@@ -16,7 +16,7 @@ export function PainelDivida() {
     <section className="cp-section cp-data-section" aria-labelledby="divida-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">02 · Dívida bruta · Banco Central</p>
+          <p className="rotulo cp-eyebrow">02 · Dívida bruta · Banco Central</p>
           <h2 id="divida-titulo">Quanto os governos devem?</h2>
           <p>Dívida bruta do governo geral: União, INSS, estados e municípios, sem o Banco Central e as empresas estatais. Saldo no fim do mês, em reais correntes e em relação ao PIB dos últimos 12 meses.</p>
         </div>

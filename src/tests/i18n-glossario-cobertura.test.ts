@@ -54,9 +54,9 @@ describe("glossário no relatório de cobertura", () => {
       glossario: { path: ARQUIVO, fontes: 1, termos: 1, nomes_preservados: 0, pendencias: [{ id: "editorial.pendente", pt: "Nome pendente", depende_de: "mantenedor" }], uso_na_interface_verificado: false, uso_no_pipeline_verificado: false },
       dominios: { plataforma: { interface: { chaves_catalogadas: { traduzidas: 0 }, percentual_traduzido: null }, cobertura_completa: false } },
     });
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
     escrever(raiz, ARQUIVO, { ...glossario, entradas: { "energia.eletricidade": { ...glossario.entradas["energia.eletricidade"], nota: "Contexto documental atualizado." } } });
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(join(raiz, RELATORIO))).toEqual(original);
     executar([], raiz);
     const atualizado = JSON.parse(readFileSync(join(raiz, RELATORIO), "utf8"));
@@ -207,7 +207,7 @@ describe("proveniência dos produtos na cobertura", () => {
     expect(depois.glossario).toEqual(antes.glossario);
     expect(depois.escopo.fontes_sha256).not.toBe(antes.escopo.fontes_sha256);
     expect(depois.escopo.arquivos_analisados).toBe(antes.escopo.arquivos_analisados);
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(join(raiz, RELATORIO))).toEqual(relatorio);
   });
 
@@ -219,7 +219,7 @@ describe("proveniência dos produtos na cobertura", () => {
     escreverRegistroProduto(raiz, "Dados com Nome Alterado");
 
     expect(() => gerarCobertura(raiz)).toThrow();
-    expect(() => executar(["--check"], raiz)).toThrow();
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow();
     expect(readFileSync(join(raiz, RELATORIO))).toEqual(relatorio);
     expect(readFileSync(join(raiz, ARQUIVO))).toEqual(bytesGlossario);
   });

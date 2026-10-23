@@ -560,7 +560,7 @@ export function TabelaInterativa({
                         className={`inline-flex min-h-[44px] w-full items-center gap-1.5 py-1 ${numerica ? "justify-end text-right" : "text-left"} hover:text-carvao`}
                       >
                         <span>{c.rotuloEhNome ? <Nome>{rotuloCabecalho(c)}</Nome> : rotuloCabecalho(c)}</span>
-                        <span aria-hidden="true" className={`text-[0.7rem] ${ativa ? "text-energia-dark" : "text-mineral"}`}>
+                        <span aria-hidden="true" className={`text-xs ${ativa ? "text-energia-dark" : "text-mineral"}`}>
                           {ativa && ordem ? (ordem.direcao === "asc" ? "▲" : "▼") : "↕"}
                         </span>
                       </button>
@@ -792,7 +792,7 @@ function FiltroCategoria({
       >
         <span>{coluna.rotulo}</span>
         {ativo && <span className="tabular-nums">({marcados.length})</span>}
-        <span aria-hidden="true" className="text-[0.7em]">
+        <span aria-hidden="true" className="text-xs">
           {aberto ? "▴" : "▾"}
         </span>
       </summary>

@@ -203,7 +203,7 @@ function contasEstaduais(): Montagem {
     ],
     atalhos: { metodo: `${r}#metodo` },
     // etapa piloto (catálogo, cobertura e seis fichas de prova): dito na navegação, como antes no cabeçalho próprio
-    estado: "Piloto",
+    estado: "piloto",
   };
 }
 

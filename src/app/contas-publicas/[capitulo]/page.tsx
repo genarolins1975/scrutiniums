@@ -32,7 +32,7 @@ export default function Page({params}:{params:{capitulo:string}}){
  // os complementos saíram do topo (diagnóstico de 20/10/2026, item 9): viram links depois do painel, onde a leitura pede o próximo passo
  const complementos=cobertura.complementares.filter(p=>!p.href.startsWith(`/contas-publicas/${c.id}`));
  return <main id="conteudo-contas" className="cp-wrap cp-main">
-  <header className="cp-chapter-header"><p className="cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
+  <header className="cp-chapter-header"><p className="rotulo cp-eyebrow">{c.etapa} · Dados disponíveis · recorte parcial</p><h1>{c.pergunta}</h1><p className="cp-lead">{c.entrega}</p><p className="cp-note cp-chapter-limit">{c.limite}</p></header>
   {c.id==='panorama'&&<ResumoFiscalAbertura/>}
   {/* os outros painéis estão na navegação da coleção (NavegacaoColecao), acima do título */}<div className="cp-chapter-tools"><RecorteCompartilhavel/></div>
   {c.id==='panorama'&&<><FluxoFederal/><PainelFiscal/></>}{c.id==='execucao'&&<PainelOrcamento/>}{c.id==='restos-a-pagar'&&<PainelRAP/>}{c.id==='custos'&&<PainelCustos/>}{c.id==='metas'&&<PainelMetas inicial={consultarMetas({busca:'',orgao:'',estado:'calculavel'})} info={META_INFO}/>}

@@ -1,3 +1,4 @@
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import type { ReactNode } from "react";
 import type { FocosMunicipio, GoldQueimadas } from "@/lib/territorio/queimadas";
 import { NOME_UF } from "@/lib/territorio/queimadas";
@@ -57,8 +58,8 @@ function GraficoAnual({ g, compacto = false }: Readonly<{ g: GoldQueimadas; comp
   const menor = fechados.reduce((a, b) => (b.focos < a.focos ? b : a));
   const ultimo = fechados[fechados.length - 1];
   const destaque = new Set(compacto ? [maior.ano, ultimo.ano] : [maior.ano, menor.ano, ultimo.ano]);
-  const fonte = compacto ? "text-[11px]" : "text-[13px]";
-  const fonteEixo = compacto ? "text-[11px]" : "text-[12px]";
+  const fonte = compacto ? "text-xs" : "text-[13px]";
+  const fonteEixo = compacto ? "text-xs" : "text-xs";
   return (
     <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={`Focos de calor por ano, satélite de referência, ${fechados[0].ano} a ${ultimo.ano}. Maior: ${maior.ano}, ${n(maior.focos)}. Menor: ${menor.ano}, ${n(menor.focos)}. ${ultimo.ano}: ${n(ultimo.focos)}.`} className="h-auto w-full">
       <line x1="0" x2={L} y1={base} y2={base} className="stroke-linha" strokeWidth="1" />
@@ -146,7 +147,7 @@ function GraficoMensal({ g, compacto = false }: Readonly<{ g: GoldQueimadas; com
                 <g><title>{`${rot}/${atual}${b.parcial ? ", parcial" : ""}: ${n(b.focos)} focos`}</title>
                   <rect x={x + grupo * 0.52} y={y(b.focos)} width={grupo * 0.36} height={base - y(b.focos)} className={b.parcial ? "fill-none stroke-obee" : "fill-obee"} strokeWidth={b.parcial ? 2 : 0} strokeDasharray={b.parcial ? "4 3" : undefined} /></g>
               )}
-              <text x={x + grupo / 2} y={base + 18} textAnchor="middle" className={`fill-mineral ${compacto ? "text-[11px]" : "text-[12px]"}`}>{compacto ? rot[0].toUpperCase() : rot}</text>
+              <text x={x + grupo / 2} y={base + 18} textAnchor="middle" className={`fill-mineral ${compacto ? "text-xs" : "text-xs"}`}>{compacto ? rot[0].toUpperCase() : rot}</text>
             </g>
           );
         })}
@@ -227,7 +228,6 @@ export function TabelaUF({ g, linhas }: Readonly<{ g: GoldQueimadas; linhas: { i
   );
 }
 
-/** Modelo didático: o que um foco de calor é e o que ele deixa de ver. */
 /**
  * Modelo didático do foco de calor. No painel, a introdução fala "deste painel"; na
  * entrada do observatório, ela recebe outro texto (introducao) e a ligação ao painel.
@@ -239,30 +239,37 @@ export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNo
     { id: "invisivel", titulo: "O que fica de fora", texto: "Fogo pequeno, rasteiro sob a copa, sob nuvem ou apagado entre duas passagens do satélite não é detectado: zero focos não prova ausência de fogo.", pixels: [[1, 1]], nuvem: true, focos: 0 },
   ];
   return (
-    <section aria-labelledby="didatico-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-12 md:py-14">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="didatico-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.5rem,2.8vw,2rem)] leading-tight text-carvao">Do satélite ao foco de calor</h2>
-        <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+    <ModeloDidatico
+      id="didatico"
+      titulo="Do satélite ao foco de calor"
+      descricao={
+        <>
           {introducao ?? (
             <>
               Os números deste painel contam focos: pixels com fogo ativo vistos pelo satélite de referência do INPE. O esquema mostra
               por que foco não é área queimada nem número de incêndios. É uma ilustração, sem escala nem dado real.
             </>
           )}
-        </p>
-        <ol className="mt-8 grid gap-px border border-linha bg-linha md:grid-cols-3">
+        </>
+      }
+      deixaDeFora={[
+        "Fogo pequeno, rasteiro sob a copa, sob nuvem ou apagado entre duas passagens do satélite: zero focos não prova ausência de fogo.",
+        "Área queimada e número de incêndios: o foco é um pixel com fogo ativo, e um incêndio grande soma vários.",
+        "Escala e dado real: é uma ilustração.",
+      ]}
+    >
+        <ol className="grid gap-px border border-linha bg-linha md:grid-cols-3">
           {casos.map((c, i) => (
             <li key={c.id} className="flex flex-col bg-papel p-5">
               <p className="rotulo flex items-baseline gap-2 text-mineral"><span className="tabular-nums text-carvao">{String(i + 1).padStart(2, "0")}</span>{c.titulo}</p>
               <svg viewBox="0 0 120 90" aria-hidden="true" className="mt-4 h-auto w-40">
                 {[0, 1, 2].map((cx) => [0, 1].map((cy) => (
-                  <rect key={`${cx}-${cy}`} x={10 + cx * 34} y={14 + cy * 34} width="32" height="32" className={c.pixels.some(([px, py]) => px === cx && py === cy) && !c.nuvem ? "fill-obee" : "fill-superficie"} stroke="#D8D2C6" />
+                  <rect key={`${cx}-${cy}`} x={10 + cx * 34} y={14 + cy * 34} width="32" height="32" className={c.pixels.some(([px, py]) => px === cx && py === cy) && !c.nuvem ? "fill-obee" : "fill-superficie"} stroke="var(--cor-linha)" />
                 )))}
                 {c.pixels.map(([px, py]) => (
                   <circle key={`${px}-${py}`} cx={26 + px * 34} cy={30 + py * 34} r="5" className="fill-bronze" />
                 ))}
-                {c.nuvem && <ellipse cx="60" cy="40" rx="46" ry="20" className="fill-marfim" stroke="#A6A8A4" strokeDasharray="3 3" />}
+                {c.nuvem && <ellipse cx="60" cy="40" rx="46" ry="20" className="fill-marfim" stroke="var(--cor-mineral-soft)" strokeDasharray="3 3" />}
               </svg>
               <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.texto}</p>
               <p className="mt-auto pt-3 text-sm text-carvao"><span className="font-label text-lg tabular-nums">{c.focos}</span> {c.focos === 1 ? "foco" : "focos"}</p>
@@ -273,8 +280,7 @@ export function DoSateliteAoFoco({ introducao }: Readonly<{ introducao?: ReactNo
           Ponto marrom: fogo no terreno. Quadrado escuro: pixel que o satélite registra como foco. Comparar anos exige sempre o mesmo
           satélite: a soma de todos os satélites conta o mesmo fogo várias vezes e muda com a quantidade de satélites em órbita.
         </p>
-      </div>
-    </section>
+    </ModeloDidatico>
   );
 }
 

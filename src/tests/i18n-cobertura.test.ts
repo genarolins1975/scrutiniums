@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -66,18 +66,46 @@ describe("relatório inicial de cobertura i18n", () => {
     expect(alterado.escopo.fontes_sha256).not.toBe(construirRelatorio(manifesto, fontes, ler).escopo.fontes_sha256);
   });
 
-  it("confere o arquivo versionado sem reescrevê-lo e detecta uma fonte nova", () => {
+  it("confere um relatório gravado (--comparar) sem reescrevê-lo e detecta uma fonte nova", () => {
     const raiz = fixture();
     executar([], raiz);
     const arquivo = join(raiz, "docs/i18n/cobertura.json");
     const original = readFileSync(arquivo);
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
     writeFileSync(join(raiz, "src/app/novo.tsx"), 'export const aviso = "Novo texto";');
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(arquivo)).toEqual(original);
     executar([], raiz);
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
     expect(readFileSync(join(raiz, "gold/base.json"), "utf8")).toBe(textos["gold/base.json"]);
+  });
+
+  it("--check gera e valida sem ler nem gravar relatório, e falha quando a geração falha", () => {
+    const raiz = fixture();
+    expect(executar(["--check"], raiz)).toContain("validada");
+    expect(existsSync(join(raiz, "docs/i18n/cobertura.json"))).toBe(false);
+    // fonte nova não é "desatualização": não há arquivo de referência, só a geração
+    writeFileSync(join(raiz, "src/app/novo.tsx"), 'export const aviso = "Novo texto";');
+    expect(executar(["--check"], raiz)).toContain("validada");
+    writeFileSync(join(raiz, "src/app/quebrado.tsx"), "const x = <h1>");
+    expect(() => executar(["--check"], raiz)).toThrow("Sintaxe não analisada");
+    expect(existsSync(join(raiz, "docs/i18n/cobertura.json"))).toBe(false);
+  });
+
+  it("--comparar exige exatamente um arquivo e trata arquivo ausente como desatualizado", () => {
+    const raiz = fixture();
+    expect(() => executar(["--comparar"], raiz)).toThrow("Uso:");
+    expect(() => executar(["--comparar", "a.json", "b.json"], raiz)).toThrow("Uso:");
+    expect(() => executar(["--comparar", "--check"], raiz)).toThrow("Uso:");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
+    writeFileSync(join(raiz, "outro.json"), executar(["--stdout"], raiz));
+    expect(executar(["--comparar", "outro.json"], raiz)).toContain("confere");
+  });
+
+  it("o relatório do repositório não é versionado e o git o ignora", () => {
+    // versionado, ele conflitava em quase todo merge (34 dos 300 últimos commits do main eram só a regeneração, 22/10/2026)
+    expect(execFileSync("git", ["ls-files", "docs/i18n/cobertura.json"], { encoding: "utf8" })).toBe("");
+    expect(execFileSync("git", ["check-ignore", "docs/i18n/cobertura.json"], { encoding: "utf8" }).trim()).toBe("docs/i18n/cobertura.json");
   });
 
   it("exige integrar o catálogo antes de medir as futuras fontes inglesas", () => {

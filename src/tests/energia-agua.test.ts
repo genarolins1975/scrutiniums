@@ -2285,7 +2285,7 @@ describe("componentes do módulo", () => {
   const componentes = readdirSync(dir).filter((x) => x.startsWith("Agua"));
   const paginas = ["", "/afluencia", "/chuva-e-temperatura", "/reservatorios"].map((r) => join(raiz, `src/app/setor-eletrico/agua-e-clima${r}/page.tsx`));
 
-  it("sem hexadecimal solto (o uso de energia-soft como texto é conferido por design-tokens-energia)", () => {
+  it("sem hexadecimal solto (o uso de energia-soft como texto é conferido por design-tokens)", () => {
     for (const f of [...componentes.map((c) => join(dir, c)), ...paginas, join(raiz, "src/lib/energia/agua.ts")]) {
       const t = readFileSync(f, "utf-8");
       expect(t, f).not.toMatch(/#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?\b/);

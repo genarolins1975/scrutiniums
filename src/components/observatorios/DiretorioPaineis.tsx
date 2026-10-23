@@ -1,3 +1,4 @@
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ObservatorioInventario, PaginaInventario, TotaisInventario } from "@/lib/observatorios/inventario";
@@ -30,9 +31,9 @@ export function DiretorioPaineis({ observatorios, totais, extras, exemplo }: {
           consultas e verbetes; Enter abre o primeiro resultado.
         </p>
         <p className={styles.legenda}>
-          <span><i className={styles.pontoPublicado} aria-hidden="true" /> publicado: página com dados na cobertura declarada</span>
-          <span><i className={styles.pontoParcial} aria-hidden="true" /> parcial: no ar, com parte da cobertura</span>
-          <span><i className={styles.pontoPrevisto} aria-hidden="true" /> previsto: consta do catálogo, ainda sem página</span>
+          <span><SeloProntidao valor="publicado" />: página com dados na cobertura declarada</span>
+          <span><SeloProntidao valor="parcial" />: no ar, com parte da cobertura</span>
+          <span><SeloProntidao valor="preparacao" />: consta do catálogo, ainda sem página</span>
         </p>
       </section>
 
@@ -79,14 +80,19 @@ function Paginas({ paginas }: { paginas: PaginaInventario[] }) {
     <p className={styles.paginas}>
       {paginas.map((p, i) => {
         const classe = p.situacao === "parcial" ? styles.parcial : p.situacao === "previsto" ? styles.previsto : "";
-        const texto = p.situacao === "previsto" ? `${p.titulo} (previsto)` : p.situacao === "parcial" ? `${p.titulo} (parcial)` : p.titulo;
         return (
           <span key={`${p.rota ?? p.titulo}`} className={classe}>
             {i > 0 && <span aria-hidden="true" className={styles.sep}> · </span>}
             {p.rota ? (
-              <Link href={p.rota} prefetch={false}>{texto}</Link>
+              <Link href={p.rota} prefetch={false}>
+                {p.titulo}
+                {p.situacao === "parcial" && <> <SeloProntidao valor="parcial" /></>}
+              </Link>
             ) : (
-              <span title={p.pendencia}>{texto}</span>
+              // previsto: sem página, nunca link
+              <span title={p.pendencia}>
+                {p.titulo} <SeloProntidao valor="preparacao" detalhe={p.pendencia} />
+              </span>
             )}
           </span>
         );

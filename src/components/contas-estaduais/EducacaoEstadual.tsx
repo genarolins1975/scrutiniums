@@ -25,7 +25,7 @@ export default function EducacaoEstadual({ uf, ano }: { uf: string; ano: number 
   const consulta = new URLSearchParams({ uf, ano: String(ano), etapa }).toString();
   return <section id="educacao-estadual" tabIndex={-1} className="ce-education" aria-labelledby="educacao-titulo">
     <div className="ce-section-heading">
-      <div><p className="ce-kicker">Educação / {uf} / {ano} / rede estadual</p><h3 id="educacao-titulo">Do gasto à aprendizagem.</h3></div>
+      <div><p className="rotulo ce-kicker">Educação / {uf} / {ano} / rede estadual</p><h3 id="educacao-titulo">Do gasto à aprendizagem.</h3></div>
       <a className="ce-download" href={'/contas-publicas-estaduais/educacao.csv?' + consulta}>Baixar disponibilidade · CSV ↓</a>
     </div>
     <p className="ce-education-lead">Quanto se gasta por matrícula? As metas foram cumpridas? O que mudou na aprendizagem? Para responder, orçamento, atendimento e resultados precisam descrever o mesmo universo.</p>

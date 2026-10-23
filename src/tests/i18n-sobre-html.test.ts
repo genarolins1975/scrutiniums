@@ -88,7 +88,7 @@ describe(`Sobre: HTML estático PT/EN (${EXIGIR ? "build obrigatório" : "build 
     expect(attr(tag(pt, "html"), "lang")).toBe("pt-BR");
     expect(attr(tag(en, "html"), "lang")).toBe("en");
     expect(attr(tag(en, "html"), "class")).toBe(attr(tag(pt, "html"), "class"));
-    for (const doc of [pt, en]) expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-marfim text-carvao");
+    for (const doc of [pt, en]) expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-papel text-carvao");
     expect(texto(tag(pt, "title"))).toBe("Sobre a Scrutiniums · Scrutiniums");
     expect(texto(tag(en, "title"))).toBe("About Scrutiniums · Scrutiniums");
     expect(meta(pt, "description")).toEqual(["Quem mantém a plataforma, como ela se financia, que regras editoriais seguem as notas, como erros são corrigidos e registrados, como citar, sob qual licença e como entrar em contato."]);
@@ -189,7 +189,7 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
     expect(attr(tag(pt, "html"), "class")).toBeTruthy();
     expect(attr(tag(en, "html"), "class")).toBe(attr(tag(pt, "html"), "class"));
     for (const [doc, caminho, locale, outroLocale] of [[pt, par.pt, "pt_BR", "en_US"], [en, par.en, "en_US", "pt_BR"]] as const) {
-      expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-marfim text-carvao");
+      expect(attr(tag(doc, "body"), "class")).toBe("min-h-screen bg-papel text-carvao");
       expect(links(doc, "canonical").map((e) => attr(e, "href")), caminho).toEqual([url(caminho)]);
       expect(links(doc, "alternate").filter((e) => attr(e, "hreflang") !== undefined)
         .map((e) => [attr(e, "hreflang"), attr(e, "href")]).sort(), caminho).toEqual([...alternates].sort());
@@ -417,9 +417,9 @@ describe.each(PARES_FORA_DO_SETOR)("HTML de cada irmã declarada: $pt ↔ $en", 
         const trechos = filhos(anchor).filter((e): e is Elemento => "tagName" in e);
         expect(trechos).toHaveLength(4);
         const spans = filhos(trechos[3]).filter((e): e is Elemento => "tagName" in e);
-        expect(spans).toHaveLength(3);
-        const valor = unico(spans[2], (e) => e !== spans[2] && e.tagName === "span", "valor da contagem");
-        return { anchor, imagem: trechos[0], nome: spans[1], contagem: spans[2], valor };
+        expect(spans, "nome e contagem; sem numeração desde 22/10/2026").toHaveLength(2);
+        const valor = unico(spans[1], (e) => e !== spans[1] && e.tagName === "span", "valor da contagem");
+        return { anchor, imagem: trechos[0], nome: spans[0], contagem: spans[1], valor };
       };
       const substituirTexto = (no: Elemento, transformar: (valor: string) => string) => {
         const partes = filhos(no).filter((filho) => "value" in filho && filho.value.trim() !== "");

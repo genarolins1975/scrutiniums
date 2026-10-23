@@ -113,7 +113,7 @@ export function Numero({
   const variPt = variacao ? descreverVariacao(variacao) : null;
   // a frase da variação vem de evidencia.ts em português; em inglês, a mesma regra (mesmo arredondamento e sinal) escrita aqui
   const vari = variPt && variacao && idiomaEnergia() === "en" ? { ...variPt, ...variacaoEn(variacao, variPt.direcao) } : variPt;
-  const corpo = tamanho === "grande" ? "text-[2rem]" : "text-2xl";
+  const corpo = tamanho === "grande" ? "numero-g" : "numero-p";
 
   if (variante === "faixa") {
     // medida da abertura: rótulo em frase, valor em serifa, unidade em sans, uma linha de contexto (período, natureza e prova) e a
@@ -135,7 +135,7 @@ export function Numero({
             {tx("sem dado", "no data")}
           </p>
         ) : (
-          <p className="col-start-2 row-span-2 row-start-1 text-right font-serif text-[1.75rem] leading-none tabular-nums text-carvao sm:text-left sm:text-[2.25rem]">
+          <p className="col-start-2 row-span-2 row-start-1 text-right numero-m leading-none text-carvao sm:text-left sm:numero-g">
             {valorDestaque(v, formato, casas)}
             {u && <span className="block pt-1 font-sans text-xs leading-tight text-carvao-muted sm:ml-1.5 sm:inline sm:pt-0 sm:!text-sm">{u}</span>}
           </p>
@@ -174,7 +174,7 @@ export function Numero({
           {tx("sem dado", "no data")}
         </p>
       ) : (
-        <p className={`mt-3 font-serif ${corpo} leading-none tabular-nums text-carvao`}>
+        <p className={`mt-3 ${corpo} leading-none text-carvao`}>
           {valorDestaque(v, formato, casas)}
           {u && <span className="ml-1 font-sans text-sm text-mineral">{u}</span>}
         </p>

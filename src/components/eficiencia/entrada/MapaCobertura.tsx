@@ -1,3 +1,4 @@
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import Link from 'next/link';
 import {DIMENSOES, GRUPOS} from '@/lib/eficiencia/dimensoes';
 import {Siglas} from '@/components/eficiencia/Siglas';
@@ -23,7 +24,7 @@ export function MapaCobertura({temas}: {temas: TemaCobertura[]}) {
   const porId = new Map(temas.map(t => [t.id, t]));
   return <section id="cobertura" className={styles.coverage} aria-labelledby="titulo-cobertura">
     <header className={styles.sectionHead}>
-      <div><p className={styles.eyebrow}>04 · O que ainda não se sabe</p><h2 id="titulo-cobertura">Até onde cada tema chega.</h2></div>
+      <div><p className={`rotulo ${styles.eyebrow}`}>04 · O que ainda não se sabe</p><h2 id="titulo-cobertura">Até onde cada tema chega.</h2></div>
       <div className={styles.sectionAside}>
         <p>Comparar capitais exige a mesma medida, no mesmo ano, para todas. Esta matriz mostra em que nível territorial cada tema tem dados publicados. Dos 16 temas, {DIMENSOES.filter(d => (porId.get(d.id)?.niveis ?? []).some(n => n === 'indice' || n === 'capitais' || n === 'municipios')).length} têm algum dado por município ou capital; {DIMENSOES.filter(d => !porId.has(d.id)).length} ainda não têm painel.</p>
         <p className={styles.small}>Abra um tema para ver o que mostra, o que não inclui, fontes, cobertura e acessos. Os anos de referência variam entre temas e não devem ser tratados como contemporâneos.</p>
@@ -36,7 +37,7 @@ export function MapaCobertura({temas}: {temas: TemaCobertura[]}) {
         {DIMENSOES.filter(d => d.grupo === g).map(d => { const t = porId.get(d.id);
           return <details key={d.id} id={`cobertura-${d.id}`} className={styles.matrixRow}>
             <summary className="list-none">
-              <span className={styles.matrixName}><strong>{t?.titulo ?? d.titulo}</strong><small>{t ? 'Painel publicado' : 'Em desenvolvimento'}</small></span>
+              <span className={styles.matrixName}><strong>{t?.titulo ?? d.titulo}</strong><small><SeloProntidao valor={t ? 'publicado' : 'preparacao'} /></small></span>
               {COLUNAS.map(c => { const tem = !!t?.niveis.includes(c.id); return <span key={c.id} className={styles.matrixCell}><i className={tem ? (c.id === 'indice' ? styles.cellIndex : styles.cellOn) : styles.cellOff} aria-hidden="true"/><span className="sr-only">{c.ajuda}: {tem ? 'sim' : 'não'}.</span></span>; })}
             </summary>
             <div className={styles.matrixDetail}>

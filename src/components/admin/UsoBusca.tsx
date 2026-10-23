@@ -12,11 +12,11 @@ const LINHAS = 30;
  * docs/observatorios/MEDICAO_DE_USO.md): os termos mais buscados nos últimos 30 dias e os que a busca de hoje não acha. Sem
  * conta, a coluna só mede com USO_ANONIMO_ATIVO=1; desligada, aparece como "não medido", nunca como zero.
  */
-export function UsoBusca({ busca, numero }: { busca: BuscasDoPeriodo; numero: string }) {
+export function UsoBusca({ busca }: { busca: BuscasDoPeriodo }) {
   const semResultado = busca.termos.filter((t) => t.resultados === 0);
   return (
     <section aria-label="Busca da plataforma" className="border border-linha bg-papel p-8" data-secao="uso-busca">
-      <SectionHeading number={numero} label="Busca" title="Busca da plataforma, últimos 30 dias" />
+      <SectionHeading label="Busca" title="Busca da plataforma, últimos 30 dias" />
       <p className="text-sm text-carvao">
         {diaBr(busca.inicio)} a {diaBr(busca.fim)}, fuso de Brasília. Cada busca feita (resultado aberto pelo campo ou página de
         resultados) soma 1 ao termo do dia, sem associar a busca a ninguém. Só é gravado o termo cujas palavras existem no

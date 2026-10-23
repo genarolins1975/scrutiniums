@@ -2,8 +2,10 @@ import {readFileSync} from 'node:fs';
 import {describe,expect,it} from 'vitest';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {AberturaFederal} from '@/components/contas-publicas/AberturaFederal';
-import {AberturaEstadual} from '@/components/contas-estaduais/AberturaEstadual';
+import {CascataFederal} from '@/components/contas-publicas/AberturaFederal';
+import {escalaFederal} from '@/lib/contas-publicas/entrada';
+import {SeletorEstado} from '@/components/contas-estaduais/AberturaEstadual';
+import {escalaEstadual} from '@/lib/contas-estaduais/entrada';
 import {RetratoCapital} from '@/components/eficiencia/entrada/RetratoCapital';
 import {montarRetrato} from '@/lib/eficiencia/entrada';
 import {naCapital,numero} from "@/lib/eficiencia/entrada-nucleo";
@@ -17,18 +19,23 @@ import {comparar} from '@/lib/contas-estaduais/comparacao';
 const percentual=(v:number)=>v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
 describe('Aberturas editoriais: números e perímetros preservados',()=>{
  it('Federal usa os quatro estágios do mesmo exercício, com fonte e ressalva',()=>{
-  const html=renderToStaticMarkup(createElement(AberturaFederal));
+  // molde único (Iniciativa 4, 22/10/2026): os quatro estágios são a escala da entrada; a cascata, com 2026 parcial, fica recolhida
+  const html=renderToStaticMarkup(createElement(CascataFederal));
   const b=DADOS.orcamento.find(b=>b.ano===2025)!;
   for(const campo of ['atualizada','empenhado','liquidado','pago'] as const)expect(html).toContain(moeda(b.total[campo],'reais'));
+  const escala=escalaFederal(2025);
+  expect(escala.map(n=>n.valor)).toEqual((['atualizada','empenhado','liquidado','pago'] as const).map(c=>moeda(b.total[c],'reais')));
+  for(const n of escala)expect(`${n.fonte} · ${n.periodo}`).toBe('SIOP, dados abertos · 2025, exercício encerrado');
   expect(html).toContain('Os estágios não se somam');
   expect(html).toContain('pagamentos de restos a pagar ficam separados');
   expect(html).toContain('Fonte: SIOP');
   expect(html).toContain('2026 · parcial');
  });
  it('Federal abre com a pergunta e uma cascata só, com o que fica para trás em cada passo (diagnóstico de 20/10/2026, item 9)',()=>{
-  const html=renderToStaticMarkup(createElement(AberturaFederal));
+  const html=renderToStaticMarkup(createElement(CascataFederal));
   const b=DADOS.orcamento.find(b=>b.ano===2025)!.total;
-  expect(html).toMatch(/<h1[^>]*>Quanto do orçamento federal vira <em>pagamento<\/em>\?<\/h1>/);
+  // o título passou para o EntradaColecao da página (a pergunta, sem mudança de texto)
+  expect(readFileSync('src/app/contas-publicas/page.tsx','utf-8')).toContain('titulo={<>Quanto do orçamento federal vira <em>pagamento</em>?</>}');
   expect(html).not.toContain('à <em>entrega.</em>');
   // uma barra encaixada no lugar das quatro barras soltas, e sem a escala comum delas
   expect(html.match(/role="img"/g)).toHaveLength(1);
@@ -39,17 +46,19 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(html).toContain('cada um está dentro do anterior');
  });
  it.each(snapshot.ufs)('Estadual mantém os números conferidos de $uf e as 27 bandeiras',u=>{
-  const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:u.uf,ano:2025,selecionar:()=>{}}));
+  // molde único (Iniciativa 4, 22/10/2026): os dois números do estado são a escala da entrada; as bandeiras, o SeletorEstado no "Para você"
+  const html=renderToStaticMarkup(createElement(SeletorEstado,{uf:u.uf,ano:2025,selecionar:()=>{}}));
   const execucao=comparar(2025,'CE-04','Todas',true).linhas.find(l=>l.uf===u.uf)!.valor!;
-  expect(html).toContain(percentual(execucao));
-  expect(html).toContain(percentual(dividaPrimaria(u.uf,2025)!.valores.percentual_declarado));
+  const escala=escalaEstadual(u.uf,2025);
+  expect(escala.map(n=>n.valor)).toEqual([percentual(execucao),percentual(dividaPrimaria(u.uf,2025)!.valores.percentual_declarado)]);
+  for(const n of escala)expect(n.fonte).toMatch(/^Tesouro \/ Siconfi, (RREO|RGF)$/);
   expect(html.match(/<button /g)).toHaveLength(27);
   expect(html.match(/aria-pressed="true"/g)).toHaveLength(1);
   if(u.uf==='DF')expect(html).toContain('competências estaduais e municipais');
  });
  it('Estadual abre com a pergunta e a página não repete a grade de bandeiras nem os cartões com fotos (diagnóstico de 20/10/2026, item 5)',()=>{
-  const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:'PE',ano:2025,selecionar:()=>{}}));
-  expect(/<h1[^>]*>([^<]+)<\/h1>/.exec(html)![1]).toBe('Como estão as contas do seu estado?');
+  // o título passou para o EntradaColecao da página, sem mudança de texto
+  expect(readFileSync('src/app/contas-publicas-estaduais/page.tsx','utf8')).toContain('titulo="Como estão as contas do seu estado?"');
   const painel=readFileSync('src/components/contas-estaduais/PainelEstadual.tsx','utf8');
   expect(painel).not.toContain('<TrilhasEstado');
   expect(readFileSync('src/components/contas-estaduais/TerritoriosEstaduais.tsx','utf8')).not.toContain('ce-flag-list');
@@ -61,16 +70,18 @@ describe('Aberturas editoriais: números e perímetros preservados',()=>{
   expect(painel).toContain('if (e.target.value !== "Todos") setCatalogoAberto(true);');
  });
  it('Estadual distingue ausência de dado conferido de valor zero',()=>{
-  const html=renderToStaticMarkup(createElement(AberturaEstadual,{uf:'PE',ano:2015,selecionar:()=>{}}));
-  expect(html.match(/Não conferido/g)).toHaveLength(2);
-  expect(html).not.toContain('0,00%');
+  // sem fonte conferida no ano, o número da escala é null: a entrada escreve "Indisponível nesta publicação", nunca zero
+  const escala=escalaEstadual('PE',2015);
+  expect(escala.map(n=>n.valor)).toEqual([null,null]);
+  for(const n of escala)expect(n.nota).toBe('Sem fonte conferida neste ano.');
  });
  const retrato=montarRetrato();
  const retratoDe=(a:string,b:string)=>renderToStaticMarkup(createElement(RetratoCapital,{a:retrato.capitais.find(c=>c.id===a)!,b:retrato.capitais.find(c=>c.id===b)!,condicoes:retrato.condicoes,capitais:retrato.capitais,onSelect:()=>{},fonteContornos:retrato.fonteContornos,fontePopulacao:retrato.fontePopulacao}));
  it.each(retrato.capitais)('OBEE retrata $nome com os sete valores originais, contorno oficial e população do Censo',city=>{
   const reference=city.id==='4106902'?'2611606':'4106902';
   const html=retratoDe(city.id,reference);
-  expect(html).toContain(`Como se vive ${naCapital(city.nome).split(" ")[0]} <em>${city.nome}</em>?`);
+  // destaque colorido no título só no H1 da página inicial (decisão do dono de 22/10/2026)
+  expect(html).toContain(`Como se vive ${naCapital(city.nome).split(" ")[0]} ${city.nome}?`);
   for(const m of retrato.condicoes)expect(html).toContain(numero(m.valores[city.id].valor,m.unidade));
   expect(city.contorno).not.toBeNull();expect(html).toContain('retrato-hachura');
   expect(city.populacao).toBeGreaterThan(0);expect(html).toContain(Math.round(city.populacao!).toLocaleString('pt-BR'));

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { registroErros } from "@/lib/sobre";
-import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/home/Recolhido";
+import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
 
 type Item = { titulo: string; descricao: string; link?: { href: string; rotulo: string } };
 
@@ -61,7 +61,7 @@ export function SecaoPlataforma() {
                 id="plataforma-titulo"
                 className="mt-3 font-serif text-[clamp(1.5rem,3.4vw,2.25rem)] leading-[1.15] text-marfim [text-wrap:balance]"
               >
-                Fonte, período e limites, <span className="text-bronze-soft">declarados junto ao número.</span>
+                Fonte, período e limites, declarados junto ao número.
               </h2>
             </span>
             <IndicadorRecolhido claro />

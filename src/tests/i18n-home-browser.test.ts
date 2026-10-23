@@ -179,7 +179,7 @@ describe("home PT/EN: navegador do build de produção", () => {
         expect(await anchor.locator("span.tabular-nums").textContent()).toBe(esperado.en.valor);
         expect(await anchor.locator("span.mt-2").textContent()).toBe(`${esperado.en.valor} ${esperado.en.unidade}`);
         const escapar = (valor: string) => valor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const nomeAcessivel = new RegExp(`^${[esperado.ordinal, esperado.nome, esperado.en.valor, esperado.en.unidade].map(escapar).join("\\s*")}$`);
+        const nomeAcessivel = new RegExp(`^${[esperado.nome, esperado.en.valor, esperado.en.unidade].map(escapar).join("\\s*")}$`);
         expect(await nav.getByRole("link", { name: nomeAcessivel }).count(), `nome acessível de ${esperado.id}`).toBe(1);
       }
       const destinos = await indice.evaluateAll((links) => links.map((a) => {

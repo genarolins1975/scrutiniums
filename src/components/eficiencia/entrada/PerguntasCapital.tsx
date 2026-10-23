@@ -45,7 +45,7 @@ export function PerguntasCapital({id, eyebrow, titulo, texto, medidas, a, b, cap
   const nomes = Object.fromEntries(capitais.map(c => [c.id, c.nome]));
   return <section id={id} className={styles.questions} aria-labelledby={`${id}-titulo`}>
     <header className={styles.sectionHead}>
-      <div><p className={styles.eyebrow}>{eyebrow}</p><h2 id={`${id}-titulo`}>{titulo}</h2></div>
+      <div><p className={`rotulo ${styles.eyebrow}`}>{eyebrow}</p><h2 id={`${id}-titulo`}>{titulo}</h2></div>
       <div className={styles.sectionAside}><p>{texto}</p>
         <p className={styles.legend}><span><i className={styles.legendFocus}/>{a.nome}</span><span><i className={styles.legendPeer}/>{b.nome}</span><span><i className={styles.legendDot}/>Demais capitais</span><span><i className={styles.legendMedian}/>Mediana das capitais</span></p></div>
     </header>

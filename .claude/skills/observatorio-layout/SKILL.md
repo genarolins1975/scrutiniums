@@ -57,6 +57,8 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 
 ## 3. Identidade visual de referência
 
+**Tokens e tipografia da plataforma (Iniciativa 5, 22/10/2026):** a referência é `docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md`: cor só em `src/app/globals.css` (nenhum hexadecimal nem `--cor-*` fora dele, `src/tests/design-tokens.test.ts`), escala única (`.t-h1` a `.t-meta`, `.rotulo` a 12 px), três tamanhos de número em serifa (`.numero-g`, `.numero-m`, `.numero-p`), papel em todo `main` e piso de 12 px conferido no navegador (`src/tests/ux-texto-minimo.test.ts`). Decisão do dono de 22/10/2026: rótulos em caixa alta ficam, a 12 px; a numeração 01, 02, 03 sai dos cartões da home e das portas; destaque colorido no título só no H1 da home; filetes de 3 px na cor do observatório ficam. A tabela abaixo é a referência de origem; os valores em uso são os do documento.
+
 Adotar a paleta abaixo como ponto de partida quando o projeto não possuir tokens equivalentes. Mapear para os tokens existentes e verificar contraste em cada uso. Não afirmar que uma cor isolada garante acessibilidade.
 
 | Papel | Referência | Aplicação |
@@ -109,6 +111,22 @@ Preservar o logotipo e os ativos oficiais. Não redesenhá-los por aproximação
 5. **Método, elos, recorte e downloads recolhidos no fim**, sem sumir do HTML (auditabilidade e testes).
 6. **Imagens finais**: nenhuma gravura provisória; ilustração estilizada só quando acrescenta reconhecimento (ex.: a capital, o tema), nunca fotografia decorativa.
 7. **Home e cards atualizados** quando um painel novo entra: a página não logada, os cards da home e o mapa do observatório citam o painel novo.
+
+**Molde único (Iniciativa 4 do parecer de UX de 21/10/2026).** Toda entrada de observatório e de coleção, e toda versão aperitivo, é `EntradaColecao` (`src/components/observatorios/EntradaColecao.tsx`), renderizada no servidor, com as fatias nesta ordem (cada uma marcada `data-fatia`, conferida por `src/tests/entrada-molde.test.ts`):
+
+1. **Abertura**: `RotuloContexto`, H1 pergunta com até 60 caracteres (duas linhas a 1440, três a 390) e uma frase com até 220. Nada mais antes dos números.
+2. **Escala**: de um a quatro números com `NumeroEscala` (`src/components/observatorios/NumeroEscala.tsx`), cada um com rótulo, valor, unidade, período, fonte, nota opcional e "Ver no painel"; o topo do primeiro número abaixo de 900 px a 1440. Valor ausente é "Indisponível nesta publicação", nunca zero. Não criar outro componente de número (a Iniciativa 6 funde este no kit).
+3. **ParaVoce**.
+4. **Destinos**: as coleções (entrada de observatório) ou os destinos de primeiro nível de `navegacaoDaColecao` (entrada de coleção, `DestinosColecao`), cada um com a pergunta que responde e, quando há, o número lido da mesma base; até oito à vista e o resto em "Mais destinos".
+5. **Artefato**: um modelo didático, sempre no envelope `ModeloDidatico` (`src/components/observatorios/ModeloDidatico.tsx`): rótulo fixo "Modelo didático", título, corpo e a lista obrigatória "O que este modelo deixa de fora" (o tipo exige a lista). "Laboratório ilustrativo", "cenário hipotético" e afins vêm nesse envelope.
+6. **Caminhos**: "Perguntas para começar", cada uma com resposta curta e, quando o destino tem número, o número lido dele (regra do `paraVoce.ts`: nunca escrito à mão).
+7. **Método**: um único `<details>` no fim, com método, fontes, downloads (`SeloComConta` na versão aberta, `ExportacaoComConta` para exportação do navegador) e `FaixaFrescor` variante método.
+
+Entre os destinos e o artefato cabe **uma** seção própria da coleção (`secaoPropria`: o percurso da Energia, a régua das capitais). O resto do conteúdo vai para `Recolhido` (`src/components/observatorios/Recolhido.tsx`, o único jeito de recolher seção longa: título e resumo de uma linha no `<summary>`, conteúdo inteiro no HTML) ou para a página "Visão geral" da coleção; nunca é apagado. A versão aperitivo (`tipo="aperitivo"`) usa abertura, a consulta do leitor no lugar da escala, `ConviteAperitivo` e método.
+
+**Estados de prontidão** têm forma única, `SeloProntidao` (`src/components/observatorios/SeloProntidao.tsx`): glifo e texto, nunca só cor, em quatro valores (publicado, cobertura parcial, em preparação, piloto). Destino em preparação nunca é link. Nada de "Versão em desenvolvimento", "Em desenvolvimento", "(previsto)" ou "Estados · Piloto" escritos à mão; o teste do molde reprova as formas antigas no código.
+
+**Orçamento de comprimento** (medido por `scripts/ux-medidas.mjs`): entrada de observatório e de coleção até 6.500 px a 1440 e 11.000 a 390; página aperitivo até 2.500 e 4.500; porta `/perguntas/*` até 3.500 e 7.000; página aberta do Crédito até 3.500 e 7.000. Acima disso, recolher, nunca apagar.
 
 Na entrada de um observatório inteiro, combinar: identidade e promessa curta → explicação visual do tema → amostra equilibrada de indicadores com referências → caminhos por perguntas → índice temático completo → fontes e atualidade acessíveis.
 
@@ -306,7 +324,7 @@ O usuário autoriza em frases curtas ("abre o PR", "faz o merge quando o CI pass
 
 1. **PR** com resumo do que mudou para o leitor, verificações feitas e pendências reais; acompanhar o PR.
 2. **CI e revisão automática**: corrigir falhas e achados procedentes (Codex, Claude Code Review) e responder cada thread. Se o CI não aparece, checar conflito com o main: PR em conflito não roda testes.
-3. **Conflitos** em arquivos gerados se resolvem regenerando com a ferramenta do repositório, nunca à mão: `docs/i18n/cobertura.json` com `node scripts/cobertura-i18n.mjs`; no Setor Elétrico, `public/energia/gold/metricas.json`, `arquivos.json` e `manifesto.json` com `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta` (um módulo qualquer já integrado basta, porque os três são derivados de todos os registros). Em outros domínios, usar o gerador próprio do domínio, não o de energia.
+3. **Conflitos** em arquivos gerados se resolvem regenerando com a ferramenta do repositório, nunca à mão. O inventário de tradução `docs/i18n/cobertura.json` não é versionado desde 22/10/2026: conflito nele é sempre resolvido apagando (`git rm docs/i18n/cobertura.json`). No Setor Elétrico, `public/energia/gold/metricas.json`, `arquivos.json` e `manifesto.json` com `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta` (um módulo qualquer já integrado basta, porque os três são derivados de todos os registros). Em outros domínios, usar o gerador próprio do domínio, não o de energia.
 4. **Merge** só com autorização explícita do usuário nesta conversa; "faz o merge quando ficar verde" vale para o PR em questão.
 5. **Produção**: depois do merge, conferir o deploy da Vercel no commit do main (status do commit no GitHub) e só então dizer "está no ar", com o horário e os links das rotas. Os painéis exigem login: dizer o que foi verificado (deploy, cabeçalhos, rotas públicas) e o que só ele pode ver logado. Mudança de navegação ou acesso exige conferência logado e deslogado.
 6. **Encerramento**: uma linha com o estado final e a próxima decisão dele, se houver.

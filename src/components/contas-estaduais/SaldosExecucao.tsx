@@ -4,7 +4,7 @@ export default function SaldosExecucao({uf, ano}: {uf:string; ano:number}) {
  const s = saldosExecucao(uf, ano);
  if (!s) return null;
  return <section id="saldos-execucao" tabIndex={-1} className="ce-balances" aria-labelledby="saldos-titulo">
-  <div className="ce-section-heading"><div><p className="ce-kicker">Leitura dos saldos / {uf} / {ano}</p><h3 id="saldos-titulo">Como se distribui a autorização?</h3></div><a className="ce-download" href={`/contas-publicas-estaduais/saldos.csv?uf=${uf}&ano=${ano}`}>Baixar este recorte · CSV ↓</a></div>
+  <div className="ce-section-heading"><div><p className="rotulo ce-kicker">Leitura dos saldos / {uf} / {ano}</p><h3 id="saldos-titulo">Como se distribui a autorização?</h3></div><a className="ce-download" href={`/contas-publicas-estaduais/saldos.csv?uf=${uf}&ano=${ano}`}>Baixar este recorte · CSV ↓</a></div>
   <p className="ce-note">Janeiro a dezembro · RREO Anexo 01 · valores nominais. As quatro parcelas recompõem a dotação atualizada, sem dupla contagem.</p>
   <figure className="ce-balance-figure"><figcaption>R$ {num(s.dado.valores.dotacao_atualizada / 1e9)} bilhões autorizados <span>100% da dotação atualizada · mesma escala para todas as parcelas</span></figcaption>
    <div className="ce-balance-bar" aria-hidden="true">{s.partes.map((p,i)=><span key={p.id} className={`ce-balance-color-${i}`} style={{width:`${p.percentual}%`}} />)}</div>

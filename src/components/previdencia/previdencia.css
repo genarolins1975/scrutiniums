@@ -22,7 +22,7 @@
 .pv-numeros > div:last-child { border-right: 0; }
 .pv-numeros dt { font-size: 14px; line-height: 1.4; color: var(--cor-carvao); }
 .pv-numeros dd { margin: 0; }
-.pv-valor { font-family: var(--font-serif), Georgia, serif; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; color: var(--cor-carvao); letter-spacing: -0.01em; }
+.pv-valor {font-family:var(--font-serif),Georgia,serif;font-weight:400; font-size:2.25rem; line-height: 1.15; font-variant-numeric:lining-nums tabular-nums; color: var(--cor-carvao); letter-spacing: -0.01em; }
 .pv-unidade { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); letter-spacing: 0; margin-left: 4px; }
 .pv-prova { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
 .pv-numeros > div.pv-lider .pv-valor { color: var(--pv-acento-escuro); }
@@ -46,7 +46,7 @@
 .pv-extrato dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; margin: 22px 0 0; }
 .pv-extrato dt { font-size: 14px; color: var(--cor-carvao); }
 .pv-extrato dd { margin: 4px 0 0; }
-.pv-extrato .pv-valor { font-size: clamp(32px, 4vw, 44px); }
+.pv-extrato .pv-valor { font-size:2.25rem; }
 .pv-extrato .pv-valor-acento { color: var(--pv-acento-escuro); }
 .pv-extrato .pv-detalhe { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
 @media (max-width: 640px) { .pv-extrato { padding: 20px 18px 18px; } .pv-extrato dl { grid-template-columns: 1fr; gap: 18px; } }
@@ -127,7 +127,7 @@
 .pv-fluxo-linha > span:first-child { font-size: 14px; line-height: 1.4; }
 .pv-fluxo-trilho { display: flex; height: 32px; }
 .pv-fluxo-trilho > span { display: block; min-width: 0; }
-.pv-fluxo-entra { background: var(--pv-acento); color: #fff; }
+.pv-fluxo-entra { background: var(--pv-acento); color: var(--cor-superficie); }
 .pv-fluxo-falta { background: repeating-linear-gradient(135deg, var(--cor-papel) 0 5px, var(--cor-bronze-soft) 5px 7px); color: var(--cor-carvao); box-shadow: inset 0 0 0 1px var(--cor-bronze); }
 .pv-fluxo-valores { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 6px; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--cor-carvao); }
 .pv-fluxo-valores i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }

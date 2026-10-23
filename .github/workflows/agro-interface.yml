@@ -1,4 +1,10 @@
 name: Interface do Agronegócio
+# A verificação (scripts/agro/verificacao.mjs) abre, além do Agronegócio, a home em pt e en,
+# o seletor de observatórios, o rodapé e a política de acesso das raízes. Por isso o filtro
+# por lista fixa de pastas não basta: o job `mudancas` calcula o fecho de importações a
+# partir dessas rotas (scripts/ci/classificar-mudancas.mjs) e só roda a verificação quando
+# a mudança o alcança. Até 22/10/2026 qualquer arquivo em src/** disparava os 11 minutos
+# (build completo mais verificação) em paralelo ao CI, mesmo num PR só do Setor Elétrico.
 on:
   pull_request:
     paths:
@@ -6,6 +12,14 @@ on:
       - 'public/agro/**'
       - 'pipeline/agro/**'
       - 'scripts/agro/**'
+      - 'scripts/ci/**'
+      - 'docs/agro/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.mjs'
+      - 'tailwind.config.ts'
+      - 'postcss.config.mjs'
+      - 'tsconfig.json'
       - '.github/workflows/agro-interface.yml'
   push:
     branches: [main]
@@ -14,6 +28,14 @@ on:
       - 'public/agro/**'
       - 'pipeline/agro/**'
       - 'scripts/agro/**'
+      - 'scripts/ci/**'
+      - 'docs/agro/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.mjs'
+      - 'tailwind.config.ts'
+      - 'postcss.config.mjs'
+      - 'tsconfig.json'
       - '.github/workflows/agro-interface.yml'
   workflow_dispatch:
 permissions:
@@ -21,8 +43,39 @@ permissions:
 concurrency:
   group: agro-interface-${{ github.ref }}
   cancel-in-progress: true
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
 jobs:
+  mudancas:
+    name: Classificar mudanças
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      agro: ${{ steps.classificar.outputs.agro }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            /src/
+            /scripts/
+            /pesquisa/
+            /pipeline/**/*.py
+            /docs/obee/**/*.py
+          sparse-checkout-cone-mode: false
+          # o primeiro pai do commit de merge do PR é a base usada no merge
+          fetch-depth: 2
+      - name: Classificar
+        id: classificar
+        # Em pull_request, o checkout é o commit de merge com a base atual, e o diff vai do primeiro pai (a base usada
+        # no merge) a ele: só o que o PR traz. O base.sha do evento envelhece quando a base anda e trazia para o diff o
+        # que entrou nela depois (achado na medida de 22/10/2026). Fora de pull_request, o script devolve tudo verdadeiro.
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then export BASE_SHA="$(git rev-parse HEAD^1)"; fi
+          node scripts/ci/classificar-mudancas.mjs
   interface:
+    needs: mudancas
+    # Em pull_request só quando a mudança alcança o que a verificação percorre; em push no main, sempre.
+    if: needs.mudancas.outputs.agro == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -35,12 +88,35 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci
-      - run: npx --no-install playwright install --with-deps chromium
+      - name: Versão do Playwright fixada no lockfile
+        id: playwright
+        run: echo "versao=$(node -p "require('playwright/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Cache do Chromium do Playwright
+        id: chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
+      - name: Chromium
+        run: |
+          if [ "${{ steps.chromium.outputs.cache-hit }}" = "true" ]; then
+            npx --no-install playwright install-deps chromium
+          else
+            npx --no-install playwright install --with-deps chromium
+          fi
       - name: Derivadas reproduzíveis
         run: |
           python3 -m pipeline.agro.run --check
           python3 -m pipeline.agro.dicionario --check
           node scripts/agro/catalogo.mjs --check
+      - name: Restaurar o cache do compilador do Next (.next/cache)
+        # gravado pelo CI fora de pull_request (ci.yml, job testes); aqui só se restaura
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
       - run: npm run build
       - run: node scripts/agro/verificacao.mjs
       - uses: actions/upload-artifact@v4

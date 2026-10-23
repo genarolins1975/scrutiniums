@@ -185,13 +185,13 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
         {ticksY.map((v) => (
           <g key={v}>
             <line x1={M.e} x2={W - M.d} y1={sy(v)} y2={sy(v)} stroke="var(--cor-grade)" />
-            <text x={M.e - 6} y={sy(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao-muted)">
+            <text x={M.e - 6} y={sy(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-carvao-muted)">
               {n(v, 0)}
             </text>
           </g>
         ))}
         {anos.map((a) => (
-          <text key={a} x={sx(a)} y={H - 12} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
+          <text key={a} x={sx(a)} y={H - 12} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
             {a}
           </text>
         ))}
@@ -201,7 +201,7 @@ export function LeiloesDispersao({ url, categorias, ipcaAte }: { url: string; ca
         {daCat.map((x, i) => (
           <circle key={x.i} cx={sx(frac(x.data))} cy={sy(valor(x)!)} r={i === ativo ? 6 : 3.5} fill={cor} stroke={i === ativo ? "var(--cor-carvao)" : "var(--cor-superficie)"} strokeWidth={i === ativo ? 2 : 0.8} />
         ))}
-        <text x={M.e} y={M.t - 2} fontSize="11" fill="var(--cor-carvao-muted)">
+        <text x={M.e} y={M.t - 2} fontSize="12" fill="var(--cor-carvao-muted)">
           R$/MWh
         </text>
       </svg>

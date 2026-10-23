@@ -219,7 +219,7 @@ export function MiniSerie({
           {dom.ticks.map((t) => (
             <g key={t}>
               <line x1={m.l} x2={w - m.r} y1={y(t)} y2={y(t)} stroke={COR.grade} strokeWidth={1} />
-              <text x={m.l - 8} y={y(t)} dy="0.32em" textAnchor="end" fontSize={11} fill={COR.eixo}>
+              <text x={m.l - 8} y={y(t)} dy="0.32em" textAnchor="end" fontSize={12} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
@@ -227,12 +227,12 @@ export function MiniSerie({
           {pontos.map((p, i) => (
             <g key={p.ano}>
               {mostrarRotulo(i) && (
-                <text x={x(i)} y={H - 10} textAnchor="middle" fontSize={11} fill={COR.eixo}>
+                <text x={x(i)} y={H - 10} textAnchor="middle" fontSize={12} fill={COR.eixo}>
                   {p.ano}
                 </text>
               )}
               {anot.has(p.ano) && (
-                <text x={x(i)} y={m.t - 2} textAnchor="middle" fontSize={10} fill={COR.referencia}>
+                <text x={x(i)} y={m.t - 2} textAnchor="middle" fontSize={12} fill={COR.referencia}>
                   {anot.get(p.ano)}
                 </text>
               )}
@@ -245,7 +245,7 @@ export function MiniSerie({
             <g key={`rp${pontos[i].ano}`}>
               <line x1={(x(i - 1) + x(i)) / 2} x2={(x(i - 1) + x(i)) / 2} y1={m.t} y2={H - m.b} stroke={COR.referencia} strokeWidth={1.25} strokeDasharray="2 3" />
               {n === 0 && rotuloRuptura && (
-                <text x={rotuloRuptura.cx} y={rotuloRuptura.y} textAnchor="middle" fontSize={10} fill={COR.referencia} {...(rotuloRuptura.dentro ? { stroke: "var(--cor-papel)", strokeWidth: 3, paintOrder: "stroke" } : {})}>
+                <text x={rotuloRuptura.cx} y={rotuloRuptura.y} textAnchor="middle" fontSize={12} fill={COR.referencia} {...(rotuloRuptura.dentro ? { stroke: "var(--cor-papel)", strokeWidth: 3, paintOrder: "stroke" } : {})}>
                   mudança de base
                 </text>
               )}
@@ -283,7 +283,7 @@ export function MiniSerie({
               key={`v${pontos[r.i].ano}`}
               x={r.x0}
               y={r.y}
-              fontSize={11.5}
+              fontSize={12}
               fontWeight={r.i === iUltimo ? 600 : 400}
               fill="var(--cor-obee-tinta)"
               stroke="var(--cor-papel)"

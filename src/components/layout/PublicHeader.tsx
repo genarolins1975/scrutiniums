@@ -76,7 +76,7 @@ export function PublicHeaderView({ authenticated = false, idioma = "pt" }: { aut
             <DetalhesFechaveis className="group relative sm:hidden">
               <summary className="rotulo flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 whitespace-nowrap text-carvao hover:text-bronze [&::-webkit-details-marker]:hidden">
                 {t.observatorios}
-                <span aria-hidden="true" className="text-[0.7em] motion-safe:transition-transform group-open:rotate-180">▾</span>
+                <span aria-hidden="true" className="text-xs motion-safe:transition-transform group-open:rotate-180">▾</span>
               </summary>
               {/* o painel ocupa a largura útil (fixo, 1rem de margem) para não sair da tela */}
               <div className="fixed inset-x-4 z-40 mt-1 hidden flex-col border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:flex">

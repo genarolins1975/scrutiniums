@@ -281,7 +281,7 @@ export function GraficoBarras({
   const k = empilhado ? 1 : series.length;
   const w = largura;
   // abaixo de 640 px o texto do gráfico tem 12 px (11 px ficava abaixo do que as demais figuras da página usam); pxc é a largura média de um caractere nesse tamanho
-  const FS = w < 640 ? 12 : 11;
+  const FS = 12;
   const pxc = w < 640 ? 6.7 : PX_CARACTERE;
 
   // ---------- geometria ----------

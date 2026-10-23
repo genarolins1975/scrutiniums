@@ -6,6 +6,7 @@ import type { ComponentProps } from "react";
 import react from "@vitejs/plugin-react";
 import { chromium, type Browser, type ConsoleMessage, type Page, type Request, type Response } from "playwright";
 import { createServer, type ViteDevServer } from "vite";
+import { portaLivre } from "./porta-livre";
 import type { PerfilForm } from "@/components/conta/PerfilForm";
 
 const RAIZ = fileURLToPath(new URL("../../../", import.meta.url));
@@ -80,12 +81,13 @@ export async function criarNavegadorPerfil(): Promise<NavegadorPerfil> {
     const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Fixture de PerfilForm</title>
       <link rel="icon" href="data:,"><style>body{margin:24px;font:16px sans-serif}main{max-width:640px}label,input,select{display:block}input,select,button{min-height:32px;margin:8px 0}form>div{margin:12px 0}</style>
       </head><body><main><div id="montagem"></div></main><script type="module" src="/@fs${entrada}"></script></body></html>`;
+    const porta = await portaLivre();
     servidor = await createServer({
       root: RAIZ, configFile: false, envFile: false, envPrefix: [], publicDir: false,
       appType: "custom", cacheDir: join(temporario, "cache"), logLevel: "error",
       resolve: { alias: { "@": join(RAIZ, "src") }, dedupe: ["react", "react-dom"] },
       optimizeDeps: { entries: [entrada], noDiscovery: true, include: ["react", "react-dom/client", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"] },
-      server: { host: "127.0.0.1", port: 0, strictPort: true, hmr: false, ws: false, watch: null, fs: { strict: true, allow: diretorios } },
+      server: { host: "127.0.0.1", port: porta, strictPort: true, hmr: false, ws: false, watch: null, fs: { strict: true, allow: diretorios } },
       plugins: [react(), {
         name: "fixture-conta-cpf",
         configureServer(vite) {

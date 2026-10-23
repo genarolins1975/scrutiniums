@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Confirmar assinatura", robots: { ind
 export default function Page({ searchParams }: { searchParams: { token?: string } }) {
   const token = typeof searchParams.token === "string" ? searchParams.token : "";
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle label="Resumo do crédito" title="Confirmar a assinatura do resumo" description="Clique abaixo para começar a receber o resumo do crédito por e-mail, na periodicidade que você escolheu." />

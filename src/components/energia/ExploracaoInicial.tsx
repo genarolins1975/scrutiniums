@@ -26,7 +26,7 @@ export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoIni
     <div className={styles.opcoes} role="group" aria-label={tx("Escolha o indicador para explorar", "Choose the indicator to explore")}>
       {resumos.map((r, i) => <button type="button" key={r.id} aria-pressed={!todos && atual === i} aria-controls={`energia-resposta-${r.id}`} onClick={() => { setAtual(i); setTodos(false); guardarAncora(`#pergunta-${r.id}`); }}>
         <span className={styles.indice}>{String(i + 1).padStart(2, "0")} <span aria-hidden="true">↗</span></span>
-        <span className={styles.rotulo}>{r.titulo}</span><strong>{r.valor}</strong><span>{r.unidade}</span><small>{r.periodo}</small>
+        <span className={`t-meta ${styles.titulo}`}>{r.titulo}</span><strong>{r.valor}</strong><span>{r.unidade}</span><small>{r.periodo}</small>
       </button>)}
     </div>
     <div className={styles.barra}><p>{tx("Selecione uma medida para abrir sua referência, universo e fonte. Cada uma tem seu próprio período.", "Select a measure to open its reference, universe and source. Each one has its own period.")}</p>
@@ -37,7 +37,11 @@ export function PerguntasExploraveis({ resumos, children }: { resumos: ResumoIni
   </div>;
 }
 
-export function LaboratorioEnergia() {
+/**
+ * Laboratório "Potência não é energia". `embutido`: dentro do ModeloDidatico da entrada (Iniciativa 4), que já traz o rótulo, o
+ * título e a descrição; aqui ficam os controles, o gráfico, o resultado, a nota de hipóteses e o link para o simulador da conta.
+ */
+export function LaboratorioEnergia({ embutido = false }: { embutido?: boolean } = {}) {
   const idioma = useIdioma();
   const tx = useTx();
   const num = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR", { maximumFractionDigits: 2 });
@@ -47,8 +51,8 @@ export function LaboratorioEnergia() {
   const kwh = energiaConsumida(potencia, horas, dias)!;
   const diario = energiaConsumida(potencia, horas, 1)!;
   const referencia = energiaConsumida(1500, 3, 30)!;
-  return <section className={styles.laboratorio} aria-labelledby="energia-lab-titulo" id="laboratorio-energia">
-    <div className={styles.labCabecalho}><div><p className={styles.sobretitulo}>{tx("Laboratório de leitura · cenário ilustrativo", "Reading lab · illustrative scenario")}</p><h2 id="energia-lab-titulo">{tx("Potência não é energia.", "Capacity is not energy.")}</h2><p>{tx("Experimente: a altura representa a potência; a largura, o tempo de uso. A área revela a energia consumida em um dia.", "Try it: the height represents power; the width, the time of use. The area shows the energy consumed in one day.")}</p></div><Link href="/setor-eletrico/conta-de-luz#simulador">{tx("Explorar o simulador da conta ↗", "Explore the bill simulator ↗")}</Link></div>
+  const simulador = <Link href="/setor-eletrico/conta-de-luz#simulador">{tx("Explorar o simulador da conta ↗", "Explore the bill simulator ↗")}</Link>;
+  const corpo = <>
     <div className={styles.labGrade}>
       <div className={styles.controles}>
         <label htmlFor="energia-lab-w">{tx("Potência constante", "Constant power")} <output htmlFor="energia-lab-w">{num(potencia)} W</output></label>
@@ -75,6 +79,11 @@ export function LaboratorioEnergia() {
       </div>
     </div>
     <p className={styles.nota}>{tx("Hipóteses de uso, sem dados de uma residência. Referência: 1.500 W, 3 h/dia e 30 dias. Potência constante durante o uso; não considera ciclos de funcionamento. O exercício calcula energia, não fatura, despacho ou PLD. O gráfico mantém as mesmas escalas em todos os cenários.", "Usage assumptions, with no data from an actual household. Reference: 1,500 W, 3 h/day and 30 days. Constant power during use; operating cycles are not considered. The exercise calculates energy, not the bill, dispatch or PLD. The chart keeps the same scales in every scenario.")}</p>
+  </>;
+  if (embutido) return <div className={`${styles.laboratorio} ${styles.embutido}`}>{corpo}<p className={styles.simulador}>{simulador}</p></div>;
+  return <section className={styles.laboratorio} aria-labelledby="energia-lab-titulo" id="laboratorio-energia">
+    <div className={styles.labCabecalho}><div><p className={`rotulo ${styles.sobretitulo}`}>{tx("Laboratório de leitura · cenário ilustrativo", "Reading lab · illustrative scenario")}</p><h2 id="energia-lab-titulo">{tx("Potência não é energia.", "Capacity is not energy.")}</h2><p>{tx("Experimente: a altura representa a potência; a largura, o tempo de uso. A área revela a energia consumida em um dia.", "Try it: the height represents power; the width, the time of use. The area shows the energy consumed in one day.")}</p></div>{simulador}</div>
+    {corpo}
   </section>;
 }
 
