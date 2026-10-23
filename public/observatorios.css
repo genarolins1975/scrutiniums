@@ -319,14 +319,14 @@
   margin:-1px 0 0 -1px; padding:16px 20px;
 }
 .observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi h4 { font-family:inherit; font-size:var(--tipo-meta); font-weight:400; color:var(--text-2); margin-bottom:6px; }
-.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi .big { font-variant-numeric:tabular-nums; }
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi .big { font-variant-numeric:lining-nums tabular-nums; }
 .observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi.clickable:hover { background:var(--surface-2); }
 .observatorio-credito .guia-pergunta { font:400 var(--tipo-h3)/1.35 var(--serif); color:var(--text); margin:0 0 12px; }
 .observatorio-credito .guia-como, .observatorio-credito .guia-limite { max-width:75ch; margin:8px 0; font-size:var(--tipo-tabela); line-height:1.65; }
 .observatorio-credito .guia-leitura .guia { border:0; border-top:1px solid var(--border); border-radius:0; margin:16px 0 0; background:transparent; }
 .observatorio-credito .guia-leitura summary { padding:10px 0 0; min-height:44px; }
 .observatorio-credito .guia-leitura .guiabody { display:block; border:0; padding:12px 0 0; max-width:75ch; }
-.observatorio-credito table.data { font-variant-numeric:tabular-nums; }
+.observatorio-credito table.data { font-variant-numeric:lining-nums tabular-nums; }
 .observatorio-credito table.data td { padding-block:12px; }
 .observatorio-credito table.data tbody tr:hover { background:var(--surface-2); }
 .dominio-energia [data-painel-evidencia] { padding-top:32px; margin-top:16px; }

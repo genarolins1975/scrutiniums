@@ -675,13 +675,13 @@ dfn.verbete:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 .bets-tl li { position: relative; padding: 0 0 14px 12px; }
 .bets-tl li::before { content: ""; position: absolute; left: -21px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .bets-tl li.parcial::before { background: var(--c-gray); }
-.bets-tl .tld { font-size: var(--tipo-meta); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.bets-tl .tld { font-size: var(--tipo-meta); color: var(--text-2); font-variant-numeric: lining-nums tabular-nums; }
 .bets-bar { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: var(--tipo-tabela); }
 .bets-bar .lbl { flex: 0 0 190px; color: var(--text-2); }
 .bets-bar .track { flex: 1; height: 8px; background: var(--surface-2); border-radius: var(--r-full); overflow: hidden; }
 .bets-bar .fill { height: 100%; background: var(--c-line1); }
 .bets-bar .fill.warn { background: var(--warning); }
-.bets-bar .num { flex: 0 0 auto; font-weight: var(--fw-bold); font-variant-numeric: tabular-nums; }
+.bets-bar .num { flex: 0 0 auto; font-weight: var(--fw-bold); font-variant-numeric: lining-nums tabular-nums; }
 @media (max-width: 640px) { .bets-bar .lbl { flex-basis: 120px; } .bets-chain .node { min-width: 100px; } }
 hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 
@@ -884,7 +884,7 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .penlista li:hover { background: var(--surface-2); }
 .penlista li.sel { background: var(--accent-soft); }
 .penlista .n small { color: var(--text-3); margin-left: 5px; font-size: var(--tipo-rotulo); }
-.penlista .v { font-variant-numeric: tabular-nums; color: var(--text-2); white-space: nowrap; }
+.penlista .v { font-variant-numeric: lining-nums tabular-nums; color: var(--text-2); white-space: nowrap; }
 
 .penperfil { margin-top: 14px; }
 .pp-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
@@ -986,8 +986,8 @@ tr.selrow { background: var(--accent-soft); }
 .morbar .fill { display: block; height: 100%; background: color-mix(in srgb, var(--teal) 55%, var(--surface)); border-radius: var(--r-sm); }
 .morbar .fill.destaque { background: var(--accent); }
 .morbar .v { text-align: right; min-width: 12ch; }
-.morbar .v b { font-variant-numeric: tabular-nums; }
-.morbar .v small { display: block; color: var(--text-3); font-size: var(--tipo-meta); font-variant-numeric: tabular-nums; }
+.morbar .v b { font-variant-numeric: lining-nums tabular-nums; }
+.morbar .v small { display: block; color: var(--text-3); font-size: var(--tipo-meta); font-variant-numeric: lining-nums tabular-nums; }
 
 .morfalta ul { margin: 6px 0 10px; padding-left: 20px; }
 .morfalta li { margin: 3px 0; color: var(--text-2); }
@@ -1003,8 +1003,8 @@ tr.morfora code { opacity: .75; }
 
 .morsim { gap: 14px; align-items: flex-end; }
 .morsim label { display: flex; flex-direction: column; gap: 4px; font-size: var(--tipo-tabela); color: var(--text-2); }
-.morsim input { width: 13ch; padding: 6px 8px; font-variant-numeric: tabular-nums; }
-.morsimtab td { font-variant-numeric: tabular-nums; }
+.morsim input { width: 13ch; padding: 6px 8px; font-variant-numeric: lining-nums tabular-nums; }
+.morsimtab td { font-variant-numeric: lining-nums tabular-nums; }
 
 .morselo { display: inline-block; padding: 1px 8px; border-radius: var(--r-full); font-size: var(--tipo-meta);
   letter-spacing: var(--tr-wide); text-transform: uppercase; color: var(--c);
@@ -1019,7 +1019,7 @@ tr.morfora code { opacity: .75; }
 .morperfil table th[scope="row"] { text-align: left; font-weight: var(--fw-normal); color: var(--text-2); }
 .morperfil table td:last-child { width: 1%; white-space: nowrap; }
 .morperfil .sechead small { font-weight: var(--fw-normal); color: var(--text-3); }
-.moruf td, .morinst td { font-variant-numeric: tabular-nums; }
+.moruf td, .morinst td { font-variant-numeric: lining-nums tabular-nums; }
 button.linkish { background: none; border: 0; padding: 0; color: var(--accent-ink); cursor: pointer;
   font: inherit; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
 
@@ -1040,21 +1040,21 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
 
 .cgpir { display: flex; flex-direction: column; gap: 2px; }
 .cgpirl { display: grid; grid-template-columns: 8ch 1fr 5ch; gap: 8px; align-items: center; font-size: var(--tipo-meta); }
-.cgpirl .g { color: var(--text-3); text-align: right; font-variant-numeric: tabular-nums; }
+.cgpirl .g { color: var(--text-3); text-align: right; font-variant-numeric: lining-nums tabular-nums; }
 .cgpirl .b { display: block; height: 12px; background: var(--surface-2); border-radius: var(--r-xs); overflow: hidden; }
 .cgpirl .b > span { display: block; height: 100%; background: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
-.cgpirl .v { color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }
+.cgpirl .v { color: var(--text-2); text-align: right; font-variant-numeric: lining-nums tabular-nums; }
 
 .cgfaixas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .cgfx { text-align: center; padding: 10px 4px; background: var(--surface-2); border-radius: var(--r-md); }
-.cgfx .n { display: block; font-size: var(--tipo-numero-p); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
+.cgfx .n { display: block; font-size: var(--tipo-numero-p); font-weight: var(--fw-semibold); font-variant-numeric: lining-nums tabular-nums; }
 .cgfx .r { display: block; font-size: var(--tipo-meta); color: var(--text-2); margin-top: 2px; }
 
 .cgdisp { width: 100%; height: auto; }
 .cgdisp circle { transition: fill-opacity .15s; }
 .cgdisp circle:hover { fill-opacity: .8; }
 
-.cgseg td, .cgtaxa td, .cgrec td, .cgrisco td, .cgperfil td { font-variant-numeric: tabular-nums; }
+.cgseg td, .cgtaxa td, .cgrec td, .cgrisco td, .cgperfil td { font-variant-numeric: lining-nums tabular-nums; }
 .cgdestaque { background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .cgtot th, .cgtot td { border-top: 1px solid var(--border); font-weight: var(--fw-semibold); }
 .cgmelhor { color: var(--positive); }
@@ -1064,7 +1064,7 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
 .cgtl li { display: grid; grid-template-columns: 10ch 1fr; gap: 12px; padding-bottom: 10px;
   border-bottom: 1px solid var(--border); }
 .cgtl li:last-child { border-bottom: 0; }
-.cgtl .d { color: var(--text-3); font-size: var(--tipo-tabela); font-variant-numeric: tabular-nums; }
+.cgtl .d { color: var(--text-3); font-size: var(--tipo-tabela); font-variant-numeric: lining-nums tabular-nums; }
 .cgtl .c { display: flex; flex-direction: column; gap: 3px; }
 .cgtl .o { color: var(--text-2); font-size: var(--tipo-tabela); max-width: 80ch; }
 .cgtl .tp { display: inline-block; padding: 0 7px; border-radius: var(--r-full); font-size: var(--tipo-rotulo);
@@ -1112,7 +1112,7 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
   letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-3); }
 .pgkpi .mk .v { font-size: var(--tipo-numero-m); font-weight: var(--fw-light);
   letter-spacing: var(--tr-tight); line-height: var(--lh-tight);
-  font-variant-numeric: tabular-nums; color: var(--text); }
+  font-variant-numeric: lining-nums tabular-nums; color: var(--text); }
 .pgkpi .mk .v small { font-size: var(--tipo-lead); font-weight: var(--fw-normal); color: var(--text-2); }
 .pgkpi .mk.destaque .v { color: var(--accent-ink); }
 .pgkpi .mk .n { font-size: var(--tipo-meta); color: var(--text-3); line-height: var(--lh-snug); }

@@ -302,6 +302,14 @@ describe("6. tipografia, números, selos, datas e tokens da plataforma (PR 2 da 
     expect(fora).toEqual([]);
   });
 
+  it("algarismos alinhados em toda declaração de algarismos tabulares (tabular-nums sozinho volta a Playfair aos algarismos de estilo antigo)", () => {
+    // achado da revisão independente de 23/10/2026: a regra do Crédito em observatorios.css desligava o lining-nums da faixa de números
+    for (const [nome, css] of [["styles.css", styles], ["atlas.css", atlas], ["observatorios.css (Crédito)", regrasCredito]]) {
+      const soTabular = [...css.matchAll(/font-variant-numeric\s*:\s*([^;}]+)/g)].map((m) => m[1].trim()).filter((v) => /tabular-nums/.test(v) && !/lining-nums/.test(v));
+      expect(soTabular, nome).toEqual([]);
+    }
+  });
+
   it("a escala própria (--fs-*) e os tamanhos soltos saíram", () => {
     for (const [nome, t] of [["styles.css", styles], ["observatorios.css", obs], ["app.js", app]]) {
       expect(semComentarios(t), nome).not.toMatch(/--fs-[a-z0-9]+/);
