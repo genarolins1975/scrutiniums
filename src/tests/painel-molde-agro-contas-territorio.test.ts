@@ -32,6 +32,10 @@ const PAGINAS: [string, Carga, Record<string, unknown>?][] = [
   ["/territorio/queimadas", () => import("@/app/territorio/queimadas/page")],
   ["/combustiveis/no-meu-estado", () => import("@/app/combustiveis/no-meu-estado/page")],
   ["/contas-publicas/por-area", () => import("@/app/contas-publicas/por-area/page"), { searchParams: {} }],
+  // os recortes da URL que trocam figura por estado de ausência (estágio incompleto, dívida na base primária) continuam no molde
+  ["/contas-publicas/por-area", () => import("@/app/contas-publicas/por-area/page"), { searchParams: { ano: "2014", estagio: "atualizada" } }],
+  ["/contas-publicas/por-area", () => import("@/app/contas-publicas/por-area/page"), { searchParams: { base: "primaria", area: "divida-servico" } }],
+  ["/contas-publicas/por-area", () => import("@/app/contas-publicas/por-area/page"), { searchParams: { area: "reserva", ano: "2026" } }],
   ["/contas-publicas/metas", () => import("@/app/contas-publicas/[capitulo]/page"), { params: { capitulo: "metas" } }],
   ["/agronegocio/tamanho", () => import("@/app/agronegocio/tamanho/page")],
   ["/agronegocio/prato", () => import("@/app/agronegocio/prato/page")],
@@ -41,6 +45,6 @@ const PAGINAS: [string, Carga, Record<string, unknown>?][] = [
 
 describe("molde de painel: Agronegócio, Contas Federais, Território e Combustíveis", () => {
   for (const [rota, carregar, props] of PAGINAS) {
-    it(rota, async () => conferirPainel(rota, await html(rota, carregar, props)), 60_000);
+    it(`${rota} ${JSON.stringify(props ?? {})}`, async () => conferirPainel(rota, await html(rota, carregar, props)), 60_000);
   }
 });

@@ -6,7 +6,8 @@
 
 .cp-skip{position:absolute;left:16px;top:-100px;background:var(--cor-superficie);padding:12px;z-index:99}.cp-skip:focus{top:12px}
 .cp-main{padding-top:32px;padding-bottom:64px}.cp-eyebrow{color:var(--cor-obee-dark)}
-.cp-root h1,.cp-root h2,.cp-root h3{font-family:var(--font-serif),Georgia,serif;font-weight:400;text-wrap:balance}.cp-root h1{font-size:clamp(32px,4vw,48px);line-height:1.12;max-width:850px;margin:14px 0 20px}.cp-root h2{font-size:clamp(25px,3vw,32px);line-height:1.2}.cp-root h3{font-size:23px;line-height:1.25}
+/* os títulos das páginas no molde de painel (data-painel, Iniciativa 1 de 23/10/2026) seguem as classes .t-* do kit, não a escala antiga dos capítulos */
+.cp-root :is(h1,h2,h3):not([data-painel] *){font-family:var(--font-serif),Georgia,serif;font-weight:400;text-wrap:balance}.cp-root h1:not([data-painel] *){font-size:clamp(32px,4vw,48px);line-height:1.12;max-width:850px;margin:14px 0 20px}.cp-root h2:not([data-painel] *){font-size:clamp(25px,3vw,32px);line-height:1.2}.cp-root h3:not([data-painel] *){font-size:23px;line-height:1.25}
 .cp-lead{font-size:18px;line-height:1.65;max-width:750px}.cp-note{font-size:14px;line-height:1.6;color:var(--cor-carvao-muted)}
 .cp-status{border-left:3px solid var(--cp-referencia);padding:12px 18px;background:var(--cor-marfim);margin:24px 0;font-size:14px;line-height:1.65}
 .cp-hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px;align-items:center;padding-bottom:32px}.cp-hero-aside{border-left:1px solid var(--cor-linha);padding-left:28px}.cp-hero-aside dl{display:grid;gap:22px}.cp-hero-aside dt{font-size:17px;font-weight:600}.cp-hero-aside dd{font-size:14px;line-height:1.6;margin-top:5px}
