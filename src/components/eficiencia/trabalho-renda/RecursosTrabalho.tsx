@@ -203,7 +203,7 @@ export function FiguraRecursos({ rota }: { rota: string }) {
             </>
           ) : undefined
         }
-        naoConcluir="Eficiência ou desperdício: a classificação funcional não cobre todas as ações de emprego e renda, e divergências entre declarações não demonstram eficiência ou desperdício. Não é custo por atendimento."
+        naoConcluir="Se o recurso foi bem ou mal aplicado: a classificação funcional não cobre todas as ações de emprego e renda, e divergências entre declarações não mostram a qualidade do gasto. Não é custo por atendimento."
         tabela={{
           titulo: `Função 11 Trabalho · ${estado.ano} · ${estado.moeda === "real" ? "reais de 2025" : "nominal"} · 26 capitais, inclusive ausências`,
           colunas: ["Capital", "Conferência", "Nota material", "Despesa"],
