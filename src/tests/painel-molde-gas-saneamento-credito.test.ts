@@ -41,3 +41,30 @@ describe("Gás natural no molde de painel", () => {
     expect(h).toContain('data-fatia="controles"');
   });
 });
+
+describe("Saneamento no molde de painel", () => {
+  it("simulador da conta de água e esgoto", async () => {
+    const h = await html("/saneamento/preco-regulado/simulador", () => import("@/app/saneamento/preco-regulado/simulador/page"));
+    conferirPainel("/saneamento/preco-regulado/simulador", h);
+    // a consulta: os controles na abertura, as três leituras na faixa de números, a decomposição na fatia de tabelas
+    expect(h).toMatch(/data-acao=""[\s\S]*aria-label="Tabela verificada"/);
+    expect(h).toContain("Três leituras diferentes");
+    expect(h).toContain("Decomposição da conta simulada por serviço e faixa de consumo");
+  });
+
+  it("busca do município com sessão", async () => {
+    const h = await html("/saneamento/municipio", () => import("@/app/saneamento/municipio/page"));
+    conferirPainel("/saneamento/municipio", h);
+    // a busca é a primeira ação; as capitais levam à ficha
+    expect(h).toMatch(/data-acao=""[\s\S]*Digite o nome do município/);
+    expect(h).toContain('href="/saneamento/municipio/3550308"');
+  });
+
+  it("tarifa social", async () => {
+    const h = await html("/saneamento/tarifa-social", () => import("@/app/saneamento/tarifa-social/page"));
+    conferirPainel("/saneamento/tarifa-social", h);
+    // a pergunta inteira do capítulo continua na página, no bloco recolhido da abertura
+    expect(h).toContain("A conta cabe no orçamento? A tarifa social chega a quem precisa?");
+    expect(h).toContain('data-tabela-ordenavel=""');
+  });
+});

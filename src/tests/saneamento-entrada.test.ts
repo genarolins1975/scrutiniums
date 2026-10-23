@@ -86,8 +86,9 @@ describe("Nesta página: atalhos completos, na ordem, sem âncora ausente", () =
     const nav = h.match(/<nav aria-label="Nesta página"[\s\S]*?<\/nav>/)?.[0];
     expect(nav, "navegação ausente").toBeDefined();
     const atalhos = [...nav!.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
-    // Seções da página: <section id> que contêm um título h2, na ordem do documento.
-    const secoes = [...h.matchAll(/<section[^>]*\bid="([^"]+)"[^>]*>(?:(?!<section)[\s\S])*?<h2/g)].map((m) => m[1]);
+    // Seções da página: <section id> que contêm um título h2, na ordem do documento. No molde de painel (Iniciativa 1 do parecer de
+    // UX de 23/10/2026) um capítulo sem gráfico é um Recolhido, um <details id> com o h2 no resumo: conta como seção do mesmo jeito.
+    const secoes = [...h.matchAll(/<(?:section|details)[^>]*\bid="([^"]+)"[^>]*>(?:(?!<section|<details)[\s\S])*?<h2/g)].map((m) => m[1]);
     expect(atalhos).toEqual(secoes);
     expect(new Set(atalhos).size).toBe(atalhos.length);
   }, 60_000);
