@@ -10,13 +10,20 @@ import {
   PARCELAS_ROTULOS_EN,
   marcarNomes,
 } from "@/lib/energia/i18n/qualidade-perdas";
-import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { FaixaNumeros, FiguraAnalitica, NumeroIndicador, PaginaPainel, type CelulaTabela, type NumeroProps } from "@/components/painel";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { fonteLegivel } from "@/lib/energia/bastidor";
+import { provenienciaLegivel } from "@/lib/energia/mercado";
+import { rotuloDoGrupo } from "@/lib/energia/navegacao";
+import { valorOuAusencia } from "@/lib/painel/numeros";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Histograma } from "@/components/energia/Histograma";
-import { Numero } from "@/components/energia/Numero";
 import { QualidadeAviso, QualidadeCapitulos, QualidadeDatas, QualidadeIndisponivel, QualidadePar, QualidadeRecorte } from "@/components/energia/QualidadePagina";
 import { QualidadeBuscaMunicipio } from "@/components/energia/QualidadeBuscaMunicipio";
 import { URL_MUNICIPIOS_QUALIDADE, URL_SERIE_QUALIDADE, avisosFecDaPagina, tamanhoPublico, textosDaGold } from "@/components/energia/QualidadeServidor";
@@ -26,8 +33,6 @@ import { QualidadeTabela } from "@/components/energia/QualidadeTabela";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { SeguirPainel } from "@/components/energia/SeguirPainel";
-import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { QualidadeLevaEscolha } from "@/components/energia/QualidadeLevaEscolha";
@@ -268,21 +273,101 @@ export default function QualidadePage() {
       )}
     </>
   );
+  // tabela equivalente das duas séries de reclamações (as mesmas linhas dos dois gráficos), unidas pelo ano
+  const ouvidoriaPorAno = new Map(linhasOuvidoriaNacional(g).map((l) => [String(l.ano), l]));
+  const linhasReclamacoesPorAno: CelulaTabela[][] = linhasReclamacoesNacional(g).map((l) => {
+    const o = ouvidoriaPorAno.get(String(l.ano));
+    return [String(l.ano), l.total ?? null, l.interrupcao ?? null, o?.total ?? null, o?.procedentes ?? null];
+  });
+
+  // números do kit (NumeroIndicador): os mesmos valores, notas e fichas de prova da faixa antiga; ausência com o motivo
+  const semDozeMeses = tx("Ano sem os 12 meses nacionais completos.", "Year without the 12 complete national months.");
+  const fonteContinuidadeCurta = tx("ANEEL, indicadores de continuidade", "ANEEL, continuity indicators");
+  const numerosAbertura: NumeroProps[] = [
+    {
+      ...valorOuAusencia(m.dec, semDozeMeses),
+      rotulo: tx("Duração média (DEC)", "Average duration (DEC)"),
+      natureza: "CALCULADO",
+      casas: 2,
+      unidade: tx("h por UC", "h per UC"),
+      periodo: String(m.ano),
+      fonte: fonteContinuidadeCurta,
+      marcador: "var(--cor-energia)",
+      id: "numero-dec",
+      comprove: ev.dec_brasil ? <ComproveNumero evidencia={ev.dec_brasil} endereco={`/setor-eletrico/qualidade#${p051.ancora}`} /> : undefined,
+      nota:
+                    m.dec !== null ? (
+                      <>
+                        {tx(<>Cerca de {m.decHorasMinutos} por UC.</>, <>About {m.decHorasMinutos} per UC.</>)}
+                        {m.decAnterior !== null && tx(` Em ${m.anoAnterior}: ${num(m.decAnterior, 2)} h.`, ` In ${m.anoAnterior}: ${num(m.decAnterior, 2)} h.`)}
+                        {notaPerimetroAbertura(g, "dec") && ` ${notaPerimetroAbertura(g, "dec")}`}
+                      </>
+                    ) : undefined,
+    },
+    {
+      ...valorOuAusencia(m.fec, semDozeMeses),
+      rotulo: tx("Frequência média (FEC)", "Average frequency (FEC)"),
+      natureza: "CALCULADO",
+      casas: 2,
+      unidade: tx("interrupções por UC", "interruptions per UC"),
+      periodo: String(m.ano),
+      fonte: fonteContinuidadeCurta,
+      marcador: "var(--cor-energia)",
+      id: "numero-fec",
+      comprove: ev.fec_brasil ? <ComproveNumero evidencia={ev.fec_brasil} endereco={`/setor-eletrico/qualidade#${p051.ancora}`} /> : undefined,
+      nota:
+                    m.fec !== null ? (
+                      <>
+                        {tx("Interrupções de 3 min ou mais.", "Interruptions of 3 min or more.")}
+                        {m.fecAnterior !== null && tx(` Em ${m.anoAnterior}: ${num(m.fecAnterior, 2)}.`, ` In ${m.anoAnterior}: ${num(m.fecAnterior, 2)}.`)}
+                        {notaPerimetroAbertura(g, "fec") && ` ${notaPerimetroAbertura(g, "fec")}`}
+                      </>
+                    ) : undefined,
+    },
+    {
+      ...valorOuAusencia(m.decTodasOrigens, tx("Parcelas não publicadas para o ano.", "Components not published for the year.")),
+      rotulo: tx("DEC de todas as origens", "DEC from all origins"),
+      natureza: "CALCULADO",
+      casas: 2,
+      unidade: tx("h por UC", "h per UC"),
+      periodo: String(m.ano),
+      fonte: fonteContinuidadeCurta,
+      nota:
+                    m.decTodasOrigens !== null
+                      ? tx(
+                          <>
+                            Cerca de {m.decTodasOrigensHorasMinutos}. Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do operador do sistema (ONS).
+                          </>,
+                          <>
+                            About {m.decTodasOrigensHorasMinutos}. It includes what the rule excludes from the limit: emergencies, critical days, external origin and cuts by the system operator (ONS).
+                          </>,
+                        )
+                      : undefined,
+    },
+  ];
+  const semDozeMesesComp = tx("Ano sem os 12 meses informados pelas distribuidoras.", "Year without the 12 months reported by the distribution utilities.");
+  const fonteCompensacoes = tx("ANEEL, compensações de continuidade", "ANEEL, continuity compensation payments");
+  const fonteReclamacoes = tx("ANEEL, reclamações", "ANEEL, complaints");
+  const ouvidoria = ev.ouvidoria_aneel?.valor_calculo ?? null;
 
   return (
     <>
       <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:qualidade" />
       <QualidadeLevaEscolha />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <CabecalhoModulo
-          siglas={["DEC", "FEC", "UC", "DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
-          titulo={tx("Quanto tempo e quantas vezes falta luz?", "How long and how often is the power cut?")}
-          lead={tx(
+      <PaginaPainel
+        rota="/setor-eletrico/qualidade"
+        idioma={idioma}
+        profundidade
+        abertura={{
+          grupo: rotuloDoGrupo("consumidor-e-territorio"),
+          acento: "energia",
+          titulo: tx("Quanto tempo e quantas vezes falta luz?", "How long and how often is the power cut?"),
+          lead: tx(
             "Procure o seu município e veja quanto tempo e quantas vezes faltou luz lá, diante do limite fixado pela ANEEL. Depois, o Brasil ano a ano, as compensações e o atendimento.",
             "Look up your municipality and see how long and how often the power was cut there, against the limit set by ANEEL. Then Brazil year by year, compensation payments and customer service.",
-          )}
-          acao={
+          ),
+          acao: (
             <QualidadeBuscaMunicipio
               ano={g.mapa.ano}
               urlMunicipios={URL_MUNICIPIOS}
@@ -291,19 +376,30 @@ export default function QualidadePage() {
               fonteConjuntos={fonteContinuidade()}
               tamanhoConjuntos={tamanhos[arquivoConjuntosDoAno(g.mapa.ano)]}
             />
-          }
-          recorte={tx(`${ref} · Brasil, ${distComDec} distribuidoras · horas e interrupções por UC`, `${ref} · Brazil, ${distComDec} distribution utilities · hours and interruptions per UC`)}
-          fonte={tx("ANEEL, indicadores coletivos de continuidade", "ANEEL, collective continuity indicators")}
-          limite={tx("quanto tempo cada casa ficou sem luz: DEC e FEC são médias por unidade consumidora (UC), e há UCs bem acima delas.", "how long each home was without power: DEC and FEC are averages per consumer unit (UC), and some UCs are well above them.")}
-          referencia={tx(
+          ),
+          recorte: {
+            periodo: String(ref),
+            universo: tx(`Brasil, ${distComDec} distribuidoras`, `Brazil, ${distComDec} distribution utilities`),
+            unidade: tx("horas e interrupções por UC", "hours and interruptions per UC"),
+            fonte: tx("ANEEL, indicadores coletivos de continuidade", "ANEEL, collective continuity indicators"),
+          },
+          limite: tx(
+            "quanto tempo cada casa ficou sem luz: DEC e FEC são médias por unidade consumidora (UC), e há UCs bem acima delas.",
+            "how long each home was without power: DEC and FEC are averages per consumer unit (UC), and some UCs are well above them.",
+          ),
+          fontesDatasSiglas: (
+            <>
+              <p className="t-meta text-mineral">
+                <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
+                {tx(
             <>
               {textoAtualidade(g)} Indicadores publicados pela ANEEL em {dataBR(prov.conjuntos.publicado_pela_fonte_em?.slice(0, 10) ?? null)}; processado em {carimbo(g.gerado_em)}.
             </>,
             <>
               {textoAtualidade(g)} Indicators published by ANEEL on {dataBR(prov.conjuntos.publicado_pela_fonte_em?.slice(0, 10) ?? null)}; processed on {carimbo(g.gerado_em)}.
             </>,
-          )}
-          datas={
+                )}
+              </p>
             <QualidadeDatas
               itens={[
                 {
@@ -342,84 +438,7 @@ export default function QualidadePage() {
                 },
               ]}
             />
-          }
-          metricas={
-            <>
-              {defasagem && <QualidadeAviso>{defasagem}</QualidadeAviso>}
-              <FaixaMetricas colunas={3} rotulo={tx("Indicadores de continuidade no Brasil", "Continuity indicators in Brazil")}>
-                <Numero
-                  variante="faixa"
-                  rotulo={tx("Duração média (DEC)", "Average duration (DEC)")}
-                  natureza="CALCULADO"
-                  valor={m.dec}
-                  formato="num"
-                  casas={2}
-                  unidade={tx("h por UC", "h per UC")}
-                  periodo={String(m.ano)}
-                  evidencia={ev.dec_brasil ?? null}
-                  motivoAusencia={tx("Ano sem os 12 meses nacionais completos.", "Year without the 12 complete national months.")}
-                  nota={
-                    m.dec !== null ? (
-                      <>
-                        {tx(<>Cerca de {m.decHorasMinutos} por UC.</>, <>About {m.decHorasMinutos} per UC.</>)}
-                        {m.decAnterior !== null && tx(` Em ${m.anoAnterior}: ${num(m.decAnterior, 2)} h.`, ` In ${m.anoAnterior}: ${num(m.decAnterior, 2)} h.`)}
-                        {notaPerimetroAbertura(g, "dec") && ` ${notaPerimetroAbertura(g, "dec")}`}
-                      </>
-                    ) : undefined
-                  }
-                  cor="var(--cor-energia)"
-                  endereco={`/setor-eletrico/qualidade#${p051.ancora}`}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo={tx("Frequência média (FEC)", "Average frequency (FEC)")}
-                  natureza="CALCULADO"
-                  valor={m.fec}
-                  formato="num"
-                  casas={2}
-                  unidade={tx("interrupções por UC", "interruptions per UC")}
-                  periodo={String(m.ano)}
-                  evidencia={ev.fec_brasil ?? null}
-                  motivoAusencia={tx("Ano sem os 12 meses nacionais completos.", "Year without the 12 complete national months.")}
-                  nota={
-                    m.fec !== null ? (
-                      <>
-                        {tx("Interrupções de 3 min ou mais.", "Interruptions of 3 min or more.")}
-                        {m.fecAnterior !== null && tx(` Em ${m.anoAnterior}: ${num(m.fecAnterior, 2)}.`, ` In ${m.anoAnterior}: ${num(m.fecAnterior, 2)}.`)}
-                        {notaPerimetroAbertura(g, "fec") && ` ${notaPerimetroAbertura(g, "fec")}`}
-                      </>
-                    ) : undefined
-                  }
-                  cor="var(--cor-energia)"
-                  endereco={`/setor-eletrico/qualidade#${p051.ancora}`}
-                />
-                <Numero
-                  variante="faixa"
-                  rotulo={tx("DEC de todas as origens", "DEC from all origins")}
-                  natureza="CALCULADO"
-                  valor={m.decTodasOrigens}
-                  formato="num"
-                  casas={2}
-                  unidade={tx("h por UC", "h per UC")}
-                  periodo={String(m.ano)}
-                  motivoAusencia={tx("Parcelas não publicadas para o ano.", "Components not published for the year.")}
-                  nota={
-                    m.decTodasOrigens !== null
-                      ? tx(
-                          <>
-                            Cerca de {m.decTodasOrigensHorasMinutos}. Inclui o que a regra deixa fora do limite: emergências, dias críticos, origem externa e cortes do operador do sistema (ONS).
-                          </>,
-                          <>
-                            About {m.decTodasOrigensHorasMinutos}. It includes what the rule excludes from the limit: emergencies, critical days, external origin and cuts by the system operator (ONS).
-                          </>,
-                        )
-                      : undefined
-                  }
-                />
-              </FaixaMetricas>
-            </>
-          }
-        >
+              <div>
           {tx(
             <>
               A ANEEL mede a continuidade do fornecimento por <Termo slug="conjunto-eletrico">conjunto elétrico</Termo>: o <Termo slug="dec">DEC</Termo> diz quantas horas, em média, cada
@@ -434,19 +453,29 @@ export default function QualidadePage() {
               whose individual limit was violated and how consumers are served.
             </>,
           )}
-        </CabecalhoModulo>
-
-        <ModoProfundidade>
-          {/* ---------------- P051 ---------------- */}
-          <Bloco id={p051.ancora}>
-            <PainelEvidencia
-              id={p051.id}
-              pergunta={p051.titulo}
-              subtitulo={tx(
-                "DEC e FEC apurados, o que a regra conta para o limite, no Brasil, nas distribuidoras e nos conjuntos · horas e interrupções por UC",
-                "Assessed DEC and FEC, what the rule counts toward the limit, in Brazil, at the distribution utilities and in the consumer sets · hours and interruptions per UC",
-              )}
-              natureza="CALCULADO"
+              </div>
+              <LegendaDeSiglas siglas={["DEC", "FEC", "UC", "DIC", "FIC", "ANEEL", "IBGE", "ONS"]} />
+            </>
+          ),
+        }}
+        aviso={defasagem ? <QualidadeAviso>{defasagem}</QualidadeAviso> : undefined}
+        rotuloNumeros={tx("Indicadores de continuidade no Brasil", "Continuity indicators in Brazil")}
+        numeros={numerosAbertura}
+        figuras={
+          <>
+            {/* P051: duração e frequência, no Brasil, nas distribuidoras e nos conjuntos */}
+            <Recolhido id={p051.ancora} aberto nivelTitulo={2} titulo={p051.rotulo} resumo={p051.descricao}>
+              <div className="space-y-6">
+                <FiguraAnalitica
+                  id={p051.id}
+                  nivelTitulo={3}
+                  pergunta={p051.titulo}
+                  subtitulo={tx(
+                    "DEC e FEC apurados, o que a regra conta para o limite, no Brasil, nas distribuidoras e nos conjuntos · horas e interrupções por UC",
+                    "Assessed DEC and FEC, what the rule counts toward the limit, in Brazil, at the distribution utilities and in the consumer sets · hours and interruptions per UC",
+                  )}
+                  natureza="CALCULADO"
+                  legivel={fonteLegivel}
               porQueImporta={
                 <>
                   {tx(
@@ -455,59 +484,36 @@ export default function QualidadePage() {
                   )}
                 </>
               }
-              oQueMudou={oQueMudouP051}
-              comoInterpretar={comoInterpretarP051}
-              naoConcluir={naoConcluirP051}
-              naoConcluirNoCorpo
-              proveniencia={prov.distribuidoras}
+                  oQueMudou={oQueMudouP051}
+                  comoInterpretar={comoInterpretarP051}
+                  naoConcluir={naoConcluirP051}
+                  proveniencia={provenienciaLegivel(prov.distribuidoras)}
               complementares={[
                 { rotulo: tx("Conjuntos (valores da ANEEL)", "Consumer sets (ANEEL values)"), p: prov.conjuntos },
                 { rotulo: tx("Mapa por município", "Map by municipality"), p: prov.mapa },
               ]}
-            >
-              <div className="space-y-6">
-                <CursorSincronizado>
-                  <QualidadePar>
-                    <GraficoLinhas
-                      titulo={tx(`DEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`, `Assessed DEC of Brazil and aggregate limit, ${primeiroAno} to ${ref}`)}
-                      dados={anualDec}
-                      chaveX="ano" // i18n: dado
-                      formatoX="texto"
-                      series={[
-                        { id: "dec", rotulo: tx("Todas as distribuidoras", "All distribution utilities"), sigla: "DEC", cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "dec_concessionarias", rotulo: tx("Só concessionárias", "Concession holders only"), sigla: tx("Concess.", "Conc."), cor: "var(--serie-sm-se)" },
-                        { id: "dec_limite", rotulo: tx("Limite agregado do ano", "Aggregate limit of the year"), sigla: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
-                      ]}
-                      unidade="h"
-                      casas={2}
-                      zeroNoEixo
-                      marcos={marcos}
-                    />
-                    <GraficoLinhas
-                      titulo={tx(`FEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`, `Assessed FEC of Brazil and aggregate limit, ${primeiroAno} to ${ref}`)}
-                      dados={anualFec}
-                      chaveX="ano" // i18n: dado
-                      formatoX="texto"
-                      series={[
-                        { id: "fec", rotulo: tx("Todas as distribuidoras", "All distribution utilities"), sigla: "FEC", cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "fec_concessionarias", rotulo: tx("Só concessionárias", "Concession holders only"), sigla: tx("Concess.", "Conc."), cor: "var(--serie-sm-se)" },
-                        { id: "fec_limite", rotulo: tx("Limite agregado do ano", "Aggregate limit of the year"), sigla: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
-                      ]}
-                      unidade={tx("interrupções", "interruptions")}
-                      casas={2}
-                      zeroNoEixo
-                      marcos={marcos}
-                    />
-                  </QualidadePar>
-                </CursorSincronizado>
-
-                {/* a resposta vem logo depois das duas figuras: os mesmos números já estão na faixa de métricas, e a figura chega à primeira tela */}
-                <div>
+                  tabela={{
+                    titulo: tx(`DEC e FEC apurados do Brasil e limites agregados, ${primeiroAno} a ${ref}`, `Assessed DEC and FEC of Brazil and aggregate limits, ${primeiroAno} to ${ref}`),
+                    colunas: [
+                      tx("Ano", "Year"),
+                      tx("DEC, todas (h)", "DEC, all (h)"),
+                      tx("DEC, concessionárias (h)", "DEC, concession holders (h)"),
+                      tx("DEC, limite (h)", "DEC, limit (h)"),
+                      tx("FEC, todas", "FEC, all"),
+                      tx("FEC, concessionárias", "FEC, concession holders"),
+                      tx("FEC, limite", "FEC, limit"),
+                    ],
+                    linhas: anual.map((l) => [String(l.ano), l.dec, l.dec_concessionarias, l.dec_limite, l.fec, l.fec_concessionarias, l.fec_limite] as CelulaTabela[]),
+                    casas: [null, 2, 2, 2, 2, 2, 2],
+                    limite: anual.length,
+                  }}
+                  leitura={
                   <RespostaCurta id={p051.id} veredito={vereditoP051(g)}>
                     {respostaP051(g)}
                   </RespostaCurta>
-                </div>
-
+                  }
+                  complemento={
+                    <>
                 <QualidadeRecorte
                   periodo={
                     <>
@@ -536,11 +542,47 @@ export default function QualidadePage() {
                     </>
                   }
                 />
-
-                <NotasDoPainel oQueMudou={oQueMudouP051} comoInterpretar={comoInterpretarP051} naoConcluir={naoConcluirP051} />
-
-                <QualidadeCapitulos atual={p051.ancora} />
-
+                      <QualidadeCapitulos atual={p051.ancora} />
+                    </>
+                  }
+                >
+                <CursorSincronizado>
+                  <QualidadePar>
+                    <GraficoLinhas
+                      semTabela
+                      titulo={tx(`DEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`, `Assessed DEC of Brazil and aggregate limit, ${primeiroAno} to ${ref}`)}
+                      dados={anualDec}
+                      chaveX="ano" // i18n: dado
+                      formatoX="texto"
+                      series={[
+                        { id: "dec", rotulo: tx("Todas as distribuidoras", "All distribution utilities"), sigla: "DEC", cor: "var(--cor-energia)" }, // i18n: dado
+                        { id: "dec_concessionarias", rotulo: tx("Só concessionárias", "Concession holders only"), sigla: tx("Concess.", "Conc."), cor: "var(--serie-sm-se)" },
+                        { id: "dec_limite", rotulo: tx("Limite agregado do ano", "Aggregate limit of the year"), sigla: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
+                      ]}
+                      unidade="h"
+                      casas={2}
+                      zeroNoEixo
+                      marcos={marcos}
+                    />
+                    <GraficoLinhas
+                      semTabela
+                      titulo={tx(`FEC apurado do Brasil e limite agregado, ${primeiroAno} a ${ref}`, `Assessed FEC of Brazil and aggregate limit, ${primeiroAno} to ${ref}`)}
+                      dados={anualFec}
+                      chaveX="ano" // i18n: dado
+                      formatoX="texto"
+                      series={[
+                        { id: "fec", rotulo: tx("Todas as distribuidoras", "All distribution utilities"), sigla: "FEC", cor: "var(--cor-energia)" }, // i18n: dado
+                        { id: "fec_concessionarias", rotulo: tx("Só concessionárias", "Concession holders only"), sigla: tx("Concess.", "Conc."), cor: "var(--serie-sm-se)" },
+                        { id: "fec_limite", rotulo: tx("Limite agregado do ano", "Aggregate limit of the year"), sigla: tx("Limite", "Limit"), cor: "var(--serie-referencia)", tracejada: true },
+                      ]}
+                      unidade={tx("interrupções", "interruptions")}
+                      casas={2}
+                      zeroNoEixo
+                      marcos={marcos}
+                    />
+                  </QualidadePar>
+                </CursorSincronizado>
+                </FiguraAnalitica>
                 <SecaoDoPainel
                   id="expurgos"
                   titulo={tx("Quanto do tempo sem energia fica fora do apurado?", "How much of the time without power is excluded from the assessed value?")}
@@ -738,22 +780,23 @@ export default function QualidadePage() {
                     ))}
                   </ul>
                 </SecaoDoPainel>
-
                 <SeguirPainel ancora={p051.ancora} downloads={downloadsDoPainel(g, "p051")} proximo={{ href: hrefPainelQualidade("p052", "entrada"), pergunta: p052.descricao }} />
               </div>
-            </PainelEvidencia>
-          </Bloco>
+            </Recolhido>
 
-          {/* ---------------- P053 ---------------- */}
-          <Bloco id={p053.ancora}>
-            <PainelEvidencia
-              id={p053.id}
-              pergunta={p053.titulo}
-              subtitulo={tx(
-                "Compensações pagas quando o limite individual de continuidade de uma unidade consumidora é violado · R$ nominais e quantidade",
-                "Compensation payments made when the individual continuity limit of a consumer unit is violated · nominal R$ and quantity",
-              )}
-              natureza="CALCULADO"
+            {/* P053: compensações pagas quando o limite individual é violado */}
+            <Recolhido id={p053.ancora} aberto nivelTitulo={2} titulo={p053.rotulo} resumo={p053.descricao}>
+              <div className="space-y-6">
+                <FiguraAnalitica
+                  id={p053.id}
+                  nivelTitulo={3}
+                  pergunta={p053.titulo}
+                  subtitulo={tx(
+                    "Compensações pagas quando o limite individual de continuidade de uma unidade consumidora é violado · R$ nominais e quantidade",
+                    "Compensation payments made when the individual continuity limit of a consumer unit is violated · nominal R$ and quantity",
+                  )}
+                  natureza="CALCULADO"
+                  legivel={fonteLegivel}
               porQueImporta={
                 <>
                   {tx(
@@ -762,34 +805,40 @@ export default function QualidadePage() {
                   )}
                 </>
               }
-              oQueMudou={mudancaP053(g)}
-              comoInterpretar={comoInterpretarP053}
-              naoConcluir={naoConcluirP053}
-              naoConcluirNoCorpo
-              proveniencia={prov.compensacoes}
-            >
-              <div className="space-y-6">
+                  oQueMudou={mudancaP053(g)}
+                  comoInterpretar={comoInterpretarP053}
+                  naoConcluir={naoConcluirP053}
+                  proveniencia={provenienciaLegivel(prov.compensacoes)}
+                  tabela={{
+                    titulo: tx(`Compensações pagas a unidades consumidoras por ano (R$ milhões nominais)`, `Compensation payments to consumer units by year (nominal R$ million)`),
+                    colunas: [tx("Ano", "Year"), tx("Valor a unidades consumidoras (R$ milhões)", "Amount to consumer units (R$ million)")],
+                    linhas: compBarras.map((l) => [String(l.ano), l.valor_uc_mi] as CelulaTabela[]),
+                    casas: [null, 1],
+                    limite: compBarras.length,
+                  }}
+                  leitura={
                 <RespostaCurta id={p053.id} veredito={vereditoP053(g)}>
                   {respostaP053(g)}
                 </RespostaCurta>
-
+                  }
+                  complemento={
+                    <>
                 <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-texto="limites-individuais">
                   {definicaoLimitesIndividuais()}
                 </p>
-
-                <FaixaMetricas colunas={3} rotulo={tx("Compensações do ano de referência", "Compensation payments in the reference year")}>
-                  <Numero
-                    variante="faixa"
-                    rotulo={tx("Pago a unidades consumidoras", "Paid to consumer units")}
-                    natureza="CALCULADO"
-                    valor={mc.valorUcMilhoes}
-                    formato="reais"
-                    casas={1}
-                    unidade={tx("milhões", "million")}
-                    periodo={String(comp.ano_referencia)}
-                    evidencia={ev.compensacoes_ano ?? null}
-                    motivoAusencia={tx("Ano sem os 12 meses informados pelas distribuidoras.", "Year without the 12 months reported by the distribution utilities.")}
-                    nota={[
+                      <FaixaNumeros rotulo={tx("Compensações do ano de referência", "Compensation payments in the reference year")}>
+                        <NumeroIndicador
+                          {...valorOuAusencia(mc.valorUcMilhoes, semDozeMesesComp)}
+                          rotulo={tx("Pago a unidades consumidoras", "Paid to consumer units")}
+                          natureza="CALCULADO"
+                          formato="reais"
+                          casas={1}
+                          unidade={tx("milhões", "million")}
+                          periodo={String(comp.ano_referencia)}
+                          fonte={fonteCompensacoes}
+                          marcador="var(--cor-energia)"
+                          comprove={ev.compensacoes_ano ? <ComproveNumero evidencia={ev.compensacoes_ano} endereco={`/setor-eletrico/qualidade#${p053.ancora}`} /> : undefined}
+                          nota={[
                       mc.valorUcAnteriorMilhoes !== null
                         ? tx(
                             `Valores nominais da competência. Em ${mc.anoAnterior}: R$ ${num(mc.valorUcAnteriorMilhoes, 1)} milhões.`,
@@ -800,61 +849,34 @@ export default function QualidadePage() {
                     ]
                       .filter(Boolean)
                       .join(" ")}
-                    cor="var(--cor-energia)"
-                    endereco={`/setor-eletrico/qualidade#${p053.ancora}`}
-                  />
-                  <Numero
-                    variante="faixa"
-                    rotulo={tx("Compensações pagas a unidades consumidoras", "Compensation payments made to consumer units")}
-                    natureza="CALCULADO"
-                    valor={mc.quantidadeUcMilhoes}
-                    formato="num"
-                    casas={1}
-                    unidade={tx("milhões de compensações", "million compensation payments")}
-                    periodo={String(comp.ano_referencia)}
-                    motivoAusencia={tx("Ano sem os 12 meses informados pelas distribuidoras.", "Year without the 12 months reported by the distribution utilities.")}
-                    nota={[tx("Conta compensações, não consumidores.", "It counts compensation payments, not consumers."), notaQuantidadeDivulgada(g)].filter(Boolean).join(" ")}
-                  />
-                  <Numero
-                    variante="faixa"
-                    rotulo={tx("Pago a unidades geradoras", "Paid to generating units")}
-                    natureza="CALCULADO"
-                    valor={mc.valorUgMilhoes}
-                    formato="reais"
-                    casas={1}
-                    unidade={tx("milhões", "million")}
-                    periodo={String(comp.ano_referencia)}
-                    motivoAusencia={tx("Sem linha de unidade geradora na fonte para o ano.", "No generating unit line in the source for the year.")}
-                    nota={tx("À parte: não entra no total das unidades consumidoras.", "Separate: not included in the consumer units total.")}
-                  />
-                </FaixaMetricas>
-
+                        />
+                        <NumeroIndicador
+                          {...valorOuAusencia(mc.quantidadeUcMilhoes, semDozeMesesComp)}
+                          rotulo={tx("Compensações pagas a unidades consumidoras", "Compensation payments made to consumer units")}
+                          natureza="CALCULADO"
+                          casas={1}
+                          unidade={tx("milhões de compensações", "million compensation payments")}
+                          periodo={String(comp.ano_referencia)}
+                          fonte={fonteCompensacoes}
+                          nota={[tx("Conta compensações, não consumidores.", "It counts compensation payments, not consumers."), notaQuantidadeDivulgada(g)].filter(Boolean).join(" ")}
+                        />
+                        <NumeroIndicador
+                          {...valorOuAusencia(mc.valorUgMilhoes, tx("Sem linha de unidade geradora na fonte para o ano.", "No generating unit line in the source for the year."))}
+                          rotulo={tx("Pago a unidades geradoras", "Paid to generating units")}
+                          natureza="CALCULADO"
+                          formato="reais"
+                          casas={1}
+                          unidade={tx("milhões", "million")}
+                          periodo={String(comp.ano_referencia)}
+                          fonte={fonteCompensacoes}
+                          nota={tx("À parte: não entra no total das unidades consumidoras.", "Separate: not included in the consumer units total.")}
+                        />
+                      </FaixaNumeros>
                 {avisoQuebraComp && (
                   <p role="note" data-aviso="quebra-compensacoes" className="max-w-prose2 border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao">
                     {avisoQuebraComp}
                   </p>
                 )}
-                <GraficoBarras
-                  titulo={tx(
-                    `Compensações pagas a unidades consumidoras por ano, ${compBarras[0]?.ano ?? ""} a ${comp.ano_referencia}`,
-                    `Compensation payments to consumer units by year, ${compBarras[0]?.ano ?? ""} to ${comp.ano_referencia}`,
-                  )}
-                  dados={dadosCompAnual}
-                  chaveCategoria="ano" // i18n: dado
-                  series={
-                    regimes
-                      ? [
-                          { id: "antes", rotulo: regimes.antes, cor: "var(--serie-sm-se)", opcional: true },
-                          { id: "depois", rotulo: regimes.depois, cor: "var(--cor-energia)", opcional: true }, // i18n: dado
-                        ]
-                      : [{ id: "valor_uc_mi", rotulo: tx("Valor a unidades consumidoras", "Amount to consumer units"), cor: "var(--cor-energia)" }] // i18n: dado
-                  }
-                  unidade={tx("R$ milhões", "R$ million")}
-                  casas={1}
-                  empilhado={Boolean(regimes)}
-                  altura={300}
-                />
-
                 <QualidadeRecorte
                   periodo={
                     <>
@@ -874,9 +896,31 @@ export default function QualidadePage() {
                   )}
                   unidade={tx("R$ nominais da competência (milhões no gráfico) e quantidade de compensações", "Nominal R$ of the accrual month (millions in the chart) and quantity of compensation payments")}
                 />
-
-                <NotasDoPainel oQueMudou={mudancaP053(g)} comoInterpretar={comoInterpretarP053} naoConcluir={naoConcluirP053} />
-
+                    </>
+                  }
+                >
+                <GraficoBarras
+                      semTabela
+                  titulo={tx(
+                    `Compensações pagas a unidades consumidoras por ano, ${compBarras[0]?.ano ?? ""} a ${comp.ano_referencia}`,
+                    `Compensation payments to consumer units by year, ${compBarras[0]?.ano ?? ""} to ${comp.ano_referencia}`,
+                  )}
+                  dados={dadosCompAnual}
+                  chaveCategoria="ano" // i18n: dado
+                  series={
+                    regimes
+                      ? [
+                          { id: "antes", rotulo: regimes.antes, cor: "var(--serie-sm-se)", opcional: true },
+                          { id: "depois", rotulo: regimes.depois, cor: "var(--cor-energia)", opcional: true }, // i18n: dado
+                        ]
+                      : [{ id: "valor_uc_mi", rotulo: tx("Valor a unidades consumidoras", "Amount to consumer units"), cor: "var(--cor-energia)" }] // i18n: dado
+                  }
+                  unidade={tx("R$ milhões", "R$ million")}
+                  casas={1}
+                  empilhado={Boolean(regimes)}
+                  altura={300}
+                />
+                </FiguraAnalitica>
                 <SecaoDoPainel id="compensacoes-por-ano" nivel="analisar" titulo={tx("Compensações por ano, com quantidade e unidades geradoras", "Compensation payments by year, with quantity and generating units")}>
                   <QualidadeTabela tabela="comp-anual" titulo={tx("Compensações por ano: unidades consumidoras e geradoras", "Compensation payments by year: consumer and generating units")} linhas={n("comp-anual")} chaveUrl="tcomp" />
                 </SecaoDoPainel>
@@ -976,22 +1020,23 @@ export default function QualidadePage() {
                     chaveUrl="tdiv"
                   />
                 </SecaoDoPainel>
-
                 <SeguirPainel ancora={p053.ancora} downloads={downloadsDoPainel(g, "p053")} proximo={{ href: `#${p054.ancora}`, pergunta: p054.descricao }} />
               </div>
-            </PainelEvidencia>
-          </Bloco>
+            </Recolhido>
 
-          {/* ---------------- P054 ---------------- */}
-          <Bloco id={p054.ancora}>
-            <PainelEvidencia
-              id={p054.id}
-              pergunta={p054.titulo}
-              subtitulo={tx(
-                "Reclamações por unidade consumidora, pesquisa de satisfação (IASC) com amostra, atendimento telefônico e emergencial, eventos de emergência · escopos separados",
-                "Complaints per consumer unit, satisfaction survey (IASC) with its sample, telephone and emergency service, emergency events · separate scopes",
-              )}
-              natureza="CALCULADO"
+            {/* P054: reclamações, satisfação e atendimento */}
+            <Recolhido id={p054.ancora} aberto nivelTitulo={2} titulo={p054.rotulo} resumo={p054.descricao}>
+              <div className="space-y-6">
+                <FiguraAnalitica
+                  id={p054.id}
+                  nivelTitulo={3}
+                  pergunta={p054.titulo}
+                  subtitulo={tx(
+                    "Reclamações por unidade consumidora, pesquisa de satisfação (IASC) com amostra, atendimento telefônico e emergencial, eventos de emergência · escopos separados",
+                    "Complaints per consumer unit, satisfaction survey (IASC) with its sample, telephone and emergency service, emergency events · separate scopes",
+                  )}
+                  natureza="CALCULADO"
+                  legivel={fonteLegivel}
               porQueImporta={
                 <>
                   {tx(
@@ -1000,11 +1045,10 @@ export default function QualidadePage() {
                   )}
                 </>
               }
-              oQueMudou={mudancaP054(g)}
-              comoInterpretar={comoInterpretarP054}
-              naoConcluir={naoConcluirP054}
-              naoConcluirNoCorpo
-              proveniencia={prov.reclamacoes}
+                  oQueMudou={mudancaP054(g)}
+                  comoInterpretar={comoInterpretarP054}
+                  naoConcluir={naoConcluirP054}
+                  proveniencia={provenienciaLegivel(prov.reclamacoes)}
               complementares={[
                 { rotulo: tx("Ouvidoria Setorial da ANEEL", "ANEEL Sector Ombudsman"), p: prov.ouvidoria_aneel },
                 { rotulo: tx("IASC (pesquisa amostral)", "IASC (sample survey)"), p: prov.iasc },
@@ -1012,112 +1056,62 @@ export default function QualidadePage() {
                 { rotulo: tx("Atendimento telefônico", "Telephone service"), p: prov.telefonico },
                 { rotulo: tx("Eventos em situação de emergência", "Events in emergency situations"), p: prov.eventos },
               ]}
-            >
-              <div className="space-y-6">
+                  tabela={{
+                    titulo: tx("Reclamações por ano: na distribuidora (por mil UCs) e na Ouvidoria da ANEEL (por 100 mil UCs)", "Complaints by year: at the distribution utility (per thousand UCs) and at the ANEEL Ombudsman (per 100 thousand UCs)"),
+                    colunas: [
+                      tx("Ano", "Year"),
+                      tx("Distribuidora, todas (por mil UCs)", "Utility, all (per thousand UCs)"),
+                      tx("Distribuidora, interrupção (por mil UCs)", "Utility, interruptions (per thousand UCs)"),
+                      tx("Ouvidoria, todas (por 100 mil UCs)", "Ombudsman, all (per 100 thousand UCs)"),
+                      tx("Ouvidoria, procedentes (por 100 mil UCs)", "Ombudsman, upheld (per 100 thousand UCs)"),
+                    ],
+                    linhas: linhasReclamacoesPorAno,
+                    casas: [null, 1, 1, 1, 1],
+                    limite: linhasReclamacoesPorAno.length,
+                  }}
+                  leitura={
                 <RespostaCurta id={p054.id} veredito={vereditoP054(g)}>
                   {respostaP054(g)}
                 </RespostaCurta>
-
-                <FaixaMetricas colunas={2} rotulo={tx("Reclamações do ano de referência, cada uma com a sua base", "Complaints in the reference year, each with its own base")}>
-                  <Numero
-                    variante="faixa"
-                    rotulo={tx("Reclamações na distribuidora, 1º nível", "Complaints at the distribution utility, 1st level")}
-                    natureza="CALCULADO"
-                    evidencia={ev.reclamacoes_distribuidora ?? null}
-                    valor={rec?.por_ucs ?? null}
-                    casas={1}
-                    unidade={tx("por mil UCs", "per thousand UCs")}
-                    motivoAusencia={motivoAusenciaNoIdioma(rec?.motivo_ausencia) ?? tx("Sem distribuidora com os 12 meses enviados.", "No distribution utility with the 12 months sent.")}
-                    nota={
+                  }
+                  complemento={
+                    <>
+                      <FaixaNumeros rotulo={tx("Reclamações do ano de referência, cada uma com a sua base", "Complaints in the reference year, each with its own base")}>
+                        <NumeroIndicador
+                          {...valorOuAusencia(rec?.por_ucs ?? null, motivoAusenciaNoIdioma(rec?.motivo_ausencia) ?? tx("Sem distribuidora com os 12 meses enviados.", "No distribution utility with the 12 months sent."))}
+                          rotulo={tx("Reclamações na distribuidora, 1º nível", "Complaints at the distribution utility, 1st level")}
+                          natureza="CALCULADO"
+                          casas={1}
+                          unidade={tx("por mil UCs", "per thousand UCs")}
+                          periodo={String(ref)}
+                          fonte={fonteReclamacoes}
+                          marcador="var(--cor-energia)"
+                          comprove={ev.reclamacoes_distribuidora ? <ComproveNumero evidencia={ev.reclamacoes_distribuidora} endereco={`/setor-eletrico/qualidade#${p054.ancora}`} /> : undefined}
+                          nota={
                       rec && rec.por_ucs !== null
                         ? tx(
                             `Base: 1.000 unidades consumidoras médias das mesmas distribuidoras. Na base de 100 mil UCs do cartão ao lado, seriam ${num(taxaNaBaseDaOuvidoria(rec.por_ucs), 0)}.`,
                             `Base: 1,000 average consumer units of the same distribution utilities. On the 100 thousand UC base of the card alongside, it would be ${num(taxaNaBaseDaOuvidoria(rec.por_ucs), 0)}.`,
                           )
                         : tx("Base: 1.000 unidades consumidoras médias das mesmas distribuidoras.", "Base: 1,000 average consumer units of the same distribution utilities.")
-                    }
-                    cor="var(--cor-energia)"
-                    endereco={`/setor-eletrico/qualidade#${p054.ancora}`}
-                  />
-                  <Numero
-                    variante="faixa"
-                    rotulo={tx("Reclamações na Ouvidoria da ANEEL, 2º nível", "Complaints at the ANEEL Ombudsman, 2nd level")}
-                    natureza="CALCULADO"
-                    evidencia={ev.ouvidoria_aneel ?? null}
-                    casas={1}
-                    unidade={tx("por 100 mil UCs", "per 100 thousand UCs")}
-                    motivoAusencia={tx("Arquivo da Ouvidoria sem os 12 meses do ano.", "Ombudsman file without the 12 months of the year.")}
-                    nota={tx(
+                          }
+                        />
+                        <NumeroIndicador
+                          {...valorOuAusencia(ouvidoria, tx("Arquivo da Ouvidoria sem os 12 meses do ano.", "Ombudsman file without the 12 months of the year."))}
+                          rotulo={tx("Reclamações na Ouvidoria da ANEEL, 2º nível", "Complaints at the ANEEL Ombudsman, 2nd level")}
+                          natureza="CALCULADO"
+                          casas={1}
+                          unidade={tx("por 100 mil UCs", "per 100 thousand UCs")}
+                          periodo={String(ref)}
+                          fonte={tx("ANEEL, Ouvidoria Setorial", "ANEEL, Sector Ombudsman")}
+                          marcador="var(--serie-sm-se)"
+                          comprove={ev.ouvidoria_aneel ? <ComproveNumero evidencia={ev.ouvidoria_aneel} endereco={`/setor-eletrico/qualidade#${p054.ancora}`} /> : undefined}
+                          nota={tx(
                       "Base: 100 mil UCs, diferente da do cartão ao lado (1.000). Segunda instância, depois do atendimento na distribuidora.",
                       "Base: 100 thousand UCs, different from the card alongside (1,000). Second level, after the distribution utility's own service.",
-                    )}
-                    cor="var(--serie-sm-se)"
-                    endereco={`/setor-eletrico/qualidade#${p054.ancora}`}
-                  />
-                </FaixaMetricas>
-
-                <QualidadePar>
-                  <div className="space-y-3">
-                    <GraficoBarras
-                      titulo={tx("Reclamações registradas pelas distribuidoras por mil unidades consumidoras", "Complaints recorded by the distribution utilities per thousand consumer units")}
-                      dados={linhasReclamacoesNacional(g)}
-                      chaveCategoria="ano" // i18n: dado
-                      series={[
-                        { id: "total", rotulo: tx("Todas as reclamações (1º nível)", "All complaints (1st level)"), cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "interrupcao", rotulo: tx("Sobre interrupção (1º nível)", "About interruptions (1st level)"), cor: "var(--serie-termica)" },
-                      ]}
-                      unidade={tx("por mil UCs", "per thousand UCs")}
-                      casas={1}
-                      altura={280}
-                    />
-                    {recParcial && (
-                      <p className="text-sm text-carvao-muted">
-                        {tx(
-                          <>
-                            {recParcial.ano}: barra hachurada é ausência, não zero ({recParcial.motivo_ausencia}).
-                          </>,
-                          <>
-                            {recParcial.ano}: the hatched bar is absence, not zero ({motivoAusenciaNoIdioma(recParcial.motivo_ausencia)}).
-                          </>,
-                        )}
-                      </p>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <GraficoBarras
-                      titulo={tx("Reclamações na Ouvidoria Setorial da ANEEL por 100 mil unidades consumidoras", "Complaints at the ANEEL Sector Ombudsman per 100 thousand consumer units")}
-                      dados={linhasOuvidoriaNacional(g)}
-                      chaveCategoria="ano" // i18n: dado
-                      series={[
-                        { id: "total", rotulo: tx("Todas", "All"), cor: "var(--cor-energia)" }, // i18n: dado
-                        { id: "procedentes", rotulo: tx("Procedentes", "Upheld"), cor: "var(--serie-sm-se)" },
-                      ]}
-                      unidade={tx("por 100 mil UCs", "per 100 thousand UCs")}
-                      casas={1}
-                      altura={280}
-                    />
-                    {ouvParcial.length > 0 && (
-                      <p className="text-sm text-carvao-muted">
-                        {ouvParcial
-                          .map((o) =>
-                            o.motivo_ausencia
-                              ? tx(`${o.ano}: barra hachurada é ausência, não zero (${o.motivo_ausencia})`, `${o.ano}: the hatched bar is absence, not zero (${motivoAusenciaNoIdioma(o.motivo_ausencia)})`)
-                              : tx(
-                                  `${o.ano}: barra hachurada é ausência, não zero (${
-                                    o.meses_max !== null ? `até ${o.meses_max} ${o.meses_max === 1 ? "mês publicado" : "meses publicados"} no arquivo do ano` : "ano incompleto no arquivo"
-                                  }: sem taxa anual; a contagem parcial está na tabela de indicadores nacionais)`,
-                                  `${o.ano}: the hatched bar is absence, not zero (${
-                                    o.meses_max !== null ? `up to ${o.meses_max} ${o.meses_max === 1 ? "month published" : "months published"} in the year's file` : "incomplete year in the file"
-                                  }: no annual rate; the partial count is in the table of national indicators)`,
-                                ),
-                          )
-                          .join("; ")}
-                        .
-                      </p>
-                    )}
-                  </div>
-                </QualidadePar>
-
+                          )}
+                        />
+                      </FaixaNumeros>
                 <QualidadeRecorte
                   periodo={
                     <>
@@ -1152,9 +1146,73 @@ export default function QualidadePage() {
                     "complaints per thousand UCs (distribution utility) and per 100 thousand UCs (Ombudsman); index from 0 to 100; minutes; % of months within the standard",
                   )}
                 />
-
-                <NotasDoPainel oQueMudou={mudancaP054(g)} comoInterpretar={comoInterpretarP054} naoConcluir={naoConcluirP054} />
-
+                    </>
+                  }
+                >
+                <QualidadePar>
+                  <div className="space-y-3">
+                    <GraficoBarras
+                      semTabela
+                      titulo={tx("Reclamações registradas pelas distribuidoras por mil unidades consumidoras", "Complaints recorded by the distribution utilities per thousand consumer units")}
+                      dados={linhasReclamacoesNacional(g)}
+                      chaveCategoria="ano" // i18n: dado
+                      series={[
+                        { id: "total", rotulo: tx("Todas as reclamações (1º nível)", "All complaints (1st level)"), cor: "var(--cor-energia)" }, // i18n: dado
+                        { id: "interrupcao", rotulo: tx("Sobre interrupção (1º nível)", "About interruptions (1st level)"), cor: "var(--serie-termica)" },
+                      ]}
+                      unidade={tx("por mil UCs", "per thousand UCs")}
+                      casas={1}
+                      altura={280}
+                    />
+                    {recParcial && (
+                      <p className="text-sm text-carvao-muted">
+                        {tx(
+                          <>
+                            {recParcial.ano}: barra hachurada é ausência, não zero ({recParcial.motivo_ausencia}).
+                          </>,
+                          <>
+                            {recParcial.ano}: the hatched bar is absence, not zero ({motivoAusenciaNoIdioma(recParcial.motivo_ausencia)}).
+                          </>,
+                        )}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <GraficoBarras
+                      semTabela
+                      titulo={tx("Reclamações na Ouvidoria Setorial da ANEEL por 100 mil unidades consumidoras", "Complaints at the ANEEL Sector Ombudsman per 100 thousand consumer units")}
+                      dados={linhasOuvidoriaNacional(g)}
+                      chaveCategoria="ano" // i18n: dado
+                      series={[
+                        { id: "total", rotulo: tx("Todas", "All"), cor: "var(--cor-energia)" }, // i18n: dado
+                        { id: "procedentes", rotulo: tx("Procedentes", "Upheld"), cor: "var(--serie-sm-se)" },
+                      ]}
+                      unidade={tx("por 100 mil UCs", "per 100 thousand UCs")}
+                      casas={1}
+                      altura={280}
+                    />
+                    {ouvParcial.length > 0 && (
+                      <p className="text-sm text-carvao-muted">
+                        {ouvParcial
+                          .map((o) =>
+                            o.motivo_ausencia
+                              ? tx(`${o.ano}: barra hachurada é ausência, não zero (${o.motivo_ausencia})`, `${o.ano}: the hatched bar is absence, not zero (${motivoAusenciaNoIdioma(o.motivo_ausencia)})`)
+                              : tx(
+                                  `${o.ano}: barra hachurada é ausência, não zero (${
+                                    o.meses_max !== null ? `até ${o.meses_max} ${o.meses_max === 1 ? "mês publicado" : "meses publicados"} no arquivo do ano` : "ano incompleto no arquivo"
+                                  }: sem taxa anual; a contagem parcial está na tabela de indicadores nacionais)`,
+                                  `${o.ano}: the hatched bar is absence, not zero (${
+                                    o.meses_max !== null ? `up to ${o.meses_max} ${o.meses_max === 1 ? "month published" : "months published"} in the year's file` : "incomplete year in the file"
+                                  }: no annual rate; the partial count is in the table of national indicators)`,
+                                ),
+                          )
+                          .join("; ")}
+                        .
+                      </p>
+                    )}
+                  </div>
+                </QualidadePar>
+                </FiguraAnalitica>
                 <SecaoDoPainel
                   id="satisfacao-iasc"
                   titulo={tx(
@@ -1312,18 +1370,17 @@ export default function QualidadePage() {
                     </li>
                   </ul>
                 </SecaoDoPainel>
-
                 <SeguirPainel
                   ancora={p054.ancora}
                   downloads={downloadsDoPainel(g, "p054")}
                   proximo={{ href: "/setor-eletrico/conta-de-luz", pergunta: tx("Quanto essas distribuidoras cobram? Veja a conta de luz.", "How much do these distribution utilities charge? See the electricity bill.") }}
                 />
               </div>
-            </PainelEvidencia>
-          </Bloco>
-
-          {/* ---------------- Auditoria do módulo ---------------- */}
-          <Bloco id="auditoria-qualidade" nivel="auditar">
+            </Recolhido>
+          </>
+        }
+        metodo={
+          <div id="auditoria-qualidade" data-nivel="auditar" className="scroll-mt-28 py-5">
             <section aria-labelledby="auditoria-qualidade-titulo" className="space-y-4 border-t border-dashed border-linha pt-6">
               <h2 id="auditoria-qualidade-titulo" className="ed-h2 font-serif text-carvao">
                 {tx("Controles executados nesta publicação e arquivos de origem", "Checks run in this release and source files")}
@@ -1389,9 +1446,10 @@ export default function QualidadePage() {
                 .
               </p>
             </section>
-          </Bloco>
-        </ModoProfundidade>
-      </main>
+          </div>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
+      />
     </>
   );
 }

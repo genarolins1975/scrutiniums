@@ -8,6 +8,7 @@ import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
+import { Controles } from "@/components/painel/Controles";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -286,7 +287,8 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
 
       <div ref={ranking}>
         <SecaoDoPainel id="ranking" titulo={tx("Todas as distribuidoras, da mais barata à mais cara", "All distribution utilities, from the cheapest to the most expensive")}>
-          <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+          {/* controles do kit (Controles): logo antes da lista e da tabela que eles filtram; o recorte fica na URL */}
+          <Controles rotulo={tx("Recorte do ranking", "Ranking selection")} idioma={idioma}>
             <ContaEscolha legenda={tx("Leitura do ranking", "Ranking view")} opcoes={OPCOES_LEITURA} valor={v.leitura} onEscolher={(l) => definir({ leitura: l })} />
             <ContaEscolha
               legenda={tx("Tipo de distribuidora", "Type of distribution utility")}
@@ -298,7 +300,7 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               onEscolher={(g) => definir({ grupo: g })}
             />
             <ContaLista rotulo={tx("Estado (UF)", "State")} opcoes={opcoesUf} valor={uf} onEscolher={(u) => definir({ uf: u })} />
-          </div>
+          </Controles>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted" data-nota="grupos">
             {tx(
               <>

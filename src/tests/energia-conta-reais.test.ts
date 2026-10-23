@@ -15,8 +15,8 @@ import type { ContaGold } from "@/lib/energia/tipos-conta";
  * bilhões nominais, sem rótulo. Este teste falharia com a página de antes: o número, a frase e o "o que mudou" não liam a escolha.
  */
 
-vi.mock("@/components/energia/useEstadoUrl", async () => {
-  const lib = await import("@/lib/energia/estadoUrl");
+vi.mock("@/components/painel/useEstadoUrl", async () => {
+  const lib = await import("@/lib/painel/estadoUrl");
   return {
     useEstadoUrl: (esquema: Parameters<typeof lib.lerEstado>[0]) => [lib.lerEstado(esquema, "?valores=real"), () => undefined],
   };

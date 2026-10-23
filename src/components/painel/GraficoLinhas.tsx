@@ -1,0 +1,954 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { Nome } from "@/components/i18n/Nome";
+import { comNomes } from "@/components/i18n/comNomes";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { BaixarImagem } from "@/components/painel/BaixarImagem";
+import { useCursorSincronizado } from "@/components/painel/CursorSincronizado";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { rotuloTick } from "@/lib/painel/escalas";
+import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
+import { useIdioma, useTx } from "@/lib/painel/useIdioma";
+import type { Idioma } from "@/lib/idioma";
+import { corDaSerie, ehContrato, paraFormaLarga, type ContratoGrafico } from "@/lib/painel/graficos";
+import {
+  dominioLinhas,
+  formatarX,
+  indiceDoValorX,
+  indicesDoEixoX,
+  indicesDoIntervalo,
+  intervaloDosIndices,
+  mesmaEscala,
+  periodosProntos,
+  rotulosDoEixoX,
+  type FormatoX,
+  type IntervaloX,
+} from "@/lib/painel/series-temporais";
+
+/**
+ * Gráfico de linhas SVG com camada de leitura: cruz + dica no hover, setas do
+ * teclado percorrem os pontos (Home e End vão ao início e ao fim), rótulo
+ * direto no fim de cada linha quando não colide, legenda sempre presente e
+ * tabela equivalente recolhida (montada só ao abrir, para não pesar o HTML).
+ * Ausência é lacuna na linha (nunca zero). Um único eixo Y.
+ *
+ * Recursos opcionais (desligados por padrão; sem as props novas o gráfico é
+ * o mesmo de antes):
+ *
+ * - `zoom`: seleção de intervalo por arrasto (mouse, em larguras de 520 px
+ *   ou mais), por períodos prontos ("30 dias", "12 meses") e por controles
+ *   nativos de início e fim (teclado: setas, Home, End, PageUp, PageDown).
+ *   No celular não há arrasto: o toque continua abrindo a dica e o recorte é
+ *   feito pelos controles de período. "Restaurar intervalo" volta à série
+ *   completa. O eixo vertical é recalculado para o trecho e o texto de
+ *   estado diz isso; a tabela equivalente mostra o mesmo trecho.
+ * - Cursor sincronizado: sob um <CursorSincronizado>, gráficos com a mesma
+ *   chaveX (ou o mesmo grupoCursor) mostram a cruz no mesmo X.
+ * - `legendaInterativa`: botões com aria-pressed ocultam e mostram séries. A
+ *   unidade continua na legenda; ao menos uma série fica visível. Se ocultar
+ *   muda a escala, um aviso visível e anunciado diz a escala nova e a de
+ *   todas as séries, com a opção de manter a escala completa.
+ */
+export type SerieLinha = {
+  id: string;
+  rotulo: string;
+  /** Rótulo curto (SE/CO, S, NE, N): usado no celular e quando linhas terminam juntas. */
+  sigla?: string;
+  cor: string;
+  tracejada?: boolean;
+  /** Cenário: traço pontilhado (previsão é tracejada). */
+  pontilhada?: boolean;
+  espessura?: number;
+};
+
+export type { IntervaloX };
+
+type Ponto = Record<string, string | number | null | undefined>;
+
+export type GraficoLinhasProps = {
+  /** Dentro da FiguraAnalitica, que traz a tabela equivalente do servidor: o gráfico não repete a sua. */
+  semTabela?: boolean;
+  titulo: string;
+  /** Nomes próprios que aparecem no título (reservatório, bacia, usina): na página inglesa saem marcados e o gráfico passa a ser
+   * nomeado pelo título visível (aria-labelledby) em vez de <title>. */
+  nomesNoTitulo?: readonly string[];
+  /** Os nomes das séries são nomes próprios (uma empresa por série): legenda, dica e tabela os marcam com <Nome>. */
+  seriesSaoNomes?: boolean;
+  dados: Ponto[];
+  chaveX: string;
+  series: SerieLinha[];
+  unidade: string;
+  casas?: number;
+  formatoX?: FormatoX;
+  zeroNoEixo?: boolean;
+  banda?: { inferior: string; superior: string; rotulo: string; cor?: string };
+  marcos?: { x: string; rotulo: string }[];
+  altura?: number;
+  rotulosDiretos?: boolean;
+  /** Liga o zoom por intervalo (arrasto, períodos prontos, início e fim, restaurar). */
+  zoom?: boolean;
+  /** Intervalo inicial, em valores de chaveX, quando o zoom não é controlado. */
+  intervaloInicial?: IntervaloX | null;
+  /** Intervalo controlado (ex.: vindo da URL); null é a série completa. Use com onIntervalo. */
+  intervalo?: IntervaloX | null;
+  onIntervalo?: (intervalo: IntervaloX | null) => void;
+  /** Legenda com botões para ocultar e mostrar séries. */
+  legendaInterativa?: boolean;
+  /** Séries ocultas ao abrir (ids), quando a legenda não é controlada. */
+  ocultasIniciais?: string[];
+  /** Séries ocultas controladas; use com onOcultas. */
+  ocultas?: string[];
+  onOcultas?: (ids: string[]) => void;
+  /** Ao ocultar séries: "ajustar" (padrão) recalcula o eixo às visíveis, com aviso; "manter" preserva a escala de todas. */
+  escalaAoOcultar?: "ajustar" | "manter";
+  /** Participa do cursor sincronizado quando há um CursorSincronizado acima (padrão: sim). */
+  sincronizarCursor?: boolean;
+  /** Grupo do cursor sincronizado; padrão: a chaveX. */
+  grupoCursor?: string;
+  /** Abre a tabela equivalente já montada (ex.: modo Auditar). */
+  tabelaAbertaInicial?: boolean;
+  /**
+   * Para cartões que já trazem o próprio título: o título do gráfico fica só para leitor de tela (continua nomeando a figura e a tabela)
+   * e a unidade, que ia nele, passa para a legenda.
+   */
+  semTitulo?: boolean;
+  /**
+   * Prefixo único na página dos parâmetros de URL (`<chave>.de`, `<chave>.ate` e `<chave>.oc`) que guardam o
+   * intervalo e as séries ocultas quando o gráfico não é controlado: o link do painel e o F5 reabrem o mesmo
+   * recorte. Com a chave, a URL é a fonte do estado (`intervaloInicial` e `ocultasIniciais` valem sem parâmetro).
+   */
+  chaveUrl?: string;
+};
+
+function fmtV(v: number | null | undefined, casas: number, unidade: string, idioma: Idioma = "pt"): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return idioma === "en" ? "no data" : "sem dado"; // i18n: dado (as duas formas)
+  // sinal de menos tipográfico, como no resto do portal
+  const locale = idioma === "en" ? "en-US" : "pt-BR"; // i18n: dado
+  return `${v.toLocaleString(locale, { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")} ${unidade}`.trim();
+}
+
+function ticks(min: number, max: number, n = 4): number[] {
+  const span = max - min || 1;
+  const bruto = span / n;
+  const mag = Math.pow(10, Math.floor(Math.log10(bruto)));
+  const passo = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((p) => span / p <= n + 0.5) ?? mag * 10;
+  const ini = Math.ceil(min / passo) * passo;
+  const out: number[] = [];
+  for (let v = ini; v <= max + 1e-9; v += passo) out.push(Number(v.toFixed(10)));
+  return out;
+}
+
+/** Abaixo desta largura: rótulos curtos e, com zoom, sem arrasto (controles de período). */
+const ESTREITO = 520;
+const SEM_OCULTAS: string[] = [];
+/** Largura média de um caractere a 12 px, para decidir onde o rótulo de um marco quebra. */
+const PX_MARCO = 6.5;
+
+/** Quebra o texto em até `maxLinhas` linhas de `maxChars` caracteres, por palavra; o que passar da última linha vira reticências. */
+function quebraEmLinhas(texto: string, maxChars: number, maxLinhas: number): string[] {
+  const largura = Math.max(8, maxChars);
+  const linhas: string[] = [];
+  let atual = "";
+  const palavras = texto.split(" ");
+  for (let k = 0; k < palavras.length; k++) {
+    const candidata = atual ? `${atual} ${palavras[k]}` : palavras[k];
+    if (candidata.length <= largura || !atual) {
+      atual = candidata;
+      continue;
+    }
+    linhas.push(atual);
+    atual = palavras[k];
+    if (linhas.length === maxLinhas - 1) {
+      atual = palavras.slice(k).join(" ");
+      break;
+    }
+  }
+  linhas.push(atual);
+  const ultima = linhas[linhas.length - 1];
+  if (ultima.length > largura) linhas[linhas.length - 1] = `${ultima.slice(0, Math.max(1, largura - 1)).trimEnd()}…`;
+  return linhas;
+}
+
+function GraficoLinhasLargo({
+  semTabela = false,
+  titulo,
+  nomesNoTitulo,
+  seriesSaoNomes = false,
+  dados,
+  chaveX,
+  series,
+  unidade,
+  casas = 1,
+  formatoX = "data",
+  zeroNoEixo = false,
+  banda,
+  marcos = [],
+  altura = 300,
+  rotulosDiretos = true,
+  zoom = false,
+  intervaloInicial = null,
+  intervalo: intervaloControlado,
+  onIntervalo,
+  legendaInterativa = false,
+  ocultasIniciais = SEM_OCULTAS,
+  ocultas: ocultasControladas,
+  onOcultas,
+  escalaAoOcultar = "ajustar",
+  sincronizarCursor = true,
+  grupoCursor,
+  tabelaAbertaInicial = false,
+  semTitulo = false,
+  chaveUrl,
+}: GraficoLinhasProps) {
+  const idioma = useIdioma();
+  const marcaTitulo = idioma === "en" && !!nomesNoTitulo?.length;
+  const nomeSerie = (t: ReactNode) => (seriesSaoNomes ? <Nome>{t}</Nome> : t);
+  const tx = useTx();
+  const fmtX = (v: string, f: FormatoX | undefined, longo = false) => formatarX(v, f, longo, idioma);
+  const fV = (v: number | null | undefined, c: number, u: string) => fmtV(v, c, u, idioma);
+  const nLoc = (v: number) => v.toLocaleString(idioma === "en" ? "en-US" : "pt-BR");
+  const uid = useId();
+  const [largura, setLargura] = useState(760);
+  const [ativo, setAtivo] = useState<number | null>(null);
+  const [tabelaAberta, setTabelaAberta] = useState(tabelaAbertaInicial);
+  const [intervaloInterno, setIntervaloInterno] = useState<IntervaloX | null>(intervaloInicial);
+  const [ocultasInternas, setOcultasInternas] = useState<string[]>(ocultasIniciais);
+  const [modoEscala, setModoEscala] = useState<"ajustar" | "manter">(escalaAoOcultar);
+  const [arrasto, setArrasto] = useState<{ a: number; b: number } | null>(null);
+  const [aviso, setAviso] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  // recorte na URL (só com chaveUrl e sem controle externo): o esquema é estável enquanto a chave e as ocultas iniciais não mudam
+  const chaveOcultasIniciais = ocultasIniciais.join(",");
+  const esquemaUrl = useMemo(
+    () => ({
+      de: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.de` }), // i18n: dado
+      ate: campo(tiposUrl.texto({ max: 10 }), "", { param: `${chaveUrl}.ate` }),
+      oc: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 })), chaveOcultasIniciais ? chaveOcultasIniciais.split(",") : [], { param: `${chaveUrl}.oc` }),
+    }),
+    [chaveUrl, chaveOcultasIniciais],
+  );
+  const [vUrl, definirUrl] = useEstadoUrl(esquemaUrl, { sincronizar: !!chaveUrl });
+  const usaUrl = !!chaveUrl;
+
+  // impressão: a tabela do gráfico só é montada com o details aberto, e o toggle chega depois do layout da impressão;
+  // montá-la aqui, de forma síncrona, é o que a leva ao papel (AbreDetalhesAoImprimir abre o details; fechá-lo desmonta de novo)
+  useEffect(() => {
+    const montar = () => flushSync(() => setTabelaAberta(true));
+    window.addEventListener("beforeprint", montar);
+    return () => window.removeEventListener("beforeprint", montar);
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver((e) => setLargura(Math.max(300, Math.round(e[0].contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // no toque não há "sair com o ponteiro": a dica fica aberta até um toque fora do gráfico
+  const temAtivo = ativo !== null;
+  useEffect(() => {
+    if (!temAtivo) return;
+    const fora = (e: PointerEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setAtivo(null);
+    };
+    document.addEventListener("pointerdown", fora);
+    return () => document.removeEventListener("pointerdown", fora);
+  }, [temAtivo]);
+
+  /* ---------- trecho exibido (zoom) ---------- */
+  const N = dados.length;
+  // valores de X e períodos prontos só mudam com os dados: não são refeitos a cada movimento do cursor
+  const xsTodos = useMemo(() => (zoom ? dados.map((d) => String(d[chaveX] ?? "")) : []), [zoom, dados, chaveX]);
+  const periodos = useMemo(
+    () => (zoom ? periodosProntos(xsTodos, formatoX, idioma).map((p) => ({ ...p, indices: indicesDoIntervalo(xsTodos, p) })) : []),
+    [zoom, xsTodos, formatoX, idioma],
+  );
+  const intervaloDaUrl: IntervaloX | null = vUrl.de && vUrl.ate ? { inicio: vUrl.de, fim: vUrl.ate } : intervaloInicial;
+  const ivAtual = zoom ? (intervaloControlado !== undefined ? intervaloControlado : usaUrl ? intervaloDaUrl : intervaloInterno) : null;
+  const [i0, i1] = zoom ? indicesDoIntervalo(xsTodos, ivAtual) : [0, N - 1];
+  const ampliado = zoom && N > 0 && (i0 > 0 || i1 < N - 1);
+  const vis = ampliado ? dados.slice(i0, i1 + 1) : dados;
+
+  /* ---------- séries visíveis (legenda interativa) ---------- */
+  const ocultasLista = legendaInterativa ? (ocultasControladas ?? (usaUrl ? vUrl.oc : ocultasInternas)) : SEM_OCULTAS;
+  let seriesVis = ocultasLista.length ? series.filter((s) => !ocultasLista.includes(s.id)) : series;
+  if (!seriesVis.length) seriesVis = series; // nunca um gráfico sem linha: todas ocultas equivale a nenhuma
+  const temOcultas = seriesVis.length < series.length;
+
+  const R = rotulosDiretos ? (largura < ESTREITO ? 92 : 124) : 16;
+  const T = 14;
+  const B = 30;
+  const w = largura;
+  const h = altura;
+
+  // domínio com as mesmas regras de sempre, sobre o trecho e as séries exibidos;
+  // as variantes existem para dizer quando (e quanto) a escala mudou
+  const extras = banda ? [banda.inferior, banda.superior] : [];
+  const domTodas = dominioLinhas(vis, [...series.map((s) => s.id), ...extras], zeroNoEixo);
+  const domVisiveis = temOcultas ? dominioLinhas(vis, [...seriesVis.map((s) => s.id), ...extras], zeroNoEixo) : domTodas;
+  const { yMin, yMax } = modoEscala === "ajustar" ? domVisiveis : domTodas;
+  const escalaDasVisiveis = temOcultas && modoEscala === "ajustar" && !mesmaEscala(domVisiveis, domTodas);
+  const escalaDoTrecho = ampliado && !mesmaEscala(domTodas, dominioLinhas(dados, [...series.map((s) => s.id), ...extras], zeroNoEixo));
+
+  // unidade de um caractere ("%", "h") fica fora do título, que não a repete ao lado do texto; o eixo a diz em cada rótulo ("40 %")
+  const unidadeNoEixo = unidade.length === 1 && unidade.trim() ? ` ${unidade}` : "";
+  const yt = ticks(yMin, yMax);
+  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
+  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
+  // margem esquerda: a de sempre, ampliada quando o maior rótulo do eixo (12 px, cerca de 6,8 px por caractere) não cabe nela; um rótulo
+  // como "−5.000.000" não pode sair cortado pela borda do gráfico
+  const maiorRotuloY = yt.reduce((m, v) => Math.max(m, (rotuloTick(v, passoY, idioma) + unidadeNoEixo).length), 0);
+  const L = Math.max(largura < ESTREITO ? 48 : 60, Math.ceil(maiorRotuloY * 6.8) + 12);
+
+  const n = vis.length;
+  const x = (i: number) => L + (n <= 1 ? 0 : (i / (n - 1)) * (w - L - R));
+  const y = (v: number) => T + (1 - (v - yMin) / (yMax - yMin || 1)) * (h - T - B);
+
+  /* ---------- cursor sincronizado ---------- */
+  const sinc = useCursorSincronizado(sincronizarCursor ? (grupoCursor ?? chaveX) : null);
+  const publicar = sinc?.publicar;
+  const limpar = sinc?.limpar;
+  const xAtivo = ativo !== null && vis[ativo] ? String(vis[ativo][chaveX] ?? "") : null;
+  useEffect(() => {
+    if (!publicar || !limpar) return;
+    if (xAtivo !== null) publicar(xAtivo, uid);
+    else limpar(uid);
+  }, [publicar, limpar, xAtivo, uid]);
+  useEffect(() => () => limpar?.(uid), [limpar, uid]);
+  const valorExterno = sinc?.cursor && sinc.cursor.origem !== uid ? sinc.cursor.valor : null;
+  const iExterno = ativo === null && valorExterno !== null ? indiceDoValorX(vis.map((d) => String(d[chaveX] ?? "")), valorExterno) : -1;
+  const iCruz = ativo !== null ? ativo : iExterno >= 0 ? iExterno : null;
+
+  const caminhos = seriesVis.map((s) => {
+    let d = "";
+    let aberto = false;
+    vis.forEach((p, i) => {
+      const v = p[s.id];
+      if (typeof v === "number" && Number.isFinite(v)) {
+        d += `${aberto ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`;
+        aberto = true;
+      } else {
+        aberto = false; // lacuna: ausência não é zero
+      }
+    });
+    return d;
+  });
+
+  let bandaPath = "";
+  if (banda) {
+    const sup: string[] = [];
+    const inf: string[] = [];
+    vis.forEach((p, i) => {
+      const a = p[banda.superior];
+      const b = p[banda.inferior];
+      if (typeof a === "number" && typeof b === "number") {
+        sup.push(`${x(i).toFixed(1)},${y(a).toFixed(1)}`);
+        inf.unshift(`${x(i).toFixed(1)},${y(b).toFixed(1)}`);
+      }
+    });
+    if (sup.length) bandaPath = `M${sup.join("L")}L${inf.join("L")}Z`;
+  }
+
+  // rótulos diretos no último ponto válido, afastados para não colidir
+  const finais = seriesVis
+    .map((s) => {
+      for (let i = n - 1; i >= 0; i--) {
+        const v = vis[i][s.id];
+        if (typeof v === "number" && Number.isFinite(v)) return { s, i, v, yy: y(v) };
+      }
+      return null;
+    })
+    .filter((f): f is { s: SerieLinha; i: number; v: number; yy: number } => !!f)
+    .sort((a, b) => a.yy - b.yy);
+  // linhas que terminam no mesmo ponto viram um só rótulo com as siglas ("SE/CO · NE · N"):
+  // diz quais linhas se encontram no último ponto, sem afirmar que são iguais no resto do período
+  const grupos: { itens: typeof finais; yy: number }[] = [];
+  for (const f of finais) {
+    const g = grupos.at(-1);
+    if (g && Math.abs(g.itens[0].yy - f.yy) < 3 && g.itens[0].i === f.i) g.itens.push(f);
+    else grupos.push({ itens: [f], yy: f.yy });
+  }
+  const rotulos = grupos.map((g) => ({ ...g, alvo: g.yy }));
+  for (let k = 1; k < rotulos.length; k++) {
+    if (rotulos[k].yy - rotulos[k - 1].yy < 14) rotulos[k].yy = rotulos[k - 1].yy + 14;
+  }
+  // rótulo direto seletivo: só onde cabe perto do próprio ponto e dentro da área
+  // do gráfico; o que não cabe fica identificado pela legenda
+  const finaisVisiveis = rotulos.filter((r) => Math.abs(r.yy - r.alvo) <= 10 && r.yy <= h - B - 4 && r.yy >= T + 4);
+
+  // marcos só dentro do intervalo exibido. O rótulo vai para o lado do traço com mais espaço, quebra em até três linhas dentro da área do
+  // gráfico (nunca passa da borda nem entra no eixo) e os de marcos próximos se empilham pela altura real de cada um.
+  // Com rótulos diretos, a margem direita é deles: o texto do marco para onde a área do gráfico termina
+  const x0 = String(vis[0]?.[chaveX] ?? "");
+  const x1 = String(vis[n - 1]?.[chaveX] ?? "");
+  const limiteDireito = (rotulosDiretos ? w - R : w) - 4;
+  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; topo: number; linhas: string[]; ancora: "start" | "end" }[] = [];
+  for (const m of marcos) {
+    if (!n || m.x < x0 || m.x > x1) continue;
+    const i = vis.findIndex((d) => String(d[chaveX]) >= m.x);
+    if (i < 0) continue;
+    const xi = x(i);
+    const direita = limiteDireito - (xi + 4);
+    const esquerda = xi - 4 - L;
+    const ancora: "start" | "end" = m.rotulo.length * PX_MARCO <= direita || direita >= esquerda ? "start" : "end";
+    const linhas = quebraEmLinhas(m.rotulo, Math.floor(Math.max(24, ancora === "start" ? direita : esquerda) / PX_MARCO), 3);
+    const anterior = marcosVisiveis.at(-1);
+    const topo = anterior && xi - x(anterior.i) < 110 ? anterior.topo + anterior.linhas.length * 14 + 1 : 0;
+    marcosVisiveis.push({ m, i, topo, linhas, ancora });
+  }
+
+  // marcas com passo constante a partir do último ponto (anos, trimestres, quinzenas), não em partes iguais do total
+  const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);
+
+  const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX, idioma);
+
+  /* ---------- interação ---------- */
+  const podeArrastar = zoom && largura >= ESTREITO && n > 2;
+
+  function indicePonteiro(ev: React.PointerEvent<SVGRectElement>): number {
+    const r = (ev.currentTarget as SVGRectElement).getBoundingClientRect();
+    const px = ((ev.clientX - r.left) / r.width) * (w - L - R);
+    const i = Math.round((px / (w - L - R)) * (n - 1));
+    return Math.max(0, Math.min(n - 1, i));
+  }
+
+  function mover(ev: React.PointerEvent<SVGRectElement>) {
+    const i = indicePonteiro(ev);
+    setAtivo(i);
+    if (arrasto && arrasto.b !== i) setArrasto({ a: arrasto.a, b: i });
+  }
+
+  function pressionar(ev: React.PointerEvent<SVGRectElement>) {
+    const i = indicePonteiro(ev);
+    setAtivo(i);
+    // arrasto só com mouse: no toque, arrastar rola a página e tocar abre a dica
+    if (podeArrastar && ev.pointerType === "mouse" && ev.button === 0) {
+      try {
+        ev.currentTarget.setPointerCapture(ev.pointerId);
+      } catch {
+        /* navegador sem captura de ponteiro: o arrasto termina ao sair do gráfico */
+      }
+      setArrasto({ a: i, b: i });
+    }
+  }
+
+  function soltar() {
+    if (!arrasto) return;
+    const a = Math.min(arrasto.a, arrasto.b);
+    const b = Math.max(arrasto.a, arrasto.b);
+    setArrasto(null);
+    if (b - a >= 1) aplicarIndices(i0 + a, i0 + b);
+  }
+
+  function aplicarIndices(a: number, b: number) {
+    const novo = intervaloDosIndices(xsTodos, a, b);
+    if (intervaloControlado === undefined) {
+      if (usaUrl) definirUrl({ de: novo?.inicio ?? "", ate: novo?.fim ?? "" });
+      else setIntervaloInterno(novo);
+    }
+    onIntervalo?.(novo);
+    setAtivo(null);
+    setAviso("");
+  }
+
+  function alternarSerie(id: string) {
+    const atual = new Set(ocultasLista);
+    if (atual.has(id)) atual.delete(id);
+    else {
+      if (series.length - atual.size <= 1) {
+        setAviso(tx("Ao menos uma série fica visível.", "At least one series stays visible."));
+        return;
+      }
+      atual.add(id);
+    }
+    const lista = series.map((s) => s.id).filter((i) => atual.has(i));
+    if (ocultasControladas === undefined) {
+      if (usaUrl) definirUrl({ oc: lista });
+      else setOcultasInternas(lista);
+    }
+    onOcultas?.(lista);
+    setAviso("");
+  }
+
+  function teclado(ev: React.KeyboardEvent<SVGSVGElement>) {
+    if (ev.key === "Home" || ev.key === "End") {
+      ev.preventDefault();
+      setAtivo(ev.key === "Home" ? 0 : n - 1);
+    } else if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
+      ev.preventDefault();
+      setAtivo((a) => {
+        const base = a ?? n - 1;
+        return Math.max(0, Math.min(n - 1, base + (ev.key === "ArrowRight" ? 1 : -1)));
+      });
+    } else if (ev.key === "Escape") {
+      setAtivo(null);
+      setArrasto(null);
+    }
+  }
+
+  const pa = ativo !== null ? vis[ativo] : null;
+  const tipX = ativo !== null ? x(ativo) : 0;
+  const pCruz = iCruz !== null ? vis[iCruz] : null;
+  const cruzX = iCruz !== null ? x(iCruz) : 0;
+
+  /* ---------- textos de estado (zoom e escala) ---------- */
+  const rotuloX = (i: number) => fmtX(xsTodos[i] ?? "", formatoX, true);
+  const estado: string[] = [];
+  if (ampliado) {
+    estado.push(
+      tx(
+        `Intervalo exibido: ${rotuloX(i0)} a ${rotuloX(i1)}, ${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} pontos` +
+          (escalaDoTrecho ? "; eixo vertical recalculado para o intervalo." : "."),
+        `Range shown: ${rotuloX(i0)} to ${rotuloX(i1)}, ${nLoc(n)} of ${nLoc(N)} points` + (escalaDoTrecho ? "; vertical axis recalculated for the range." : "."),
+      ),
+    );
+  }
+  if (escalaDasVisiveis) {
+    estado.push(
+      tx(
+        `Escala ajustada às séries visíveis: eixo de ${fmtV(domVisiveis.yMin, casas, "")} a ${fmtV(domVisiveis.yMax, casas, unidade)}; com todas as séries, ${fmtV(domTodas.yMin, casas, "")} a ${fmtV(domTodas.yMax, casas, unidade)}.`,
+        `Scale adjusted to the visible series: axis from ${fV(domVisiveis.yMin, casas, "")} to ${fV(domVisiveis.yMax, casas, unidade)}; with all series, ${fV(domTodas.yMin, casas, "")} to ${fV(domTodas.yMax, casas, unidade)}.`,
+      ),
+    );
+  } else if (temOcultas && modoEscala === "manter") {
+    estado.push(tx("Escala mantida com todas as séries, inclusive as ocultas.", "Scale kept with all series, including the hidden ones."));
+  } else if (temOcultas) {
+    estado.push(tx("Ocultar séries não mudou a escala do eixo.", "Hiding series did not change the axis scale."));
+  }
+  if (aviso) estado.push(aviso);
+  const textoEstado = estado.join(" ");
+
+  const pontosSel = arrasto ? [Math.min(arrasto.a, arrasto.b), Math.max(arrasto.a, arrasto.b)] : null;
+  const nomesOcultas = series.filter((s) => !seriesVis.includes(s)).map((s) => s.rotulo);
+  const botao = "rotulo inline-flex min-h-[44px] items-center border px-3";
+
+  return (
+    <div ref={ref} className="relative w-full">
+      <p className={semTitulo ? "sr-only" : "mb-1 text-sm font-medium text-carvao"} data-titulo-grafico="true">
+        {comNomes(titulo, nomesNoTitulo, idioma)}
+        {unidade.length > 1 && <span className={semTitulo ? undefined : "font-normal text-mineral"}>{tx(", em ", ", in ")}{unidade}</span>}
+      </p>
+      {/* com nomes no título, o texto do <title> (título e instrução) fica num span só para leitor de tela, com os nomes marcados */}
+      {marcaTitulo && (
+        <span id={`${uid}-h`} className="sr-only">
+          {comNomes(titulo, nomesNoTitulo, idioma)}. Use the arrow keys to move through the points.
+        </span>
+      )}
+      {zoom && N > 2 && (
+        <div role="group" aria-label={marcaTitulo ? "Chart range" : tx(`Intervalo do gráfico: ${titulo}`, `Chart range: ${titulo}`)} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">
+          {periodos.length > 0 && <span className="rotulo mr-1 text-mineral">{tx("Período", "Period")}</span>}
+          {periodos.map((p) => {
+            const [a, b] = p.indices;
+            const atual = ampliado && a === i0 && b === i1;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                aria-pressed={atual}
+                onClick={() => aplicarIndices(a, b)}
+                className={`${botao} ${atual ? "border-energia bg-energia-fundo text-energia-dark" : "border-linha text-carvao-muted hover:border-carvao hover:text-carvao"}`}
+              >
+                {p.rotulo}
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            aria-disabled={!ampliado}
+            onClick={() => ampliado && aplicarIndices(0, N - 1)}
+            className={`${botao} ${ampliado ? "border-carvao-muted text-carvao hover:border-carvao" : "cursor-default border-linha text-mineral"}`}
+          >
+            {tx("Restaurar intervalo", "Reset range")}
+          </button>
+          <span className="hidden text-xs text-mineral sm:inline">{tx("ou arraste sobre o gráfico com o mouse", "or drag across the chart with the mouse")}</span>
+          <details className="w-full">
+            <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+              {tx("Ajustar início e fim", "Adjust start and end")}
+            </summary>
+            <div className="grid gap-x-6 gap-y-1 sm:grid-cols-2">
+              <label className="block text-xs text-carvao-muted">
+                {tx("Início: ", "Start: ")}
+                <span className="tabular-nums text-carvao">{rotuloX(i0)}</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={N - 2}
+                  step={1}
+                  value={i0}
+                  aria-valuetext={rotuloX(i0)}
+                  onChange={(e) => {
+                    const v = Number(e.currentTarget.value);
+                    aplicarIndices(v, Math.max(i1, v + 1));
+                  }}
+                  className="block h-11 w-full cursor-pointer accent-energia"
+                />
+              </label>
+              <label className="block text-xs text-carvao-muted">
+                {tx("Fim: ", "End: ")}
+                <span className="tabular-nums text-carvao">{rotuloX(i1)}</span>
+                <input
+                  type="range"
+                  min={1}
+                  max={N - 1}
+                  step={1}
+                  value={i1}
+                  aria-valuetext={rotuloX(i1)}
+                  onChange={(e) => {
+                    const v = Number(e.currentTarget.value);
+                    aplicarIndices(Math.min(i0, v - 1), v);
+                  }}
+                  className="block h-11 w-full cursor-pointer accent-energia"
+                />
+              </label>
+            </div>
+          </details>
+        </div>
+      )}
+      <div className="flex flex-wrap items-baseline gap-x-4">
+        {legendaInterativa ? (
+          <ul className="mb-1 flex flex-wrap items-center gap-x-1 gap-y-0 text-xs text-carvao-muted" aria-label={tx("Legenda: ative ou oculte séries", "Legend: show or hide series")}>
+            {series.map((s) => {
+              const visivel = seriesVis.includes(s);
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    aria-pressed={visivel}
+                    onClick={() => alternarSerie(s.id)}
+                    className={`inline-flex min-h-[44px] items-center gap-1.5 px-1.5 underline-offset-4 hover:underline ${visivel ? "text-carvao-muted" : "text-mineral"}`}
+                  >
+                    <svg width="18" height="8" aria-hidden="true">
+                      <line
+                        x1="0"
+                        y1="4"
+                        x2="18"
+                        y2="4"
+                        stroke={visivel ? s.cor : "var(--cor-mineral-soft)"}
+                        strokeWidth="2.5"
+                        strokeDasharray={s.tracejada ? "4 3" : s.pontilhada ? "1.5 3" : visivel ? undefined : "1 3"}
+                      />
+                    </svg>
+                    {nomeSerie(s.rotulo)}
+                    {!visivel && <span className="italic">{tx("(oculta)", "(hidden)")}</span>}
+                  </button>
+                </li>
+              );
+            })}
+            {banda && (
+              <li className="flex min-h-[44px] items-center gap-1.5 px-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
+              </li>
+            )}
+            <li className="flex min-h-[44px] items-center px-1.5 text-mineral" data-legenda="unidade">
+              {tx("Valores em ", "Values in ")}
+              {unidade}
+            </li>
+          </ul>
+        ) : (
+          <ul className="mb-2 flex flex-wrap gap-x-5 gap-y-1 px-1 text-xs text-carvao-muted" aria-label={tx("Legenda", "Legend")}>
+            {series.map((s) => (
+              <li key={s.id} className="flex items-center gap-1.5">
+                <svg width="18" height="8" aria-hidden="true">
+                  <line x1="0" y1="4" x2="18" y2="4" stroke={s.cor} strokeWidth="2.5" strokeDasharray={s.tracejada ? "4 3" : undefined} />
+                </svg>
+                {nomeSerie(s.rotulo)}
+              </li>
+            ))}
+            {banda && (
+              <li className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="inline-block h-2.5 w-4" style={{ background: banda.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)" }} />
+                {banda.rotulo}
+              </li>
+            )}
+            {semTitulo && (
+              <li className="text-mineral" data-legenda="unidade">
+                {tx("Valores em ", "Values in ")}
+                {unidade}
+              </li>
+            )}
+          </ul>
+        )}
+        <BaixarImagem raiz={ref} titulo={titulo} unidade={unidade} />
+      </div>
+      {(zoom || legendaInterativa) && (
+        <div className="mb-2 flex min-h-[1.25rem] flex-wrap items-center gap-x-3 px-1">
+          <p className="text-xs text-carvao-muted" aria-live="polite" data-estado-grafico="">
+            {textoEstado}
+          </p>
+          {legendaInterativa && temOcultas && (
+            <button
+              type="button"
+              onClick={() => setModoEscala((m) => (m === "ajustar" ? "manter" : "ajustar"))}
+              className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"
+            >
+              {modoEscala === "ajustar"
+                ? tx("Manter a escala de todas as séries", "Keep the scale of all series")
+                : tx("Ajustar a escala às séries visíveis", "Fit the scale to the visible series")}
+            </button>
+          )}
+        </div>
+      )}
+      {zoom && (
+        <p id={`${uid}-d`} className="sr-only">
+          {tx(
+            "Para ampliar um trecho, use os botões de período ou os controles de início e fim acima do gráfico.",
+            "To zoom into a stretch, use the period buttons or the start and end controls above the chart.",
+          )}
+        </p>
+      )}
+      {/* altura fixa em pixels: o HTML do servidor já reserva a altura final, e âncoras abaixo
+          do gráfico não se deslocam quando a largura real é medida no cliente. A dica é posicionada em relação a este contêiner,
+          que envolve só a figura: antes ela era medida a partir do topo do componente e cobria o título e a legenda. */}
+      <div className="relative">
+        <svg
+          width="100%"
+          height={h}
+          viewBox={`0 0 ${w} ${h}`}
+          role="img"
+          aria-labelledby={marcaTitulo ? `${uid}-h` : `${uid}-t`}
+          aria-describedby={zoom ? `${uid}-d` : undefined}
+          tabIndex={0}
+          onKeyDown={teclado}
+          onBlur={() => setAtivo(null)}
+          className="block overflow-visible focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+          data-svg-grafico=""
+        >
+          {marcaTitulo ? null : <title id={`${uid}-t`}>{tx(`${titulo}. Use as setas para percorrer os pontos.`, `${titulo}. Use the arrow keys to move through the points.`)}</title>}
+          {yt.map((v) => (
+            <g key={v}>
+              <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
+              <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">
+                {rotuloTick(v, passoY, idioma)}
+                {unidadeNoEixo}
+              </text>
+            </g>
+          ))}
+          {xt.map((i, k) => (
+            <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="12" fill="var(--cor-mineral)">
+              {rotulosX[k]}
+            </text>
+          ))}
+          {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
+          {marcosVisiveis.map(({ m, i, topo, linhas, ancora }) => (
+            <g key={m.x}>
+              <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
+              {/* com 12 px a letra mede cerca de 6,5 px: o texto quebra no espaço do lado escolhido */}
+              <text data-marco="" x={x(i) + (ancora === "start" ? 4 : -4)} textAnchor={ancora} y={T + 10 + topo} fontSize="12" fill="var(--cor-mineral)">
+                {linhas.length > 1
+                  ? linhas.map((l, q) => (
+                      <tspan key={q} x={x(i) + (ancora === "start" ? 4 : -4)} dy={q ? 14 : 0}>
+                        {l}
+                      </tspan>
+                    ))
+                  : linhas[0]}
+              </text>
+            </g>
+          ))}
+          {seriesVis.map((s, k) => (
+            <path
+              key={s.id}
+              d={caminhos[k]}
+              fill="none"
+              stroke={s.cor}
+              strokeWidth={s.espessura ?? 2}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray={s.tracejada ? "5 4" : s.pontilhada ? "1.5 3.5" : undefined}
+            />
+          ))}
+          {rotulosDiretos &&
+            finaisVisiveis.map((r) => {
+              const f = r.itens[0];
+              const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
+              const texto =
+                r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < ESTREITO ? "·" : " · ") : largura < ESTREITO || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
+              // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
+              if (x(f.i) + 8 + texto.length * 6.8 > w - 2) return null;
+              return (
+                <g key={f.s.id}>
+                  <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
+                  <text x={x(f.i) + 8} y={r.yy + 4} fontSize="12" fill="var(--cor-carvao)">
+                    {texto}
+                  </text>
+                </g>
+              );
+            })}
+          {pontosSel && (
+            <rect
+              data-selecao="intervalo"
+              x={x(pontosSel[0])}
+              y={T}
+              width={Math.max(1, x(pontosSel[1]) - x(pontosSel[0]))}
+              height={Math.max(1, h - T - B)}
+              fill="color-mix(in srgb, var(--cor-energia) 12%, transparent)"
+              stroke="var(--cor-energia)"
+              strokeWidth="1"
+              pointerEvents="none"
+            />
+          )}
+          {iCruz !== null && (
+            <g pointerEvents="none" data-cursor={ativo !== null ? "local" : "sincronizado"}>
+              <line x1={cruzX} x2={cruzX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
+              {seriesVis.map((s) => {
+                const v = pCruz?.[s.id];
+                return typeof v === "number" && Number.isFinite(v) ? (
+                  <circle key={s.id} cx={cruzX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
+                ) : null;
+              })}
+            </g>
+          )}
+          <rect
+            x={L}
+            y={T}
+            width={Math.max(1, w - L - R)}
+            height={Math.max(1, h - T - B)}
+            fill="transparent"
+            className={podeArrastar ? "cursor-crosshair" : undefined}
+            onPointerMove={mover}
+            onPointerDown={pressionar}
+            onPointerUp={soltar}
+            onPointerCancel={() => setArrasto(null)}
+            onPointerLeave={(ev) => {
+              // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
+              if (ev.pointerType === "mouse") setAtivo(null);
+              if (arrasto) soltar();
+            }}
+          />
+        </svg>
+        {pa && (
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute top-1 z-20 min-w-[11rem] max-w-[calc(100%-1rem)] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)] ${tipX > w / 2 ? "-translate-x-full" : ""}`}
+            // a dica abre ao lado da cruz (à direita na metade esquerda, à esquerda na metade direita) e deixa a cruz e os pontos à vista
+            style={{ left: tipX > w / 2 ? `max(12rem, calc(${(tipX / w) * 100}% - 0.75rem))` : `min(calc(${(tipX / w) * 100}% + 0.75rem), calc(100% - 12rem))` }}
+          >
+            <p className="rotulo text-mineral">{fmtX(String(pa[chaveX]), formatoX, true)}</p>
+            <ul className="mt-1 space-y-0.5">
+              {seriesVis.map((s) => (
+                <li key={s.id} className="flex items-center justify-between gap-3 text-carvao">
+                  <span className="flex items-center gap-1.5">
+                    <span aria-hidden="true" className="inline-block h-2 w-2" style={{ background: s.cor }} />
+                    {nomeSerie(s.rotulo)}
+                  </span>
+                  <span className="tabular-nums">{fV(pa[s.id] as number | null, casas, unidade)}</span>
+                </li>
+              ))}
+              {banda && typeof pa[banda.inferior] === "number" && (
+                <li className="flex justify-between gap-3 text-mineral">
+                  <span>{banda.rotulo}</span>
+                  <span className="tabular-nums">
+                    {fV(pa[banda.inferior] as number, casas, "")} {tx("a", "to")} {fV(pa[banda.superior] as number, casas, unidade)}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
+      {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
+      <p className="sr-only" aria-live="polite">
+        {pa
+          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${seriesVis.map((s) => `${s.rotulo} ${fV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
+          : ""}
+      </p>
+      {!semTabela && (
+      <details className="mt-3 text-xs" open={tabelaAbertaInicial || undefined} onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
+        <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+          {ampliado
+            ? tx(
+                `Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} de ${N.toLocaleString("pt-BR")} linhas, intervalo exibido)`,
+                `Chart data as a table (${nLoc(n)} of ${nLoc(N)} rows, range shown)`,
+              )
+            : tx(`Dados do gráfico em tabela (${n.toLocaleString("pt-BR")} ${n === 1 ? "linha" : "linhas"})`, `Chart data as a table (${nLoc(n)} ${n === 1 ? "row" : "rows"})`)}
+        </summary>
+        {tabelaAberta && (
+          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={marcaTitulo ? "Chart data as a table (scrollable)" : tx(`${titulo}: dados em tabela (rolável)`, `${titulo}: data as a table (scrollable)`)}>
+            <table className="w-full border-collapse tabular-nums">
+              <caption className="sr-only">
+                {marcaTitulo && <>{comNomes(titulo, nomesNoTitulo, idioma)}</>}
+                {tx(
+                  `${titulo}, em ${unidade}` +
+                    (ampliado ? `; intervalo de ${rotuloX(i0)} a ${rotuloX(i1)}` : "") +
+                    (nomesOcultas.length ? `; séries ocultas no gráfico e na tabela: ${nomesOcultas.join(", ")}` : ""),
+                  `${marcaTitulo ? "" : titulo}, in ${unidade}` +
+                    (ampliado ? `; range from ${rotuloX(i0)} to ${rotuloX(i1)}` : "") +
+                    (nomesOcultas.length ? `; series hidden in the chart and the table: ${nomesOcultas.join(", ")}` : ""),
+                )}
+              </caption>
+              <thead className="sticky top-0 bg-superficie">
+                <tr className="text-left text-mineral">
+                  <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
+                    {formatoX === "hora" ? tx("Hora", "Hour") : formatoX === "mes" ? tx("Mês", "Month") : formatoX === "texto" ? tx("Item", "Item") : tx("Data", "Date")}
+                  </th>
+                  {seriesVis.map((s) => (
+                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeSerie(s.rotulo)} ({unidade})</th>
+                  ))}
+                  {banda && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{banda.rotulo} ({unidade})</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {vis.map((p, i) => (
+                  <tr key={i} className="border-b border-linha">
+                    <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{fmtX(String(p[chaveX] ?? ""), formatoX, true)}</th>
+                    {seriesVis.map((s) => (
+                      <td key={s.id} className="px-2 py-1 text-carvao">{fV(p[s.id] as number | null, casas, "")}</td>
+                    ))}
+                    {banda && (
+                      <td className="px-2 py-1 text-mineral">
+                        {typeof p[banda.inferior] === "number"
+                          ? tx(`${fmtV(p[banda.inferior] as number, casas, "")} a ${fmtV(p[banda.superior] as number, casas, "")}`, `${fV(p[banda.inferior] as number, casas, "")} to ${fV(p[banda.superior] as number, casas, "")}`)
+                          : tx("sem dado", "no data")}
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </details>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Entrada do contrato único do kit (src/lib/painel/graficos.ts): séries com pontos `{ x, y }` e o eixo com a unidade. Os demais
+ * ajustes da forma larga (zoom, banda, marcos, cursor sincronizado) valem nas duas entradas.
+ */
+export type GraficoLinhasContrato = ContratoGrafico & Omit<GraficoLinhasProps, "dados" | "chaveX" | "series" | "unidade" | "casas" | "zeroNoEixo" | "titulo">;
+
+/**
+ * Gráfico de linhas do kit de painel. Aceita o contrato único (`series` com pontos e `eixoY`) ou, até o PR 5 da Iniciativa 1, a forma
+ * larga do Setor Elétrico (`dados` e `chaveX`). O contêiner leva `data-grafico`, que o teste do molde procura em toda figura.
+ */
+export function GraficoLinhas(props: GraficoLinhasProps | GraficoLinhasContrato) {
+  if (!ehContrato(props)) {
+    return (
+      <div data-grafico="linhas" className="min-w-0">
+        <GraficoLinhasLargo {...(props as GraficoLinhasProps)} />
+      </div>
+    );
+  }
+  const { series, eixoY, ...resto } = props;
+  return (
+    <div data-grafico="linhas" className="min-w-0">
+      <GraficoLinhasLargo
+        semTabela
+        {...resto}
+        dados={paraFormaLarga(series)}
+        chaveX="x"
+        series={series.map((s, i) => ({ id: s.id, rotulo: s.nome, cor: corDaSerie(i, s.cor), tracejada: s.natureza === "previsto", pontilhada: s.natureza === "cenario" }))}
+        unidade={eixoY.unidade}
+        casas={eixoY.casas ?? 1}
+        zeroNoEixo={eixoY.zero ?? false}
+      />
+    </div>
+  );
+}

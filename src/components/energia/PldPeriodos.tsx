@@ -3,6 +3,7 @@
 import Link from "@/components/i18n/LinkIdioma";
 import { useMemo, useRef } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { TabelaDados } from "@/components/painel/TabelaDados";
 import { LinkDoPainel } from "@/components/energia/LinkDoPainel";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -326,71 +327,35 @@ export function PldPeriodos({
           </div>
         </dl>
 
-        <div
-          className="tabela-scroll mt-5"
-          tabIndex={0}
-          role="region"
-          aria-label={tx("Estatísticas do período por submercado (rolável)", "Statistics for the period by submarket (scrollable)")}
-        >
-          <table className="w-full border-collapse text-sm tabular-nums sm:min-w-[40rem]">
-            <caption className="sr-only">{tx("Estatísticas do PLD no período por submercado", "PLD statistics for the period by submarket")}</caption>
-            <thead>
-              <tr className="text-left text-xs text-mineral">
-                <th scope="col" className="border-b border-linha py-2 pr-3 font-medium">
-                  {tx("Submercado", "Submarket")}
-                </th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                  {tx("Média", "Average")}
-                </th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                  {tx("Mínimo", "Minimum")}
-                </th>
-                <th scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                  {tx("Máximo", "Maximum")}
-                </th>
-                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">
-                  {tx("Volatilidade (desvio padrão)", "Volatility (standard deviation)")}
-                </th>
-                <th scope="col" className="hidden border-b border-linha px-2 py-2 font-medium sm:table-cell">
-                  {tx("Horas em faixa baixa · central · alta", "Hours in low · central · high band")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {SMS.flatMap((s) => {
-                const st = at.stats[s.id];
-                const faixas = `${p(st.permanencia.baixa, idioma)} · ${p(st.permanencia.central, idioma)} · ${p(st.permanencia.alta, idioma)}`;
-                const rotulo = rotuloSm(s.id, idioma);
-                return [
-                  <tr key={s.id} className="border-b border-linha max-sm:border-b-0">
-                    <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                      <span aria-hidden="true" className="mr-2 inline-block h-2 w-2" style={{ background: s.cor }} />
-                      <span className="sm:hidden">
-                        <abbr title={rotulo} className="no-underline">
-                          {siglaSm(s.id, idioma)}
-                        </abbr>
-                      </span>
-                      <span className="hidden sm:inline">{rotulo}</span>
-                    </th>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media, 2, idioma)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min, 2, idioma)}</td>
-                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max, 2, idioma)}</td>
-                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">R$&nbsp;{n(st.desvio_padrao, 2, idioma)}</td>
-                    <td className="hidden px-2 py-2 text-carvao sm:table-cell">{faixas}</td>
-                  </tr>,
-                  // celular: volatilidade e faixas descem para uma segunda linha do mesmo submercado, em vez de empurrar colunas para fora da tela
-                  <tr key={`${s.id}-mais`} className="border-b border-linha sm:hidden">
-                    <td colSpan={4} className="px-2 pb-2 pt-0 text-xs text-carvao-muted">
-                      {tx(
-                        `Volatilidade (desvio padrão): R$ ${n(st.desvio_padrao)}. Horas em faixa baixa · central · alta: ${faixas}.`,
-                        `Volatility (standard deviation): R$ ${n(st.desvio_padrao, 2, idioma)}. Hours in low · central · high band: ${faixas}.`,
-                      )}
-                    </td>
-                  </tr>,
-                ];
-              })}
-            </tbody>
-          </table>
+        {/* tabela do kit (TabelaDados): rola dentro do bloco no celular, com o submercado fixo na primeira coluna */}
+        <div className="mt-5">
+          <TabelaDados
+            recolhida={false}
+            idioma={idioma}
+            titulo={tx("Estatísticas do PLD no período por submercado", "PLD statistics for the period by submarket")}
+            colunas={[
+              tx("Submercado", "Submarket"),
+              tx("Média (R$/MWh)", "Average (R$/MWh)"),
+              tx("Mínimo (R$/MWh)", "Minimum (R$/MWh)"),
+              tx("Máximo (R$/MWh)", "Maximum (R$/MWh)"),
+              tx("Volatilidade, desvio padrão (R$/MWh)", "Volatility, standard deviation (R$/MWh)"),
+              tx("Horas em faixa baixa · central · alta", "Hours in low · central · high band"),
+            ]}
+            linhas={SMS.map((s) => {
+              const st = at.stats[s.id];
+              return [
+                rotuloSm(s.id, idioma),
+                st.media,
+                st.min,
+                st.max,
+                st.desvio_padrao,
+                `${p(st.permanencia.baixa, idioma)} · ${p(st.permanencia.central, idioma)} · ${p(st.permanencia.alta, idioma)}`,
+              ];
+            })}
+            casas={[null, 2, 2, 2, 2, null]}
+            limite={SMS.length}
+            fixarPrimeiraColuna
+          />
         </div>
         <p className="mt-2 text-xs text-mineral">
           {tx(

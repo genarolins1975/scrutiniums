@@ -167,7 +167,7 @@ describe("I01 a I04: recorte dos gráficos e tabelas na URL", () => {
     }
   });
   it("GraficoLinhas grava intervalo e séries ocultas na URL só com chaveUrl e sem controle externo", () => {
-    const t = ler("src/components/energia/GraficoLinhas.tsx");
+    const t = ler("src/components/painel/GraficoLinhas.tsx");
     expect(t).toContain("`${chaveUrl}.de`");
     expect(t).toContain("`${chaveUrl}.ate`");
     expect(t).toContain("`${chaveUrl}.oc`");
@@ -229,7 +229,7 @@ describe("I18 e I19: títulos e anúncios", () => {
     expect(ler("src/app/setor-eletrico/geracao/restricoes/page.tsx")).toContain("contra o arquivo principal, ${NOME_FONTE_RESTRICAO[f].toLowerCase()}");
   });
   it("trocar linhas por página e exportar sem linhas são anunciados", () => {
-    const t = ler("src/components/energia/TabelaInterativa.tsx");
+    const t = ler("src/components/painel/TabelaInterativa.tsx");
     expect(t).toContain("linhas por página:");
     expect(t).toContain("Nenhuma linha para exportar");
   });

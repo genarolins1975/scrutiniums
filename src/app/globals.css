@@ -585,6 +585,21 @@ html[data-recorte="pendente"] #conteudo {
   .ed-faixa-grade[data-colunas="6"] > :not(:nth-child(3n+1)) { border-left: 1px solid var(--cor-linha); padding-left: 1.5rem; }
 }
 
+/* Faixa de números do kit de painel (FaixaNumeros, Iniciativa 1 do parecer de UX de 23/10/2026): de um a quatro números separados por
+   filetes, sem cartões; dois por linha no celular, todos numa linha a partir de 768 px. */
+.faixa-numeros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1rem; border-block: 1px solid var(--cor-linha); padding-block: 1rem; margin-block: 0.75rem 0.5rem; }
+.faixa-numeros[data-quantos="1"] { grid-template-columns: minmax(0, 1fr); }
+/* seletores com a mesma especificidade (:nth-child) nas duas larguras, para a regra de 768 px valer para todos os números */
+.faixa-numeros > :nth-child(odd) { padding-inline: 0 1rem; }
+.faixa-numeros > :nth-child(even) { border-left: 1px solid var(--cor-linha); padding-inline: 1rem 0; }
+@media (min-width: 768px) {
+  .faixa-numeros[data-quantos="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .faixa-numeros[data-quantos="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .faixa-numeros > :nth-child(n) { padding-inline: 1.5rem; border-left: 1px solid var(--cor-linha); }
+  .faixa-numeros > :nth-child(1) { padding-left: 0; border-left: 0; }
+  .faixa-numeros > :nth-last-child(1) { padding-right: 0; }
+}
+
 /* O primeiro painel logo abaixo da barra de profundidade não repete a linha fina da barra. */
 .modo-profundidade > .sticky + div > section[data-painel-evidencia]:first-child { border-top: 0; padding-top: 0.75rem; }
 

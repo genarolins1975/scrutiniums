@@ -415,6 +415,11 @@ export const GRUPOS_NAVEGACAO: GrupoNavegacao[] = [
   grupo("conhecimento-e-evidencia", 6, () => tx("Conhecimento e evidência", "Knowledge and evidence"), () => tx("As regras, os conceitos, os dados e os métodos por trás de cada número.", "The rules, concepts, data and methods behind each number.")),
 ];
 
+/** Rótulo de um grupo da navegação, para a abertura dos painéis do kit (AberturaPainel, `grupo`). */
+export function rotuloDoGrupo(id: IdGrupo): string {
+  return GRUPOS_NAVEGACAO.find((g) => g.id === id)?.rotulo ?? id;
+}
+
 export function destino(slug: string): DestinoNavegacao {
   const d = DESTINOS_NAVEGACAO.find((x) => x.slug === slug);
   if (!d) throw new Error(`destino desconhecido: ${slug}`);

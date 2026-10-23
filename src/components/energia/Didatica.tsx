@@ -14,60 +14,10 @@ import { tx } from "@/lib/energia/idioma";
  *   dos números que usa.
  */
 
-export type ItemParaLer = {
-  /** Termo ou unidade, como aparece na página. */
-  termo: ReactNode;
-  /** Uma ou duas frases em palavras simples. */
-  definicao: ReactNode;
-  /** Exemplo com número da gold da página (opcional). */
-  exemplo?: ReactNode;
-};
-
-export function ParaLer({
-  id,
-  titulo,
-  itens,
-  nivelTitulo = 2,
-  nota,
-}: {
-  id: string;
-  titulo?: ReactNode;
-  itens: ItemParaLer[];
-  /** Nível do título no documento: 2 fora de um painel, 3 dentro dele. */
-  nivelTitulo?: 2 | 3;
-  /** Linha final opcional (por exemplo, o link para o Aprenda). */
-  nota?: ReactNode;
-}) {
-  const T = nivelTitulo === 3 ? "h3" : "h2";
-  return (
-    <section id={id} aria-labelledby={`${id}-t`} data-glossario-uso={id} className="scroll-mt-28 border-y border-linha py-5">
-      <T id={`${id}-t`} className="rotulo text-mineral">
-        {titulo ?? tx("Para ler esta página", "How to read this page")}
-      </T>
-      <dl className="mt-3 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-        {itens.map((it, i) => (
-          <div key={i} className="min-w-0">
-            <dt className="text-sm font-medium text-carvao">{it.termo}</dt>
-            <dd className="mt-1 text-sm leading-relaxed text-carvao-muted">
-              {it.definicao}
-              {it.exemplo && <span className="mt-1 block text-carvao">{it.exemplo}</span>}
-            </dd>
-          </div>
-        ))}
-      </dl>
-      {nota && <p className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted">{nota}</p>}
-    </section>
-  );
-}
-
-export function LeituraGuiada({ children, rotulo, id }: { children: ReactNode; rotulo?: string; id?: string }) {
-  return (
-    <p data-leitura-guiada={id ?? ""} className="max-w-prose2 border-l-2 border-energia pl-3 text-sm leading-relaxed text-carvao">
-      <span className="rotulo mr-2 text-mineral">{rotulo ?? tx("Como ler", "How to read it")}</span>
-      {children}
-    </p>
-  );
-}
+/** ParaLer e LeituraGuiada moveram para o kit de painel (src/components/painel); este arquivo os reexporta até o PR 5 da Iniciativa 1. */
+export { ParaLer } from "@/components/painel/ParaLer";
+export { LeituraGuiada } from "@/components/painel/LeituraGuiada";
+export type { ItemParaLer } from "@/lib/painel/tipos";
 
 export function ModeloDidatico({
   id,

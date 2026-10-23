@@ -717,7 +717,9 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     expect(h1Comparar).toBe("Como cada distribuidora fica diante do próprio limite?");
     for (const p of PAINEIS_QUALIDADE) {
       const h = p.id === "p052" ? comparar : entrada;
-      expect(h, p.id).toContain(`<h2 id="${p.id}-titulo"`);
+      // na entrada, no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), cada pergunta é a FiguraAnalitica (h3) dentro do
+      // capítulo do painel (h2, o rótulo curto); Comparar distribuidoras ainda está no desenho anterior
+      expect(h, p.id).toContain(p.id === "p052" ? `<h2 id="${p.id}-titulo"` : `<h3 id="${p.id}-titulo"`);
       expect(h, p.id).toContain(p.titulo);
       expect(p.titulo, p.id).not.toBe(h1);
       expect(h, p.id).toContain(`id="${p.ancora}"`);
@@ -737,7 +739,10 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     // cada gráfico leva a sua tabela equivalente no HTML; as tabelas de análise abrem sob demanda
     // barras, pontos e histogramas já trazem a tabela no HTML; a das linhas monta ao abrir o resumo
     expect((html.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(10);
-    expect((html.match(/Dados do gráfico em tabela/g) ?? []).length).toBeGreaterThanOrEqual(18);
+    // as figuras principais da entrada (FiguraAnalitica do kit de painel, Iniciativa 1 de 23/10/2026) trazem a tabela equivalente do servidor
+    // ("Resumo em tabela") no lugar da que cada gráfico montava; os pares DEC e FEC e as duas reclamações dividem uma tabela por figura,
+    // por isso o piso desce de 18 para 16 (cinco tabelas de gráfico viraram três tabelas de figura, com as mesmas linhas)
+    expect((html.match(/Dados do gráfico em tabela|Resumo em tabela/g) ?? []).length).toBeGreaterThanOrEqual(16);
     expect(html).toContain(`Abrir: Realizado, limite e DGC por distribuidora, ${gold.ano_referencia}`);
     expect(html).toContain("Compensações por ano: unidades consumidoras e geradoras");
     expect(html).toContain("Abrir: Indicadores nacionais de atendimento por ano");
@@ -1030,10 +1035,10 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
   it("a primeira tela responde: título, lead, recorte e faixa de métricas antes do primeiro painel; o bloco de unidades não vem antes dos valores", () => {
     const i = {
       h1: ate("<h1"),
-      lead: ate('class="ed-lead'),
+      lead: ate('class="t-lead'),
       busca: ate("data-busca-municipio-topo"),
       recorte: ate('data-recorte=""'),
-      faixa: ate("data-faixa-metricas"),
+      faixa: ate("data-faixa-numeros"),
       painel: ate('id="p051"'),
     };
     expect(i.h1).toBeGreaterThan(0);
@@ -1046,7 +1051,7 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
     expect(html).not.toContain("Como ler as unidades");
     // três medidas do Brasil na faixa, cada uma com a sua unidade por UC e o ano
     const faixa = html.slice(i.faixa, i.painel);
-    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(3);
+    expect((faixa.match(/data-numero-indicador=""/g) ?? []).length).toBe(3);
     const m = metricasAbertura(gold);
     for (const t of [num(m.dec, 2), num(m.fec, 2), num(m.decTodasOrigens, 2), m.decHorasMinutos]) expect(faixa, t).toContain(t);
     expect(faixa).toContain("h por UC");
@@ -1151,7 +1156,7 @@ describe.skipIf(!disponivel)("redesenho: a página no servidor", () => {
   });
 
   it("as ressalvas vão para onde evitam a leitura errada: média por UC na abertura, conjunto no mapa, expurgo na figura, divulgado na compensação", () => {
-    const lead = /<p class="ed-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
+    const lead = /<p class="t-lead[^>]*>([^<]*)<\/p>/.exec(html)?.[1] ?? "";
     // O lead fala com o leitor (o município dele, o limite da área); as siglas e a média por UC vêm na linha "Não permite concluir".
     expect(lead).toMatch(/Procure o seu município/);
     expect(lead).toMatch(/diante do limite fixado pela ANEEL/);
@@ -1663,7 +1668,7 @@ describe.skipIf(!disponivel)("ressalvas das avaliações independentes: a págin
   const ref = gold.ano_referencia;
   const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
   const ate = (marca: string) => html.indexOf(marca);
-  const faixa = () => html.slice(ate("data-faixa-metricas"), ate('id="p051"'));
+  const faixa = () => html.slice(ate("data-faixa-numeros"), ate('id="p051"'));
   const secao = (de: string, ate_: string) => html.slice(ate(de), ate(ate_));
   const csvAno = conjuntosDoCsv(ler(`public${arquivoConjuntosDoAno(gold.conjuntos.ano)}`), gold.conjuntos.ano);
 
@@ -1924,9 +1929,9 @@ describe.skipIf(!disponivel)("rodada 2: frase do recorte, quebra de 2022, busca 
     // na página: a primeira ação, logo depois do lead e antes do recorte, da linha "Não permite concluir" e da faixa de métricas
     // (diagnóstico de layout de 20/10/2026, item 6); campo com rótulo, combobox e a ficha do mapa com âncora
     const busca = entrada.indexOf("data-busca-municipio-topo");
-    expect(busca).toBeGreaterThan(entrada.indexOf('class="ed-lead'));
+    expect(busca).toBeGreaterThan(entrada.indexOf('class="t-lead'));
     expect(busca).toBeLessThan(entrada.indexOf('data-limite=""'));
-    expect(busca).toBeLessThan(entrada.indexOf("data-faixa-metricas"));
+    expect(busca).toBeLessThan(entrada.indexOf("data-faixa-numeros"));
     expect(entrada).toContain("Como foi no seu município?");
     // a nota dos números do município: do conjunto inteiro, do menor ao maior dos conjuntos, nunca média municipal
     expect(notaValoresMunicipio(m)).toMatch(/do menor ao maior deles, e a ANEEL não publica média por município/);

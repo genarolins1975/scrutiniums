@@ -278,7 +278,8 @@ export function Histograma({
       );
 
   return (
-    <div ref={ref} className="relative w-full">
+    // data-grafico: o teste do molde de painel aceita a tabela equivalente do próprio gráfico (Iniciativa 1, até o histograma entrar no kit)
+    <div ref={ref} className="relative w-full" data-grafico="histograma">
       <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
         <defs>
           <pattern id={`${uid}-hachura`} width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">

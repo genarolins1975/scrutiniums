@@ -39,6 +39,7 @@ export function Recolhido({
   children,
   aberto = false,
   className = "",
+  nivelTitulo,
 }: Readonly<{
   id: string;
   titulo: ReactNode;
@@ -47,14 +48,22 @@ export function Recolhido({
   children: ReactNode;
   aberto?: boolean;
   className?: string;
+  /** Título como cabeçalho (h2 ou h3) quando o bloco é um capítulo da página (painéis do kit); sem ele, texto do resumo. */
+  nivelTitulo?: 2 | 3;
 }>) {
+  // com cabeçalho, título e resumo vão num <hgroup> (o <summary> aceita conteúdo de cabeçalho, não um <h2> dentro de <span>)
+  const Titulo = nivelTitulo === 2 ? "h2" : nivelTitulo === 3 ? "h3" : "span";
+  const Grupo = nivelTitulo ? "hgroup" : "span";
+  const Resumo = nivelTitulo ? "p" : "span";
   return (
     <details id={id} open={aberto || undefined} data-recolhido="" className={`${DETALHE_RECOLHIDO} border-t border-linha ${className}`}>
       <summary className={`${RESUMO_RECOLHIDO} py-4 md:py-6`}>
-        <span className="block">
-          <span className="block font-serif text-[clamp(1.25rem,2.4vw,1.6rem)] leading-snug text-carvao">{titulo}</span>
-          <span className="mt-1 block text-sm leading-relaxed text-carvao-muted">{resumo}</span>
-        </span>
+        <Grupo className="block">
+          <Titulo id={nivelTitulo ? `${id}-titulo` : undefined} className="block font-serif text-[clamp(1.25rem,2.4vw,1.6rem)] leading-snug text-carvao">
+            {titulo}
+          </Titulo>
+          <Resumo className="mt-1 block text-sm leading-relaxed text-carvao-muted">{resumo}</Resumo>
+        </Grupo>
         <IndicadorRecolhido />
       </summary>
       <div className="pb-10">{children}</div>

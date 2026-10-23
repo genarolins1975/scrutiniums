@@ -2,7 +2,16 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
 import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
-import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { FaixaNumeros, FiguraAnalitica, NumeroIndicador, PaginaPainel } from "@/components/painel";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { fonteLegivel } from "@/lib/energia/bastidor";
+import { provenienciaLegivel } from "@/lib/energia/mercado";
+import { rotuloDoGrupo } from "@/lib/energia/navegacao";
+import { valorOuAusencia } from "@/lib/painel/numeros";
 import { BandeiraDoMes } from "@/components/energia/BandeiraDoMes";
 import { ContaComposicao } from "@/components/energia/ContaComposicao";
 import { ContaFaixa } from "@/components/energia/ContaFaixa";
@@ -12,12 +21,9 @@ import { ContaSerieReal } from "@/components/energia/ContaSerieReal";
 import { ContaSimulador } from "@/components/energia/ContaSimulador";
 import { ContaTabelaSobDemanda } from "@/components/energia/ContaTabelaSobDemanda";
 import { ContaTarifas } from "@/components/energia/ContaTarifas";
-import { Numero } from "@/components/energia/Numero";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
@@ -353,16 +359,27 @@ export default function ContaDeLuzPage() {
         )}
       />
       <MarcaVisita secao="energia:conta-de-luz" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <Navegacao atual="tarifas" />
-        <CabecalhoModulo
-          siglas={["TE", "TUSD", "ANEEL", "IPCA", "CDE", "PLD", "REN"]}
-          titulo={tx("Quanto custa o mesmo consumo?", "How much does the same consumption cost?")}
-          lead={tx(
+      <PaginaPainel
+        rota="/setor-eletrico/conta-de-luz"
+        idioma={idioma}
+        profundidade
+        // as duas páginas da consulta (tarifas e reajustes), na faixa de páginas irmãs, logo depois dos números
+        navegacaoLocal={<Navegacao atual="tarifas" />}
+        abertura={{
+          grupo: rotuloDoGrupo("consumidor-e-territorio"),
+          acento: "energia",
+          titulo: tx("Quanto custa o mesmo consumo?", "How much does the same consumption cost?"),
+          lead: tx(
             "O mesmo consumo em quilowatt-hora (kWh) custa diferente conforme a distribuidora: cada área tem a sua tarifa de energia (TE) e de uso da rede (TUSD). Tributos, iluminação pública e bandeira ficam de fora.",
             "The same consumption in kilowatt-hours (kWh) costs a different amount depending on the distribution utility: each area has its own energy tariff (TE) and grid use tariff (TUSD). Taxes, public lighting and the tariff flag are left out.",
-          )}
-          limite={tx(
+          ),
+          recorte: {
+            periodo: dataBR(ref),
+            universo: tx(`${t.resumo.n} distribuidoras · B1 residencial convencional`, `${t.resumo.n} distribution utilities · conventional residential B1`),
+            unidade: tx("R$/mês e R$/kWh", "R$/month and R$/kWh"),
+            fonte: tx("ANEEL, tarifas de aplicação das distribuidoras", "ANEEL, applied tariffs of the distribution utilities"),
+          },
+          limite: tx(
             <>
               Não é a fatura: faltam ICMS, PIS/Pasep, Cofins, iluminação pública e bandeira. O menor e o maior custo são das {t.resumo.n} distribuidoras com tarifa no arquivo de {dataBR(ref)} (de{" "}
               {cobertura.universo}), e a mediana não pesa por consumidores.
@@ -371,13 +388,12 @@ export default function ContaDeLuzPage() {
               It is not the bill: ICMS, PIS/Pasep, Cofins, public lighting and the tariff flag are missing. The lowest and highest cost are those of the {t.resumo.n} distribution utilities with a
               tariff in the file of {dataBR(ref)} (out of {cobertura.universo}), and the median is not weighted by consumers.
             </>,
-          )}
-          recorte={tx(
-            `${dataBR(ref)} · ${t.resumo.n} distribuidoras · B1 residencial convencional · R$/mês e R$/kWh`,
-            `${dataBR(ref)} · ${t.resumo.n} distribution utilities · conventional residential B1 · R$/month and R$/kWh`,
-          )}
-          fonte={tx("ANEEL, tarifas de aplicação das distribuidoras", "ANEEL, applied tariffs of the distribution utilities")}
-          referencia={tx(
+          ),
+          fontesDatasSiglas: (
+            <>
+              <p className="t-meta text-mineral">
+                <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
+                {tx(
             <>
               Tarifas de aplicação da ANEEL vigentes em {dataBR(ref)} (arquivo gerado pela fonte em {dataBR(g.gerado_pela_fonte_em)}); bandeiras registradas até{" "}
               {ultimaBandeira ? mesAno(`${ultimaBandeira}-01`) : "mês não publicado"}; IPCA até {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "mês não publicado"}. Processado em{" "}
@@ -388,8 +404,8 @@ export default function ContaDeLuzPage() {
               {ultimaBandeira ? mesAno(`${ultimaBandeira}-01`) : "month not published"}; IPCA up to {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "month not published"}. Processed on{" "}
               {carimbo(g.gerado_em)}.
             </>,
-          )}
-          datas={
+                )}
+              </p>
             <Datas
               itens={[
                 { rotulo: tx("Tarifas e componentes", "Tariffs and components"), texto: tx(`até ${dataBR(ref)}`, `up to ${dataBR(ref)}`), natureza: "CALCULADO" },
@@ -405,9 +421,7 @@ export default function ContaDeLuzPage() {
                 },
               ]}
             />
-          }
-          metricas={<ContaFaixa vigentes={vigentesCompactos} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} info={info} cobertura={cobertura} />}
-        >
+              <div>
           {tx(
             <>
               A distribuidora cobra pela energia (TE) e pelo uso da rede (TUSD) os valores que a ANEEL homologa para cada área. Esta página compara essas tarifas entre distribuidoras, mostra do que
@@ -426,19 +440,25 @@ export default function ContaDeLuzPage() {
               . Taxes and public lighting are left out: there is no structured official database that maps them to each distribution utility&apos;s tariff.
             </>,
           )}
-        </CabecalhoModulo>
-
-        <ModoProfundidade>
-          {/* ---------------- P047 ---------------- */}
-          <Bloco id="tarifa">
-            <PainelEvidencia
+              </div>
+              <LegendaDeSiglas siglas={["TE", "TUSD", "ANEEL", "IPCA", "CDE", "PLD", "REN"]} />
+            </>
+          ),
+        }}
+        faixaNumeros={<ContaFaixa vigentes={vigentesCompactos} resumo={t.resumo} dataReferencia={ref} evidenciaMediana={comProcedimentoExterno(t.evidencia_mediana)} comparacao={comparacao} info={info} cobertura={cobertura} />}
+        figuras={
+          <>
+            {/* P047: o mesmo consumo, da menor à maior tarifa */}
+            <FiguraAnalitica
               id="p047"
+              ancoraAntiga="tarifa"
               pergunta={tx("O mesmo consumo, da menor à maior tarifa", "The same consumption, from the lowest to the highest tariff")}
               subtitulo={tx(
                 "Tarifa B1 residencial convencional de aplicação (TE + TUSD) · R$/mês por perfil e R$/MWh",
                 "Applied conventional residential B1 tariff (TE + TUSD) · R$/month by profile and R$/MWh",
               )}
               natureza="CALCULADO"
+              legivel={fonteLegivel}
               porQueImporta={tx(
                 <>
                   A <Termo slug="tarifa-te-tusd">tarifa homologada</Termo> é a parte da conta que a ANEEL fixa para cada distribuidora: o mesmo consumo custa diferente conforme a
@@ -452,8 +472,7 @@ export default function ContaDeLuzPage() {
               oQueMudou={oQueMudouTarifa}
               comoInterpretar={comoInterpretarTarifa}
               naoConcluir={naoConcluirTarifa}
-              naoConcluirNoCorpo
-              proveniencia={t.proveniencia}
+              proveniencia={provenienciaLegivel(t.proveniencia)}
               complementares={[
                 {
                   rotulo: tx("Evolução mensal da mediana", "Monthly evolution of the median"),
@@ -464,39 +483,11 @@ export default function ContaDeLuzPage() {
                   p: reaj.proveniencia_ipca,
                 },
               ]}
-            >
-              <div className="space-y-6">
-                <ContaTarifas
-                  vigentes={vigentesCompactos}
-                  resumo={t.resumo}
-                  dataReferencia={ref}
-                  fonte={fonteTarifas()}
-                  info={info}
-                  fora={compactarFora(foraRank)}
-                  recorte={
-                    <Recorte
-                      periodo={tx(
-                        <>
-                          Tarifa vigente em {dataBR(ref)}; histórico de {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} a {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
-                        </>,
-                        <>
-                          Tariff in force on {dataBR(ref)}; history from {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} to {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
-                        </>,
-                      )}
-                      universo={tx(
-                        <>
-                          {t.resumo.n} distribuidoras com vigência na data; {fora} fora do ranking (lista em Auditar)
-                        </>,
-                        <>
-                          {t.resumo.n} distribution utilities with a validity period on the date; {fora} out of the ranking (list in Audit)
-                        </>,
-                      )}
-                      unidade={tx("R$/mês para o perfil; R$/MWh para a tarifa (÷ 1000 = R$/kWh)", "R$/month for the profile; R$/MWh for the tariff (÷ 1000 = R$/kWh)")}
-                    />
-                  }
-                  notas={<NotasDoPainel oQueMudou={oQueMudouTarifa} comoInterpretar={comoInterpretarTarifa} naoConcluir={naoConcluirTarifa} />}
-                />
-
+              // a tabela equivalente é a do próprio gráfico (as 81 distribuidoras na leitura e no grupo escolhidos, logo abaixo das barras); uma
+              // segunda lista fixa repetia as mesmas linhas, e a ordenável e exportável segue sob demanda em Analisar
+              tabela={{ naFigura: tx("a tabela do gráfico, logo abaixo das barras, com todas as distribuidoras na leitura e no grupo escolhidos.", "the chart's table, right below the bars, with every distribution utility in the chosen reading and group.") }}
+              depois={
+                <>
                 <SecaoDoPainel
                   id="evolucao"
                   titulo={
@@ -609,22 +600,53 @@ export default function ContaDeLuzPage() {
                     </p>
                   )}
                 </Auditoria>
-
                 <Seguir
                   ancora="tarifa"
                   proximo={{ href: "#composicao", pergunta: tx("Para onde vai esse valor? Veja a composição da tarifa.", "Where does that money go? See the tariff composition.") }}
                   downloads={downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv", "conta_tarifas_bt_historico.csv", "conta_historico_b1.json", "conta_conflitos_fonte.csv"])}
                 />
-              </div>
-            </PainelEvidencia>
-          </Bloco>
+                </>
+              }
+            >
+                <ContaTarifas
+                  vigentes={vigentesCompactos}
+                  resumo={t.resumo}
+                  dataReferencia={ref}
+                  fonte={fonteTarifas()}
+                  info={info}
+                  fora={compactarFora(foraRank)}
+                  recorte={
+                    <Recorte
+                      periodo={tx(
+                        <>
+                          Tarifa vigente em {dataBR(ref)}; histórico de {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} a {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
+                        </>,
+                        <>
+                          Tariff in force on {dataBR(ref)}; history from {mesAno(`${evolucao[0]?.m ?? ref.slice(0, 7)}-01`)} to {mesAno(`${evolucao.at(-1)?.m ?? ref.slice(0, 7)}-01`)}
+                        </>,
+                      )}
+                      universo={tx(
+                        <>
+                          {t.resumo.n} distribuidoras com vigência na data; {fora} fora do ranking (lista em Auditar)
+                        </>,
+                        <>
+                          {t.resumo.n} distribution utilities with a validity period on the date; {fora} out of the ranking (list in Audit)
+                        </>,
+                      )}
+                      unidade={tx("R$/mês para o perfil; R$/MWh para a tarifa (÷ 1000 = R$/kWh)", "R$/month for the profile; R$/MWh for the tariff (÷ 1000 = R$/kWh)")}
+                    />
+                  }
+              />
+            </FiguraAnalitica>
 
-          {/* ---------------- os três números que se confundem com a conta ---------------- */}
-          <Bloco id="tres-numeros">
-            <section aria-labelledby="tres-numeros-titulo" className="border-t border-linha pt-6">
-              <h2 id="tres-numeros-titulo" className="ed-h2 font-serif text-carvao">
-                {tx("Três números que costumam ser chamados de conta de luz", "Three numbers often called the electricity bill")}
-              </h2>
+            {/* os três números que se confundem com a conta */}
+            <Recolhido
+              id="tres-numeros"
+              aberto
+              nivelTitulo={2}
+              titulo={tx("Três números que costumam ser chamados de conta de luz", "Three numbers often called the electricity bill")}
+              resumo={tx("A tarifa homologada, a tarifa média de fornecimento e a conta simulada: o que cada uma é.", "The ratified tariff, the average supply tariff and the simulated bill: what each one is.")}
+            >
               <ul className="mt-4 grid gap-x-8 gap-y-5 md:grid-cols-3">
                 <li className="min-w-0 border-l-2 border-linha pl-4">
                   <h3 className="rotulo text-mineral">{tx("Tarifa homologada (usada aqui)", "Ratified tariff (used here)")}</h3>
@@ -657,19 +679,19 @@ export default function ContaDeLuzPage() {
                 </li>
               </ul>
               <p className="mt-4 max-w-prose2 text-sm text-carvao-muted">{dadoNo(g.definicoes.nao_e_conta, "conta-definicao", idioma)}</p>
-            </section>
-          </Bloco>
+            </Recolhido>
 
-          {/* ---------------- P048 ---------------- */}
-          <Bloco id="composicao">
-            <PainelEvidencia
+            {/* P048: para onde vai o valor da conta */}
+            <FiguraAnalitica
               id="p048"
+              ancoraAntiga="composicao"
               pergunta={tx("Para onde vai o valor da conta?", "Where does the bill money go?")}
               subtitulo={tx(
                 "Componentes tarifárias da tarifa B1 residencial agrupadas · R$/MWh e % de TE + TUSD",
                 "Grouped tariff components of the residential B1 tariff · R$/MWh and % of TE + TUSD",
               )}
               natureza="CALCULADO"
+              legivel={fonteLegivel}
               porQueImporta={tx(
                 <>
                   Mostra quanto da tarifa paga a energia comprada, a transmissão, a rede de distribuição, as perdas e os encargos setoriais, a partir das componentes que a ANEEL
@@ -683,12 +705,10 @@ export default function ContaDeLuzPage() {
               oQueMudou={oQueMudouComposicao}
               comoInterpretar={comoInterpretarComposicao}
               naoConcluir={naoConcluirComposicao}
-              naoConcluirNoCorpo
-              proveniencia={comp.proveniencia}
-            >
-              <div className="space-y-6">
-                <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-start">
-                  <div className="min-w-0 space-y-4">
+              proveniencia={provenienciaLegivel(comp.proveniencia)}
+              tabela={{ naFigura: tx("a decomposição por grupo de componentes, logo abaixo do gráfico.", "the breakdown by component group, right below the chart.") }}
+              leitura={
+                <div className="space-y-3">
                     <RespostaCurta id="p048" veredito={vereditoComposicao(comp)}>
                       {respostaComposicao(comp)}
                     </RespostaCurta>
@@ -697,59 +717,50 @@ export default function ContaDeLuzPage() {
                         {tresValores}
                       </p>
                     )}
-                  </div>
-                  <div className="space-y-4">
+                </div>
+              }
+              complemento={
+                <>
+                  <FaixaNumeros rotulo={tx("Encargos setoriais na tarifa", "Sector charges in the tariff")}>
                     {/* O destaque é o agregado, o mesmo número da frase de abertura: razão de somas das distribuidoras com componentes. A gold só
-                        publica ficha de prova para a distribuidora de exemplo (abaixo), então o agregado diz de onde vem em vez de levar ficha. */}
-                    <Numero
-                      variante="faixa"
+                        publica ficha de prova para a distribuidora de exemplo, então o agregado diz de onde vem em vez de levar ficha. */}
+                    <NumeroIndicador
+                      {...valorOuAusencia(comp.media?.grupos_pct.encargos ?? null, tx("Sem composição média publicada.", "No average composition published."))}
                       rotulo={tx(
                         `Encargos setoriais na tarifa média de ${comp.media?.n ?? comp.distribuidoras.length} distribuidoras`,
                         `Sector charges in the average tariff of ${comp.media?.n ?? comp.distribuidoras.length} distribution utilities`,
                       )}
                       natureza="CALCULADO"
-                      valor={comp.media?.grupos_pct.encargos ?? null}
-                      formato="pct"
+                      formato="percentual"
                       casas={1}
-                      evidencia={null}
-                      motivoAusencia={tx("Sem composição média publicada.", "No average composition published.")}
+                      unidade="%"
+                      periodo={dataBR(ref)}
+                      fonte={tx("ANEEL, Componentes Tarifárias", "ANEEL, Tariff Components")}
                       nota={tx(
-                        "Soma dos encargos de todas dividida pela soma das tarifas (razão de somas). Sem ficha própria: a prova publicada é a do exemplo abaixo, e o cálculo do agregado está na tabela de decomposição.",
-                        "Sum of all sector charges divided by the sum of the tariffs (ratio of sums). No sheet of its own: the published evidence is that of the example below, and the aggregate calculation is in the breakdown table.",
+                        "Soma dos encargos de todas dividida pela soma das tarifas (razão de somas). Sem ficha própria: a prova publicada é a do exemplo ao lado, e o cálculo do agregado está na tabela de decomposição.",
+                        "Sum of all sector charges divided by the sum of the tariffs (ratio of sums). No sheet of its own: the published evidence is that of the example alongside, and the aggregate calculation is in the breakdown table.",
                       )}
-                      endereco="/setor-eletrico/conta-de-luz#composicao"
                     />
-                    <div className="border-t border-linha pt-4">
-                      <Numero
-                        variante="faixa"
-                        rotulo={tx(
-                          `Exemplo: encargos na ${comp.evidencia?.entidade ?? "distribuidora de referência"}, de tarifa mais próxima da mediana`,
-                          `Example: sector charges at ${comp.evidencia?.entidade ?? "the reference distribution utility"}, the tariff closest to the median`,
-                        )}
-                        natureza="CALCULADO"
-                        evidencia={comProcedimentoExterno(comp.evidencia)}
-                        formato="pct"
-                        casas={1}
-                        motivoAusencia={tx("Sem componentes para a distribuidora de referência.", "No components for the reference distribution utility.")}
-                        nota={
-                          comp.evidencia
-                            ? tx(`Uma distribuidora, não a média: ${comp.evidencia.universo}.`, `One distribution utility, not the average: ${dadoTexto(comp.evidencia.universo, idioma)}.`)
-                            : undefined
-                        }
-                        endereco="/setor-eletrico/conta-de-luz#composicao"
-                      />
-                    </div>
-                  </div>
-                  {/* A parcela CDE média está na resposta acima e na linha "Dos encargos: componentes CDE" da
-                      tabela de decomposição; a gold não traz evidência própria para ela, então não vira destaque. */}
-                </div>
-                <ContaComposicao
-                  composicao={compactarComposicao(comp)}
-                  vigentes={vigentesCompactos}
-                  referencia={sim.casos_referencia.cnpj}
-                  dataReferencia={ref}
-                  fonte={tx("ANEEL, Componentes Tarifárias", "ANEEL, Tariff Components")}
-                />
+                    <NumeroIndicador
+                      {...valorOuAusencia(comp.evidencia?.valor_calculo ?? null, tx("Sem componentes para a distribuidora de referência.", "No components for the reference distribution utility."))}
+                      rotulo={tx(
+                        `Exemplo: encargos na ${comp.evidencia?.entidade ?? "distribuidora de referência"}, de tarifa mais próxima da mediana`,
+                        `Example: sector charges at ${comp.evidencia?.entidade ?? "the reference distribution utility"}, the tariff closest to the median`,
+                      )}
+                      natureza="CALCULADO"
+                      formato="percentual"
+                      casas={1}
+                      unidade="%"
+                      periodo={dataBR(ref)}
+                      fonte={tx("ANEEL, Componentes Tarifárias", "ANEEL, Tariff Components")}
+                      comprove={comp.evidencia ? <ComproveNumero evidencia={comProcedimentoExterno(comp.evidencia)!} endereco="/setor-eletrico/conta-de-luz#composicao" /> : undefined}
+                      nota={
+                        comp.evidencia
+                          ? tx(`Uma distribuidora, não a média: ${comp.evidencia.universo}.`, `One distribution utility, not the average: ${dadoTexto(comp.evidencia.universo, idioma)}.`)
+                          : undefined
+                      }
+                    />
+                  </FaixaNumeros>
                 <Recorte
                   periodo={tx(
                     <>Componentes da vigência que cobre {dataBR(ref)}, a mesma classe, modalidade e data do comparativo</>,
@@ -765,7 +776,10 @@ export default function ContaDeLuzPage() {
                   )}
                   unidade={tx("R$/MWh de TE + TUSD (ou % da tarifa)", "R$/MWh of TE + TUSD (or % of the tariff)")}
                 />
-                <NotasDoPainel oQueMudou={oQueMudouComposicao} comoInterpretar={comoInterpretarComposicao} naoConcluir={naoConcluirComposicao} />
+                </>
+              }
+              depois={
+                <>
                 <Auditoria titulo={tx("Componentes de cada grupo, valores atípicos e conferências", "Components of each group, outliers and checks")}>
                   <dl className="grid gap-3 text-sm sm:grid-cols-2">
                     {comp.grupos.map((gr) => (
@@ -847,20 +861,29 @@ export default function ContaDeLuzPage() {
                   proximo={{ href: "#simulador", pergunta: tx("Quanto ficaria a minha conta? Simule o seu consumo.", "What would my bill be? Simulate your consumption.") }}
                   downloads={downloadsDoPainel(g.downloads, ["conta_composicao_b1.csv"])}
                 />
-              </div>
-            </PainelEvidencia>
-          </Bloco>
+                </>
+              }
+            >
+                <ContaComposicao
+                  composicao={compactarComposicao(comp)}
+                  vigentes={vigentesCompactos}
+                  referencia={sim.casos_referencia.cnpj}
+                  dataReferencia={ref}
+                  fonte={tx("ANEEL, Componentes Tarifárias", "ANEEL, Tariff Components")}
+                />
+            </FiguraAnalitica>
 
-          {/* ---------------- P049 ---------------- */}
-          <Bloco id="simulador">
-            <PainelEvidencia
+            {/* P049: como a minha conta varia com o consumo e o perfil */}
+            <FiguraAnalitica
               id="p049"
+              ancoraAntiga="simulador"
               pergunta={tx("Como a minha conta varia com o consumo e o perfil?", "How does my bill vary with consumption and profile?")}
               subtitulo={tx(
                 "Simulação com as tarifas vigentes e as regras publicadas · R$/mês, estimativa sem tributos",
                 "Simulation with the tariffs in force and the published rules · R$/month, estimate without taxes",
               )}
               natureza="ESTIMADO"
+              legivel={fonteLegivel}
               porQueImporta={tx(
                 <>
                   Mostra como a regra de cada classe (mínimo da ligação, faixas da Tarifa Social e do Desconto Social, bandeira) transforma kWh em reais, com a tarifa vigente da
@@ -874,33 +897,10 @@ export default function ContaDeLuzPage() {
               oQueMudou={oQueMudouSimulador}
               comoInterpretar={comoInterpretarSimulador}
               naoConcluir={naoConcluirSimulador}
-              naoConcluirNoCorpo
-              proveniencia={sim.proveniencia}
-              complementares={[{ rotulo: tx("Bandeiras", "Tariff flags"), p: band.proveniencia }]}
-            >
-              <div className="space-y-6">
-                <ContaSimulador
-                  simulador={{
-                    classes: sim.classes,
-                    regras: sim.regras,
-                    regras_texto: sim.regras_texto,
-                    estado_regras: sim.estado_regras,
-                    bandeiras: sim.bandeiras,
-                    bandeira_vigente: sim.bandeira_vigente,
-                    distribuidoras: compactarDistribuidorasSim(sim.distribuidoras),
-                    rotulo: sim.rotulo,
-                    formula: sim.formula,
-                    chaves_tarifa: sim.chaves_tarifa,
-                    referencia: {
-                      cnpj: sim.casos_referencia.cnpj,
-                      sigla: sim.casos_referencia.sigla,
-                    },
-                  }}
-                  evidencia={comProcedimentoExterno(sim.evidencia)}
-                  dataReferencia={ref}
-                  mesDaPagina={mesDaPagina}
-                  info={info}
-                />
+              proveniencia={provenienciaLegivel(sim.proveniencia)}
+              complementares={[{ rotulo: tx("Bandeiras", "Tariff flags"), p: provenienciaLegivel(band.proveniencia) }]}
+              tabela={{ naFigura: tx("a memória de cálculo da simulação, ao lado do resultado.", "the simulation calculation breakdown, next to the result.") }}
+              complemento={
                 <Recorte
                   periodo={tx(
                     <>
@@ -920,7 +920,9 @@ export default function ContaDeLuzPage() {
                   )}
                   unidade={tx("R$/mês (estimativa); tarifas em R$/kWh", "R$/month (estimate); tariffs in R$/kWh")}
                 />
-                <NotasDoPainel oQueMudou={oQueMudouSimulador} comoInterpretar={comoInterpretarSimulador} naoConcluir={naoConcluirSimulador} />
+              }
+              depois={
+                <>
                 <Auditoria titulo={tx("Normas conferidas e casos de referência", "Rules checked and reference cases")}>
                   <ul className="space-y-3 text-sm">
                     {sim.normas.map((n) => (
@@ -987,22 +989,45 @@ export default function ContaDeLuzPage() {
                   proximo={{ href: "#p050", pergunta: tx("O que mudou na tarifa e quem financia os descontos?", "What changed in the tariff and who funds the discounts?") }}
                   downloads={downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv"])}
                 />
-              </div>
-            </PainelEvidencia>
-          </Bloco>
+                </>
+              }
+            >
+                <ContaSimulador
+                  simulador={{
+                    classes: sim.classes,
+                    regras: sim.regras,
+                    regras_texto: sim.regras_texto,
+                    estado_regras: sim.estado_regras,
+                    bandeiras: sim.bandeiras,
+                    bandeira_vigente: sim.bandeira_vigente,
+                    distribuidoras: compactarDistribuidorasSim(sim.distribuidoras),
+                    rotulo: sim.rotulo,
+                    formula: sim.formula,
+                    chaves_tarifa: sim.chaves_tarifa,
+                    referencia: {
+                      cnpj: sim.casos_referencia.cnpj,
+                      sigla: sim.casos_referencia.sigla,
+                    },
+                  }}
+                  evidencia={comProcedimentoExterno(sim.evidencia)}
+                  dataReferencia={ref}
+                  mesDaPagina={mesDaPagina}
+                  info={info}
+                />
+            </FiguraAnalitica>
 
-          {/* ---------------- P050 (página própria) ---------------- */}
-          <Bloco id="p050">
-            <section aria-labelledby="p050-titulo" data-navegacao-local="capitulos" className="border-t border-linha pt-6">
-              <h2 id="p050-titulo" className="ed-h2 font-serif text-carvao">
-                {tx("O que mudou e quem financia os benefícios?", "What changed and who funds the benefits?")}
-              </h2>
-              <p className="mt-2 text-sm text-carvao-muted">
-                {tx(
+            {/* P050: o resumo da página própria (reajustes, bandeiras e subsídios) */}
+            <Recolhido
+              id="p050"
+              aberto
+              nivelTitulo={2}
+              titulo={tx("O que mudou e quem financia os benefícios?", "What changed and who funds the benefits?")}
+              resumo={tx(
                   "Variação da tarifa B1 contra o IPCA, bandeiras acionadas e financiamento dos descontos pela CDE. Os painéis completos, com gráfico, tabela e provas, estão em página própria.",
                   "Change in the B1 tariff against the IPCA, tariff flags activated and funding of the discounts by the CDE. The full panels, with chart, table and evidence, are on their own page.",
-                )}
-              </p>
+              )}
+            >
+              <div data-navegacao-local="capitulos">
               <ol className="mt-5 grid gap-x-8 gap-y-6 md:grid-cols-3">
                 {[
                   {
@@ -1040,11 +1065,12 @@ export default function ContaDeLuzPage() {
                   </li>
                 ))}
               </ol>
-            </section>
-          </Bloco>
-
-          {/* ---------------- Auditoria geral ---------------- */}
-          <Bloco nivel="auditar" id="auditoria-conta">
+              </div>
+            </Recolhido>
+          </>
+        }
+        metodo={
+          <div data-nivel="auditar" id="auditoria-conta" className="scroll-mt-28 py-5">
             <section aria-labelledby="auditoria-conta-titulo" className="space-y-5 border-t border-dashed border-linha pt-6">
               <h2 id="auditoria-conta-titulo" className="ed-h2 font-serif text-carvao">
                 {tx("Validação, tarifa média avaliada e arquivos", "Validation, average tariff assessed and files")}
@@ -1150,9 +1176,10 @@ export default function ContaDeLuzPage() {
                 </p>
               </div>
             </section>
-          </Bloco>
-        </ModoProfundidade>
-      </main>
+          </div>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
+      />
     </>
   );
 }

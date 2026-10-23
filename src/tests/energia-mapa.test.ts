@@ -89,7 +89,8 @@ function confereDestino(href: string) {
   const arquivo = paginaDaRota(href);
   expect(arquivo, `${href}: rota sem página`).not.toBeNull();
   const ancora = href.includes("#") ? href.split("#")[1] : null;
-  if (ancora) expect(codigoDaPagina(arquivo!), `${href}: âncora ausente`).toMatch(new RegExp(`id="${ancora}"|id=\\{"${ancora}"\\}|id: "${ancora}"`));
+  // ancoraAntiga: a âncora de um painel no molde de painel (FiguraAnalitica do kit, Iniciativa 1 de 23/10/2026), escrita pela figura
+  if (ancora) expect(codigoDaPagina(arquivo!), `${href}: âncora ausente`).toMatch(new RegExp(`id="${ancora}"|id=\\{"${ancora}"\\}|id: "${ancora}"|ancoraAntiga="${ancora}"`));
 }
 
 describe("página inicial: mapa didático (P001)", () => {
@@ -638,7 +639,7 @@ describe("auditoria do mapa: regressões", () => {
   });
 
   it("gráfico reserva a altura final já no HTML do servidor, e âncoras abaixo dele não se deslocam", () => {
-    expect(ler("src/components/energia/GraficoLinhas.tsx")).toMatch(/width="100%"\s*height=\{h\}/);
+    expect(ler("src/components/painel/GraficoLinhas.tsx")).toMatch(/width="100%"\s*height=\{h\}/);
   });
 
   it("a home explica nomes e réguas, ausência e o canal de correções", () => {

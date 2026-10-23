@@ -814,7 +814,8 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(i, t).toBeGreaterThan(-1);
     return i;
   };
-  const faixa = /<section[^>]*data-faixa-metricas[^>]*>[\s\S]*?<\/section>/.exec(h)![0];
+  // faixa de números do kit de painel (Iniciativa 1 do parecer de UX de 23/10/2026): FaixaNumeros com NumeroIndicador no lugar de FaixaMetricas
+  const faixa = /<section[^>]*data-faixa-numeros[^>]*>[\s\S]*?<\/section>/.exec(h)![0];
   const dia = pldGold.dia_referencia;
   const linhas = linhasMediaDiaria(pldGold.cartoes);
   const e = extremosMediaDiaria(linhas)!;
@@ -822,7 +823,7 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
   it("título curto em forma de pergunta e uma faixa de três medidas com o menor, o maior (com os empates) e a distância", () => {
     expect((h.match(/<h1/g) ?? []).length).toBe(1);
     expect(h).toMatch(/<h1[^>]*>Quanto custa a energia no curto prazo\?<\/h1>/);
-    expect((faixa.match(/data-metrica=""/g) ?? []).length).toBe(3);
+    expect((faixa.match(/data-numero-indicador=""/g) ?? []).length).toBe(3);
     for (const r of ["Menor média diária", "Maior média diária", "Distância entre regiões"]) expect(faixa, r).toContain(`aria-label="${r}"`);
     expect(faixa).toContain(escHtml(`${reais(e.menor.valor)}`));
     expect(faixa).toContain(escHtml(`${reais(e.maior.valor)}`));
@@ -843,12 +844,14 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     expect(faixa).toContain(escHtml(pldGold.regras.media_diaria));
     expect(faixa).toContain("Não existe um PLD único do Brasil");
     expect(faixa).not.toMatch(/PLD Brasil|PLD do Brasil|PLD nacional|média dos quatro submercados:/i);
-    for (const m of Array.from(faixa.matchAll(/aria-label="([^"]+)" data-metrica/g))) expect(m[1]).not.toMatch(/Brasil|SIN|nacional/i);
+    const rotulos = Array.from(faixa.matchAll(/role="group" aria-label="([^"]+)"[^>]*data-numero-indicador/g));
+    expect(rotulos.length).toBe(3);
+    for (const m of rotulos) expect(m[1]).not.toMatch(/Brasil|SIN|nacional/i);
   });
 
   it("o preço vem antes da aula: faixa, seletor de profundidade, painel de preços, gráfico, e só depois a aula, a formação e a previsão", () => {
     const ordem = [
-      pos("data-faixa-metricas"),
+      pos("data-faixa-numeros"),
       pos('aria-label="Nível de profundidade"'),
       pos('id="hoje"'),
       pos('data-grafico="barras"'),
@@ -879,7 +882,8 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     const empates = textoEmpatesMediaDiaria(e);
     if (empates) expect(h).toContain(escHtml(empates));
     for (const l of linhas) expect(h).toContain(`data-id="${l.id}"`);
-    expect(h).toContain("Dados do gráfico em tabela (4 linhas)");
+    // a tabela equivalente agora é a da FiguraAnalitica, do servidor; o gráfico do contrato único não repete a sua
+    expect(h).toContain("Resumo em tabela (4 linhas)");
   });
 
   it("as visões que estavam em Analisar e respondem a uma pergunta própria passam a ficar à vista; regras e auditoria continuam nos seus níveis", () => {
@@ -911,7 +915,7 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     const tag = /<[^>]*data-resposta="hoje"[^>]*>/.exec(h)![0];
     expect(tag).toContain("data-resposta-depois");
     expect(pos('data-resposta="hoje"')).toBeGreaterThan(pos('data-grafico="barras"'));
-    expect(pos('data-resposta="hoje"')).toBeGreaterThan(pos("data-faixa-metricas"));
+    expect(pos('data-resposta="hoje"')).toBeGreaterThan(pos("data-faixa-numeros"));
     // as respostas de outros painéis não ganham a marca: ela é do primeiro quadro desta página
     expect((h.match(/data-resposta-depois/g) ?? []).length).toBe(1);
   });

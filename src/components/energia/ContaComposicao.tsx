@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { ContaEscolha, type OpcaoConta } from "@/components/energia/ContaControles";
 import { ContaSobDemanda } from "@/components/energia/ContaSobDemanda";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
+import { TabelaDados } from "@/components/painel/TabelaDados";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
 import { dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
@@ -193,107 +193,47 @@ export function ContaComposicao({ composicao, vigentes: compactos, referencia, d
             <>Breakdown: average, median and {nomeDestaque ?? "highlighted distribution utility"}</>,
           )}
         </h3>
-        <ContaRolavel rotulo={tx("Tabela de decomposição da tarifa B1", "B1 tariff breakdown table")} className="mt-2">
-          <table className="w-full min-w-[640px] border-collapse text-sm tabular-nums">
-            <caption className="sr-only">
-              {tx(
-                "Grupos de componentes: média simples das distribuidoras, participação, mediana e a distribuidora em destaque",
-                "Component groups: simple average of the distribution utilities, share, median and the highlighted distribution utility",
-              )}
-            </caption>
-            <thead>
-              <tr className="border-b border-linha text-left text-xs text-mineral">
-                <th scope="col" className="py-2 pr-3 font-normal">
-                  {tx("Grupo", "Group")}
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {tx("Média (R$/MWh)", "Average (R$/MWh)")}
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {tx("Participação média", "Average share")}
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {tx("Mediana (R$/MWh, não soma)", "Median (R$/MWh, does not add up)")}
-                </th>
-                {dDestaque && (
-                  <>
-                    <th scope="col" className="py-2 pr-3 text-right font-normal">
-                      {nomeDestaque ? `${nomeDestaque} (R$/MWh)` : tx("Destaque (R$/MWh)", "Highlight (R$/MWh)")}
-                    </th>
-                    <th scope="col" className="py-2 text-right font-normal">
-                      {nomeDestaque ? `${nomeDestaque} (%)` : tx("Destaque (%)", "Highlight (%)")}
-                    </th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {grupos.map((g) => (
-                <tr key={g.id} className="border-b border-linha">
-                  <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                    <span aria-hidden="true" className="mr-2 inline-block h-2.5 w-2.5 align-middle" style={{ background: COR_GRUPO[g.id] }} />
-                    {dadoTexto(g.grupo, idioma)}
-                  </th>
-                  <td className="py-2 pr-3 text-right">{num(g.media_rs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{pct(g.media_pct, 2)}</td>
-                  <td className="py-2 pr-3 text-right text-carvao-muted">{num(g.mediana_rs, 2)}</td>
-                  {dDestaque && (
-                    <>
-                      <td className="py-2 pr-3 text-right">{num(g.dist_rs, 2)}</td>
-                      <td className="py-2 text-right">{pct(g.dist_pct, 2)}</td>
-                    </>
-                  )}
-                </tr>
-              ))}
-              {mostrarAjuste && (
-                <tr className="border-b border-linha text-carvao-muted">
-                  <th scope="row" className="py-2 pr-3 text-left font-normal">
-                    {ROTULO_AJUSTE}
-                  </th>
-                  <td className="py-2 pr-3 text-right">{num(ajMediaRs, 2)}</td>
-                  <td className="py-2 pr-3 text-right">{pct(ajMediaPct, 2)}</td>
-                  <td className="py-2 pr-3 text-right" />
-                  {dDestaque && (
-                    <>
-                      <td className="py-2 pr-3 text-right">{num(ajDestRs, 2)}</td>
-                      <td className="py-2 text-right">{pct(ajDestPct, 2)}</td>
-                    </>
-                  )}
-                </tr>
-              )}
-              <tr className="border-b border-linha font-medium">
-                <th scope="row" className="py-2 pr-3 text-left text-carvao">
-                  {tx("Tarifa (TE + TUSD)", "Tariff (TE + TUSD)")}
-                </th>
-                <td className="py-2 pr-3 text-right">{num(comp.media?.total_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right">{comp.media ? pct(100, 2) : tx("sem dado", "no data")}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">
-                  {num(comp.mediana.mediana_do_total_rs_mwh, 2)} {tx("(soma das medianas:", "(sum of the medians:")} {num(comp.mediana.soma_das_medianas_rs_mwh, 2)})
-                </td>
-                {dDestaque && (
-                  <>
-                    <td className="py-2 pr-3 text-right">{num(dDestaque.total, 2)}</td>
-                    <td className="py-2 text-right">{pct(100, 2)}</td>
-                  </>
-                )}
-              </tr>
-              <tr>
-                <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao-muted">
-                  {tx("Dos encargos: componentes CDE", "Of the sector charges: CDE components")}
-                </th>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.media?.cde_rs_mwh, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{pct(comp.cde.razao_de_somas_pct, 2)}</td>
-                <td className="py-2 pr-3 text-right text-carvao-muted">{num(comp.cde.mediana_rs_mwh, 2)}</td>
-                {dDestaque && (
-                  <>
-                    <td className="py-2 pr-3 text-right text-carvao-muted">{num(dDestaque.cde, 2)}</td>
-                    <td className="py-2 text-right text-carvao-muted">{pct(dDestaque.cde_pct, 2)}</td>
-                  </>
-                )}
-              </tr>
-            </tbody>
-          </table>
-        </ContaRolavel>
+        {/* tabela do kit (TabelaDados): rola dentro do bloco, a linha da tarifa em destaque; os mesmos valores e arredondamentos de antes */}
+        <TabelaDados
+          recolhida={false}
+          idioma={idioma}
+          titulo={tx(
+            "Grupos de componentes: média simples das distribuidoras, participação, mediana e a distribuidora em destaque",
+            "Component groups: simple average of the distribution utilities, share, median and the highlighted distribution utility",
+          )}
+          colunas={[
+            tx("Grupo", "Group"),
+            tx("Média (R$/MWh)", "Average (R$/MWh)"),
+            tx("Participação média", "Average share"),
+            tx("Mediana (R$/MWh, não soma)", "Median (R$/MWh, does not add up)"),
+            ...(dDestaque
+              ? [nomeDestaque ? `${nomeDestaque} (R$/MWh)` : tx("Destaque (R$/MWh)", "Highlight (R$/MWh)"), nomeDestaque ? `${nomeDestaque} (%)` : tx("Destaque (%)", "Highlight (%)")]
+              : []),
+          ]}
+          linhas={[
+            ...grupos.map((g) => [dadoTexto(g.grupo, idioma), g.media_rs, pct(g.media_pct, 2), g.mediana_rs, ...(dDestaque ? [g.dist_rs, pct(g.dist_pct, 2)] : [])]),
+            ...(mostrarAjuste ? [[ROTULO_AJUSTE, ajMediaRs, pct(ajMediaPct, 2), null, ...(dDestaque ? [ajDestRs, pct(ajDestPct, 2)] : [])]] : []),
+            [
+              tx("Tarifa (TE + TUSD)", "Tariff (TE + TUSD)"),
+              comp.media?.total_rs_mwh ?? null,
+              comp.media ? pct(100, 2) : null,
+              `${num(comp.mediana.mediana_do_total_rs_mwh, 2)} ${tx("(soma das medianas:", "(sum of the medians:")} ${num(comp.mediana.soma_das_medianas_rs_mwh, 2)})`,
+              ...(dDestaque ? [dDestaque.total, pct(100, 2)] : []),
+            ],
+            [
+              tx("Dos encargos: componentes CDE", "Of the sector charges: CDE components"),
+              comp.media?.cde_rs_mwh ?? null,
+              pct(comp.cde.razao_de_somas_pct, 2),
+              comp.cde.mediana_rs_mwh,
+              ...(dDestaque ? [dDestaque.cde, pct(dDestaque.cde_pct, 2)] : []),
+            ],
+          ]}
+          ausencia={{ [tx("Mediana (R$/MWh, não soma)", "Median (R$/MWh, does not add up)")]: tx("não se aplica", "not applicable") }}
+          casas={[null, 2, null, 2, 2, null]}
+          linhasDestacadas={[grupos.length + (mostrarAjuste ? 1 : 0)]}
+          limite={grupos.length + 3}
+          fixarPrimeiraColuna
+        />
         <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
           {tx(
             <>

@@ -1,5 +1,6 @@
 "use client";
 
+import { TabelaDados } from "@/components/painel/TabelaDados";
 import { useMemo, useState } from "react";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
@@ -7,7 +8,6 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { RespostaCurta } from "@/components/energia/RespostaCurta";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { useMesCorrente } from "@/components/energia/useMesCorrente";
-import { ContaRolavel } from "@/components/energia/ContaRolavel";
 import { bandeiraUsada, fonteBandeira, fraseBandeira, situacaoBandeira } from "@/lib/energia/bandeira-do-mes";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { formatos } from "@/lib/energia/formato";
@@ -455,74 +455,41 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
         </div>
 
         <div>
-          <ContaRolavel rotulo={tx("Memória de cálculo da simulação", "Simulation calculation breakdown")}>
-            <table className="w-full min-w-[520px] border-collapse text-sm tabular-nums">
-              <caption className="mb-2 text-left font-serif text-lg text-carvao">
-                {tx("Memória de cálculo", "Calculation breakdown")}
-                {tarifasUsadas.length > 0 && (
-                  <span className="mt-1 block font-sans text-xs font-normal leading-relaxed text-carvao-muted" data-memoria-tarifa="">
-                    {tx("Tarifa usada:", "Tariff used:")} {memoriaTarifa}.
-                  </span>
-                )}
-              </caption>
-              <thead>
-                <tr className="border-b border-linha text-left text-xs text-mineral">
-                  <th scope="col" className="py-2 pr-3 font-normal">
-                    {tx("Item", "Item")}
-                  </th>
-                  <th scope="col" className="py-2 pr-3 text-right font-normal">
-                    kWh
-                  </th>
-                  <th scope="col" className="py-2 pr-3 text-right font-normal">
-                    R$/kWh
-                  </th>
-                  <th scope="col" className="py-2 text-right font-normal">
-                    {tx("Valor", "Amount")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {r.disponivel ? (
-                  <>
-                    {r.linhas.map((l, i) => (
-                      <tr key={i} className="border-b border-linha">
-                        <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                          {l.rotulo}
-                        </th>
-                        <td className="py-2 pr-3 text-right">{num(l.kwh, 0)}</td>
-                        <td className="py-2 pr-3 text-right">{num(l.rs_kwh, 5)}</td>
-                        <td className="py-2 text-right">{reais(l.valor)}</td>
-                      </tr>
-                    ))}
-                    <tr className="border-b border-linha">
-                      <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                        {semBandeira
-                          ? tx("Bandeira: adicional não publicado, fora da estimativa", "Tariff flag: surcharge not published, left out of the estimate")
-                          : tx(`Bandeira ${rotuloBandeira} sobre o consumo sujeito`, `${rotuloBandeira} tariff flag on the consumption subject to it`)}
-                      </th>
-                      <td className="py-2 pr-3 text-right">{num(r.kwh_bandeira, 0)}</td>
-                      <td className="py-2 pr-3 text-right">{adicional === null ? tx("sem valor", "no value") : num(adicional / 1000, 5)}</td>
-                      <td className="py-2 text-right">{semBandeira ? tx("sem valor", "no value") : reais(r.bandeira)}</td>
-                    </tr>
-                    <tr className="font-medium">
-                      <th scope="row" className="py-2 pr-3 text-left text-carvao">
-                        {tx("Estimativa sem tributos e sem iluminação pública", "Estimate without taxes and without public lighting")}
-                      </th>
-                      <td className="py-2 pr-3 text-right">{tx(`${num(r.kwh_faturado, 0)} faturados`, `${num(r.kwh_faturado, 0)} billed`)}</td>
-                      <td className="py-2 pr-3" />
-                      <td className="py-2 text-right">{reais(r.total)}</td>
-                    </tr>
-                  </>
-                ) : (
-                  <tr>
-                    <td colSpan={4} className="py-3 text-carvao-muted">
-                      {tx(`${r.motivo}: nenhuma tarifa de outra classe é usada no lugar.`, `${r.motivo}: no tariff from another class is used instead.`)}
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </ContaRolavel>
+          {/* tabela do kit (TabelaDados): a memória de cálculo com a estimativa na última linha */}
+          <p className="font-serif text-lg text-carvao">{tx("Memória de cálculo", "Calculation breakdown")}</p>
+          {tarifasUsadas.length > 0 && (
+            <p className="mt-1 text-xs leading-relaxed text-carvao-muted" data-memoria-tarifa="">
+              {tx("Tarifa usada:", "Tariff used:")} {memoriaTarifa}.
+            </p>
+          )}
+          {r.disponivel ? (
+            <TabelaDados
+              recolhida={false}
+              idioma={idioma}
+              titulo={tx("Memória de cálculo da simulação", "Simulation calculation breakdown")}
+              colunas={[tx("Item", "Item"), "kWh", "R$/kWh", tx("Valor", "Amount")]}
+              linhas={[
+                ...r.linhas.map((l) => [l.rotulo, l.kwh, l.rs_kwh, reais(l.valor)]),
+                [
+                  semBandeira
+                    ? tx("Bandeira: adicional não publicado, fora da estimativa", "Tariff flag: surcharge not published, left out of the estimate")
+                    : tx(`Bandeira ${rotuloBandeira} sobre o consumo sujeito`, `${rotuloBandeira} tariff flag on the consumption subject to it`),
+                  r.kwh_bandeira,
+                  adicional === null ? null : adicional / 1000,
+                  semBandeira ? null : reais(r.bandeira),
+                ],
+                [tx("Estimativa sem tributos e sem iluminação pública", "Estimate without taxes and without public lighting"), tx(`${num(r.kwh_faturado, 0)} faturados`, `${num(r.kwh_faturado, 0)} billed`), null, reais(r.total)],
+              ]}
+              casas={[null, 0, 5, null]}
+              ausencia={{ "R$/kWh": tx("sem valor", "no value"), [tx("Valor", "Amount")]: tx("sem valor", "no value") }}
+              destaqueUltimaLinha
+              limite={r.linhas.length + 2}
+            />
+          ) : (
+            <p className="mt-2 text-sm text-carvao-muted" role="status">
+              {tx(`${r.motivo}: nenhuma tarifa de outra classe é usada no lugar.`, `${r.motivo}: no tariff from another class is used instead.`)}
+            </p>
+          )}
           {notaArredondamento && (
             <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-nota="arredondamento">
               {notaArredondamento}
@@ -589,52 +556,28 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
       </p>
 
       {comparadas.length > 0 && (
-        <ContaRolavel rotulo={tx("Mesma simulação nas distribuidoras escolhidas", "Same simulation at the chosen distribution utilities")}>
-          <table className="w-full min-w-[520px] border-collapse text-sm tabular-nums">
-            <caption className="mb-2 text-left font-serif text-lg text-carvao">
-              {tx(
-                `Mesma simulação nas distribuidoras escolhidas (${num(v.kwh, 0)} kWh, ${minuscula(classe.rotulo)})`,
-                `Same simulation at the chosen distribution utilities (${num(v.kwh, 0)} kWh, ${minuscula(rotuloClasse)})`,
-              )}
-            </caption>
-            <thead>
-              <tr className="border-b border-linha text-left text-xs text-mineral">
-                <th scope="col" className="py-2 pr-3 font-normal">
-                  {tx("Distribuidora", "Distribution utility")}
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {tx("Energia (TE + TUSD)", "Energy (TE + TUSD)")}
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-normal">
-                  {tx("Bandeira", "Tariff flag")}
-                </th>
-                <th scope="col" className="py-2 text-right font-normal">
-                  {tx("Estimativa", "Estimate")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparadas.map((c) => (
-                <tr key={c.id} className={`border-b border-linha ${c.id === cnpj ? "bg-energia-fundo" : ""}`}>
-                  <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                    {c.sigla}
-                  </th>
-                  {c.r.disponivel ? (
-                    <>
-                      <td className="py-2 pr-3 text-right">{reais(c.r.energia)}</td>
-                      <td className="py-2 pr-3 text-right">{semBandeira ? tx("sem valor", "no value") : reais(c.r.bandeira)}</td>
-                      <td className="py-2 text-right">{reais(c.r.total)}</td>
-                    </>
-                  ) : (
-                    <td colSpan={3} className="py-2 text-right text-carvao-muted">
-                      {tx(`indisponível: ${c.r.motivo}`, `unavailable: ${c.r.motivo}`)}
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ContaRolavel>
+        <div>
+          <p className="font-serif text-lg text-carvao">
+            {tx(
+              `Mesma simulação nas distribuidoras escolhidas (${num(v.kwh, 0)} kWh, ${minuscula(classe.rotulo)})`,
+              `Same simulation at the chosen distribution utilities (${num(v.kwh, 0)} kWh, ${minuscula(rotuloClasse)})`,
+            )}
+          </p>
+          <TabelaDados
+            recolhida={false}
+            idioma={idioma}
+            titulo={tx("Mesma simulação nas distribuidoras escolhidas", "Same simulation at the chosen distribution utilities")}
+            colunas={[tx("Distribuidora", "Distribution utility"), tx("Energia (TE + TUSD)", "Energy (TE + TUSD)"), tx("Bandeira", "Tariff flag"), tx("Estimativa", "Estimate")]}
+            linhas={comparadas.map((c) =>
+              c.r.disponivel
+                ? [c.sigla, reais(c.r.energia), semBandeira ? null : reais(c.r.bandeira), reais(c.r.total)]
+                : [c.sigla, tx(`indisponível: ${c.r.motivo}`, `unavailable: ${c.r.motivo}`), null, null],
+            )}
+            ausencia={{ [tx("Bandeira", "Tariff flag")]: tx("sem valor", "no value"), [tx("Estimativa", "Estimate")]: tx("indisponível", "unavailable") }}
+            linhasDestacadas={comparadas.flatMap((c, i) => (c.id === cnpj ? [i] : []))}
+            limite={comparadas.length}
+          />
+        </div>
       )}
 
       <div id="regras-da-classe" className="scroll-mt-28">

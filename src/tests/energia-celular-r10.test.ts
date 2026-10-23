@@ -109,7 +109,7 @@ describe("rótulos do eixo de horas", () => {
 
 describe("rótulo da categoria acima da barra no celular", () => {
   it("barras horizontais: abaixo de 520 px o rótulo ocupa a largura toda, numa linha acima da barra", () => {
-    const t = ler("src/components/energia/GraficoBarras.tsx");
+    const t = ler("src/components/painel/GraficoBarras.tsx");
     expect(t).toContain("const LARGURA_ESTREITA = 520;");
     expect(t).toContain("rotuloEmCima = w < LARGURA_ESTREITA;");
     expect(t).toContain("colunaRotulo = rotuloEmCima ? 0 :");
@@ -119,12 +119,12 @@ describe("rótulo da categoria acima da barra no celular", () => {
   });
 
   it("a categoria continua com pelo menos 44 px de alvo de toque quando o rótulo vai para cima", () => {
-    const t = ler("src/components/energia/GraficoBarras.tsx");
+    const t = ler("src/components/painel/GraficoBarras.tsx");
     expect(t).toMatch(/hc = rotuloEmCima\s*\? Math\.max\(alturaCategoria \?\? 0, 44, topo \+ k \* 14/);
   });
 
   it("pontos pareados e faixas de tempo seguem a mesma regra", () => {
-    const p = ler("src/components/energia/GraficoPontos.tsx");
+    const p = ler("src/components/painel/GraficoPontos.tsx");
     expect(p).toContain("const rotuloEmCima = w < LARGURA_ESTREITA;");
     expect(p).toContain("rotuloEmCima ? cabe(p.rotulo, w - colunaDif - 12, pxCaractere12(p.rotulo)) : cabe(p.rotulo, colunaRotulo - 8)");
     const f = ler("src/components/energia/RegulacaoFaixas.tsx");
@@ -133,7 +133,7 @@ describe("rótulo da categoria acima da barra no celular", () => {
   });
 
   it("barras verticais: a margem do eixo cabe o maior rótulo e o último rótulo do eixo X não passa da borda", () => {
-    const t = ler("src/components/energia/GraficoBarras.tsx");
+    const t = ler("src/components/painel/GraficoBarras.tsx");
     expect(t).toContain("const larguraEixo = Math.max(...dom.ticks.map((t) => rotuloTick(t, dom.passo).length)) * 6.4 + 14;");
     expect(t).toContain('const ancora = centro + meia > w - 2 ? "end" : centro - meia < 2 ? "start" : "middle";');
   });
@@ -141,16 +141,16 @@ describe("rótulo da categoria acima da barra no celular", () => {
 
 describe("marcas de eixo e de tempo", () => {
   it("barras e pontos desenham grade e rótulos só das marcas que cabem", () => {
-    const b = ler("src/components/energia/GraficoBarras.tsx");
+    const b = ler("src/components/painel/GraficoBarras.tsx");
     expect(b).toContain("ticksQueCabem(dom.ticks, escala,");
     expect(b).toContain("const grade = ticksEixo.map(");
-    const p = ler("src/components/energia/GraficoPontos.tsx");
+    const p = ler("src/components/painel/GraficoPontos.tsx");
     expect(p).toContain("const ticksEixo = ticksQueCabem(dom.ticks, x,");
     expect(p).not.toMatch(/dom\.ticks\.map/);
   });
 
   it("o gráfico de linhas marca o eixo X com passo constante", () => {
-    const l = ler("src/components/energia/GraficoLinhas.tsx");
+    const l = ler("src/components/painel/GraficoLinhas.tsx");
     expect(l).toContain("const xt = indicesDoEixoX(n, largura < ESTREITO ? 4 : 7, formatoX);");
     expect(l).not.toContain("Math.round((k / Math.max(nx - 1, 1)) * (n - 1))");
   });
@@ -158,7 +158,7 @@ describe("marcas de eixo e de tempo", () => {
 
 describe("tabela de Entender", () => {
   it("a linha escolhida pela própria página (padrão) não abre a tabela; só uma escolha feita depois", () => {
-    const t = ler("src/components/energia/TabelaInterativa.tsx");
+    const t = ler("src/components/painel/TabelaInterativa.tsx");
     expect(t).toContain("const selecaoInicial = useRef(selecionado);");
     expect(t).toContain("selecionado !== selecaoInicial.current;");
     expect(t).toContain("const comRecorte = !!busca || itensFiltro.length > 0 || paginaPedida > 1 || selecaoNova;");
@@ -166,7 +166,7 @@ describe("tabela de Entender", () => {
   });
 
   it("a tabela montada depois de um pedido do leitor ('Abrir: tabela...') nasce aberta, para ele não achar o botão de abrir de novo", () => {
-    expect(ler("src/components/energia/TabelaInterativa.tsx")).toContain("const [aberta, setAberta] = useState(iniciarAberta);");
+    expect(ler("src/components/painel/TabelaInterativa.tsx")).toContain("const [aberta, setAberta] = useState(iniciarAberta);");
     for (const f of ["QualidadeTabela", "GeracaoTabelasSobDemanda", "MercadoTabelasSobDemanda", "VisaoTabelasSobDemanda"]) {
       expect(ler(`src/components/energia/${f}.tsx`), f).toMatch(/iniciarAberta/);
     }
@@ -175,7 +175,7 @@ describe("tabela de Entender", () => {
 
 describe("coluna com rótulo longo no celular", () => {
   it("abaixo de 520 px a coluna com rótulo de mais de nove caracteres vira barra horizontal, até 16 categorias, e aparece inteira", () => {
-    const b = ler("src/components/energia/GraficoBarras.tsx");
+    const b = ler("src/components/painel/GraficoBarras.tsx");
     expect(b).toContain('const virouHorizontal = orientacao === "vertical" && largura < LARGURA_ESTREITA && maiorRotulo > 9 && n <= 16;');
     expect(b).toContain('const vertical = orientacao === "vertical" && !virouHorizontal;');
     expect(b).toContain("const limiteAltura = virouHorizontal ? Math.max(alturaMaxima, h) : alturaMaxima;");
@@ -185,7 +185,7 @@ describe("coluna com rótulo longo no celular", () => {
 
 describe("eixo dos pontos pareados no celular", () => {
   it("o cabeçalho da diferença ocupa a própria linha e o rótulo das marcas não passa da borda", () => {
-    const p = ler("src/components/energia/GraficoPontos.tsx");
+    const p = ler("src/components/painel/GraficoPontos.tsx");
     expect(p).toContain("height={rotuloEmCima ? 36 : 22}");
     expect(p).toContain('<g transform={rotuloEmCima ? "translate(0 14)" : undefined}>');
     expect(p).toContain('textAnchor={px - meia < 0 ? "start" : px + meia > w ? "end" : "middle"}');
