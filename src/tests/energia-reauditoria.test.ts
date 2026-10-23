@@ -233,9 +233,11 @@ describe("auditoria final: regressões", () => {
 
 describe("auditoria final B: regressões", () => {
   it("selo da tela de escolha quebra linha em tela estreita", () => {
-    const t = ler("src/app/app/(foco)/observatorios/page.tsx");
-    expect(t).toContain("flex flex-wrap items-start justify-between");
-    expect(t).not.toMatch(/rotulo shrink-0 border border-linha px-2 py-1 text-mineral">sua última escolha/);
+    // Iniciativa M1 do parecer de UX de 23/10/2026: a faixa "seu lugar" virou a fatia "retomar" do mapa, em grade de uma coluna
+    // abaixo de 1024 px; o selo "sua última escolha" não voltou
+    const t = ler("src/components/observatorios/MapaDaConta.tsx") + ler("src/app/app/(foco)/observatorios/page.tsx");
+    expect(ler("src/components/observatorios/MapaDaConta.module.css")).toMatch(/\.retomar \{ display: grid; grid-template-columns: minmax\(0, 1fr\)/);
+    expect(t).not.toMatch(/sua última escolha/);
   });
 
   it("gavetas da amplitude usam a proveniência da amplitude, sem recuar para a de outra grandeza", () => {

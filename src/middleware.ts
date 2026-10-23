@@ -114,7 +114,10 @@ export async function middleware(request: NextRequest) {
       // Escape inválido não fornece um caminho de política alternativo.
     }
   }
-  if (!pathname.startsWith("/app")) return marcarUltimoAcesso(request, NextResponse.next(), paginaHtml(request) ? ultimoAcessoDoCaminho(pathname) : null);
+  // painel de uma coleção ou entrada de observatório, com sessão: grava o último acesso (Iniciativa M1)
+  const valorPainel = !pathname.startsWith("/app") && paginaHtml(request) ? ultimoAcessoDoCaminho(pathname) : null;
+  if (valorPainel) return marcarUltimoAcesso(request, NextResponse.next(), valorPainel);
+  if (!pathname.startsWith("/app")) return NextResponse.next();
   return protegerAdmin(request, pathname, "pt");
 }
 
