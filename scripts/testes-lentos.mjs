@@ -8,7 +8,7 @@
  * de parede é o da execução inteira, medido aqui.
  */
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { cpus, totalmem } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,11 +22,18 @@ const top = i >= 0 ? Number(args.splice(i, 2)[1]) : 30;
 const preparo = spawnSync(process.execPath, [join(RAIZ, "scripts/preparar.mjs")], { cwd: RAIZ, stdio: "inherit" });
 if (preparo.status !== 0) process.exit(preparo.status ?? 1);
 
+// A tabela vai para o PR: um arquivo de uma execução anterior não pode passar pelo desta. Se o Vitest abortar antes
+// do fim (worker que não sobe, erro no reporter), o arquivo não existe e o script diz isso.
+rmSync(SAIDA, { force: true });
 const inicio = Date.now();
 const r = spawnSync(process.execPath, [join(RAIZ, "node_modules/vitest/vitest.mjs"), "run", "--reporter=default", "--reporter=./scripts/vitest-tempos.mjs", ...args],
   { cwd: RAIZ, stdio: "inherit", env: { ...process.env, TEMPOS_SAIDA: SAIDA } });
 const paredeS = (Date.now() - inicio) / 1000;
 
+if (!existsSync(SAIDA)) {
+  console.error(`\nO Vitest terminou sem gravar ${SAIDA} (código ${r.status ?? "sem código"}): não há tempos desta execução para mostrar.`);
+  process.exit(r.status || 1);
+}
 const { arquivos } = JSON.parse(readFileSync(SAIDA, "utf8"));
 const total = (a) => a.ambiente_ms + a.preparo_ms + a.importacao_ms + a.setup_ms + a.corpo_ms;
 const soma = (campo) => arquivos.reduce((s, a) => s + (campo === "total" ? total(a) : a[campo]), 0) / 1000;
