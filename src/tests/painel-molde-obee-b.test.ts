@@ -79,8 +79,9 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
       expect(h).toContain(t);
     }
     expect(h).toContain("data-figura-legado");
-    // recursos e métodos seguem fora do molde
-    expect(html(createElement(PaginaCultura, { params: { painel: ["recursos"] } }))).not.toContain("data-painel");
+    // métodos (página de método) segue fora do molde; recursos e o panorama passaram ao molde no PR 2 (molde de painel, Iniciativa 1 do
+    // parecer de UX de 23/10/2026), conferidos em painel-molde-pr2-habitacao-cultura.test.ts
+    expect(html(createElement(PaginaCultura, { params: { painel: ["metodos"] } }))).not.toContain("data-painel");
   });
   it("mobilidade: a distribuição, o explorador paginado, os downloads e os outros capítulos continuam", () => {
     const h = html(createElement(PainelMobilidade, { slug: "tempo", p: {} }));
