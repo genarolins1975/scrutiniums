@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { chromium, type Browser, type Page } from "playwright";
 import { createServer, type ViteDevServer } from "vite";
+import { portaLivre } from "./porta-livre";
 
 /**
  * Monta o PerfilForm real da etapa 3 do cadastro num Chromium, servido pelo
@@ -60,12 +61,13 @@ export async function criarNavegadorCadastro(): Promise<NavegadorCadastro> {
     const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Fixture do cadastro</title>
       <link rel="icon" href="data:,"><style>body{margin:16px;font:16px sans-serif}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
       </head><body><main><div id="montagem"></div></main><script type="module" src="/@fs${entrada}"></script></body></html>`;
+    const porta = await portaLivre();
     servidor = await createServer({
       root: RAIZ, configFile: false, envFile: false, envPrefix: [], publicDir: false,
       appType: "custom", cacheDir: join(temporario, "cache"), logLevel: "error",
       resolve: { alias: { "@": join(RAIZ, "src"), "next/navigation": roteador }, dedupe: ["react", "react-dom"] },
       optimizeDeps: { entries: [entrada], noDiscovery: true, include: ["react", "react-dom/client", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"] },
-      server: { host: "127.0.0.1", port: 0, strictPort: true, hmr: false, ws: false, watch: null,
+      server: { host: "127.0.0.1", port: porta, strictPort: true, hmr: false, ws: false, watch: null,
         fs: { strict: true, allow: [join(RAIZ, "src"), join(RAIZ, "node_modules"), temporario] } },
       plugins: [react(), {
         name: "fixture-cadastro-perfil",

@@ -49,6 +49,13 @@ const tituloDoc = (doc: No) => texto(elementos(tag(doc, "head")).find((e) => e.t
 
 describe.skipIf(!temBuild && !EXIGIR)("Setor Elétrico em inglês: HTML gerado", () => {
   const caminhos = caminhosDoSetor();
+  /**
+   * Os três testes de cada página leem os mesmos dois documentos, sem alterá-los (os auxiliares de ./suporte só
+   * percorrem a árvore). Até 22/10/2026 cada teste relia e reanalisava os dois HTML: seis análises por página, e o
+   * arquivo levava 141 s, o segundo mais lento da suíte. Guarda-se só a página corrente, porque os testes de uma
+   * página rodam em sequência e cada árvore pesa dezenas de MB.
+   */
+  let ultimo: { caminho: string; docs: { pt: No; en: No } } | undefined;
 
   it("cobre todas as páginas do observatório, com e sem parâmetro", () => {
     expect(temBuild, "EXIGIR_BUILD_HTML=1 requer um build completo").toBe(true);
@@ -58,7 +65,10 @@ describe.skipIf(!temBuild && !EXIGIR)("Setor Elétrico em inglês: HTML gerado",
 
   describe.each(caminhos)("%s", (caminhoPt) => {
     const par = parDeIdioma(caminhoPt)!;
-    const carregar = () => ({ pt: documento(par.pt), en: documento(par.en) });
+    const carregar = () => {
+      if (ultimo?.caminho !== caminhoPt) ultimo = { caminho: caminhoPt, docs: { pt: documento(par.pt), en: documento(par.en) } };
+      return ultimo.docs;
+    };
 
     it("head inglês próprio, indexável e com alternates recíprocos", () => {
       const { pt, en } = carregar();
