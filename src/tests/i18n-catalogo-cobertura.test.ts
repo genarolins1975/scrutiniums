@@ -61,10 +61,10 @@ describe("catálogo disponível separado da cobertura efetiva", () => {
       } },
     });
     expect(relatorio.escopo.nao_classificadas).toEqual([]);
-    expect(executar(["--check"], raiz)).toContain("confere");
+    expect(executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toContain("confere");
 
     writeFileSync(join(raiz, declaracao.en), 'export const en = { "idioma.seletor": { estado: "portugues_marcado", motivo: "Revisão pendente" } } as const;\n');
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(join(raiz, RELATORIO))).toEqual(original);
     const atualizado = gerarCobertura(raiz);
     expect(atualizado.catalogo).toMatchObject({ traducoes_disponiveis: 0, portugues_marcado_declarado: 1, uso_na_interface_verificado: false });

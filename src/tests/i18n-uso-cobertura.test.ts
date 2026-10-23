@@ -257,19 +257,19 @@ describe("relatório de uso declarado, separado do catálogo e do HTML", () => {
     expect(depois.catalogo?.arquivos.en.sha256).not.toBe(antes.catalogo?.arquivos.en.sha256);
   });
 
-  it("assina as fontes consumidoras e a declaração, sem regravar relatório durante --check", () => {
+  it("assina as fontes consumidoras e a declaração, sem regravar relatório durante --comparar", () => {
     const { raiz, manifesto } = fixture();
     executar([], raiz);
     const path = join(raiz, "docs/i18n/cobertura.json");
     const original = readFileSync(path);
     escrever(raiz, "src/components/Hero.tsx", "export const Hero = () => <h1>Fonte alterada</h1>;");
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(path)).toEqual(original);
     executar([], raiz);
     const atualizado = readFileSync(path);
     manifesto.uso_interface.rotas[0].regioes[0].id = "home-titulo-revisado";
     escrever(raiz, "config/i18n-inventario.json", JSON.stringify(manifesto));
-    expect(() => executar(["--check"], raiz)).toThrow("desatualizada");
+    expect(() => executar(["--comparar", "docs/i18n/cobertura.json"], raiz)).toThrow("desatualizada");
     expect(readFileSync(path)).toEqual(atualizado);
   });
 

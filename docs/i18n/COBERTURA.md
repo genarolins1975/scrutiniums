@@ -1,6 +1,6 @@
 # Inventário inicial de cobertura
 
-`cobertura.json` é a saída determinística de `scripts/cobertura-i18n.mjs`. Ele inventaria fontes e pendências e registra separadamente as mensagens disponíveis no catálogo inicial. Não conclui a fase 0 nem declara tradução efetiva de páginas, paridade de URLs, fallback verificado ou ausência de vazamento de idioma.
+`cobertura.json` é a saída determinística de `scripts/cobertura-i18n.mjs`. Desde 22/10/2026 ele não é versionado: o CI o gera e valida em todo PR e o publica como artefato (`cobertura-i18n`), e cada pessoa o grava localmente quando quer lê-lo. Versionado, ele mudava a cada texto novo em `src/` e conflitava em quase todo merge entre branches (34 dos 300 últimos commits do main eram só a regeneração). Ele inventaria fontes e pendências e registra separadamente as mensagens disponíveis no catálogo inicial. Não conclui a fase 0 nem declara tradução efetiva de páginas, paridade de URLs, fallback verificado ou ausência de vazamento de idioma.
 
 ## Gerar e conferir
 
@@ -8,13 +8,17 @@ Usar Node 22 e as dependências existentes do projeto. Em clone limpo, instalar 
 
 ```sh
 npm ci
-node scripts/cobertura-i18n.mjs
-node scripts/cobertura-i18n.mjs --check
+node scripts/cobertura-i18n.mjs --check                                  # gera e valida, sem gravar
+node scripts/cobertura-i18n.mjs                                          # grava docs/i18n/cobertura.json (gitignorado)
+node scripts/cobertura-i18n.mjs --stdout > /tmp/cobertura-depois.json    # imprime
+node scripts/cobertura-i18n.mjs --comparar /tmp/cobertura-antes.json     # falha se o relatório atual divergir do arquivo
 ```
 
-Os materializadores só são necessários para o diagnóstico `--gold`, não para gerar ou conferir o relatório de código. O minificador também materializa Trabalho e Renda. O comando sem argumento grava somente `docs/i18n/cobertura.json`; `--check` compara os bytes e falha se divergirem, sem corrigir o arquivo; `--stdout` imprime o relatório de código; `--gold` imprime o diagnóstico atual dos dados. O scanner não executa código do aplicativo, não materializa dados e não escreve nas fontes. Usa TypeScript e parse5, já presentes no projeto.
+Os materializadores só são necessários para o diagnóstico `--gold`, não para gerar ou conferir o relatório de código. O minificador também materializa Trabalho e Renda. O comando sem argumento grava somente `docs/i18n/cobertura.json`, que o git ignora; `--check` gera o relatório em memória e aplica todas as validações (fonte nova sem domínio, sintaxe não analisável, catálogo, glossário, rotas, terminologia e uso declarados), sem ler nem gravar arquivo; `--stdout` imprime o relatório de código; `--comparar <arquivo>` compara os bytes com um relatório gravado antes e falha se divergirem, sem corrigir o arquivo, o que serve para ver o efeito de uma mudança; `--gold` imprime o diagnóstico atual dos dados. O scanner não executa código do aplicativo, não materializa dados e não escreve nas fontes. Usa TypeScript e parse5, já presentes no projeto.
 
-O CI exige `--check` somente sobre fontes de código. O relatório versionado não abre, enumera ou assina a gold, snapshots, relatórios produzidos pelos pipelines ou saídas materializadas. Mudanças diárias em dados não exigem regenerar `docs/i18n/cobertura.json`.
+O CI exige `--check` somente sobre fontes de código e publica a saída de `--stdout` como artefato. O relatório não abre, enumera ou assina a gold, snapshots, relatórios produzidos pelos pipelines ou saídas materializadas. Mudanças diárias em dados não alteram o relatório.
+
+Branch aberta antes de 22/10/2026 que tenha regenerado o relatório recebe, ao integrar o main, um conflito de "modificado contra apagado" em `docs/i18n/cobertura.json`. A resolução é sempre apagá-lo: `git rm docs/i18n/cobertura.json`.
 
 Os workflows `atualizar-dados`, `atualizar-energia`, `atualizar-gas` e `previsao-pld` permanecem idênticos aos da main. Nenhum produtor de dados instala Node ou executa cobertura por causa da i18n. O antigo helper de publicação foi removido.
 

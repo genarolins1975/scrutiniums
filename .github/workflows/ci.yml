@@ -105,8 +105,18 @@ jobs:
       - name: Tipos
         run: npx tsc --noEmit
       - name: Cobertura bilíngue confere com as fontes de código
-        # Não depende da gold nem de saídas dos materializadores.
+        # Não depende da gold nem de saídas dos materializadores. Gera o inventário e aplica
+        # todas as validações; desde 22/10/2026 não compara com arquivo versionado.
         run: node scripts/cobertura-i18n.mjs --check
+      - name: Relatório de cobertura bilíngue para leitura
+        # O relatório deixou de ser versionado (conflitava em quase todo merge) e sai como artefato.
+        run: node scripts/cobertura-i18n.mjs --stdout > "$RUNNER_TEMP/cobertura-i18n.json"
+      - name: Publicar o relatório de cobertura bilíngue
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-i18n
+          path: ${{ runner.temp }}/cobertura-i18n.json
+          if-no-files-found: error
       - name: Contrato de grupos e publicação seletiva da gold
         # Stdlib, fixtures sintéticas; um arquivo novo sem grupo bloqueia o PR.
         run: python3 -m unittest pipeline.tests.test_publicar_gold

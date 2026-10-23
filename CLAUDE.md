@@ -31,7 +31,7 @@ Antes de empurrar, três comandos (todos na raiz; `scripts/verificar.mjs` explic
 - Testes da interface: `npx vitest run` (os de navegador dependem do Chromium do Playwright); tipos: `npx tsc --noEmit`; lint: `npm run lint`; build: `npm run build`.
 - Sessão nova: rode `bash scripts/preparar-sessao.sh` antes de qualquer teste (dependências, derivados, Chromium compatível com o Playwright e heap do Node; idempotente). Nas sessões do Claude Code o hook `SessionStart` de `.claude/settings.json` já o chama.
 - Testes do pipeline: `python3 -m unittest discover -s pipeline/tests -t .`.
-- Inventário de tradução (arquivo gerado, regenerar em todo conflito): `node scripts/cobertura-i18n.mjs`.
+- Inventário de tradução: `node scripts/cobertura-i18n.mjs --check` (gera e valida; o relatório não é versionado desde 22/10/2026; em conflito "modificado contra apagado" de `docs/i18n/cobertura.json`, apagar).
 - Golds derivadas do Setor Elétrico (`public/energia/gold/{metricas,arquivos,manifesto}.json`): `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta`.
 - Evidências de página para o PR, sobre o build existente: `npm run evidencias -- --rotas /a /b --saida docs/ux-AAAA-MM-DD/<tema>` (capturas a 390, 768 e 1440 px com e sem sessão, cromo, axe, erros de console e requisições que caíram no login, com a tabela em `evidencias.md`).
 
