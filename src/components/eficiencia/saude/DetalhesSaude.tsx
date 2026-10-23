@@ -6,31 +6,101 @@ import { composicao, composicaoAgregada, type CapitalPainel, type ComposicaoAgre
 import { ROTA_SAUDE } from "@/lib/eficiencia/saude/rotas";
 import type { ContextoFicha } from "../FichaConteudo";
 import { SobreDadoSaude as SobreEsteDado } from "./SobreDadoSaude";
-import { TabelaSimples } from "../TabelaSimples";
 import { Siglas } from "../Siglas";
-import { BarrasComposicao } from "../graficos";
+import { FiguraAnalitica, GraficoBarras, TabelaDados } from "@/components/painel";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { provenienciaDaFicha } from "@/lib/eficiencia/proveniencia";
+import type { FichaExibivel } from "@/lib/eficiencia/tipos";
 
-/** Blocos de detalhe de cada tema: composição, componentes e o que os números não dizem. Sempre do mesmo conjunto de observações do gráfico. */
+/**
+ * Blocos de detalhe de cada tema: composição, componentes e o que os números não dizem. Sempre do mesmo conjunto de observações do gráfico.
+ *
+ * No molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026) cada bloco é uma peça de primeiro nível da fatia de figuras: as
+ * composições são FiguraAnalitica com o gráfico de barras do kit e a tabela equivalente; os blocos de texto e de contagem são Recolhido,
+ * abertos (continuam à vista, como antes), com as tabelas na TabelaDados do kit.
+ */
 
 type Base = { ix: IndiceSaude; cap: CapitalPainel | null; ano: number; contextos: Record<string, ContextoFicha> };
 
 function Bloco({ id, titulo, subtitulo, acao, children }: { id: string; titulo: string; subtitulo?: string; acao?: ReactNode; children: ReactNode }) {
   return (
-    <section aria-labelledby={id} className="border-t border-linha pt-8">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-        <h2 id={id} className="font-serif text-[1.45rem] leading-snug text-obee-tinta">
-          {titulo}
-        </h2>
-        {acao}
-      </div>
-      {subtitulo && <p className="mt-1 max-w-prose2 text-sm leading-snug text-carvao-muted">{subtitulo}</p>}
-      <div className="mt-5">{children}</div>
-    </section>
+    <Recolhido id={id} titulo={titulo} resumo={subtitulo ?? ""} aberto nivelTitulo={2}>
+      {acao && <div className="mb-3">{acao}</div>}
+      {children}
+    </Recolhido>
   );
 }
 
-function Composicao({ linhas, detalhe }: { linhas: LinhaComposicao[]; detalhe: (l: LinhaComposicao) => string }) {
-  return <BarrasComposicao linhas={linhas.map((l) => ({ chave: l.chave, rotulo: l.rotulo, pct: l.participacao, detalhe: detalhe(l) }))} />;
+/** Tabela de contagens de um bloco (antes TabelaSimples): a TabelaDados do kit, à vista. */
+function Contagens({ legenda, cabecalho, linhas }: { legenda: string; cabecalho: string[]; linhas: string[][] }) {
+  return <TabelaDados recolhida={false} idioma="pt" titulo={legenda} colunas={cabecalho} linhas={linhas} limite={linhas.length} />;
+}
+
+/**
+ * Uma composição como figura do kit: a participação de cada categoria no gráfico de barras (escala de 0 a 100%), a tabela equivalente
+ * com o valor, a ficha de origem e o que a composição não permite concluir. Sem composição publicada, o motivo fica no lugar do gráfico.
+ */
+function FiguraComposicao({
+  id,
+  pergunta,
+  subtitulo,
+  ficha,
+  contextos,
+  ix,
+  ano,
+  linhas,
+  indisponivel,
+  detalhe,
+  rotuloValor,
+  naoConcluir,
+  complemento,
+}: {
+  id: string;
+  pergunta: string;
+  subtitulo: string;
+  ficha: FichaExibivel | undefined;
+  contextos: Record<string, ContextoFicha>;
+  ix: IndiceSaude;
+  ano: number;
+  linhas: LinhaComposicao[];
+  indisponivel: string | null;
+  detalhe: (l: LinhaComposicao) => string;
+  rotuloValor: string;
+  naoConcluir: ReactNode;
+  complemento?: ReactNode;
+}) {
+  if (!ficha)
+    return (
+      <Bloco id={id} titulo={pergunta} subtitulo={subtitulo}>
+        <Aviso>Ficha do indicador não encontrada nesta publicação.</Aviso>
+      </Bloco>
+    );
+  return (
+    <FiguraAnalitica
+      id={id}
+      idioma="pt"
+      pergunta={pergunta}
+      subtitulo={subtitulo}
+      natureza={ficha.natureza}
+      proveniencia={provenienciaDaFicha(ficha, ix.d.fontes, { inicio: String(ano), fim: String(ano) })}
+      tabela={{ colunas: ["Categoria", "Participação", rotuloValor], linhas: linhas.map((l) => [l.rotulo, percentual(l.participacao, 1), detalhe(l)]), titulo: `${pergunta} ${subtitulo}` }}
+      naoConcluir={naoConcluir}
+      complemento={
+        <>
+          {complemento}
+          <SobreEsteDado f={ficha} ctx={contextos[ficha.id]} rotulo="Ficha do indicador" />
+        </>
+      }
+    >
+      {indisponivel || !linhas.length ? (
+        <div data-grafico="sem-composicao">
+          <Aviso>{indisponivel ?? "Sem composição publicada para este recorte."}</Aviso>
+        </div>
+      ) : (
+        <GraficoBarras titulo={pergunta} series={[{ id: "pct", nome: "Participação", pontos: linhas.map((l) => ({ x: l.chave, rotulo: l.rotulo, y: l.participacao })) }]} eixoY={{ unidade: "%", zero: true, casas: 1 }} orientacao="horizontal" rotulosValor />
+      )}
+    </FiguraAnalitica>
+  );
 }
 
 /** Quantas capitais entram na soma e quais ficam de fora, com o motivo: o agregado nunca esconde o seu universo. */
@@ -74,7 +144,7 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
   const dca = cap ? ix.ponto("sau.despesa.funcao_saude", cap.cod, ano, "nominal") : null;
   const escopo = (ag: ComposicaoAgregada | null) => (cap ? `${nomeCap}, exercício ${ano}` : ag ? `Soma de ${ag.capitais} de ${ag.universo} capitais, exercício ${ano}` : `Exercício ${ano}`);
   return (
-    <div className="space-y-12">
+    <>
       <Bloco id="gastos-perimetro" titulo="O que a despesa inclui, e o que não inclui" subtitulo="Os recursos executados pelo município são um dos três perímetros do módulo.">
         <div className="grid max-w-[60rem] gap-x-10 gap-y-4 text-sm leading-relaxed text-obee-tinta md:grid-cols-2">
           <p>
@@ -92,49 +162,65 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
         </div>
       </Bloco>
 
-      <Bloco
+      <FiguraComposicao
         id="gastos-subfuncao"
-        titulo="Por subfunção orçamentária"
+        pergunta="Por subfunção orçamentária: onde a despesa é classificada?"
         subtitulo={`Participação de cada subfunção na despesa liquidada na função Saúde. ${escopo(aSub)}.`}
-        acao={fichaSub && <SobreEsteDado f={fichaSub} ctx={contextos[fichaSub.id]} />}
-      >
-        {cSub?.indisponivel && <Aviso>{cSub.indisponivel}</Aviso>}
-        {cSub && !cSub.indisponivel && <Composicao linhas={cSub.linhas} detalhe={pctValor} />}
-        {aSub && <Composicao linhas={aSub.linhas} detalhe={pctValor} />}
-        {aSub && <UniversoDoAgregado ag={aSub} ano={ano} />}
-        {aSub && <p className="mt-2 max-w-prose2 text-xs leading-snug text-carvao-muted">A classificação por subfunção é contábil e varia entre municípios. Subfunção sem linha na declaração não aparece: a soma das linhas de cada declaração reproduz o total da função.</p>}
-        {cSub && !cSub.indisponivel && <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">A classificação por subfunção é contábil: a subfunção Atenção básica não é a despesa da rede de atenção primária, e a prática de classificação varia entre municípios.</p>}
-      </Bloco>
+        ficha={fichaSub}
+        contextos={contextos}
+        ix={ix}
+        ano={ano}
+        linhas={cSub ? cSub.linhas : (aSub?.linhas ?? [])}
+        indisponivel={cSub?.indisponivel ?? null}
+        detalhe={pctValor}
+        rotuloValor="Participação e valor"
+        naoConcluir={
+          aSub
+            ? "A classificação por subfunção é contábil e varia entre municípios. Subfunção sem linha na declaração não aparece: a soma das linhas de cada declaração reproduz o total da função."
+            : "A classificação por subfunção é contábil: a subfunção Atenção básica não é a despesa da rede de atenção primária, e a prática de classificação varia entre municípios."
+        }
+        complemento={aSub && <UniversoDoAgregado ag={aSub} ano={ano} />}
+      />
 
-      <Bloco
+      <FiguraComposicao
         id="gastos-natureza"
-        titulo="Por natureza da despesa"
+        pergunta="Por natureza da despesa: quanto vai para pessoal, custeio e capital?"
         subtitulo={`Pessoal, outras despesas correntes e despesas de capital, pela Matriz de Saldos Contábeis. ${escopo(aNat)}.`}
-        acao={fichaNat && <SobreEsteDado f={fichaNat} ctx={contextos[fichaNat.id]} />}
-      >
-        {cNat?.indisponivel && <Aviso>{cNat.indisponivel}</Aviso>}
-        {cNat && !cNat.indisponivel && <Composicao linhas={cNat.linhas} detalhe={pctValor} />}
-        {aNat && <Composicao linhas={aNat.linhas} detalhe={pctValor} />}
-        {aNat && <UniversoDoAgregado ag={aNat} ano={ano} />}
-        <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">
-          A natureza não indica quem presta o serviço: outras despesas correntes incluem serviços de terceiros, organizações sociais e consórcios, e a composição muda conforme o modelo de gestão sem mudar o que é entregue. A abertura só é publicada onde as três categorias reproduzem a <Siglas texto="DCA" />.
-        </p>
-      </Bloco>
+        ficha={fichaNat}
+        contextos={contextos}
+        ix={ix}
+        ano={ano}
+        linhas={cNat ? cNat.linhas : (aNat?.linhas ?? [])}
+        indisponivel={cNat?.indisponivel ?? null}
+        detalhe={pctValor}
+        rotuloValor="Participação e valor"
+        naoConcluir={
+          <>
+            A natureza não indica quem presta o serviço: outras despesas correntes incluem serviços de terceiros, organizações sociais e consórcios, e a composição muda conforme o modelo de gestão sem mudar o que é entregue. A abertura só é publicada onde as três categorias reproduzem a <Siglas texto="DCA" />.
+          </>
+        }
+        complemento={aNat && <UniversoDoAgregado ag={aNat} ano={ano} />}
+      />
 
-      <Bloco
+      <FiguraComposicao
         id="gastos-fonte"
-        titulo="Por fonte de recursos, segundo o SIOPS"
+        pergunta="Por fonte de recursos, segundo o SIOPS: de onde vem o dinheiro?"
         subtitulo={`Despesa total em saúde empenhada, por fonte, no perímetro declarado pelo município. ${escopo(aFon)}. Contexto: não é a despesa liquidada da DCA e não se soma a ela.`}
-        acao={fichaFon && <SobreEsteDado f={fichaFon} ctx={contextos[fichaFon.id]} />}
-      >
-        {cFon?.indisponivel && <Aviso>{cFon.indisponivel}</Aviso>}
-        {cFon && !cFon.indisponivel && <Composicao linhas={cFon.linhas} detalhe={pctValor} />}
-        {aFon && <Composicao linhas={aFon.linhas} detalhe={pctValor} />}
-        {aFon && <UniversoDoAgregado ag={aFon} ano={ano} />}
-        <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">
-          A fonte financia, e não prova quem executa o serviço. A participação de transferências do <Siglas texto="SUS" /> descreve a origem declarada dos recursos e depende da divisão de responsabilidades no território; não é indicador de mérito.
-        </p>
-      </Bloco>
+        ficha={fichaFon}
+        contextos={contextos}
+        ix={ix}
+        ano={ano}
+        linhas={cFon ? cFon.linhas : (aFon?.linhas ?? [])}
+        indisponivel={cFon?.indisponivel ?? null}
+        detalhe={pctValor}
+        rotuloValor="Participação e valor"
+        naoConcluir={
+          <>
+            A fonte financia, e não prova quem executa o serviço. A participação de transferências do <Siglas texto="SUS" /> descreve a origem declarada dos recursos e depende da divisão de responsabilidades no território; não é indicador de mérito.
+          </>
+        }
+        complemento={aFon && <UniversoDoAgregado ag={aFon} ano={ano} />}
+      />
 
       {cap && dca && (
         <Bloco id="gastos-ponte" titulo="Conferência da despesa com outras fontes oficiais" subtitulo={`${nomeCap}, exercício ${ano}.`}>
@@ -147,7 +233,7 @@ export function DetalheGastos({ ix, cap, ano, contextos }: Base) {
           </div>
         </Bloco>
       )}
-    </div>
+    </>
   );
 }
 
@@ -222,7 +308,7 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
   const cob = cap ? ix.ponto("sau.aps.cobertura_potencial", cap.cod, ano, null) : null;
   const rotulo = cap ? `${cap.nome} (${cap.uf})` : `Soma de ${capsComEquipe.length} de ${ix.d.capitais.length} capitais`;
   return (
-    <div className="space-y-12">
+    <>
       <Bloco id="rede-conceitos" titulo="Estabelecimento, equipe, cobertura e pessoas atendidas são coisas diferentes" subtitulo="O módulo mostra cadastro e capacidade registrada, não atendimento efetivo.">
         <dl className="grid max-w-[60rem] gap-x-10 gap-y-4 text-sm leading-relaxed text-obee-tinta md:grid-cols-2">
           <div><dt className="font-semibold">Estabelecimento (<Siglas texto="UBS" />)</dt><dd>Uma unidade cadastrada no <Siglas texto="CNES" /> como posto de saúde ou centro de saúde. O cadastro não comprova funcionamento, acesso nem vaga, e uma unidade situada na capital pode ser de gestão estadual ou dupla.</dd></div>
@@ -238,9 +324,9 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
         subtitulo={`Contagem de estabelecimentos ativos por natureza, gestão e atendimento SUS. ${rotulo}. Retrato de 09/10/2026, sem competência.`}
         acao={fichaRet && <SobreEsteDado f={fichaRet} ctx={contextos[fichaRet.id]} />}
       >
-        <TabelaSimples legenda={`UBS no retrato do CNES: ${rotulo}`} cabecalho={["Recorte", "Estabelecimentos"]} linhas={linhasRet} />
+        <Contagens legenda={`UBS no retrato do CNES: ${rotulo}`} cabecalho={["Recorte", "Estabelecimentos"]} linhas={linhasRet} />
         <p className="mt-4 rotulo text-mineral">Outros tipos de unidade com atenção primária (contexto, não se somam às UBS)</p>
-        <TabelaSimples legenda={`Outros tipos de unidade de atenção primária: ${rotulo}`} cabecalho={["Tipo de unidade", "Estabelecimentos"]} linhas={linhasCtx} />
+        <Contagens legenda={`Outros tipos de unidade de atenção primária: ${rotulo}`} cabecalho={["Tipo de unidade", "Estabelecimentos"]} linhas={linhasCtx} />
         <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">
           Natureza pública é a natureza jurídica do estabelecimento (código iniciado em 1); a esfera administrativa do arquivo repete a gestão e não é usada para isso. Gestão municipal não equivale a propriedade municipal.
         </p>
@@ -252,7 +338,7 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
         subtitulo={`Contagem de equipes registradas em dezembro de ${ano}. ${rotulo}.`}
         acao={fichaEq && <SobreEsteDado f={fichaEq} ctx={contextos[fichaEq.id]} />}
       >
-        <TabelaSimples legenda={`Equipes por tipo, dezembro de ${ano}: ${rotulo}`} cabecalho={["Tipo de equipe", "Equipes"]} linhas={linhasEq} />
+        <Contagens legenda={`Equipes por tipo, dezembro de ${ano}: ${rotulo}`} cabecalho={["Tipo de equipe", "Equipes"]} linhas={linhasEq} />
       </Bloco>
 
       {cap && cob && (
@@ -274,7 +360,7 @@ export function DetalheRede({ ix, cap, ano, contextos }: Base) {
           )}
         </Bloco>
       )}
-    </div>
+    </>
   );
 }
 
@@ -291,7 +377,7 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
   const plano = cap ? ix.ponto("sau.ctx.cobertura_planos", cap.cod, ano, null) : null;
   const planosVals = ix.d.capitais.map((c) => ix.ponto("sau.ctx.cobertura_planos", c.cod, ano, null).valor).filter((v): v is number => v !== null).sort((a, b) => a - b);
   return (
-    <div className="space-y-12">
+    <>
       <Bloco id="res-perimetro" titulo="O que este resultado mede, e o que não mede" subtitulo="Resultado por residência: descreve o sistema de saúde que atende os moradores, não a produção da prefeitura.">
         <div className="grid max-w-[60rem] gap-x-10 gap-y-4 text-sm leading-relaxed text-obee-tinta md:grid-cols-2">
           <p><span className="font-semibold">Universo:</span> internações pagas pelo <Siglas texto="SUS" />, de residentes da capital, por ano de processamento da <Siglas texto="AIH" />. A internação de um morador em outro município conta para a capital de residência. Por local de internação o número pode ser outro, por exemplo em capitais que atendem pacientes de outros municípios; por isso o módulo usa residência.</p>
@@ -301,17 +387,21 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
         </div>
       </Bloco>
 
-      <Bloco
+      <FiguraComposicao
         id="res-grupos"
-        titulo="Por grupo da Lista Brasileira"
+        pergunta="Por grupo da Lista Brasileira: em que condições se concentram as internações?"
         subtitulo={`Internações ICSAP nos 19 grupos da Portaria SAS/MS nº 221/2008, em ordem de número de internações. ${rotulo}, ano ${ano}.`}
-        acao={fichaGr && <SobreEsteDado f={fichaGr} ctx={contextos[fichaGr.id]} />}
-      >
-        {cGr?.indisponivel && <Aviso>{cGr.indisponivel}</Aviso>}
-        {linhas.length > 0 && <Composicao linhas={linhas} detalhe={(l) => `${percentual(l.participacao, 1)} · ${inteiro(l.valor)}`} />}
-        {aGr && <UniversoDoAgregado ag={aGr} ano={ano} />}
-        <p className="mt-3 max-w-prose2 text-xs leading-snug text-carvao-muted">Os grupos descrevem o diagnóstico principal da internação paga pelo SUS, não a incidência da doença nem o que a atenção primária teria evitado em cada caso. A composição por idade de cada capital influencia a distribuição.</p>
-      </Bloco>
+        ficha={fichaGr}
+        contextos={contextos}
+        ix={ix}
+        ano={ano}
+        linhas={linhas}
+        indisponivel={cGr?.indisponivel ?? null}
+        detalhe={(l) => `${percentual(l.participacao, 1)} · ${inteiro(l.valor)}`}
+        rotuloValor="Participação e internações"
+        naoConcluir="Os grupos descrevem o diagnóstico principal da internação paga pelo SUS, não a incidência da doença nem o que a atenção primária teria evitado em cada caso. A composição por idade de cada capital influencia a distribuição."
+        complemento={aGr && <UniversoDoAgregado ag={aGr} ano={ano} />}
+      />
 
       <Bloco
         id="res-planos"
@@ -338,6 +428,6 @@ export function DetalheResultados({ ix, cap, ano, contextos }: Base) {
         </ul>
         <p className="mt-3 text-sm"><a href={`${ROTA_SAUDE}/metodos#decisoes-fontes`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Ver as decisões sobre cada fonte em Dados e métodos</a></p>
       </Bloco>
-    </div>
+    </>
   );
 }

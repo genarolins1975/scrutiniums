@@ -7,7 +7,7 @@
   "files": [
     {
       "path": "src/components/eficiencia/IndiceResultados.tsx",
-      "sha256": "f608d254880421785d675f468887c4658dad6bd4b2aa89e94e0c05d0cf65f1a5"
+      "sha256": "1152b47f8ccb5cf4da6007eb7e364d2597fbfdd71ce019ff79d577e22b5f82ed"
     },
     {
       "path": "src/components/eficiencia/IndiceResultados.module.css",
