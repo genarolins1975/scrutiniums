@@ -995,6 +995,7 @@ export default function MapaDoObservatorio() {
         }
         artefato={
           <ModeloDidatico
+            recolhido
             id="laboratorio-energia"
             idioma={idioma}
             titulo={tx("Potência não é energia", "Capacity is not energy")}
@@ -1021,8 +1022,8 @@ export default function MapaDoObservatorio() {
               id="recolhido-perguntas"
               titulo={tx("Cada pergunta com a medida, a referência e a prova", "Each question with its measure, reference and proof")}
               resumo={tx(
-                "Cada número com período, universo, figura de referência, natureza do dado e a ficha Comprove; a escolha da sua distribuidora e outras perguntas do dia a dia.",
-                "Each number with its period, universe, reference figure, data type and the Check record; the choice of your distribution utility and other everyday questions.",
+                "A medida, a referência e a prova de cada pergunta, e a escolha da sua distribuidora.",
+                "The measure, the reference and the proof of each question, and the choice of your distribution utility.",
               )}
             >
               <Secao
@@ -1091,10 +1092,10 @@ export default function MapaDoObservatorio() {
             </Recolhido>
             <Recolhido
               id="recolhido-sobre"
-              titulo={tx("Sobre o observatório, caminhos e fontes", "About the observatory, paths and sources")}
+              titulo={tx("Sobre o observatório, conhecimento e fontes", "About the observatory, knowledge and sources")}
               resumo={tx(
-                "O que o observatório acompanha, o que as medidas nacionais não permitem concluir e por onde começar.",
-                "What the observatory follows, what national measures do not allow concluding and where to start.",
+                "O que o observatório acompanha e não permite concluir, os verbetes do Aprenda, os dados e a metodologia.",
+                "What the observatory follows and does not allow concluding, the Learn entries, the data and the methodology.",
               )}
             >
               <div className="energia-contexto energia-contexto-recolhido">
@@ -1216,23 +1217,24 @@ export default function MapaDoObservatorio() {
             ].map(([valor, rotulo, detalhe]) => <div key={rotulo}><dd>{valor}</dd><dt>{rotulo}</dt><dd>{detalhe}</dd></div>)}
           </dl>
               </div>
+              <nav aria-label={tx("Conhecimento e fontes", "Knowledge and sources")} className="grid gap-4 sm:grid-cols-2">
+          {CAMINHOS_INTENCAO.slice(3).map(c => <div key={c.id} data-caminho={c.id} className="border-l-4 border-obee bg-superficie p-5">
+            <Link href={destino(c.slugs[0]).href} className="inline-flex min-h-[44px] items-center font-serif text-xl text-obee-tinta underline underline-offset-4">{c.titulo} →</Link>
+            <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.descricao}</p>
+            {c.slugs.slice(1).map(slug => <Link key={slug} href={destino(slug).href} className={link}>{destino(slug).rotulo}</Link>)}
+          </div>)}
+        </nav>
             </Recolhido>
             <Recolhido
               id="recolhido-camadas"
-              titulo={tx("Físico e comercial: duas camadas que se cruzam", "Physical and commercial: two layers that intersect")}
+              titulo={tx("Físico e comercial: como as partes do setor se ligam", "Physical and commercial: how the parts of the sector connect")}
               resumo={tx(
-                "Como a energia circula pela rede e como ela é contratada e paga, e as leituras que ligam os módulos.",
-                "How energy flows through the grid and how it is contracted and paid for, and the readings that connect the modules.",
+                "Como a energia circula, é contratada e paga, e os sete elos, da água à vida das pessoas.",
+                "How energy flows, is contracted and paid for, and the seven nodes, from water to people's lives.",
               )}
             >
               <DuasCamadasEnergia compacto />
               <LeiturasIntegradas />
-            </Recolhido>
-            <Recolhido
-              id="recolhido-mapa"
-              titulo={tx("Como as partes do setor elétrico se ligam", "How the parts of the power sector connect")}
-              resumo={tx("Sete elos, da água à vida das pessoas, e o tipo de cada ligação.", "Seven nodes, from water to people's lives, and the type of each connection.")}
-            >
               <Secao
           recolhida
           id="mapa-conceitual"
@@ -1310,8 +1312,11 @@ export default function MapaDoObservatorio() {
             </Recolhido>
             <Recolhido
               id="recolhido-trilhas"
-              titulo={tx("Trilhas de leitura", "Learning paths")}
-              resumo={tx("Percursos curtos, em ordem, que ligam os temas.", "Short routes, in order, that connect the topics.")}
+              titulo={tx("Trilhas de leitura e como conferir", "Learning paths and how to check")}
+              resumo={tx(
+                "Percursos curtos entre os temas, o que cada selo significa e como provar um número.",
+                "Short routes between topics, what each label means and how to prove a number.",
+              )}
             >
               <Secao
           recolhida
@@ -1355,28 +1360,6 @@ export default function MapaDoObservatorio() {
             ))}
           </div>
         </Secao>
-            </Recolhido>
-            <Recolhido
-              id="recolhido-conhecimento"
-              titulo={tx("Conhecimento e fontes", "Knowledge and sources")}
-              resumo={tx("Os verbetes do Aprenda, os dados e a metodologia.", "The Learn entries, the data and the methodology.")}
-            >
-              <nav aria-label={tx("Conhecimento e fontes", "Knowledge and sources")} className="grid gap-4 sm:grid-cols-2">
-          {CAMINHOS_INTENCAO.slice(3).map(c => <div key={c.id} data-caminho={c.id} className="border-l-4 border-obee bg-superficie p-5">
-            <Link href={destino(c.slugs[0]).href} className="inline-flex min-h-[44px] items-center font-serif text-xl text-obee-tinta underline underline-offset-4">{c.titulo} →</Link>
-            <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{c.descricao}</p>
-            {c.slugs.slice(1).map(slug => <Link key={slug} href={destino(slug).href} className={link}>{destino(slug).rotulo}</Link>)}
-          </div>)}
-        </nav>
-            </Recolhido>
-            <Recolhido
-              id="recolhido-confiar"
-              titulo={tx("Como ler e conferir", "How to read and check")}
-              resumo={tx(
-                "O que cada selo significa, por que cada número tem várias datas e como provar um número.",
-                "What each label means, why each number has several dates and how to prove a number.",
-              )}
-            >
               <Secao
           recolhida
           id="como-confiar"

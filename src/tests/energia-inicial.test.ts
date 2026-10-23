@@ -836,12 +836,12 @@ describe("a página renderizada", () => {
   });
 
   it("o mapa completo abre em disclosure nativo e preserva desenho, versão mobile, tipos e limites", () => {
-    // molde único (Iniciativa 4): o mapa inteiro está no bloco recolhido "Como as partes do setor elétrico se ligam"; o segundo
+    // molde único (Iniciativa 4): o mapa inteiro está no bloco recolhido "Físico e comercial: como as partes do setor se ligam"; o segundo
     // disclosure ("Abrir o mapa completo de relações") saiu, porque abrir o bloco já é abrir o mapa
     const mapa = secao("mapa-conceitual").html;
     expect(mapa).not.toContain("energia-mapa-completo");
-    expect(html.indexOf('id="recolhido-mapa"')).toBeLessThan(secao("mapa-conceitual").i);
-    expect(html.slice(html.indexOf('id="recolhido-mapa"'), secao("mapa-conceitual").i)).toContain("Como as partes do setor elétrico se ligam");
+    expect(html.indexOf('id="recolhido-camadas"')).toBeLessThan(secao("mapa-conceitual").i);
+    expect(html.slice(html.indexOf('id="recolhido-camadas"'), secao("mapa-conceitual").i)).toContain("como as partes do setor se ligam");
     // Após abrir o mapa completo, fora dos blocos recolhíveis (só a linha do <summary> de cada elo fica): o sistema inteiro já está à vista, com o desenho, as faixas, os elos,
     // o tipo e o destino de cada ligação e os tipos
     const aVista = mapa.replace(/<details[^>]*>([\s\S]*?)<\/details>/g, (_m, dentro: string) => /<summary[\s\S]*?<\/summary>/.exec(dentro)?.[0] ?? "");
