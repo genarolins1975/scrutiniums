@@ -14,3 +14,16 @@ export function GuiaLeituraGas({ slug }: { slug: string }) {
     </nav>
   </div>;
 }
+
+/**
+ * Só os atalhos da página ("Explore a pergunta"), para o molde de painel: a navegação local fica logo depois dos números, e o texto do
+ * guia vai para as notas de leitura (ParaLer), porque nada além do recorte e do limite vem antes dos números.
+ */
+export function AtalhosGas({ slug }: { slug: string }) {
+  const guia = LEITURAS_GAS[slug];
+  if (!guia) return null;
+  return <nav aria-label="Nesta página" className="mt-8 border-l-2 border-gas pl-4">
+    <p className="rotulo text-gas-dark">Explore a pergunta</p>
+    <ul className="flex flex-wrap gap-x-6">{guia.atalhos.map(([id, texto]) => <li key={id}><a href={`#${id}`} className="inline-flex min-h-[44px] items-center text-sm text-gas-dark underline underline-offset-4">{texto}</a></li>)}</ul>
+  </nav>;
+}

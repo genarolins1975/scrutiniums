@@ -6,6 +6,7 @@ import {campo,tiposUrl} from '@/lib/energia/estadoUrl';
 import {BASE_JUDICIARIO,MEDIDAS_TRIBUNAL,medianaDasMedias,csvJudiciario,type TribunalJudiciario,type MedidaTribunal,type RamoAgregado} from '@/lib/eficiencia/judiciario/modelo';
 import {n,duracao} from '@/lib/eficiencia/justica/modelo';
 import {HalteresTribunais} from './Halteres';
+import {Controles,GraficoBarras,TabelaDados} from '@/components/painel';
 import s from './Judiciario.module.css';
 
 function salvar(nome:string,conteudo:string){const url=URL.createObjectURL(new Blob([conteudo],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=nome;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
@@ -14,17 +15,27 @@ const medidasRamo:Record<MedidaRamo,{titulo:string;unidade:string}>={
  novos:{titulo:'Casos novos no ano',unidade:'processos'},baixados:{titulo:'Processos baixados no ano',unidade:'processos'},pendentes:{titulo:'Processos pendentes em dezembro',unidade:'processos'},
  idadePendente:{titulo:'Idade média dos pendentes · todas as fases',unidade:'meses'},conhecimento:{titulo:'Idade média dos pendentes · conhecimento',unidade:'meses'},execucao:{titulo:'Idade média dos pendentes · execução',unidade:'meses'},cejuscs:{titulo:'Centros de solução de conflitos',unidade:'unidades'},
 };
+// peças do kit de painel (molde de painel, Iniciativa 1 do parecer de UX de 23/10/2026): controles junto do gráfico, barras e tabela do kit
+// no lugar das barras e da tabela à mão; o gráfico desenha sempre os três ramos, com o escolhido em destaque, para a escala continuar comum
+const rotuloControle='rotulo block text-mineral';
+const controleKit='mt-1 min-h-[44px] w-full min-w-0 border border-mineral bg-superficie px-2 text-sm text-carvao focus:outline focus:outline-2 focus:outline-obee';
+const botaoKit='inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao';
 export function ExploradorRamos({ramos,medidas,fonte,ano}:{ramos:RamoAgregado[];medidas:MedidaRamo[];fonte:string;ano:number}){
  const schema=useMemo(()=>({ramo:campo(tiposUrl.opcao(['todos','estadual','federal','trabalho']),'todos'),medida:campo(tiposUrl.opcao(medidas),medidas[0])}),[medidas]);
  const [state,set]=useEstadoUrl(schema);
  const rows=ramos.filter(r=>state.ramo==='todos'||r.id===state.ramo),m=medidasRamo[state.medida];
- const max=Math.max(...ramos.map(r=>r[state.medida]),1);
  const valor=(v:number)=>m.unidade==='meses'?duracao(v):n(v);
- return <section aria-label="Explorar agregados dos ramos"><div className={s.controls}><label>Ramo<select aria-label="Ramo" className={s.control} value={state.ramo} onChange={e=>set({ramo:e.target.value as typeof state.ramo})}><option value="todos">Três ramos selecionados</option>{ramos.map(r=><option key={r.id} value={r.id}>{r.nome}</option>)}</select></label><label>Medida por ramo<select aria-label="Medida por ramo" className={s.control} value={state.medida} onChange={e=>set({medida:e.target.value as MedidaRamo})}>{medidas.map(k=><option key={k} value={k}>{medidasRamo[k].titulo}</option>)}</select></label></div>
- <p className={s.muted}>Os controles afetam somente este gráfico, sua tabela e seu CSV. Referência {ano}. Escala comum aos três ramos, mesmo ao selecionar apenas um.</p>
- <figure className={s.chart}><figcaption>{m.titulo} · {m.unidade} · {ano}</figcaption>{rows.map(r=><div className={s.barRow} key={r.id}><span>{r.nome}</span><div className={s.track} role="img" aria-label={`${r.nome}: ${valor(r[state.medida])}`}><div className={s.bar} style={{width:100*r[state.medida]/max+'%'}}/></div><span className={s.value}>{m.unidade==='meses'?n(r[state.medida]):r[state.medida]>=1_000_000?n(r[state.medida]/1_000_000,1)+' mi':n(r[state.medida])}</span></div>)}<p className={s.scale}>Escala começa em zero · máximo: {n(max)} {m.unidade}. Valores exatos do recorte na tabela.</p></figure>
- <div className={s.tableWrap} tabIndex={0} role="region" aria-label="Tabela equivalente dos ramos, role para todas as colunas"><table className={s.table}><caption>{m.titulo} · {ano} · {m.unidade}</caption><thead><tr><th scope="col">Ramo</th><th scope="col">Valor</th><th scope="col">Unidade</th><th scope="col">Precisão e universo</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><th scope="row">{r.nome}</th><td>{valor(r[state.medida])}</td><td>{m.unidade}</td><td>{m.unidade==='processos'?'Arredondado a 100 mil processos':m.unidade==='meses'?'Média publicada, não mediana':'Centros instalados'}</td></tr>)}</tbody></table></div>
- <div className={s.actions}><button className={s.button} onClick={()=>set({ramo:'todos',medida:medidas[0]})}>Limpar filtros</button><button className={s.button} onClick={()=>salvar('judiciario-ramos-'+state.medida+'.csv',csvJudiciario(['Ramo','Indicador','Valor','Unidade','Ano','Fonte','Nota'],rows.map(r=>[r.nome,m.titulo,r[state.medida],m.unidade,ano,fonte,m.unidade==='processos'?r.nota:m.unidade==='meses'?MEDIDAS_TRIBUNAL.idadePendentes.nota:'Centros instalados; não mede acesso efetivo.'])))}>Baixar recorte completo CSV</button></div></section>;
+ const precisao=m.unidade==='processos'?'Arredondado a 100 mil processos':m.unidade==='meses'?'Média publicada, não mediana':'Centros instalados';
+ return <section aria-label="Explorar agregados dos ramos" className="space-y-5">
+ <Controles rotulo="Recorte dos ramos" resumo={(state.ramo==='todos'?'Três ramos selecionados':ramos.find(r=>r.id===state.ramo)?.nome)+' · '+m.titulo+' · '+ano}>
+ <label className="min-w-0 sm:w-64"><span className={rotuloControle}>Ramo</span><select aria-label="Ramo" className={controleKit} value={state.ramo} onChange={e=>set({ramo:e.target.value as typeof state.ramo})}><option value="todos">Três ramos selecionados</option>{ramos.map(r=><option key={r.id} value={r.id}>{r.nome}</option>)}</select></label>
+ <label className="min-w-0 sm:w-72"><span className={rotuloControle}>Medida por ramo</span><select aria-label="Medida por ramo" className={controleKit} value={state.medida} onChange={e=>set({medida:e.target.value as MedidaRamo})}>{medidas.map(k=><option key={k} value={k}>{medidasRamo[k].titulo}</option>)}</select></label>
+ <div className="flex flex-wrap gap-x-5"><button type="button" className={botaoKit} onClick={()=>set({ramo:'todos',medida:medidas[0]})}>Limpar filtros</button><button type="button" className={botaoKit} onClick={()=>salvar('judiciario-ramos-'+state.medida+'.csv',csvJudiciario(['Ramo','Indicador','Valor','Unidade','Ano','Fonte','Nota'],rows.map(r=>[r.nome,m.titulo,r[state.medida],m.unidade,ano,fonte,m.unidade==='processos'?r.nota:m.unidade==='meses'?MEDIDAS_TRIBUNAL.idadePendentes.nota:'Centros instalados; não mede acesso efetivo.'])))}>Baixar recorte completo CSV</button></div>
+ </Controles>
+ <p className="t-meta max-w-prose2 text-carvao-muted">Os controles afetam somente este gráfico, sua tabela e seu CSV. Referência {ano}. Escala comum aos três ramos, mesmo ao selecionar apenas um: o ramo escolhido fica destacado no gráfico, e a tabela e o CSV trazem só ele. Escala começa em zero; valores exatos do recorte na tabela.</p>
+ <GraficoBarras semTabela titulo={m.titulo+' · '+m.unidade+' · '+ano} dados={ramos.map(r=>({id:r.id,nome:r.nome,v:r[state.medida]}))} chaveCategoria="id" chaveRotulo="nome" orientacao="horizontal" series={[{id:'v',rotulo:m.titulo,cor:'var(--cor-obee)'}]} unidade={m.unidade} casas={0} rotulosValor selecionado={state.ramo==='todos'?null:state.ramo} onSelecionar={id=>set({ramo:(id??'todos') as typeof state.ramo})}/>
+ <TabelaDados titulo={m.titulo+' · '+ano+' · '+m.unidade} colunas={['Ramo','Valor','Unidade','Precisão e universo']} linhas={rows.map(r=>[r.nome,m.unidade==='meses'?valor(r[state.medida]):r[state.medida],m.unidade,precisao])} casas={[null,0,null,null]} limite={rows.length} recolhida={false}/>
+ </section>;
 }
 
 export function ComparadorJudiciario({tribunais,fonte,ano}:{tribunais:TribunalJudiciario[];fonte:string;ano:number}){

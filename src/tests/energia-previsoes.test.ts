@@ -532,8 +532,11 @@ describe.skipIf(!temCelulas)("P013: grade, gráfico, tabela e exportação com a
       expect(soma / x.valores.length).toBeCloseTo(x.media!, 2);
     }
     const ls = linhasPublicadoNoCorte(pub);
-    expect(ls).toHaveLength(Math.max(...Object.values(pub.submercados).map((x) => x.valores.length)));
-    expect(ls[0].SE).toBe(pub.submercados.SE.valores[0][1]);
+    const nHoras = Math.max(...Object.values(pub.submercados).map((x) => x.valores.length));
+    expect(ls).toHaveLength(nHoras);
+    // rodada sem nenhuma hora capturada depois do corte (a de 23/10/2026, por exemplo): o gráfico fica sem linhas e a página diz isso;
+    // com horas, a primeira linha do gráfico é a primeira hora publicada
+    if (nHoras > 0) expect(ls[0].SE).toBe(pub.submercados.SE.valores[0]?.[1] ?? null);
   });
 
   it("textos da emissão e do que mudou derivados da rodada", () => {

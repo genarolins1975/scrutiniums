@@ -37,3 +37,23 @@ describe("TabelaDados ordenável: célula em nó React", () => {
     expect(textoDoNo(null)).toBe("");
   });
 });
+
+describe("TabelaDados: link por célula", () => {
+  it("a célula com endereço aponta para a página da linha, inclusive quando a tabela mostra só as últimas linhas", async () => {
+    const { TabelaDados } = await import("@/components/painel/TabelaDados");
+    const html = renderToStaticMarkup(
+      createElement(TabelaDados, {
+        titulo: "Teste",
+        colunas: ["Município", "Valor"],
+        linhas: [["Arapiraca", 1], ["Maceió", 2], ["Penedo", null]],
+        links: { Município: ["/a", "/m", null] },
+        limite: 2,
+        recolhida: false,
+      }),
+    );
+    expect(html).toMatch(/<a [^>]*href="\/m"[^>]*>Maceió<\/a>/);
+    expect(html).not.toContain('href="/a"');
+    expect(html).toContain("Penedo");
+    expect(html).not.toMatch(/<a [^>]*>Penedo/);
+  });
+});

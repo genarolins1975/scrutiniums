@@ -4,4 +4,4 @@ import { modeloDeTitulo } from "@/lib/observatorios/contexto";
 
 /** Títulos "Página · Coleção · Scrutiniums", com a coleção dona do tema no registro. */
 export const metadata: Metadata = { title: modeloDeTitulo("/eficiencia-estatal/assistencia-social") };
-export default function Layout({children}:{children:React.ReactNode}){return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/assistencia-social" navegacao="protecao" /></header><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10">{children}</main></>}
+export default function Layout({children}:{children:React.ReactNode}){return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/assistencia-social" navegacao="protecao" /></header><main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-10 [&>[data-painel]]:px-0">{children}</main></>}

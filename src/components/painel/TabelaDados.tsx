@@ -1,5 +1,6 @@
 import { isValidElement, type ReactNode } from "react";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
+import Link from "@/components/i18n/LinkIdioma";
 import dynamic from "next/dynamic";
 import { TextoDaColuna } from "@/components/painel/TextoDaColuna";
 import { idiomaDaPagina, tx } from "@/lib/painel/idioma";
@@ -34,6 +35,8 @@ export function TabelaDados({
   idiomaTexto,
   ordenavel = false,
   ausencia,
+  links,
+  nomeArquivo,
   fixarPrimeiraColuna = false,
   recolhida = true,
   nota,
@@ -61,14 +64,21 @@ export function TabelaDados({
       tipo: numerica[j] ? "numero" : "texto",
       casas: casas?.[j] ?? undefined,
       idiomaTexto: idiomaTexto?.[j] ?? undefined,
+      link: links?.[c] ? `_link${j}` : undefined,
     }));
     // a tabela ordenável guarda valores (texto e número); célula em nó React (um nome marcado, por exemplo) vira o texto que ela mostra,
     // para continuar na busca, na ordenação e na exportação, nunca ausência
     const valor = (v: CelulaTabela) => (v === null || typeof v === "string" || typeof v === "number" ? v : textoDoNo(v));
-    const dados: LinhaTabela[] = linhas.map((l, i) => Object.fromEntries([["_id", String(i)], ...l.map((v, j) => [`c${j}`, valor(v)] as const)]));
+    const dados: LinhaTabela[] = linhas.map((l, i) =>
+      Object.fromEntries([
+        ["_id", String(i)],
+        ...l.map((v, j) => [`c${j}`, valor(v)] as const),
+        ...colunas.flatMap((c, j) => (links?.[c] ? [[`_link${j}`, links[c][i] ?? null] as const] : [])),
+      ]),
+    );
     return (
       <div data-tabela-ordenavel="">
-        <TabelaInterativa titulo={titulo} colunas={cols} linhas={dados} chaveLinha="_id" fonte={titulo} versao="" nomeArquivo={titulo} recolher={recolhida} />
+        <TabelaInterativa titulo={titulo} colunas={cols} linhas={dados} chaveLinha="_id" fonte={titulo} versao="" nomeArquivo={nomeArquivo ?? titulo} recolher={recolhida} />
         {nota && <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">{nota}</p>}
       </div>
     );
@@ -87,10 +97,22 @@ export function TabelaDados({
     ) : (
       v
     );
+  // célula com endereço (a ficha da linha): link interno em volta do valor; `i` é o índice da linha em `linhas`
+  const comLink = (no: ReactNode, v: CelulaTabela, j: number, i: number): ReactNode => {
+    const destino = v === null || v === undefined ? null : links?.[colunas[j]]?.[i];
+    return destino ? (
+      <Link href={destino} prefetch={false} className="underline decoration-linha underline-offset-4 hover:decoration-carvao">
+        {no}
+      </Link>
+    ) : (
+      no
+    );
+  };
   const fixa = fixarPrimeiraColuna ? "sticky left-0 z-10 bg-papel" : "";
   const tabela = (
     <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`, idioma)}>
-      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums" data-tabela-dados="">
+      {/* nota miúda numa célula (<small>, como "nesta área de 2004 a 2026") fica em 12 px, o piso da plataforma; sem isso o navegador a reduz */}
+      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums [&_small]:text-xs" data-tabela-dados="">
         <caption className="sr-only">{titulo}</caption>
         <thead>
           <tr>
@@ -110,11 +132,11 @@ export function TabelaDados({
               {l.map((v, j) =>
                 j === 0 ? (
                   <th key={j} scope="row" className={`px-2 py-1 text-left font-normal text-carvao ${numerica[j] ? "text-right" : ""} ${fixa}`}>
-                    {celula(v, j)}
+                    {comLink(celula(v, j), v, j, linhas.length - visiveis.length + i)}
                   </th>
                 ) : (
                   <td key={j} className={`px-2 py-1 text-carvao ${numerica[j] ? "text-right" : ""}`}>
-                    {celula(v, j)}
+                    {comLink(celula(v, j), v, j, linhas.length - visiveis.length + i)}
                   </td>
                 ),
               )}

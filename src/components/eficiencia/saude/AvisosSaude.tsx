@@ -56,7 +56,7 @@ export function AvisoDoPeriodo({ texto }: { texto: string | null }) {
   );
 }
 
-const SIGLAS_POR_TEMA: Record<string, [string, string][]> = {
+export const SIGLAS_POR_TEMA: Record<string, [string, string][]> = {
   gastos: [
     ["DCA", "Declaração de Contas Anuais, enviada pelo município ao Tesouro Nacional"],
     ["ASPS", "ações e serviços públicos de saúde, base do mínimo de 15% da LC 141/2012"],

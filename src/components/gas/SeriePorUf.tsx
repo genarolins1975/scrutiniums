@@ -1,7 +1,8 @@
 "use client";
 
 import { useId } from "react";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { Controles } from "@/components/painel/Controles";
+import { GraficoLinhas } from "@/components/painel/GraficoLinhas";
 
 import { useSelecaoGas } from "./useSelecaoGas";
 import { mesExtenso, num, reais, sinal } from "@/lib/gas/formato";
@@ -50,17 +51,20 @@ export function SeriePorUf({
   const dados = serieUf.map((p) => ({ mes: p.mes as string, uf: (p[uf] as number | null | undefined) ?? null, brasil: brasil.get(p.mes as string) ?? null }));
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <label htmlFor={id} className="text-sm text-carvao">UF</label>
-        <select
-          id={id}
-          value={uf}
-          onChange={(e) => escolha.selecionar(e.target.value)}
-          className="min-h-[44px] border border-mineral bg-superficie px-3 text-sm text-carvao"
-        >
-          {ufs.map((x) => <option key={x.uf} value={x.uf}>{x.nome}</option>)}
-        </select>
-      </div>
+      {/* controle do kit (Controles), logo antes do retrato e do gráfico que ele recorta; a UF fica na URL (?uf=) */}
+      <Controles rotulo="Estado da série" idioma="pt">
+        <div className="flex flex-wrap items-center gap-3">
+          <label htmlFor={id} className="text-sm text-carvao">UF</label>
+          <select
+            id={id}
+            value={uf}
+            onChange={(e) => escolha.selecionar(e.target.value)}
+            className="min-h-[44px] border border-mineral bg-superficie px-3 text-sm text-carvao"
+          >
+            {ufs.map((x) => <option key={x.uf} value={x.uf}>{x.nome}</option>)}
+          </select>
+        </div>
+      </Controles>
       <p aria-live="polite" className="text-sm text-carvao-muted">{escolha.invalida ? "A UF informada no endereço não está disponível nesta pesquisa. Exibimos a seleção inicial." : ""}</p>
       <div role="status" className="border-l-2 border-gas bg-gas-fundo p-4 text-sm leading-relaxed text-carvao">
         <p>{nome} · {mesExtenso(retrato.periodo)} · Preços observados na pesquisa da ANP.</p>

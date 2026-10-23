@@ -517,7 +517,10 @@ describe("páginas renderizadas no servidor", () => {
   });
 
   it("tabelas equivalentes e mapas presentes onde há mapa; proxy rotulada", () => {
-    expect(html.p059).toContain("Faturas com desconto por UF");
+    // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o mapa por UF não repete a tabela dele; a tabela equivalente é a
+    // TabelaInterativa por UF sincronizada com o mapa, e o mapa fica marcado como legado até a Iniciativa 5
+    expect(html.p059).toContain("Tarifa Social por UF");
+    expect(html.p059).toContain('data-mapa-legado="tarifa-social-uf"');
     expect(html.p060).toContain("Proxy");
     expect(html.p060).toContain("Faixa de sensibilidade ao denominador por UF");
     expect(html.p061).toContain("Razão de médias");
@@ -635,7 +638,8 @@ describe("revisão de interface: páginas", () => {
   const paginas = { sintese: Sintese, p059: PaginaTarifa, p060: PaginaCobertura, p061: PaginaOrcamento, p062: PaginaAcesso };
   const html = Object.fromEntries(Object.entries(paginas).map(([k, p]) => [k, renderToStaticMarkup(createElement(p))]));
   // o número de destaque tem duas formas: o cartão (variante padrão do Numero) e a medida da faixa de métricas (data-metrica), que é a das aberturas
-  const MARCAS_NUMERO = ['class="relative flex h-full flex-col border border-linha bg-superficie p-5"', 'data-metrica=""'];
+  // e, no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), o NumeroIndicador do kit (data-numero-indicador), que a Tarifa Social já usa
+  const MARCAS_NUMERO = ['class="relative flex h-full flex-col border border-linha bg-superficie p-5"', 'data-metrica=""', 'data-numero-indicador=""'];
 
   /** Conteúdo de cada bloco Numero (cartão ou medida da faixa), pela contagem de div abertos e fechados. */
   function blocosNumero(h: string): string[] {
@@ -682,7 +686,8 @@ describe("revisão de interface: páginas", () => {
       const blocos = blocosNumero(h);
       expect(blocos.length, k).toBeGreaterThan(0);
       for (const b of blocos) {
-        const ok = b.includes("Comprove este número") || b.includes("sem dado") || SEM_FICHA_PROPRIA.some((r) => r.test(rotuloDoBloco(b)));
+        // a ausência no NumeroIndicador do kit se escreve "Indisponível nesta publicação", com o motivo
+        const ok = b.includes("Comprove este número") || b.includes("sem dado") || b.includes("Indisponível nesta publicação") || SEM_FICHA_PROPRIA.some((r) => r.test(rotuloDoBloco(b)));
         expect(ok, `${k}: ${rotuloDoBloco(b)}`).toBe(true);
       }
     }
@@ -951,7 +956,8 @@ describe("abertura editorial: pergunta social primeiro, unidades e datas própri
   /** Medidas da faixa de métricas de uma página: o conteúdo de cada bloco data-metrica. */
   function blocosDaFaixa(h: string): string[] {
     const out: string[] = [];
-    const re = /<div role="group" aria-label="[^"]*" data-metrica=""[^>]*>/g;
+    // a medida da faixa de antes (data-metrica) ou o NumeroIndicador do kit, no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026)
+    const re = /<div (?:id="[^"]*" )?role="group" aria-label="[^"]*" (?:data-metrica=""|class="[^"]*" data-numero-indicador="")[^>]*>/g;
     let m: RegExpExecArray | null;
     while ((m = re.exec(h))) {
       let prof = 0;
@@ -1097,7 +1103,8 @@ describe("frase, cartões e ficha acompanham o controle do painel (base, indicad
   /** Cada bloco data-metrica (medida da faixa), pela contagem de div abertos e fechados. */
   function blocos(h: string): string[] {
     const out: string[] = [];
-    const re = /<div role="group" aria-label="[^"]*" data-metrica=""[^>]*>/g;
+    // a medida da faixa de antes (data-metrica) ou o NumeroIndicador do kit, no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026)
+    const re = /<div (?:id="[^"]*" )?role="group" aria-label="[^"]*" (?:data-metrica=""|class="[^"]*" data-numero-indicador="")[^>]*>/g;
     let m: RegExpExecArray | null;
     while ((m = re.exec(h))) {
       let prof = 0;
