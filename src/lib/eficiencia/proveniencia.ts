@@ -1,5 +1,6 @@
 import type { FichaExibivel } from "@/lib/eficiencia/tipos";
 import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
+import { LICENCA_NAO_REGISTRADA } from "@/lib/eficiencia/fichaDaFigura";
 
 /**
  * Proveniência no contrato do kit de painel (src/lib/painel/tipos.ts) a partir do que a Eficiência Estatal já publica em cada base:
@@ -99,14 +100,16 @@ export function provenienciaObee(o: OrigemObee): Proveniencia {
       recurso: o.recurso ?? o.dataset,
       url_dataset: o.url,
       url_primaria: o.urlPrimaria ?? o.url,
-      licenca: o.licenca ?? "Dados abertos publicados pela fonte oficial",
+      // licença só a que a origem registra: ser fonte oficial não comprova condição de uso
+      licenca: o.licenca ?? LICENCA_NAO_REGISTRADA,
     },
     unidade: o.unidade,
     frequencia: o.frequencia,
     periodo_referencia: { inicio: o.inicio, fim: o.fim },
     publicado_pela_fonte_em: o.publicadoEm ?? null,
     capturado_em: o.capturadoEm ?? null,
-    validado_em: o.validadoEm ?? o.capturadoEm ?? o.fim,
+    // sem validação registrada, a ficha diz "não informado pela fonte"; o fim do período é a data do dado, não uma conferência
+    validado_em: o.validadoEm ?? o.capturadoEm ?? "",
     cobertura_historica: o.cobertura ?? { inicio: o.inicio, fim: o.fim },
     transformacoes: [...(o.transformacoes ?? [])],
     formula: o.formula ?? null,
