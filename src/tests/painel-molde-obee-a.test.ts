@@ -7,6 +7,7 @@ import { conferirPainel } from "./suporte/molde-painel";
 vi.mock("server-only", () => ({}));
 
 import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/necessidades/page";
+import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), frente obee-a do Grupo 1: as páginas com sessão da Eficiência
@@ -23,5 +24,14 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     expect(h).toContain("Denominador necessário");
     expect(h).toMatch(/<div class="tabela-scroll[^"]*" tabindex="0" role="region"/);
     expect(h).not.toContain("overflow-x-auto");
+  });
+
+  it("/eficiencia-estatal/indice-de-resultados", () => {
+    const h = html(PaginaIndice);
+    conferirPainel("/eficiencia-estatal/indice-de-resultados", h);
+    // a interface da edição v4 segue inteira dentro da figura, marcada como figura legada, e as tabelas dela são as do kit
+    expect(h).toContain('data-figura-legado="indice-v4"');
+    expect(h).toContain('id="atlas-indice"');
+    expect(h).toContain('id="atlas-score-method"');
   });
 });
