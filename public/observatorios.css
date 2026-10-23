@@ -8,7 +8,8 @@
 .obs-hero { background:var(--obs-tinta); color:white; padding:clamp(24px,3vw,40px); }
 .obs-hero h1 { font-weight:400; font-size:clamp(32px,3.6vw,52px); line-height:1.12; letter-spacing:-.015em; max-width:760px; }
 .obs-hero p { line-height:1.6; }
-.obs-hero .obs-eyebrow { font-size:12px; letter-spacing:.14em; text-transform:uppercase; margin:0 0 16px; }
+/* mesma especificação do .rotulo da plataforma (a aplicação do Crédito não carrega globals.css) */
+.obs-hero .obs-eyebrow { font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-weight:400; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 16px; }
 .obs-hero a { color:var(--obs-marfim); }
 .obs-hero .obs-primary { display:inline-flex; min-height:44px; align-items:center; padding:10px 18px; margin-top:20px; background:var(--obs-marfim); color:var(--obs-tinta); text-decoration:none; font:600 14px/1.4 var(--sans, var(--font-sans, system-ui)); }
 .obs-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); background:white; border-bottom:1px solid var(--obs-regra); color:var(--obs-tinta); margin:0; }
@@ -147,7 +148,7 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .observatorio-credito .sidebar { background:var(--surface); padding:24px 16px 16px; }
 .observatorio-credito .brand { border-bottom:1px solid var(--border); padding-bottom:20px; }
 .observatorio-credito .brandtext { font-size:16px; line-height:1.35; }
-.observatorio-credito .navlabel { font-size:12px; letter-spacing:.08em; }
+.observatorio-credito .navlabel { font-size:.75rem; letter-spacing:.14em; }
 .observatorio-credito #tabs button[data-view] { min-height:44px; font-size:14px; padding-block:10px; }
 .observatorio-credito .pagehead { background:var(--surface); border-top:3px solid var(--accent); padding:24px; margin-bottom:20px; }
 .observatorio-credito .pagehead h1, .observatorio-credito .pagehead h2 { font:400 clamp(28px,3vw,40px)/1.15 var(--serif); color:var(--text); margin:0 0 12px; }

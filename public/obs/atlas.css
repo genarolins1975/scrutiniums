@@ -2,7 +2,7 @@
 /* Paleta do painel escuro da plataforma (public/obs/tokens.css, gerado de src/app/globals.css); --atlas-* são aliases. */
 #view-mapa.has-credit-atlas { --atlas-petrol:var(--cor-painel-escuro); --atlas-mint:var(--cor-painel-escuro-acento); --atlas-cream:var(--cor-painel-escuro-texto); }
 #view-mapa.has-credit-atlas .obs-credit-hero > div > p:not(.obs-eyebrow) { color:var(--text-2); }
-#view-mapa .atlas-eyebrow { font:500 12px/1.5 var(--sans,Inter,sans-serif); text-transform:uppercase; letter-spacing:.12em; margin:0 0 10px; }
+#view-mapa .atlas-eyebrow { font:400 .75rem/1.5 var(--font-label,"Archivo Narrow"),system-ui,sans-serif; text-transform:uppercase; letter-spacing:.14em; margin:0 0 10px; } /* especificação do .rotulo da plataforma */
 #view-mapa .atlas-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-block:1px solid var(--border); margin:24px 0 12px; }
 #view-mapa .atlas-metric { padding:18px 22px; min-width:0; border-right:1px solid var(--border); }
 #view-mapa .atlas-metric:first-child { padding-left:0; }

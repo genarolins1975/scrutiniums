@@ -25,9 +25,8 @@ const globals = ler("src/app/globals.css");
 
 // ---------------------------------------------------------------------------------------------------- exceções datadas
 type Regra = "hexadecimal" | "redefine --cor-*" | "corpo abaixo de 12 px" | "!text-[" | "text-[…] abaixo de 0,75 rem";
-// Lista de 22/10/2026 (PR 1 da Iniciativa 5).
+// Vazia desde o PR 4 da Iniciativa 5 (22/10/2026). Arquivo novo entra sem exceção; se precisar de uma, com o PR que a resolve.
 const EXCECOES: Record<string, { regras: Regra[]; ate: string }> = {
-  "public/obs/styles.css": { regras: ["hexadecimal", "corpo abaixo de 12 px"], ate: "PR 4 da Iniciativa 5 (aplicação do Crédito)" },
 };
 
 // ---------------------------------------------------------------------------------------------------- leitura dos arquivos
