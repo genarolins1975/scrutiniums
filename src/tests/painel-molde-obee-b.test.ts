@@ -1,9 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+// as páginas importam módulos marcados com server-only; no teste, o marcador não tem efeito
+vi.mock("server-only", () => ({}));
 import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { conferirPainel } from "./suporte/molde-painel";
 import PaginaDeficit from "@/app/eficiencia-estatal/habitacao/deficit/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
+import PaginaJudiciario from "@/app/eficiencia-estatal/judiciario/[capitulo]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), frente obee-b do Grupo 1: as páginas com sessão da Eficiência Estatal
@@ -17,6 +20,9 @@ describe("molde de painel: Eficiência Estatal, frente obee-b", () => {
   it("/eficiencia-estatal/habitacao/deficit", () => {
     conferirPainel("/eficiencia-estatal/habitacao/deficit", html(createElement(PaginaDeficit)));
   });
+  it("/eficiencia-estatal/judiciario/panorama", () => {
+    conferirPainel("/eficiencia-estatal/judiciario/panorama", html(createElement(PaginaJudiciario, { params: { capitulo: "panorama" } })));
+  });
   // o corpo dos capítulos de medida do meio ambiente é um só (riscos, prevenção e pressões ambientais): o molde vale para os três
   it.each(["riscos", "prevencao", "residuos"])("/eficiencia-estatal/meio-ambiente-clima/%s", (slug) => {
     conferirPainel(`/eficiencia-estatal/meio-ambiente-clima/${slug}`, html(createElement(PaginaAmbiente, { params: { painel: [slug] } })));
@@ -29,6 +35,13 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
     for (const t of ["Onde a água ameaça a moradia?", "não equivalem ao total de ocorrências do S2ID", "Compare medidas, sem transformar diferenças em notas", "Quem responde por esses resultados?", "Examinar o serviço no capítulo de Saneamento", "Fórmula, elegibilidade e fonte"]) {
       expect(h).toContain(t);
     }
+  });
+  it("Judiciário: a tabela de perímetros é a do kit, com a mesma conta, e a cobertura fica à vista", () => {
+    const h = html(createElement(PaginaJudiciario, { params: { capitulo: "panorama" } }));
+    for (const t of ["Três ramos não são o total do Judiciário.", "Diferença de perímetro e arredondamento", "Cobertura deste recorte:", "Não ajustar os ramos para que somem ao total", "Escala comum aos três ramos"]) {
+      expect(h).toContain(t);
+    }
+    expect(h).toContain('data-bloco-tabela=""');
   });
   it("déficit: os três números, a comparação e os três conceitos", () => {
     const h = html(createElement(PaginaDeficit));
