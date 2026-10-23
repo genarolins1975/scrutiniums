@@ -1,6 +1,6 @@
 {
  "data": "2026-10-23",
- "build": "cL8ZREMolGx-lTzORKl3-",
+ "build": "q9BCXnIDIQuXzSlcIvVni",
  "maquina": "2 vCPU, 8 GB",
  "comando": "npm run evidencias -- --rotas /app/observatorios --saida docs/ux-2026-10-23/mapa/depois-conta-nova --larguras 390,1440 --modos com",
  "tempo": "0 min 09 s",

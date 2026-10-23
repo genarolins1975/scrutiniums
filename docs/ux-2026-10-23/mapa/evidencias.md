@@ -34,4 +34,4 @@ Não verificado: leitor de tela, zoom de 200 %, 768 px nas capturas do mapa (a v
 
 ## Verificação do repositório
 
-`npm run verificar:pr` verde em 23/10/2026: lint, tipos, testes Python, build, fluxos do Judiciário, cobertura bilíngue e Vitest (372 arquivos, 9.165 testes, 12 ignorados), árvore versionada igual à do início.
+`npm run verificar:pr` verde em 23/10/2026: lint, tipos, testes Python, build, fluxos do Judiciário, cobertura bilíngue e Vitest (374 arquivos, 9.169 testes, 12 ignorados), sobre o `main` com o PR #364, árvore versionada igual à do início.
