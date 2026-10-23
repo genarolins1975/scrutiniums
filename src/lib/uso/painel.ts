@@ -135,7 +135,10 @@ export type BuscasDoPeriodo = {
   total: number;
   /** Buscas cujo texto não foi gravado (fora do vocabulário do índice ou com cara de dado pessoal; src/lib/uso/busca.ts). */
   foraDoIndice: number;
-  /** Termos da janela, do mais para o menos buscado; `resultados` é o que a busca devolve hoje para o termo. */
+  /**
+   * Termos da janela, do mais para o menos buscado; `resultados` é o que a busca devolve hoje para o termo, com o resultado
+   * parcial contado como zero: nenhum destino tem todas as palavras, e é isso que o quadro "Buscas sem resultado" precisa ver.
+   */
   termos: TermoBuscado[];
 };
 
@@ -170,7 +173,10 @@ export async function getBuscasDoPeriodo(agora = new Date(), env: Record<string,
   }
   const indice = indiceDeBusca();
   const termos = Array.from(porTermo.values())
-    .map((x) => ({ ...x, resultados: buscar(indice, x.termo).resultados.length }))
+    .map((x) => {
+      const r = buscar(indice, x.termo);
+      return { ...x, resultados: r.parcial ? 0 : r.resultados.length };
+    })
     .sort((a, b) => b.comConta + b.semConta - (a.comConta + a.semConta) || a.termo.localeCompare(b.termo));
   const primeiroDia = primeiro[0]?.dia ?? null;
   return {

@@ -183,6 +183,39 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     }
   }, 120_000);
 
+  it("ciclo 2 da busca (23/10/2026): o primeiro resultado vem marcado antes da seta, a correção e o parcial se explicam", async () => {
+    const ctx = await contexto(1440, false);
+    try {
+      const { page, noLogin } = await abrir(ctx, "/");
+      const campo = page.locator(`${CAMPO} input[name=q]`);
+      const estado = page.locator("[data-barra-plataforma] #bp-busca-estado");
+      const opcoes = page.locator("[data-barra-plataforma] [role=option]");
+      await campo.click();
+      await page.keyboard.type("saneamneto");
+      await expect.poll(() => opcoes.count(), { timeout: 15_000 }).toBeGreaterThan(0);
+      await expect.poll(() => estado.textContent()).toContain("Mostrando resultados para “saneamento”");
+      // a opção que o Enter abre tem a marca antes de qualquer seta, sem virar a opção ativa do leitor de tela
+      expect(await opcoes.first().getAttribute("data-ativa")).toBe("");
+      expect(await campo.getAttribute("aria-activedescendant")).toBeNull();
+      // "mesmo assim": o termo como foi escrito, sem resultado, e o foco continua no campo
+      await page.locator("[data-barra-plataforma] button.bp-busca-acao", { hasText: "mesmo assim" }).click();
+      await expect.poll(() => opcoes.count()).toBe(0);
+      expect(await campo.evaluate((el) => el === document.activeElement)).toBe(true);
+      // a escolha acompanha o leitor até /buscar (Enter e "Ver na página de busca"): sem exato=1 a página corrigiria de novo
+      expect(await page.locator(`${CAMPO} input[name=exato]`).getAttribute("value")).toBe("1");
+      expect(await page.locator("[data-barra-plataforma] .bp-busca-rodape a").getAttribute("href")).toBe("/buscar?q=saneamneto&exato=1");
+      // parcial: nenhuma página tem as duas palavras; o rótulo diz por quais chegou ao mais próximo
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type("juros do cartão");
+      await expect.poll(() => estado.textContent(), { timeout: 15_000 }).toContain("O mais próximo, por “juros” e “cartão”");
+      expect(await opcoes.count()).toBeGreaterThan(1);
+      expect(noLogin).toEqual([]);
+      await page.close();
+    } finally {
+      await ctx.close();
+    }
+  }, 120_000);
+
   it("sem sessão, digitar não dispara requisição a página fechada (nenhum pré-carregamento cai no login)", async () => {
     const ctx = await contexto(1440, false);
     try {
