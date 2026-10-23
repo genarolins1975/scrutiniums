@@ -232,6 +232,19 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     }
   }, 120_000);
 
+  it("um motor só (ciclo 2 da busca, bloco 5): com sessão, a entrada do Setor Elétrico tem um campo além da barra, com o rótulo do filtro", async () => {
+    const ctx = await contexto(1440, true);
+    try {
+      const { page } = await abrir(ctx, "/setor-eletrico");
+      const fora = page.locator("form[role=search]:not([data-barra-plataforma] form)");
+      expect(await fora.count()).toBe(1);
+      expect(await page.locator("label[for=busca-local-q]").textContent()).toBe("Buscar só em Setor Elétrico");
+      await page.close();
+    } finally {
+      await ctx.close();
+    }
+  }, 120_000);
+
   it("sem sessão, digitar não dispara requisição a página fechada (nenhum pré-carregamento cai no login)", async () => {
     const ctx = await contexto(1440, false);
     try {
