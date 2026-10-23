@@ -56,6 +56,7 @@ export default function Page(){
   destinos={<section className="cp-section mx-auto max-w-page px-6" id="capitulos" aria-labelledby="titulo-capitulos"><div className="cp-section-head"><div><p className="rotulo cp-eyebrow">Mapa completo</p><h2 id="titulo-capitulos">Uma pergunta para cada dimensão</h2><p>Abra um capítulo para conhecer suas medidas, fontes candidatas e condições de comparação.</p></div><Link className="cp-button" href="/contas-publicas/dados">Consultar os indicadores</Link></div><IndiceFederal/></section>}
   artefato={
    <ModeloDidatico
+    recolhido
     id="cem-reais"
     titulo="Para onde vai cada R$ 100 pagos?"
     descricao="A régua reparte o que o orçamento federal pagou no ano por grupo de despesa, o que se compra. Bronze identifica juros e amortização."

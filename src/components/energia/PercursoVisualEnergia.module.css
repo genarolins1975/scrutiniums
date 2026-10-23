@@ -25,8 +25,13 @@
 @media(max-width:390px) { .botao { gap:5px;font-size:18px }.botao>span:first-child { padding-right:5px }.pergunta { font-size:13px } }
 .etapas,.detalhe { scroll-margin-top:150px }
 .voltar { display:inline-flex;align-items:center;min-height:44px;margin-top:16px;font-size:13px;color:var(--atlas-link);text-decoration:underline;text-underline-offset:4px }
+/* com as quatro etapas numa linha, logo acima do detalhe, a volta repete o que já está à vista; ela serve ao celular, onde as etapas ficam fora da tela */
+@media(min-width:1001px) { .voltar { display:none } }
 
 .etapas>button:hover .botao { border-color:var(--atlas-acento) }
 @media(min-width:761px) and (max-width:1000px) { .etapas { grid-template-columns:repeat(2,minmax(0,1fr));gap:24px }.botao { font-size:22px } }
-@media(max-width:390px) { .etapas { grid-template-columns:1fr;gap:28px }.etapas>button { max-width:340px;width:100%;justify-self:center }.botao { font-size:24px }.pergunta { font-size:14px } }
+/* até 390 px as quatro etapas seguem em duas colunas (a coluna única empilhava quatro gravuras inteiras e dobrava a entrada no celular, Iniciativa 4) */
+@media(max-width:390px) { .etapas { gap:10px }.botao { font-size:17px }.pergunta { font-size:13px } }
+/* antes da escolha, o detalhe e a volta ficam no HTML e fora da tela (as classes dão display e venceriam o [hidden] do navegador) */
+.detalhe[hidden],.voltar[hidden] { display:none }
 @media(forced-colors:active) { .botao { border-color:CanvasText }.etapas>button[aria-pressed=true] .botao { outline:2px solid Highlight } }

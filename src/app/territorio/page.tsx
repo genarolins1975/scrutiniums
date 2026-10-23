@@ -137,7 +137,14 @@ export default function EntradaTerritorio() {
                 ))}
               </ul>
 
-              <h3 className="mt-10 font-serif text-xl leading-snug text-carvao md:mt-14">Todos os painéis, por coleção</h3>
+              {/* o índice completo fica recolhido, como o "Mais destinos" do molde: os três painéis próprios seguem à vista
+                  (orçamento de comprimento da entrada, Iniciativa 4) */}
+              <details className="group/mais mt-6">
+                <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-carvao-muted hover:text-carvao">
+                  <span className="group-open/mais:hidden">Todos os painéis, por coleção ({colecoes.reduce((n, c) => n + c.paineis.length, 0)})</span>
+                  <span className="hidden group-open/mais:inline">Fechar a lista dos painéis</span>
+                </summary>
+              <h3 className="mt-4 font-serif text-xl leading-snug text-carvao">Todos os painéis, por coleção</h3>
               <p className="mt-1 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                 Os marcados com a origem são mantidos por outro observatório e aparecem aqui como atalho.
               </p>
@@ -159,6 +166,7 @@ export default function EntradaTerritorio() {
                   </section>
                 ))}
               </div>
+              </details>
             </div>
           </section>
         </>

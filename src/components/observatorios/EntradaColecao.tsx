@@ -74,6 +74,7 @@ export function EntradaColecao({
   secaoPropria,
   artefato,
   caminhos,
+  caminhosAVista,
   recolhidos,
   convite,
   metodo,
@@ -109,6 +110,8 @@ export function EntradaColecao({
   /** Um ModeloDidatico. */
   artefato?: ReactNode;
   caminhos?: readonly CaminhoEntrada[];
+  /** Quantas perguntas ficam à vista; o resto vai para "Mais perguntas", no HTML (sem o valor, todas à vista). */
+  caminhosAVista?: number;
   recolhidos?: ReactNode;
   convite?: ReactNode;
   metodo: ReactNode;
@@ -130,7 +133,7 @@ export function EntradaColecao({
     <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={classe ? `bg-papel ${classe}` : "bg-papel"} tipo={tipo}>
       <section aria-labelledby={idTitulo} className="border-b border-linha bg-marfim" data-fatia="abertura">
         {frescor}
-        <div className="mx-auto max-w-page px-6 pb-10 pt-8 md:pb-14 md:pt-12">
+        <div className="mx-auto max-w-page px-6 pb-10 pt-8 md:pb-12 md:pt-12">
           <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
             <RotuloContexto rota={rota} className="flex items-center gap-3 text-mineral" marca={<span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />} />
             {aoLadoDoRotulo}
@@ -149,7 +152,7 @@ export function EntradaColecao({
       {destinos && <div data-fatia="destinos">{destinos}</div>}
       {secaoPropria && <div data-fatia="secao-propria">{secaoPropria}</div>}
       {artefato && <div data-fatia="artefato">{artefato}</div>}
-      {caminhos && caminhos.length > 0 && <Caminhos caminhos={caminhos} hover={a.hover} idioma={idioma} />}
+      {caminhos && caminhos.length > 0 && <Caminhos caminhos={caminhos} hover={a.hover} idioma={idioma} aVista={caminhosAVista} />}
       {recolhidos && (
         <div data-fatia="recolhidos" className="mx-auto max-w-page px-6 pt-6">
           {recolhidos}
@@ -157,7 +160,7 @@ export function EntradaColecao({
       )}
       {convite && <div data-fatia="convite">{convite}</div>}
 
-      <div className="mx-auto max-w-page px-6 pb-14 pt-6 md:pb-16">
+      <div className="mx-auto max-w-page px-6 pb-10 pt-6 md:pb-12">
         <details className="border-t border-linha pt-4" data-fatia="metodo">
           <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">{t(idioma, "Método e fontes", "Method and sources")}</summary>
           <div className={`mt-2 space-y-3 text-sm leading-relaxed text-carvao-muted ${metodoLargo ? "" : "max-w-prose2"}`}>{metodo}</div>
@@ -195,17 +198,39 @@ export function Escala({ escala, nota, idioma = "pt" }: Readonly<{ escala: reado
   );
 }
 
-/** Fatia 7: perguntas para começar, cada uma com a resposta curta e o número do destino, quando ele tem. */
-function Caminhos({ caminhos, hover, idioma }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string; idioma: Idioma }>) {
-  const n = caminhos.length;
-  const quatro = n === 4 || n === 8;
+/** Fatia 7: perguntas para começar, cada uma com a resposta curta e o número do destino, quando ele tem. Com `aVista`, as primeiras
+ *  ficam à vista e o resto em "Mais perguntas", no HTML. */
+function Caminhos({ caminhos, hover, idioma, aVista }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string; idioma: Idioma; aVista?: number }>) {
+  const corte = aVista && aVista < caminhos.length ? aVista : caminhos.length;
+  const resto = caminhos.slice(corte);
   return (
-    <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-16" data-fatia="caminhos">
+    <section aria-labelledby="caminhos-titulo" className="mx-auto max-w-page px-6 py-10 md:py-12" data-fatia="caminhos">
       <h2 id="caminhos-titulo" className={H2}>
         {t(idioma, "Perguntas para começar", "Questions to start with")}
       </h2>
+      <GradeCaminhos caminhos={caminhos.slice(0, corte)} hover={hover} idioma={idioma} classe="mt-6" />
+      {resto.length > 0 && (
+        <details className="group/mais mt-4">
+          <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-carvao-muted hover:text-carvao">
+            <span className="group-open/mais:hidden">
+              {t(idioma, "Mais perguntas", "More questions")} ({resto.length})
+            </span>
+            <span className="hidden group-open/mais:inline">{t(idioma, "Menos perguntas", "Fewer questions")}</span>
+          </summary>
+          <GradeCaminhos caminhos={resto} hover={hover} idioma={idioma} classe="mt-2" />
+        </details>
+      )}
+    </section>
+  );
+}
+
+function GradeCaminhos({ caminhos, hover, idioma, classe }: Readonly<{ caminhos: readonly CaminhoEntrada[]; hover: string; idioma: Idioma; classe: string }>) {
+  const n = caminhos.length;
+  const quatro = n === 4 || n === 8;
+  return (
+    <>
       {/* quatro ou oito perguntas fecham linhas de quatro no desktop; as demais quantidades, linhas de três */}
-      <ul className={`mt-6 grid gap-px border border-linha bg-linha sm:grid-cols-2 ${quatro ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
+      <ul className={`${classe} grid gap-px border border-linha bg-linha sm:grid-cols-2 ${quatro ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
         {caminhos.map((c, i) => (
           // o último item ocupa o que sobra da linha, em duas e em três colunas, para não deixar célula vazia
           <li
@@ -229,7 +254,7 @@ function Caminhos({ caminhos, hover, idioma }: Readonly<{ caminhos: readonly Cam
           </li>
         ))}
       </ul>
-    </section>
+    </>
   );
 }
 
@@ -260,7 +285,7 @@ export function DestinosColecao({
   const resto = itens.slice(DESTINOS_A_VISTA);
   const nMais = mais ? mais.n : resto.length;
   return (
-    <section id={id} aria-labelledby="destinos-titulo" className="mx-auto max-w-page scroll-mt-24 px-6 py-10 md:py-16">
+    <section id={id} aria-labelledby="destinos-titulo" className="mx-auto max-w-page scroll-mt-24 px-6 py-10 md:py-12">
       <h2 id="destinos-titulo" className={H2}>
         {titulo ?? t(idioma, "Por onde seguir", "Where to go next")}
       </h2>

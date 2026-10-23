@@ -8,12 +8,17 @@ import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { observarAncoras, guardarAncora } from "./navegacao-ancoras";
 import styles from "./PercursoVisualEnergia.module.css";
 
-/** Botões nativos: todos acessíveis por Tab; setas também percorrem as etapas. */
+/**
+ * Botões nativos: todos acessíveis por Tab; setas também percorrem as etapas. O detalhe abre quando o leitor escolhe uma etapa
+ * (ou chega por #etapa-…): até lá, os quatro cartões trazem a pergunta e o que se encontra, e o detalhe da primeira etapa fica no
+ * HTML, recolhido (orçamento de comprimento da entrada, Iniciativa 4, 22/10/2026).
+ */
 export function PercursoVisualEnergia() {
   const idioma = useIdioma();
   const tx = useTx();
   const ETAPAS_ENERGIA = ETAPAS_ENERGIA_IDIOMAS[idioma];
   const [ativa, setAtiva] = useState(0);
+  const [escolhida, setEscolhida] = useState(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
   useEffect(() => observarAncoras(hash => {
     if (hash === "#mapa-conceitual") {
@@ -24,10 +29,12 @@ export function PercursoVisualEnergia() {
     const i = ETAPAS_ENERGIA.findIndex(e => hash === `#etapa-${e.id}`);
     if (i < 0) return;
     setAtiva(i);
+    setEscolhida(true);
     requestAnimationFrame(() => document.getElementById("percurso-energia")?.scrollIntoView({ block: "start" }));
   }), [ETAPAS_ENERGIA]);
   const selecionar = (i: number) => {
     setAtiva(i);
+    setEscolhida(true);
     guardarAncora(`#etapa-${ETAPAS_ENERGIA[i].id}`);
   };
   const etapa = ETAPAS_ENERGIA[ativa];
@@ -39,7 +46,7 @@ export function PercursoVisualEnergia() {
     </div>
     <div id="energia-etapas" className={styles.etapas} role="group" aria-label={tx("Etapas do caminho da energia", "Stages of the path of energy")}>
       {ETAPAS_ENERGIA.map((e, i) => <button key={e.id} id={`etapa-${e.id}`} type="button"
-        ref={el => { botoes.current[i] = el; }} aria-pressed={ativa === i} aria-controls="percurso-detalhe"
+        ref={el => { botoes.current[i] = el; }} aria-pressed={escolhida && ativa === i} aria-controls="percurso-detalhe"
         onClick={() => {
           selecionar(i);
           if (window.matchMedia("(max-width: 760px)").matches) requestAnimationFrame(() => {
@@ -53,12 +60,12 @@ export function PercursoVisualEnergia() {
           event.preventDefault(); selecionar(seguinte); botoes.current[seguinte]?.focus();
         }}>
         <GravuraEnergia etapa={e.id} />
-        <span className={styles.botao}><span>{e.numero}</span>{e.nome}<span className={styles.sinal} aria-hidden="true">{ativa === i ? "✓" : "↓"}</span></span>
+        <span className={styles.botao}><span>{e.numero}</span>{e.nome}<span className={styles.sinal} aria-hidden="true">{escolhida && ativa === i ? "✓" : "↓"}</span></span>
         <span className={styles.pergunta}>{e.pergunta}</span>
         <span className={styles.encontra}>{e.encontra}</span>
       </button>)}
     </div>
-    <div id="percurso-detalhe" className={styles.detalhe} role="region" aria-labelledby="percurso-etapa-titulo">
+    <div id="percurso-detalhe" className={styles.detalhe} role="region" aria-labelledby="percurso-etapa-titulo" hidden={!escolhida}>
       <div className={styles.miniatura}>
         <GravuraEnergia etapa={etapa.id} />
       </div>
@@ -70,7 +77,7 @@ export function PercursoVisualEnergia() {
       </div>
       <aside className={styles.conceito}><span className={styles.sobretitulo}>{tx("Uma distinção importante", "An important distinction")}</span><p>{etapa.conceito}</p></aside>
     </div>
-    <a className={styles.voltar} href="#energia-etapas">{tx("Escolher outra etapa ↑", "Choose another stage ↑")}</a>
+    <a className={styles.voltar} href="#energia-etapas" hidden={!escolhida}>{tx("Escolher outra etapa ↑", "Choose another stage ↑")}</a>
     <p className={styles.nota}>
       {tx(
         "Ilustrações conceituais geradas por IA. Percurso didático simplificado: não representa a topologia ou o despacho do SIN. Geração distribuída e sistemas isolados têm outras configurações.",

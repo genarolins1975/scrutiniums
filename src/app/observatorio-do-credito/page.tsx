@@ -15,10 +15,7 @@ import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
-import { paginaCredito } from "@/lib/credito/navegacao";
 import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
-import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
-import { Recolhido } from "@/components/observatorios/Recolhido";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { CircuitoCredito } from "@/components/observatorios/CircuitoCredito";
 import { circuitoCredito } from "@/lib/observatorios/entradas/economia";
@@ -128,37 +125,6 @@ function numeroDaArea(area: string): NumeroPorta | undefined {
   return undefined;
 }
 
-/**
- * "Para o seu caso": as consultas de juros do Crédito (páginas com conta), cada uma com um número real da publicação
- * do Banco Central, para o leitor ver antes do clique o que encontra lá.
- */
-function consultasDoLeitor() {
-  const juros = goldJuros();
-  const banco = paginaCredito("quanto-meu-banco-cobra");
-  const simulador = paginaCredito("simulador-da-parcela");
-  let prova: string | null = null;
-  if (juros) {
-    const pf = juros.modalidades.filter((m) => m.segmento === "PF");
-    const maior = [...(pf.length ? pf : juros.modalidades)].sort((a, b) => b.stats.n - a.stats.n)[0];
-    const instituicoes = new Set(juros.modalidades.flatMap((m) => m.ranking.map((r) => r.cnpj8))).size;
-    prova = `${instituicoes} instituições em ${juros.modalidades.length} modalidades. Em ${rotuloModalidade(maior.modalidade).toLowerCase()}, a mediana entre ${maior.stats.n} instituições foi de ${numJuros(maior.stats.mediana)}% ao ano na semana de ${janelaJuros(maior.janela)} (Banco Central).`;
-  }
-  return [
-    {
-      href: banco.href,
-      titulo: banco.titulo,
-      resumo: "A taxa de juros que o seu banco informou ao Banco Central na modalidade escolhida, ao lado da mediana e da distribuição entre as instituições. Taxa não é CET: a página diz o que fica de fora.",
-      prova,
-    },
-    {
-      href: simulador.href,
-      titulo: simulador.titulo,
-      resumo: "Parcela, total pago e juros pela tabela Price, com a taxa publicada para o seu banco ou a do seu contrato, e quanto o CET muda o custo. É cálculo, não previsão nem oferta.",
-      prova: null,
-    },
-  ];
-}
-
 /** As perguntas que o acervo responde — o mesmo catálogo didático da aplicação. */
 const AREAS = [
   {
@@ -240,13 +206,14 @@ const DIFERENCAS = [
 
 export default function ObservatorioPublicoPage() {
   const { numeros, vintages } = numerosVivos();
-  const consultas = consultasDoLeitor();
   const r = resumoDiario();
   const geradoEm = geradoEmPublicado();
 
   // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026), com o título aprovado pelo dono em 22/10/2026: os números
   // vivos na escala, as consultas no "Para você", o circuito do crédito como modelo didático, as áreas como caminhos (link e número
-  // da gold de cada uma), o convite do aperitivo à vista; o diagnóstico do dia, o que muda em relação às fontes e a coleta, recolhidos
+  // da gold de cada uma, quatro à vista e quatro em "Mais perguntas"), o convite do aperitivo à vista; o diagnóstico do dia, o que
+  // muda em relação às fontes e a coleta, no método. Sem a fatia de destinos: a taxa por banco e o simulador estão no "Para você",
+  // e o painel completo, no convite e nas perguntas (orçamento de comprimento, decisão do dono de 23/10/2026)
   return (
     <>
       <PublicHeaderView />
@@ -259,76 +226,11 @@ export default function ObservatorioPublicoPage() {
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/observatorio-do-credito"]} conteiner="mx-auto max-w-page px-6" />}
         escala={numeros}
         paraVoce={
-          <ParaVoce entrada="/observatorio-do-credito">
-            <div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
-              {consultas.filter((c) => c.href !== "/observatorio-do-credito/quanto-meu-banco-cobra").map((c) => (
-                <article key={c.href} className="border-t border-carvao pt-5">
-                  <h3 className="font-serif text-xl leading-snug text-carvao">
-                    <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="underline decoration-linha underline-offset-8 transition-colors hover:text-bronze">
-                      {c.titulo}
-                      <SeloComConta href={c.href} idioma="pt" className="font-sans" />
-                    </Link>
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{c.resumo}</p>
-                  {c.prova && <p className="mt-3 border-l-2 border-bronze pl-3 text-sm leading-relaxed text-carvao">{c.prova}</p>}
-                </article>
-              ))}
-            </div>
-          </ParaVoce>
+          <ParaVoce entrada="/observatorio-do-credito" />
         }
-        destinos={destinosDaColecao("credito", { proprio: "/observatorio-do-credito" })}
-        artefato={<CircuitoCredito circuito={circuitoCredito()} />}
+        artefato={<CircuitoCredito circuito={circuitoCredito()} recolhido />}
+        caminhosAVista={4}
         caminhos={AREAS.map((a) => ({ pergunta: a.pergunta, resumo: a.detalhe, href: a.href, rotulo: a.titulo, numero: numeroDaArea(a.titulo) }))}
-        recolhidos={
-          <>
-            {r && (
-              <Recolhido id="hoje" titulo="O diagnóstico de hoje" resumo="A frase do dia, montada por regras sobre as séries oficiais.">
-                <p className="max-w-prose2 text-base leading-relaxed text-carvao">{r.frase}</p>
-                <p className="rotulo mt-6 text-mineral">
-                  Frase montada por regras determinísticas sobre as séries oficiais — nunca texto
-                  livre. Atualizada a cada execução do pipeline.
-                </p>
-                <p className="mt-8">
-                  <Link
-                    href="/resumo"
-                  prefetch={prefetchDoLink("/resumo")}
-                    className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
-                  >
-                    Ler o resumo completo
-                    <ComConta />
-                  </Link>
-                </p>
-              </Recolhido>
-            )}
-            <Recolhido id="metodo-credito" titulo="O que muda em relação a consultar as fontes direto" resumo="Origem de cada número, ausência que não vira zero e conceitos separados.">
-              <div className="grid gap-x-10 gap-y-12 md:grid-cols-2">
-                {DIFERENCAS.map((d) => (
-                  <article key={d.t}>
-                    <h3 className="font-serif text-lg leading-snug text-carvao">{d.t}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{d.d}</p>
-                  </article>
-                ))}
-              </div>
-              <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
-                <Link
-                  href="/observatorio-do-credito/metodologia"
-                  prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
-                  className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
-                >
-                  Metodologia e fontes
-                  <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
-                </Link>
-                <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                  Glossário
-                </Link>
-                <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                  Indicadores com definição
-                  <ComConta />
-                </Link>
-              </div>
-            </Recolhido>
-          </>
-        }
         convite={
           <div className="border-b border-linha bg-papel">
           <ConviteAperitivo
@@ -344,7 +246,57 @@ export default function ObservatorioPublicoPage() {
           />
           </div>
         }
+        metodoLargo
         metodo={
+          <>
+          {r && (
+            <div id="hoje" className="space-y-4 pb-10">
+              <h3 className="font-serif text-xl text-carvao">O diagnóstico de hoje</h3>
+              <p className="max-w-prose2 text-base leading-relaxed text-carvao">{r.frase}</p>
+              <p className="rotulo mt-6 text-mineral">
+                Frase montada por regras determinísticas sobre as séries oficiais — nunca texto
+                livre. Atualizada a cada execução do pipeline.
+              </p>
+              <p className="mt-8">
+                <Link
+                  href="/resumo"
+                  prefetch={prefetchDoLink("/resumo")}
+                  className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
+                >
+                  Ler o resumo completo
+                  <ComConta />
+                </Link>
+              </p>
+            </div>
+          )}
+          <div id="metodo-credito" className="space-y-4 pb-10">
+            <h3 className="font-serif text-xl text-carvao">O que muda em relação a consultar as fontes direto</h3>
+            <div className="grid gap-x-10 gap-y-12 md:grid-cols-2">
+              {DIFERENCAS.map((d) => (
+                <article key={d.t}>
+                  <h4 className="font-serif text-lg leading-snug text-carvao">{d.t}</h4>
+                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{d.d}</p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
+              <Link
+                href="/observatorio-do-credito/metodologia"
+                prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
+                className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
+              >
+                Metodologia e fontes
+                <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
+              </Link>
+              <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+                Glossário
+              </Link>
+              <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+                Indicadores com definição
+                <ComConta />
+              </Link>
+            </div>
+          </div>
           <div id="acesso" className="space-y-4">
             <h3 className="font-serif text-xl text-carvao">Coleta diária, sem custo</h3>
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
@@ -384,10 +336,12 @@ export default function ObservatorioPublicoPage() {
               {ACESSO.leitura} {ACESSO.conta}
             </p>
           </div>
+          </>
         }
         frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/observatorio-do-credito"]} variante="metodo" />}
       />
-      <Footer />
+      {/* rodapé compacto, como nas páginas abertas dos outros temas (aperitivos): os mesmos links, sem a coluna de apresentação */}
+      <Footer compacto />
     </>
   );
 }

@@ -126,7 +126,7 @@ Entre os destinos e o artefato cabe **uma** seção própria da coleção (`seca
 
 **Estados de prontidão** têm forma única, `SeloProntidao` (`src/components/observatorios/SeloProntidao.tsx`): glifo e texto, nunca só cor, em quatro valores (publicado, cobertura parcial, em preparação, piloto). Destino em preparação nunca é link. Nada de "Versão em desenvolvimento", "Em desenvolvimento", "(previsto)" ou "Estados · Piloto" escritos à mão; o teste do molde reprova as formas antigas no código.
 
-**Orçamento de comprimento** (medido por `scripts/ux-medidas.mjs`): entrada de observatório e de coleção até 6.500 px a 1440 e 11.000 a 390; página aperitivo até 2.500 e 4.500; porta `/perguntas/*` até 3.500 e 7.000; página aberta do Crédito até 3.500 e 7.000. Acima disso, recolher, nunca apagar.
+**Orçamento de comprimento** (medido por `scripts/ux-medidas.mjs`): entrada de observatório e de coleção até 6.500 px a 1440 e 11.000 a 390; página aperitivo até 2.500 e 4.500; porta `/perguntas/*` até 3.500 e 7.000; página aberta do Crédito até 3.500 e 7.000. Acima disso, recolher, nunca apagar. Sem exceção (decisão do dono de 22/10/2026: "seguir sempre o padrão"); as entradas são conferidas no build por `src/tests/ux-orcamentos-comprimento.test.ts`. Na página aberta do Crédito, a fatia de destinos sai porque repetia o "Para você" e o convite (decisão do dono de 23/10/2026).
 
 Na entrada de um observatório inteiro, combinar: identidade e promessa curta → explicação visual do tema → amostra equilibrada de indicadores com referências → caminhos por perguntas → índice temático completo → fontes e atualidade acessíveis.
 
