@@ -116,6 +116,11 @@ export type MapaCoropleticoProps = {
    * como medida da região inteira. Sem a prop, nada muda.
    */
   detalheRegiao?: (id: string) => string | null | undefined;
+  /**
+   * Dentro da FiguraAnalitica do kit de painel (Iniciativa 1 de 23/10/2026), que traz a tabela equivalente do servidor: o mapa não
+   * repete a sua. Sem a prop, nada muda.
+   */
+  semTabela?: boolean;
 };
 
 /** Largura usada no HTML do servidor, antes da medição real (a mesma de GraficoLinhas). */
@@ -328,6 +333,7 @@ export function MapaCoropletico({
   periodo,
   nota,
   detalheRegiao,
+  semTabela = false,
 }: MapaCoropleticoProps) {
   const idioma = useIdioma();
   const tx = useTx();
@@ -937,7 +943,7 @@ export function MapaCoropletico({
         {nota && <p>{nota}</p>}
       </div>
 
-      <TabelaRegioes titulo={titulo} linhas={linhasTabela} classes={classes} casas={casas} unidade={unidade} rotulo={rotulo} selecionado={selecionado} />
+      {!semTabela && <TabelaRegioes titulo={titulo} linhas={linhasTabela} classes={classes} casas={casas} unidade={unidade} rotulo={rotulo} selecionado={selecionado} />}
     </div>
   );
 }
