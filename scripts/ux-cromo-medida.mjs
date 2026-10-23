@@ -11,17 +11,27 @@ export const ORCAMENTO = { 1440: 230, 390: 200 };
 export const TOPO_H1_MAXIMO = { 1440: 600, 390: 844 };
 
 /**
- * Espera a página assentar antes de medir (roda no Node, com a página do Playwright): rede quieta, fontes carregadas, com sessão
- * a faixa de consulta aberta ([data-aviso-consulta-aberta]) fora da tela, e o cromo estável em leituras seguidas. A faixa vem no
- * HTML do servidor e só some quando o React hidrata e resolve a sessão, e outras peças do cabeçalho entram pelo cliente; com a
- * CPU disputada, a rede assenta antes disso e a medida pegava o layout de antes da hidratação. Achado no CI do main (run 1255,
- * 23/10/2026): /eficiencia-estatal a 390 px com sessão mediu 333 px; hidratada, mede 195 px. Com a CPU 20 vezes mais lenta, a
- * medida antiga reproduz os 333 px, e esperar só a faixa dava 173 px. Devolve false se a faixa não sumir no prazo: com sessão
- * ela não deve aparecer, e quem mede reprova.
+ * Espera a página assentar antes de medir (roda no Node, com a página do Playwright). Com a CPU disputada, a rede assenta antes de
+ * o React hidratar, e a medida pegava o layout do HTML do servidor. Achado no CI do main (run 1255, 23/10/2026): a 390 px com
+ * sessão, /eficiencia-estatal mediu 333 px, com a faixa de consulta aberta ainda na tela; hidratada, mede 195 px. Por isso,
+ * nesta ordem:
+ * 1. rede quieta e fontes carregadas;
+ * 2. a barra comum hidratada (o React já ligou a ela as suas propriedades internas);
+ * 3. a consulta de sessão do navegador (/api/auth/estado, src/components/acesso/sessao.ts) concluída, com prazo curto para a
+ *    página que não a faz;
+ * 4. com sessão, a faixa de consulta aberta ([data-aviso-consulta-aberta]) fora da tela;
+ * 5. o cromo igual em duas leituras seguidas, porque a conta e a faixa de frescor ainda se acomodam depois da sessão.
+ * Devolve false se, com sessão, a faixa não sumir: ela não deve aparecer para quem tem conta, e quem mede reprova.
  */
 export async function esperarPaginaAssentada(page, comSessao, prazo = 30_000) {
   await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
   await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  await page.waitForFunction(() => {
+    const alvo = document.querySelector(".bp") || document.querySelector("h1");
+    return !alvo || Object.keys(alvo).some((k) => k.startsWith("__reactFiber$") || k.startsWith("__reactProps$"));
+  }, undefined, { timeout: prazo }).catch(() => undefined);
+  await page.waitForFunction(() => performance.getEntriesByType("resource").some((e) => e.name.includes("/api/auth/estado")), undefined, { timeout: 5_000 })
+    .catch(() => undefined);
   const semFaixa = !comSessao
     || (await page.waitForFunction(() => !document.querySelector("[data-aviso-consulta-aberta]"), undefined, { timeout: prazo }).then(() => true, () => false));
   // duas leituras iguais seguidas, com 300 ms entre elas, no máximo por 15 s
