@@ -1,0 +1,353 @@
+{
+ "data": "2026-10-23",
+ "build": "qTeHvFxDqYWAQ79sbKjGm",
+ "maquina": "4 vCPU, 16 GB",
+ "comando": "npm run evidencias -- --rotas /buscar?q=hospitais /buscar?q=agências reguladoras /buscar?q=saneamneto /setor-eletrico /setor-eletrico/aprenda --saida docs/ux-2026-10-23/busca-pr5 --larguras 390,1440",
+ "tempo": "1 min 12 s",
+ "resultados": [
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_hospitais-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_hospitais-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_hospitais-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_hospitais-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_saneamneto-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_saneamneto-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_saneamneto-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_saneamneto-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/entrar?de=%2Fsetor-eletrico",
+   "barra": false,
+   "cromo": 0,
+   "topoH1": 210,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico-390-sem-sessao.jpg",
+   "primeiraTela": "setor_eletrico-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/entrar?de=%2Fsetor-eletrico",
+   "barra": false,
+   "cromo": 0,
+   "topoH1": 206,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico-1440-sem-sessao.jpg",
+   "primeiraTela": "setor_eletrico-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/setor-eletrico",
+   "barra": true,
+   "cromo": 195,
+   "topoH1": 287,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico-390-com-sessao.jpg",
+   "primeiraTela": "setor_eletrico-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/setor-eletrico",
+   "barra": true,
+   "cromo": 222,
+   "topoH1": 312,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico-1440-com-sessao.jpg",
+   "primeiraTela": "setor_eletrico-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico/aprenda",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/setor-eletrico/aprenda",
+   "barra": true,
+   "cromo": 183,
+   "topoH1": 229,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico_aprenda-390-sem-sessao.jpg",
+   "primeiraTela": "setor_eletrico_aprenda-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico/aprenda",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/setor-eletrico/aprenda",
+   "barra": true,
+   "cromo": 228,
+   "topoH1": 278,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico_aprenda-1440-sem-sessao.jpg",
+   "primeiraTela": "setor_eletrico_aprenda-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico/aprenda",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/setor-eletrico/aprenda",
+   "barra": true,
+   "cromo": 183,
+   "topoH1": 229,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico_aprenda-390-com-sessao.jpg",
+   "primeiraTela": "setor_eletrico_aprenda-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico/aprenda",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/setor-eletrico/aprenda",
+   "barra": true,
+   "cromo": 228,
+   "topoH1": 278,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico_aprenda-1440-com-sessao.jpg",
+   "primeiraTela": "setor_eletrico_aprenda-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}
