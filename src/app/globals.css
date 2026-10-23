@@ -9,6 +9,20 @@
   social, que não lê CSS. Nenhum outro arquivo escreve hexadecimal nem redefine --cor-* (src/tests/design-tokens.test.ts).
 */
 :root {
+  /* Escala tipográfica única (Iniciativa 5 do parecer de UX de 21/10/2026) como variáveis: as classes .t-*, .ed-*, .rotulo e
+     .numero-* abaixo leem daqui, e a aplicação do Crédito, que não carrega este arquivo, lê as mesmas pelo tokens.css derivado
+     (Iniciativa 2 do parecer de UX de 23/10/2026). Nenhum texto fora destes passos. */
+  --tipo-rotulo: 0.75rem;
+  --tipo-meta: 0.8125rem;
+  --tipo-tabela: 0.875rem;
+  --tipo-corpo: 1rem;
+  --tipo-lead: 1.0625rem;
+  --tipo-h3: 1.25rem;
+  --tipo-h2: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  --tipo-h1: clamp(2rem, 1.4rem + 2.2vw, 3.2rem);
+  --tipo-numero-p: 1.35rem;
+  --tipo-numero-m: 1.75rem;
+  --tipo-numero-g: 2.25rem;
   --cor-carvao: #1a1d21;
   --cor-carvao-soft: #2a2e33;
   --cor-carvao-muted: #3d4147;
@@ -71,50 +85,6 @@
   /* Neutros frios das barras não focais e das categorias de apoio (Contas Estaduais): marcação, nunca texto. */
   --cor-neutro-frio: #607e80;
   --cor-neutro-frio-claro: #c4cccb;
-  /* Aplicação do Crédito (public/obs, Iniciativa 5): estados, eixos e tema escuro com os valores que ela já usava, agora lidos
-     daqui. Papel, tinta, linha, superfície e destaque são os da plataforma; a Iniciativa 8 reconcilia o resto com a paleta. */
-  --cor-credito-positivo: #177245;
-  --cor-credito-positivo-fundo: #e3efe4;
-  --cor-credito-negativo: #b32626;
-  --cor-credito-negativo-fundo: #f6e6e0;
-  --cor-credito-alerta: #925d0b; /* 4,63:1 sobre o próprio fundo */
-  --cor-credito-alerta-fundo: #f4ead3;
-  --cor-credito-relevante: #c2540a; /* nível "relevante" da central de alertas */
-  --cor-credito-previsao: #6d51a8;
-  --cor-credito-previsao-fundo: #ece5f2;
-  --cor-credito-teal: #0e707f; /* 4,60:1 sobre a própria tinta a 12% */
-  --cor-credito-indisponivel: #6e6f69; /* 4,61:1 sobre a superfície */
-  --cor-credito-pix: #0a6d61;
-  --cor-credito-grade: #e9e3d4;
-  --cor-credito-eixo: rgb(138 134 122 / 0.4);
-  --cor-credito-eixo-texto: #7c7970;
-  --cor-credito-sobre-acento-escuro: #10141a; /* texto sobre o acento no tema escuro */
-  --cor-credito-escuro-bg: #14171a;
-  --cor-credito-escuro-surface: #1e2226;
-  --cor-credito-escuro-surface-2: #262b30;
-  --cor-credito-escuro-surface-3: #2f353b;
-  --cor-credito-escuro-text: #ece7db;
-  --cor-credito-escuro-text-2: #c0bbad;
-  --cor-credito-escuro-text-3: #979382; /* 4,63:1 sobre --surface-2 escuro */
-  --cor-credito-escuro-border: #32373c;
-  --cor-credito-escuro-border-2: #454a50;
-  --cor-credito-escuro-accent: #b08a67;
-  --cor-credito-escuro-accent-soft: #33291f;
-  --cor-credito-escuro-accent-ink: #cbaa88;
-  --cor-credito-escuro-positivo: #56b384;
-  --cor-credito-escuro-positivo-fundo: #1d3229;
-  --cor-credito-escuro-negativo: #d98080;
-  --cor-credito-escuro-negativo-fundo: #3a2426;
-  --cor-credito-escuro-alerta: #d3a55a;
-  --cor-credito-escuro-alerta-fundo: #392f1c;
-  --cor-credito-escuro-previsao: #a893d4;
-  --cor-credito-escuro-previsao-fundo: #2e2740;
-  --cor-credito-escuro-teal: #5cb3c2;
-  --cor-credito-escuro-indisponivel: #969387; /* 4,64:1 sobre a superfície escura */
-  --cor-credito-escuro-pix: #4ecdc0;
-  --cor-credito-escuro-grade: #23282c;
-  --cor-credito-escuro-eixo: #3c4147;
-  --cor-credito-escuro-eixo-texto: #9a958a;
   /* Valor negativo sem vermelho (déficit e saldo negativo nas Contas Federais): 6,7:1 sobre o papel, serve de texto e de barra. */
   --cor-negativo: #65516f;
   /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
@@ -280,24 +250,24 @@ body {
    Em @layer components para aceitarem as variantes do Tailwind (sm:numero-g). */
 @layer components {
   /* títulos em serifa, peso 400; H1 de 32 px no celular a 51 px no desktop */
-  .t-h1 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: clamp(2rem, 1.4rem + 2.2vw, 3.2rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
-  .t-h2 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
-  .t-h3 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: 1.25rem; line-height: 1.25; }
+  .t-h1 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: var(--tipo-h1); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
+  .t-h2 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: var(--tipo-h2); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+  .t-h3 { font-family: var(--font-serif), Georgia, serif; font-weight: 400; font-size: var(--tipo-h3); line-height: 1.25; }
   /* abertura: 16 px no celular, 17 px a partir de 768 px */
-  .t-lead { font-size: 1rem; line-height: 1.55; }
-  .t-corpo { font-size: 1rem; line-height: 1.55; }
-  .t-tabela { font-size: 0.875rem; line-height: 1.45; }
+  .t-lead { font-size: var(--tipo-corpo); line-height: 1.55; }
+  .t-corpo { font-size: var(--tipo-corpo); line-height: 1.55; }
+  .t-tabela { font-size: var(--tipo-tabela); line-height: 1.45; }
   /* metadados, notas, fontes e ressalvas: 13 px */
-  .t-meta { font-size: 0.8125rem; line-height: 1.5; }
+  .t-meta { font-size: var(--tipo-meta); line-height: 1.5; }
   /* rótulo editorial em caixa alta: 12 px, o piso (decisão do dono de 22/10/2026: a caixa alta espaçada fica como identidade) */
-  .rotulo { font-family: var(--font-label), system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.75rem; }
+  .rotulo { font-family: var(--font-label), system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: var(--tipo-rotulo); }
   /* números de destaque: três tamanhos só, sempre em serifa com algarismos alinhados e tabulares */
   .numero-g, .numero-m, .numero-p { font-family: var(--font-serif), Georgia, serif; font-weight: 400; line-height: 1.1; font-variant-numeric: lining-nums tabular-nums; }
-  .numero-g { font-size: 2.25rem; }
-  .numero-m { font-size: 1.75rem; }
-  .numero-p { font-size: 1.35rem; }
+  .numero-g { font-size: var(--tipo-numero-g); }
+  .numero-m { font-size: var(--tipo-numero-m); }
+  .numero-p { font-size: var(--tipo-numero-p); }
 }
-@media (min-width: 768px) { .t-lead { font-size: 1.0625rem; } }
+@media (min-width: 768px) { .t-lead { font-size: var(--tipo-lead); } }
 
 /* Skeleton pulsante discreto */
 @keyframes skeleton-pulse {
@@ -530,9 +500,9 @@ html[data-recorte="pendente"] #conteudo {
 .ed-pagina { width: 100%; max-width: 77.5rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }
 
 /* Aliases da escala única (.t-h1, .t-h2, .t-h3, .t-lead), até a Iniciativa 6 migrar os componentes. */
-.ed-h1 { font-weight: 400; font-size: clamp(2rem, 1.4rem + 2.2vw, 3.2rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
-.ed-h2 { font-weight: 400; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
-.ed-h3 { font-weight: 400; font-size: 1.25rem; line-height: 1.25; }
+.ed-h1 { font-weight: 400; font-size: var(--tipo-h1); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; }
+.ed-h2 { font-weight: 400; font-size: var(--tipo-h2); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+.ed-h3 { font-weight: 400; font-size: var(--tipo-h3); line-height: 1.25; }
 .ed-lead { font-size: 1rem; line-height: 1.55; }
 @media (min-width: 768px) { .ed-lead { font-size: 1.0625rem; } }
 

@@ -37,8 +37,9 @@ describe("molde de abertura do Crédito: contrato no código", () => {
   });
 
   it("os ativos alterados sobem de versão (cache imutável)", () => {
-    // 15 e 7: Iniciativa 2 do parecer de UX de 23/10/2026 (sem barra lateral; o rótulo de contexto da plataforma no Início do painel)
-    expect(html).toContain("/observatorios.css?v=15");
+    // 15 e 7: Iniciativa 2 do parecer de UX de 23/10/2026 (sem barra lateral; o rótulo de contexto da plataforma no Início do painel);
+    // 16: PR 2 da mesma iniciativa (escala tipográfica da plataforma, sem tema escuro)
+    expect(html).toContain("/observatorios.css?v=16");
     expect(html).toContain("/obs/editorial.js?v=7");
   });
 });
