@@ -1,6 +1,6 @@
 ### Evidências de página (2026-10-23)
 
-Build GJj3vvkj-5fb80sIpCKyp, `next start` local com banco temporário e sessão de teste. Máquina: 2 vCPU, 8 GB. Comando: `npm run evidencias -- --rotas /app/observatorios --saida docs/ux-2026-10-23/mapa/depois-conta-que-volta --larguras 390,1440 --modos com --conta volta`. Tempo: 0 min 10 s.
+Build 5250fQWCk-bZ_h6FnW6Hr, `next start` local com banco temporário e sessão de teste. Máquina: 2 vCPU, 8 GB. Comando: `npm run evidencias -- --rotas /app/observatorios --saida docs/ux-2026-10-23/mapa/depois-conta-que-volta --larguras 390,1440 --modos com --conta volta`. Tempo: 0 min 09 s.
 
 Cromo: do topo da barra comum ao início do conteúdo, em px, com o orçamento da Iniciativa 2 a 390 e 1440 px. Axe: violações WCAG 2.1 A e AA (regra e número de nós). Login: requisições feitas pela página (arquivos, dados, APIs) que caíram em /entrar; o redirecionamento da própria página aparece na coluna Endereço final.
 

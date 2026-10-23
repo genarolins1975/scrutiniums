@@ -36,12 +36,11 @@ export default async function EncontreOPainelPagina() {
   const listaRecortes = recortes.status === "fulfilled" ? recortes.value : [];
   const listaAlertas = alertas.status === "fulfilled" ? alertas.value : [];
 
-  const colecaoNoMapa = (id: string) => secoes.flatMap((o) => o.colecoes).find((c) => c.id === id);
   const retomar: Retomar = {
     continuar: ultimo && {
       ...ultimo,
       observatorioNome: OBSERVATORIOS.find((o) => o.id === ultimo.observatorio)!.nomeCurto,
-      pergunta: ultimo.colecao ? (colecaoNoMapa(ultimo.colecao)?.pergunta ?? null) : OBSERVATORIOS.find((o) => o.id === ultimo.observatorio)!.pergunta,
+      pergunta: ultimo.colecao ? null : OBSERVATORIOS.find((o) => o.id === ultimo.observatorio)!.pergunta,
     },
     recortes: listaRecortes.slice(0, 3).map((r) => ({ titulo: r.titulo, caminho: r.caminho, colecao: colecaoDoCaminho(r.caminho)?.nome ?? null })),
     totalRecortes: listaRecortes.length,

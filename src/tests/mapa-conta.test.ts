@@ -89,7 +89,10 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
       const id = "mapa-volta";
       await db.insert(schema.users).values({ id, email: `${id}@example.invalid`, emailVerifiedAt: agora, phoneVerifiedAt: agora, onboardingStatus: "COMPLETE", createdAt: agora, updatedAt: agora });
       await db.insert(schema.sessions).values({ id: `${id}-sessao`, userId: id, tokenHash: createHash("sha256").update(TOKEN_VOLTA).digest("hex"), expiresAt: new Date(Date.now() + 3_600_000), createdAt: agora });
-      await db.insert(schema.recortesSalvos).values({ id: `${id}-r1`, userId: id, titulo: "PLD do Sudeste", caminho: "/setor-eletrico/pld?submercado=SE", observatorio: "energia", criadoEm: agora });
+      // quatro recortes: o mapa mostra os três mais recentes e o link para todos
+      for (const [i, caminho] of ["/setor-eletrico/pld?submercado=SE", "/gas-natural/gas-de-cozinha?uf=PE", "/saneamento/municipio/2611606", "/observatorio/payroll-lending-aging"].entries()) {
+        await db.insert(schema.recortesSalvos).values({ id: `${id}-r${i}`, userId: id, titulo: `Recorte ${i + 1}`, caminho, observatorio: "energia", criadoEm: new Date(agora.getTime() - i * 60_000) });
+      }
       await db.insert(schema.alertasAtualizacao).values({ id: `${id}-a1`, userId: id, dominio: "energia", referenciaAvisada: null, criadoEm: agora });
     });
     casos.nova = (await htmlDe(servidor, "/app/observatorios", true)).html;
@@ -126,6 +129,8 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
     const r = elemento(casos.volta, 'data-fatia="retomar"');
     expect(r).toMatch(/<a [^>]*href="\/setor-eletrico"[^>]*>Continuar em Setor Elétrico/);
     expect(r).toContain('href="/setor-eletrico/pld?submercado=SE"');
+    expect(r).not.toContain('href="/observatorio/payroll-lending-aging"');
+    expect(r).toContain('href="/app/conta#recortes"');
     expect(r).toContain('href="/app/conta#alertas"');
   });
 

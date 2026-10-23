@@ -1,9 +1,9 @@
 {
  "data": "2026-10-23",
- "build": "GJj3vvkj-5fb80sIpCKyp",
+ "build": "5250fQWCk-bZ_h6FnW6Hr",
  "maquina": "2 vCPU, 8 GB",
  "comando": "npm run evidencias -- --rotas /app/observatorios --saida docs/ux-2026-10-23/mapa/depois-conta-que-volta --larguras 390,1440 --modos com --conta volta",
- "tempo": "0 min 10 s",
+ "tempo": "0 min 09 s",
  "resultados": [
   {
    "rota": "/app/observatorios",
@@ -13,7 +13,7 @@
    "final": "/app/observatorios",
    "barra": true,
    "cromo": 102,
-   "topoH1": 462,
+   "topoH1": 633,
    "rolagemHorizontal": false,
    "axe": [],
    "console": [],
@@ -29,7 +29,7 @@
    "final": "/app/observatorios",
    "barra": true,
    "cromo": 151,
-   "topoH1": 308,
+   "topoH1": 479,
    "rolagemHorizontal": false,
    "axe": [],
    "console": [],

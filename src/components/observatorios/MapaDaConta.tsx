@@ -72,18 +72,27 @@ export function MapaDaConta({
       </section>
 
       <div data-fatia="para-voce">
-        <ParaVoce
-          perguntas={paraVoce.estado}
-          conteiner=""
-          className="border-t border-linha"
-          descricao={
-            paraVoce.comNumeros
-              ? "Perguntas sobre o seu estado e a sua cidade, a um clique. Cada número traz fonte e período; o destino mostra o detalhe."
-              : "Perguntas sobre o seu estado e a sua cidade, a um clique. Os números aparecem no destino, depois de escolher o lugar."
-          }
-        >
-          <MinhaCidade perguntas={paraVoce.cidade} />
-        </ParaVoce>
+        {paraVoce.comNumeros ? (
+          <ParaVoce
+            perguntas={paraVoce.estado}
+            conteiner=""
+            className="border-t border-linha"
+            descricao="Perguntas sobre o seu estado e a sua cidade, a um clique. Cada número traz fonte e período; o destino mostra o detalhe."
+          >
+            <MinhaCidade perguntas={paraVoce.cidade} />
+          </ParaVoce>
+        ) : (
+          <ParaVoce
+            perguntas={paraVoce.estado}
+            forma="lista"
+            tituloLista="No seu estado"
+            conteiner=""
+            className="border-t border-linha"
+            descricao="Perguntas sobre o seu estado e a sua cidade, a um clique. Os números aparecem no destino, depois de escolher o lugar."
+          >
+            <MinhaCidade perguntas={paraVoce.cidade} />
+          </ParaVoce>
+        )}
       </div>
 
       <div data-fatia="destinos" className={styles.destinos}>
@@ -94,6 +103,9 @@ export function MapaDaConta({
               {o.entrada ? (
                 <LinkMedido href={o.entrada} secao={`mapa:o:${o.id}`} className={styles.titulo}>
                   {o.nomeCurto}
+                  <span aria-hidden="true" className={styles.seta}>
+                    →
+                  </span>
                 </LinkMedido>
               ) : (
                 o.nomeCurto
@@ -171,24 +183,23 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
   );
 }
 
-/** As consultas por cidade, sem número até a conta guardar o município (Iniciativa I3). */
+/** As consultas por cidade, sem número até a conta guardar o município (Iniciativa I3): a mesma lista do "No seu estado". */
 function MinhaCidade({ perguntas }: Readonly<{ perguntas: PerguntaParaVoce[] }>) {
-  const motivo = perguntas[0]?.semNumero;
   return (
     <div data-minha-cidade="">
-      <h3 id="minha-cidade-titulo" className="t-h3 text-carvao">
-        Na sua cidade
-      </h3>
-      <ul className={styles.cidade}>
+      <h3 className="t-h3 text-carvao">Na sua cidade</h3>
+      <ul className="mt-2 grid gap-x-8 md:grid-cols-2 lg:grid-cols-4">
         {perguntas.map((p) => (
-          <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.semNumero ?? ""}>
-            <Link href={p.href} prefetch={false} className={`${styles.alvo} t-corpo text-carvao`}>
-              {p.pergunta}
+          <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.semNumero ?? ""} className="min-w-0 border-t border-linha">
+            <Link href={p.href} prefetch={false} className="group flex min-h-[44px] items-center justify-between gap-x-3 py-2 t-corpo text-carvao">
+              <span className="group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">{p.pergunta}</span>
+              <span aria-hidden="true" className="text-mineral">
+                →
+              </span>
             </Link>
           </li>
         ))}
       </ul>
-      {motivo && <p className="t-meta mt-2 text-mineral">{motivo}</p>}
     </div>
   );
 }
@@ -207,16 +218,20 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
       <h3 id={`col-${c.id}`} className={styles.nome}>
         <LinkMedido href={c.href} secao={`mapa:${c.id}`} className={`${styles.alvo} t-corpo font-medium text-carvao`}>
           {c.nome}
+          <span aria-hidden="true" className={styles.seta}>
+            →
+          </span>
         </LinkMedido>
         {c.prontidao && <SeloProntidao valor={c.prontidao} />}
       </h3>
-      {c.pergunta && <p className="t-meta text-carvao-muted">{c.pergunta}</p>}
       {c.paginas.length > 0 ? (
         <details className={styles.paginas}>
           <summary className="t-meta text-mineral" data-estado-colecao="">
             <span>{estado}</span>
             <span className={styles.abrir}>
-              ver as páginas<span aria-hidden="true"> +</span>
+              <span className={styles.fechado}>Ver as páginas</span>
+              <span className={styles.aberto}>Fechar a lista</span>
+              <span aria-hidden="true" className={styles.sinal} />
             </span>
           </summary>
           <ul>
@@ -239,7 +254,7 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
           </ul>
         </details>
       ) : (
-        <p className="t-meta text-mineral" data-estado-colecao="">
+        <p className={`${styles.estado} t-meta text-mineral`} data-estado-colecao="">
           {estado}
         </p>
       )}
@@ -252,7 +267,8 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
   return (
     <details data-fatia="metodo" className={styles.metodo}>
       <summary className="t-h3 text-carvao">
-        Como este mapa é montado<span aria-hidden="true" className={styles.abrir}> +</span>
+        Como este mapa é montado
+        <span aria-hidden="true" className={styles.sinal} />
       </summary>
       <div className="t-corpo max-w-prose2 text-carvao-muted">
         <p className="mt-4" data-totais="">

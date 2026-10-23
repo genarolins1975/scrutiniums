@@ -153,11 +153,23 @@ async function medirPagina(contexto, origem, rota, largura, modo, saida, base) {
   }
 }
 
-/** A conta que volta: um recorte salvo e um aviso de atualização (o último acesso vai no cookie, como o middleware grava). */
+/**
+ * A conta que volta, no caso mais longo do mapa: quatro recortes salvos (o mapa mostra três e o link para todos), dois avisos de
+ * atualização e o último acesso no Setor Elétrico (no cookie, como o middleware grava).
+ */
 async function contaQueVolta(db, schema, usuario) {
-  const agora = new Date();
-  await db.insert(schema.recortesSalvos).values({ id: `${usuario}-r1`, userId: usuario, titulo: "PLD do Sudeste", caminho: "/setor-eletrico/pld?submercado=SE", observatorio: "energia", criadoEm: agora });
-  await db.insert(schema.alertasAtualizacao).values({ id: `${usuario}-a1`, userId: usuario, dominio: "energia", referenciaAvisada: null, criadoEm: agora });
+  const agora = Date.now();
+  const recortes = [
+    ["PLD do Sudeste", "/setor-eletrico/pld?submercado=SE", "energia"],
+    ["Botijão em Pernambuco", "/gas-natural/gas-de-cozinha?uf=PE", "gas"],
+    ["Saneamento em Recife", "/saneamento/municipio/2611606", "saneamento"],
+    ["Juros do consignado", "/observatorio/payroll-lending-aging", "credito"],
+  ];
+  for (const [i, [titulo, caminho, observatorio]] of recortes.entries()) {
+    await db.insert(schema.recortesSalvos).values({ id: `${usuario}-r${i}`, userId: usuario, titulo, caminho, observatorio, criadoEm: new Date(agora - i * 60_000) });
+  }
+  await db.insert(schema.alertasAtualizacao).values({ id: `${usuario}-a2`, userId: usuario, dominio: "saneamento", referenciaAvisada: null, criadoEm: new Date(agora) });
+  await db.insert(schema.alertasAtualizacao).values({ id: `${usuario}-a1`, userId: usuario, dominio: "energia", referenciaAvisada: null, criadoEm: new Date(agora) });
 }
 
 export async function executar(argv) {

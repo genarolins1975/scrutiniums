@@ -22,7 +22,9 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
  *
  * `perguntas` substitui `entrada` quando a lista não é a de uma entrada (o mapa da conta, Iniciativa M1 de 23/10/2026, com
  * paraVoceDoMapa): nesse modo, o cartão sem número diz por quê (`semNumero`), no lugar do número. Todo cartão marca a prova:
- * `data-prova-numero` (fonte · período) ou `data-sem-numero` (o motivo).
+ * `data-prova-numero` (fonte · período) ou `data-sem-numero` (o motivo). Com `forma="lista"`, quando nenhuma pergunta tem
+ * número (o mapa enquanto a UF da conta não escolhe os números), as perguntas saem como lista de links, sem cartão vazio, e o
+ * motivo é dito uma vez, na frase ao lado do título.
  */
 export function ParaVoce({
   entrada,
@@ -33,7 +35,13 @@ export function ParaVoce({
   className = "border-b border-linha",
   children = null,
   artes,
+  forma = "cartoes",
+  tituloLista,
 }: Readonly<{
+  /** "lista": perguntas sem número como links em grade, com o título da lista acima (só com `perguntas`). */
+  forma?: "cartoes" | "lista";
+  /** Título da lista, quando `forma="lista"` (ex.: "No seu estado"). */
+  tituloLista?: string;
   idioma?: Idioma;
   /** A frase ao lado do título; por padrão, a das entradas. */
   descricao?: string;
@@ -62,6 +70,21 @@ export function ParaVoce({
             )}
           </p>
         </div>
+        {forma === "lista" && lista ? (
+          <div className="mt-6" data-para-voce-lista="">
+            {tituloLista && <h3 className="t-h3 text-carvao">{tituloLista}</h3>}
+            <ul className="mt-2 grid gap-x-8 md:grid-cols-2 lg:grid-cols-4">
+              {perguntas.map((p) => (
+                <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.numero ? undefined : (p.semNumero ?? "")} className="min-w-0 border-t border-linha">
+                  <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex min-h-[44px] items-center justify-between gap-x-3 py-2 t-corpo text-carvao">
+                    <span className="group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">{p.pergunta}</span>
+                    <span aria-hidden="true" className="text-mineral">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
         <ul className={`mt-6 grid gap-px border border-linha bg-linha ${colunas}`}>
           {perguntas.map((p) => (
             <li
@@ -111,6 +134,7 @@ export function ParaVoce({
             </li>
           ))}
         </ul>
+        )}
         {artes && Object.keys(artes).length > 0 && (
           <p className="mt-3 text-xs leading-relaxed text-mineral">
             {t(

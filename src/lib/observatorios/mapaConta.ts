@@ -1,13 +1,15 @@
 /**
  * Dados do mapa da conta (/app/observatorios, Iniciativa M1 do parecer de UX de 23/10/2026), montados no servidor a cada
- * requisição a partir do que já existe: o inventário das páginas (inventario.ts), o registro (lista.ts), o índice da busca
- * (src/lib/busca/indice.ts) e o frescor de cada fonte (src/lib/frescor). Nada é escrito à mão aqui além da tabela de fontes por
+ * requisição a partir do que já existe: o inventário das páginas (inventario.ts), o registro (lista.ts) e o frescor de cada fonte (src/lib/frescor). Nada é escrito à mão aqui além da tabela de fontes por
  * coleção, que diz de onde vem a data "dados até" de cada linha do diretório.
+ *
+ * A linha da coleção não traz pergunta: o registro não tem a pergunta de cada coleção, e o índice da busca só tem perguntas de
+ * páginas ou consultas dentro dela (que respondem a uma parte, não à coleção). A pergunta por coleção fica para o dono decidir o
+ * texto (campo novo em lista.ts); até lá, nada é emprestado.
  */
 import { inventario, totais, type PaginaInventario, type TotaisInventario } from "./inventario";
 import { OBSERVATORIOS, type Observatorio, type ObservatorioId } from "./lista";
 import { navegacaoDaColecao } from "./navegacaoColecao";
-import { indiceDeBusca } from "@/lib/busca/indice";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { dadosFrescor } from "@/lib/frescor/dominios";
 import { dataPublicacao, rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
@@ -59,8 +61,6 @@ export type LinhaColecao = {
   id: string;
   nome: string;
   href: string;
-  /** A pergunta da coleção no índice da busca (a porta aberta ou a consulta pessoal que leva a ela); null quando não há. */
-  pergunta: string | null;
   /** A entrada mais as páginas que existem (publicadas ou parciais); as previstas não contam. */
   contagem: number;
   /** Páginas além da entrada, como o inventário as lista (previstas incluídas, sem link). */
@@ -76,21 +76,8 @@ export type LinhaColecao = {
 
 export type SecaoObservatorio = Pick<Observatorio, "id" | "nomeCurto" | "nome" | "pergunta" | "acento"> & { entrada: string | undefined; colecoes: LinhaColecao[] };
 
-/** A pergunta curta de cada coleção, pelo endereço: primeiro a pergunta da porta, depois a consulta pessoal. */
-function perguntasDoIndice(): Map<string, string> {
-  const m = new Map<string, string>();
-  const entradas = indiceDeBusca().entradas;
-  for (const tipo of ["pergunta", "consulta"] as const) {
-    for (const e of entradas) if (e.tipo === tipo && e.href && !m.has(e.href)) m.set(e.href, e.titulo);
-  }
-  return m;
-}
-
-let perguntas: Map<string, string> | null = null;
-
 /** O diretório do mapa: os seis observatórios na ordem do registro, cada coleção com o estado lido das bases. */
 export function diretorioDoMapa(agora: Date = new Date()): { secoes: SecaoObservatorio[]; totais: TotaisInventario } {
-  perguntas ??= perguntasDoIndice();
   const inv = inventario();
   const secoes = OBSERVATORIOS.map((o): SecaoObservatorio => {
     const io = inv.find((x) => x.id === o.id)!;
@@ -111,7 +98,6 @@ export function diretorioDoMapa(agora: Date = new Date()): { secoes: SecaoObserv
           id: c.id,
           nome: c.nome,
           href: c.href,
-          pergunta: perguntas!.get(c.href) ?? null,
           contagem: 1 + existentes.length,
           paginas: c.paginas,
           dadosAte: principal ? (rotuloReferencia(principal.referencia) ?? dataPublicacao(principal.publicadoEm)) : null,
