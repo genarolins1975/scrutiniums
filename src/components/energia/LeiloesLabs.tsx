@@ -320,7 +320,7 @@ export function LabLeilao() {
             {marcas.map((v) => (
               <g key={v}>
                 <line x1={M.e} x2={W - M.d} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" />
-                <text x={M.e - 6} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao-muted)">
+                <text x={M.e - 6} y={y(v) + 4} textAnchor="end" fontSize="12" fill="var(--cor-carvao-muted)">
                   {n(v)}
                 </text>
               </g>
@@ -336,18 +336,18 @@ export function LabLeilao() {
               />
             ))}
             <line x1={M.e} x2={W - M.d} y1={y(p.teto)} y2={y(p.teto)} stroke="var(--cor-carvao)" strokeDasharray="6 4" />
-            <text x={W - M.d} y={y(p.teto) - 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao)">
+            <text x={W - M.d} y={y(p.teto) - 4} textAnchor="end" fontSize="12" fill="var(--cor-carvao)">
               {tx("Teto", "Ceiling")}
             </text>
             {r.preco != null && (
               <>
                 <line x1={M.e} x2={W - M.d} y1={y(r.preco)} y2={y(r.preco)} stroke="var(--cor-energia-dark)" strokeWidth="2" />
-                <text x={M.e + 4} y={y(r.preco) - 4} fontSize="11" fill="var(--cor-energia-dark)">
+                <text x={M.e + 4} y={y(r.preco) - 4} fontSize="12" fill="var(--cor-energia-dark)">
                   {tx("Preço de fechamento", "Closing price")}
                 </text>
               </>
             )}
-            <text x={M.e} y={H - 8} fontSize="11" fill="var(--cor-carvao-muted)">
+            <text x={M.e} y={H - 8} fontSize="12" fill="var(--cor-carvao-muted)">
               {W < 420
                 ? tx("Proponentes, do menor ao maior custo", "Bidders, from lowest to highest cost")
                 : tx("Proponentes, do menor ao maior custo (R$/MWh)", "Bidders, from lowest to highest cost (R$/MWh)")}

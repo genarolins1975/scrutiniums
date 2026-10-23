@@ -5,14 +5,14 @@ export function AberturaAgro({ rotulo, titulo, texto }: {
     rotulo: string;
     titulo: string;
     texto: string;
-}) { return <section className={s.intro}><p className={s.eyebrow}>{rotulo}</p><h1>{titulo}</h1><p>{texto}</p></section>; }
+}) { return <section className={s.intro}><p className={`rotulo ${s.eyebrow}`}>{rotulo}</p><h1>{titulo}</h1><p>{texto}</p></section>; }
 export function SecaoAgro({ id, titulo, rotulo, texto, children }: {
     id?: string;
     titulo: string;
     rotulo?: string;
     texto?: string;
     children: React.ReactNode;
-}) { return <section className={s.section} id={id}><div className={s.sectionHeading}><div>{rotulo && <p className={s.eyebrow}>{rotulo}</p>}<h2>{titulo}</h2></div>{texto && <p>{texto}</p>}</div>{children}</section>; }
+}) { return <section className={s.section} id={id}><div className={s.sectionHeading}><div>{rotulo && <p className={`rotulo ${s.eyebrow}`}>{rotulo}</p>}<h2>{titulo}</h2></div>{texto && <p>{texto}</p>}</div>{children}</section>; }
 export function LimiteAgro({ titulo, children }: {
     titulo: string;
     children: React.ReactNode;

@@ -275,7 +275,7 @@ export function ExploradorTema({ tema, dados, contextos }: { tema: Tema; dados: 
                       <span aria-hidden="true">{ativa ? "● " : "○ "}</span>
                       {DEFINICAO_CURTA[f.m].titulo}
                     </span>
-                    <span className="rotulo !text-[0.66rem] text-carvao-muted">{f.mm.anos === "ideb" ? `edição ${f.an}` : f.an}</span>
+                    <span className="rotulo text-carvao-muted">{f.mm.anos === "ideb" ? `edição ${f.an}` : f.an}</span>
                   </span>
                   <span className="mt-2 font-serif text-2xl tabular-nums text-obee-tinta">
                     {valor ? (valor.valor !== null ? formata(f.m, valor.valor) : "sem valor") : f.r?.mediana != null ? formata(f.m, f.r.mediana) : "sem valor"}

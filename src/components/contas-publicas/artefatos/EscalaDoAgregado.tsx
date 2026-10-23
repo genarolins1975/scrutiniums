@@ -15,7 +15,7 @@ export function EscalaDoAgregado({valorMilhoes,ano,mes=12,titulo,ressalva,saldoM
   const d=denominador(ano,mes);
   if(!d) return <p className="cp-note cp-scale-unavailable">Escala por habitante e PIB disponível para anos completos de 2024 e 2025. O recorte de {ano} não foi anualizado.</p>;
   return <aside className="cp-human-scale" aria-label={titulo}>
-    <div><p className="cp-eyebrow">O tamanho do valor · {ano}</p><h3>{titulo}</h3><p>Mesmo agregado, duas referências.</p></div>
+    <div><p className="rotulo cp-eyebrow">O tamanho do valor · {ano}</p><h3>{titulo}</h3><p>Mesmo agregado, duas referências.</p></div>
     <dl><div><dt>Por habitante no ano</dt><dd>{moeda(converterEscala(valorMilhoes,ano,mes,'habitante'),'reais')}</dd></div><div><dt>Em relação ao PIB do ano</dt><dd>{numero(converterEscala(valorMilhoes,ano,mes,'pib'),2)}%</dd></div></dl>
     <div className="cp-scale-explanation">
       {saldoMilhoes!==undefined&&<p><strong>Saldo primário: {numero(converterEscala(saldoMilhoes,ano,mes,'pib'),2)}% do PIB.</strong> Resultado acima da linha; não é a apuração da meta fiscal.</p>}

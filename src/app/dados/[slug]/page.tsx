@@ -61,7 +61,7 @@ export default function IndicadorPage({ params }: { params: { slug: string } }) 
   };
   const fmtEixo = (v: number) => fmtValor(i, v).replace(" a.a.", "");
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">

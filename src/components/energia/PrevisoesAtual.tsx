@@ -717,7 +717,7 @@ function PainelFrequencia({
               x={mensal ? x(dia(comNumero[comNumero.length - 1].fim) + 1) : x(dia(comNumero[0].inicio))}
               y={y(comNumero[0].previsao as number) - 7}
               textAnchor={mensal ? "end" : "start"}
-              fontSize={11.5}
+              fontSize={12}
               fill="var(--cor-carvao)"
             >
               {tx(
@@ -727,7 +727,7 @@ function PainelFrequencia({
             </text>
           ) : (
             comNumero.map((l) => (
-              <text key={l.id} x={(x(dia(l.inicio)) + x(dia(l.fim) + 1)) / 2} y={y(l.previsao as number) - 7} textAnchor="middle" fontSize={10.5} fill="var(--cor-carvao)">
+              <text key={l.id} x={(x(dia(l.inicio)) + x(dia(l.fim) + 1)) / 2} y={y(l.previsao as number) - 7} textAnchor="middle" fontSize={12} fill="var(--cor-carvao)">
                 {num(l.previsao as number, 0)}
               </text>
             ))

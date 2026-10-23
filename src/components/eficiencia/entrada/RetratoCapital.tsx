@@ -54,7 +54,7 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
     <div className={styles.heroInner}>
       <div className={styles.heroText}>
         {rotulo}
-        <h1 id="titulo-eficiencia" className={styles.heroTitle}>Como se vive {naCapital(a.nome).split(' ')[0]} <em>{a.nome}</em>?</h1>
+        <h1 id="titulo-eficiencia" className={styles.heroTitle}>Como se vive {naCapital(a.nome).split(' ')[0]} {a.nome}?</h1>
         <p className={styles.heroLead}>Sete resultados na vida dos moradores, o que a prefeitura aplica em educação e saúde, e o que ainda não se sabe. Cada número com fonte, período e limites.</p>
         <div className={styles.selectors}>
           <label>Capital<select value={a.id} onChange={e => onSelect('territorio', e.target.value)}>{capitais.map(c => <option key={c.id} value={c.id}>{c.nome} · {c.uf}</option>)}</select></label>

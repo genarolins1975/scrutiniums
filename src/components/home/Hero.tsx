@@ -45,7 +45,7 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
               data-i18n-regiao={idioma === "en" ? "home-titulo" : undefined}
               className="mt-6 max-w-4xl font-serif text-[clamp(2rem,4.2vw,3.1rem)] leading-[1.08] tracking-[-0.01em] text-carvao [text-wrap:balance]"
             >
-              {tituloInicio}<span className="text-bronze">{tituloDestaque}</span>.
+              {tituloInicio}{tituloDestaque}.
             </h2>
             <p data-i18n-regiao={idioma === "en" ? "home-introducao" : undefined} className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
               {introducao.observatorios}{introducao.restante}
@@ -118,8 +118,7 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
                         className="absolute inset-0 bg-gradient-to-t from-carvao from-10% via-carvao/75 via-40% to-transparent to-80%"
                       />
                       <span className="absolute inset-x-0 bottom-0 flex flex-col p-4 md:p-5 xl:p-4">
-                        <span className="rotulo text-marfim/75">{String(i + 1).padStart(2, "0")}</span>
-                        <span lang={idioma === "en" ? "pt-BR" : undefined} className="mt-1.5 font-serif text-lg leading-snug text-marfim md:text-xl xl:text-lg [text-wrap:balance]">{d.nomeCurto}</span>
+                        <span lang={idioma === "en" ? "pt-BR" : undefined} className="font-serif text-lg leading-snug text-marfim md:text-xl xl:text-lg [text-wrap:balance]">{d.nomeCurto}</span>
                         <span className="mt-2 text-xs leading-snug text-marfim/80">
                           <span className="font-label text-sm tabular-nums text-marfim">{contagem.valor}</span>{" "}
                           {contagem.unidade}

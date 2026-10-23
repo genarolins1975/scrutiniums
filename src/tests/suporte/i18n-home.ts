@@ -48,10 +48,10 @@ const contagensIndice: Record<DominioId, { numeros: readonly number[]; chave: (t
   agro: { numeros: [16], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
   gas: { numeros: [PAGINAS_GAS.length], chave: "home.indice.paginas_por_pergunta", pt: "páginas por pergunta", en: "pages by question" },
 };
-export const INDICE_HOME = DOMINIOS.map((dominio, i) => {
+export const INDICE_HOME = DOMINIOS.map((dominio) => {
   const contagem = contagensIndice[dominio.id];
   return {
-    id: dominio.id, nome: dominio.nomeCurto, ordinal: String(i + 1).padStart(2, "0"),
+    id: dominio.id, nome: dominio.nomeCurto,
     href: `#obs-${dominio.id}`, imagem: dominio.id === "agro" ? "/home/agro.svg" : `/home/${dominio.id}.webp`, chave: contagem.chave,
     pt: { valor: contagem.numeros.length === 2 ? contagem.numeros.join(" de ") : formatadorNumero("pt", {}).format(contagem.numeros[0]), unidade: contagem.pt },
     en: { valor: contagem.numeros.map((n) => formatadorNumero("en", {}).format(n)).join(" of "), unidade: contagem.en },
@@ -135,12 +135,11 @@ function verificarIndiceHome(indicePt: Elemento, indiceEn: Elemento, corpoPt: El
     }
     const conteudoCartao = objeto(anchor.filhos[3], "cartão sem textos");
     expect(conteudoCartao.tag).toBe("span");
-    expect(conteudoCartao.filhos).toHaveLength(3);
-    const ordinal = objeto(conteudoCartao.filhos[0], "cartão sem ordinal");
-    const nome = objeto(conteudoCartao.filhos[1], "cartão sem nome");
-    const contagem = objeto(conteudoCartao.filhos[2], "cartão sem contagem");
-    for (const span of [ordinal, nome, contagem]) expect(span.tag).toBe("span");
-    expect(ordinal.filhos).toEqual([esperadoCartao.ordinal]);
+    // sem numeração 01 a 08 desde 22/10/2026 (decisão do dono, Iniciativa 5): nome e contagem
+    expect(conteudoCartao.filhos).toHaveLength(2);
+    const nome = objeto(conteudoCartao.filhos[0], "cartão sem nome");
+    const contagem = objeto(conteudoCartao.filhos[1], "cartão sem contagem");
+    for (const span of [nome, contagem]) expect(span.tag).toBe("span");
     expect(nome.filhos).toEqual([esperadoCartao.nome]);
     expect(atributo(nome, "lang")).toBeUndefined();
     nome.atributos.push(["lang", "pt-BR"]);
@@ -272,16 +271,10 @@ export function verificarHomeParcial(pt: No, en: No): void {
     expect(attr(regiao, "data-i18n-estado")).toBeUndefined();
     expect(attr(regiao, "lang")).toBeUndefined();
   }
+  // sem destaque colorido no H2 (decisão do dono de 22/10/2026: o destaque fica só no H1 da home); as duas chaves formam um texto só
   const tituloEsperado = forma(tituloPt);
-  expect(tituloEsperado.filhos[0]).toBe(catalogoPt[CHAVES.titulo[0]]);
-  expect(tituloEsperado.filhos[2]).toBe(".");
-  const destaque = tituloEsperado.filhos[1];
-  expect(typeof destaque).toBe("object");
-  if (typeof destaque === "string") throw new Error("Destaque do Hero sem elemento");
-  expect(destaque.tag).toBe("span");
-  expect(destaque.filhos).toEqual([catalogoPt[CHAVES.titulo[1]]]);
-  tituloEsperado.filhos[0] = inglesa(CHAVES.titulo[0]);
-  destaque.filhos = [inglesa(CHAVES.titulo[1])];
+  expect(tituloEsperado.filhos).toEqual([catalogoPt[CHAVES.titulo[0]] + catalogoPt[CHAVES.titulo[1]] + "."]);
+  tituloEsperado.filhos = [inglesa(CHAVES.titulo[0]) + inglesa(CHAVES.titulo[1]) + "."];
   const acoesEsperadas = forma(acoesPt);
   for (const [href, chave] of [["/cadastro", CHAVES.acoes[0]], ["/entrar", CHAVES.acoes[1]]] as const) {
     const anchor = acoesEsperadas.filhos.find((f) => typeof f !== "string" && atributo(f, "href") === href);

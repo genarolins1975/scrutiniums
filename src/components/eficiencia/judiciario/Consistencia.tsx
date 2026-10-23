@@ -26,7 +26,7 @@ export function LaboratorioConsistencia(){
  const pct=(v:number)=>n(100*v,1)+'%';
  return <section className={s.funnelLab} aria-labelledby="laboratorio-titulo">
   <div className={s.funnelControls}>
-   <p className={s.eyebrow} id="laboratorio-titulo">Modelo didático · acaso ou divergência?</p>
+   <p className={`rotulo ${s.eyebrow}`} id="laboratorio-titulo">Modelo didático · acaso ou divergência?</p>
    <label htmlFor="lab-taxa"><span>Taxa de procedência do grupo de varas<output htmlFor="lab-taxa">{taxa}%</output></span><input id="lab-taxa" type="range" min={10} max={90} value={taxa} onChange={e=>setTaxa(+e.target.value)}/></label>
    <label htmlFor="lab-casos"><span>Processos julgados pela vara<output htmlFor="lab-casos">{n(casos)}</output></span><input id="lab-casos" type="range" min={0} max={100} value={posicao} onChange={e=>setPosicao(+e.target.value)}/></label>
    <label htmlFor="lab-observada"><span>Procedentes na vara<output htmlFor="lab-observada lab-casos">{n(procedentes)} de {n(casos)} ({pct(o)})</output></span><input id="lab-observada" type="range" min={0} max={100} value={observada} aria-valuetext={`${procedentes} de ${casos} decisões procedentes, ${pct(o)}`} onChange={e=>setObservada(+e.target.value)}/></label>

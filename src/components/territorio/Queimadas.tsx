@@ -58,8 +58,8 @@ function GraficoAnual({ g, compacto = false }: Readonly<{ g: GoldQueimadas; comp
   const menor = fechados.reduce((a, b) => (b.focos < a.focos ? b : a));
   const ultimo = fechados[fechados.length - 1];
   const destaque = new Set(compacto ? [maior.ano, ultimo.ano] : [maior.ano, menor.ano, ultimo.ano]);
-  const fonte = compacto ? "text-[11px]" : "text-[13px]";
-  const fonteEixo = compacto ? "text-[11px]" : "text-[12px]";
+  const fonte = compacto ? "text-xs" : "text-[13px]";
+  const fonteEixo = compacto ? "text-xs" : "text-xs";
   return (
     <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={`Focos de calor por ano, satélite de referência, ${fechados[0].ano} a ${ultimo.ano}. Maior: ${maior.ano}, ${n(maior.focos)}. Menor: ${menor.ano}, ${n(menor.focos)}. ${ultimo.ano}: ${n(ultimo.focos)}.`} className="h-auto w-full">
       <line x1="0" x2={L} y1={base} y2={base} className="stroke-linha" strokeWidth="1" />
@@ -147,7 +147,7 @@ function GraficoMensal({ g, compacto = false }: Readonly<{ g: GoldQueimadas; com
                 <g><title>{`${rot}/${atual}${b.parcial ? ", parcial" : ""}: ${n(b.focos)} focos`}</title>
                   <rect x={x + grupo * 0.52} y={y(b.focos)} width={grupo * 0.36} height={base - y(b.focos)} className={b.parcial ? "fill-none stroke-obee" : "fill-obee"} strokeWidth={b.parcial ? 2 : 0} strokeDasharray={b.parcial ? "4 3" : undefined} /></g>
               )}
-              <text x={x + grupo / 2} y={base + 18} textAnchor="middle" className={`fill-mineral ${compacto ? "text-[11px]" : "text-[12px]"}`}>{compacto ? rot[0].toUpperCase() : rot}</text>
+              <text x={x + grupo / 2} y={base + 18} textAnchor="middle" className={`fill-mineral ${compacto ? "text-xs" : "text-xs"}`}>{compacto ? rot[0].toUpperCase() : rot}</text>
             </g>
           );
         })}

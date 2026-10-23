@@ -40,7 +40,7 @@ function Grafico({ g, compacto = false }: Readonly<{ g: GoldDesastres; compacto?
   const ultimo = serie[serie.length - 1];
   const maior = serie.reduce((a, b) => (b.registros_reconhecidos > a.registros_reconhecidos ? b : a));
   const passo = compacto ? 5 : 2;
-  const fonte = compacto ? "text-[11px]" : "text-[12px]";
+  const fonte = compacto ? "text-xs" : "text-xs";
   return (
     <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={`Registros municipais com reconhecimento federal por ano, ${serie[0].ano} a ${ultimo.ano}, por grupo de tipologia. Maior: ${maior.ano}, ${n(maior.registros_reconhecidos)}. ${ultimo.ano}: ${n(ultimo.registros_reconhecidos)}. Valores na tabela.`} className="h-auto w-full">
       <line x1="0" x2={L} y1={base} y2={base} className="stroke-linha" strokeWidth="1" />

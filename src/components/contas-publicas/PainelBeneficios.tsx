@@ -33,7 +33,7 @@ export function PainelBeneficios() {
     <section className="cp-section cp-data-section" aria-labelledby="beneficios-titulo">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">01 · Gastos tributários · Receita Federal</p>
+          <p className="rotulo cp-eyebrow">01 · Gastos tributários · Receita Federal</p>
           <h2 id="beneficios-titulo">Quanto a União deixa de arrecadar com benefícios tributários?</h2>
           <p>Isenções, deduções, alíquotas reduzidas e regimes especiais que fazem a União arrecadar menos do que a regra geral do tributo cobraria. Estimativa oficial da Receita Federal, em reais correntes.</p>
         </div>

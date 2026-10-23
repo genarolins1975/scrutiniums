@@ -120,7 +120,7 @@ describe("tabela uso_busca_dia", () => {
     expect(b.termos.find((t) => t.termo === "conta pld ideb")?.resultados).toBe(0);
     expect(b.foraDoIndice).toBe(1);
     expect(b.termos.find((t) => t.termo === "ideb")?.resultados).toBeGreaterThan(0);
-    const html = renderToStaticMarkup(createElement(UsoBusca, { busca: b, numero: "04" }));
+    const html = renderToStaticMarkup(createElement(UsoBusca, { busca: b }));
     expect(html).toContain("Termos mais buscados, últimos 30 dias");
     expect(html).toContain("Buscas sem resultado");
     const semResultado = html.slice(html.indexOf('data-uso="sem-resultado"'));
@@ -135,7 +135,7 @@ describe("ligações", () => {
   const vazio: BuscasDoPeriodo = { inicio: "2026-09-22", fim: "2026-10-21", anonimoAtivo: false, primeiroRegistro: null, total: 0, foraDoIndice: 0, termos: [] };
 
   it("sem registro declara a ausência em vez de tabela de zeros", () => {
-    const html = renderToStaticMarkup(createElement(UsoBusca, { busca: vazio, numero: "04" }));
+    const html = renderToStaticMarkup(createElement(UsoBusca, { busca: vazio }));
     expect(html).toContain("Nenhuma busca registrada");
     expect(html).not.toContain("<table");
   });

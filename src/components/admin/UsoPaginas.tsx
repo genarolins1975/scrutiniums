@@ -58,12 +58,12 @@ function semContaParcial(uso: UsoDoPeriodo): string {
   return parcial + desligada;
 }
 
-export function UsoPaginas({ uso, numero = "03" }: { uso: UsoDoPeriodo; numero?: string }) {
+export function UsoPaginas({ uso }: { uso: UsoDoPeriodo }) {
   const semConta = (n: number) => (uso.semContaMedido ? n : null);
   const comecouDepois = uso.primeiroRegistro !== null && uso.primeiroRegistro > uso.inicio;
   return (
     <section aria-label="Uso por observatório e por página" className="border border-linha bg-papel p-8" data-secao="uso-paginas">
-      <SectionHeading number={numero} label="Uso" title="Uso por observatório e por página, últimos 30 dias" />
+      <SectionHeading label="Uso" title="Uso por observatório e por página, últimos 30 dias" />
 
       <dl className="grid gap-6 border-b border-linha pb-6 sm:grid-cols-3">
         <div>

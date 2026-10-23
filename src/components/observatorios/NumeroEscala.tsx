@@ -14,7 +14,7 @@ export function NumeroEscala({ n, grande = false, idioma = "pt" }: Readonly<{ n:
         <span className="block text-base text-carvao">{idioma === "en" ? "Unavailable in this publication" : "Indisponível nesta publicação"}</span>
       ) : (
         <span className="block">
-          <span className={`font-label leading-none tabular-nums text-carvao ${grande ? "text-[2.1rem]" : "text-[1.35rem]"}`}>{n.valor}</span>{" "}
+          <span className={`leading-none text-carvao ${grande ? "numero-g" : "numero-p"}`}>{n.valor}</span>{" "}
           <span className="text-sm text-carvao-muted">{n.unidade}</span>
         </span>
       )}

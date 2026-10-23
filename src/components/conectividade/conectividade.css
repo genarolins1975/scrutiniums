@@ -39,7 +39,7 @@
 .cn-numeros > div:last-child { border-right: 0; }
 .cn-numeros dt { font-size: 14px; line-height: 1.4; color: var(--cor-carvao); }
 .cn-numeros dd { margin: 0; }
-.cn-valor { font-family: var(--font-serif), Georgia, serif; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; font-variant-numeric: tabular-nums lining-nums; color: var(--cor-carvao); letter-spacing: -0.01em; }
+.cn-valor {font-family:var(--font-serif),Georgia,serif;font-weight:400; font-size:2.25rem; line-height: 1.15; font-variant-numeric:lining-nums tabular-nums; color: var(--cor-carvao); letter-spacing: -0.01em; }
 .cn-unidade { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); letter-spacing: 0; margin-left: 4px; }
 .cn-prova { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
 .cn-numeros > div.cn-lider .cn-valor { color: var(--cn-acento-escuro); }
@@ -64,7 +64,7 @@
 .cn-retrato dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 36px; margin: 22px 0 0; }
 .cn-retrato dt { font-size: 14px; color: var(--cor-carvao); }
 .cn-retrato dd { margin: 4px 0 0; }
-.cn-retrato .cn-valor { font-size: clamp(30px, 3.6vw, 40px); }
+.cn-retrato .cn-valor { font-size:2.25rem; }
 .cn-retrato .cn-valor-acento { color: var(--cn-acento-escuro); }
 .cn-retrato .cn-detalhe { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); }
 @media (max-width: 760px) { .cn-retrato dl { grid-template-columns: 1fr; gap: 18px; } }

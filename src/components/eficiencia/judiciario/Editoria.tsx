@@ -6,7 +6,7 @@ import {FiguraCabecalhoJudiciario,type TemaFiguraJudiciario} from './Figuras';
 export {s as estiloJudiciario};
 export function SetaJudiciario(){return <svg className={s.inlineArrow} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M3 13 13 3M3 3h10v10"/></svg>;}
 export function AberturaJudiciario({titulo,texto,rotulo='Judiciário brasileiro',tema,referencia}:{titulo:string;texto:string;rotulo?:string;tema?:TemaFiguraJudiciario;referencia?:string}){
- return <header className={`${s.header} ${tema&&tema!=='metodos'?s.chapterHeader:''}`}><div><p className={s.eyebrow}>{rotulo.replace('Judiciário / ','')}</p><h1>{titulo}</h1><p>{texto}</p><p className={s.meta}>{referencia??`CNJ · Justiça em Números ${d.edicao} · dados de ${d.ano}`}</p></div>{tema&&tema!=='metodos'&&<FiguraCabecalhoJudiciario tema={tema}/>}</header>;
+ return <header className={`${s.header} ${tema&&tema!=='metodos'?s.chapterHeader:''}`}><div><p className={`rotulo ${s.eyebrow}`}>{rotulo.replace('Judiciário / ','')}</p><h1>{titulo}</h1><p>{texto}</p><p className={s.meta}>{referencia??`CNJ · Justiça em Números ${d.edicao} · dados de ${d.ano}`}</p></div>{tema&&tema!=='metodos'&&<FiguraCabecalhoJudiciario tema={tema}/>}</header>;
 }
 export function FonteJudiciario({pagina,children}:{pagina:string;children?:React.ReactNode}){
  return <p className={s.source}>Fonte: <a href={`${d.fonte.url}#page=${pagina.split(/[– e]/)[0]}`}>CNJ, Justiça em Números {d.edicao}, p. {pagina}</a> · ano-base {d.ano}. {children} <Link href={BASE_JUDICIARIO+'/metodos'}>Cobertura e método.</Link></p>;
