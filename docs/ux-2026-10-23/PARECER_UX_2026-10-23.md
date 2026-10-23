@@ -18,17 +18,17 @@ Este documento é a referência das sete iniciativas abaixo. Os testes `ux-orcam
 
 **Inferência.** O que falta não está nas entradas, está no que vem depois delas e antes delas. Depois: as cerca de 300 páginas de painel, onde cada domínio mantém a própria anatomia (9 componentes de abertura, 19 faixas de números com nomes diferentes, 9 tabelas, 52 arquivos de gráfico em SVG próprio, 8 seletores de lugar), o componente de evidência que o design system declara obrigatório existe em um domínio só, e a aplicação do Crédito, que serve 5 das 28 coleções, é um segundo produto (barra lateral própria, 727 px de cromo no celular, datas em formato ISO, números em outra tipografia). Antes: o mapa da área logada, que é a página inicial de quem tem conta, lista 28 coleções e 140 páginas em texto de 12,5 px, abre com três estados vazios, usa formulários POST no lugar de links, quebra um observatório entre colunas e reintroduz os oito domínios antigos no fim. Não há dado de uso de visitante sem conta e nenhum número de uso com conta foi consultado; a priorização abaixo é por inferência sobre o código, o build e as capturas.
 
-**Recomendação.** Sete iniciativas, em duas frentes. Plataforma: (I1) um molde único de página de painel com kit de evidência; (I2) o Crédito na mesma casca; (I3) um só seletor de lugar e a preferência "Meu lugar"; (I4) orientação sem repetição, fim de página único e páginas leves; (I5) um só contrato para artefatos, figuras, mapas e imagens. Mapa da área logada: (M1) arquitetura e interação do mapa, que vira uma tela de decisão; (M2) a camada pessoal, com retomar, recortes, novidades e o lugar do leitor. Ordem sugerida: M1, I4, I1, I3, M2, I5, I2, por relação entre efeito para o leitor e custo. A fila para produção tem um PR, o #362, só de instruções para agentes, com CI verde; a recomendação é fazer o merge antes de começar, porque muda o que o implementador deve ler.
+**Recomendação.** Sete iniciativas, em duas frentes. Plataforma: (I1) um molde único de página de painel com kit de evidência; (I2) o Crédito na mesma casca; (I3) um só seletor de lugar e a preferência "Meu lugar"; (I4) orientação sem repetição, fim de página único e páginas leves; (I5) um só contrato para artefatos, figuras, mapas e imagens. Mapa da área logada: (M1) arquitetura e interação do mapa, que vira uma tela de decisão; (M2) a camada pessoal, com retomar, recortes, novidades e o lugar do leitor. Por importância para o leitor: I1, M1, I2, I3, I4, M2, I5. Ordem sugerida de execução, pela relação entre efeito e custo: M1, I4, I1, I3, M2, I5, I2 (seção 9). A fila para produção tem um PR, o #362, só de instruções para agentes, com CI verde; a recomendação é fazer o merge antes de começar, porque muda o que o implementador deve ler.
 
-| Iniciativa | Critério que mais move | Efeito para o leitor | Esforço (PRs) |
-|---|---|---|---|
-| M1 Mapa: arquitetura e interação | C1, C2, C4 | A primeira tela de quem entra decide em uma olhada | 1 |
-| I4 Orientação, fim de página e peso | C2, C7 | Menos repetição acima e abaixo do conteúdo; páginas até 16 vezes mais leves | 3 |
-| I1 Molde de página de painel | C3, C6 | Mesma pergunta, mesma resposta visual em todos os painéis | 1 + 5 |
-| I3 Lugar único e "Meu lugar" | C1 | O leitor escolhe a cidade uma vez e a plataforma lembra | 2 |
-| M2 Mapa: camada pessoal | C1 | Retomar, novidades desde a última visita, números do seu lugar | 1 |
-| I5 Artefatos, figuras, mapas e imagens | C8, C3 | Um só contrato visual para o que não é texto | 2 |
-| I2 Crédito na mesma casca | C3, C4, C7 | Deixa de existir um segundo produto | 2 + migrações |
+| Importância | Iniciativa | Critério que mais move | Efeito para o leitor | Esforço (PRs) | Ordem de execução |
+|---|---|---|---|---|---|
+| 1 | I1 Molde de página de painel | C3, C6 | Mesma pergunta, mesma resposta visual nas cerca de 300 páginas de painel | 1 + 5 | 3ª |
+| 2 | M1 Mapa: arquitetura e interação | C1, C2, C4 | A primeira tela de todo login decide em uma olhada | 1 | 1ª |
+| 3 | I2 Crédito na mesma casca | C3, C4, C7 | Deixa de existir um segundo produto em 5 das 28 coleções | 2 + migrações | 7ª |
+| 4 | I3 Lugar único e "Meu lugar" | C1 | O leitor escolhe a cidade uma vez e a plataforma lembra em todo tema | 2 | 4ª |
+| 5 | I4 Orientação, fim de página e peso | C2, C7 | Menos repetição acima e abaixo do conteúdo; páginas até 16 vezes mais leves | 3 | 2ª |
+| 6 | M2 Mapa: camada pessoal | C1 | Retomar, novidades desde a última visita, números do seu lugar | 1 | 5ª |
+| 7 | I5 Artefatos, figuras, mapas e imagens | C8, C3 | Um só contrato visual para o que não é texto | 2 | 6ª |
 
 ## 2. O que foi examinado e o que não foi
 
