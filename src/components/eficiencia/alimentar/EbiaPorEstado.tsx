@@ -2,8 +2,16 @@
 /**
  * EBIA por estado (IBGE, SIDRA 9552): percentual publicado de domicílios em cada classe, com o
  * coeficiente de variação ao lado. Só filtra e ordena o que a gold traz; não recalcula nada.
+ *
+ * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): os controles (medida e ano, na URL como ?classe= e ?ano=) logo antes
+ * da figura do kit, com as barras desde zero, o Brasil como linha de referência, a tabela com o coeficiente de variação e o número de
+ * domicílios como tabela equivalente e a procedência da medida logo abaixo.
  */
-import { useId, useState } from "react";
+import { useId, useMemo, type ReactNode } from "react";
+import { Controles, FiguraAnalitica, GraficoBarras, LeituraGuiada } from "@/components/painel";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
+import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
 import type { ClasseEbia, LinhaEbia } from "@/lib/eficiencia/alimentar/complementos";
 
 const CLASSES: { id: Exclude<ClasseEbia, "total" | "segura">; nome: string }[] = [
@@ -13,87 +21,97 @@ const CLASSES: { id: Exclude<ClasseEbia, "total" | "segura">; nome: string }[] =
   { id: "leve", nome: "Insegurança alimentar leve" },
 ];
 const fmt = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const fmtInt = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+const sem = "Sem valor publicado";
 
-export function EbiaPorEstado({ linhas, regiaoDe }: { linhas: LinhaEbia[]; regiaoDe: Record<string, string> }) {
+export function EbiaPorEstado({
+  linhas,
+  regiaoDe,
+  proveniencia,
+  natureza,
+  complemento,
+  contexto,
+  download,
+  rota,
+}: {
+  linhas: LinhaEbia[];
+  regiaoDe: Record<string, string>;
+  proveniencia: Proveniencia;
+  natureza: Natureza;
+  complemento: ReactNode;
+  contexto?: ReactNode;
+  download: { href: string; rotulo: string };
+  rota: string;
+}) {
   const id = useId();
-  const anos = [...new Set(linhas.map((l) => l.ano))].sort((a, b) => b - a);
-  const [ano, setAno] = useState(anos[0]);
-  const [classe, setClasse] = useState<(typeof CLASSES)[number]["id"]>("insegura");
+  const anos = useMemo(() => [...new Set(linhas.map((l) => l.ano))].sort((a, b) => b - a), [linhas]);
+  const esquema = useMemo(
+    () => ({
+      classe: campo(tiposUrl.opcao(CLASSES.map((c) => c.id)), "insegura" as (typeof CLASSES)[number]["id"]),
+      ano: campo(tiposUrl.opcao(anos.map(String)), String(anos[0])),
+    }),
+    [anos],
+  );
+  const [s, definir] = useEstadoUrl(esquema);
+  const ano = Number(s.ano);
+  const classe = s.classe;
   const nomeClasse = CLASSES.find((c) => c.id === classe)!.nome;
   const brasil = linhas.find((l) => l.nivel === "brasil" && l.ano === ano)!.classes[classe].pct;
   const ufs = linhas
     .filter((l) => l.nivel === "uf" && l.ano === ano)
     .sort((a, b) => (b.classes[classe].pct ?? -1) - (a.classes[classe].pct ?? -1) || a.territorio.localeCompare(b.territorio, "pt-BR"));
-  // escala fixa entre os anos da mesma classe: trocar o ano não muda a régua
-  const maximo = Math.ceil(Math.max(...linhas.filter((l) => l.nivel === "uf").map((l) => l.classes[classe].pct ?? 0)) / 10) * 10;
+  const padrao = classe === "insegura" && ano === anos[0];
+  const textoBrasil = brasil === null ? "sem valor publicado" : `${fmt(brasil)}%`;
+  const rotuloSelect = "mt-2 block min-h-[44px] w-full max-w-full border border-mineral bg-superficie px-3 text-sm text-carvao";
   return (
-    <div className="mt-6">
-      <div className="flex flex-wrap gap-4">
-        <label htmlFor={`${id}-classe`} className="max-w-full text-sm">
+    <>
+      <Controles rotulo="Recorte da comparação entre estados" resumo={`Mostrando ${nomeClasse.toLowerCase()}, ${ano}, 27 estados.`} limpar={padrao ? undefined : { href: `${rota}#estados` }} idioma="pt">
+        <label htmlFor={`${id}-classe`} className="min-w-[14rem] max-w-full text-sm text-carvao">
           Medida
-          <select id={`${id}-classe`} value={classe} onChange={(e) => setClasse(e.target.value as typeof classe)} className="mt-2 block min-h-[44px] w-full border border-mineral bg-superficie px-3">
+          <select id={`${id}-classe`} value={classe} onChange={(e) => definir({ classe: e.target.value as typeof classe })} className={rotuloSelect}>
             {CLASSES.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
           </select>
         </label>
-        <label htmlFor={`${id}-ano`} className="text-sm">
+        <label htmlFor={`${id}-ano`} className="text-sm text-carvao">
           Ano
-          <select id={`${id}-ano`} value={ano} onChange={(e) => setAno(Number(e.target.value))} className="mt-2 block min-h-[44px] border border-mineral bg-superficie px-3">
+          <select id={`${id}-ano`} value={s.ano} onChange={(e) => definir({ ano: e.target.value })} className={rotuloSelect}>
             {anos.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </label>
-      </div>
-      <figure className="mt-6" aria-label={`${nomeClasse}, % dos domicílios por estado, ${ano}; Brasil ${brasil === null ? "sem valor publicado" : fmt(brasil) + "%"}`}>
-        <figcaption className="mb-3 text-sm">{nomeClasse} · % dos domicílios · 27 estados · {ano}</figcaption>
-        <div className="space-y-0.5">
-          {ufs.map((l) => {
-            const v = l.classes[classe].pct;
-            return (
-              <div key={l.codigo} className="grid grid-cols-[minmax(6.5rem,11rem)_1fr_3.5rem] items-center gap-3 text-sm">
-                <span className="truncate" title={l.territorio}>{l.territorio}</span>
-                <div className="relative h-3 bg-obee-fundo" aria-hidden="true">
-                  {v !== null && <div className="h-full bg-obee" style={{ width: `${(100 * v) / maximo}%` }} />}
-                  {brasil !== null && <div className="absolute inset-y-[-3px] w-0.5 bg-obee-tinta" style={{ left: `${(100 * brasil) / maximo}%` }} />}
-                </div>
-                <span className="text-right tabular-nums">{v === null ? "Sem valor" : `${fmt(v)}%`}</span>
-              </div>
-            );
-          })}
-        </div>
-        <p className="mt-3 text-xs text-carvao-muted">
-          Insegurança total soma as classes leve, moderada e grave. Barras desde zero, escala de 0 a {maximo}% igual nos dois anos. O traço escuro marca o Brasil ({brasil === null ? "sem valor publicado" : `${fmt(brasil)}%`}). A ordem segue o valor e não indica diferença estatisticamente significativa entre estados vizinhos na lista.
-        </p>
-      </figure>
-      <details className="mt-4 border-y border-linha py-2">
-        <summary className="min-h-[44px] cursor-pointer py-3 text-sm font-medium">Tabela com coeficiente de variação e número de domicílios</summary>
-        <div className="tabela-scroll mt-2 min-w-0 max-w-full" tabIndex={0} role="region" aria-label={`${nomeClasse} por estado, ${ano} (tabela; role na horizontal se necessário)`}>
-          <table className="w-full min-w-[30rem] border-collapse text-sm">
-            <caption className="sr-only">{nomeClasse} por estado, {ano}: percentual publicado, coeficiente de variação e mil domicílios</caption>
-            <thead>
-              <tr>
-                {["Estado", "Região", "% dos domicílios", "CV do percentual", "Mil domicílios"].map((t, i) => (
-                  <th key={t} scope="col" className={`border-b border-carvao-muted px-2 py-1.5 font-semibold text-obee-tinta ${i > 1 ? "text-right" : "text-left"}`}>{t}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {ufs.map((l) => {
-                const v = l.classes[classe];
-                return (
-                  <tr key={l.codigo} className="border-b border-linha">
-                    <th scope="row" className="px-2 py-1.5 text-left font-normal">{l.territorio}</th>
-                    <td className="px-2 py-1.5">{regiaoDe[l.codigo] ?? ""}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{v.pct === null ? "Sem valor publicado" : `${fmt(v.pct)}%`}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{v.cv_pct === null ? "Sem valor publicado" : `${fmt(v.cv_pct)}%`}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums">{v.mil_domicilios === null ? "Sem valor publicado" : fmtInt(v.mil_domicilios)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-2 text-xs text-carvao-muted">CV: coeficiente de variação publicado pelo IBGE; quanto maior, menos precisa a estimativa amostral.</p>
-      </details>
-    </div>
+      </Controles>
+      <FiguraAnalitica
+        id="estados"
+        idioma="pt"
+        pergunta="Como a insegurança alimentar varia entre os estados?"
+        subtitulo={`${nomeClasse} · % dos domicílios · 27 estados · ${ano}`}
+        natureza={natureza}
+        proveniencia={proveniencia}
+        download={download}
+        leitura={<LeituraGuiada>A linha tracejada marca o Brasil ({textoBrasil}). A ordem segue o valor e não indica diferença estatisticamente significativa entre estados vizinhos na lista.</LeituraGuiada>}
+        comoInterpretar="Insegurança total soma as classes leve, moderada e grave. Barras desde zero; a escala acompanha os valores do ano e da medida escolhidos. CV: coeficiente de variação publicado pelo IBGE; quanto maior, menos precisa a estimativa amostral."
+        naoConcluir="Estimativa amostral: diferenças pequenas entre estados ou anos podem estar dentro do erro amostral, e nenhuma diferença é apresentada como estatisticamente significativa. Não existe EBIA municipal nesta fonte."
+        tabela={{
+          titulo: `${nomeClasse} por estado, ${ano}: percentual publicado, coeficiente de variação e mil domicílios`,
+          colunas: ["Estado", "Região", "% dos domicílios", "CV do percentual", "Mil domicílios"],
+          linhas: ufs.map((l) => {
+            const v = l.classes[classe];
+            return [l.territorio, regiaoDe[l.codigo] ?? "", v.pct === null ? sem : `${fmt(v.pct)}%`, v.cv_pct === null ? sem : `${fmt(v.cv_pct)}%`, v.mil_domicilios === null ? sem : v.mil_domicilios];
+          }),
+          casas: [null, null, null, null, 0],
+        }}
+        complemento={complemento}
+      >
+        {contexto && <div className="t-corpo mb-6 max-w-prose2 space-y-2 text-carvao">{contexto}</div>}
+        <GraficoBarras
+          titulo={`${nomeClasse}, % dos domicílios por estado, ${ano}; Brasil ${textoBrasil}`}
+          series={[{ id: "pct", nome: nomeClasse, pontos: ufs.map((l) => ({ x: l.codigo, rotulo: l.territorio, y: l.classes[classe].pct })) }]}
+          eixoY={{ unidade: "%", zero: true, casas: 1 }}
+          orientacao="horizontal"
+          alturaCategoria={32}
+          rotulosValor
+          rotulosSaoNomes
+          referencias={brasil === null ? undefined : [{ valor: brasil, rotulo: "Brasil" }]}
+        />
+      </FiguraAnalitica>
+    </>
   );
 }

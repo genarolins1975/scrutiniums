@@ -3,8 +3,13 @@
  * Consulta por município das bases complementares: um arquivo por UF, buscado no navegador sob
  * a sessão do painel. O tema escolhe as colunas (CadINSAN em Necessidades, PNAE em Acesso, PNAE e
  * PAA em Recursos). Ausência é escrita com o motivo; nenhum valor é calculado aqui.
+ *
+ * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): a consulta é um bloco da fatia `tabelas`, a TabelaDados do kit à
+ * vista, com os controles (estado e busca) logo antes da tabela, o estado do carregamento numa região viva e a paginação e a nota na
+ * linha sob a tabela. A busca e a paginação continuam as mesmas.
  */
 import { useEffect, useId, useMemo, useState } from "react";
+import { Controles, TabelaDados } from "@/components/painel";
 import type { MunicipioComplementar } from "@/lib/eficiencia/alimentar/complementos";
 
 export type TemaConsulta = "necessidades" | "acesso" | "recursos";
@@ -64,8 +69,8 @@ const NOTA: Record<TemaConsulta, string> = {
   recursos: "“Sem dado no extrato”: o MDS não preencheu o campo para o município naquele ano; não significa zero nem ausência do programa. “Sem registro municipal associado”: nome do FNDE diferente do oficial ou ausência de prefeitura executora. Valores nominais, sem correção pela inflação.",
 };
 
-export function ConsultaMunicipalAlimentar({ tema, ufs, ufInicial = "PE" }: { tema: TemaConsulta; ufs: { sigla: string; nome: string }[]; ufInicial?: string }) {
-  const id = useId();
+export function ConsultaMunicipalAlimentar({ tema, ufs, ufInicial = "PE", id = "municipio" }: { tema: TemaConsulta; ufs: { sigla: string; nome: string }[]; ufInicial?: string; id?: string }) {
+  const idCampo = useId();
   const [uf, setUf] = useState(ufInicial);
   const [busca, setBusca] = useState("");
   const [pagina, setPagina] = useState(0);
@@ -95,66 +100,61 @@ export function ConsultaMunicipalAlimentar({ tema, ufs, ufInicial = "PE" }: { te
   const paginas = Math.max(1, Math.ceil(filtradas.length / POR_PAGINA));
   const atual = Math.min(pagina, paginas - 1);
   const nomeUf = ufs.find((u) => u.sigla === uf)?.nome ?? uf;
+  const visiveis = estado === "pronto" ? filtradas.slice(atual * POR_PAGINA, (atual + 1) * POR_PAGINA) : [];
+  const campo = "mt-2 block min-h-[44px] w-full border border-mineral bg-superficie px-3 text-sm text-carvao";
+  const botao = "min-h-[44px] border border-mineral px-4 text-sm disabled:opacity-40";
   return (
-    <div className="mt-8">
-      <h3 className="font-serif text-xl">No seu município</h3>
-      <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_1.5fr]">
-        <label htmlFor={`${id}-uf`} className="text-sm">
-          Estado
-          <select id={`${id}-uf`} value={uf} onChange={(e) => { setUf(e.target.value); setPagina(0); }} className="mt-2 block min-h-[44px] w-full border border-mineral bg-superficie px-3">
-            {ufs.map((u) => <option key={u.sigla} value={u.sigla}>{u.nome}</option>)}
-          </select>
-        </label>
-        <label htmlFor={`${id}-busca`} className="text-sm">
-          Município ou código IBGE
-          <input id={`${id}-busca`} type="search" value={busca} onChange={(e) => { setBusca(e.target.value); setPagina(0); }} placeholder="Ex.: Recife ou 2611606" className="mt-2 block min-h-[44px] w-full border border-mineral bg-superficie px-3" />
-        </label>
-      </div>
-      {estado === "carregando" && <p role="status" className="my-6 text-sm">Carregando os municípios de {nomeUf}…</p>}
-      {estado === "erro" && (
-        <div role="status" className="my-6 border border-linha p-4 text-sm">
-          <p>Não foi possível carregar os municípios. Tente de novo ou baixe o CSV completo abaixo.</p>
-          <button type="button" onClick={() => setTentativa((t) => t + 1)} className="mt-3 min-h-[44px] underline">Tentar de novo</button>
-        </div>
-      )}
-      {estado === "pronto" && (
+    <TabelaDados
+      idioma="pt"
+      recolhida={false}
+      id={id}
+      tituloVisivel="No seu município"
+      lead={
         <>
-          <p className="mt-5 max-w-prose2 text-xs leading-relaxed" aria-hidden="true">{LEGENDA[tema]} · {nomeUf} · {int(filtradas.length)} municípios no filtro</p>
-          <div className="tabela-scroll mt-2 min-w-0 max-w-full" tabIndex={0} role="region" aria-label={`${LEGENDA[tema]} · ${nomeUf} (tabela; role na horizontal se necessário)`}>
-            <table className="w-full min-w-[34rem] border-collapse text-sm">
-              <caption className="sr-only">{LEGENDA[tema]} · {nomeUf} · {int(filtradas.length)} municípios no filtro</caption>
-              <thead>
-                <tr>
-                  <th scope="col" className="border-b border-carvao-muted px-2 py-2 text-left font-semibold">Município</th>
-                  {cols.map((c) => <th key={c.titulo} scope="col" className="border-b border-carvao-muted px-2 py-2 text-right font-semibold">{c.titulo}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                {filtradas.slice(atual * POR_PAGINA, (atual + 1) * POR_PAGINA).map((m) => (
-                  <tr key={m.codigo} className="border-b border-linha">
-                    <th scope="row" className="px-2 py-2 text-left font-normal">{m.nome}<span className="block text-xs text-carvao-muted">{m.codigo}</span></th>
-                    {cols.map((c) => {
-                      const v = c.valor(m);
-                      const ausente = /^(Fora|Sem)/.test(v);
-                      return <td key={c.titulo} className={`px-2 py-2 text-right ${ausente ? "text-xs text-carvao-muted" : "tabular-nums"}`}>{v}</td>;
-                    })}
-                  </tr>
-                ))}
-                {filtradas.length === 0 && <tr><td colSpan={cols.length + 1} className="py-6">Nenhum município encontrado em {nomeUf}.</td></tr>}
-              </tbody>
-            </table>
+          <Controles rotulo="Município da consulta" idioma="pt">
+            <label htmlFor={`${idCampo}-uf`} className="min-w-[12rem] flex-1 text-sm text-carvao">
+              Estado
+              <select id={`${idCampo}-uf`} value={uf} onChange={(e) => { setUf(e.target.value); setPagina(0); }} className={campo}>
+                {ufs.map((u) => <option key={u.sigla} value={u.sigla}>{u.nome}</option>)}
+              </select>
+            </label>
+            <label htmlFor={`${idCampo}-busca`} className="min-w-[14rem] flex-[1.5] text-sm text-carvao">
+              Município ou código IBGE
+              <input id={`${idCampo}-busca`} type="search" value={busca} onChange={(e) => { setBusca(e.target.value); setPagina(0); }} placeholder="Ex.: Recife ou 2611606" className={campo} />
+            </label>
+          </Controles>
+          <div role="status" className="mt-3 text-carvao">
+            {estado === "carregando" && <p>Carregando os municípios de {nomeUf}…</p>}
+            {estado === "erro" && (
+              <>
+                <p>Não foi possível carregar os municípios. Tente de novo ou baixe o CSV completo abaixo.</p>
+                <button type="button" onClick={() => setTentativa((t) => t + 1)} className="mt-3 min-h-[44px] underline">Tentar de novo</button>
+              </>
+            )}
+            {estado === "pronto" && <p>{LEGENDA[tema]} · {nomeUf} · {int(filtradas.length)} municípios no filtro{filtradas.length === 0 ? `. Nenhum município encontrado em ${nomeUf}.` : ""}</p>}
           </div>
-          {paginas > 1 && (
-            <div className="my-4 flex flex-wrap items-center justify-between gap-3">
-              <button type="button" onClick={() => setPagina(atual - 1)} disabled={atual === 0} className="min-h-[44px] border border-mineral px-4 text-sm disabled:opacity-40">← Anterior</button>
-              <span role="status" className="text-xs">Página {atual + 1} de {paginas} · até {POR_PAGINA} municípios por página</span>
-              <button type="button" onClick={() => setPagina(atual + 1)} disabled={atual === paginas - 1} className="min-h-[44px] border border-mineral px-4 text-sm disabled:opacity-40">Próxima →</button>
-            </div>
-          )}
         </>
-      )}
-      <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">{NOTA[tema]}</p>
-      <noscript><p className="text-sm">A consulta por município precisa de JavaScript. O CSV completo continua disponível para download.</p></noscript>
-    </div>
+      }
+      titulo={`${LEGENDA[tema]} · ${nomeUf} · ${int(filtradas.length)} municípios no filtro`}
+      colunas={["Município", ...cols.map((c) => c.titulo)]}
+      linhas={visiveis.map((m) => [
+        <span key={m.codigo}>{m.nome}<span className="block text-xs text-carvao-muted">{m.codigo}</span></span>,
+        ...cols.map((c) => c.valor(m)),
+      ])}
+      limite={POR_PAGINA}
+      nota={
+        <>
+          {paginas > 1 && estado === "pronto" && (
+            <span className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <button type="button" onClick={() => setPagina(atual - 1)} disabled={atual === 0} className={botao}>← Anterior</button>
+              <span role="status">Página {atual + 1} de {paginas} · até {POR_PAGINA} municípios por página</span>
+              <button type="button" onClick={() => setPagina(atual + 1)} disabled={atual === paginas - 1} className={botao}>Próxima →</button>
+            </span>
+          )}
+          {NOTA[tema]}
+          <noscript> A consulta por município precisa de JavaScript. O CSV completo continua disponível para download.</noscript>
+        </>
+      }
+    />
   );
 }

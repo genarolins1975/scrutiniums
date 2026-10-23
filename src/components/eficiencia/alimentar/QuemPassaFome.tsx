@@ -10,6 +10,9 @@
  * Nenhuma diferença é chamada de significativa: o IBGE não publica o teste.
  */
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { FiguraAnalitica, TabelaDados } from "@/components/painel";
+import { provenienciaObee } from "@/lib/eficiencia/proveniencia";
 import { BASE_COMPLEMENTOS, int, milhoes, pct1, type ClasseSocial, type Complementos, type RecorteSocial, type ValorSocial } from "@/lib/eficiencia/alimentar/complementos";
 import { dataBr } from "@/lib/eficiencia/formato";
 
@@ -121,81 +124,80 @@ function leituras(c: Complementos): string[] {
   ];
 }
 
+/** Tabela de apoio de um recorte de composição, 2024 e 2023, com domicílios, coeficientes de variação e a parcela calculada no grupo. */
 function TabelaComposicao({ r, limiar }: { r: RecorteSocial; limiar: number }) {
   const f = foco(r);
   const anos = [...new Set(r.linhas.map((l) => l.ano))].sort((a, b) => b - a);
   const cab = ["Grupo, como o IBGE publica", "Ano", "Mil domicílios", "% de todos os domicílios", `% dos domicílios em ${NOME_CLASSE[f]}`, "CV desse %", `Mil domicílios em ${NOME_CLASSE[f]}`, `A cada 100 domicílios do grupo, em ${NOME_CLASSE[f]} (calculado)`];
+  const mil = (v: number | null) => (v === null ? "Não publicado" : v);
+  const titulo = `${r.rotulo} · tabela SIDRA ${r.tabela} · Brasil`;
   return (
-    <div>
-    <p className="text-sm font-medium">{r.rotulo} · tabela SIDRA {r.tabela} · Brasil</p>
-    <div className="tabela-scroll mt-2 min-w-0 max-w-full" tabIndex={0} role="region" aria-label={`${r.rotulo}, tabela ${r.tabela} (tabela; role na horizontal se necessário)`}>
-      <table className="w-full min-w-[46rem] border-collapse text-sm">
-        <caption className="sr-only">{r.rotulo} · tabela SIDRA {r.tabela} · Brasil</caption>
-        <thead>
-          <tr>{cab.map((t, i) => <th key={t} scope="col" className={`border-b border-carvao-muted px-2 py-1.5 align-bottom font-semibold text-obee-tinta ${i > 1 ? "text-right" : "text-left"}`}>{t}</th>)}</tr>
-        </thead>
-        <tbody>
-          {["Total", ...r.grupos].flatMap((g) => anos.map((ano) => {
-            const todos = cel(r, ano, g, "total"), v = cel(r, ano, g, f);
-            const total = g === "Total";
-            return (
-              <tr key={`${g}-${ano}`} className="border-b border-linha">
-                <th scope="row" className={`px-2 py-1.5 text-left font-normal ${total ? "font-medium" : ""}`}>{g}</th>
-                <td className="px-2 py-1.5 tabular-nums">{ano}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{todos.mil_domicilios === null ? "Não publicado" : int(todos.mil_domicilios)}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{total ? "100,0%" : <Pct v={todos} limiar={limiar} />}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{total ? "100,0%" : <Pct v={v} limiar={limiar} />}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{total ? "Não se aplica" : v.cv_pct === null ? "Não publicado" : pct1(v.cv_pct)}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{v.mil_domicilios === null ? "Não publicado" : int(v.mil_domicilios)}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{v.pct_no_grupo_calculado == null ? "Sem base" : pct1(v.pct_no_grupo_calculado)}</td>
-              </tr>
-            );
-          }))}
-        </tbody>
-      </table>
-    </div>
-    </div>
+    <TabelaDados
+      idioma="pt"
+      recolhida={false}
+      titulo={titulo}
+      colunas={cab}
+      casas={[null, null, 0, null, null, null, 0, null]}
+      limite={200}
+      linhas={["Total", ...r.grupos].flatMap((g) =>
+        anos.map((ano) => {
+          const todos = cel(r, ano, g, "total"),
+            v = cel(r, ano, g, f);
+          const total = g === "Total";
+          return [
+            g,
+            String(ano),
+            mil(todos.mil_domicilios),
+            total ? "100,0%" : <Pct key="t" v={todos} limiar={limiar} />,
+            total ? "100,0%" : <Pct key="f" v={v} limiar={limiar} />,
+            total ? "Não se aplica" : v.cv_pct === null ? "Não publicado" : pct1(v.cv_pct),
+            mil(v.mil_domicilios),
+            v.pct_no_grupo_calculado == null ? "Sem base" : pct1(v.pct_no_grupo_calculado),
+          ];
+        }),
+      )}
+      tituloVisivel={titulo}
+    />
   );
 }
 
+/** Domicílios com crianças, adolescentes ou pessoas idosas: a parcela de cada grupo em cada classe, à vista como antes. */
 function TabelaMoradores({ c, ano, limiar }: { c: Complementos; ano: number; limiar: number }) {
   const recortes = (["menores_5", "menores_18", "idosos"] as const).map((id) => recorte(c, id));
   const nomes: Record<string, string> = { menores_5: "criança menor de 5 anos", menores_18: "morador menor de 18 anos", idosos: "morador com 60 anos ou mais" };
   // a grave logo depois do total: no celular, a coluna da pergunta da seção fica à vista antes da rolagem da tabela
   const classes: ClasseSocial[] = ["insegura", "grave", "moderada", "leve"];
+  const titulo = `% dos domicílios de cada grupo · Brasil · ${ano} · tabelas SIDRA 9559, 9562 e 9560`;
   return (
-    <>
-    <p className="mt-3 text-sm font-medium">% dos domicílios de cada grupo · Brasil · {ano} · tabelas SIDRA 9559, 9562 e 9560</p>
-    <div className="tabela-scroll mt-2 min-w-0 max-w-full" tabIndex={0} role="region" aria-label={`Insegurança alimentar por presença de crianças, adolescentes e pessoas idosas, ${ano} (tabela; role na horizontal se necessário)`}>
-      <table className="w-full min-w-[40rem] border-collapse text-sm">
-        <caption className="sr-only">% dos domicílios de cada grupo · Brasil · {ano} · tabelas SIDRA 9559, 9562 e 9560</caption>
-        <thead>
-          <tr>
-            {["Domicílios", "Com alguma insegurança", "Grave", "Moderada", "Leve", "CV da grave", "Mil domicílios"].map((t, i) => (
-              <th key={t} scope="col" className={`border-b border-carvao-muted px-2 py-1.5 align-bottom font-semibold text-obee-tinta ${i ? "text-right" : "text-left"}`}>{t}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {recortes.flatMap((r) => r.grupos.map((g) => {
-            const l = linha(r, ano, g).classes;
-            return (
-              <tr key={`${r.id}-${g}`} className="border-b border-linha">
-                <th scope="row" className="px-2 py-1.5 text-left font-normal">{curto(g)} {nomes[r.id]}</th>
-                {classes.map((k) => <td key={k} className="px-2 py-1.5 text-right tabular-nums"><Pct v={l[k]!} limiar={limiar} /></td>)}
-                <td className="px-2 py-1.5 text-right tabular-nums">{l.grave!.cv_pct === null ? "Não publicado" : pct1(l.grave!.cv_pct)}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{l.total!.mil_domicilios === null ? "Não publicado" : int(l.total!.mil_domicilios)}</td>
-              </tr>
-            );
-          }))}
-        </tbody>
-      </table>
-    </div>
-    </>
+    <TabelaDados
+      idioma="pt"
+      recolhida={false}
+      titulo={titulo}
+      colunas={["Domicílios", "Com alguma insegurança", "Grave", "Moderada", "Leve", "CV da grave", "Mil domicílios"]}
+      casas={[null, null, null, null, null, null, 0]}
+      linhas={recortes.flatMap((r) =>
+        r.grupos.map((g) => {
+          const l = linha(r, ano, g).classes;
+          return [
+            `${curto(g)} ${nomes[r.id]}`,
+            ...classes.map((k) => <Pct key={k} v={l[k]!} limiar={limiar} />),
+            l.grave!.cv_pct === null ? "Não publicado" : pct1(l.grave!.cv_pct),
+            l.total!.mil_domicilios === null ? "Não publicado" : l.total!.mil_domicilios,
+          ];
+        }),
+      )}
+      nota={titulo}
+    />
   );
 }
 
-export function QuemPassaFome({ c }: { c: Complementos }) {
+/**
+ * A seção inteira no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): uma FiguraAnalitica com a pergunta, o contexto,
+ * o retrato do Brasil, as leituras e os quadros pareados, que ficam no desenho próprio (marcados `data-figura-legado`): o kit ainda não
+ * tem pequenos múltiplos de barras pareadas com escala comum e a marca de coeficiente de variação em cada valor. As tabelas de apoio, com
+ * a tabela do kit, são a tabela equivalente; as casas com crianças, adolescentes ou pessoas idosas vêm logo depois da figura.
+ */
+export function QuemPassaFome({ c, contexto }: { c: Complementos; contexto?: ReactNode }) {
   const s = c.ebia_social;
   const limiar = s.limiar_cv;
   const composicao = s.recortes.filter((r) => r.orientacao === "composicao");
@@ -211,19 +213,99 @@ export function QuemPassaFome({ c }: { c: Complementos }) {
   const criancas = cel(recorte(c, "menores_5"), ANO, "Existe", "insegura").pct;
   const semCriancas = cel(recorte(c, "menores_5"), ANO, "Não existe", "insegura").pct;
   const renda = recorte(c, "renda");
+  const fontes = s.manifesto.fontes;
+  // a ficha "Sobre este dado" das nove tabelas: a fonte, a captura e o seed com hash, a regra de cálculo e os limites que a seção declara
+  const proveniencia = provenienciaObee({
+    indicador: "Domicílios em insegurança alimentar por grupo social",
+    natureza: "OBSERVADO",
+    orgao: "IBGE",
+    dataset: "PNAD Contínua, Segurança alimentar, tabelas SIDRA 9553 a 9562",
+    recurso: fontes.map((f) => f.nome).join("; "),
+    url: fontes[0]?.pagina ?? "",
+    unidade: "% dos domicílios particulares permanentes e mil domicílios",
+    frequencia: "Suplemento da PNAD Contínua; duas edições integradas.",
+    inicio: "2023",
+    fim: String(ANO),
+    capturadoEm: s.manifesto.capturado_em,
+    transformacoes: ["Percentuais e domicílios publicados pelo IBGE, sem recálculo; a parcela a cada 100 domicílios do grupo é calculada pelo painel."],
+    limitacoes: [s.tabela_ausente.motivo, ...(renda.universo_menor ? [`Renda (tabela 9558): ${renda.universo_menor}`] : [])],
+    snapshot: { id: s.manifesto.origem, sha256: s.manifesto.seed_sha256 },
+  });
   return (
-    <>
-      <p className="mt-6 max-w-prose2 text-base leading-relaxed">
-        Em {ANO}, <strong className="tabular-nums">{br.mil_domicilios === null ? "um número não publicado" : milhoes(br.mil_domicilios * 1000)}</strong> de domicílios
-        {br.pct === null ? "" : <> (<span className="tabular-nums">{pct1(br.pct)}</span> do total)</>} estavam em insegurança alimentar grave: a quantidade de comida diminuiu também para as crianças, ou a falta de alimentos rompeu as refeições de todos os moradores. Segundo o IBGE, nessa situação a fome passa a ser vivida no domicílio.
-      </p>
-      <ul className="mt-4 max-w-prose2 space-y-2 border-l-2 border-obee pl-4 text-base leading-relaxed">
-        {leituras(c).map((t) => <li key={t}>{t}</li>)}
-      </ul>
-
-      <h3 className="mt-10 font-serif text-2xl">Quem são os domicílios em insegurança grave</h3>
-      <figure className="mt-3" aria-labelledby="fome-figura-titulo">
-        <figcaption id="fome-figura-titulo" className="text-sm">
+    <FiguraAnalitica
+      id="quem-passa-fome"
+      idioma="pt"
+      pergunta="Quem passa fome no Brasil?"
+      subtitulo={`Domicílios em insegurança alimentar por grupo social · % dos domicílios · Brasil · ${ANO}`}
+      natureza="OBSERVADO"
+      proveniencia={proveniencia}
+      download={{ href: `${BASE_COMPLEMENTOS}/ebia-grupos-sociais.csv`, rotulo: "Baixar os nove recortes · CSV ↓" }}
+      tabela={{ naFigura: "as tabelas de apoio, 2023 e 2024, com domicílios, coeficientes de variação e a parcela de cada grupo, logo abaixo do gráfico." }}
+      comoInterpretar="Em cada quadro, a barra clara é a parcela do grupo entre todos os domicílios e a escura, entre os domicílios em insegurança grave (na renda, moderada ou grave). O asterisco marca estimativa menos precisa."
+      naoConcluir="Causa: um grupo que aparece mais entre os domicílios em insegurança não teve a sua situação causada por pertencer a ele. São estimativas amostrais publicadas pelo IBGE, que não publica teste das diferenças entre grupos."
+      complemento={
+        <>
+          <details className="border-y border-linha py-2">
+            <summary className="flex min-h-[44px] cursor-pointer items-center py-3 text-sm font-medium">Tabelas de apoio, 2023 e 2024, com domicílios, coeficientes de variação e a parcela de cada grupo</summary>
+            <div className="space-y-8 pb-4">
+              {composicao.map((r) => <TabelaComposicao key={r.id} r={r} limiar={limiar} />)}
+              <TabelaMoradores c={c} ano={2023} limiar={limiar} />
+            </div>
+            <p className="pb-3 text-xs leading-relaxed text-carvao-muted">
+              “A cada 100 domicílios do grupo” é calculado pelo painel com os domicílios publicados em mil (domicílios do grupo na classe ÷ domicílios do grupo), sem coeficiente de variação; os demais valores são do IBGE. O arquivo traz também todas as classes e a divisão urbana e rural da tabela de renda.
+            </p>
+          </details>
+          <details className="border-b border-linha py-2">
+            <summary className="flex min-h-[44px] cursor-pointer items-center py-3 text-sm font-medium">Como ler, conferências e limites</summary>
+            <div className="max-w-prose2 space-y-3 pb-4 text-sm leading-relaxed">
+              <p>A EBIA classifica cada domicílio pelas experiências dos três meses anteriores à entrevista: segurança alimentar e insegurança leve, moderada ou grave. As tabelas de sexo, cor ou raça, escolaridade, trabalho, número de moradores e renda mostram como se dividem os domicílios de cada classe; as de crianças, adolescentes e pessoas idosas mostram como se dividem os domicílios de cada grupo.</p>
+              <p>Antes de publicar, o pipeline confere que as classes somam 100% (tolerância de {dec2(s.tolerancias.pct_por_parcela)} ponto por parcela somada, o arredondamento do IBGE), que os domicílios dos grupos somam o total ({dec2(s.tolerancias.mil_por_parcela)} mil por parcela) e que o total de cada tabela repete o da tabela 9552, usada na seção por estado: {int(s.conferencias.classes_pct + s.conferencias.classes_mil + s.conferencias.grupos_pct + s.conferencias.grupos_mil + s.conferencias.totais_9552)} conferências, todas aprovadas. Qualquer falha retém a publicação.</p>
+              {renda.universo_menor && <p>Renda (tabela 9558): {renda.universo_menor}</p>}
+              <p>Estimativas amostrais: cada valor tem o coeficiente de variação publicado pelo IBGE. O painel marca com asterisco os de {int(limiar)}% ou mais. O IBGE não publica teste das diferenças entre grupos, e o painel não usa microdados; por isso nenhuma diferença é chamada de significativa.</p>
+              <p>{s.tabela_ausente.motivo} Não há recorte por estado nessas tabelas: o IBGE as publica só para o Brasil.</p>
+            </div>
+          </details>
+          <div className="t-meta max-w-prose2 text-carvao-muted" data-fonte-medida="">
+            <p>
+              Fonte: IBGE, PNAD Contínua, Segurança alimentar, tabelas SIDRA{" "}
+              {fontes.map((f, i) => {
+                const r = s.recortes.find((x) => x.fonte_id === f.id)!;
+                return <span key={f.id}>{i ? ", " : ""}<a href={f.pagina} className="text-obee-dark underline underline-offset-2">{r.tabela}</a> ({r.rotulo.toLowerCase()})</span>;
+              })}
+              , capturadas em {captura} pela API do SIDRA. Período: 2023 e 2024. Território: Brasil. Unidade: % dos domicílios particulares permanentes e mil domicílios. A tabela 9561 não existe.
+            </p>
+            <p className="mt-1 flex flex-wrap gap-x-5">
+              <Link href={`${METODOS}#san.ebia.social.composicao`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">Fichas das medidas →</Link>
+            </p>
+          </div>
+        </>
+      }
+      depois={
+        <section aria-labelledby="fome-moradores" className="space-y-3">
+          <h3 id="fome-moradores" className="t-h3 text-carvao">E nas casas com crianças, adolescentes ou pessoas idosas?</h3>
+          <p className="t-corpo max-w-prose2 text-carvao">
+            Aqui o IBGE publica outra conta: a parcela dos domicílios de cada grupo em cada classe. Em {ANO}, {criancas === null ? "valor não publicado" : pct1(criancas)} dos domicílios com criança menor de 5 anos tinham alguma insegurança alimentar, contra {semCriancas === null ? "valor não publicado" : pct1(semCriancas)} dos domicílios sem criança dessa idade.
+          </p>
+          <TabelaMoradores c={c} ano={ANO} limiar={limiar} />
+          <p className="t-meta max-w-prose2 text-carvao-muted">
+            As linhas se sobrepõem: um domicílio com criança de 3 anos também tem morador menor de 18. A idade é dos moradores, não da pessoa responsável. “Com alguma insegurança” soma leve, moderada e grave, como o IBGE publica.
+          </p>
+        </section>
+      }
+    >
+      <div className="space-y-4">
+        {contexto && <div className="t-corpo max-w-prose2 text-carvao">{contexto}</div>}
+        <p className="t-corpo max-w-prose2 text-carvao">
+          Em {ANO}, <strong className="tabular-nums">{br.mil_domicilios === null ? "um número não publicado" : milhoes(br.mil_domicilios * 1000)}</strong> de domicílios
+          {br.pct === null ? "" : <> (<span className="tabular-nums">{pct1(br.pct)}</span> do total)</>} estavam em insegurança alimentar grave: a quantidade de comida diminuiu também para as crianças, ou a falta de alimentos rompeu as refeições de todos os moradores. Segundo o IBGE, nessa situação a fome passa a ser vivida no domicílio.
+        </p>
+        <ul className="t-corpo max-w-prose2 space-y-2 border-l-2 border-obee pl-4 text-carvao">
+          {leituras(c).map((t) => <li key={t}>{t}</li>)}
+        </ul>
+      </div>
+      <figure className="mt-8" aria-labelledby="fome-figura-titulo" data-figura-legado="quem-passa-fome">
+        <h3 className="t-h3 text-carvao">Quem são os domicílios em insegurança grave</h3>
+        <figcaption id="fome-figura-titulo" className="t-meta mt-2 text-carvao-muted">
           Parcela de cada grupo entre os domicílios em insegurança alimentar grave (na renda, moderada ou grave, que o IBGE publica juntas) e entre todos os domicílios · % · Brasil · {ANO}
         </figcaption>
         <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-hidden="true">
@@ -239,53 +321,7 @@ export function QuemPassaFome({ c }: { c: Complementos }) {
           {altos.length > 0 && <p>* Estimativa menos precisa: coeficiente de variação de {int(limiar)}% ou mais, limiar do painel e não regra do IBGE. {altos.join("; ")}.</p>}
         </div>
       </figure>
-
-      <h3 className="mt-12 font-serif text-2xl">E nas casas com crianças, adolescentes ou pessoas idosas?</h3>
-      <p className="mt-3 max-w-prose2 text-base leading-relaxed">
-        Aqui o IBGE publica outra conta: a parcela dos domicílios de cada grupo em cada classe. Em {ANO}, {criancas === null ? "valor não publicado" : pct1(criancas)} dos domicílios com criança menor de 5 anos tinham alguma insegurança alimentar, contra {semCriancas === null ? "valor não publicado" : pct1(semCriancas)} dos domicílios sem criança dessa idade.
-      </p>
-      <TabelaMoradores c={c} ano={ANO} limiar={limiar} />
-      <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-        As linhas se sobrepõem: um domicílio com criança de 3 anos também tem morador menor de 18. A idade é dos moradores, não da pessoa responsável. “Com alguma insegurança” soma leve, moderada e grave, como o IBGE publica.
-      </p>
-
-      <details className="mt-8 border-y border-linha py-2">
-        <summary className="min-h-[44px] cursor-pointer py-3 text-sm font-medium">Tabelas de apoio, 2023 e 2024, com domicílios, coeficientes de variação e a parcela de cada grupo</summary>
-        <div className="space-y-8 pb-4">
-          {composicao.map((r) => <TabelaComposicao key={r.id} r={r} limiar={limiar} />)}
-          <TabelaMoradores c={c} ano={2023} limiar={limiar} />
-        </div>
-        <p className="pb-3 text-xs leading-relaxed text-carvao-muted">
-          “A cada 100 domicílios do grupo” é calculado pelo painel com os domicílios publicados em mil (domicílios do grupo na classe ÷ domicílios do grupo), sem coeficiente de variação; os demais valores são do IBGE. O arquivo traz também todas as classes e a divisão urbana e rural da tabela de renda.
-        </p>
-      </details>
-
-      <details className="mt-4 border-b border-linha py-2">
-        <summary className="min-h-[44px] cursor-pointer py-3 text-sm font-medium">Como ler, conferências e limites</summary>
-        <div className="max-w-prose2 space-y-3 pb-4 text-sm leading-relaxed">
-          <p>A EBIA classifica cada domicílio pelas experiências dos três meses anteriores à entrevista: segurança alimentar e insegurança leve, moderada ou grave. As tabelas de sexo, cor ou raça, escolaridade, trabalho, número de moradores e renda mostram como se dividem os domicílios de cada classe; as de crianças, adolescentes e pessoas idosas mostram como se dividem os domicílios de cada grupo.</p>
-          <p>Antes de publicar, o pipeline confere que as classes somam 100% (tolerância de {dec2(s.tolerancias.pct_por_parcela)} ponto por parcela somada, o arredondamento do IBGE), que os domicílios dos grupos somam o total ({dec2(s.tolerancias.mil_por_parcela)} mil por parcela) e que o total de cada tabela repete o da tabela 9552, usada na seção por estado: {int(s.conferencias.classes_pct + s.conferencias.classes_mil + s.conferencias.grupos_pct + s.conferencias.grupos_mil + s.conferencias.totais_9552)} conferências, todas aprovadas. Qualquer falha retém a publicação.</p>
-          {renda.universo_menor && <p>Renda (tabela 9558): {renda.universo_menor}</p>}
-          <p>Estimativas amostrais: cada valor tem o coeficiente de variação publicado pelo IBGE. O painel marca com asterisco os de {int(limiar)}% ou mais. O IBGE não publica teste das diferenças entre grupos, e o painel não usa microdados; por isso nenhuma diferença é chamada de significativa.</p>
-          <p>{s.tabela_ausente.motivo} Não há recorte por estado nessas tabelas: o IBGE as publica só para o Brasil.</p>
-        </div>
-      </details>
-
-      <div className="mt-4 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
-        <p>
-          Fonte: IBGE, PNAD Contínua, Segurança alimentar, tabelas SIDRA{" "}
-          {s.manifesto.fontes.map((f, i) => {
-            const r = s.recortes.find((x) => x.fonte_id === f.id)!;
-            return <span key={f.id}>{i ? ", " : ""}<a href={f.pagina} className="text-obee-dark underline underline-offset-2">{r.tabela}</a> ({r.rotulo.toLowerCase()})</span>;
-          })}
-          , capturadas em {captura} pela API do SIDRA. Período: 2023 e 2024. Território: Brasil. Unidade: % dos domicílios particulares permanentes e mil domicílios. A tabela 9561 não existe.
-        </p>
-        <p className="mt-1 flex flex-wrap gap-x-5">
-          <Link href={`${METODOS}#san.ebia.social.composicao`} className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">Fichas das medidas →</Link>
-          <a href={`${BASE_COMPLEMENTOS}/ebia-grupos-sociais.csv`} download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-2">Baixar os nove recortes · CSV ↓</a>
-        </p>
-      </div>
-    </>
+    </FiguraAnalitica>
   );
 }
 
