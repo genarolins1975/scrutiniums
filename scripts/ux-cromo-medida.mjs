@@ -10,41 +10,6 @@
 export const ORCAMENTO = { 1440: 230, 390: 200 };
 export const TOPO_H1_MAXIMO = { 1440: 600, 390: 844 };
 
-/**
- * Espera a página assentar antes de medir (roda no Node, com a página do Playwright). Com a CPU disputada, a rede assenta antes de
- * o React hidratar, e a medida pegava o layout do HTML do servidor. Achado no CI do main (run 1255, 23/10/2026): a 390 px com
- * sessão, /eficiencia-estatal mediu 333 px, com a faixa de consulta aberta ainda na tela; hidratada, mede 195 px. Por isso,
- * nesta ordem:
- * 1. rede quieta e fontes carregadas;
- * 2. a barra comum hidratada (o React já ligou a ela as suas propriedades internas);
- * 3. a consulta de sessão do navegador (/api/auth/estado, src/components/acesso/sessao.ts) concluída, com prazo curto para a
- *    página que não a faz;
- * 4. com sessão, a faixa de consulta aberta ([data-aviso-consulta-aberta]) fora da tela;
- * 5. o cromo igual em duas leituras seguidas, porque a conta e a faixa de frescor ainda se acomodam depois da sessão.
- * Devolve false se, com sessão, a faixa não sumir: ela não deve aparecer para quem tem conta, e quem mede reprova.
- */
-export async function esperarPaginaAssentada(page, comSessao, prazo = 30_000) {
-  await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
-  await page.evaluate(() => document.fonts.ready.then(() => undefined));
-  await page.waitForFunction(() => {
-    const alvo = document.querySelector(".bp") || document.querySelector("h1");
-    return !alvo || Object.keys(alvo).some((k) => k.startsWith("__reactFiber$") || k.startsWith("__reactProps$"));
-  }, undefined, { timeout: prazo }).catch(() => undefined);
-  await page.waitForFunction(() => performance.getEntriesByType("resource").some((e) => e.name.includes("/api/auth/estado")), undefined, { timeout: 5_000 })
-    .catch(() => undefined);
-  const semFaixa = !comSessao
-    || (await page.waitForFunction(() => !document.querySelector("[data-aviso-consulta-aberta]"), undefined, { timeout: prazo }).then(() => true, () => false));
-  // duas leituras iguais seguidas, com 300 ms entre elas, no máximo por 15 s
-  let anterior = "";
-  for (let i = 0; i < 50; i++) {
-    const atual = JSON.stringify(await page.evaluate(medirCromo));
-    if (atual === anterior) break;
-    anterior = atual;
-    await page.waitForTimeout(300);
-  }
-  return semFaixa;
-}
-
 export function medirCromo() {
   const visivel = (e) => {
     if (!e) return false;
@@ -78,4 +43,20 @@ export function medirCromo() {
     linhas: Array.from(document.querySelectorAll("nav[data-nav-colecao] ul[id]")).filter(visivel).length,
     rolagemHorizontal: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   };
+}
+
+/**
+ * Com sessão, a medida só vale depois que o navegador resolveu a sessão: `useSessao` consulta /api/auth/eu depois de hidratar e só
+ * então a faixa de consulta aberta ([data-aviso-consulta-aberta], que vem no HTML) sai da página. Até lá ela empurra a faixa de
+ * frescor e o H1 para baixo e o cromo sai inflado: no run 1255 do main (23/10/2026), sob carga, /eficiencia-estatal mediu 333 px a
+ * 390 px, os 195 px reais mais os 138 px da faixa, porque a espera por rede ociosa estourou antes de a sessão resolver. Esperar o
+ * estado, não o tempo. Sem sessão não há o que esperar: a faixa fica. Falha com mensagem própria se a sessão não resolver no prazo.
+ */
+export async function aguardarSessaoResolvida(page, comSessao, timeout = 60_000) {
+  if (!comSessao) return;
+  try {
+    await page.waitForFunction(() => !document.querySelector("[data-aviso-consulta-aberta]"), undefined, { timeout });
+  } catch (e) {
+    throw new Error(`a sessão não resolveu no navegador em ${timeout} ms: a faixa de consulta aberta continua na página (${e.message})`);
+  }
 }

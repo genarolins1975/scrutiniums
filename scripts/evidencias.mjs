@@ -21,7 +21,7 @@ import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
-import { ORCAMENTO, TOPO_H1_MAXIMO, esperarPaginaAssentada, medirCromo } from "./ux-cromo-medida.mjs";
+import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarSessaoResolvida, medirCromo } from "./ux-cromo-medida.mjs";
 import { subirServidorLocal } from "./servidor-local.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
@@ -126,7 +126,8 @@ async function medirPagina(contexto, origem, rota, largura, modo, saida, base) {
   });
   try {
     const resposta = await pagina.goto(origem + rota, { waitUntil: "networkidle", timeout: 120_000 });
-    if (!(await esperarPaginaAssentada(pagina, modo === "com"))) throw new Error("a faixa de consulta aberta continua na tela com sessão");
+    await aguardarSessaoResolvida(pagina, modo === "com");
+    await pagina.evaluate(() => document.fonts.ready.then(() => undefined));
     await pagina.waitForTimeout(400);
     const cromo = await pagina.evaluate(medirCromo);
     const barra = await pagina.evaluate(() => { const e = document.querySelector(".bp"); return !!e && e.getBoundingClientRect().height > 0; });
