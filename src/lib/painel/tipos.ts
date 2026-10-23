@@ -157,6 +157,12 @@ export type TabelaEquivalente = {
   limite?: number;
 };
 
+/**
+ * A tabela equivalente já está dentro da figura (a TabelaInterativa do ranking, ordenável e com exportação, logo abaixo do gráfico): a
+ * figura diz onde ela está em vez de repeti-la. O teste do molde exige então uma TabelaDados dentro da figura.
+ */
+export type TabelaNaFigura = { naFigura: string };
+
 export type FiguraProps = {
   id: string;
   /** Título, em pergunta ou conclusão factual. */
@@ -168,7 +174,7 @@ export type FiguraProps = {
   children: ReactNode;
   /** LeituraGuiada: uma frase factual do mesmo contrato do gráfico, sem causa. */
   leitura?: ReactNode;
-  tabela: TabelaEquivalente;
+  tabela: TabelaEquivalente | TabelaNaFigura;
   proveniencia: Proveniencia;
   /** Outras séries da mesma figura, com proveniência própria (selo e "Sobre este dado" próprios). */
   complementares?: { rotulo: string; p: Proveniencia }[];
@@ -184,8 +190,13 @@ export type FiguraProps = {
   nivelTitulo?: 2 | 3;
   /** Conteúdo que acompanha a figura e não é o gráfico (o detalhe de um dia, a nota de empates); fica abaixo da leitura. */
   complemento?: ReactNode;
-  /** Depois do rodapé de fonte: os arquivos, o link do painel e a próxima pergunta (SeguirPainel). */
-  seguir?: ReactNode;
+  /**
+   * Depois do rodapé de fonte: as análises complementares do mesmo painel (seções em Analisar e Auditar) e o caminho seguinte (arquivos,
+   * link do painel e próxima pergunta).
+   */
+  depois?: ReactNode;
+  /** Âncora antiga do painel (links de outras páginas apontam para ela); fica no topo da figura. */
+  ancoraAntiga?: string;
 };
 
 /* ------------------------------------------------------------------ tabela */
@@ -212,6 +223,10 @@ export type TabelaDadosProps = {
   /** No celular a tabela rola dentro do próprio bloco; a página nunca rola na horizontal. */
   rolagem?: "tabela";
   idioma?: "pt" | "en";
+  /** Última linha em destaque (total). */
+  destaqueUltimaLinha?: boolean;
+  /** Índices das linhas destacadas (a distribuidora escolhida); fundo de contexto, nunca cor de julgamento. */
+  linhasDestacadas?: readonly number[];
   /** Na fatia `tabelas`: título visível (h3), frase de abertura, âncora e nível mínimo de profundidade do bloco. */
   tituloVisivel?: ReactNode;
   lead?: ReactNode;
@@ -283,6 +298,11 @@ export type PaginaPainelProps = {
   numeros?: readonly NumeroProps[];
   /** Ressalva da faixa inteira. */
   notaNumeros?: ReactNode;
+  /**
+   * A faixa já montada, no lugar de `numeros`, quando os números acompanham um controle de cliente (o perfil de consumo da Conta de luz
+   * na URL): um componente de cliente que desenha FaixaNumeros com NumeroIndicador.
+   */
+  faixaNumeros?: ReactNode;
   /** Nome acessível da faixa de números. */
   rotuloNumeros?: string;
   /** Só FiguraAnalitica e Recolhido. */

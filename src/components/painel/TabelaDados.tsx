@@ -37,6 +37,8 @@ export function TabelaDados({
   lead,
   id,
   nivel,
+  destaqueUltimaLinha = false,
+  linhasDestacadas = [],
 }: TabelaDadosProps) {
   const idioma = idiomaFixo ?? idiomaDaPagina();
   const locale = idioma === "en" ? "en-US" : "pt-BR";
@@ -95,7 +97,10 @@ export function TabelaDados({
         </thead>
         <tbody>
           {visiveis.map((l, i) => (
-            <tr key={i} className="border-b border-linha">
+            <tr
+              key={i}
+              className={`border-b border-linha ${destaqueUltimaLinha && i === visiveis.length - 1 ? "font-medium" : ""} ${linhasDestacadas.includes(linhas.length - visiveis.length + i) ? "bg-contexto" : ""}`}
+            >
               {l.map((v, j) =>
                 j === 0 ? (
                   <th key={j} scope="row" className={`px-2 py-1 text-left font-normal text-carvao ${numerica[j] ? "text-right" : ""} ${fixa}`}>

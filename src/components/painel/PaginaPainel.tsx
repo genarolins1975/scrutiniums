@@ -29,6 +29,7 @@ export function PaginaPainel({
   abertura,
   numeros,
   notaNumeros,
+  faixaNumeros,
   rotuloNumeros,
   figuras,
   tabelas,
@@ -76,17 +77,19 @@ export function PaginaPainel({
   );
   const conteudo = (
     <>
-      {aviso}
       <div data-fatia="abertura">
         <AberturaPainel {...abertura} idioma={lingua} />
       </div>
-      {numeros && numeros.length > 0 && (
+      {aviso}
+      {(faixaNumeros || (numeros && numeros.length > 0)) && (
         <div data-fatia="numeros">
-          <FaixaNumeros rotulo={rotuloNumeros} nota={notaNumeros} idioma={lingua}>
-            {numeros.map((n) => (
-              <NumeroIndicador key={n.rotulo} {...n} tamanho={n.tamanho ?? "g"} idioma={lingua} />
-            ))}
-          </FaixaNumeros>
+          {faixaNumeros ?? (
+            <FaixaNumeros rotulo={rotuloNumeros} nota={notaNumeros} idioma={lingua}>
+              {numeros!.map((n) => (
+                <NumeroIndicador key={n.rotulo} {...n} tamanho={n.tamanho ?? "g"} idioma={lingua} />
+              ))}
+            </FaixaNumeros>
+          )}
         </div>
       )}
       {navegacaoLocal}

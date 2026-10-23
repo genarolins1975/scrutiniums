@@ -586,7 +586,7 @@ export default function PldPage() {
                     <PldCapitulos />
                   </>
                 }
-                seguir={<PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />}
+                depois={<PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />}
               >
                 <GraficoBarras
                   titulo={tx(`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`, `Daily PLD average by submarket, ${dataBR(pld.dia_referencia)}`)}
@@ -1093,7 +1093,7 @@ export default function PldPage() {
                   </div>
                         </>
                       }
-                      seguir={<PldSeguir ancora="p008" proximo={proximoPainel("p008")} downloads={detalhe!.downloads.filter((d) => /cmo_horario/.test(d.url))} />}
+                      depois={<PldSeguir ancora="p008" proximo={proximoPainel("p008")} downloads={detalhe!.downloads.filter((d) => /cmo_horario/.test(d.url))} />}
                     >
                       <SecaoDoPainel id="diagrama-formacao" titulo={tx("O PLD emerge de um sistema, não de uma variável", "The PLD emerges from a system, not from a single variable")}>
                         <div data-figura-legado="formacao">

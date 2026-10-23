@@ -103,8 +103,13 @@ export function conferirPainel(rota: string, html: string): void {
     expect(todos(f, (n) => tem(n, "data-grafico") || tem(n, "data-mapa-legado") || tem(n, "data-figura-legado")).length, `${rota}#${id}: gráfico`).toBeGreaterThan(0);
     const equivalente = todos(f, (n) => tem(n, "data-tabela-equivalente"));
     expect(equivalente.length, `${rota}#${id}: tabela equivalente`).toBe(1);
-    expect(todos(equivalente[0], (n) => n.tagName === "details").length, `${rota}#${id}: tabela equivalente em <details>`).toBeGreaterThan(0);
-    expect(todos(equivalente[0], (n) => n.tagName === "table").length, `${rota}#${id}: <table> na tabela equivalente`).toBe(1);
+    if (tem(equivalente[0], "data-na-figura")) {
+      // a figura aponta a tabela que já traz (o ranking ordenável): ela tem de estar dentro da figura, no kit
+      expect(todos(f, (n) => n.tagName === "table" && tem(n, "data-tabela-dados")).length, `${rota}#${id}: a tabela que a figura aponta`).toBeGreaterThan(0);
+    } else {
+      expect(todos(equivalente[0], (n) => n.tagName === "details").length, `${rota}#${id}: tabela equivalente em <details>`).toBeGreaterThan(0);
+      expect(todos(equivalente[0], (n) => n.tagName === "table").length, `${rota}#${id}: <table> na tabela equivalente`).toBe(1);
+    }
     expect(todos(f, (n) => tem(n, "data-proveniencia")).length, `${rota}#${id}: proveniência`).toBe(1);
     const nao = todos(f, (n) => tem(n, "data-nao-concluir"));
     expect(nao.length, `${rota}#${id}: não permite concluir`).toBe(1);

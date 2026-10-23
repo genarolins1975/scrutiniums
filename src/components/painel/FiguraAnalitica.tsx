@@ -49,7 +49,8 @@ export function FiguraAnalitica({
   nivel,
   nivelTitulo = 2,
   complemento,
-  seguir,
+  depois,
+  ancoraAntiga,
   legivel = (x: string) => x,
   extraFonte,
   idioma: idiomaFixo,
@@ -104,6 +105,7 @@ export function FiguraAnalitica({
   const notas = [oQueMudou && ([mudou, oQueMudou, "data-que-mudou"] as const), comoInterpretar && ([interpretar, comoInterpretar, "data-como-interpretar"] as const)].filter(Boolean) as (readonly [string, ReactNode, string])[];
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} data-figura-analitica={id} className="scroll-mt-28 border-t border-linha pt-6">
+      {ancoraAntiga && <span id={ancoraAntiga} data-ancora-antiga="" className="block scroll-mt-28" />}
       <header>
         <Titulo id={`${id}-titulo`} className={`${nivelTitulo === 3 ? "t-h3" : "t-h2"} max-w-4xl text-carvao`}>
           {pergunta}
@@ -141,17 +143,24 @@ export function FiguraAnalitica({
           <div className="t-meta max-w-prose2 border-t border-linha pb-2 pt-3 text-carvao-muted">{porQueImporta}</div>
         </DetalheDoNivel>
       )}
-      <div data-tabela-equivalente="">
-        <TabelaDados
-          titulo={tabela.titulo ?? tx(`${pergunta}: tabela equivalente`, `${pergunta}: equivalent table`, idioma)}
-          colunas={tabela.colunas}
-          linhas={tabela.linhas}
-          casas={tabela.casas}
-          csv={tabela.csv}
-          limite={tabela.limite}
-          idioma={idioma}
-        />
-      </div>
+      {"naFigura" in tabela ? (
+        <p className="t-meta mt-4 text-carvao-muted" data-tabela-equivalente="" data-na-figura="">
+          <span className="font-medium text-carvao">{tx("Tabela equivalente: ", "Equivalent table: ", idioma)}</span>
+          {tabela.naFigura}
+        </p>
+      ) : (
+        <div data-tabela-equivalente="">
+          <TabelaDados
+            titulo={tabela.titulo ?? tx(`${pergunta}: tabela equivalente`, `${pergunta}: equivalent table`, idioma)}
+            colunas={tabela.colunas}
+            linhas={tabela.linhas}
+            casas={tabela.casas}
+            csv={tabela.csv}
+            limite={tabela.limite}
+            idioma={idioma}
+          />
+        </div>
+      )}
       <footer className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-linha pt-3" data-proveniencia="">
         <p className="t-meta text-carvao-muted">
           {fontes}
@@ -176,7 +185,7 @@ export function FiguraAnalitica({
           </ul>
         )}
       </footer>
-      {seguir}
+      {depois && <div className="mt-8 space-y-8">{depois}</div>}
     </section>
   );
 }

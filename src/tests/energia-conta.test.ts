@@ -859,16 +859,21 @@ describe.skipIf(!disponivel)("revisão da interface: defeitos corrigidos não vo
   const htmlP050 = renderToStaticMarkup(createElement(ContaReajustesPage));
   const blocosNumero = (src: string) => Array.from(src.matchAll(/<Numero\b[\s\S]*?\/>/g)).map((m) => m[0]);
 
-  it('todo destaque (Numero) das duas páginas leva a evidência do "Comprove este número"', () => {
-    for (const [nome, src] of Object.entries(fontes)) {
-      const blocos = blocosNumero(src);
-      expect(blocos.length, nome).toBeGreaterThan(0);
-      for (const b of blocos) expect(b, `${nome}: ${b.slice(0, 80)}`).toMatch(/\bevidencia=\{/);
-    }
+  // a página principal está no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): os destaques são NumeroIndicador, e a ficha
+  // "Comprove este número" entra pelo `comprove` (o destaque sem ficha própria diz isso na nota); a página de reajustes segue com Numero
+  const blocosIndicador = (src: string) => Array.from(src.matchAll(/<NumeroIndicador\b[\s\S]*?\n\s*\/>/g)).map((m) => m[0]);
+
+  it('todo destaque das duas páginas leva a evidência do "Comprove este número" ou diz por que não tem ficha', () => {
+    const p050 = blocosNumero(fontes.p050);
+    expect(p050.length).toBeGreaterThan(0);
+    for (const b of p050) expect(b, `p050: ${b.slice(0, 80)}`).toMatch(/\bevidencia=\{/);
+    const principal = blocosIndicador(fontes.principal);
+    expect(principal.length).toBeGreaterThan(0);
+    for (const b of principal) expect(b, `principal: ${b.slice(0, 80)}`).toMatch(/\bcomprove=\{|Sem ficha própria/);
   });
 
   it("a citação de cada destaque aponta para a página e a âncora onde o número está", () => {
-    for (const b of blocosNumero(fontes.principal)) {
+    for (const b of blocosIndicador(fontes.principal).filter((x) => /\bcomprove=\{/.test(x))) {
       const m = b.match(/endereco="\/setor-eletrico\/conta-de-luz#([a-z0-9-]+)"/);
       expect(m, b.slice(0, 80)).toBeTruthy();
       expect(html).toContain(`id="${m![1]}"`);
@@ -1198,7 +1203,9 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
     expect(html).toContain('data-navegacao-local="faixa"');
     expect(html).toMatch(/aria-current="page"[^>]*>Tarifas, composição e simulador</);
     expect(html).toMatch(/<a href="\/setor-eletrico\/conta-de-luz\/reajustes-e-subsidios"[^>]*>Reajustes, bandeiras e subsídios</);
-    expect(html.indexOf('data-navegacao-local="faixa"')).toBeLessThan(html.indexOf("<h1"));
+    // no molde de painel a faixa de páginas irmãs vem logo depois dos números da abertura, antes da primeira figura (como nas filhas do PLD)
+    expect(html.indexOf('data-navegacao-local="faixa"')).toBeGreaterThan(html.indexOf("data-faixa-numeros"));
+    expect(html.indexOf('data-navegacao-local="faixa"')).toBeLessThan(html.indexOf('id="p047"'));
     // a abertura da filha não leva faixa de métricas (as quatro medidas ficam nos painéis, e a primeira figura aparece na primeira tela)
     expect(ateAProfundidade(htmlP050)).not.toContain("data-faixa-metricas");
     const painel = (id: string) => htmlP050.indexOf(`id="${id}"`);
@@ -1235,13 +1242,15 @@ describe.skipIf(!disponivel)("redesenho: primeira tela, níveis de profundidade 
   });
 
   it("os destaques de ContaFaixa sem ficha são só os três do perfil, e a tarifa mediana leva a evidência da gold", () => {
+    // NumeroIndicador do kit de painel (Iniciativa 1, 23/10/2026): a ficha entra pelo `comprove`, a unidade mensal pela constante `mes`
     const src = ler("src/components/energia/ContaFaixa.tsx");
-    const blocos = Array.from(src.matchAll(/<Numero\b[\s\S]*?\/>/g)).map((m) => m[0]);
+    const blocos = Array.from(src.matchAll(/<NumeroIndicador\b[\s\S]*?\n\s*\/>/g)).map((m) => m[0]);
     expect(blocos.length).toBe(4);
-    const semFicha = blocos.filter((b) => !/\bevidencia=\{/.test(b));
+    const semFicha = blocos.filter((b) => !/\bcomprove=\{/.test(b));
     expect(semFicha.length).toBe(3);
-    for (const b of semFicha) expect(b).toMatch(/formato="reais"[\s\S]*unidade="R\$\/mês"/);
-    expect(blocos.filter((b) => /evidencia=\{evidenciaMediana\}/.test(b)).length).toBe(1);
+    for (const b of semFicha) expect(b).toMatch(/formato="reais"[\s\S]*unidade=\{mes\}/);
+    expect(src).toMatch(/const mes = idioma === "en" \? "R\$\/month" : "R\$\/mês"/);
+    expect(blocos.filter((b) => /comprove=\{evidenciaMediana \?/.test(b)).length).toBe(1);
   });
 });
 
@@ -1931,9 +1940,9 @@ describe.skipIf(!disponivel)("segunda passada: o que as páginas dizem e mostram
   it("a mediana da primeira tela traz a variação nas mesmas distribuidoras e a ressalva diz quantas saíram do conjunto", () => {
     const antes = semEspacoDuro(textoCompletoDe(ateAProfundidade(html).replace(/<details[\s\S]*?<\/details>/g, " ")));
     expect(antes).toContain(`nas mesmas ${cmp.nComum} distribuidoras, de ${dataBR(cmp.de)} a ${dataBR(cmp.ate)}`);
-    // a variação com o sinal escrito (+ ou −), e sem sinal quando arredonda a zero
+    // a variação em palavras (alta, queda, estável), com o valor absoluto, como no NumeroIndicador do kit de painel (Iniciativa 1, 23/10/2026)
     const v2 = Number((cmp.variacaoPct as number).toFixed(2));
-    expect(antes).toContain(`${v2 > 0 ? "+" : v2 < 0 ? "−" : ""}${num(Math.abs(v2), 2)}%`);
+    expect(antes).toContain(v2 > 0 ? `alta de ${num(Math.abs(v2), 2)}%` : v2 < 0 ? `queda de ${num(Math.abs(v2), 2)}%` : "estável");
     // o painel diz o mesmo com as medianas do mesmo conjunto e o limite de leitura
     expect(entender).toContain(`Nas mesmas ${cmp.nComum} distribuidoras, a mediana`);
     expect(entender).toContain(num(cmp.medianaDeComum, 2));
@@ -2458,8 +2467,9 @@ describe.skipIf(!disponivel)("rodada 2: cobertura, extremos, mediana ponderada e
     const h = semEspacoDuro(html);
     expect(h).toContain(`Menor custo de 200 kWh/mês, entre as ${t.resumo.n} com tarifa vigente`);
     expect(h).toContain(`Maior custo de 200 kWh/mês, entre as ${t.resumo.n} com tarifa vigente`);
-    expect(h).toContain(semEspacoDuro(`${ref.menor!.sigla} (${textoUcs(info[ref.menor!.cnpj].ucs)}), ${dataBR(gold.data_referencia)}`));
-    expect(h).toContain(semEspacoDuro(`${ref.maior!.sigla} (${textoUcs(info[ref.maior!.cnpj].ucs)}), ${dataBR(gold.data_referencia)}`));
+    // no NumeroIndicador o recorte (distribuidora e UCs) e o período vêm na mesma linha, separados por ponto médio
+    expect(h).toContain(semEspacoDuro(`${ref.menor!.sigla} (${textoUcs(info[ref.menor!.cnpj].ucs)}) · ${dataBR(gold.data_referencia)}`));
+    expect(h).toContain(semEspacoDuro(`${ref.maior!.sigla} (${textoUcs(info[ref.maior!.cnpj].ucs)}) · ${dataBR(gold.data_referencia)}`));
     expect(h).toContain('data-nota="cobertura-ranking"');
     expect(h).toContain(`${cob.n} de ${cob.universo} distribuidoras`);
     expect(textoUcs(6134)).toBe("6,1 mil UCs");

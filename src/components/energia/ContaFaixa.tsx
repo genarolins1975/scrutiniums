@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
-import { Numero } from "@/components/energia/Numero";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { FaixaNumeros } from "@/components/painel/FaixaNumeros";
+import { NumeroIndicador } from "@/components/painel/NumeroIndicador";
+import { valorOuAusencia } from "@/lib/painel/numeros";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import {
   CAMPO_PERFIL,
@@ -85,83 +87,87 @@ export function ContaFaixa({
     idioma,
   );
   const semVigente = tx("Nenhuma distribuidora com tarifa vigente na data.", "No distribution utility with a tariff in force on the date.");
-  // a unidade dos três destaques fica escrita em português no próprio Numero (a forma de sempre) e a página inglesa a troca aqui
-  const unidadeEn: { unidade?: string } = idioma === "en" ? { unidade: "R$/month" } : {};
   const abaixoDoPiso = cobertura !== null && cobertura.atingePiso === false;
+  const fonte = tx("ANEEL, tarifas de aplicação", "ANEEL, applied tariffs");
+  const mes = idioma === "en" ? "R$/month" : "R$/mês"; // i18n: dado (a forma inglesa no ramo en)
   return (
-    <FaixaMetricas
-      colunas={4}
+    <FaixaNumeros
+      idioma={idioma}
       rotulo={tx(`Custo de ${perfil} kWh por mês e tarifa mediana`, `Cost of ${perfil} kWh a month and median tariff`)}
       nota={
-        <p className={`text-sm leading-relaxed ${abaixoDoPiso ? "border border-dashed border-mineral px-3 py-2 text-carvao" : "text-carvao-muted"}`} role={abaixoDoPiso ? "status" : undefined} data-nota="cobertura-ranking">
+        <p className={`t-meta ${abaixoDoPiso ? "border border-dashed border-mineral px-3 py-2 text-carvao" : "text-carvao-muted"}`} role={abaixoDoPiso ? "status" : undefined} data-nota="cobertura-ranking">
           {nota}
         </p>
       }
     >
-      <Numero
-        variante="faixa"
+      <NumeroIndicador
+        idioma={idioma}
+        {...valorOuAusencia(r.menor?.valor ?? null, semVigente)}
         rotulo={tx(`Menor custo de ${perfil} kWh/mês, entre as ${r.n} com tarifa vigente`, `Lowest cost of ${perfil} kWh/month, among the ${r.n} with a tariff in force`)}
         natureza="CALCULADO"
-        valor={r.menor?.valor ?? null}
         formato="reais"
         casas={2}
-        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
-        {...unidadeEn}
-        periodo={r.menor ? `${r.menor.sigla} (${ucsDe(r.menor.cnpj)}), ${data}` : data}
-        motivoAusencia={semVigente}
-        cor="var(--serie-1)"
+        unidade={mes}
+        recorte={r.menor ? `${r.menor.sigla} (${ucsDe(r.menor.cnpj)})` : undefined}
+        periodo={data}
+        fonte={fonte}
+        marcador="var(--serie-1)"
+        tamanho="g"
       />
-      <Numero
-        variante="faixa"
+      <NumeroIndicador
+        idioma={idioma}
+        {...valorOuAusencia(r.mediana, semVigente)}
         rotulo={tx(`Mediana simples de ${r.n} distribuidoras`, `Simple median of ${r.n} distribution utilities`)}
         natureza="CALCULADO"
-        valor={r.mediana}
         formato="reais"
         casas={2}
-        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
-        {...unidadeEn}
-        periodo={tx(`${perfil} kWh/mês, ${data}`, `${perfil} kWh/month, ${data}`)}
+        unidade={mes}
+        recorte={tx(`${perfil} kWh/mês`, `${perfil} kWh/month`)}
+        periodo={data}
+        fonte={fonte}
         variacao={
           comparacao && comparacao.variacaoPct !== null
             ? {
                 valor: comparacao.variacaoPct,
                 casas: 2,
-                sufixo: "%",
-                referencia: tx(
+                unidade: "%",
+                base: tx(
                   `nas mesmas ${comparacao.nComum} distribuidoras, de ${dataBR(comparacao.de, idioma)} a ${dataBR(comparacao.ate, idioma)}`,
                   `in the same ${comparacao.nComum} distribution utilities, from ${dataBR(comparacao.de, idioma)} to ${dataBR(comparacao.ate, idioma)}`,
                 ),
               }
             : undefined
         }
-        motivoAusencia={semVigente}
-        cor="var(--cor-energia)"
+        marcador="var(--cor-energia)"
+        tamanho="g"
       />
-      <Numero
-        variante="faixa"
+      <NumeroIndicador
+        idioma={idioma}
+        {...valorOuAusencia(r.maior?.valor ?? null, semVigente)}
         rotulo={tx(`Maior custo de ${perfil} kWh/mês, entre as ${r.n} com tarifa vigente`, `Highest cost of ${perfil} kWh/month, among the ${r.n} with a tariff in force`)}
         natureza="CALCULADO"
-        valor={r.maior?.valor ?? null}
         formato="reais"
         casas={2}
-        unidade="R$/mês" // i18n: dado (a forma inglesa vem de unidadeEn)
-        {...unidadeEn}
-        periodo={r.maior ? `${r.maior.sigla} (${ucsDe(r.maior.cnpj)}), ${data}` : data}
-        motivoAusencia={semVigente}
-        cor="var(--serie-1)"
+        unidade={mes}
+        recorte={r.maior ? `${r.maior.sigla} (${ucsDe(r.maior.cnpj)})` : undefined}
+        periodo={data}
+        fonte={fonte}
+        marcador="var(--serie-1)"
+        tamanho="g"
       />
-      <Numero
-        variante="faixa"
+      <NumeroIndicador
+        idioma={idioma}
+        {...valorOuAusencia(resumo.mediana === null ? null : resumo.mediana / 1000, semVigente)}
         rotulo={tx("Tarifa mediana simples, TE + TUSD", "Simple median tariff, TE + TUSD")}
         natureza="CALCULADO"
-        valor={resumo.mediana === null ? null : resumo.mediana / 1000}
         formato="reais"
         casas={4}
         unidade="R$/kWh"
-        evidencia={evidenciaMediana}
-        motivoAusencia={semVigente}
-        endereco="/setor-eletrico/conta-de-luz#tarifa"
+        periodo={data}
+        fonte={fonte}
+        comprove={evidenciaMediana ? <ComproveNumero evidencia={evidenciaMediana} endereco="/setor-eletrico/conta-de-luz#tarifa" /> : undefined}
+        tamanho="g"
       />
-    </FaixaMetricas>
+    </FaixaNumeros>
   );
 }
