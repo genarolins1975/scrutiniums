@@ -14,6 +14,9 @@ import NecessidadesAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/
 import AcessoAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/acesso/page";
 import QualidadeAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/qualidade/page";
 import RecursosAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/recursos/page";
+import PanoramaTrabalho from "@/app/eficiencia-estatal/trabalho-renda/page";
+import QualificacaoTrabalho from "@/app/eficiencia-estatal/trabalho-renda/qualificacao/page";
+import RecursosTrabalho from "@/app/eficiencia-estatal/trabalho-renda/recursos/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2, frente de Trabalho e renda, Assistência social e Segurança
@@ -59,6 +62,48 @@ describe("molde de painel: Assistência social", () => {
     for (const t of ["diferente de visitas do PAIF", "não some essas categorias", "Os centros-dia incluem modalidades similares e organizações não governamentais."]) expect(c).toContain(t);
     const r = pagina(RecursosAssistencia);
     for (const t of ["sem identificar trabalhadores", "pessoas únicas ou equivalentes de jornada completa", "O recorte financeiro ainda não foi integrado; estas medidas não são uma nota de eficiência."]) expect(r).toContain(t);
+  });
+});
+
+/** Página assíncrona (lê a base no servidor) ou que embrulha uma assíncrona: resolve até o elemento que o React renderiza. */
+async function resolver(el: ReactElement): Promise<ReactElement> {
+  const tipo = el.type as unknown;
+  if (typeof tipo === "function" && tipo.constructor.name === "AsyncFunction") return (await (tipo as (p: unknown) => Promise<ReactElement>)(el.props)) as ReactElement;
+  if (typeof tipo === "function" && !(tipo as { prototype?: { isReactComponent?: unknown } }).prototype?.isReactComponent) {
+    const filho = (tipo as (p: unknown) => ReactElement)(el.props);
+    return filho && typeof filho === "object" && "type" in filho && typeof filho.type === "function" && filho.type.constructor.name === "AsyncFunction" ? resolver(filho) : filho;
+  }
+  return el;
+}
+
+describe("molde de painel: Trabalho e renda", () => {
+  it("/eficiencia-estatal/trabalho-renda (panorama)", async () => {
+    const h = html(await resolver(createElement(PanoramaTrabalho)));
+    conferirPainel("/eficiencia-estatal/trabalho-renda", h);
+    for (const t of ['data-figura-analitica="desocupacao"', 'id="dimensoes"', "Entre pela pergunta que importa.", "Dois calendários, duas perguntas.", "Todas as dimensões, cobertura explícita.", "Trajetórias e mobilidade", "não publicado nesta edição", "Definições, reprodução e limites", "Explorar a série, exportação e comparação"]) expect(h).toContain(t);
+    for (const s of ["acesso-ao-trabalho", "qualidade-do-trabalho", "renda-do-trabalho", "renda-das-familias"]) expect(h).toContain(`href="/eficiencia-estatal/trabalho-renda/${s}?ter=1"`);
+    // sem a numeração "01 ·" de antes (decisão 7 pendente: padrão sem numeração)
+    expect(h).not.toMatch(/\b0\d · /);
+  });
+
+  it("/eficiencia-estatal/trabalho-renda/qualificacao, com e sem recorte na URL", () => {
+    const h = html(createElement(QualificacaoTrabalho));
+    conferirPainel("/eficiencia-estatal/trabalho-renda/qualificacao", h);
+    for (const t of ['data-figura-analitica="modalidades"', 'id="cursos"', "Aplicar filtros", "Exportar todo o recorte CSV", "Próxima página →", "Ocupações e aprovação", "Baixar planilha original ZIP", "SHA-256 do CSV original", "O que falta para medir resultados"]) expect(h).toContain(t);
+    const ac = html(createElement(QualificacaoTrabalho, { searchParams: { uf: "AC", pagina: "2" } }));
+    conferirPainel("/eficiencia-estatal/trabalho-renda/qualificacao", ac);
+    // o HTML do servidor já sai no recorte pedido: a UF no resumo, a segunda página e o link para a anterior e para limpar
+    expect(ac).toContain("Mostrando AC");
+    expect(ac).toContain("Página 2 de");
+    expect(ac).toContain("← Página anterior");
+    expect(ac).toContain("Limpar o recorte");
+    expect(ac).toContain('href="/eficiencia-estatal/trabalho-renda/qualificacao/dados.csv?uf=AC');
+  });
+
+  it("/eficiencia-estatal/trabalho-renda/recursos", async () => {
+    const h = html(await resolver(createElement(RecursosTrabalho)));
+    conferirPainel("/eficiencia-estatal/trabalho-renda/recursos", h);
+    for (const t of ['data-figura-analitica="distribuicao"', 'id="evolucao"', 'id="composicao"', "Barras · escala linear", "Pontos · escala logarítmica", "Baixar comparação completa CSV", "Consulta DCA", "Baixar base e proveniência JSON", "Perímetro:", "Conferência DCA × RREO", "Valores ausentes não representam ausência de política pública."]) expect(h).toContain(t);
   });
 });
 
