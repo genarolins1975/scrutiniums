@@ -13,6 +13,7 @@ import PaginaResiduos from "@/app/eficiencia-estatal/saneamento/residuos/page";
 import PaginaDrenagem from "@/app/eficiencia-estatal/saneamento/drenagem/page";
 import PaginaRecursos from "@/app/eficiencia-estatal/saneamento/recursos/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
+import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2 do Grupo 2, frente de saúde, educação, saneamento, energia e meio
@@ -63,6 +64,48 @@ describe("molde de painel: saneamento no OBEE", () => {
     expect(h).toContain("O que os municípios informaram?");
     expect(h).toContain('data-bloco-tabela=""');
     expect(h).not.toContain("overflow-x-auto");
+  });
+});
+
+describe("molde de painel: energia e conectividade", () => {
+  const visao = (slug: string) => html(createElement(PaginaEnergia, { params: { painel: [slug] } }));
+  // cada visão do modelo [[...painel]] tem corpo próprio; as quatro de medida estão no molde, Dados e métodos fica fora
+  it.each(["acesso", "continuidade", "custo", "internet"])("/eficiencia-estatal/energia-conectividade/%s", (slug) => {
+    const h = visao(slug);
+    conferirPainel(`/eficiencia-estatal/energia-conectividade/${slug}`, h);
+    // o aviso do painel principal continua nas visões que o tinham (todas menos Conectividade)
+    expect(h.includes("data-painel-principal")).toBe(slug !== "internet");
+  });
+  it("acesso: o ano das estimativas, a tabela por território, a nota amostral, o arquivo e os sistemas isolados", () => {
+    const h = visao("acesso");
+    for (const t of ["Quem ainda não tem energia?", "Ano de referência", "Ter energia, estar ligado à rede e receber em tempo integral.", "CV é o coeficiente de variação", "Baixar todas as observações de acesso (CSV)", "Sistemas isolados também fornecem energia.", "Examinar inclusão e sistemas isolados no Setor Elétrico"]) {
+      expect(h).toContain(t);
+    }
+    expect(h).toContain('data-bloco-tabela=""');
+  });
+  it("continuidade: a figura do DEC no kit, o ano corrente como ressalva, a busca, a ordem, o arquivo e o caminho ao Setor Elétrico", () => {
+    const h = visao("continuidade");
+    for (const t of ["Por quanto tempo falta energia?", "Quanto tempo falta energia, ano a ano?", "Ano corrente:", "Buscar distribuidora", "Ordenar por", "DEC apurado crescente", "Baixar histórico por distribuidora (CSV)", "Explorar meses, conjuntos e compensações", "As parcelas expurgadas não entram no indicador apurado"]) {
+      expect(h).toContain(t);
+    }
+    expect(h).toContain('data-grafico="pontos"');
+  });
+  it("custo: a Tarifa Social e o Luz para Todos no NumeroIndicador, a busca, o consumo, o cálculo e o arquivo; nenhuma data crua na tabela", () => {
+    const h = visao("custo");
+    expect(h.match(/data-numero-indicador=""/g)).toHaveLength(2);
+    for (const t of ["Tarifa Social: unidade consumidora não é pessoa.", "Luz para Todos: ligações registradas pelo programa.", "Consumo de referência (kWh/mês)", "Cálculo: consumo × (TE + TUSD) ÷ 1.000.", "Baixar tarifas da publicação (CSV)", "Consultar orçamento familiar, subsídios e recursos por contrato"]) {
+      expect(h).toContain(t);
+    }
+  });
+  it("internet: as barras do kit, a diferença urbana e rural e o arquivo do recorte", () => {
+    const h = visao("internet");
+    for (const t of ["Internet no domicílio: cidade e campo.", "Diferença urbana–rural:", "Baixar recorte de conectividade (CSV)", "cobertura 4G/5G"]) expect(h).toContain(t);
+    expect(h).toContain('data-grafico="barras"');
+  });
+  it("Dados e métodos segue fora do molde (página de método)", () => {
+    const h = visao("metodos");
+    expect(h).not.toContain("data-painel");
+    expect(h).toContain("Regras de interpretação.");
   });
 });
 
