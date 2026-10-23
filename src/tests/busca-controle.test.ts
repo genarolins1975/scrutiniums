@@ -7,6 +7,8 @@ import { formasDe, nucleoDaBusca, palavrasUteis } from "@/lib/busca/normalizar";
 import { rotuloDoParcial } from "@/lib/busca/textos";
 import type { EntradaBusca, IndiceBusca } from "@/lib/busca/tipos";
 import { ListaResultados } from "@/components/busca/ListaResultados";
+import { NaoCobre } from "@/components/busca/NaoCobre";
+import { ehRotaPublica } from "@/lib/rotasPublicas";
 
 vi.mock("next/navigation", async () => ({
   ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
@@ -363,8 +365,7 @@ describe("bloco 2: sinônimos com alcance certo", () => {
     expect(r.resultados[0].href).toBe("/observatorio");
   });
 
-  // nenhuma página trata do salário mínimo: o termo espera o estado "ainda não cobre" (bloco 4), sem gancho inventado
-  it.todo("bloco 4: 'salário mínimo' cai no estado 'ainda não cobre'");
+  // nenhuma página trata do salário mínimo: o termo cai no estado "ainda não cobre" (bloco 4), sem gancho inventado
 });
 
 describe("bloco 3: toda página com pergunta e termos", () => {
@@ -415,11 +416,73 @@ describe("bloco 3: toda página com pergunta e termos", () => {
 });
 
 describe("bloco 4: estado vazio", () => {
-  it.todo("'tarifa branca': sem verbete nem página, estado 'ainda não cobre'");
-  it.todo("'autonomia financeira': estado 'ainda não cobre', com os seis observatórios");
-  it.todo("'ações', 'transparência': a página prevista acompanhada do observatório e da coleção");
-  it.todo("'xyzabc': estado 'ainda não cobre', sem resultado demonstrativo");
-  it.todo("conjunto completo: todo termo com zero resultado cai num dos três estados vazios");
+  const vazio = (termo: string) => renderToStaticMarkup(createElement(NaoCobre, { termo, indice: indiceDeBusca(), comSessao: false }));
+
+  it("'autonomia financeira', 'xyzabc', 'tarifa branca', 'salário mínimo': estado 'ainda não cobre', com os seis observatórios e sem resultado demonstrativo", () => {
+    for (const t of ["autonomia financeira", "xyzabc", "tarifa branca", "salário mínimo"]) {
+      const r = b(t);
+      expect(r.resultados, t).toEqual([]);
+      expect(r.sugestoes, t).toBeUndefined();
+      const h = vazio(t);
+      // frase decidida pelo dono em 23/10/2026 (seção 7 do prompt da busca, item 4)
+      expect(h, t).toContain("A Scrutiniums ainda não cobre <q>");
+      expect(h, t).toContain("Veja o que cada observatório responde:");
+      expect(h.split("<li").length - 1, t).toBe(6);
+    }
+  });
+
+  // desde o bloco 3, "ações" acha "Bancos na bolsa" e "transparência" acha "Políticas e inclusão" (termos dos catálogos); os
+  // termos que só alcançam a página prevista trazem junto a coleção e o observatório dela
+  it("'ações', 'transparência': já têm página publicada; 'equidade' e 'avaliação': a prevista vem com a coleção e o observatório", () => {
+    expect(b("ações").resultados.some((x) => x.href === "/observatorio/market")).toBe(true);
+    expect(b("transparência").resultados.some((x) => x.situacao === "publicado" && x.href)).toBe(true);
+    for (const t of ["equidade", "avaliação"]) {
+      const r = b(t).resultados;
+      expect(r[0].situacao, t).toBe("previsto");
+      expect(r.some((x) => x.tipo === "colecao" && x.href === "/contas-publicas"), t).toBe(true);
+      expect(r.some((x) => x.tipo === "observatorio" && x.href), t).toBe(true);
+    }
+  });
+
+  // decisão do dono de 23/10/2026 (seção 7 do prompt da busca, item 3; achado A7): sem sessão, o primeiro resultado fechado ganha
+  // a linha "Versão aberta do tema" quando a coleção tem página aberta, sem mudar a ordem
+  it("versão aberta: cada página aberta dos aperitivos fica presa à sua coleção, e o endereço é público", () => {
+    const abertas = indiceDeBusca().colecoes.filter((c) => c.aberta);
+    expect(abertas.find((c) => c.id === "setor-eletrico")?.aberta).toEqual({ titulo: "Quanto custa a minha conta de luz?", href: "/setor-eletrico/conta-de-luz" });
+    expect(abertas.find((c) => c.id === "saneamento")?.aberta?.href).toBe("/saneamento/municipio");
+    for (const c of abertas) expect(ehRotaPublica(c.aberta!.href), c.id).toBe(true);
+  });
+
+  it("versão aberta: sem sessão, a linha aparece sob o primeiro resultado fechado, só nele; com sessão ou primeiro aberto, não", () => {
+    const html = (termo: string, comSessao: boolean) => renderToStaticMarkup(createElement(ListaResultados, { grupos: b(termo).grupos, comSessao }));
+    const r = b("PLD").resultados[0];
+    expect([r.colecao, r.aberta]).toEqual(["setor-eletrico", false]);
+    const sem = html("PLD", false);
+    expect(sem.split("data-versao-aberta").length - 1).toBe(1);
+    expect(sem).toContain('href="/setor-eletrico/conta-de-luz"');
+    expect(sem).toContain("Versão aberta do tema:");
+    // a ordem não muda: o primeiro item da lista continua sendo o primeiro resultado
+    expect(emOrdemDeTela(b("PLD").grupos)[0].id).toBe(r.id);
+    expect(html("PLD", true)).not.toContain("data-versao-aberta");
+    expect(b("conta de luz").resultados[0].aberta).toBe(true);
+    expect(html("conta de luz", false)).not.toContain("data-versao-aberta");
+  });
+
+  it("versão aberta: na listbox do campo a linha não entra numa opção (fica na BuscaPlataforma, fora da lista)", () => {
+    const naListbox = renderToStaticMarkup(
+      createElement(ListaResultados, { grupos: b("PLD").grupos, comSessao: false, opcao: { id: (n: number) => `t-op-${n}`, ativa: -1 } }),
+    );
+    expect(naListbox).not.toContain("data-versao-aberta");
+  });
+
+  it("conjunto completo: todo termo sem resultado cai num dos estados vazios (sugestão de correção ou 'ainda não cobre')", () => {
+    const i = indiceDeBusca();
+    const semEstado = TERMOS.map(([t]) => [t, buscar(i, t)] as const)
+      .filter(([, r]) => r.resultados.length === 0)
+      .filter(([t, r]) => !r.sugestoes?.length && !vazio(t).includes("ainda não cobre"))
+      .map(([t]) => t);
+    expect(semEstado).toEqual([]);
+  });
 });
 
 /** Os 234 termos dos dois lotes, com o número de resultados de 23/10/2026 (main em 00c055474; "30" é o limite, "30+" no anexo). */
