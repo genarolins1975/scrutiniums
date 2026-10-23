@@ -367,6 +367,7 @@ export default function PaginaQueimadas() {
                     unidade="focos"
                     casas={0}
                     orientacao="horizontal"
+                    alturaMaxima={15 * 48 + 48}
                     rotulosValor
                     rotulosSaoNomes
                   />
@@ -392,6 +393,7 @@ export default function PaginaQueimadas() {
                     unidade="focos por 1.000 km²"
                     casas={1}
                     orientacao="horizontal"
+                    alturaMaxima={15 * 48 + 48}
                     rotulosValor
                     rotulosSaoNomes
                   />
