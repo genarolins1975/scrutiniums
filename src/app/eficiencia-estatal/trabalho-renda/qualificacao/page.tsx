@@ -80,7 +80,7 @@ export default function Qualificacao({searchParams={}}:{searchParams?:RecorteCur
         </Controles>
       </form>,
       fontesDatasSiglas:<>
-        <p>{indice.fonte.referencia}</p>
+        <p>Captura da planilha do MTE: {new Date(indice.fonte.capturadoEm).toLocaleDateString("pt-BR",{timeZone:"America/Sao_Paulo"})}.</p>
         <p><span className="font-medium">MTE:</span> Ministério do Trabalho e Emprego. <span className="font-medium">CBO:</span> Classificação Brasileira de Ocupações. <span className="font-medium">Sine:</span> Sistema Nacional de Emprego.</p>
       </>,
     }}

@@ -222,7 +222,7 @@ export function FiguraRecursos({ rota }: { rota: string }) {
           <GraficoBarras
             titulo={`Despesa liquidada na função Trabalho, capitais elegíveis, ${estado.ano}, ${rotuloMoeda}`}
             series={[{ id: "despesa", nome: "Despesa liquidada", pontos: elegiveis.map((x) => ({ x: x.territorioId, rotulo: nomeDe(x.territorioId), y: valor(x) })) }]}
-            eixoY={{ unidade: "R$", zero: true, casas: 0 }}
+            eixoY={{ unidade: "R$", zero: true, casas: 2 }}
             orientacao="horizontal"
             alturaCategoria={32}
             rotulosValor
