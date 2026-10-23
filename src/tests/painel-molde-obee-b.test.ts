@@ -7,6 +7,7 @@ import { conferirPainel } from "./suporte/molde-painel";
 import PaginaDeficit from "@/app/eficiencia-estatal/habitacao/deficit/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
 import PaginaJudiciario from "@/app/eficiencia-estatal/judiciario/[capitulo]/page";
+import PaginaSeguranca from "@/app/eficiencia-estatal/seguranca-publica/[[...painel]]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), frente obee-b do Grupo 1: as páginas com sessão da Eficiência Estatal
@@ -22,6 +23,9 @@ describe("molde de painel: Eficiência Estatal, frente obee-b", () => {
   });
   it("/eficiencia-estatal/judiciario/panorama", () => {
     conferirPainel("/eficiencia-estatal/judiciario/panorama", html(createElement(PaginaJudiciario, { params: { capitulo: "panorama" } })));
+  });
+  it("/eficiencia-estatal/seguranca-publica/estados", () => {
+    conferirPainel("/eficiencia-estatal/seguranca-publica/estados", html(createElement(PaginaSeguranca, { params: { painel: ["estados"] } })));
   });
   // o corpo dos capítulos de medida do meio ambiente é um só (riscos, prevenção e pressões ambientais): o molde vale para os três
   it.each(["riscos", "prevencao", "residuos"])("/eficiencia-estatal/meio-ambiente-clima/%s", (slug) => {
@@ -42,6 +46,14 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
       expect(h).toContain(t);
     }
     expect(h).toContain('data-bloco-tabela=""');
+  });
+  it("segurança por estado: as duas comparações, a tabela por UF do kit com a linha do Brasil e o antes de comparar", () => {
+    const h = html(createElement(PaginaSeguranca, { params: { painel: ["estados"] } }));
+    for (const t of ["Como cada UF se compara à taxa do Brasil?", "Polícia e saúde contam de formas diferentes", "Valores, denominador e posição em", "Soma das 27 UFs", "Antes de comparar", "Baixar esta tabela · CSV", "Ver a lista de ausências e o método", "Escolha o indicador, o ano e uma UF."]) {
+      expect(h).toContain(t);
+    }
+    // a âncora antiga da seção polícia e saúde continua valendo
+    expect(h).toContain('id="policia-e-saude"');
   });
   it("déficit: os três números, a comparação e os três conceitos", () => {
     const h = html(createElement(PaginaDeficit));
