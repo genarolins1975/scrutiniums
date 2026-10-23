@@ -43,6 +43,8 @@ export type OrigemObee = {
   download?: string | null;
   notas?: string | null;
   versao?: string;
+  /** Arquivo bruto integrado e a sua impressão digital, quando a base registra. */
+  snapshot?: { id: string | null; sha256: string | null };
 };
 
 /** Fonte como as bases das capitais (Saúde, Educação) a entregam ao navegador: nome legível, páginas oficiais e data da captura. */
@@ -108,7 +110,7 @@ export function provenienciaObee(o: OrigemObee): Proveniencia {
     cobertura_historica: o.cobertura ?? { inicio: o.inicio, fim: o.fim },
     transformacoes: [...(o.transformacoes ?? [])],
     formula: o.formula ?? null,
-    snapshot: { id: null, sha256: null },
+    snapshot: o.snapshot ?? { id: null, sha256: null },
     versao_pipeline: o.versao ?? "Eficiência Estatal",
     versao_codigo: null,
     revisoes_conhecidas: null,

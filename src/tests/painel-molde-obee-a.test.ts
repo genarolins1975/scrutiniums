@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createElement } from "react";
+import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { conferirPainel } from "./suporte/molde-painel";
 
@@ -13,6 +13,16 @@ import PaginaEducacao from "@/app/eficiencia-estatal/educacao-municipal-capitais
 import PaginaSaudeGastos from "@/app/eficiencia-estatal/saude-capitais/gastos/page";
 import PaginaSaudeRede from "@/app/eficiencia-estatal/saude-capitais/rede-e-atencao-primaria/page";
 import PaginaSaudeResultados from "@/app/eficiencia-estatal/saude-capitais/atendimento-e-resultados/page";
+import PaginaTrabalho0 from "@/app/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho/page";
+import PaginaTrabalho1 from "@/app/eficiencia-estatal/trabalho-renda/cadastro-unico/page";
+import PaginaTrabalho2 from "@/app/eficiencia-estatal/trabalho-renda/comparar/page";
+import PaginaTrabalho3 from "@/app/eficiencia-estatal/trabalho-renda/desigualdade/page";
+import PaginaTrabalho4 from "@/app/eficiencia-estatal/trabalho-renda/emprego-formal/page";
+import PaginaTrabalho5 from "@/app/eficiencia-estatal/trabalho-renda/ocupacoes/page";
+import PaginaTrabalho6 from "@/app/eficiencia-estatal/trabalho-renda/protecao-da-renda/page";
+import PaginaTrabalho7 from "@/app/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho/page";
+import PaginaTrabalho8 from "@/app/eficiencia-estatal/trabalho-renda/renda-das-familias/page";
+import PaginaTrabalho9 from "@/app/eficiencia-estatal/trabalho-renda/renda-do-trabalho/page";
 import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
@@ -74,5 +84,26 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     const h = html(P);
     conferirPainel(rota, h);
     for (const id of ["distribuicao", "evolucao", ...composicoes]) expect(h).toContain(`data-figura-analitica="${id}"`);
+  });
+
+  // modelo genérico (PaginaTrabalho e ExploradorTrabalho): o mesmo corpo serve a todas as páginas de Trabalho e renda que exploram medidas.
+  // A PaginaTrabalho é assíncrona (lê a base no servidor): o teste resolve o componente antes de renderizar o HTML.
+  it.each([
+    ["/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho", PaginaTrabalho0],
+    ["/eficiencia-estatal/trabalho-renda/cadastro-unico", PaginaTrabalho1],
+    ["/eficiencia-estatal/trabalho-renda/comparar", PaginaTrabalho2],
+    ["/eficiencia-estatal/trabalho-renda/desigualdade", PaginaTrabalho3],
+    ["/eficiencia-estatal/trabalho-renda/emprego-formal", PaginaTrabalho4],
+    ["/eficiencia-estatal/trabalho-renda/ocupacoes", PaginaTrabalho5],
+    ["/eficiencia-estatal/trabalho-renda/protecao-da-renda", PaginaTrabalho6],
+    ["/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho", PaginaTrabalho7],
+    ["/eficiencia-estatal/trabalho-renda/renda-das-familias", PaginaTrabalho8],
+    ["/eficiencia-estatal/trabalho-renda/renda-do-trabalho", PaginaTrabalho9],
+  ] as const)("%s", async (rota, P) => {
+    const el = (P as () => ReactElement<Record<string, unknown>>)();
+    const corpo = await (el.type as (p: Record<string, unknown>) => Promise<ReactElement>)(el.props);
+    const h = renderToStaticMarkup(corpo);
+    conferirPainel(rota, h);
+    for (const id of ["evolucao"]) expect(h).toContain(`data-figura-analitica="${id}"`);
   });
 });
