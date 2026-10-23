@@ -36,6 +36,7 @@ export function AtlasMunicipal({
   nomesUf,
   titulo,
   complemento,
+  semTabela = false,
 }: {
   ids: string[];
   referencias: MapaReferencias;
@@ -43,6 +44,11 @@ export function AtlasMunicipal({
   titulo: string;
   /** Tabela municipal complementar (mesmo formato colunar, primeira coluna = código IBGE) que as medidas exigem. */
   complemento?: string;
+  /**
+   * Dentro de um painel no molde (Iniciativa 1 do parecer de UX de 23/10/2026) que já traz a tabela municipal do kit com os mesmos
+   * valores: o mapa não repete a sua. Sem a prop, nada muda.
+   */
+  semTabela?: boolean;
 }) {
   const medidas = useMemo(() => MEDIDAS.filter((m) => ids.includes(m.id)), [ids]);
   const esquema = useMemo(
@@ -226,6 +232,7 @@ export function AtlasMunicipal({
               onSelecionar={(id) => set({ m: id ?? "" })}
               altura={560}
               alturaCelular={400}
+              semTabela={semTabela}
               periodo={med.periodo}
               nota={`Classes fixas, iguais em todos os recortes. ${s.uf !== "BR" ? "Municípios de outras UFs aparecem em cinza (não se aplica ao recorte)." : ""}`}
             />

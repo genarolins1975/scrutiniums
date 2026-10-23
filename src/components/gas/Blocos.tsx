@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { fontesPorId, type Indicador } from "@/lib/gas/gold";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
+import type { NumeroProps } from "@/lib/painel/tipos";
 import { carimbo, num, periodoLegivel, sinal } from "@/lib/gas/formato";
 import type { PaginaGas } from "@/lib/gas/navegacao";
 import { GRUPOS_GAS } from "@/lib/gas/navegacao";
@@ -119,6 +120,62 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
       </details>
     </div>
   );
+}
+
+/** "Como este número é obtido": fórmula e fontes com a data de captura, recolhidos junto do número (a prova do número no gás). */
+export function ComoObtidoGas({ ind }: { ind: Indicador }) {
+  const fontes = fontesPorId(ind.fontes);
+  const hrefFonte = fontes.length === 1 ? `/gas-natural/dados#fonte-${fontes[0].id}` : "/gas-natural/dados#fontes";
+  return (
+    <details className="group">
+      <summary className="inline-flex min-h-[44px] cursor-pointer list-none items-center text-xs text-gas-dark underline underline-offset-4 [&::-webkit-details-marker]:hidden">
+        Como este número é obtido
+      </summary>
+      <div className="space-y-1.5 pb-2 text-xs leading-relaxed text-carvao-muted">
+        {ind.formula && <p><span className="text-carvao">Fórmula:</span> {ind.formula}.</p>}
+        <p>
+          <span className="text-carvao">Fonte:</span>{" "}
+          {fontes.map((f, i) => (
+            <span key={f.id}>
+              {i > 0 && "; "}
+              <a href={f.pagina} className="underline underline-offset-2" rel="noopener noreferrer">{f.orgao}, {f.conjunto}<SeloComConta href={f.pagina} /></a>
+              {f.capturado_em && `, capturado em ${carimbo(f.capturado_em)}`}
+            </span>
+          ))}
+          .
+        </p>
+        <p>
+          <Link href={hrefFonte} prefetch={prefetchDoLink(hrefFonte)} className="underline underline-offset-4">
+            A fonte na página de dados do observatório
+            <SeloComConta href={hrefFonte} />
+          </Link>
+        </p>
+      </div>
+    </details>
+  );
+}
+
+/**
+ * Um indicador da gold como número do kit de painel (NumeroIndicador): o valor e a unidade na mesma forma da MedidaGas
+ * (valorComUnidade), a fonte curta, o período legível, a natureza e, como prova, "Como este número é obtido". Ausência vira
+ * "Indisponível nesta publicação" com o motivo, nunca zero.
+ */
+export function numeroGas(ind: Indicador, { casas = 1, rotulo, variacao = false }: { casas?: number; rotulo?: string; variacao?: boolean } = {}): NumeroProps {
+  const fontes = fontesPorId(ind.fontes);
+  const fonte = fontes.length === 1 ? `${fontes[0].orgao}, ${fontes[0].conjunto}` : fontes.length ? `${listaOrgaos(fontes.map((f) => f.orgao))}, ${fontes.length} conjuntos` : "ANP";
+  const base = {
+    rotulo: rotulo ?? ind.rotulo,
+    periodo: periodoLegivel(ind.periodo),
+    recorte: ind.recorte,
+    fonte,
+    natureza: ind.natureza,
+    nota: ind.nota,
+    comprove: <ComoObtidoGas ind={ind} />,
+  };
+  if (typeof ind.valor === "string") return { ...base, formato: "texto", valorTexto: ind.valor, unidade: "" };
+  if (typeof ind.valor !== "number") return { ...base, valor: null, unidade: ind.unidade, motivoAusencia: "A gold do gás não traz este valor para o período." };
+  const { valor, unidade } = valorComUnidade(ind.valor, ind.unidade, casas, variacao);
+  return { ...base, valor: ind.valor, valorTexto: valor, unidade };
 }
 
 export function FaixaMedidas({ children }: { children: ReactNode }) {

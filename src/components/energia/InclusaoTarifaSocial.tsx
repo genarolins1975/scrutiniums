@@ -198,7 +198,9 @@ export function InclusaoMapaTsee({ ufs, mesMapa, fonte }: InclusaoMapaTseeProps)
   return (
     <div className="space-y-6">
       <InclusaoOpcoes rotulo={tx("Mapa", "Map")} nome="inclusao-ts-mapa" opcoes={opcoesMapa(idioma)} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
+      {/* a TabelaInterativa por UF, logo abaixo e sincronizada com o mapa, é a tabela dele: o mapa não repete a sua (molde de painel) */}
       <MapaCoropletico
+        semTabela
         titulo={tx(`${med.rotulo} por UF, ${mes(mesMapa)} (Beneficiários da CDE)`, `${med.rotulo} by state, ${mes(mesMapa)} (CDE Beneficiaries)`)}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
