@@ -470,7 +470,7 @@ export const PARA_VOCE_POR_UF = false;
 
 export type IdPerguntaMapa =
   | "tanque-uf" | "botijao-uf" | "violencia-uf" | "contas-uf"
-  | "cidade-luz" | "cidade-saneamento" | "cidade-internet" | "cidade-inss" | "cidade-escola" | "cidade-fogo" | "cidade-custo-de-vida";
+  | "cidade-luz" | "cidade-saneamento" | "cidade-internet" | "cidade-inss" | "cidade-escola" | "cidade-fogo" | "cidade-desastres" | "cidade-custo-de-vida";
 
 /** As 27 siglas que as bases por estado publicam (a lista das Contas Estaduais, a mesma do cadastro). */
 const UFS = new Set<string>(snapshotEstadual.ufs.map((u) => u.uf));
@@ -613,6 +613,8 @@ export function paraVoceDoMapa(ufBruta: string | null): { estado: PerguntaParaVo
       semNumero("cidade-inss", CONSULTAS.inss.pergunta, CONSULTAS.inss.resumo, CONSULTAS.inss.href, cidade),
       semNumero("cidade-escola", CONSULTAS.escola.pergunta, CONSULTAS.escola.resumo, CONSULTAS.escola.href, cidade),
       semNumero("cidade-fogo", "Teve fogo perto de mim?", "Focos de calor por município, o ano em curso contra os mesmos meses do ano anterior.", "/territorio/queimadas", cidade),
+      // os desastres reconhecidos também são consulta por município (Território e Clima); com eles, a lista fecha em duas linhas de quatro
+      semNumero("cidade-desastres", "O meu município já teve desastre reconhecido?", "Secas, chuvas e deslizamentos com emergência ou calamidade reconhecida pela União desde 2003.", "/territorio/desastres", cidade),
       semNumero("cidade-custo-de-vida", "Quanto subiu o custo de vida na minha cidade?", "A inflação do IPCA na sua cidade ou região metropolitana, comparada com a do Brasil.", "/custo-de-vida", cidade),
     ],
   };

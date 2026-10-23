@@ -130,7 +130,7 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
         <div className={styles.retomarItem} data-retomar="continuar">
           <p className="rotulo text-carvao-muted">Onde você parou</p>
           <Link href={continuar.href} prefetch={false} className={`${styles.alvo} t-corpo font-medium text-carvao`}>
-            Continuar em {continuar.nome} <span aria-hidden="true">→</span>
+            {`Continuar em ${continuar.nome}`} <span aria-hidden="true">→</span>
           </Link>
           <p className="t-meta text-carvao-muted">
             {continuar.tipo === "colecao" ? `Observatório ${continuar.observatorioNome}` : "Entrada do observatório"}
@@ -153,7 +153,7 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
           </ul>
           {totalRecortes > recortes.length && (
             <Link href="/app/conta#recortes" prefetch={false} className={`${styles.alvo} t-meta text-carvao`}>
-              Todos os recortes ({totalRecortes.toLocaleString("pt-BR")}) <span aria-hidden="true">→</span>
+              {`Todos os recortes (${totalRecortes.toLocaleString("pt-BR")})`} <span aria-hidden="true">→</span>
             </Link>
           )}
         </div>
@@ -161,13 +161,10 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
       {avisos.length > 0 && (
         <div className={styles.retomarItem} data-retomar="avisos">
           <p className="rotulo text-carvao-muted">Avisos por e-mail</p>
-          <p className="t-corpo mt-2 text-carvao">
-            Avisar quando atualizar: {plural(avisos.length, "fonte", "fontes")}
-          </p>
-          <p className="t-meta text-carvao-muted">{avisos.join(", ")}</p>
-          <Link href="/app/conta#alertas" prefetch={false} className={`${styles.alvo} t-meta text-carvao`}>
-            Ajustar os avisos <span aria-hidden="true">→</span>
+          <Link href="/app/conta#alertas" prefetch={false} className={`${styles.alvo} t-corpo text-carvao`}>
+            {`Avisar quando atualizar: ${plural(avisos.length, "fonte", "fontes")}`} <span aria-hidden="true">→</span>
           </Link>
+          <p className="t-meta text-carvao-muted">{avisos.join(", ")}</p>
         </div>
       )}
     </section>
