@@ -21,6 +21,13 @@ Neste projeto, todo trabalho de interface usa sempre, além da skill de layout, 
 
 ## Comandos do repositório
 
+Antes de empurrar, três comandos (todos na raiz; `scripts/verificar.mjs` explica cada etapa):
+
+- `npm run verificar:rapido`: lint e tipos em paralelo, cobertura bilíngue e os testes afetados pela branch (grafo de importação mais os testes que citam pelo caminho os arquivos alterados). É filtro, não verdade: o CI roda a suíte inteira.
+- `npm run verificar:pr`: o que o CI roda, na mesma ordem, com build e `EXIGIR_BUILD_HTML=1`; serve para reproduzir uma falha de CI sem empurrar commit atrás de commit. `-- --listar` mostra as etapas, `-- --etapas build,vitest` roda só as nomeadas, `-- --agro` inclui a verificação do Agronegócio.
+- `npm run preparar`: materializa os derivados gitignorados e gera o `app.min.js` (os hooks `predev`, `prebuild` e `pretest` chamam o mesmo script). `npm run testes:lentos` imprime os 30 arquivos de teste mais lentos, em tabela para o PR.
+- Contêiner com até 15 GB de memória: o limite padrão de heap do Node é 2 GB e `npx tsc --noEmit` e `npm run build` abortam por falta de memória; os dois comandos acima já passam `--max-old-space-size=4096`. Chamados à mão, use `NODE_OPTIONS=--max-old-space-size=4096`.
+
 - Testes da interface: `npx vitest run` (os de navegador dependem do Chromium do Playwright); tipos: `npx tsc --noEmit`; lint: `npm run lint`; build: `npm run build`.
 - Testes do pipeline: `python3 -m unittest discover -s pipeline/tests -t .`.
 - Inventário de tradução (arquivo gerado, regenerar em todo conflito): `node scripts/cobertura-i18n.mjs`.

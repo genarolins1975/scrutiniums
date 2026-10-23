@@ -56,3 +56,4 @@ __pycache__/
 /.gold-publicacao/
 # Trabalho da atualização agendada por grupo (scripts/atualizacao_por_grupo.py)
 /.atualizacao/
+/vitest-tempos.json
