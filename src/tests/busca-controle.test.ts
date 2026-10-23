@@ -9,6 +9,10 @@ import type { EntradaBusca, IndiceBusca } from "@/lib/busca/tipos";
 import { ListaResultados } from "@/components/busca/ListaResultados";
 import { NaoCobre } from "@/components/busca/NaoCobre";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { buscarVerbetes } from "@/lib/energia/aprenda-busca";
+import { gruposDoIndice } from "@/lib/energia/conteudo/aprenda-indice";
 
 vi.mock("next/navigation", async () => ({
   ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
@@ -482,6 +486,28 @@ describe("bloco 4: estado vazio", () => {
       .filter(([t, r]) => !r.sugestoes?.length && !vazio(t).includes("ainda não cobre"))
       .map(([t]) => t);
     expect(semEstado).toEqual([]);
+  });
+});
+
+describe("bloco 5: um motor só", () => {
+  // decisão do dono de 23/10/2026: o filtro do Aprenda fica na página (lista filtrada, link da busca, painel de cada verbete) e a
+  // busca inglesa do Setor Elétrico fica para o inglês (o índice da plataforma é só em português); as regras de palavra das duas
+  // passam a ser as do motor da plataforma
+  const itens = gruposDoIndice().flatMap((g) => g.itens);
+  const slugs = (t: string) => (buscarVerbetes(itens, t) ?? []).map((i) => i.slug);
+
+  it("Aprenda: palavras de pergunta saem e o plural procura o singular, como na busca da plataforma", () => {
+    expect(slugs("o que é PLD")[0]).toBe("pld");
+    expect(slugs("como funciona o PLD")[0]).toBe("pld");
+    expect(slugs("agências")).toContain("aneel");
+  });
+
+  it("as duas buscas próprias do Setor Elétrico usam as regras de normalizar.ts, sem lista própria em português", () => {
+    const aprenda = readFileSync(join(process.cwd(), "src/lib/energia/aprenda-busca.ts"), "utf-8");
+    const legado = readFileSync(join(process.cwd(), "src/lib/energia/busca.ts"), "utf-8");
+    expect(aprenda).toContain('from "@/lib/busca/normalizar"');
+    expect(legado).toContain('from "@/lib/busca/normalizar"');
+    expect(legado).not.toMatch(/function formasDe/);
   });
 });
 

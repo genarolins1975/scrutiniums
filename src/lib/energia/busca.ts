@@ -1,6 +1,8 @@
 /**
- * Busca da página inicial: normalização sem acento e sem maiúscula e ordenação dos
- * resultados. Lógica pura, testável sem renderizar; o componente cliente só desenha.
+ * Busca da página inicial do Setor Elétrico em inglês: normalização sem acento e sem maiúscula e ordenação dos
+ * resultados. Lógica pura, testável sem renderizar; o componente cliente só desenha. Em português a entrada usa a busca da
+ * plataforma (BuscaPlataforma); esta fica só para a página inglesa, porque o índice da plataforma é só em português (ciclo 2 da
+ * busca, bloco 5, decisão do dono de 23/10/2026). O plural e as palavras de pergunta em português são os do motor da plataforma.
  *
  * O que decide se um item aparece: todas as palavras do que foi digitado precisam começar alguma
  * palavra do item (título, sinônimos, detalhe e tipo), em qualquer ordem. Começo de palavra, e não
@@ -20,6 +22,8 @@
  * Só frases de três palavras úteis ou mais entram nesse caso: com duas, a metade é uma palavra só
  * ("Belo Horizonte" trazia a cooperativa de Novo Horizonte), e o nome de lugar vai para Minha região.
  */
+import { PERGUNTA as PERGUNTA_PLATAFORMA, formasDe } from "@/lib/busca/normalizar";
+
 export type ItemBusca = {
   tipo: "Página" | "Painel" | "Pergunta" | "Conceito" | "Distribuidora";
   titulo: string;
@@ -64,9 +68,8 @@ const LIGACAO = new Set([
  * "quero saber o preço da luz").
  */
 const PERGUNTA = new Set([
-  "qual", "quais", "quanto", "quanta", "quantos", "quantas", "quem", "onde", "como", "quando", // i18n: dado
-  "significa", "significado", "funciona", "funcionam", "funcionamento", "explica", "explicar", "explique",
-  "quero", "preciso", "procuro", "saber", "entender", "ver", "existe", "existem", // i18n: dado
+  // as portuguesas são as do motor da plataforma (src/lib/busca/normalizar.ts): uma lista só
+  ...PERGUNTA_PLATAFORMA,
   // as mesmas, em inglês ("what is PLD", "how does the PLD work")
   "what", "which", "how", "who", "where", "when", "why", "much", "many", "does", "mean", "means", "meaning",
   "work", "works", "explain", "want", "need", "looking", "know", "understand", "see", "there",
@@ -85,10 +88,6 @@ const PONTOS = {
   comecoNoDetalhe: 1,
 } as const;
 
-/** A palavra digitada e, quando ela parece um plural, o singular: "perdas" acha "perda". */
-function formasDe(p: string): string[] {
-  return p.length > 3 && p.endsWith("s") ? [p, p.slice(0, -1)] : [p];
-}
 
 /** Quantas palavras úteis uma frase precisa ter para a busca devolver resultado parcial. */
 const PALAVRAS_PARA_PARCIAL = 3;
