@@ -6,7 +6,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, type Browser } from "playwright";
-import { ORCAMENTO, TOPO_H1_MAXIMO, medirCromo } from "../../scripts/ux-cromo-medida.mjs";
+import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarSessaoResolvida, medirCromo } from "../../scripts/ux-cromo-medida.mjs";
 
 /**
  * Orçamento de cromo (Iniciativa 2 do parecer de UX de 21/10/2026, docs/PARECER_UX_2026-10-21.md): do topo da barra comum até o
@@ -127,9 +127,11 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
         const resp = await page.goto(origem + rota, { waitUntil: "load", timeout: 60_000 });
         expect(resp?.status(), rota).toBe(200);
         expect(new URL(page.url()).pathname, `${rota} não pode cair no login`).toBe(rota);
-        // como scripts/ux-cromo.mjs: mede depois de a rede assentar, quando o navegador já resolveu a sessão (a faixa de
-        // consulta aberta, que vem no HTML, some para quem tem conta)
+        // como scripts/ux-cromo.mjs: mede depois de a rede assentar e, com sessão, depois de o navegador resolvê-la (a faixa de
+        // consulta aberta, que vem no HTML, some para quem tem conta). A espera por rede ociosa é um atalho e pode estourar sob
+        // carga; a que vale é a do estado, em aguardarSessaoResolvida (run 1255 do main, 23/10/2026).
         await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
+        await aguardarSessaoResolvida(page, comSessao);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(medirCromo);
         if (m.cromo > ORCAMENTO[largura]) fora.push(`${rota}: cromo ${m.cromo} px (máximo ${ORCAMENTO[largura]})`);

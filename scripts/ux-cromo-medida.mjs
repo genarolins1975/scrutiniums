@@ -44,3 +44,19 @@ export function medirCromo() {
     rolagemHorizontal: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
   };
 }
+
+/**
+ * Com sessão, a medida só vale depois que o navegador resolveu a sessão: `useSessao` consulta /api/auth/eu depois de hidratar e só
+ * então a faixa de consulta aberta ([data-aviso-consulta-aberta], que vem no HTML) sai da página. Até lá ela empurra a faixa de
+ * frescor e o H1 para baixo e o cromo sai inflado: no run 1255 do main (23/10/2026), sob carga, /eficiencia-estatal mediu 333 px a
+ * 390 px, os 195 px reais mais os 138 px da faixa, porque a espera por rede ociosa estourou antes de a sessão resolver. Esperar o
+ * estado, não o tempo. Sem sessão não há o que esperar: a faixa fica. Falha com mensagem própria se a sessão não resolver no prazo.
+ */
+export async function aguardarSessaoResolvida(page, comSessao, timeout = 60_000) {
+  if (!comSessao) return;
+  try {
+    await page.waitForFunction(() => !document.querySelector("[data-aviso-consulta-aberta]"), undefined, { timeout });
+  } catch (e) {
+    throw new Error(`a sessão não resolveu no navegador em ${timeout} ms: a faixa de consulta aberta continua na página (${e.message})`);
+  }
+}
