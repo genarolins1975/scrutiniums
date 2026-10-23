@@ -16,6 +16,7 @@
 /* consultas por cidade: lista de links de 44 px, em colunas que fecham */
 .cidade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 32px; margin: 8px 0 0; padding: 0; list-style: none; }
 .cidade li { border-top: 1px solid var(--cor-linha); }
+.cidade li > a { padding: 8px 0; }
 @media (min-width: 768px) { .cidade { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .cidade { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 

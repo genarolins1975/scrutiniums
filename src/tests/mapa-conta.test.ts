@@ -111,8 +111,12 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
   it("um elemento do mapa dentro do <main>, fatias na ordem; retomar só para quem volta", () => {
     for (const [nome, h] of Object.entries(casos)) {
       expect(h.match(/data-mapa-conta=""/g), nome).toHaveLength(1);
-      expect(h.match(/<main[\s>]/g), nome).toHaveLength(1);
-      expect(h.indexOf("<main")).toBeLessThan(h.indexOf('data-mapa-conta=""'));
+      // o <main> é o do layout da conta; o outro que o HTML traz é o esqueleto de carregamento (aria-busy), trocado no streaming
+      const mains = (h.match(/<main[^>]*>/g) ?? []).filter((m) => !m.includes('aria-busy="true"'));
+      expect(mains, nome).toHaveLength(1);
+      const inicio = h.indexOf(mains[0]);
+      expect(inicio, nome).toBeLessThan(h.indexOf('data-mapa-conta=""'));
+      expect(h.slice(inicio, h.indexOf('data-mapa-conta=""')), nome).not.toContain("</main>");
       const f = fatias(h);
       expect(f, nome).toEqual(ORDEM.filter((x) => f.includes(x)));
       expect(new Set(f).size, nome).toBe(f.length);
@@ -151,7 +155,9 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
   it("nenhum nome de domínio antigo, nenhum 'Explorar'", () => {
     const nomesDeColecao = new Set(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.nome)));
     for (const h of Object.values(casos)) {
-      let t = texto(mapa(h));
+      // fora da conta: as faixas de frescor do método nomeiam as fontes como limiares.json as registra (a fonte "Eficiência
+      // Estatal" alimenta a Síntese das capitais e a Saúde); é nome de base de dados, não título de seção
+      let t = texto(mapa(h).replace(/<li data-frescor-dominio=[\s\S]*?<\/li>/g, ""));
       for (const n of nomesDeColecao) t = t.split(n).join(" ");
       for (const d of DOMINIOS) expect(t, d.nomeLegado).not.toContain(d.nomeLegado);
       expect(t).not.toContain("Eficiência Estatal");
@@ -183,7 +189,7 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
     expect(texto(d)).not.toMatch(/\(previsto\)|Em desenvolvimento|Versão em desenvolvimento/);
     for (const a of d.match(/<a [\s\S]*?<\/a>/g) ?? []) expect(a).not.toContain('data-prontidao="preparacao"');
     // "cobertura parcial" só pelo selo
-    const soltos = texto(d.replace(/<span data-prontidao="parcial"[\s\S]*?<\/span><\/span>|<span data-prontidao="parcial"[^>]*>[\s\S]*?<\/span>/g, "")).match(/cobertura parcial/g) ?? [];
+    const soltos = texto(d.replace(/<span data-prontidao="parcial"[^>]*><span aria-hidden="true">[^<]*<\/span>cobertura parcial(<span class="sr-only">[^<]*<\/span>)?<\/span>/g, "")).match(/cobertura parcial/g) ?? [];
     expect(soltos).toEqual([]);
   });
 
