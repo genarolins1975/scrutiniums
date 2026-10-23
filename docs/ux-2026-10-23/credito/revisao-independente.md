@@ -148,3 +148,16 @@ números em formato inglês, contraste no pix). O PR 2 entregou a parte de token
 mas o contrato de número (algarismos alinhados, forma única, selo único na linha do número, padrão brasileiro) não aparece nas
 capturas. Prioridade para a próxima rodada: itens 1, 5, 6 e 7 (escopo do próprio PR 2), depois 2, 3 e 9; depois refazer as
 evidências e uma nova revisão independente.
+
+## Resposta da implementação (23/10/2026, depois desta revisão)
+
+Registro da sessão que implementou o PR; as notas acima ficam como o revisor as deu.
+
+- Corrigidos neste PR (commit `8ff0728ee`): algarismos de estilo antigo nos números em serifa (`tabular-nums` sozinho desligava o
+  `lining-nums`; teste novo em `credito-casca`) e a regra do celular do `atlas.css` (rótulos de 12 e 14 px tinham virado 28 px).
+- A captura vazia de `/observatorio/institutions` a 390 px é limite do formato JPEG para página muito alta, não da página; a
+  primeira tela da mesma rota está registrada.
+- Decisão do dono (23/10/2026): o PR 2 segue com o escopo do prompt e a rubrica não atingida, declarada; os achados que já
+  existiam antes deste PR (números com ponto decimal gerados pelo pipeline, forma única do número e do selo, selos ao lado do
+  título, eixos cortados, Risco setorial a 390 px, datas mensais com dia, contraste do mapa de calor do Pix) vão para o PR 2b,
+  que passa por nova revisão independente antes do PR 3.
