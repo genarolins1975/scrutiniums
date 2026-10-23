@@ -11,7 +11,10 @@
  *    marcado; fim de página sem "Para ir além", rodapé da coleção e rodapé da plataforma; data ISO ou "UTC" em texto visível;
  * 4. no app.js: a consulta a /api/admin/eu (o 403 do console), o tema escuro aplicado, a interceptação dos links da casca e a
  *    troca da casca a cada página;
- * 5. no build, com sessão (EXIGIR_BUILD_HTML=1 no CI): as mesmas regras na resposta real de uma página de cada coleção.
+ * 5. no build, com sessão (EXIGIR_BUILD_HTML=1 no CI): as mesmas regras na resposta real de uma página de cada coleção;
+ * 6. (PR 2 da iniciativa) corpo de letra fora da escala da plataforma (--tipo-*), classe good/bad, --cor-credito-* ou tema escuro
+ *    nas folhas da aplicação; selo fora da forma do SeloNatureza; faixa de números sem a natureza de cada número; data ISO ou
+ *    "UTC" escritos na tela pelo app.js; seta ou travessão no lead das páginas.
  */
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -267,4 +270,165 @@ describe("5. no build, com sessão, a resposta real de uma página de cada cole�
     // sem sessão, a aplicação continua fechada
     expect((await htmlDe(servidor!, c.rota, false)).status).toBe(307);
   }, 30_000);
+});
+
+describe("6. tipografia, números, selos, datas e tokens da plataforma (PR 2 da Iniciativa 2)", () => {
+  const styles = ler("public/obs/styles.css");
+  const atlas = ler("public/obs/atlas.css");
+  const obs = ler("public/observatorios.css");
+  const semComentarios = (t: string) => t.replace(/\/\*[\s\S]*?\*\//g, " ");
+  // as regras de observatorios.css que valem para a aplicação: as presas a .observatorio-credito e as do herói do Início do painel
+  const regrasCredito = semComentarios(obs)
+    .split("}")
+    .filter((r) => /\.observatorio-credito|\.obs-credit-hero|\.obs-index-search/.test(r) && !/dominio-energia/.test(r))
+    .join("}");
+
+  it("nenhum corpo de letra fora da escala: todo font-size e todo atalho font leem uma variável --tipo-*", () => {
+    const fora: string[] = [];
+    for (const [nome, css] of [["styles.css", semComentarios(styles)], ["atlas.css", semComentarios(atlas)], ["observatorios.css (Crédito)", regrasCredito]]) {
+      for (const m of css.matchAll(/font-size\s*:\s*([^;}]+)/g)) {
+        const v = m[1].trim();
+        // --svg-fs é o corpo que o app.js calcula para o texto do SVG não ficar abaixo de 12 px na tela (avaliacao-set26)
+        if (!/^var\(--tipo-[a-z0-9-]+\)$/.test(v) && v !== "var(--svg-fs)" && v !== "inherit") fora.push(`${nome}: ${m[0]}`);
+      }
+      for (const m of css.matchAll(/(?:^|[;{\s])font\s*:\s*([^;}]+)/g)) {
+        const v = m[1].trim();
+        if (v !== "inherit" && !/var\(--tipo-[a-z0-9-]+\)/.test(v)) fora.push(`${nome}: font: ${v}`);
+      }
+    }
+    for (const m of app.matchAll(/font-size:\s*([^;"'`}]+)/g)) {
+      if (!/^var\(--tipo-[a-z0-9-]+\)$/.test(m[1].trim())) fora.push(`app.js: ${m[0]}`);
+    }
+    expect(fora).toEqual([]);
+  });
+
+  it("algarismos alinhados em toda declaração de algarismos tabulares (tabular-nums sozinho volta a Playfair aos algarismos de estilo antigo)", () => {
+    // achado da revisão independente de 23/10/2026: a regra do Crédito em observatorios.css desligava o lining-nums da faixa de números
+    for (const [nome, css] of [["styles.css", styles], ["atlas.css", atlas], ["observatorios.css (Crédito)", regrasCredito]]) {
+      const soTabular = [...css.matchAll(/font-variant-numeric\s*:\s*([^;}]+)/g)].map((m) => m[1].trim()).filter((v) => /tabular-nums/.test(v) && !/lining-nums/.test(v));
+      expect(soTabular, nome).toEqual([]);
+    }
+  });
+
+  it("a escala própria (--fs-*) e os tamanhos soltos saíram", () => {
+    for (const [nome, t] of [["styles.css", styles], ["observatorios.css", obs], ["app.js", app]]) {
+      expect(semComentarios(t), nome).not.toMatch(/--fs-[a-z0-9]+/);
+    }
+    expect(styles).not.toMatch(/13\.5px|14\.5px/);
+  });
+
+  it("as variáveis da escala vêm de globals.css pelo tokens.css derivado", () => {
+    const tokens = ler("public/obs/tokens.css");
+    for (const v of ["rotulo", "meta", "tabela", "corpo", "lead", "h3", "h2", "h1", "numero-p", "numero-m", "numero-g"]) {
+      expect(tokens, v).toContain(`--tipo-${v}:`);
+    }
+  });
+
+  it("sem --cor-credito-* e sem tema escuro em nenhuma folha da aplicação", () => {
+    for (const [nome, t] of [["styles.css", styles], ["atlas.css", atlas], ["observatorios.css", obs], ["tokens.css", ler("public/obs/tokens.css")], ["globals.css", ler("src/app/globals.css")]]) {
+      expect(t, nome).not.toContain("--cor-credito-");
+      expect(t, nome).not.toContain('data-theme="dark"');
+    }
+  });
+
+  it("alta e queda sem cor de julgamento: nenhuma classe good/bad", () => {
+    expect(app).not.toMatch(/\b(?:up|down) (?:good|bad)\b/);
+    expect(app).not.toMatch(/"(?:good|bad)"/);
+    expect(styles).not.toMatch(/\.(?:good|bad)\b/);
+  });
+
+  // as funções puras do app.js, sem o resto do arquivo
+  const trecho = (de: string, ate: string) => app.slice(app.indexOf(de), app.indexOf(ate, app.indexOf(de)));
+  const attr = (v: unknown) => String(v == null ? "" : v).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
+  const selos = new Function("attr", `${trecho("const BADGES = {", "/* Renderização única do chip")}; return { badge, seloHtml };`)(attr) as {
+    badge: (k: string, t?: string) => string;
+  };
+  const faixa = new Function(
+    "attr",
+    `${trecho("const BADGES = {", "/* Renderização única do chip")}; ${trecho("function seloTexto(nat)", "const _ult = s =>")}; return { placar, abertura };`,
+  )(attr) as { placar: (i: unknown[], n?: string) => string; abertura: (o: unknown) => string };
+
+  it("o selo tem o glifo, o rótulo e a borda do SeloNatureza da plataforma", () => {
+    const casos: [string, string, string][] = [
+      ["observado", "●", "OBSERVADO"],
+      ["calculado", "◆", "CALCULADO"],
+      ["estimado", "◐", "ESTIMADO"],
+      ["previsao", "◌", "PREVISTO"],
+      ["cenario", "◇", "CENARIO"],
+    ];
+    for (const [k, glifo, nat] of casos) {
+      const h = selos.badge(k);
+      expect(h, k).toContain(`data-natureza="${nat}"`);
+      expect(h, k).toContain(`<span aria-hidden="true">${glifo}</span>`);
+      expect(h, k).toContain('<span class="sr-only">Natureza do dado: </span>');
+    }
+    expect(selos.badge("observado")).toContain("Observado</span>");
+    expect(app).not.toMatch(/DADO (?:OBSERVADO|CALCULADO|ESTIMADO)"\]/);
+    expect(styles).toMatch(/\.seal\.prev \{[^}]*border-style: dashed/);
+    expect(styles).toMatch(/\.seal\.cen \{[^}]*border-style: dotted/);
+    expect(styles).toMatch(/\.seal\.obs \{[^}]*var\(--cor-natureza-observado\)/);
+  });
+
+  it("a faixa de números tem a forma do NumeroIndicador: valor em serifa, linha de recorte e selo de natureza", () => {
+    const h = faixa.placar([{ l: "Saldo", v: "R$ 6,8 tri", sub: "BCB/SGS ago/2026" }, { nat: "previsao", l: "Projeção", v: "3,4%", sub: "banda" }, { nat: null, l: "Data-base", v: "2T2026" }], "observado");
+    expect(h.match(/data-numero-indicador=""/g)).toHaveLength(3);
+    expect(h).toContain('role="group" aria-label="Saldo"');
+    expect(h).toContain('<div class="kpi-linha"><span>BCB/SGS ago/2026</span><span class="seal obs" data-natureza="OBSERVADO"');
+    expect(h).toContain('data-natureza="PREVISTO"');
+    // a data-base não é medida: fica sem selo
+    expect(h).toMatch(/aria-label="Data-base" data-numero-indicador=""><h4>/);
+    expect(styles).toMatch(/\.big, \.card \.big,[^{]*\{[^}]*font-family: var\(--serif\)[^}]*tabular-nums/);
+  });
+
+  it("toda abertura e toda faixa de números declara a natureza dos seus números", () => {
+    const aberturas = [...app.matchAll(/abertura\(\{\s*natureza: "(observado|calculado|estimado|previsao|cenario)"/g)].length;
+    expect(aberturas).toBe([...app.matchAll(/\babertura\(\{/g)].length);
+    const faixas = [...app.matchAll(/placar\(\[/g)].length;
+    expect(faixas).toBeGreaterThan(0);
+    expect([...app.matchAll(/\], "(?:observado|calculado|estimado)"\)/g)].length).toBe(faixas);
+  });
+
+  it("datas em português: mmm/aaaa, dd/mm/aaaa e a hora no horário de Brasília", () => {
+    const datas = new Function(`const fmt = { d: ${trecho("d: iso =>", "\n").replace(/^d: /, "").replace(/,$/, "")}, my: ${trecho("my: iso =>", "\n").replace(/^my: /, "").replace(/,$/, "")} }; ${trecho("function dataTela(v)", "function rerenderCurrent")}; return { fmt, dataTela, dataHoraBrasilia };`)() as {
+      fmt: { my: (v: string) => string };
+      dataTela: (v: string) => string;
+      dataHoraBrasilia: (v: string) => string;
+    };
+    expect(datas.fmt.my("2026-08")).toBe("ago/2026");
+    expect(datas.fmt.my("2026-12-01")).toBe("dez/2026");
+    expect(datas.dataTela("2026-08")).toBe("ago/2026");
+    expect(datas.dataTela("2026-10-18")).toBe("18/10/2026");
+    expect(datas.dataTela("2026-10-18T15:09:35+00:00")).toBe("18/10/2026 às 12:09 (horário de Brasília)");
+    expect(datas.dataTela("2T2026")).toBe("2T2026");
+  });
+
+  it("a data que vem do dado também chega à tela na forma da plataforma, sem mexer em intervalo de anos, CNPJ ou código", () => {
+    const fmtSrc = `const fmt = { d: ${trecho("d: iso =>", "\n").replace(/^d: /, "").replace(/,$/, "")}, my: ${trecho("my: iso =>", "\n").replace(/^my: /, "").replace(/,$/, "")} };`;
+    const conv = new Function(`${fmtSrc} ${trecho("function dataTela(v)", "function rerenderCurrent")}; ${trecho("const DATA_ISO_TELA", "function datasNaTela(")}; return dataIsoNoTexto;`)() as (t: string) => string;
+    expect(conv("SCR.data 2026-08 · janela 2025-08 a 2026-07")).toBe("SCR.data ago/2026 · janela ago/2025 a jul/2026");
+    expect(conv("status até 2026-10-22.")).toBe("status até 22/10/2026.");
+    expect(conv("execução de 2026-10-22T15:47:03+00:00")).toBe("execução de 22/10/2026 às 12:47 (horário de Brasília)");
+    // intervalo de anos, CNPJ, código de série e ano fora de 1900 a 2099 ficam como estão
+    expect(conv("quebra em 2020-21 e safra 2011-12")).toBe("quebra em 2020-21 e safra 2011-12");
+    expect(conv("15.124.464/0001-87 · SGS 21082 · 2100-01")).toBe("15.124.464/0001-87 · SGS 21082 · 2100-01");
+    // roda a cada página e a cada re-render, junto com os outros ajustes da camada de apresentação
+    expect(trecho("function agendaAcessibilidade()", "window.addEventListener(\"resize\"")).toContain("datasNaTela(ativa);");
+  });
+
+  it("o app.js não escreve carimbo ISO nem UTC na tela; a hora do processamento fica em Fontes, datas e siglas", () => {
+    const codigo = semComentarios(app).replace(/(^|[\s;{}(),])\/\/[^\n]*/g, "$1");
+    expect(codigo).not.toContain("UTC");
+    expect(codigo).not.toContain('.slice(0, 16).replace("T", " ")');
+    const recorte = trecho("function linhaRecorte(", "function pageHead(o)");
+    expect(recorte).toContain("Dados até <b>${dataTela(vint)}</b>");
+    expect(recorte).toContain('<details class="ph-fontes"><summary>Fontes, datas e siglas</summary>');
+    expect(recorte.indexOf("dataHoraBrasilia(geradoEm)")).toBeGreaterThan(-1);
+    expect(trecho("function pageHead(o)", "window.pvSave")).toContain("${linhaRecorte(vint, o.fontes, meta.gerado_em)}");
+  });
+
+  it("os leads das páginas não têm seta nem travessão", () => {
+    const leads = [...app.matchAll(/^\s*desc: (["`])(.*)\1,?$/gm)].map((m) => m[2]);
+    expect(leads.length).toBeGreaterThan(20);
+    expect(leads.filter((d) => /[→—–]/.test(d))).toEqual([]);
+  });
 });

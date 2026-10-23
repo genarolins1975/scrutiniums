@@ -26,7 +26,7 @@
   /* abertura: 16 px no celular, 17 px a partir de 768 px */
   /* metadados, notas, fontes e ressalvas: 13 px */
   /* rótulo editorial em caixa alta: 12 px, o piso (decisão do dono de 22/10/2026: a caixa alta espaçada fica como identidade) */
-  .rotulo { font-family: var(--font-label), system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.75rem; }
+  .rotulo { font-family: var(--font-label), system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: var(--tipo-rotulo); }
   /* números de destaque: três tamanhos só, sempre em serifa com algarismos alinhados e tabulares */
 .casca .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 .casca .absolute { position: absolute; }
