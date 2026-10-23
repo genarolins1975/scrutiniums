@@ -7,6 +7,7 @@ import { conferirPainel } from "./suporte/molde-painel";
 import PaginaHabitacao from "@/app/eficiencia-estatal/habitacao/page";
 import PaginaAluguel from "@/app/eficiencia-estatal/habitacao/aluguel-renda/page";
 import PaginaInadequacao from "@/app/eficiencia-estatal/habitacao/inadequacao/page";
+import PaginaCultura from "@/app/eficiencia-estatal/cultura/[[...painel]]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), frente pr2-habitacao-cultura do Grupo 2: as páginas com sessão da
@@ -25,6 +26,12 @@ describe("molde de painel: Eficiência Estatal, frente pr2-habitacao-cultura", (
   });
   it("/eficiencia-estatal/habitacao/inadequacao", () => {
     conferirPainel("/eficiencia-estatal/habitacao/inadequacao", html(createElement(PaginaInadequacao)));
+  });
+  it("/eficiencia-estatal/cultura", () => {
+    conferirPainel("/eficiencia-estatal/cultura", html(createElement(PaginaCultura, { params: {} })));
+  });
+  it("/eficiencia-estatal/cultura/recursos", () => {
+    conferirPainel("/eficiencia-estatal/cultura/recursos", html(createElement(PaginaCultura, { params: { painel: ["recursos"] } })));
   });
 });
 
@@ -94,5 +101,60 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
     ]) {
       expect(h).toContain(t);
     }
+  });
+  it("panorama da cultura: os três números, os caminhos, o Wi-Fi com margem (legado) e o aviso de participação no método", () => {
+    const h = html(createElement(PaginaCultura, { params: {} }));
+    for (const t of [
+      "O que os espaços culturais oferecem ao público?",
+      "Bibliotecas com Wi-Fi para o público",
+      "Bibliotecas de natureza pública municipal",
+      "Despesa pública com cultura",
+      "Os valores não compõem um escore de eficiência.",
+      "Da estrutura à experiência cultural.",
+      "Quanto o poder público destina à cultura?",
+      "Wi-Fi para o público, por tipo de equipamento",
+      "barra: estimativa · traço: margem publicada (95%)",
+      "Margens que se sobrepõem não comprovam diferença entre os tipos.",
+      "Oferta registrada. Participação ainda não medida.",
+      "A existência de um equipamento não comprova acesso efetivo.",
+    ]) {
+      expect(h).toContain(t);
+    }
+    // o gráfico de estimativa e margem fica como era, marcado como legado, com a margem de cada tipo na tabela equivalente
+    expect(h).toContain("data-figura-legado");
+    expect(h).toContain("Margem (p.p.)");
+    // os caminhos levam a todos os capítulos, inclusive métodos
+    for (const s of ["rede", "acesso", "atividades", "acervos", "recursos", "metodos"]) expect(h).toContain(`href="/eficiencia-estatal/cultura/${s}"`);
+  });
+  it("recursos da cultura: o recorte na abertura, os dois números, a evolução, as esferas e a tabela dos governos estaduais", () => {
+    const h = html(createElement(PaginaCultura, { params: { painel: ["recursos"] } }));
+    for (const t of [
+      "Quanto o poder público destina à cultura?",
+      "Ano do recorte",
+      "Esfera na evolução",
+      "Baixar recorte · CSV",
+      "Despesa com cultura · Total · 2023",
+      "Mostrando a esfera Total e o ano 2023.",
+      "Participação na despesa total da própria esfera",
+      "Não é participação no gasto cultural.",
+      "Onze anos de despesa publicada.",
+      "O crescimento nominal não mede o aumento do poder de compra.",
+      "% do orçamento da esfera",
+      "Como o total se distribui entre esferas?",
+      "Não identifica a origem de transferências",
+      "Governos estaduais e Distrito Federal.",
+      "Não soma as prefeituras localizadas na UF.",
+      "Buscar UF",
+      "Ordenar governos",
+      "27 governos estaduais/distrital no recorte.",
+      "Aba · linha · coluna",
+    ]) {
+      expect(h).toContain(t);
+    }
+    // a tabela dos governos estaduais continua à vista, com as 27 linhas
+    expect(h).toContain('data-tabela-a-vista=""');
+    expect(h.match(/3\.7 · \d+ · \d+/g)?.length).toBe(27);
+    // os controles do recorte vêm na abertura, antes dos números
+    expect(h.indexOf("Ano do recorte")).toBeLessThan(h.indexOf('data-fatia="numeros"'));
   });
 });
