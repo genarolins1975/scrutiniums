@@ -60,3 +60,32 @@ export async function aguardarSessaoResolvida(page, comSessao, timeout = 60_000)
     throw new Error(`a sessão não resolveu no navegador em ${timeout} ms: a faixa de consulta aberta continua na página (${e.message})`);
   }
 }
+
+/**
+ * Espera a hidratação também onde não há faixa de consulta aberta. Sem a faixa, aguardarSessaoResolvida termina na hora, mas a
+ * barra comum ainda se acomoda no cliente: a conta (FerramentasConta) entra depois de a sessão resolver e a faixa de frescor é
+ * recalculada. Sob CPU disputada, a medida saía antes e ficava abaixo da real: /conectividade a 390 px com sessão mediu 183 px
+ * com a CPU 4 e 8 vezes mais lenta, contra 195 px hidratada (build local do main, 23/10/2026; achado de revisão no PR
+ * "Ciclo: medida do cromo espera a página assentar"). Uma medida abaixo da real pode aprovar cabeçalho acima do orçamento.
+ * Espera, nesta ordem: a barra comum hidratada (o React já ligou a ela as suas propriedades internas); a consulta de sessão do
+ * navegador (/api/auth/estado, src/components/acesso/sessao.ts) concluída, com prazo curto para a página que não a faz; a faixa
+ * de frescor calculada (data-frescor-geral deixa de ser "calculando", src/components/frescor/FaixaFrescorCliente.tsx); e o
+ * cromo igual em duas leituras seguidas, com 300 ms entre elas, por no máximo 15 s.
+ */
+export async function aguardarHidratacao(page, prazo = 30_000) {
+  await page.waitForFunction(() => {
+    const alvo = document.querySelector(".bp") || document.querySelector("h1");
+    return !alvo || Object.keys(alvo).some((k) => k.startsWith("__reactFiber$") || k.startsWith("__reactProps$"));
+  }, undefined, { timeout: prazo }).catch(() => undefined);
+  await page.waitForFunction(() => performance.getEntriesByType("resource").some((e) => e.name.includes("/api/auth/estado")), undefined, { timeout: 5_000 })
+    .catch(() => undefined);
+  // a faixa de frescor sai do servidor como "calculando" e o navegador calcula a situação com o relógio de quem lê
+  await page.waitForFunction(() => !document.querySelector('[data-frescor-geral="calculando"]'), undefined, { timeout: prazo }).catch(() => undefined);
+  let anterior = "";
+  for (let i = 0; i < 50; i++) {
+    const atual = JSON.stringify(await page.evaluate(medirCromo));
+    if (atual === anterior) break;
+    anterior = atual;
+    await page.waitForTimeout(300);
+  }
+}
