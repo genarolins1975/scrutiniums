@@ -6,7 +6,7 @@
 // Depende do Playwright do repositório e do Chromium (CHROMIUM_PATH ou PLAYWRIGHT_BROWSERS_PATH).
 import { chromium } from "playwright";
 import { existsSync, writeFileSync } from "node:fs";
-import { ORCAMENTO, medirCromo } from "./ux-cromo-medida.mjs";
+import { ORCAMENTO, aguardarSessaoResolvida, medirCromo } from "./ux-cromo-medida.mjs";
 
 const [base, cookie, saida, ...rotas] = process.argv.slice(2);
 if (!base || !cookie || !saida || rotas.length === 0) {
@@ -24,6 +24,7 @@ for (const largura of [1440, 390]) {
     const page = await ctx.newPage();
     try {
       await page.goto(base + rota, { waitUntil: "networkidle", timeout: 120000 });
+      await aguardarSessaoResolvida(page, cookie !== "-");
       await page.evaluate(() => document.fonts.ready.then(() => undefined));
       await page.waitForTimeout(400);
       const m = await page.evaluate(medirCromo);
