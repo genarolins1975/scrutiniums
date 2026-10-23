@@ -362,6 +362,7 @@ export function ExploradorSaude({ tema, dados, contextos }: { tema: TemaSaude; d
             eixoY={{ unidade, zero: true, casas }}
             orientacao="horizontal"
             alturaCategoria={32}
+            alturaMaxima={900}
             rotulosValor
             rotulosSaoNomes
             selecionado={cap?.id ?? null}

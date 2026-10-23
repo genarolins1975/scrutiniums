@@ -502,6 +502,7 @@ export function ExploradorTrabalho({ dados, ids, rota }: { dados: Snapshot; ids:
               eixoY={{ unidade, zero: true, casas }}
               orientacao="horizontal"
               alturaCategoria={32}
+              alturaMaxima={900}
               rotulosValor
               rotulosSaoNomes
               selecionado={ter.id}
