@@ -102,9 +102,12 @@ class Montagem {
 
 /* ------------------------------------------------------------------ sinônimos */
 
-const GRUPOS = Object.entries(sinonimos as Record<string, string | string[]>)
+const GRUPOS = Object.entries(sinonimos as Record<string, unknown>)
   .filter(([chave]) => !chave.startsWith("_"))
   .map(([chave, lista]) => [chave, ...(lista as string[])]);
+
+/** Apelidos de nomes próprios das listas de bancos e distribuidoras: o nome como está na lista e os apelidos ("Neoenergia PE" é a Celpe). */
+const NOMES = Object.entries((sinonimos as { _nomes: Record<string, string[]> })._nomes);
 
 /** Contém a expressão inteira (palavras completas), já normalizada. */
 const contem = (texto: string, expressao: string) => ` ${texto} `.includes(` ${expressao} `);
@@ -115,6 +118,17 @@ function comSinonimos(termos: string[]): string[] {
   const extra: string[] = [];
   for (const grupo of GRUPOS) if (grupo.some((s) => contem(texto, normalizar(s)))) extra.push(...grupo);
   return [...termos, ...extra];
+}
+
+/**
+ * As listas de nomes recebem só os apelidos de `_nomes`, nunca os grupos temáticos: uma palavra comum dentro de uma razão social
+ * ("Safra", "Amazônia", "Fibra") anexava o grupo inteiro e levava "pecuária" ou "Anatel" à consulta de bancos (diagnóstico da
+ * busca de 23/10/2026, achado A3).
+ */
+function comApelidos(nomes: string[]): string[] {
+  const presentes = new Set(nomes.map(normalizar));
+  const extra = NOMES.filter(([nome]) => presentes.has(normalizar(nome))).flatMap(([, apelidos]) => apelidos);
+  return [...nomes, ...extra];
 }
 
 /* ------------------------------------------------------------------ lugares */
@@ -140,16 +154,29 @@ const distribuidoras = (): string[] =>
     [] as string[],
   );
 
-/** Instituições com taxa publicada pelo Banco Central, as mesmas da consulta "Quanto meu banco cobra?", sem as abreviaturas da razão social. */
+/**
+ * Instituições com taxa publicada pelo Banco Central, as mesmas da consulta "Quanto meu banco cobra?", sem as abreviaturas da razão
+ * social e com "BCO" por extenso ("BANCO DO BRASIL", "BANCO DA AMAZONIA": quem digita o nome do banco o acha inteiro).
+ */
 const bancos = (): string[] =>
   lerPublico(
     "obs/data/gold/juros.json",
     (j) =>
       ((j as { perfis_if: { nome: string }[] }).perfis_if ?? []).map((b) =>
-        b.nome.replace(/\b(BCO|S\.?\/?A\.?|LTDA\.?|CFI|SCFI|DTVM|CCTVM)\b/gi, " ").replace(/\s+/g, " ").trim(),
+        b.nome
+          .replace(/\bBCO\b/gi, "BANCO")
+          .replace(/\b(S\.?\/?A\.?|LTDA\.?|CFI|SCFI|DTVM|CCTVM)(?=\s|$)/gi, " ")
+          .replace(/(\s+\.)+(?=\s|$)/g, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
       ),
     [] as string[],
   );
+
+/** As listas de nomes como vêm das bases, antes dos apelidos (para o teste conferir que cada apelido aponta para um nome que existe). */
+export function nomesDasListas(): { banco: string[]; distribuidora: string[] } {
+  return { banco: bancos(), distribuidora: distribuidoras() };
+}
 
 /** As listas de lugares e nomes que levam a cada consulta pessoal, pelo padrão da pergunta ("minha cidade", "meu estado"...). */
 function lugaresDaConsulta(titulo: string, href: string): TipoLugar[] {
@@ -302,8 +329,8 @@ export function indiceDeBusca(): IndiceBusca {
     observatorios: obs.map((o) => ({ id: o.id, nome: o.nomeCurto })),
     colecoes,
     exemplos: [...EXEMPLOS_BUSCA],
-    // nomes com sinônimo (Nu Financeira → Nubank) levam o grupo junto: a lista do cabeçalho já sai expandida
-    lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comSinonimos(v)))])) as Record<TipoLugar, string[]>,
+    // nomes com apelido (NU FINANCEIRA → Nubank, Neoenergia PE → Celpe) levam o apelido junto: a lista do cabeçalho já sai expandida
+    lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comApelidos(v)))])) as Record<TipoLugar, string[]>,
     entradas: comVocabularioDoSetorEletrico(m.entradas()),
   };
   return cache;
