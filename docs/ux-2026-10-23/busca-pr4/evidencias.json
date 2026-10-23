@@ -1,9 +1,9 @@
 {
  "data": "2026-10-23",
- "build": "bKGc72m2DpDag45BDj08Q",
+ "build": "85Bxk0ojJMumcGCKpFSgz",
  "maquina": "4 vCPU, 16 GB",
- "comando": "npm run evidencias -- --rotas /buscar?q=autonomia financeira /buscar?q=xyzabc /buscar?q=avaliação /setor-eletrico --saida docs/ux-2026-10-23/busca-pr4 --larguras 390,1440",
- "tempo": "0 min 58 s",
+ "comando": "npm run evidencias -- --rotas /buscar?q=autonomia financeira /buscar?q=xyzabc /buscar?q=avaliação /buscar?q=PLD /setor-eletrico --saida docs/ux-2026-10-23/busca-pr4 --larguras 390,1440",
+ "tempo": "1 min 08 s",
  "resultados": [
   {
    "rota": "/buscar?q=autonomia financeira",
@@ -220,6 +220,78 @@
    "login": [],
    "captura": "buscar_q_avalia_o-1440-com-sessao.jpg",
    "primeiraTela": "buscar_q_avalia_o-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=PLD",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=PLD",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_PLD-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_PLD-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=PLD",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=PLD",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_PLD-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_PLD-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=PLD",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=PLD",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_PLD-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_PLD-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=PLD",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=PLD",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_PLD-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_PLD-1440-com-sessao-primeira-tela.jpg"
   },
   {
    "rota": "/setor-eletrico",
