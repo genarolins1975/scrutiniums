@@ -44,6 +44,22 @@ const COM_CONTA = [
   "/gas-natural/gnv-e-gas-encanado", "/observatorio-do-credito/quanto-meu-banco-cobra", "/observatorio-do-credito/simulador-da-parcela",
   "/saneamento/preco-regulado/simulador", "/saneamento/tarifa-social", "/setor-eletrico/inclusao-energetica/tarifa-social",
   "/territorio/desastres", "/territorio/queimadas",
+  // PR 2b da Iniciativa 1 (Grupo 2, Eficiência Estatal)
+  "/eficiencia-estatal/acesso-justica", "/eficiencia-estatal/acesso-justica/cobertura", "/eficiencia-estatal/acesso-justica/conciliacao",
+  "/eficiencia-estatal/acesso-justica/recursos", "/eficiencia-estatal/acesso-justica/tempo-resposta",
+  "/eficiencia-estatal/educacao-municipal-capitais/atendimento", "/eficiencia-estatal/educacao-municipal-capitais/comparar",
+  "/eficiencia-estatal/educacao-municipal-capitais/gastos", "/eficiencia-estatal/educacao-municipal-capitais/resultados",
+  "/eficiencia-estatal/energia-conectividade/acesso", "/eficiencia-estatal/energia-conectividade/continuidade",
+  "/eficiencia-estatal/energia-conectividade/custo", "/eficiencia-estatal/energia-conectividade/internet", "/eficiencia-estatal/judiciario",
+  "/eficiencia-estatal/judiciario/internacional", "/eficiencia-estatal/judiciario/recursos", "/eficiencia-estatal/judiciario/tempo",
+  "/eficiencia-estatal/judiciario/filas", "/eficiencia-estatal/judiciario/entrega", "/eficiencia-estatal/judiciario/consistencia",
+  "/eficiencia-estatal/judiciario/criminal", "/eficiencia-estatal/judiciario/acesso", "/eficiencia-estatal/judiciario/comparar",
+  "/eficiencia-estatal/meio-ambiente-clima", "/eficiencia-estatal/mobilidade-transporte", "/eficiencia-estatal/mobilidade-transporte/oportunidades",
+  "/eficiencia-estatal/saneamento", "/eficiencia-estatal/saneamento/agua", "/eficiencia-estatal/saneamento/drenagem",
+  "/eficiencia-estatal/saneamento/esgoto", "/eficiencia-estatal/saneamento/recursos", "/eficiencia-estatal/saneamento/residuos",
+  "/eficiencia-estatal/saude-capitais/comparar", "/eficiencia-estatal/seguranca-publica", "/eficiencia-estatal/seguranca-publica/letalidade",
+  "/eficiencia-estatal/seguranca-publica/mulheres", "/eficiencia-estatal/seguranca-publica/patrimonio",
+  "/eficiencia-estatal/seguranca-publica/resposta", "/eficiencia-estatal/seguranca-publica/recursos",
 ];
 
 describe("piso de 12 px", () => {
