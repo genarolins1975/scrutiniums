@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import dynamic from "next/dynamic";
 import { TextoDaColuna } from "@/components/painel/TextoDaColuna";
@@ -62,8 +62,9 @@ export function TabelaDados({
       casas: casas?.[j] ?? undefined,
       idiomaTexto: idiomaTexto?.[j] ?? undefined,
     }));
-    // a tabela ordenável guarda valores (texto e número); nó marcado vira o próprio texto
-    const valor = (v: CelulaTabela) => (v === null || typeof v === "string" || typeof v === "number" ? v : null);
+    // a tabela ordenável guarda valores (texto e número); célula em nó React (um nome marcado, por exemplo) vira o texto que ela mostra,
+    // para continuar na busca, na ordenação e na exportação, nunca ausência
+    const valor = (v: CelulaTabela) => (v === null || typeof v === "string" || typeof v === "number" ? v : textoDoNo(v));
     const dados: LinhaTabela[] = linhas.map((l, i) => Object.fromEntries([["_id", String(i)], ...l.map((v, j) => [`c${j}`, valor(v)] as const)]));
     return (
       <div data-tabela-ordenavel="">
@@ -173,4 +174,13 @@ export function TabelaDados({
       {arquivo}
     </details>
   );
+}
+
+/** Texto visível de um nó React (texto, número, lista ou elemento com filhos), na ordem; o que não tem texto vira "". */
+export function textoDoNo(no: ReactNode): string {
+  if (no === null || no === undefined || typeof no === "boolean") return "";
+  if (typeof no === "string" || typeof no === "number") return String(no);
+  if (Array.isArray(no)) return no.map(textoDoNo).join("");
+  if (isValidElement<{ children?: ReactNode }>(no)) return textoDoNo(no.props.children);
+  return "";
 }

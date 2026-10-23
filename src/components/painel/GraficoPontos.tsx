@@ -648,13 +648,25 @@ export function GraficoPontos(props: GraficoPontosProps | GraficoPontosContrato)
   }
   const { series, eixoY, ...resto } = props;
   const [valor, ref] = series;
-  const refPorX = new Map((ref?.pontos ?? []).map((p) => [String(p.x), p.y]));
+  // o domínio é a união das duas séries, na ordem em que aparecem: entidade só na referência entra sem valor (nunca some nem vira zero),
+  // e o nome exibido é o `rotulo` do ponto quando houver
+  const pontos = new Map<string, { rotulo: string; valor: number | null; referencia: number | null }>();
+  for (const [k, s] of [valor, ref].entries()) {
+    for (const p of s?.pontos ?? []) {
+      const id = String(p.x);
+      const item = pontos.get(id) ?? { rotulo: p.rotulo ?? id, valor: null, referencia: null };
+      if (p.rotulo && item.rotulo === id) item.rotulo = p.rotulo;
+      if (k === 0) item.valor = p.y;
+      else item.referencia = p.y;
+      pontos.set(id, item);
+    }
+  }
   return (
     <div data-grafico="pontos" className="min-w-0">
       <GraficoPontosLargo
         semTabela
         {...resto}
-        itens={(valor?.pontos ?? []).map((p) => ({ id: String(p.x), rotulo: String(p.x), valor: p.y, referencia: refPorX.get(String(p.x)) ?? null }))}
+        itens={[...pontos].map(([id, item]) => ({ id, ...item }))}
         unidade={eixoY.unidade}
         casas={eixoY.casas ?? 1}
         zeroNoEixo={eixoY.zero ?? false}
