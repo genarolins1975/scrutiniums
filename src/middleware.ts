@@ -119,15 +119,14 @@ export async function middleware(request: NextRequest) {
 }
 
 /**
- * Navegação de página de verdade: GET que pede o documento (text/html) ou a navegação do App Router no cliente (cabeçalho RSC,
- * a forma de quase todo clique em link interno). O pré-carregamento não conta (Next-Router-Prefetch, Sec-Purpose/Purpose
- * "prefetch"): um link visível no mapa não pode virar "último acesso" sem clique.
+ * Navegação de documento: GET que pede HTML. A navegação no cliente do App Router e o pré-carregamento chegam aqui sem os
+ * cabeçalhos RSC (o Next os retira antes do middleware) e sem pedir HTML: não contam, porque não há como separar o clique do
+ * pré-carregamento, e um link visível não pode virar "último acesso" sem clique. Os links do mapa são de documento (LinkMedido).
  */
 function paginaHtml(request: NextRequest): boolean {
   if (request.method !== "GET") return false;
-  const h = request.headers;
-  if (h.has("next-router-prefetch") || /prefetch/i.test(h.get("sec-purpose") ?? h.get("purpose") ?? "")) return false;
-  return h.get("rsc") === "1" || (h.get("accept")?.includes("text/html") ?? false);
+  if (/prefetch/i.test(request.headers.get("sec-purpose") ?? request.headers.get("purpose") ?? "")) return false;
+  return request.headers.get("accept")?.includes("text/html") ?? false;
 }
 
 /**

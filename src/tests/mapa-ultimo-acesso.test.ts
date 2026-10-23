@@ -90,11 +90,7 @@ describe("gravação pelo middleware", () => {
     expect(familias.cookies.get(COOKIE_OBSERVATORIO)?.value).toBe("o:familias");
   });
 
-  it("a navegação no cliente (RSC, o clique em link interno) também grava; o pré-carregamento não", async () => {
-    // o prompt da M1 previa só a navegação com text/html; no App Router, o clique num <Link> é uma requisição RSC, e sem ela o
-    // "Continuar" só mudaria em recarga de página
-    expect((await navegar("/setor-eletrico/pld", { accept: "*/*", rsc: true })).cookies.get(COOKIE_OBSERVATORIO)?.value).toBe("c:setor-eletrico");
-    expect((await navegar("/setor-eletrico/pld", { accept: "*/*", rsc: true, prefetch: true })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+  it("pré-carregamento do navegador não grava", async () => {
     const h = new Headers({ accept: "text/html", "sec-purpose": "prefetch", cookie: `scrutiniums_session=${await signSessionCookie(TOKEN, new Date(Date.now() + 3_600_000))}` });
     expect((await middleware(new NextRequest(ORIGEM + "/setor-eletrico/pld", { headers: h }))).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
   });
@@ -103,7 +99,8 @@ describe("gravação pelo middleware", () => {
     expect((await navegar("/setor-eletrico/pld", { sessao: false })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/sobre")).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/app/conta")).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
-    expect((await navegar("/setor-eletrico/pld", { accept: "text/x-component", rsc: true, prefetch: true })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+    // navegação no cliente e pré-carregamento do App Router chegam ao middleware sem os cabeçalhos RSC e com accept */*
+    expect((await navegar("/setor-eletrico/pld", { accept: "*/*" })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/setor-eletrico/pld", { accept: "*/*" })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/setor-eletrico/pld", { cookie: "c:setor-eletrico" })).headers.get("set-cookie")).toBeNull();
   });
@@ -120,7 +117,7 @@ describe("gravação pelo middleware", () => {
 });
 
 describe("LinkMedido", () => {
-  it("é um <a href> comum, sem formulário", () => {
+  it("é um <a href> de documento, sem formulário (a navegação inteira passa pelo middleware, que grava o último acesso)", () => {
     const h = renderToStaticMarkup(createElement(LinkMedido, { href: "/setor-eletrico", secao: "mapa:setor-eletrico" }, "Setor Elétrico"));
     expect(h).toBe('<a href="/setor-eletrico">Setor Elétrico</a>');
   });
@@ -134,9 +131,10 @@ describe("LinkMedido", () => {
       },
     });
     const externo = vi.fn();
-    const el = LinkMedido({ href: "/setor-eletrico", secao: "mapa:setor-eletrico", onClick: externo, children: "Setor Elétrico" }) as ReactElement<{ onClick: (e: unknown) => void; prefetch: boolean }>;
+    const el = LinkMedido({ href: "/setor-eletrico", secao: "mapa:setor-eletrico", onClick: externo, children: "Setor Elétrico" }) as ReactElement<{ onClick: (e: unknown) => void; href: string }>;
     expect(isValidElement(el)).toBe(true);
-    expect(el.props.prefetch).toBe(false);
+    expect(el.type).toBe("a");
+    expect(el.props.href).toBe("/setor-eletrico");
     const evento = { defaultPrevented: false, preventDefault: vi.fn() };
     el.props.onClick(evento);
     await vi.waitFor(() => expect(enviados).toEqual([{ url: "/api/telemetria", corpo: JSON.stringify({ secao: "mapa:setor-eletrico" }) }]));

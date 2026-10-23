@@ -110,12 +110,12 @@ try{
  }
  const choice=page.locator('[data-fatia="destinos"] [data-colecao="justica"] a[href="'+PREFIX+'"]').first();
  await choice.focus();
- const navigation=page.waitForURL(u=>new URL(u).pathname===PREFIX,{timeout:20000});
+ const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
  await page.keyboard.press('Enter');await navigation;await ocioso();
  await captura({path:join(out,'seletor-destino.png'),fullPage:true});
  check('Coleção abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
- check('Cookie guarda a coleção Justiça',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='c:justica'&&c.httpOnly));
+ check('Cookie guarda a coleção Justiça',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&decodeURIComponent(c.value)==='c:justica'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
  check('Último acesso leva de volta à Justiça',await page.locator('[data-fatia="retomar"] a[href="'+PREFIX+'"]').isVisible());
  const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
