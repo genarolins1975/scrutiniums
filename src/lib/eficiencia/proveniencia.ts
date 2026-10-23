@@ -46,7 +46,7 @@ export type OrigemObee = {
 };
 
 /** Fonte como as bases das capitais (Saúde, Educação) a entregam ao navegador: nome legível, páginas oficiais e data da captura. */
-export type FonteFicha = { nome: string; url: string; capturado_em: string };
+export type FonteFicha = { nome: string; url: string; capturado_em: string; orgao?: string; conjunto?: string };
 
 /**
  * Proveniência de uma medida das capitais a partir da ficha do catálogo (a mesma que o diálogo "Sobre este dado" do OBEE mostra) e
@@ -62,13 +62,14 @@ export function provenienciaDaFicha(
   const principal = citadas[0];
   const capturas = citadas.map((x) => x.capturado_em).filter(Boolean).sort();
   // o nome legível vem como "Órgão, conjunto" ("Siconfi, DCA Anexo I-E"): a figura agrupa a fonte por órgão
+  // quando a base separa instituição e conjunto (Educação), valem os dois campos
   const nome = principal?.nome ?? f.fontes.join(", ");
-  const orgao = nome.split(", ")[0];
+  const orgao = principal?.orgao ?? nome.split(", ")[0];
   return provenienciaObee({
     indicador: f.nome,
     natureza: f.natureza,
     orgao,
-    dataset: nome.slice(orgao.length + 2) || f.localizacao_registro,
+    dataset: principal?.conjunto ?? (nome.slice(orgao.length + 2) || f.localizacao_registro),
     recurso: [f.localizacao_registro, ...citadas.slice(1).map((x) => x.nome)].join("; "),
     url: principal?.url.split(" ")[0] ?? "",
     unidade: f.unidade,

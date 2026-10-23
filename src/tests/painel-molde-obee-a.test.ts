@@ -9,6 +9,7 @@ vi.mock("server-only", () => ({}));
 import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/necessidades/page";
 import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";
 import PaginaSaude from "@/app/eficiencia-estatal/saude-capitais/page";
+import PaginaEducacao from "@/app/eficiencia-estatal/educacao-municipal-capitais/page";
 import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
@@ -51,5 +52,13 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     // uma figura por medida do panorama, cada uma com o caminho para a trilha da própria medida em Dados e métodos
     expect(h.match(/data-figura-analitica="medida-/g)).toHaveLength(7);
     expect(h).toContain('href="/eficiencia-estatal/saude-capitais/metodos#trilha-sau-despesa-por_habitante"');
+  });
+
+  it("/eficiencia-estatal/educacao-municipal-capitais", () => {
+    const h = html(PaginaEducacao);
+    conferirPainel("/eficiencia-estatal/educacao-municipal-capitais", h);
+    // os três capítulos do panorama, sem a numeração "01 /" de antes (decisão 7 pendente: padrão sem numeração)
+    for (const c of ["gastos", "atendimento", "resultados"]) expect(h).toContain(`data-figura-analitica="capitulo-${c}"`);
+    expect(h).toContain('href="/educacao-municipal"');
   });
 });
