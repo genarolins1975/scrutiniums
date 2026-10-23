@@ -583,10 +583,15 @@ export default function PldPage() {
                         {perguntaPainel("p011")} {tx("Percentis da mesma época e médias ponderadas", "Percentiles for the same time of year and weighted averages")}
                       </Link>
                     </p>
-                    <PldCapitulos />
                   </>
                 }
-                depois={<PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />}
+                // as perguntas irmãs vêm depois das notas e da proveniência da figura, como no desenho anterior (notas, depois capítulos)
+                depois={
+                  <>
+                    <PldCapitulos />
+                    <PldSeguir ancora="hoje" proximo={proximoPainel("p008")} downloads={pld.downloads} />
+                  </>
+                }
               >
                 <GraficoBarras
                   titulo={tx(`Média diária do PLD por submercado, ${dataBR(pld.dia_referencia)}`, `Daily PLD average by submarket, ${dataBR(pld.dia_referencia)}`)}

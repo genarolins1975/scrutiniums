@@ -483,15 +483,9 @@ export default function ContaDeLuzPage() {
                   p: reaj.proveniencia_ipca,
                 },
               ]}
-              tabela={{
-                titulo: tx(`Tarifa B1 residencial vigente em ${dataBR(ref)} e custo de 100, 200 e 300 kWh por mês, da menor à maior`, `Residential B1 tariff in force on ${dataBR(ref)} and cost of 100, 200 and 300 kWh a month, from lowest to highest`),
-                colunas: [tx("Distribuidora", "Distribution utility"), tx("Tarifa (R$/MWh)", "Tariff (R$/MWh)"), tx("100 kWh (R$/mês)", "100 kWh (R$/month)"), tx("200 kWh (R$/mês)", "200 kWh (R$/month)"), tx("300 kWh (R$/mês)", "300 kWh (R$/month)")],
-                linhas: [...t.vigentes].sort((a, b) => a.posicao - b.posicao).map((v) => [rotuloDistribuidora(v.sigla, v.cnpj), v.total, v.perfis["100"], v.perfis["200"], v.perfis["300"]]),
-                casas: [null, 2, 2, 2, 2],
-                idiomaTexto: ["nome", null, null, null, null],
-                limite: t.vigentes.length,
-                csv: downloadsDoPainel(g.downloads, ["conta_tarifas_b1_vigentes.csv"])[0]?.url,
-              }}
+              // a tabela equivalente é a do próprio gráfico (as 81 distribuidoras na leitura e no grupo escolhidos, logo abaixo das barras); uma
+              // segunda lista fixa repetia as mesmas linhas, e a ordenável e exportável segue sob demanda em Analisar
+              tabela={{ naFigura: tx("a tabela do gráfico, logo abaixo das barras, com todas as distribuidoras na leitura e no grupo escolhidos.", "the chart's table, right below the bars, with every distribution utility in the chosen reading and group.") }}
               depois={
                 <>
                 <SecaoDoPainel

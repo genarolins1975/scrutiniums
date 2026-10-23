@@ -100,6 +100,11 @@ export function conferirPainel(rota: string, html: string, { comprimento = true 
     expect(nNumeros).toBeLessThanOrEqual(4);
   }
 
+  const dentroDeGrafico = (t: No) => {
+    for (let p = t.parentNode; p; p = p.parentNode) if (tem(p, "data-grafico")) return true;
+    return false;
+  };
+
   // figuras: gráfico (ou mapa e figura legados), tabela equivalente, proveniência e "não permite concluir"
   const figuras = todos(painel, (n) => tem(n, "data-figura-analitica"));
   for (const f of figuras) {
@@ -108,8 +113,9 @@ export function conferirPainel(rota: string, html: string, { comprimento = true 
     const equivalente = todos(f, (n) => tem(n, "data-tabela-equivalente"));
     expect(equivalente.length, `${rota}#${id}: tabela equivalente`).toBe(1);
     if (tem(equivalente[0], "data-na-figura")) {
-      // a figura aponta a tabela que já traz (o ranking ordenável): ela tem de estar dentro da figura, no kit
-      expect(todos(f, (n) => n.tagName === "table" && tem(n, "data-tabela-dados")).length, `${rota}#${id}: a tabela que a figura aponta`).toBeGreaterThan(0);
+      // a figura aponta a tabela que já traz (a do kit ou a que o próprio gráfico monta): ela tem de estar dentro da figura, no HTML
+      const naFigura = todos(f, (n) => n.tagName === "table" && (tem(n, "data-tabela-dados") || dentroDeGrafico(n)));
+      expect(naFigura.length, `${rota}#${id}: a tabela que a figura aponta`).toBeGreaterThan(0);
     } else {
       expect(todos(equivalente[0], (n) => n.tagName === "details").length, `${rota}#${id}: tabela equivalente em <details>`).toBeGreaterThan(0);
       expect(todos(equivalente[0], (n) => n.tagName === "table").length, `${rota}#${id}: <table> na tabela equivalente`).toBe(1);
@@ -132,10 +138,6 @@ export function conferirPainel(rota: string, html: string, { comprimento = true 
   }
   // nenhuma <table> fora do kit: a TabelaDados (data-tabela-dados) ou a tabela equivalente que o próprio gráfico monta (dentro de data-grafico)
   const tabelas = todos(painel, (n) => n.tagName === "table");
-  const dentroDeGrafico = (t: No) => {
-    for (let p = t.parentNode; p; p = p.parentNode) if (tem(p, "data-grafico")) return true;
-    return false;
-  };
   const fora = tabelas.filter((t) => !tem(t, "data-tabela-dados") && !dentroDeGrafico(t));
   expect(fora.map((t) => attr(t, "class") ?? "(sem classe)"), `${rota}: <table> fora de TabelaDados`).toEqual([]);
 
