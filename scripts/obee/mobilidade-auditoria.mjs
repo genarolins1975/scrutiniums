@@ -39,8 +39,10 @@ try{
     const main=document.querySelector('main');
     const axe=await window.axe.run(main,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});
     const controls=[...main.querySelectorAll('button,input:not([type=hidden]),select,summary,nav a')];
-    const small=controls.filter(e=>{const r=e.getBoundingClientRect();return r.height<43.5||r.width<43.5;}).map(e=>({text:e.textContent?.trim().slice(0,70),tag:e.tagName}));
-    return {overflow:document.documentElement.scrollWidth>innerWidth+1,h1:main.querySelectorAll('h1').length,violations:axe.violations.map(v=>({id:v.id,nodes:v.nodes.length})),smallControls:small,hasData:!!main.querySelector('figure')||main.textContent.includes('Dicionário e cobertura')};
+    // controle não renderizado (dentro de <dialog> fechado, como o fechar da ficha "Sobre este dado") não é alvo de toque
+    const small=controls.filter(e=>{const r=e.getBoundingClientRect();if(!r.width&&!r.height)return false;return r.height<43.5||r.width<43.5;}).map(e=>({text:e.textContent?.trim().slice(0,70),tag:e.tagName}));
+    // dado na página: a figura antiga, a FiguraAnalitica do molde de painel ou o gráfico do kit (o panorama usa o gráfico do kit fora do molde)
+    return {overflow:document.documentElement.scrollWidth>innerWidth+1,h1:main.querySelectorAll('h1').length,violations:axe.violations.map(v=>({id:v.id,nodes:v.nodes.length})),smallControls:small,hasData:!!main.querySelector('figure,[data-figura-analitica],[data-grafico]')||main.textContent.includes('Dicionário e cobertura')};
    });
    await page.screenshot({path:output+'/'+(slug||'panorama')+'-'+width+'.png',fullPage:true});
    const result={slug:slug||'panorama',width,status:res.status(),...checks,errors};results.push(result);console.log('ROTA',JSON.stringify(result));
@@ -58,8 +60,11 @@ try{
  await passo('busca territorial, tabela e CSV do mesmo recorte',async()=>{
   await page.getByLabel('Buscar território',{exact:true}).fill('São Paulo');
   await aplicar(page,u=>u.searchParams.get('busca')==='São Paulo');
-  assert((await page.locator('figure').innerText()).includes('São Paulo'),'Busca territorial não refletida no gráfico');
-  await page.getByText('Tabela equivalente ao gráfico',{exact:true}).click();
+  // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o gráfico é a FiguraAnalitica "explorar" e a tabela equivalente é a
+  // TabelaDados recolhida logo abaixo dele ("Resumo em tabela"); o que se confere é o mesmo
+  const figura=page.locator('[data-figura-analitica="explorar"]');
+  assert((await figura.innerText()).includes('São Paulo'),'Busca territorial não refletida no gráfico');
+  await figura.locator('summary',{hasText:'Resumo em tabela'}).first().click();
   assert((await page.locator('details[open] table').innerText()).includes('São Paulo'),'Tabela não acompanha a busca');
   const link=await page.getByRole('link',{name:'Baixar recorte completo (CSV)',exact:true}).getAttribute('href');
   const r=await fetch(base+link);assert(r.ok,'Falha HTTP no CSV do recorte');const rows=Array.from(csvRows(await r.text())).slice(1);
@@ -70,7 +75,8 @@ try{
   await page.getByLabel('Dias no mês',{exact:true}).fill('22');
   await page.getByLabel('Embarques pagos por dia',{exact:true}).fill('2');
   // dentro do <main>: a busca da barra (Iniciativa 3) também tem uma região aria-live, e vem antes do simulador
-  await page.waitForFunction(()=>document.querySelector('main [aria-live=polite]')?.textContent.includes('220,00'));
+  // a região viva do próprio simulador: no molde, gráficos e botões do kit têm regiões vivas antes dele
+  await page.waitForFunction(()=>document.querySelector('main section[aria-labelledby="simulador-custo"] [aria-live=polite]')?.textContent.includes('220,00'));
   await page.screenshot({path:output+'/simulador-390.png',fullPage:true});
  });
  await passo('limpar filtros e estado vazio',async()=>{

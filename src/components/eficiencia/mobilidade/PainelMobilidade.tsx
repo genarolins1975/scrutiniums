@@ -10,7 +10,8 @@ const numero=(n:number)=>new Intl.NumberFormat('pt-BR').format(n);
 const data=(iso?:string)=>iso?new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo'}).format(new Date(iso)):'Não registrada';
 function download(p:Record<string,string>={}){const q=new URLSearchParams(p);return '/api/eficiencia-mobilidade/exportar'+(q.size?'?'+q.toString():'');}
 function FonteDaMedida({g,m}:{g:BaseMobilidade;m:Medida}){const f=g.sources.find(f=>f.arquivo===m.source);return <p className={s.nota}>Fonte: <a className={s.acao} href={f?.url} rel="noreferrer">{m.id.startsWith('censo.')?'IBGE · Censo 2022 · tabela 10330':'Ministério das Cidades · Pemob Municipal 2025'}</a>. Referência: {m.period}. Captura: {data(f?.capturado_em)}.</p>;}
-function Sobre({g,m}:{g:BaseMobilidade;m:Medida}){return <details><summary>Sobre este indicador</summary><div><p className={s.nota}>{m.definition}</p><p className={'mt-3 '+s.nota}><strong>Universo:</strong> {m.universe}</p><FonteDaMedida g={g} m={m}/></div></details>;}
+// o resumo leva o alvo de 44 px que a classe .painel dava no desenho anterior (o molde de painel não usa .painel)
+function Sobre({g,m}:{g:BaseMobilidade;m:Medida}){return <details><summary className="flex min-h-[44px] cursor-pointer items-center py-3 font-medium">Sobre este indicador</summary><div><p className={s.nota}>{m.definition}</p><p className={'mt-3 '+s.nota}><strong>Universo:</strong> {m.universe}</p><FonteDaMedida g={g} m={m}/></div></details>;}
 // peças do kit de painel (molde de painel, Iniciativa 1 do parecer de UX de 23/10/2026): as barras e as tabelas à mão passam ao GraficoBarras e
 // à TabelaDados, e o formulário do recorte ao Controles, com os mesmos valores, estados, referências, paginação e exportações
 const ROTULO='rotulo block text-mineral';
