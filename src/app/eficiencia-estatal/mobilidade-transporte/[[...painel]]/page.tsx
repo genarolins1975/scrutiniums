@@ -19,7 +19,10 @@ export default function Pagina({params,searchParams}:Props){
  // Navegação por Link preserva controles não controlados. Uma nova seleção na
  // URL precisa remontá-los para que defaultValue reflita o recorte servido.
  const chaveOportunidades=JSON.stringify(['indicador','modo','cidade','pico'].map(k=>primeiro(searchParams[k])));
- // capítulos de medida no molde de painel: o PaginaPainel abre o próprio <main> (Iniciativa 1 do parecer de UX de 23/10/2026)
- if(noMoldeDePainel(p.slug))return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="mobilidade" /></header><PainelMobilidade slug={p.slug} p={searchParams}/></>;
- return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="mobilidade" /></header><main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}>{p.slug==='oportunidades'?<PainelOportunidades key={chaveOportunidades} p={searchParams}/>:<PainelMobilidade slug={p.slug} p={searchParams}/>}</main></>;
+ // panorama, capítulos de medida e acesso a oportunidades no molde de painel: o PaginaPainel abre o próprio <main> (Iniciativa 1 do
+ // parecer de UX de 23/10/2026); só o capítulo de método segue na casca de antes
+ const cabecalho=<header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="mobilidade" /></header>;
+ if(p.slug==='oportunidades')return <>{cabecalho}<PainelOportunidades key={chaveOportunidades} p={searchParams}/></>;
+ if(noMoldeDePainel(p.slug))return <>{cabecalho}<PainelMobilidade slug={p.slug} p={searchParams}/></>;
+ return <>{cabecalho}<main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}><PainelMobilidade slug={p.slug} p={searchParams}/></main></>;
 }
