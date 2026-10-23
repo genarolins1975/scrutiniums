@@ -12,9 +12,9 @@ const fmt = (v: number | null) => (v === null ? "Não informado" : v.toLocaleStr
 /**
  * As respostas da rede do SUAS a uma pergunta do Censo, no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): os
  * controles (território e medida) logo antes da figura que eles mudam, com o recorte na URL (?ter= e ?med=), e a figura do kit com o
- * gráfico de barras, a tabela equivalente, a fonte e o que não é possível concluir. Os números e as frases são os mesmos da
- * DistribuicaoSuas, que as demais páginas da Assistência social ainda usam: percentuais entre respostas observadas, nas perguntas de
- * categoria; nas de contagem, a cobertura das respostas (observadas, não informadas e não aplicáveis) e a soma e a mediana declaradas.
+ * gráfico de barras, a tabela equivalente, a fonte e o que não é possível concluir. Os números e as frases são os da antiga
+ * DistribuicaoSuas, que saiu quando as seis páginas da Assistência social migraram: percentuais entre respostas observadas, nas perguntas
+ * de categoria; nas de contagem, a cobertura das respostas (observadas, não informadas e não aplicáveis) e a soma e a mediana declaradas.
  */
 export function FiguraSuas({
   metrics,
@@ -146,6 +146,8 @@ export function FiguraSuas({
           eixoY={{ unidade: categorica ? "%" : "unidades", zero: true, casas: categorica ? 1 : 0 }}
           orientacao="horizontal"
           rotulosValor
+          // a frase "Escala comum de 0 a 100%" vale como na distribuição de antes: a referência no total leva o eixo a 100 em toda medida
+          referencias={categorica ? [{ valor: 100, rotulo: "Total das respostas observadas" }] : undefined}
         />
       </FiguraAnalitica>
     </>

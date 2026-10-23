@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Crédito a estados e municípios (Sadipem PVL, Tesouro Nacional). O que se trava:
@@ -126,7 +127,8 @@ describe("SPA: aba Crédito a estados e municípios", () => {
     const ini = app.indexOf("/* @chunk:emergentes:ini */"), fim = app.indexOf("/* @chunk:emergentes:fim */");
     expect(k).toBeGreaterThan(ini);
     expect(k).toBeLessThan(fim);
-    expect(read("public/obs/index.html")).toContain('<button data-view="subnacional">Crédito a estados e municípios</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/subnational-credit")).toBe("Início"); // a entrada da coleção Dívida e crédito dos governos
     expect(read("public/obs/index.html")).toContain('<section class="view" id="view-subnacional"></section>');
     expect(read("src/lib/data/observatorioAbas.ts")).toContain('caminho: "/subnational-credit"');
     expect(read("src/lib/telemetry.ts")).toContain('"obs:subnacional"');

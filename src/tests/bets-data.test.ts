@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Testes de consistência do dado curado da aba "Apostas e crédito das famílias".
@@ -205,7 +206,8 @@ describe("bets: integração com a plataforma", () => {
     expect(app).toContain('bets: "renderBets"');
     expect(app).toContain("function renderBets()");
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    expect(html).toContain('data-view="bets"');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/bets-financial-risk")).toBe("Apostas e crédito das famílias");
     expect(html).toContain('id="view-bets"');
     expect(html).toContain("Pagamentos, conduta e fronteiras");
   });

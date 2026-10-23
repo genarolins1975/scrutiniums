@@ -72,7 +72,7 @@
 .sel-obs { color:var(--cor-mineral); }
 .sel-obs:hover, .sel-obs[aria-current="true"] { color:var(--cor-carvao); }
 /* a mesma trilha na SPA do Crédito, que não carrega o Tailwind das páginas Next */
-.observatorio-credito .obs-trilha ol { display:flex; flex-wrap:wrap; align-items:center; gap:0 8px; margin:0; padding:0; list-style:none; font-size:13px; line-height:20px; color:var(--bp-suave); }
+.observatorio-credito .obs-trilha ol { display:flex; flex-wrap:wrap; align-items:center; gap:0 8px; margin:0; padding:0; list-style:none; font-size:var(--tipo-meta); line-height:20px; color:var(--bp-suave); }
 .observatorio-credito .obs-trilha li { display:inline-flex; align-items:center; gap:8px; }
 .observatorio-credito .obs-trilha a { display:inline-flex; align-items:center; min-height:32px; color:inherit; text-decoration:underline; text-decoration-color:var(--bp-regra); text-underline-offset:4px; }
 .observatorio-credito .obs-trilha a:hover { color:var(--bp-tinta); text-decoration-color:currentColor; }
@@ -139,66 +139,58 @@
 .dominio-energia .ed-faixa { background:transparent; padding:20px 0; margin-block:0 24px; }
 .dominio-energia [data-secao-painel]>h3 { color:var(--obs-tinta); font-size:24px; }
 @media(max-width:639px) { .dominio-energia .obs-hero, .dominio-energia .cab-modulo { padding:20px 0; } .dominio-energia .obs-hero nav { border-top:1px solid var(--obs-regra); padding-top:20px; } }
-/* Crédito: navegação persistente com leitura ampla; modo escuro continua disponível. */
-html:not([data-theme="dark"]) .observatorio-credito { --bg:var(--obs-papel); --surface:var(--cor-superficie); --surface-2:var(--obs-contexto); --text:var(--obs-tinta); --text-2:var(--cor-carvao-muted); --text-3:var(--cor-mineral-dark); --border:var(--obs-regra); --accent:var(--obs-destaque); --accent-ink:var(--cor-obee-dark); --accent-soft:var(--obs-contexto); }
-.observatorio-credito { --fs-base:15px; --fs-sm:14px; --fs-2xs:12px; --fs-xs:13px; --sidebar-w:244px; }
-.observatorio-credito .bp { --bp-largura:none; --bp-margem:clamp(16px,3vw,40px); }
-html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); --bp-tinta:var(--text); --bp-suave:var(--text-2); --bp-regra:var(--border); --bp-destaque:var(--accent); }
-.observatorio-credito main { max-width:1240px; padding:28px clamp(16px,3vw,36px) 64px; }
-.observatorio-credito .sidebar { background:var(--surface); padding:24px 16px 16px; }
-.observatorio-credito .brand { border-bottom:1px solid var(--border); padding-bottom:20px; }
-.observatorio-credito .brandtext { font-size:16px; line-height:1.35; }
-.observatorio-credito .navlabel { font-size:.75rem; letter-spacing:.14em; }
-.observatorio-credito #tabs button[data-view] { min-height:44px; font-size:14px; padding-block:10px; }
+/* Crédito: leitura ampla na coluna da plataforma. */
+.observatorio-credito { --bg:var(--obs-papel); --surface:var(--cor-superficie); --surface-2:var(--obs-contexto); --text:var(--obs-tinta); --text-2:var(--cor-carvao-muted); --text-3:var(--cor-mineral-dark); --border:var(--obs-regra); --accent:var(--obs-destaque); --accent-ink:var(--cor-obee-dark); --accent-soft:var(--obs-contexto); }
+/* Sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026: o conteúdo ocupa a coluna da barra, da trilha e da
+   navegação da coleção (a mesma de .ed-pagina), para o título cair na margem delas. */
+.observatorio-credito main { max-width:var(--bp-largura,77.5rem); padding:28px var(--bp-margem,clamp(1rem,4vw,2.5rem)) 64px; }
 .observatorio-credito .pagehead { background:var(--surface); border-top:3px solid var(--accent); padding:24px; margin-bottom:20px; }
-.observatorio-credito .pagehead h1, .observatorio-credito .pagehead h2 { font:400 clamp(28px,3vw,40px)/1.15 var(--serif); color:var(--text); margin:0 0 12px; }
-.observatorio-credito .pagehead .viewdesc { font-size:16px; line-height:1.6; }
+.observatorio-credito .pagehead h1, .observatorio-credito .pagehead h2 { font:400 var(--tipo-h1)/1.15 var(--serif); color:var(--text); margin:0 0 12px; }
+.observatorio-credito .pagehead .viewdesc { font-size:var(--tipo-corpo); line-height:1.6; }
 .observatorio-credito .ph-meta { line-height:1.6; }
 .observatorio-credito .card { border-radius:0; padding:24px; }
-.observatorio-credito .card h4 { font-size:15px; line-height:1.45; }
+.observatorio-credito .card h4 { font-size:var(--tipo-corpo); line-height:1.45; }
 .observatorio-credito .sechead { margin-top:40px; padding-top:20px; border-top:1px solid var(--border); }
-.observatorio-credito .sechead h3 { font:400 28px/1.25 var(--serif); }
+.observatorio-credito .sechead h3 { font:400 var(--tipo-h2)/1.25 var(--serif); }
 .observatorio-credito .tblwrap { border:1px solid var(--border); }
-.observatorio-credito table.data { font-size:14px; }
+.observatorio-credito table.data { font-size:var(--tipo-tabela); }
 .observatorio-credito table.data th { padding-block:12px; color:var(--text); background:var(--surface-2); }
 .observatorio-credito .controls { gap:12px; background:var(--surface); padding:16px; border:1px solid var(--border); }
 .observatorio-credito .controls select, .observatorio-credito .controls input, .observatorio-credito button.btn { min-height:44px; }
 .obs-credit-hero { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:32px; }
 .obs-credit-hero h1 { margin-bottom:16px; }
-.obs-credit-hero>div>p:not(.obs-eyebrow) { max-width:600px; font-size:16px; color:var(--obs-marfim); }
+.obs-credit-hero>div>p:not(.obs-eyebrow) { max-width:600px; font-size:var(--tipo-corpo); color:var(--obs-marfim); }
 .obs-credit-hero nav { border-left:1px solid color-mix(in srgb, var(--cor-superficie) 25%, transparent); padding-left:24px; }
-.obs-credit-hero nav>a { display:block; min-height:44px; padding:14px 0; font:400 20px/1.3 var(--serif); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--cor-superficie) 25%, transparent); }
-.obs-credit-hero nav>a span { display:block; margin-top:6px; font:400 14px/1.6 var(--sans); }
+.obs-credit-hero nav>a { display:block; min-height:44px; padding:14px 0; font:400 var(--tipo-h3)/1.3 var(--serif); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--cor-superficie) 25%, transparent); }
+.obs-credit-hero nav>a span { display:block; margin-top:6px; font:400 var(--tipo-tabela)/1.6 var(--sans); }
 .observatorio-credito .obs-map-meta { border-top:0; background:transparent; padding:20px 0 0; }
 .observatorio-credito .obs-map-meta h2, .observatorio-credito .obs-map-meta .viewdesc { display:none; }
 .observatorio-credito .mapa-fluxo { grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .observatorio-credito .mapa-no { border-radius:0; border-top:3px solid var(--accent); padding:24px; }
-.observatorio-credito .mapa-no h4 { font:400 22px/1.25 var(--serif); }
+.observatorio-credito .mapa-no h4 { font:400 var(--tipo-h3)/1.25 var(--serif); }
 .observatorio-credito .mapa-no::after { content:none; }
 .observatorio-credito .mapa-num { border-radius:0; width:32px; height:32px; margin-bottom:12px; }
-.observatorio-credito .mapa-no li a { display:inline-flex; align-items:center; min-height:44px; font-size:14px; }
+.observatorio-credito .mapa-no li a { display:inline-flex; align-items:center; min-height:44px; font-size:var(--tipo-tabela); }
 .observatorio-credito .mapa-perg div { padding-block:12px; }
-.observatorio-credito .mapa-perg dt { font-size:15px; line-height:1.5; }
-.observatorio-credito .mapa-perg dd a { display:inline-flex; min-height:44px; align-items:center; font-size:14px; }
+.observatorio-credito .mapa-perg dt { font-size:var(--tipo-corpo); line-height:1.5; }
+.observatorio-credito .mapa-perg dd a { display:inline-flex; min-height:44px; align-items:center; font-size:var(--tipo-tabela); }
 .obs-index-search { border:1px solid var(--border); padding:20px; background:var(--surface); margin-bottom:20px; }
-.obs-index-search label { display:block; font-weight:600; font-size:14px; margin-bottom:8px; }
+.obs-index-search label { display:block; font-weight:600; font-size:var(--tipo-tabela); margin-bottom:8px; }
 .obs-index-search>div { display:flex; gap:12px; flex-wrap:wrap; }
 .obs-index-search input { flex:1; min-width:0; width:100%; min-height:48px; border:1px solid var(--text-3); background:var(--surface); color:var(--text); padding:12px; }
 .obs-index-search button { min-height:44px; padding:8px 16px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); }
-.obs-index-search [role=status] { font-size:13px; margin:12px 0 0; }
+.obs-index-search [role=status] { font-size:var(--tipo-meta); margin:12px 0 0; }
 .observatorio-credito [hidden] { display:none!important; }
-[data-theme=dark] .observatorio-credito .obs-metrics { background:var(--surface); color:var(--text); }
-[data-theme=dark] .observatorio-credito .obs-metrics dd:last-child { color:var(--text-2); }
 @media(min-width:1600px) { .observatorio-credito .mapa-fluxo { grid-template-columns:repeat(4,minmax(0,1fr)); } }
-@media(max-width:1100px) { .obs-credit-hero { grid-template-columns:1fr; } .obs-credit-hero nav { border-left:0; padding-left:0; border-top:1px solid color-mix(in srgb, var(--cor-superficie) 25%, transparent); padding-top:20px; } .obs-credit-hero nav>a { font-size:18px; } }
-@media(max-width:960px) { .observatorio-credito .bp { --bp-margem:16px; } .observatorio-credito .mobilebar { background:var(--surface); backdrop-filter:none; min-height:56px; } .observatorio-credito .mobilebar button { min-width:44px; min-height:44px; } .observatorio-credito .mobile-obs { display:none; } .observatorio-credito .mapa-fluxo { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:639px) { .observatorio-credito .pagehead, .observatorio-credito .card, .observatorio-credito .mapa-no { padding:20px 16px; } .observatorio-credito .obs-map-meta { padding:16px 0 0; } .observatorio-credito .mapa-fluxo { grid-template-columns:1fr; } .observatorio-credito .sechead h3 { font-size:24px; } }
+@media(max-width:1100px) { .obs-credit-hero { grid-template-columns:1fr; } .obs-credit-hero nav { border-left:0; padding-left:0; border-top:1px solid color-mix(in srgb, var(--cor-superficie) 25%, transparent); padding-top:20px; } .obs-credit-hero nav>a { font-size:var(--tipo-lead); } }
+@media(max-width:960px) { .observatorio-credito .mapa-fluxo { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:639px) { .observatorio-credito .pagehead, .observatorio-credito .card, .observatorio-credito .mapa-no { padding:20px 16px; } .observatorio-credito .obs-map-meta { padding:16px 0 0; } .observatorio-credito .mapa-fluxo { grid-template-columns:1fr; } .observatorio-credito .sechead h3 { font-size:var(--tipo-h2); } }
 /* Seletor de observatório da barra comum na SPA do Crédito: o mesmo rótulo do SwitcherObservatorio (caixa alta em Archivo Narrow),
-   em todas as larguras; no celular guarda os destinos da lista de observatórios, que sai. A barra sobe acima da barra fixa do menu
-   (z 50) para o painel aberto não ficar por baixo dela, e fica abaixo do véu da barra lateral (z 55). */
+   em todas as larguras; no celular guarda os destinos da lista de observatórios, que sai. A barra sobe (z 52) para o painel aberto
+   não ficar por baixo da navegação da coleção, cujo "Mais" usa z 40. */
 .observatorio-credito .obs-trocar { display:block; position:relative; }
-.observatorio-credito .obs-trocar summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; min-height:44px; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; font-weight:400; line-height:1.3; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta); white-space:nowrap; }
-.observatorio-credito .obs-trocar summary>span[aria-hidden] { display:inline-block; font-size:12px; }
+.observatorio-credito .obs-trocar summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; min-height:44px; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:var(--tipo-rotulo); font-weight:400; line-height:1.3; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta); white-space:nowrap; }
+.observatorio-credito .obs-trocar summary>span[aria-hidden] { display:inline-block; font-size:var(--tipo-rotulo); }
 .observatorio-credito .obs-trocar[open] summary>span[aria-hidden] { transform:rotate(180deg); }
 /* nome da coleção ("Crédito e sistema financeiro") cortado com reticências no celular, para a conta caber na linha da marca */
 .observatorio-credito .obs-trocar-nome { display:inline-block; max-width:11rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -207,12 +199,12 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .observatorio-credito .obs-trocar summary::-webkit-details-marker { display:none; }
 .observatorio-credito .obs-trocar-menu { position:fixed; left:16px; right:16px; z-index:52; margin-top:4px; padding:8px; display:flex; flex-direction:column; max-height:80vh; overflow-y:auto; background:var(--surface); border:1px solid var(--border); box-shadow:0 8px 24px rgb(var(--cor-carvao-rgb) / .12); }
 @media(min-width:640px) { .observatorio-credito .obs-trocar-menu { position:absolute; left:0; right:auto; width:20rem; } .observatorio-credito .obs-trocar-menu a { min-height:36px; padding:6px 12px; } }
-.observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
-.observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:14px; line-height:1.35; color:var(--text); text-decoration:none; }
+.observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:var(--tipo-rotulo); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+.observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:var(--tipo-tabela); line-height:1.35; color:var(--text); text-decoration:none; }
 .observatorio-credito .obs-trocar-menu a[aria-current] { font-weight:600; }
-.observatorio-credito .obs-trocar-menu .obs-trocar-obs { margin-top:4px; border-top:1px solid var(--border); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+.observatorio-credito .obs-trocar-menu .obs-trocar-obs { margin-top:4px; border-top:1px solid var(--border); font-size:var(--tipo-rotulo); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 .observatorio-credito .obs-trocar-menu .obs-trocar-obs:first-child { margin-top:0; border-top:0; }
-.observatorio-credito .obs-trocar-menu .obs-trocar-conta { border-top:1px solid var(--border); margin-top:4px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+.observatorio-credito .obs-trocar-menu .obs-trocar-conta { border-top:1px solid var(--border); margin-top:4px; font-size:var(--tipo-rotulo); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 @media(max-width:639px) { .observatorio-credito .bp { z-index:52; } }
 /* conta na linha da marca, com o mesmo rótulo do AcessoConta */
 .bp a.bp-conta { display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-suave); text-decoration:none; }
@@ -246,6 +238,9 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 /* correção e sugestão da busca (diagnóstico de 23/10/2026): ação dentro da frase, com a cor e o sublinhado dos links da lista */
 .bp-busca-acao { display:inline; margin:0; padding:0; border:0; background:none; cursor:pointer; font:inherit; color:var(--bp-destaque,var(--cor-destaque)); text-decoration:underline; text-underline-offset:4px; }
 .bp-busca-vazio .bp-busca-acao { display:inline-flex; align-items:center; min-height:44px; }
+/* estado "ainda não cobre" (ciclo 2 da busca, bloco 4): a frase e os seis observatórios, na tipografia da lista de resultados */
+.bp-busca-nao-cobre { margin:8px 0 0; font-size:14px; }
+.bp-busca-nao-cobre ul { margin:4px 0 0; padding:0; list-style:none; }
 .bp-busca-rodape { border-top:1px solid var(--bp-regra,var(--cor-linha)); }
 .bp-busca-vazio a, .bp-busca-rodape a { display:inline-flex; align-items:center; min-height:44px; color:var(--bp-destaque,var(--cor-destaque)); text-decoration:underline; text-underline-offset:4px; }
 .bp-busca-fechar { flex-shrink:0; min-height:44px; margin-left:8px; padding:0 4px; border:0; background:none; cursor:pointer; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta,var(--cor-carvao)); }
@@ -269,14 +264,11 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 @media print { .bp-busca { display:none!important; } }
 @media print { .obs-index-search, .obs-dominios, .obs-primary { display:none!important; } .obs-hero { background:white; color:black; padding:0; } .obs-hero a, .obs-hero p, .obs-credit-hero>div>p:not(.obs-eyebrow) { color:black; } }
 .obs-hero h1 { font-family:var(--serif, var(--font-serif, Georgia)); }
-.observatorio-credito .sidefoot { flex-wrap:wrap; gap:8px; }
-.observatorio-credito .sidefoot .updated { flex-basis:100%; font-size:12px; line-height:1.5; }
-.observatorio-credito .sidefoot button, .observatorio-credito .sidefoot a { min-width:32px; min-height:44px; }
 
 .observatorio-credito .obs-index-group>summary { display:flex; align-items:center; gap:12px; min-height:48px; cursor:pointer; list-style:none; }
 .observatorio-credito .obs-index-group>summary::-webkit-details-marker { display:none; }
-.observatorio-credito .obs-index-group>summary h4 { flex:1; margin:0; font:400 22px/1.3 var(--serif); }
-.observatorio-credito .obs-index-count { font-size:12px; color:var(--text-3); white-space:nowrap; }
+.observatorio-credito .obs-index-group>summary h4 { flex:1; margin:0; font:400 var(--tipo-h3)/1.3 var(--serif); }
+.observatorio-credito .obs-index-count { font-size:var(--tipo-rotulo); color:var(--text-3); white-space:nowrap; }
 .observatorio-credito .obs-index-arrow { color:var(--accent-ink); }
 .observatorio-credito .obs-index-group[open] .obs-index-arrow { transform:rotate(180deg); }
 .observatorio-credito .obs-index-group .mapa-perg { margin-top:16px; border-top:1px solid var(--border); }
@@ -288,7 +280,7 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
   border-top:2px solid var(--obs-destaque); border-bottom:1px solid var(--obs-regra);
 }
 .observatorio-credito .obs-hero h1 {
-  font-size:clamp(30px,3.2vw,46px); line-height:1.16; text-wrap:balance;
+  font-size:var(--tipo-h1); line-height:1.16; text-wrap:balance;
 }
 .observatorio-credito .obs-hero p, .observatorio-credito .obs-hero nav>a span { color:var(--cor-mineral); }
 .observatorio-credito .obs-hero a { color:var(--obs-destaque); }
@@ -296,7 +288,7 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .observatorio-credito .obs-hero nav, .observatorio-credito .obs-hero nav>a { border-color:var(--obs-regra); }
 .observatorio-credito .obs-metrics { background:transparent; }
 .observatorio-credito .obs-metrics>div { padding:14px 16px; }
-.observatorio-credito .obs-metrics dd:first-child { font-size:1.35rem; }
+.observatorio-credito .obs-metrics dd:first-child { font-size:var(--tipo-numero-p); }
 .observatorio-credito .pagehead {
   background:transparent; padding:24px 0; border-top:2px solid var(--obs-destaque);
   border-bottom:1px solid var(--obs-regra); margin-bottom:24px;
@@ -307,7 +299,7 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .observatorio-credito .grid { gap:24px; }
 .observatorio-credito .grid>* { min-width:0; }
 .observatorio-credito .card { box-shadow:none; border-color:var(--border); }
-.observatorio-credito .card h4 { font-size:16px; color:var(--text); margin-bottom:12px; }
+.observatorio-credito .card h4 { font-size:var(--tipo-corpo); color:var(--text); margin-bottom:12px; }
 .observatorio-credito .sechead { margin-top:48px; padding-top:24px; }
 .observatorio-credito .sechead h3 { text-wrap:balance; }
 /* Diagnóstico de layout de 20/10/2026, item 2: a caixa de leitura vem depois do primeiro bloco de números
@@ -326,15 +318,15 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
   border-left:1px solid var(--border); border-top:1px solid var(--border);
   margin:-1px 0 0 -1px; padding:16px 20px;
 }
-.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi h4 { font-family:inherit; font-size:14px; font-weight:400; color:var(--text-2); margin-bottom:6px; }
-.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi .big { font-variant-numeric:tabular-nums; }
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi h4 { font-family:inherit; font-size:var(--tipo-meta); font-weight:400; color:var(--text-2); margin-bottom:6px; }
+.observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi .big { font-variant-numeric:lining-nums tabular-nums; }
 .observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi.clickable:hover { background:var(--surface-2); }
-.observatorio-credito .guia-pergunta { font:400 22px/1.35 var(--serif); color:var(--text); margin:0 0 12px; }
-.observatorio-credito .guia-como, .observatorio-credito .guia-limite { max-width:75ch; margin:8px 0; font-size:14px; line-height:1.65; }
+.observatorio-credito .guia-pergunta { font:400 var(--tipo-h3)/1.35 var(--serif); color:var(--text); margin:0 0 12px; }
+.observatorio-credito .guia-como, .observatorio-credito .guia-limite { max-width:75ch; margin:8px 0; font-size:var(--tipo-tabela); line-height:1.65; }
 .observatorio-credito .guia-leitura .guia { border:0; border-top:1px solid var(--border); border-radius:0; margin:16px 0 0; background:transparent; }
 .observatorio-credito .guia-leitura summary { padding:10px 0 0; min-height:44px; }
 .observatorio-credito .guia-leitura .guiabody { display:block; border:0; padding:12px 0 0; max-width:75ch; }
-.observatorio-credito table.data { font-variant-numeric:tabular-nums; }
+.observatorio-credito table.data { font-variant-numeric:lining-nums tabular-nums; }
 .observatorio-credito table.data td { padding-block:12px; }
 .observatorio-credito table.data tbody tr:hover { background:var(--surface-2); }
 .dominio-energia [data-painel-evidencia] { padding-top:32px; margin-top:16px; }
@@ -351,19 +343,15 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
   .observatorio-credito .pagehead { padding:20px 0; }
   .observatorio-credito .guia-leitura { padding:14px 0 0; }
   .observatorio-credito :is(.kpirow, .pan-kpi) > .card.kpi { padding:14px 16px; }
-  .observatorio-credito .guia-pergunta { font-size:20px; }
+  .observatorio-credito .guia-pergunta { font-size:var(--tipo-h3); }
   .observatorio-credito .guiamais { white-space:normal; }
   .observatorio-credito .grid { gap:16px; }
   .observatorio-credito .sechead { margin-top:32px; }
   .dominio-energia [data-painel-evidencia] { padding-top:24px; }
 }
-html[data-theme="dark"] .observatorio-credito { --obs-tinta:var(--text); --obs-regra:var(--border); --obs-destaque:var(--accent); }
-html[data-theme="dark"] .observatorio-credito .obs-hero p,
-html[data-theme="dark"] .observatorio-credito .obs-hero nav>a span { color:var(--text-2); }
 @media(prefers-reduced-motion:reduce) {
   .observatorio-credito *, .dominio-energia * { scroll-behavior:auto!important; animation:none!important; transition:none!important; }
 }
-html[data-theme="dark"] .observatorio-credito .obs-hero .obs-primary { color:var(--bg); }
 
 /* Revisão por subpainel: guia de leitura compacto e acesso aos capítulos longos. */
 .observatorio-credito .obs-page-index {
@@ -371,7 +359,7 @@ html[data-theme="dark"] .observatorio-credito .obs-hero .obs-primary { color:var
 }
 .observatorio-credito .obs-page-index summary {
   padding:12px 0; min-height:44px; color:var(--accent-ink); cursor:pointer;
-  font-size:14px; font-weight:600;
+  font-size:var(--tipo-tabela); font-weight:600;
 }
 .observatorio-credito .obs-page-index nav {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 28px; padding:0 0 16px;

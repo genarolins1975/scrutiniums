@@ -16,6 +16,7 @@ node_modules
 /public/obs/app.min.js
 /public/obs/app-municipal.min.js
 /public/obs/app-emergentes.min.js
+/public/obs/casca.min.js
 *.tsbuildinfo
 __pycache__/
 

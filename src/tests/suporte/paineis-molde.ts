@@ -66,6 +66,25 @@ export const NO_MOLDE_PAINEL: string[] = [
   "/eficiencia-estatal/trabalho-renda/qualidade-do-trabalho",
   "/eficiencia-estatal/trabalho-renda/renda-das-familias",
   "/eficiencia-estatal/trabalho-renda/renda-do-trabalho",
+  // PR 2a: trabalho e renda, assistência social, segurança alimentar, habitação e cultura (Grupo 2, Eficiência Estatal)
+  "/eficiencia-estatal/habitacao",
+  "/eficiencia-estatal/habitacao/aluguel-renda",
+  "/eficiencia-estatal/habitacao/inadequacao",
+  "/eficiencia-estatal/cultura",
+  "/eficiencia-estatal/cultura/recursos",
+  "/eficiencia-estatal/trabalho-renda",
+  "/eficiencia-estatal/trabalho-renda/qualificacao",
+  "/eficiencia-estatal/trabalho-renda/recursos",
+  "/eficiencia-estatal/assistencia-social",
+  "/eficiencia-estatal/assistencia-social/acesso",
+  "/eficiencia-estatal/assistencia-social/acompanhamento",
+  "/eficiencia-estatal/assistencia-social/cuidado",
+  "/eficiencia-estatal/assistencia-social/recursos",
+  "/eficiencia-estatal/seguranca-alimentar",
+  "/eficiencia-estatal/seguranca-alimentar/acesso",
+  "/eficiencia-estatal/seguranca-alimentar/necessidades",
+  "/eficiencia-estatal/seguranca-alimentar/qualidade",
+  "/eficiencia-estatal/seguranca-alimentar/recursos",
   // PR 2b: Judiciário, acesso à justiça, segurança pública, mobilidade, saúde, educação, saneamento, energia e conectividade e meio ambiente
   // (Grupo 2, Eficiência Estatal)
   "/eficiencia-estatal/acesso-justica",
@@ -125,25 +144,7 @@ export const GRUPOS = {
 export const A_MIGRAR: Record<string, keyof typeof GRUPOS> = {
   // Grupo 1, os destinos mais procurados
   // Grupo 2, Eficiência Estatal
-  "/eficiencia-estatal/assistencia-social": 2,
-  "/eficiencia-estatal/assistencia-social/acesso": 2,
-  "/eficiencia-estatal/assistencia-social/acompanhamento": 2,
-  "/eficiencia-estatal/assistencia-social/cuidado": 2,
-  "/eficiencia-estatal/assistencia-social/recursos": 2,
-  "/eficiencia-estatal/cultura": 2,
-  "/eficiencia-estatal/cultura/[[...painel]]": 2,
-  "/eficiencia-estatal/habitacao": 2,
-  "/eficiencia-estatal/habitacao/aluguel-renda": 2,
-  "/eficiencia-estatal/habitacao/inadequacao": 2,
   "/eficiencia-estatal/judiciario/tribunais/[id]": 2,
-  "/eficiencia-estatal/seguranca-alimentar": 2,
-  "/eficiencia-estatal/seguranca-alimentar/acesso": 2,
-  "/eficiencia-estatal/seguranca-alimentar/necessidades": 2,
-  "/eficiencia-estatal/seguranca-alimentar/qualidade": 2,
-  "/eficiencia-estatal/seguranca-alimentar/recursos": 2,
-  "/eficiencia-estatal/trabalho-renda": 2,
-  "/eficiencia-estatal/trabalho-renda/qualificacao": 2,
-  "/eficiencia-estatal/trabalho-renda/recursos": 2,
   // Grupo 3, Contas Federais, Saneamento, Gás e Agronegócio
   "/agronegocio/[capitulo]": 3,
   "/agronegocio/alimentos-consumo": 3,
@@ -277,6 +278,7 @@ export const A_MIGRAR: Record<string, keyof typeof GRUPOS> = {
 
 /** Rotas que não são página de painel, com o motivo. */
 export const FORA_DO_MOLDE: Record<string, string> = {
+  "/eficiencia-estatal/cultura/[[...painel]]": "padrão dinâmico da Cultura: cada capítulo está em NO_MOLDE_PAINEL pela rota concreta; metodos é página de método",
   "/eficiencia-estatal/energia-conectividade/[[...painel]]": "padrão dinâmico de Energia e conectividade: cada capítulo está em NO_MOLDE_PAINEL pela rota concreta; metodos é página de método",
   "/eficiencia-estatal/meio-ambiente-clima/[[...painel]]": "padrão dinâmico de Meio ambiente e clima: cada capítulo está em NO_MOLDE_PAINEL pela rota concreta; metodos é página de método",
   "/eficiencia-estatal/mobilidade-transporte/[[...painel]]": "padrão dinâmico da Mobilidade: cada capítulo está em NO_MOLDE_PAINEL pela rota concreta; metodos é página de método",

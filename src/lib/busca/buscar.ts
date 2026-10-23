@@ -17,7 +17,7 @@
  * partir de oito letras). O mesmo código roda no servidor (/buscar) e no navegador (BuscaPlataforma).
  */
 import { formasDe, normalizar, nucleoDaBusca, palavrasUteis } from "./normalizar";
-import type { EntradaBusca, IndiceBusca } from "./tipos";
+import type { EntradaBusca, IndiceBusca, VersaoAberta } from "./tipos";
 
 export const LIMITE_RESULTADOS = 30;
 /** O resultado parcial é uma aproximação: poucos itens, para não parecer resposta. */
@@ -34,7 +34,7 @@ export type Resultado = EntradaBusca & {
   via?: string;
 };
 
-export type GrupoColecao = { colecao: { id: string; nome: string; href: string } | null; resultados: Resultado[] };
+export type GrupoColecao = { colecao: { id: string; nome: string; href: string; aberta?: VersaoAberta } | null; resultados: Resultado[] };
 export type GrupoObservatorio = { observatorio: { id: string; nome: string }; colecoes: GrupoColecao[] };
 
 export type RespostaBusca = {
@@ -366,7 +366,7 @@ export function buscar(indice: IndiceBusca, termo: string, opcoes: OpcoesBusca =
   const pronto = preparar(indice);
   const resposta = (r: { resultados: Resultado[]; parcial: boolean; total: number }, extra: Partial<RespostaBusca> = {}): RespostaBusca => {
     const teto = r.parcial ? Math.min(limite, LIMITE_PARCIAL) : limite;
-    const resultados = r.resultados.slice(0, teto);
+    const resultados = comCompanhia(pronto, r.resultados.slice(0, teto), opcoes);
     return { termo, resultados, grupos: agrupar(indice, resultados), cortado: r.total > teto, ...(r.parcial ? { parcial: true as const } : {}), ...extra };
   };
 
@@ -391,6 +391,22 @@ export function buscar(indice: IndiceBusca, termo: string, opcoes: OpcoesBusca =
   return resposta(direto);
 }
 
+/**
+ * A página prevista ("ainda sem página") nunca é o único item mostrado (ciclo 2 da busca, bloco 4): quando todos os resultados
+ * são previstos, a coleção e o observatório deles vêm junto, para o leitor ter onde ir ("transparência" leva à Avaliação e
+ * transparência, ainda sem página, e às Contas Federais).
+ */
+function comCompanhia(pronto: Pronto, resultados: Resultado[], opcoes: OpcoesBusca): Resultado[] {
+  if (!resultados.length || resultados.some((r) => r.situacao !== "previsto")) return resultados;
+  const extra: Resultado[] = [];
+  for (const r of resultados) {
+    const colecao = pronto.lista.find((p) => p.e.tipo === "colecao" && p.e.colecao === r.colecao && p.e.observatorio === r.observatorio);
+    const observatorio = opcoes.colecao ? undefined : pronto.lista.find((p) => p.e.tipo === "observatorio" && p.e.observatorio === r.observatorio);
+    for (const p of [colecao, observatorio]) if (p && !extra.some((x) => x.id === p.e.id)) extra.push({ ...p.e, nivel: 3 });
+  }
+  return [...resultados, ...extra];
+}
+
 /** Agrupa por observatório e coleção, preservando a ordem de relevância (o grupo entra quando o primeiro resultado dele aparece). */
 export function agrupar(indice: IndiceBusca, resultados: Resultado[]): GrupoObservatorio[] {
   const obs = new Map(indice.observatorios.map((o) => [o.id, o]));
@@ -407,7 +423,7 @@ export function agrupar(indice: IndiceBusca, resultados: Resultado[]): GrupoObse
     const idCol = c?.id ?? null;
     let gc = g.colecoes.find((x) => (x.colecao?.id ?? null) === idCol);
     if (!gc) {
-      gc = { colecao: c ? { id: c.id, nome: c.nome, href: c.href } : null, resultados: [] };
+      gc = { colecao: c ? { id: c.id, nome: c.nome, href: c.href, ...(c.aberta ? { aberta: c.aberta } : {}) } : null, resultados: [] };
       g.colecoes.push(gc);
     }
     gc.resultados.push(r);

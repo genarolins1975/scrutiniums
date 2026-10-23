@@ -165,7 +165,7 @@ const SECTIONS = new Set<string>(VIEW_SECTIONS);
 
 /** Rótulos exibidos no painel de administração. */
 export const SECTION_LABELS: Record<ViewSection, string> = {
-  "obs:mapa": "Observatório · Mapa do Observatório",
+  "obs:mapa": "Observatório · Início do painel",
   "obs:overview": "Observatório · Visão geral",
   "obs:panorama": "Observatório · Quem toma crédito e onde",
   "obs:pulse": "Observatório · Pulso do crédito",

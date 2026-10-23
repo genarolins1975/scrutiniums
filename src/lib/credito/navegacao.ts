@@ -64,3 +64,47 @@ export function paginaCredito(slug: PaginaCredito["slug"]): PaginaCredito {
 export const PAINEL_JUROS = "/observatorio/interest-rates";
 /** Vista de metodologia da aplicação de página única, com os conceitos clicáveis. */
 export const METODO_SPA = "/observatorio/methodology";
+
+/**
+ * Os grupos do Crédito na ordem da jornada (decisão do dono de 18/10/2026: oito grupos, de "Começar" a "Referência"), com
+ * as páginas de cada um, as da aplicação de página única (/observatorio/*) e as Next do Crédito. Fonte única do agrupamento
+ * desde a Iniciativa 2 do parecer de UX de 23/10/2026 (o Crédito na mesma casca): a navegação da coleção
+ * (navegacaoColecao.ts) mostra só as páginas que o Crédito mantém, porque as que pertencem a outra coleção
+ * (DESTINO_ABAS_CREDITO, registro.ts) ficam na navegação da coleção dona; o "Início do painel" da aplicação lista todas, por
+ * pergunta. Decisões do dono de 23/10/2026: "Metodologia e fontes" entra em "Começar", o "Simulador da parcela" em "Produtos e
+ * preços", "Marcos regulatórios" fica sozinho em "Referência" (vira item próprio da navegação) e "Sobre o Observatório" vai
+ * para o fim da página. `curto`: o rótulo do grupo na navegação, quando o nome inteiro não deixa os oito itens e os atalhos
+ * caberem numa linha a 1440 px (medido em 23/10/2026: faltavam 90 px e "Marcos regulatórios" saía cortado), como o Setor
+ * Elétrico faz com os grupos longos; o nome inteiro continua no "Início do painel".
+ */
+export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas: readonly string[] }[] = [
+  { rotulo: "Começar", paginas: ["/observatorio/map", "/observatorio/overview", "/observatorio/alerts", METODO_SPA] },
+  { rotulo: "Ciclo do crédito", paginas: ["/observatorio/credit", "/observatorio/leading-signals", "/observatorio/scenarios", "/observatorio/search-trends"] },
+  {
+    rotulo: "Instituições e funding",
+    curto: "Instituições",
+    paginas: ["/observatorio/institutions", "/observatorio/compare", "/observatorio/sfn-entries-exits", "/observatorio/funding", "/observatorio/fidc-receivables", "/observatorio/operational-indicators", "/observatorio/market"],
+  },
+  {
+    rotulo: "Produtos e preços",
+    paginas: ["/observatorio/products", "/observatorio/loan-maturity", PAINEL_JUROS, "/observatorio-do-credito/simulador-da-parcela", "/observatorio/rural-credit", "/observatorio/directed-credit-bndes", "/observatorio/broad-credit", "/observatorio/consortia"],
+  },
+  {
+    rotulo: "Território e pessoas",
+    curto: "Território",
+    paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/observatorio/housing-credit", "/observatorio/payroll-lending-aging", "/observatorio/formal-employment", "/observatorio/subnational-credit"],
+  },
+  { rotulo: "Risco, cobrança e recuperação", paginas: ["/observatorio/sectors", "/observatorio/desenrola", "/observatorio/debt-collection-lawsuits", "/observatorio/recoveries", "/observatorio/federal-tax-debt"] },
+  {
+    rotulo: "Pagamentos, conduta e fronteiras",
+    paginas: ["/observatorio/pix", "/observatorio/open-finance", "/observatorio/conduct-enforcement", "/observatorio/lawsuits", "/observatorio/bets-financial-risk", "/observatorio/financial-fraud"],
+  },
+  { rotulo: "Referência", paginas: ["/observatorio/regulacao"] },
+];
+
+/** Páginas da aplicação que ficam no fim da página, fora dos grupos: perguntas rápidas, sugestões e o "Sobre". */
+export const FIM_DA_PAGINA_CREDITO: readonly { rotulo: string; href: string }[] = [
+  { rotulo: "Perguntas rápidas", href: "/observatorio/research" },
+  { rotulo: "Sobre o Observatório", href: "/observatorio/about" },
+  { rotulo: "Sugestões", href: "/observatorio/suggestions" },
+];

@@ -3,6 +3,7 @@ import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import type { GrupoObservatorio, Resultado } from "@/lib/busca/buscar";
 import type { TipoEntrada } from "@/lib/busca/tipos";
+import { VersaoAberta } from "./VersaoAberta";
 
 /** O que é o destino, em uma palavra, antes do resumo. */
 const ROTULO_TIPO: Record<TipoEntrada, string> = {
@@ -18,7 +19,9 @@ const ROTULO_TIPO: Record<TipoEntrada, string> = {
 /**
  * Resultados da busca da plataforma, agrupados por observatório e coleção: título, o que o destino é e o resumo em uma linha,
  * com o selo "com conta" nos destinos fechados quando não há sessão, e "via <termo>" quando foi um termo, e não o título ou
- * o resumo, que trouxe o destino. Página prevista aparece como "ainda sem página", sem link. Sem estado próprio: serve à página /buscar (servidor) e à lista do campo de busca da barra (BuscaPlataforma), que
+ * o resumo, que trouxe o destino. Página prevista aparece como "ainda sem página", sem link. Sem sessão, o primeiro resultado
+ * fechado ganha a linha "Versão aberta do tema" quando a coleção tem página aberta (VersaoAberta); no campo da barra, a linha
+ * vai logo depois da listbox, porque um link dentro de uma opção não é alcançável pelas setas nem pelo Tab. Sem estado próprio: serve à página /buscar (servidor) e à lista do campo de busca da barra (BuscaPlataforma), que
  * passa `opcao` para dar a cada item o papel de opção da listbox e marcar a ativa.
  */
 export function ListaResultados({
@@ -101,6 +104,8 @@ export function ListaResultados({
                           {r.resumo && <span className="mt-0.5 block truncate text-sm">{r.resumo}</span>}
                         </span>
                       )}
+                      {/* na listbox do campo a linha fica fora da lista (BuscaPlataforma), onde o Tab a alcança */}
+                      {atual === 0 && !opcao && r.href && c.colecao?.aberta && !comSessao && <VersaoAberta destino={r.href} versao={c.colecao.aberta} />}
                     </li>
                   );
                 })}

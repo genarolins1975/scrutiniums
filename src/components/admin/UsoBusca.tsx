@@ -9,8 +9,9 @@ const LINHAS = 30;
 
 /**
  * Seção do painel de administração com a medição agregada da busca da plataforma (uso_busca_dia,
- * docs/observatorios/MEDICAO_DE_USO.md): os termos mais buscados nos últimos 30 dias e os que a busca de hoje não acha. Sem
- * conta, a coluna só mede com USO_ANONIMO_ATIVO=1; desligada, aparece como "não medido", nunca como zero.
+ * docs/observatorios/MEDICAO_DE_USO.md): os termos mais buscados nos últimos 30 dias, os que a busca de hoje não acha e, desde o
+ * ciclo 2 da busca (decisão do dono de 23/10/2026), as palavras que o índice não conhece, gravadas só com conta e apagadas
+ * depois de 30 dias. Sem conta, a coluna só mede com USO_ANONIMO_ATIVO=1; desligada, aparece como "não medido", nunca como zero.
  */
 export function UsoBusca({ busca }: { busca: BuscasDoPeriodo }) {
   const semResultado = busca.termos.filter((t) => t.resultados === 0);
@@ -18,9 +19,10 @@ export function UsoBusca({ busca }: { busca: BuscasDoPeriodo }) {
     <section aria-label="Busca da plataforma" className="border border-linha bg-papel p-8" data-secao="uso-busca">
       <SectionHeading label="Busca" title="Busca da plataforma, últimos 30 dias" />
       <p className="text-sm text-carvao">
-        {diaBr(busca.inicio)} a {diaBr(busca.fim)}, fuso de Brasília. Cada busca feita (resultado aberto pelo campo ou página de
-        resultados) soma 1 ao termo do dia, sem associar a busca a ninguém. Só é gravado o termo cujas palavras existem no
-        vocabulário do índice; os demais (um nome, um endereço, um email, algarismos) somam num contador sem o texto
+        {diaBr(busca.inicio)} a {diaBr(busca.fim)}, fuso de Brasília. Cada busca feita (resultado aberto pelo campo, página de
+        resultados ou busca da barra sem resultado, uma vez por termo) soma 1 ao termo do dia, sem associar a busca a ninguém. O
+        texto é gravado quando as palavras existem no vocabulário do índice e, com conta, quando só uma não existe (guardado por
+        30 dias); os demais (um nome, um endereço, um email, algarismos) somam num contador sem o texto
         {busca.foraDoIndice > 0 ? `, ${fmtNumber(busca.foraDoIndice)} no período` : ""}. {busca.anonimoAtivo ? "Buscas sem conta: contagem ligada (USO_ANONIMO_ATIVO=1)." : "Buscas sem conta: não medidas (USO_ANONIMO_ATIVO desligado)."}
       </p>
       {busca.primeiroRegistro !== null && busca.primeiroRegistro > busca.inicio && (
@@ -28,7 +30,7 @@ export function UsoBusca({ busca }: { busca: BuscasDoPeriodo }) {
           A medição da busca começou em {diaBr(busca.primeiroRegistro)}; os dias anteriores não têm registro, o que não equivale a zero buscas.
         </p>
       )}
-      {busca.termos.length === 0 ? (
+      {busca.termos.length === 0 && busca.foraDoVocabulario.length === 0 ? (
         <div className="mt-8">
           <EmptyState title="Nenhuma busca registrada nos últimos 30 dias" description="Assim que alguém fizer uma busca, o termo aparece aqui." />
         </div>
@@ -40,6 +42,13 @@ export function UsoBusca({ busca }: { busca: BuscasDoPeriodo }) {
             <p className="mt-3 text-xs text-mineral">
               Termos com palavras do índice cuja combinação o índice de hoje não acha: destino que falta ou sinônimo a acrescentar
               em src/lib/busca/sinonimos.json.
+            </p>
+          </div>
+          <div>
+            <Quadro titulo="Palavras que o índice não conhece" termos={busca.foraDoVocabulario.slice(0, LINHAS)} anonimo={busca.anonimoAtivo} dado="fora-do-vocabulario" />
+            <p className="mt-3 text-xs text-mineral">
+              Só buscas com conta, com no máximo uma palavra desconhecida, apagadas depois de 30 dias: o vocabulário que o leitor usa e
+              a plataforma não tem. Vira sinônimo quando há página que trata do assunto; senão, é tema não coberto.
             </p>
           </div>
         </div>

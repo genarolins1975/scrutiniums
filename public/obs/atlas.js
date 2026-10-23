@@ -37,13 +37,16 @@
   function visualHero(mapa) {
     const hero = mapa.querySelector('.obs-hero');
     const orientation = node('details', 'atlas-orientation'); orientation.append(node('summary', '', 'Sobre o observatório, caminhos e fontes'));
+    // o rótulo de contexto da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026) fica acima do título da gravura, no lugar do
+    // nome antigo escrito à mão; sem ele (fora da aplicação), o nome da coleção
+    const rotulo = hero.querySelector('[data-rotulo-contexto]'); const rotuloCasca = rotulo ? rotulo.closest('.casca') || rotulo : null; if (rotuloCasca) rotuloCasca.remove();
     const oldTitle = hero.querySelector('h1'); const oldLabel = node('p', 'atlas-eyebrow', oldTitle.textContent); oldTitle.replaceWith(oldLabel);
     orientation.append(...hero.childNodes); hero.after(orientation);
     hero.classList.add('atlas-city'); hero.setAttribute('aria-labelledby', 'obs-credit-titulo');
     const image = node('img', 'atlas-city-image'); image.src = '/obs/arte/economia-gravura-v1.webp'; image.width = 1600; image.height = 800; image.fetchPriority = 'high'; image.alt = 'Gravura conceitual de instituições, moradias, comércio e indústria; não representa uma localização real.';
     const copy = node('div', 'atlas-city-copy'); const title = node('h1', '', 'O crédito que conecta pessoas e negócios.'); title.id = 'obs-credit-titulo';
     const cta = link('Explorar o ciclo ↓', '#mp-ciclo'); cta.className = 'obs-primary';
-    copy.append(subtitle('Observatório Brasileiro de Crédito'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
+    copy.append(rotuloCasca || subtitle('Crédito e sistema financeiro'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
     const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore os temas do crédito');
     [['Instituições', '/institutions'], ['Habitação', '/housing-credit'], ['Empresas', '/credit-panorama?pcli=PJ'], ['Famílias', '/credit-panorama?pcli=PF']].forEach(([name, route], i) => {
       const a = link(name, '/observatorio' + route); a.className = `atlas-city-point point-${i}`; points.append(a);

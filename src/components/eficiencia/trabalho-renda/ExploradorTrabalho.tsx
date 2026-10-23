@@ -1,6 +1,5 @@
 "use client";
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { useLargura } from "@/components/eficiencia/graficos";
 import Link from "next/link";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -36,7 +35,7 @@ function celula(v: unknown) {
 }
 
 /** Natureza do dado pela fonte: estimativas amostrais do IBGE, registros administrativos publicados e a variação calculada aqui. */
-function naturezaDe(med: Indicador): Natureza {
+export function naturezaDe(med: Indicador): Natureza {
   if (med.id === "saldo-formal") return "CALCULADO";
   if (med.fonteId.startsWith("pnad") || med.fonteId.startsWith("censo")) return "ESTIMADO";
   return "OBSERVADO";
@@ -61,7 +60,7 @@ function referenciaPeriodo(p: string | number, trimestral: boolean): string {
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 /** Todos os períodos entre o primeiro e o último da série, no calendário da fonte; o que falta vira lacuna (null), nunca ponte. */
-function comLacunas(serie: Obs[]): { periodo: string; nome: string; valor: number | null; status: string }[] {
+export function comLacunas(serie: Obs[]): { periodo: string; nome: string; valor: number | null; status: string }[] {
   if (!serie.length) return [];
   const p0 = serie[0].periodo;
   const pN = serie[serie.length - 1].periodo;
@@ -167,7 +166,7 @@ function useRecorteTrabalho(dados: Snapshot, ids: string[]) {
 }
 
 /** Proveniência da medida escolhida, a partir da fonte registrada no snapshot (página oficial, consulta, captura e limitações). */
-function provenienciaTrabalho(dados: Snapshot, med: Indicador, fonte: Fonte | undefined, serie: Obs[]): Proveniencia {
+export function provenienciaTrabalho(dados: Snapshot, med: Indicador, fonte: Fonte | undefined, serie: Obs[]): Proveniencia {
   const nome = fonte?.nome ?? med.fonteId;
   const [orgao, ...resto] = nome.split(" · ");
   const trimestral = fonte?.periodo.frequencia === "trimestral";
@@ -205,7 +204,7 @@ export function ProvedorTrabalho({ dados, children }: { dados: Snapshot; childre
   return <ContextoTrabalho.Provider value={dados}>{children}</ContextoTrabalho.Provider>;
 }
 
-function useBaseTrabalho(dados?: Snapshot): Snapshot {
+export function useBaseTrabalho(dados?: Snapshot): Snapshot {
   const doContexto = useContext(ContextoTrabalho);
   const base = dados ?? doContexto;
   if (!base) throw new Error("Base de Trabalho e renda ausente: passe `dados` ou use ProvedorTrabalho.");
@@ -646,150 +645,6 @@ function FiguraEmpregoFormal({ dados, indicadorAtual }: { dados: Snapshot; indic
     >
       <GraficoLinhas titulo={`${med.nome} · Brasil`} series={[{ id: "valor", nome: med.nome, pontos: lacunas.map((p) => ({ x: p.nome, y: p.valor })) }]} eixoY={{ unidade: med.unidade, zero: id === "estoque-formal", casas: 0 }} formatoX="texto" altura={260} />
     </FiguraAnalitica>
-  );
-}
-
-/** Série temporal própria do tema, que o Panorama de Trabalho e renda ainda usa (migra com ele, no Grupo 2). */
-export function GraficoSerie({
-  pontos,
-  unidade,
-  selecionado,
-  quebras = [],
-}: {
-  pontos: Snapshot["observacoes"];
-  unidade: string;
-  selecionado: string;
-  quebras?: number[];
-}) {
-  const [ref, largura] = useLargura<HTMLDivElement>(600);
-  const validos = pontos.filter((p) => p.valor !== null);
-  const max =
-    unidade === "índice"
-      ? 1
-      : Math.max(...validos.map((p) => p.valor as number), 1) * 1.12;
-  const min = Math.min(0, ...validos.map((p) => p.valor as number));
-  const w = Math.max(largura, 240),
-    h = 280,
-    left = 70,
-    right = 20,
-    top = 20,
-    bottom = 45;
-  const tempo = (p: string) =>
-    p.includes("-")
-      ? Number(p.slice(0, 4)) * 12 + Number(p.slice(5, 7)) - 1
-      : p.length === 6
-        ? Number(p.slice(0, 4)) * 12 + (Number(p.slice(4)) - 1) * 3
-        : Number(p) * 12;
-  const inicio = tempo(pontos[0].periodo),
-    fim = tempo(pontos.at(-1)!.periodo);
-  const x = (i: number) =>
-    left +
-    ((tempo(pontos[i].periodo) - inicio) * (w - left - right)) /
-      Math.max(1, fim - inicio);
-  const y = (v: number) =>
-    h - bottom - ((v - min) / (max - min)) * (h - bottom - top);
-  let path = "";
-  let lacuna = true;
-  pontos.forEach((p, i) => {
-    const intervalo = p.periodo.includes("-")
-      ? 1
-      : p.periodo.length === 6
-        ? 3
-        : 12;
-    if (
-      i > 0 &&
-      (tempo(p.periodo) - tempo(pontos[i - 1].periodo) > intervalo ||
-        quebras.includes(Number(p.periodo.slice(0, 4))))
-    )
-      lacuna = true;
-    if (p.valor === null) {
-      lacuna = true;
-      return;
-    }
-    path += `${lacuna ? "M" : "L"}${x(i)},${y(p.valor)} `;
-    lacuna = false;
-  });
-  const ticks = [min, min + (max - min) / 3, min + ((max - min) * 2) / 3, max];
-  return (
-    <div ref={ref}>
-      <p className="tr-chart-description">
-        {unidade}. O círculo maior marca o período selecionado. Lacunas na
-        cobertura interrompem a linha. É possível consultar os valores de cada
-        período na tabela equivalente.
-      </p>
-      <svg
-        role="img"
-        aria-label={`Evolução temporal: ${validos.length} observações disponíveis; unidade ${unidade}. Valores exatos na tabela equivalente.`}
-        viewBox={`0 0 ${w} ${h}`}
-      >
-        <title>Série temporal sem interpolação de valores ausentes</title>
-        {ticks.map((v) => (
-          <g key={v}>
-            <line
-              x1={left}
-              x2={w - right}
-              y1={y(v)}
-              y2={y(v)}
-              stroke="var(--cor-linha)"
-            />
-            <text
-              x={left - 10}
-              y={y(v) + 4}
-              textAnchor="end"
-              fill="var(--cor-carvao-muted)"
-              fontSize="14"
-            >
-              {v.toLocaleString("pt-BR", {
-                notation: Math.abs(v) >= 10000 ? "compact" : "standard",
-                maximumFractionDigits: unidade === "índice" ? 2 : 1,
-              })}
-            </text>
-          </g>
-        ))}
-        <path d={path} fill="none" stroke="var(--cor-obee)" strokeWidth="3" />
-        {pontos.map((p, i) =>
-          p.valor === null ? null : (
-            <circle
-              key={p.periodo}
-              cx={x(i)}
-              cy={y(p.valor)}
-              r={p.periodo === selecionado ? 6 : 3}
-              fill={
-                p.periodo === selecionado
-                  ? "var(--cor-obee-tinta)"
-                  : "var(--cor-obee)"
-              }
-            >
-              <title>{`${p.periodoNome}: ${formato(p.valor, unidade)}`}</title>
-            </circle>
-          ),
-        )}
-        {(w < 350
-          ? [0, pontos.length - 1]
-          : [0, Math.floor((pontos.length - 1) / 2), pontos.length - 1]
-        )
-          .filter((v, i, a) => a.indexOf(v) === i)
-          .map((i) => (
-            <text
-              key={i}
-              x={x(i)}
-              y={h - 12}
-              textAnchor={
-                i === 0 ? "start" : i === pontos.length - 1 ? "end" : "middle"
-              }
-              fill="var(--cor-carvao-muted)"
-              fontSize="14"
-            >
-              {w < 500
-                ? pontos[i].periodoNome
-                    .replace(/(\d)º trimestre (\d+)/, "T$1/$2")
-                    .replace(" de ", "/")
-                    .replace(/^(\w{3})\w+\//, "$1/")
-                : pontos[i].periodoNome}
-            </text>
-          ))}
-      </svg>
-    </div>
   );
 }
 

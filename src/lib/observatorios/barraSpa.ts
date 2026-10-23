@@ -15,8 +15,13 @@
  * app.js a refaz pelo índice embutido (os painéis do registro sob /observatorio), porque abas do Crédito pertencem também
  * às Famílias e às Contas Públicas.
  */
-import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
-import { paineis } from "@/lib/observatorios/registro";
+import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
+import { ABAS_INSTITUCIONAIS_CREDITO, ATALHOS, paineis } from "@/lib/observatorios/registro";
+import { abaPorCaminho } from "@/lib/data/observatorioAbas";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
+import { htmlNavegacao, htmlParaIrAlem, htmlRodapeColecao, htmlRotulo, type IndiceCasca, type NavCasca } from "@/lib/observatorios/cascaPura";
+import { FIM_DA_PAGINA_CREDITO, GRUPOS_CREDITO } from "@/lib/credito/navegacao";
+import { ACENTO } from "@/components/home/acentos";
 import { resolverContexto, type IndiceContexto } from "@/lib/observatorios/contextoPuro";
 import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 
@@ -52,11 +57,28 @@ const BUSCA = [
 
 const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+/**
+ * Páginas da aplicação que a trilha, o rótulo e o fim de página resolvem: os painéis do registro sob /observatorio e as duas
+ * páginas institucionais dela ("Sobre o Observatório" e "Sugestões"), que o registro deixa de fora da navegação dos
+ * observatórios mas que o fim de página liga desde a Iniciativa 2 do parecer de UX de 23/10/2026; sem elas, a trilha e o
+ * rótulo dessas páginas diziam "Crédito" no lugar do nome delas (achado do Codex no PR #369).
+ */
+function paineisDaAplicacao(): (readonly [string, string, ObservatorioId, string])[] {
+  const doRegistro = paineis()
+    .filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/"))
+    .map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const);
+  const institucionais = Array.from(ABAS_INSTITUCIONAIS_CREDITO).flatMap((c) => {
+    const aba = abaPorCaminho(c);
+    return aba ? [[`/observatorio${c}`, aba.titulo, "economia" as ObservatorioId, DOMINIO_DA_SPA] as const] : [];
+  });
+  return [...doRegistro, ...institucionais];
+}
+
 /** Índice da trilha da SPA: observatórios, coleções e os painéis do registro sob /observatorio. */
 export function indiceTrilhaSpa() {
   return {
     observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nomeCurto: o.nomeCurto, entrada: destinoObservatorio(o), colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
-    paineis: paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/")).map((p) => [p.rota, p.titulo, p.observatorio, p.colecao]),
+    paineis: paineisDaAplicacao(),
   };
 }
 
@@ -68,7 +90,7 @@ export function indiceTrilhaSpa() {
 function indiceSpa(): IndiceContexto {
   return {
     observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nome: o.nome, nomeCurto: o.nomeCurto, entrada: o.entrada, metodo: o.metodo, colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
-    paineis: paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/")).map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const),
+    paineis: paineisDaAplicacao(),
   };
 }
 
@@ -136,4 +158,95 @@ export function htmlBarraSpa(caminho = "/observatorio"): string {
     `<script type="application/json" id="obsTrilhaIndice">${JSON.stringify(indiceTrilhaSpa()).replace(/</g, "\\u003c")}</script>`,
     MARCADOR_FIM,
   ].join("\n");
+}
+
+// ------------------------------------------------------------------------------------------------------------------------
+// Casca da plataforma abaixo da trilha e no fim da página (Iniciativa 2 do parecer de UX de 23/10/2026, "o Crédito na mesma
+// casca"): a navegação da coleção dona do endereço, o rótulo de contexto acima do H1 e o fim de página ("Para ir além" e rodapé
+// da coleção), desenhados por cascaPura.ts com o mesmo HTML dos componentes React. O route handler (observatorioHead.ts) troca,
+// por endereço, o trecho entre os marcadores; o app.js refaz as mesmas peças a cada troca de página, com o índice embutido.
+
+export const MARCADOR_NAV_INICIO = "<!-- navegacao-colecao:inicio (gerada por src/lib/observatorios/barraSpa.ts; não editar à mão) -->";
+export const MARCADOR_NAV_FIM = "<!-- navegacao-colecao:fim -->";
+export const MARCADOR_FIM_INICIO = "<!-- fim-colecao:inicio (gerado por src/lib/observatorios/barraSpa.ts; não editar à mão) -->";
+export const MARCADOR_FIM_FIM = "<!-- fim-colecao:fim -->";
+
+/** Endereço que a casca resolve: a raiz da aplicação abre o "Início do painel" (/observatorio/map). */
+const enderecoDaCasca = (caminho: string) => (caminho === "/observatorio" || caminho === "/observatorio/" ? "/observatorio/map" : caminho);
+
+const navCasca = (id: string): NavCasca => {
+  const n = navegacaoDaColecao(id);
+  return { id: n.id, nome: n.nome, tipo: n.tipo, itens: n.itens, atalhos: n.atalhos, filete: ACENTO[n.acento].filete };
+};
+
+let indiceCache: IndiceCasca | null = null;
+
+/** Índice da casca: os painéis da aplicação, os atalhos deles, os observatórios e a navegação de cada coleção dona de um painel. */
+export function indiceCasca(): IndiceCasca {
+  if (indiceCache) return indiceCache;
+  const daAplicacao = paineisDaAplicacao();
+  const colecoes = Array.from(new Set(daAplicacao.map((p) => p[3])));
+  indiceCache = {
+    observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nome: o.nome, destino: destinoObservatorio(o), colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
+    paineis: daAplicacao,
+    atalhos: ATALHOS.filter((a) => daAplicacao.some((p) => p[0] === a.rota)).map((a) => [a.rota, a.observatorio, a.colecao] as const),
+    navs: Object.fromEntries(colecoes.map((c) => [c, navCasca(c)])),
+  };
+  return indiceCache;
+}
+
+/** Coleção dona de um endereço da aplicação (id do registro), com a do Crédito quando o registro não conhece o endereço. */
+export function colecaoDaCasca(caminho: string): string {
+  const indice = indiceSpa();
+  const ctx = resolverContexto(enderecoDaCasca(caminho), indice) ?? resolverContexto("/observatorio", indice)!;
+  return ctx.colecao?.id ?? DOMINIO_DA_SPA;
+}
+
+/** Navegação da coleção dona do endereço, com o atual marcado, e o índice que o app.js usa para refazê-la. */
+export function htmlNavegacaoSpa(caminho = "/observatorio"): string {
+  const indice = indiceCasca();
+  const nav = indice.navs[colecaoDaCasca(caminho)] ?? indice.navs[DOMINIO_DA_SPA];
+  return [
+    MARCADOR_NAV_INICIO,
+    `<div class="casca" id="cascaNav">${htmlNavegacao(nav, enderecoDaCasca(caminho))}</div>`,
+    // o índice da casca, os grupos do Crédito (o "Início do painel" os lista) e as páginas institucionais do fim da página
+    `<script type="application/json" id="navColecaoIndice">${JSON.stringify({ ...indice, grupos: GRUPOS_CREDITO, extrasRodape: FIM_DA_PAGINA_CREDITO }).replace(/</g, "\\u003c")}</script>`,
+    MARCADOR_NAV_FIM,
+  ].join("\n");
+}
+
+/** Rótulo de contexto acima do H1 de um endereço da aplicação ("Observatório X · Coleção Y · Página Z"). */
+export function htmlRotuloSpa(caminho: string): string {
+  return htmlRotulo(indiceCasca(), enderecoDaCasca(caminho), CLASSE_ROTULO_SPA);
+}
+
+/** Classe do rótulo de contexto na aplicação: a mesma cor de metadado das aberturas da plataforma. */
+export const CLASSE_ROTULO_SPA = "text-mineral";
+
+/**
+ * Fontes e data da aplicação no rodapé da coleção: o texto que ficava no rodapé próprio dela; o aviso da gold
+ * (meta.plataforma.disclaimer) e a data da publicação mais antiga, que antes ficava na barra lateral, o app.js preenche.
+ */
+export const FONTES_RODAPE_SPA =
+  '<p class="max-w-prose2 text-sm leading-relaxed text-carvao-muted">Dados abertos do BCB, CVM, IBGE, CNJ, PGFN e Ipeadata, com atribuição; a lista completa de coletores e o estado de cada fonte estão em <a class="underline decoration-linha underline-offset-4 hover:decoration-carvao" href="/observatorio/methodology">Metodologia e fontes</a>. <span id="footDisclaimer"></span></p>' +
+  '<p class="py-1 text-xs text-mineral" id="updatedAt"></p>';
+
+/** Fim de página de um endereço da aplicação: "Para ir além" e o rodapé da coleção dona, com as páginas institucionais dela. */
+export function htmlFimSpa(caminho = "/observatorio"): string {
+  const indice = indiceCasca();
+  const endereco = enderecoDaCasca(caminho);
+  const nav = indice.navs[colecaoDaCasca(caminho)] ?? indice.navs[DOMINIO_DA_SPA];
+  return [
+    MARCADOR_FIM_INICIO,
+    `<div class="casca" id="cascaFim">${htmlParaIrAlem(indice, endereco)}${htmlRodapeColecao(nav, FONTES_RODAPE_SPA, FIM_DA_PAGINA_CREDITO)}</div>`,
+    MARCADOR_FIM_FIM,
+  ].join("\n");
+}
+
+export const MARCADOR_RODAPE_INICIO = "<!-- rodape-plataforma:inicio (gerado por scripts/barra-spa.mjs a partir de src/components/layout/Footer.tsx; não editar à mão) -->";
+export const MARCADOR_RODAPE_FIM = "<!-- rodape-plataforma:fim -->";
+
+/** Rodapé da plataforma na aplicação: o HTML do componente Footer (renderizado por scripts/barra-spa.mjs), dentro da casca. */
+export function htmlRodapePlataformaSpa(footer: string): string {
+  return [MARCADOR_RODAPE_INICIO, `<div class="casca">${footer}</div>`, MARCADOR_RODAPE_FIM].join("\n");
 }
