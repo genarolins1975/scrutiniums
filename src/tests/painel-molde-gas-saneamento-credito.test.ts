@@ -68,3 +68,36 @@ describe("Saneamento no molde de painel", () => {
     expect(h).toContain('data-tabela-ordenavel=""');
   });
 });
+
+describe("Crédito no molde de painel", () => {
+  // o caso do teste das consultas: a modalidade PF com mais instituições e a instituição do meio do ranking
+  async function caso() {
+    const { goldJuros, slugModalidade } = await import("@/lib/credito/juros");
+    const gold = goldJuros()!;
+    const mod = gold.modalidades.filter((m) => m.segmento === "PF").sort((a, b) => b.stats.n - a.stats.n)[0];
+    const presentes = new Set(mod.ranking.map((r) => r.cnpj8));
+    return { gold, mod, seg: "pf", slug: slugModalidade(mod.modalidade), linha: mod.ranking[Math.floor(mod.ranking.length / 2)], ausente: gold.perfis_if.find((p) => !presentes.has(p.cnpj8))! };
+  }
+
+  it("quanto meu banco cobra, com banco, sem banco e com banco ausente da modalidade", async () => {
+    const { seg, slug, linha, ausente } = await caso();
+    const rota = "/observatorio-do-credito/quanto-meu-banco-cobra";
+    for (const banco of [linha.cnpj8, undefined, ausente.cnpj8]) {
+      const h = await html(rota, () => import("@/app/observatorio-do-credito/quanto-meu-banco-cobra/page"), { searchParams: { seg, mod: slug, ...(banco ? { banco } : {}) } });
+      conferirPainel(rota, h);
+      // o recorte vive na URL: o formulário GET reproduz seg, mod e banco
+      expect(h).toMatch(/data-acao=""[\s\S]*<form[^>]*method="get"/);
+    }
+  });
+
+  it("simulador da parcela, com banco e com a mediana", async () => {
+    const { seg, slug, linha } = await caso();
+    const rota = "/observatorio-do-credito/simulador-da-parcela";
+    for (const banco of [linha.cnpj8, undefined]) {
+      const h = await html(rota, () => import("@/app/observatorio-do-credito/simulador-da-parcela/page"), { searchParams: { seg, mod: slug, ...(banco ? { banco } : {}) } });
+      conferirPainel(rota, h);
+      expect(h).toMatch(/data-acao=""[\s\S]*name="valor"/);
+      expect(h).toContain("data-aviso-cet");
+    }
+  });
+});
