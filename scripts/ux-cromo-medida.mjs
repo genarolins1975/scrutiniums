@@ -10,6 +10,31 @@
 export const ORCAMENTO = { 1440: 230, 390: 200 };
 export const TOPO_H1_MAXIMO = { 1440: 600, 390: 844 };
 
+/**
+ * Espera a página assentar antes de medir (roda no Node, com a página do Playwright): rede quieta, fontes carregadas, com sessão
+ * a faixa de consulta aberta ([data-aviso-consulta-aberta]) fora da tela, e o cromo estável em leituras seguidas. A faixa vem no
+ * HTML do servidor e só some quando o React hidrata e resolve a sessão, e outras peças do cabeçalho entram pelo cliente; com a
+ * CPU disputada, a rede assenta antes disso e a medida pegava o layout de antes da hidratação. Achado no CI do main (run 1255,
+ * 23/10/2026): /eficiencia-estatal a 390 px com sessão mediu 333 px; hidratada, mede 195 px. Com a CPU 20 vezes mais lenta, a
+ * medida antiga reproduz os 333 px, e esperar só a faixa dava 173 px. Devolve false se a faixa não sumir no prazo: com sessão
+ * ela não deve aparecer, e quem mede reprova.
+ */
+export async function esperarPaginaAssentada(page, comSessao, prazo = 30_000) {
+  await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  const semFaixa = !comSessao
+    || (await page.waitForFunction(() => !document.querySelector("[data-aviso-consulta-aberta]"), undefined, { timeout: prazo }).then(() => true, () => false));
+  // duas leituras iguais seguidas, com 300 ms entre elas, no máximo por 15 s
+  let anterior = "";
+  for (let i = 0; i < 50; i++) {
+    const atual = JSON.stringify(await page.evaluate(medirCromo));
+    if (atual === anterior) break;
+    anterior = atual;
+    await page.waitForTimeout(300);
+  }
+  return semFaixa;
+}
+
 export function medirCromo() {
   const visivel = (e) => {
     if (!e) return false;
