@@ -6,7 +6,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, type Browser } from "playwright";
-import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarSessaoResolvida, medirCromo } from "../../scripts/ux-cromo-medida.mjs";
+import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarHidratacao, aguardarSessaoResolvida, medirCromo } from "../../scripts/ux-cromo-medida.mjs";
 
 /**
  * Orçamento de cromo (Iniciativa 2 do parecer de UX de 21/10/2026, docs/PARECER_UX_2026-10-21.md): do topo da barra comum até o
@@ -133,6 +133,8 @@ describe.skipIf(!temBuild)("orçamento de cromo no navegador (build de produçã
         await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => undefined);
         await aguardarSessaoResolvida(page, comSessao);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
+        // onde não há faixa, a barra ainda se acomoda no cliente; sem esperar, a medida sob carga sai abaixo da real
+        await aguardarHidratacao(page);
         const m = await page.evaluate(medirCromo);
         if (m.cromo > ORCAMENTO[largura]) fora.push(`${rota}: cromo ${m.cromo} px (máximo ${ORCAMENTO[largura]})`);
         if (m.topoH1 === null || m.topoH1 >= TOPO_H1_MAXIMO[largura]) fora.push(`${rota}: H1 em ${m.topoH1} px (máximo ${TOPO_H1_MAXIMO[largura]})`);
