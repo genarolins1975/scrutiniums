@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 /*
-  Tokens centrais em CSS variables para uso fora do Tailwind
-  (gráficos, SVG, estilos calculados). Fonte única de verdade
-  junto com tailwind.config.ts.
+  Tokens da plataforma: este é o único arquivo que define cor (Iniciativa 5 do parecer de UX de 21/10/2026).
+  tailwind.config.ts lê estas variáveis; public/obs/tokens.css e src/lib/tokens.gerado.ts são derivados daqui
+  (node scripts/tokens-derivados.mjs) para a aplicação do Crédito, que não carrega este arquivo, e para a imagem
+  social, que não lê CSS. Nenhum outro arquivo escreve hexadecimal nem redefine --cor-* (src/tests/design-tokens.test.ts).
 */
 :root {
   --cor-carvao: #1a1d21;
@@ -19,8 +20,16 @@
   --cor-mineral: #6b6d6a; /* escurecido p/ contraste AA sobre marfim/papel */
   --cor-mineral-soft: #a6a8a4;
   --cor-linha: #d8d2c6;
+  --cor-linha-escura: #33373d; /* filete sobre fundo carvão (rodapé institucional) */
   --cor-erro: #8c3b2e;
   --cor-sucesso: #4f6b4e;
+  --cor-aviso: #8a6d2f; /* estado de aviso documentado, texto AA sobre papel e branco */
+  /* Selos de natureza do dado (SeloNatureza): texto AA sobre papel e branco; cor nunca é o único portador. */
+  --cor-natureza-observado: #1a1d21;
+  --cor-natureza-calculado: #4a5158;
+  --cor-natureza-estimado: #7a5a12;
+  --cor-natureza-previsto: #5b3f8c;
+  --cor-natureza-cenario: #6b4f3a;
   --cor-energia: #0e6170;
   --cor-energia-dark: #0a4a56;
   --cor-energia-soft: #5e98a3;
@@ -38,6 +47,31 @@
   --cor-gas-dark: #2b4a78;
   --cor-gas-soft: #7a93b8;
   --cor-gas-fundo: #e8edf4;
+  /* Destaque da plataforma: série focal, link e seleção da barra comum. Era #09697a na barra (5,97:1 sobre o papel) e #00697f
+     no OBEE (5,94:1); ficou um só, o do OBEE, que passa AA em todos os fundos claros. */
+  --cor-destaque: var(--cor-obee);
+  /* Painel escuro (Atlas, gravuras, régua da Eficiência, painéis das Contas Estaduais e do Crédito). Era #102e36 nos painéis
+     e #14243a na tinta do OBEE; o painel fica com #102e36, o valor de todos os fundos escuros existentes. */
+  --cor-painel-escuro: #102e36;
+  --cor-painel-escuro-texto: #f8f7f2; /* texto sobre o painel escuro (13,4:1) */
+  --cor-painel-escuro-legenda: #c4d7d7; /* texto secundário, legenda e crédito sobre o painel escuro e as gravuras (9,6:1) */
+  /* Conectividade: acento petróleo próprio (5,9:1 sobre o papel, dark 8,2:1), distinto do OBEE e do Gás; soft só marcação. */
+  --cor-conect: #0f6b74;
+  --cor-conect-dark: #0b535a;
+  --cor-conect-soft: #7fb2b7;
+  --cor-conect-fundo: #e3eff0; /* faixa e estado ativo da Conectividade; texto sobre ele só carvão, carvão-muted e o acento */
+  /* Triplas RGB das cores usadas com modificador de opacidade no Tailwind (bg-carvao/40): mesmo valor do hexadecimal acima,
+     conferido pelo teste. */
+  --cor-carvao-rgb: 26 29 33;
+  --cor-marfim-rgb: 243 239 229;
+  --cor-linha-rgb: 216 210 198;
+  --cor-bronze-rgb: 150 107 72;
+  --cor-energia-rgb: 14 97 112;
+  --cor-superficie-rgb: 255 255 255;
+  --cor-obee-rgb: 0 105 127;
+  --cor-obee-fundo-rgb: 230 239 240;
+  --cor-obee-tinta-rgb: 20 36 58;
+  --cor-obee-neutro-rgb: 133 128 114;
   /* Escala sequencial do gás (mapas por UF), luminosidade monotônica no acento. Nunca cor de texto. */
   --escala-gas-1: #dfe6f0;
   --escala-gas-2: #b3c3da;
@@ -385,7 +419,7 @@ html[data-recorte="pendente"] #conteudo {
 
 /* ==========================================================================================================================
    Sistema editorial do domínio Energia (redesenho). Tokens de escala e composição, sem alterar as cores globais, que são
-   compartilhadas com o outro observatório e já passam AA (src/tests/design-tokens-energia.test.ts).
+   compartilhadas com o outro observatório e já passam AA (src/tests/design-tokens.test.ts).
    Largura de leitura: 1.160 px de conteúdo a partir de 1.240 px de janela; margem lateral de 16 px no celular a 40 px no desktop.
    ========================================================================================================================== */
 .ed-pagina { width: 100%; max-width: 77.5rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }

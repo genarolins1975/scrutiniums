@@ -72,7 +72,7 @@ describe("imagem social", () => {
       expect(s).toContain("rodape:");
     }
     expect(ler("src/app/layout.tsx")).toContain('twitter: { card: "summary_large_image" }');
-    expect(ler("src/lib/og.tsx")).toContain('import config from "../../tailwind.config"');
+    expect(ler("src/lib/og.tsx")).toContain('import { TOKENS } from "./tokens.gerado"');
     expect(ler("src/lib/og.tsx")).not.toMatch(/#[0-9A-Fa-f]{6}/);
   });
 });
