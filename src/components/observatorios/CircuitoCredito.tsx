@@ -21,9 +21,9 @@ function Medida({ n }: Readonly<{ n: NumeroPorta }>) {
  * Segue definições (taxa = custo de captação + spread; saldo é estoque,
  * concessão é fluxo); não mede repasse da Selic nem causa do atraso.
  */
-export function CircuitoCredito({ circuito }: Readonly<{ circuito: Circuito }>) {
+export function CircuitoCredito({ circuito, recolhido = false }: Readonly<{ circuito: Circuito; recolhido?: boolean }>) {
   return (
-    <ModeloDidatico id="circuito" titulo={<>Do juro básico ao atraso</>} descricao={<>O crédito liga a política do Banco Central ao bolso de famílias e empresas em quatro passos: o juro básico, o juro cobrado, o volume emprestado e o atraso. A ordem segue as definições do Banco Central; o modelo não mede quanto da Selic chega às taxas, nem em que prazo, e não explica por que alguém atrasa.</>} deixaDeFora={["Quanto da Selic chega às taxas, e em que prazo", "Por que alguém atrasa", "Causa entre os passos: a ordem segue as definições do Banco Central"]}>
+    <ModeloDidatico id="circuito" recolhido={recolhido} titulo={<>Do juro básico ao atraso</>} descricao={<>O crédito liga a política do Banco Central ao bolso de famílias e empresas em quatro passos: o juro básico, o juro cobrado, o volume emprestado e o atraso.</>} deixaDeFora={["Quanto da Selic chega às taxas, e em que prazo", "Por que alguém atrasa", "Causa entre os passos: a ordem segue as definições do Banco Central"]}>
         <ol className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
           {circuito.passos.map((p, i) => (
             <li key={p.id} className="flex flex-col bg-papel p-5">

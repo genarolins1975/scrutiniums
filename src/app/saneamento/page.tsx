@@ -156,6 +156,7 @@ export default function Pagina() {
         }
         artefato={
           <ModeloDidatico
+            recolhido
             id="como-funciona"
             titulo="Como o serviço funciona e onde cada capítulo mede"
             descricao="A água percorre um caminho físico; a tarifa, as metas e o dinheiro percorrem outro, institucional. Os dois aparecem separados."

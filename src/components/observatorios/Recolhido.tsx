@@ -50,7 +50,7 @@ export function Recolhido({
 }>) {
   return (
     <details id={id} open={aberto || undefined} data-recolhido="" className={`${DETALHE_RECOLHIDO} border-t border-linha ${className}`}>
-      <summary className={`${RESUMO_RECOLHIDO} py-5 md:py-6`}>
+      <summary className={`${RESUMO_RECOLHIDO} py-4 md:py-6`}>
         <span className="block">
           <span className="block font-serif text-[clamp(1.25rem,2.4vw,1.6rem)] leading-snug text-carvao">{titulo}</span>
           <span className="mt-1 block text-sm leading-relaxed text-carvao-muted">{resumo}</span>

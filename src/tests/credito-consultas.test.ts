@@ -275,7 +275,10 @@ describe("acesso e navegação", () => {
       expect(m![1], p.href).toContain("data-selo-conta");
     }
     const lerFonte = readFileSync(join(process.cwd(), "src/app/observatorio-do-credito/page.tsx"), "utf-8");
-    expect(lerFonte).toContain("prefetch={prefetchDoLink(c.href)}");
+    // as consultas (a taxa do banco e o simulador da parcela) são cartões do "Para você" desde o orçamento de comprimento
+    // (Iniciativa 4): o pré-carregamento segue a mesma regra, no componente
+    expect(lerFonte).toContain('<ParaVoce entrada="/observatorio-do-credito" />');
+    expect(readFileSync(join(process.cwd(), "src/components/observatorios/ParaVoce.tsx"), "utf-8")).toContain("prefetch={prefetchDoLink(p.href)}");
     expect(lerFonte).toContain('prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}');
   });
 

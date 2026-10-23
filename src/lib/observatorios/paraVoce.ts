@@ -86,6 +86,7 @@ const IDS = [
   "atlas-agro",
   "credito-atraso",
   "banco-cobra",
+  "parcela",
 ] as const;
 export type IdPergunta = (typeof IDS)[number];
 
@@ -112,8 +113,9 @@ export const PARA_VOCE = {
   "/contas-publicas/previdencia": ["estado-contas", "custo-de-vida"],
   // Contas Estaduais (Iniciativa 4): as bandeiras do estado vêm embutidas no bloco; os cartões levam ao gasto federal por área e à capital
   "/contas-publicas-estaduais": ["previdencia", "capital"],
-  // Crédito (Iniciativa 4): a taxa do seu banco e os atrasos das famílias; o simulador da parcela vem embutido no bloco
-  "/observatorio-do-credito": ["banco-cobra", "credito-atraso"],
+  // Crédito (Iniciativa 4): a taxa do seu banco, os atrasos das famílias e o simulador da parcela, os três na mesma grade (o
+  // simulador vinha embutido embaixo dos cartões e saiu para a entrada caber no orçamento de comprimento, 22/10/2026)
+  "/observatorio-do-credito": ["banco-cobra", "credito-atraso", "parcela"],
   // o custo de vida (painel novo das Famílias, 20/10/2026) abre o bloco; a água saiu para manter três perguntas e continua a
   // um clique em "Para o seu caso" da camada aberta das Famílias e no elo "Gás, luz e água" do orçamento da família
   "/observatorios/familias": ["custo-de-vida", "luz", "botijao"],
@@ -419,6 +421,15 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         resposta: "A taxa do seu banco na modalidade escolhida, comparada com a mediana das instituições, e a parcela de uma dívida no simulador.",
         href: "/observatorio-do-credito/quanto-meu-banco-cobra",
         numero: numeroBancoCobra(),
+      };
+    case "parcela":
+      return {
+        id,
+        pergunta: "Quanto vai custar minha parcela?",
+        resposta: "Parcela, total pago e juros pela tabela Price, com a taxa publicada para o seu banco ou a do seu contrato, e quanto o CET muda o custo. É cálculo, não previsão nem oferta.",
+        href: "/observatorio-do-credito/simulador-da-parcela",
+        numero: null,
+        semNumero: "Cálculo: a parcela sai do valor, do prazo e da taxa que você escolhe.",
       };
     case "credito-atraso":
       return {

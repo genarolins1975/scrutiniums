@@ -3,6 +3,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { inventario } from "@/lib/observatorios/inventario";
 import { exigirBuild, htmlDe, raiz, subirServidor, temBuild, type ServidorProducao } from "./suporte/servidor-producao";
+import { NO_MOLDE } from "./suporte/entradas-molde";
 
 /**
  * Molde único das páginas de entrada (Iniciativa 4 do parecer de UX de 21/10/2026; EntradaColecao). No HTML que o servidor
@@ -13,30 +14,6 @@ import { exigirBuild, htmlDe, raiz, subirServidor, temBuild, type ServidorProduc
  * As entradas passam para o molde em PRs por grupo: `NO_MOLDE` cresce a cada PR e `A_MIGRAR` encolhe, e um teste confere que
  * toda entrada do inventário está numa das duas listas (nenhuma é esquecida).
  */
-const NO_MOLDE: string[] = [
-  "/observatorios/familias",
-  "/observatorios/servicos-publicos",
-  "/observatorios/contas-publicas",
-  "/observatorios/energia-e-infraestrutura",
-  "/observatorios/economia",
-  // Grupo A (22/10/2026)
-  "/territorio",
-  "/combustiveis",
-  "/conectividade",
-  "/educacao-municipal",
-  "/custo-de-vida",
-  "/contas-publicas/previdencia",
-  "/agronegocio",
-  // Grupo B (22/10/2026)
-  "/gas-natural",
-  "/saneamento",
-  "/contas-publicas",
-  "/contas-publicas-estaduais",
-  // Grupo C (22/10/2026)
-  "/eficiencia-estatal",
-  "/observatorio-do-credito",
-  "/setor-eletrico",
-];
 
 /** Entradas ainda fora do molde, com o grupo do PR que as migra (a aplicação do Crédito é a Iniciativa 8). Vazia desde o Grupo C. */
 const A_MIGRAR: Record<string, string> = {};

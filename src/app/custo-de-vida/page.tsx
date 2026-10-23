@@ -82,6 +82,7 @@ export default function InflacaoPage() {
         destinos={destinosDaColecao("custo-de-vida")}
         artefato={
           <ModeloDidatico
+            recolhido
             id="como-pesa"
             titulo="Como o IPCA pesa o seu orçamento"
             descricao={<>A fatia de cada grupo no orçamento das famílias da pesquisa e quanto cada um contribuiu, em pontos percentuais, para a inflação de 12 meses até {mes}.</>}

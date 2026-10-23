@@ -16,7 +16,11 @@ describe("percurso visual da energia", () => {
   it("o HTML inicial oferece controles nativos e explicita a simplificação física", () => {
     const html = renderToStaticMarkup(createElement(PercursoVisualEnergia));
     for (const e of ETAPAS_ENERGIA) expect(html).toContain(`id="etapa-${e.id}"`);
-    expect(html.match(/aria-pressed="true"/g)).toHaveLength(1);
+    // nenhuma etapa vem escolhida: o detalhe abre quando o leitor escolhe uma ("Escolha uma etapa e descubra o que acontece nela"),
+    // e o da primeira etapa já está no HTML, recolhido (orçamento de comprimento da entrada, Iniciativa 4)
+    expect(html).not.toContain('aria-pressed="true"');
+    expect(html.match(/aria-pressed="false"/g)).toHaveLength(4);
+    expect(html).toMatch(/<div id="percurso-detalhe"[^>]*hidden=""/);
     expect(html.match(/aria-controls="percurso-detalhe"/g)).toHaveLength(4);
     expect(html).toContain("não representa a topologia ou o despacho do SIN");
     expect(html).toContain("Geração distribuída e sistemas isolados");

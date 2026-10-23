@@ -146,6 +146,29 @@ No Grupo A (PR 2), as entradas que eram o próprio painel encolheram porque as s
 
 No Grupo C (PR 4), o Setor Elétrico passa ao molde nos dois idiomas: os três números de abertura com fonte e período e a gravura do sistema na escala (a coluna de texto ao lado da paisagem, vazia desde 20/10/2026, ganhou a orientação "Da usina à tomada"); os seis grupos de páginas nos destinos, com o índice das 22 páginas em "Todas as páginas, por tema"; o percurso como seção própria; o laboratório "Potência não é energia" como modelo didático; e as perguntas com a prova, sobre o observatório, duas camadas e leituras, mapa conceitual, trilhas, conhecimento e "como ler e conferir" em blocos recolhidos, com fontes e atualidade no método. Na Eficiência, a grade dos seletores da capital deixou de estourar 8 px a 390.
 
+
+### Orçamento de comprimento (PR 5 da Iniciativa 4, 23/10/2026)
+
+Decisão do dono de 22/10/2026: seguir sempre o padrão de comprimento, sem apagar conteúdo; o que não cabe vai para blocos recolhidos na mesma página, com o conteúdo inteiro no HTML. Tetos: entrada com sessão até 6.500 px a 1440 e 11.000 a 390; o Crédito aberto até 3.500 e 7.000; o primeiro número acima de 900 px a 1440. Conferido por `src/tests/ux-orcamentos-comprimento.test.ts` no build de produção. Medido com o `main` de 23/10/2026 (Iniciativa 5 incluída), que mudou a tipografia e, com ela, algumas alturas.
+
+| Entrada | 1440 / 390 depois | Folga a 390 | O que mudou para caber |
+|---|---|---|---|
+| `/setor-eletrico` | 6.151 / 10.641 | 359 | Sete blocos recolhidos viraram quatro; o detalhe do percurso abre quando o leitor escolhe a etapa ("Escolha uma etapa e descubra o que acontece nela"), com o texto no HTML; "Escolher outra etapa" só no celular; o laboratório "Potência não é energia" recolhido, com o que ele deixa de fora à vista |
+| `/en/setor-eletrico` | 6.198 / 10.799 | 201 | As mesmas mudanças, na irmã inglesa, que entrou no teste |
+| `/observatorio-do-credito` (aberto) | 3.382 / 6.674 | 326 | Quatro perguntas à vista e quatro em "Mais perguntas"; o simulador da parcela como terceiro cartão do "Para você"; o modelo didático recolhido; o diagnóstico do dia e "O que muda em relação a consultar as fontes direto" no método; sem a fatia "Por onde seguir", que repetia o "Para você" e o convite (decisão do dono de 23/10/2026); rodapé compacto, como nas páginas abertas dos outros temas |
+| `/custo-de-vida` | 5.156 / 9.192 | 1.808 | Modelo didático recolhido |
+| `/saneamento` | 5.099 / 9.160 | 1.840 | Modelo didático recolhido |
+| `/contas-publicas` | 5.229 / 10.363 | 637 | Modelo didático ("Para onde vão R$ 100") recolhido |
+| `/territorio` | 5.271 / 10.436 | 564 | O índice "Todos os painéis, por coleção" recolhido; os três painéis próprios seguem à vista |
+| `/observatorios/familias` | 5.960 / 10.878 | 122 | Nenhuma: só o respiro do molde |
+| `/combustiveis` | 5.931 / 10.836 | 164 | Nenhuma |
+| `/contas-publicas-estaduais` | 6.232 / 10.576 | 424 | Nenhuma |
+| Demais entradas | 4.586 a 6.059 / 7.985 a 10.373 | 627 ou mais | Nenhuma |
+
+No molde inteiro, o respiro entre fatias passou de 64 para 48 px no desktop (destinos, perguntas para começar, método e modelo recolhido) e o resumo dos blocos recolhidos ficou 8 px mais baixo no celular. O modelo didático recolhido (`ModeloDidatico recolhido`) põe, no desktop, a lista "O que este modelo deixa de fora" ao lado do título, e o modelo aberto ocupa a largura toda embaixo. Axe 0 e rolagem horizontal 0 a 1440 e 390 px em todas as entradas, com sessão e, nas abertas, sem sessão.
+
+Folgas pequenas a 390 px: Famílias (122 px) e Combustíveis (164 px). Uma linha a mais nos dados publicados pode reprovar o teste; o ajuste, nesse caso, é recolher a fatia mais alta de cada uma, o modelo didático (cerca de 3.100 px nas Famílias e 2.450 nos Combustíveis, a 390).
+
 ## Pendências
 
 - Teste com leitor de tela nas seis entradas e nas cinco consultas abertas.
