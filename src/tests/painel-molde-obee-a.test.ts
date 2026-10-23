@@ -8,6 +8,7 @@ vi.mock("server-only", () => ({}));
 
 import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/necessidades/page";
 import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";
+import PaginaEnergia from "@/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), frente obee-a do Grupo 1: as páginas com sessão da Eficiência
@@ -33,5 +34,13 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
     expect(h).toContain('data-figura-legado="indice-v4"');
     expect(h).toContain('id="atlas-indice"');
     expect(h).toContain('id="atlas-score-method"');
+  });
+
+  it("/eficiencia-estatal/energia-conectividade (o panorama do modelo [[...painel]])", () => {
+    const h = renderToStaticMarkup(createElement(PaginaEnergia, { params: {} }));
+    conferirPainel("/eficiencia-estatal/energia-conectividade", h);
+    // o painel principal do tema continua avisado, e as quatro perguntas levam às visões do tema
+    expect(h).toContain("data-painel-principal");
+    for (const v of ["acesso", "continuidade", "custo", "internet"]) expect(h).toContain(`href="/eficiencia-estatal/energia-conectividade/${v}"`);
   });
 });
