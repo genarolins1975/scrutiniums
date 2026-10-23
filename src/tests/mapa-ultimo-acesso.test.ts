@@ -30,13 +30,14 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-async function navegar(caminho: string, opcoes: { sessao?: boolean; accept?: string; rsc?: boolean; cookie?: string } = {}) {
+async function navegar(caminho: string, opcoes: { sessao?: boolean; accept?: string; rsc?: boolean; prefetch?: boolean; cookie?: string } = {}) {
   const headers = new Headers({ accept: opcoes.accept ?? "text/html,application/xhtml+xml" });
   const cookies: string[] = [];
   if (opcoes.sessao ?? true) cookies.push(`scrutiniums_session=${await signSessionCookie(TOKEN, new Date(Date.now() + 3_600_000))}`);
   if (opcoes.cookie) cookies.push(`${COOKIE_OBSERVATORIO}=${opcoes.cookie}`);
   if (cookies.length) headers.set("cookie", cookies.join("; "));
   if (opcoes.rsc) headers.set("rsc", "1");
+  if (opcoes.prefetch) headers.set("next-router-prefetch", "1");
   return middleware(new NextRequest(ORIGEM + caminho, { headers }));
 }
 
@@ -89,11 +90,20 @@ describe("gravação pelo middleware", () => {
     expect(familias.cookies.get(COOKIE_OBSERVATORIO)?.value).toBe("o:familias");
   });
 
-  it("não grava sem sessão, fora das coleções, em requisição RSC nem quando o valor já é o mesmo", async () => {
+  it("a navegação no cliente (RSC, o clique em link interno) também grava; o pré-carregamento não", async () => {
+    // o prompt da M1 previa só a navegação com text/html; no App Router, o clique num <Link> é uma requisição RSC, e sem ela o
+    // "Continuar" só mudaria em recarga de página
+    expect((await navegar("/setor-eletrico/pld", { accept: "*/*", rsc: true })).cookies.get(COOKIE_OBSERVATORIO)?.value).toBe("c:setor-eletrico");
+    expect((await navegar("/setor-eletrico/pld", { accept: "*/*", rsc: true, prefetch: true })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+    const h = new Headers({ accept: "text/html", "sec-purpose": "prefetch", cookie: `scrutiniums_session=${await signSessionCookie(TOKEN, new Date(Date.now() + 3_600_000))}` });
+    expect((await middleware(new NextRequest(ORIGEM + "/setor-eletrico/pld", { headers: h }))).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+  });
+
+  it("não grava sem sessão, fora das coleções, em pré-carregamento, em pedido que não é de página nem quando o valor já é o mesmo", async () => {
     expect((await navegar("/setor-eletrico/pld", { sessao: false })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/sobre")).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/app/conta")).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
-    expect((await navegar("/setor-eletrico/pld", { accept: "text/x-component", rsc: true })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
+    expect((await navegar("/setor-eletrico/pld", { accept: "text/x-component", rsc: true, prefetch: true })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/setor-eletrico/pld", { accept: "*/*" })).cookies.get(COOKIE_OBSERVATORIO)).toBeUndefined();
     expect((await navegar("/setor-eletrico/pld", { cookie: "c:setor-eletrico" })).headers.get("set-cookie")).toBeNull();
   });

@@ -63,12 +63,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (ehRotaPublica(pathname)) {
-    // página aberta de uma coleção (método, aperitivo com sessão): com sessão, também é o último acesso
-    const valor = paginaHtml(request) ? ultimoAcessoDoCaminho(caminhoPolitica) : null;
-    const comSessao = valor !== null && (desvio ? sessaoAperitivo : await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value));
-    return comSessao ? marcarUltimoAcesso(request, NextResponse.next(), valor) : NextResponse.next();
+  // página aberta de uma coleção (método, aperitivo com sessão): com sessão, também é o último acesso (Iniciativa M1)
+  const valorAberto = ehRotaPublica(pathname) && paginaHtml(request) ? ultimoAcessoDoCaminho(caminhoPolitica) : null;
+  if (valorAberto && (desvio ? sessaoAperitivo : await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value))) {
+    return marcarUltimoAcesso(request, NextResponse.next(), valorAberto);
   }
+  if (ehRotaPublica(pathname)) return NextResponse.next();
 
   const verified = await verifySessionCookie(
     request.cookies.get("scrutiniums_session")?.value,
@@ -119,12 +119,15 @@ export async function middleware(request: NextRequest) {
 }
 
 /**
- * Navegação de página de verdade: GET que pede HTML. Requisição RSC (navegação no cliente e pré-carregamento do Next, que
- * pedem text/x-component) não conta: um link pré-carregado no mapa não pode virar "último acesso" sem clique.
+ * Navegação de página de verdade: GET que pede o documento (text/html) ou a navegação do App Router no cliente (cabeçalho RSC,
+ * a forma de quase todo clique em link interno). O pré-carregamento não conta (Next-Router-Prefetch, Sec-Purpose/Purpose
+ * "prefetch"): um link visível no mapa não pode virar "último acesso" sem clique.
  */
 function paginaHtml(request: NextRequest): boolean {
-  if (request.method !== "GET" || request.headers.get("rsc") === "1" || request.headers.has("next-router-prefetch")) return false;
-  return request.headers.get("accept")?.includes("text/html") ?? false;
+  if (request.method !== "GET") return false;
+  const h = request.headers;
+  if (h.has("next-router-prefetch") || /prefetch/i.test(h.get("sec-purpose") ?? h.get("purpose") ?? "")) return false;
+  return h.get("rsc") === "1" || (h.get("accept")?.includes("text/html") ?? false);
 }
 
 /**

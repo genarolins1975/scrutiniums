@@ -93,11 +93,14 @@ try{
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
   await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
-  const card=page.getByRole('article',{name:'Justiça',exact:true});
-  check('Cartão próprio do Judiciário '+width+'px',await card.isVisible()&&await card.getByRole('button',{name:/Explorar Justiça/}).isVisible());
-  check('Oito observatórios e Judiciário no seletor '+width+'px',await page.locator('input[name="d"]').count()===observatoryRoots.length+1);
-  await card.locator('summary').click();
-  check('Fonte e cobertura reais no cartão '+width+'px',(await card.innerText()).includes('57 tribunais')&&(await card.innerText()).includes('2009–2025'));
+  // mapa da conta (Iniciativa M1 do parecer de UX de 23/10/2026): a Justiça é uma coleção dos Serviços Públicos, com link
+  // direto; não há mais cartão por domínio, formulário nem botão "Explorar". As fontes do CNJ ficam no método recolhido.
+  const card=page.locator('[data-fatia="destinos"] [data-colecao="justica"]');
+  check('Coleção Justiça no mapa, com link direto '+width+'px',await card.isVisible()&&await card.locator('a[href="'+PREFIX+'"]').first().isVisible());
+  check('As 28 coleções no mapa, nenhum formulário '+width+'px',await page.locator('[data-fatia="destinos"] [data-colecao]').count()===28&&await page.locator('[data-fatia="destinos"] form').count()===0);
+  await page.locator('[data-fatia="metodo"] > summary').click();
+  const fontes=page.locator('[data-fontes-colecao="justica"]');
+  check('Fonte e cobertura reais da Justiça no método '+width+'px',(await fontes.innerText()).includes('57 tribunais')&&(await fontes.innerText()).includes('2009–2025'));
   await page.addScriptTag({content:axe});
   const violations=await page.evaluate(async()=>{const r=await axe.run(document.querySelector('main'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return r.violations.map(v=>v.id);});
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
@@ -105,16 +108,16 @@ try{
   screens.push({slug:'seletor-observatorios',width,status:200,overflow,violations});
   await captura({path:join(out,'seletor-'+width+'.png'),fullPage:true});
  }
- const choice=page.getByRole('article',{name:'Justiça',exact:true});
- await choice.getByRole('button',{name:/Explorar Justiça/}).focus();
- const navigation=page.waitForNavigation({waitUntil:'networkidle',timeout:20000});
- await page.keyboard.press('Enter');await navigation;
+ const choice=page.locator('[data-fatia="destinos"] [data-colecao="justica"] a[href="'+PREFIX+'"]').first();
+ await choice.focus();
+ const navigation=page.waitForURL(u=>new URL(u).pathname===PREFIX,{timeout:20000});
+ await page.keyboard.press('Enter');await navigation;await ocioso();
  await captura({path:join(out,'seletor-destino.png'),fullPage:true});
- check('Cartão abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
+ check('Coleção abre o Judiciário por teclado',new URL(page.url()).pathname===PREFIX);
  check('Escolha preserva a sessão',(await context.request.get(origin+'/api/auth/eu')).status()===204);
- check('Cookie guarda o Judiciário',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='judiciario'&&c.httpOnly));
+ check('Cookie guarda a coleção Justiça',(await context.cookies()).some(c=>c.name==='scrutiniums_observatorio'&&c.value==='c:justica'&&c.httpOnly));
  await page.goto(origin+'/app/observatorios',{waitUntil:'networkidle'});
- check('Último acesso identifica o cartão do Judiciário',await page.getByRole('article',{name:'Justiça',exact:true}).getByText('Último acesso',{exact:true}).isVisible());
+ check('Último acesso leva de volta à Justiça',await page.locator('[data-fatia="retomar"] a[href="'+PREFIX+'"]').isVisible());
  const slugs=['','panorama','internacional','recursos','tempo','filas','entrega','consistencia','criminal','acesso','comparar','metodos','tribunais/tjsp','tribunais/tjdft','tribunais/trf3','tribunais/trt3'];
  for(const width of [320,390,768,1440]){
   await page.setViewportSize({width,height:width===390?844:1000});
