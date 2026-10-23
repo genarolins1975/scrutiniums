@@ -33,6 +33,7 @@ import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { ABAS_INSTITUCIONAIS_CREDITO } from "@/lib/observatorios/registro";
 import { FIM_DA_PAGINA_CREDITO } from "@/lib/credito/navegacao";
 import { htmlNavegacao, htmlParaIrAlem, htmlRodapeColecao, htmlRotulo } from "@/lib/observatorios/cascaPura";
 import {
@@ -81,7 +82,11 @@ describe("1. a casca da aplicação tem o mesmo HTML dos componentes da platafor
     const nav = indice.navs[colecao];
     expect(nav, `${r}: navegação da coleção ${colecao} fora do índice`).toBeTruthy();
     expect(htmlNavegacao(nav, endereco)).toBe(renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: navegacaoDaColecao(colecao), caminho: endereco, idioma: "pt" })));
-    expect(htmlRotulo(indice, endereco, CLASSE_ROTULO_SPA)).toBe(renderToStaticMarkup(createElement(RotuloContexto, { rota: endereco, className: CLASSE_ROTULO_SPA })));
+    // as duas páginas institucionais da aplicação não estão no registro (ficam fora da navegação dos observatórios), e o
+    // RotuloContexto das páginas Next nunca as desenha; na aplicação o rótulo e a trilha dizem o nome delas (achado do Codex no #369)
+    const institucional = ABAS_OBSERVATORIO.find((a) => ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && endereco === `/observatorio${a.caminho}`);
+    if (institucional) expect(htmlRotulo(indice, endereco, CLASSE_ROTULO_SPA)).toContain(`<span>Observatório da Economia · Crédito e sistema financeiro · ${institucional.titulo}</span>`);
+    else expect(htmlRotulo(indice, endereco, CLASSE_ROTULO_SPA)).toBe(renderToStaticMarkup(createElement(RotuloContexto, { rota: endereco, className: CLASSE_ROTULO_SPA })));
     expect(htmlParaIrAlem(indice, endereco)).toBe(renderToStaticMarkup(createElement(ParaIrAlem, { mapa: mapaParaIrAlem() })));
     const extras = [...FIM_DA_PAGINA_CREDITO];
     expect(htmlRodapeColecao(nav, "<p>fontes</p>", extras)).toBe(renderToStaticMarkup(createElement(RodapeColecao, { colecao, extras }, createElement("p", null, "fontes"))));
@@ -182,6 +187,12 @@ describe("3. o HTML que o servidor entrega para cada coleção servida pela apli
     expect(h).toContain('aria-label="Navegação da coleção Dívida e crédito das famílias"');
     expect(h).not.toContain('aria-label="Navegação da coleção Crédito e sistema financeiro"');
     expect(htmlRotulo(indiceCasca(), "/observatorio/payroll-lending-aging")).toContain("Observatório das Famílias · Dívida e crédito das famílias");
+  });
+
+  it("as páginas institucionais têm trilha e rótulo com o nome delas", () => {
+    const h = servido("/observatorio/about");
+    expect(h).toMatch(/<li><span aria-hidden="true">\/<\/span><span aria-current="page">Sobre o Observatório<\/span><\/li><\/ol><\/nav>/);
+    expect(htmlRotulo(indiceCasca(), "/observatorio/suggestions")).toContain("· Sugestões</span>");
   });
 
   it("a raiz da aplicação marca o Início do painel, no grupo Começar", () => {

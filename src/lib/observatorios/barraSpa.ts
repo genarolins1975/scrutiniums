@@ -15,8 +15,9 @@
  * app.js a refaz pelo índice embutido (os painéis do registro sob /observatorio), porque abas do Crédito pertencem também
  * às Famílias e às Contas Públicas.
  */
-import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio } from "@/lib/observatorios/lista";
-import { ATALHOS, paineis } from "@/lib/observatorios/registro";
+import { OBSERVATORIOS, OBSERVATORIO_PRINCIPAL, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
+import { ABAS_INSTITUCIONAIS_CREDITO, ATALHOS, paineis } from "@/lib/observatorios/registro";
+import { abaPorCaminho } from "@/lib/data/observatorioAbas";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { htmlNavegacao, htmlParaIrAlem, htmlRodapeColecao, htmlRotulo, type IndiceCasca, type NavCasca } from "@/lib/observatorios/cascaPura";
 import { FIM_DA_PAGINA_CREDITO, GRUPOS_CREDITO } from "@/lib/credito/navegacao";
@@ -56,11 +57,28 @@ const BUSCA = [
 
 const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+/**
+ * Páginas da aplicação que a trilha, o rótulo e o fim de página resolvem: os painéis do registro sob /observatorio e as duas
+ * páginas institucionais dela ("Sobre o Observatório" e "Sugestões"), que o registro deixa de fora da navegação dos
+ * observatórios mas que o fim de página liga desde a Iniciativa 2 do parecer de UX de 23/10/2026; sem elas, a trilha e o
+ * rótulo dessas páginas diziam "Crédito" no lugar do nome delas (achado do Codex no PR #369).
+ */
+function paineisDaAplicacao(): (readonly [string, string, ObservatorioId, string])[] {
+  const doRegistro = paineis()
+    .filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/"))
+    .map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const);
+  const institucionais = Array.from(ABAS_INSTITUCIONAIS_CREDITO).flatMap((c) => {
+    const aba = abaPorCaminho(c);
+    return aba ? [[`/observatorio${c}`, aba.titulo, "economia" as ObservatorioId, DOMINIO_DA_SPA] as const] : [];
+  });
+  return [...doRegistro, ...institucionais];
+}
+
 /** Índice da trilha da SPA: observatórios, coleções e os painéis do registro sob /observatorio. */
 export function indiceTrilhaSpa() {
   return {
     observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nomeCurto: o.nomeCurto, entrada: destinoObservatorio(o), colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
-    paineis: paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/")).map((p) => [p.rota, p.titulo, p.observatorio, p.colecao]),
+    paineis: paineisDaAplicacao(),
   };
 }
 
@@ -72,7 +90,7 @@ export function indiceTrilhaSpa() {
 function indiceSpa(): IndiceContexto {
   return {
     observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nome: o.nome, nomeCurto: o.nomeCurto, entrada: o.entrada, metodo: o.metodo, colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
-    paineis: paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/")).map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const),
+    paineis: paineisDaAplicacao(),
   };
 }
 
@@ -166,12 +184,12 @@ let indiceCache: IndiceCasca | null = null;
 /** Índice da casca: os painéis da aplicação, os atalhos deles, os observatórios e a navegação de cada coleção dona de um painel. */
 export function indiceCasca(): IndiceCasca {
   if (indiceCache) return indiceCache;
-  const daAplicacao = paineis().filter((p) => p.rota === "/observatorio" || p.rota.startsWith("/observatorio/"));
-  const colecoes = Array.from(new Set(daAplicacao.map((p) => p.colecao)));
+  const daAplicacao = paineisDaAplicacao();
+  const colecoes = Array.from(new Set(daAplicacao.map((p) => p[3])));
   indiceCache = {
     observatorios: OBSERVATORIOS.map((o) => ({ id: o.id, nome: o.nome, destino: destinoObservatorio(o), colecoes: o.colecoes.map((c) => ({ id: c.id, nome: c.nome, href: c.href })) })),
-    paineis: daAplicacao.map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const),
-    atalhos: ATALHOS.filter((a) => daAplicacao.some((p) => p.rota === a.rota)).map((a) => [a.rota, a.observatorio, a.colecao] as const),
+    paineis: daAplicacao,
+    atalhos: ATALHOS.filter((a) => daAplicacao.some((p) => p[0] === a.rota)).map((a) => [a.rota, a.observatorio, a.colecao] as const),
     navs: Object.fromEntries(colecoes.map((c) => [c, navCasca(c)])),
   };
   return indiceCache;
