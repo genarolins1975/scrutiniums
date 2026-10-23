@@ -44,7 +44,7 @@ function Panorama(){
  return <PaginaPainel rota={BASE_JUDICIARIO+'/panorama'} principal={false}
   abertura={{grupo:TEMAS_EFICIENCIA.judiciario.nome,acento:'obee',titulo:CAPITULOS.find(c=>c[0]==='panorama')![2],lead:textos.panorama,
    recorte:{periodo:'ano-base '+d.ano,universo:'Justiça Estadual, Federal e do Trabalho',unidade:'processos',fonte:'CNJ, Justiça em Números '+d.edicao},
-   limite:'se um ramo é mais eficiente que outro, nem o total do Judiciário: são volumes de três ramos, arredondados a 0,1 milhão, e a referência nacional tem outro perímetro.',
+   limite:'uma classificação entre os ramos nem o total do Judiciário: são volumes de três ramos, arredondados a 0,1 milhão, e a referência nacional tem outro perímetro.',
    fontesDatasSiglas:<><p>{fonte} Original identificado pelo SHA-256 <span className="break-all">{d.fonte.sha256}</span>; captura em {dataBR(d.capturadoEm,'pt')}.</p><p>CNJ: Conselho Nacional de Justiça.</p></>}}
   figuras={<FiguraAnalitica id="ramos" pergunta="Quantos processos chegaram, saíram e ficaram em cada ramo?" subtitulo={'Casos novos, baixados e pendentes · processos · três ramos, '+d.ano} natureza="OBSERVADO" idioma="pt" ressalva={<TextoCoberturaJudiciario/>}
    naoConcluir="Os volumes são arredondados a 0,1 milhão: somas e razões derivadas são aproximadas. A soma dos três ramos não é o total do Judiciário, e a diferença para a referência nacional não é erro medido."
