@@ -8,6 +8,9 @@ import PaginaDeficit from "@/app/eficiencia-estatal/habitacao/deficit/page";
 import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
 import PaginaJudiciario from "@/app/eficiencia-estatal/judiciario/[capitulo]/page";
 import PaginaCultura from "@/app/eficiencia-estatal/cultura/[[...painel]]/page";
+// a página da mobilidade é o cabeçalho comum (que leva o recorte pela navegação do app router) e este corpo: o teste renderiza o corpo
+import { PainelMobilidade } from "@/components/eficiencia/mobilidade/PainelMobilidade";
+import type { PaginaMobilidade } from "@/lib/eficiencia/mobilidade/modelo";
 import PaginaSeguranca from "@/app/eficiencia-estatal/seguranca-publica/[[...painel]]/page";
 
 /**
@@ -31,6 +34,16 @@ describe("molde de painel: Eficiência Estatal, frente obee-b", () => {
   // os quatro capítulos da TIC Cultura têm o mesmo corpo (o explorador das estimativas): o molde vale para os quatro
   it.each(["rede", "acesso", "atividades", "acervos"])("/eficiencia-estatal/cultura/%s", (slug) => {
     conferirPainel(`/eficiencia-estatal/cultura/${slug}`, html(createElement(PaginaCultura, { params: { painel: [slug] } })));
+  });
+  // os capítulos de medida da mobilidade têm o mesmo corpo (o explorador; no tempo, também a distribuição do Censo)
+  it.each(["tempo", "transporte", "acesso", "seguranca", "recursos", "comparar"])("/eficiencia-estatal/mobilidade-transporte/%s", (slug) => {
+    conferirPainel(`/eficiencia-estatal/mobilidade-transporte/${slug}`, html(createElement(PainelMobilidade, { slug: slug as PaginaMobilidade, p: {} })));
+  });
+  it("/eficiencia-estatal/mobilidade-transporte/tempo com recorte na URL", () => {
+    const h = html(createElement(PainelMobilidade, { slug: "tempo", p: { nivel: "municipio", uf: "AL", territorio: "2704302" } }));
+    conferirPainel("/eficiencia-estatal/mobilidade-transporte/tempo", h);
+    // o HTML do servidor já sai no recorte pedido: a distribuição do território escolhido
+    expect(h).toContain("A distribuição em Maceió");
   });
   // o corpo dos capítulos de medida do meio ambiente é um só (riscos, prevenção e pressões ambientais): o molde vale para os três
   it.each(["riscos", "prevencao", "residuos"])("/eficiencia-estatal/meio-ambiente-clima/%s", (slug) => {
@@ -68,6 +81,15 @@ describe("molde de painel: o conteúdo de antes continua na página", () => {
     expect(h).toContain("data-figura-legado");
     // recursos e métodos seguem fora do molde
     expect(html(createElement(PaginaCultura, { params: { painel: ["recursos"] } }))).not.toContain("data-painel");
+  });
+  it("mobilidade: a distribuição, o explorador paginado, os downloads e os outros capítulos continuam", () => {
+    const h = html(createElement(PainelMobilidade, { slug: "tempo", p: {} }));
+    for (const t of ["Quanto do dia fica no caminho?", "Tempo de ida ao trabalho", "Meio em que passa mais tempo", "Baixar recorte completo (CSV)", "Aplicar recorte", "Do deslocamento ao serviço", "Ver cobertura e limites"]) {
+      expect(h).toContain(t);
+    }
+    expect(html(createElement(PainelMobilidade, { slug: "transporte", p: {} }))).toContain("Quanto custariam os embarques no mês?");
+    // panorama, métodos e oportunidades seguem fora do molde
+    expect(html(createElement(PainelMobilidade, { slug: "", p: {} }))).not.toContain("data-painel");
   });
   it("déficit: os três números, a comparação e os três conceitos", () => {
     const h = html(createElement(PaginaDeficit));
