@@ -2,8 +2,8 @@
  "data": "2026-10-23",
  "build": "5aOKeUZ00ko8KvkPzTcRc",
  "maquina": "4 vCPU, 16 GB",
- "comando": "npm run evidencias -- --rotas /observatorio/credit /observatorio/payroll-lending-aging /observatorio/interest-rates /observatorio /observatorio/institutions --saida docs/ux-2026-10-23/credito/pr2 --larguras 390,1440 --modos com",
- "tempo": "1 min 09 s",
+ "comando": "npm run evidencias -- --rotas /observatorio/credit /observatorio/payroll-lending-aging /observatorio/pix /observatorio/sectors /observatorio/subnational-credit /observatorio/interest-rates /observatorio /observatorio/institutions --saida docs/ux-2026-10-23/credito/pr2 --larguras 390,1440 --modos com",
+ "tempo": "1 min 30 s",
  "resultados": [
   {
    "rota": "/observatorio/credit",
@@ -68,6 +68,124 @@
    "login": [],
    "captura": "observatorio_payroll_lending_aging-1440-com-sessao.jpg",
    "primeiraTela": "observatorio_payroll_lending_aging-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/pix",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/observatorio/pix",
+   "barra": true,
+   "cromo": 138,
+   "topoH1": 206,
+   "rolagemHorizontal": false,
+   "axe": [
+    {
+     "id": "color-contrast",
+     "impacto": "serious",
+     "nos": 10,
+     "alvos": [
+      "#px-natureza > .card > .tblwrap[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(2)",
+      "tr:nth-child(1) > td:nth-child(2) > .src",
+      "#px-natureza > .card > .tblwrap[role=\"region\"] > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+     ]
+    }
+   ],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_pix-390-com-sessao.jpg",
+   "primeiraTela": "observatorio_pix-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/pix",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/observatorio/pix",
+   "barra": true,
+   "cromo": 187,
+   "topoH1": 259,
+   "rolagemHorizontal": false,
+   "axe": [
+    {
+     "id": "color-contrast",
+     "impacto": "serious",
+     "nos": 10,
+     "alvos": [
+      "#px-natureza > .card > .tblwrap > table > tbody > tr:nth-child(1) > td:nth-child(2)",
+      "tr:nth-child(1) > td:nth-child(2) > .src",
+      "#px-natureza > .card > .tblwrap > table > tbody > tr:nth-child(1) > td:nth-child(3)"
+     ]
+    }
+   ],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_pix-1440-com-sessao.jpg",
+   "primeiraTela": "observatorio_pix-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/sectors",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/observatorio/sectors",
+   "barra": true,
+   "cromo": 138,
+   "topoH1": 206,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_sectors-390-com-sessao.jpg",
+   "primeiraTela": "observatorio_sectors-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/sectors",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/observatorio/sectors",
+   "barra": true,
+   "cromo": 187,
+   "topoH1": 259,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_sectors-1440-com-sessao.jpg",
+   "primeiraTela": "observatorio_sectors-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/subnational-credit",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/observatorio/subnational-credit",
+   "barra": true,
+   "cromo": 138,
+   "topoH1": 224,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_subnational_credit-390-com-sessao.jpg",
+   "primeiraTela": "observatorio_subnational_credit-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/observatorio/subnational-credit",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/observatorio/subnational-credit",
+   "barra": true,
+   "cromo": 187,
+   "topoH1": 259,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "observatorio_subnational_credit-1440-com-sessao.jpg",
+   "primeiraTela": "observatorio_subnational_credit-1440-com-sessao-primeira-tela.jpg"
   },
   {
    "rota": "/observatorio/interest-rates",
