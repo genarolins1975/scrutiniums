@@ -44,6 +44,14 @@ const COM_CONTA = [
   "/gas-natural/gnv-e-gas-encanado", "/observatorio-do-credito/quanto-meu-banco-cobra", "/observatorio-do-credito/simulador-da-parcela",
   "/saneamento/preco-regulado/simulador", "/saneamento/tarifa-social", "/setor-eletrico/inclusao-energetica/tarifa-social",
   "/territorio/desastres", "/territorio/queimadas",
+  // PR 2a da Iniciativa 1 (Grupo 2, Eficiência Estatal)
+  "/eficiencia-estatal/habitacao", "/eficiencia-estatal/habitacao/aluguel-renda", "/eficiencia-estatal/habitacao/inadequacao",
+  "/eficiencia-estatal/cultura", "/eficiencia-estatal/cultura/recursos", "/eficiencia-estatal/trabalho-renda/qualificacao",
+  "/eficiencia-estatal/trabalho-renda/recursos", "/eficiencia-estatal/assistencia-social", "/eficiencia-estatal/assistencia-social/acesso",
+  "/eficiencia-estatal/assistencia-social/acompanhamento", "/eficiencia-estatal/assistencia-social/cuidado",
+  "/eficiencia-estatal/assistencia-social/recursos", "/eficiencia-estatal/seguranca-alimentar",
+  "/eficiencia-estatal/seguranca-alimentar/acesso", "/eficiencia-estatal/seguranca-alimentar/necessidades",
+  "/eficiencia-estatal/seguranca-alimentar/qualidade", "/eficiencia-estatal/seguranca-alimentar/recursos",
 ];
 
 describe("piso de 12 px", () => {
