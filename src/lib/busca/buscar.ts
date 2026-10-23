@@ -324,8 +324,9 @@ export function distancia(a: string, b: string, max: number): number {
 }
 
 /**
- * Até três palavras do índice a um erro de digitação (dois a partir de oito letras), com a mesma primeira letra, as mais
- * próximas e, entre elas, as mais frequentes.
+ * As palavras do índice a um erro de digitação (dois a partir de oito letras), com a mesma primeira letra, só as mais próximas e,
+ * entre elas, das mais para as menos frequentes. O corte em três vem depois de cada uma ser buscada (com o filtro de coleção),
+ * para a candidata certa da busca local não ficar de fora por ser menos frequente no índice inteiro.
  */
 function candidatas(pronto: Pronto, w: Palavra): string[] {
   const max = w.norma.length >= 8 ? 2 : 1;
@@ -338,8 +339,11 @@ function candidatas(pronto: Pronto, w: Palavra): string[] {
   }
   achadas.sort((a, b) => a.d - b.d || b.f - a.f || a.p.localeCompare(b.p));
   const menor = achadas[0]?.d;
-  return achadas.filter((x) => x.d === menor).slice(0, 3).map((x) => x.p);
+  return achadas.filter((x) => x.d === menor).slice(0, LIMITE_CANDIDATAS).map((x) => x.p);
 }
+
+/** Teto de candidatas buscadas por palavra: limita o trabalho a cada tecla, muito acima das que aparecem na prática. */
+const LIMITE_CANDIDATAS = 12;
 
 /** O termo com as palavras trocadas, preservando o resto do que se escreveu. */
 function trocar(termo: string, trocas: Map<string, string>): string {
@@ -366,7 +370,7 @@ export function buscar(indice: IndiceBusca, termo: string, opcoes: OpcoesBusca =
   if (opcoesPorPalavra.some((o) => o.length === 0)) return resposta(direto);
   // as combinações das trocas (na prática, uma palavra errada e até três candidatas)
   let combinacoes: (readonly [string, string])[][] = [[]];
-  for (const o of opcoesPorPalavra) combinacoes = combinacoes.flatMap((c) => o.map((x) => [...c, x])).slice(0, 9);
+  for (const o of opcoesPorPalavra) combinacoes = combinacoes.flatMap((c) => o.map((x) => [...c, x])).slice(0, LIMITE_CANDIDATAS);
   const comResultado = combinacoes
     .map((c) => {
       const para = trocar(termo, new Map(c.map(([de, por]) => [de, pronto.grafia.get(por) ?? por])));

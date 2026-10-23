@@ -105,7 +105,8 @@ export function BuscaPlataforma({
   const destacada = ativo >= 0 ? ativo : lista.findIndex((r) => r.href);
   const mostra = aberta && !!resposta;
   const opcao = (n: number) => `${id}-op-${n}`;
-  const paraTudo = `/buscar${termo.trim() ? `?q=${encodeURIComponent(termo.trim())}` : ""}`;
+  // "mesmo assim" acompanha o leitor até /buscar: sem exato=1 a página aplicaria a correção de novo
+  const paraTudo = `/buscar${termo.trim() ? `?q=${encodeURIComponent(termo.trim())}${exato ? "&exato=1" : ""}` : ""}`;
 
   function preparar() {
     setAberta(true);
@@ -243,6 +244,7 @@ export function BuscaPlataforma({
             maxLength={120}
             className="bp-busca-campo"
           />
+          {exato && <input type="hidden" name="exato" value="1" />}
           {barra && (
             <kbd className="bp-busca-tecla" aria-hidden="true">
               /

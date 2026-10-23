@@ -201,6 +201,9 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
       await page.locator("[data-barra-plataforma] button.bp-busca-acao", { hasText: "mesmo assim" }).click();
       await expect.poll(() => opcoes.count()).toBe(0);
       expect(await campo.evaluate((el) => el === document.activeElement)).toBe(true);
+      // a escolha acompanha o leitor até /buscar (Enter e "Ver na página de busca"): sem exato=1 a página corrigiria de novo
+      expect(await page.locator(`${CAMPO} input[name=exato]`).getAttribute("value")).toBe("1");
+      expect(await page.locator("[data-barra-plataforma] .bp-busca-rodape a").getAttribute("href")).toBe("/buscar?q=saneamneto&exato=1");
       // parcial: nenhuma página tem as duas palavras; o rótulo diz por quais chegou ao mais próximo
       await page.keyboard.press("Control+a");
       await page.keyboard.type("juros do cartão");

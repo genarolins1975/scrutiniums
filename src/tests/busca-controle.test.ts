@@ -240,6 +240,23 @@ describe("bloco 1: regras do motor", () => {
     }
   });
 
+  it("na busca local, a correção certa da coleção não fica de fora por ser rara no índice inteiro (revisão do PR 366)", () => {
+    const outra = (id: string, titulo: string) => entrada(id, titulo, { colecao: "outra" });
+    const i: IndiceBusca = {
+      ...sintetico([
+        ...["a", "b", "c"].flatMap((k) => [outra(`l${k}`, `Casal ${k}`), outra(`z${k}`, `Casaz ${k}`), outra(`r${k}`, `Casar ${k}`)]),
+        entrada("alvo", "Casam"),
+      ]),
+      colecoes: [
+        { id: "renda", observatorio: "familias", nome: "Renda", href: "/r" },
+        { id: "outra", observatorio: "familias", nome: "Outra", href: "/o" },
+      ],
+    };
+    const r = buscar(i, "casax", { colecao: "renda" });
+    expect(r.correcao).toEqual({ de: "casax", para: "casam" });
+    expect(r.resultados.map((x) => x.id)).toEqual(["alvo"]);
+  });
+
   it("filtro de coleção vale também para o parcial e para a correção", () => {
     const r = buscar(indiceDeBusca(), "saneamneto", { colecao: "setor-eletrico" });
     expect(r.resultados.every((x) => x.colecao === "setor-eletrico")).toBe(true);
