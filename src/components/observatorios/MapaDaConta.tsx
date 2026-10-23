@@ -158,6 +158,9 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
               <li key={r.caminho}>
                 <Link href={r.caminho} prefetch={false} className={`${styles.alvo} t-corpo text-carvao`}>
                   {r.titulo}
+                  <span aria-hidden="true" className={styles.seta}>
+                    →
+                  </span>
                 </Link>
                 {r.colecao && <span className="t-meta block text-mineral">{r.colecao}</span>}
               </li>
