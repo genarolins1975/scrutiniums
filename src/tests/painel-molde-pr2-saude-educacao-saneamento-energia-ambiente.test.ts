@@ -18,6 +18,7 @@ import PaginaEduGastos from "@/app/eficiencia-estatal/educacao-municipal-capitai
 import PaginaEduAtendimento from "@/app/eficiencia-estatal/educacao-municipal-capitais/atendimento/page";
 import PaginaEduResultados from "@/app/eficiencia-estatal/educacao-municipal-capitais/resultados/page";
 import PaginaEduComparar from "@/app/eficiencia-estatal/educacao-municipal-capitais/comparar/page";
+import PaginaSaudeComparar from "@/app/eficiencia-estatal/saude-capitais/comparar/page";
 import { ComposicaoDespesa, MatriculasPorEtapa, PonteDaRazao } from "@/components/eficiencia/DetalhesMedida";
 import { Indice, anosDaMedida } from "@/lib/eficiencia/consulta";
 import { contextos } from "@/lib/eficiencia/contexto";
@@ -72,6 +73,22 @@ describe("molde de painel: saneamento no OBEE", () => {
     expect(h).toContain("O que os municípios informaram?");
     expect(h).toContain('data-bloco-tabela=""');
     expect(h).not.toContain("overflow-x-auto");
+  });
+});
+
+describe("molde de painel: saúde nas capitais, Comparar capitais", () => {
+  it("/eficiencia-estatal/saude-capitais/comparar", () => {
+    const h = pagina(PaginaSaudeComparar);
+    conferirPainel("/eficiencia-estatal/saude-capitais/comparar", h);
+    // a mediana e o tamanho do grupo na faixa, a distribuição legada, a tabela completa do kit à vista, a ordem nos controles e os arquivos
+    expect(h.match(/data-numero-indicador=""/g)).toHaveLength(2);
+    expect(h).toContain('data-figura-legado="distribuicao-capitais"');
+    for (const t of ["Capital A", "Capital B", "Medida", "Ordenar a tabela por", "Sentido", "Baixar CSV da tabela", "Baixar CSV da medida", "Valor em itálico", "Siglas desta página", "Os três perímetros"]) {
+      expect(h).toContain(t);
+    }
+    expect(h).toContain('data-bloco-tabela=""');
+    // a tabela à mão de antes (cabeçalho com botões e grupos de colunas) saiu
+    expect(h).not.toContain('scope="colgroup"');
   });
 });
 
