@@ -523,8 +523,8 @@ describe("BaixarImagem depois da hidratação", () => {
 /* ---------- o que o código garante ---------- */
 
 describe("contratos do código do botão", () => {
-  const botao = ler("src/components/energia/BaixarImagem.tsx");
-  const lib = ler("src/lib/energia/imagem-grafico.ts");
+  const botao = ler("src/components/painel/BaixarImagem.tsx");
+  const lib = ler("src/lib/painel/imagem-grafico.ts");
 
   it("sem hexadecimal solto, sem alert, sem rede, sem fonte nem imagem externa, só fonte do sistema", () => {
     for (const t of [botao, lib]) {
@@ -549,7 +549,7 @@ describe("contratos do código do botão", () => {
 
   it("os realces que são do momento (passagem do ponteiro e anel de foco) levam data-nao-exportar nos gráficos de barras e de pontos", () => {
     for (const f of ["GraficoBarras", "GraficoPontos"]) {
-      const t = ler(`src/components/energia/${f}.tsx`);
+      const t = ler(`src/components/painel/${f}.tsx`);
       expect(t, f).toMatch(/<rect (?:key=\{i\} )?data-nao-exportar="" [^>]*opacity="0\.55"/);
       expect(t, f).toMatch(/<rect data-nao-exportar="" [^>]*stroke="var\(--cor-energia\)" strokeWidth="2" rx="2"/);
     }

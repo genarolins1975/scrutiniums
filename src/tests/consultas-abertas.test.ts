@@ -80,7 +80,7 @@ describe("exportação montada no navegador", () => {
   });
 
   it("as tabelas e o simulador passam pela guarda; a entrada da Eficiência Estatal não gera mais CSV no navegador", () => {
-    for (const p of ["src/components/energia/TabelaInterativa.tsx", "src/components/energia/ListaConsultavel.tsx", "src/components/saneamento/SimuladorConta.tsx"]) {
+    for (const p of ["src/components/painel/TabelaInterativa.tsx", "src/components/energia/ListaConsultavel.tsx", "src/components/saneamento/SimuladorConta.tsx"]) {
       expect(ler(p), p).toMatch(/<ExportacaoComConta[\s\S]*onClick=\{\(\) => exportar\(f\)\}|<ExportacaoComConta[\s\S]*onClick=\{exportar\}/);
     }
     const atlas = ler("src/components/eficiencia/AtlasCidadao.tsx");

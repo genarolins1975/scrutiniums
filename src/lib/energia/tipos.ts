@@ -5,52 +5,12 @@
  * na interface: campo ausente é null e é exibido como ausência.
  */
 
-export type Natureza = "OBSERVADO" | "CALCULADO" | "ESTIMADO" | "PREVISTO" | "CENARIO";
+import type { Download, Natureza, Proveniencia } from "@/lib/painel/tipos";
+
+/** Contrato de auditabilidade da plataforma, movido para o kit de painel (src/lib/painel/tipos.ts) e reexportado aqui. */
+export type { Download, Fonte, Natureza, Periodo, Proveniencia } from "@/lib/painel/tipos";
 export type Submercado = "SE" | "S" | "NE" | "N";
 export type Regiao = Submercado | "SIN";
-
-export type Fonte = {
-  orgao: string;
-  dataset: string;
-  recurso: string;
-  url_dataset: string;
-  url_primaria: string;
-  licenca: string;
-};
-
-export type Periodo = { inicio: string; fim: string };
-
-export type Proveniencia = {
-  indicador: string;
-  natureza: Natureza;
-  fonte: Fonte;
-  unidade: string;
-  frequencia: string;
-  periodo_referencia: Periodo;
-  publicado_pela_fonte_em: string | null;
-  capturado_em: string | null;
-  validado_em: string;
-  cobertura_historica: Periodo;
-  transformacoes: string[];
-  formula: string | null;
-  snapshot: { id: string | null; sha256: string | null };
-  versao_pipeline: string;
-  versao_codigo: string | null;
-  /** Revisões detectadas entre as vintages integradas; null quando a detecção não se aplica. */
-  revisoes_conhecidas: {
-    detectado_em: string;
-    total: number;
-    vintages_comparadas?: number;
-    arquivos?: number;
-    /** Downloads bem-sucedidos que vieram idênticos a uma captura já integrada (não viram vintage). */
-    recapturas_sem_mudanca?: number;
-    ultimo_download_ok?: string | null;
-    exemplos: { serie: string; ref: string; valores: number }[];
-  } | null;
-  limitacoes: string[];
-  download: string | null;
-  notas_fonte: string | null;
-};
 
 export type Cabecalho = {
   dominio: "energia";
@@ -61,8 +21,6 @@ export type Cabecalho = {
   disponivel: boolean;
   motivo?: string;
 };
-
-export type Download = { rotulo: string; url: string };
 
 /* ---------- PLD ---------- */
 

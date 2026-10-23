@@ -638,7 +638,7 @@ describe("auditoria do mapa: regressões", () => {
   });
 
   it("gráfico reserva a altura final já no HTML do servidor, e âncoras abaixo dele não se deslocam", () => {
-    expect(ler("src/components/energia/GraficoLinhas.tsx")).toMatch(/width="100%"\s*height=\{h\}/);
+    expect(ler("src/components/painel/GraficoLinhas.tsx")).toMatch(/width="100%"\s*height=\{h\}/);
   });
 
   it("a home explica nomes e réguas, ausência e o canal de correções", () => {

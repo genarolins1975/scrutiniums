@@ -1,20 +1,5 @@
-import { usePathname } from "next/navigation";
-import type { Idioma } from "@/lib/idioma";
-import { idiomaDoCaminhoEnergia } from "./idioma";
-
-/* Sem "use client": é módulo de hooks, importado por componentes de cliente. */
-
-/**
- * Idioma para componentes de cliente (inglês só dentro de /en/setor-eletrico). Lê o endereço pelo roteador, que é o mesmo no SSR e no
- * navegador (a hidratação não diverge) e já traz o destino durante uma navegação. Fora do App
- * Router (teste que renderiza o componente isolado) vale português.
- */
-export function useIdioma(): Idioma {
-  return idiomaDoCaminhoEnergia(usePathname());
-}
-
-/** Versão de cliente de tx(): devolve a função já presa ao idioma da página. */
-export function useTx(): <T>(pt: T, en: T) => T {
-  const idioma = useIdioma();
-  return <T,>(pt: T, en: T): T => (idioma === "en" ? en : pt);
-}
+/** Movido para src/lib/painel/useIdioma.ts (kit de painel, Iniciativa 1 do parecer de UX de 23/10/2026); este caminho reexporta até o PR 5, que o retira. */
+export {
+  useIdioma,
+  useTx,
+} from "@/lib/painel/useIdioma";
