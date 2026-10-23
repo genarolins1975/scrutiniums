@@ -51,7 +51,7 @@ function lista(itens: string[]): string {
 function Campo({ rotulo, id, children, largo = false, lugar = "" }: { rotulo: string; id?: string; children: ReactNode; largo?: boolean; lugar?: string }) {
   return (
     <section id={id} className={`min-w-0 scroll-mt-6 border-t border-linha py-6 ${largo ? "lg:col-span-2" : ""} ${lugar}`}>
-      <h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>
+      <h2 className="rotulo text-mineral">{rotulo}</h2>
       <div className="mt-2 max-w-prose2 leading-relaxed text-carvao">{children}</div>
     </section>
   );

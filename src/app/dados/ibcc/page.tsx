@@ -40,7 +40,7 @@ export default function IbccPage() {
     dm: d.anterior && typeof d.anterior.contribuicoes[k] === "number" ? v - d.anterior.contribuicoes[k] : null,
   }));
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <Trilha rota="/observatorio" extras={[{ titulo: "Dados abertos", href: "/dados" }, { titulo: "IBCC" }]} />

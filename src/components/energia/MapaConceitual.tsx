@@ -112,7 +112,7 @@ export function MapaConceitual({
   const escolhido = porId.get(atual)!;
 
   return (
-    <div className="energia-mapa-atlas">
+    <div className="energia-mapa-atlas contexto-escuro">
       <div className="energia-mapa-lentes" role="group" aria-label={tx("Tipos de ligação visíveis", "Visible connection types")}>
         <button type="button" aria-pressed={lente === TODAS} onClick={() => setLente(TODAS)}>{tx("Todas as relações", "All relationships")}</button>
         {tipos.map(t => <button type="button" key={t.id} aria-pressed={lente === t.id} onClick={() => setLente(t.id)}>{t.rotulo}</button>)}

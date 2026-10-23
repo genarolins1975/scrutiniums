@@ -89,7 +89,7 @@ export default async function AdminPage() {
 
       <div className="mt-12 space-y-14">
         <section aria-label="Visão geral" className="border border-linha bg-papel p-8">
-          <SectionHeading number="01" label="Indicadores" title="Visão geral" />
+          <SectionHeading label="Indicadores" title="Visão geral" />
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <Indicador rotulo="Usuários" valor={fmtNumber(vg.totalUsuarios)} detalhe="Contas criadas" />
             <Indicador
@@ -123,7 +123,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Atividade diária" className="border border-linha bg-papel p-8">
-          <SectionHeading number="02" label="Engajamento" title="Atividade diária" />
+          <SectionHeading label="Engajamento" title="Atividade diária" />
           <div className="grid gap-10 lg:grid-cols-2">
             <ColunasDiarias
               pontos={stats.visitasPorDia}
@@ -154,12 +154,12 @@ export default async function AdminPage() {
           </p>
         </section>
 
-        <UsoPaginas uso={uso} numero="03" />
+        <UsoPaginas uso={uso} />
 
-        <UsoBusca busca={busca} numero="04" />
+        <UsoBusca busca={busca} />
 
         <section aria-label="Seções mais visitadas" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Navegação" title="Seções mais visitadas" />
+          <SectionHeading label="Navegação" title="Seções mais visitadas" />
           {stats.ranking.length === 0 ? (
             <EmptyState
               title="Ainda não há visitas registradas"
@@ -184,7 +184,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Funil de onboarding" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Aquisição" title="Funil de onboarding" />
+          <SectionHeading label="Aquisição" title="Funil de onboarding" />
           <Funil etapas={stats.funil} />
           <p className="mt-6 text-xs text-mineral">
             Eventos acumulados desde o lançamento. {fmtNumber(stats.falhasVerificacao30d)} falha
@@ -194,7 +194,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Usuários recentes" className="border border-linha bg-papel p-8">
-          <SectionHeading number="07" label="Contas" title="Usuários recentes" />
+          <SectionHeading label="Contas" title="Usuários recentes" />
           {stats.perfisUso.length > 0 && (
             <div className="mb-10">
               <h3 className="mb-4 font-serif text-xl text-carvao">Perfil de uso das contas completas</h3>
@@ -286,7 +286,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Sugestões" className="border border-linha bg-papel p-8">
-          <SectionHeading number="08" label="Feedback" title="Sugestões dos usuários" />
+          <SectionHeading label="Feedback" title="Sugestões dos usuários" />
           {stats.sugestoesRecentes.length === 0 ? (
             <EmptyState
               title="Nenhuma sugestão ainda"
@@ -317,7 +317,7 @@ export default async function AdminPage() {
         </section>
 
         <section aria-label="Auditoria" className="border border-linha bg-papel p-8">
-          <SectionHeading number="09" label="Segurança" title="Auditoria de mudanças sensíveis" />
+          <SectionHeading label="Segurança" title="Auditoria de mudanças sensíveis" />
           {stats.auditoria.length === 0 ? (
             <EmptyState
               title="Nenhum registro de auditoria"

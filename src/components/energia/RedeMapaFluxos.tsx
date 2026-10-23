@@ -201,7 +201,7 @@ export function RedeMapaFluxos({
               <text x={POS[e.pais].x} y={POS[e.pais].y - 2} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)">
                 {nomePais(e.pais, idioma)}
               </text>
-              <text x={POS[e.pais].x} y={POS[e.pais].y + 11} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
+              <text x={POS[e.pais].x} y={POS[e.pais].y + 11} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
                 {e.rotuloValor}
               </text>
             </g>

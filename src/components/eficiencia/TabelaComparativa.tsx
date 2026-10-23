@@ -167,7 +167,7 @@ export function TabelaComparativa({
               </th>
               {colunas.map((c) => (
                 <th key={c.id} scope="col" aria-sort={aria(c.id)} className={`${esconde(c)} min-w-[6.75rem] border-b border-carvao-muted px-2 py-2 text-right md:min-w-[8.5rem] md:px-2.5 align-bottom ${c.id === colSel ? "bg-obee-fundo" : ""}`}>
-                  <span className="block text-[0.66rem] font-normal uppercase tracking-wide text-carvao-muted">
+                  <span className="block text-xs font-normal uppercase tracking-wide text-carvao-muted">
                     {ROTULO_GRUPO[c.grupo]}
                     {c.porEtapa ? ` · ${nomeEtapa(dados, etapa)}` : ""}
                   </span>

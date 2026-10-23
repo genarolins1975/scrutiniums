@@ -16,25 +16,19 @@ import type { Idioma } from "@/lib/idioma";
  */
 const link = "text-bronze underline underline-offset-4 hover:text-bronze-dark";
 
-function Bloco({ s, n }: { s: Secao; n: number }) {
+function Bloco({ s }: { s: Secao }) {
   return (
     <section aria-labelledby={s.id}>
-      <div className="mb-3 flex items-baseline gap-4">
-        <span className="font-serif text-xl text-bronze" aria-hidden="true">{String(n).padStart(2, "0")}</span>
-        <h2 id={s.id} className="font-serif text-2xl text-carvao">{s.titulo}</h2>
-      </div>
+      <h2 id={s.id} className="mb-3 font-serif text-2xl text-carvao">{s.titulo}</h2>
       {s.paragrafos.map((p) => <p key={p} className="text-carvao-muted">{p}</p>)}
       {s.itens?.length ? <ul className="mt-2 list-disc space-y-1 pl-5 text-carvao-muted">{s.itens.map((i) => <li key={i}>{i}</li>)}</ul> : null}
     </section>
   );
 }
 
-function Titulo({ id, n, children }: { id: string; n: number; children: React.ReactNode }) {
+function Titulo({ id, children }: { id: string; children: React.ReactNode }) {
   return (
-    <div className="mb-3 flex items-baseline gap-4">
-      <span className="font-serif text-xl text-bronze" aria-hidden="true">{String(n).padStart(2, "0")}</span>
-      <h2 id={id} className="font-serif text-2xl text-carvao">{children}</h2>
-    </div>
+    <h2 id={id} className="mb-3 font-serif text-2xl text-carvao">{children}</h2>
   );
 }
 
@@ -46,17 +40,16 @@ export function SobreConteudo({ idioma }: { idioma: Idioma }) {
   const { erros } = registroErros();
   const doi = INSTITUCIONAL.zenodo.doi_conceito;
   const licenca = textosInstitucionais(INSTITUCIONAL, idioma).licenca_derivados;
-  let n = 0;
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView idioma={idioma} />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle label={t.rotulo} title={t.titulo} description={t.descricao(listaObservatorios(idioma))} />
         <div className="mt-10 max-w-prose2 space-y-10">
-          {inst.map((s) => <Bloco key={s.id} s={s} n={++n} />)}
+          {inst.map((s) => <Bloco key={s.id} s={s} />)}
 
           <section aria-labelledby="correcao">
-            <Titulo id="correcao" n={++n}>{t.correcaoTitulo}</Titulo>
+            <Titulo id="correcao">{t.correcaoTitulo}</Titulo>
             <p className="text-carvao-muted">{t.correcaoTexto}</p>
             <p className="mt-3 text-carvao-muted">
               <Link href={h("/sobre/erros")} className={link}>{t.registroLink}</Link> ({erros.length}{" "}
@@ -65,14 +58,14 @@ export function SobreConteudo({ idioma }: { idioma: Idioma }) {
           </section>
 
           <section aria-labelledby="governanca">
-            <Titulo id="governanca" n={++n}>{t.governancaTitulo}</Titulo>
+            <Titulo id="governanca">{t.governancaTitulo}</Titulo>
             <p className="text-carvao-muted">
               {t.governancaTexto} <Link href={h("/sobre/governanca")} className={link}>{t.governancaLink}</Link>.
             </p>
           </section>
 
           <section aria-labelledby="citar">
-            <Titulo id="citar" n={++n}>{t.citarTitulo}</Titulo>
+            <Titulo id="citar">{t.citarTitulo}</Titulo>
             <p className="text-carvao-muted">
               {t.citarAntes} <Link href={h("/dados")} className={link}>{t.citarLink}</Link> {t.citarDepois}
             </p>
@@ -84,7 +77,7 @@ export function SobreConteudo({ idioma }: { idioma: Idioma }) {
           </section>
 
           <section aria-labelledby="contato">
-            <Titulo id="contato" n={++n}>{t.contatoTitulo}</Titulo>
+            <Titulo id="contato">{t.contatoTitulo}</Titulo>
             <p className="text-carvao-muted">
               <a href={c.principal.href} className={link} {...(c.principal.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
                 {c.principal.rotulo}

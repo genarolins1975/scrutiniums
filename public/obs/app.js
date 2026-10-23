@@ -359,58 +359,58 @@ function marcosRegulatorios(painel) {
 const IG = {
   basileia: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="capital como colchão sobre os ativos ponderados pelo risco">
     <rect x="20" y="90" width="190" height="40" fill="var(--c-line1,#1d4e89)" opacity=".25" rx="4"/>
-    <text x="115" y="114" text-anchor="middle" font-size="11" fill="var(--ink,#333)">ativos ponderados pelo risco (RWA)</text>
+    <text x="115" y="114" text-anchor="middle" font-size="12" fill="var(--text)">ativos ponderados pelo risco (RWA)</text>
     <rect x="20" y="58" width="190" height="26" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
-    <text x="115" y="75" text-anchor="middle" font-size="11" fill="#fff">capital próprio (PR)</text>
-    <path d="M225 71 h30" stroke="var(--ink,#333)" stroke-dasharray="3,3"/>
-    <text x="262" y="66" font-size="11" fill="var(--ink,#333)">Basileia =</text>
-    <text x="262" y="80" font-size="11" fill="var(--ink,#333)">capital ÷ RWA</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">quanto do risco é bancado com dinheiro próprio?</text>
-    <text x="20" y="40" font-size="11" fill="var(--ink-soft,#666)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
+    <text x="115" y="75" text-anchor="middle" font-size="12" fill="#fff">capital próprio (PR)</text>
+    <path d="M225 71 h30" stroke="var(--text)" stroke-dasharray="3,3"/>
+    <text x="262" y="66" font-size="12" fill="var(--text)">Basileia =</text>
+    <text x="262" y="80" font-size="12" fill="var(--text)">capital ÷ RWA</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">quanto do risco é bancado com dinheiro próprio?</text>
+    <text x="20" y="40" font-size="12" fill="var(--text-2)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
   lcr: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="caixa de alta qualidade contra trinta dias de saídas em estresse">
     <rect x="20" y="45" width="120" height="80" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="6"/>
-    <text x="80" y="80" text-anchor="middle" font-size="11" fill="#fff">ativos líquidos</text>
-    <text x="80" y="95" text-anchor="middle" font-size="11" fill="#fff">de alta qualidade</text>
+    <text x="80" y="80" text-anchor="middle" font-size="12" fill="#fff">ativos líquidos</text>
+    <text x="80" y="95" text-anchor="middle" font-size="12" fill="#fff">de alta qualidade</text>
     <rect x="200" y="70" width="120" height="55" fill="var(--c-line3,#b45309)" opacity=".55" rx="6"/>
-    <text x="260" y="94" text-anchor="middle" font-size="11" fill="var(--ink,#333)">saídas líquidas em</text>
-    <text x="260" y="108" text-anchor="middle" font-size="11" fill="var(--ink,#333)">30 dias de estresse</text>
-    <path d="M148 85 h44" stroke="var(--ink,#333)" marker-end="url(#seta)"/>
-    <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--ink,#333)">≥</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">o caixa aguenta um mês de pânico?</text>
-    <text x="20" y="139" font-size="11" fill="var(--ink-soft,#666)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
+    <text x="260" y="94" text-anchor="middle" font-size="12" fill="var(--text)">saídas líquidas em</text>
+    <text x="260" y="108" text-anchor="middle" font-size="12" fill="var(--text)">30 dias de estresse</text>
+    <path d="M148 85 h44" stroke="var(--text)" marker-end="url(#seta)"/>
+    <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--text)">≥</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">o caixa aguenta um mês de pânico?</text>
+    <text x="20" y="139" font-size="12" fill="var(--text-2)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
   aging: () => `<svg viewBox="0 0 340 130" class="cdlg-ig" role="img" aria-label="linha do tempo do atraso de uma parcela">
     <line x1="25" y1="70" x2="320" y2="70" stroke="var(--c-grid,#ccc)" stroke-width="2"/>
     ${[[25, "dia 0", "vencimento"], [115, "15 dias", "vira ATRASO"], [230, "90 dias", "vira INADIMPLÊNCIA"]].map(([x, t, s]) => `
       <circle cx="${x}" cy="70" r="5" fill="var(--c-line1,#1d4e89)"/>
-      <text x="${x}" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">${t}</text>
-      <text x="${x}" y="92" text-anchor="middle" font-size="11" fill="var(--ink-soft,#666)">${s}</text>`).join("")}
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">os dois relógios do não-pagamento</text>
-    <text x="20" y="118" font-size="11" fill="var(--ink-soft,#666)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
+      <text x="${x}" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text)">${t}</text>
+      <text x="${x}" y="92" text-anchor="middle" font-size="12" fill="var(--text-2)">${s}</text>`).join("")}
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">os dois relógios do não-pagamento</text>
+    <text x="20" y="118" font-size="12" fill="var(--text-2)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
   acp: () => `<svg viewBox="0 0 340 160" class="cdlg-ig" role="img" aria-label="pilha de colchões de capital sobre o mínimo">
     ${[[118, 26, "var(--c-line1,#1d4e89)", "mínimo de capital (8%)"], [88, 26, "var(--c-line2,#0e7c7b)", "colchão de conservação"],
        [66, 18, "#6b46a3", "colchão contracíclico"], [44, 18, "#b45309", "colchão sistêmico (só os grandes)"]].map(([y, h, c, t]) => `
       <rect x="30" y="${y}" width="130" height="${h}" fill="${c}" opacity=".8" rx="3"/>
-      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="11" fill="var(--ink,#333)">${t}</text>`).join("")}
-    <path d="M30 150 h130" stroke="var(--ink,#333)"/>
-    <text x="95" y="158" text-anchor="middle" font-size="9.5" fill="var(--ink-soft,#666)">quanto mais alto, mais protegido</text>
-    <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--ink,#333)">capital mínimo + colchões (ACP)</text></svg>`,
+      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="12" fill="var(--text)">${t}</text>`).join("")}
+    <path d="M30 150 h130" stroke="var(--text)"/>
+    <text x="95" y="158" text-anchor="middle" font-size="12" fill="var(--text-2)">quanto mais alto, mais protegido</text>
+    <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--text)">capital mínimo + colchões (ACP)</text></svg>`,
   eficiencia: () => `<svg viewBox="0 0 340 140" class="cdlg-ig" role="img" aria-label="despesas comparadas às receitas">
     <rect x="30" y="40" width="200" height="30" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
-    <text x="130" y="59" text-anchor="middle" font-size="11" fill="#fff">receitas (intermediação + serviços)</text>
+    <text x="130" y="59" text-anchor="middle" font-size="12" fill="#fff">receitas (intermediação + serviços)</text>
     <rect x="30" y="85" width="110" height="30" fill="var(--c-line3,#b45309)" opacity=".7" rx="4"/>
-    <text x="85" y="104" text-anchor="middle" font-size="11" fill="#fff">despesas</text>
-    <text x="250" y="104" font-size="11" fill="var(--ink,#333)">eficiência = 55%</text>
-    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
-    <text x="30" y="132" font-size="11" fill="var(--ink-soft,#666)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
+    <text x="85" y="104" text-anchor="middle" font-size="12" fill="#fff">despesas</text>
+    <text x="250" y="104" font-size="12" fill="var(--text)">eficiência = 55%</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--text)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
+    <text x="30" y="132" font-size="12" fill="var(--text-2)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
   spread: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="do custo de captar à taxa cobrada">
     <rect x="30" y="95" width="280" height="24" fill="var(--c-line1,#1d4e89)" opacity=".35" rx="4"/>
-    <text x="170" y="111" text-anchor="middle" font-size="11" fill="var(--ink,#333)">custo de captar o dinheiro</text>
+    <text x="170" y="111" text-anchor="middle" font-size="12" fill="var(--text)">custo de captar o dinheiro</text>
     <rect x="30" y="62" width="280" height="28" fill="var(--c-line3,#b45309)" opacity=".55" rx="4"/>
-    <text x="170" y="80" text-anchor="middle" font-size="11" fill="var(--ink,#333)">SPREAD: inadimplência esperada + impostos + custos + margem</text>
-    <path d="M30 50 h280" stroke="var(--ink,#333)" stroke-dasharray="4,3"/>
-    <text x="170" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">taxa cobrada do cliente</text>
-    <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--ink,#333)">a taxa é o custo do dinheiro + o spread</text>
-    <text x="30" y="140" font-size="11" fill="var(--ink-soft,#666)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
+    <text x="170" y="80" text-anchor="middle" font-size="12" fill="var(--text)">SPREAD: inadimplência esperada + impostos + custos + margem</text>
+    <path d="M30 50 h280" stroke="var(--text)" stroke-dasharray="4,3"/>
+    <text x="170" y="42" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text)">taxa cobrada do cliente</text>
+    <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--text)">a taxa é o custo do dinheiro + o spread</text>
+    <text x="30" y="140" font-size="12" fill="var(--text-2)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
 };
 
 const CONCEITOS = {
@@ -936,14 +936,14 @@ function lineChart(opts) {
   for (let i = 0; i <= ticks; i++) {
     const y = Y(tickVals[i]);
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${y}" y2="${y}" style="stroke:var(--c-grid)"/>`;
-    out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
+    out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
   }
   const step = Math.max(1, Math.floor(allX.length / 6));
   for (let i = 0; i < allX.length; i += step) {
     const tx = X(allX[i]);
     // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
     const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="11" style="fill:var(--c-axis-text)">${dateLabel(allX[i])}</text>`;
+    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="12" style="fill:var(--c-axis-text)">${dateLabel(allX[i])}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -954,7 +954,7 @@ function lineChart(opts) {
   if (opts.forecastStart != null && allX.includes(opts.forecastStart)) {
     const x = X(opts.forecastStart);
     out += `<line x1="${x}" x2="${x}" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--c-axis)" stroke-dasharray="2,3"/>`;
-    out += `<text x="${x + 5}" y="${M.t + 9}" font-size="11" style="fill:var(--c-axis-text)">início da previsão</text>`;
+    out += `<text x="${x + 5}" y="${M.t + 9}" font-size="12" style="fill:var(--c-axis-text)">início da previsão</text>`;
   }
   (opts.annotations || []).forEach((an, ai) => {
     if (!allX.includes(an.x)) return;
@@ -963,10 +963,10 @@ function lineChart(opts) {
     // alturas alternadas (quatro faixas) e âncora invertida perto da borda direita: rótulos não se sobrepõem
     const aTy = M.t + 10 + (ai % 4) * 12;
     const aRight = ax > W - M.r - 90;
-    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="11" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
+    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="12" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
   });
   (opts.hlines || []).forEach(hl => {
-    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="11" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
+    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="12" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
   });
   opts.series.forEach((s, si) => {
     const d = s.pts.filter(p => p.y != null).map((p, i) => `${i ? "L" : "M"}${X(p.x)},${Y(p.y)}`).join(" ");
@@ -990,7 +990,7 @@ function lineChart(opts) {
     }
     ends.forEach(e2 => {
       out += `<circle cx="${e2.x}" cy="${Math.min(Math.max(e2.y, M.t + 4), yMax)}" r="0" fill="none"/>`;
-      out += `<text x="${e2.x + 6}" y="${Math.min(Math.max(e2.y, M.t + 8), yMax) + 3}" font-size="11" font-weight="640" style="fill:${e2.color};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${e2.label}</text>`;
+      out += `<text x="${e2.x + 6}" y="${Math.min(Math.max(e2.y, M.t + 8), yMax) + 3}" font-size="12" font-weight="640" style="fill:${e2.color};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${e2.label}</text>`;
     });
   }
   // último valor da série principal sempre rotulado (a conclusão não depende do hover)
@@ -1002,7 +1002,7 @@ function lineChart(opts) {
       const anchor = lx > W - M.r - 52 ? "end" : "start";
       const tx = anchor === "end" ? lx - 6 : lx + 6;
       out += `<circle cx="${lx}" cy="${ly}" r="3" style="fill:${ccol(s0.color)}"/>`;
-      out += `<text x="${tx}" y="${ly - 6}" text-anchor="${anchor}" font-size="11" font-weight="640" style="fill:${ccol(s0.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${fmt.n(lastPt.y, dec)}</text>`;
+      out += `<text x="${tx}" y="${ly - 6}" text-anchor="${anchor}" font-size="12" font-weight="640" style="fill:${ccol(s0.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${fmt.n(lastPt.y, dec)}</text>`;
     }
   }
   // crosshair (posicionado via JS no hover/teclado)
@@ -1189,7 +1189,7 @@ function waterfallChart(steps, w = 720, h = 280, unit) {
   let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="gráfico de ponte (waterfall)">`;
   for (let i = 0; i <= 4; i++) {
     const v = lo + (hi - lo) * i / 4;
-    out += `<line x1="${ML}" x2="${w - MR}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--c-grid)"/><text x="${ML - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="9.5" style="fill:var(--c-axis-text)">${fmt.n(v / 1e9, 0)}</text>`;
+    out += `<line x1="${ML}" x2="${w - MR}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--c-grid)"/><text x="${ML - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${fmt.n(v / 1e9, 0)}</text>`;
   }
   if (lo < 0) out += `<line x1="${ML}" x2="${w - MR}" y1="${Y(0)}" y2="${Y(0)}" style="stroke:var(--c-axis)"/>`;
   steps.forEach((st, i) => {
@@ -1199,10 +1199,10 @@ function waterfallChart(steps, w = 720, h = 280, unit) {
     const tip = encodeURIComponent(`<div class="tt-date">${st.label}</div><div class="tt-row"><span class="tt-lbl">impacto</span><span class="tt-val">${st.v >= 0 ? "+" : ""}R$ ${fmt.n(st.v / 1e9, 2)} bi</span></div>${st.expl ? `<div class="tt-meta">${st.expl}</div>` : ""}`);
     out += `<rect x="${X(i) + (X(1) - X(0) - bw) / 2}" y="${yTop}" width="${bw}" height="${hBar}" rx="3" data-tip="${tip}" style="fill:${cor}" opacity="${st.tipo === "abs" ? 1 : 0.85}"/>`;
     if (i < steps.length - 1) out += `<line x1="${X(i) + (X(1) - X(0) + bw) / 2}" x2="${X(i + 1) + (X(1) - X(0) - bw) / 2}" y1="${Y(p.y1)}" y2="${Y(p.y1)}" style="stroke:var(--c-axis)" stroke-dasharray="2,2"/>`;
-    out += `<text x="${X(i) + (X(1) - X(0)) / 2}" y="${yTop - 5}" text-anchor="middle" font-size="9.5" font-weight="620" style="fill:var(--text-2);paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${st.v >= 0 && st.tipo !== "abs" ? "+" : ""}${fmt.n(st.v / 1e9, 1)}</text>`;
+    out += `<text x="${X(i) + (X(1) - X(0)) / 2}" y="${yTop - 5}" text-anchor="middle" font-size="12" font-weight="620" style="fill:var(--text-2);paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${st.v >= 0 && st.tipo !== "abs" ? "+" : ""}${fmt.n(st.v / 1e9, 1)}</text>`;
     const words = st.label.split(" ");
     words.slice(0, 2).forEach((wd, k) => {
-      out += `<text x="${X(i) + (X(1) - X(0)) / 2}" y="${h - MB + 14 + k * 11}" text-anchor="middle" font-size="8.8" style="fill:var(--c-axis-text)">${wd}</text>`;
+      out += `<text x="${X(i) + (X(1) - X(0)) / 2}" y="${h - MB + 14 + k * 11}" text-anchor="middle" font-size="12" style="fill:var(--c-axis-text)">${wd}</text>`;
     });
   });
   out += `</svg>`;
@@ -1830,7 +1830,7 @@ function pxStackedArea(periods, series, opts) {
   const Y = v => M.t + (1 - v / 100) * (H - M.t - M.b);
   const totals = periods.map((_, i) => series.reduce((s, sr) => s + (sr.vals[i] || 0), 0));
   let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.aria || "participação empilhada"}">`;
-  [0, 25, 50, 75, 100].forEach(g => { out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(g)}" y2="${Y(g)}" style="stroke:var(--border)"/><text x="${M.l - 5}" y="${Y(g) + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">${g}</text>`; });
+  [0, 25, 50, 75, 100].forEach(g => { out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(g)}" y2="${Y(g)}" style="stroke:var(--border)"/><text x="${M.l - 5}" y="${Y(g) + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${g}</text>`; });
   let base = periods.map(() => 0);
   series.forEach(sr => {
     const top = base.map((b, i) => b + (totals[i] ? (sr.vals[i] || 0) / totals[i] * 100 : 0));
@@ -1841,7 +1841,7 @@ function pxStackedArea(periods, series, opts) {
     base = top;
   });
   const step = Math.max(1, Math.ceil(n / 8));
-  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="8.6" style="fill:var(--c-axis-text)">${p}</text>`; });
+  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="12" style="fill:var(--c-axis-text)">${p}</text>`; });
   out += "</svg>";
   out += `<div class="stacklegend">${series.map(sr => `<span><span class="sw" style="background:${ccol(sr.color)}"></span>${sr.label}</span>`).join("")}</div>`;
   out += `<details class="charttable"><summary>dados em tabela (participação %, período final)</summary><div class="tblwrap" style="max-height:220px"><table class="data compact"><thead><tr><th>Instrumento</th><th style="text-align:right">${periods[n - 1]}</th></tr></thead><tbody>${series.map(sr => `<tr><td>${sr.label}</td><td style="text-align:right">${totals[n - 1] ? fmt.n((sr.vals[n - 1] || 0) / totals[n - 1] * 100, 1) : "–"}%</td></tr>`).join("")}</tbody></table></div></details>`;
@@ -2137,13 +2137,13 @@ function renderPix() {
         if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
         const tip = encodeURIComponent(`<div class="tt-date">${pg} → ${rc}</div>
           <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${fmt.n(v2, v2 < 1 ? 2 : 1)} bi</span></div>`);
-        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:10px;padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
+        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:12px;padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
       };
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · passe o mouse para o par completo</div>
-        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:10px"><thead>
-          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:9px;padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:10px" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:12px"><thead>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:12px;padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:12px" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
   }
@@ -2458,7 +2458,7 @@ function renderPanorama() {
         <div class="src">${a.indicador} · ${a.periodo}${a.vs_brasil != null ? ` · ${fmt.pp(a.vs_brasil)} p.p. vs BR` : ""}</div>
         <div class="src" style="margin-top:4px">${a.regra}</div>
         ${a.nota ? `<div class="src" style="margin-top:4px" title="${attr(a.nota)}"><i>${a.nota}</i></div>` : ""}
-        ${a.link && a.link.uf ? `<a href="javascript:void(0)" onclick="panSelUF('${a.link.uf}');window.scrollTo({top:0,behavior:'smooth'})" style="font-size:11.5px">investigar no mapa →</a>` : ""}</div>`).join("")}
+        ${a.link && a.link.uf ? `<a href="javascript:void(0)" onclick="panSelUF('${a.link.uf}');window.scrollTo({top:0,behavior:'smooth'})" style="font-size:12px">investigar no mapa →</a>` : ""}</div>`).join("")}
       ${P.melhoras.map(m => `<div class="alertcard melhora"><h5>${m.nome} (${m.uf})</h5>
         <div class="num" style="color:var(--c-pos)">${fmt.pp(m.d_inad_12m)} p.p. <span class="src" style="font-size:12px">em 12m</span></div>
         <div class="src">menor deterioração da inadimplência entre as UFs · nível atual ${fmt.n(m.inad, 1)}%</div></div>`).join("")}
@@ -2494,7 +2494,7 @@ function panMatriz(P) {
   const allInad = rendas.flatMap(r => prods.map(p => (P.matriz_renda_produto[r][p] || {}).inad)).filter(v => v != null);
   const mx = Math.max(...allInad);
   let h = `<div class="heatwrap"><div class="heatgrid" style="grid-template-columns:minmax(150px,210px) repeat(${prods.length},minmax(30px,1fr))">`;
-  h += `<div class="hcell hhead hlab"></div>` + prods.map(p => `<div class="hcell hhead" style="height:auto;line-height:1.2;padding:2px 2px 6px;white-space:normal;font-size:9.5px">${p.replace("Cartão — ", "Cartão ")}</div>`).join("");
+  h += `<div class="hcell hhead hlab"></div>` + prods.map(p => `<div class="hcell hhead" style="height:auto;line-height:1.2;padding:2px 2px 6px;white-space:normal;font-size:12px">${p.replace("Cartão — ", "Cartão ")}</div>`).join("");
   rendas.forEach(r => {
     h += `<div class="hcell hlab" title="${attr(r)}">${r.replace(" salários mínimos", " SM").replace(" salário mínimo", " SM")}</div>`;
     h += prods.map(p => {
@@ -4659,7 +4659,7 @@ function histogram(vals, mine, w = 340, h = 90) {
   });
   const mp = (mine - lo) / (hi - lo) * w;
   out += `<line x1="${mp}" x2="${mp}" y1="4" y2="${h - 14}" style="stroke:var(--text)" stroke-width="2.5"/>`;
-  out += `<text x="4" y="${h - 2}" font-size="11" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="11" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg>`;
+  out += `<text x="4" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg>`;
   out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:200px"><table class="data compact"><thead><tr><th>Faixa</th><th style="text-align:right">Instituições</th></tr></thead><tbody>` +
     bins.map((b, i) => `<tr><td>${fmt.n(lo + (hi - lo) * i / nb, 1)} – ${fmt.n(lo + (hi - lo) * (i + 1) / nb, 1)}</td><td style="text-align:right">${b}</td></tr>`).join("") +
     `</tbody></table></div></details>`;
@@ -4720,26 +4720,26 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   const fx = tickFmt(dlx, dhx), fy = tickFmt(dly, dhy);
   [0, 0.5, 1].forEach(t => {
     const vx = dlx + (dhx - dlx) * t, vy = dly + (dhy - dly) * t;
-    out += `<text x="${X(vx)}" y="${h - 16}" font-size="8.5" style="fill:var(--c-axis-text)" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}">${fx(vx)}</text>`;
-    out += `<text x="36" y="${Y(vy) + 3}" font-size="8.5" style="fill:var(--c-axis-text)" text-anchor="end">${fy(vy)}</text>`;
+    out += `<text x="${X(vx)}" y="${h - 16}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}">${fx(vx)}</text>`;
+    out += `<text x="36" y="${Y(vy) + 3}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="end">${fy(vy)}</text>`;
   });
   if (opts.refX != null) {
     out += `<line x1="${X(opts.refX)}" x2="${X(opts.refX)}" y1="10" y2="${h - 26}" style="stroke:var(--c-gray)" stroke-dasharray="4,3"/>`;
-    out += `<text x="${X(opts.refX) + 4}" y="20" font-size="8.5" style="fill:var(--c-axis-text)">${opts.refXLabel || "mediana"}</text>`;
+    out += `<text x="${X(opts.refX) + 4}" y="20" font-size="12" style="fill:var(--c-axis-text)">${opts.refXLabel || "mediana"}</text>`;
   }
   if (opts.refY != null) {
     out += `<line x1="40" x2="${w - 10}" y1="${Y(opts.refY)}" y2="${Y(opts.refY)}" style="stroke:var(--c-gray)" stroke-dasharray="4,3"/>`;
-    out += `<text x="${w - 12}" y="${Y(opts.refY) - 4}" text-anchor="end" font-size="8.5" style="fill:var(--c-axis-text)">${opts.refYLabel || "mediana"}</text>`;
+    out += `<text x="${w - 12}" y="${Y(opts.refY) - 4}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${opts.refYLabel || "mediana"}</text>`;
   }
   pairs.forEach(p => {
     const tip = encodeURIComponent(`<div class="tt-date">${p.label}</div><div class="tt-row"><span class="tt-lbl">${xl}</span><span class="tt-val">${fmt.n(p.x, 2)}</span></div><div class="tt-row"><span class="tt-lbl">${yl}</span><span class="tt-val">${fmt.n(p.y, 2)}</span></div>${p.size != null ? `<div class="tt-row"><span class="tt-lbl">${opts.sizeLabel || "tamanho"}</span><span class="tt-val">${fmt.money(p.size)}</span></div>` : ""}${p.grp ? `<div class="tt-meta">grupo ${p.grp}</div>` : ""}`);
     out += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="${R(p)}" data-tip="${tip}" style="fill:${ccol(p.color) || "var(--c-line1)"}" opacity=".68" stroke="var(--c-halo)" stroke-width="1"></circle>`;
   });
   if (opts.labels) pairs.forEach(p => {
-    out += `<text x="${X(p.x)}" y="${Y(p.y) - R(p) - 4}" text-anchor="middle" font-size="9.5" font-weight="600" style="fill:var(--text-2);paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${p.label.slice(0, 16)}</text>`;
+    out += `<text x="${X(p.x)}" y="${Y(p.y) - R(p) - 4}" text-anchor="middle" font-size="12" font-weight="600" style="fill:var(--text-2);paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${p.label.slice(0, 16)}</text>`;
   });
-  out += `<text x="${w / 2}" y="${h - 6}" font-size="9.5" style="fill:var(--c-axis-text)" text-anchor="middle">${xl}</text>`;
-  out += `<text x="10" y="${h / 2}" font-size="9.5" style="fill:var(--c-axis-text)" transform="rotate(-90 10 ${h / 2})" text-anchor="middle">${yl}</text></svg>`;
+  out += `<text x="${w / 2}" y="${h - 6}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="middle">${xl}</text>`;
+  out += `<text x="10" y="${h / 2}" font-size="12" style="fill:var(--c-axis-text)" transform="rotate(-90 10 ${h / 2})" text-anchor="middle">${yl}</text></svg>`;
   if (!opts.noTable) {
     out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:240px"><table class="data compact"><thead><tr><th>Item</th><th style="text-align:right">${xl}</th><th style="text-align:right">${yl}</th>${opts.sizeLabel ? `<th style="text-align:right">${opts.sizeLabel}</th>` : ""}${pairs.some(p => p.grp) ? "<th>grupo</th>" : ""}</tr></thead><tbody>` +
       pairs.map(p => `<tr><td>${p.label}</td><td style="text-align:right">${fmt.n(p.x, 2)}</td><td style="text-align:right">${fmt.n(p.y, 2)}</td>${opts.sizeLabel ? `<td style="text-align:right">${p.size != null ? fmt.money(p.size) : "–"}</td>` : ""}${pairs.some(pp => pp.grp) ? `<td>${p.grp || "–"}</td>` : ""}</tr>`).join("") +
@@ -6034,9 +6034,9 @@ function renderPenetracao() {
       ${linha.length > 1 ? `<path d="M${linha.map(([x, y]) => px(x).toFixed(1) + "," + py(y).toFixed(1)).join("L")}"
         fill="none" stroke="var(--text)" stroke-width="1.8" stroke-dasharray="5,3"/>` : ""}
       ${[0, 0.5, 1].map(t => { const v = xlo + (xhi - xlo) * t;
-        return `<text x="${px(v)}" y="${H - 14}" font-size="9.5" text-anchor="middle" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
+        return `<text x="${px(v)}" y="${H - 14}" font-size="12" text-anchor="middle" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
       ${[0, 0.5, 1].map(t => { const v = ylo + (yhi - ylo) * t;
-        return `<text x="${Mg.l - 6}" y="${py(v) + 3}" font-size="9.5" text-anchor="end" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
+        return `<text x="${Mg.l - 6}" y="${py(v) + 3}" font-size="12" text-anchor="end" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
     </svg>
     <div class="legend"><span><span class="sw" style="background:var(--c-neg)"></span>gap acima de 50%</span>
       <span><span class="sw" style="background:var(--warning)"></span>gap positivo</span>
@@ -7251,7 +7251,7 @@ function renderInstPageData(el, pg) {
     const ap = pg.atraso_produtos;
     if (!ap || !ap.itens || !ap.itens.length) return "";
     const row = i => `<tr class="clickable" onclick="openProduct('${i.slug}')">
-      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:10.5px">${i.seg}</span></td>
+      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:12px">${i.seg}</span></td>
       <td style="text-align:right">${fmt.money(i.carteira_brl)}</td>
       <td style="text-align:right"><b>${i.atraso15_pct != null ? fmt.n(i.atraso15_pct, 2) + "%" : "–"}</b></td>
       <td style="text-align:right">${i.mediana_produto_pct != null ? fmt.n(i.mediana_produto_pct, 2) + "%" : "–"}</td>
@@ -11396,9 +11396,9 @@ function cgCircularidade(D) {
           r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
           stroke="var(--teal)"></circle>
         <text x="${(px(e.outras_censo) + 8).toFixed(1)}" y="${(py(e.cons_por_60) + 4).toFixed(1)}"
-          font-size="11" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
-      <text x="380" y="282" text-anchor="middle" font-size="11" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
-      <text x="16" y="145" font-size="11" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
+          font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
+      <text x="380" y="282" text-anchor="middle" font-size="12" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
+      <text x="16" y="145" font-size="12" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
     </svg>
     <p class="src">${cgSelo("observado")} Especificação de referência, r = ${fmt.n(ref ? ref.r : C.referencia, 3)}.
     Tamanho do círculo proporcional à população de 60 anos ou mais. Os dois eixos vêm de fontes
@@ -13451,8 +13451,8 @@ function bumpChart(items, periods, w = 720, h0 = null) {
   const X = i => ML + i / (periods.length - 1) * (w - ML - MR);
   const Y = r => MT + (r - 1) / Math.max(n - 1, 1) * (h - MT - MB);
   let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="mudança de posição no ranking">`;
-  periods.forEach((p, i) => { out += `<text x="${X(i)}" y="${h - 8}" text-anchor="middle" font-size="11" style="fill:var(--c-axis-text)">${p}</text>`; });
-  for (let r = 1; r <= n; r++) out += `<text x="${ML - 8}" y="${Y(r) + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">#${r}</text>`;
+  periods.forEach((p, i) => { out += `<text x="${X(i)}" y="${h - 8}" text-anchor="middle" font-size="12" style="fill:var(--c-axis-text)">${p}</text>`; });
+  for (let r = 1; r <= n; r++) out += `<text x="${ML - 8}" y="${Y(r) + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">#${r}</text>`;
   const bumpItems = items, bumpPeriods = periods;
   items.forEach(it => {
     const pts = it.ranks.map((r, i) => r == null ? null : [X(i), Y(r)]);
@@ -13464,7 +13464,7 @@ function bumpChart(items, periods, w = 720, h0 = null) {
       out += `<circle cx="${p[0]}" cy="${p[1]}" r="4" data-tip="${tip}" style="fill:${ccol(it.color)};stroke:var(--c-halo);stroke-width:1.5"/>`;
     });
     const lastIdx = it.ranks.map((r, i) => r != null ? i : null).filter(x => x != null).pop();
-    if (lastIdx != null) out += `<text x="${X(lastIdx) + 10}" y="${Y(it.ranks[lastIdx]) + 3.5}" font-size="11" font-weight="600" style="fill:${ccol(it.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${it.label.slice(0, 24)}</text>`;
+    if (lastIdx != null) out += `<text x="${X(lastIdx) + 10}" y="${Y(it.ranks[lastIdx]) + 3.5}" font-size="12" font-weight="600" style="fill:${ccol(it.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${it.label.slice(0, 24)}</text>`;
   });
   out += `</svg>`;
   out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:220px"><table class="data compact"><thead><tr><th>Instituição</th>${bumpPeriods.map(p2 => `<th style="text-align:right">${p2}</th>`).join("")}</tr></thead><tbody>` +
@@ -13818,7 +13818,7 @@ function renderCompare() {
     const absVals = cells.map(x => x.v).filter(v => v != null && isFinite(v));
     const maxAbs2 = absVals.length ? Math.max(...absVals.map(Math.abs)) : null;
     const refIdx = cmp.insts.indexOf(refCod);
-    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:8.5px">${m.quality_status.replace("observado ", "obs. ")}</span> ${cmpSentidoChip(m)}<div class="src">${m.unit} · trimestral</div></td>
+    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:12px">${m.quality_status.replace("observado ", "obs. ")}</span> ${cmpSentidoChip(m)}<div class="src">${m.unit} · trimestral</div></td>
     ${cells.map((x, i) => {
       const pctl = cmp.norm === "abs" ? cmpPercentil(C, mid, latest, x.v) : null;
       const vsRef = (cmp.norm === "abs" && i !== refIdx && x.v != null && cells[refIdx] && cells[refIdx].v != null && cells[refIdx].v !== 0)
@@ -13858,8 +13858,8 @@ function renderCompare() {
         ${linhaKpi("ativos totais", at != null ? fmt.money(at) : null)}
         ${linhaKpi("carteira de crédito", ct != null ? fmt.money(ct) : null)}
         ${linhaKpi("captações", cap != null ? fmt.money(cap) : null)}
-        ${linhaKpi("lucro (acum. ano)", ll != null ? fmt.money(ll) : null, ' <span class="seal calc" style="font-size:8px" title="acumulado no ano-calendário IF.data — NÃO anualizado; T1 reinicia a base">acum. ano</span>')}
-        ${linhaKpi("ROE do período", roe != null ? fmt.n(roe, 1) + "%" : null, ' <span class="seal calc" style="font-size:8px" title="lucro acumulado no ano ÷ PL do trimestre — não anualizado">não anualiz.</span>')}
+        ${linhaKpi("lucro (acum. ano)", ll != null ? fmt.money(ll) : null, ' <span class="seal calc" style="font-size:12px" title="acumulado no ano-calendário IF.data — NÃO anualizado; T1 reinicia a base">acum. ano</span>')}
+        ${linhaKpi("ROE do período", roe != null ? fmt.n(roe, 1) + "%" : null, ' <span class="seal calc" style="font-size:12px" title="lucro acumulado no ano ÷ PL do trimestre — não anualizado">não anualiz.</span>')}
         ${linhaKpi("Basileia", bas != null ? fmt.n(bas, 1) + "%" : null)}
         ${linhaKpi("inadimplência (>90d)", npl != null ? fmt.n(npl, 2) + "%" : null)}
         <div style="margin-top:6px">${spark(c, "carteira_credito")} <span class="src">carteira · 5 trim.</span></div>
@@ -13901,7 +13901,7 @@ function renderCompare() {
     body = `
     <div class="ov-2col-eq" style="margin-top:6px">${cards}</div>
     <div class="ov-2col" style="margin-top:18px">
-      <div class="card"><h4>Principais diferenças <span class="seal calc" style="font-size:8.5px">DADO CALCULADO</span></h4>
+      <div class="card"><h4>Principais diferenças <span class="seal calc" style="font-size:12px">DADO CALCULADO</span></h4>
         <ul style="font-size:13px;margin:6px 0 4px 16px;display:flex;flex-direction:column;gap:7px">${difs.map(d2 => `<li>${d2}</li>`).join("")}</ul>
         <div class="src">Frases geradas apenas dos dados de ${fmtTri(latest)}, sem julgamento de mérito: "maior" não significa "melhor" — o sentido econômico de cada métrica está declarado nos tooltips.</div></div>
       <div class="card"><h4>Escala comparada</h4>${barras}<div class="src">Barras proporcionais ao maior valor entre as selecionadas · ◈ = referência</div></div>

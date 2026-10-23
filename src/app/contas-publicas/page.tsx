@@ -53,7 +53,7 @@ export default function Page(){
   escala={escalaFederal(2025)}
   notaEscala="Orçamentos Fiscal e da Seguridade Social da União. Inclui juros, amortização e refinanciamento; pagamentos de restos a pagar ficam separados. Os estágios não se somam: cada um está dentro do anterior. Liquidação e pagamento não comprovam entrega ou impacto."
   paraVoce={<ParaVoce entrada="/contas-publicas" artes={{previdencia:<ArteTriptico tema="federal" cena={0}/>,metas:<ArteTriptico tema="federal" cena={1}/>,"estado-contas":<ArteTriptico tema="federal" cena={2}/>}}/>}
-  destinos={<section className="cp-section mx-auto max-w-page px-6" id="capitulos" aria-labelledby="titulo-capitulos"><div className="cp-section-head"><div><p className="cp-eyebrow">Mapa completo</p><h2 id="titulo-capitulos">Uma pergunta para cada dimensão</h2><p>Abra um capítulo para conhecer suas medidas, fontes candidatas e condições de comparação.</p></div><Link className="cp-button" href="/contas-publicas/dados">Consultar os indicadores</Link></div><IndiceFederal/></section>}
+  destinos={<section className="cp-section mx-auto max-w-page px-6" id="capitulos" aria-labelledby="titulo-capitulos"><div className="cp-section-head"><div><p className="rotulo cp-eyebrow">Mapa completo</p><h2 id="titulo-capitulos">Uma pergunta para cada dimensão</h2><p>Abra um capítulo para conhecer suas medidas, fontes candidatas e condições de comparação.</p></div><Link className="cp-button" href="/contas-publicas/dados">Consultar os indicadores</Link></div><IndiceFederal/></section>}
   artefato={
    <ModeloDidatico
     recolhido
@@ -85,7 +85,7 @@ export default function Page(){
   metodo={<div className="space-y-6">
    <p className="cp-note">{CAPITULOS_PUBLICADOS.length} capítulos com dados · {INDICADORES.filter(i=>i.status==='integracao-parcial').length} indicadores com recorte observado, cada um com fonte, período e limite. A despesa por área e os custos agregados são painéis complementares; custos por entrega e impacto aguardam integração.</p>
    <p className="cp-note"><SeloProntidao valor="parcial"/> Orçamento, despesa por área, previdência e INSS, plano e execução, resultado fiscal, dívida bruta e rigidez, gastos tributários, restos a pagar, entregas físicas e custos agregados; fontes e datas identificadas em cada painel.</p>
-   <article className="cp-method"><p className="cp-eyebrow">Leitura responsável</p><h3>Gastar, entregar e transformar são medidas diferentes.</h3><p>Execução não comprova eficiência. Metas cumpridas não comprovam impacto. Cada indicador explicita o que pode responder e seus limites.</p><Link href="/contas-publicas/metodologia">Entender as regras de comparação →</Link></article>
+   <article className="cp-method"><p className="rotulo cp-eyebrow">Leitura responsável</p><h3>Gastar, entregar e transformar são medidas diferentes.</h3><p>Execução não comprova eficiência. Metas cumpridas não comprovam impacto. Cada indicador explicita o que pode responder e seus limites.</p><Link href="/contas-publicas/metodologia">Entender as regras de comparação →</Link></article>
    <div><h3 className="font-serif text-xl text-carvao">Fonte e recorte das primeiras respostas</h3>{respostas.map(r=><div key={r.href} className="mt-4"><p className="text-sm text-carvao">{r.pergunta}</p><Proveniencia {...r.origem}/></div>)}<AvisoAtualidadeRTN/></div>
   </div>}
   frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/contas-publicas"]} variante="metodo"/>}

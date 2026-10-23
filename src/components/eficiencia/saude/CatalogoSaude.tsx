@@ -121,7 +121,7 @@ export function MatrizDeFontes({ linhas }: { linhas: LinhaMatrizFonte[] }) {
                 {itens.map((l) => (
                   <li key={l.id} className="py-4">
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <span className="font-mono text-[0.8rem] text-carvao-muted">{l.id}</span>
+              <span className="font-mono t-meta text-carvao-muted">{l.id}</span>
               <span className="min-w-0 flex-1 basis-[18rem] font-semibold leading-snug text-obee-tinta">{l.medida}</span>
               <span className="rotulo text-obee-tinta">{l.decisao}</span>
             </div>
@@ -150,7 +150,7 @@ export function ListaValidacoes({ validacoes }: { validacoes: Validacao[] }) {
         <li key={v.id} className="py-3">
           <details>
             <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-0.5">
-              <span className="font-mono text-[0.8rem] text-carvao-muted">{v.id}</span>
+              <span className="font-mono t-meta text-carvao-muted">{v.id}</span>
               <span className="min-w-0 flex-1 basis-[18rem] leading-snug text-obee-tinta">{v.titulo}</span>
               <span className="rotulo text-obee-tinta">{RESULTADO[v.resultado] ?? v.resultado}</span>
               <span className="sr-only">(abrir o detalhe)</span>

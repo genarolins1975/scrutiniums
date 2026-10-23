@@ -56,7 +56,7 @@ export function ErrosConteudo({ idioma }: { idioma: Idioma }) {
   const t = TEXTOS_ERROS[idioma];
   const { descricao, erros } = registroErros();
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView idioma={idioma} />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <nav aria-label={t.trilha} className="rotulo text-mineral">

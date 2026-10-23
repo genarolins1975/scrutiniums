@@ -3,7 +3,7 @@ import s from './Agro.module.css';
 /** Exemplos de mecanismo sem estatísticas ou valores fictícios. */
 export function FiguraGlossarioAgro() {
   return <figure className={s.mechanism}>
-    <figcaption><p className={s.eyebrow}>Explicação conceitual</p><h2 className={s.blockTitle}>Três contas. Três perguntas.</h2></figcaption>
+    <figcaption><p className={`rotulo ${s.eyebrow}`}>Explicação conceitual</p><h2 className={s.blockTitle}>Três contas. Três perguntas.</h2></figcaption>
     <div className={s.conceptGrid}>
       <article><h3>Quanto foi vendido?</h3><p className={s.formula}>Quantidade vendida × preço<span style={{display:'block'}} aria-hidden="true">↓</span><strong>Receita bruta</strong></p><p className={s.note}>Por exemplo, a venda de grãos gera receita. Isso ainda não subtrai os custos da atividade.</p></article>
       <article><h3>O que sobra no escopo?</h3><p className={s.formula}>Receita − custos incluídos<span style={{display:'block'}} aria-hidden="true">↓</span><strong>Margem do escopo</strong></p><p className={s.note}>Custos variáveis, operacionais e econômicos têm perímetros diferentes. Uma margem não é automaticamente lucro líquido.</p></article>

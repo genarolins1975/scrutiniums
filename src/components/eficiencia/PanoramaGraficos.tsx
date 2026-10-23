@@ -127,17 +127,17 @@ export function FaixaResumo({
           {ticks.map((t) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={yEixo} y2={yEixo + 5} stroke={COR.eixo} strokeWidth={1} />
-              <text x={x(t)} y={yEixo + 20} textAnchor={x(t) < 24 ? "start" : x(t) > w - 24 ? "end" : "middle"} fontSize={11.5} fill={COR.eixo}>
+              <text x={x(t)} y={yEixo + 20} textAnchor={x(t) < 24 ? "start" : x(t) > w - 24 ? "end" : "middle"} fontSize={12} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
           ))}
           {faixa && (
             <g>
-              <text x={x(faixa.q1)} y={yEixo + 20} textAnchor={afastados ? "middle" : "end"} fontSize={11.5} fill="var(--cor-obee-dark)">
+              <text x={x(faixa.q1)} y={yEixo + 20} textAnchor={afastados ? "middle" : "end"} fontSize={12} fill="var(--cor-obee-dark)">
                 {formataEixo(faixa.q1)}
               </text>
-              <text x={x(faixa.q3)} y={yEixo + 20} textAnchor={afastados ? "middle" : "start"} fontSize={11.5} fill="var(--cor-obee-dark)">
+              <text x={x(faixa.q3)} y={yEixo + 20} textAnchor={afastados ? "middle" : "start"} fontSize={12} fill="var(--cor-obee-dark)">
                 {formataEixo(faixa.q3)}
               </text>
             </g>
@@ -158,7 +158,7 @@ export function FaixaResumo({
               {r.texto}
             </text>
           ))}
-          <text x={w / 2} y={yEixo + 46} textAnchor="middle" fontSize={11.5} fill={COR.referencia}>
+          <text x={w / 2} y={yEixo + 46} textAnchor="middle" fontSize={12} fill={COR.referencia}>
             {tituloEixo}
           </text>
         </svg>
@@ -203,7 +203,7 @@ export function ComparacaoReferencia({
           {dom.ticks.map((t) => (
             <g key={t}>
               <line x1={x(t)} x2={x(t)} y1={yBase} y2={yBase + 5} stroke={COR.eixo} strokeWidth={1} />
-              <text x={x(t)} y={yBase + 20} textAnchor={x(t) < mb.l + 4 ? "start" : x(t) > w - 24 ? "end" : "middle"} fontSize={11.5} fill={COR.eixo}>
+              <text x={x(t)} y={yBase + 20} textAnchor={x(t) < mb.l + 4 ? "start" : x(t) > w - 24 ? "end" : "middle"} fontSize={12} fill={COR.eixo}>
                 {formataEixo(t)}
               </text>
             </g>
@@ -216,7 +216,7 @@ export function ComparacaoReferencia({
             return (
               <g key={l.chave}>
                 <line x1={mb.l} x2={w - mb.r} y1={yc(i)} y2={yc(i)} stroke={COR.grade} strokeWidth={1} />
-                <text x={mb.l - 10} y={yc(i)} textAnchor="end" fontSize={estreito ? 11.5 : 12} fill="var(--cor-carvao-muted)">
+                <text x={mb.l - 10} y={yc(i)} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
                   {estreito ? (
                     <>
                       <tspan x={mb.l - 10} dy="-0.15em">

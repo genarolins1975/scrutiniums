@@ -54,7 +54,7 @@ export default async function ContaPage() {
 
       <div className="mt-12 space-y-14">
         <section aria-label="Perfil" className="border border-linha bg-papel p-8">
-          <SectionHeading number="01" label="Dados da conta" title="Perfil" />
+          <SectionHeading label="Dados da conta" title="Perfil" />
           <dl className="mb-8 grid gap-6 sm:grid-cols-3">
             <div>
               <dt className="rotulo mb-2 text-mineral">E-mail</dt>
@@ -91,7 +91,7 @@ export default async function ContaPage() {
         </section>
 
         <section id="recortes" aria-label="Meus recortes" className="scroll-mt-24 border border-linha bg-papel p-8">
-          <SectionHeading number="02" label="Recursos da conta" title="Meus recortes" />
+          <SectionHeading label="Recursos da conta" title="Meus recortes" />
           <MeusRecortes
             limite={LIMITE_RECORTES}
             iniciais={recortes.map((r) => ({
@@ -105,7 +105,7 @@ export default async function ContaPage() {
         </section>
 
         <section id="alertas" aria-label="Alertas de atualização" className="scroll-mt-24 border border-linha bg-papel p-8">
-          <SectionHeading number="03" label="Recursos da conta" title="Alertas de atualização" />
+          <SectionHeading label="Recursos da conta" title="Alertas de atualização" />
           <MeusAlertas
             envioLigado={ligado}
             iniciais={alertas.flatMap((a) =>
@@ -123,27 +123,27 @@ export default async function ContaPage() {
         </section>
 
         <section id="senha" aria-label="Senha" className="scroll-mt-24 border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Segurança do acesso" title="Senha" />
+          <SectionHeading label="Segurança do acesso" title="Senha" />
           <AlterarSenha temSenha={Boolean(user.passwordHash)} recuperacao={recuperacao} />
         </section>
 
         <section aria-label="Alterar telefone" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Segurança do acesso" title="Alterar telefone" />
+          <SectionHeading label="Segurança do acesso" title="Alterar telefone" />
           <AlterarTelefone paises={opcoesPaisSms()} />
         </section>
 
         <section aria-label="Sessões e segurança" className="border border-linha bg-papel p-8">
-          <SectionHeading number="06" label="Dispositivos" title="Sessões e segurança" />
+          <SectionHeading label="Dispositivos" title="Sessões e segurança" />
           <EncerrarSessoes />
         </section>
 
         <section aria-label="Boletim mensal" className="border border-linha bg-papel p-8">
-          <SectionHeading number="07" label="Comunicações" title="Boletim mensal" />
+          <SectionHeading label="Comunicações" title="Boletim mensal" />
           <BoletimPreferencia optInInicial={user.marketingOptIn} />
         </section>
 
         <section aria-label="Privacidade e dados" className="border border-linha bg-papel p-8">
-          <SectionHeading number="08" label="Seus dados" title="Privacidade e dados" />
+          <SectionHeading label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
               Pedimos apenas o necessário: o e-mail é seu dado de contato; o telefone valida, dá

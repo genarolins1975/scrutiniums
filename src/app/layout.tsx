@@ -63,7 +63,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <DocumentoIdioma className={`${serif.variable} ${sans.variable} ${label.variable}`} bodyClassName="min-h-screen bg-marfim text-carvao">
+    <DocumentoIdioma className={`${serif.variable} ${sans.variable} ${label.variable}`} bodyClassName="min-h-screen bg-papel text-carvao">
       {children}
       {/* Medição de uso agregada, sem dado pessoal (docs/observatorios/MEDICAO_DE_USO.md). */}
       <MedeUso />

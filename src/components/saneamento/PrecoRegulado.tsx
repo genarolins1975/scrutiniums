@@ -107,7 +107,7 @@ export function Documentos({ documentos }: { documentos: Documento[] }) {
           <a href={d.url} className="text-obee-dark underline underline-offset-2" rel="noopener noreferrer">
             {d.rotulo}
           </a>
-          <span className="block break-all font-mono text-[0.7rem] text-carvao-muted">sha256 {d.sha256}</span>
+          <span className="block break-all font-mono text-xs text-carvao-muted">sha256 {d.sha256}</span>
           {d.observacao && <span className="block text-xs text-carvao-muted">{d.observacao}</span>}
         </li>
       ))}
@@ -152,7 +152,7 @@ export function FichasTabelas() {
                     {f.rotulo}
                   </a>
                   <span className="text-carvao-muted"> · {f.localizador}</span>
-                  <span className="block break-all font-mono text-[0.68rem] text-carvao-muted">sha256 {f.sha256}</span>
+                  <span className="block break-all font-mono text-xs text-carvao-muted">sha256 {f.sha256}</span>
                 </li>
               ))}
             </ul>

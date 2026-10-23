@@ -811,7 +811,8 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect((abertura.match(/Comprove este número/g) ?? []).length).toBe(1);
     expect(abertura).toContain(`Contagem em ${dBR(ref)}, a data de referência da publicação`);
     // o número é o da ficha de prova (contagem na data de referência), não o da data de leitura
-    const valor = new RegExp(`aria-label="Recebendo contribuições"[\\s\\S]*?tabular-nums[^>]*>(\\d+)`).exec(abertura)?.[1];
+    // número de destaque: classe da escala única (.numero-m/.numero-g, Iniciativa 5) ou tabular-nums
+    const valor = new RegExp(`aria-label="Recebendo contribuições"[\\s\\S]*?(?:tabular-nums|numero-[gmp])[^>]*>(\\d+)`).exec(abertura)?.[1];
     expect(valor).toBe(String(gold.evidencias.consultas_abertas!.valor_calculo));
     // onde contribuir fica logo abaixo do gráfico, com o que a figura mostra
     expect(h.indexOf("data-onde-contribuir")).toBeGreaterThan(h.indexOf('data-grafico="faixas-tempo"'));

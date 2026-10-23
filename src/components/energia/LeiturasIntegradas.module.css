@@ -1,5 +1,5 @@
 .section{padding:48px 0;border-top:1px solid var(--cor-linha);color:var(--cor-carvao);scroll-margin-top:110px}
-.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cor-energia-dark);font-weight:600;margin-bottom:12px}
+.eyebrow{color:var(--cor-energia-dark);margin-bottom:12px}
 .title{font-family:var(--font-serif,Georgia,serif);font-size:clamp(28px,3.3vw,42px);line-height:1.15;max-width:850px;margin-bottom:16px}
 .intro{font-size:17px;line-height:1.65;max-width:760px;color:var(--cor-carvao-muted);margin-bottom:24px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 40px}

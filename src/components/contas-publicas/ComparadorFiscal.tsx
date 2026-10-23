@@ -29,7 +29,7 @@ export function ComparadorFiscal({ano,mes}:{ano:number;mes:number}) {
   const unidade=efetiva==='real'?`R$ a preços de ${BASE_PRECOS} · IPCA`:efetiva==='total'?'R$ correntes':efetiva==='habitante'?'R$ correntes por habitante no ano':'% do PIB de cada ano';
   const csv=exportarComparacaoFiscal(ordenadas,ano,mes,efetiva);
   return <section className="cp-fiscal-compare" aria-labelledby="comparar-despesas">
-    <div className="cp-section-head"><div><p className="cp-eyebrow">Composição e mudança</p><h3 id="comparar-despesas">Maiores despesas e o que mudou</h3><p className="cp-note">{janela} de {ano-1} e {ano} · Governo Central · {unidade}</p></div></div>
+    <div className="cp-section-head"><div><p className="rotulo cp-eyebrow">Composição e mudança</p><h3 id="comparar-despesas">Maiores despesas e o que mudou</h3><p className="cp-note">{janela} de {ano-1} e {ano} · Governo Central · {unidade}</p></div></div>
     <div className="cp-compare-controls">
       <label className="cp-select">Escala da comparação<select value={efetiva} onChange={e=>setEscala(e.target.value as EscalaFiscal)}><option value="total">Valor total · nominal</option><option value="real" disabled={!temReal}>Corrigido pelo IPCA</option><option value="habitante" disabled={!denominadores}>Por habitante</option><option value="pib" disabled={!denominadores}>Em % do PIB</option></select></label>
       <label className="cp-select">Ordenar despesas<select value={ordem} onChange={e=>setOrdem(e.target.value)}><option value="valor">Maior valor atual</option><option value="diferenca">Maior variação em magnitude</option></select></label>

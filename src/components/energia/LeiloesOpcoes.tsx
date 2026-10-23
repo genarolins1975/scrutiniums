@@ -199,14 +199,14 @@ export function LeiloesPrecoAno({
           .map((t) => (
             <g key={t}>
               <line x1={M.e} x2={W - M.d} y1={sy(t)} y2={sy(t)} stroke="var(--cor-grade)" />
-              <text x={M.e - 6} y={sy(t) + 4} textAnchor="end" fontSize="11" fill="var(--cor-carvao-muted)">
+              <text x={M.e - 6} y={sy(t) + 4} textAnchor="end" fontSize="12" fill="var(--cor-carvao-muted)">
                 {f.num(t, 0)}
               </text>
             </g>
           ))}
         {anos.map((a, i) =>
           i % passo === 0 ? (
-            <text key={a} x={sx(a)} y={H - 10} textAnchor="middle" fontSize="11" fill="var(--cor-carvao-muted)">
+            <text key={a} x={sx(a)} y={H - 10} textAnchor="middle" fontSize="12" fill="var(--cor-carvao-muted)">
               {a}
             </text>
           ) : null,
@@ -227,7 +227,7 @@ export function LeiloesPrecoAno({
                   </circle>
                 ))}
                 {largura >= 520 && (
-                  <text x={sx(u.ano) + 8} y={(yRotulo[c.id] ?? sy(v(u)!)) + 4} fontSize="11" fill="var(--cor-carvao)">
+                  <text x={sx(u.ano) + 8} y={(yRotulo[c.id] ?? sy(v(u)!)) + 4} fontSize="12" fill="var(--cor-carvao)">
                     {c.rotulo}
                   </text>
                 )}
