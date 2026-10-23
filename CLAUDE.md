@@ -4,7 +4,7 @@ Este arquivo é lido em toda sessão. O conteúdo vale igualmente para o `AGENTS
 
 ## Regra principal
 
-Todo trabalho em página, painel, observatório, gráfico, tabela, texto exibido, navegação, logos de empresas, artefato didático, PR, merge ou conferência em produção segue a skill **`.claude/skills/observatorio-layout/SKILL.md`**. Ler o arquivo inteiro antes de começar, mesmo que o pedido seja curto ("faz o merge", "está no ar?", "melhora essa página"). A skill registra o que o dono da plataforma pede e o que ele já reprovou.
+Todo trabalho em página, painel, observatório, gráfico, tabela, texto exibido, navegação, logos de empresas, artefato didático, PR, merge ou conferência em produção segue a skill **`.claude/skills/observatorio-layout/SKILL.md`**. Ler o núcleo inteiro e, pelo índice do topo, os anexos do tema tocado (`anexos/*.md`, desde 23/10/2026) antes de começar, mesmo que o pedido seja curto ("faz o merge", "está no ar?", "melhora essa página"). A skill registra o que o dono da plataforma pede e o que ele já reprovou.
 
 ## Skills de design obrigatórias (decisão do dono de 20/10/2026)
 

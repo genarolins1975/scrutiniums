@@ -54,3 +54,13 @@ A primeira versão deste documento tirava também os ativos de `public/` e todo 
 **Ganho projetado.** Cerca de 640 MB a menos em disco por clone, em cada sessão de agente e em cada job do CI. O tempo de clone cai de 3 a 10 s, dentro da oscilação da rede; o ganho principal é disco e histórico, não tempo. Tirar também `docs/obee` exigiria migrar os dois consumidores do build e os testes que o leem.
 
 **Custo e risco.** Muda o deploy da Vercel (o build precisa baixar os dados), o pipeline diário (publica asset em vez de commit) e a forma como 165 arquivos de teste leem `public/`. Build sem dados vira um modo de falha novo, que o manifesto de hash precisa barrar.
+
+## Decisões do dono (23/10/2026)
+
+Na conversa com a sessão que conduziu o ciclo, o dono aceitou seguir as recomendações abaixo, registradas aqui como decisão.
+
+| Proposta | Decisão | Onde |
+|---|---|---|
+| 1. Skill em núcleo e anexos | **Aprovada.** Divisão aplicada sobre o SKILL.md do main de 23/10/2026 (texto movido sem alteração, `node scripts/skill-cobertura.mjs <ref>` prova 0 linhas ausentes; núcleo de 13,4 KB). | `.claude/skills/observatorio-layout/SKILL.md` e `anexos/`; `CLAUDE.md` e `AGENTS.md` mandam ler o núcleo e os anexos do tema; `src/tests/skill-layout.test.ts` fixa o teto do núcleo e o índice |
+| 2. Política para testes de texto literal | **Aprovada para o que nasce.** Asserção literal só para texto decidido pelo dono, com a decisão citada no teste; o existente não é reescrito. | Seção 9 do núcleo da skill |
+| 3. Dados pesados fora do git | **Não autorizada agora.** O ganho medido, de 3 a 10 s por clone dentro da oscilação da rede, não paga a mudança no deploy da Vercel, no pipeline diário e na leitura de `public/` por 165 arquivos de teste. Rever se o disco por clone ou o histórico virarem bloqueio (clone raso acima de 60 s, ou falta de espaço no CI ou na sessão). | Este documento |

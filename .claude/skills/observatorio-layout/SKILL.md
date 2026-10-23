@@ -26,14 +26,21 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 - **Coerência entre observatórios.** O de Crédito é a referência de página inicial didática ("um mapa geral do observatório"); um erro corrigido num painel é procurado e corrigido nos demais.
 - **O trabalho só termina em produção**, com links das rotas entregues (seção 13).
 - **Skills de design obrigatórias** (decisão do dono de 20/10/2026): todo trabalho de interface deste projeto usa sempre as skills emil-design-eng, impeccable e design-taste-frontend, junto com esta. Carregar as três antes de desenhar ou revisar; se alguma faltar no ambiente, avisar o usuário antes de entregar.
-- **Princípio do aperitivo** (decisão do dono de 20/10/2026, acima das demais regras de acesso): tudo o que a área não logada mostra existe na área logada, com nível de detalhe muito maior; a área não logada mostra apenas um aperitivo da informação. Nenhuma informação é exclusiva da área aberta, e nenhuma página aberta pode ser o painel inteiro. Toda consulta aberta declara o painel com conta que a aprofunda (`APERITIVOS` e `painelCompleto` em `LEVA_2`, `src/lib/rotasPublicas.ts`), cada tema tem uma única página aberta, e `src/tests/aperitivo.test.ts` reprova consulta sem esse painel ou com painel aberto. Ficam fora do princípio só método, glossário, conteúdo didático (`/setor-eletrico/aprenda`), páginas institucionais e o fluxo de conta, que valem igual para todos. Toda página aberta de tema mostra sempre o que a página com conta tem a mais (decisão do dono de 20/10/2026): o bloco `ConviteAperitivo` (`src/components/acesso/ConviteAperitivo.tsx`) lista, seção por seção e em palavras de leigo, tudo o que o painel completo oferece além do aperitivo, dimensionado com números do próprio dado quando houver (quantas áreas, desde quando), sem prometer o que não existe, e leva ao login com a volta para o painel; o teste reprova página aberta de tema sem esse bloco. Página aberta nova ou consulta aprovada: definir antes o que é aperitivo (o número do caso do leitor, com fonte e período) e o que fica com conta (série, comparação, detalhe, download).
-- **Aberto responde ao curioso sobre o seu caso; com conta é profundidade** (decisão de 17/10/2026, revista em 19/10/2026). A camada aberta ("O Brasil em perguntas", `/perguntas/*`, e a home) mostra poucos números do tema com fonte e período, uma frase de contexto e o convite para o painel. Além disso, podem ser abertas, rota por rota e só com aprovação do dono, as consultas pessoais em modo de consulta: minha cidade, minha distribuidora, meu estado, meu banco, minha capital (lista de candidatas em `docs/BANCA_2026-10-19.md`, seção "Estratégia aberto e com conta"). A leva 1 está aberta desde 19/10/2026: `/setor-eletrico/conta-de-luz`, `/saneamento/municipio` e `/saneamento/municipio/[id]`, `/saneamento/preco-regulado/simulador`, `/eficiencia-estatal` e `/gas-natural/gas-de-cozinha` (detalhes na seção 4, Navegação e acesso). A leva 2 está preparada e desligada em `LEVA_2`, aguardando a aprovação do dono item por item (seção 4). Séries completas, comparações entre muitas entidades, fichas completas, downloads, API, cenários, previsões, recortes salvos e alertas ficam com conta, que deve ter grau de profundidade e beleza muito maior que a página aberta. Numa rota aberta, todo recurso fechado aparece com o selo "com conta"; exportação gerada no navegador sai da versão aberta. Não transformar a página aberta em painel.
-- **Decisões do dono de 19/10/2026** (registro completo em `docs/BANCA_2026-10-19.md`):
-  - Retrato das capitais: a nota composta de 0 a 100 sai da entrada da Eficiência Estatal e fica no painel; a entrada mostra só as posições.
-  - Cadastro: as informações básicas continuam obrigatórias (email, celular verificado, CPF, UF e perfil de uso); a melhoria é de clareza e de etapa, não de retirar dado. Tipo de instituição, área e cargo só para perfis profissionais.
-  - Inglês na 1.0: só a home e o Setor Elétrico. Fora desse escopo, não prometer inglês.
-  - Gravuras: melhorar quando a revisão julgar necessário; o layout tem de estar perfeito, sem imagem quebrada, cortada ou sem função.
-  - Expansão: não há congelamento. Painel novo entra pelo valor agregado, sem duplicar tema sem painel canônico, com atualização agendada, consulta pessoal aberta quando houver e o critério de conclusão do documento da banca.
+
+## Anexos (carregar quando o tema for tocado)
+
+Regras permanentes ficam aqui; decisões datadas, listas de rotas e nomes de componentes ficam nos anexos, com o texto original sem alteração e os mesmos números de seção. Ler o anexo inteiro antes de mexer no tema dele.
+
+| Anexo | Quando carregar |
+|---|---|
+| `anexos/acesso.md` | páginas abertas, aperitivo, leva 2, selo "com conta", rotas públicas, sitemap |
+| `anexos/navegacao.md` | barra comum, cabeçalho no celular, rótulo de contexto e trilha, navegação da coleção, orçamento de cromo, destinos novos |
+| `anexos/busca.md` | busca da barra, índice, /buscar, busca local da coleção |
+| `anexos/decisoes-gerais.md` | retrato das capitais, cadastro, inglês na 1.0, gravuras, expansão |
+| `anexos/arquiteturas.md` | página de entrada (checklist, molde único da Iniciativa 4, selo de prontidão, orçamento de comprimento), panorama, exploração, ficha, catálogo e método |
+| `anexos/identidade-visual.md` | tokens e tipografia da plataforma (Iniciativa 5), paleta, geometria e ritmo |
+| `anexos/componentes-e-graficos.md` | número de destaque, figura, tabela, controles, logos, estados, gramática dos gráficos, rótulos de medida |
+| `anexos/tema-acessibilidade-exemplos.md` | adaptação por tema, acessibilidade e comportamento, exemplos de decisão |
 
 ## 1. Contrato editorial inegociável
 
@@ -55,211 +62,6 @@ Prioridade declarada por ele: **clareza > narrativa > didatismo > credibilidade 
 5. Escolher a pergunta principal e as perguntas complementares. Para cada visual, explicitar internamente qual comparação ele torna possível.
 6. Usar preferências conhecidas do usuário. Perguntar somente se faltar uma decisão que altere substancialmente o resultado. Não perguntar novamente por cores e direção já definidas.
 
-## 3. Identidade visual de referência
-
-**Tokens e tipografia da plataforma (Iniciativa 5, 22/10/2026):** a referência é `docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md`: cor só em `src/app/globals.css` (nenhum hexadecimal nem `--cor-*` fora dele, `src/tests/design-tokens.test.ts`), escala única (`.t-h1` a `.t-meta`, `.rotulo` a 12 px), três tamanhos de número em serifa (`.numero-g`, `.numero-m`, `.numero-p`), papel em todo `main` e piso de 12 px conferido no navegador (`src/tests/ux-texto-minimo.test.ts`). Decisão do dono de 22/10/2026: rótulos em caixa alta ficam, a 12 px; a numeração 01, 02, 03 sai dos cartões da home e das portas; destaque colorido no título só no H1 da home; filetes de 3 px na cor do observatório ficam. A tabela abaixo é a referência de origem; os valores em uso são os do documento.
-
-Adotar a paleta abaixo como ponto de partida quando o projeto não possuir tokens equivalentes. Mapear para os tokens existentes e verificar contraste em cada uso. Não afirmar que uma cor isolada garante acessibilidade.
-
-| Papel | Referência | Aplicação |
-|---|---|---|
-| Papel | `#F8F7F2` | Fundo editorial principal |
-| Superfície | `#FFFFFF` | Controles, menus e superfícies funcionais |
-| Tinta | `#182B36` | Texto e valores principais |
-| Texto secundário | `#58666B` | Contexto e metadados legíveis |
-| Destaque | `#09697A` | Série focal, links e seleção |
-| Contexto suave | `#E7EFEE` | Faixas de referência e seleção discreta |
-| Regra | `#D7DCD7` | Separadores decorativos; não depender dela para distinguir controles |
-| Comparação | `#806A45` | Série de referência quando necessária; verificar contraste |
-
-Usar uma cor focal e referências neutras por padrão. Em composição multissérie, aplicar uma paleta categórica acessível com identidade estável, rótulos e alternativas à cor. Não pintar cada entidade com uma cor diferente sem função.
-
-Reservar cores de aviso para estados documentados. Não usar verde/vermelho para dizer que gastar mais, gerar mais ou cobrar menos é bom ou ruim.
-
-Preservar o logotipo e os ativos oficiais. Não redesenhá-los por aproximação. Preferir a aparência clara editorial; preservar e testar modo escuro se o produto já o oferecer, sem adicioná-lo apenas como adorno.
-
-### Tipografia
-
-- Reutilizar as famílias licenciadas já carregadas. Usar serifada editorial para títulos e sans-serif legível para texto, controles, unidades e tabelas.
-- Na ausência de fontes próprias, usar fallbacks de sistema coerentes. Não depender de download externo para a primeira leitura.
-- Adotar como referência: H1 40–48 px desktop e 30–36 px mobile; H2 28–34/24–28; H3 20–24; corpo 16–18; tabelas 14–16; metadados 12–14.
-- Tratar faixas como orientação, não medidas rígidas. Respeitar zoom, texto ampliado, tradução e títulos longos.
-- Usar entrelinha de aproximadamente 1,5–1,65 em texto corrido e 1,1–1,25 em títulos. Evitar tracking apertado que prejudique acentos.
-- Preferir pesos 400, 500 e 600; reservar negrito para hierarquia real. Não transformar a página em competição de números gigantes.
-- Usar algarismos tabulares em colunas e comparações; alinhar números à direita. Aplicar padrão brasileiro de números e datas.
-- Limitar parágrafos de explicação a uma largura confortável, aproximadamente 60–75 caracteres. Não restringir gráficos e tabelas à largura do texto.
-
-### Geometria e ritmo
-
-- Usar escala de espaçamento consistente: 4, 8, 12, 16, 24, 32, 48 e 64 px como referência.
-- Adotar área principal de cerca de 1.160–1.240 px; permitir maior largura em tabelas analíticas quando a tarefa exigir.
-- Usar margens laterais de 32–48 px no desktop e 16–24 px no celular, ajustadas ao espaço real.
-- Preferir linhas, alinhamento e proximidade a caixas. Agrupar com superfície apenas quando houver uma função distinta: controles, seleção, aviso ou comparação delimitada.
-- Evitar sombras em gráficos, bordas em cada bloco e grandes raios. Reservar sombra discreta para sobreposição real, como menu ou diálogo.
-- Construir seções pela pergunta; evitar uma sucessão monótona de três cards iguais.
-
-## 4. Arquiteturas de página
-
-### Página de entrada (observatório ou módulo)
-
-É a página mais criticada pelo usuário ("confusa", "péssima", "pouco objetiva", "fator UAU da Apple"). Antes de entregar, conferir cada item:
-
-1. **Primeira tela responde ao leitor, não ao método.** Título com a pergunta, uma frase do que a página mostra e no máximo quatro números de escala do tema, cada um com fonte e data. Siglas de base, contagens de cadastro, CNPJ e taxas de vínculo ficam nos painéis ou no método, não na abertura.
-2. **O destino mais procurado está a um clique**, à vista logo depois dos números, com cartões que já mostram algo útil (ex.: as companhias listadas com logo, papel e o que controlam; não só uma aba no menu). Toda subpágina do módulo é alcançável em um clique da entrada.
-3. **Um artefato didático do mecanismo** (ex.: "Da usina à tomada": o que cada elo faz, como é remunerado, quantos agentes, com link para o painel), distinguindo fluxo físico, contratual e financeiro.
-4. **Busca e caminhos por pergunta** depois disso, em cartões com a resposta curta e um número com prova.
-5. **Método, elos, recorte e downloads recolhidos no fim**, sem sumir do HTML (auditabilidade e testes).
-6. **Imagens finais**: nenhuma gravura provisória; ilustração estilizada só quando acrescenta reconhecimento (ex.: a capital, o tema), nunca fotografia decorativa.
-7. **Home e cards atualizados** quando um painel novo entra: a página não logada, os cards da home e o mapa do observatório citam o painel novo.
-
-**Molde único (Iniciativa 4 do parecer de UX de 21/10/2026).** Toda entrada de observatório e de coleção, e toda versão aperitivo, é `EntradaColecao` (`src/components/observatorios/EntradaColecao.tsx`), renderizada no servidor, com as fatias nesta ordem (cada uma marcada `data-fatia`, conferida por `src/tests/entrada-molde.test.ts`):
-
-1. **Abertura**: `RotuloContexto`, H1 pergunta com até 60 caracteres (duas linhas a 1440, três a 390) e uma frase com até 220. Nada mais antes dos números.
-2. **Escala**: de um a quatro números com `NumeroEscala` (`src/components/observatorios/NumeroEscala.tsx`), cada um com rótulo, valor, unidade, período, fonte, nota opcional e "Ver no painel"; o topo do primeiro número abaixo de 900 px a 1440. Valor ausente é "Indisponível nesta publicação", nunca zero. Não criar outro componente de número (a Iniciativa 6 funde este no kit).
-3. **ParaVoce**.
-4. **Destinos**: as coleções (entrada de observatório) ou os destinos de primeiro nível de `navegacaoDaColecao` (entrada de coleção, `DestinosColecao`), cada um com a pergunta que responde e, quando há, o número lido da mesma base; até oito à vista e o resto em "Mais destinos".
-5. **Artefato**: um modelo didático, sempre no envelope `ModeloDidatico` (`src/components/observatorios/ModeloDidatico.tsx`): rótulo fixo "Modelo didático", título, corpo e a lista obrigatória "O que este modelo deixa de fora" (o tipo exige a lista). "Laboratório ilustrativo", "cenário hipotético" e afins vêm nesse envelope.
-6. **Caminhos**: "Perguntas para começar", cada uma com resposta curta e, quando o destino tem número, o número lido dele (regra do `paraVoce.ts`: nunca escrito à mão).
-7. **Método**: um único `<details>` no fim, com método, fontes, downloads (`SeloComConta` na versão aberta, `ExportacaoComConta` para exportação do navegador) e `FaixaFrescor` variante método.
-
-Entre os destinos e o artefato cabe **uma** seção própria da coleção (`secaoPropria`: o percurso da Energia, a régua das capitais). O resto do conteúdo vai para `Recolhido` (`src/components/observatorios/Recolhido.tsx`, o único jeito de recolher seção longa: título e resumo de uma linha no `<summary>`, conteúdo inteiro no HTML) ou para a página "Visão geral" da coleção; nunca é apagado. A versão aperitivo (`tipo="aperitivo"`) usa abertura, a consulta do leitor no lugar da escala, `ConviteAperitivo` e método.
-
-**Estados de prontidão** têm forma única, `SeloProntidao` (`src/components/observatorios/SeloProntidao.tsx`): glifo e texto, nunca só cor, em quatro valores (publicado, cobertura parcial, em preparação, piloto). Destino em preparação nunca é link. Nada de "Versão em desenvolvimento", "Em desenvolvimento", "(previsto)" ou "Estados · Piloto" escritos à mão; o teste do molde reprova as formas antigas no código.
-
-**Orçamento de comprimento** (medido por `scripts/ux-medidas.mjs`): entrada de observatório e de coleção até 6.500 px a 1440 e 11.000 a 390; página aperitivo até 2.500 e 4.500; porta `/perguntas/*` até 3.500 e 7.000; página aberta do Crédito até 3.500 e 7.000. Acima disso, recolher, nunca apagar. Sem exceção (decisão do dono de 22/10/2026: "seguir sempre o padrão"); as entradas são conferidas no build por `src/tests/ux-orcamentos-comprimento.test.ts`. Na página aberta do Crédito, a fatia de destinos sai porque repetia o "Para você" e o convite (decisão do dono de 23/10/2026).
-
-Na entrada de um observatório inteiro, combinar: identidade e promessa curta → explicação visual do tema → amostra equilibrada de indicadores com referências → caminhos por perguntas → índice temático completo → fontes e atualidade acessíveis.
-
-Garantir informação substantiva cedo. Evitar hero de marketing que consuma a primeira tela, fotografia decorativa, manifesto longo e mosaico interminável de KPI.
-
-Usar o diagrama do sistema para ensinar relações reais. Diferenciar fluxos físicos, relações institucionais, financeiras e associações. Não desenhar uma seta causal onde existe apenas conexão temática.
-
-Oferecer uma navegação principal e busca funcional quando houver índice confiável. Não repetir os mesmos destinos em quatro menus e conjuntos de cards.
-
-### Panorama temático
-
-Organizar: pergunta → recorte → medida com referência → visual principal → análises complementares visíveis → conexões úteis → aprofundamento e método.
-
-Escolher a densidade conforme a pergunta. Não impor limite universal de três indicadores ou um gráfico. Mostrar evolução, distribuição, composição e território quando acrescentarem entendimento; não apenas links com esses nomes.
-
-### Exploração e comparação
-
-Priorizar área analítica, controles locais, estado da seleção, resumo do universo e referências recalculadas. Usar duas colunas quando as medidas precisarem ser vistas juntas e uma quando a figura exigir largura.
-
-Preservar filtros na URL quando o projeto suportar. Permitir compartilhar o recorte. Evitar filtros globais que pareçam sincronizar indicadores com calendários incompatíveis.
-
-### Ficha de entidade
-
-Dar identidade, perímetro e cobertura à entidade antes de comparar. Organizar dimensões em capítulos. Não inventar nota composta para sintetizar indicadores heterogêneos.
-
-### Catálogo e metodologia
-
-Dar prioridade à busca, classificação e reprodução. Evitar hero alto, indicadores ornamentais e documentação integral antes do primeiro recurso útil. Manter datas de referência, captura e publicação distintas.
-
-### Navegação e acesso
-
-- **Todos os painéis exigem conta.** As únicas rotas abertas são as de `src/lib/rotasPublicas.ts`; nenhuma mudança de layout pode abrir painel sem login nem apontar a barra superior para o login quando há sessão.
-- **Páginas abertas por tema (leva 1 de 19/10/2026, refeita pelo princípio do aperitivo em 20/10/2026).** Cada tema tem uma única página aberta, declarada em `APERITIVOS` (`src/lib/rotasPublicas.ts`): Conta de luz `/setor-eletrico/conta-de-luz` (a irmã `/en` herda por `parDeIdioma`), Saneamento `/saneamento/municipio`, Eficiência Estatal `/eficiencia-estatal`, Gás de cozinha `/gas-natural/gas-de-cozinha`, Crédito `/observatorio-do-credito` (apresentação) e, desde 20/10/2026, Previdência `/contas-publicas/previdencia` (aperitivo "Quanto o INSS paga na minha cidade?"; com sessão, o painel Previdência e INSS) Educação nos municípios `/educacao-municipal` (aperitivo "Como está a escola pública da minha cidade?"; com sessão, o painel completo, porta da coleção Educação dos Serviços Públicos, que leva ao painel das capitais quando o município é capital) e Conectividade `/conectividade` (aperitivo "Como é a internet na minha cidade?", 20/10/2026; com sessão, o painel Conectividade, dados da Anatel por município); da leva 2, Combustíveis `/combustiveis/no-meu-estado`. Quando o tema tem `versaoAberta`, o endereço público serve duas versões (`desvioDoAperitivo` no `src/middleware.ts`): sem sessão, a página aperitivo de `src/app/aperitivo/<tema>` por rewrite, sem mudar o endereço; com sessão, o painel completo de sempre. O caminho `/aperitivo` não existe como endereço (404 com ou sem sessão), e todo convite da página aperitivo usa `ConviteAperitivo` com a rota pública. A ficha `/saneamento/municipio/[id]` é do painel completo: sem sessão volta a `/saneamento/municipio?ibge=`. O simulador da conta de água saiu da área aberta. Continuam fechadas as vizinhas, as pastas de arquivos e todos os downloads. Arquivo que a página aberta busca no navegador abre sozinho, pelo endereço exato, em `ARQUIVOS_DAS_CONSULTAS` (hoje `/setor-eletrico/conta-de-luz/municipios.json` e `/saneamento/gold/indice.json`), nunca a pasta. `src/tests/aperitivo.test.ts` reprova tema com duas páginas abertas, página aberta de informação fora de um tema e tema sem versão aperitivo ou sem painel completo. Antes de abrir outra rota, conferir no navegador sem sessão que nenhuma requisição cai no login.
-- **Leva 2 (preparada, aguardando aprovação do dono).** Declarada em `LEVA_2` (`src/lib/rotasPublicas.ts`): para cada ferramenta, a pergunta, a forma (consulta, método ou artefato), as portas de `/perguntas/[porta]`, as rotas exatas, a ficha por código IBGE quando houver, os arquivos exatos que o navegador busca e `aprovadaEm`. Com `aprovadaEm: null` nada abre, nada aparece na camada aberta, na navegação ou no sitemap. **Ligar um item é trocar `null` pela data da aprovação (AAAA-MM-DD) nesse item, e só isso**: middleware, sitemap, bloco "Para o seu caso", métodos da porta, artefato da porta, faixa `AvisoConsultaAberta` e link da navegação do tema leem a lista (`leva2Aprovada`, `src/lib/perguntas/leva2.ts`). O teste `src/tests/leva2.test.ts` confere a regra com a lista desligada e ligada e reprova item aprovado sem página ou sem arquivo em `public/`. Itens: "Quanto meu banco cobra?" (`/observatorio-do-credito/quanto-meu-banco-cobra`, rota do pacote Q1), "Teve fogo perto de mim?" (`/territorio/queimadas/municipio` e a ficha `/territorio/queimadas/municipio/[ibge]`, montada no servidor: a gold municipal inteira segue com conta; o navegador só baixa `/saneamento/gold/indice.json`, já aberto), "Para onde vão R$ 100 dos meus impostos?" (`CemReaisAberto` dentro de `/perguntas/contas-publicas`, que já é aberta), "Como o Crédito calcula cada número?" (`/observatorio-do-credito/metodologia`, pacote Q1), "Quanto custa encher o tanque no meu estado?" (`/combustiveis/no-meu-estado`, consulta do painel Combustíveis nos postos, montada no servidor; nenhum arquivo abre; **aberta em 20/10/2026** por aprovação do dono, o único item da lista ligado; o painel `/combustiveis` continua com conta), "Quanto de cada R$ 100 do governo federal vai para cada área?" (`CemReaisPorAreaAberto` dentro de `/perguntas/contas-publicas`, consulta do painel Despesa por área `/contas-publicas/por-area`; nenhum arquivo abre; desligada) e "Quanto subiu o custo de vida na minha cidade?" (`/custo-de-vida/na-minha-cidade`, consulta do painel Inflação por cidade do Observatório das Famílias, montada no servidor; nenhum arquivo abre; desligada). Antes de ligar: conferir no navegador, com e sem sessão, que a rota abre, que nenhuma requisição cai no login e que os destinos fechados levam o selo; registrar a data na tabela da banca.
-- **Na página aberta, o fechado se vê antes do clique.** A faixa `AvisoConsultaAberta` diz o que fica com a conta gratuita e some com sessão; todo link para destino fechado leva `SeloComConta` (cadeado e "com conta", que só aparece em página aberta) e `prefetch={prefetchDoLink(href)}`; exportação montada no navegador (CSV, XLSX) passa por `ExportacaoComConta`, que sem sessão a troca pelo convite para entrar. Exportação que precisa existir para quem tem conta sai de uma rota de servidor fechada (ex.: `/eficiencia-estatal/retrato-26-capitais.csv`). Arquivo em caminho fechado buscado pela página (ex.: histórico por distribuidora da Conta de luz) responde com o login; o componente trata esse caso como "com conta", nunca como erro. A camada aberta `/perguntas/[porta]` lista essas consultas no bloco "Para o seu caso", e os caminhos de "No painel completo" levam só a painéis com conta.
-- Ao mexer em abas, barra superior, cards ou rotas, conferir **logado e deslogado, em todos os observatórios**, e corrigir README ou documentação que diga outra coisa.
-- **Um só cabeçalho (achado A7 da banca de 19/10/2026):** todo observatório e painel abre com a barra comum (`CabecalhoPlataforma` sobre `BarraPlataforma`, estilo `bp-*` em `public/observatorios.css`): a mesma marca, os seis observatórios na ordem e com os rótulos do registro, o atual marcado, o seletor e a conta. Abaixo dela vem a navegação do módulo. O cabeçalho público usa a mesma barra com os destinos abertos. Na SPA do Crédito a barra é gerada do registro (`node scripts/barra-spa.mjs`). Cabeçalho novo não desenha marca própria (teste `cabecalho-movel`).
-- **Cabeçalho no celular (abaixo de 640 px):** a lista dos observatórios sai (`public/observatorios.css`) e os mesmos destinos ficam no seletor de observatório da linha da marca (`SwitcherObservatorio`; na SPA do Crédito, `.obs-trocar`; no cabeçalho público, "Observatórios ▾"), com a conta na mesma linha quando cabe. Cabeçalho novo que mostra `NavegacaoObservatorios` traz o seletor (teste `cabecalho-movel`). Decisão do dono de 17/10/2026, etapa 4 da arquitetura do Saneamento.
-- **Um só vocabulário (Iniciativa 1 do parecer de UX de 21/10/2026):** Observatório (um dos seis) → Coleção (uma das 28 de `src/lib/observatorios/lista.ts`) → Página, em toda tela. Acima do H1, o rótulo é sempre `RotuloContexto` (`src/components/layout/RotuloContexto.tsx`, "Observatório X · Coleção Y · Página Z", lido do registro); a trilha é sempre `Trilha` ("Você está em", raiz "Observatórios"; a barra comum já a traz em toda página de coleção, e só página aberta fora dela, como as portas `/perguntas/<id>`, usa `<Trilha>` direto). Nenhuma página escreve rótulo de contexto ou trilha à mão, nem diz "Observatório Brasileiro de X" (o nome antigo fica em `nomeLegado`); navegação de módulo leva aria-label "Navegação da coleção X" e o título da aba "Página · Coleção · Scrutiniums". Teste `src/tests/vocabulario.test.ts`.
-- **Uma só navegação de módulo (Iniciativa 2 do parecer de UX de 21/10/2026):** abaixo da barra comum, toda coleção usa `NavegacaoColecao` (`src/components/layout/NavegacaoColecao.tsx`), alimentada pelo catálogo único `navegacaoDaColecao` (`src/lib/observatorios/navegacaoColecao.ts`, que lê os catálogos de cada domínio; nunca lista escrita no cabeçalho). Duas linhas no máximo: a linha 1 com "Início", a consulta pessoal da coleção em segundo (Conta de luz, Meu município, Gás de cozinha, Consulta por estado, Quanto meu banco cobra?, Previdência e INSS), os grupos e as páginas, até oito à vista e o resto em "Mais", e à direita os atalhos Dados, Método e Glossário, nesta ordem; a linha 2 só quando o destino atual é um grupo, com as páginas dele. Nada de menu suspenso por grupo nem botão "Menu": no celular as duas linhas rolam só nelas mesmas, com o atual à vista. Destino sem página é texto "em preparação". O Território e Clima, que mantém painéis próprios, usa a mesma peça como navegação do observatório. Nas coleções da Eficiência Estatal, as abas de cada tema vêm de uma lista só, `src/lib/eficiencia/temas.ts` (com `levar`, os parâmetros do recorte, como a capital, que acompanham o leitor de uma aba a outra). A área da conta (`/app/*`: escolha do painel, Conta, Admin) usa a mesma barra comum, sem observatório marcado, e a mesma peça como "Navegação da conta" (`navegacaoDaConta`: Encontre o painel, Conta, Admin só para quem administra, e o "Sair" como formulário); não existe cabeçalho de foco. No celular, as ferramentas da conta (Salvar recorte, Citar, Avisar quando atualizar) ficam num só botão "Conta ▾" na linha da marca, e a faixa de frescor mostra só a data e a situação, com o resto em "Fontes e referência". O bloco "Para ir além" vem no HTML do servidor. **Orçamento de cromo:** do topo da barra comum até o início do conteúdo, faixa de frescor incluída, no máximo 230 px a 1440 px e 200 px a 390 px, e o H1 na primeira tela (`scripts/ux-cromo.mjs`, teste `src/tests/ux-orcamentos-cromo.test.ts`). A parceria técnica (FGV CERI) não ocupa linha de navegação: vai para o rodapé da coleção, `RodapeColecao` (`src/components/layout/RodapeColecao.tsx`, com e sem sessão; decisão registrada no PR da Iniciativa 2, pela recomendação do parecer). Testes `navegacao-colecao` e `cabecalho-movel`.
-- **Uma só busca (Iniciativa 3 do parecer de UX de 21/10/2026):** a busca da plataforma é `BuscaPlataforma` (`src/components/busca/BuscaPlataforma.tsx`), na linha da marca da barra comum, à esquerda da conta (prop `busca` de `BarraPlataforma`, passada por `CabecalhoPlataforma` e `PublicHeaderView`; na SPA do Crédito, o mesmo formulário GET gerado por `barraSpa.ts`). Abaixo de 640 px, uma lupa de 44 px abre a busca em tela cheia; "/" e Ctrl K levam ao campo, sem animação; Esc fecha e devolve o foco. O índice é único (`src/lib/busca/indice.ts`, servido em `/busca/indice.json` e baixado só no foco) e a lista de resultados também (`ListaResultados`, usada pela barra, por `/buscar` e por `/app/observatorios`); destinos fechados levam `SeloComConta` para quem não tem sessão. `/buscar` é aberta, não indexada e fora do sitemap; sem JavaScript, o campo envia para lá. Em página de coleção, a busca local é o mesmo componente com `filtro={{ colecao }}` e o link "Buscar em toda a plataforma"; não criar outra busca de páginas. **Destino novo entra na busca pelo registro e pelos catálogos, nunca à mão**: `src/lib/busca` não lista endereços (teste `busca-indice.test.ts`), e sinônimo novo vai para `src/lib/busca/sinonimos.json`. O índice é só em português: nas páginas em inglês o campo não aparece. A busca de município é a da consulta de cada tema (Iniciativa 7).
-- Destinos novos entram na navegação do módulo (ordem pela procura: o mais procurado logo depois da visão geral), na busca e no mapa do observatório. O sitemap só lista rotas públicas (`ehRotaPublica`): painel protegido fica fora dele, e nunca se abre um painel só para aparecer no sitemap.
-
-## 5. Contrato dos componentes
-
-### Número de destaque
-
-Exibir rótulo preciso, valor, unidade, recorte temporal e referência identificada. Mostrar variação com base e período. Não exibir seta sem explicar a comparação. Não reduzir o valor a abreviação ambígua; oferecer precisão apropriada no detalhe.
-
-### Figura analítica
-
-Incluir pergunta/título curto, subtítulo com unidade e universo, marcas legíveis, referência, fonte e ressalva material. Evitar repetir o título da página. Usar legenda apenas quando os rótulos diretos não resolverem.
-
-Disponibilizar tabela equivalente e exportação quando existentes. Preservar, em toda alternância, seleção, elegibilidade e unidades. Resumo visual não autoriza exportar apenas a amostra mostrada sem aviso.
-
-### Tabela
-
-Definir colunas pela tarefa, não pela ordem da base. Fixar identificação apenas quando ajudar e sem ocultar valores. Agrupar cabeçalhos de modo semântico. Ordenar com estado visível, mantendo tratamento explícito de ausências e empates.
-
-No OBEE, dar visibilidade a gasto total, por habitante e por matrícula quando metodologicamente válidos, além de referência e cobertura; não escondê-los em tooltip. Não chamar matrícula de estudante único sem suporte do contrato.
-
-Manter diferenças entre zero, ausência, inelegibilidade e indisponibilidade. Evitar ícones sem texto explicativo.
-
-No celular, preservar identificação e valores essenciais. Se a tarefa exigir comparação entre colunas, permitir rolagem apenas na tabela, com indicação perceptível, em vez de converter tudo em cards e perder a comparação. Não permitir rolagem horizontal da página inteira.
-
-### Controles e notas
-
-Colocar filtros perto do conteúdo afetado; rotular todos. Mostrar seleção, ação de limpar e estado de carregamento quando pertinentes. Preservar foco após atualização.
-
-Usar ajuda curta para conceitos; usar expansão para detalhes. Manter ressalvas materiais fora de tooltips. Não espalhar um botão “Passaporte” em cada célula; oferecer uma ficha coerente por indicador com contexto do recorte.
-
-### Identidade de empresas (logos)
-
-O usuário quer o símbolo de cada empresa sempre que a página fala de uma companhia identificada (fichas, vitrines, tabelas de grupos, vencedoras de leilão).
-
-- Só o arquivo oficial publicado pela própria companhia (RI, kit de marca), baixado e servido localmente; nunca redesenhar, aproximar ou usar fonte de terceiros.
-- Manifesto versionado por logo (`public/energia/logos/manifesto.json`): papel, nome de exibição, CNPJ da holding, CNPJ do grupo no topo da cadeia, arquivo, URL de origem, data de captura, sha256, tom do fundo e ausência com motivo.
-- Vínculo entre logo e entidade só por CNPJ ou cadeia de controle provada; nunca por semelhança de nome. Quando a base não traz CNPJ (ex.: vencedora de leilão), ligar pelo ativo ao controlador atual e dizer que não é o vencedor na data.
-- Placa no tom do arquivo (logos publicados só em branco ganham placa escura); tamanho fixo e discreto; alt com o nome; sem logo oficial, o nome em texto e a ausência registrada.
-- SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado (não "limpo"); a pasta de logos responde com CSP restritiva.
-
-### Estados
-
-Projetar padrão, carregamento, ausência, erro, cobertura insuficiente, estimativa, quebra de série e seleção extrema. Explicar o que falta e o que continua utilizável. Não substituir ausência por zero nem preencher painel com dado demonstrativo em produção.
-
-## 6. Gramática dos gráficos
-
-| Pergunta | Preferência | Cuidado |
-|---|---|---|
-| Como evoluiu? | Linha e referência temporal compatível | Mostrar lacunas e quebras; não inventar continuidade |
-| Como se compara? | Pontos, barras ou pequenos múltiplos | Usar mesma unidade, universo e escala quando comparáveis |
-| Onde está na distribuição? | Pontos, histograma ou boxplot explicado | Declarar população, mediana e cobertura |
-| Do que se compõe? | Barras empilhadas e categorias completas | Não apresentar “cinco maiores” como total fechado |
-| Onde ocorre? | Mapa com geometria oficial | Oferecer comparação tabular; respeitar grão territorial |
-| Como duas medidas se relacionam? | Dispersão com contexto | Não sugerir causalidade ou ranking de eficiência |
-| Como funciona? | Diagrama curto e rotulado | Distinguir mecanismo, fluxo e associação |
-| Qual é a incerteza? | Faixa ou intervalo documentado | Não criar leque de previsão sem método |
-
-- Iniciar barras quantitativas em zero; justificar e sinalizar exceções de outros tipos de gráfico. Evitar eixo duplo como atalho para medidas distintas.
-- Escolher precisão coerente com fonte e tarefa. Diferenciar pontos percentuais de variação percentual.
-- Mostrar extremos sem comprimir todos os demais até ficarem ilegíveis: pequenos múltiplos, distribuição ou escalas explicitamente alternativas. Não remover o extremo silenciosamente.
-- Usar referência histórica sazonal quando a sazonalidade fizer parte do fenômeno. Não tratar máximo observado como meta.
-- Exigir numerador, denominador, janela e ponderação compatíveis. Não converter benchmark incompatível em linha de meta.
-- Posicionar labels diretamente e testar nomes longos. No mobile, reduzir ticks e anotações opcionais, não reduzir todo o gráfico até ilegibilidade.
-- Usar curvas e transições apenas quando preservarem significado. Não suavizar séries para esconder volatilidade; não animar contadores decorativos.
-
-### Rótulos de medida (achados recorrentes de revisão)
-
-- **A unidade da contagem é a do dado.** Linha de arquivo não é entidade: "1.552 vendas de 1.469 usinas distintas", não "1.552 empreendimentos". Antes de rotular, conferir chave única.
-- **A data é a da fonte que produziu o número.** Contagem derivada do índice de distribuidoras não leva a data do cadastro de agentes; texto que cita uma data alternativa não leva o rótulo da fonte principal (ex.: "(bolsa)" sem carteira da bolsa).
-- **Zero calculado não é "sem dado".** Companhia sem distribuidora sob controle mostra 0 com a regra, não ausência.
-- **Identificador oficial na forma da fonte.** Número de leilão como a ANEEL designa ("nº 10/2013"), nunca em formato que pareça ano e mês.
-
-## 7. Adaptação ao tema
-
-| Tema | Preservar na apresentação |
-|---|---|
-| Energia | Potência versus energia; PLD versus tarifa/fatura; medição versus estimativa; fluxo bruto versus saldo; limites com vigência; projetos versus operação; previsão versus cenário |
-| OBEE | Gasto versus serviço versus resultado; universos próprios; valores totais e denominadores válidos; cobertura e elegibilidade; anos de resultados e gastos; ausência de julgamento automático de eficiência |
-| Crédito | Estoque versus fluxo; saldo versus concessão; taxa versus spread; inadimplência com conceito e janela; PF/PJ; perímetros de instituições; comparações de produtos e períodos compatíveis |
-
-Não inserir valores ou datas fixos desta skill nos painéis. Buscar tudo nos contratos reais. Encaminhar problemas de dados à investigação metodológica sem “corrigi-los” por CSS, arredondamento ou exclusão silenciosa.
-
-## 8. Acessibilidade e comportamento
-
-- Projetar responsivamente pelo conteúdo; testar pelo menos 320, 390, 768 e 1440 px, zoom de 200% e reflow com texto ampliado quando viável.
-- Mirar alvos confortáveis de 44 × 44 px para controles de toque. Manter texto essencial legível sem depender de zoom.
-- Verificar teclado, ordem de leitura, foco visível, links, menus e alternativa ao hover. Não esconder o foco sob cabeçalhos fixos.
-- Usar estrutura semântica, cabeçalhos de tabela, nomes acessíveis e descrição dos gráficos. Não anunciar todas as mudanças do gráfico em região viva.
-- Usar contraste de texto como critério verificável: referência de 4,5:1 para texto comum e 3:1 para texto grande; verificar também limites perceptíveis dos controles e elementos gráficos necessários.
-- Respeitar preferência por movimento reduzido. Evitar carrosséis automáticos, animações de entrada em todos os blocos e modais instrutivos obrigatórios.
-- Não declarar conformidade integral por teste automático. Registrar se leitor de tela ou verificação manual não puderam ser executados.
-
 ## 9. Processo de execução
 
 1. Diagnosticar o estado atual com capturas e inventário proporcional ao escopo.
@@ -272,6 +74,8 @@ Não inserir valores ou datas fixos desta skill nos painéis. Buscar tudo nos co
 8. Entregar mudança revisável, evidências, limitações e próximos bloqueios reais. Seguir o ciclo da seção 13 até onde o usuário autorizou.
 
 Testes que fixam o desenho anterior (ordem de seções, título, faixa de números) mudam junto com um redesenho pedido pelo usuário: atualizar de propósito, preservando os invariantes (natureza, período e prova de cada número, links válidos, teto de HTML) e dizendo no PR o que mudou e por quê. Nunca apagar teste para passar.
+
+**Texto literal nos testes (decisão do dono de 23/10/2026, proposta 2 do ciclo).** Asserção de texto literal só para texto que o dono decidiu, com a decisão citada no comentário do teste. Teste novo prefere invariantes: natureza, período e prova de cada número, links válidos, estrutura declarada da página, ausência de `undefined`, `NaN` e data crua. Vale para o que nasce; o existente não é reescrito.
 
 Não instalar bibliotecas, fontes ou animações pesadas sem necessidade concreta. Reutilizar a infraestrutura de gráficos e componentes do projeto; usar carregamento progressivo para séries extensas sem esconder seus resumos.
 
@@ -297,18 +101,6 @@ Buscar pelo menos 9 em cada critério. Não garantir essa nota nem atribuí-la p
 Reprovar enquanto houver: dado enganoso, ressalva essencial escondida, funcionalidade perdida, valor ilegível, sobreposição, tarefa essencial inacessível, referência incompatível, destino mais procurado a mais de um clique da entrada, data ou unidade atribuída à fonte errada, logo sem vínculo provado ou gravura provisória.
 
 Após duas rodadas sem ganho verificável, reconsiderar a solução ou declarar o bloqueio. Não gerar alterações cosméticas sem finalidade nem prolongar indefinidamente o trabalho.
-
-## 11. Exemplos de decisão
-
-- “A página está entulhada”: agrupar controles, retirar repetições e organizar capítulos; preservar série, distribuição e comparação, em vez de apagá-las.
-- “Quero padrão mundial”: traduzir em alinhamento, hierarquia, leitura e tarefas verificáveis; não apenas trocar fontes, usar gradientes ou adicionar cards.
-- “Quero mais referências”: escolher régua pertinente ao indicador, declarar universo e mostrar a posição; não colocar média de grupo incompatível.
-- “Quero que se entenda se está bem ou mal”: oferecer distância da referência, distribuição e limite aplicável; deixar o julgamento ao leitor.
-- “No celular a tabela ficou enorme”: priorizar identificação e medidas, permitir exploração do restante e rolagem localizada quando necessária; não ocultar gasto por habitante ou por matrícula sem acesso claro.
-- “Esta página está confusa / péssima”: refazer pela checklist da página de entrada (seção 4): o que o leitor procura primeiro, a um clique; quatro números; um artefato do mecanismo; método recolhido. Não só trocar estilo.
-- “Coloque o símbolo da empresa”: aplicar o contrato de logos a todas as superfícies onde a empresa aparece, inclusive tabelas de outras seções, pelo mesmo componente e manifesto.
-- “Use artefato didático sempre que possível”: um laboratório que o leitor manipula e que mostra o mecanismo real, com o rótulo "modelo didático" e o que ele deixa de fora; não ilustração estática no lugar de dado.
-- “O gráfico está bonito”: verificar a tarefa. Se a pessoa não consegue comparar ou entender a unidade, refazer mesmo que a imagem pareça sofisticada.
 
 ## 12. Entrega
 
