@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type {ReactNode} from 'react';
-import {PainelPrincipal} from '@/components/observatorios/PainelPrincipal';
 import {FiguraAnalitica,PaginaPainel} from '@/components/painel';
 import {Comparacao} from '@/components/eficiencia/saneamento/Comparacao';
 import {captura,edicao,fontes,indicadores,referenciaAno,valores} from '@/lib/eficiencia/saneamento/dados';
@@ -32,6 +31,8 @@ export type ServicoSaneamento={
  /** A seção explicativa do fim da página, agora logo depois da figura. */
  explicacao:{titulo:string;corpo:ReactNode};
  limite:string;
+ /** O aviso do painel principal da coleção Saneamento, escrito na própria página (o teste das cópias lê a rota no arquivo da página). */
+ aviso:ReactNode;
 };
 
 /**
@@ -41,7 +42,7 @@ export type ServicoSaneamento={
  * destaque; a comparação territorial (Comparacao, já no kit) vira a figura, com a ficha do SINISA, e a seção explicativa vem logo depois
  * dela. A fonte por extenso fica no bloco recolhido e no método. Nenhum texto, número ou arredondamento mudou.
  */
-export function PaginaServico({slug,titulo,lead,numeros,complementoNumero='',notaNumeros,secao,explicacao,limite}:ServicoSaneamento){
+export function PaginaServico({slug,titulo,lead,numeros,complementoNumero='',notaNumeros,secao,explicacao,limite,aviso}:ServicoSaneamento){
  const medidas=indicadores.filter(m=>m.grupo===slug);const dados=valores.filter(r=>medidas.some(m=>m.id===r.indicador));
  const comUf=dados.some(r=>r.tipo==='UF');
  // a figura mostra uma medida por vez (escolhida no controle): a ficha principal é a das medidas publicadas pela fonte e, quando o grupo
@@ -50,7 +51,7 @@ export function PaginaServico({slug,titulo,lead,numeros,complementoNumero='',not
  const fonteIds=[...new Set(medidas.map(m=>m.fonte))];const arquivos=fonteIds.map(id=>fontes.find(f=>f.id===id)!);
  return <PaginaPainel rota={ROTA+'/'+slug} principal={false} idioma="pt"
   abertura={aberturaSaneamento({titulo,lead,limite,universo:comUf?'Brasil, cinco regiões e 27 UFs':'Brasil e cinco regiões'})}
-  aviso={<PainelPrincipal rota={ROTA+'/'+slug}/>}
+  aviso={aviso}
   // "Brasil, 2024." da nota de antes é a linha de recorte e período do próprio número; a nota guarda a base e o complemento
   numeros={numeros.map(id=>numeroSaneamento(id,indicadores.find(m=>m.id===id)!.base+complementoNumero))}
   notaNumeros={notaNumeros}

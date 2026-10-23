@@ -1,9 +1,10 @@
 import type {Metadata} from 'next';
+import {PainelPrincipal} from '@/components/observatorios/PainelPrincipal';
 import {PaginaServico} from '@/components/eficiencia/saneamento/PaginaServico';
 export const dynamic='force-static';
 export const metadata:Metadata={"title": "Infraestrutura, exposição e impactos. — Saneamento", "alternates": {"canonical": "/eficiencia-estatal/saneamento/drenagem"}};
 // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o corpo comum das páginas de serviço; textos e números são os de antes
-export default function Pagina(){return <PaginaServico slug="drenagem" titulo="Infraestrutura, exposição e impactos."
+export default function Pagina(){return <PaginaServico slug="drenagem" aviso={<PainelPrincipal rota="/eficiencia-estatal/saneamento/drenagem"/>} titulo="Infraestrutura, exposição e impactos."
  lead="A drenagem envolve condução, retenção e infiltração da água da chuva. A existência de redes subterrâneas é apenas uma parte do sistema; chuvas, ocupação do solo e condições locais também afetam os impactos."
  limite="ocorrências nem o total de pessoas afetadas: domicílios em risco são exposição declarada, a população impactada considera desabrigados e desalojados, e as contagens não substituem os registros do S2ID."
  numeros={["IAP0002", "DOM_RISCO", "IGR0002"]}

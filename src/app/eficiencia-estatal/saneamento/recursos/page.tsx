@@ -1,9 +1,10 @@
 import type {Metadata} from 'next';
+import {PainelPrincipal} from '@/components/observatorios/PainelPrincipal';
 import {PaginaServico} from '@/components/eficiencia/saneamento/PaginaServico';
 export const dynamic='force-static';
 export const metadata:Metadata={"title": "Quanto se declara em despesas e investimentos? — Saneamento", "alternates": {"canonical": "/eficiencia-estatal/saneamento/recursos"}};
 // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o corpo comum das páginas de serviço; textos e números são os de antes
-export default function Pagina(){return <PaginaServico slug="recursos" titulo="Quanto se declara em despesas e investimentos?"
+export default function Pagina(){return <PaginaServico slug="recursos" aviso={<PainelPrincipal rota="/eficiencia-estatal/saneamento/recursos"/>} titulo="Quanto se declara em despesas e investimentos?"
  lead="Os registros financeiros acompanham serviços prestados por organizações públicas e privadas. Valores totais mostram a escala; razões por residente oferecem uma referência de tamanho com o universo de cada módulo."
  limite="gasto público, gasto por usuário atendido ou tarifa: os valores são autodeclarados ao SINISA por prestadores de diferentes naturezas, sem conferência com demonstrações financeiras auditadas."
  numeros={["AG_DESPESA", "AG_INVESTIMENTO", "ES_INVESTIMENTO"]}

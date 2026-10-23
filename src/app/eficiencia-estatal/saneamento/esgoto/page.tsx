@@ -1,9 +1,10 @@
 import type {Metadata} from 'next';
+import {PainelPrincipal} from '@/components/observatorios/PainelPrincipal';
 import {PaginaServico} from '@/components/eficiencia/saneamento/PaginaServico';
 export const dynamic='force-static';
 export const metadata:Metadata={"title": "Coletar e tratar são etapas diferentes. — Saneamento", "alternates": {"canonical": "/eficiencia-estatal/saneamento/esgoto"}};
 // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o corpo comum das páginas de serviço; textos e números são os de antes
-export default function Pagina(){return <PaginaServico slug="esgoto" titulo="Coletar e tratar são etapas diferentes."
+export default function Pagina(){return <PaginaServico slug="esgoto" aviso={<PainelPrincipal rota="/eficiencia-estatal/saneamento/esgoto"/>} titulo="Coletar e tratar são etapas diferentes."
  lead="O alcance da rede e o destino do volume coletado respondem a perguntas distintas. Tratar grande parte do que é coletado não significa que toda a população esteja conectada."
  limite="quantas pessoas ficam sem tratamento: os dois percentuais de tratamento têm denominadores diferentes e não se subtraem, e tratar grande parte do que é coletado não significa que toda a população esteja conectada."
  numeros={["IES0001", "IES2003", "IES2004"]}

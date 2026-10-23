@@ -22,7 +22,7 @@ export default function Pagina(){return <PaginaPainel rota={ROTA} principal={fal
  abertura={aberturaSaneamento({titulo:'Da água que chega ao destino dos resíduos.',universo:'Brasil, cinco regiões e 27 UFs',
   lead:'Saneamento reúne serviços com redes, operações e universos próprios. Este capítulo acompanha acesso, funcionamento, destino e recursos declarados, com referências territoriais e limites de comparação.',
   limite:'uma nota de saneamento nem a eficiência de um governo: os três percentuais têm denominadores diferentes e não medem isoladamente a gestão.'})}
- aviso={<PainelPrincipal rota={ROTA}/>}
+ aviso={<PainelPrincipal rota="/eficiencia-estatal/saneamento"/>}
  numeros={['IAG0001','IES0001','IAP0002'].map(id=>numeroSaneamento(id,indicador(id).base))}
  notaNumeros="Os três percentuais têm denominadores diferentes. Não formam uma nota de saneamento nem medem isoladamente a eficiência de um governo."
  navegacaoLocal={<nav aria-labelledby="quatro-servicos" className="mt-8">
