@@ -12,6 +12,7 @@ import PaginaEsgoto from "@/app/eficiencia-estatal/saneamento/esgoto/page";
 import PaginaResiduos from "@/app/eficiencia-estatal/saneamento/residuos/page";
 import PaginaDrenagem from "@/app/eficiencia-estatal/saneamento/drenagem/page";
 import PaginaRecursos from "@/app/eficiencia-estatal/saneamento/recursos/page";
+import PaginaAmbiente from "@/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2 do Grupo 2, frente de saúde, educação, saneamento, energia e meio
@@ -62,5 +63,25 @@ describe("molde de painel: saneamento no OBEE", () => {
     expect(h).toContain("O que os municípios informaram?");
     expect(h).toContain('data-bloco-tabela=""');
     expect(h).not.toContain("overflow-x-auto");
+  });
+});
+
+describe("molde de painel: meio ambiente e clima", () => {
+  it("/eficiencia-estatal/meio-ambiente-clima (o panorama do modelo [[...painel]])", () => {
+    const h = html(createElement(PaginaAmbiente, { params: {} }));
+    conferirPainel("/eficiencia-estatal/meio-ambiente-clima", h);
+    // os três capítulos a um clique, a figura das regiões no kit e os outros painéis de clima e território, à vista
+    for (const s of ["riscos", "prevencao", "residuos"]) expect(h).toContain(`href="/eficiencia-estatal/meio-ambiente-clima/${s}"`);
+    for (const t of ["Quanto do lixo coletado vai para destino inadequado?", "traço: Brasil", "Ver coleta seletiva e recuperação", "Os outros painéis de clima e território", "Ausência de indicador não significa ausência de problema."]) {
+      expect(h).toContain(t);
+    }
+    for (const href of ["/territorio/desastres", "/territorio/queimadas", "/territorio/emissoes", "/agronegocio/ambiente"]) expect(h).toContain(`href="${href}"`);
+    expect(h).toContain('data-grafico="barras"');
+  });
+  it("Dados e métodos segue fora do molde (página de método)", () => {
+    const h = html(createElement(PaginaAmbiente, { params: { painel: ["metodos"] } }));
+    expect(h).not.toContain("data-painel");
+    expect(h).toContain("O que os dados permitem afirmar.");
+    expect(h).toContain("Regras para interpretar");
   });
 });
