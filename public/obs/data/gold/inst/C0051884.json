@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:01+00:00",
+  "atualizado_em": "2026-10-23T16:23:55+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
@@ -39,7 +39,7 @@
    },
    {
     "tipo": "ok",
-    "texto": "Índice de reclamações 26.1 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+    "texto": "Índice de reclamações 18.4 (abaixo da mediana do ranking 66.1) — indicador operacional, não de solvência.",
     "base": "BCB rdrweb"
    }
   ],
@@ -255,7 +255,7 @@
   },
   {
    "tipo": "ok",
-   "texto": "Índice de reclamações 26.1 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+   "texto": "Índice de reclamações 18.4 (abaixo da mediana do ranking 66.1) — indicador operacional, não de solvência.",
    "base": "BCB rdrweb"
   }
  ],
@@ -1532,6 +1532,15 @@
  },
  "reclamacoes": [
   {
+   "periodo": "2026-T3",
+   "indice": 18.45,
+   "reclamacoes": 7701,
+   "clientes": 45938075.0,
+   "posicao_arquivo": 113,
+   "nome_fonte": "INTER (conglomerado)",
+   "casamento": "nome_identico_bcb"
+  },
+  {
    "periodo": "2026-T2",
    "indice": 26.15,
    "reclamacoes": 7568,
@@ -1555,15 +1564,6 @@
    "reclamacoes": 8567,
    "clientes": 41962921.0,
    "posicao_arquivo": 98,
-   "nome_fonte": "INTER (conglomerado)",
-   "casamento": "nome_identico_bcb"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 96.37,
-   "reclamacoes": 11140,
-   "clientes": 40066015.0,
-   "posicao_arquivo": 105,
    "nome_fonte": "INTER (conglomerado)",
    "casamento": "nome_identico_bcb"
   }

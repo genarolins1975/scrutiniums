@@ -1,0 +1,297 @@
+{
+ "data": "2026-10-23",
+ "build": "_IdhPLVpNYDCc5e6oURMY",
+ "maquina": "4 vCPU, 16 GB",
+ "comando": "npm run evidencias -- --rotas /buscar?q=Amazônia /buscar?q=Celpe /buscar?q=agências reguladoras /buscar?q=LOA --saida docs/ux-2026-10-23/busca-pr2 --larguras 390,1440",
+ "tempo": "0 min 47 s",
+ "resultados": [
+  {
+   "rota": "/buscar?q=Amazônia",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Amaz%C3%B4nia",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Amaz_nia-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Amaz_nia-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Amazônia",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Amaz%C3%B4nia",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Amaz_nia-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Amaz_nia-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Amazônia",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Amaz%C3%B4nia",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Amaz_nia-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Amaz_nia-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Amazônia",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Amaz%C3%B4nia",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Amaz_nia-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Amaz_nia-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Celpe",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Celpe",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Celpe-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Celpe-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Celpe",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Celpe",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_Celpe-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_Celpe-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Celpe",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=Celpe",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Celpe-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Celpe-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=Celpe",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=Celpe",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_Celpe-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_Celpe-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=LOA",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=LOA",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_LOA-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_LOA-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=LOA",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=LOA",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_LOA-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_LOA-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=LOA",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=LOA",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_LOA-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_LOA-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=LOA",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=LOA",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_LOA-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_LOA-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

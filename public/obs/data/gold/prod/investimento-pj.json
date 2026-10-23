@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-22T15:48:19+00:00",
+ "gerado_em": "2026-10-23T16:24:14+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -13342,7 +13342,7 @@
    {
     "cod": "C0052656",
     "nome": "BARU",
-    "sr": null,
+    "sr": "S4",
     "nivel": "conglomerado",
     "carteira_brl": 2291795.69,
     "atraso15_pct": 8.89,
@@ -15708,18 +15708,18 @@
      },
      {
       "anomes": "202512",
-      "total_brl": 26888710023.81,
-      "n_inst": 124
+      "total_brl": 26889699276.42,
+      "n_inst": 125
      },
      {
       "anomes": "202603",
-      "total_brl": 26916281049.22,
-      "n_inst": 127
+      "total_brl": 26917137961.67,
+      "n_inst": 128
      },
      {
       "anomes": "202606",
-      "total_brl": 27047944752.74,
-      "n_inst": 127
+      "total_brl": 27050236548.43,
+      "n_inst": 128
      }
     ],
     "atraso_serie": [
@@ -15741,17 +15741,17 @@
      {
       "anomes": "202512",
       "agg_pct": 1.01,
-      "n": 124
+      "n": 125
      },
      {
       "anomes": "202603",
       "agg_pct": 1.3,
-      "n": 127
+      "n": 128
      },
      {
       "anomes": "202606",
       "agg_pct": 1.22,
-      "n": 127
+      "n": 128
      }
     ]
    },

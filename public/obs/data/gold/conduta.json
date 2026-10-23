@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-22T15:48:26+00:00",
+ "gerado_em": "2026-10-23T16:24:21+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (165 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (165 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-10-21",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11400
   },
   "janela_12m": {
-   "ini": "2025-10-22",
+   "ini": "2025-10-23",
    "decisoes": 1347,
    "processos": 1278,
    "multas_n": 1289,
@@ -91,8 +91,8 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 862,
-    "share": 63.99
+    "n": 863,
+    "share": 64.07
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -100,12 +100,12 @@
     "share": 10.17
    },
    {
-    "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 114,
-    "share": 8.46
+    "situacao": "MULTA VENCIDA E NÃO PAGA",
+    "n": 116,
+    "share": 8.61
    },
    {
-    "situacao": "MULTA VENCIDA E NÃO PAGA",
+    "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
     "share": 8.46
    },
@@ -116,8 +116,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 34,
-    "share": 2.52
+    "n": 31,
+    "share": 2.3
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -153,8 +153,8 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11947,
-    "share": 87.78
+    "n": 11948,
+    "share": 87.79
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -173,8 +173,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 116,
-    "share": 0.85
+    "n": 118,
+    "share": 0.87
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -188,8 +188,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 48,
-    "share": 0.35
+    "n": 45,
+    "share": 0.33
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -783,7 +783,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA VENCIDA E NÃO PAGA"
    },
    {
     "pas": "312208",
@@ -793,7 +793,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA VENCIDA E NÃO PAGA"
    },
    {
     "pas": "312203",
@@ -803,7 +803,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "312201",
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-22",
+   "ini": "2025-10-23",
    "processos": 65,
    "acusados": 165
   },
@@ -1541,13 +1541,19 @@
     "mediana": 69.64,
     "p90": 1388.76,
     "n_instituicoes": 70
+   },
+   {
+    "periodo": "2026-3",
+    "mediana": 70.03,
+    "p90": 2043.65,
+    "n_instituicoes": 73
    }
   ],
   "ultimo": {
-   "periodo": "2026-2",
-   "mediana": 69.64,
-   "p90": 1388.76,
-   "n_instituicoes": 70
+   "periodo": "2026-3",
+   "mediana": 70.03,
+   "p90": 2043.65,
+   "n_instituicoes": 73
   },
   "nota": "índice de reclamações (reclamações procedentes por milhão de clientes) do ranking trimestral do BCB; mediana e p90 entre as instituições do ranking, sem nome."
  },

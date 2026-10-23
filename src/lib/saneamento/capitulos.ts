@@ -23,6 +23,8 @@ export type Capitulo = {
   /** Rótulo curto de navegação. */
   rotulo: string;
   resumo: string;
+  /** Siglas, fontes e o vocabulário leigo que levam ao capítulo na busca da plataforma (ciclo 2 da busca, bloco 3). */
+  termos: string[];
   situacao: Situacao;
   /** O que ainda falta e de que depende (obrigatório quando não publicado). */
   pendencia?: string;
@@ -48,6 +50,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Sem atendimento",
         pergunta: "Quantas pessoas ainda estão sem atendimento adequado?",
         resumo: "Carência de água e esgoto em pessoas e em proporção, nos 5.570 municípios, pelo Censo 2022 e pelo SINISA 2024.",
+        termos: ["sem água", "sem esgoto", "carência", "Censo 2022", "SINISA"],
         situacao: "publicado",
       },
       {
@@ -56,6 +59,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Quem fica para trás",
         pergunta: "Quem fica para trás?",
         resumo: "Diferenças por cor ou raça, quilombolas, indígenas, favelas e áreas urbanas e rurais nas tabelas do Censo 2022.",
+        termos: ["cor ou raça", "quilombolas", "indígenas", "favelas", "área rural"],
         situacao: "parcial",
         pendencia:
           "Censo 2022 por cor ou raça, esgoto de quilombolas e indígenas e água/esgoto em favelas integrados. Ligação à rede de água para quilombolas e indígenas pela identificação ampliada e recortes urbano/rural ainda não integrados. Renda individual cruzada com saneamento não publicada pelo Censo.",
@@ -67,6 +71,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "A água chega regularmente e com qualidade monitorada?",
         resumo:
           "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde, plano de amostragem e população sob formas com controle, de 2014 a 2025.",
+        termos: ["falta de água", "racionamento", "qualidade da água", "SISAGUA", "paralisações"],
         situacao: "parcial",
         pendencia:
           "SISAGUA integrado para E. coli, coliformes totais, cloro residual livre, turbidez, cor e fluoreto, plano de amostragem de SAA e SAC desde 2023 e população cadastrada. Substâncias químicas, radioatividade e cianotoxinas na água tratada integradas em 2024 e 2025. Ainda não integrados: série das substâncias químicas antes de 2024 e plano de amostragem até 2022 (só JSON até 2021; cálculo de 2022 não comparável). pH não tem limite na rede pela Portaria 888.",
@@ -77,6 +82,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Destino do esgoto",
         pergunta: "Para onde vai o esgoto?",
         resumo: "Coleta, tratamento com denominadores explícitos, ligações possíveis ainda não feitas e estações de tratamento declaradas.",
+        termos: ["tratamento de esgoto", "coleta de esgoto", "estações de tratamento", "ligações"],
         situacao: "publicado",
       },
     ],
@@ -93,6 +99,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Tarifa",
         pergunta: "Tarifa: o que pagamos, por que foi autorizada e o que ela financia?",
         resumo: "Simulador com regras verificadas, formação da tarifa pelo regulador, reajustes, contrapartidas e riscos.",
+        termos: ["conta de água", "tarifa de água", "reajuste", "regulador", "simulador"],
         situacao: "parcial",
         pendencia: "Amostra de prestadores e decisões tarifárias limitada aos atos verificados; cada subpainel declara o tamanho da amostra.",
         subpaineis: [
@@ -110,6 +117,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "A conta cabe no orçamento? A tarifa social chega a quem precisa?",
         resumo:
           "Regras da Lei 14.898/2024, o que cada prestador declarou ao SINISA, economias com tarifa social por família elegível do CadÚnico e cenários de comprometimento de renda.",
+        termos: ["tarifa social de água", "CadÚnico", "Lei 14.898", "desconto na conta de água"],
         situacao: "parcial",
         pendencia:
           "O SINISA conta economias com tarifa social, não famílias beneficiadas; a razão sobre as famílias elegíveis do CadÚnico é aproximação declarada como tal. Famílias beneficiadas por município dependem de dado dos prestadores ou da ANA, ainda não publicado.",
@@ -128,6 +136,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Quem presta",
         pergunta: "Quem presta o serviço e quem controla as empresas?",
         resumo: "Cadastro de prestadores declarados ao SINISA, com natureza jurídica, abrangência, municípios, instrumento de delegação e vigência, e a posição acionária das companhias abertas.",
+        termos: ["prestador", "companhia de saneamento", "concessionária", "acionistas", "SINISA"],
         situacao: "parcial",
         pendencia:
           "Controle societário só das 17 companhias abertas com Formulário de Referência na CVM. Empresas fechadas, SPEs sem registro, autarquias e serviços municipais não têm esse dado; para eles o painel mostra a natureza jurídica declarada em 2024.",
@@ -151,6 +160,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "Como os prestadores se comparam em serviço, operação e finanças?",
         resumo:
           "Até quatro prestadores lado a lado: perdas, consumo, receita e despesa por metro cúbico, investimento e demonstrações declaradas; os valores financeiros são autodeclarados ao SINISA, sem conferência com demonstrações financeiras auditadas.",
+        termos: ["comparar prestadores", "perdas de água", "receita", "despesa", "investimento"],
         situacao: "parcial",
         pendencia:
           "Seleção de pares por escala, densidade e renda e reconciliação de demonstrações auditadas (CVM) ainda não feitas; a comparação é descritiva e declara o perímetro de cada número.",
@@ -170,6 +180,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "Onde o investimento está chegando? As obras viram serviço?",
         resumo:
           "Investimento de 2024 declarado pelos prestadores por município, em água e esgoto, expansão e reposição, ao lado da carência medida pelo Censo; autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas.",
+        termos: ["investimento em saneamento", "obras", "expansão", "reposição", "SINISA"],
         situacao: "parcial",
         pendencia: "Obras identificadas (cronograma, avanço físico e entrada em operação) dependem de bases de execução ainda não integradas.",
       },
@@ -180,6 +191,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "De onde vem o dinheiro e quem suporta o custo?",
         resumo:
           "Origem dos recursos (próprios, onerosos e não onerosos) do investimento que os prestadores declararam ao SINISA 2024, o próprio e o do governo estadual; autodeclarado, sem conferência com demonstrações financeiras auditadas.",
+        termos: ["financiamento", "recursos onerosos", "recursos não onerosos", "governo estadual"],
         situacao: "parcial",
         pendencia: "Contratações e desembolsos do BNDES, CAIXA e Transferegov ainda não conciliados com o SINISA; sem conciliação não se somam.",
       },
@@ -189,6 +201,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Metas e planos",
         pergunta: "O planejamento é suficiente para a universalização?",
         resumo: "Metas do art. 11-B, indicadores da NR ANA 8/2024, situação observada, ritmo aritmético e planos municipais declarados.",
+        termos: ["universalização", "metas", "2033", "plano municipal", "ANA"],
         situacao: "parcial",
         pendencia: "Os indicadores da NR ANA 8/2024 são aproximações sem ICA, ICE e soluções alternativas; nenhum município é declarado em cumprimento de meta.",
       },
@@ -199,6 +212,7 @@ export const EIXOS: Eixo[] = [
         pergunta: "O que já está contratado para universalizar até 2033?",
         resumo:
           "Leilões de concessão e PPP desde o novo marco legal, com vencedor, outorga, investimento previsto e prazo; metas contratuais ano a ano transcritas dos contratos; posição 2024 das áreas concedidas; cenário didático para 2033 e as estimativas do custo da universalização lado a lado.",
+        termos: ["leilão", "concessão", "PPP", "marco legal", "2033"],
         situacao: "parcial",
         pendencia:
           "Tabela curada à mão, com grau de verificação por linha; metas transcritas só dos contratos com anexo público localizado; aferição oficial de cumprimento (NR ANA 8/2024, art. 31) suspensa em 2026. Totais só somam contratos de serviço adjudicados e conferidos na fonte.",
@@ -209,6 +223,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Quem responde",
         pergunta: "Quem responde pelas metas, fiscaliza e atende o cidadão?",
         resumo: "Titular, prestador e regulador de cada município, conselhos, ouvidorias e o catálogo de entidades reguladoras por CNPJ.",
+        termos: ["regulador", "agência reguladora", "titular", "ouvidoria", "conselho"],
         situacao: "parcial",
         pendencia: "Contratos, fiscalizações e sanções dependem dos portais de cada regulador; o painel publica só o que o SINISA declara.",
       },
@@ -226,6 +241,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Saúde e ambiente",
         pergunta: "Como saneamento, saúde e ambiente se relacionam?",
         resumo: "Internações e óbitos por infecções intestinais, leptospirose e esquistossomose, por município de residência, ao lado da carência de esgoto.",
+        termos: ["internações", "infecções intestinais", "leptospirose", "esquistossomose", "DataSUS"],
         situacao: "parcial",
         pendencia:
           "Só três grupos de doenças, na janela de 2022 a 2024, sem taxa ajustada por idade e sem o recorte por faixa etária. Qualidade da água bruta (ANA e órgãos estaduais), dengue e demais doenças de vetor e hepatite A não integradas.",
@@ -236,6 +252,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Secas e eventos extremos",
         pergunta: "O serviço está preparado para secas, enchentes e crescimento urbano?",
         resumo: "Interrupções sistemáticas por baixa disponibilidade do manancial e dias de colapso declarados ao SINISA 2024.",
+        termos: ["seca", "enchentes", "manancial", "colapso do abastecimento", "eventos extremos"],
         situacao: "parcial",
         pendencia:
           "Mananciais, bacias, eventos da Defesa Civil e Cemaden e planos de contingência ainda não integrados; o painel mostra apenas o que os prestadores declararam.",
@@ -247,10 +264,10 @@ export const EIXOS: Eixo[] = [
 export const CAPITULOS: Capitulo[] = EIXOS.flatMap((e) => e.capitulos);
 
 export const FERRAMENTAS = [
-  { slug: "municipio", rotulo: "Meu município", descricao: "Busca por nome: carência, prestador, regulador, plano, investimento e comparação com o estado." },
-  { slug: "comparar", rotulo: "Comparar municípios", descricao: "Até quatro municípios lado a lado, com período comum e link compartilhável." },
-  { slug: "internacional", rotulo: "Brasil no mundo", descricao: "Água e esgotamento no Brasil e em outros países pelo JMP da OMS e do UNICEF, outros indicadores dos ODS e por que os números diferem do Censo e do SINISA." },
-  { slug: "metodologia", rotulo: "Método e fontes", descricao: "Fontes, matriz de viabilidade, conferências entre bases e downloads." },
+  { slug: "municipio", rotulo: "Meu município", descricao: "Busca por nome: carência, prestador, regulador, plano, investimento e comparação com o estado.", pergunta: "Como está o saneamento no meu município?", termos: ["meu município", "minha cidade", "carência", "prestador"] },
+  { slug: "comparar", rotulo: "Comparar municípios", descricao: "Até quatro municípios lado a lado, com período comum e link compartilhável.", pergunta: "Como o meu município se compara a outros?", termos: ["comparar municípios", "lado a lado", "período comum"] },
+  { slug: "internacional", rotulo: "Brasil no mundo", descricao: "Água e esgotamento no Brasil e em outros países pelo JMP da OMS e do UNICEF, outros indicadores dos ODS e por que os números diferem do Censo e do SINISA.", pergunta: "Como o Brasil se compara a outros países em água e esgoto?", termos: ["JMP", "OMS", "UNICEF", "ODS", "outros países"] },
+  { slug: "metodologia", rotulo: "Método e fontes", descricao: "Fontes, matriz de viabilidade, conferências entre bases e downloads.", pergunta: "De onde vêm os números do Saneamento e como foram conferidos?", termos: ["metodologia", "fontes", "Censo 2022", "SINISA", "downloads"] },
 ] as const;
 
 export function rotaCapitulo(c: Pick<Capitulo, "slug">): string {

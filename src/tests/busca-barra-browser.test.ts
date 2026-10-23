@@ -206,8 +206,8 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
       expect(await page.locator("[data-barra-plataforma] .bp-busca-rodape a").getAttribute("href")).toBe("/buscar?q=saneamneto&exato=1");
       // parcial: nenhuma página tem as duas palavras; o rótulo diz por quais chegou ao mais próximo
       await page.keyboard.press("Control+a");
-      await page.keyboard.type("juros do cartão");
-      await expect.poll(() => estado.textContent(), { timeout: 15_000 }).toContain("O mais próximo, por “juros” e “cartão”");
+      await page.keyboard.type("orçamento da ANEEL");
+      await expect.poll(() => estado.textContent(), { timeout: 15_000 }).toContain("O mais próximo, por “orçamento” e “ANEEL”");
       expect(await opcoes.count()).toBeGreaterThan(1);
       expect(noLogin).toEqual([]);
       await page.close();

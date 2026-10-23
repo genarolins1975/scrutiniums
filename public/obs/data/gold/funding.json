@@ -1852,8 +1852,8 @@
   "por_segmento": [
    {
     "sr": "n/d",
-    "n": 283,
-    "captacoes": 11198449483674.283,
+    "n": 282,
+    "captacoes": 11198447274896.303,
     "share_sfn": 78.48,
     "varejo_share": 50.86,
     "mercado_share": 36.74,
@@ -1892,8 +1892,8 @@
    },
    {
     "sr": "S4",
-    "n": 241,
-    "captacoes": 389362239779.2499,
+    "n": 242,
+    "captacoes": 389364448557.22986,
     "share_sfn": 2.73,
     "varejo_share": 81.79,
     "mercado_share": 9.64,
@@ -4117,7 +4117,7 @@
   ],
   "sigilo": {
    "mes": "2026-09",
-   "valor": 456766882966.0,
+   "valor": 473788157686.0,
    "liberacao_ate": "2027-03-29"
   },
   "cobertura": {
@@ -5186,19 +5186,19 @@
     "ligado_share": 20.31,
     "n_classes": 1540,
     "parcial": true,
-    "sob_sigilo": 479182451676.0,
+    "sob_sigilo": 479183497164.0,
     "sigilo_ate": "2027-02-27"
    },
    {
     "mes": "2026-09",
-    "valor": 255313553843.44998,
-    "n_emissores": 123,
-    "lf": 182416384751.25998,
-    "cdb": 54682442324.1,
-    "ligado_share": 20.3,
-    "n_classes": 1076,
+    "valor": 261016626651.28,
+    "n_emissores": 127,
+    "lf": 185989345721.85,
+    "cdb": 56670332718.67,
+    "ligado_share": 21.46,
+    "n_classes": 1100,
     "parcial": true,
-    "sob_sigilo": 456766882966.0,
+    "sob_sigilo": 473788157686.0,
     "sigilo_ate": "2027-03-29"
    }
   ],

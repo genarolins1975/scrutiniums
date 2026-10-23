@@ -69,7 +69,7 @@ type Preparada = {
   titulo: string[];
   tituloInteiro: string;
   /**
-   * Siglas do próprio destino: o primeiro termo, quando é só a sigla ("ANEEL" no verbete da agência), a sigla entre parênteses no
+   * Siglas do próprio destino: o primeiro termo do verbete, quando é só a sigla ("ANEEL" no verbete da agência), a sigla entre parênteses no
    * título ("Preço de curto prazo (PLD)") ou o título que é a sigla. A sigla solta no meio do título não conta: em "Agenda
    * Regulatória da ANEEL" ela qualifica o assunto, que é a agenda.
    */
@@ -107,9 +107,10 @@ const SIGLA = /^(?=.*[A-Z])[A-Z0-9]{2,6}$/;
 
 function siglasDe(e: EntradaBusca): Set<string> {
   const s = new Set<string>();
-  // só o primeiro termo: é onde o catálogo põe a sigla do destino (os verbetes do Aprenda); as siglas que vêm depois chegam
-  // pelos grupos de sinônimos e são de outro destino ("PLD" nos termos do verbete Mercado de Curto Prazo, ou da coleção)
-  const primeiro = e.termos[0]?.trim() ?? "";
+  // só no verbete e só o primeiro termo: é onde o glossário põe a sigla do conceito (os verbetes do Aprenda); as siglas que vêm
+  // depois chegam pelos grupos de sinônimos e são de outro destino ("PLD" nos termos do verbete Mercado de Curto Prazo), e a
+  // sigla nos termos de uma página é fonte ou indicador que ela usa ("LOA" na Qualidade do planejamento), não o nome dela
+  const primeiro = e.tipo === "verbete" ? (e.termos[0]?.trim() ?? "") : "";
   if (SIGLA.test(primeiro)) s.add(normalizar(primeiro));
   for (const m of e.titulo.matchAll(/\(([A-Z0-9]{2,6})\)/g)) if (SIGLA.test(m[1])) s.add(normalizar(m[1]));
   if (SIGLA.test(e.titulo.trim())) s.add(normalizar(e.titulo));
@@ -210,10 +211,16 @@ function viaDe(p: Preparada, soNosTermos: Palavra[], prefixoCurto: boolean): str
 type Parcial = { r: Resultado; forca: number; indices: number[]; raridade: number };
 type Rodada = { completos: Resultado[]; parciais: Parcial[] };
 
+/**
+ * No mesmo nível, o destino que só as listas de lugares e nomes trouxeram vem depois do que os termos trouxeram: "Amazônia" é o
+ * Desmatamento antes do Banco da Amazônia, "safra" é o Agronegócio antes do Banco Safra (diagnóstico de 23/10/2026, achado A3).
+ */
+type Completo = { r: Resultado; soPorLugar: boolean };
+
 function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBusca, prefixoCurto: boolean): Rodada {
   const inteiro = normalizar(termo);
   const nucleo = nucleoDaBusca(termo);
-  const completos: Resultado[] = [];
+  const completos: Completo[] = [];
   const parciais: Parcial[] = [];
   const destinosDaPalavra = busca.map(() => 0);
   for (const p of pronto.lista) {
@@ -236,7 +243,8 @@ function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBu
     // o título igual e a sigla do próprio destino já explicam o resultado
     const via = igual || sigla ? undefined : viaDe(p, soNosTermos, prefixoCurto);
     if (nivel !== null) {
-      completos.push({ ...p.e, nivel, ...(via ? { via } : {}) });
+      const soPorLugar = nivel >= 2 && busca.some((_, k) => nosLugares[k] && !noTitulo[k] && !nosTermos[k] && !noResto[k]);
+      completos.push({ r: { ...p.e, nivel, ...(via ? { via } : {}) }, soPorLugar });
       continue;
     }
     // parcial: só título e termos contam; as listas de lugares ficam fora ("Belo Horizonte" não traz "Novo Horizonte")
@@ -250,7 +258,8 @@ function rodar(pronto: Pronto, busca: Palavra[], termo: string, opcoes: OpcoesBu
     }
   }
   for (const x of parciais) x.raridade = x.indices.reduce((t, k) => t + destinosDaPalavra[k], 0);
-  return { completos: completos.sort(ordem), parciais };
+  completos.sort((a, b) => a.r.nivel - b.r.nivel || Number(a.soPorLugar) - Number(b.soPorLugar) || ordem(a.r, b.r));
+  return { completos: completos.map((x) => x.r), parciais };
 }
 
 /**
