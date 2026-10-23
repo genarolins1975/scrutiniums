@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 /**
  * Painel "Previdência e INSS" (aprovado pelo dono em 20/10/2026): Contas Federais, com pipeline e gold próprios
@@ -154,6 +154,12 @@ describe("previdência: o convite do aperitivo não promete série que o municí
 });
 
 describe("previdência: painel completo (com sessão)", () => {
+  // a primeira importação da página (o grafo inteiro das Contas Públicas) leva perto de 5 s sob carga, no main também; carregada antes, o
+  // primeiro caso mede só a renderização e não estoura o tempo do caso (mesmas asserções, nenhum tempo de caso alterado)
+  beforeAll(async () => {
+    await import("@/app/contas-publicas/previdencia/page");
+  }, 60_000);
+
   it("abertura: os quatro números com período e fonte, lidos da gold", async () => {
     const t = textoDe(await painel());
     const tipos = Object.fromEntries(gold.brasil_mes.tipos.map((x) => [x.id, x]));

@@ -1,22 +1,25 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
+import Link from "@/components/i18n/LinkIdioma";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
-import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
-import { FaixaMetricas } from "@/components/energia/FaixaMetricas";
-import { GraficoBarras } from "@/components/energia/GraficoBarras";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { LegendaDeSiglas } from "@/components/energia/LegendaSiglas";
 import { InclusaoDatas, InclusaoIndisponivel, InclusaoNavegacao, InclusaoRecorte, InclusaoSeguir } from "@/components/energia/InclusaoPagina";
 import { InclusaoPorMedidaTsee } from "@/components/energia/InclusaoPorEstado";
 import { InclusaoHistoricoUfTsee, InclusaoMapaTsee, InclusaoSerieTsee } from "@/components/energia/InclusaoTarifaSocial";
 import { InclusaoBaseLegal, TarifaSocialRegraVigente, TarifaSocialResposta } from "@/components/energia/InclusaoTextos";
-import { Numero } from "@/components/energia/Numero";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
-import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
-import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
+import { FiguraAnalitica, GraficoBarras, GraficoLinhas, PaginaPainel, TabelaDados, type CelulaTabela, type NumeroProps } from "@/components/painel";
+import { TabelaInterativa } from "@/components/painel/TabelaInterativa";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, pct } from "@/lib/energia/formato";
+import { fonteLegivel } from "@/lib/energia/bastidor";
+import { textoPeriodo } from "@/lib/energia/evidencia";
+import { provenienciaLegivel } from "@/lib/energia/mercado";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { valorOuAusencia } from "@/lib/painel/numeros";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { comNomes, dadoNo, dadoTexto } from "@/lib/energia/i18n/conta-inclusao";
@@ -202,216 +205,224 @@ export default function TarifaSocialPage() {
     </>,
   );
 
+  // os quatro números da abertura, no NumeroIndicador do kit: valor, período e unidade da evidência da gold, como o Numero de antes, e a
+  // ficha "Comprove este número" ao lado; valor ausente fica ausente, com o motivo
+  const semValor = tx("A gold da inclusão não traz este valor nesta publicação.", "The inclusion gold does not carry this value in this publication.");
+  const fonteScs = tx("ANEEL, SCS", "ANEEL, SCS");
+  const fonteCde = tx("ANEEL, Beneficiários da CDE", "ANEEL, CDE Beneficiaries");
+  const endereco = `${rotaPainel("p059")}#p059`;
+  const periodoDe = (e: { periodo: { inicio: string; fim: string } } | null | undefined, mesAlternativo?: string | null) =>
+    e ? textoPeriodo(e.periodo) : mesAlternativo ? mes(mesAlternativo) : textoPeriodo(null);
+  const prova = (e: Parameters<typeof ComproveNumero>[0]["evidencia"] | null | undefined) => (e ? <ComproveNumero evidencia={e} endereco={endereco} /> : undefined);
+  const numeros: NumeroProps[] = [
+    {
+      ...valorOuAusencia(k.uc_tsee.evidencia?.valor_calculo, semValor),
+      rotulo: tx("UC com Tarifa Social", "Consumer units with Tarifa Social"),
+      natureza: "OBSERVADO",
+      formato: "inteiro",
+      unidade: tx("UC", "consumer units"),
+      periodo: periodoDe(k.uc_tsee.evidencia, k.uc_tsee.mes),
+      fonte: fonteScs,
+      marcador: "var(--cor-energia)",
+      comprove: prova(k.uc_tsee.evidencia),
+      nota: notaAntesDaRegra,
+    },
+    {
+      ...valorOuAusencia(k.participacao_pct.evidencia?.valor_calculo, semValor),
+      rotulo: tx("Das UC residenciais", "Of residential consumer units"),
+      natureza: "CALCULADO",
+      formato: "percentual",
+      casas: 1,
+      unidade: "%",
+      periodo: periodoDe(k.participacao_pct.evidencia, k.participacao_pct.mes),
+      fonte: fonteScs,
+      marcador: "var(--cor-energia)",
+      comprove: prova(k.participacao_pct.evidencia),
+      nota:
+        k.variacao_12m_pct.valor !== null
+          ? tx(
+              `UC com Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "cresceram" : "caíram"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} desde ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (mês base incompleto)"}.`,
+              `Consumer units with Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "grew" : "fell"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} since ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (incomplete base month)"}.`,
+            )
+          : undefined,
+    },
+    {
+      ...valorOuAusencia(k.dmr_mes_reais.evidencia?.valor_calculo, semValor),
+      rotulo: tx("Diferença Mensal de Receita (DMR)", "Monthly Revenue Difference (DMR)"),
+      natureza: "OBSERVADO",
+      formato: "reais",
+      casas: 0,
+      unidade: "R$",
+      periodo: periodoDe(k.dmr_mes_reais.evidencia, k.dmr_mes_reais.mes),
+      fonte: fonteScs,
+      marcador: "var(--serie-referencia)",
+      comprove: prova(k.dmr_mes_reais.evidencia),
+      nota: tx(
+        `${reaisTexto(k.dmr_por_uc_reais.valor)} por UC; ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`,
+        `${reaisTexto(k.dmr_por_uc_reais.valor)} per consumer unit; ${numTexto(k.kwh_por_uc.valor, 1)} kWh per consumer unit in the month.`,
+      ),
+    },
+    {
+      ...valorOuAusencia(k.faturas_cde_mapa?.evidencia?.valor_calculo, tx("Nenhum arquivo da CDE com todas as distribuidoras.", "No CDE file with all distribution utilities.")),
+      rotulo: tx("Faturas com desconto (CDE)", "Bills with a discount (CDE)"),
+      natureza: "CALCULADO",
+      formato: "inteiro",
+      unidade: tx("faturas", "bills"),
+      periodo: periodoDe(k.faturas_cde_mapa?.evidencia, k.faturas_cde_mapa?.mes ?? mesMapa),
+      fonte: fonteCde,
+      marcador: "var(--serie-comp-2)",
+      comprove: prova(k.faturas_cde_mapa?.evidencia),
+      nota: cdeMapa
+        ? tx(`${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.`, `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} average discount per bill.`)
+        : undefined,
+    },
+  ];
+  // a tabela de modalidades, que era um <table> à mão, na TabelaDados do kit: mesmas linhas, ausência em texto
+  const linhasModalidades: CelulaTabela[][] = modalidades().map(([id, rot]) => [<span key={id}>{comNomes(rot, idioma)}</span>, t.modalidades_referencia[id]]);
+
   return (
     <>
       <header><CabecalhoPlataforma colecao="energia" destinoConta="/setor-eletrico" navegacao="setor-eletrico" idiomas /></header>
       <MarcaVisita secao="energia:inclusao-tarifa-social" />
-      <main id="conteudo" tabIndex={-1} className="ed-pagina">
-        <InclusaoNavegacao atual="p059" />
-        <CabecalhoModulo
-          siglas={["ANEEL", "UF", "MPV", "IBGE", "CCC"]}
-          rotulo={tx("Inclusão energética", "Energy inclusion")}
-          titulo={tx("Tarifa Social de Energia Elétrica", "Tarifa Social (social electricity tariff)")}
-          lead={comNomes(
+      <PaginaPainel
+        rota="/setor-eletrico/inclusao-energetica/tarifa-social"
+        idioma={idioma}
+        profundidade
+        abertura={{
+          grupo: tx("Inclusão energética", "Energy inclusion"),
+          acento: "energia",
+          titulo: tx("Tarifa Social de Energia Elétrica", "Tarifa Social (social electricity tariff)"),
+          lead: comNomes(
             tx(
-              "A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale; UC e faturas vêm de fontes e meses diferentes e não se somam.",
-              "The Tarifa Social is a discount on the electricity bill of low-income families and of those who receive the Benefício de Prestação Continuada (BPC, continuous cash benefit). How many consumer units receive it, where they are and how much it is worth; consumer units and bills come from different sources and months and do not add up.",
+              "A Tarifa Social é um desconto na conta de luz de famílias de baixa renda e de quem recebe o Benefício de Prestação Continuada (BPC). Quantas unidades consumidoras (UC) o recebem, onde estão e quanto vale.",
+              "The Tarifa Social is a discount on the electricity bill of low-income families and of those who receive the Benefício de Prestação Continuada (BPC, continuous cash benefit). How many consumer units receive it, where they are and how much it is worth.",
             ),
             idioma,
-          )}
-          recorte={tx(
-            `UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)} · faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)} · R$ correntes`,
-            `Consumer units from ${mes(serie[0]?.m)} to ${mes(serie.at(-1)?.m)} · bills from ${mes(cdeComValor[0]?.mes)} to ${mes(cdeComValor.at(-1)?.mes)} · current R$`,
-          )}
-          fonte={comNomes(
-            tx(
-              "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE)",
-              "ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS, subsidy and social program control system) and Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE)",
+          ),
+          recorte: {
+            periodo: tx(
+              `UC de ${mes(serie[0]?.m)} a ${mes(serie.at(-1)?.m)}; faturas de ${mes(cdeComValor[0]?.mes)} a ${mes(cdeComValor.at(-1)?.mes)}`,
+              `consumer units from ${mes(serie[0]?.m)} to ${mes(serie.at(-1)?.m)}; bills from ${mes(cdeComValor[0]?.mes)} to ${mes(cdeComValor.at(-1)?.mes)}`,
             ),
-            idioma,
-          )}
-          limite={limiteTarifaSocial(t.ufs)}
-          referencia={tx(
+            universo: tx(`${t.distribuidoras.length} distribuidoras no SCS; ${ufsComFaturas} UF com faturas no mês do mapa`, `${t.distribuidoras.length} distribution utilities in the SCS; ${ufsComFaturas} states with bills in the map month`),
+            unidade: tx("UC, faturas e R$ correntes", "consumer units, bills and current R$"),
+            fonte: tx("ANEEL, SCS e Beneficiários da CDE", "ANEEL, SCS and CDE Beneficiaries"),
+          },
+          limite: limiteTarifaSocial(t.ufs),
+          fontesDatasSiglas: (
             <>
-              SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
-              {mes(g.referencias.cde_mes_mais_recente)} (último mês completo {mes(mesMapa)}). Processado em {carimbo(g.gerado_em)}.
-            </>,
-            <>
-              ANEEL&rsquo;s SCS up to {mes(ultimoScs)} (file generated by the source on {dataBR(geracaoScs)}; latest complete month {mes(t.mes_referencia)}); CDE Beneficiaries up to{" "}
-              {mes(g.referencias.cde_mes_mais_recente)} (latest complete month {mes(mesMapa)}). Processed on {carimbo(g.gerado_em)}.
-            </>,
-          )}
-          datas={<InclusaoDatas itens={datasMedidas(g).filter((d) => d.id === "scs" || d.id === "cde")} />}
-          metricas={
-            <FaixaMetricas
-              colunas={4}
-              rotulo={tx("Indicadores da Tarifa Social", "Tarifa Social indicators")}
-              nota={tx(
-                <>
-                  <p>Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
-                  <ul className="mt-1 list-disc space-y-0.5 pl-5">
-                    <li>
-                      SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC.
-                    </li>
-                    <li>
-                      Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e
-                      do mapa.
-                    </li>
-                  </ul>
-                </>,
-                <>
-                  <p>Lagged source, as declared. A month only enters the comparisons when all distribution utilities have sent their report.</p>
-                  <ul className="mt-1 list-disc space-y-0.5 pl-5">
-                    <li>
-                      SCS (consumer units): file generated on {dataBR(geracaoScs)}, published up to {mes(ultimoScs)}; the latest month with all utilities is {mes(t.mes_referencia)}, that of
-                      the consumer unit figures.
-                    </li>
-                    <li>
-                      CDE Beneficiaries (bills): published up to {mes(g.referencias.cde_mes_mais_recente)}; the latest month with all utilities is {mes(mesMapa)}, that of the bill figures and
-                      of the map.
-                    </li>
-                  </ul>
-                </>,
-              )}
-            >
-              <Numero
-                variante="faixa"
-                rotulo={tx("UC com Tarifa Social", "Consumer units with Tarifa Social")}
-                natureza="OBSERVADO"
-                evidencia={k.uc_tsee.evidencia}
-                casas={0}
-                unidade={tx("UC", "consumer units")}
-                cor="var(--cor-energia)"
-                nota={notaAntesDaRegra}
-                endereco={`${rotaPainel("p059")}#p059`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={tx("Das UC residenciais", "Of residential consumer units")}
-                natureza="CALCULADO"
-                evidencia={k.participacao_pct.evidencia}
-                formato="pct"
-                casas={1}
-                cor="var(--cor-energia)"
-                nota={
-                  k.variacao_12m_pct.valor !== null
-                    ? tx(
-                        `UC com Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "cresceram" : "caíram"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} desde ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (mês base incompleto)"}.`,
-                        `Consumer units with Tarifa Social ${k.variacao_12m_pct.valor >= 0 ? "grew" : "fell"} ${pct(Math.abs(k.variacao_12m_pct.valor), 1)} since ${mes(k.variacao_12m_pct.mes_base)}${k.variacao_12m_pct.comparavel ? "" : " (incomplete base month)"}.`,
-                      )
-                    : undefined
-                }
-                endereco={`${rotaPainel("p059")}#p059`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={tx("Diferença Mensal de Receita (DMR)", "Monthly Revenue Difference (DMR)")}
-                natureza="OBSERVADO"
-                evidencia={k.dmr_mes_reais.evidencia}
-                formato="reais"
-                casas={0}
-                unidade="R$"
-                cor="var(--serie-referencia)"
-                nota={tx(
-                  `${reaisTexto(k.dmr_por_uc_reais.valor)} por UC; ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`,
-                  `${reaisTexto(k.dmr_por_uc_reais.valor)} per consumer unit; ${numTexto(k.kwh_por_uc.valor, 1)} kWh per consumer unit in the month.`,
+              <p className="t-meta text-mineral">
+                <span className="font-medium text-carvao-muted">{tx("Fontes e datas de referência: ", "Sources and reference dates: ")}</span>
+                {tx(
+                  <>
+                    SCS da ANEEL até {mes(ultimoScs)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}; último mês completo {mes(t.mes_referencia)}); Beneficiários da CDE até{" "}
+                    {mes(g.referencias.cde_mes_mais_recente)} (último mês completo {mes(mesMapa)}). Processado em {carimbo(g.gerado_em)}.
+                  </>,
+                  <>
+                    ANEEL&rsquo;s SCS up to {mes(ultimoScs)} (file generated by the source on {dataBR(geracaoScs)}; latest complete month {mes(t.mes_referencia)}); CDE Beneficiaries up to{" "}
+                    {mes(g.referencias.cde_mes_mais_recente)} (latest complete month {mes(mesMapa)}). Processed on {carimbo(g.gerado_em)}.
+                  </>,
                 )}
-                endereco={`${rotaPainel("p059")}#p059`}
-              />
-              <Numero
-                variante="faixa"
-                rotulo={tx("Faturas com desconto (CDE)", "Bills with a discount (CDE)")}
-                natureza="CALCULADO"
-                evidencia={k.faturas_cde_mapa?.evidencia ?? null}
-                casas={0}
-                unidade={tx("faturas", "bills")}
-                cor="var(--serie-comp-2)"
-                motivoAusencia={tx("Nenhum arquivo da CDE com todas as distribuidoras.", "No CDE file with all distribution utilities.")}
-                nota={
-                  cdeMapa
-                    ? tx(
-                        `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.`,
-                        `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} average discount per bill.`,
-                      )
-                    : undefined
-                }
-                endereco={`${rotaPainel("p059")}#p059`}
-              />
-            </FaixaMetricas>
-          }
-        >
-          {tx(
-            "Os números são agregados, por distribuidora, UF e mês: nenhum beneficiário individual aparece aqui.",
-            "The figures are aggregated, by distribution utility, state and month: no individual beneficiary appears here.",
-          )}
-        </CabecalhoModulo>
-        <TarifaSocialRegraVigente t={t} className="mb-10" />
-        <ModoProfundidade>
-          <Bloco id="tarifa-social">
-            <PainelEvidencia
-              id="p059"
-              pergunta={dadoTexto(t.pergunta, idioma)}
-              subtitulo={tx(
-                "UC com Tarifa Social (SCS) e faturas com desconto (Beneficiários da CDE) · UC, faturas e R$ correntes",
-                "Consumer units with Tarifa Social (SCS) and bills with a discount (CDE Beneficiaries) · consumer units, bills and current R$",
-              )}
-              natureza="OBSERVADO"
-              porQueImporta={tx(
-                <>
-                  A <Termo slug="tarifa-social">Tarifa Social de Energia Elétrica</Termo> dá desconto na conta da subclasse residencial baixa renda, custeado pela Conta de Desenvolvimento Energético (CDE). Saber quantas
-                  unidades recebem, onde e com que desconto é o ponto de partida para discutir o alcance do benefício.
-                </>,
-                <>
-                  The <Termo slug="tarifa-social">Tarifa Social de Energia Elétrica</Termo> (social electricity tariff) gives a discount on the bill of the low-income residential subclass,
-                  funded by the Energy Development Account (CDE). Knowing how many units receive it, where and with what discount is the starting point for discussing the reach of the benefit.
-                </>,
-              )}
-              oQueMudou={oQueMudou}
-              comoInterpretar={comoInterpretar}
-              naoConcluir={naoConcluir}
-              naoConcluirNoCorpo
-              proveniencia={t.proveniencia.scs}
-              complementares={[
-                { rotulo: tx("Participação nas UC residenciais", "Share of residential consumer units"), p: t.proveniencia.participacao },
-                { rotulo: tx("Faturas e desconto (CDE)", "Bills and discount (CDE)"), p: t.proveniencia.cde },
-                ...(t.proveniencia.custeio ? [{ rotulo: tx("Custeio anual da CDE", "Annual CDE funding"), p: t.proveniencia.custeio }] : []),
-                ...(t.proveniencia.antiga ? [{ rotulo: tx("Série antiga (descontinuada)", "Old series (discontinued)"), p: t.proveniencia.antiga }] : []),
-              ]}
-            >
-              <div className="space-y-6">
-                <InclusaoSerieTsee
-                  serie={serie}
-                  marcos={marcosScs}
-                  resposta={
-                    <InclusaoPorMedidaTsee
-                      variantes={{ uc: <TarifaSocialResposta t={t} medida="uc" />, part: <TarifaSocialResposta t={t} medida="part" />, dmr: <TarifaSocialResposta t={t} medida="dmr" /> }}
-                    />
-                  }
-                  recorte={
-                    <InclusaoRecorte
-                      periodo={tx(
-                        <>
-                          SCS de {mes(serie[0]?.m)} a {mes(serie.at(-1)?.m)} (referência {mes(t.mes_referencia)}); CDE de {mes(cdeComValor[0]?.mes)} a {mes(cdeComValor.at(-1)?.mes)} (mapa em {mes(mesMapa)})
-                        </>,
-                        <>
-                          SCS from {mes(serie[0]?.m)} to {mes(serie.at(-1)?.m)} (reference {mes(t.mes_referencia)}); CDE from {mes(cdeComValor[0]?.mes)} to {mes(cdeComValor.at(-1)?.mes)} (map in{" "}
-                          {mes(mesMapa)})
-                        </>,
-                      )}
-                      universo={tx(
-                        <>
-                          {t.distribuidoras.length} distribuidoras no SCS; {ufsComFaturas} UF e {inteiro(municipiosComFaturas)} municípios com faturas no mês do mapa
-                        </>,
-                        <>
-                          {t.distribuidoras.length} distribution utilities in the SCS; {ufsComFaturas} states and {inteiro(municipiosComFaturas)} municipalities with bills in the map month
-                        </>,
-                      )}
-                      unidade={tx("UC (SCS); faturas (CDE); R$ correntes", "consumer units (SCS); bills (CDE); current R$")}
-                    />
-                  }
-                  notas={<NotasDoPainel oQueMudou={oQueMudou} comoInterpretar={comoInterpretar} naoConcluir={naoConcluir} />}
-                />
-
+              </p>
+              <p>
+                {comNomes(
+                  tx(
+                    "Fonte: ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS) e Beneficiários da Conta de Desenvolvimento Energético (CDE).",
+                    "Source: ANEEL, Sistema de Controle de Subvenções e Programas Sociais (SCS, subsidy and social program control system) and Beneficiários da Conta de Desenvolvimento Energético (beneficiaries of the Energy Development Account, CDE).",
+                  ),
+                  idioma,
+                )}
+              </p>
+              <InclusaoDatas itens={datasMedidas(g).filter((d) => d.id === "scs" || d.id === "cde")} />
+              <div>
+                {tx(
+                  "Os números são agregados, por distribuidora, UF e mês: nenhum beneficiário individual aparece aqui.",
+                  "The figures are aggregated, by distribution utility, state and month: no individual beneficiary appears here.",
+                )}
+              </div>
+              <LegendaDeSiglas siglas={["ANEEL", "UF", "MPV", "IBGE", "CCC"]} />
+            </>
+          ),
+        }}
+        rotuloNumeros={tx("Indicadores da Tarifa Social", "Tarifa Social indicators")}
+        numeros={numeros}
+        notaNumeros={tx(
+          <>
+            <p>UC e faturas vêm de fontes e meses diferentes e não se somam.</p>
+            <p className="mt-1">Fonte defasada, declarada. Um mês só entra nas comparações quando todas as distribuidoras enviaram o informe.</p>
+            <ul className="mt-1 list-disc space-y-0.5 pl-5">
+              <li>
+                SCS (UC): arquivo gerado em {dataBR(geracaoScs)}, publicado até {mes(ultimoScs)}; o último mês com todas as distribuidoras é {mes(t.mes_referencia)}, o dos números de UC.
+              </li>
+              <li>
+                Beneficiários da CDE (faturas): publicados até {mes(g.referencias.cde_mes_mais_recente)}; o último mês com todas as distribuidoras é {mes(mesMapa)}, o dos números de fatura e do
+                mapa.
+              </li>
+            </ul>
+          </>,
+          <>
+            <p>Consumer units and bills come from different sources and months and do not add up.</p>
+            <p className="mt-1">Lagged source, as declared. A month only enters the comparisons when all distribution utilities have sent their report.</p>
+            <ul className="mt-1 list-disc space-y-0.5 pl-5">
+              <li>
+                SCS (consumer units): file generated on {dataBR(geracaoScs)}, published up to {mes(ultimoScs)}; the latest month with all utilities is {mes(t.mes_referencia)}, that of the
+                consumer unit figures.
+              </li>
+              <li>
+                CDE Beneficiaries (bills): published up to {mes(g.referencias.cde_mes_mais_recente)}; the latest month with all utilities is {mes(mesMapa)}, that of the bill figures and of the
+                map.
+              </li>
+            </ul>
+          </>,
+        )}
+        // as páginas da inclusão energética e a regra vigente, logo depois dos números (antes, no topo e entre a abertura e o painel)
+        navegacaoLocal={
+          <div className="mt-8 space-y-8">
+            <InclusaoNavegacao atual="p059" />
+            <TarifaSocialRegraVigente t={t} />
+          </div>
+        }
+        figuras={
+          <FiguraAnalitica
+            id="p059"
+            ancoraAntiga="tarifa-social"
+            idioma={idioma}
+            legivel={fonteLegivel}
+            pergunta={dadoTexto(t.pergunta, idioma)}
+            subtitulo={tx(
+              "UC com Tarifa Social (SCS) e faturas com desconto (Beneficiários da CDE) · UC, faturas e R$ correntes",
+              "Consumer units with Tarifa Social (SCS) and bills with a discount (CDE Beneficiaries) · consumer units, bills and current R$",
+            )}
+            natureza="OBSERVADO"
+            porQueImporta={tx(
+              <>
+                A <Termo slug="tarifa-social">Tarifa Social de Energia Elétrica</Termo> dá desconto na conta da subclasse residencial baixa renda, custeado pela Conta de Desenvolvimento Energético (CDE). Saber quantas
+                unidades recebem, onde e com que desconto é o ponto de partida para discutir o alcance do benefício.
+              </>,
+              <>
+                The <Termo slug="tarifa-social">Tarifa Social de Energia Elétrica</Termo> (social electricity tariff) gives a discount on the bill of the low-income residential subclass,
+                funded by the Energy Development Account (CDE). Knowing how many units receive it, where and with what discount is the starting point for discussing the reach of the benefit.
+              </>,
+            )}
+            oQueMudou={oQueMudou}
+            comoInterpretar={comoInterpretar}
+            naoConcluir={naoConcluir}
+            proveniencia={provenienciaLegivel(t.proveniencia.scs)}
+            complementares={[
+              { rotulo: tx("Participação nas UC residenciais", "Share of residential consumer units"), p: provenienciaLegivel(t.proveniencia.participacao) },
+              { rotulo: tx("Faturas e desconto (CDE)", "Bills and discount (CDE)"), p: provenienciaLegivel(t.proveniencia.cde) },
+              ...(t.proveniencia.custeio ? [{ rotulo: tx("Custeio anual da CDE", "Annual CDE funding"), p: provenienciaLegivel(t.proveniencia.custeio) }] : []),
+              ...(t.proveniencia.antiga ? [{ rotulo: tx("Série antiga (descontinuada)", "Old series (discontinued)"), p: provenienciaLegivel(t.proveniencia.antiga) }] : []),
+            ]}
+            // a série mensal nacional inteira, ordenável e exportável, já está na figura (Distribuidoras, em Analisar): a figura aponta para ela
+            tabela={{
+              naFigura: tx(
+                "a série mensal nacional do SCS, todos os meses publicados, na seção das distribuidoras (modo Analisar), com busca, ordem e exportação.",
+                "the national monthly SCS series, all published months, in the distribution utilities section (Analyse mode), with search, sorting and export.",
+              ),
+            }}
+            depois={
+              <>
                 <SecaoDoPainel
                   id="cde"
                   titulo={tx("Depois do SCS: o que os arquivos da CDE mostram mês a mês?", "After the SCS: what do the CDE files show month by month?")}
@@ -464,7 +475,10 @@ export default function TarifaSocialPage() {
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="uf" titulo={tx("Onde: faturas com desconto por UF", "Where: bills with a discount by state")}>
-                  <InclusaoMapaTsee ufs={t.ufs} mesMapa={mesMapa} fonte={fontes.cde} />
+                  {/* mapa de domínio até a Iniciativa 5; a tabela por UF sincronizada com ele, logo abaixo, é a sua tabela */}
+                  <div data-mapa-legado="tarifa-social-uf">
+                    <InclusaoMapaTsee ufs={t.ufs} mesMapa={mesMapa} fonte={fontes.cde} />
+                  </div>
                 </SecaoDoPainel>
 
                 <SecaoDoPainel id="historico-uf" titulo={tx("Como as UF escolhidas evoluíram mês a mês?", "How have the chosen states evolved month by month?")}>
@@ -478,36 +492,18 @@ export default function TarifaSocialPage() {
                     `Who receives it and how much they consume: type and consumption band in ${mes(t.modalidades_referencia.mes)}`,
                   )}
                 >
-                  <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="grid gap-6 lg:grid-cols-2 [&>*]:min-w-0">
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-carvao">{tx(`Modalidades em ${mes(t.modalidades_referencia.mes)}`, `Types in ${mes(t.modalidades_referencia.mes)}`)}</p>
-                      <div className="tabela-scroll">
-                        <table className="w-full text-sm">
-                          <caption className="sr-only">{tx("UC com Tarifa Social por modalidade", "Consumer units with Tarifa Social by type")}</caption>
-                          <thead>
-                            <tr className="border-b border-linha text-left text-mineral">
-                              <th scope="col" className="py-2 pr-4 font-normal">
-                                {tx("Modalidade", "Type")}
-                              </th>
-                              <th scope="col" className="py-2 text-right font-normal">
-                                {tx("UC", "Consumer units")}
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {modalidades().map(([id, rot]) => (
-                              <tr key={id} className="border-b border-linha">
-                                <th scope="row" className="py-2 pr-4 text-left font-normal text-carvao">
-                                  {comNomes(rot, idioma)}
-                                </th>
-                                <td className="py-2 text-right tabular-nums text-carvao">
-                                  {t.modalidades_referencia[id] === null ? tx("sem dado", "no data") : inteiro(t.modalidades_referencia[id])}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                      <TabelaDados
+                        titulo={tx("UC com Tarifa Social por modalidade", "Consumer units with Tarifa Social by type")}
+                        colunas={[tx("Modalidade", "Type"), tx("UC", "Consumer units")]}
+                        linhas={linhasModalidades}
+                        casas={[null, 0]}
+                        limite={linhasModalidades.length}
+                        recolhida={false}
+                        idioma={idioma}
+                      />
                     </div>
                     <GraficoBarras
                       titulo={tx(
@@ -597,142 +593,6 @@ export default function TarifaSocialPage() {
                   />
                 </SecaoDoPainel>
 
-                <SecaoDoPainel
-                  id="regras-p059"
-                  nivel="auditar" // i18n: dado
-                  titulo={tx("Regras, conferências e a série antiga", "Rules, checks and the old series")}
-                >
-                  <dl className="grid gap-3 text-sm sm:grid-cols-2">
-                    {Object.entries(t.regras).map(([id, txt]) => (
-                      <div key={id}>
-                        <dt className="font-medium text-carvao">{rotuloRegra(id)}</dt>
-                        <dd className="mt-0.5 text-carvao-muted">{dadoNo(txt, "regra-tarifa-social", idioma)}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  {conf && (
-                    <>
-                      <p className="text-sm text-carvao-muted">
-                        {tx(
-                          <>
-                            Conferência SCS e CDE em {mes(conf.mes)}, mesmas {conf.distribuidoras_comparadas} distribuidoras: {inteiro(conf.uc_scs)} UC e {inteiro(conf.faturas_cde)} faturas (
-                            {pct(conf.diferenca_pct, 2)}); {reaisGrandes(conf.dmr_scs_reais)} de DMR e {reaisGrandes(conf.desconto_cde_reais)} de desconto ({pct(conf.diferenca_valor_pct, 2)});{" "}
-                            {conf.distribuidoras_ate_2pct} distribuidoras dentro de 2%. Tolerância: {conf.tolerancia}
-                            {conf.so_na_cde.length ? ` Só na CDE: ${conf.so_na_cde.join(", ")}.` : ""}
-                            {conf.so_no_scs.length ? ` Só no SCS: ${conf.so_no_scs.join(", ")}.` : ""}
-                          </>,
-                          <>
-                            SCS and CDE check in {mes(conf.mes)}, same {conf.distribuidoras_comparadas} distribution utilities: {inteiro(conf.uc_scs)} consumer units and{" "}
-                            {inteiro(conf.faturas_cde)} bills ({pct(conf.diferenca_pct, 2)}); {reaisGrandes(conf.dmr_scs_reais)} of DMR and {reaisGrandes(conf.desconto_cde_reais)} of discount (
-                            {pct(conf.diferenca_valor_pct, 2)}); {conf.distribuidoras_ate_2pct} utilities within 2%. Tolerance: {dadoNo(conf.tolerancia, "tolerancia-scs-cde", idioma)}
-                            {conf.so_na_cde.length ? ` Only in the CDE: ${conf.so_na_cde.join(", ")}.` : ""}
-                            {conf.so_no_scs.length ? ` Only in the SCS: ${conf.so_no_scs.join(", ")}.` : ""}
-                          </>,
-                        )}
-                      </p>
-                      <TabelaInterativa
-                        titulo={tx(`Maiores diferenças entre UC do SCS e faturas da CDE, ${mes(conf.mes)}`, `Largest differences between SCS consumer units and CDE bills, ${mes(conf.mes)}`)}
-                        colunas={colunasConferencia()}
-                        linhas={linhasConferencia}
-                        chaveLinha="id"
-                        colunaRotulo="sigla"
-                        fonte={`${fontes.scs}; ${fontes.cde}`}
-                        versao={conf.mes}
-                        nomeArquivo="inclusao-conferencia-scs-cde"
-                        chaveUrl="ts.conf"
-                        ordemInicial={{ coluna: "diferenca_pct", direcao: "desc" }}
-                      />
-                    </>
-                  )}
-                  {t.incorporacoes.length > 0 && (
-                    <TabelaInterativa
-                      titulo={tx("Incorporações detectadas no SCS (não são inconsistência)", "Mergers detected in the SCS (not an inconsistency)")}
-                      colunas={colunasIncorporacoes()}
-                      linhas={t.incorporacoes.map((i) => ({
-                        id: `${i.mes_ruptura}|${i.sucessora}`,
-                        mes: i.mes_ruptura,
-                        sucessora: i.sigla_sucessora ?? i.sucessora,
-                        incorporadas: i.siglas_incorporadas.map((s, j) => s ?? i.incorporadas[j]).join(", "),
-                        total: i.total_incorporadas,
-                        salto: i.salto_sucessora,
-                      }))}
-                      chaveLinha="id"
-                      colunaRotulo="mes"
-                      fonte={fontes.scs}
-                      versao={t.mes_referencia}
-                      nomeArquivo="inclusao-incorporacoes-scs"
-                      chaveUrl="ts.inc"
-                    />
-                  )}
-                  {t.siglas_de_outra_fonte.length > 0 && (
-                    <p className="text-sm text-carvao-muted">
-                      {tx(
-                        `Siglas tomadas de outra fonte: ${t.siglas_de_outra_fonte.map((s) => `CNPJ ${s.cnpj} exibido como ${s.sigla} (${s.origem})`).join("; ")}.`,
-                        `Acronyms taken from another source: ${t.siglas_de_outra_fonte.map((s) => `CNPJ ${s.cnpj} shown as ${s.sigla} (${dadoTexto(s.origem, idioma)})`).join("; ")}.`,
-                      )}
-                    </p>
-                  )}
-                  {t.diagnostico_scs && (
-                    <p className="text-sm text-carvao-muted">
-                      {tx(
-                        <>
-                          Arquivo do SCS: {inteiro(t.diagnostico_scs.linhas)} linhas, {inteiro(t.diagnostico_scs.pares)} pares distribuidora e competência;{" "}
-                          {inteiro(t.diagnostico_scs.pares_com_mais_de_um_despacho)} pares em mais de um despacho, {t.diagnostico_scs.pares_com_despachos_divergentes} com valores divergentes;{" "}
-                          {t.diagnostico_scs.pares_com_faixas_incompletas} com faixas incompletas.
-                        </>,
-                        <>
-                          SCS file: {inteiro(t.diagnostico_scs.linhas)} rows, {inteiro(t.diagnostico_scs.pares)} distribution utility and accrual month pairs;{" "}
-                          {inteiro(t.diagnostico_scs.pares_com_mais_de_um_despacho)} pairs in more than one order, {t.diagnostico_scs.pares_com_despachos_divergentes} with divergent values;{" "}
-                          {t.diagnostico_scs.pares_com_faixas_incompletas} with incomplete bands.
-                        </>,
-                      )}
-                    </p>
-                  )}
-                  {antiga && (
-                    <>
-                      <p className="text-sm text-carvao-muted">
-                        {tx(
-                          <>
-                            Série antiga descontinuada: o portal a intitula &ldquo;{antiga.titulo_no_portal}&rdquo;. Teste do recurso em {carimbo(antiga.teste_do_recurso.testado_em)}: HTTP{" "}
-                            {antiga.teste_do_recurso.status_http}, {antiga.teste_do_recurso.conclusao}. Cópia usada: <span className="break-all">{antiga.copia_usada}</span>. Ela entra só como
-                            histórico identificado, nunca como fonte atual.
-                          </>,
-                          <>
-                            Discontinued old series: the portal titles it &ldquo;<Nome>{antiga.titulo_no_portal}</Nome>&rdquo;. Resource test on {carimbo(antiga.teste_do_recurso.testado_em)}: HTTP{" "}
-                            {antiga.teste_do_recurso.status_http}, {dadoNo(antiga.teste_do_recurso.conclusao, "serie-antiga", idioma)}. Copy used:{" "}
-                            <span className="break-all">{antiga.copia_usada}</span>. It enters only as identified history, never as a current source.
-                          </>,
-                        )}
-                      </p>
-                      <TabelaInterativa
-                        titulo={tx("Série antiga da ANEEL contra o SCS nos trimestres comuns", "ANEEL's old series against the SCS in the common quarters")}
-                        colunas={colunasAntiga()}
-                        linhas={antiga.comparacao_scs.map((x) => ({
-                          id: x.m,
-                          m: x.m,
-                          antiga: x.uc_baixa_renda_antiga,
-                          scs: x.uc_tsee_scs,
-                          dif: x.diferenca_pct,
-                          repete: x.repete_trimestre ?? "",
-                        }))}
-                        chaveLinha="id"
-                        colunaRotulo="m"
-                        fonte={tx(
-                          "ANEEL, Tarifa Social de Energia Elétrica: Beneficiários (descontinuado)",
-                          "ANEEL, Tarifa Social de Energia Elétrica beneficiaries dataset (discontinued)",
-                        )}
-                        versao={antiga.comparacao_scs.at(-1)?.m ?? ""}
-                        nomeArquivo="inclusao-serie-antiga-contra-scs"
-                        chaveUrl="ts.ant"
-                        nota={tx(
-                          "Trimestre que repete a contagem de outro no arquivo original fica marcado e fora da estatística de concordância.",
-                          "A quarter that repeats another's count in the original file is flagged and left out of the agreement statistic.",
-                        )}
-                      />
-                    </>
-                  )}
-                </SecaoDoPainel>
-
                 <InclusaoSeguir
                   ancora="p059"
                   proximo={{
@@ -747,11 +607,187 @@ export default function TarifaSocialPage() {
                     "/energia/series/inclusao_cde_custeio.csv",
                   ])}
                 />
-              </div>
-            </PainelEvidencia>
-          </Bloco>
-        </ModoProfundidade>
-      </main>
+              </>
+            }
+          >
+            <InclusaoSerieTsee
+              serie={serie}
+              marcos={marcosScs}
+              resposta={
+                <InclusaoPorMedidaTsee
+                  variantes={{ uc: <TarifaSocialResposta t={t} medida="uc" />, part: <TarifaSocialResposta t={t} medida="part" />, dmr: <TarifaSocialResposta t={t} medida="dmr" /> }}
+                />
+              }
+              recorte={
+                <InclusaoRecorte
+                  periodo={tx(
+                    <>
+                      SCS de {mes(serie[0]?.m)} a {mes(serie.at(-1)?.m)} (referência {mes(t.mes_referencia)}); CDE de {mes(cdeComValor[0]?.mes)} a {mes(cdeComValor.at(-1)?.mes)} (mapa em {mes(mesMapa)})
+                    </>,
+                    <>
+                      SCS from {mes(serie[0]?.m)} to {mes(serie.at(-1)?.m)} (reference {mes(t.mes_referencia)}); CDE from {mes(cdeComValor[0]?.mes)} to {mes(cdeComValor.at(-1)?.mes)} (map in{" "}
+                      {mes(mesMapa)})
+                    </>,
+                  )}
+                  universo={tx(
+                    <>
+                      {t.distribuidoras.length} distribuidoras no SCS; {ufsComFaturas} UF e {inteiro(municipiosComFaturas)} municípios com faturas no mês do mapa
+                    </>,
+                    <>
+                      {t.distribuidoras.length} distribution utilities in the SCS; {ufsComFaturas} states and {inteiro(municipiosComFaturas)} municipalities with bills in the map month
+                    </>,
+                  )}
+                  unidade={tx("UC (SCS); faturas (CDE); R$ correntes", "consumer units (SCS); bills (CDE); current R$")}
+                />
+              }
+            />
+          </FiguraAnalitica>
+        }
+        metodo={
+          <>
+            {/* as regras, as conferências e a série antiga (antes, a seção de Auditar no fim do painel) são o método desta página */}
+            <SecaoDoPainel id="regras-p059" nivel="auditar" titulo={tx("Regras, conferências e a série antiga", "Rules, checks and the old series")}>
+              <dl className="grid gap-3 text-sm sm:grid-cols-2">
+                {Object.entries(t.regras).map(([id, txt]) => (
+                  <div key={id}>
+                    <dt className="font-medium text-carvao">{rotuloRegra(id)}</dt>
+                    <dd className="mt-0.5 text-carvao-muted">{dadoNo(txt, "regra-tarifa-social", idioma)}</dd>
+                  </div>
+                ))}
+              </dl>
+              {conf && (
+                <>
+                  <p className="text-sm text-carvao-muted">
+                    {tx(
+                      <>
+                        Conferência SCS e CDE em {mes(conf.mes)}, mesmas {conf.distribuidoras_comparadas} distribuidoras: {inteiro(conf.uc_scs)} UC e {inteiro(conf.faturas_cde)} faturas (
+                        {pct(conf.diferenca_pct, 2)}); {reaisGrandes(conf.dmr_scs_reais)} de DMR e {reaisGrandes(conf.desconto_cde_reais)} de desconto ({pct(conf.diferenca_valor_pct, 2)});{" "}
+                        {conf.distribuidoras_ate_2pct} distribuidoras dentro de 2%. Tolerância: {conf.tolerancia}
+                        {conf.so_na_cde.length ? ` Só na CDE: ${conf.so_na_cde.join(", ")}.` : ""}
+                        {conf.so_no_scs.length ? ` Só no SCS: ${conf.so_no_scs.join(", ")}.` : ""}
+                      </>,
+                      <>
+                        SCS and CDE check in {mes(conf.mes)}, same {conf.distribuidoras_comparadas} distribution utilities: {inteiro(conf.uc_scs)} consumer units and{" "}
+                        {inteiro(conf.faturas_cde)} bills ({pct(conf.diferenca_pct, 2)}); {reaisGrandes(conf.dmr_scs_reais)} of DMR and {reaisGrandes(conf.desconto_cde_reais)} of discount (
+                        {pct(conf.diferenca_valor_pct, 2)}); {conf.distribuidoras_ate_2pct} utilities within 2%. Tolerance: {dadoNo(conf.tolerancia, "tolerancia-scs-cde", idioma)}
+                        {conf.so_na_cde.length ? ` Only in the CDE: ${conf.so_na_cde.join(", ")}.` : ""}
+                        {conf.so_no_scs.length ? ` Only in the SCS: ${conf.so_no_scs.join(", ")}.` : ""}
+                      </>,
+                    )}
+                  </p>
+                  <TabelaInterativa
+                    titulo={tx(`Maiores diferenças entre UC do SCS e faturas da CDE, ${mes(conf.mes)}`, `Largest differences between SCS consumer units and CDE bills, ${mes(conf.mes)}`)}
+                    colunas={colunasConferencia()}
+                    linhas={linhasConferencia}
+                    chaveLinha="id"
+                    colunaRotulo="sigla"
+                    fonte={`${fontes.scs}; ${fontes.cde}`}
+                    versao={conf.mes}
+                    nomeArquivo="inclusao-conferencia-scs-cde"
+                    chaveUrl="ts.conf"
+                    ordemInicial={{ coluna: "diferenca_pct", direcao: "desc" }}
+                  />
+                </>
+              )}
+              {t.incorporacoes.length > 0 && (
+                <TabelaInterativa
+                  titulo={tx("Incorporações detectadas no SCS (não são inconsistência)", "Mergers detected in the SCS (not an inconsistency)")}
+                  colunas={colunasIncorporacoes()}
+                  linhas={t.incorporacoes.map((i) => ({
+                    id: `${i.mes_ruptura}|${i.sucessora}`,
+                    mes: i.mes_ruptura,
+                    sucessora: i.sigla_sucessora ?? i.sucessora,
+                    incorporadas: i.siglas_incorporadas.map((s, j) => s ?? i.incorporadas[j]).join(", "),
+                    total: i.total_incorporadas,
+                    salto: i.salto_sucessora,
+                  }))}
+                  chaveLinha="id"
+                  colunaRotulo="mes"
+                  fonte={fontes.scs}
+                  versao={t.mes_referencia}
+                  nomeArquivo="inclusao-incorporacoes-scs"
+                  chaveUrl="ts.inc"
+                />
+              )}
+              {t.siglas_de_outra_fonte.length > 0 && (
+                <p className="text-sm text-carvao-muted">
+                  {tx(
+                    `Siglas tomadas de outra fonte: ${t.siglas_de_outra_fonte.map((s) => `CNPJ ${s.cnpj} exibido como ${s.sigla} (${s.origem})`).join("; ")}.`,
+                    `Acronyms taken from another source: ${t.siglas_de_outra_fonte.map((s) => `CNPJ ${s.cnpj} shown as ${s.sigla} (${dadoTexto(s.origem, idioma)})`).join("; ")}.`,
+                  )}
+                </p>
+              )}
+              {t.diagnostico_scs && (
+                <p className="text-sm text-carvao-muted">
+                  {tx(
+                    <>
+                      Arquivo do SCS: {inteiro(t.diagnostico_scs.linhas)} linhas, {inteiro(t.diagnostico_scs.pares)} pares distribuidora e competência;{" "}
+                      {inteiro(t.diagnostico_scs.pares_com_mais_de_um_despacho)} pares em mais de um despacho, {t.diagnostico_scs.pares_com_despachos_divergentes} com valores divergentes;{" "}
+                      {t.diagnostico_scs.pares_com_faixas_incompletas} com faixas incompletas.
+                    </>,
+                    <>
+                      SCS file: {inteiro(t.diagnostico_scs.linhas)} rows, {inteiro(t.diagnostico_scs.pares)} distribution utility and accrual month pairs;{" "}
+                      {inteiro(t.diagnostico_scs.pares_com_mais_de_um_despacho)} pairs in more than one order, {t.diagnostico_scs.pares_com_despachos_divergentes} with divergent values;{" "}
+                      {t.diagnostico_scs.pares_com_faixas_incompletas} with incomplete bands.
+                    </>,
+                  )}
+                </p>
+              )}
+              {antiga && (
+                <>
+                  <p className="text-sm text-carvao-muted">
+                    {tx(
+                      <>
+                        Série antiga descontinuada: o portal a intitula &ldquo;{antiga.titulo_no_portal}&rdquo;. Teste do recurso em {carimbo(antiga.teste_do_recurso.testado_em)}: HTTP{" "}
+                        {antiga.teste_do_recurso.status_http}, {antiga.teste_do_recurso.conclusao}. Cópia usada: <span className="break-all">{antiga.copia_usada}</span>. Ela entra só como
+                        histórico identificado, nunca como fonte atual.
+                      </>,
+                      <>
+                        Discontinued old series: the portal titles it &ldquo;<Nome>{antiga.titulo_no_portal}</Nome>&rdquo;. Resource test on {carimbo(antiga.teste_do_recurso.testado_em)}: HTTP{" "}
+                        {antiga.teste_do_recurso.status_http}, {dadoNo(antiga.teste_do_recurso.conclusao, "serie-antiga", idioma)}. Copy used:{" "}
+                        <span className="break-all">{antiga.copia_usada}</span>. It enters only as identified history, never as a current source.
+                      </>,
+                    )}
+                  </p>
+                  <TabelaInterativa
+                    titulo={tx("Série antiga da ANEEL contra o SCS nos trimestres comuns", "ANEEL's old series against the SCS in the common quarters")}
+                    colunas={colunasAntiga()}
+                    linhas={antiga.comparacao_scs.map((x) => ({
+                      id: x.m,
+                      m: x.m,
+                      antiga: x.uc_baixa_renda_antiga,
+                      scs: x.uc_tsee_scs,
+                      dif: x.diferenca_pct,
+                      repete: x.repete_trimestre ?? "",
+                    }))}
+                    chaveLinha="id"
+                    colunaRotulo="m"
+                    fonte={tx(
+                      "ANEEL, Tarifa Social de Energia Elétrica: Beneficiários (descontinuado)",
+                      "ANEEL, Tarifa Social de Energia Elétrica beneficiaries dataset (discontinued)",
+                    )}
+                    versao={antiga.comparacao_scs.at(-1)?.m ?? ""}
+                    nomeArquivo="inclusao-serie-antiga-contra-scs"
+                    chaveUrl="ts.ant"
+                    nota={tx(
+                      "Trimestre que repete a contagem de outro no arquivo original fica marcado e fora da estatística de concordância.",
+                      "A quarter that repeats another's count in the original file is flagged and left out of the agreement statistic.",
+                    )}
+                  />
+                </>
+              )}
+            </SecaoDoPainel>
+            <p>
+              {tx("Regras gerais em", "General rules in the")}{" "}
+              <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">
+                {tx("metodologia", "methodology")}
+              </Link>
+              .
+            </p>
+          </>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/setor-eletrico"]} variante="metodo" idioma={idioma} />}
+      />
     </>
   );
 }

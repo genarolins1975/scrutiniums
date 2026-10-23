@@ -3,13 +3,43 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {Explorador} from '@/components/eficiencia/cultura/Explorador';
 import {Recursos} from '@/components/eficiencia/cultura/Recursos';
-import {base,ROTA,n} from '@/lib/eficiencia/cultura/dados';
+import {base,fichas,ROTA,n} from '@/lib/eficiencia/cultura/dados';
+import {FiguraAnalitica,PaginaPainel} from '@/components/painel';
+import {fichaDaFigura} from '@/lib/eficiencia/fichaDaFigura';
+import {TEMAS_EFICIENCIA} from '@/lib/eficiencia/temas';
+import {dataBR} from '@/lib/painel/formato';
 export const dynamic='force-static';
 const capitulos={rede:['Equipamentos','Quem mantém os espaços culturais?','Natureza jurídica e distribuição regional dos sete tipos de equipamento nos cadastros oficiais. Uma biblioteca pública, um cinema privado e um ponto de cultura comunitário têm papéis e universos próprios.'],acesso:['Acesso digital','Que portas digitais estão abertas ao público?','Usar internet dentro da instituição, oferecer Wi-Fi aos visitantes e possuir website são capacidades distintas. Explore uma de cada vez.'],atividades:['Atividades','O que as instituições realizam?','Leitura, formação, exposições e apresentações. A pesquisa registra atividades das instituições; não conta participantes únicos nem mede a satisfação dos visitantes.'],acervos:['Acervos','O patrimônio também pode ser acessado online?','Ter acervo, digitalizá-lo, disponibilizar conteúdos e publicar um catálogo são etapas diferentes. O percentual se refere a instituições, não a itens do acervo.'],recursos:['Recursos','Quanto o poder público destina à cultura?','A evolução dos gastos e sua distribuição por esfera ajudam a dimensionar recursos. A despesa não identifica, sozinha, a quantidade ou a qualidade dos serviços prestados.'],metodos:['Dados e métodos','Como ler e reproduzir estes números?','Do arquivo oficial à célula de origem, com universos, precisão e transformação declarados.']} as const;
 type Slug=keyof typeof capitulos;
 export function generateStaticParams(){return [{painel:[]},...Object.keys(capitulos).map(s=>({painel:[s]}))];}
 export function generateMetadata({params}:{params:{painel?:string[]}}):Metadata {const slug=params.painel?.[0] as Slug;return {title:capitulos[slug]?.[0]??'Cultura',alternates:{canonical:ROTA+(slug?'/'+slug:'')}};}
 function Abertura({rotulo,titulo,texto}:{rotulo:string;titulo:string;texto:string}){return <header className="mt-8"><p className="rotulo text-obee-dark">{rotulo} · Brasil</p><h1 className="mt-4 max-w-[52rem] font-serif text-4xl leading-[1.12] md:text-5xl">{titulo}</h1><p className="mt-5 max-w-prose2 text-base leading-relaxed text-carvao-muted">{texto}</p></header>;}
+/**
+ * Capítulos da TIC Cultura (equipamentos, acesso digital, atividades e acervos) no molde de painel (Iniciativa 1 do parecer de UX de
+ * 23/10/2026). Os quatro têm o mesmo corpo, o explorador das estimativas, por isso o molde vale para os quatro; recursos e métodos
+ * seguem com a abertura de antes. O explorador fica numa FiguraAnalitica com a ficha da TIC Cultura e o "não permite concluir" da
+ * própria nota de fonte do explorador.
+ */
+function CapituloTic({slug}:{slug:Exclude<Slug,'recursos'|'metodos'>}){
+ const tic=base.fontes.find(f=>f.id==='tic')!;
+ const ficha=fichaDaFigura({indicador:fichas.filter(f=>f.familia===slug).map(f=>f.nome).join('; '),natureza:'ESTIMADO',orgao:'Cetic.br/NIC.br',conjunto:'TIC Cultura '+tic.referencia,recurso:tic.titulo,url:tic.url,unidade:'% do total de cada tipo de equipamento; margem em pontos percentuais',
+  frequencia:'Edição da pesquisa',referencia:{inicio:tic.referencia,fim:tic.referencia},publicadoEm:tic.publicadoEm,capturadoEm:base.capturadoEm,sha256:tic.sha256,snapshot:'public/eficiencia/cultura/snapshot.json',versao:'snapshot da cultura, versão '+base.versao,
+  limitacoes:fichas.filter(f=>f.familia===slug).map(f=>f.nome+': '+f.limites),notas:'O relatório metodológico descreve amostragem estratificada e estratos censitários; margens divulgadas com confiança de 95%. Não cobre todos os espaços informais, pessoas ou manifestações culturais. Relatório metodológico: '+tic.metodo+'.'});
+ const fonte=<>Fonte: <a className="underline" href={tic.url}>Cetic.br/NIC.br · TIC Cultura 2024</a>, publicada em {dataBR(tic.publicadoEm,'pt')}; <a className="underline" href={tic.metodo}>relatório metodológico</a>. Captura pela Scrutiniums em {dataBR(base.capturadoEm,'pt')}.</>;
+ return <PaginaPainel rota={ROTA+'/'+slug} principal={false}
+  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · '+capitulos[slug][0],acento:'obee',titulo:capitulos[slug][1],lead:capitulos[slug][2],
+   recorte:{periodo:'2024',universo:'Brasil, sete tipos de equipamento cultural',unidade:'% dos equipamentos de cada tipo',fonte:'Cetic.br/NIC.br, TIC Cultura 2024'},
+   limite:'qual proporção de pessoas é atendida, porque o percentual é de equipamentos nos cadastros oficiais, públicos e privados, e não cobre todos os espaços culturais.',
+   fontesDatasSiglas:<><p>{fonte}</p><p>TIC Cultura: pesquisa sobre o uso das tecnologias de informação e comunicação nos equipamentos culturais brasileiros, do Cetic.br, centro do NIC.br.</p></>}}
+  figuras={<FiguraAnalitica id="estimativas" pergunta="Estimativa e margem publicada, por tipo de equipamento" subtitulo="Indicador escolhido · % do total de cada tipo de equipamento · Brasil, 2024" natureza="ESTIMADO" idioma="pt"
+   naoConcluir="Equipamento não é pessoa: o percentual é de equipamentos e não mede a proporção da população atendida. Uma diferença visual pequena não comprova diferença estatística."
+   comoInterpretar="O ponto mostra a estimativa; o segmento mostra a estimativa mais ou menos a margem publicada, limitado a 0–100%."
+   tabela={{naFigura:'logo abaixo do gráfico, com a estimativa, a margem e a célula de origem de cada tipo de equipamento.'}} proveniencia={ficha}>
+   <Explorador capitulo={slug} inicial={slug==='rede'?'A4':slug==='acesso'?'B10':slug==='acervos'?'D4B':undefined}/>
+  </FiguraAnalitica>}
+  metodo={<><p>{fonte}</p><p>Sete tipos de equipamentos culturais listados em cadastros oficiais. Inclui públicos e privados. O relatório metodológico descreve amostragem estratificada e estratos censitários; margens divulgadas com confiança de 95%. Não cobre todos os espaços informais, pessoas ou manifestações culturais.</p><p>Definições por indicador, arquivos e verificação em <Link className="underline" href={ROTA+'/metodos'}>Dados e métodos</Link>.</p></>}
+ />;
+}
 export default function Pagina({params}:{params:{painel?:string[]}}){
  const slug=params.painel?.[0] as Slug;
  if((params.painel?.length??0)>1||(slug&&!capitulos[slug]))notFound();
@@ -17,7 +47,8 @@ export default function Pagina({params}:{params:{painel?:string[]}}){
  <section className="mt-8"><h2 className="font-serif text-2xl">Quatro cuidados que mudam a leitura.</h2><ol className="mt-5 grid gap-6 md:grid-cols-2">{[['01','Equipamento não é pessoa.','64,8% das bibliotecas disponibilizam Wi-Fi. Isso não significa que 64,8% da população seja atendida.'],['02','As diferenças têm incerteza.','O segmento do gráfico mostra a estimativa mais ou menos a margem publicada, limitado a 0–100%. Uma diferença visual pequena não comprova diferença estatística.'],['03','Público e privado compartilham o recorte.','Os indicadores de acesso e atividade não isolam equipamentos públicos. A natureza jurídica não permite reponderar os demais indicadores por conta própria.'],['04','Os calendários são distintos.','A pesquisa de equipamentos é de 2024; os gastos vão até 2023. Não há junção entre instituição e despesa, nem medida de efeito de políticas.']].map(([id,t,d])=><li key={id} className="border-t border-linha pt-4"><p className="rotulo text-obee-dark">{id}</p><h3 className="mt-2 font-serif text-xl">{t}</h3><p className="mt-2 text-sm leading-relaxed">{d}</p></li>)}</ol></section>
  <section className="mt-10"><h2 className="font-serif text-2xl">Arquivos e verificação.</h2><p className="mt-3 max-w-prose2 text-sm leading-relaxed">Captura: 11/10/2026. TIC publicada em 07/10/2025; SIIC publicado em 12/12/2025, arquivo de gastos revisto em 10/03/2026. As somas das três esferas e dos 27 governos estaduais/distrital foram reconciliadas nos onze anos. Os recortes guardam aba, linha, coluna e hashes dos arquivos originais.</p><div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">{[['snapshot.json','Dados e fichas · JSON'],['celulas.csv','Células extraídas · CSV'],['manifesto.json','Fontes e hashes · JSON']].map(([f,t])=><a key={f} href={'/eficiencia/cultura/'+f} download className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline">{t} ↓</a>)}</div></section>
  <section className="mt-10"><h2 className="font-serif text-2xl">Definições por indicador.</h2><div className="mt-4 divide-y divide-linha">{base.catalogo.map(f=><details key={f.id} className="py-3"><summary className="min-h-[44px] cursor-pointer py-2 font-semibold">{f.nome}</summary><dl className="grid gap-3 pb-4 pt-3 text-sm md:grid-cols-2">{[['O que mede',f.o_que_mede],['Universo',f.perimetro],['Período',f.periodo],['Unidade',f.unidade],['Transformação',f.formula],['Localização',f.localizacao_registro],['Limites',f.limites]].map(([k,v])=><div key={k}><dt className="font-semibold">{k}</dt><dd className="mt-1 leading-relaxed">{v}</dd></div>)}</dl></details>)}</div></section><aside className="mt-8 border-l-4 border-obee bg-obee-suave p-5"><h2 className="font-serif text-xl">Avaliação do serviço: dados ainda insuficientes.</h2><p className="mt-2 text-sm leading-relaxed">Não há nota de qualidade ou eficiência neste capítulo. Faltam frequência individual, demanda não atendida, tempo e custo de acesso, satisfação, acessibilidade física e referências compatíveis. O diagnóstico descritivo permanece disponível.</p></aside></>;
- if(slug)return <><Abertura rotulo={capitulos[slug][0]+(slug==='recursos'?' · 2013–2023':' · 2024')} titulo={capitulos[slug][1]} texto={capitulos[slug][2]}/>{slug==='recursos'?<Recursos/>:<Explorador capitulo={slug} inicial={slug==='rede'?'A4':slug==='acesso'?'B10':slug==='acervos'?'D4B':undefined}/>}</>;
+ if(slug==='recursos')return <><Abertura rotulo={capitulos[slug][0]+' · 2013–2023'} titulo={capitulos[slug][1]} texto={capitulos[slug][2]}/><Recursos/></>;
+ if(slug)return <CapituloTic slug={slug}/>;
  const wifi=base.tic.find(r=>r.aba==='B10'&&r.tipo==='Biblioteca')!;
  const municipal=base.tic.find(r=>r.aba==='A4'&&r.tipo==='Biblioteca'&&r.categoria==='Público municipal')!;
  const gasto=base.gastos.find(r=>r.ano===2023&&r.entidade==='Total')!;

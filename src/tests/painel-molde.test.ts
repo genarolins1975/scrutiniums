@@ -18,6 +18,17 @@ import { conferirPainel } from "./suporte/molde-painel";
  * do molde com o motivo; nenhuma é esquecida, nenhuma está em duas listas e nenhuma lista cita rota que não existe.
  */
 
+/** Seção 5.1 do prompt (calculada em 23/10/2026 de paraVoce.ts e navegacaoDaColecao). */
+const GRUPO_1 = `/agronegocio/atlas /agronegocio/clima-ambiente /agronegocio/prato /agronegocio/tamanho /combustiveis/no-meu-estado
+/contas-publicas/metas /contas-publicas/por-area /eficiencia-estatal/assistencia-social/necessidades /eficiencia-estatal/cultura/rede
+/eficiencia-estatal/educacao-municipal-capitais /eficiencia-estatal/energia-conectividade /eficiencia-estatal/habitacao/deficit
+/eficiencia-estatal/indice-de-resultados /eficiencia-estatal/judiciario/panorama /eficiencia-estatal/meio-ambiente-clima/riscos
+/eficiencia-estatal/mobilidade-transporte/tempo /eficiencia-estatal/saude-capitais /eficiencia-estatal/saude-capitais/gastos
+/eficiencia-estatal/seguranca-publica/estados /eficiencia-estatal/trabalho-renda/acesso-ao-trabalho /gas-natural/gas-de-cozinha
+/gas-natural/gnv-e-gas-encanado /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela
+/saneamento/municipio /saneamento/preco-regulado/simulador /saneamento/tarifa-social /setor-eletrico/conta-de-luz
+/setor-eletrico/inclusao-energetica/tarifa-social /setor-eletrico/qualidade /territorio/desastres /territorio/queimadas`.split(/\s+/);
+
 const rotasDoApp: string[] = JSON.parse(readFileSync(join(raiz, "src/lib/uso/rotas-do-app.json"), "utf-8"));
 
 /** A rota concreta existe no app: igual a uma página, ou casa com o padrão dinâmico dela ([x] é um segmento; [[...x]], o resto opcional). */
@@ -55,10 +66,12 @@ describe("molde de painel: inventário", () => {
     for (const r of [...NO_MOLDE_PAINEL, ...NO_MOLDE_PAINEL_EN, ...Object.keys(A_MIGRAR), ...Object.keys(FORA_DO_MOLDE)]) expect(existeNoApp(r), r).toBe(true);
   });
 
-  it("o Grupo 1 tem as 32 páginas da seção 5.1 do prompt, contadas as que já estão no molde", () => {
-    const grupo1 = Object.entries(A_MIGRAR).filter(([, g]) => g === 1).map(([r]) => r);
-    const migradas = ["/setor-eletrico/qualidade", "/setor-eletrico/conta-de-luz"].filter((r) => NO_MOLDE_PAINEL.includes(r));
-    expect(grupo1.length + migradas.length).toBe(32);
+  // PR 1 (Grupo 1): as 32 páginas da seção 5.1 do prompt estão no molde e nenhuma rota fica a migrar no Grupo 1; o teste do PR 0 contava
+  // as que faltavam, este confere a lista inteira
+  it("o Grupo 1 tem as 32 páginas da seção 5.1 do prompt, todas no molde", () => {
+    expect(GRUPO_1.length).toBe(32);
+    expect(GRUPO_1.filter((r) => !NO_MOLDE_PAINEL.includes(r)), "do Grupo 1 fora do molde").toEqual([]);
+    expect(Object.entries(A_MIGRAR).filter(([, g]) => g === 1).map(([r]) => r), "a migrar no Grupo 1").toEqual([]);
   });
 });
 

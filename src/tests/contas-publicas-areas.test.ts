@@ -149,7 +149,8 @@ describe('a página', () => {
 
   it('primeira tela: a pergunta, cada R$ 100 do último exercício encerrado com a dívida à parte, valores, ano e fonte', async () => {
     const html = await pagina();
-    expect(html).toContain('<h1>Para onde vai o dinheiro federal, por área?</h1>');
+    // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o H1 é o do AberturaPainel, com as classes do kit; o texto é o mesmo
+    expect(html).toMatch(/<h1[^>]*>Para onde vai o dinheiro federal, por área\?<\/h1>/);
     expect(html).toContain(`De cada R$ 100 pagos em ${ANO}, quanto foi para cada área?`);
     const itens = emCem(composicao(ANO, 'pago', 'total')!)!;
     const divida = itens.filter((p) => p.tipo === 'divida').reduce((s, p) => s + p.cem, 0);
@@ -169,7 +170,9 @@ describe('a página', () => {
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     expect(html).toContain('Do orçamento ao pagamento');
     expect(html).toContain('Modelo didático');
-    expect(html).toMatch(/<details class="cp-method-fold"><summary id="metodo-titulo">Método, fontes, notas e downloads/);
+    // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o método é a fatia única recolhida do kit, no fim, com o mesmo conteúdo
+    expect(html).toMatch(/<details[^>]*data-fatia="metodo"/);
+    expect(html.indexOf('data-fatia="metodo"')).toBeLessThan(html.indexOf('id="metodo"'));
     const metodo = html.slice(html.indexOf('id="metodo"'));
     expect(metodo).toContain('/contas-publicas/por-area/funcoes.csv');
     expect(metodo).toContain('/contas-publicas/funcoes.json');

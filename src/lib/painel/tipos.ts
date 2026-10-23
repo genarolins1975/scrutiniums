@@ -217,6 +217,10 @@ export type TabelaDadosProps = {
   ordenavel?: boolean;
   /** Como mostrar null por coluna ("não elegível", "não publicado"); sempre texto, padrão "sem dado". */
   ausencia?: Record<string, string>;
+  /** Endereço interno de cada célula, por coluna (nome da coluna, uma entrada por linha; null sem link): a ficha de cada município. */
+  links?: Record<string, readonly (string | null)[]>;
+  /** Nome do arquivo exportado pela tabela ordenável (sem ele, o título). */
+  nomeArquivo?: string;
   fixarPrimeiraColuna?: boolean;
   /** Recolhida em <details> (tabela equivalente de figura) ou à vista (fatia `tabelas`). */
   recolhida?: boolean;

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "@/components/i18n/LinkIdioma";
 import { TextoDaColuna } from "@/components/painel/TextoDaColuna";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { comNomes } from "@/components/i18n/comNomes";
@@ -590,7 +591,8 @@ export function TabelaInterativa({
                     {colunas.map((c) => {
                       const v = valorColuna(l, c);
                       const numerica = ehNumerica(c);
-                      const conteudo =
+                      const destino = c.link && v !== null ? l[c.link] : null;
+                      const valorCelula =
                         v === null ? (
                           <SemDado sobreFundoAtivo={sel} />
                         ) : c.literal && typeof v === "string" && defLiteral(c.literal.classe)?.padrao.test(v) ? (
@@ -610,6 +612,15 @@ export function TabelaInterativa({
                           </TextoDaColuna>
                         ) : (
                           textoCelula(v, c, idioma)
+                        );
+                      // a célula com destino aponta para a página própria da linha (a ficha do município), como a tabela de domínio fazia
+                      const conteudo =
+                        typeof destino === "string" && destino ? (
+                          <Link href={destino} prefetch={false} onClick={(e) => e.stopPropagation()} className="underline decoration-linha underline-offset-4 hover:decoration-carvao">
+                            {valorCelula}
+                          </Link>
+                        ) : (
+                          valorCelula
                         );
                       if (c.id === colRot?.id) {
                         return (

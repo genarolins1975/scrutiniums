@@ -57,7 +57,11 @@ describe('temas da Eficiência Estatal: pergunta, sem numeração, reais no padr
   });
   it('cultura, energia e meio ambiente têm um gráfico de dado real na abertura', () => {
     expect(ler('src/app/eficiencia-estatal/cultura/[[...painel]]/page.tsx')).toContain("r.aba==='B10'&&r.categoria==='Sim'");
-    expect(ler('src/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page.tsx').match(/<FiguraDec anual=\{q\.brasil\.anual\}\/>/g)).toHaveLength(2);
+    // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o panorama da energia desenha o DEC apurado e o limite no GraficoPontos
+    // do kit, dentro da FiguraAnalitica; a FiguraDec antiga fica só na visão Continuidade, que migra no Grupo 2
+    const energia = ler('src/app/eficiencia-estatal/energia-conectividade/[[...painel]]/page.tsx');
+    expect(energia.match(/<FiguraDec anual=\{q\.brasil\.anual\}\/>/g)).toHaveLength(1);
+    expect(energia).toContain("<GraficoPontos titulo=\"DEC apurado e limite agregado, Brasil, anos completos desde 2022\"");
     expect(ler('src/app/eficiencia-estatal/meio-ambiente-clima/[[...painel]]/page.tsx')).toContain('<FiguraRegioes/>');
   });
 });

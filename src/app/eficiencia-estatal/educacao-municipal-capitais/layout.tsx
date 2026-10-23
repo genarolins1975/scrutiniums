@@ -13,7 +13,7 @@ export default function LayoutPainelEducacao({ children }: { children: React.Rea
     <>
       <header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/educacao-municipal-capitais" navegacao="educacao" /></header>
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_RECORTE }} />
-      <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-12">
+      <main id="conteudo" className="mx-auto max-w-page px-4 pb-20 pt-8 sm:px-6 md:pt-12 [&>[data-painel]]:px-0">
         {children}<EscoresServicos capitulo="education"/>
         <LiberaRecorte />
         <noscript>

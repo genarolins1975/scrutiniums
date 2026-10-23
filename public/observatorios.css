@@ -335,7 +335,8 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 .dominio-energia [data-notas-painel] { padding-block:16px; }
 .dominio-energia [data-notas-painel] aside { line-height:1.65; }
 .dominio-energia .ed-meta { font-size:13px; line-height:1.6; margin-top:12px; }
-.dominio-energia [data-limite] { border-left:2px solid var(--obs-regra); padding-left:12px; margin-top:16px; line-height:1.6; }
+/* a abertura do kit de painel (data-abertura="painel") desenha o próprio filete, igual em todos os domínios */
+.dominio-energia [data-limite]:not([data-abertura] *) { border-left:2px solid var(--obs-regra); padding-left:12px; margin-top:16px; line-height:1.6; }
 .observatorio-credito :is(a,button,input,select,summary):focus-visible,
 .dominio-energia :is(a,button,input,select,summary):focus-visible { outline:2px solid var(--obs-destaque); outline-offset:4px; }
 @media(max-width:639px) {
