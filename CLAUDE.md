@@ -29,6 +29,7 @@ Antes de empurrar, três comandos (todos na raiz; `scripts/verificar.mjs` explic
 - Contêiner com até 15 GB de memória: o limite padrão de heap do Node é 2 GB e `npx tsc --noEmit` e `npm run build` abortam por falta de memória; os dois comandos acima já passam `--max-old-space-size=4096`. Chamados à mão, use `NODE_OPTIONS=--max-old-space-size=4096`.
 
 - Testes da interface: `npx vitest run` (os de navegador dependem do Chromium do Playwright); tipos: `npx tsc --noEmit`; lint: `npm run lint`; build: `npm run build`.
+- Sessão nova: rode `bash scripts/preparar-sessao.sh` antes de qualquer teste (dependências, derivados, Chromium compatível com o Playwright e heap do Node; idempotente). Nas sessões do Claude Code o hook `SessionStart` de `.claude/settings.json` já o chama.
 - Testes do pipeline: `python3 -m unittest discover -s pipeline/tests -t .`.
 - Inventário de tradução (arquivo gerado, regenerar em todo conflito): `node scripts/cobertura-i18n.mjs`.
 - Golds derivadas do Setor Elétrico (`public/energia/gold/{metricas,arquivos,manifesto}.json`): `python3 pipeline/energia/executar_modulo.py <módulo> --sem-coleta`.
