@@ -9,6 +9,11 @@ import AcessoAssistencia from "@/app/eficiencia-estatal/assistencia-social/acess
 import AcompanhamentoAssistencia from "@/app/eficiencia-estatal/assistencia-social/acompanhamento/page";
 import CuidadoAssistencia from "@/app/eficiencia-estatal/assistencia-social/cuidado/page";
 import RecursosAssistencia from "@/app/eficiencia-estatal/assistencia-social/recursos/page";
+import PanoramaAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/page";
+import NecessidadesAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/necessidades/page";
+import AcessoAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/acesso/page";
+import QualidadeAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/qualidade/page";
+import RecursosAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/recursos/page";
 
 /**
  * Molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026), PR 2, frente de Trabalho e renda, Assistência social e Segurança
@@ -54,5 +59,53 @@ describe("molde de painel: Assistência social", () => {
     for (const t of ["diferente de visitas do PAIF", "não some essas categorias", "Os centros-dia incluem modalidades similares e organizações não governamentais."]) expect(c).toContain(t);
     const r = pagina(RecursosAssistencia);
     for (const t of ["sem identificar trabalhadores", "pessoas únicas ou equivalentes de jornada completa", "O recorte financeiro ainda não foi integrado; estas medidas não são uma nota de eficiência."]) expect(r).toContain(t);
+  });
+});
+
+describe("molde de painel: Segurança alimentar", () => {
+  it.each([
+    ["/eficiencia-estatal/seguranca-alimentar", PanoramaAlimentar],
+    ["/eficiencia-estatal/seguranca-alimentar/necessidades", NecessidadesAlimentar],
+    ["/eficiencia-estatal/seguranca-alimentar/acesso", AcessoAlimentar],
+    ["/eficiencia-estatal/seguranca-alimentar/qualidade", QualidadeAlimentar],
+    ["/eficiencia-estatal/seguranca-alimentar/recursos", RecursosAlimentar],
+  ] as const)("%s", (rota, P) => {
+    const h = pagina(P);
+    conferirPainel(rota, h);
+    // nenhuma tabela escrita à mão: todas são a TabelaDados do kit (o conferidor já reprova <table> fora dela)
+    expect(h).not.toContain("overflow-x-auto");
+  });
+
+  it("necessidades: as três figuras e as três tabelas, na ordem de antes, com as âncoras do índice", () => {
+    const h = pagina(NecessidadesAlimentar);
+    const ordem = ['data-figura-analitica="ebia-regioes"', 'data-figura-analitica="quem-passa-fome"', 'data-figura-analitica="estados"', 'id="urbano-rural"', 'id="cadinsan"', 'id="cadinsan-municipio"'].map((t) => h.indexOf(t));
+    expect(ordem.every((i) => i > 0)).toBe(true);
+    expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
+    for (const a of ["#ebia-regioes", "#quem-passa-fome", "#estados", "#urbano-rural", "#cadinsan"]) expect(h).toContain(`href="${a}"`);
+    // os quadros pareados ficam no desenho próprio, marcados como figura legada; as tabelas de apoio e a dos moradores são do kit
+    expect(h).toContain('data-figura-legado="quem-passa-fome"');
+    for (const t of ["Barras em escala fixa de 0 a 100%", "Baixar tabela completa · CSV", "/eficiencia/seguranca-alimentar/pnad.csv", "No seu município", "E nas casas com crianças, adolescentes ou pessoas idosas?", "A linha tracejada marca o Brasil"]) expect(h).toContain(t);
+  });
+
+  it("acesso: a figura do PNAE com a tabela por estado e a consulta, a do IPCA e o que falta medir", () => {
+    const h = pagina(AcessoAlimentar);
+    for (const t of ['data-figura-analitica="escolar"', 'data-figura-analitica="precos"', 'id="lacunas"', "Por estado, 2025", "Refeições públicas", "Auxílio alimentar", "Consultar ações declaradas na base municipal", 'href="/custo-de-vida"', "Acumulada em 12 meses"]) expect(h).toContain(t);
+  });
+
+  it("qualidade: a figura do SISVAN e a tabela dos critérios propostos, do kit", () => {
+    const h = pagina(QualidadeAlimentar);
+    for (const t of ['data-figura-analitica="acompanhamento-nutricional"', "Oferta cumprida", "Entregas verificadas pelo protocolo", "Situação: dados e referências pendentes; escore não calculável.", "Nenhuma dessas taxas é inferida da quantidade de equipamentos"]) expect(h).toContain(t);
+  });
+
+  it("recursos: a figura dos repasses, as tabelas do PAA, a consulta e a estrutura municipal declarada", () => {
+    const h = pagina(RecursosAlimentar);
+    for (const t of ['data-figura-analitica="pnae-repasses"', 'id="paa"', 'id="municipio"', 'id="estrutura"', "Gestão e participação", "Explorar registros de equipamentos e gestão", "Por estado, 2025"]) expect(h).toContain(t);
+  });
+
+  it("panorama: os quatro números, as seis perguntas e a proposta de escores depois do painel", () => {
+    const h = pagina(PanoramaAlimentar);
+    expect(h.match(/data-numero-indicador=""/g)).toHaveLength(4);
+    for (const r of ["necessidades", "acesso", "qualidade", "recursos", "dados", "metodos"]) expect(h).toContain(`href="/eficiencia-estatal/seguranca-alimentar/${r}"`);
+    expect(h.indexOf('id="escores-servicos"')).toBeGreaterThan(h.indexOf('data-fatia="fim"'));
   });
 });
