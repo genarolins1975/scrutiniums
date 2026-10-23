@@ -6,7 +6,7 @@ Data: 22/10/2026. Para decisão do dono. Nada aqui entra sem aprovação explíc
 |---|---|---|---|
 | 1. Skill da casa em núcleo e anexos | 45 KB para 13,3 KB em tarefa de PR e produção | agente precisa carregar o anexo certo | aprovar ou manter |
 | 2. Política para testes de texto literal | não medido; ver evidência | invariantes são mais difíceis de escrever | aprovar ou manter |
-| 3. Dados pesados fora do git | clone raso de 42 s para 18 s e de 906 MB para 243 MB | muda o deploy da Vercel e o pipeline diário | autorizar estudo ou manter |
+| 3. Dados pesados fora do git | clone raso de 1.243 MB para 601 MB; de 3 a 10 s a menos por clone | muda o deploy da Vercel e o pipeline diário | autorizar estudo ou manter |
 
 ## 1. Skill da casa em núcleo e anexos
 
@@ -34,7 +34,16 @@ Data: 22/10/2026. Para decisão do dono. Nada aqui entra sem aprovação explíc
 
 ## 3. Dados pesados fora do histórico do git
 
-**Evidência.** `public/` tem 549 MB e `docs/obee` 116 MB. Um clone raso, como o do `actions/checkout`, levou 42 s e ocupou 906 MB; o mesmo clone sem `public/` e `docs/obee` levou 18 s e ocupou 243 MB (medido nesta sessão, 4 vCPU, via proxy, 22/10/2026). No CI, o checkout leva cerca de 30 s em cada job, e um PR roda de três a cinco jobs. O commit diário do pipeline altera cerca de 3.875 arquivos em `public/`.
+**Evidência.** No git (main `30c5d63`, 22/10/2026), `public/` guarda 531 MB de dados em 4.677 arquivos (JSON, CSV, Parquet, ZIP e GZ) e só 7 MB de ativos da aplicação; `docs/obee` guarda 113 MB, que o build lê (`src/components/eficiencia/IndiceResultados.tsx` e `src/app/eficiencia-estatal/laboratorio-cesta/route.ts`). O commit diário do pipeline altera cerca de 3.875 arquivos em `public/`. No CI, o checkout leva cerca de 30 s em cada job, e um PR roda de três a cinco jobs.
+
+Clone raso, como o do `actions/checkout`, medido duas vezes nesta sessão (4 vCPU, via proxy, 23/10/2026), com o `.git` incluído no disco:
+
+| Clone | Tempo | Disco |
+|---|---|---|
+| Completo | 33,0 s e 28,4 s | 1.243 MB |
+| Sem os dados de `public/`, com `docs/obee` e os ativos | 22,7 s e 25,2 s | 601 MB |
+
+A primeira versão deste documento tirava também os ativos de `public/` e todo o `docs/obee`, e dava 24 s e 663 MB de ganho. Como a primeira alternativa move só os dados e o build lê `docs/obee`, a medida acima é a que vale para ela (correção apontada na revisão do PR).
 
 **Alternativas.**
 
@@ -42,6 +51,6 @@ Data: 22/10/2026. Para decisão do dono. Nada aqui entra sem aprovação explíc
 - Repositório de dados próprio, clonado no build na revisão registrada no git.
 - Git LFS, que a Vercel aceita quando habilitado no projeto; não reduz o tamanho do checkout, só o do histórico.
 
-**Ganho projetado.** Cerca de 24 s a menos por clone e 663 MB a menos em disco, em cada sessão de agente e em cada job do CI.
+**Ganho projetado.** Cerca de 640 MB a menos em disco por clone, em cada sessão de agente e em cada job do CI. O tempo de clone cai de 3 a 10 s, dentro da oscilação da rede; o ganho principal é disco e histórico, não tempo. Tirar também `docs/obee` exigiria migrar os dois consumidores do build e os testes que o leem.
 
 **Custo e risco.** Muda o deploy da Vercel (o build precisa baixar os dados), o pipeline diário (publica asset em vez de commit) e a forma como 165 arquivos de teste leem `public/`. Build sem dados vira um modo de falha novo, que o manifesto de hash precisa barrar.
