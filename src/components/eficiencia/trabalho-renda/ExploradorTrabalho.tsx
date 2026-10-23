@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useLargura } from "@/components/eficiencia/graficos";
 import Link from "next/link";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -399,6 +399,7 @@ export function ExploradorTrabalho({ dados, ids, rota }: { dados: Snapshot; ids:
               ))}
           </select>
         </label>
+        <CopiarLinkRecorte />
       </Controles>
 
       {dados.indicadores.some((i) => i.id === "renda-por-decil") && <FiguraDecis dados={dados} territorio={ter.id} periodo={periodo} nome={nome} />}
@@ -768,6 +769,32 @@ export function GraficoSerie({
             </text>
           ))}
       </svg>
+    </div>
+  );
+}
+
+/** "Copiar link do recorte", como no desenho anterior: o recorte vive na URL, e o botão a copia; sem área de transferência, diz como fazer. */
+function CopiarLinkRecorte() {
+  const [aviso, setAviso] = useState("");
+  return (
+    <div className="flex flex-wrap items-center gap-x-4">
+      <button
+        type="button"
+        className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao"
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            setAviso("Link do recorte copiado.");
+          } catch {
+            setAviso("Copie o endereço da página para compartilhar o recorte.");
+          }
+        }}
+      >
+        Copiar link do recorte
+      </button>
+      <span role="status" className="t-meta text-carvao-muted">
+        {aviso}
+      </span>
     </div>
   );
 }
