@@ -1,7 +1,18 @@
 import { LINKEDIN_URL } from "@/lib/contato";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { MARCADOR_FIM, MARCADOR_INICIO, colecaoDaRotaSpa, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
+import {
+  MARCADOR_FIM,
+  MARCADOR_FIM_FIM,
+  MARCADOR_FIM_INICIO,
+  MARCADOR_INICIO,
+  MARCADOR_NAV_FIM,
+  MARCADOR_NAV_INICIO,
+  colecaoDaRotaSpa,
+  htmlBarraSpa,
+  htmlFimSpa,
+  htmlNavegacaoSpa,
+} from "@/lib/observatorios/barraSpa";
 import {
   abaPorCaminho,
   PREFIXOS_DINAMICOS,
@@ -160,7 +171,7 @@ function resolverMetaDaAba(caminho: string): MetaObservatorio {
   const padrao = {
     titulo: NOME_PLATAFORMA,
     descricao:
-      "O crédito brasileiro explicado com rigor, do funding à cobrança: carteira, inadimplência, produtos, instituições, funding, mapa por UF e município, sinais antecedentes e cobrança judicial, com fontes oficiais, metodologia aberta e acesso gratuito com cadastro. Comece pelo Mapa do Observatório.",
+      "O crédito brasileiro explicado com rigor, do funding à cobrança: carteira, inadimplência, produtos, instituições, funding, mapa por UF e município, sinais antecedentes e cobrança judicial, com fontes oficiais, metodologia aberta e acesso gratuito com cadastro. Comece pelo Início do painel.",
     canonico: `${BASE}/observatorio`,
   };
   if (caminho === "/" || caminho === "") {
@@ -272,10 +283,17 @@ export function montarHtml(meta: MetaObservatorio, html = shell()): string {
     .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${c}">`)
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${c}">`);
   // a barra da aba pedida, já no HTML do servidor: seletor, abas e trilha com a coleção e o observatório donos dela no
-  // registro (o index.html traz a da entrada da coleção)
-  const ini = out.indexOf(MARCADOR_INICIO);
-  const fim = out.indexOf(MARCADOR_FIM);
-  if (ini >= 0 && fim > ini) out = out.slice(0, ini) + htmlBarraSpa(meta.canonico.replace(BASE, "")) + out.slice(fim + MARCADOR_FIM.length);
+  // registro; abaixo dela, a navegação da coleção dona, e no fim da página "Para ir além" e o rodapé da coleção (Iniciativa 2 do
+  // parecer de UX de 23/10/2026, o Crédito na mesma casca)
+  const caminho = meta.canonico.replace(BASE, "");
+  const trocar = (ini: string, fim: string, novo: string) => {
+    const a = out.indexOf(ini);
+    const b = out.indexOf(fim);
+    if (a >= 0 && b > a) out = out.slice(0, a) + novo + out.slice(b + fim.length);
+  };
+  trocar(MARCADOR_INICIO, MARCADOR_FIM, htmlBarraSpa(caminho));
+  trocar(MARCADOR_NAV_INICIO, MARCADOR_NAV_FIM, htmlNavegacaoSpa(caminho));
+  trocar(MARCADOR_FIM_INICIO, MARCADOR_FIM_FIM, htmlFimSpa(caminho));
   const extras = [
     meta.indexavel ? "" : `<meta name="robots" content="noindex">`,
     meta.indexavel ? jsonLd(meta) : "",

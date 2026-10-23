@@ -22,7 +22,7 @@ import { inventario } from "@/lib/observatorios/inventario";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { todasAsPerguntas } from "@/lib/observatorios/paraVoce";
 import { CONSULTAS, portas } from "@/lib/perguntas/portas";
-import { LEVA_2, ehRotaPublica, itemAprovado } from "@/lib/rotasPublicas";
+import { APERITIVOS, LEVA_2, ehRotaPublica, itemAprovado } from "@/lib/rotasPublicas";
 import { GLOSSARIO as GLOSSARIO_CREDITO } from "@/lib/data/glossario";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { GLOSSARIO as GLOSSARIO_CONTAS } from "@/lib/contas-publicas/glossario";
@@ -34,7 +34,7 @@ import sinonimos from "./sinonimos.json";
 import { EXEMPLOS_BUSCA } from "./exemplos";
 import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 import { normalizar } from "./normalizar";
-import type { EntradaBusca, IndiceBusca, SituacaoEntrada, TipoEntrada, TipoLugar } from "./tipos";
+import type { EntradaBusca, IndiceBusca, SituacaoEntrada, TipoEntrada, TipoLugar, VersaoAberta } from "./tipos";
 
 /** Resumo de uma linha: o índice viaja ao navegador e deve ficar leve. */
 const LIMITE_RESUMO = 140;
@@ -344,7 +344,14 @@ export function indiceDeBusca(): IndiceBusca {
     m.add({ tipo: "verbete", titulo: g.termo, resumo: g.definicao, href: `/agronegocio/glossario#${ancoraConceitoAgro(g.termo)}`, observatorio: "economia", colecao: "agro", situacao: "publicado", termos: ["glossário"] });
   }
 
-  const colecoes = obs.flatMap((o) => o.colecoes.map((c) => ({ id: c.id, observatorio: o.id, nome: c.nome, href: c.href })));
+  const entradas = comVocabularioDoSetorEletrico(m.entradas());
+  const abertas = versoesAbertas(entradas);
+  const colecoes = obs.flatMap((o) =>
+    o.colecoes.map((c) => {
+      const aberta = abertas.get(`${o.id}/${c.id}`);
+      return { id: c.id, observatorio: o.id, nome: c.nome, href: c.href, ...(aberta ? { aberta } : {}) };
+    }),
+  );
   cache = {
     versao: 1,
     observatorios: obs.map((o) => ({ id: o.id, nome: o.nomeCurto })),
@@ -352,7 +359,25 @@ export function indiceDeBusca(): IndiceBusca {
     exemplos: [...EXEMPLOS_BUSCA],
     // nomes com apelido (NU FINANCEIRA → Nubank, Neoenergia PE → Celpe) levam o apelido junto: a lista do cabeçalho já sai expandida
     lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comApelidos(v)))])) as Record<TipoLugar, string[]>,
-    entradas: comVocabularioDoSetorEletrico(m.entradas()),
+    entradas,
   };
   return cache;
+}
+
+/**
+ * A versão aberta de cada tema, presa à coleção (decisão do dono de 23/10/2026, achado A7 do diagnóstico da busca): a página
+ * que o princípio do aperitivo deixa aberta (APERITIVOS em rotasPublicas.ts), na coleção da entrada que a serve; sem entrada
+ * aberta no índice (a apresentação do Crédito), na coleção do painel completo, com o nome do tema.
+ */
+function versoesAbertas(entradas: EntradaBusca[]): Map<string, VersaoAberta> {
+  const m = new Map<string, VersaoAberta>();
+  for (const a of APERITIVOS) {
+    if (!ehRotaPublica(a.rota)) continue;
+    const propria = entradas.find((e) => e.href === a.rota && e.aberta && e.colecao);
+    const dona = propria ?? entradas.find((e) => e.href === a.painelCompleto && e.colecao);
+    if (!dona) continue;
+    const chave = `${dona.observatorio}/${dona.colecao}`;
+    if (!m.has(chave)) m.set(chave, { titulo: propria?.titulo ?? a.tema, href: a.rota });
+  }
+  return m;
 }

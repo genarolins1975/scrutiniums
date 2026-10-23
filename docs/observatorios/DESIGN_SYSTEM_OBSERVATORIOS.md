@@ -42,11 +42,11 @@ Contraste medido sobre papel / marfim / superfície (branco). Texto pequeno pede
 | `painel-escuro-controle` · `-foco` | `#87a9af` · `#e5bf76` | borda de controle e anel de foco sobre o painel | 5,7 · 8,2 sobre o painel |
 | `painel-escuro-linha` · `-superficie` · `-selecao` | `#557278` · `#214650` · `#37616b` | filete, realce e item selecionado sobre o painel | decorativos; texto sobre a seleção a 6,4:1 |
 
-Séries de gráfico (`--serie-*`): 3:1 sobre papel e marfim, salvo `serie-solar` e `serie-5`, que exigem rótulo direto e tabela equivalente. Escalas de mapa (`--escala-*`, `--san-div-*`) nunca são cor de texto. A aplicação do Crédito guarda seus estados, eixos e tema escuro em `--cor-credito-*` com os valores que já usava; a Iniciativa 8 os reconcilia com a paleta.
+Séries de gráfico (`--serie-*`): 3:1 sobre papel e marfim, salvo `serie-solar` e `serie-5`, que exigem rótulo direto e tabela equivalente. Escalas de mapa (`--escala-*`, `--san-div-*`) nunca são cor de texto. A aplicação do Crédito lê a mesma paleta (eixo e grade em `--cor-linha` e `--cor-mineral`, alerta em `--cor-aviso`, selos em `--cor-natureza-*`, saldo negativo em `--cor-negativo`); os tokens `--cor-credito-*` e o tema escuro próprio saíram na Iniciativa 2 do parecer de UX de 23/10/2026, e `design-tokens.test.ts` reprova `--cor-credito-*`.
 
 ## Escala tipográfica
 
-Uma escala só, com classes de papel (não de domínio), em `globals.css`. Serifa (Playfair Display) nos títulos e números; Inter no texto; Archivo Narrow nos rótulos.
+Uma escala só, com classes de papel (não de domínio), em `globals.css`. Serifa (Playfair Display) nos títulos e números; Inter no texto; Archivo Narrow nos rótulos. Os corpos também são variáveis (`--tipo-rotulo`, `--tipo-meta`, `--tipo-tabela`, `--tipo-corpo`, `--tipo-lead`, `--tipo-h3`, `--tipo-h2`, `--tipo-h1`, `--tipo-numero-p`, `--tipo-numero-m`, `--tipo-numero-g`): as classes abaixo leem delas e a aplicação do Crédito, que não carrega o CSS do Next, usa as mesmas pelo `public/obs/tokens.css` derivado. Nenhum `font-size` em pixel nas folhas da aplicação (`credito-casca.test.ts`).
 
 | Classe | Corpo | Uso |
 | --- | --- | --- |

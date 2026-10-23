@@ -54,9 +54,12 @@ describe("página de embed", () => {
   });
 
   it("cromo ausente no embed nunca derruba o script (null-guards)", () => {
-    expect(app).toContain("if (_themeBtn) _themeBtn.addEventListener");
-    expect(app).toContain("if (_tabsEl) _tabsEl.addEventListener");
-    expect(app).toContain("if (menuBtnEl) menuBtnEl.addEventListener");
+    // desde a Iniciativa 2 do parecer de UX de 23/10/2026 a aplicação não tem alternador de tema, barra lateral nem botão de menu;
+    // a casca da plataforma (navegação, rótulo, fim de página), que o embed não tem, é refeita só quando existe
+    expect(app).toContain("if (!C || !ind) return;");
+    expect(app).toContain("if (caixa && nav) {");
+    expect(app).toContain("if (fim && nav) {");
+    expect(app).toContain("if (upd && quando)");
     expect(app).toContain("if (_mainEl) new MutationObserver");
   });
 });

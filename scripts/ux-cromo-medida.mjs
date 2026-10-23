@@ -73,6 +73,21 @@ export async function aguardarSessaoResolvida(page, comSessao, timeout = 60_000)
  * cromo igual em duas leituras seguidas, com 300 ms entre elas, por no máximo 15 s.
  */
 export async function aguardarHidratacao(page, prazo = 30_000) {
+  // a aplicação do Crédito (/observatorio) não é React: ela assenta quando o app.js resolve a sessão e mostra a conta da barra
+  // (#barraConta), depois de refazer a casca; esperar a hidratação do React ali só gastava o prazo inteiro em cada página
+  if (await page.evaluate(() => document.body.classList.contains("observatorio-credito"))) {
+    await page.waitForFunction(() => !document.getElementById("barraConta")?.hidden, undefined, { timeout: prazo }).catch(() => undefined);
+  } else await hidratacaoReact(page, prazo);
+  let anterior = "";
+  for (let i = 0; i < 50; i++) {
+    const atual = JSON.stringify(await page.evaluate(medirCromo));
+    if (atual === anterior) break;
+    anterior = atual;
+    await page.waitForTimeout(300);
+  }
+}
+
+async function hidratacaoReact(page, prazo) {
   await page.waitForFunction(() => {
     const alvo = document.querySelector(".bp") || document.querySelector("h1");
     return !alvo || Object.keys(alvo).some((k) => k.startsWith("__reactFiber$") || k.startsWith("__reactProps$"));
@@ -81,11 +96,4 @@ export async function aguardarHidratacao(page, prazo = 30_000) {
     .catch(() => undefined);
   // a faixa de frescor sai do servidor como "calculando" e o navegador calcula a situação com o relógio de quem lê
   await page.waitForFunction(() => !document.querySelector('[data-frescor-geral="calculando"]'), undefined, { timeout: prazo }).catch(() => undefined);
-  let anterior = "";
-  for (let i = 0; i < 50; i++) {
-    const atual = JSON.stringify(await page.evaluate(medirCromo));
-    if (atual === anterior) break;
-    anterior = atual;
-    await page.waitForTimeout(300);
-  }
 }

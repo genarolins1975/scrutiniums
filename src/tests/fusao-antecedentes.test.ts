@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Fusão de "Ciclo & Antecedentes" com "Radar de Sinais" numa única página.
@@ -58,7 +59,8 @@ describe("fusão das páginas de antecedentes", () => {
   });
 
   it("a navegação passou a ter um item no lugar de dois", () => {
-    expect(html).toMatch(/data-view="leading">Sinais antecedentes</);
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/leading-signals")).toBe("Sinais antecedentes");
     expect(html).not.toMatch(/Ciclo &amp; Antecedentes/);
     expect(html).not.toMatch(/Radar de Sinais/);
   });

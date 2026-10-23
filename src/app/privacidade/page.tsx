@@ -161,6 +161,13 @@ export default function PrivacidadePage() {
               analytics. Registros internos de auditoria guardam apenas versões mascaradas desses
               dados.
             </p>
+            <p className="mt-3 text-carvao-muted">
+              A busca soma, por dia, quantas vezes cada termo foi procurado, sem associar a busca a
+              quem a fez. Termo com e-mail, sequência de algarismos (como CPF, telefone ou CEP) ou
+              mais de uma palavra que a plataforma não conhece nunca é gravado como texto. Com conta,
+              o termo com uma única palavra desconhecida é guardado por 30 dias, visível só para a
+              administração, para que a plataforma aprenda o vocabulário que falta.
+            </p>
           </section>
 
           <section aria-labelledby="priv-resumo">

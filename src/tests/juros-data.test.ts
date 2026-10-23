@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Consistência da aba Juros por instituição: rankings ordenados, estatísticas
@@ -109,7 +110,8 @@ describe("juros: integração com a plataforma", () => {
     expect(app).toContain('juros: "/interest-rates"');
     expect(app).toContain('juros: "renderJuros"');
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    expect(html).toContain('data-view="juros"');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/interest-rates")).toBe("Juros por instituição");
     expect(html).toContain('id="view-juros"');
     const bloco = app.slice(app.indexOf("function renderJuros()"), app.indexOf("const RENDER = {"));
     expect(bloco).not.toMatch(/\bdemo\b|DEMONSTRATIVO|placeholder/i);

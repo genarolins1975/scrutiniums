@@ -33,10 +33,17 @@ export type EntradaBusca = {
 /** Capitais, estados, distribuidoras e bancos: guardados uma vez no índice, não repetidos em cada consulta. */
 export type TipoLugar = "capital" | "uf" | "distribuidora" | "banco";
 
+/** A versão aberta de um tema: título e endereço da página que qualquer pessoa abre sem conta. */
+export type VersaoAberta = { titulo: string; href: string };
+
 export type IndiceBusca = {
   versao: 1;
   observatorios: { id: ObservatorioId; nome: string }[];
-  colecoes: { id: string; observatorio: ObservatorioId; nome: string; href: string }[];
+  /**
+   * `aberta`: a página do tema que abre sem conta (APERITIVOS em rotasPublicas.ts), quando a coleção tem uma. Sem sessão, a lista
+   * de resultados a mostra numa linha sob o primeiro resultado se ele for fechado (achado A7 do diagnóstico da busca).
+   */
+  colecoes: { id: string; observatorio: ObservatorioId; nome: string; href: string; aberta?: VersaoAberta }[];
   /** Três exemplos para o campo ("conta de luz, Ideb, dívida dos estados…"). */
   exemplos: string[];
   lugares: Record<TipoLugar, string[]>;

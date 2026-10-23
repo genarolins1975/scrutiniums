@@ -3,14 +3,14 @@ import { getSessionUser } from "@/lib/session";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
 import { chaveDeTaxa, recusaAntesDoCaminho } from "@/lib/uso/coleta";
 import { cabecalhosRecusamRastreio } from "@/lib/uso/sinais";
-import { registrarBusca, termoParaContagem } from "@/lib/uso/busca";
+import { EVENTOS_BUSCA, contagemDoTermo, registrarBusca } from "@/lib/uso/busca";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Medição agregada da busca da plataforma (docs/observatorios/MEDICAO_DE_USO.md). Recebe só { termo } do campo de busca ou da
- * página /buscar e soma 1 ao contador do dia. As regras são as de /api/uso: resposta sempre 204 e sem corpo, Do Not Track e
+ * Medição agregada da busca da plataforma (docs/observatorios/MEDICAO_DE_USO.md). Recebe só { termo, evento } do campo de busca
+ * ou da página /buscar e soma 1 ao contador do dia (evento "abriu" ou "sem_resultado"). As regras são as de /api/uso: resposta sempre 204 e sem corpo, Do Not Track e
  * Global Privacy Control nunca contam, sem conta só com USO_ANONIMO_ATIVO=1; 429 só no limite de taxa.
  */
 const TAMANHO_MAXIMO = 512;
@@ -31,7 +31,10 @@ export async function POST(req: Request) {
   } catch {
     return vazio();
   }
-  const termo = termoParaContagem(corpo && typeof corpo === "object" ? (corpo as { termo?: unknown }).termo : undefined);
-  if (termo) await registrarBusca(termo, comConta);
+  const dados = corpo && typeof corpo === "object" ? (corpo as { termo?: unknown; evento?: unknown }) : {};
+  const conta = contagemDoTermo(dados.termo, comConta);
+  // evento desconhecido vale como busca aberta: o contador nunca recebe valor livre
+  const evento = EVENTOS_BUSCA.find((e) => e === dados.evento) ?? "abriu";
+  if (conta) await registrarBusca(conta.termo, comConta, new Date(), { evento });
   return vazio();
 }

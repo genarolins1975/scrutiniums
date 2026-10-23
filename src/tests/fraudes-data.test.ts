@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Testes de consistência do dado curado da aba "Fraudes financeiras e
@@ -185,7 +186,8 @@ describe("fraudes: integração com a plataforma", () => {
     expect(app).toContain('fraudes: "renderFraudes"');
     expect(app).toContain("function renderFraudes()");
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    expect(html).toContain('data-view="fraudes"');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/financial-fraud")).toBe("Golpes e fraudes");
     expect(html).toContain('id="view-fraudes"');
     const gold = readFileSync(join(process.cwd(), "pipeline/gold.py"), "utf-8");
     expect(gold).toContain("curated_dir");

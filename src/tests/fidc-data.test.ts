@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * FIDCs por lastro e classe de cota (informes CVM). O que se trava:
@@ -103,7 +104,8 @@ describe("SPA: aba FIDCs registrada em todos os mapas", () => {
     expect(app).toMatch(/\n  fidc: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.fi = {");
     expect(app).toContain('views: ["funding", "ampliado", "fidc"]');
-    expect(html).toContain('data-view="fidc">FIDCs por lastro e cota</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/fidc-receivables")).toBe("FIDCs por lastro e cota");
     expect(html).toContain('id="view-fidc"');
   });
   it("o renderizador vive no chunk emergentes, abre com placar e síntese, e o pipeline registra builder e catálogo", () => {

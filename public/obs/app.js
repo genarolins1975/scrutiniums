@@ -227,7 +227,8 @@ const fmt = {
     : v >= 1e6 ? "R$ " + fmt.n(v / 1e6, 1) + " mi"
     : "R$ " + fmt.n0(v),
   d: iso => iso ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : "–",
-  my: iso => iso ? `${iso.slice(5, 7)}/${iso.slice(0, 4)}` : "–",
+  // mês e ano por extenso abreviado ("ago/2026"), a forma da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026; antes "08/2026")
+  my: iso => iso && /^\d{4}-\d{2}/.test(iso) ? `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][+iso.slice(5, 7) - 1]}/${iso.slice(0, 4)}` : (iso || "–"),
   pp: v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2),
 };
 
@@ -236,7 +237,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.122.0";
+const APP_VERSION = "0.124.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -724,15 +725,31 @@ function conceitosLista() {
 }
 
 /* ---------- componentes transversais de transparência ---------- */
+/* Selos na forma do SeloNatureza da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026): glifo, rótulo e definição iguais aos
+   de src/components/evidencia/SeloNatureza.tsx; os que não são natureza do dado (experimental, demonstrativo, descontinuada) ficam
+   sem glifo. */
 const BADGES = {
-  observado: ["obs", "DADO OBSERVADO"], calculado: ["calc", "DADO CALCULADO"],
-  estimado: ["est", "DADO ESTIMADO"], previsao: ["prev", "PREVISÃO"], cenario: ["cen", "CENÁRIO"],
-  experimental: ["exp", "EXPERIMENTAL"], demo: ["demo", "DADO DEMONSTRATIVO"], descontinuada: ["desc", "SÉRIE DESCONTINUADA"],
+  observado: ["obs", "Observado"], calculado: ["calc", "Calculado"],
+  estimado: ["est", "Estimado"], previsao: ["prev", "Previsto"], cenario: ["cen", "Cenário"],
+  experimental: ["exp", "Experimental"], demo: ["demo", "Dado demonstrativo"], descontinuada: ["desc", "Série descontinuada"],
 };
+const NATUREZA_SELO = {
+  obs: ["OBSERVADO", "●", "Valor publicado diretamente pela fonte oficial ou primária."],
+  calc: ["CALCULADO", "◆", "Transformação determinística feita pela Scrutiniums, com fórmula publicada."],
+  est: ["ESTIMADO", "◐", "Valor obtido por procedimento estatístico, com incerteza."],
+  prev: ["PREVISTO", "◌", "Valor para período futuro, sempre com modelo, versão e dados de origem."],
+  cen: ["CENARIO", "◇", "Simulação condicional a uma hipótese declarada. Não é previsão."],
+};
+/** Um selo: classe, texto e, quando a classe é uma natureza do dado, o glifo e a definição da plataforma no title. */
+function seloHtml(cls, texto, title) {
+  const n = NATUREZA_SELO[cls];
+  const dica = title || (n ? `${texto}: ${n[2]}` : "");
+  return `<span class="seal ${cls}"${n ? ` data-natureza="${n[0]}"` : ""}${dica ? ` title="${attr(dica)}"` : ""}>${n ? `<span aria-hidden="true">${n[1]}</span><span class="sr-only">Natureza do dado: </span>` : ""}${texto}</span>`;
+}
 function badge(kind, title) {
   const b = BADGES[kind];
   if (!b) return "";
-  return `<span class="seal ${b[0]}" ${title ? `title="${attr(title)}"` : ""}>${b[1]}</span>`;
+  return seloHtml(b[0], b[1], title);
 }
 /* Renderização única do chip de selo metodológico. Cada página mantém seu vocabulário
    — "reportado" no Desenrola é deliberado, "hipótese" existe só no consignado — mas a
@@ -750,7 +767,7 @@ function costuraMunicipios(base, mun) {
 
 function seloChip(dic, s) {
   const b = dic[s];
-  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+  return b ? seloHtml(b[0], b[1]) : "";
 }
 
 function sealFor(tipo) {
@@ -775,13 +792,13 @@ function confBadge(level, motivo) {
 }
 function srcLine(meta, q) {
   if (!meta) return "";
-  return `<div class="src"><b>${meta.source}</b> · série ${meta.series_code} · ${meta.unit} · ${meta.freq} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? meta.last_collected_at.slice(0, 10) : "–"} ${qBadge(q)}<br><span title="${attr(meta.methodology)}">${meta.methodology}</span></div>`;
+  return `<div class="src"><b>${meta.source}</b> · série ${meta.series_code} · ${meta.unit} · ${meta.freq} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? fmt.d(meta.last_collected_at.slice(0, 10)) : "–"} ${qBadge(q)}<br><span title="${attr(meta.methodology)}">${meta.methodology}</span></div>`;
 }
 function chartFooter(opts) {
   // rodapé obrigatório: fonte · período · atualização · unidade · nota metodológica
   // + três ações por gráfico: link da seção, citação pronta e iframe do embed.html
   // (com crédito e link de volta). A citação lê fonte e período daqui (data-*).
-  return `<div class="chartfoot" data-fonte="${attr(opts.fonte || "")}" data-periodo="${attr(opts.periodo || "")}">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""} · <a href="javascript:void(0)" onclick="grafLink(this,0)" title="copia a URL desta seção, com os filtros atuais">copiar link</a> · <a href="javascript:void(0)" onclick="grafLink(this,2)" title="copia a citação do gráfico, com fonte, período e data de acesso">Copiar citação</a> · <a href="javascript:void(0)" onclick="grafLink(this,1)" title="copia o código para incorporar este gráfico em outra página, com crédito e link de volta">Incorporar</a></div>`;
+  return `<div class="chartfoot" data-fonte="${attr(opts.fonte || "")}" data-periodo="${attr(opts.periodo || "")}">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${dataTela(opts.atualizado) || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""} · <a href="javascript:void(0)" onclick="grafLink(this,0)" title="copia a URL desta seção, com os filtros atuais">copiar link</a> · <a href="javascript:void(0)" onclick="grafLink(this,2)" title="copia a citação do gráfico, com fonte, período e data de acesso">Copiar citação</a> · <a href="javascript:void(0)" onclick="grafLink(this,1)" title="copia o código para incorporar este gráfico em outra página, com crédito e link de volta">Incorporar</a></div>`;
 }
 /* Citação no padrão da casa: título do gráfico, observatório, fonte primária,
    período, natureza do número, URL da seção e data de acesso. Pura, testada. */
@@ -1241,7 +1258,7 @@ function renderLeading() {
   const tabs = [["geral", "Visão Geral"], ["garantias", "Garantias"], ["empresarial", "Empresarial & Judicial"], ["naobancario", "Crédito Não Bancário"], ["consumidor", "Consumidor"], ["regional", "Regional"], ["buscas", "Buscas"], ["protocolo", "Protocolo & regimes"], ["metodo", "Metodologia & Licenças"]];
   const head = pageHead({
     title: "Sinais antecedentes",
-    desc: "Sinais econômicos, patrimoniais, jurídicos e de crédito não bancário que podem aparecer antes da deterioração dos indicadores convencionais — com a distinção explícita entre coincidente, antecedente candidato, contexto e associação.",
+    desc: "Sinais econômicos, patrimoniais, jurídicos e de crédito não bancário que podem aparecer antes da deterioração dos indicadores convencionais, com a distinção explícita entre coincidente, antecedente candidato, contexto e associação.",
     fontes: "BCB (SGS, rdrweb), CVM (FIDC), CNJ/DataJud",
   });
   const nav2 = `<div class="controls"><span class="seg">${tabs.map(([k, l]) => `<button class="${t === k ? "active" : ""}" onclick="leadSet('tab','${k}')">${l}</button>`).join("")}</span></div>`;
@@ -1267,9 +1284,9 @@ function renderLeading() {
       const pts = s.serie.map(x => ({ x: `${x.p.slice(0, 4)}-${x.p.slice(4)}`, y: x.z }));
       return `<div class="card">
         <h4>${s.nome}</h4>
-        <div class="big ${s.z_atual > 1 ? "up" : ""}" style="font-size:24px">${s.z_atual >= 0 ? "+" : ""}${fmt.n(s.z_atual, 2)}σ</div>
+        <div class="big ${s.z_atual > 1 ? "up" : ""}" style="font-size:var(--tipo-numero-m)">${s.z_atual >= 0 ? "+" : ""}${fmt.n(s.z_atual, 2)}σ</div>
         <div class="src" style="margin:-2px 0 4px">${zPlano(s.z_atual)}</div>
-        <div class="delta ${s.tendencia === "subindo" ? "up" : s.tendencia === "caindo" ? "down good" : "neutral"}"><span title="${TIT_TEND}">${s.tendencia}</span> · <span title="variação do z-score em 3 meses">Δ3m ${fmt.pp(s.delta_3m)}σ</span> · <span title="${TIT_COB}">${s.cobertura}</span> · <span title="${TIT_CONF}">confiança ${s.confianca}</span></div>
+        <div class="delta ${s.tendencia === "subindo" ? "up" : s.tendencia === "caindo" ? "down" : "neutral"}"><span title="${TIT_TEND}">${s.tendencia}</span> · <span title="variação do z-score em 3 meses">Δ3m ${fmt.pp(s.delta_3m)}σ</span> · <span title="${TIT_COB}">${s.cobertura}</span> · <span title="${TIT_CONF}">confiança ${s.confianca}</span></div>
         ${lineChart({ series: [{ pts, color: "#1d4e89", label: "z-score" }], hlines: [{ y: 0, color: "#aaa", label: "média histórica" }], h: 120, unit: "σ", fonte: "componentes abaixo", status: "calculado", dec: 1, noTable: true })}
         <div class="src">componentes (distância da própria média): ${Object.entries(s.contribuicoes).map(([c, z]) => `<span title="${attr(sigNome(c))}: ${z >= 0 ? "+" : ""}${fmt.n(z, 1)} desvio-padrão vs. a média histórica desta série">${sigNome(c)} ${z >= 0 ? "+" : ""}${fmt.n(z, 1)}σ</span>`).join(" · ")}</div>
       </div>`;
@@ -1323,7 +1340,7 @@ function renderLeading() {
   } else if (t === "regional") {
     const rrow = r => `<tr class="clickable" onclick="nav('rj')"><td><b>${r.uf}</b> <span class="src">${r.tribunal}</span></td>
       <td style="text-align:right">${fmt.n0(r.rj_mes)}</td>
-      <td style="text-align:right" class="${r.rj_yoy_pct > 10 ? "up" : r.rj_yoy_pct < -10 ? "down good" : "neutral"}">${fmt.pp(r.rj_yoy_pct)}%</td>
+      <td style="text-align:right" class="${r.rj_yoy_pct > 10 ? "up" : r.rj_yoy_pct < -10 ? "down" : "neutral"}">${fmt.pp(r.rj_yoy_pct)}%</td>
       <td>${r.tendencia}</td></tr>`;
     body = sechead("Fragilidade regional — recuperações judiciais por UF", L.regional.nota) +
       `<div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">RJ/mês (últ.)</th><th style="text-align:right">Var. 12m</th><th>Tendência</th></tr></thead>
@@ -1358,9 +1375,9 @@ function renderLeading() {
       <div class="src" style="margin-top:8px">Sem scraping proibido; sem dados pessoais; ausência ≠ zero; versão metodológica ${L.versao_metodologica}. Auditoria completa: docs/AUDITORIA_SINAIS.md.</div></div>`;
   }
   const leadAbertura = abertura({
-    placar: Object.values(L.subindices).map(sx => ({ l: sx.nome, v: sx.z_atual != null ? `${sx.z_atual >= 0 ? "+" : ""}${fmt.n(sx.z_atual, 2)}σ` : null, sub: `${sx.tendencia} · confiança ${sx.confianca} · ${sx.cobertura}` })),
+    natureza: "calculado", placar: Object.values(L.subindices).map(sx => ({ l: sx.nome, v: sx.z_atual != null ? `${sx.z_atual >= 0 ? "+" : ""}${fmt.n(sx.z_atual, 2)}σ` : null, sub: `${sx.tendencia} · confiança ${sx.confianca} · ${sx.cobertura}` })),
     sintese: [L.sintese && L.sintese.texto, L.sintese && L.sintese.cobertura ? `Cobertura: ${L.sintese.cobertura}.` : null],
-    ref: `z-score contra a média histórica de cada série · ${(L.gerado_em || "").slice(0, 10)} · confiança ${L.sintese ? L.sintese.confianca : "–"}`,
+    ref: `z-score contra a média histórica de cada série · ${dataTela((L.gerado_em || "").slice(0, 10))} · confiança ${L.sintese ? L.sintese.confianca : "–"}`,
   });
   el.innerHTML = head + leadAbertura + principio + nav2 + body;
 }
@@ -1417,7 +1434,7 @@ function renderTrends() {
   const head = pageHead({
     title: "Buscas no Google",
     seals: `${badge("observado", "séries do Google Trends, exportação manual da interface oficial")} ${badge("calculado", "z-scores, sazonalidade e defasagens calculados pelo Observatório; variações e painel calculados na exportação")} ${selo}`,
-    desc: "O que os brasileiros buscam no Google sobre dívida, crédito, emprego e financiamento — 21 termos em 5 famílias, jan/2011–jun/2026.",
+    desc: "O que os brasileiros buscam no Google sobre dívida, crédito, emprego e financiamento: 21 termos em 5 famílias, de jan/2011 a jun/2026.",
     fontes: "Google Trends (exportação manual autorizada, 29/07/2026) · BCB/SGS 21082 (alvo das defasagens)",
     actions: `<button class="btn ghost small" onclick="trCSV()">baixar CSV</button>`,
   });
@@ -1610,6 +1627,7 @@ function renderSobre() {
   el.innerHTML = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Sobre o Observatório</h2>
     </div>
   </div>
@@ -1651,7 +1669,7 @@ function renderJudicial() {
     title: "Clientes contra bancos na Justiça",
     vintage: (J.coletado_em || "").slice(0, 7),
     seals: `${badge("observado", "metadados processuais do CNJ/DataJud e ranking publicado pelo TST")} ${badge("calculado", "agregações, casos únicos e normalização por escala")}`,
-    desc: "Litigiosidade de temas bancários no Judiciário e os maiores litigantes nominais — em duas camadas que não se misturam.",
+    desc: "Litigiosidade de temas bancários no Judiciário e os maiores litigantes nominais, em duas camadas que não se misturam.",
     fontes: "CNJ/DataJud (API pública) · TST (Ranking das Partes) · BCB/IF.data (escala)",
     actions: `<button class="btn ghost small" onclick="judCSV()">baixar CSV</button>`,
   });
@@ -1860,7 +1878,7 @@ function renderPix() {
   const head = pageHead({
     title: "Pix e pagamentos", vintage: X.mes,
     seals: `${badge("observado", "BCB: Pix_DadosAbertos, MPV, SPI")} ${badge("calculado", "valores reais (IPCA), base 100, participações e médias móveis calculados")}`,
-    desc: "Como o Pix evoluiu, quem usa, para quê, onde — e como se compara a cartões, TED, boletos e os demais instrumentos.",
+    desc: "Como o Pix evoluiu, quem usa, para quê, onde, e como se compara a cartões, TED, boletos e os demais instrumentos.",
     fontes: "BCB (Pix, Meios de Pagamento, SPI, EPAE) · IBGE (população, IPCA)",
     actions: `<button class="btn ghost small" onclick="pxCSV()">baixar CSV</button>`,
   });
@@ -2078,10 +2096,10 @@ function renderPix() {
         <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
       <div class="card"><h4>${sel.setor}</h4>
         <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
-          <div><div class="src">recebe/mês</div><div class="big" style="font-size:19px">${fmt.money(sel.v)}</div></div>
-          <div><div class="src">participação</div><div class="big" style="font-size:19px">${fmt.n(sel.part, 1)}%</div></div>
-          <div><div class="src">tíquete</div><div class="big" style="font-size:19px">R$ ${fmt.n(sel.t, 0)}</div></div>
-          <div><div class="src">crescimento 12m</div><div class="big" style="font-size:19px">${sel.yoy != null ? fmt.pp(sel.yoy) + "%" : "n.d."}</div></div>
+          <div><div class="src">recebe/mês</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(sel.v)}</div></div>
+          <div><div class="src">participação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sel.part, 1)}%</div></div>
+          <div><div class="src">tíquete</div><div class="big" style="font-size:var(--tipo-numero-p)">R$ ${fmt.n(sel.t, 0)}</div></div>
+          <div><div class="src">crescimento 12m</div><div class="big" style="font-size:var(--tipo-numero-p)">${sel.yoy != null ? fmt.pp(sel.yoy) + "%" : "n.d."}</div></div>
         </div>
         <h5 style="margin:10px 0 4px">De quem recebe</h5>
         ${Object.entries(mrow).sort((a, b) => b[1] - a[1]).map(([n2, v2]) => panBar(NATREL[n2] || n2, v2, Math.max(...Object.values(mrow)), vv => fmt.money(vv))).join("")}
@@ -2137,13 +2155,13 @@ function renderPix() {
         if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
         const tip = encodeURIComponent(`<div class="tt-date">${pg} → ${rc}</div>
           <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${fmt.n(v2, v2 < 1 ? 2 : 1)} bi</span></div>`);
-        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:12px;padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
+        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
       };
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · passe o mouse para o par completo</div>
-        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:12px"><thead>
-          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:12px;padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:12px" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:var(--tipo-rotulo)"><thead>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:var(--tipo-rotulo);padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo)" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
   }
@@ -2171,12 +2189,12 @@ function renderPix() {
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.pct_devolucao })), label: "% devolvido", color: "var(--pix)" }], h: 160, unit: "% do valor contestado devolvido", aria: "taxa de devolução do MED" })}</div>
     <div class="card"><h4>Último mês (${md0.p || "–"})</h4>
       <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
-        <div><div class="src">Pix contestados</div><div class="big" style="font-size:20px">${fmt.n0(md0.contestados_q)}</div></div>
-        <div><div class="src">contestações aceitas</div><div class="big" style="font-size:20px">${fmt.n0(md0.aceitas_q)}</div></div>
-        <div><div class="src">valor contestado (aceitas)</div><div class="big" style="font-size:20px">${fmt.money(md0.valor_contestado)}</div></div>
-        <div><div class="src">% devolvido</div><div class="big" style="font-size:20px">${fmt.n(md0.pct_devolucao, 1)}%</div></div>
-        <div><div class="src">usuários com marcação de fraude</div><div class="big" style="font-size:20px">${fmt.n0(md0.usuarios_marcados)}</div></div>
-        <div><div class="src">chaves com marcação</div><div class="big" style="font-size:20px">${fmt.n0(md0.chaves_marcadas)}</div></div>
+        <div><div class="src">Pix contestados</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.contestados_q)}</div></div>
+        <div><div class="src">contestações aceitas</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.aceitas_q)}</div></div>
+        <div><div class="src">valor contestado (aceitas)</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(md0.valor_contestado)}</div></div>
+        <div><div class="src">% devolvido</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(md0.pct_devolucao, 1)}%</div></div>
+        <div><div class="src">usuários com marcação de fraude</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.usuarios_marcados)}</div></div>
+        <div><div class="src">chaves com marcação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.chaves_marcadas)}</div></div>
       </div>
       ${entenda("pxmed", [["Cadeia de conceitos", "transação CONTESTADA → contestação ACEITA → DEVOLUÇÃO (integral ou parcial). 'Marcação de fraude' é um registro no DICT, não sentença."],
         ["Por que a devolução parcial", "o MED só alcança o saldo remanescente na conta do recebedor — daí o % devolvido baixo."],
@@ -2310,7 +2328,7 @@ function renderPanorama() {
   const head = pageHead({
     title: "Quem toma crédito e onde",
     seals: `${badge("observado", "SCR.data v2 — agregados públicos do BCB")} ${badge("calculado", "taxas, crescimento, per capita, z-scores e síntese calculados com metodologia declarada")}`,
-    desc: `Onde está o crédito, quem toma, em quais produtos e com qual qualidade — 27 UFs × produto × renda × ocupação, ${P.datas.length} datas-base.`,
+    desc: `Onde está o crédito, quem toma, em quais produtos e com qual qualidade: 27 UFs, por produto, renda e ocupação, em ${P.datas.length} datas-base.`,
     fontes: `BCB SCR.data v2 (data-base ${P.data_base}) · ${P.populacao_fonte} · malha IBGE`,
     actions: `<button class="btn ghost small" onclick="panCSV()">baixar CSV</button>`,
   });
@@ -2320,7 +2338,7 @@ function renderPanorama() {
     <div class="card kpi"><h4>Crescimento nominal</h4><div class="big" style="color:var(--accent-ink)">${fmt.pp(k.saldo.cresc12)}%<small> 12m</small></div><div class="src">3m ${fmt.pp(k.saldo.cresc3)}% · 6m ${fmt.pp(k.saldo.cresc6)}% — estoque entre datas-base (não é concessão)</div></div>
     <div class="card kpi"><h4>Inadimplência (arrastada) ${inadChip("scr")}</h4><div class="big" style="color:var(--c-neg)">${fmt.n(k.inad.v, 1)}%</div><div class="src">${fmt.pp(k.inad.d12m_pp)} p.p. em 12m · <span title="${attr(k.inad.conceito)}">conceito ≠ SGS†</span> · atraso 15–90d: ${fmt.n(k.atraso15_90.v, 2)}%</div></div>
     <div class="card kpi"><h4>Saldo médio por operação</h4><div class="big">R$ ${fmt.n0(k.saldo_medio_op.v)}</div><div class="src" title="${attr(k.saldo_medio_op.conceito)}">${k.saldo_medio_op.parcial ? "cálculo parcial (células suprimidas fora)†" : ""} · nº de clientes não é público</div></div>
-    <div class="card kpi"><h4>Maior deterioração</h4><div class="big" style="font-size:16px;font-weight:560;line-height:1.35">${k.grupo_deterioracao.v || "–"}</div><div class="src">inadimplência arrastada · regra publicada em "O que mudou?"</div></div>
+    <div class="card kpi"><h4>Maior deterioração</h4><div class="big" style="font-size:var(--tipo-corpo);font-weight:560;line-height:1.35">${k.grupo_deterioracao.v || "–"}</div><div class="src">inadimplência arrastada · regra publicada em "O que mudou?"</div></div>
   </div>`;
   const sintese = `<p class="pan-sintese">${P.sintese}</p>
     <div class="src">Síntese determinística (regras publicadas na metodologia) · ${badge("calculado")} · data-base ${P.data_base} · ativo problemático nacional: ${fmt.n(k.ap.v, 1)}%</div>`;
@@ -2364,10 +2382,10 @@ function renderPanorama() {
     const dchip = (v, inverse) => v == null ? "" : `<span class="deltachip ${v > 0 ? (inverse ? "down" : "up") : (v < 0 ? (inverse ? "up" : "down") : "")}">${fmt.pp(v)} ${String(v).includes("%") ? "" : "p.p. vs BR"}</span>`;
     painel = `<div class="card ufpanel"><h4 style="display:flex;justify-content:space-between;align-items:baseline">${m.nome} <span class="src">${m.regiao} · ${fmt.n(m.part_br, 1)}% do crédito nacional · <a href="/observatorio/states/${m.uf}" onclick="ufNav('${m.uf}');return false">página do estado →</a></span></h4>
       <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));margin-top:8px">
-        <div><div class="src">saldo</div><div class="big" style="font-size:20px">${fmt.money(m.saldo)}</div></div>
-        <div><div class="src">cresc. 12m</div><div class="big" style="font-size:20px">${fmt.pp(m.cresc12)}%</div></div>
-        <div><div class="src">inadimplência</div><div class="big" style="font-size:20px;color:var(--c-neg)">${fmt.n(m.inad, 1)}%</div>${dchip(m.inad != null && brInad != null ? +(m.inad - brInad).toFixed(2) : null)}</div>
-        <div><div class="src">per capita</div><div class="big" style="font-size:20px">R$ ${fmt.n0(m.per_capita)}</div></div>
+        <div><div class="src">saldo</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(m.saldo)}</div></div>
+        <div><div class="src">cresc. 12m</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.pp(m.cresc12)}%</div></div>
+        <div><div class="src">inadimplência</div><div class="big" style="font-size:var(--tipo-numero-p);color:var(--c-neg)">${fmt.n(m.inad, 1)}%</div>${dchip(m.inad != null && brInad != null ? +(m.inad - brInad).toFixed(2) : null)}</div>
+        <div><div class="src">per capita</div><div class="big" style="font-size:var(--tipo-numero-p)">R$ ${fmt.n0(m.per_capita)}</div></div>
       </div>
       <div class="src" style="margin-top:8px">z-score da inadimplência: ${fmt.pp(m.z_inad)} · Δ 12m: ${fmt.pp(m.d_inad_12m)} p.p. · ranking de saldo: ${rankOf(m.uf) || "–"}º</div>
       ${D && D.serie_inad ? `
@@ -2454,13 +2472,13 @@ function renderPanorama() {
   const alertas = sechead("O que mudou?", "regras: alta em 2 datas-base consecutivas + Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.") + `
     <div class="alertgrid">
       ${P.alertas.slice(0, 9).map(a => `<div class="alertcard"><h5>${a.grupo}</h5>
-        <div class="num" style="color:var(--c-neg)">${fmt.n(a.atual, 1)}% <span class="src" style="font-size:12px">era ${fmt.n(a.anterior, 1)}% · ${fmt.pp(a.delta_pp)} p.p.</span></div>
+        <div class="num" style="color:var(--c-neg)">${fmt.n(a.atual, 1)}% <span class="src" style="font-size:var(--tipo-rotulo)">era ${fmt.n(a.anterior, 1)}% · ${fmt.pp(a.delta_pp)} p.p.</span></div>
         <div class="src">${a.indicador} · ${a.periodo}${a.vs_brasil != null ? ` · ${fmt.pp(a.vs_brasil)} p.p. vs BR` : ""}</div>
         <div class="src" style="margin-top:4px">${a.regra}</div>
         ${a.nota ? `<div class="src" style="margin-top:4px" title="${attr(a.nota)}"><i>${a.nota}</i></div>` : ""}
-        ${a.link && a.link.uf ? `<a href="javascript:void(0)" onclick="panSelUF('${a.link.uf}');window.scrollTo({top:0,behavior:'smooth'})" style="font-size:12px">investigar no mapa →</a>` : ""}</div>`).join("")}
+        ${a.link && a.link.uf ? `<a href="javascript:void(0)" onclick="panSelUF('${a.link.uf}');window.scrollTo({top:0,behavior:'smooth'})" style="font-size:var(--tipo-rotulo)">investigar no mapa →</a>` : ""}</div>`).join("")}
       ${P.melhoras.map(m => `<div class="alertcard melhora"><h5>${m.nome} (${m.uf})</h5>
-        <div class="num" style="color:var(--c-pos)">${fmt.pp(m.d_inad_12m)} p.p. <span class="src" style="font-size:12px">em 12m</span></div>
+        <div class="num" style="color:var(--c-pos)">${fmt.pp(m.d_inad_12m)} p.p. <span class="src" style="font-size:var(--tipo-rotulo)">em 12m</span></div>
         <div class="src">menor deterioração da inadimplência entre as UFs · nível atual ${fmt.n(m.inad, 1)}%</div></div>`).join("")}
     </div>`;
 
@@ -2494,7 +2512,7 @@ function panMatriz(P) {
   const allInad = rendas.flatMap(r => prods.map(p => (P.matriz_renda_produto[r][p] || {}).inad)).filter(v => v != null);
   const mx = Math.max(...allInad);
   let h = `<div class="heatwrap"><div class="heatgrid" style="grid-template-columns:minmax(150px,210px) repeat(${prods.length},minmax(30px,1fr))">`;
-  h += `<div class="hcell hhead hlab"></div>` + prods.map(p => `<div class="hcell hhead" style="height:auto;line-height:1.2;padding:2px 2px 6px;white-space:normal;font-size:12px">${p.replace("Cartão — ", "Cartão ")}</div>`).join("");
+  h += `<div class="hcell hhead hlab"></div>` + prods.map(p => `<div class="hcell hhead" style="height:auto;line-height:1.2;padding:2px 2px 6px;white-space:normal;font-size:var(--tipo-rotulo)">${p.replace("Cartão — ", "Cartão ")}</div>`).join("");
   rendas.forEach(r => {
     h += `<div class="hcell hlab" title="${attr(r)}">${r.replace(" salários mínimos", " SM").replace(" salário mínimo", " SM")}</div>`;
     h += prods.map(p => {
@@ -2618,22 +2636,21 @@ function renderMapa() {
   const el = document.getElementById("view-mapa");
   const meta = metaDaPagina();
   const vs = meta.vintages || {};
-  const noMenu = Array.from(document.querySelectorAll("#tabs button[data-view]")).map(b => b.dataset.view);
+  // as páginas de cada grupo do Crédito, na ordem da jornada (GRUPOS_CREDITO, src/lib/credito/navegacao.ts, no índice que o
+  // servidor embute): todas as da aplicação, inclusive as que a navegação mostra na coleção dona (Famílias, Empresas...)
+  const grupos = gruposDoMenu();
+  const noMenu = grupos.flatMap(g => g.vistas);
   const abas = noMenu.filter(v => v !== "mapa");
+  el.dataset.paginas = String(abas.length);
   const head = pageHead({
-    title: "Mapa do Observatório",
+    title: "Início do painel",
     desc: "O crédito brasileiro do funding à cobrança, em sete passos: o que cada página responde, com que fonte e até quando. Comece por aqui e siga pela pergunta, pela trilha do seu perfil ou pelo ciclo.",
     fontes: `${Object.keys(vs).length} famílias de fontes oficiais e abertas · ${abas.length} páginas temáticas · 27 estados · 5.570 municípios · uma ficha por instituição`,
   });
   const ciclo = secWrap("mp-ciclo", `${sechead("O ciclo do crédito em sete passos", "cada passo liga às páginas que o respondem")}
   <div class="mapa-fluxo">${MAPA_CICLO.map(c => `<div class="mapa-no"><div class="mapa-num">${c.n}</div><h4>${c.titulo}</h4><p class="src">${c.pergunta}</p><ul>${c.views.map(v => `<li>${mapaLink(v)}</li>`).join("")}</ul></div>`).join("")}</div>
   <p class="src">O dinheiro entra pelo funding (1), passa pelas instituições (2), vira produto com preço (3), chega a famílias, empresas e territórios (4), o ciclo mede o que cresce, o que atrasa e o que vem (5), o atraso vira renegociação, cobrança ou recuperação (6), e tudo acontece sob regras, trilhos de pagamento e vigilância (7). As páginas de Referência explicam de onde vem cada número.</p>`);
-  const porGrupo = [];
-  document.querySelectorAll("#tabs .navgroup").forEach(g => {
-    const rot = g.querySelector(".navlabel").textContent;
-    const vistas = Array.from(g.querySelectorAll("button[data-view]")).map(b => b.dataset.view).filter(v => v !== "mapa" && GUIA[v]);
-    if (vistas.length) porGrupo.push({ rot, vistas });
-  });
+  const porGrupo = grupos.map(g => ({ rot: g.rotulo, vistas: g.vistas.filter(v => v !== "mapa" && GUIA[v]) })).filter(g => g.vistas.length);
   const perguntas = secWrap("mp-perguntas", `${sechead("Por pergunta", "a pergunta que cada página responde, na ordem do menu")}
   <div class="grid g2">${porGrupo.map(g => `<div class="card"><h4>${g.rot}</h4><dl class="mapa-perg">${g.vistas.map(v => `<div><dt>${GUIA[v].q}</dt><dd>${mapaLink(v)}</dd></div>`).join("")}</dl></div>`).join("")}</div>`);
   const trilhas = secWrap("mp-trilhas", `${sechead("Trilhas de entrada", "três perfis, cinco páginas cada")}
@@ -2653,7 +2670,7 @@ function renderMapa() {
   </div>
   ${verbetesCarteiraIF(meta, true)}`);
   const linhas = Object.entries(vs).filter(([k, v]) => v).sort((a, b) => (b[1] || "").localeCompare(a[1] || ""));
-  const fontes = secWrap("mp-fontes", `${sechead("Fontes e atualidade", meta.gerado_em ? `pipeline processado em ${meta.gerado_em.slice(0, 16).replace("T", " ")} UTC` : "")}
+  const fontes = secWrap("mp-fontes", `${sechead("Fontes e atualidade", meta.gerado_em ? `pipeline processado em ${dataHoraBrasilia(meta.gerado_em)}` : "")}
   <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Família de fonte</th><th>Dados até</th><th>Onde aparece</th></tr></thead>
     <tbody>${linhas.map(([k, v]) => `<tr><td>${MAPA_FONTES[k] || k}</td><td>${v}</td><td class="src">${Object.entries(VIEW_VINTAGE).filter(([vw, f]) => f === k && noMenu.includes(vw)).map(([vw]) => mapaLink(vw)).join(" · ") || "–"}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">Todas as fontes são abertas e oficiais (BCB, CVM, CNJ, IBGE, MTE, BNDES, PGFN, Ipea), com atribuição. A lista completa de coletores, o estado de cada um e a linhagem de cada arquivo estão em ${mapaLink("method")}. Correções e sugestões: ${mapaLink("sugestoes")}.</p></div>`);
@@ -2965,39 +2982,6 @@ function guiaPagina(view) {
 }
 
 
-/* ---------- navegação: acordeão + busca ----------
-   Com 24 páginas, a lista inteira aberta vira ruído. Cada grupo agora colapsa e
-   só o grupo da página atual fica aberto; um campo de busca filtra por nome.
-   Nenhuma página foi removida e nenhuma rota mudou. */
-function navGrupoAtivo() {
-  const b = document.querySelector(`#tabs button[data-view="${currentView()}"]`);
-  return b ? b.closest(".navgroup") : null;
-}
-function navSincroniza() {
-  const ativo = navGrupoAtivo();
-  document.querySelectorAll("#tabs .navgroup").forEach(g => {
-    g.classList.toggle("aberto", g === ativo);
-  });
-}
-window.navToggleGrupo = ev => {
-  const g = ev.currentTarget.closest(".navgroup");
-  g.classList.toggle("aberto");
-  ev.stopPropagation();
-};
-function navPrepara() {
-  const tabs = document.getElementById("tabs");
-  if (!tabs || tabs.dataset.pronto) return;
-  tabs.dataset.pronto = "1";
-  tabs.querySelectorAll(".navgroup .navlabel").forEach(lb => {
-    lb.setAttribute("role", "button");
-    lb.setAttribute("tabindex", "0");
-    lb.addEventListener("click", window.navToggleGrupo);
-    lb.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); window.navToggleGrupo(e); } });
-  });
-  navSincroniza();
-}
-
-
 /* ---------- exportação universal ----------
    Toda página exporta o que está na tela, sem que cada uma precise implementar
    o seu próprio botão. Funciona porque cada gráfico já publica a alternativa
@@ -3122,34 +3106,34 @@ window.exportarPagina = () => {
   URL.revokeObjectURL(a.href);
 };
 
-/* Abas do Crédito que pertencem a outro observatório (src/lib/observatorios/registro.ts,
-   DESTINO_ABAS_CREDITO): o cabeçalho diz a que observatório a página pertence e leva à
-   entrada dele. As demais abas são do Observatório da Economia. */
-const VIEW_OBSERVATORIO = {
-  consignado: "familias", moradia: "familias", emprego: "familias", desenrola: "familias", cobranca: "familias",
-  conduta: "familias", judicial: "familias", bets: "familias", fraudes: "familias",
-  subnacional: "contas-publicas", pgfn: "contas-publicas",
-};
-const OBSERVATORIOS_DESTINO = {
-  familias: ["Observatório das Famílias", "/observatorios/familias"],
-  "contas-publicas": ["Observatório das Contas Públicas", "/observatorios/contas-publicas"],
-};
-function linhaObservatorio(view) {
-  const id = VIEW_OBSERVATORIO[view];
-  if (!id) return "";
-  const [nome, href] = OBSERVATORIOS_DESTINO[id];
-  return `<p class="ph-obs">Este painel faz parte do <a href="${href}">${nome}</a>; quem o mantém é a coleção Crédito e sistema financeiro.</p>`;
+/* Rótulo de contexto acima do título ("Observatório X · Coleção Y · Página Z"), no lugar da frase "Este painel faz parte
+   do ...": o mesmo RotuloContexto das páginas da plataforma, desenhado por casca.min.js (src/lib/observatorios/cascaPura.ts)
+   com o índice que o servidor embute no HTML (Iniciativa 2 do parecer de UX de 23/10/2026). Fora da aplicação (embed),
+   sem índice, não desenha nada. */
+function rotuloContexto() {
+  const ind = indiceCasca();
+  // dentro de .casca: as classes do rótulo são as da plataforma (public/obs/casca.css)
+  const h = ind && window.CascaCredito ? window.CascaCredito.htmlRotulo(ind, caminhoDaVista(), "text-mineral") : "";
+  return h ? `<div class="casca">${h}</div>` : "";
+}
+/* Linha de recorte da abertura (Iniciativa 2 do parecer de UX de 23/10/2026): "Dados até mmm/aaaa · fontes" à vista, em corpo de
+   meta; a hora do processamento sai da abertura e fica em "Fontes, datas e siglas", recolhido, no horário de Brasília. */
+function linhaRecorte(vint, fontes, geradoEm) {
+  const proc = dataHoraBrasilia(geradoEm);
+  const quando = vint ? `Dados até <b>${dataTela(vint)}</b>` : proc ? `Atualizado em <b>${dataTela((geradoEm || "").slice(0, 10))}</b>` : "";
+  return `<div class="ph-meta">${quando}${fontes ? `${quando ? " · " : ""}fontes: ${fontes}` : ""}${quando || fontes ? " · " : ""}<a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
+      ${proc ? `<details class="ph-fontes"><summary>Fontes, datas e siglas</summary><p>Dados processados em ${proc}.${vint ? ` Data-base mais recente: ${dataTela(vint)}.` : ""}${fontes ? ` Fontes: ${fontes}.` : ""}</p></details>` : ""}`;
 }
 function pageHead(o) {
   ULTIMO_HEAD = o || {};
   const meta = metaDaPagina();
-  const upd = meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–";
+  const vint = o.vintage || pageVintage(currentView());
   return `<div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${o.title}${o.seals ? " " + o.seals : ""}</h2>
-      ${linhaObservatorio(currentView())}
       ${o.desc ? `<p class="viewdesc">${o.desc}</p>` : ""}
-      <div class="ph-meta">${(o.vintage || pageVintage(currentView())) ? `Dados até <b>${o.vintage || pageVintage(currentView())}</b> · processado em ${upd}` : `Última atualização: ${upd}`}${o.fontes ? " · fontes: " + o.fontes : ""} · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
+      ${linhaRecorte(vint, o.fontes, meta.gerado_em)}
     </div>
     ${phActions(`<button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — filtros incluídos'))">copiar URL</button>
       ${o.actions || ""}
@@ -3293,7 +3277,7 @@ function fontesEmPane(view) {
 function fontePane(view) {
   const ks = fontesEmPane(view);
   if (!ks.length) return "";
-  const gerado = ((metaDaPagina()).gerado_em || "").slice(0, 10);
+  const gerado = dataTela(((metaDaPagina()).gerado_em || "").slice(0, 10));
   return `<div class="note warn pane" role="status"><b>Fonte em pane:</b> a coleta de <b>${ks.join(", ")}</b> falhou na execução de ${gerado}. Os números desta aba são os da última coleta íntegra (data-base declarada em cada bloco); a recoleta é diária. <a href="/observatorio/methodology" onclick="nav('method');return false">estado das fontes</a></div>`;
 }
 const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
@@ -3310,20 +3294,36 @@ window.ponteIr = (view, anchor) => {
 const ponte = (texto, view, anchor, nota) => `<div class="note" style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">
   <a href="javascript:void(0)" onclick="ponteIr('${view}'${anchor ? `,'${anchor}'` : ""})"><b>${texto} →</b></a>
   ${nota ? `<span class="src">${nota}</span>` : ""}</div>`;
-function placar(itens) {
-  return `<div class="kpirow">${itens.filter(i => i && i.v != null).map(i => `<div class="card kpi${i.href ? " clickable" : ""}"${i.href ? ` onclick="var n=document.querySelector('${i.href}'); n && n.scrollIntoView({behavior:'smooth'})"` : ""}><h4>${i.l}</h4><div class="big" style="font-size:22px">${i.v}</div><div class="src">${i.sub || ""}</div></div>`).join("")}</div>`;
+/* Faixa de números na forma do NumeroIndicador da plataforma (src/components/painel/NumeroIndicador.tsx; Iniciativa 2 do parecer
+   de UX de 23/10/2026): rótulo, valor em serifa com algarismos tabulares e a linha "recorte · período" com o selo de natureza em
+   texto. A natureza vem de cada item (`nat`) ou do padrão da abertura; `nat: null` (uma data, não uma medida) fica sem selo. */
+function seloTexto(nat) {
+  const b = BADGES[nat];
+  const n = b && NATUREZA_SELO[b[0]];
+  return n ? `<span class="seal ${b[0]}" data-natureza="${n[0]}" title="${attr(`${b[1]}: ${n[2]}`)}"><span aria-hidden="true">${n[1]}</span><span class="sr-only">Natureza do dado: </span>${b[1]}</span>` : "";
+}
+function placar(itens, natPadrao) {
+  return `<div class="kpirow">${itens.filter(i => i && i.v != null).map(i => {
+    const nat = i.nat !== undefined ? i.nat : natPadrao;
+    const n = nat && BADGES[nat] && NATUREZA_SELO[BADGES[nat][0]];
+    const linha = (i.sub ? `<span>${i.sub}</span>` : "") + (n ? seloTexto(nat) : "");
+    return `<div class="card kpi${i.href ? " clickable" : ""}" role="group" aria-label="${attr(i.l)}" data-numero-indicador=""${n ? ` data-natureza="${n[0]}"` : ""}${i.href ? ` onclick="var n=document.querySelector('${i.href}'); n && n.scrollIntoView({behavior:'smooth'})"` : ""}><h4>${i.l}</h4><div class="big">${i.v}</div>${linha ? `<div class="kpi-linha">${linha}</div>` : ""}</div>`;
+  }).join("")}</div>`;
 }
 
 /* ---------- padrão de abertura (avaliação de 06/09/2026, §3.3 e §4.2) ----------
    Toda aba temática abre na mesma ordem: pergunta (pageHead), quatro números datados
    (placar), síntese determinística de até três frases, e só então gráfico, método e
    ressalvas. A síntese é montada no navegador a partir dos números do gold com regras
-   fixas; nunca é texto livre. */
+   fixas; nunca é texto livre. A natureza padrão dos números (`natureza`) vale para os
+   itens sem `nat`: série publicada pela fonte é "observado"; soma, razão, mediana e
+   contagem feitas pelo pipeline são "calculado"; projeção é "previsao"; simulação é
+   "cenario"; aproximação declarada é "estimado". */
 function abertura(o) {
   const itens = (o.placar || []).filter(i => i && i.v != null);
   const frases = (o.sintese || []).filter(Boolean);
   if (!itens.length && !frases.length) return "";
-  return `<div class="abertura">${itens.length ? placar(itens) : ""}
+  return `<div class="abertura">${itens.length ? placar(itens, o.natureza) : ""}
     ${frases.length ? `<p class="pan-sintese">${frases.join(" ")}</p>` : ""}
     ${o.ref ? `<div class="src">Síntese determinística · ${o.ref}</div>` : ""}</div>`;
 }
@@ -3539,9 +3539,10 @@ function renderOverview() {
   const pagehead = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Visão geral</h2>
       <p class="viewdesc">Panorama do mercado de crédito no Brasil com dados públicos rastreáveis — monitoramento, diagnóstico e previsão.</p>
-      <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>${filterBar("overview")}${guiaPagina("overview")}
+      ${linhaRecorte(pageVintage("overview"), "BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil", meta.gerado_em)}${filterBar("overview")}${guiaPagina("overview")}
     </div>
     ${phActions(`<button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — filtros incluídos'))">copiar URL</button>
@@ -3560,7 +3561,7 @@ function renderOverview() {
   const classifRegra = "regra declarada: percentil histórico do IBCC ≤25 = restritivas · ≥75 = expansionistas · demais = neutras";
 
   /* ---------- fatores ± (das mudanças) ---------- */
-  const fat = (r, up) => `<span class="fat"><b class="${up ? "up" : "down good"}">${up ? "▲" : "▼"}</b><span><b>${r.indicador}</b> ${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""} <a href="/observatorio${ROUTES[r.area] || "/overview"}" onclick="nav('${r.area}');return false" class="src" style="display:inline">analisar →</a></span></span>`;
+  const fat = (r, up) => `<span class="fat"><b class="${up ? "up" : "down"}">${up ? "▲" : "▼"}</b><span><b>${r.indicador}</b> ${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""} <a href="/observatorio${ROUTES[r.area] || "/overview"}" onclick="nav('${r.area}');return false" class="src" style="display:inline">analisar →</a></span></span>`;
   const diagcard = diag && diag.ok ? `
   <div class="diagcard">
     <div><span class="classif ${classif[0]}" title="${classifRegra}">${classif[1]}</span></div>
@@ -3590,7 +3591,7 @@ function renderOverview() {
   const cards = [];
   if (ibcc && ibcc.ok && pos) {
     const t = encodeURIComponent(`<div class="tt-date">IBCC — Índice de Condições de Crédito</div><div class="tt-meta">100 = média histórica · índice-síntese calculado (preço, qualidade, capacidade, atividade, oferta, antecedentes) · fase: ${ibcc.fase_ciclo} · percentil ${fmt.n(pos.percentil_historico, 0)}</div>`);
-    cards.push(mcard("Índice de Condições de Crédito", fmt.n(pos.atual, 1), `<span class="${pos.delta_1m < 0 ? "up" : "down good"}">${fmt.pp(pos.delta_1m)} pt vs. mês ant.</span>`,
+    cards.push(mcard("Índice de Condições de Crédito", fmt.n(pos.atual, 1), `<span class="${pos.delta_1m < 0 ? "up" : "down"}">${fmt.pp(pos.delta_1m)} pt vs. mês ant.</span>`,
       ibcc.serie ? sparkline(ibcc.serie.slice(-24).map(o => o.valor), 150, 30) : "", `document.getElementById('ov-icc').scrollIntoView({behavior:'smooth'})`, t));
   }
   const serieDefs = [
@@ -3604,20 +3605,20 @@ function renderOverview() {
     const [prev, cur] = last2(sdata.obs);
     const d = prev != null ? cur - prev : null;
     const t = encodeURIComponent(`<div class="tt-date">${lbl} — ${segName()}</div><div class="tt-meta">${sdata.meta.source} série ${sdata.meta.series_code} · ${sdata.meta.unit} · mensal · ref. ${fmt.my(sdata.obs[sdata.obs.length-1].ref)} · observado</div>`);
-    cards.push(mcard(lbl + (key.startsWith("inad_") ? " " + inadChip("sgs") : ""), fmtV(cur), d == null ? "" : `<span class="${d > 0 ? (higherBad ? "up" : "down good") : (higherBad ? "down good" : "up")}">${fmt.pp(d)} ${unit} vs. mês ant.</span>`, sparkOf(sdata.obs), `nav('pulse')`, t));
+    cards.push(mcard(lbl + (key.startsWith("inad_") ? " " + inadChip("sgs") : ""), fmtV(cur), d == null ? "" : `<span class="${d > 0 ? (higherBad ? "up" : "down") : (higherBad ? "down" : "up")}">${fmt.pp(d)} ${unit} vs. mês ant.</span>`, sparkOf(sdata.obs), `nav('pulse')`, t));
   });
   const saldo = pulse.series[`saldo_${seg}`];
   if (saldo && saldo.yoy && saldo.yoy.length) {
     const y = saldo.yoy[saldo.yoy.length - 1].v, yPrev = saldo.yoy.length > 1 ? saldo.yoy[saldo.yoy.length - 2].v : null;
     const t = encodeURIComponent(`<div class="tt-date">Crescimento da carteira (12m) — ${segName()}</div><div class="tt-meta">${saldo.meta.source} ${saldo.meta.series_code} · var. % em 12 meses (nominal) · calculado sobre série observada</div>`);
     cards.push(mcard("Crescimento da carteira (12m)", fmt.n(y, 1) + "<small>% a/a</small>",
-      yPrev == null ? "" : `<span class="${y - yPrev >= 0 ? "down good" : "up"}">${fmt.pp(y - yPrev)} p.p. vs. mês ant.</span>`, sparkOf(saldo.yoy), `nav('pulse')`, t));
+      yPrev == null ? "" : `<span class="${y - yPrev >= 0 ? "down" : "up"}">${fmt.pp(y - yPrev)} p.p. vs. mês ant.</span>`, sparkOf(saldo.yoy), `nav('pulse')`, t));
   }
   const comp = pulse.series.comprometimento;
   if (comp) {
     const [prev, cur] = last2(comp.obs);
     const t = encodeURIComponent(`<div class="tt-date">Comprometimento de renda — famílias (Brasil, sem corte PF/PJ)</div><div class="tt-meta">${comp.meta.source} ${comp.meta.series_code} · % da renda com serviço da dívida · observado</div>`);
-    cards.push(mcard("Comprometimento de renda", fmt.n(cur, 1) + "<small>%</small>", prev == null ? "" : `<span class="${cur - prev > 0 ? "up" : "down good"}">${fmt.pp(cur - prev)} p.p. vs. mês ant.</span>`, sparkOf(comp.obs), `nav('pulse')`, t));
+    cards.push(mcard("Comprometimento de renda", fmt.n(cur, 1) + "<small>%</small>", prev == null ? "" : `<span class="${cur - prev > 0 ? "up" : "down"}">${fmt.pp(cur - prev)} p.p. vs. mês ant.</span>`, sparkOf(comp.obs), `nav('pulse')`, t));
   }
   const heroStrip = `<div class="hero-strip">${cards.slice(0, 6).join("")}</div>`;
 
@@ -3632,7 +3633,7 @@ function renderOverview() {
   }) : "<p class='src'>série indisponível</p>";
   const chgLine = r => `<div class="contrib clickable" onclick="nav('${r.area}')" title="abrir a análise de ${r.indicador}">
     <span class="lbl" style="width:210px">${r.indicador}</span>
-    <span class="num ${r.classificacao === "deterioração" ? "up" : r.classificacao === "melhora" ? "down good" : "neutral"}">${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""}</span>
+    <span class="num ${r.classificacao === "deterioração" ? "up" : r.classificacao === "melhora" ? "down" : "neutral"}">${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""}</span>
     <span class="src" title="relevância: a variação deste mês equivale a ${fmt.n(r.relevancia_z, 1)} vez(es) a oscilação mensal típica desta série — acima de 1 é movimento fora do padrão">relev. ${fmt.n(r.relevancia_z, 1)}× →</span></div>`;
   const secCondicoes = `
   <div class="sechead" id="ov-icc"><h3>Condições de crédito</h3><a href="javascript:void(0)" class="seeall" onclick="nav('pulse')">ver pulso do crédito →</a></div>
@@ -3650,11 +3651,11 @@ function renderOverview() {
       <h4>Principais mudanças <span class="src">(vs. mês anterior)</span> ${badge("calculado", "Δ mensal normalizado pelo desvio-padrão histórico")}</h4>
       <h5 class="up">▲ deteriorações</h5>
       ${chg.top_deterioracoes.map(chgLine).join("") || "<p class='src'>nenhuma</p>"}
-      <h5 class="down good" style="margin-top:12px">▼ melhoras</h5>
+      <h5 class="down" style="margin-top:12px">▼ melhoras</h5>
       ${chg.top_melhoras.map(chgLine).join("") || "<p class='src'>nenhuma</p>"}
       <details class="decomp" style="margin-top:10px"><summary>tabela completa (${chg.tabela.length} indicadores)</summary>
         <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Anterior</th><th>Atual</th><th>Δ 1m</th><th>Interpretação</th></tr></thead>
-        <tbody>${chg.tabela.map(r => `<tr class="clickable" onclick="nav('${r.area}')"><td>${r.indicador}</td><td>${fmt.n(r.anterior, 2)}</td><td>${fmt.n(r.atual, 2)}</td><td class="${r.classificacao === "deterioração" ? "up" : r.classificacao === "melhora" ? "down good" : "neutral"}">${fmt.pp(r.delta_1m)}</td><td>${r.interpretacao}</td></tr>`).join("")}</tbody></table></div>
+        <tbody>${chg.tabela.map(r => `<tr class="clickable" onclick="nav('${r.area}')"><td>${r.indicador}</td><td>${fmt.n(r.anterior, 2)}</td><td>${fmt.n(r.atual, 2)}</td><td class="${r.classificacao === "deterioração" ? "up" : r.classificacao === "melhora" ? "down" : "neutral"}">${fmt.pp(r.delta_1m)}</td><td>${r.interpretacao}</td></tr>`).join("")}</tbody></table></div>
       </details>
       <div class="src" style="margin-top:8px">Fontes: BCB/SGS, IBGE, Ipeadata · classificação pela direção econômica de cada indicador · cada linha abre a análise correspondente.</div>
     </div>
@@ -3668,7 +3669,7 @@ function renderOverview() {
     const detRow = d => `<tr class="clickable" onclick="openInstPage('${d.cod_inst}')" title="abrir a página da instituição">
       <td class="inst">${d.nome.slice(0, 28)}<div class="src">${d.grupo}${d.carteira_brl != null ? " · carteira " + fmt.money(d.carteira_brl) : ""}</div></td>
       <td style="text-align:right">${fmt.n(d.inad_pct, 2)}%</td>
-      <td style="text-align:right" class="${d.d_ano_pp > 0 ? "up" : "down good"}">${fmt.pp(d.d_ano_pp)} p.p.</td>
+      <td style="text-align:right" class="${d.d_ano_pp > 0 ? "up" : "down"}">${fmt.pp(d.d_ano_pp)} p.p.</td>
       <td style="text-align:right" class="${(d.cresc_carteira_4t_pct || 0) > 15 ? "up" : "neutral"}">${d.cresc_carteira_4t_pct != null ? fmt.pp(d.cresc_carteira_4t_pct) + "%" : "–"}</td></tr>`;
     secNpl = `
     <div class="sechead"><h3>Inadimplência nas instituições financeiras ${badge("observado", npl.metodo)} ${inadChip("if90")}</h3>
@@ -3725,7 +3726,7 @@ function renderOverview() {
         <td>${sx.nome.length > 42 ? sx.nome.slice(0, 42) + "…" : sx.nome}</td>
         <td style="text-align:right"><b>${fmt.n(sx.score, 1)}</b></td>
         <td><span class="qbadge ${sx.faixa === "elevado" ? "q-low" : sx.faixa === "moderado" ? "q-mid" : "q-high"}">${sx.faixa}</span></td>
-        <td style="text-align:right" class="${sx.tendencia === "piorando" ? "up" : sx.tendencia === "melhorando" ? "down good" : "neutral"}">${sx.tendencia} ${sx.tendencia_valor_pp != null ? "(" + fmt.pp(sx.tendencia_valor_pp) + ")" : ""}</td></tr>`).join("")}</tbody></table></div>
+        <td style="text-align:right" class="${sx.tendencia === "piorando" ? "up" : sx.tendencia === "melhorando" ? "down" : "neutral"}">${sx.tendencia} ${sx.tendencia_valor_pp != null ? "(" + fmt.pp(sx.tendencia_valor_pp) + ")" : ""}</td></tr>`).join("")}</tbody></table></div>
       <div class="src" style="margin-top:8px"><a href="/observatorio/sectors" onclick="nav('sectors');return false">ver todos os setores →</a></div></div>`;
   }
   let ofPanel = "";
@@ -3738,8 +3739,8 @@ function renderOverview() {
     const suc = ofr.series.of_sucesso_dados_transacionais ? ofr.series.of_sucesso_dados_transacionais.obs.slice(-1)[0].v : null;
     const alertaOf = (ofr.alertas_of || [])[0];
     ofPanel = `<div class="card"><h4>Open Finance ${badge("observado")}</h4>
-      <div class="big" style="font-size:25px">${fmt.n0(cons.v / 1e6)} mi <small style="font-size:13px;color:var(--text-3)">consentimentos ativos</small></div>
-      <div class="delta ${cresc >= 0 ? "down good" : "up"}">${cresc != null ? fmt.pp(cresc) + "% em 4 semanas" : ""}</div>
+      <div class="big" style="font-size:var(--tipo-numero-m)">${fmt.n0(cons.v / 1e6)} mi <small style="font-size:var(--tipo-meta);color:var(--text-3)">consentimentos ativos</small></div>
+      <div class="delta ${cresc >= 0 ? "down" : "up"}">${cresc != null ? fmt.pp(cresc) + "% em 4 semanas" : ""}</div>
       ${sparkline(consSerie.slice(-16).map(o => o.v), 170, 30)}
       <div class="src" style="margin-top:8px;line-height:2">chamadas de API: <b>${fmt.n(chamadas / 1e9, 1)} bi/semana</b> · sucesso transacional: <b>${suc != null ? fmt.n(suc, 1) + "%" : "–"}</b> · ${ofr.participantes ? ofr.participantes.total + " organizações" : ""}<br>
       clientes únicos e conversão: <span class="seal aprox">INDISPONÍVEL</span> — a fonte não publica; volume ≠ maturidade.</div>
@@ -3824,7 +3825,7 @@ function renderOverview() {
     const fs = meta.fontes_status || {};
     const falhas = Object.entries(fs).filter(([k, v]) => v && v.falhas && v.falhas.length).map(([k, v]) => k + " (" + v.falhas.length + ")");
     return `<div class="card" style="margin-top:22px"><h4>Saúde dos dados ${badge("calculado")}</h4>
-      <div class="src" style="font-size:12.5px;line-height:1.9">
+      <div class="src" style="font-size:var(--tipo-meta);line-height:1.9">
       <b>${vals.length}</b> séries monitoradas · <b>${fmt.n(atualizadas / Math.max(vals.length, 1) * 100, 0)}%</b> com atualidade adequada ·
       pipelines com falha na última execução: <b>${falhas.length ? falhas.join(", ") : "nenhum"}</b> ·
       componentes demonstrativos remanescentes: <b>estresse setorial (RJ) e painel demo da aba RJ</b> ·
@@ -3858,7 +3859,7 @@ function renderOverview() {
   const NOV = overview.novidades;
   const NOV_ROTULO = { alerta_novo: "alerta novo", regime: "regime", recorde: "recorde", guidance: "guidance" };
   const secNovidades = !NOV || !(NOV.itens || []).length ? "" : `
-  <div class="sechead"><h3>O que mudou</h3><span class="src">consolidado na execução de ${(overview.gerado_em || "").slice(0, 10)} · ${badge("calculado", "regra determinística — régua declarada no rodapé do bloco")}</span></div>
+  <div class="sechead"><h3>O que mudou</h3><span class="src">consolidado na execução de ${dataTela((overview.gerado_em || "").slice(0, 10))} · ${badge("calculado", "regra determinística — régua declarada no rodapé do bloco")}</span></div>
   <div class="card">
     <ul class="novidades" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
       ${NOV.itens.map(n => `<li style="display:flex;gap:10px;align-items:baseline">
@@ -3920,11 +3921,11 @@ function renderOverview() {
   const projSeg = (overview.projecoes_resumo || {})[`inad_${seg}`];
   const p12 = projSeg && projSeg.ok && projSeg.pontos && projSeg.pontos.length ? projSeg.pontos[projSeg.pontos.length - 1] : null;
   const aberturaHtml = abertura({
-    placar: [
+    natureza: "observado", placar: [
       { l: `Saldo de crédito · ${segName().toLowerCase()}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sSaldo) != null ? fmt.pp(_yoy(sSaldo)) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
       { l: "Inadimplência acima de 90 dias", v: uI ? fmt.pct(uI.v, 2) : null, sub: uI ? `${_d12(sInad) != null ? fmt.pp(_d12(sInad)) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uI.ref)}` : "" },
       { l: "Concessões no mês", v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sConc) != null ? fmt.pp(_yoy(sConc)) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
-      { l: "Condições de crédito (IBCC)", v: pos && pos.atual != null ? fmt.n(pos.atual, 1) : null, sub: pos ? `percentil histórico ${fmt.n(pos.percentil_historico, 0)} · ${classif[1].toLowerCase()} · ${fmt.my(pos.ref)}` : "" },
+      { nat: "calculado", l: "Condições de crédito (IBCC)", v: pos && pos.atual != null ? fmt.n(pos.atual, 1) : null, sub: pos ? `percentil histórico ${fmt.n(pos.percentil_historico, 0)} · ${classif[1].toLowerCase()} · ${fmt.my(pos.ref)}` : "" },
     ],
     sintese: [
       diag && diag.frase,
@@ -4163,7 +4164,7 @@ function renderPulse() {
     return `<div class="card" id="pu-${c.key}">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
-      <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
+      <div class="delta ${yoy > 0 ? "up" : "down"}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
       ${avisoTransf}
       ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
@@ -4196,7 +4197,7 @@ function renderPulse() {
 
   el.innerHTML = `
   ${pageHead({ title: "Pulso do crédito",
-    desc: "Séries oficiais do BCB organizadas em oferta → preço → qualidade → composição, com projeções e bandas. Estoque (saldo) e fluxo (concessões) claramente separados.",
+    desc: "Séries oficiais do BCB organizadas em oferta, preço, qualidade e composição, com projeções e bandas. Estoque (saldo) e fluxo (concessões) claramente separados.",
     fontes: "BCB/SGS (códigos validados por série)" })}
   ${(() => {
     const sv = k => pulse.series[`${k}_${f.seg}`];
@@ -4204,7 +4205,7 @@ function renderPulse() {
     const fcI = pulse.previsoes[`inad_${f.seg}`], p12 = fcI && fcI.ok && fcI.pontos.length ? fcI.pontos[fcI.pontos.length - 1] : null;
     const seg = segName().toLowerCase();
     return abertura({
-      placar: [
+      natureza: "observado", placar: [
         { l: `Saldo · ${seg}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
         { l: `Concessões no mês · ${seg}`, v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
         { l: "Taxa média de juros", v: uT ? fmt.pct(uT.v, 1) + " a.a." : null, sub: uT ? `${_d12(sv("taxa")) != null ? fmt.pp(_d12(sv("taxa"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uT.ref)}` : "" },
@@ -4238,7 +4239,7 @@ function extraCard(k) {
   if (!s) return "";
   const last = s.obs[s.obs.length - 1];
   return `<div class="card" id="pu-${k}"><h4>${s.meta.name} ${badge("observado")} ${favStar("pulse", k, s.meta.name)}</h4>
-    <div class="big" style="font-size:20px">${fmt.n(last.v, 2)} <span style="font-size:12px;color:var(--text-3)">${s.meta.unit}</span></div>
+    <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(last.v, 2)} <span style="font-size:var(--tipo-rotulo);color:var(--text-3)">${s.meta.unit}</span></div>
     ${lineChart({ series: [{ pts: s.obs.slice(-state.filters.range).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: s.meta.name }], h: 110, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" })}
     ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `até ${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
     <button class="btn ghost small" onclick="exportSeries('${k}')">baixar CSV</button></div>`;
@@ -4263,9 +4264,9 @@ function blocoProtocolo() {
       <td>${statusSeal(c.status)}<div class="src">${c.criterios_atendidos} critérios</div></td>
       <td>${c.melhor_defasagem_meses}m</td>
       <td>${c.correlacao_melhor_defasagem > 0 ? "+" : ""}${fmt.n(c.correlacao_melhor_defasagem, 2)}</td>
-      <td class="${c.criterios.granger_5pct ? "down good" : "neutral"}">${crit(c.criterios.granger_5pct)} <span class="src">F=${c.granger_F ?? "–"}</span></td>
-      <td class="${c.criterios.ganho_oos ? "down good" : "neutral"}">${crit(c.criterios.ganho_oos)} <span class="src">${c.ganho_oos_pct != null ? fmt.pp(c.ganho_oos_pct) + "%" : "–"}</span></td>
-      <td class="${c.estavel ? "down good" : "neutral"}">${crit(c.estavel)} <span class="src">${fmt.n(c.estabilidade_metade1, 2)} / ${fmt.n(c.estabilidade_metade2, 2)}</span></td>
+      <td class="${c.criterios.granger_5pct ? "down" : "neutral"}">${crit(c.criterios.granger_5pct)} <span class="src">F=${c.granger_F ?? "–"}</span></td>
+      <td class="${c.criterios.ganho_oos ? "down" : "neutral"}">${crit(c.criterios.ganho_oos)} <span class="src">${c.ganho_oos_pct != null ? fmt.pp(c.ganho_oos_pct) + "%" : "–"}</span></td>
+      <td class="${c.estavel ? "down" : "neutral"}">${crit(c.estavel)} <span class="src">${fmt.n(c.estabilidade_metade1, 2)} / ${fmt.n(c.estabilidade_metade2, 2)}</span></td>
       <td><details class="decomp"><summary>CCF</summary>${c.ccf.map(p => `<div class="contrib"><span class="lbl" style="width:50px">k=${p.lag}</span><span class="bar ${(p.corr || 0) >= 0 ? "pos" : "neg"}" style="width:${Math.abs(p.corr || 0) * 120}px"></span><span class="num">${fmt.n(p.corr, 2)}</span></div>`).join("")}</details></td>
     </tr>`).join("");
   const regRows = regimes && regimes.series ? regimes.series.map(s => {
@@ -4273,7 +4274,7 @@ function blocoProtocolo() {
     const cs = s.cusum;
     return `<tr>
       <td>${s.label}</td>
-      <td class="${s.estado_hipotese.includes("deterior") ? "up" : s.estado_hipotese.includes("melhora") ? "down good" : "neutral"}">${s.estado_hipotese}</td>
+      <td class="${s.estado_hipotese.includes("deterior") ? "up" : s.estado_hipotese.includes("melhora") ? "down" : "neutral"}">${s.estado_hipotese}</td>
       <td>${br ? `${fmt.my(br.data_quebra)} ${br.significativa ? "(significativa)" : "(não significativa)"}<div class="src">sup-F ${br.supF} vs. ${br.critico_5pct_aprox} · média ${fmt.n(br.media_antes)} → ${fmt.n(br.media_depois)}</div>` : "–"}</td>
       <td class="src">${cs && cs.ultimo_disparo ? `${fmt.my(cs.ultimo_disparo.data)} (${cs.ultimo_disparo.direcao})` : "sem disparo"}</td>
     </tr>`;
@@ -4374,7 +4375,7 @@ function renderSectors() {
   const papel = pulse && pulse.series.papelao;
   el.innerHTML = `
   ${pageHead({ title: "Risco setorial",
-    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
+    desc: "Score de estresse por atividade a partir do volume real de cada setor (indústria pela PIM, serviços pela PMS e comércio pela PMC), das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
     fontes: "IBGE PIM-PF · PMS · PMC, BCB/SGS (crédito PJ), MTE/Novo Caged via BCB/SGS (emprego), BCB IF.data (exposições)" })}
   ${(() => {
     const st = sectors.setores || [];
@@ -4384,7 +4385,7 @@ function renderSectors() {
     const refMax = st.map(x => x.ref).filter(Boolean).sort().pop();
     const med = _mediana(st.map(x => x.yoy_producao_pct));
     return abertura({
-      placar: [
+      natureza: "calculado", placar: [
         { l: "Atividades monitoradas", v: st.length ? fmt.n0(st.length) : null, sub: "IBGE PIM-PF, PMS e PMC · uma linha por atividade" },
         { l: "Em estresse elevado", v: st.length ? fmt.n0(elevados.length) : null, sub: `${fmt.pct(st.length ? elevados.length / st.length * 100 : null, 0)} das atividades · faixa do score` },
         { l: "Piorando em três meses", v: st.length ? fmt.n0(piorando.length) : null, sub: "tendência do score" },
@@ -4510,8 +4511,8 @@ function rjRealSection() {
     const tribs = Object.entries(s.por_tribunal || {});
     return `<div class="card">
       <h4>${titulo} — agregado ${s.cobertura} ${badge("observado")}${fc2 && fc2.ok ? " " + badge("previsao") : ""}</h4>
-      <div class="big">${fmt.n0(last.v)} <span style="font-size:13px;color:var(--text-3)">processos em ${fmt.my(last.ref)}</span></div>
-      ${yoy != null ? `<div class="delta ${yoy > 0 ? "up" : "down good"}">${yoy > 0 ? "▲" : "▼"} ${fmt.n(Math.abs(yoy), 1)}% a/a</div>` : ""}
+      <div class="big">${fmt.n0(last.v)} <span style="font-size:var(--tipo-meta);color:var(--text-3)">processos em ${fmt.my(last.ref)}</span></div>
+      ${yoy != null ? `<div class="delta ${yoy > 0 ? "up" : "down"}">${yoy > 0 ? "▲" : "▼"} ${fmt.n(Math.abs(yoy), 1)}% a/a</div>` : ""}
       ${lineChart({ series, band, h: 170, forecastStart: fc2 && fc2.ok ? last.ref : null, unit: "processos", fonte: agg.meta.source, status: "observado" + (fc2 && fc2.ok ? " + previsão" : ""), dec: 0 })}
       ${fc2 && fc2.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p50)}</b> [${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p10)}–${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p90)}] processos/mês${fc2.meses_excluidos ? ` · ajustada sem os ${fc2.meses_excluidos} meses mais recentes` : ""}</div>` : ""}
       <div class="note" style="margin-top:6px"><b>Cobertura parcial nos meses recentes:</b> o DataJud recebe os registros dos tribunais com atraso, e os últimos meses da série tendem a subir nas cargas seguintes. Leia a queda recente como latência da fonte até que a data-base avance; a variação a/a do último mês herda esse efeito.</div>
@@ -4529,7 +4530,7 @@ function rjRealSection() {
     <div class="note"><b>Método:</b> ${cr.metodo}<br><b>Limitações:</b> ${cr.limitacoes}</div>
     ${cr.fichas.slice(0, 30).map(c => `
     <details class="decomp card" style="margin-bottom:6px">
-      <summary><b>${c.empresas[0] || "—"}</b>${c.empresas.length > 1 ? ` (+${c.empresas.length - 1})` : ""} · ${c.tribunal} · ${c.classe} · últ. publicação ${c.ultima_publicacao ? c.ultima_publicacao.slice(0, 10) : "–"}</summary>
+      <summary><b>${c.empresas[0] || "—"}</b>${c.empresas.length > 1 ? ` (+${c.empresas.length - 1})` : ""} · ${c.tribunal} · ${c.classe} · últ. publicação ${c.ultima_publicacao ? fmt.d(c.ultima_publicacao.slice(0, 10)) : "–"}</summary>
       <div class="src" style="margin-top:6px">
         <b>Processo:</b> ${c.numero_processo} · <b>Órgão:</b> ${c.orgao || "–"}<br>
         <b>Empresas identificadas:</b> ${c.empresas.join("; ")}<br>
@@ -4557,8 +4558,8 @@ function rjRealSection() {
     if (pj2) {
       expo += `<h3>Passivo dos casos da janela — cascata de estimativa ${sealFor(pj2.tipo)}</h3>
       <div class="grid g3">
-        <div class="card"><h4>Citado em atos ${badge("observado")}</h4><div class="big" style="font-size:19px">${pj2.passivo_citado_soma_brl ? fmt.money(pj2.passivo_citado_soma_brl) : "–"}</div><div class="src">${pj2.casos_com_passivo_citado} de ${pj2.casos_total} casos com valor citado</div></div>
-        <div class="card"><h4>Estimado (sem valor citado) ${badge("estimado")}</h4><div class="big" style="font-size:19px">${pj2.intervalo_estimado_total_brl ? fmt.money(pj2.intervalo_estimado_total_brl[0]) + " – " + fmt.money(pj2.intervalo_estimado_total_brl[1]) : "–"}</div><div class="src">${pj2.casos_estimados} casos × intervalo interquartil por caso ${pj2.intervalo_por_caso_estimado_brl ? `(${fmt.money(pj2.intervalo_por_caso_estimado_brl[0])}–${fmt.money(pj2.intervalo_por_caso_estimado_brl[1])})` : ""}</div></div>
+        <div class="card"><h4>Citado em atos ${badge("observado")}</h4><div class="big" style="font-size:var(--tipo-numero-p)">${pj2.passivo_citado_soma_brl ? fmt.money(pj2.passivo_citado_soma_brl) : "–"}</div><div class="src">${pj2.casos_com_passivo_citado} de ${pj2.casos_total} casos com valor citado</div></div>
+        <div class="card"><h4>Estimado (sem valor citado) ${badge("estimado")}</h4><div class="big" style="font-size:var(--tipo-numero-p)">${pj2.intervalo_estimado_total_brl ? fmt.money(pj2.intervalo_estimado_total_brl[0]) + " – " + fmt.money(pj2.intervalo_estimado_total_brl[1]) : "–"}</div><div class="src">${pj2.casos_estimados} casos × intervalo interquartil por caso ${pj2.intervalo_por_caso_estimado_brl ? `(${fmt.money(pj2.intervalo_por_caso_estimado_brl[0])}–${fmt.money(pj2.intervalo_por_caso_estimado_brl[1])})` : ""}</div></div>
         <div class="card"><h4>Método e limites</h4><div class="src">${pj2.metodo}<br><b>Limitações:</b> ${pj2.limitacoes}</div></div>
       </div>`;
     }
@@ -4568,7 +4569,7 @@ function rjRealSection() {
         Object.values(ms).map(m => {
           const last = m.obs[m.obs.length - 1];
           return `<div class="card"><h4>${m.titulo} ${badge("observado")}</h4>
-          <div class="big" style="font-size:20px">${fmt.n0(last.v)} <span style="font-size:12px;color:var(--text-3)">em ${fmt.my(last.ref)}</span></div>
+          <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(last.v)} <span style="font-size:var(--tipo-rotulo);color:var(--text-3)">em ${fmt.my(last.ref)}</span></div>
           ${lineChart({ series: [{ pts: m.obs.map(o => ({ x: o.ref, y: o.v })), color: "#6b46a3" }], h: 130 })}
           ${chartFooter({ fonte: m.meta.source + " (" + m.meta.series_code + ")", periodo: `${fmt.my(m.obs[0].ref)}–${fmt.my(last.ref)}`, atualizado: m.meta.last_collected_at ? m.meta.last_collected_at.slice(0, 10) : "–", unidade: m.meta.unit, nota: m.meta.methodology })}</div>`;
         }).join("") + `</div>`;
@@ -4620,11 +4621,11 @@ function renderRJ() {
     const cob = (sr.recuperacao_judicial || {}).cobertura || "";
     const nTrib = cob ? cob.split(",").length : 0;
     return abertura({
-      placar: [
+      natureza: "observado", placar: [
         { l: "Pedidos de recuperação judicial no mês", v: uR ? fmt.n0(uR.v) : null, sub: uR ? `${_yoy(aR) != null ? _pp1(_yoy(aR)) + "% a/a · " : ""}CNJ/DataJud ${fmt.my(uR.ref)}` : "" },
-        { l: "Recuperações em doze meses", v: fmt.n0(soma12(aR)), sub: uR ? `até ${fmt.my(uR.ref)}` : "" },
+        { nat: "calculado", l: "Recuperações em doze meses", v: fmt.n0(soma12(aR)), sub: uR ? `até ${fmt.my(uR.ref)}` : "" },
         { l: "Falências ajuizadas no mês", v: uF ? fmt.n0(uF.v) : null, sub: uF ? `${_yoy(aF) != null ? _pp1(_yoy(aF)) + "% a/a · " : ""}${fmt.n0(soma12(aF))} em doze meses` : "" },
-        { l: "Tribunais cobertos", v: nTrib ? fmt.n0(nTrib) : null, sub: cob },
+        { nat: "calculado", l: "Tribunais cobertos", v: nTrib ? fmt.n0(nTrib) : null, sub: cob },
       ],
       sintese: [
         uR ? `Nos ${nTrib} tribunais cobertos, foram ${fmt.n0(uR.v)} pedidos de recuperação judicial em ${fmt.my(uR.ref)}${_yoy(aR) != null ? ` (${_pp1(_yoy(aR))}% a/a)` : ""}${uF ? ` e ${fmt.n0(uF.v)} falências decretadas` : ""}.` : null,
@@ -4754,7 +4755,7 @@ function renderOpenFinanceReal(el, of) {
     if (!s) return "";
     const last = s.obs[s.obs.length - 1];
     return `<div class="card"><h4>${s.meta.name} ${badge("observado")}</h4>
-      <div class="big" style="font-size:20px">${last.v >= 1e6 ? fmt.n0(last.v / 1e6) + " mi" : fmt.n(last.v, last.v < 200 ? 2 : 0)}${s.meta.unit === "%" ? "%" : ""} <span style="font-size:12px;color:var(--text-3)">semana de ${fmt.d(last.ref)}</span></div>
+      <div class="big" style="font-size:var(--tipo-numero-p)">${last.v >= 1e6 ? fmt.n0(last.v / 1e6) + " mi" : fmt.n(last.v, last.v < 200 ? 2 : 0)}${s.meta.unit === "%" ? "%" : ""} <span style="font-size:var(--tipo-rotulo);color:var(--text-3)">semana de ${fmt.d(last.ref)}</span></div>
       ${lineChart({ series: [{ pts: s.obs.map(o => ({ x: o.ref, y: o.v })), color, label: s.meta.name }], h: h || 130, unit: s.meta.unit, fonte: "Dashboard do Cidadão — Open Finance Brasil", status: "observado" })}
       ${chartFooter({ fonte: "Dashboard do Cidadão — Open Finance Brasil", periodo: `${fmt.d(s.obs[0].ref)}–${fmt.d(last.ref)} (semanal)`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: "Reprodução integral da métrica publicada pela fonte." })}</div>`;
   };
@@ -4769,7 +4770,7 @@ function renderOpenFinanceReal(el, of) {
        ["Chamadas na semana — dados abertos", ultimaFase("of_chamadas_dados_abertos"), "bi"],
        ["Chamadas na semana — iniciação de pagamento", ultimaFase("of_chamadas_iniciacao_pagamento"), "bi"]]
       .filter(([, o]) => o).map(([titulo, o, u]) => `<div class="card kpi"><h4>${titulo}</h4>
-      <div class="big" style="font-size:21px">${u === "mi" ? fmt.n0(o.v / 1e6) + " mi" : fmt.n(o.v / 1e9, 1) + " bi"}</div>
+      <div class="big" style="font-size:var(--tipo-numero-p)">${u === "mi" ? fmt.n0(o.v / 1e6) + " mi" : fmt.n(o.v / 1e9, 1) + " bi"}</div>
       <div class="src">${badge("observado")} semana de ${fmt.d(o.ref)}</div></div>`).join("")}
   </div>`;
   const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
@@ -4800,7 +4801,7 @@ function renderOpenFinanceReal(el, of) {
     ${(e.endpoints || []).slice(0, 6).map(x => `<div class="contrib"><span class="lbl" style="width:170px">${x.nome.slice(0, 26)}</span><span class="num">${fmt.n0(x.chamadas / 1e6)} mi</span></div>`).join("")}
     <div class="src">Acumulado da janela divulgada pela fonte.</div></div>`).join("")}</div></div>
   <div id="of-escopo"><h3>Escopo e fonte</h3><div class="card">
-    <p class="src" style="font-size:13px;line-height:1.8;max-width:88ch">Esta página reproduz exclusivamente as métricas publicadas
+    <p class="src" style="font-size:var(--tipo-meta);line-height:1.8;max-width:88ch">Esta página reproduz exclusivamente as métricas publicadas
     pelas rotas públicas do <b>Dashboard do Cidadão do Open Finance Brasil</b>, na periodicidade semanal da própria fonte:
     consentimentos ativos (transmissores e receptores) e chamadas de API por fase, por instituição, por família de API e por
     endpoint. Nenhum indicador é calculado, estimado ou combinado a outras fontes nesta página. Métricas não divulgadas pelo
@@ -5049,7 +5050,7 @@ function renderScenarios() {
     ${sf.pontos.map(p => `<tr><td>${p.h}m (${fmt.my(p.ref_date)})</td><td>${fmt.n(p.p50)}%</td><td><b>${fmt.n(p.cen50)}%</b></td><td>${fmt.pp(p.cen50 - p.p50)}</td><td>${fmt.n(p.cen10)}% – ${fmt.n(p.cen90)}%</td></tr>`).join("")}</tbody></table></div>` : "";
   el.innerHTML = `
   ${pageHead({ title: "Cenários",
-    desc: "Simulação condicional sobre a projeção-base de inadimplência via elasticidades empíricas — resultado condicionado às hipóteses definidas, nunca previsão.",
+    desc: "Simulação condicional sobre a projeção-base de inadimplência via elasticidades empíricas: resultado condicionado às hipóteses definidas, nunca previsão.",
     fontes: "BCB/SGS + elasticidades estimadas (documentadas)" })}
   ${(() => {
     const p12 = sf && sf.pontos.length ? sf.pontos[sf.pontos.length - 1] : null;
@@ -5057,10 +5058,10 @@ function renderScenarios() {
     const NOMES = { selic_pp: "Selic", desemprego_pp: "desemprego", pib_pp: "PIB", cambio_pct10: "câmbio" };
     const choques = Object.entries(state.scen).filter(([, v]) => v).map(([k, v]) => `${NOMES[k] || k} ${v > 0 ? "+" : ""}${v}${k === "cambio_pct10" ? "×10%" : " p.p."}`);
     return abertura({
-      placar: [
+      natureza: "observado", placar: [
         { l: `Inadimplência observada · ${segName().toLowerCase()}`, v: fmt.pct(last.v, 2), sub: `BCB/SGS ${fmt.my(last.ref)}` },
-        { l: "Projeção-base em 12 meses", v: p12 ? fmt.pct(p12.p50, 2) : null, sub: p12 ? `banda ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)} · ${fmt.my(p12.ref_date)}` : "" },
-        { l: "Cenário simulado em 12 meses", v: p12 ? fmt.pct(p12.cen50, 2) : null, sub: p12 ? `${fmt.pp(p12.cen50 - p12.p50)} p.p. sobre a base · ${choques.length ? choques.join(", ") : "sem choques"}` : "" },
+        { nat: "previsao", l: "Projeção-base em 12 meses", v: p12 ? fmt.pct(p12.p50, 2) : null, sub: p12 ? `banda ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)} · ${fmt.my(p12.ref_date)}` : "" },
+        { nat: "cenario", l: "Cenário simulado em 12 meses", v: p12 ? fmt.pct(p12.cen50, 2) : null, sub: p12 ? `${fmt.pp(p12.cen50 - p12.p50)} p.p. sobre a base · ${choques.length ? choques.join(", ") : "sem choques"}` : "" },
         { l: "Meta Selic vigente", v: ex ? fmt.pct(ex.v, 2) + " a.a." : null, sub: ex ? `BCB/SGS 432 · ref. ${fmt.d(ex.ref)}` : "" },
       ],
       sintese: [
@@ -5252,7 +5253,7 @@ function renderPgfn() {
 
   el.innerHTML = pageHead({
     title: "Dívida com a União",
-    desc: "Crédito tributário federal inscrito em dívida ativa — onde está, de que tamanho, há quanto tempo e quanto já foi ao Judiciário.",
+    desc: "Crédito tributário federal inscrito em dívida ativa: onde está, de que tamanho, há quanto tempo e quanto já foi ao Judiciário.",
     vintage: D.data_base,
     fontes: "PGFN dados abertos (dadosabertos.pgfn.gov.br) · população IBGE SIDRA 6579",
   }) + armadilha + `<p class="lead">${D.sintese}</p>` + kpis + mapa + safras + perfil
@@ -5718,7 +5719,7 @@ function renderDesenrola() {
   <div class="card"><h4>Procedência e tratamento</h4>
     <ul class="src" style="line-height:1.9">
       <li><b>Fonte:</b> ${D.fonte} · <a href="${D.url_dataset}" target="_blank" rel="noopener">página do conjunto</a> · licença ${D.licenca}.</li>
-      <li><b>Coleta:</b> ${(D.coletado_em || "").slice(0, 16).replace("T", " ")} UTC · sha256 do arquivo bruto <code>${(D.bronze_sha || "").slice(0, 16)}…</code>, preservado em bronze com URL e data.</li>
+      <li><b>Coleta:</b> ${dataHoraBrasilia(D.coletado_em) || "–"} · sha256 do arquivo bruto <code>${(D.bronze_sha || "").slice(0, 16)}…</code>, preservado em bronze com URL e data.</li>
       <li><b>Cobertura:</b> ${D.meses} data-bases de ${D.data_base_min} a ${D.data_base}, sem meses ausentes · ${fmt.n0(D.linhas_base)} células na base.</li>
       <li><b>Chave:</b> data-base × faixa × UF × conglomerado, verificada como única na origem.</li>
       <li><b>Revisões:</b> a fonte republica a série inteira a cada mês e o BCB reflete retificações das entidades
@@ -6172,7 +6173,7 @@ function renderPenetracao() {
     ${R.aviso_data ? `<div class="desnota">${R.aviso_data}</div>` : ""}
     <div class="pen2col" style="align-items:start">
       <div>
-        <div class="big" style="font-size:26px">${fmt.n(R.razao_br, 2)}×</div>
+        <div class="big" style="font-size:var(--tipo-numero-m)">${fmt.n(R.razao_br, 2)}×</div>
         <p class="src">é a razão nacional entre o total do ESTBAN (${fmt.money(R.total_estban)}) e o do SCR
         (${fmt.money(R.total_scr)}), ambos em ${R.data_base_estban}${R.mesmo_mes ? " — mesma data-base" : ""}.
         Próxima de 1 no agregado, ela se desfaz por estado: é aí que a contabilização aparece.</p>
@@ -6196,7 +6197,7 @@ function renderPenetracao() {
       <li><b>Demografia e renda:</b> ${P.fontes.demografia} · ano-base ${P.ano_base_censo}.</li>
       <li><b>Malha:</b> ${P.fontes.malha}.</li>
       <li><b>Conciliação:</b> o ESTBAN usa código próprio do BCB, não o do IBGE. O casamento é por UF e nome normalizado, com lista explícita de grafias divergentes e agregação das regiões administrativas do Distrito Federal em Brasília. Município que não casa fica de fora e é contado.</li>
-      <li><b>Processado em</b> ${(P.gerado_em || "").slice(0, 16).replace("T", " ")} UTC.</li>
+      <li><b>Processado em</b> ${dataHoraBrasilia(P.gerado_em) || "–"}.</li>
     </ul>
   </div></section>`;
 
@@ -6340,8 +6341,8 @@ function renderAlerts() {
     <span class="src">para receber por e-mail: assine o RSS em qualquer serviço RSS→e-mail (ex.: Blogtrottr); periodicidade segue o pipeline diário</span>
   </div>
   ${abertura({
-    placar: [
-      { l: "Alertas disparados", v: fmt.n0(C.total), sub: `regras publicadas · ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"}` },
+    natureza: "calculado", placar: [
+      { l: "Alertas disparados", v: fmt.n0(C.total), sub: `regras publicadas · processado em ${C.gerado_em ? dataTela(C.gerado_em.slice(0, 10)) : "–"}` },
       { l: "Em aberto neste navegador", v: fmt.n0(abertos.length), sub: "estado gerenciado localmente" },
       { l: "Com nível declarado pela fonte", v: fmt.n0(comNivel), sub: `${fmt.n0(C.total - comNivel)} sem gradação de severidade` },
       { l: "Famílias observadas", v: fmt.n0(C.familias.length), sub: (C.fontes_ausentes || []).length ? `${C.fontes_ausentes.length} sem dado nesta execução` : "todas com dado nesta execução" },
@@ -6351,7 +6352,7 @@ function renderAlerts() {
       `${comNivel} trazem nível declarado pela fonte e ${C.total - comNivel} vêm de fontes que não graduam severidade.`,
       (C.fontes_ausentes || []).length ? `Famílias sem dado nesta execução: ${C.fontes_ausentes.map(x => `${x.familia} (${x.motivo})`).join("; ")}.` : null,
     ],
-    ref: `${C.estado_local} · processado em ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") : "–"} UTC`,
+    ref: `${C.estado_local} · processado em ${dataHoraBrasilia(C.gerado_em) || "–"}`,
   })}
   ${chips}
   <div id="alListas">${listasAlertas()}</div>
@@ -6378,7 +6379,7 @@ function renderAlerts() {
   <h3>Histórico de disparos — família macro (${hist.length})</h3>
   <div class="src" style="margin-bottom:6px">O histórico persistido cobre a família macro; as demais declaram persistência no próprio alerta.</div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Quando</th><th>Alerta</th><th>Nível</th><th>Valor</th></tr></thead><tbody>
-  ${hist.map(h => `<tr><td class="src">${h.run_at.slice(0, 16).replace("T", " ")}</td><td>${h.titulo}</td><td>${h.nivel}</td><td>${h.valor != null ? fmt.n(h.valor, 2) : "–"}</td></tr>`).join("")}</tbody></table></div>`;
+  ${hist.map(h => `<tr><td class="src">${dataHoraBrasilia(h.run_at)}</td><td>${h.titulo}</td><td>${h.nivel}</td><td>${h.valor != null ? fmt.n(h.valor, 2) : "–"}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 /* ---------- PESQUISA (assistente determinístico) ---------- */
@@ -6386,7 +6387,7 @@ function _norm(s) {
   return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 function _cite(meta, q) {
-  return `${meta.source} · série ${meta.series_code} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? meta.last_collected_at.slice(0, 10) : "–"}`;
+  return `${meta.source} · série ${meta.series_code} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? fmt.d(meta.last_collected_at.slice(0, 10)) : "–"}`;
 }
 
 const INTENTS = [
@@ -6580,7 +6581,7 @@ function renderResearch() {
   const hist = loadLS("obc_research", []);
   el.innerHTML = `
   ${pageHead({ title: "Perguntas rápidas",
-    desc: "Consultas determinísticas sobre os dados carregados (8 intenções). Perguntas fora do escopo são recusadas com transparência — sem geração livre.",
+    desc: "Consultas determinísticas sobre os dados carregados (8 intenções). Perguntas fora do escopo são recusadas com transparência, sem geração livre.",
     fontes: "camada gold local (sem chamadas externas)" })}
   <div class="controls">
     <input id="qbox" type="text" placeholder="ex.: por que a inadimplência aumentou?" style="flex:1;min-width:280px;border:1px solid var(--border);border-radius:6px;padding:8px 12px" onkeydown="if(event.key==='Enter')askQuestion()">
@@ -6626,7 +6627,7 @@ function renderMethod() {
       <b>Validação:</b> ${c.validacao} · <b>Benchmark:</b> ${c.benchmark}<br>
       <b>Desempenho:</b> ${JSON.stringify(c.desempenho)}<br>
       <b>Incerteza:</b> ${c.incerteza}<br><b>Limitações:</b> ${c.limitacoes || "—"}<br>
-      <b>Atualizado:</b> ${c.atualizado_em ? c.atualizado_em.slice(0, 16).replace("T", " ") : "—"}</div></details>`).join("") : "";
+      <b>Atualizado:</b> ${c.atualizado_em ? dataHoraBrasilia(c.atualizado_em) : "—"}</div></details>`).join("") : "";
   const verRows = method ? method.changelog.map(v => `
     <div class="card" style="margin-bottom:8px"><b>v${v.versao}</b> — ${fmt.d(v.data)}<ul>${v.mudancas.map(m => `<li class="src">${m}</li>`).join("")}</ul></div>`).join("") : "";
   const lrows = lineage ? lineage.linhagem_recente.slice(0, 20).map(l => `
@@ -6642,7 +6643,7 @@ function renderMethod() {
   el.innerHTML = `
   ${conceitosLista()}
   ${pageHead({ title: "Metodologia e fontes",
-    desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
+    desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões: a documentação acompanha os dados.",
     fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}\n  ${verbetesCarteiraIF(meta, false)}\n  ${glossarioHtml()}
   ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-glossario", "Glossário"], ["#met-models", "Model cards"],
     ["#met-scores", "Score cards"], ["#met-versoes", "Versões"], ["#met-linhagem", "Linhagem"], ["#met-refs", "Referências"]])}
@@ -6900,7 +6901,7 @@ function renderInstitutions() {
       <td>${i.basileia_pct != null ? fmt.n(i.basileia_pct, 1) + "%" : "<span class='src'>não reportado</span>"}${i.capital_principal_pct != null ? `<div class="src">CP ${fmt.n(i.capital_principal_pct, 1)}%</div>` : ""}</td>
       <td>${(function(){
         const n = state.data.npl; const q = n && n.ok ? n.instituicoes.find(x => x.cod_inst === i.cod_inst) : null;
-        return q ? `<b>${fmt.n(q.inad_pct, 2)}%</b><div class="src">Δtri ${fmt.pp(q.d_tri_pp)} · 4T ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) : "–"} p.p.</div><div class="src ${q.tendencia.includes("piora") ? "up" : q.tendencia === "melhora" ? "down good" : ""}">${q.tendencia}</div>` : "<span class='src'>n/d</span>";
+        return q ? `<b>${fmt.n(q.inad_pct, 2)}%</b><div class="src">Δtri ${fmt.pp(q.d_tri_pp)} · 4T ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) : "–"} p.p.</div><div class="src ${q.tendencia.includes("piora") ? "up" : q.tendencia === "melhora" ? "down" : ""}">${q.tendencia}</div>` : "<span class='src'>n/d</span>";
       })()}</td>
       <td>${fmt.n(i.dimensoes.rentabilidade ? i.dimensoes.rentabilidade.valor : null, 1)}% <span class="src">med. ${i.dimensoes.rentabilidade ? fmt.n(i.dimensoes.rentabilidade.mediana_pares, 1) : "–"}%</span></td>
       <td>${v ? `${fmt.n(v.basileia_pos_choque_pct[0], 1)}–${fmt.n(v.basileia_pos_choque_pct[1], 1)}% ${badge("cenario", v.metodo)}<div class="src">Δinad ${fmt.pp(v.delta_inad_pp[0])} a ${fmt.pp(v.delta_inad_pp[1])} p.p.</div>` : "<span class='src'>sem RWA/Basileia</span>"}</td>
@@ -6909,7 +6910,7 @@ function renderInstitutions() {
   }).join("");
   el.innerHTML = `
   ${pageHead({ title: "Instituições",
-    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. O nome de cada instituição abre a sua ficha completa.",
+    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1 a S5), com mediana, quartis e variação trimestral. O nome de cada instituição abre a sua ficha completa.",
     fontes: "BCB IF.data (Olinda + interface)" })}
   ${(() => {
     const todos = inst.instituicoes || [];
@@ -6920,7 +6921,7 @@ function renderInstitutions() {
     const semBal = Array.isArray(inst.sem_balanco_na_data_base) ? inst.sem_balanco_na_data_base : null;
     const semBalGrandes = semBal ? semBal.filter(x => (x.ativo_ultima_entrega || 0) >= 1e9) : [];
     return abertura({
-      placar: [
+      natureza: "calculado", placar: [
         { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}${semBal ? ` · ${fmt.n0(semBal.length)} na lista sem balanço` : ""}` },
         { l: "Capital principal mediano", v: fmt.pct(cpMed, 1), sub: `entre os ${todos.length} avaliados` },
         { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
@@ -7055,10 +7056,10 @@ function coopSecao(inst) {
   const centrais = coops.filter(i => i.tcb === "B3C").length;
   return `<div class="card" style="margin-top:12px"><h4>Cooperativas de crédito no corte ${badge("observado", "classificação TCB do IF.data: B3C = centrais/confederações, B3S = singulares; os bancos cooperativos (Sicredi, Sicoob) são B1 e entram como bancos")}</h4>
     <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">
-      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:20px">${coops.length} cooperativas</div></div>
-      <div><div class="src">centrais/confederações</div><div class="big" style="font-size:20px">${centrais}</div></div>
-      <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:20px">${fmt.money(atCoop)}</div></div>
-      <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:20px">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
+      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:var(--tipo-numero-p)">${coops.length} cooperativas</div></div>
+      <div><div class="src">centrais/confederações</div><div class="big" style="font-size:var(--tipo-numero-p)">${centrais}</div></div>
+      <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(atCoop)}</div></div>
+      <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
     </div>
     <p class="src">Os bancos cooperativos (Banco Sicredi, Banco Sicoob) são TCB B1 e aparecem no filtro "bancos" — o braço bancário dos sistemas, não as cooperativas em si. O share é do CORTE dos ${insts.length} maiores, não do sistema inteiro. Use o filtro "cooperativas" acima para isolar o segmento na tabela.</p></div>`;
 }
@@ -7140,8 +7141,8 @@ function renderInstPageData(el, pg) {
   const avisoLacuna = lacuna ? `<div class="card" style="border-left:4px solid #b45309;margin-bottom:12px"><b>Sem balanço em ${lacuna.data_base}.</b> ${lacuna.texto}</div>` : "";
   const kpiCard = k => `<div class="card kpi">
     <h4>${k.label}</h4>
-    <div class="big" style="font-size:21px">${k.unit === "R$" ? fmt.money(k.v) : fmt.n(k.v, 2) + k.unit}</div>
-    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down good" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : (k.hist && k.hist.length > 1 && k.d_tri_tipo ? `<div class="src">sem variação trimestral: o trimestre anterior faltou na fonte</div>` : "")}
+    <div class="big" style="font-size:var(--tipo-numero-p)">${k.unit === "R$" ? fmt.money(k.v) : fmt.n(k.v, 2) + k.unit}</div>
+    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : (k.hist && k.hist.length > 1 && k.d_tri_tipo ? `<div class="src">sem variação trimestral: o trimestre anterior faltou na fonte</div>` : "")}
     ${k.hist && k.hist.length > 2 ? sparkline(k.hist, 150, 30) : ""}
     <div class="src">${k.periodo ? k.periodo + " · " : ""}${k.fonte}</div></div>`;
   const destIcon = t => t === "ok" ? "✅" : "⚠️";
@@ -7176,7 +7177,7 @@ function renderInstPageData(el, pg) {
   const subnav = subnavFixa(subnavItens);
   el.innerHTML = `
   <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
-    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base}${cab.data_base_universo && cab.data_base_universo !== cab.data_base ? ` (universo em ${cab.data_base_universo})` : ""} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
+    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base}${cab.data_base_universo && cab.data_base_universo !== cab.data_base ? ` (universo em ${cab.data_base_universo})` : ""} · atualizado ${dataHoraBrasilia(cab.atualizado_em)}</span></div>
   ${avisoLacuna}
   <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
     <div style="flex:2;min-width:300px">
@@ -7202,9 +7203,9 @@ function renderInstPageData(el, pg) {
   </div>
   ${subnav}
   <div id="s-resumo" class="card" style="margin-top:12px"><h4>Resumo executivo ${badge("calculado", "frases por regras determinísticas; cada uma com base declarada")}</h4>
-    ${re ? `<p style="font-size:15px"><b>${re.avaliacao_geral.texto}</b> <span class="src">[${re.avaliacao_geral.base}]</span></p>
+    ${re ? `<p style="font-size:var(--tipo-corpo)"><b>${re.avaliacao_geral.texto}</b> <span class="src">[${re.avaliacao_geral.base}]</span></p>
     <div class="cols2">
-      <div><h5 class="down good">Pontos fortes</h5>${re.pontos_fortes.length ? re.pontos_fortes.map(d => `<p style="margin:4px 0">✅ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
+      <div><h5 class="down">Pontos fortes</h5>${re.pontos_fortes.length ? re.pontos_fortes.map(d => `<p style="margin:4px 0">✅ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
       <div><h5 class="up">Pontos de atenção</h5>${re.pontos_atencao.length ? re.pontos_atencao.map(d => `<p style="margin:4px 0">⚠️ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
     </div>
     ${re.mudancas_recentes.length ? `<h5>Mudanças recentes</h5>${re.mudancas_recentes.map(m => `<p style="margin:3px 0" class="src">• ${m.texto} [${m.base}]</p>`).join("")}` : ""}
@@ -7223,13 +7224,13 @@ function renderInstPageData(el, pg) {
     return `<div id="s-risco" class="card" style="margin-top:12px">
       <h4>Risco e Inadimplência ${badge("observado", n.metodo)} <span class="src">data-base ${n.data_base} · ${n.nivel_consolidacao}</span></h4>
       <div class="kpirow">
-        <div class="card kpi"><h4>${termo("inadimplencia-90","Inadimplência (>90d)")} ${inadChip("if90")}</h4><div class="big" style="font-size:21px">${fmt.n(q.inad_pct, 2)}%</div>
-          <div class="delta ${(q.d_tri_pp||0) > 0 ? "up" : "down good"}">${q.d_tri_pp != null ? fmt.pp(q.d_tri_pp) + " p.p. no tri" : ""} · ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) + " p.p. em 4T" : "4T: histórico insuficiente"}</div>
+        <div class="card kpi"><h4>${termo("inadimplencia-90","Inadimplência (>90d)")} ${inadChip("if90")}</h4><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(q.inad_pct, 2)}%</div>
+          <div class="delta ${(q.d_tri_pp||0) > 0 ? "up" : "down"}">${q.d_tri_pp != null ? fmt.pp(q.d_tri_pp) + " p.p. no tri" : ""} · ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) + " p.p. em 4T" : "4T: histórico insuficiente"}</div>
           <div class="src">tendência: <b>${q.tendencia}</b> (regra analítica ±0,20/0,50 p.p. — não regulatória)</div></div>
-        <div class="card kpi"><h4>Posição nos pares (${q.grupo})</h4><div class="big" style="font-size:21px">p${q.percentil_pares}</div>
+        <div class="card kpi"><h4>Posição nos pares (${q.grupo})</h4><div class="big" style="font-size:var(--tipo-numero-p)">p${q.percentil_pares}</div>
           <div class="src">mediana ${fmt.n(q.mediana_pares, 2)}%${grp.quartis ? ` · q1 ${grp.quartis.q1}% · q3 ${grp.quartis.q3}%` : ""} · n=${grp.n || "–"}</div></div>
-        <div class="card kpi"><h4>${termo("ativos-problematicos","Ativos problemáticos")}</h4><div class="big" style="font-size:21px">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
-        <div class="card kpi"><h4>Cobertura contábil aprox.</h4><div class="big" style="font-size:21px">${q.cobertura_pct != null ? fmt.n(q.cobertura_pct, 0) + "%" : "n/d"}</div>
+        <div class="card kpi"><h4>${termo("ativos-problematicos","Ativos problemáticos")}</h4><div class="big" style="font-size:var(--tipo-numero-p)">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
+        <div class="card kpi"><h4>Cobertura contábil aprox.</h4><div class="big" style="font-size:var(--tipo-numero-p)">${q.cobertura_pct != null ? fmt.n(q.cobertura_pct, 0) + "%" : "n/d"}</div>
           <div class="src">${q.d_cobertura_pp != null ? `Δ ${fmt.pp(q.d_cobertura_pp)} p.p. no tri · ` : ""}perda esperada de crédito ÷ carteira >90d — a provisão cobre também operações em dia; não é razão regulatória</div></div>
       </div>
       <div class="grid g2" style="margin-top:10px">
@@ -7251,11 +7252,11 @@ function renderInstPageData(el, pg) {
     const ap = pg.atraso_produtos;
     if (!ap || !ap.itens || !ap.itens.length) return "";
     const row = i => `<tr class="clickable" onclick="openProduct('${i.slug}')">
-      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:12px">${i.seg}</span></td>
+      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:var(--tipo-rotulo)">${i.seg}</span></td>
       <td style="text-align:right">${fmt.money(i.carteira_brl)}</td>
       <td style="text-align:right"><b>${i.atraso15_pct != null ? fmt.n(i.atraso15_pct, 2) + "%" : "–"}</b></td>
       <td style="text-align:right">${i.mediana_produto_pct != null ? fmt.n(i.mediana_produto_pct, 2) + "%" : "–"}</td>
-      <td style="text-align:right" class="${i.percentil_no_produto != null && i.atraso15_pct != null && i.mediana_produto_pct != null ? (i.atraso15_pct > i.mediana_produto_pct ? "up" : "down good") : "neutral"}">${i.percentil_no_produto != null ? "p" + Math.round(i.percentil_no_produto) : "–"} <span class="src">(n=${i.n_universo})</span></td>
+      <td style="text-align:right" class="${i.percentil_no_produto != null && i.atraso15_pct != null && i.mediana_produto_pct != null ? (i.atraso15_pct > i.mediana_produto_pct ? "up" : "down") : "neutral"}">${i.percentil_no_produto != null ? "p" + Math.round(i.percentil_no_produto) : "–"} <span class="src">(n=${i.n_universo})</span></td>
       <td>${i.serie && i.serie.length > 2 ? sparkline(i.serie.map(x => x.pct), 110, 24) : `<span class="src">${(i.serie || []).map(x => x.pct + "%").join(" · ") || "–"}</span>`}</td></tr>`;
     return `<div id="s-atraso-prod" class="card" style="margin-top:12px">
       <h4>${termo("atraso-15-90","Atraso ≥15 dias")} por produto ${badge("observado", ap.nota)} <span class="src">data-base ${ap.data_base}</span></h4>
@@ -7314,7 +7315,7 @@ function renderInstPageData(el, pg) {
   </div>
   ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
     <div class="card"><h4>${termo("custo-de-captacao","Custo de captação")} ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
-      ${sc.captacao ? `<div class="big" style="font-size:22px">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:13px">a.a. (estimado)</span></div>
+      ${sc.captacao ? `<div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:var(--tipo-meta)">a.a. (estimado)</span></div>
         <div class="src">Fórmula: ${sc.captacao.formula}.</div>
         <div class="src">Captações totais ${fmt.money(sc.captacao.captacoes_brl)}${sc.captacao.dep_captacoes_pct != null ? ` · depósitos = ${sc.captacao.dep_captacoes_pct}% das captações` : ""}</div>
         ${sc.captacao.mix_depositos_pct ? `<div style="margin-top:8px"><b>Mix de depósitos</b>
@@ -7324,7 +7325,7 @@ function renderInstPageData(el, pg) {
     </div>
     <div class="card"><h4>Modelo de negócio ${badge("calculado")}</h4>
       ${sc.modelo_negocio ? `
-        ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
+        ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:var(--tipo-meta)">da receita operacional vem de serviços</span></div>
           <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
         ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% ${dica(sc.modelo_negocio.eficiencia_conceito)}
           <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
@@ -7346,7 +7347,7 @@ function renderInstPageData(el, pg) {
         <b>Maiores membros:</b> ${gpc.maiores_membros.map(m => `<span class="clickable" onclick="openInstPage('${m.cod}')">${m.nome}</span>`).join(" · ")}<br>
         <b>Estabilidade:</b> ${gpc.estabilidade}</div></details>` : ""}</div>
     <div id="s-recl" class="card"><h4>Reclamações e atendimento ${badge("observado", "indicador operacional/reputacional — não mede solvência")}</h4>
-      ${pg.reclamacoes.length ? `<div class="big" style="font-size:22px">${pg.reclamacoes[0].indice != null ? fmt.n(pg.reclamacoes[0].indice, 1) : "n/d"}</div>
+      ${pg.reclamacoes.length ? `<div class="big" style="font-size:var(--tipo-numero-p)">${pg.reclamacoes[0].indice != null ? fmt.n(pg.reclamacoes[0].indice, 1) : "n/d"}</div>
         <div class="src">índice em ${pg.reclamacoes[0].periodo} · ${fmt.n0(pg.reclamacoes[0].reclamacoes)} reclamações · ${pg.reclamacoes[0].clientes ? fmt.n0(pg.reclamacoes[0].clientes / 1e6) + " mi clientes" : ""}</div>
         ${sparkline(pg.reclamacoes.slice().reverse().map(r => r.indice).filter(v => v != null), 150, 26)}
         <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte}${pg.reclamacoes[0].casamento ? ` · ligação por ${{ cnpj: "CNPJ", nome_identico_bcb: "nome idêntico publicado pelo BCB", mapa_curado: "mapa curado" }[pg.reclamacoes[0].casamento] || pg.reclamacoes[0].casamento}` : ""} · assuntos por instituição não disponíveis no CSV público</div>`
@@ -7473,6 +7474,7 @@ function renderBets() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${B.titulo}</h2>
       <p class="viewdesc">${B.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(B.gerado_em.slice(0, 10))}</b> · Período coberto: ${B.periodo_coberto} · Corte da pesquisa: ${fmt.d(B.corte_pesquisa)} (verificação de atualizações posteriores registrada em FONTES_BETS.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${B.aviso}</span></div>
@@ -7542,7 +7544,7 @@ function renderBets() {
       <div class="src">${(S.arrecadacao || {}).conceito || ""}${arr26 ? `<br>2026 (jan a mai): R$ ${fmt.n(arr26.tributos, 2)} bi em tributos ${betsStatus(arr26.status)}` : ""}</div>
       <div class="src"><a href="${arr ? arr.url : "#"}" target="_blank" rel="noopener">SPA/MF · gov.br</a></div></div>
     <div class="card"><h4>Fluxo Pix pré-regulação (2024) — quebra metodológica ${nv("A")}</h4>
-      <div class="tr-big">R$ 18–21 bi<span style="font-size:14px">/mês</span></div>
+      <div class="tr-big">R$ 18–21 bi<span style="font-size:var(--tipo-tabela)">/mês</span></div>
       <div class="src">jan a ago/2024 · pico R$ ${fmt.n(pix.obs[0] ? pix.obs[0].v : null, 1)} bi em ago/2024 · <a href="${pix.obs[0] ? pix.obs[0].url : "#"}" target="_blank" rel="noopener">BCB, EE 119/2024</a> ${badge("descontinuada")}</div>
       <div class="note warn" style="margin-top:8px"><b>Não comparável ao GGR.</b> ${pix.conceito}</div></div>
   </div>
@@ -7583,7 +7585,7 @@ function renderBets() {
   <h3>Vulnerabilidade financeira</h3>
   <div class="grid g2">
     <div class="card"><h4>Beneficiários de programas sociais ${nv("A")}</h4>
-      <p style="font-size:13px">${V.bolsa_familia?.dado_central?.texto} · <a href="${V.bolsa_familia?.dado_central?.url}" target="_blank" rel="noopener">${V.bolsa_familia?.dado_central?.fonte}</a></p>
+      <p style="font-size:var(--tipo-meta)">${V.bolsa_familia?.dado_central?.texto} · <a href="${V.bolsa_familia?.dado_central?.url}" target="_blank" rel="noopener">${V.bolsa_familia?.dado_central?.fonte}</a></p>
       <div class="note warn"><b>Dado contestado.</b> ${V.bolsa_familia?.contestacao}</div>
       <p class="src" style="margin-top:8px">${V.bolsa_familia?.restricao?.texto}</p></div>
     <div class="card"><h4>Grupos com sinal de exposição</h4>
@@ -7682,7 +7684,7 @@ function renderBets() {
     ${(MI.estimativas || []).map(e2 => `<tr><td style="white-space:nowrap"><a href="${e2.url}" target="_blank" rel="noopener">${e2.fonte}</a></td><td><b>${e2.valor}</b></td><td class="src">${e2.metodo}</td><td>${nv(e2.nivel)}</td></tr>`).join("")}
     </tbody></table></div>
     <h4 style="margin-top:10px">Ações de contenção</h4>
-    <ul style="font-size:13px;margin:4px 0 8px 18px">${(MI.acoes || []).map(a => `<li>${a.texto}</li>`).join("")}</ul>
+    <ul style="font-size:var(--tipo-meta);margin:4px 0 8px 18px">${(MI.acoes || []).map(a => `<li>${a.texto}</li>`).join("")}</ul>
     <div class="src">${MI.riscos}</div>
   </div>`;
 
@@ -7730,9 +7732,9 @@ function renderBets() {
     const leitura = !L ? "" : `
       <div class="grid g2" style="margin-top:12px">
         <div><h4>O que esta série permite dizer</h4>
-          <ul style="font-size:13px;margin:4px 0 0 18px">${L.permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
+          <ul style="font-size:var(--tipo-meta);margin:4px 0 0 18px">${L.permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
         <div><h4>O que ela não permite dizer</h4>
-          <ul style="font-size:13px;margin:4px 0 0 18px">${L.nao_permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
+          <ul style="font-size:var(--tipo-meta);margin:4px 0 0 18px">${L.nao_permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
       </div>`;
     return `
     <div class="card">
@@ -7751,7 +7753,7 @@ function renderBets() {
         <div class="tblwrap"><table class="data compact"><tbody>
         ${(E.conceitos || []).map(c => `<tr><td style="white-space:nowrap"><b>${c.termo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
         </tbody></table></div>
-        <ul style="font-size:13px;margin:8px 0 0 18px">${(E.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+        <ul style="font-size:var(--tipo-meta);margin:8px 0 0 18px">${(E.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
       </details>
       <div class="src" style="margin-top:8px">Último mês publicado: <b>${fmt.my(ult.ref)}</b> · pessoas → seção R$ ${fmt.n(ult.pf_para_secao, 1)} bi em ${fmt.n(ult.tx_pf_para_secao, 0)} milhões de transações · <button class="btn ghost small" onclick="epaeCSV()">baixar CSV (série)</button></div>
     </div>`;
@@ -7765,7 +7767,7 @@ function renderBets() {
     <div class="card"><h4><a href="${e2.url}" target="_blank" rel="noopener">${e2.titulo}</a> ${nv(e2.nivel)}</h4>
       <div class="src">${e2.autores} (${e2.ano}) · ${e2.veiculo} · <b>${e2.tipo}</b> · ${e2.pais} · ${e2.periodo}</div>
       <div class="src" style="margin-top:4px"><b>Base:</b> ${e2.base} · <b>Desenho:</b> ${e2.desenho}</div>
-      <p style="font-size:13px;margin:6px 0">${e2.resultado}</p>
+      <p style="font-size:var(--tipo-meta);margin:6px 0">${e2.resultado}</p>
       <div class="src"><b>Limitações:</b> ${e2.limitacoes}</div>
       <div class="src"><b>Aplicabilidade ao Brasil:</b> ${e2.aplicabilidade}</div>
     </div>`).join("")}</div>`;
@@ -7784,7 +7786,7 @@ function renderBets() {
   const met = `
   <div class="card" id="bets-metodologia">
     <h3>Metodologia desta aba</h3>
-    <p style="font-size:13px"><b>Princípio.</b> ${M.principio}</p>
+    <p style="font-size:var(--tipo-meta)"><b>Princípio.</b> ${M.principio}</p>
     <p class="src">Tipos de dado distinguidos em todo o painel: ${(M.tipos_de_dado || []).join(" · ")}.</p>
     <h4>Conceitos que não podem ser confundidos</h4>
     <div class="tblwrap"><table class="data compact"><tbody>
@@ -7865,6 +7867,7 @@ function renderFraudes() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>${F.titulo}</h2>
       <p class="viewdesc">${F.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(F.gerado_em.slice(0, 10))}</b> · Período coberto: ${F.periodo_coberto} · Corte da pesquisa: ${fmt.d(F.corte_pesquisa)} (registro em FONTES_FRAUDES.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${F.aviso}</span></div>
@@ -7921,7 +7924,7 @@ function renderFraudes() {
       <div class="note warn" style="margin-top:8px">${est.nota}</div>
       ${chartFooter({ fonte: "FBSP/SINESP (Anuários 2019 a 2026)", periodo: "2018 a 2025", atualizado: fmt.d(F.corte_pesquisa), unidade: "milhões de ocorrências", nota: est.conceito })}</div>
     <div class="card"><h4>Devolução no MED (Pix) ${nv("A")}</h4>
-      <div class="tr-big">${medOficial ? fmt.n(medOficial.v, 1) : "–"}%<span style="font-size:14px"> recuperados (2025)</span></div>
+      <div class="tr-big">${medOficial ? fmt.n(medOficial.v, 1) : "–"}%<span style="font-size:var(--tipo-tabela)"> recuperados (2025)</span></div>
       <div class="src">do valor contestado pelas vítimas · <a href="${medOficial ? medOficial.url : "#"}" target="_blank" rel="noopener">BCB, MED 2.0 (oficial)</a></div>
       ${medImprensa ? `<div class="src" style="margin-top:6px">Acumulado jan/2022 a abr/2026: R$ ${fmt.n(medImprensa.v, 1)} bi contestados, R$ 2,2 bi devolvidos (8,9%) ${betsStatus("imprensa")}</div>` : ""}
       <div class="note warn" style="margin-top:8px"><b>Quebra metodológica:</b> ${med.nota}</div>
@@ -8047,7 +8050,7 @@ function renderFraudes() {
     <div class="card"><h4><a href="${e2.url}" target="_blank" rel="noopener">${e2.titulo}</a> ${nv(e2.nivel)}</h4>
       <div class="src">${e2.autores} (${e2.ano}) · ${e2.veiculo} · <b>${e2.tipo}</b> · ${e2.pais} · ${e2.periodo}</div>
       <div class="src" style="margin-top:4px"><b>Base:</b> ${e2.base} · <b>Desenho:</b> ${e2.desenho}</div>
-      <p style="font-size:13px;margin:6px 0">${e2.resultado}</p>
+      <p style="font-size:var(--tipo-meta);margin:6px 0">${e2.resultado}</p>
       <div class="src"><b>Limitações:</b> ${e2.limitacoes}</div>
       <div class="src"><b>Aplicabilidade ao Brasil:</b> ${e2.aplicabilidade}</div>
     </div>`).join("")}</div>`;
@@ -8066,7 +8069,7 @@ function renderFraudes() {
   const met = `
   <div class="card" id="frd-metodologia">
     <h3>Metodologia desta aba</h3>
-    <p style="font-size:13px"><b>Princípio.</b> ${M.principio}</p>
+    <p style="font-size:var(--tipo-meta)"><b>Princípio.</b> ${M.principio}</p>
     <p class="src">Tipos de dado distinguidos em todo o painel: ${(M.tipos_de_dado || []).join(" · ")}.</p>
     <h4>Conceitos que não podem ser confundidos</h4>
     <div class="tblwrap"><table class="data compact"><tbody>
@@ -8145,6 +8148,7 @@ function renderJuros() {
   const head = `
   <div class="pagehead">
     <div class="ph-left">
+      ${rotuloContexto()}
       <h2>Juros por instituição</h2>
       <p class="viewdesc">Quanto cada instituição cobra em cada modalidade de crédito: distribuição completa, evolução, quem é persistentemente mais barato e a carteira associada — nas 20 modalidades divulgadas pelo BC.</p>
       <div class="ph-meta">Fonte: BCB txjuros (operações contratadas, janelas de ~5 dias úteis) · Selic meta vigente: <b>${fmt.n(J.selic_meta, 2)}% a.a.</b> · atualizado ${fmt.d((J.gerado_em || "").slice(0, 10))} · <span title="${attr(J.conceitos.taxa)}">o que é esta taxa ⓘ</span></div>
@@ -8163,7 +8167,7 @@ function renderJuros() {
       <td style="text-align:right" class="src">${fmt.n(m.stats.min, 1)} a ${fmt.n(m.stats.max, 1)}%</td>
       <td style="text-align:right" title="distância entre o 1º e o 3º quartil: metade das IFs cobra dentro desta faixa">${disp != null ? fmt.n(disp, 1) : "–"} p.p.</td>
       <td style="text-align:right">${m.stats.n}</td>
-      <td style="text-align:right" class="${m.delta_3m > 0 ? "up" : m.delta_3m < 0 ? "down good" : "neutral"}">${m.delta_3m != null ? fmt.pp(m.delta_3m) : "–"}</td>
+      <td style="text-align:right" class="${m.delta_3m > 0 ? "up" : m.delta_3m < 0 ? "down" : "neutral"}">${m.delta_3m != null ? fmt.pp(m.delta_3m) : "–"}</td>
       <td style="text-align:right" title="${attr(J.conceitos.spread_selic)}">${m.spread_selic != null ? fmt.pp(m.spread_selic) : "–"}</td>
     </tr>`;
   };
@@ -8192,7 +8196,7 @@ function renderJuros() {
     <td><b>${r.nome}</b></td>
     <td style="text-align:right"><b>${fmt.n(r.taxa_aa, 2)}%</b> <span class="src">a.a.</span></td>
     <td style="text-align:right" class="src">${fmt.n(r.taxa_am, 2)}% a.m.</td>
-    <td style="text-align:right" class="${r.vs_mediana > 0 ? "up" : "down good"}">${fmt.pp(r.vs_mediana)} p.p.</td>
+    <td style="text-align:right" class="${r.vs_mediana > 0 ? "up" : "down"}">${fmt.pp(r.vs_mediana)} p.p.</td>
     <td style="width:120px"><span style="display:inline-block;height:7px;background:${r.vs_mediana > 0 ? "var(--c-neg)" : "var(--c-pos)"};opacity:.65;width:${Math.max(r.taxa_aa / maxAbs * 100, 2).toFixed(1)}%"></span></td>
   </tr>`;
   const cart = M.carteira_scr;
@@ -8200,9 +8204,9 @@ function renderJuros() {
   ${sechead(`${jurosModCurta(M.modalidade)} — ${M.segmento}`, `janela consolidada iniciada em ${fmt.d(M.janela.inicio)} · ${M.stats.n} instituições divulgadas`)}
   <div class="grid g4">
     <div class="card kpi"><h4>Mediana entre IFs</h4><div class="tr-big">${fmt.n(M.stats.mediana, 1)}%<small> a.a.</small></div><div class="src">metade das IFs cobra menos, metade mais</div></div>
-    <div class="card kpi"><h4>Faixa completa</h4><div class="tr-big" style="font-size:22px">${fmt.n(M.stats.min, 1)} a ${fmt.n(M.stats.max, 1)}%</div><div class="src">da IF mais barata à mais cara (razão ${M.stats.min > 0 ? fmt.n(M.stats.max / M.stats.min, 1) : "–"}×)</div></div>
+    <div class="card kpi"><h4>Faixa completa</h4><div class="tr-big" style="font-size:var(--tipo-numero-p)">${fmt.n(M.stats.min, 1)} a ${fmt.n(M.stats.max, 1)}%</div><div class="src">da IF mais barata à mais cara (razão ${M.stats.min > 0 ? fmt.n(M.stats.max / M.stats.min, 1) : "–"}×)</div></div>
     <div class="card kpi"><h4>Sobre a Selic</h4><div class="tr-big">${M.spread_selic != null ? fmt.pp(M.spread_selic) : "–"}<small> p.p.</small></div><div class="src" title="${attr(J.conceitos.spread_selic)}">mediana menos a meta Selic (aproximação ⓘ)</div></div>
-    <div class="card kpi"><h4>Movimento 3 meses</h4><div class="tr-big ${M.delta_3m > 0 ? "up" : "down good"}">${M.delta_3m != null ? fmt.pp(M.delta_3m) : "–"}<small> p.p.</small></div><div class="src">variação da mediana entre IFs</div></div>
+    <div class="card kpi"><h4>Movimento 3 meses</h4><div class="tr-big ${M.delta_3m > 0 ? "up" : "down"}">${M.delta_3m != null ? fmt.pp(M.delta_3m) : "–"}<small> p.p.</small></div><div class="src">variação da mediana entre IFs</div></div>
   </div>
   <div class="ov-2col" style="margin-top:14px">
     <div class="card"><h4>Evolução mensal ${badge("observado")} <span class="src">banda = 1º a 3º quartil entre IFs</span></h4>
@@ -8240,7 +8244,7 @@ function renderJuros() {
       <td>${mm ? mm.segmento : ""} · ${jurosModCurta(pm.id.split(":")[1])}</td>
       <td style="text-align:right"><b>${fmt.n(pm.taxa_aa, 2)}%</b></td>
       <td style="text-align:right" class="src">${fmt.n(pm.mediana, 2)}%</td>
-      <td style="text-align:right" class="${pm.taxa_aa > pm.mediana ? "up" : "down good"}">${fmt.pp(pm.taxa_aa - pm.mediana)} p.p.</td>
+      <td style="text-align:right" class="${pm.taxa_aa > pm.mediana ? "up" : "down"}">${fmt.pp(pm.taxa_aa - pm.mediana)} p.p.</td>
       <td style="text-align:right">${pm.posicao}º de ${pm.n}</td>
     </tr>`;
   }).join("") : "";
@@ -8278,7 +8282,7 @@ function renderJuros() {
       { l: "Comissão de quem vende", v: pct(K.comissao_12m_pct, 0), sub: "despesa de comercialização ÷ prêmio direto" },
       { l: "Sinistralidade", v: pct(K.sinistralidade_12m_pct, 0), sub: "sinistro ocorrido ÷ prêmio ganho" },
       { l: "Cinco maiores grupos", v: pct(K.top5_grupos_share_pct, 0), sub: "do prêmio de 12 meses" },
-    ])}
+    ], "calculado")}
     <p class="pan-sintese">${P.sintese}</p><div class="src">Síntese determinística · SUSEP SES ${P.mes} · BCB/SGS 20633 (concessões PF)${(P.meses_parciais || []).length ? ` · meses parciais fora dos KPIs: ${P.meses_parciais.join(", ")}` : ""}</div>
     <div class="grid g2" style="margin-top:12px">
       <div class="card"><h4>Prêmios por mês ${badge("observado")}</h4>
@@ -8342,7 +8346,7 @@ function renderAmpliado() {
     { l: "Ofertas encerradas (12 m)", v: kE ? biR(kE.valor_12m) : "–", sub: kE ? `${fmt.pp(kE.var_12m_pct)}% · dívida corporativa ${biR(kE.divida_corporativa_12m)}` : "", href: "#amp-emis" },
     { l: "Lastro de CRI vencido", v: bCRI ? pct(bCRI.kpis.vencidos_pct, 2) : "–", sub: bCRI ? `${biR(bCRI.kpis.creditos)} em ${bCRI.mes}` : "", href: "#amp-sec" },
     { l: "Lastro de CRA vencido", v: bCRA ? pct(bCRA.kpis.vencidos_pct, 2) : "–", sub: bCRA ? `${biR(bCRA.kpis.creditos)} em ${bCRA.mes}` : "", href: "#amp-sec" },
-  ]);
+  ], "calculado");
 
   /* ---------- saldo: composição ---------- */
   let saldo = "";
@@ -8530,12 +8534,12 @@ function renderBndes() {
   <div class="src">Síntese determinística · saldo ${S.mes || "não coletado nesta execução"} · desembolsos ${D.disponivel ? D.janela.ini + " a " + D.janela.fim : "–"} · operações ${O.disponivel ? O.janela.ini + " a " + O.janela.fim : "–"}</div>`;
 
   const placarHtml = placar([
-    { l: "Saldo direcionado no SFN", v: kS ? triM(kS.saldo_direcionado) : "–", sub: kS ? `${pct(kS.share_direcionado)} da carteira · ${fmt.pp(kS.var_12m_pct)}% em 12 m` : "série do SGS ainda não coletada", href: "#bn-saldo" },
+    { nat: "observado", l: "Saldo direcionado no SFN", v: kS ? triM(kS.saldo_direcionado) : "–", sub: kS ? `${pct(kS.share_direcionado)} da carteira · ${fmt.pp(kS.var_12m_pct)}% em 12 m` : "série do SGS ainda não coletada", href: "#bn-saldo" },
     { l: "BNDES no crédito PJ", v: kS ? pct(kS.pj.bndes_share_total_pj) : "–", sub: kS ? `${pct(kS.pj.bndes_share_direcionado)} do direcionado PJ` : "", href: "#bn-saldo" },
     { l: "Desembolsos do BNDES (12 m)", v: kD ? biM(kD.desembolsos_12m) : "–", sub: kD ? `${fmt.pp(kD.var_12m_pct)}% · até ${D.mes}` : "", href: "#bn-desemb" },
     { l: "Parte para MPME", v: kD ? pct(kD.mpme_share) : "–", sub: kD ? `infraestrutura ${pct(kD.infraestrutura_share)} · agro ${pct(kD.agropecuaria_share)}` : "", href: "#bn-quem" },
     { l: "Via agentes financeiros", v: kD ? pct(kD.via_agentes_share) : "–", sub: kD ? `${fmt.n0(kD.n_agentes)} agentes em ${kD.ano_agentes} · HHI ${fmt.n0(kD.hhi_agentes)}` : "", href: "#bn-agentes" },
-  ]);
+  ], "calculado");
 
   /* ---------- saldo direcionado ---------- */
   let saldo = "";
@@ -8748,11 +8752,11 @@ function renderEstados() {
       const top = k => ufs.slice().filter(u => u.scr && u.scr[k] != null).sort((a, b) => b.scr[k] - a.scr[k])[0];
       const tS = ord[0], tPc = top("per_capita"), tI = top("inad"), tC = top("cresc12");
       return abertura({
-        placar: [
+        natureza: "observado", placar: [
           { l: "Carteira de crédito no país", v: fmt.money(B.saldo), sub: `SCR ${U.datas.scr} · 27 UFs` },
-          { l: "Crescimento em doze meses", v: B.cresc12 != null ? _pp1(B.cresc12) + "%" : null, sub: `SCR ${U.datas.scr}` },
+          { nat: "calculado", l: "Crescimento em doze meses", v: B.cresc12 != null ? _pp1(B.cresc12) + "%" : null, sub: `SCR ${U.datas.scr}` },
           { l: "Inadimplência", v: fmt.pct(B.inad, 2), sub: `SCR ${U.datas.scr}` },
-          { l: "Penetração do crédito", v: fmt.pct(B.penetracao, 0), sub: `crédito ÷ renda anual estimada · ${U.datas.penetracao}` },
+          { nat: "estimado", l: "Penetração do crédito", v: fmt.pct(B.penetracao, 0), sub: `crédito ÷ renda anual estimada · ${U.datas.penetracao}` },
         ],
         sintese: [
           tS && tS.scr ? `${tS.nome} concentra ${fmt.pct(tS.scr.part_br, 1)} da carteira nacional (${fmt.money(tS.scr.saldo)}).` : null,
@@ -8789,12 +8793,12 @@ function renderEstados() {
   });
   const sintese = `<p class="pan-sintese">${u.sintese}</p><div class="src">Síntese determinística · posições calculadas entre as 27 UFs dentro de cada régua · <a href="/observatorio/states" onclick="nav('estados');return false">todos os estados →</a></div>`;
   const placarHtml = placar([
-    { l: "Carteira de crédito (SCR)", v: brl(s.saldo), sub: `${pct(s.part_br)} do Brasil · ${pos(u, "scr.saldo")} · ${s.cresc12 != null ? fmt.pp(s.cresc12) + "% em 12 m" : ""}`, href: "#uf-scr" },
-    { l: "Inadimplência arrastada", v: pct(s.inad, 2), sub: `Brasil ${pct(B.inad, 2)} · ${pos(u, "scr.inad")} (1º = maior) · ${s.d_inad_12m != null ? fmt.pp(s.d_inad_12m) + " p.p. em 12 m" : ""}`, href: "#uf-scr" },
+    { nat: "observado", l: "Carteira de crédito (SCR)", v: brl(s.saldo), sub: `${pct(s.part_br)} do Brasil · ${pos(u, "scr.saldo")} · ${s.cresc12 != null ? fmt.pp(s.cresc12) + "% em 12 m" : ""}`, href: "#uf-scr" },
+    { nat: "observado", l: "Inadimplência arrastada", v: pct(s.inad, 2), sub: `Brasil ${pct(B.inad, 2)} · ${pos(u, "scr.inad")} (1º = maior) · ${s.d_inad_12m != null ? fmt.pp(s.d_inad_12m) + " p.p. em 12 m" : ""}`, href: "#uf-scr" },
     { l: "Crédito por habitante", v: s.per_capita != null ? "R$ " + n0(s.per_capita) : "–", sub: `${pos(u, "scr.per_capita")} entre as UFs`, href: "#uf-scr" },
-    { l: "Penetração do crédito", v: pct(pe.penetracao, 0), sub: `Brasil ${pct(B.penetracao, 0)} · ${pos(u, "penetracao.penetracao")} · ${n0(pe.municipios_abaixo)} de ${n0(pe.municipios)} municípios abaixo do modelo`, href: "#uf-penetracao" },
+    { nat: "estimado", l: "Penetração do crédito", v: pct(pe.penetracao, 0), sub: `Brasil ${pct(B.penetracao, 0)} · ${pos(u, "penetracao.penetracao")} · ${n0(pe.municipios_abaixo)} de ${n0(pe.municipios)} municípios abaixo do modelo`, href: "#uf-penetracao" },
     { l: "Municípios com agência", v: pr.municipios ? `${n0(pr.com_agencia)} de ${n0(pr.municipios)}` : "–", sub: `${n0(pr.so_correspondente)} só com correspondente · ${n0(pr.nenhum)} sem ponto físico`, href: "#uf-presenca" },
-  ]);
+  ], "calculado");
   const bloco = (id, titulo, sub, corpo, view, secao, ponteTxt) => secWrap(id, `${sechead(titulo, sub)}<div class="card">${corpo}${ponte(ponteTxt, view, secao || null, "o painel de origem tem a série inteira, o mapa e o método")}</div>`);
   const linha = (rot, v, extra) => `<div><dt>${rot}</dt><dd>${v}${extra ? ` <span class="src">${extra}</span>` : ""}</dd></div>`;
   const prods = u.produtos || [];
@@ -8898,7 +8902,7 @@ function renderSfn() {
     { l: "Reportantes do IF.data", v: n0(kI.reportantes), sub: I.ultimo_fechado ? `entregaram o resumo de ${tri(I.ultimo_fechado)}${kI.sem_resumo != null ? ` · ${n0(kI.sem_resumo)} na lista sem balanço` : ""}` : "", href: "#sfn-ifdata" },
     { l: "Entradas e saídas na lista (4 trimestres)", v: kI.entradas_4t != null ? `+${n0(kI.entradas_4t)} · −${n0(kI.saidas_4t)}` : "–", sub: regLista ? `${n0(kI.entradas_4t_novas)} instituições novas · ${n0(kI.saidas_4t_fora_cadastro)} fora do cadastro hoje` : "primeira e última presença na série", href: "#sfn-lista" },
     { l: "Sob regime de resolução", v: n0(R.vigentes), sub: R.disponivel ? `${n0(R.decretados_12m)} decretados em 12 meses` : "", href: "#sfn-regimes" },
-  ]);
+  ], "calculado");
 
   /* ---------- cadastro ---------- */
   let cad = "";
@@ -8952,7 +8956,7 @@ function renderSfn() {
         <p class="src">${tcbs.map(t => `<b>${t}</b> ${I.tcb[t]}`).join(" · ")}.</p></div>
       <div class="card"><h4>Entradas e saídas por trimestre ${badge("calculado")}</h4>
         <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>Trimestre</th><th style="text-align:right">Entregaram</th>${regLista ? '<th style="text-align:right">Na lista sem balanço</th>' : ""}<th style="text-align:right">Entradas</th><th style="text-align:right">Saídas</th><th style="text-align:right">Líquido</th><th style="text-align:right">Faltou e voltou</th></tr></thead>
-        <tbody>${ser.slice().reverse().slice(0, 24).map(p => `<tr><td>${tri(p.anomes)}${p.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td style="text-align:right">${n0(p.n)}</td>${regLista ? `<td style="text-align:right">${p.sem_resumo != null ? n0(p.sem_resumo) : "–"}</td>` : ""}<td style="text-align:right" class="up good">${p.entradas != null ? "+" + n0(p.entradas) : "–"}</td><td style="text-align:right" class="down">${p.saidas != null ? "−" + n0(p.saidas) : "–"}</td><td style="text-align:right">${p.entradas != null ? fmt.pp(p.entradas - p.saidas) : "–"}</td><td style="text-align:right" class="src">${p.ausencias != null ? `${n0(p.ausencias)} · ${n0(p.retornos)}` : "–"}</td></tr>`).join("")}</tbody></table></div>
+        <tbody>${ser.slice().reverse().slice(0, 24).map(p => `<tr><td>${tri(p.anomes)}${p.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td style="text-align:right">${n0(p.n)}</td>${regLista ? `<td style="text-align:right">${p.sem_resumo != null ? n0(p.sem_resumo) : "–"}</td>` : ""}<td style="text-align:right" class="up">${p.entradas != null ? "+" + n0(p.entradas) : "–"}</td><td style="text-align:right" class="down">${p.saidas != null ? "−" + n0(p.saidas) : "–"}</td><td style="text-align:right">${p.entradas != null ? fmt.pp(p.entradas - p.saidas) : "–"}</td><td style="text-align:right" class="src">${p.ausencias != null ? `${n0(p.ausencias)} · ${n0(p.retornos)}` : "–"}</td></tr>`).join("")}</tbody></table></div>
         <p class="src">Entrada = primeiro trimestre do código em toda a série; saída = deixou a lista e não voltou. "Faltou e voltou" = ausências temporárias iniciadas no trimestre · retornos no trimestre; nenhuma das duas conta como entrada ou saída.${regLista ? " \"Na lista sem balanço\" = constava da relação do trimestre com saldo nulo na fonte (atraso, RAET, retardatário)." : ""}</p>
         <div style="margin-top:8px">${(I.por_tcb || []).map(x => `<div class="contrib"><span class="lbl" style="width:60px"><b>${x.tcb}</b></span><span class="bar pos" style="width:${Math.min(150, (x.share || 0) * 1.5)}px;background:${cores[x.tcb] || "#999"}"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)} · ${(I.var_4t_por_tcb || {})[x.tcb] != null ? fmt.pp(I.var_4t_por_tcb[x.tcb]) + " em 4 trimestres" : ""}</span></span></div>`).join("")}</div>
         <p class="src">${I.nota}</p></div>
@@ -8967,7 +8971,7 @@ function renderSfn() {
     const L = F.lista === "saidas" ? I.saidas : F.lista === "conversoes" ? I.conversoes : F.lista === "sem_resumo" ? (semResumo || []) : F.lista === "ausencias" ? ausencias : I.entradas;
     const linkInst = x => x.cod && (x.cod.startsWith("C") || /^\d{8}$/.test(x.cod)) ? `<a href="/observatorio/institutions/${x.cod}" onclick="nav('inst',{instCod:'${x.cod}'});return false">${x.nome || x.cod}</a>` : (x.nome || x.cod);
     const am = v => v ? `${v.slice(4, 6)}/${v.slice(0, 4)}` : "–";
-    const classeSel = { nova: "good", antiga: "", troca_codigo: "", sem_data: "", fora_cadastro: "down", autorizada_hoje: "", sem_cruzamento: "" };
+    const classeSel = { nova: "", antiga: "", troca_codigo: "", sem_data: "", fora_cadastro: "", autorizada_hoje: "", sem_cruzamento: "" };
     const leitura = x => x.leitura ? `<span class="${classeSel[x.classe] || ""}">${x.leitura}</span>` : "–";
     const comoLer = `<div class="card" style="margin-bottom:12px"><h4>Como ler esta lista</h4>
       <p><b>Entrada</b> é o primeiro trimestre, em toda a série desde ${tri(I.primeiro)}, em que um código aparece ${regLista ? "na relação do resumo" : "com resumo entregue"}. Isso inclui instituições novas e também instituições antigas que ganharam um código novo de conglomerado ou só agora passaram a reportar. A coluna "Início de atividade" (cadastro do BCB) separa os dois casos: até ${I.meses_nova || 12} meses antes do trimestre de entrada, é instituição nova; antes disso, já existia.</p>
@@ -9060,7 +9064,7 @@ function renderConduta() {
     { l: "Inabilitados vigentes", v: n0((B.inabilitados || {}).vigentes), sub: B.inabilitados ? `${n0(B.inabilitados.encerram_12m)} encerram em 12 m · ${n0(B.proibidos_vigentes)} proibidos de atuar` : "", href: "#cd-bcb" },
     { l: "Processos abertos pela CVM (12 m)", v: n0((C.abertos_12m || {}).processos), sub: C.acervo ? `${n0(C.acervo.em_curso)} em curso · idade mediana ${fmt.n((C.idade_em_curso_meses || {}).mediana || 0, 0)} meses` : "", href: "#cd-cvm" },
     { l: "Índice mediano de reclamações", v: R.disponivel ? fmt.n(R.ultimo.mediana, 1) : "–", sub: R.disponivel ? `${R.ultimo.periodo} · ${n0(R.ultimo.n_instituicoes)} instituições` : "ranking ainda não coletado", href: "#cd-reclamacoes" },
-  ]);
+  ], "calculado");
 
   /* ---------- BCB ---------- */
   let bcb = "";
@@ -9162,7 +9166,7 @@ function renderEmprego() {
   const sn = v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n0(v);
   const pct = (v, d = 1) => fmt.pct(v, d);
   const zf = v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2) + "σ";
-  const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
+  const cls = v => v == null ? "neutral" : v > 0 ? "down" : v < 0 ? "up" : "neutral";
   const rotulosFim = window.innerWidth > 640;
   const setores = D.setores || [];
   const total = setores.find(s => s.key === "total") || {};
@@ -9177,12 +9181,12 @@ function renderEmprego() {
   });
   const sintese = `<p class="pan-sintese">${D.sintese}</p><div class="src">Síntese determinística · dados até ${D.mes} (mês preliminar) · z-score contra a própria história desde ${D.janela_z.inicio}</div>`;
   const placarHtml = placar([
-    { l: "Vínculos formais", v: n0(B.estoque), sub: `${D.mes} · ${pct(B.nao_itemizado_pct)} não itemizados por seção`, href: "#emp-brasil" },
-    { l: "Saldo do mês", v: sn(B.saldo_mes), sub: B.saldo_mes_sa != null ? `${sn(B.saldo_mes_sa)} com ajuste sazonal` : "", href: "#emp-brasil" },
+    { nat: "observado", l: "Vínculos formais", v: n0(B.estoque), sub: `${D.mes} · ${pct(B.nao_itemizado_pct)} não itemizados por seção`, href: "#emp-brasil" },
+    { nat: "observado", l: "Saldo do mês", v: sn(B.saldo_mes), sub: B.saldo_mes_sa != null ? `${sn(B.saldo_mes_sa)} com ajuste sazonal` : "", href: "#emp-brasil" },
     { l: "Saldo em 12 meses", v: sn(B.saldo_12m), sub: B.saldo_12m_anterior != null ? `${sn(B.saldo_12m_anterior)} nos 12 meses anteriores` : "", href: "#emp-brasil" },
     { l: "Variação a/a do estoque", v: total.yoy_pct != null ? fmt.pp(total.yoy_pct) + "%" : "–", sub: total.z != null ? `${zf(total.z)} vs. a própria história · ${total.faixa}` : "", href: "#emp-secoes" },
-    { l: "Admissões no mês", v: n0(B.admissoes_mes), sub: B.desligamentos_mes != null ? `${n0(B.desligamentos_mes)} desligamentos · rotatividade 12 m ${pct(B.rotatividade_12m_pct, 0)} do estoque` : "", href: "#emp-ufs" },
-  ]);
+    { nat: "observado", l: "Admissões no mês", v: n0(B.admissoes_mes), sub: B.desligamentos_mes != null ? `${n0(B.desligamentos_mes)} desligamentos · rotatividade 12 m ${pct(B.rotatividade_12m_pct, 0)} do estoque` : "", href: "#emp-ufs" },
+  ], "calculado");
 
   /* ---------- Brasil ---------- */
   const ser = D.serie || [];
@@ -9272,7 +9276,7 @@ function renderFunding() {
   const n0 = fmt.n0;
   const bi = fmt.brlBi;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
-  const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
+  const cls = v => v == null ? "neutral" : v > 0 ? "down" : v < 0 ? "up" : "neutral";
   const am = a => a ? `${a.slice(0, 4)}-${a.slice(4, 6)}` : "–";
   const rotulosFim = window.innerWidth > 640;
   const head = pageHead({
@@ -9286,12 +9290,12 @@ function renderFunding() {
   const m4 = S ? S.agregados.find(a => a.id === "m4") : null;
   const lfTipo = U ? U.por_tipo.find(t => t.tipo.startsWith("Letra")) : null;
   const placarHtml = placar([
-    { l: "Aplicado pelo público (M4)", v: m4 ? bi(m4.valor) : "–", sub: m4 ? `${S.mes} · ${pp(m4.var_12m_pct)} em 12 m` : "", href: "#fd-sistema" },
+    { nat: "observado", l: "Aplicado pelo público (M4)", v: m4 ? bi(m4.valor) : "–", sub: m4 ? `${S.mes} · ${pp(m4.var_12m_pct)} em 12 m` : "", href: "#fd-sistema" },
     { l: "Captações dos bancos (IF.data)", v: B ? bi(B.agregado.captacoes) : "–", sub: B ? `${am(B.anomes)} · ${n0(B.n_instituicoes)} instituições · 5 maiores ${pct(B.concentracao.top5_share, 0)}` : "", href: "#fd-bancos" },
     { l: "Varejo · mercado · repasses", v: B ? `${pct(B.indicadores.varejo_share, 0)} · ${pct(B.indicadores.mercado_share, 0)} · ${pct(B.indicadores.repasses_share, 0)}` : "–", sub: B && B.indicadores.ltd != null ? `crédito ÷ depósitos ${fmt.n(B.indicadores.ltd, 2)}` : "", href: "#fd-bancos" },
     { l: "Papel bancário em fundos", v: U ? bi(U.total.valor) : "–", sub: U ? `${U.mes} · ${pct(U.total.share_pl)} do PL · ${lfTipo ? pct(lfTipo.share, 0) + " em LF" : ""}` : "", href: "#fd-fundos" },
     { l: "Emissores nos fundos", v: U ? n0(U.total.n_emissores) : "–", sub: U ? `5 maiores ${pct(U.concentracao.top5_share, 0)} · HHI ${n0(U.concentracao.hhi)} · ${pct(U.total.ligado_share, 0)} em emissor ligado` : "", href: "#fd-fundos" },
-  ]);
+  ], "calculado");
 
   /* ---------- sistema ---------- */
   let sistema = "";
@@ -9410,7 +9414,7 @@ function renderConsorcios() {
   const bi = fmt.brlBi;
   const brl = fmt.brlInteiro;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
-  const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
+  const cls = v => v == null ? "neutral" : v > 0 ? "down" : v < 0 ? "up" : "neutral";
   const rotulosFim = window.innerWidth > 640;
   const head = pageHead({
     title: "Consórcios", vintage: D.database ? `${D.database.slice(0, 4)}-${D.database.slice(4, 6)}` : null,
@@ -9426,7 +9430,7 @@ function renderConsorcios() {
     { l: "Contempladas em 12 meses", v: n0(P.contempladas_12m), sub: `${pct(P.contemplacao_12m_pct)} das cotas · ${pct(P.lance_share, 0)} por lance`, href: "#cs-segmentos" },
     { l: "Inadimplência · exclusão", v: `${pct(P.inadimplencia_pct)} · ${pct(P.exclusao_pct, 0)}`, sub: `há 12 m ${pct(P.inadimplencia_12m_atras_pct)} · pré-inadimplência ${pct(P.pre_inadimplencia_pct)}`, href: "#cs-panorama" },
     { l: "Taxa de administração (grupos novos)", v: pct(P.taxa_adm_pct), sub: `crédito médio ${brl(P.valor_medio)} · prazo ${n0(P.prazo_meses)} meses`, href: "#cs-segmentos" },
-  ]);
+  ], "calculado");
 
   /* ---------- panorama e série ---------- */
   const S = D.serie || [];
@@ -9509,7 +9513,7 @@ function renderCobranca() {
   const pct = (v, d = 1) => fmt.pct(v, d);
   const n0 = fmt.n0;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
-  const cls = v => v == null ? "neutral" : v > 0 ? "up" : v < 0 ? "down good" : "neutral";
+  const cls = v => v == null ? "neutral" : v > 0 ? "up" : v < 0 ? "down" : "neutral";
   const rotulosFim = window.innerWidth > 640;
   const head = pageHead({
     title: "Bancos cobrando na Justiça", vintage: D.mes,
@@ -9526,7 +9530,7 @@ function renderCobranca() {
     { l: "Via mais usada", v: gTop ? gTop.nome : "–", sub: gTop ? `${n0(gTop.bancario.casos_12m)} casos · ${pct(gTop.bancario_share, 0)} com assunto bancário` : "", href: "#cb-classes" },
     { l: "Por mil habitantes", v: B.por_mil_hab != null ? fmt.n(B.por_mil_hab, 2) : "–", sub: `população coberta ${pct(C.populacao_coberta_pct, 0)}`, href: "#cb-ufs" },
     { l: "Por R$ bilhão de carteira", v: B.por_bi_carteira != null ? fmt.n(B.por_bi_carteira, 1) : "–", sub: "casos bancários ÷ carteira SCR das UFs cobertas", href: "#cb-ufs" },
-  ]);
+  ], "calculado");
 
   /* ---------- Brasil ---------- */
   const grupo = D.grupos.find(g => g.id === F.grupo);
@@ -9573,7 +9577,7 @@ function renderCobranca() {
     <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">${D.limitacoes}</p>
     <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
-    <p class="src">${badge("observado")} <a href="${attr(D.fonte.catalogo)}" target="_blank" rel="noopener">${D.fonte.nome}</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}). Coletado em ${(C.coletado_em || "").slice(0, 10)}.</p></div>`);
+    <p class="src">${badge("observado")} <a href="${attr(D.fonte.catalogo)}" target="_blank" rel="noopener">${D.fonte.nome}</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}). Coletado em ${dataTela((C.coletado_em || "").slice(0, 10))}.</p></div>`);
   el.innerHTML = head + sintese + placarHtml
     + subnavFixa([["#cb-brasil", "Série"], ["#cb-classes", "Classes"], ["#cb-ufs", "UFs"], ["#cb-metodo", "Método"]])
     + brasil + classes + ufsHtml + metodo;
@@ -9615,7 +9619,7 @@ function renderMarket() {
 
   const head = pageHead({
     title: `Bancos na bolsa <span class='chip' style='vertical-align:middle'>${(state.data.market.empresas || []).length} listadas na B3</span>`,
-    desc: "Como o mercado precifica as instituições e como preço, proventos, lucro e capital se conectam — plataforma acadêmica que ensina a interpretar, não recomenda.",
+    desc: "Como o mercado precifica as instituições e como preço, proventos, lucro e capital se conectam. Plataforma acadêmica: ensina a interpretar, não recomenda.",
     fontes: "B3 (COTAHIST, proventos, ações em circulação), CVM (DFP/ITR)",
   });
   // o disclaimer já vive no rodapé de todas as páginas; aqui vira uma linha discreta (E15)
@@ -9643,7 +9647,7 @@ function renderMarket() {
     const pvp = _mediana(vals.map(v => v.pvp)), pl = _mediana(vals.map(v => v.pl_ratio)), roe = _mediana(vals.map(v => v.roe_cia));
     const exerc = vals.map(v => v.exercicio_ref).filter(Boolean).sort().pop();
     return abertura({
-      placar: [
+      natureza: "calculado", placar: [
         { l: "Instituições listadas na B3", v: fmt.n0((M.empresas || []).length), sub: `${tks.length} tickers com série de preço` },
         { l: "Retorno total mediano em 12 meses", v: fmt.pct(r12, 1), sub: dataPreco ? `preço mais proventos · até ${fmt.d(dataPreco)}` : "" },
         { l: "P/VP mediano", v: pvp != null ? fmt.n(pvp, 2) + "×" : null, sub: pl != null ? `P/L mediano ${fmt.n(pl, 1)}× · patrimônio do último balanço` : "" },
@@ -9712,7 +9716,7 @@ function mktAcoes(M, mkt, tks, val) {
   const jan = M.janelas;
   const jrow = tk => {
     const t = jan[tk], v = val[tk];
-    const cell = x => x != null ? `<td style="text-align:right" class="${x >= 0 ? "down good" : "up"}">${fmt.pp(x)}%</td>` : "<td style='text-align:right'>–</td>";
+    const cell = x => x != null ? `<td style="text-align:right" class="${x >= 0 ? "down" : "up"}">${fmt.pp(x)}%</td>` : "<td style='text-align:right'>–</td>";
     return `<tr><td><b style="color:${ccol(MKT_COLORS[tk])}">${nomeDe[tk]}</b> <span class="src">${tk} · R$ ${fmt.n(v.preco, 2)}</span></td>
       ${cell(t.total.m1)}${cell(t.total.m3)}${cell(t.total.ytd)}${cell(t.total.a12)}${cell(t.total.a36)}
       <td style="text-align:right">${fmt.pp(t.total.a12 - t.preco.a12)} p.p.</td>
@@ -10006,11 +10010,11 @@ function renderPrazo() {
     actions: `<button class="btn ghost small" onclick="pzCSV()">baixar CSV (série mensal)</button>`,
   });
   const aberturaHtml = abertura({
-    placar: [
-      { l: "Carteira a vencer", v: brl(B.a_vencer), sub: `${B.d12.a_vencer_pct != null ? fmt.pp(B.d12.a_vencer_pct) + "% a/a · " : ""}SCR.data ${D.data_base}`, href: "#pz-perfil" },
+    natureza: "calculado", placar: [
+      { nat: "observado", l: "Carteira a vencer", v: brl(B.a_vencer), sub: `${B.d12.a_vencer_pct != null ? fmt.pp(B.d12.a_vencer_pct) + "% a/a · " : ""}SCR.data ${D.data_base}`, href: "#pz-perfil" },
       { l: "Vence em até 12 meses", v: pct(B.curto_12m_pct), sub: `${ppd(B.d12.curto_12m_pct)} · PF ${pct(PF.curto_12m_pct, 0)} · PJ ${pct(PJ.curto_12m_pct, 0)}`, href: "#pz-perfil" },
       { l: "Vence depois de 5 anos", v: pct(B.longo_5a_pct), sub: `${ppd(B.d12.longo_5a_pct)} · PF ${pct(PF.longo_5a_pct, 0)} · PJ ${pct(PJ.longo_5a_pct, 0)}`, href: "#pz-perfil" },
-      { l: "Prazo médio residual (aproximado)", v: anos(B.prazo_medio_anos), sub: `PF ${anos(PF.prazo_medio_anos)} · PJ ${anos(PJ.prazo_medio_anos)} · ponto médio das faixas`, href: "#pz-metodo" },
+      { nat: "estimado", l: "Prazo médio residual (aproximado)", v: anos(B.prazo_medio_anos), sub: `PF ${anos(PF.prazo_medio_anos)} · PJ ${anos(PJ.prazo_medio_anos)} · ponto médio das faixas`, href: "#pz-metodo" },
       { l: "Vencido (todo atraso)", v: pct(B.vencido_pct), sub: `${brl(B.vencido)} · ${ppd(B.d12.vencido_pct)}`, href: "#pz-perfil" },
     ],
     sintese: [D.sintese],
@@ -10109,7 +10113,7 @@ function renderFidc() {
   });
   const top = L && L.grupos.length ? L.grupos[0] : null;
   const aberturaHtml = abertura({
-    placar: [
+    natureza: "calculado", placar: [
       { l: "Fundos com carteira", v: n0(S.n_fundos), sub: `carteira ${brl(S.carteira)} · PL ${brl(S.pl_total)} · ${D.mes}`, href: "#fi-serie" },
       { l: "Créditos inadimplentes", v: pct(S.inad_pct, 2), sub: S.parcelas_inad_pct != null ? `a vencer com parcelas inadimplentes ${pct(S.parcelas_inad_pct, 2)}` : "sobre a carteira", href: "#fi-serie" },
       { l: "Maior lastro", v: top ? pct(top.share_pct, 0) : null, sub: top ? `${top.nome} · ${ppd(top.d12_pp)} · ${pct(L.cobertura.share_carteira_pct, 0)} da carteira abre o lastro` : "", href: "#fi-lastro" },
@@ -10144,12 +10148,12 @@ function renderFidc() {
     classes = secWrap("fi-classes", `${sechead("Quem absorve a primeira perda", `tabela X.2 contra tabela IV · ${n0(C.cobertura.n_fundos_ok)} fundos com soma das classes igual ao PL (${pct(C.cobertura.share_pl_pct, 0)} do PL)`)}
     <div class="grid g2">
       <div class="card"><h4>PL por classe de cota, fundos com duas ou mais classes ${badge("calculado")}</h4>
-        <div class="big">${pct(C.subordinacao_pct)} <span style="font-size:13px;color:var(--text-3)">de subordinação (mezanino + subordinada ÷ PL)</span></div>
-        ${C.d12_subordinacao_pp != null ? `<div class="delta ${C.d12_subordinacao_pp >= 0 ? "down good" : "up"}">${fmt.pp(C.d12_subordinacao_pp)} p.p. contra ${D.mes_12m}</div>` : ""}
+        <div class="big">${pct(C.subordinacao_pct)} <span style="font-size:var(--tipo-meta);color:var(--text-3)">de subordinação (mezanino + subordinada ÷ PL)</span></div>
+        ${C.d12_subordinacao_pp != null ? `<div class="delta ${C.d12_subordinacao_pp >= 0 ? "down" : "up"}">${fmt.pp(C.d12_subordinacao_pp)} p.p. contra ${D.mes_12m}</div>` : ""}
         ${C.itens.map(x => `<div class="contrib"><span class="lbl" style="width:120px">${x.nome}</span><span class="bar ${x.id === "senior" ? "pos" : "neg"}" style="width:${Math.max(2, (x.share_pct || 0) / cMax * 150)}px"></span><span class="num">${pct(x.share_pct)} <span class="src">${brl(x.pl)} · ${n0(x.n_fundos)} fundos${x.d12_pp != null ? " · " + fmt.pp(x.d12_pp) + " p.p." : ""}</span></span></div>`).join("")}
         <p class="src">PL das classes = quantidade × valor da cota. Só fundos cuja soma fecha com o PL em ±20% entram; os demais têm erro de unidade no informe e ficam fora.</p></div>
       <div class="card"><h4>Fundos de classe única ${badge("observado")}</h4>
-        <div class="big">${C.monoclasse ? pct(C.monoclasse.share_pl_pct, 0) : "–"} <span style="font-size:13px;color:var(--text-3)">do PL válido em fundos com uma só classe</span></div>
+        <div class="big">${C.monoclasse ? pct(C.monoclasse.share_pl_pct, 0) : "–"} <span style="font-size:var(--tipo-meta);color:var(--text-3)">do PL válido em fundos com uma só classe</span></div>
         <p class="src">${C.monoclasse ? `${n0(C.monoclasse.n_fundos)} fundos, PL ${brl(C.monoclasse.pl)}.` : ""} Fundo de uma classe não tem subordinação, seja qual for o rótulo da cota: em 2025-12 a CVM renomeou centenas desses fundos de "subordinada" para "sênior" sem nenhuma mudança na estrutura. Por isso a subordinação do sistema é medida só entre fundos com duas ou mais classes.</p>
         <p class="src">Fundos exclusivos e de um só cotista (comuns entre originadores que securitizam a própria carteira) ficam aqui.</p></div>
     </div>`);
@@ -10230,7 +10234,7 @@ function renderSubnacional() {
   const shareMun = K.deferidos_12m_valor ? K.municipios_12m_valor / K.deferidos_12m_valor * 100 : null;
   const sharePgfn = K.deferidos_12m_valor ? K.pgfn_12m_valor / K.deferidos_12m_valor * 100 : null;
   const aberturaHtml = abertura({
-    placar: [
+    natureza: "calculado", placar: [
       { l: "Com parecer favorável em 12 meses", v: bi(K.deferidos_12m_valor), sub: `${n0(K.deferidos_12m_n)} operações${K.var_12m_valor_pct != null ? ` · ${K.var_12m_valor_pct >= 0 ? "+" : ""}${fmt.n(K.var_12m_valor_pct, 0)}% em valor contra os 12 meses anteriores` : ""}`, href: "#sn-mensal" },
       { l: "Entes com parecer favorável", v: n0(K.entes_12m), sub: `${n0(K.municipios_12m_n)} operações de municípios e ${n0(K.estados_12m_n)} de estados`, href: "#sn-ufs" },
       { l: "Municípios no valor", v: pct(shareMun, 0), sub: `${bi(K.municipios_12m_valor)} · estados ${bi(K.estados_12m_valor)}`, href: "#sn-anual" },
@@ -10320,7 +10324,7 @@ function renderSubnacional() {
     dividaSec = secWrap("sn-divida", `${sechead("Quanto os estados devem", `Siconfi, RGF Anexo 02 · ${KD.periodo || "–"} · ${n0(KD.n_ufs)} de 27 UFs com entrega`)}
     <div class="grid g2">
       <div class="card"><h4>Dívida consolidada líquida dos estados e do DF ${badge("observado")}</h4>
-        <div class="big">${bi(KD.dcl)} <span style="font-size:13px;color:var(--text-3)">${pct(KD.dcl_rcl_pct, 0)} da receita corrente líquida</span></div>
+        <div class="big">${bi(KD.dcl)} <span style="font-size:var(--tipo-meta);color:var(--text-3)">${pct(KD.dcl_rcl_pct, 0)} da receita corrente líquida</span></div>
         <dl class="ppgrid" style="margin-top:8px"><div><dt>Dívida consolidada bruta</dt><dd>${bi(KD.dc)}</dd></div><div><dt>Com a União (reestruturação)</dt><dd>${bi(KD.reestruturacao_uniao)} <span class="src">${pct(KD.uniao_share_pct, 0)} da bruta</span></dd></div>
         <div><dt>Acima do limite do Senado</dt><dd>${n0(KD.ufs_acima_limite)} UF${KD.ufs_acima_limite === 1 ? "" : "s"} <span class="src">${(KD.ufs_acima_limite_lista || []).join(", ") || "nenhuma"}</span></dd></div><div><dt>Acima do limite de alerta</dt><dd>${n0(KD.ufs_acima_alerta)} UF${KD.ufs_acima_alerta === 1 ? "" : "s"}</dd></div></dl>
         ${lineChart({ series: seriesD, h: 180, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "Tesouro Nacional, Siconfi (RGF)", status: "observado", aria: "dívida consolidada líquida sobre receita corrente líquida, soma das UFs, por ano" })}
@@ -10431,6 +10435,7 @@ function renderSugestoes() {
   const el = document.getElementById("view-sugestoes");
   el.innerHTML = `
   <div class="pagehead"><div class="ph-left">
+    ${rotuloContexto()}
     <h2>Sugestões</h2>
     <p class="viewdesc">Diga o que falta, o que está confuso ou o que merece correção. Cada sugestão vai direto para a administração da plataforma, identificada pela sua conta.</p>
   </div></div>
@@ -10884,7 +10889,7 @@ function renderMoradia() {
 
   el.innerHTML = pageHead({
     title: "Crédito imobiliário e moradia",
-    desc: "Como o país mora, quanto crédito imobiliário existe e onde ele não chega — com as três bases públicas mantidas separadas.",
+    desc: "Como o país mora, quanto crédito imobiliário existe e onde ele não chega, com as três bases públicas mantidas separadas.",
     fontes: `IBGE Censo ${C.ano} · BCB ESTBAN ${D.datas.estban} · BCB Mercado Imobiliário ${D.datas.mi_credito} · BCB SCR ${D.datas.scr}`,
   }) + indice + abertura + achados
     + blocoMora + blocoOnde + blocoQuem + blocoPeso + blocoPot + blocoMet;
@@ -11250,14 +11255,14 @@ function renderConsignado() {
 
   el.innerHTML = pageHead({
     title: "Consignado e aposentados",
-    desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante — separando o que é observado do que é estimado.",
+    desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante, separando o que é observado do que é estimado.",
     fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
   }) + ((D.sgs && D.sgs.atual && D.sgs.atual.inss && D.sgs.atual.privado) ? placar([
     { v: fmt.n(D.sgs.atual.inss.inad, 2) + "%", l: "Inadimplência — consignado INSS", sub: `SGS · ${D.sgs.data_base}`, href: "#cg-geral" },
     { v: fmt.n(D.sgs.atual.privado.inad, 2) + "%", l: "Inadimplência — consignado privado", sub: `${fmt.n(D.sgs.atual.privado.inad / D.sgs.atual.inss.inad, 1)}× a do INSS, no mesmo conceito SGS`, href: "#cg-geral" },
-    D.reclamacoes && D.reclamacoes.total ? { v: fmt.n0(D.reclamacoes.total), l: "Reclamações de beneficiários INSS", sub: `${D.reclamacoes.de} a ${D.reclamacoes.ate}`, href: "#cg-idade" } : null,
-    D.sgs.atual.total && D.sgs.atual.total.saldo ? { v: fmt.money(D.sgs.atual.total.saldo * 1e6), l: "Carteira total do consignado", sub: "INSS + privado + público", href: "#cg-geral" } : null,
-  ]) : "") + indice + geral + mapa + avisoFonte + idade + prev
+    D.reclamacoes && D.reclamacoes.total ? { nat: "calculado", v: fmt.n0(D.reclamacoes.total), l: "Reclamações de beneficiários INSS", sub: `${D.reclamacoes.de} a ${D.reclamacoes.ate}`, href: "#cg-idade" } : null,
+    D.sgs.atual.total && D.sgs.atual.total.saldo ? { nat: "calculado", v: fmt.money(D.sgs.atual.total.saldo * 1e6), l: "Carteira total do consignado", sub: "INSS + privado + público", href: "#cg-geral" } : null,
+  ], "observado") : "") + indice + geral + mapa + avisoFonte + idade + prev
     + cgExposicao(D) + cgCircularidade(D) + cgSaturacao(D, base)
     + cgRisco(D, base) + cgInstituicoes(D)
     + cgPerfil(D, sel, comparar) + cgMetodo(D);
@@ -11703,7 +11708,7 @@ function renderRural() {
   const head = pageHead({
     title: "Crédito rural", vintage: R.mes_fechado,
     seals: `${badge("observado", "MDCR/Sicor: contratações registradas, agregadas pelo BCB")} ${badge("calculado", "janela de 12 meses, safras, participações, valor por habitante e por hectare calculados")}`,
-    desc: "Quanto crédito rural se contrata no Brasil, com que dinheiro, por quais programas, para quem e onde — a Matriz de Dados do Crédito Rural do BCB, cédula a cédula, agregada por mês.",
+    desc: "Quanto crédito rural se contrata no Brasil, com que dinheiro, por quais programas, para quem e onde, pela Matriz de Dados do Crédito Rural do BCB, cédula a cédula, agregada por mês.",
     fontes: "BCB MDCR/Sicor (dados abertos, ODbL) · IBGE Censo 2022 (população) · malha IBGE",
     actions: `<button class="btn ghost small" onclick="ruCSV()">baixar CSV (municípios, 12 m)</button>`,
   });
@@ -11716,7 +11721,7 @@ function renderRural() {
     { l: "Custeio no valor", v: pct(K.custeio_share), sub: `investimento ${pct(K.investimento_share)} · agrícola ${pct(K.agricola_share)}`, href: "#ru-evol" },
     { l: "PRONAF no valor", v: pct(K.pronaf_share), sub: `fontes com taxa controlada ${pct(K.controlada_share)}`, href: "#ru-prog" },
     { l: "Mulheres nos contratos (PF)", v: pct(K.mulheres_share_qtd), sub: `${pct(K.mulheres_share_valor)} do valor`, href: "#ru-quem" },
-  ]);
+  ], "calculado");
 
   /* ---------- evolução ---------- */
   const ser = R.serie_mensal || [];
@@ -11747,7 +11752,7 @@ function renderRural() {
   const safra = secWrap("ru-safra", `${sechead("Safra a safra", "ano agrícola: julho a junho")}
   <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Safra</th><th style="text-align:right">Valor</th><th style="text-align:right">Contratos</th><th style="text-align:right">Custeio</th><th style="text-align:right">Investimento</th><th style="text-align:right">Comercialização</th><th style="text-align:right">Industrialização</th><th></th></tr></thead>
   <tbody>${saf.map((x, i) => { const ant = saf[i - 1]; const v = ant && !ant.incompleta && !x.incompleta ? (x.valor / ant.valor - 1) * 100 : null;
-    return `<tr><td><b>${x.safra}</b>${x.incompleta ? ` <span class="src">(${x.meses} de 12 meses)</span>` : ""}</td><td style="text-align:right"><b>${brl(x.valor)}</b>${v != null ? ` <span class="src ${v >= 0 ? "down good" : "up"}">${fmt.pp(v)}%</span>` : ""}</td><td style="text-align:right">${fmt.n0(x.qtd)}</td><td style="text-align:right">${brl(x.custeio)}</td><td style="text-align:right">${brl(x.investimento)}</td><td style="text-align:right">${brl(x.comercializacao)}</td><td style="text-align:right">${brl(x.industrializacao)}</td><td>${x.incompleta ? badge("estimado", "safra incompleta: soma dos meses já publicados") : ""}</td></tr>`; }).join("")}</tbody></table></div>
+    return `<tr><td><b>${x.safra}</b>${x.incompleta ? ` <span class="src">(${x.meses} de 12 meses)</span>` : ""}</td><td style="text-align:right"><b>${brl(x.valor)}</b>${v != null ? ` <span class="src ${v >= 0 ? "down" : "up"}">${fmt.pp(v)}%</span>` : ""}</td><td style="text-align:right">${fmt.n0(x.qtd)}</td><td style="text-align:right">${brl(x.custeio)}</td><td style="text-align:right">${brl(x.investimento)}</td><td style="text-align:right">${brl(x.comercializacao)}</td><td style="text-align:right">${brl(x.industrializacao)}</td><td>${x.incompleta ? badge("estimado", "safra incompleta: soma dos meses já publicados") : ""}</td></tr>`; }).join("")}</tbody></table></div>
   <p class="src">Valores nominais. Safra incompleta é a soma dos meses já publicados, nunca uma projeção.</p></div>`);
 
   /* ---------- programas ---------- */
@@ -11794,9 +11799,9 @@ function renderRural() {
   <div class="grid g2">
     <div class="card"><h4>Mulheres no crédito rural ${badge("observado", G.universo)}</h4>
       <div class="kpirow">
-        <div class="card kpi"><h4>dos contratos</h4><div class="big" style="font-size:22px">${pct(G.mulheres_share_qtd, 1)}</div></div>
-        <div class="card kpi"><h4>do valor</h4><div class="big" style="font-size:22px">${pct(G.mulheres_share_valor, 1)}</div></div>
-        <div class="card kpi"><h4>valor médio (mulheres × homens)</h4><div class="big" style="font-size:22px">R$ ${fmt.n0(G.ticket_mulheres)} <span class="src">× R$ ${fmt.n0(G.ticket_homens)}</span></div></div>
+        <div class="card kpi"><h4>dos contratos</h4><div class="big" style="font-size:var(--tipo-numero-p)">${pct(G.mulheres_share_qtd, 1)}</div></div>
+        <div class="card kpi"><h4>do valor</h4><div class="big" style="font-size:var(--tipo-numero-p)">${pct(G.mulheres_share_valor, 1)}</div></div>
+        <div class="card kpi"><h4>valor médio (mulheres × homens)</h4><div class="big" style="font-size:var(--tipo-numero-p)">R$ ${fmt.n0(G.ticket_mulheres)} <span class="src">× R$ ${fmt.n0(G.ticket_homens)}</span></div></div>
       </div>
       <div class="src" style="margin:8px 0">universo: ${G.universo} · cobre ${pct(G.cobertura_valor_pct)} do valor contratado</div>
       <details class="decomp"><summary>por UF (${(G.por_uf || []).length}) e por safra</summary>
@@ -11930,27 +11935,27 @@ function operBlocoInst(cab) {
   const { piloto, rede, pontos, corresp } = r;
   const emp = piloto && piloto.empregados ? piloto.empregados.serie[piloto.empregados.serie.length - 1] : null;
   const aud = piloto && piloto.auditor && piloto.auditor.vigente;
-  const dvar = v => v == null ? "" : `<div class="delta ${v < 0 ? "up" : "down good"}">${v > 0 ? "▲ +" : v < 0 ? "▼ " : ""}${fmt.n0(v)} em 12 meses</div>`;
+  const dvar = v => v == null ? "" : `<div class="delta ${v < 0 ? "up" : "down"}">${v > 0 ? "▲ +" : v < 0 ? "▼ " : ""}${fmt.n0(v)} em 12 meses</div>`;
   const cards = [];
   if (rede) cards.push(`<div class="card kpi"><h4>Agências (banco operacional)</h4>
-    <div class="big" style="font-size:21px">${fmt.n0(rede.agencias)}</div>${dvar(rede.var_12m)}
+    <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(rede.agencias)}</div>${dvar(rede.var_12m)}
     ${rede.serie ? sparkline(rede.serie.map(p => p.agencias), 150, 30) : ""}
     <div class="src">${badge("observado")} ${fmt.n0(rede.municipios)} municípios · ESTBAN ${fmt.my(rede.mes)}</div></div>`);
   if (emp) cards.push(`<div class="card kpi"><h4>Empregados (declarado no FRE)</h4>
-    <div class="big" style="font-size:21px">${fmt.n0(emp.total)}</div>
-    ${emp.var_aa_pct != null ? `<div class="delta ${emp.var_aa_pct < 0 ? "up" : "down good"}">${emp.var_aa_pct > 0 ? "▲ +" : "▼ "}${fmt.n(Math.abs(emp.var_aa_pct), 1)}% a/a</div>` : ""}
+    <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(emp.total)}</div>
+    ${emp.var_aa_pct != null ? `<div class="delta ${emp.var_aa_pct < 0 ? "up" : "down"}">${emp.var_aa_pct > 0 ? "▲ +" : "▼ "}${fmt.n(Math.abs(emp.var_aa_pct), 1)}% a/a</div>` : ""}
     ${piloto.empregados.serie.length > 2 ? sparkline(piloto.empregados.serie.map(p => p.total), 150, 30) : ""}
     <div class="src">${badge("observado")} escopo declarado pela companhia · ref. ${fmt.d(emp.ref)}</div></div>`);
   if (pontos) cards.push(`<div class="card kpi"><h4>Rede de atendimento (cadastro do BC)</h4>
-    <div class="big" style="font-size:21px">${fmt.n0(pontos.total)}</div>
+    <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(pontos.total)}</div>
     <div class="src" style="margin-top:2px">${fmt.n0(pontos.agencia)} agências · ${fmt.n0(pontos.posto)} postos · ${fmt.n0(pontos.pae)} PAE</div>
     <div class="src">${badge("observado")} ${fmt.n0(pontos.municipios)} municípios · posição ${r.posicao || "–"}</div></div>`);
   if (corresp) cards.push(`<div class="card kpi"><h4>Correspondentes contratados</h4>
-    <div class="big" style="font-size:21px">${fmt.n0(corresp.pontos)}</div>
+    <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(corresp.pontos)}</div>
     <div class="src" style="margin-top:2px">${fmt.n0(corresp.correspondentes)} correspondentes distintos</div>
     <div class="src">${badge("observado")} ${fmt.n0(corresp.municipios)} municípios · posição ${r.posicaoCorresp || "–"} · contratante, não grupo</div></div>`);
   if (aud) cards.push(`<div class="card kpi"><h4>Auditor independente</h4>
-    <div class="big" style="font-size:15px;line-height:1.25">${aud.nome}</div>
+    <div class="big" style="font-size:var(--tipo-corpo);line-height:1.25">${aud.nome}</div>
     <div class="src">${badge("observado")} desde ${fmt.d(aud.desde)} · ${piloto.auditor.historico.filter(h => h.fim).length} troca(s) registrada(s) no FCA</div></div>`);
   if (!cards.length) return "";
   return `<div id="s-oper" style="margin-top:12px">${sechead("Rede, pessoas e auditoria", "gente, rede e auditoria — fontes estruturadas oficiais")}
@@ -12107,7 +12112,7 @@ function renderOperacional() {
       <div class="src">${badge("observado")} de 5.570 municípios<br>os demais dependem de postos e canais digitais</div></div>
     <div class="card kpi"><h4>Bancos com rede física</h4><div class="big">${fmt.n0(atual.bancos)}</div>
       <div class="src">${badge("observado")} com ao menos 1 agência processada</div></div>
-    <div class="card kpi"><h4>Série disponível</h4><div class="big">${sfn.length} <span style="font-size:.55em">meses</span></div>
+    <div class="card kpi"><h4>Série disponível</h4><div class="big">${sfn.length} <span style="font-size:var(--tipo-meta)">meses</span></div>
       <div class="src">${sfn.length ? `${fmt.my(sfn[0].mes)} a ${fmt.my(atual.mes)}` : "–"} · atualização mensal</div></div>
   </div>`;
 
@@ -12225,7 +12230,7 @@ function renderOperacional() {
         </tbody></table></div>
       <p class="src" style="margin-top:6px">Ordenado pela fatia de municípios em que o correspondente é a única presença.</p>
       <details class="decomp" style="margin-top:10px"><summary>o que este mapa não diz</summary>
-        <ul style="font-size:13px;margin:6px 0 0 18px">${PR.limitacoes.map(l => `<li>${l}</li>`).join("")}</ul>
+        <ul style="font-size:var(--tipo-meta);margin:6px 0 0 18px">${PR.limitacoes.map(l => `<li>${l}</li>`).join("")}</ul>
         <div class="tblwrap" style="margin-top:8px"><table class="data compact"><tbody>
         ${PR.classes.map(c => `<tr><td style="white-space:nowrap"><b>${c.rotulo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
         </tbody></table></div>
@@ -12260,7 +12265,7 @@ function renderOperacional() {
         <td class="num">${fmt.n0(i.correspondentes.municipios)}</td></tr>`).join("")}
       </tbody></table></div>
     <div class="note warn" style="margin-top:8px"><b>Contratante não é grupo.</b> ${CO.escopo}</div>
-    <ul style="font-size:13px;margin:8px 0 0 18px">${(CO.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+    <ul style="font-size:var(--tipo-meta);margin:8px 0 0 18px">${(CO.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
     <p class="src" style="margin-top:8px">${badge("observado")} <a href="${attr(CO.fonte.url)}" target="_blank" rel="noopener">${CO.fonte.nome}</a> ·
     nível ${CO.fonte.nivel}. Instituição sem correspondente contratado não aparece na tabela: ausência de contrato é
     informação, não zero de rede.</p></div>`;
@@ -12438,7 +12443,7 @@ function renderOperacional() {
   if (TI) {
     const ag = TI.agregado_sistema;
     const cardAg = !ag ? "" : `<div class="card"><h4>${ag.nome} ${badge("observado")}</h4>
-      <div class="big" style="font-size:21px">${fmt.money(ag.orcamento_2025_brl)} <span style="font-size:13px">previstos para 2025</span></div>
+      <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(ag.orcamento_2025_brl)} <span style="font-size:var(--tipo-meta)">previstos para 2025</span></div>
       <div class="delta neutral">${fmt.money(ag.orcamento_2024_brl)} em 2024 · +${ag.variacao_pct}%</div>
       <p class="src">${ag.amostra}. <b>${ag.conceito}</b></p>
       <p class="src"><a href="${attr(ag.fonte.url)}" target="_blank" rel="noopener">${ag.fonte.nome}</a> · nível ${ag.fonte.nivel}.</p></div>`;
@@ -12606,7 +12611,7 @@ function renderPresencaMun() {
   <div class="card"><div class="note warn">${PR.aviso}</div>
     <dl class="descomoler" style="margin-top:10px">${(PR.classes || []).map(c => `<dt>${c.rotulo}</dt><dd>${c.def}</dd>`).join("")}</dl>
     <details class="decomp" style="margin-top:8px"><summary>o que estes números não dizem</summary>
-      <ul style="font-size:13px;margin:6px 0 0 18px">${(PR.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+      <ul style="font-size:var(--tipo-meta);margin:6px 0 0 18px">${(PR.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
     </details>
     <p class="src" style="margin-top:8px">${badge("observado")} ${(PR.fontes || []).map(f =>
       `<a href="${attr(f.url)}" target="_blank" rel="noopener">${f.nome}</a>`).join(" · ")} ·
@@ -12670,8 +12675,8 @@ function renderRegulacao() {
     const orgaos = new Set(todos.map(m => m.orgao).filter(Boolean));
     const u = todos[0];
     return abertura({
-      placar: [
-        { l: "Marcos na linha do tempo", v: todos.length ? fmt.n0(todos.length) : null, sub: `régua editorial · atualizado ${(R.gerado_em || "").slice(0, 10)}` },
+      natureza: "calculado", placar: [
+        { l: "Marcos na linha do tempo", v: todos.length ? fmt.n0(todos.length) : null, sub: `régua editorial · atualizado ${dataTela((R.gerado_em || "").slice(0, 10))}` },
         { l: "Nos últimos doze meses", v: todos.length ? fmt.n0(rec.length) : null, sub: `desde ${fmt.d(lim)}` },
         { l: "Órgãos emissores", v: orgaos.size ? fmt.n0(orgaos.size) : null, sub: [...orgaos].join(" · ") },
         { l: "Painéis afetados", v: (R.paineis || []).length ? fmt.n0(R.paineis.length) : null, sub: "cada marco aponta as abas que explica" },
@@ -12680,7 +12685,7 @@ function renderRegulacao() {
         u ? `O marco mais recente é ${u.ato}, de ${u.orgao} em ${fmt.d(u.data)}, e afeta ${(u.paineis || []).map(p => REG_LABELS[p] || p).join(", ") || "painéis não indicados"}.` : null,
         `A régua é editorial: ${todos.length} marcos escolhidos por explicarem quebras visíveis nas séries, não um censo normativo.`,
       ],
-      ref: `${R.fonte ? R.fonte.nome : "textos oficiais"} · ${(R.gerado_em || "").slice(0, 10)}`,
+      ref: `${R.fonte ? R.fonte.nome : "textos oficiais"} · ${dataTela((R.gerado_em || "").slice(0, 10))}`,
     });
   })()}
   <div class="note warn"><b>Coincidência no tempo não é efeito.</b> ${R.leitura}</div>
@@ -12694,11 +12699,27 @@ function renderRegulacao() {
     ${(R.timelines_tematicas || []).map(t => `<p><button class="btn ghost small" onclick="nav('${t.painel}')">${t.nome} →</button></p>`).join("")}
     <p class="src">E a aba Consignado marca as mudanças de margem consignável diretamente nos gráficos de saldo.</p>
   </div>
-  <div class="card"><p class="src">${badge("observado")} ${R.fonte.nome} · nível ${R.fonte.nivel} — ${R.fonte.nota}. Atualizado ${(R.gerado_em || "").slice(0, 10)}.</p></div>`;
+  <div class="card"><p class="src">${badge("observado")} ${R.fonte.nome} · nível ${R.fonte.nivel} — ${R.fonte.nota}. Atualizado ${dataTela((R.gerado_em || "").slice(0, 10))}.</p></div>`;
 }
 
+/* Data na forma da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026): "AAAA-MM-DD" vira dd/mm/aaaa, "AAAA-MM" vira
+   mmm/aaaa e um carimbo com hora vira o horário de Brasília; o resto (trimestre, ano, texto) passa como veio. */
+function dataTela(v) {
+  const t = v == null ? "" : String(v).trim();
+  if (/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}/.test(t)) return dataHoraBrasilia(t);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return fmt.d(t);
+  if (/^\d{4}-\d{2}$/.test(t)) return fmt.my(t);
+  return t;
+}
+/* "22/10/2026 às 15:48 (horário de Brasília)" a partir de um carimbo ISO em UTC; nunca o carimbo cru na tela */
+function dataHoraBrasilia(iso) {
+  const d = iso ? new Date(iso.length <= 19 && !/[zZ]|[+-]\d\d:?\d\d$/.test(iso) ? iso + "Z" : iso) : null;
+  if (!d || isNaN(d)) return "";
+  const p = Object.fromEntries(new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(d).map(x => [x.type, x.value]));
+  return `${p.day}/${p.month}/${p.year} às ${p.hour}:${p.minute} (horário de Brasília)`;
+}
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota", subnacional: "Crédito a estados e municípios" };
+const VIEW_TITLES = { mapa: "Início do painel", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota", subnacional: "Crédito a estados e municípios" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -12720,19 +12741,24 @@ function pingView(v) {
    às colunas da direita, porque o contêiner não recebia foco. O tabindex só
    entra onde há rolagem de fato — pôr foco em contêiner que não rola criaria
    paradas de tabulação vazias, que é o defeito oposto. */
+/* Abaixo de 640 px a tabela solta num cartão rola sozinha (display:block, styles.css "transbordos a 390 px"): ela mesma
+   recebe o foco e o nome, sem trocar o papel de tabela por região (três nós reprovados em payroll-lending-aging a 390 px na
+   medição de 23/10/2026, Iniciativa 2 do parecer de UX). */
+const TABELA_QUE_ROLA = ".card > table.data, .view > table.data, details > table.data";
 function acessibilizaRolagem(raiz) {
-  (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x").forEach(el => {
+  (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x, " + TABELA_QUE_ROLA).forEach(el => {
     const rola = el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2;
+    const tabela = el.tagName === "TABLE";
     if (rola && !el.hasAttribute("tabindex")) {
       el.setAttribute("tabindex", "0");
-      el.setAttribute("role", "region");
+      if (!tabela) el.setAttribute("role", "region");
       el.dataset.rolavel = "1";
       if (!el.getAttribute("aria-label")) {
         const t = el.querySelector("table caption, th");
         el.setAttribute("aria-label", `área rolável${t ? ": " + attr(t.textContent).slice(0, 60) : ""} — use as setas para percorrer`);
       }
     } else if (!rola && el.dataset.rolavel === "1") {
-      el.removeAttribute("tabindex"); el.removeAttribute("role"); delete el.dataset.rolavel;
+      el.removeAttribute("tabindex"); if (!tabela) el.removeAttribute("role"); delete el.dataset.rolavel;
     }
   });
 }
@@ -12793,6 +12819,33 @@ function ajustaFonteSvg(raiz) {
     }
   });
 }
+/* Datas na forma da plataforma também no texto que vem do dado (Iniciativa 2 do parecer de UX de 23/10/2026): data-base, janela e
+   frases determinísticas das golds chegam como "2026-08" ou "2026-10-22", em dezenas de lugares. Em vez de lembrar de formatar em
+   cada um, a camada de apresentação converte o texto visível da página: "AAAA-MM" vira mmm/aaaa, "AAAA-MM-DD" vira dd/mm/aaaa e um
+   carimbo com hora vira o horário de Brasília. O dado, os atributos, as exportações e os campos de formulário não mudam.
+   "2011-12" fica como está quando pode ser um intervalo de anos (o mês é o ano seguinte), e nada fora de 1900 a 2099 é data. */
+const DATA_ISO_TELA = /(?<![\d-])((?:19|20)\d{2})-(0[1-9]|1[0-2])(?:-(0[1-9]|[12]\d|3[01])(?:[T ]([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?)?(?![\d-])/g;
+function dataIsoNoTexto(t) {
+  return t.replace(DATA_ISO_TELA, (m, ano, mes, dia, hora) => {
+    if (hora) return dataHoraBrasilia(m.replace(" ", "T")) || m;
+    if (dia) return fmt.d(m);
+    return +mes === (+ano + 1) % 100 ? m : fmt.my(m);
+  });
+}
+function datasNaTela(raiz) {
+  if (!raiz || typeof document.createTreeWalker !== "function") return;
+  const tem = /(?:19|20)\d{2}-(?:0[1-9]|1[0-2])/;
+  const w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => tem.test(n.nodeValue) && !(n.parentElement && n.parentElement.closest("script, style, code, pre, textarea"))
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  });
+  const nos = [];
+  while (w.nextNode()) nos.push(w.currentNode);
+  for (const n of nos) {
+    const novo = dataIsoNoTexto(n.nodeValue);
+    if (novo !== n.nodeValue) n.nodeValue = novo;
+  }
+}
 function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
   _rolagemAgendada = setTimeout(() => {
@@ -12800,6 +12853,7 @@ function agendaAcessibilidade() {
     acessibilizaRolagem(ativa);
     adaptaTabelasMoveis(ativa);
     ajustaFonteSvg(ativa);
+    datasNaTela(ativa);
     aplicaCapitulos();
   }, 120);
 }
@@ -12857,9 +12911,8 @@ function refazTrilha() {
 }
 function showViewSilent(v) {
   refazTrilha();
-  try { navPrepara(); navSincroniza(); } catch (e) {}
+  refazCasca();
   pingView(v);
-  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional") || (v === "estado" && b.dataset.view === "estados")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
   if (pend) {
@@ -12868,44 +12921,17 @@ function showViewSilent(v) {
     Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   } else ensureChunk(v).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + TITULO_COLECAO;
-  closeSidebar();
   hideTip();
   window.scrollTo(0, 0);
   agendaAcessibilidade();
 }
 
-/* ---------- shell: tema, menu móvel, badge de alertas ---------- */
-function applyTheme(t) {
-  if (t) document.documentElement.dataset.theme = t;
-  else delete document.documentElement.dataset.theme;
-}
-(function initTheme() {
-  const saved = loadLS("obc_theme", null);
-  if (saved) applyTheme(saved);
-  else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
-})();
-/* Atalho de administração: só aparece se a sessão atual é de admin
-   (checagem no servidor via /api/admin/eu; para os demais, nada muda). */
-(function initAdminShortcut() {
-  const btn = document.getElementById("adminBtn");
-  if (!btn) return;
-  fetch("/api/admin/eu", { credentials: "same-origin" })
-    .then(r => { if (r.ok) btn.hidden = false; })
-    .catch(() => {});
-})();
-/* Observatório público: o padrão do rodapé é o visitante (botão "Entrar").
-   Se a sessão existir (/api/auth/eu → 204), troca para "Minha conta"/"Sair". */
-(function initSessionFoot() {
-  const login = document.getElementById("loginBtn");
-  const account = document.getElementById("accountBtn");
-  const logout = document.getElementById("logoutBtn");
-  if (!login || !account || !logout) return;
-  fetch("/api/auth/eu", { credentials: "same-origin" })
-    .then(r => {
-      if (r.status === 204) { login.hidden = true; account.hidden = false; logout.hidden = false; }
-    })
-    .catch(() => {});
-})();
+/* ---------- shell ----------
+   Desde a Iniciativa 2 do parecer de UX de 23/10/2026 (o Crédito na mesma casca) a aplicação não tem barra lateral, barra de
+   celular, marca nem rodapé próprios: a navegação é a da coleção dona do endereço, gerada no servidor, e a conta fica na
+   barra comum. Saíram com a barra lateral o alternador de tema (decisão do dono de 23/10/2026: a plataforma não tem tema
+   escuro; a página ficaria metade clara, metade escura), o atalho de administração (a consulta de administração respondia
+   403 a quem não administra, e o link vive na navegação da conta, /app) e o par Entrar/Minha conta/Sair do rodapé. */
 /* Conta na barra comum da plataforma (public/obs/index.html): começa oculta e só
    aparece com a resposta da sessão, para quem entrou não ver "Entrar" piscar.
    Com sessão (/api/auth/eu → 204), "Minha conta"; sem ela, "Entrar", com volta a
@@ -12939,37 +12965,6 @@ function applyTheme(t) {
     el.addEventListener("focusout", e => { if (el.open && !el.contains(e.relatedTarget)) el.open = false; });
   });
 })();
-const _themeBtn = document.getElementById("themeToggle"); // ausente na página de embed
-if (_themeBtn) _themeBtn.addEventListener("click", () => {
-  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  saveLS("obc_theme", next);
-  applyTheme(next);
-});
-const sidebarEl = document.getElementById("sidebar"), scrimEl = document.getElementById("scrim"), menuBtnEl = document.getElementById("menuBtn");
-/* sidebar recolhível (desktop): iniciais + tooltip nativo; persistida */
-(function initCollapse() {
-  document.querySelectorAll("nav.tabs button").forEach(b => {
-    const label = b.textContent.trim();
-    b.title = label;
-    b.dataset.initial = label.split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-  });
-  if (loadLS("obc_sb_collapsed", false)) document.body.classList.add("sb-collapsed");
-  const t = document.getElementById("sbToggle");
-  if (t) t.addEventListener("click", () => {
-    const on = document.body.classList.toggle("sb-collapsed");
-    saveLS("obc_sb_collapsed", on);
-  });
-})();
-function closeSidebar() { if (!sidebarEl) return; sidebarEl.classList.remove("open"); scrimEl.hidden = true; menuBtnEl.setAttribute("aria-expanded", "false"); }
-// os três elementos não existem na página de embed — null-guard obrigatório
-if (menuBtnEl) menuBtnEl.addEventListener("click", () => {
-  const open = !sidebarEl.classList.contains("open");
-  sidebarEl.classList.toggle("open", open);
-  scrimEl.hidden = !open;
-  menuBtnEl.setAttribute("aria-expanded", String(open));
-});
-if (scrimEl) scrimEl.addEventListener("click", closeSidebar);
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeSidebar(); });
 function updateAlertBadge() {
   const el = document.getElementById("alertCount");
   const a = state.data.alertas_central;
@@ -12994,8 +12989,66 @@ window.showView = v => {
   }
   showViewSilent(v);
 };
-const _tabsEl = document.getElementById("tabs"); // ausente na página de embed
-if (_tabsEl) _tabsEl.addEventListener("click", e => { if (e.target.dataset.view) showView(e.target.dataset.view); });
+
+/* ---------- casca da plataforma: navegação da coleção, rótulo e fim de página ----------
+   O servidor (src/lib/observatorios/barraSpa.ts) manda, para o endereço pedido, a navegação da coleção dona, "Para ir além"
+   e o rodapé da coleção, e embute o índice (#navColecaoIndice) com que casca.min.js (src/lib/observatorios/cascaPura.ts)
+   refaz as mesmas peças a cada troca de página dentro da aplicação: o atual marcado, a segunda linha do grupo e, quando a
+   página é de outra coleção (Consignado é das Famílias), a navegação e o rodapé dela. */
+let _indiceCasca;
+function indiceCasca() {
+  if (_indiceCasca !== undefined) return _indiceCasca;
+  const el = document.getElementById("navColecaoIndice");
+  try { _indiceCasca = el ? JSON.parse(el.textContent) : null; } catch (e) { _indiceCasca = null; }
+  return _indiceCasca;
+}
+/* grupos do Crédito com as vistas de cada um (para o "Início do painel"), na ordem da jornada */
+function gruposDoMenu() {
+  const ind = indiceCasca();
+  if (!ind || !ind.grupos) return [];
+  const porRota = Object.fromEntries(Object.entries(ROUTES).map(([v, r]) => [BASE + r, v]));
+  return ind.grupos.map(g => ({ rotulo: g.rotulo, vistas: g.paginas.map(h => porRota[h]).filter(Boolean) }));
+}
+/* endereço canônico da vista aberta: a raiz da aplicação é o "Início do painel" */
+function caminhoDaVista() {
+  const v = currentView();
+  if (PATH_MODE && location.pathname !== BASE && location.pathname !== BASE + "/") return location.pathname.replace(/\/+$/, "");
+  return BASE + (ROUTES[v] || "/map");
+}
+function refazCasca() {
+  const C = window.CascaCredito, ind = indiceCasca();
+  if (!C || !ind) return;
+  const caminho = caminhoDaVista();
+  const col = C.contexto(ind, caminho);
+  const nav = ind.navs[(col && col.colecao && col.colecao.id) || "credito"] || ind.navs.credito;
+  const caixa = document.getElementById("cascaNav");
+  if (caixa && nav) {
+    caixa.innerHTML = C.htmlNavegacao(nav, caminho);
+    C.ligarNavegacao(caixa.firstElementChild);
+  }
+  const fim = document.getElementById("cascaFim");
+  if (fim && nav) {
+    // as fontes e a data (preenchidas no início) atravessam a troca: o rodapé muda de coleção, o texto delas não
+    const fontes = Array.from(fim.querySelectorAll("[data-rodape-colecao] .min-w-0 > p")).map(p => p.outerHTML).join("");
+    fim.innerHTML = C.htmlParaIrAlem(ind, caminho) + C.htmlRodapeColecao(nav, fontes, ind.extrasRodape || []);
+  }
+}
+/* Os links da casca (navegação, fim de página) que levam a outra página da aplicação abrem pelo roteador interno, sem
+   recarregar; os demais, o clique com tecla modificadora ou outro botão seguem como link comum. Sem JavaScript, cada link
+   abre a página pelo servidor (o route handler serve qualquer endereço da aplicação). */
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target instanceof Element ? e.target.closest("a[href]") : null;
+  if (!a || !a.closest(".casca") || a.target || a.hasAttribute("download")) return;
+  const url = new URL(a.href, location.href);
+  if (!PATH_MODE || url.origin !== location.origin || !(url.pathname === BASE || url.pathname.startsWith(BASE + "/"))) return;
+  e.preventDefault();
+  if (url.pathname + url.search === location.pathname + location.search) return;
+  history.pushState(null, "", url.pathname + url.search + url.hash);
+  const v = parseHash();
+  if (RENDER[v]) showViewSilent(v);
+  else location.assign(url.href);
+});
 
 /* ---------- acessibilidade: teclado para clicáveis não nativos (padrão tabindex+keydown da SPA) ---------- */
 const A11Y_NATIVE = ["BUTTON", "A", "INPUT", "SELECT", "TEXTAREA", "SUMMARY", "OPTION", "LABEL"];
@@ -13117,15 +13170,15 @@ function renderProducts() {
     const lider = p.lider;
     return `<div class="card clickable" onclick="openProduct('${p.slug}')">
       <h4><a href="/observatorio/products/${p.slug}" aria-label="${attr(p.nome.replace(/\s+(PF|PJ)$/i, "") + " " + p.seg.toUpperCase())}" onclick="event.stopPropagation();openProduct('${p.slug}');return false">${p.nome.replace(/\s+(PF|PJ)$/i, "")}</a> <span class="chip" style="padding:1px 8px">${p.seg.toUpperCase()}</span> ${badge("observado")}</h4>
-      <div class="big" style="font-size:24px">${fmt.money(p.mercado_total_brl)}</div>
-      <div class="delta ${p.crescimento_4t_pct >= 0 ? "down good" : "up"}">${p.crescimento_4t_pct != null ? (p.crescimento_4t_pct >= 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(p.crescimento_4t_pct), 1) + "% em 4 trim. (pareado)" : "Δ4T indisponível"}</div>
+      <div class="big" style="font-size:var(--tipo-numero-m)">${fmt.money(p.mercado_total_brl)}</div>
+      <div class="delta ${p.crescimento_4t_pct >= 0 ? "down" : "up"}">${p.crescimento_4t_pct != null ? (p.crescimento_4t_pct >= 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(p.crescimento_4t_pct), 1) + "% em 4 trim. (pareado)" : "Δ4T indisponível"}</div>
       ${spark}
       <div class="src">${p.n_instituicoes} instituições${p.atraso15 && p.atraso15.agg_pct != null ? ` · atraso ≥15d ${fmt.n(p.atraso15.agg_pct, 1)}%` : ""} · ${p.share_segmento_pct != null ? fmt.n(p.share_segmento_pct, 1) + "% da carteira " + p.seg.toUpperCase() : ""} · líder: ${lider ? lider.nome.slice(0, 24) + " (" + fmt.n(lider.share_pct, 1) + "%)" : "–"} · top-5 ${fmt.n(p.concentracao.top5_pct, 0)}%</div>
     </div>`;
   };
   el.innerHTML = `
   ${pageHead({ title: "Produtos de crédito", seals: badge("observado"),
-    desc: `Mercado de cada modalidade a partir da carteira por instituição (trimestral, ${fmtTri(P.data_base)}) — tamanho, crescimento pareado, concentração, atraso e taxas.`,
+    desc: `Mercado de cada modalidade a partir da carteira por instituição (trimestral, ${fmtTri(P.data_base)}): tamanho, crescimento pareado, concentração, atraso e taxas.`,
     fontes: "BCB IF.data rel. 123/128, BCB txjuros" })}
   ${(() => {
     const tri = fmtTri(P.data_base);
@@ -13135,7 +13188,7 @@ function renderProducts() {
     const med = _mediana(list.map(p => p.crescimento_4t_pct));
     const rot = seg === "total" ? "PF e PJ" : seg.toUpperCase();
     return abertura({
-      placar: [
+      natureza: "calculado", placar: [
         { l: `Produtos validados · ${rot}`, v: list.length ? fmt.n0(list.length) : null, sub: `IF.data ${tri} · universo de reportantes` },
         { l: "Carteira somada dos produtos", v: list.length ? fmt.money(total) : null, sub: `${tri} · soma das modalidades listadas, não a carteira total` },
         { l: "Maior produto", v: maior ? fmt.money(maior.mercado_total_brl) : null, sub: maior ? `${maior.nome} (${maior.seg.toUpperCase()}) · ${fmt.pct(maior.share_segmento_pct, 1)} da carteira ${maior.seg.toUpperCase()}` : "" },
@@ -13229,7 +13282,7 @@ function renderProductPageData(el, P) {
   const matrizSeg = PMX_SEG === "todos" ? p.matriz : p.matriz.filter(r => r.sr === PMX_SEG);
   const serie = (segD ? segD.serie : p.serie).map(x => ({ x: anomesISO(x.anomes), y: x.total_brl / 1e9 }));
   const atrSerie = segD ? (segD.atraso_serie || []) : (p.atraso15 && p.atraso15.serie) || [];
-  const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:21px">${val}</div><div class="src">${sub || ""}</div></div>`;
+  const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:var(--tipo-numero-p)">${val}</div><div class="src">${sub || ""}</div></div>`;
   p.matriz.forEach(r => { r.npl_est_pct = r.npl_prod_est ? r.npl_prod_est.pct : null; }); // chave plana p/ ordenar
   // Modalidade de taxa SELECIONADA (o MESMO seletor da seção de taxas): matriz e
   // dispersão nunca misturam modalidades — rotativo (~450% a.a.) e parcelado
@@ -13254,7 +13307,7 @@ function renderProductPageData(el, P) {
     <td><span class="clickable" onclick="${r.cod.startsWith("C") || r.cod.length === 8 ? `openInstPage('${r.cod}')` : ""}"><b>${r.nome.slice(0, 34)}</b></span><div class="src">${r.sr || ""} · ${r.nivel}</div></td>
     <td style="text-align:right">${fmt.money(r.carteira_brl)}</td>
     <td style="text-align:right">${fmt.n(r.share_pct, 2)}%</td>
-    <td style="text-align:right" class="${r.d4t_pct > 0 ? "down good" : r.d4t_pct < 0 ? "up" : "neutral"}">${r.d4t_pct != null ? fmt.pp(r.d4t_pct) + "%" : "–"}</td>
+    <td style="text-align:right" class="${r.d4t_pct > 0 ? "down" : r.d4t_pct < 0 ? "up" : "neutral"}">${r.d4t_pct != null ? fmt.pp(r.d4t_pct) + "%" : "–"}</td>
     <td style="text-align:right">${r.d1t_pct != null ? fmt.pp(r.d1t_pct) + "%" : "–"}</td>
     <td style="text-align:right">${r.pct_carteira_inst != null ? fmt.n(r.pct_carteira_inst, 1) + "%" : "–"}</td>
     <td style="text-align:right"><b>${r.atraso15_pct != null ? fmt.n(r.atraso15_pct, 2) + "%" : "–"}</b></td>
@@ -13276,7 +13329,7 @@ function renderProductPageData(el, P) {
     <span class="seg">${["todos"].concat(segsDisp).map(s => `<button class="${PMX_SEG === s ? "active" : ""}" onclick="setProdSeg('${s}')">${s === "todos" ? "Todos" : s}</button>`).join("")}</span>
     ${PMX_SEG !== "todos" ? `<span class="src">gráficos, matriz e taxas recortados para ${PMX_SEG} · pontos com poucos reportantes são omitidos pelo método (n em cada ponto)</span>` : ""}</div>` : ""}
   <p class="viewdesc">${p.definicao}${p.nota_taxonomia ? " " + p.nota_taxonomia : ""}</p>
-  ${p.sintese ? `<div class="diag" style="margin-top:2px"><div class="diag-frase" style="font-size:19px">${p.sintese}</div><div class="diag-meta">${badge("calculado", p.sintese_regras)} regras: ${p.sintese_regras}</div></div>` : ""}
+  ${p.sintese ? `<div class="diag" style="margin-top:2px"><div class="diag-frase" style="font-size:var(--tipo-h3)">${p.sintese}</div><div class="diag-meta">${badge("calculado", p.sintese_regras)} regras: ${p.sintese_regras}</div></div>` : ""}
   <div class="kpirow">
     ${kpi("Mercado (universo IF.data)", fmt.money(p.mercado_total_brl), fmtTri(p.data_base), badge("observado"))}
     ${kpi("Crescimento 4 trim.", p.crescimento_4t_pct != null ? fmt.pp(p.crescimento_4t_pct) + "%" : "–", `amostra pareada n=${p.crescimento_4t_n_pareado}`, badge("calculado"))}
@@ -13748,11 +13801,11 @@ function renderCompare() {
     </div>`;
 
   const cmpAbertura = extra => abertura({
-    placar: [
+    natureza: "calculado", placar: [
       { l: "Métricas no catálogo", v: fmt.n0(C.metric_catalog.length), sub: "trimestrais · unidade declarada em cada uma" },
       { l: "Períodos disponíveis", v: fmt.n0(C.anomes_list.length), sub: `${fmtTri(C.anomes_list[0])} a ${fmtTri(latest)}` },
       { l: "Universo IF.data", v: C.universo ? fmt.n0(C.universo.n_total) : null, sub: C.universo ? `${fmt.n0(C.universo.n_conglomerados)} conglomerados prudenciais · ${fmt.n0(C.universo.n_individuais)} individuais` : "" },
-      extra || { l: "Data-base", v: fmtTri(latest), sub: "último trimestre publicado" },
+      extra || { nat: null, l: "Data-base", v: fmtTri(latest), sub: "último trimestre publicado" },
     ],
     sintese: [
       `Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais e ${C.anomes_list.length} períodos, de ${fmtTri(C.anomes_list[0])} a ${fmtTri(latest)}${C.universo ? `, num universo de ${fmt.n0(C.universo.n_total)} instituições do IF.data` : ""}.`,
@@ -13818,7 +13871,7 @@ function renderCompare() {
     const absVals = cells.map(x => x.v).filter(v => v != null && isFinite(v));
     const maxAbs2 = absVals.length ? Math.max(...absVals.map(Math.abs)) : null;
     const refIdx = cmp.insts.indexOf(refCod);
-    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:12px">${m.quality_status.replace("observado ", "obs. ")}</span> ${cmpSentidoChip(m)}<div class="src">${m.unit} · trimestral</div></td>
+    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:var(--tipo-rotulo)">${m.quality_status.replace("observado ", "obs. ")}</span> ${cmpSentidoChip(m)}<div class="src">${m.unit} · trimestral</div></td>
     ${cells.map((x, i) => {
       const pctl = cmp.norm === "abs" ? cmpPercentil(C, mid, latest, x.v) : null;
       const vsRef = (cmp.norm === "abs" && i !== refIdx && x.v != null && cells[refIdx] && cells[refIdx].v != null && cells[refIdx].v !== 0)
@@ -13858,8 +13911,8 @@ function renderCompare() {
         ${linhaKpi("ativos totais", at != null ? fmt.money(at) : null)}
         ${linhaKpi("carteira de crédito", ct != null ? fmt.money(ct) : null)}
         ${linhaKpi("captações", cap != null ? fmt.money(cap) : null)}
-        ${linhaKpi("lucro (acum. ano)", ll != null ? fmt.money(ll) : null, ' <span class="seal calc" style="font-size:12px" title="acumulado no ano-calendário IF.data — NÃO anualizado; T1 reinicia a base">acum. ano</span>')}
-        ${linhaKpi("ROE do período", roe != null ? fmt.n(roe, 1) + "%" : null, ' <span class="seal calc" style="font-size:12px" title="lucro acumulado no ano ÷ PL do trimestre — não anualizado">não anualiz.</span>')}
+        ${linhaKpi("lucro (acum. ano)", ll != null ? fmt.money(ll) : null, ' <span class="seal calc" title="acumulado no ano-calendário IF.data — NÃO anualizado; T1 reinicia a base">acum. ano</span>')}
+        ${linhaKpi("ROE do período", roe != null ? fmt.n(roe, 1) + "%" : null, ' <span class="seal calc" title="lucro acumulado no ano ÷ PL do trimestre — não anualizado">não anualiz.</span>')}
         ${linhaKpi("Basileia", bas != null ? fmt.n(bas, 1) + "%" : null)}
         ${linhaKpi("inadimplência (>90d)", npl != null ? fmt.n(npl, 2) + "%" : null)}
         <div style="margin-top:6px">${spark(c, "carteira_credito")} <span class="src">carteira · 5 trim.</span></div>
@@ -13901,8 +13954,8 @@ function renderCompare() {
     body = `
     <div class="ov-2col-eq" style="margin-top:6px">${cards}</div>
     <div class="ov-2col" style="margin-top:18px">
-      <div class="card"><h4>Principais diferenças <span class="seal calc" style="font-size:12px">DADO CALCULADO</span></h4>
-        <ul style="font-size:13px;margin:6px 0 4px 16px;display:flex;flex-direction:column;gap:7px">${difs.map(d2 => `<li>${d2}</li>`).join("")}</ul>
+      <div class="card"><h4>Principais diferenças ${badge("calculado")}</h4>
+        <ul style="font-size:var(--tipo-meta);margin:6px 0 4px 16px;display:flex;flex-direction:column;gap:7px">${difs.map(d2 => `<li>${d2}</li>`).join("")}</ul>
         <div class="src">Frases geradas apenas dos dados de ${fmtTri(latest)}, sem julgamento de mérito: "maior" não significa "melhor" — o sentido econômico de cada métrica está declarado nos tooltips.</div></div>
       <div class="card"><h4>Escala comparada</h4>${barras}<div class="src">Barras proporcionais ao maior valor entre as selecionadas · ◈ = referência</div></div>
     </div>
@@ -14029,6 +14082,7 @@ function renderCompare() {
 
   el.innerHTML = `
   <div class="pagehead"><div class="ph-left">
+    ${rotuloContexto()}
     <h2>Comparar instituições</h2>
     <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
   </div></div>
@@ -14041,9 +14095,11 @@ function renderCompare() {
   await loadAll();
   const m = state.data.meta;
   if (m) {
-    // a marca da barra lateral é o nome da coleção, escrito em index.html; o nome da gold (meta.plataforma.name) fica nos dados
-    document.getElementById("updatedAt").textContent = "publicação mais antiga: " + (m.gerado_em || "").slice(0, 16).replace("T", " ") + " UTC";
-    document.getElementById("footDisclaimer").textContent = m.plataforma.disclaimer;
+    // no rodapé da coleção (antes na barra lateral): a data da publicação mais antiga, no horário de Brasília, e o aviso da gold
+    const quando = dataHoraBrasilia(m.gerado_em);
+    const upd = document.getElementById("updatedAt"), aviso = document.getElementById("footDisclaimer");
+    if (upd && quando) upd.textContent = "Publicação mais antiga dos dados desta aplicação: " + quando + ".";
+    if (aviso) aviso.textContent = m.plataforma.disclaimer;
   }
   updateAlertBadge();
   let v = parseHash();

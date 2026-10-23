@@ -42,11 +42,16 @@ describe("camada pública de leitura", () => {
     for (const p of ["/", "/observatorio-do-credito", "/entrar", "/cadastro/perfil", "/api/auth/eu"]) expect(ehRotaPublica(p), p).toBe(true);
   });
 
-  it("a SPA oferece Entrar ao visitante e conta/sair só a quem tem sessão", () => {
-    expect(indexHtml).toMatch(/id="loginBtn" href="\/entrar\?de=%2Fobservatorio"/);
-    expect(indexHtml).toMatch(/id="accountBtn"[^>]*hidden/);
-    expect(indexHtml).toMatch(/id="logoutBtn"[^>]*hidden/);
-    expect(appJs).toContain('fetch("/api/auth/eu"');
+  // desde a Iniciativa 2 do parecer de UX de 23/10/2026 o par Entrar/Minha conta/Sair do rodapé da barra lateral saiu: a conta é a
+  // da barra comum, oculta até a resposta da sessão ("Minha conta" com sessão, "Entrar" com volta sem ela; o Sair fica na conta)
+  it("a SPA oferece Entrar ao visitante e a conta só a quem tem sessão, na barra comum", () => {
+    expect(indexHtml).toMatch(/<a id="barraConta" class="bp-conta" href="\/app\/conta" hidden>Minha conta<\/a>/);
+    expect(indexHtml).not.toMatch(/id="(loginBtn|accountBtn|logoutBtn)"/);
+    const ini = appJs.indexOf("(function initContaBarra()");
+    const trecho = appJs.slice(ini, appJs.indexOf("})();", ini));
+    expect(trecho).toContain('fetch("/api/auth/eu"');
+    expect(trecho).toContain('conta.href = "/entrar?de="');
+    expect(trecho).toContain('conta.textContent = "Entrar"');
   });
 
   it("a checagem de sessão da SPA existe, é mínima e sem cache", () => {

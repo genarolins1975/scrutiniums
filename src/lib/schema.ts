@@ -177,9 +177,13 @@ export const usoBuscaDia = pgTable(
     dia: date("dia", { mode: "string" }).notNull(),
     termo: text("termo").notNull(),
     comConta: boolean("com_conta").notNull(),
+    /** "abriu": resultado aberto pelo campo ou /buscar com termo; "sem_resultado": busca da barra sem resultado completo (ciclo 2 da busca, 23/10/2026). */
+    evento: text("evento").notNull().default("abriu"),
+    /** Termo com palavra fora do vocabulário do índice, gravado só com conta e apagado depois de 30 dias (MEDICAO_DE_USO.md §8a). */
+    foraDoVocabulario: boolean("fora_do_vocabulario").notNull().default(false),
     buscas: integer("buscas").notNull().default(0),
   },
-  (t) => [primaryKey({ columns: [t.dia, t.termo, t.comConta] })],
+  (t) => [primaryKey({ columns: [t.dia, t.termo, t.comConta, t.evento] })],
 );
 
 export type User = typeof users.$inferSelect;
