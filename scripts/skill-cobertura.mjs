@@ -1,7 +1,7 @@
 /**
  * Prova que a divisão da skill observatorio-layout em núcleo e anexos não perdeu nem alterou texto.
  *
- * Uso: node scripts/skill-cobertura.mjs [<ref do original>]   (padrão: origin/main)
+ * Uso: node scripts/skill-cobertura.mjs [<ref do original>]   (padrão: origin/main, ou main se não houver remoto)
  *
  * Cada linha não vazia do SKILL.md original (frases, itens de lista, linhas de tabela, títulos) tem de
  * aparecer, idêntica, como linha do novo SKILL.md ou de um arquivo em anexos/. Também confere o teto do
@@ -14,7 +14,18 @@ import { join } from "node:path";
 
 const PASTA = ".claude/skills/observatorio-layout";
 const TETO_NUCLEO = 15 * 1024;
-const ref = process.argv[2] ?? "origin/main";
+/** Como scripts/testes-afetados.mjs: origin/main, ou main num checkout sem remoto; com argumento, o ref pedido. */
+function refOriginal(pedido) {
+  if (pedido) return pedido;
+  for (const candidato of ["origin/main", "main"]) {
+    try {
+      execFileSync("git", ["rev-parse", "--verify", "--quiet", `${candidato}^{commit}`], { stdio: "ignore" });
+      return candidato;
+    } catch { /* tenta o próximo */ }
+  }
+  throw new Error("Sem origin/main nem main: informe o ref do original como argumento.");
+}
+const ref = refOriginal(process.argv[2]);
 const original = execFileSync("git", ["show", `${ref}:${PASTA}/SKILL.md`], { encoding: "utf8" });
 const arquivos = [join(PASTA, "SKILL.md"), ...readdirSync(join(PASTA, "anexos")).map((f) => join(PASTA, "anexos", f))];
 const novas = new Map();
