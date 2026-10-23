@@ -34,7 +34,7 @@ export function ExploradorRamos({ramos,medidas,fonte,ano}:{ramos:RamoAgregado[];
  </Controles>
  <p className="t-meta max-w-prose2 text-carvao-muted">Os controles afetam somente este gráfico, sua tabela e seu CSV. Referência {ano}. Escala comum aos três ramos, mesmo ao selecionar apenas um: o ramo escolhido fica destacado no gráfico, e a tabela e o CSV trazem só ele. Escala começa em zero; valores exatos do recorte na tabela.</p>
  <GraficoBarras semTabela titulo={m.titulo+' · '+m.unidade+' · '+ano} dados={ramos.map(r=>({id:r.id,nome:r.nome,v:r[state.medida]}))} chaveCategoria="id" chaveRotulo="nome" orientacao="horizontal" series={[{id:'v',rotulo:m.titulo,cor:'var(--cor-obee)'}]} unidade={m.unidade} casas={0} rotulosValor selecionado={state.ramo==='todos'?null:state.ramo} onSelecionar={id=>set({ramo:(id??'todos') as typeof state.ramo})}/>
- <TabelaDados titulo={m.titulo+' · '+ano+' · '+m.unidade} colunas={['Ramo','Valor','Unidade','Precisão e universo']} linhas={rows.map(r=>[r.nome,m.unidade==='meses'?valor(r[state.medida]):r[state.medida],m.unidade,precisao])} casas={[null,0,null,null]} limite={rows.length}/>
+ <TabelaDados titulo={m.titulo+' · '+ano+' · '+m.unidade} colunas={['Ramo','Valor','Unidade','Precisão e universo']} linhas={rows.map(r=>[r.nome,m.unidade==='meses'?valor(r[state.medida]):r[state.medida],m.unidade,precisao])} casas={[null,0,null,null]} limite={rows.length} recolhida={false}/>
  </section>;
 }
 
