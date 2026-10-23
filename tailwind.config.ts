@@ -1,76 +1,83 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Design tokens da Scrutiniums.
- * Valores extraídos da referência visual (contrato do projeto).
- * Nunca use hexadecimais soltos em componentes: sempre tokens.
+ * Design tokens da Scrutiniums. As cores moram só em src/app/globals.css (--cor-*): aqui cada cor lê a variável, sem
+ * hexadecimal (Iniciativa 5 do parecer de UX de 21/10/2026; src/tests/design-tokens.test.ts).
  */
+const v = (nome: string) => `var(--cor-${nome})`;
+// Cores usadas com modificador de opacidade (bg-carvao/40): com var() puro o Tailwind 3 descarta a classe em silêncio, então
+// leem a tripla RGB do mesmo token (--cor-<nome>-rgb, conferida contra o hexadecimal pelo teste).
+const comAlfa = (nome: string) => `rgb(var(--cor-${nome}-rgb) / <alpha-value>)`;
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
         carvao: {
-          DEFAULT: "#1A1D21",
-          soft: "#2A2E33",
-          muted: "#3D4147",
+          DEFAULT: comAlfa("carvao"),
+          soft: v("carvao-soft"),
+          muted: v("carvao-muted"),
         },
-        marfim: "#F3EFE5",
-        papel: "#FAF8F2",
+        marfim: comAlfa("marfim"),
+        papel: v("papel"),
         bronze: {
-          DEFAULT: "#966B48",
-          dark: "#7C5638",
-          soft: "#B08A67",
+          DEFAULT: comAlfa("bronze"),
+          dark: v("bronze-dark"),
+          soft: v("bronze-soft"),
         },
+        // mineral escurecido para >= 4,5:1 sobre marfim e papel (texto pequeno); soft só para fundos escuros.
         mineral: {
-          // DEFAULT escurecido de #878986 para garantir ≥4.5:1 sobre
-          // marfim/papel (texto pequeno, WCAG AA). `soft` segue para fundos escuros.
-          DEFAULT: "#6B6D6A",
-          soft: "#A6A8A4",
+          DEFAULT: v("mineral"),
+          soft: v("mineral-soft"),
         },
-        linha: "#D8D2C6",
-        "linha-escura": "#33373D",
-        // Acento do Observatório Brasileiro do Setor Elétrico (teal sóbrio).
-        // DEFAULT e dark passam AA sobre marfim, papel e branco; soft só para
-        // marcação não textual. Ver docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md.
+        linha: comAlfa("linha"),
+        "linha-escura": v("linha-escura"),
+        // Acento do Setor Elétrico (teal sóbrio): DEFAULT e dark passam AA sobre marfim, papel e branco; soft só marcação.
         energia: {
-          DEFAULT: "#0E6170",
-          dark: "#0A4A56",
-          soft: "#5E98A3",
-          fundo: "#E6EEEE",
+          DEFAULT: comAlfa("energia"),
+          dark: v("energia-dark"),
+          soft: v("energia-soft"),
+          fundo: v("energia-fundo"),
         },
-        // Acento do Observatório Brasileiro de Eficiência Estatal (petróleo).
-        // DEFAULT e dark passam AA como texto sobre papel e branco; neutro é só
-        // marcação não textual (pontos dos pares nos gráficos), validada >= 3:1.
-        // tinta: azul muito escuro do texto do domínio. Ver docs/obee/ARQUITETURA.md.
+        // Acento da Eficiência Estatal (petróleo): DEFAULT e dark AA sobre papel e branco; neutro só marcação (>= 3:1).
         obee: {
-          DEFAULT: "#00697F",
-          dark: "#0B4F5E",
-          fundo: "#E6EFF0",
-          tinta: "#14243A",
-          neutro: "#858072",
+          DEFAULT: comAlfa("obee"),
+          dark: v("obee-dark"),
+          fundo: comAlfa("obee-fundo"),
+          tinta: comAlfa("obee-tinta"),
+          neutro: comAlfa("obee-neutro"),
         },
-        // Acento do Observatório Brasileiro de Gás Natural (azul ardósia).
-        // DEFAULT mede 6,7:1 e dark 8,4:1 sobre o papel; soft só para marcação
-        // não textual. Seleção e identidade do domínio, nunca juízo de valor.
+        // Acento do Gás Natural (azul ardósia): seleção e identidade do domínio, nunca juízo de valor.
         gas: {
-          DEFAULT: "#35598A",
-          dark: "#2B4A78",
-          soft: "#7A93B8",
-          fundo: "#E8EDF4",
+          DEFAULT: v("gas"),
+          dark: v("gas-dark"),
+          soft: v("gas-soft"),
+          fundo: v("gas-fundo"),
         },
-        superficie: "#FFFFFF",
+        // Acento da Conectividade (petróleo próprio).
+        conect: {
+          DEFAULT: v("conect"),
+          dark: v("conect-dark"),
+          soft: v("conect-soft"),
+          fundo: v("conect-fundo"),
+        },
+        destaque: v("destaque"),
+        "painel-escuro": {
+          DEFAULT: v("painel-escuro"),
+          texto: v("painel-escuro-texto"),
+        },
+        superficie: comAlfa("superficie"),
         // Selos de natureza do dado (texto AA sobre papel e branco).
         natureza: {
-          observado: "#1A1D21",
-          calculado: "#4A5158",
-          estimado: "#7A5A12",
-          previsto: "#5B3F8C",
-          cenario: "#6B4F3A",
+          observado: v("natureza-observado"),
+          calculado: v("natureza-calculado"),
+          estimado: v("natureza-estimado"),
+          previsto: v("natureza-previsto"),
+          cenario: v("natureza-cenario"),
         },
-        erro: "#8C3B2E",
-        sucesso: "#4F6B4E",
-        aviso: "#8A6D2F",
+        erro: v("erro"),
+        sucesso: v("sucesso"),
+        aviso: v("aviso"),
       },
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],

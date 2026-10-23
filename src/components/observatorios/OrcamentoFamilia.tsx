@@ -1,22 +1,13 @@
 import Link from "next/link";
-import { Numero } from "@/components/observatorios/EntradaObservatorio";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { EtapaOrcamento } from "@/lib/observatorios/entradas/familias";
 
 /** Modelo didático do orçamento doméstico: quatro etapas ligadas aos painéis do Observatório das Famílias. */
 export function OrcamentoFamilia({ orcamento }: Readonly<{ orcamento: EtapaOrcamento[] }>) {
   return (
-    <section aria-labelledby="orcamento-titulo" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="orcamento-titulo" className="mt-3 max-w-3xl font-serif text-[clamp(1.6rem,3vw,2.1rem)] leading-tight text-carvao">
-          Como o dinheiro circula no orçamento de uma família
-        </h2>
-        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          Quatro etapas que ligam os painéis do observatório: o que entra, o essencial, o crédito quando falta e os riscos.
-          O modelo mostra relações entre as partes, não a conta de uma família real. Ele deixa de fora poupança,
-          impostos e gastos não essenciais, que a plataforma ainda não mede.
-        </p>
-        <ol className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-0">
+    <ModeloDidatico id="orcamento" titulo={<>Como o dinheiro circula no orçamento de uma família</>} descricao={<>Quatro etapas que ligam os painéis do observatório: o que entra, o essencial, o crédito quando falta e os riscos.</>} deixaDeFora={["Poupança", "Impostos", "Gastos não essenciais, que a plataforma ainda não mede", "A conta de uma família real: o modelo mostra relações entre as partes"]}>
+        <ol className="grid gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-0">
           {orcamento.map((etapa, i) => (
             <li key={etapa.id} className="relative xl:pr-10">
               {i < orcamento.length - 1 && (
@@ -37,7 +28,7 @@ export function OrcamentoFamilia({ orcamento }: Readonly<{ orcamento: EtapaOrcam
                     {elo.numero && (
                       <div className="mt-3 border-t border-linha pt-3">
                         <span className="block text-xs leading-snug text-carvao-muted">{elo.numero.rotulo}</span>
-                        <span className="mt-1 block"><Numero n={elo.numero} /></span>
+                        <span className="mt-1 block"><NumeroEscala n={elo.numero} /></span>
                         {elo.numero.nota && <span className="mt-1 block text-xs leading-relaxed text-mineral">{elo.numero.nota}</span>}
                       </div>
                     )}
@@ -48,8 +39,7 @@ export function OrcamentoFamilia({ orcamento }: Readonly<{ orcamento: EtapaOrcam
             </li>
           ))}
         </ol>
-      </div>
-    </section>
+      </ModeloDidatico>
   );
 }
 

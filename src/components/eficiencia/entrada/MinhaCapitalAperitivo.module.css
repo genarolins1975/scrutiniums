@@ -11,7 +11,7 @@
   repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 56px),
   var(--cor-obee-atlas-tinta)}
 .aberturaInterna{max-width:76rem;margin:0 auto;padding:56px 32px 44px}
-.kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
+.kicker{color:var(--cor-obee-atlas-rotulo-inverso)}
 .titulo{font-family:"Playfair Display Variable",Georgia,serif;font-weight:400;font-size:clamp(34px,4.6vw,58px)!important;line-height:1.08!important;letter-spacing:-.03em;margin-top:14px!important;color:var(--cor-obee-atlas-texto-claro)}
 .lead{margin-top:18px!important;max-width:38rem;font-size:18px;line-height:1.6;color:var(--cor-obee-atlas-texto-inverso)}
 .escolha{display:flex;flex-direction:column;gap:6px;margin-top:28px;max-width:22rem;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cor-obee-atlas-rotulo-inverso)}
@@ -30,7 +30,7 @@
 .ausente{font-size:24px;color:var(--muted)}
 .medida{font-size:14px;color:var(--muted)}
 .posicao{margin-top:10px!important;padding:10px 12px;background:var(--cor-obee-atlas-selecao);font-size:15px;line-height:1.45}
-.posicao span{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.posicao span{display:block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .nota{margin-top:6px!important;font-size:13px;line-height:1.55;color:var(--muted);max-width:36rem}
 .fonte{font-size:13px;color:var(--muted)}
 .fonte a{display:inline-flex;align-items:center;min-height:44px;color:var(--cor-obee-atlas-serie-territorio)}

@@ -1,5 +1,6 @@
 "use client";
 
+import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, type ComponentProps, type MouseEvent, type ReactNode } from "react";
@@ -100,7 +101,7 @@ export function NavegacaoColecaoCliente({
           {acoes && <li className="flex shrink-0 sm:hidden">{acoes}</li>}
           {nav.estado && (
             <li className="flex shrink-0 items-center sm:hidden">
-              <span className="rotulo px-3 text-mineral">{nav.estado}</span>
+              <span className="px-3"><SeloProntidao valor={nav.estado} idioma={idioma === "en" ? "en" : "pt"} /></span>
             </li>
           )}
         </ul>
@@ -121,7 +122,7 @@ export function NavegacaoColecaoCliente({
             </ul>
           </DetalhesFechaveis>
         )}
-        {nav.estado && <span className="rotulo hidden shrink-0 self-center text-mineral sm:inline">{nav.estado}</span>}
+        {nav.estado && <span className="hidden shrink-0 self-center px-2 sm:inline"><SeloProntidao valor={nav.estado} idioma={idioma === "en" ? "en" : "pt"} /></span>}
         {(atalhos.length > 0 || acoes) && (
           <div className="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 sm:flex">
             {atalhos.map((k) => atalho(k))}
@@ -178,7 +179,7 @@ function Destino({
     return (
       <span className={`${base} text-mineral ${className}`}>
         {p.rotulo}
-        <span className="text-xs">· {tx("em preparação", "in preparation", idioma)}</span>
+        <SeloProntidao valor="preparacao" idioma={idioma === "en" ? "en" : "pt"} />
       </span>
     );
   const marcado = ativo || grupoAtivo;

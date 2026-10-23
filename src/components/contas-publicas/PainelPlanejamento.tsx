@@ -34,7 +34,7 @@ export function PainelPlanejamento({anos}: {anos: AnoPlano[]}) {
     <section className="cp-section cp-data-section" aria-labelledby="plano-observado">
       <div className="cp-section-head">
         <div>
-          <p className="cp-eyebrow">01 · Plano e execução · SIOP</p>
+          <p className="rotulo cp-eyebrow">01 · Plano e execução · SIOP</p>
           <h2 id="plano-observado">Quanto a execução se afastou da lei original?</h2>
           <p>Orçamentos Fiscal e da Seguridade Social da União. Compara o que a lei orçamentária aprovou com o que foi autorizado ao longo do ano e com o que foi liquidado. Valores nominais.</p>
         </div>

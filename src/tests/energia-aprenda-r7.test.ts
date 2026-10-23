@@ -296,7 +296,8 @@ describe("cromo global (L-20, L-37, F15, F17, F18, F21) e painel de Mercado (F19
   });
 
   it("F15: rótulos de campo e selo de natureza com corpo maior; a ficha explica o +alterado (F21)", () => {
-    expect(ler("src/components/energia/AprendaVerbete.tsx")).toContain('<h2 className="rotulo !text-[0.8rem] text-mineral">{rotulo}</h2>');
+    // Iniciativa 5: o rótulo da escala única já tem 12 px (antes 11,5 px, por isso o reforço a 0,8 rem); não há mais corpo forçado com !text-[
+    expect(ler("src/components/energia/AprendaVerbete.tsx")).toContain('<h2 className="rotulo text-mineral">{rotulo}</h2>');
     expect(ler("src/components/evidencia/SeloNatureza.tsx")).toContain("!text-xs");
     expect(ler("src/components/energia/ComproveNumero.tsx")).toContain("ainda não confirmadas em commit (sufixo +alterado)");
   });

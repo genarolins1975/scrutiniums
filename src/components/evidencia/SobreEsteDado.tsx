@@ -210,15 +210,15 @@ export function SobreEsteDado({ p, rotulo }: { p: Proveniencia; rotulo?: string 
               </Linha>
               {p.formula && (
                 <Linha rotulo={tx("Fórmula", "Formula")}>
-                  <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-[0.8rem]">{p.formula}</code>
+                  <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono t-meta">{p.formula}</code>
                 </Linha>
               )}
               <Linha rotulo={tx("Snapshot", "Snapshot")}>
-                <span className="break-all font-mono text-[0.78rem]">{p.snapshot.id ?? tx("não informado", "not reported")}</span>
+                <span className="break-all font-mono t-meta">{p.snapshot.id ?? tx("não informado", "not reported")}</span>
                 {p.snapshot.sha256 && (
                   <>
                     <br />
-                    <span className="break-all font-mono text-[0.72rem] text-mineral">sha256 {p.snapshot.sha256}</span>
+                    <span className="break-all font-mono text-xs text-mineral">sha256 {p.snapshot.sha256}</span>
                   </>
                 )}
               </Linha>

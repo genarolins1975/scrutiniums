@@ -4,34 +4,101 @@
  * medida conta (modelo didático) e o método recolhido no fim. Tudo desenhado no servidor a partir da gold; nenhum número
  * escrito à mão.
  */
-import type { ReactNode } from "react";
+import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { BuscaConectividade } from "./BuscaConectividade";
 import { ListadasLogo } from "@/components/energia/ListadasLogo";
 import { anoDecimal, GraficoLinhas, marcasAnos, type Serie } from "./Graficos";
 import { cobertos, faixaNaDistribuicao, linhaEstado, pontosAnuais, serieCobertura, ufsPor, type ConsultaMunicipio } from "@/lib/conectividade/dados";
 import { logosConectividade, type LogoDaOperadora } from "@/lib/conectividade/logos";
 import { dataBr, dataCaptura, frequenciaSerie, mesAcessos, mesCurto, mesExtenso, milhoes, num, pct, plural, posicao, SEM_DADO } from "@/lib/conectividade/formato";
-import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
+import { DO_ESTADO, DOWNLOADS, hrefMunicipio, MEIOS, nomeGrupo, PERGUNTA_PAINEL, ROTA_CONECTIVIDADE, TECNOLOGIAS, VELOCIDADES } from "@/lib/conectividade/paginas";
 import type { ArquivoUf, GoldConectividade, MunicipioGold, UfGold } from "@/lib/conectividade/tipos";
 
 type Logos = Map<string, LogoDaOperadora>;
 
-export function PainelConectividade({ g, consulta, ferramentas }: { g: GoldConectividade; consulta: ConsultaMunicipio; ferramentas?: ReactNode }) {
+export function PainelConectividade({ g, consulta }: { g: GoldConectividade; consulta: ConsultaMunicipio }) {
   // símbolos oficiais das operadoras (contrato de identidade da plataforma): manifesto em public/conectividade/logos
   const logos = logosConectividade();
+  const f = g.brasil.fixa;
+  const m = g.brasil.movel;
+  const r = g.referencia;
+  const cob = g.brasil.cobertura.tecnologias;
+  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): as seções de sempre, nas fatias do molde; as longas, recolhidas
   return (
-    <>
-      <Abertura g={g} />
-      {ferramentas}
-      <SecaoMunicipio g={g} c={consulta} logos={logos} />
-      <SecaoFibra g={g} />
-      <SecaoCobertura g={g} logos={logos} />
-      <SecaoEvolucao g={g} />
-      <SecaoEstados g={g} escolhida={consulta.estado === "ok" ? consulta.uf : null} />
-      <Mecanismo />
-      <Metodo g={g} logos={logos} />
-    </>
+    <EntradaColecao
+      tipo="colecao"
+      rota={ROTA_CONECTIVIDADE}
+      acento="obee"
+      titulo={PERGUNTA_PAINEL}
+      frase="Quantos acessos de internet há em cada cidade, por fibra ou não, quantas empresas disputam o cliente, e quem está dentro da cobertura 4G e 5G. Dados abertos da Anatel, município a município."
+      frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/conectividade"]} conteiner="mx-auto max-w-page px-6" />}
+      escala={escalaConectividade(g)}
+      paraVoce={
+        <ParaVoce entrada={ROTA_CONECTIVIDADE}>
+          <SecaoMunicipio g={g} c={consulta} logos={logos} />
+        </ParaVoce>
+      }
+      destinos={destinosDaColecao("conectividade")}
+      artefato={
+        <ModeloDidatico
+          id="mecanismo"
+          titulo="O que cada medida conta"
+          descricao="Três contagens diferentes que costumam ser lidas como se fossem uma."
+          deixaDeFora={["A qualidade e o preço do serviço", "A velocidade que chega e o sinal dentro de casa", "Quantas pessoas usam cada contrato ou cada chip"]}
+        >
+          <Mecanismo />
+        </ModeloDidatico>
+      }
+      caminhos={[
+        { pergunta: "A fibra chegou a todo lugar?", resumo: "O meio e a velocidade contratada da banda larga fixa, no Brasil e nos estados.", href: "#fibra", numero: { rotulo: "Acessos fixos com 100 Mbps ou mais", valor: f.vel_100_mais_pct === null ? null : pct(f.vel_100_mais_pct), unidade: "dos acessos", periodo: mesExtenso(r.fixa), fonte: "Anatel, acessos de banda larga fixa", href: "#fibra" } },
+        { pergunta: "Onde o 4G e o 5G alcançam os moradores?", resumo: "A parte da população dentro da cobertura declarada, por geração, operadora e estado.", href: "#cobertura", numero: { rotulo: "Moradores dentro da cobertura 4G", valor: cob.g4?.[0] == null ? null : pct(cob.g4[0]), unidade: "dos moradores", periodo: mesExtenso(r.cobertura), fonte: "Anatel, cobertura móvel", href: "#cobertura" } },
+        { pergunta: "Como a internet cresceu no Brasil?", resumo: "Os acessos fixos e móveis ano a ano, pela série de totais da Anatel.", href: "#evolucao", numero: { rotulo: "Linhas móveis ativas", valor: m.linhas == null ? null : milhoes(m.linhas), unidade: "", periodo: mesExtenso(r.movel), fonte: "Anatel, telefonia móvel", href: "#evolucao" } },
+        { pergunta: "Como os estados se comparam?", resumo: "As mesmas medidas da sua cidade para cada estado e para o Brasil.", href: "#estados" },
+      ]}
+      recolhidos={
+        <>
+          <Recolhido id="recolhido-retrato" titulo="O retrato do país" resumo="Os números de abertura numa frase, com a referência de cada fonte.">
+            <Achado g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-fibra" titulo="A fibra chegou a todo lugar?" resumo="Meio de acesso e velocidade contratada, no Brasil e por estado.">
+            <SecaoFibra g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-cobertura" titulo="Onde o 4G e o 5G alcançam os moradores?" resumo="Cobertura por geração, por operadora e por estado, trimestre a trimestre.">
+            <SecaoCobertura g={g} logos={logos} />
+          </Recolhido>
+          <Recolhido id="recolhido-evolucao" titulo="Como a internet cresceu no Brasil?" resumo="Acessos fixos e móveis desde o começo da série.">
+            <SecaoEvolucao g={g} />
+          </Recolhido>
+          <Recolhido id="recolhido-estados" titulo="Os estados lado a lado" resumo="A tabela das medidas por estado, com o Brasil.">
+            <SecaoEstados g={g} escolhida={consulta.estado === "ok" ? consulta.uf : null} />
+          </Recolhido>
+        </>
+      }
+      metodo={<Metodo g={g} logos={logos} />}
+      frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/conectividade"]} variante="metodo" />}
+    />
   );
+}
+
+/** Os quatro números da abertura, lidos da gold: os mesmos que a seção do município compara. */
+function escalaConectividade(g: GoldConectividade): NumeroPorta[] {
+  const f = g.brasil.fixa;
+  const c = g.brasil.cobertura;
+  const r = g.referencia;
+  const n = (v: string, ok: boolean) => (ok ? v : null);
+  return [
+    { rotulo: "Acessos de banda larga fixa por 100 habitantes", valor: n(num(f.densidade, 1), f.densidade != null), unidade: "por 100 habitantes", periodo: mesExtenso(r.fixa), fonte: "Anatel, acessos de banda larga fixa", nota: `${milhoes(f.acessos)} de acessos.`, href: "#municipio" },
+    { rotulo: "Acessos fixos por fibra óptica", valor: n(pct(f.fibra_pct), f.fibra_pct != null), unidade: "dos acessos", periodo: mesExtenso(r.fixa), fonte: "Anatel, meio de acesso declarado pela prestadora", href: "#fibra" },
+    { rotulo: "Moradores dentro da cobertura 5G", valor: n(pct(c.tecnologias.g5?.[0]), c.tecnologias.g5?.[0] != null), unidade: "dos moradores", periodo: mesExtenso(r.cobertura), fonte: "Anatel, cobertura móvel; Censo 2022", nota: "Qualquer operadora.", href: "#cobertura" },
+    { rotulo: "Municípios ainda sem 5G", valor: num(g.destaques.sem_5g), unidade: `de ${num(g.destaques.municipios_com_5g_publicado)}`, periodo: mesExtenso(r.cobertura), fonte: "Anatel, cobertura móvel", nota: "Menos de 1% dos moradores cobertos, entre os municípios com cobertura 5G publicada.", href: "#cobertura" },
+  ];
 }
 
 /* --------------------------------------------------------------------------------------------- abertura */
@@ -49,42 +116,19 @@ function fraseMaiorGrupo(grupo: string | null, parte: number | null): string {
   return `O maior grupo econômico, ${nomeGrupo(grupo)}, tem ${pct(parte)} dos acessos.`;
 }
 
-function Abertura({ g }: { g: GoldConectividade }) {
+/** A frase do retrato do país, com a referência de cada fonte (os quatro números estão na escala da entrada). */
+function Achado({ g }: { g: GoldConectividade }) {
   const f = g.brasil.fixa;
   const m = g.brasil.movel;
   const c = g.brasil.cobertura;
   const r = g.referencia;
   return (
-    <>
-      <p className="cn-achado">
+    <p className="cn-achado">
         Em {mesExtenso(r.fixa)}, o Brasil tinha <strong>{milhoes(f.acessos)} de acessos de banda larga fixa</strong>, {num(f.densidade, 1)} para cada 100 habitantes, e{" "}
         <strong>{pct(f.fibra_pct)} deles por fibra óptica</strong>. Nas redes móveis{r.movel !== r.fixa ? `, em ${mesExtenso(r.movel)}` : ""}, {milhoes(m.linhas)} de linhas ativas, {pct(m.g5_pct)} já em 5G. Em {mesExtenso(r.cobertura)},{" "}
         <strong>{pct(c.tecnologias.g5?.[0])} dos moradores</strong> do país estavam dentro da cobertura 5G declarada pelas operadoras, e em {num(g.destaques.sem_5g)} dos{" "}
         {num(g.destaques.municipios_com_5g_publicado)} municípios com cobertura 5G publicada menos de 1% dos moradores estavam dentro de alguma cobertura 5G.
-      </p>
-      <dl className="cn-numeros" aria-label="O tema em quatro números">
-        <div className="cn-lider">
-          <dt>Acessos de banda larga fixa por 100 habitantes</dt>
-          <dd className="cn-valor">{num(f.densidade, 1)}</dd>
-          <dd className="cn-prova">{mesExtenso(r.fixa)} · {milhoes(f.acessos)} de acessos · Anatel, acessos de banda larga fixa</dd>
-        </div>
-        <div>
-          <dt>Acessos fixos por fibra óptica</dt>
-          <dd className="cn-valor">{pct(f.fibra_pct)}</dd>
-          <dd className="cn-prova">{mesExtenso(r.fixa)} · meio de acesso declarado pela prestadora · Anatel</dd>
-        </div>
-        <div>
-          <dt>Moradores dentro da cobertura 5G</dt>
-          <dd className="cn-valor">{pct(c.tecnologias.g5?.[0])}</dd>
-          <dd className="cn-prova">{mesExtenso(r.cobertura)} · qualquer operadora · Censo 2022 · Anatel, cobertura móvel</dd>
-        </div>
-        <div>
-          <dt>Municípios ainda sem 5G</dt>
-          <dd className="cn-valor">{num(g.destaques.sem_5g)}<span className="cn-unidade">de {num(g.destaques.municipios_com_5g_publicado)}</span></dd>
-          <dd className="cn-prova">{mesExtenso(r.cobertura)} · menos de 1% dos moradores cobertos · municípios com cobertura 5G publicada · Anatel</dd>
-        </div>
-      </dl>
-    </>
+    </p>
   );
 }
 
@@ -393,7 +437,7 @@ function SecaoFibra({ g }: { g: GoldConectividade }) {
       <Barras itens={ufs.map((x) => ({ rotulo: x.u.nome, v: x.v }))} max={100} referencia={f.fibra_pct} />
       <div className="cn-legenda" aria-hidden="true">
         <span><i className="cn-bloco" style={{ background: "var(--cn-acento)" }} />parte dos acessos do estado por fibra</span>
-        <span><i style={{ background: "#182B36", height: 12, width: 2 }} />Brasil, {pct(f.fibra_pct)}</span>
+        <span><i style={{ background: "var(--cor-carvao)", height: 12, width: 2 }} />Brasil, {pct(f.fibra_pct)}</span>
       </div>
       <p className="cn-fonte">
         Em {mesExtenso(g.referencia.fixa)}, {g.destaques.sem_fibra ? `${plural(g.destaques.sem_fibra, "município não tinha", "municípios não tinham")} nenhum acesso por fibra` : "todos os municípios tinham algum acesso por fibra"}
@@ -456,7 +500,7 @@ function SecaoCobertura({ g, logos }: { g: GoldConectividade; logos: Logos }) {
       <Barras itens={ufs5.map((x) => ({ rotulo: x.u.nome, v: x.v }))} max={100} referencia={c.tecnologias.g5?.[0] ?? null} />
       <div className="cn-legenda" aria-hidden="true">
         <span><i className="cn-bloco" style={{ background: "var(--cn-acento)" }} />moradores do estado dentro da cobertura 5G</span>
-        <span><i style={{ background: "#182B36", height: 12, width: 2 }} />Brasil, {pct(c.tecnologias.g5?.[0])}</span>
+        <span><i style={{ background: "var(--cor-carvao)", height: 12, width: 2 }} />Brasil, {pct(c.tecnologias.g5?.[0])}</span>
       </div>
       <p className="cn-fonte">
         Média dos municípios de cada estado ponderada pelos moradores (cálculo da Scrutiniums). Em {mesExtenso(g.referencia.cobertura)}, dos {num(g.destaques.municipios_com_5g_publicado)} municípios com cobertura 5G publicada, {num(g.destaques.sem_5g)} tinham
@@ -571,33 +615,30 @@ function SecaoEstados({ g, escolhida }: { g: GoldConectividade; escolhida: strin
 
 /* ---------------------------------------------------------------------------------------------- mecanismo */
 
+/** O que cada medida conta: o corpo do modelo didático da entrada (ModeloDidatico dá o título e a lista do que fica de fora). */
 function Mecanismo() {
   return (
-    <section className="cn-secao" id="mecanismo" aria-labelledby="mecanismo-titulo">
-      <h2 id="mecanismo-titulo">O que cada medida conta</h2>
-      <p className="cn-intro">Três contagens diferentes que costumam ser lidas como se fossem uma. Modelo didático: descreve o que a Anatel mede, não avalia qualidade nem preço.</p>
-      <div className="cn-mecanismo">
-        <div>
-          <h3>Acesso de banda larga fixa</h3>
-          <p>Um contrato de internet por cabo, fibra, rádio ou satélite num endereço. A prestadora declara à Anatel, todo mês, quantos contratos tem em cada município, por meio e velocidade. As prestadoras são contadas por CNPJ; a parte de cada grupo econômico soma os CNPJs do grupo.</p>
-          <p className="cn-mede">Mede a demanda atendida com fio. Não diz quantas pessoas usam o contrato nem a velocidade entregue.</p>
-        </div>
-        <div>
-          <h3>Linha móvel</h3>
-          <p>
-            Um chip ativo, pré ou pós-pago. A Anatel publica dois totais: as linhas ativas, que somam tudo o que está registrado no município, inclusive as de máquinas (M2M,
-            como medidores e rastreadores) e os pontos de serviço; e os acessos, que deixam essas duas categorias de fora e são a base da densidade por 100 habitantes. As
-            partes por geração e por modalidade são calculadas sobre todas as linhas ativas.
-          </p>
-          <p className="cn-mede">Mede chips, não pessoas: uma pessoa pode ter dois, e a linha é contada no município do cadastro.</p>
-        </div>
-        <div>
-          <h3>Cobertura</h3>
-          <p>A mancha no mapa onde cada operadora declara ter sinal, por geração. A Anatel cruza a mancha com os setores do Censo e calcula a parte dos moradores, dos domicílios e da área dentro dela.</p>
-          <p className="cn-mede">Mede alcance declarado, não sinal dentro de casa, nem velocidade, nem preço.</p>
-        </div>
+    <div className="cn-mecanismo">
+      <div>
+        <h3>Acesso de banda larga fixa</h3>
+        <p>Um contrato de internet por cabo, fibra, rádio ou satélite num endereço. A prestadora declara à Anatel, todo mês, quantos contratos tem em cada município, por meio e velocidade. As prestadoras são contadas por CNPJ; a parte de cada grupo econômico soma os CNPJs do grupo.</p>
+        <p className="cn-mede">Mede a demanda atendida com fio. Não diz quantas pessoas usam o contrato nem a velocidade entregue.</p>
       </div>
-    </section>
+      <div>
+        <h3>Linha móvel</h3>
+        <p>
+          Um chip ativo, pré ou pós-pago. A Anatel publica dois totais: as linhas ativas, que somam tudo o que está registrado no município, inclusive as de máquinas (M2M,
+          como medidores e rastreadores) e os pontos de serviço; e os acessos, que deixam essas duas categorias de fora e são a base da densidade por 100 habitantes. As
+          partes por geração e por modalidade são calculadas sobre todas as linhas ativas.
+        </p>
+        <p className="cn-mede">Mede chips, não pessoas: uma pessoa pode ter dois, e a linha é contada no município do cadastro.</p>
+      </div>
+      <div>
+        <h3>Cobertura</h3>
+        <p>A mancha no mapa onde cada operadora declara ter sinal, por geração. A Anatel cruza a mancha com os setores do Censo e calcula a parte dos moradores, dos domicílios e da área dentro dela.</p>
+        <p className="cn-mede">Mede alcance declarado, não sinal dentro de casa, nem velocidade, nem preço.</p>
+      </div>
+    </div>
   );
 }
 
@@ -613,9 +654,7 @@ function semSimbolo(g: GoldConectividade, logos: Logos): string {
 function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
   const f = g.fontes;
   return (
-    <details className="cn-metodo" id="metodo">
-      <summary>Método, fontes e arquivos para baixar</summary>
-      <div className="cn-metodo-corpo">
+    <div className="cn-metodo-corpo" id="metodo">
         <div>
           <h3>Fontes</h3>
           <ul>
@@ -668,7 +707,6 @@ function Metodo({ g, logos }: { g: GoldConectividade; logos: Logos }) {
             ))}
           </div>
         </div>
-      </div>
-    </details>
+    </div>
   );
 }

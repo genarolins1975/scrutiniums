@@ -161,7 +161,8 @@ describe("regras reprovam o que não segue o padrão", () => {
     navegador.caminho = "/teste";
     const h = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: comPrep, caminho: "/teste", idioma: "pt" }));
     expect(h).not.toContain('href="/teste/novo"');
-    expect(h).toMatch(/Capítulo novo<span[^>]*>· em preparação/);
+    // o estado sai do SeloProntidao (Iniciativa 4): glifo e texto, a forma única da plataforma
+    expect(h).toMatch(/Capítulo novo<span data-prontidao="preparacao"[^>]*><span aria-hidden="true">○<\/span>em preparação/);
   });
 });
 

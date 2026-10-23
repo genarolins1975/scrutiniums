@@ -110,7 +110,7 @@ export default async function EscolhaObservatorioPage() {
               if (cartoes.length === 0) return null;
               return (
                 <div key={o.id}>
-                  <p className={styles.rotulo}>{o.nomeCurto}</p>
+                  <p className={`rotulo ${styles.legenda}`}>{o.nomeCurto}</p>
                   {cartoes.map((d) => {
                     const at = atualizacaoObservatorio(d.id);
                     return (
@@ -119,7 +119,7 @@ export default async function EscolhaObservatorioPage() {
                           <summary>{d.nomeCurto} <span aria-hidden="true">+</span></summary>
                           <div>
                             <p>{d.descricaoCurta}</p>
-                            <p className={styles.rotulo}>{at.rotulo}</p>
+                            <p className={`rotulo ${styles.legenda}`}>{at.rotulo}</p>
                             <ul>{at.linhas.map((l) => <li key={l}>{l}</li>)}</ul>
                           </div>
                         </details>

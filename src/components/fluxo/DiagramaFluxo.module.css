@@ -1,16 +1,16 @@
 /* Diagrama de fluxo: uma cor focal (entrada), referências neutras e bronze só para o resultado.
    Nada de verde ou vermelho: déficit e superávit têm a mesma cor, o sinal está escrito. */
 .raiz {
-  --fx-tinta: var(--cor-obee-tinta, #14243a);
-  --fx-texto: var(--cor-carvao-muted, #3d4147);
-  --fx-papel: var(--cor-papel, #faf8f2);
-  --fx-linha: var(--cor-linha, #d8d2c6);
-  --fx-entrada: var(--cor-obee, #00697f);
-  --fx-tronco: var(--cor-obee-dark, #0b4f5e);
-  --fx-outro: var(--cor-obee-neutro, #858072);
-  --fx-gasto: var(--cor-obee-tinta, #14243a);
-  --fx-resultado: var(--cor-bronze, #966b48);
-  --fx-diferenca: var(--cor-mineral-soft, #a6a8a4);
+  --fx-tinta: var(--cor-obee-tinta);
+  --fx-texto: var(--cor-carvao-muted);
+  --fx-papel: var(--cor-papel);
+  --fx-linha: var(--cor-linha);
+  --fx-entrada: var(--cor-obee);
+  --fx-tronco: var(--cor-obee-dark);
+  --fx-outro: var(--cor-obee-neutro);
+  --fx-gasto: var(--cor-obee-tinta);
+  --fx-resultado: var(--cor-bronze);
+  --fx-diferenca: var(--cor-mineral-soft);
   --fx-curva: cubic-bezier(0.23, 1, 0.32, 1);
   container-type: inline-size;
   margin-block: 48px;

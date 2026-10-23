@@ -150,7 +150,7 @@ export default function MetodologiaTerritorio() {
                           <td className="whitespace-nowrap border-b border-linha px-2 py-2 align-top text-carvao">
                             {o.data ? `${dataBr(o.data)} (${o.tipoData === "fonte" ? "na fonte" : "captura"})` : "não informada pela fonte"}
                           </td>
-                          <td className="border-b border-linha px-2 py-2 align-top font-mono text-[11px] text-carvao-muted [overflow-wrap:anywhere]">{o.sha256}</td>
+                          <td className="border-b border-linha px-2 py-2 align-top font-mono text-xs text-carvao-muted [overflow-wrap:anywhere]">{o.sha256}</td>
                         </tr>
                       ))}
                     </tbody>

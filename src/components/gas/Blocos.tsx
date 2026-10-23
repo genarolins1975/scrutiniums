@@ -5,6 +5,7 @@ import { GuiaLeituraGas } from "./GuiaLeituraGas";
 import type { ReactNode } from "react";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { fontesPorId, type Indicador } from "@/lib/gas/gold";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { carimbo, num, periodoLegivel, sinal } from "@/lib/gas/formato";
 import type { PaginaGas } from "@/lib/gas/navegacao";
 import { GRUPOS_GAS } from "@/lib/gas/navegacao";
@@ -47,6 +48,20 @@ export function valorComUnidade(v: number | string | null, unidade: string, casa
   return { valor: num(v, casas), unidade };
 }
 
+/** Um indicador da gold como número da entrada (escala ou caminho): valor, unidade, período e fonte, lidos da mesma gold do painel. */
+export function numeroDoIndicador(ind: Indicador | undefined, rotulo: string, href: string, casas = 2): NumeroPorta {
+  const v = ind && typeof ind.valor === "number" ? valorComUnidade(ind.valor, ind.unidade, casas) : null;
+  const fontes = ind ? fontesPorId(ind.fontes) : [];
+  return {
+    rotulo,
+    valor: v?.valor ?? null,
+    unidade: v?.unidade ?? "",
+    periodo: periodoLegivel(ind?.periodo),
+    fonte: fontes.length ? fontes.map((f) => `${f.orgao}, ${f.conjunto}`).join("; ") : "ANP",
+    href,
+  };
+}
+
 /** "ANP", "ANP e BCB", "ANP, BCB e IBGE": órgãos distintos na ordem em que aparecem. */
 function listaOrgaos(orgaos: string[]): string {
   const u = Array.from(new Set(orgaos));
@@ -64,7 +79,7 @@ export function MedidaGas({ ind, casas = 1, rotulo, comparacao, variacao = false
   return (
     <div className="min-w-0 border-t-2 border-gas pt-3">
       <p className="text-sm leading-snug text-carvao-muted">{rotulo ?? ind.rotulo}</p>
-      <p className="mt-1 font-sans text-[1.75rem] tracking-tight leading-tight text-carvao [font-variant-numeric:tabular-nums]">
+      <p className="mt-1 numero-m leading-tight text-carvao">
         {valor} {unidade && <span className="text-base text-carvao-muted">{unidade}</span>}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-mineral">

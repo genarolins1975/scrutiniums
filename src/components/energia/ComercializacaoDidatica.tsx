@@ -20,7 +20,7 @@ const esquema = {
 export function DuasCamadasEnergia({ compacto = false }: { compacto?: boolean }) {
   const tx = useTx();
   return <section id="fisico-e-comercial" className={s.section} aria-labelledby="duas-camadas-titulo">
-    <p className={s.eyebrow}>{tx("O caminho da energia e o caminho dos contratos", "The path of energy and the path of contracts")}</p>
+    <p className={`rotulo ${s.eyebrow}`}>{tx("O caminho da energia e o caminho dos contratos", "The path of energy and the path of contracts")}</p>
     <h2 id="duas-camadas-titulo" className={s.title}>{tx("A rede transporta. O contrato distribui obrigações e riscos.", "The grid carries the energy. The contract allocates obligations and risks.")}</h2>
     <p className={s.intro}>{tx("Uma comercializadora compra e vende energia, estrutura contratos e administra exposições. Ela pode atuar sem possuir usinas ou redes. O fornecedor escolhido no contrato não define o trajeto físico da eletricidade.", "An energy trader buys and sells energy, structures contracts and manages exposures. It can operate without owning plants or grids. The supplier chosen in the contract does not determine the physical path of the electricity.")}</p>
     <div className={s.lane}>
@@ -50,7 +50,7 @@ export function LaboratorioContratos() {
   const blocos = BLOCOS_COMERCIAIS.map((b, i) => ({ ...b, contrato: v.perfil === "casado" ? b.consumo : b.contrato, pld: i === 3 ? v.ponta : b.pld }));
   const r = liquidacaoDidatica(blocos, v.preco)!;
   return <section id="laboratorio-contratos" className={s.section} aria-labelledby="laboratorio-contratos-titulo">
-    <p className={s.eyebrow}>{tx("Laboratório · números hipotéticos · perspectiva do comprador", "Lab · hypothetical numbers · buyer's perspective")}</p>
+    <p className={`rotulo ${s.eyebrow}`}>{tx("Laboratório · números hipotéticos · perspectiva do comprador", "Lab · hypothetical numbers · buyer's perspective")}</p>
     <h2 id="laboratorio-contratos-titulo" className={s.title}>{tx("Contratar 100 MWh e consumir 100 MWh elimina a exposição?", "Does contracting 100 MWh and consuming 100 MWh eliminate the exposure?")}</h2>
     <p className={s.intro}>{tx("Depende dos horários. Neste dia ilustrativo, o consumo soma 100 MWh. Compare uma compra distribuída igualmente entre quatro blocos com uma compra que acompanha o consumo de cada bloco.", "It depends on the hours. On this illustrative day, consumption adds up to 100 MWh. Compare a purchase spread evenly across four blocks with a purchase that follows the consumption of each block.")}</p>
     <div className={s.tabs} role="group" aria-label={tx("Perfil do volume contratado", "Profile of the contracted volume")}>

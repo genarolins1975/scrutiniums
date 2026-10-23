@@ -7,11 +7,11 @@
   "files": [
     {
       "path": "src/components/eficiencia/IndiceResultados.tsx",
-      "sha256": "5389f65bc823c17705032ea942e29c2834a140a065319c8b45805ff73e0f910c"
+      "sha256": "f608d254880421785d675f468887c4658dad6bd4b2aa89e94e0c05d0cf65f1a5"
     },
     {
       "path": "src/components/eficiencia/IndiceResultados.module.css",
-      "sha256": "317ec7e15d58b7513f9c27fb497a6b93a8ae5d205626639af17555074f1b2d2a"
+      "sha256": "86fe90b3b7f6150017a97e811acf4a7f1223fab986ff7327dc5a78ebf421e785"
     },
     {
       "path": "src/lib/eficiencia/indice-v4-nucleo.ts",

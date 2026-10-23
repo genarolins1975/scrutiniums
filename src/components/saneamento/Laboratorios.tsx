@@ -423,24 +423,24 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
               </desc>
               {[0, 25, 50, 75, 100].map((v) => (
                 <g key={v}>
-                  <line x1={G.esq} x2={w - G.dir} y1={gy(v)} y2={gy(v)} stroke="var(--cor-linha, #d7dcd7)" strokeWidth={1} />
-                  <text x={G.esq - 6} y={gy(v) + 4} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted, #58666b)">
+                  <line x1={G.esq} x2={w - G.dir} y1={gy(v)} y2={gy(v)} stroke="var(--cor-linha)" strokeWidth={1} />
+                  <text x={G.esq - 6} y={gy(v) + 4} textAnchor="end" fontSize={12} fill="var(--cor-carvao-muted)">
                     {v}%
                   </text>
                 </g>
               ))}
               {[2010, 2014, 2018, 2022, 2026].map((a) => (
-                <text key={a} x={gx(a)} y={G.h - G.base + 16} textAnchor="middle" fontSize={12} fill="var(--cor-carvao-muted, #58666b)">
+                <text key={a} x={gx(a)} y={G.h - G.base + 16} textAnchor="middle" fontSize={12} fill="var(--cor-carvao-muted)">
                   {a}
                 </text>
               ))}
-              <line x1={gx(ANO_PRAZO)} x2={gx(ANO_PRAZO)} y1={G.topo} y2={G.h - G.base} stroke="var(--cor-carvao-muted, #58666b)" strokeWidth={1} />
-              <text x={gx(ANO_PRAZO)} y={G.h - G.base + 16} textAnchor="middle" fontSize={12} fill="var(--cor-carvao, #182b36)">
+              <line x1={gx(ANO_PRAZO)} x2={gx(ANO_PRAZO)} y1={G.topo} y2={G.h - G.base} stroke="var(--cor-carvao-muted)" strokeWidth={1} />
+              <text x={gx(ANO_PRAZO)} y={G.h - G.base + 16} textAnchor="middle" fontSize={12} fill="var(--cor-carvao)">
                 fim de 2033
               </text>
               {/* meta */}
-              <line x1={G.esq} x2={gx(ANO_PRAZO)} y1={gy(meta)} y2={gy(meta)} stroke="var(--cor-carvao, #182b36)" strokeWidth={1} strokeDasharray="2 3" />
-              <text x={gx(ANO_PRAZO) + 6} y={rotuloMeta} fontSize={13} fill="var(--cor-carvao, #182b36)">
+              <line x1={G.esq} x2={gx(ANO_PRAZO)} y1={gy(meta)} y2={gy(meta)} stroke="var(--cor-carvao)" strokeWidth={1} strokeDasharray="2 3" />
+              <text x={gx(ANO_PRAZO) + 6} y={rotuloMeta} fontSize={13} fill="var(--cor-carvao)">
                 meta {meta}%
               </text>
               {/* ritmo exigido */}
@@ -450,45 +450,45 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
                   y1={gy(serie.v2022)}
                   x2={gx(ANO_PRAZO)}
                   y2={gy(meta)}
-                  stroke="var(--cor-bronze, #966b48)"
+                  stroke="var(--cor-bronze)"
                   strokeWidth={2}
                   strokeDasharray="1 4"
                   strokeLinecap="round"
                 />
               )}
               {/* observado entre os Censos */}
-              <line x1={gx(ANO_CENSO_2010)} y1={gy(serie.v2010)} x2={gx(ANO_CENSO_2022)} y2={gy(serie.v2022)} stroke="var(--cor-obee, #00697f)" strokeWidth={2.5} />
+              <line x1={gx(ANO_CENSO_2010)} y1={gy(serie.v2010)} x2={gx(ANO_CENSO_2022)} y2={gy(serie.v2022)} stroke="var(--cor-obee)" strokeWidth={2.5} />
               {/* ritmo escolhido */}
               <line
                 x1={gx(ANO_CENSO_2022)}
                 y1={gy(serie.v2022)}
                 x2={gx(fimProjecao)}
                 y2={gy(fimProjecao === ANO_PRAZO ? r.em2033 : 100)}
-                stroke="var(--cor-obee, #00697f)"
+                stroke="var(--cor-obee)"
                 strokeWidth={2.5}
                 strokeDasharray="7 5"
               />
               {fimProjecao < ANO_PRAZO && (
-                <line x1={gx(fimProjecao)} y1={gy(100)} x2={gx(ANO_PRAZO)} y2={gy(100)} stroke="var(--cor-obee, #00697f)" strokeWidth={2.5} strokeDasharray="7 5" />
+                <line x1={gx(fimProjecao)} y1={gy(100)} x2={gx(ANO_PRAZO)} y2={gy(100)} stroke="var(--cor-obee)" strokeWidth={2.5} strokeDasharray="7 5" />
               )}
               {[
                 [ANO_CENSO_2010, serie.v2010],
                 [ANO_CENSO_2022, serie.v2022],
               ].map(([a, v]) => (
                 <g key={a}>
-                  <circle cx={gx(a)} cy={gy(v)} r={5} fill="var(--cor-obee, #00697f)" stroke="var(--cor-papel, #f8f7f2)" strokeWidth={2} />
-                  <text x={gx(a)} y={gy(v) + (v > 85 ? 18 : -10)} textAnchor="middle" fontSize={13} fill="var(--cor-carvao, #182b36)">
+                  <circle cx={gx(a)} cy={gy(v)} r={5} fill="var(--cor-obee)" stroke="var(--cor-papel)" strokeWidth={2} />
+                  <text x={gx(a)} y={gy(v) + (v > 85 ? 18 : -10)} textAnchor="middle" fontSize={13} fill="var(--cor-carvao)">
                     {numero(v, 1)}%
                   </text>
                 </g>
               ))}
-              <circle cx={gx(ANO_PRAZO)} cy={gy(r.em2033)} r={5} fill="var(--cor-papel, #f8f7f2)" stroke="var(--cor-obee, #00697f)" strokeWidth={2.5} />
+              <circle cx={gx(ANO_PRAZO)} cy={gy(r.em2033)} r={5} fill="var(--cor-papel)" stroke="var(--cor-obee)" strokeWidth={2.5} />
               <text
                 x={gx(ANO_PRAZO) + 6}
                 y={rotuloEm}
                 fontSize={13}
                 fontWeight={600}
-                fill="var(--cor-carvao, #182b36)"
+                fill="var(--cor-carvao)"
               >
                 {numero(r.em2033, 1)}%
               </text>
@@ -497,19 +497,19 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
           <figcaption className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao">
             <span className="inline-flex items-center gap-2">
               <svg width="26" height="8" aria-hidden="true">
-                <line x1="1" x2="25" y1="4" y2="4" stroke="var(--cor-obee, #00697f)" strokeWidth="2.5" />
+                <line x1="1" x2="25" y1="4" y2="4" stroke="var(--cor-obee)" strokeWidth="2.5" />
               </svg>
               Censos 2010 e 2022
             </span>
             <span className="inline-flex items-center gap-2">
               <svg width="26" height="8" aria-hidden="true">
-                <line x1="1" x2="25" y1="4" y2="4" stroke="var(--cor-obee, #00697f)" strokeWidth="2.5" strokeDasharray="7 5" />
+                <line x1="1" x2="25" y1="4" y2="4" stroke="var(--cor-obee)" strokeWidth="2.5" strokeDasharray="7 5" />
               </svg>
               Ritmo escolhido
             </span>
             <span className="inline-flex items-center gap-2">
               <svg width="26" height="8" aria-hidden="true">
-                <line x1="2" x2="25" y1="4" y2="4" stroke="var(--cor-bronze, #966b48)" strokeWidth="2" strokeDasharray="1 4" strokeLinecap="round" />
+                <line x1="2" x2="25" y1="4" y2="4" stroke="var(--cor-bronze)" strokeWidth="2" strokeDasharray="1 4" strokeLinecap="round" />
               </svg>
               Ritmo exigido pela meta
             </span>

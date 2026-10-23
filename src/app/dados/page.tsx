@@ -27,7 +27,7 @@ export default function DadosPage() {
   const inds = indicadoresPublicos();
   const refMax = inds.map((i) => i.ref).sort().at(-1);
   return (
-    <div className="flex min-h-screen flex-col bg-marfim">
+    <div className="flex min-h-screen flex-col bg-papel">
       <PublicHeaderView />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-14">
         <PageTitle

@@ -1,20 +1,75 @@
-# Design system dos observatórios
+# Design system da plataforma
+
+Referência de toda a Scrutiniums (todos os observatórios, as páginas abertas, a conta e a aplicação do Crédito), desde a Iniciativa 5 do parecer de UX de 21/10/2026. Antes era o documento do Setor Elétrico.
 
 A família visual é a da Scrutiniums: tipografia, grid, filetes, rótulos em caixa alta, espaço negativo. Cada observatório tem **um** acento. Nada de gradiente decorativo, neon, gauge sem régua ou tela de trading.
 
-## Tokens
+## Um só arquivo de tokens
 
-| Token | Valor | Uso | Contraste sobre marfim / papel / branco |
+* `src/app/globals.css` é o único lugar que define cor. Nenhum outro arquivo escreve hexadecimal nem redefine `--cor-*`; `src/tests/design-tokens.test.ts` reprova (escopo: `src/components`, `src/app`, `public/observatorios.css`, `public/observatorios-gravuras.css`, `public/obs/styles.css`, `public/obs/atlas.css`).
+* `tailwind.config.ts` lê as variáveis (`var(--cor-…)`), sem hexadecimal. As cores usadas com modificador de opacidade (`bg-carvao/40`) leem a tripla RGB do mesmo token (`--cor-<nome>-rgb`), porque com `var()` puro o Tailwind 3 descarta a classe em silêncio; o teste confere tripla contra hexadecimal e reprova classe com opacidade em cor sem tripla.
+* Derivados, regenerados por `node scripts/tokens-derivados.mjs` e conferidos pelo teste: `public/obs/tokens.css` (as mesmas variáveis para a aplicação do Crédito, que não carrega `globals.css`) e `src/lib/tokens.gerado.ts` (hexadecimais para a imagem social, que não lê CSS).
+* Aliases de coleção (`--obs-*`, `--cp-*`, `--ce-*`, `--cn-*`, `--edm-*`, `--pv-*`, `--atlas-*`, `--gravura-*` e os `--ink`/`--line`/`--muted`/`--paper` dos módulos da Eficiência) têm uma linha cada e nenhum valor próprio; somem quando a Iniciativa 6 migrar os componentes.
+* Dentro de um painel escuro com componentes de gráfico, a classe `.contexto-escuro` (em `globals.css`) troca os tokens de texto e linha pelos do painel, só na tela.
+
+## Tokens de cor
+
+Contraste medido sobre papel / marfim / superfície (branco). Texto pequeno pede 4,5:1; texto grande e elemento gráfico, 3:1.
+
+| Token | Valor | Uso | Contraste |
 | --- | --- | --- | --- |
-| `carvao` | `#1A1D21` | texto principal | 14,7 / 15,9 / 16,9 |
-| `bronze` | `#966B48` | acento do Crédito e da marca | 4,1 / 4,4 / 4,7 (só texto grande ou marcação) |
-| `energia` | `#0E6170` | acento do Setor Elétrico (teal sóbrio) | 6,2 / 6,7 / 7,1 |
-| `energia-dark` | `#0A4A56` | hover, foco, texto de destaque | 8,6 / 9,3 / 9,9 |
-| `energia-soft` | `#5E98A3` | marcação não textual (filetes, áreas) | 2,8 / 3,0 / 3,2 (nunca texto) |
-| `energia-fundo` | `#E6EEEE` | estado ativo e faixas de destaque do domínio | fundo; texto sobre ele só em `carvao`, `carvao-muted`, `energia` ou `energia-dark` (`mineral` fica em 4,43:1) |
-| `superficie` | `#FFFFFF` | superfícies de painel no Setor Elétrico | fundo |
+| `papel` | `#faf8f2` | fundo de página, em todo `main` | fundo |
+| `marfim` | `#f3efe5` | faixa ou superfície que pede um degrau de tom (seções alternadas da página inicial) | fundo |
+| `superficie` | `#ffffff` | controles, menus, cartões de laboratório | fundo |
+| `contexto` | `#e6eeee` | faixa de referência, seleção discreta, cabeçalho de tabela | fundo; texto só em carvão, carvão-muted e acento (mineral 4,4:1, usar `mineral-dark`) |
+| `linha` | `#d8d2c6` | separador decorativo; campo de formulário usa borda em mineral | 1,4 / 1,3 / 1,5 |
+| `carvao` | `#1a1d21` | texto e valor principal | 15,9 / 14,7 / 16,9 |
+| `carvao-muted` | `#3d4147` | texto de apoio | 9,7 / 8,9 / 10,3 |
+| `mineral` | `#6b6d6a` | metadado sobre papel, marfim e branco | 4,9 / 4,5 / 5,2 |
+| `mineral-dark` | `#626762` | texto terciário sobre o contexto suave e as tintas claras | 5,4 / 5,0 / 5,8 |
+| `destaque` | `#00697f` | série focal, link e seleção da barra comum (unifica `#09697a` e `#00697f`) | 5,9 / 5,5 / 6,3 |
+| `bronze` | `#966b48` | acento da marca e das Famílias; só texto grande ou marcação | 4,4 / 4,1 / 4,7 |
+| `bronze-dark` | `#7c5638` | texto em bronze, aviso sobre marfim | 6,1 / 5,6 / 6,5 |
+| `energia` · `energia-dark` | `#0e6170` · `#0a4a56` | acento do Setor Elétrico | 6,7 · 9,3 sobre papel |
+| `obee` · `obee-dark` · `obee-tinta` | `#00697f` · `#0b4f5e` · `#14243a` | acento e tinta da Eficiência Estatal | 5,9 · 8,6 · 14,7 sobre papel |
+| `gas` · `gas-dark` | `#35598a` · `#2b4a78` | acento do Gás e dos Combustíveis | 6,7 · 8,4 sobre papel |
+| `conect` · `conect-dark` | `#0f6b74` · `#0b535a` | acento da Conectividade | 5,9 · 8,2 sobre papel |
+| `negativo` | `#65516f` | valor negativo sem vermelho (Contas Federais) | 6,7 / 6,2 / 7,1 |
+| `comparacao` | `#806a45` | série de referência quando é preciso uma segunda cor; marcação | 4,9 / 4,5 / 5,2 |
+| `erro` · `sucesso` · `aviso` | `#8c3b2e` · `#4f6b4e` · `#8a6d2f` | estados documentados; `aviso` não vai sobre marfim (4,2:1) | 7,1 · 5,6 · 4,6 sobre papel |
+| `painel-escuro` | `#102e36` | fundo dos painéis escuros (Atlas, gravuras, Contas Estaduais, Crédito) | fundo |
+| `painel-escuro-texto` · `-legenda` · `-acento` | `#f8f7f2` · `#c4d7d7` · `#a3e3d7` | texto, legenda e acento sobre o painel escuro | 13,4 · 9,6 · 9,9 sobre o painel |
+| `painel-escuro-controle` · `-foco` | `#87a9af` · `#e5bf76` | borda de controle e anel de foco sobre o painel | 5,7 · 8,2 sobre o painel |
+| `painel-escuro-linha` · `-superficie` · `-selecao` | `#557278` · `#214650` · `#37616b` | filete, realce e item selecionado sobre o painel | decorativos; texto sobre a seleção a 6,4:1 |
 
-Regra herdada: nenhum hexadecimal solto em componente. Os tokens entram em `tailwind.config.ts` e em `globals.css` (`--cor-energia*`). SVG de gráfico usa as variáveis CSS (`var(--cor-mineral)`, `var(--cor-grade)`, `var(--serie-*)`), nunca o hexadecimal. O teste `design-tokens-energia.test.ts` confere contraste AA dos tokens de texto sobre `superficie`, `papel` e `energia-fundo`, a ausência de hexadecimal solto nos componentes do domínio e que `energia-soft` nunca vira cor de texto.
+Séries de gráfico (`--serie-*`): 3:1 sobre papel e marfim, salvo `serie-solar` e `serie-5`, que exigem rótulo direto e tabela equivalente. Escalas de mapa (`--escala-*`, `--san-div-*`) nunca são cor de texto. A aplicação do Crédito guarda seus estados, eixos e tema escuro em `--cor-credito-*` com os valores que já usava; a Iniciativa 8 os reconcilia com a paleta.
+
+## Escala tipográfica
+
+Uma escala só, com classes de papel (não de domínio), em `globals.css`. Serifa (Playfair Display) nos títulos e números; Inter no texto; Archivo Narrow nos rótulos.
+
+| Classe | Corpo | Uso |
+| --- | --- | --- |
+| `.t-h1` | clamp(2 rem, 1,4 rem + 2,2 vw, 3,2 rem), entrelinha 1,1, peso 400 | título da página (`.ed-h1` é alias) |
+| `.t-h2` | clamp(1,5 rem, 1,2 rem + 1 vw, 2,1 rem) | título de seção (`.ed-h2`) |
+| `.t-h3` | 1,25 rem | subtítulo (`.ed-h3`) |
+| `.t-lead` | 1 rem no celular, 1,0625 rem a partir de 768 px | abertura (`.ed-lead`) |
+| `.t-corpo` | 1 rem, entrelinha 1,55 | texto corrido |
+| `.t-tabela` | 0,875 rem | tabela |
+| `.t-meta` | 0,8125 rem (13 px) | nota, fonte, ressalva, código |
+| `.rotulo` | 0,75 rem (12 px), caixa alta, 0,14 em, Archivo Narrow, peso 400 | rótulo de seção e metadado em caixa alta |
+
+**Piso de 12 px.** Nenhum texto visível abaixo de 12 px, em nenhuma página, inclusive rótulo de eixo de gráfico em SVG. Conferido no código por `design-tokens.test.ts` (nenhum `font-size` abaixo de 0,75 rem fora de `@media print`, nenhum `text-[…]` abaixo disso, nenhum `!text-[`) e no navegador por `src/tests/ux-texto-minimo.test.ts` (as 37 rotas da seção 5 do parecer mais `/cadastro`, a 1440 e 390 px, com e sem sessão). Para achar a origem de um texto pequeno: `node scripts/ux-texto-minimo.mjs <base> <cookie ou -> <saida.json> <rotas…>`.
+
+**Decisão do dono de 22/10/2026** (conflito registrado em 20/10/2026 entre o sistema da casa e a `design-taste-frontend`): os rótulos em caixa alta espaçada ficam como identidade, a 12 px; a numeração 01, 02, 03 sai dos cartões da página inicial e das portas; o destaque colorido no título fica só no H1 da página inicial; os filetes de 3 px na cor do observatório ficam.
+
+## Números de destaque
+
+Três tamanhos só, sempre em serifa com `font-variant-numeric: lining-nums tabular-nums`: `.numero-g` (2,25 rem), `.numero-m` (1,75 rem), `.numero-p` (1,35 rem). As classes aceitam variantes (`numero-m sm:numero-g`). Números grandes só para o indicador principal de cada bloco; a hierarquia vem do título, não de um número gigante.
+
+## Fundo de página
+
+Papel em todo `main`. Branco só em superfícies funcionais (controles, menus, cartões de laboratório). Marfim só como degrau de tom entre faixas.
 
 ## Selos de natureza do dado
 
@@ -61,10 +116,6 @@ A obrigatoriedade é de tipo (TypeScript): um painel sem "o que não posso concl
 * Todo gráfico tem unidade, período, fonte, data de referência, tooltip, link de metodologia e download quando pertinente.
 * Paletas validadas com o verificador de daltonismo da skill de visualização (ordem fixa; separação CVD entre séries adjacentes acima de 8; visão normal acima de 15). A primeira proposta (tons terrosos) falhou no piso de croma e na separação CVD e foi substituída. Fontes, nesta ordem: hidráulica `#256ABF`, térmica `#D95926`, eólica `#17966A`, solar `#C98500` (solar abaixo de 3:1 exige rótulo direto e tabela). Submercados: SE/CO `#4A3AA7`, S `#17966A`, NE `#D95926`, N `#2A78D6`. O verde era `#199E70` até o redesenho de 2026: media 3,21:1 sobre o papel `#FAF8F2` e 2,97:1 sobre o marfim `#F3EFE5`, abaixo dos 3:1 de elemento gráfico (WCAG 1.4.11) neste segundo fundo, e passou a `#17966A` (3,53:1 e 3,26:1; distâncias CIEDE2000 para o laranja de 14,6 na protanopia e 18,4 na deuteranopia, e para o azul de 10,5 na tritanopia). Sempre com rótulo direto no fim da linha e legenda; texto nunca na cor da série.
 * Ausência é lacuna na linha, nunca zero. Previsão tracejada com faixa; cenário pontilhado.
-
-## Tipografia e ritmo
-
-Títulos em serifa, texto em Inter 16 a 18 px, rótulos em Archivo Narrow caixa alta com tracking 0,14em. Números em algarismos tabulares. Números grandes só para o indicador principal de cada bloco.
 
 ## Acessibilidade
 

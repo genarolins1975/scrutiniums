@@ -5,7 +5,6 @@ import { join } from "node:path";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
-import { LinkEntrarComDestino } from "@/components/home/LinkEntrarComDestino";
 import { SeloFrescor } from "@/components/dados/SeloFrescor";
 import { ACESSO } from "@/lib/acesso";
 import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos";
@@ -17,7 +16,15 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
 import { paginaCredito } from "@/lib/credito/navegacao";
-import { RotuloContexto } from "@/components/layout/RotuloContexto";
+import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { ParaVoce } from "@/components/observatorios/ParaVoce";
+import { CircuitoCredito } from "@/components/observatorios/CircuitoCredito";
+import { circuitoCredito } from "@/lib/observatorios/entradas/economia";
+import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
 /**
  * Vitrine pública da coleção Crédito e sistema financeiro.
@@ -70,43 +77,55 @@ function nbr(v: number, dec = 1) {
   return v.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec });
 }
 
-/** Números-vitrine: cada um sai de um módulo diferente, com fonte e data-base. */
-function numerosVivos() {
+/** Números-vitrine da escala: cada um sai de um módulo diferente, com fonte e data-base (o painel de destino lê a mesma gold). */
+function numerosVivos(): { numeros: NumeroPorta[]; vintages: Record<string, string> } {
   const panorama = lerGold("panorama");
   const pix = lerGold("pix");
   const judicial = lerGold("judicial");
   const meta = lerGold("meta");
-  const out: { valor: string; rotulo: string; nota: string }[] = [];
+  const out: NumeroPorta[] = [];
 
   if (panorama?.disponivel) {
-    out.push({
-      valor: `R$ ${nbr(panorama.kpis.saldo.v / 1e12, 2)} tri`,
-      rotulo: "carteira de crédito do país",
-      nota: `SCR.data · ${panorama.data_base}`,
-    });
-    out.push({
-      valor: `${nbr(panorama.kpis.inad.v, 1)}%`,
-      rotulo: "inadimplência (conceito SCR)",
-      nota: `27 estados · ${panorama.data_base}`,
-    });
+    out.push({ rotulo: "Carteira de crédito do país", valor: `R$ ${nbr(panorama.kpis.saldo.v / 1e12, 2)}`, unidade: "trilhões", periodo: panorama.data_base, fonte: "Banco Central, SCR.data", href: "/observatorio/credit-panorama" });
+    out.push({ rotulo: "Inadimplência (conceito SCR)", valor: `${nbr(panorama.kpis.inad.v, 1)}%`, unidade: "da carteira", periodo: panorama.data_base, fonte: "Banco Central, SCR.data", nota: "27 estados.", href: "/observatorio/credit-panorama" });
   }
   if (pix?.disponivel) {
-    out.push({
-      valor: `${nbr(pix.kpis.qtd.v / 1e9, 1)} bi`,
-      rotulo: "transações Pix no mês",
-      nota: `Banco Central · ${pix.mes}`,
-    });
+    out.push({ rotulo: "Transações Pix no mês", valor: nbr(pix.kpis.qtd.v / 1e9, 1), unidade: "bilhões", periodo: pix.mes, fonte: "Banco Central", href: "/observatorio/pix" });
   }
   if (judicial?.disponivel) {
     const n = judicial.camada_nacional.total_civel_casos + judicial.camada_nacional.total_trabalhista_casos;
     out.push({
-      valor: `${nbr(n / 1e6, 1)} mi`,
-      rotulo: "processos em temas bancários",
-      nota: `CNJ/DataJud · ${judicial.camada_nacional.n_tribunais} tribunais · acervo coletado em ${String(judicial.coletado_em).slice(0, 10).split("-").reverse().join("/")}`,
+      rotulo: "Processos em temas bancários",
+      valor: nbr(n / 1e6, 1),
+      unidade: "milhões",
+      periodo: `acervo coletado em ${String(judicial.coletado_em).slice(0, 10).split("-").reverse().join("/")}`,
+      fonte: "CNJ, DataJud",
+      nota: `${judicial.camada_nacional.n_tribunais} tribunais.`,
+      href: "/observatorio/lawsuits",
     });
   }
   const vintages = meta?.vintages ?? {};
   return { numeros: out.slice(0, 4), vintages };
+}
+
+/** Número de cada área nos caminhos, lido da gold do painel da área; área sem número simples fica sem número. */
+function numeroDaArea(area: string): NumeroPorta | undefined {
+  const juros = goldJuros();
+  if (area === "Produtos e taxas" && juros) {
+    const pf = juros.modalidades.filter((m) => m.segmento === "PF");
+    const maior = [...(pf.length ? pf : juros.modalidades)].sort((a, b) => b.stats.n - a.stats.n)[0];
+    return { rotulo: `Taxa mediana: ${rotuloModalidade(maior.modalidade).toLowerCase()}`, valor: `${numJuros(maior.stats.mediana)}%`, unidade: "ao ano", periodo: `semana de ${janelaJuros(maior.janela)}`, fonte: "Banco Central", href: "/observatorio/interest-rates" };
+  }
+  if (area === "Instituições financeiras") {
+    const g = lerGold("institutions");
+    if (g?.instituicoes?.length) return { rotulo: "Instituições comparadas", valor: String(g.instituicoes.length), unidade: "instituições", periodo: `${String(g.anomes).slice(4)}/${String(g.anomes).slice(0, 4)}`, fonte: "Banco Central, IF.data", href: "/observatorio/institutions" };
+  }
+  if (area === "Apostas e crédito das famílias" || area === "Fraudes financeiras") {
+    const g = lerGold(area === "Fraudes financeiras" ? "fraudes" : "bets");
+    const s = Array.isArray(g?.sintese) ? g.sintese[0] : null;
+    if (s) return { rotulo: s.rotulo, valor: s.exibir, unidade: "", periodo: s.data_ref, fonte: s.fonte, href: area === "Fraudes financeiras" ? "/observatorio/financial-fraud" : "/observatorio/bets-financial-risk" };
+  }
+  return undefined;
 }
 
 /**
@@ -144,48 +163,56 @@ function consultasDoLeitor() {
 const AREAS = [
   {
     titulo: "Panorama do crédito",
+    href: "/observatorio/credit-panorama",
     pergunta: "Onde está o crédito no Brasil e quem são os tomadores?",
     detalhe:
       "Mapa por estado, faixa de renda, ocupação e produto, a partir dos agregados públicos do SCR. Normalizado por habitante, porque valor absoluto só reproduz o tamanho da população.",
   },
   {
     titulo: "Instituições financeiras",
+    href: "/observatorio/institutions",
     pergunta: "Qual a situação de cada banco, e como se comparam?",
     detalhe:
       "Capital, inadimplência, rentabilidade e carteira por instituição e conglomerado, com comparador que bloqueia a mistura de níveis de consolidação.",
   },
   {
     titulo: "Produtos e taxas",
+    href: "/observatorio/products",
     pergunta: "Quanto custa cada produto, em cada instituição?",
     detalhe:
       "Consignado, cartão, veículos e imobiliário com atraso específico do produto — e as taxas de novas operações por instituição e modalidade.",
   },
   {
     titulo: "Pix e meios de pagamento",
+    href: "/observatorio/pix",
     pergunta: "Como o Pix mudou os pagamentos brasileiros?",
     detalhe:
       "Evolução desde o lançamento, comparação com cartões, TED e boleto, natureza dos fluxos, geografia e o Mecanismo Especial de Devolução.",
   },
   {
     titulo: "Sinais antecedentes",
+    href: "/observatorio/leading-signals",
     pergunta: "Há estresse de crédito se formando agora?",
     detalhe:
       "Endividamento das famílias, garantias imobiliárias, crédito não bancário e judicialização combinados em subíndices, com alertas que exigem persistência.",
   },
   {
     titulo: "Mercado e valor",
+    href: "/observatorio/market",
     pergunta: "Quanto valem os bancos listados e de onde vem o lucro?",
     detalhe:
       "Preços, proventos e valuation dos bancos em bolsa, com a ponte do lucro reconstruída da DRE da CVM. Nada aqui é recomendação de investimento.",
   },
   {
     titulo: "Apostas e crédito das famílias",
+    href: "/observatorio/bets-financial-risk",
     pergunta: "O que as apostas online fazem com a saúde financeira das famílias?",
     detalhe:
       "GGR, apostadores, autoexclusão e fluxo Pix com hierarquia de evidências A–E: o painel investiga a hipótese em vez de partir da conclusão, e diz onde a evidência termina.",
   },
   {
     titulo: "Fraudes financeiras",
+    href: "/observatorio/financial-fraud",
     pergunta: "Quanto o Brasil perde com golpes, e o que os dados permitem afirmar?",
     detalhe:
       "Perdas reportadas, devoluções via Pix/MED e tipologias — separando dado administrativo oficial de estimativa privada, com a fonte primária de cada número.",
@@ -217,64 +244,24 @@ export default function ObservatorioPublicoPage() {
   const r = resumoDiario();
   const geradoEm = geradoEmPublicado();
 
+  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026), com o título aprovado pelo dono em 22/10/2026: os números
+  // vivos na escala, as consultas no "Para você", o circuito do crédito como modelo didático, as áreas como caminhos (link e número
+  // da gold de cada uma), o convite do aperitivo à vista; o diagnóstico do dia, o que muda em relação às fontes e a coleta, recolhidos
   return (
     <>
       <PublicHeaderView />
-      <main>
-        {/* ---------------- proposta ---------------- */}
-        <section aria-labelledby="titulo" className="border-b border-linha bg-marfim">
-          <div className="mx-auto max-w-page px-6 pb-16 pt-14 md:pb-20 md:pt-20">
-            <RotuloContexto rota="/observatorio" className="text-mineral" />
-            <h1
-              id="titulo"
-              className="mt-6 max-w-4xl font-serif text-[clamp(2.2rem,5.4vw,3.9rem)] leading-[1.07] tracking-[-0.015em] text-carvao"
-            >
-              Observatório Brasileiro de <span className="text-bronze">Crédito</span>
-            </h1>
-            <p className="mt-7 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-              O crédito brasileiro está documentado em dezenas de bases oficiais que quase
-              ninguém consegue cruzar. O Observatório reúne essas fontes, reconcilia os
-              conceitos e explica o que cada número significa — e o que ele não permite
-              concluir.
-            </p>
-
-            {numeros.length > 0 && (
-              <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-                {numeros.map((n) => (
-                  <div key={n.rotulo}>
-                    <p className="font-serif text-[2.6rem] leading-none tracking-[-0.02em] text-carvao">
-                      {n.valor}
-                    </p>
-                    <p className="mt-3 text-sm text-carvao-muted">{n.rotulo}</p>
-                    <p className="rotulo mt-1 text-mineral">{n.nota}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>
-              <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
-              <Link
-                href="/resumo"
-                prefetch={prefetchDoLink("/resumo")}
-                className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
-              >
-                Ver o resumo diário
-                <ComConta />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ---------------- para o seu caso: consultas de juros ---------------- */}
-        <section aria-labelledby="seu-caso" className="border-b border-linha bg-papel">
-          <div className="mx-auto max-w-page px-6 py-14 md:py-16">
-            <h2 id="seu-caso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              Para o seu caso
-            </h2>
-            <div className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
-              {consultas.map((c) => (
+      <EntradaColecao
+        tipo="colecao"
+        rota="/observatorio"
+        acento="bronze"
+        titulo="Onde o crédito cresce, quanto custa e onde o risco aparece?"
+        frase="O crédito brasileiro está em dezenas de bases oficiais que quase ninguém consegue cruzar. O Observatório reúne as fontes, reconcilia os conceitos e diz o que cada número permite concluir."
+        frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/observatorio-do-credito"]} conteiner="mx-auto max-w-page px-6" />}
+        escala={numeros}
+        paraVoce={
+          <ParaVoce entrada="/observatorio-do-credito">
+            <div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
+              {consultas.filter((c) => c.href !== "/observatorio-do-credito/quanto-meu-banco-cobra").map((c) => (
                 <article key={c.href} className="border-t border-carvao pt-5">
                   <h3 className="font-serif text-xl leading-snug text-carvao">
                     <Link href={c.href} prefetch={prefetchDoLink(c.href)} className="underline decoration-linha underline-offset-8 transition-colors hover:text-bronze">
@@ -287,11 +274,63 @@ export default function ObservatorioPublicoPage() {
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ---------------- princípio do aperitivo: o que o observatório completo tem a mais ---------------- */}
-        <div className="border-b border-linha bg-papel">
+          </ParaVoce>
+        }
+        destinos={destinosDaColecao("credito", { proprio: "/observatorio-do-credito" })}
+        artefato={<CircuitoCredito circuito={circuitoCredito()} />}
+        caminhos={AREAS.map((a) => ({ pergunta: a.pergunta, resumo: a.detalhe, href: a.href, rotulo: a.titulo, numero: numeroDaArea(a.titulo) }))}
+        recolhidos={
+          <>
+            {r && (
+              <Recolhido id="hoje" titulo="O diagnóstico de hoje" resumo="A frase do dia, montada por regras sobre as séries oficiais.">
+                <p className="max-w-prose2 text-base leading-relaxed text-carvao">{r.frase}</p>
+                <p className="rotulo mt-6 text-mineral">
+                  Frase montada por regras determinísticas sobre as séries oficiais — nunca texto
+                  livre. Atualizada a cada execução do pipeline.
+                </p>
+                <p className="mt-8">
+                  <Link
+                    href="/resumo"
+                  prefetch={prefetchDoLink("/resumo")}
+                    className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
+                  >
+                    Ler o resumo completo
+                    <ComConta />
+                  </Link>
+                </p>
+              </Recolhido>
+            )}
+            <Recolhido id="metodo-credito" titulo="O que muda em relação a consultar as fontes direto" resumo="Origem de cada número, ausência que não vira zero e conceitos separados.">
+              <div className="grid gap-x-10 gap-y-12 md:grid-cols-2">
+                {DIFERENCAS.map((d) => (
+                  <article key={d.t}>
+                    <h3 className="font-serif text-lg leading-snug text-carvao">{d.t}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{d.d}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
+                <Link
+                  href="/observatorio-do-credito/metodologia"
+                  prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
+                  className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
+                >
+                  Metodologia e fontes
+                  <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
+                </Link>
+                <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+                  Glossário
+                </Link>
+                <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+                  Indicadores com definição
+                  <ComConta />
+                </Link>
+              </div>
+            </Recolhido>
+          </>
+        }
+        convite={
+          <div className="border-b border-linha bg-papel">
           <ConviteAperitivo
             rota="/observatorio"
             className="mx-auto max-w-page px-6"
@@ -303,97 +342,12 @@ export default function ObservatorioPublicoPage() {
               "Sinais antecedentes, cenários, o resumo diário completo e a central de alertas",
             ]}
           />
-        </div>
-
-        {/* ---------------- perguntas que responde ---------------- */}
-        <section aria-labelledby="areas" className="border-b border-linha bg-papel">
-          <div className="mx-auto max-w-page px-6 py-16 md:py-20">
-            <h2 id="areas" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              O que dá para responder aqui
-            </h2>
-            <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              Cada área do Observatório existe para responder a uma pergunta concreta, e
-              declara na própria página como ler os dados e onde termina a conclusão possível.
-            </p>
-            <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-              {AREAS.map((a) => (
-                <article key={a.titulo}>
-                  <p className="rotulo text-bronze-dark">{a.titulo}</p>
-                  <h3 className="mt-3 font-serif text-lg leading-snug text-carvao">{a.pergunta}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{a.detalhe}</p>
-                </article>
-              ))}
-            </div>
           </div>
-        </section>
-
-        {/* ---------------- diagnóstico do dia (prova concreta) ---------------- */}
-        {r && (
-          <section aria-labelledby="hoje" className="border-b border-linha bg-marfim">
-            <div className="mx-auto max-w-page px-6 py-16 md:py-20">
-              <h2 id="hoje" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-                O diagnóstico de hoje
-              </h2>
-              <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao">{r.frase}</p>
-              <p className="rotulo mt-6 text-mineral">
-                Frase montada por regras determinísticas sobre as séries oficiais — nunca texto
-                livre. Atualizada a cada execução do pipeline.
-              </p>
-              <p className="mt-8">
-                <Link
-                  href="/resumo"
-                prefetch={prefetchDoLink("/resumo")}
-                  className="rotulo inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
-                >
-                  Ler o resumo completo
-                  <ComConta />
-                </Link>
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* ---------------- por que não é só o IF.data ---------------- */}
-        <section aria-labelledby="metodo" className="border-b border-linha bg-papel">
-          <div className="mx-auto max-w-page px-6 py-16 md:py-20">
-            <h2 id="metodo" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              O que muda em relação a consultar as fontes direto
-            </h2>
-            <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
-              {DIFERENCAS.map((d) => (
-                <article key={d.t}>
-                  <h3 className="font-serif text-lg leading-snug text-carvao">{d.t}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{d.d}</p>
-                </article>
-              ))}
-            </div>
-            <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
-              <Link
-                href="/observatorio-do-credito/metodologia"
-                prefetch={prefetchDoLink("/observatorio-do-credito/metodologia")}
-                className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze"
-              >
-                Metodologia e fontes
-                <SeloComConta href="/observatorio-do-credito/metodologia" idioma="pt" />
-              </Link>
-              <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Glossário
-              </Link>
-              <Link href="/dados" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Indicadores com definição
-                <ComConta />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ---------------- atualização e acesso ---------------- */}
-        <section aria-labelledby="acesso" className="bg-marfim">
-          <div className="mx-auto max-w-page px-6 py-16 md:py-20">
-            <h2 id="acesso" className="font-serif text-3xl tracking-[-0.012em] text-carvao">
-              Coleta diária, sem custo
-            </h2>
-            <p className="mt-6 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+        }
+        metodo={
+          <div id="acesso" className="space-y-4">
+            <h3 className="font-serif text-xl text-carvao">Coleta diária, sem custo</h3>
+            <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
               O pipeline roda todos os dias e só publica a base inteira quando ela passa nos testes
               de conteúdo; reprovada, a última publicação aprovada segue no ar. Cada fonte tem seu
               próprio calendário, e a plataforma mostra a data-base real de cada uma, em vez de uma
@@ -430,8 +384,9 @@ export default function ObservatorioPublicoPage() {
               {ACESSO.leitura} {ACESSO.conta}
             </p>
           </div>
-        </section>
-      </main>
+        }
+        frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/observatorio-do-credito"]} variante="metodo" />}
+      />
       <Footer />
     </>
   );

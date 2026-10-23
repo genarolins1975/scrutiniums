@@ -42,7 +42,7 @@ export default function AperitivoMinhaCapital() {
     <div className="flex-1"><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal" /></header>
       <main id="conteudo" className="pb-12">
         {/* fecho obrigatório: ConviteAperitivo com rota="/eficiencia-estatal", dentro do componente cliente */}
-        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA} rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Minha capital" className={entradaStyles.kicker}/>}/>
+        <MinhaCapitalAperitivo dados={dados} comConta={COM_CONTA} rotulo={<RotuloContexto rota="/eficiencia-estatal" pagina="Minha capital" className={`rotulo ${entradaStyles.kicker}`}/>}/>
       </main>
     </div>
     <Footer/>

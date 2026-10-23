@@ -84,7 +84,7 @@ export function SeletorColecoes({
       >
         {/* nome longo ("Dívida e crédito das famílias") não empurra a conta para fora da linha da marca no celular */}
         <span className="max-w-[11rem] truncate sm:max-w-[16rem]">{rotulo ? <Nome>{rotulo}</Nome> : tx("Observatórios", "Observatories", idioma)}</span>
-        <span aria-hidden="true" className="text-[0.7em] transition-transform group-open:rotate-180">
+        <span aria-hidden="true" className="text-xs transition-transform group-open:rotate-180">
           ▾
         </span>
       </summary>

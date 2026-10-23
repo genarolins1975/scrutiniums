@@ -368,7 +368,7 @@ function BarrasAlavancagem({ titulo, companhias, logos }: { titulo: string; comp
               </span>
               <span className={`text-right tabular-nums ${v == null ? "text-carvao-muted" : "text-carvao"}`}>
                 {v == null ? "sem leitura" : vezes(v)}
-                {cortado && <span className="block text-[11px] leading-tight text-carvao-muted">fora da escala</span>}
+                {cortado && <span className="block text-xs leading-tight text-carvao-muted">fora da escala</span>}
               </span>
             </li>
           );

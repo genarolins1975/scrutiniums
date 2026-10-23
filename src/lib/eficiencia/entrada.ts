@@ -10,7 +10,8 @@ import {join} from 'node:path';
 import contornos from './contornos-capitais.json';
 import panorama from './panorama-atlas.json';
 import {indiceSnapshot} from './indice-v4';
-import type {CapitalRetrato, Medida, RetratoDados, ValorMedida} from './entrada-nucleo';
+import {elegiveis, mediana, numero, type CapitalRetrato, type Medida, type RetratoDados, type ValorMedida} from './entrada-nucleo';
+import type {NumeroPorta} from '@/lib/perguntas/tipos';
 
 const UF: Record<string, [string, string]> = {
   '11': ['RO', 'Norte'], '12': ['AC', 'Norte'], '13': ['AM', 'Norte'], '14': ['RR', 'Norte'], '15': ['PA', 'Norte'], '16': ['AP', 'Norte'], '17': ['TO', 'Norte'],
@@ -97,4 +98,23 @@ export function montarRetrato(): RetratoDados {
   return {capitais, condicoes, recursos,
     fonteContornos: {fonte: contornos.fonte, url: contornos.fonte_url, capturadoEm: contornos.capturado_em, tratamento: contornos.tratamento},
     fontePopulacao: 'IBGE, Censo 2022 (SIDRA 4714), população residente em 31 de julho de 2022'};
+}
+
+/**
+ * Os quatro números da escala da entrada (molde único, Iniciativa 4 do parecer de UX, 22/10/2026): as quatro primeiras condições
+ * do retrato, cada uma pela mediana simples das 26 capitais, da mesma edição do índice de resultados que a régua usa. Mediana,
+ * nunca nota composta (decisão do dono de 19/10/2026).
+ */
+export function escalaEntrada(retrato: RetratoDados): NumeroPorta[] {
+  return retrato.condicoes.slice(0, 4).map((m) => {
+    const med = mediana(elegiveis(m).map((x) => x.valor));
+    return {
+      rotulo: m.curto,
+      valor: med === null ? null : numero(med, m.unidade),
+      unidade: "mediana das 26 capitais",
+      periodo: m.periodo,
+      fonte: m.fonte,
+      href: "#perguntas",
+    };
+  });
 }

@@ -63,7 +63,7 @@ export function ColunasDiarias({
         className="block w-full"
       >
         {max > 0 && (
-          <text x={0} y={PAD_TOP - 4} fontSize="10" className="fill-mineral">
+          <text x={0} y={PAD_TOP - 4} fontSize="12" className="fill-mineral">
             {fmtNumber(max)}
           </text>
         )}
@@ -108,7 +108,7 @@ export function ColunasDiarias({
               key={`t-${p.dia}`}
               x={i * passo + passo / 2}
               y={H - 7}
-              fontSize="10"
+              fontSize="12"
               textAnchor="middle"
               className="fill-mineral"
             >

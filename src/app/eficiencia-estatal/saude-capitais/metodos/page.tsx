@@ -171,15 +171,15 @@ export default function PaginaMetodos() {
             <li>Baixe o CSV do indicador (seção Arquivos): cada linha traz valor, estado, nota, fonte, registro de origem, numerador e denominador, versão metodológica e o hash dos dados.</li>
             <li>Encontre a fonte e a data de captura no manifesto das capturas. Cada captura registra a URL, a data e o sha256 do arquivo original ou da resposta integral.</li>
             <li>Refaça o cálculo com a fórmula da ficha: o numerador e o denominador estão no CSV, e a população e o IPCA são os mesmos do painel de Educação nas capitais.</li>
-            <li>Para reconstruir tudo sem rede, no <a href={REPOSITORIO} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-4">repositório do Scrutiniums</a> (código em <code className="font-mono text-[0.8rem]">pipeline/eficiencia_saude</code>, recortes das fontes em <code className="font-mono text-[0.8rem]">pipeline/eficiencia_saude/seed</code>): <code className="font-mono text-[0.8rem]">python3 -m pipeline.eficiencia_saude.run</code>. A reconstrução imprime as validações e termina com erro se alguma for reprovada.</li>
-            <li>Conferências de integridade: o sha256 do manifesto vale para o conteúdo descomprimido de cada recorte (o hash do arquivo compactado difere). O <code className="font-mono text-[0.8rem]">hash_dados</code> é o sha256 do JSON das observações, com chaves ordenadas, separadores compactos, caracteres acentuados mantidos (sem escape ASCII) e codificação UTF-8; reconstruir com o mesmo seed e o mesmo código reproduz o mesmo hash.</li>
+            <li>Para reconstruir tudo sem rede, no <a href={REPOSITORIO} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-4">repositório do Scrutiniums</a> (código em <code className="font-mono t-meta">pipeline/eficiencia_saude</code>, recortes das fontes em <code className="font-mono t-meta">pipeline/eficiencia_saude/seed</code>): <code className="font-mono t-meta">python3 -m pipeline.eficiencia_saude.run</code>. A reconstrução imprime as validações e termina com erro se alguma for reprovada.</li>
+            <li>Conferências de integridade: o sha256 do manifesto vale para o conteúdo descomprimido de cada recorte (o hash do arquivo compactado difere). O <code className="font-mono t-meta">hash_dados</code> é o sha256 do JSON das observações, com chaves ordenadas, separadores compactos, caracteres acentuados mantidos (sem escape ASCII) e codificação UTF-8; reconstruir com o mesmo seed e o mesmo código reproduz o mesmo hash.</li>
           </ol>
           <details className="mt-4 max-w-prose2">
             <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-obee-dark">Exemplos de reconstrução passo a passo (dado técnico)</summary>
             <ul className="mt-2 space-y-3 text-sm leading-snug text-obee-tinta">
               {g.trilhas.map((t) => (
                 <li key={t.indicador} id={`trilha-${t.indicador.replace(/\./g, "-")}`} className="scroll-mt-24 focus:outline focus:outline-2 focus:outline-obee">
-                  <p className="font-mono text-[0.8rem] text-carvao-muted">{t.indicador} · {t.nome} · {t.ano}</p>
+                  <p className="font-mono t-meta text-carvao-muted">{t.indicador} · {t.nome} · {t.ano}</p>
                   <ol className="mt-1 list-decimal space-y-1 pl-5">{t.passos.map((p, i) => <li key={i}>{p}</li>)}</ol>
                 </li>
               ))}
@@ -203,7 +203,7 @@ export default function PaginaMetodos() {
 
         <Secao id="atualidade" titulo="Atualidade e versões" intro="As fontes têm datas de referência diferentes: não há um único momento de atualização.">
           <p className="max-w-prose2 text-sm leading-relaxed text-obee-tinta">
-            Versão do catálogo: {rotuloVersaoCatalogo(g.meta.versao_catalogo)}. Dados gerados em {dataBr(g.meta.gerado_em)}; última captura em {dataBr(g.meta.dados_capturados_ate)}. Hash dos dados: <code className="break-all font-mono text-[0.75rem]">{g.meta.hash_dados.slice(0, 16)}</code>.
+            Versão do catálogo: {rotuloVersaoCatalogo(g.meta.versao_catalogo)}. Dados gerados em {dataBr(g.meta.gerado_em)}; última captura em {dataBr(g.meta.dados_capturados_ate)}. Hash dos dados: <code className="break-all font-mono text-xs">{g.meta.hash_dados.slice(0, 16)}</code>.
           </p>
           <details id="historico-revisoes" className="mt-4 max-w-[64rem]">
             <summary className="flex min-h-[44px] cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-0.5 font-semibold text-obee-tinta">
@@ -227,7 +227,7 @@ export default function PaginaMetodos() {
                   {HISTORICO_REVISOES.map((r) => (
                     <tr key={r.hash} className="align-top">
                       <th scope="row" className="py-2 pr-4 text-left font-normal tabular-nums text-obee-tinta">{r.geradoEm}</th>
-                      <td className="py-2 pr-4 font-mono text-[0.75rem] text-obee-tinta">{r.hash}</td>
+                      <td className="py-2 pr-4 font-mono text-xs text-obee-tinta">{r.hash}</td>
                       <td className="py-2 pr-4 text-right tabular-nums text-obee-tinta">{inteiroBr(r.observacoes)}</td>
                       <td className="py-2 pr-4 text-carvao-muted">{ROTULO_TIPO_REVISAO[r.tipo]}</td>
                       <td className="max-w-prose2 py-2 leading-snug text-obee-tinta">{r.mudou}</td>
@@ -240,7 +240,7 @@ export default function PaginaMetodos() {
           <ul className="mt-4 divide-y divide-linha border-y border-linha text-sm">
             {datas.map((d) => (
               <li key={d.id} className="grid gap-x-6 gap-y-1 py-3 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_8rem]">
-                <span className="font-mono text-[0.8rem] text-carvao-muted">{d.id}</span>
+                <span className="font-mono t-meta text-carvao-muted">{d.id}</span>
                 <span className="leading-snug text-obee-tinta">{d.papel}</span>
                 <span className="tabular-nums text-carvao-muted">captura em {dataBr(d.ultima)}</span>
               </li>

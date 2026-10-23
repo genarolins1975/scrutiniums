@@ -1,11 +1,13 @@
-import {describe,it,expect} from 'vitest';
+import {describe,it,expect,vi} from 'vitest';
+// a página importa módulos marcados com server-only; no teste, o marcador não tem efeito
+vi.mock('server-only',()=>({}));
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {FrequenciaEscolar} from '@/components/eficiencia/FrequenciaEscolar';
-import {AtlasCidadao} from '@/components/eficiencia/AtlasCidadao';
-import {montarRetrato} from '@/lib/eficiencia/entrada';
+// a entrada é montada pela página no molde único (Iniciativa 4, 22/10/2026): o teste renderiza a página inteira
+import PaginaEntradaEficiencia from '@/app/eficiencia-estatal/page';
 import dados from '@/lib/eficiencia/frequencia-escolar.json';
 
 describe('Frequência escolar no Atlas',()=>{
@@ -38,7 +40,7 @@ describe('Frequência escolar no Atlas',()=>{
     expect(html).toContain('Inclui redes públicas e privadas');expect(html).toContain('Brasil é a taxa nacional');expect(html).toContain('100%');
   });
   it('entrada sem o índice carregado não mostra nota e oferece os dois indicadores',()=>{
-    const html=renderToStaticMarkup(createElement(AtlasCidadao,{retrato:montarRetrato()}));
+    const html=renderToStaticMarkup(createElement(PaginaEntradaEficiencia));
     expect(html).not.toContain('id="atlas-indice"');expect(html).not.toContain('Nota do índice');
     expect(html).toContain('Aprendizagem · Saeb');expect(html).toContain('Frequência escolar');
   });

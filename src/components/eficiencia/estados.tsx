@@ -15,7 +15,7 @@ export function SemValor({ ponto, contexto }: { ponto: Ponto; contexto?: string 
   const resto = corte > 0 ? texto.slice(corte + 1).trim() : "";
   return (
     <div className="mt-2 border border-dashed border-mineral bg-papel px-3 py-2 text-sm text-obee-tinta" role="note">
-      <p className="rotulo flex items-center gap-1.5 !text-[0.66rem] text-carvao-muted">
+      <p className="rotulo flex items-center gap-1.5 text-carvao-muted">
         <span aria-hidden="true" className="inline-block h-2 w-2 border border-carvao-muted" />
         {ponto.status === "NAO_COMPARAVEL" && ponto.valor === null ? "Sem valor publicável" : ROTULO_STATUS[ponto.status]}
       </p>
@@ -47,7 +47,7 @@ export function Ressalva({ ponto }: { ponto: Ponto }) {
     const resto = corte > 0 ? texto.slice(corte + 1).trim() : "";
     return (
       <div className="mt-3 max-w-prose2 border-l-2 border-obee-tinta pl-3 text-sm leading-snug text-obee-tinta" role="note">
-        <p className="rotulo !text-[0.66rem] text-carvao-muted">{ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações"}</p>
+        <p className="rotulo text-carvao-muted">{ponto.elegivel ? "Ressalva" : "Ressalva: fora das comparações"}</p>
         <p className="mt-0.5"><Siglas texto={inicio} /></p>
         {(resto || extra) && (
           <details className="mt-0.5">
@@ -74,7 +74,7 @@ export function Ressalva({ ponto }: { ponto: Ponto }) {
 export function ForaDoEscopo({ texto, children }: { texto: string; children?: ReactNode }) {
   return (
     <div className="border border-dashed border-mineral bg-papel px-4 py-4 text-sm leading-relaxed text-obee-tinta" role="note">
-      <p className="rotulo !text-[0.66rem] text-carvao-muted">Fora do escopo deste indicador</p>
+      <p className="rotulo text-carvao-muted">Fora do escopo deste indicador</p>
       <p className="mt-1"><Siglas texto={texto} /></p>
       {children}
     </div>
@@ -129,7 +129,7 @@ export function NotasMateriais({ notas, n }: { notas: { texto: string; capitais:
   if (!notas.length) return null;
   return (
     <div className="border-l-2 border-obee-tinta bg-papel px-3 py-2 text-sm text-obee-tinta" role="note" aria-label="Ressalvas materiais deste recorte">
-      <p className="rotulo !text-[0.66rem] text-carvao-muted">Ressalvas deste recorte</p>
+      <p className="rotulo text-carvao-muted">Ressalvas deste recorte</p>
       <ul className="mt-1 space-y-2">
         {notas.map((x) => {
           const corte = x.texto.length > 190 ? x.texto.search(/\.\s/) : -1;

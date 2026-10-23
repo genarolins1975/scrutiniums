@@ -208,6 +208,14 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     "/eficiencia-estatal": "src/app/eficiencia-estatal/page.tsx",
     "/contas-publicas": "src/app/contas-publicas/page.tsx",
     "/agronegocio": "src/app/agronegocio/page.tsx",
+    // as coleções de um painel só entraram na lista com o molde único (Iniciativa 4): o painel monta a entrada
+    "/combustiveis": "src/app/combustiveis/page.tsx",
+    "/conectividade": "src/components/conectividade/PainelConectividade.tsx",
+    "/educacao-municipal": "src/components/educacao/PainelEducacao.tsx",
+    "/custo-de-vida": "src/app/custo-de-vida/page.tsx",
+    "/contas-publicas/previdencia": "src/components/previdencia/PainelPrevidencia.tsx",
+    "/contas-publicas-estaduais": "src/app/contas-publicas-estaduais/page.tsx",
+    "/observatorio-do-credito": "src/app/observatorio-do-credito/page.tsx",
   };
 
   it.each(Object.entries(PAGINAS))("%s: linha antes do conteúdo e lista no rodapé de método", (rota, arquivo) => {
@@ -217,15 +225,18 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     expect(usos[0]).not.toContain('variante="metodo"');
     expect(usos[1]).toContain('variante="metodo"');
     for (const u of usos) expect(u).toMatch(new RegExp(`FRESCOR_DAS_COLECOES\\[["']${rota}["']\\]`));
-    // a linha vem antes de qualquer título da página
-    expect(s.indexOf(usos[0]!)).toBeLessThan(Math.max(s.indexOf("<h1"), s.indexOf("<AberturaFederal"), s.indexOf("<AtlasCidadao")));
+    // a linha vem antes de qualquer título da página: no molde (EntradaColecao), é a prop `frescor`, a primeira coisa da abertura
+    if (s.includes("<EntradaColecao")) expect(s).toContain(`frescor={${usos[0]}}`);
+    else expect(s.indexOf(usos[0]!)).toBeLessThan(Math.max(s.indexOf("<h1"), s.indexOf("<AberturaFederal"), s.indexOf("<AtlasCidadao")));
   });
 
   it("entradas que reúnem coleções recebem a faixa e a lista por fonte", () => {
     const s = ler("src/app/observatorios/[id]/page.tsx");
     expect(s).toMatch(/frescor=\{<FaixaFrescor dominios=\{FRESCOR_DOS_OBSERVATORIOS\[id\]\}/);
     expect(s).toMatch(/frescorMetodo=\{<FaixaFrescor dominios=\{FRESCOR_DOS_OBSERVATORIOS\[id\]\} variante="metodo"/);
-    const e = ler("src/components/observatorios/EntradaObservatorio.tsx");
+    // a entrada do observatório é uma chamada do molde único (Iniciativa 4): a ordem da linha e da lista está no EntradaColecao
+    expect(ler("src/components/observatorios/EntradaObservatorio.tsx")).toMatch(/frescor=\{frescor\}[\s\S]*frescorMetodo=\{frescorMetodo\}/);
+    const e = ler("src/components/observatorios/EntradaColecao.tsx");
     expect(e.indexOf("{frescor}")).toBeGreaterThan(0);
     expect(e.indexOf("{frescor}")).toBeLessThan(e.indexOf("<h1"));
     expect(e.indexOf("{frescorMetodo")).toBeGreaterThan(e.indexOf("Método e fontes"));
@@ -237,8 +248,9 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     expect(usos).toHaveLength(2);
     for (const u of usos) expect(u).toContain('FRESCOR_DOS_OBSERVATORIOS["territorio-e-clima"]');
     expect(usos[1]).toContain('variante="metodo"');
-    expect(s.indexOf(usos[0]!)).toBeLessThan(s.indexOf("<h1"));
-    expect(s.indexOf(usos[1]!)).toBeGreaterThan(s.indexOf("Método, fontes e atualização"));
+    // no molde único (Iniciativa 4, 22/10/2026) a ordem é a do EntradaColecao: a linha no alto da abertura, a lista no método
+    expect(s).toContain(`frescor={${usos[0]}}`);
+    expect(s).toContain(`frescorMetodo={${usos[1]}}`);
   });
 
   // De onde cada entrada que reúne coleções lê os números: cada domínio lido aparece na faixa.
