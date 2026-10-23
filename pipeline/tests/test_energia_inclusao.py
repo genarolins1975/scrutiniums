@@ -615,7 +615,9 @@ class LuzParaTodos(unittest.TestCase):
             vid, _ = base.registra_vintage(con, mod.DS_LPT, "domicilios_atendidos.csv", "https://exemplo", quando, None,
                                            str(i + 1) * 64, 1, "teste", None)
             base.grava_observacoes(con, mod.DS_LPT, vid, [(s, r, v) for (s, r), v in celulas.items()])
-            mod._marca_removidas_lpt(con, vid, set(celulas))
+            # arquivo lido por inteiro, no tamanho do arquivo real de 22/10/2026 (3.868.976 domicílios)
+            res = mod._marca_removidas_lpt(con, vid, set(celulas), {"linhas": 10, "linhas_usadas": 10, "domicilios": 3868976})
+            self.assertIsNone(res["motivo_suspensao"], quando)
             obs = mod._vigentes_lpt(con)
             estados.append(obs)
             municipal = sum(v for s, pts in obs.items() if s.startswith("M|") for v in pts.values())
@@ -626,6 +628,29 @@ class LuzParaTodos(unittest.TestCase):
         # voltou com o mesmo valor: a marca é apagada e o valor antigo volta a valer
         self.assertEqual(estados[2]["M|AC|PORTO ACRE|rural"], {"2025": 1.0})
         con.close()
+
+    def test_arquivo_incompleto_nao_remove_celulas(self):
+        # arquivo com linha que o leitor não reconhece, ou que encolhe além do limite, omite células que continuam
+        # na fonte: nada sai, a soma por município deixa de fechar e a ficha reprova (publicação retida)
+        from pipeline.energia import base
+        cheio = {("M|AC|PORTO ACRE|rural", "2025"): 1.0, ("M|AC|PORTO WALTER|rural", "2025"): 13.0,
+                 ("M|AC|ACRELANDIA|rural", "2025"): 4000.0}
+        for parcial, diag, motivo in (
+                ({("M|AC|PORTO WALTER|rural", "2025"): 14.0, ("M|AC|ACRELANDIA|rural", "2025"): 4000.0},
+                 {"linhas": 10, "linhas_usadas": 9, "domicilios": 3868976}, "1 linhas do arquivo não foram lidas"),
+                ({("M|AC|PORTO ACRE|rural", "2025"): 1.0, ("M|AC|PORTO WALTER|rural", "2025"): 13.0},
+                 {"linhas": 10, "linhas_usadas": 10, "domicilios": 14}, "4.000 domicílios sairiam, acima de 0,1% do arquivo")):
+            con = base.conecta(":memory:")
+            for i, (quando, celulas) in enumerate((("2026-10-03T03:54:51Z", cheio), ("2026-10-22T02:48:39Z", parcial))):
+                vid, _ = base.registra_vintage(con, mod.DS_LPT, "domicilios_atendidos.csv", "https://exemplo", quando, None,
+                                               str(i + 1) * 64, 1, "teste", None)
+                base.grava_observacoes(con, mod.DS_LPT, vid, [(s, r, v) for (s, r), v in celulas.items()])
+                res = mod._marca_removidas_lpt(con, vid, set(celulas), diag)
+            self.assertEqual(res["motivo_suspensao"], motivo)
+            self.assertFalse(res["aplicadas"])
+            obs = mod._vigentes_lpt(con)
+            self.assertEqual({s for s in obs}, {s for s, _ in cheio})
+            con.close()
 
 
 class Metricas(unittest.TestCase):

@@ -841,25 +841,43 @@ def _chave_removida_lpt(ch):
     return serie, ref
 
 
-def _marca_removidas_lpt(con, vintage_id, presentes):
+# Remoção em massa não é correção de cadastro: arquivo truncado ou com linhas que o leitor não reconhece
+# omite células que continuam na fonte. Acima desta fração dos domicílios do arquivo, nada é removido.
+LIMITE_REMOCAO_LPT = 0.001
+
+
+def _marca_removidas_lpt(con, vintage_id, presentes, diag):
     """O arquivo de domicílios do Luz para Todos traz o histórico inteiro a cada geração: célula (série, referência)
     conhecida até esta captura e ausente da leitura nova saiu da fonte. As observações só guardam valor novo ou
     alterado (ausência não vira linha nem zero, e a fonte publica células com zero), então a saída fica registrada no
     controle; a célula que volta tem a marca apagada. Em 22/10/2026, 1 domicílio rural de 2025 passou de Porto Acre a
-    Porto Walter e Porto Acre seguia com o valor antigo: a soma por município passava o total nacional em 1."""
+    Porto Walter e Porto Acre seguia com o valor antigo: a soma por município passava o total nacional em 1.
+
+    A saída só é registrada com o arquivo lido por inteiro (toda linha usada) e com o volume removido nas células
+    municipais até LIMITE_REMOCAO_LPT dos domicílios do arquivo. Fora disso nada sai, a soma por município não fecha
+    com o total nacional e a ficha reprova a conferência (a publicação fica retida para revisão)."""
     # só as versões anteriores do mesmo arquivo contam: outro arquivo de domicílios não marca as células deste
     cap, rec = con.execute("SELECT capturado_em, recurso FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
-    conhecidas = set(con.execute(
-        """SELECT DISTINCT o.serie, o.ref FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
-           WHERE o.dataset=? AND v.recurso=? AND o.serie NOT LIKE 'R|%' AND v.capturado_em <= ?""",
-        (DS_LPT, rec, cap)).fetchall())
+    anteriores = {}
+    for serie, ref, valor in con.execute(
+            """SELECT o.serie, o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+               WHERE o.dataset=? AND v.recurso=? AND o.serie NOT LIKE 'R|%' AND v.capturado_em <= ?
+               ORDER BY v.capturado_em, o.rowid""", (DS_LPT, rec, cap)):
+        anteriores[(serie, ref)] = valor
     marcadas = [ch for ch, campos in base.registros_como_estavam_em(con, DS_CONTROLE, cap).items()
                 if ch.startswith(PREFIXO_REMOVIDA_LPT) and campos.get("removida")]
-    saidas = conhecidas - presentes
-    linhas = [(f"{PREFIXO_REMOVIDA_LPT}{r}|{s}", "removida", "1") for s, r in sorted(saidas)]
+    saidas = sorted(set(anteriores) - presentes)
+    volume = sum(anteriores[k] or 0 for k in saidas if k[0].startswith("M|"))
+    motivo = None
+    if diag.get("linhas_usadas") != diag.get("linhas"):
+        motivo = f"{diag.get('linhas', 0) - diag.get('linhas_usadas', 0)} linhas do arquivo não foram lidas"
+    elif volume > LIMITE_REMOCAO_LPT * (diag.get("domicilios") or 0):
+        motivo = f"{numero_exibido(volume)} domicílios sairiam, acima de {numero_exibido(100 * LIMITE_REMOCAO_LPT, 1)}% do arquivo"
+    linhas = [] if motivo else [(f"{PREFIXO_REMOVIDA_LPT}{r}|{s}", "removida", "1") for s, r in saidas]
     linhas += [(ch, "removida", None) for ch in marcadas if _chave_removida_lpt(ch) in presentes]
     base.grava_registros(con, DS_CONTROLE, vintage_id, linhas)
-    return len(saidas)
+    return {"celulas": len(saidas), "domicilios_municipais": volume, "aplicadas": motivo is None and bool(saidas),
+            "motivo_suspensao": motivo}
 
 
 def _vigentes_lpt(con):
@@ -912,7 +930,7 @@ def _coleta_lpt(con, ctx):
             obs = [(f"{uf}.{prog}", ref, float(q)) for (uf, prog, ref), q in agg["mensal"].items()]
             obs += [(f"M|{uf}|{nn}|{prog}", ano, float(q)) for (uf, nn, prog, ano), q in agg["municipal"].items()]
             base.grava_observacoes(con, DS_LPT, v["vintage_id"], obs)
-            diag["celulas_removidas"] = _marca_removidas_lpt(con, v["vintage_id"], {(s, r) for s, r, _ in obs})
+            diag["remocoes"] = _marca_removidas_lpt(con, v["vintage_id"], {(s, r) for s, r, _ in obs}, diag)
             base.grava_registros(con, DS_LPT, v["vintage_id"], [(f"{uf}|{nn}", "nome", nome) for (uf, nn), nome in agg["nomes"].items()])
         elif rec.startswith("recursos"):
             contratos, diag = fl.le_recursos(linhas)
@@ -2827,7 +2845,7 @@ def _bloco_luz_para_todos(con):
                     f"O ano de {ano_ult} está incompleto (último mês de atendimento no arquivo: {c.mes_br(ultimo_mes)}).",
                     "Atendimentos entram pela data do atendimento; a homologação pode vir meses depois e o arquivo muda quando novas homologações chegam.",
                     "O dicionário do MME descreve vlrpagocaixa como valor pago da RGR e vlrpago como participação do agente executor; o módulo segue a correspondência com os campos contratados.",
-                    "Linha removida numa atualização da fonte não é apagada do silver: vale a última captura de cada município, programa e período."],
+                    "Linha removida numa atualização da fonte sai da soma: a célula (município ou UF, programa e período) que deixa de vir no arquivo fica registrada como removida e o valor anterior continua no histórico de capturas. Se o arquivo vier com linha que não pôde ser lida, ou se a remoção passar de 0,1% dos domicílios do arquivo, nada é removido e a conferência da soma por município reprova."],
         download="/energia/series/inclusao_luz_para_todos_mensal.csv")
     return {
         "ultimo_mes": ultimo_mes, "ano_parcial": ano_ult,
