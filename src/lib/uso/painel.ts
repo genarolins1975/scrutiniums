@@ -136,6 +136,11 @@ export type BuscasDoPeriodo = {
   /** Buscas cujo texto não foi gravado (fora do vocabulário do índice ou com cara de dado pessoal; src/lib/uso/busca.ts). */
   foraDoIndice: number;
   /**
+   * Termos com palavra que o índice não conhece, gravados só com conta e apagados depois de 30 dias (ciclo 2 da busca, decisão
+   * do dono de 23/10/2026): o vocabulário que falta, num quadro próprio do admin.
+   */
+  foraDoVocabulario: TermoBuscado[];
+  /**
    * Termos da janela, do mais para o menos buscado; `resultados` é o que a busca devolve hoje para o termo, com o resultado
    * parcial contado como zero: nenhum destino tem todas as palavras, e é isso que o quadro "Buscas sem resultado" precisa ver.
    */
@@ -153,39 +158,45 @@ export async function getBuscasDoPeriodo(agora = new Date(), env: Record<string,
   const inicio = diaDeBrasilia(new Date(Date.parse(`${fim}T12:00:00-03:00`) - (DIAS_USO - 1) * 86_400_000));
   const [linhas, primeiro] = await Promise.all([
     db
-      .select({ termo: t.termo, comConta: t.comConta, buscas: sql<string>`sum(${t.buscas})` })
+      // os dois eventos (busca aberta e sem resultado na barra) somam no mesmo termo
+      .select({ termo: t.termo, comConta: t.comConta, foraDoVocabulario: t.foraDoVocabulario, buscas: sql<string>`sum(${t.buscas})` })
       .from(t)
       .where(and(gte(t.dia, inicio), lte(t.dia, fim)))
-      .groupBy(t.termo, t.comConta),
+      .groupBy(t.termo, t.comConta, t.foraDoVocabulario),
     db.select({ dia: sql<string | null>`min(${t.dia})` }).from(t),
   ]);
   const porTermo = new Map<string, TermoBuscado>();
+  const desconhecidos = new Map<string, TermoBuscado>();
   let foraDoIndice = 0;
   for (const l of linhas) {
     if (l.termo === FORA_DO_INDICE) {
       foraDoIndice += Number(l.buscas);
       continue;
     }
-    const x = porTermo.get(l.termo) ?? { termo: l.termo, comConta: 0, semConta: 0, resultados: 0 };
+    const mapa = l.foraDoVocabulario ? desconhecidos : porTermo;
+    const x = mapa.get(l.termo) ?? { termo: l.termo, comConta: 0, semConta: 0, resultados: 0 };
     if (l.comConta) x.comConta += Number(l.buscas);
     else x.semConta += Number(l.buscas);
-    porTermo.set(l.termo, x);
+    mapa.set(l.termo, x);
   }
+  const ordem = (a: TermoBuscado, b: TermoBuscado) => b.comConta + b.semConta - (a.comConta + a.semConta) || a.termo.localeCompare(b.termo);
   const indice = indiceDeBusca();
   const termos = Array.from(porTermo.values())
     .map((x) => {
       const r = buscar(indice, x.termo);
       return { ...x, resultados: r.parcial ? 0 : r.resultados.length };
     })
-    .sort((a, b) => b.comConta + b.semConta - (a.comConta + a.semConta) || a.termo.localeCompare(b.termo));
+    .sort(ordem);
+  const foraDoVocabulario = Array.from(desconhecidos.values()).sort(ordem);
   const primeiroDia = primeiro[0]?.dia ?? null;
   return {
     inicio,
     fim,
     anonimoAtivo: usoAnonimoAtivo(env),
     primeiroRegistro: primeiroDia ? String(primeiroDia).slice(0, 10) : null,
-    total: termos.reduce((s, x) => s + x.comConta + x.semConta, 0) + foraDoIndice,
+    total: [...termos, ...foraDoVocabulario].reduce((s, x) => s + x.comConta + x.semConta, 0) + foraDoIndice,
     foraDoIndice,
     termos,
+    foraDoVocabulario,
   };
 }

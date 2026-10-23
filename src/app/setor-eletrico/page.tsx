@@ -930,7 +930,6 @@ export default function MapaDoObservatorio() {
                 índice da plataforma é só em português e levaria o leitor a páginas em outro idioma */}
             {idiomaEnergia() === "pt" ? (
               <>
-                <p className="rotulo mb-2 text-mineral">Busque por pergunta, assunto, página, conceito ou distribuidora</p>
                 <BuscaPlataforma
                   variante="pagina"
                   exemplo="preço da luz, falta de energia, reservatórios…"

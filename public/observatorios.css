@@ -246,6 +246,9 @@ html[data-theme="dark"] .observatorio-credito .bp { --bp-fundo:var(--surface); -
 /* correção e sugestão da busca (diagnóstico de 23/10/2026): ação dentro da frase, com a cor e o sublinhado dos links da lista */
 .bp-busca-acao { display:inline; margin:0; padding:0; border:0; background:none; cursor:pointer; font:inherit; color:var(--bp-destaque,var(--cor-destaque)); text-decoration:underline; text-underline-offset:4px; }
 .bp-busca-vazio .bp-busca-acao { display:inline-flex; align-items:center; min-height:44px; }
+/* estado "ainda não cobre" (ciclo 2 da busca, bloco 4): a frase e os seis observatórios, na tipografia da lista de resultados */
+.bp-busca-nao-cobre { margin:8px 0 0; font-size:14px; }
+.bp-busca-nao-cobre ul { margin:4px 0 0; padding:0; list-style:none; }
 .bp-busca-rodape { border-top:1px solid var(--bp-regra,var(--cor-linha)); }
 .bp-busca-vazio a, .bp-busca-rodape a { display:inline-flex; align-items:center; min-height:44px; color:var(--bp-destaque,var(--cor-destaque)); text-decoration:underline; text-underline-offset:4px; }
 .bp-busca-fechar { flex-shrink:0; min-height:44px; margin-left:8px; padding:0 4px; border:0; background:none; cursor:pointer; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta,var(--cor-carvao)); }

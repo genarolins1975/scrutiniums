@@ -366,7 +366,7 @@ export function buscar(indice: IndiceBusca, termo: string, opcoes: OpcoesBusca =
   const pronto = preparar(indice);
   const resposta = (r: { resultados: Resultado[]; parcial: boolean; total: number }, extra: Partial<RespostaBusca> = {}): RespostaBusca => {
     const teto = r.parcial ? Math.min(limite, LIMITE_PARCIAL) : limite;
-    const resultados = r.resultados.slice(0, teto);
+    const resultados = comCompanhia(pronto, r.resultados.slice(0, teto), opcoes);
     return { termo, resultados, grupos: agrupar(indice, resultados), cortado: r.total > teto, ...(r.parcial ? { parcial: true as const } : {}), ...extra };
   };
 
@@ -389,6 +389,22 @@ export function buscar(indice: IndiceBusca, termo: string, opcoes: OpcoesBusca =
   if (comResultado.length === 1) return resposta(comResultado[0].r, { correcao: { de: termo.trim(), para: comResultado[0].para } });
   if (comResultado.length > 1) return { termo, resultados: [], grupos: [], cortado: false, sugestoes: comResultado.slice(0, 3).map((x) => x.para) };
   return resposta(direto);
+}
+
+/**
+ * A página prevista ("ainda sem página") nunca é o único item mostrado (ciclo 2 da busca, bloco 4): quando todos os resultados
+ * são previstos, a coleção e o observatório deles vêm junto, para o leitor ter onde ir ("transparência" leva à Avaliação e
+ * transparência, ainda sem página, e às Contas Federais).
+ */
+function comCompanhia(pronto: Pronto, resultados: Resultado[], opcoes: OpcoesBusca): Resultado[] {
+  if (!resultados.length || resultados.some((r) => r.situacao !== "previsto")) return resultados;
+  const extra: Resultado[] = [];
+  for (const r of resultados) {
+    const colecao = pronto.lista.find((p) => p.e.tipo === "colecao" && p.e.colecao === r.colecao && p.e.observatorio === r.observatorio);
+    const observatorio = opcoes.colecao ? undefined : pronto.lista.find((p) => p.e.tipo === "observatorio" && p.e.observatorio === r.observatorio);
+    for (const p of [colecao, observatorio]) if (p && !extra.some((x) => x.id === p.e.id)) extra.push({ ...p.e, nivel: 3 });
+  }
+  return [...resultados, ...extra];
 }
 
 /** Agrupa por observatório e coleção, preservando a ordem de relevância (o grupo entra quando o primeiro resultado dele aparece). */

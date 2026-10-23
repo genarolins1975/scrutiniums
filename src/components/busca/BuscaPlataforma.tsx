@@ -6,8 +6,10 @@ import { buscar, emOrdemDeTela, type RespostaBusca, type Resultado } from "@/lib
 import type { IndiceBusca } from "@/lib/busca/tipos";
 import { medirBusca } from "@/lib/busca/medir";
 import { rotuloDoParcial } from "@/lib/busca/textos";
+import { normalizar } from "@/lib/busca/normalizar";
 import { useSessao } from "@/components/acesso/sessao";
 import { ListaResultados } from "./ListaResultados";
+import { NaoCobre } from "./NaoCobre";
 
 // um só download por página, compartilhado pelos campos dela; falha de rede libera uma nova tentativa no próximo foco
 let carga: Promise<IndiceBusca | null> | null = null;
@@ -31,6 +33,11 @@ function ehAtalho(e: globalThis.KeyboardEvent): boolean {
 }
 
 const ROTULO = "Buscar na Scrutiniums";
+
+/** Pausa na digitação antes de contar a busca sem resultado (MEDICAO_DE_USO.md §8a). */
+const PAUSA_MEDICAO_MS = 1500;
+/** Termos sem resultado já contados nesta página: um por termo, mesmo que o leitor volte a ele. */
+const semResultadoMedidos = new Set<string>();
 
 /** O que a busca fez: a correção aplicada, o rótulo do parcial ou a contagem. */
 function fraseDoResultado(resposta: RespostaBusca | null, n: number): string {
@@ -133,6 +140,20 @@ export function BuscaPlataforma({
     voltarPara.current = null;
   }
 
+  // a busca da barra sem resultado completo conta uma vez por termo, depois de 1,5 s sem digitar (decisão do dono de 23/10/2026):
+  // é o que o painel precisa ver para achar destino ou sinônimo que falta; digitar e apagar antes da pausa não conta
+  useEffect(() => {
+    const t = termo.trim();
+    if (!t || !resposta || (lista.length > 0 && !resposta.parcial)) return;
+    const chave = normalizar(t);
+    if (semResultadoMedidos.has(chave)) return;
+    const espera = setTimeout(() => {
+      semResultadoMedidos.add(chave);
+      medirBusca(t, "sem_resultado");
+    }, PAUSA_MEDICAO_MS);
+    return () => clearTimeout(espera);
+  }, [termo, resposta, lista.length]);
+
   // a folha em tela cheia recebe o foco ao abrir; a página atrás não rola
   useEffect(() => {
     if (!folha) return;
@@ -212,10 +233,18 @@ export function BuscaPlataforma({
           if (!folha && !e.currentTarget.contains(e.relatedTarget as Node | null)) setAberta(false);
         }}
       >
-        <form action="/buscar" method="get" role="search" aria-label={rotulo} className="bp-busca-form" onSubmit={aoEnviar}>
-          <label htmlFor={`${id}-q`} className="sr-only">
-            {rotulo}
+        {/* busca local: o rótulo visível diz que ela procura só na coleção (I4 item 7 do parecer de UX de 23/10/2026) */}
+        {filtro && !barra && (
+          <label htmlFor={`${id}-q`} className="rotulo mb-2 block text-mineral">
+            Buscar só em {filtro.nome}
           </label>
+        )}
+        <form action="/buscar" method="get" role="search" aria-label={rotulo} className="bp-busca-form" onSubmit={aoEnviar}>
+          {!(filtro && !barra) && (
+            <label htmlFor={`${id}-q`} className="sr-only">
+              {rotulo}
+            </label>
+          )}
           <Lupa className="bp-busca-icone" />
           <input
             ref={campo}
@@ -310,16 +339,15 @@ export function BuscaPlataforma({
               ?
             </p>
           )}
-          {resposta && lista.length === 0 && !resposta.sugestoes && (
-            <p className="bp-busca-vazio">
-              Nenhum resultado para <q>{termo.trim()}</q>
-              {filtro ? ` em ${filtro.nome}` : ""}.{" "}
-              <Link href="/buscar" prefetch={false}>
-                Veja as coleções
-              </Link>
-              .
-            </p>
-          )}
+          {resposta && indice && lista.length === 0 && !resposta.sugestoes &&
+            (filtro ? (
+              // na busca local, o tema pode estar em outra coleção: o rodapé leva à busca em toda a plataforma
+              <p className="bp-busca-vazio">
+                Nenhum resultado para <q>{termo.trim()}</q> em {filtro.nome}.
+              </p>
+            ) : (
+              <NaoCobre termo={termo.trim()} indice={indice} comSessao={sessao} classe="bp-busca-nao-cobre" />
+            ))}
           {termo.trim() && municipio && (
             <p className="bp-busca-vazio">
               Procura um município? A busca por cidade está em{" "}

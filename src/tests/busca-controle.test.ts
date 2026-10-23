@@ -7,6 +7,7 @@ import { formasDe, nucleoDaBusca, palavrasUteis } from "@/lib/busca/normalizar";
 import { rotuloDoParcial } from "@/lib/busca/textos";
 import type { EntradaBusca, IndiceBusca } from "@/lib/busca/tipos";
 import { ListaResultados } from "@/components/busca/ListaResultados";
+import { NaoCobre } from "@/components/busca/NaoCobre";
 
 vi.mock("next/navigation", async () => ({
   ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
@@ -363,8 +364,7 @@ describe("bloco 2: sinônimos com alcance certo", () => {
     expect(r.resultados[0].href).toBe("/observatorio");
   });
 
-  // nenhuma página trata do salário mínimo: o termo espera o estado "ainda não cobre" (bloco 4), sem gancho inventado
-  it.todo("bloco 4: 'salário mínimo' cai no estado 'ainda não cobre'");
+  // nenhuma página trata do salário mínimo: o termo cai no estado "ainda não cobre" (bloco 4), sem gancho inventado
 });
 
 describe("bloco 3: toda página com pergunta e termos", () => {
@@ -415,11 +415,42 @@ describe("bloco 3: toda página com pergunta e termos", () => {
 });
 
 describe("bloco 4: estado vazio", () => {
-  it.todo("'tarifa branca': sem verbete nem página, estado 'ainda não cobre'");
-  it.todo("'autonomia financeira': estado 'ainda não cobre', com os seis observatórios");
-  it.todo("'ações', 'transparência': a página prevista acompanhada do observatório e da coleção");
-  it.todo("'xyzabc': estado 'ainda não cobre', sem resultado demonstrativo");
-  it.todo("conjunto completo: todo termo com zero resultado cai num dos três estados vazios");
+  const vazio = (termo: string) => renderToStaticMarkup(createElement(NaoCobre, { termo, indice: indiceDeBusca(), comSessao: false }));
+
+  it("'autonomia financeira', 'xyzabc', 'tarifa branca', 'salário mínimo': estado 'ainda não cobre', com os seis observatórios e sem resultado demonstrativo", () => {
+    for (const t of ["autonomia financeira", "xyzabc", "tarifa branca", "salário mínimo"]) {
+      const r = b(t);
+      expect(r.resultados, t).toEqual([]);
+      expect(r.sugestoes, t).toBeUndefined();
+      const h = vazio(t);
+      // frase decidida pelo dono em 23/10/2026 (seção 7 do prompt da busca, item 4)
+      expect(h, t).toContain("A Scrutiniums ainda não cobre <q>");
+      expect(h, t).toContain("Veja o que cada observatório responde:");
+      expect(h.split("<li").length - 1, t).toBe(6);
+    }
+  });
+
+  // desde o bloco 3, "ações" acha "Bancos na bolsa" e "transparência" acha "Políticas e inclusão" (termos dos catálogos); os
+  // termos que só alcançam a página prevista trazem junto a coleção e o observatório dela
+  it("'ações', 'transparência': já têm página publicada; 'equidade' e 'avaliação': a prevista vem com a coleção e o observatório", () => {
+    expect(b("ações").resultados.some((x) => x.href === "/observatorio/market")).toBe(true);
+    expect(b("transparência").resultados.some((x) => x.situacao === "publicado" && x.href)).toBe(true);
+    for (const t of ["equidade", "avaliação"]) {
+      const r = b(t).resultados;
+      expect(r[0].situacao, t).toBe("previsto");
+      expect(r.some((x) => x.tipo === "colecao" && x.href === "/contas-publicas"), t).toBe(true);
+      expect(r.some((x) => x.tipo === "observatorio" && x.href), t).toBe(true);
+    }
+  });
+
+  it("conjunto completo: todo termo sem resultado cai num dos estados vazios (sugestão de correção ou 'ainda não cobre')", () => {
+    const i = indiceDeBusca();
+    const semEstado = TERMOS.map(([t]) => [t, buscar(i, t)] as const)
+      .filter(([, r]) => r.resultados.length === 0)
+      .filter(([t, r]) => !r.sugestoes?.length && !vazio(t).includes("ainda não cobre"))
+      .map(([t]) => t);
+    expect(semEstado).toEqual([]);
+  });
 });
 
 /** Os 234 termos dos dois lotes, com o número de resultados de 23/10/2026 (main em 00c055474; "30" é o limite, "30+" no anexo). */

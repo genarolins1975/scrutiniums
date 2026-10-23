@@ -9,8 +9,14 @@
  * depois de normalizado (normalizar.ts); números de até quatro algarismos (anos) passam. Qualquer outro termo, inclusive o que
  * traz email, cinco algarismos seguidos ou nove no total (CPF, telefone, CEP), mais de seis palavras ou mais de 60 letras, soma
  * num contador único, FORA_DO_INDICE, sem o texto.
+ *
+ * Ciclo 2 da busca (23/10/2026, decisões do dono registradas no PR do bloco 4; MEDICAO_DE_USO.md §8a):
+ *  - a busca da barra que não acha resultado completo também conta, uma vez por termo, com o evento "sem_resultado";
+ *  - com conta, o termo com uma palavra fora do vocabulário do índice passa a ser gravado com o texto, marcado
+ *    fora_do_vocabulario e apagado depois de 30 dias, quando passa pelo filtro de dado pessoal acima e tem no máximo uma
+ *    palavra desconhecida (duas ou mais, como "Maria Silva", podem ser o nome de alguém e continuam no contador sem texto).
  */
-import { sql } from "drizzle-orm";
+import { and, eq, lt, sql } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { normalizar } from "@/lib/busca/normalizar";
 import { indiceDeBusca } from "@/lib/busca/indice";
@@ -23,6 +29,7 @@ export const PALAVRAS_MAXIMAS = 6;
 export const FORA_DO_INDICE = "#fora-do-indice";
 
 let vocabulario: string[] | null = null;
+let vocabularioSemNomes: string[] | null = null;
 /** As palavras do índice da busca, normalizadas, em ordem: a mesma origem dos resultados que o leitor vê. */
 function palavrasDoIndice(): string[] {
   if (vocabulario) return vocabulario;
@@ -37,9 +44,21 @@ function palavrasDoIndice(): string[] {
   return vocabulario;
 }
 
+/**
+ * O vocabulário do índice sem as listas de lugares e nomes (capitais, estados, distribuidoras, bancos): é contra ele que se conta
+ * a palavra desconhecida do termo que vai com o texto, para um sobrenome ou um nome de lugar ("Maria", de Santa Maria) não
+ * passar por palavra conhecida e deixar um nome de pessoa entrar como "uma palavra só".
+ */
+function palavrasSemNomes(): string[] {
+  if (vocabularioSemNomes) return vocabularioSemNomes;
+  const i = indiceDeBusca();
+  const textos = [...i.entradas.flatMap((e) => [e.titulo, e.resumo, ...e.termos]), ...i.observatorios.map((o) => o.nome), ...i.colecoes.map((c) => c.nome)];
+  vocabularioSemNomes = Array.from(new Set(textos.flatMap((t) => normalizar(t).split(" ")).filter(Boolean))).sort();
+  return vocabularioSemNomes;
+}
+
 /** A palavra começa alguma palavra do índice (busca binária na lista ordenada). */
-function noIndice(palavra: string): boolean {
-  const v = palavrasDoIndice();
+function noIndice(palavra: string, v: string[] = palavrasDoIndice()): boolean {
   let lo = 0;
   let hi = v.length;
   while (lo < hi) {
@@ -66,16 +85,64 @@ export function termoParaContagem(bruto: unknown): string | null {
   return palavras.every((w) => /^\d{1,4}$/.test(w) || noIndice(w)) ? termo : FORA_DO_INDICE;
 }
 
+export type EventoBusca = "abriu" | "sem_resultado";
+export const EVENTOS_BUSCA: readonly EventoBusca[] = ["abriu", "sem_resultado"];
+
+/** Quantos dias o texto de termo fora do vocabulário fica no banco. */
+export const RETENCAO_FORA_DO_VOCABULARIO_DIAS = 30;
+
+/**
+ * Como a busca entra no contador, sabendo se há conta: o termo do vocabulário vai com o texto; com conta, o termo que passa pelo
+ * filtro de dado pessoal e tem no máximo uma palavra fora do vocabulário também, marcado `foraDoVocabulario`; o resto soma em
+ * FORA_DO_INDICE, sem o texto. null quando não há termo.
+ */
+export function contagemDoTermo(bruto: unknown, comConta: boolean): { termo: string; foraDoVocabulario: boolean } | null {
+  const termo = termoParaContagem(bruto);
+  if (termo === null) return null;
+  if (termo !== FORA_DO_INDICE) return { termo, foraDoVocabulario: false };
+  if (!comConta || typeof bruto !== "string" || bruto.includes("@")) return { termo: FORA_DO_INDICE, foraDoVocabulario: false };
+  const normal = normalizar(bruto);
+  if (normal.length > TAMANHO_MAXIMO_TERMO || /\d{5}/.test(normal) || (normal.match(/\d/g)?.length ?? 0) >= 9) return { termo: FORA_DO_INDICE, foraDoVocabulario: false };
+  const palavras = normal.split(" ");
+  const desconhecidas = palavras.filter((w) => !/^\d{1,4}$/.test(w) && !noIndice(w, palavrasSemNomes()));
+  if (palavras.length > PALAVRAS_MAXIMAS || desconhecidas.length > 1) return { termo: FORA_DO_INDICE, foraDoVocabulario: false };
+  return { termo: normal, foraDoVocabulario: true };
+}
+
+let ultimaLimpeza: string | null = null;
+
+/**
+ * Apaga o texto de termo fora do vocabulário com mais de 30 dias. Não há rotina de retenção em uso_paginas_dia (só contadores
+ * sem texto), então a limpeza roda no caminho de escrita, no máximo uma vez por dia em cada processo.
+ */
+async function limparForaDoVocabulario(db: Awaited<ReturnType<typeof getDb>>, agora: Date): Promise<void> {
+  const hoje = diaDeBrasilia(agora);
+  if (ultimaLimpeza === hoje) return;
+  const limite = diaDeBrasilia(new Date(agora.getTime() - RETENCAO_FORA_DO_VOCABULARIO_DIAS * 86_400_000));
+  const t = schema.usoBuscaDia;
+  await db.delete(t).where(and(eq(t.foraDoVocabulario, true), lt(t.dia, limite)));
+  ultimaLimpeza = hoje;
+}
+
 /** Soma uma busca ao contador agregado. Falha de banco nunca derruba a requisição: devolve false. */
-export async function registrarBusca(termo: string, comConta: boolean, agora = new Date()): Promise<boolean> {
-  if (termo !== FORA_DO_INDICE && termoParaContagem(termo) !== termo) return false;
+export async function registrarBusca(
+  termo: string,
+  comConta: boolean,
+  agora = new Date(),
+  { evento = "abriu" as EventoBusca }: { evento?: EventoBusca } = {},
+): Promise<boolean> {
+  if (!EVENTOS_BUSCA.includes(evento)) return false;
+  // o termo é conferido de novo aqui: quem chama não decide sozinho o que vai para o banco
+  const conta = termo === FORA_DO_INDICE ? { termo, foraDoVocabulario: false } : contagemDoTermo(termo, comConta);
+  if (!conta || conta.termo !== termo) return false;
   try {
     const db = await getDb();
     const t = schema.usoBuscaDia;
     await db
       .insert(t)
-      .values({ dia: diaDeBrasilia(agora), termo, comConta, buscas: 1 })
-      .onConflictDoUpdate({ target: [t.dia, t.termo, t.comConta], set: { buscas: sql`${t.buscas} + 1` } });
+      .values({ dia: diaDeBrasilia(agora), termo, comConta, evento, foraDoVocabulario: conta.foraDoVocabulario, buscas: 1 })
+      .onConflictDoUpdate({ target: [t.dia, t.termo, t.comConta, t.evento], set: { buscas: sql`${t.buscas} + 1` } });
+    if (conta.foraDoVocabulario) await limparForaDoVocabulario(db, agora);
     return true;
   } catch {
     return false;

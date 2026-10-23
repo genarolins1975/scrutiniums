@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ListaResultados } from "@/components/busca/ListaResultados";
+import { NaoCobre } from "@/components/busca/NaoCobre";
 import { MedeBusca } from "@/components/busca/MedeBusca";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { buscar } from "@/lib/busca/buscar";
@@ -89,13 +90,7 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
                 ?
               </p>
             ) : resposta.resultados.length === 0 ? (
-              <p className="text-base text-carvao">
-                Nenhum resultado para <q>{q}</q>. Tente outra palavra, o nome de uma fonte (ONS, IBGE, ANP) ou{" "}
-                <Link href="/buscar" className="underline decoration-linha underline-offset-4 hover:decoration-carvao">
-                  veja as coleções
-                </Link>
-                .
-              </p>
+              <NaoCobre termo={q} indice={indice} comSessao={comSessao} classe="text-base text-carvao" />
             ) : (
               <>
                 {resposta.correcao && (
