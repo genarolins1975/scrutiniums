@@ -221,14 +221,14 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
   padding: 18px 20px; position: relative; box-shadow: var(--sh-subtle);
 }
-.card h4 { margin: 0 0 4px; font-size: var(--tipo-corpo); font-weight: var(--fw-semibold); color: var(--text-2); }
+.card h4 { overflow-wrap:anywhere; margin: 0 0 4px; font-size: var(--tipo-corpo); font-weight: var(--fw-semibold); color: var(--text-2); }
 .card .big {
   font-size: var(--tipo-numero-m); font-weight: var(--fw-bold); letter-spacing: var(--tr-tight); line-height: var(--lh-tight);
   margin: 4px 0 2px; color: var(--text);
 }
 .card .delta { font-size: var(--tipo-tabela); }
 .card.kpi h4 { font-size: var(--tipo-tabela); }
-.kpirow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+.kpirow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,11.25rem), 1fr)); gap: 12px; margin-top: 14px; }
 
 /* Alta e queda sem cor de julgamento (Iniciativa 2 do parecer de UX de 23/10/2026): subir não é bom nem ruim por si; a direção é
    dita em palavras e pelo sinal, e as classes good/bad saíram do app.js. */
@@ -391,6 +391,7 @@ table.data.compact th { position: static; }
 .alert .expl { color: var(--text-2); font-size: var(--tipo-tabela); margin-top: 4px; }
 
 .note {
+  overflow-wrap:anywhere;
   background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm);
   padding: 11px 15px; font-size: var(--tipo-tabela); color: var(--text-2); margin: 14px 0;
 }
@@ -513,7 +514,7 @@ details.decomp summary:hover { text-decoration: underline; }
 .mcard svg { margin-top: 4px; }
 
 .sechead { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin: 34px 0 14px; }
-.sechead h3 { margin: 0; }
+.sechead h3 { margin: 0; min-inline-size:0; max-inline-size:100%; overflow-wrap:anywhere; }
 .sechead .seesub { color: var(--text-3); font-size: var(--tipo-tabela); }
 
 .ov-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); gap: 22px; align-items: stretch; }
@@ -693,10 +694,10 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .instpick { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; }
 .instpick button { border: 1px solid var(--border); background: var(--surface); color: var(--text-2); border-radius: var(--r-full); padding: 3px 11px; font-size: var(--tipo-meta); cursor: pointer; }
 .instpick button.on { background: var(--pix-soft); border-color: color-mix(in srgb, var(--pix) 45%, transparent); color: var(--pix); font-weight: var(--fw-bold); }
-.pxstats { display: grid; gap: 10px; margin-top: 10px; }
+.pxstats { display: grid; grid-template-columns:minmax(0,1fr); gap: 10px; margin-top: 10px; }
 .pxstats > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 7px; }
 .pxstats > div:last-child { border-bottom: 0; }
-.pxstats b { font-size: var(--tipo-lead); font-weight: var(--fw-normal); letter-spacing: var(--tr-normal); white-space: nowrap; }
+.pxstats b { font-size: var(--tipo-lead); font-weight: var(--fw-normal); letter-spacing: var(--tr-normal); white-space:normal; }
 
 /* ---------- Ações judiciais ---------- */
 .judalerta { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface); padding: 16px 18px; margin: 16px 0 6px; }
@@ -1360,3 +1361,183 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 }
 .kpi-linha { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 8px; font-size: var(--tipo-meta); color: var(--text-2); }
 .kpi-linha .seal { padding: 0; border: 0; background: transparent; letter-spacing: 0; text-transform: none; font-family: var(--sans); font-size: var(--tipo-meta); }
+
+/* Pix: o valor fica em papel opaco sobre a escala; nenhuma combinação da
+   matriz depende da luminância do preenchimento para ser lida. */
+.px-heatmap { text-align: center; min-width: 480px; }
+.px-heatmap th[scope="row"] { text-align: left; }
+.px-cell-value { display: inline-block; padding: 6px 8px; background: var(--surface); color: var(--text); border-radius: var(--r-xs); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.px-cell-share { display: block; font-size: var(--tipo-meta); color: inherit; }
+#view-pix caption { text-align: left; padding: 8px 0; color: var(--text-2); font-size: var(--tipo-meta); }
+#view-pix .seg button, #view-pix .instpick button { min-height: 44px; }
+#view-pix td.num { white-space: nowrap; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.chart-annotations { font-size: var(--tipo-meta); line-height: var(--lh-normal); padding-left: 24px; }
+
+/* Rankings Pix: bases tipográficas reservam espaço tanto ao nome quanto à medida.
+   Quando não cabem lado a lado, refluem; a barra mantém largura integral e escala comum. */
+#view-pix .panbar { display:flex; flex-wrap:wrap; gap:6px 12px; padding:10px 0; }
+#view-pix .panbar > span { min-inline-size:0; max-inline-size:100%; overflow-wrap:anywhere; }
+#view-pix .panbar > span:first-child { flex:1 1 18ch; order:0; white-space:normal !important; overflow:visible !important; }
+#view-pix .panbar > span:last-child { flex:1 1 26ch; order:1; }
+#view-pix .panbar .track { flex:0 0 100%; order:2; }
+@media (max-width: 640px) {
+  #view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); }
+}
+
+.line-chart { min-width: 0; width: 100%; }
+.tabela-deslize { display: none; }
+#view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); line-height: var(--lh-normal); max-width: 75ch; }
+@media (max-width: 768px) {
+  table.comparacao-tabular { min-width: 640px; }
+  .tabela-deslize { display: block; }
+}
+
+/* Seleções longas preservam opções completas sem alargar a página. */
+.view .controls, .view .controls label, .view .card { min-width: 0; }
+.view select { max-width: 100%; min-width: 0; }
+
+.view input, .view .controls > *, .view .controls label { max-width: 100%; box-sizing: border-box; }
+#instSearch { min-width: 0 !important; width: min(100%, 420px); }
+.cgpirl { grid-template-columns: 8ch minmax(0, 1fr) 5ch; }
+.cgpir { min-width: 0; max-width: 100%; }
+
+/* Contém o texto assistivo de natureza dentro da célula rolável. */
+.seal { position: relative; }
+
+/* Abertura das páginas homologadas: referências e ações partilham a linha. */
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left { display: contents; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > * { grid-column: 1 / -1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > .ph-fontes { grid-column: 1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead > .ph-actions { grid-column: 2; align-self: start; }
+
+/* Dispersão estadual: preserva os rótulos de 12 px e oferece tabela equivalente. */
+.cgdisp-wrap .cgdisp { width:720px; min-width:720px; max-width:none; display:block; }
+
+@media (max-width:640px) { :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }
+
+.px-setor-legenda { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:6px 20px; list-style:none; padding:0; font-size:var(--tipo-rotulo); color:var(--text-2); }
+.px-setor-legenda b { display:inline-block; min-width:2em; font-variant-numeric:lining-nums tabular-nums; color:var(--text); }
+
+@media (max-width:700px) { :is(#view-pix, #view-subnacional) .subnav-caps { position:static !important; } }
+
+.cgperfil .comparacao-tabular th[scope="row"],
+.cgperfil .comparacao-tabular thead th:first-child { min-width:128px; max-width:128px; width:128px; white-space:normal; overflow-wrap:anywhere; }
+
+
+.px-setor-matriz tbody th[scope="row"] { top:auto; z-index:1; }
+#view-pix .px-setor-matriz thead th { position:sticky; top:0; z-index:2; }
+#view-pix .px-setor-matriz thead th:first-child { z-index:3; }
+
+/* Dispersão por UF: centros imutáveis; siglas e linhas-guia ocupam posições calculadas. */
+.cgdisp-guia { stroke: var(--text-2); stroke-width: 1; opacity: .7; }
+.cgdisp-fundo { fill: var(--surface); }
+.cgdisp-uf.is-active circle { stroke-width: 3; fill-opacity: .85; }
+.cgdisp-uf.is-active .cgdisp-guia { stroke: var(--text); stroke-width: 2; opacity: 1; }
+.cgdisp-uf.is-active .cgdisp-rotulo { fill: var(--text); font-weight: 700; }
+.cgdisp-controle { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 0; }
+.cgdisp-controle select { min-height: 44px; max-width: 100%; }
+.cgdisp-leitura { margin: 8px 0 12px; }
+
+/* O componente de favorito tem área real; ícone mantém tamanho e centralização. */
+.star { color:var(--text-2); display:inline-flex; align-items:center; justify-content:center; min-inline-size:24px; min-block-size:24px; box-sizing:border-box; vertical-align:middle; }
+:is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { display:inline-flex; align-items:center; min-inline-size:24px; min-block-size:24px; vertical-align:middle; }
+:is(#view-sectors, #view-institutions) table.data td > a + .star { margin-inline-start:4px; }
+/* Disclosures: alvo real, sem sobrepor controles vizinhos ou substituir o marcador nativo. */
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
+  min-block-size:24px; padding-block:4px; box-sizing:border-box;
+}
+@media (max-width:768px), (any-pointer:coarse) {
+  .star, :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { min-inline-size:44px; min-block-size:44px; }
+  :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
+    min-block-size:44px; padding-block:12px;
+  }
+}
+
+/* A natureza deve continuar inteira e legível com ampliação apenas do texto. */
+.seal { white-space:normal; max-inline-size:100%; box-sizing:border-box; overflow-wrap:anywhere; }
+.seal > [aria-hidden="true"] { flex-shrink:0; }
+
+/* O termo Aposentado/pensionista pode exceder a nota com texto ampliado. */
+#view-consignado .judalerta { overflow-wrap:anywhere; }
+
+/* A régua de indicadores refluí com o tamanho do texto, sem comprimir números em duas colunas fixas. */
+#view-consignado .pgkpi { grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr)); column-gap:var(--sp-4); }
+#view-consignado .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
+
+/* Linhas de medidas refluem quando o texto cresce; barras mantêm sua escala. */
+#view-sectors .contrib, #view-subnacional .contrib, .pxstats > div { flex-wrap:wrap; }
+#view-sectors .contrib .lbl, #view-sectors .contrib .num, #view-subnacional .contrib .lbl, #view-subnacional .contrib .num, .pxstats > div > * { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+#view-sectors .contrib .bar, #view-subnacional .contrib .bar { flex-shrink:0; }
+
+/* Notas analíticas preservam palavras longas mesmo com preferência nativa de fonte ampliada. */
+#view-pix .card li { overflow-wrap:anywhere; }
+
+/* Grupos de medidas acompanham a preferência de fonte. Os mínimos em rem
+   preservam as larguras originais a 16px e fazem a grade refluir com texto ampliado. */
+.pan-kpi-rem { grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--pan-kpi-min,12.8125rem)),1fr)); }
+.pan-kpi-rem > div { min-inline-size:0; overflow-wrap:anywhere; }
+
+/* Cabeçalhos do ranking acomodam nome e natureza em linhas independentes.
+   O selo participa do tamanho da própria célula, sem avançar sobre a coluna seguinte. */
+.inst-ranking thead th { white-space:normal; vertical-align:top; }
+.inst-ranking thead th .seal { display:flex; width:max-content; max-inline-size:none; white-space:nowrap; overflow-wrap:normal; margin-top:4px; }
+
+/* A faixa etária e seu valor mantêm a primeira linha; a barra ganha largura útil
+   quando os mínimos tipográficos ocupam o cartão, inclusive com fonte ampliada. */
+.cgpir { container-type: inline-size; }
+@container (max-width: 20em) {
+  .cgpirl { grid-template-columns: minmax(0, 1fr) auto; row-gap: 3px; }
+  .cgpirl .g { grid-column: 1; grid-row: 1; text-align: left; }
+  .cgpirl .v { grid-column: 2; grid-row: 1; }
+  .cgpirl .b { grid-column: 1 / -1; grid-row: 2; }
+}
+
+
+/* Identidade analítica permanece visível: nomes quebram linhas, dados não mudam. */
+.pulse-cmp-controle { display:grid; flex:1 1 15rem; min-width:0; max-width:100%; gap:4px; }
+.pulse-cmp-controle select { width:100%; }
+.pulse-cmp-nome { margin:0; overflow-wrap:anywhere; }
+.pulse-comparador .legend > span { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+/* Texto e medidas podem refluir; a origem das barras permanece comum. */
+.contrib-comparavel { display:flex; flex-wrap:wrap; column-gap:12px; row-gap:4px; }
+.contrib-comparavel > .lbl { flex:1 1 18ch; order:0; width:auto; min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.contrib-comparavel > .num { flex:1 1 26ch; order:1; min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.contrib-comparavel > .contrib-linha-barra { flex:0 0 100%; order:2; }
+.contrib-comparavel .contrib-linha-barra > .bar { display:block; }
+/* Ranking municipal: cada botão preserva nome e medida ao ampliar o texto. */
+.penlista li button { min-width:0; max-width:100%; flex-wrap:wrap; row-gap:4px; }
+.penlista li button > .n { flex:1 1 16ch; min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.penlista li button > .v { flex:0 1 auto; min-width:0; max-width:100%; white-space:normal; overflow-wrap:anywhere; }
+
+
+/* Tabelas de hipóteses preservam uma largura de leitura para as explicações.
+   O excesso permanece na região rolável; números e nomes não são suprimidos. */
+table.cg-analitica th { white-space:normal; vertical-align:top; }
+.cg-analitica :is(th,td):first-child { min-inline-size:16ch; }
+.cg-analitica :is(th,td):not(:first-child):not(:last-child) { min-inline-size:9ch; }
+.cg-analitica :is(th,td):last-child { min-inline-size:28ch; width:42%; }
+
+/* Perfis e rankings municipais: a ampliação nativa preserva nomes, medidas e
+   barras em uma origem comum, sem aumentar a largura do documento. */
+.morselo { max-inline-size:100%; white-space:normal; overflow-wrap:anywhere; }
+#view-penetracao .pen2col > div { min-inline-size:0; }
+#view-penetracao .panbar, #view-rural .atrasorow { display:flex; flex-wrap:wrap; gap:6px 12px; }
+#view-penetracao .panbar > span, #view-rural .atrasorow > span { min-inline-size:0; max-inline-size:100%; overflow-wrap:anywhere; }
+#view-penetracao .panbar > span:first-child, #view-rural .atrasorow > .aname { flex:1 1 18ch; order:0; white-space:normal !important; overflow:visible !important; }
+#view-penetracao .panbar > span:last-child, #view-rural .atrasorow > .anum { flex:1 1 26ch; order:1; }
+#view-penetracao .panbar .track, #view-rural .atrasorow > .abarwrap { flex:0 0 100%; order:2; }
+#view-rural .contrib { flex-wrap:wrap; }
+#view-rural .contrib > .lbl, #view-rural .contrib > .num { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+#view-moradia .pgkpi { grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr)); column-gap:var(--sp-4); }
+#view-moradia .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
+
+
+/* Contornos territoriais em duas cores: preservam a rampa e não traçam cada município. */
+.geo-limites { fill:none; stroke:var(--surface); stroke-width:2.4px; pointer-events:none; }
+.geo-limites path { fill:none; stroke:inherit; stroke-width:inherit; vector-effect:non-scaling-stroke; stroke-linejoin:round; pointer-events:none; }
+.geo-limites .geo-tinta { stroke:var(--text); stroke-width:1px; pointer-events:none; }
+.penmapa .geo-limites { stroke-width:1.8px; }
+.penmapa .geo-limites .geo-tinta { stroke-width:.8px; }
+.geo-escala .sw { height:10px; outline:1px solid var(--text); outline-offset:1px; }
+.faixa-amostra, .legend .faixa-amostra, .tooltip .faixa-amostra { display:inline-block; width:14px; height:10px; background:var(--c-band); border:1.5px dotted var(--text-2); border-radius:0; vertical-align:middle; }

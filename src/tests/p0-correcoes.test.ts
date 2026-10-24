@@ -85,7 +85,8 @@ describe("D4: vintages e prazos de vigília para as seis fontes", () => {
 describe("T1: fetchGold com response.ok e sem refetch infinito", () => {
   const app = read("public/obs/app.js");
   it("fetchGold rejeita resposta não ok e memoriza a falha", () => {
-    expect(app).toMatch(/async function fetchGold\(f\) \{[\s\S]*?if \(!r\.ok\) throw/);
+    // O caminho opcional atende recursos estáticos; a rejeição HTTP continua obrigatória.
+    expect(app).toMatch(/async function fetchGold\(f(?:,[^)]*)?\) \{[\s\S]*?if \(!r\.ok\) throw/);
     expect(app).toContain("GOLD_FALHAS[f] =");
   });
   it("screener distingue não pedido (undefined) de falhou (null)", () => {

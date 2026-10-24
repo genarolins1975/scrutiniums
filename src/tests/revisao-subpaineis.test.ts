@@ -21,7 +21,7 @@ describe("revisão individual: regressões observadas na navegação real", () =
     }
   });
 
-  const chart = new Function("fmt", "ccol", "attr", `${declaration(app, "lineChart")}; return lineChart;`)(fmt, (x: string) => x, (x: string) => x);
+  const chart = new Function("fmt", "ccol", "attr", `${declaration(app, "rotulosEixoSemColisao")}; ${declaration(app, "lineChart")}; return lineChart;`)(fmt, (x: string) => x, (x: string) => x);
   it("dois dias do mesmo mês permanecem distinguíveis no eixo, tabela e tooltip", () => {
     const html = chart({ series: [{ pts: [{ x: "2026-07-30", y: 14 }, { x: "2026-07-31", y: 13.75 }], label: "Selic", color: "blue" }], unit: "% a.a." });
     expect(html).toContain("<td>30/07/2026</td>");
@@ -43,7 +43,7 @@ describe("revisão individual: regressões observadas na navegação real", () =
     for (const key of ["inad", "taxa", "spread"]) {
       const result = delta(series, key, "real");
       expect(result.valor).toBeCloseTo(0.92);
-      expect(result.rotulo).toBe(" p.p. em 12 meses");
+      expect(result.rotulo).toBe(" p.p. sobre o mesmo mês do ano anterior");
     }
   });
   it("saldo e concessões conservam crescimento nominal ou real e ausência explícita", () => {

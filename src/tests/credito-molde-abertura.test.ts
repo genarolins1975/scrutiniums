@@ -63,7 +63,10 @@ describe("Instituições (item 3 do diagnóstico): busca antes, exclusões depoi
   });
   it("a régua da Basileia lê a faixa e a mediana do próprio grupo e diz quantos ficam fora", () => {
     expect(aba.indexOf("${instReguaBasileia(inst)}")).toBeGreaterThan(aba.indexOf("${instForaDoCorte(inst)}"));
-    const regua = app.slice(app.indexOf("function instReguaBasileia(inst)"), app.indexOf("function renderInstitutions() {"));
+    // A régua responsiva recebe também a largura; os contratos de dados abaixo não dependem da assinatura completa.
+    const inicioRegua = app.indexOf("function instReguaBasileia(");
+    expect(inicioRegua).toBeGreaterThan(-1);
+    const regua = app.slice(inicioRegua, app.indexOf("function renderInstitutions() {"));
     expect(regua).toContain("(inst.grupos[g].stats || {}).basileia_pct");
     expect(regua).toContain("pool_fallback");
     expect(regua).toContain("não reportam Basileia e ficam fora do gráfico");

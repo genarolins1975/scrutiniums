@@ -39,6 +39,8 @@ export type ColecaoInventario = {
   href: string;
   /** Palavras que o filtro também considera (sinônimos, siglas, fontes). */
   termos: string;
+  /** Resumo canônico da página de entrada, não uma descrição da coleção inteira. */
+  resumoEntrada?: string;
   paginas: PaginaInventario[];
 };
 
@@ -124,7 +126,7 @@ export function inventario(): ObservatorioInventario[] {
         .map((a) => porRota.get(a.rota) ?? donoDaRota(a.rota))
         .filter((p): p is NonNullable<typeof p> => !!p && !proprias.some((x) => x.rota === p.rota))
         .map((p): PaginaInventario => ({ titulo: p.titulo, rota: p.rota, situacao: situacaoDaRota(p.rota), resumo: p.resumo, termos: p.termos }));
-      return { id: c.id, nome: c.nome, href: c.href, termos: TERMOS[`${o.id}/${c.id}`] ?? "", paginas: [...proprias, ...atalhos, ...previstas(o.id, c.id)] };
+      return { id: c.id, nome: c.nome, href: c.href, termos: TERMOS[`${o.id}/${c.id}`] ?? "", resumoEntrada: porRota.get(c.href)?.resumo, paginas: [...proprias, ...atalhos, ...previstas(o.id, c.id)] };
     }),
   }));
 }

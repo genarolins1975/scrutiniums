@@ -34,9 +34,24 @@ describe("tooltips: uma regra, um helper", () => {
   it("dica() existe com a regra documentada (title curto; data-tip só em gráfico)", () => {
     expect(app).toContain("const dica = txt =>");
     expect(app).toMatch(/data-tip \(tooltip rico\) SOMENTE dentro de gráficos/);
-    // adotado nos pontos convertidos
-    const usos = app.match(/\$\{dica\(/g) || [];
-    expect(usos.length).toBeGreaterThanOrEqual(5);
+    // Notas complementares continuam usando o helper. Fórmulas de guidance
+    // migraram para details: a quantidade de tooltips não mede sua disponibilidade.
+    for (const nota of [
+      'o.notas.join(" · ")',
+      "i.modelo_negocio.receita_servicos_conceito",
+      "i.modelo_negocio.eficiencia_conceito",
+      "sc.modelo_negocio.eficiencia_conceito",
+    ]) {
+      expect(app).toContain(`\${dica(${nota})}`);
+    }
+  });
+
+  it("fórmulas de guidance têm explicação expansível, sem depender de tooltip", () => {
+    const bloco = app.slice(app.indexOf("function guidCicloBloco(c)"), app.indexOf("function guidanceSecao()"));
+    expect(bloco).toContain('<details class="decomp guid-formula"');
+    expect(bloco).toContain('<summary aria-label="Como foi calculado: ${texto(m.nome)}">Como foi calculado</summary>');
+    expect(bloco).toContain('<p class="src">${texto(m.formula)}</p></details>');
+    expect(bloco).not.toContain("dica(m.formula)");
   });
 });
 

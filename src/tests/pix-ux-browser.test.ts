@@ -1,0 +1,473 @@
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { chromium, type Browser, type BrowserContext } from "playwright";
+import { subirServidor, temBuild, exigirBuild, type ServidorProducao } from "./suporte/servidor-producao";
+
+const gold = JSON.parse(readFileSync("public/obs/data/gold/pix.json", "utf8"));
+let servidor: ServidorProducao;
+let navegador: Browser;
+let contexto: BrowserContext;
+beforeAll(async () => {
+  if (!temBuild) { if (exigirBuild) throw new Error("Build obrigatório ausente"); return; }
+  servidor = await subirServidor("pix-ux");
+  navegador = await chromium.launch({ executablePath: process.env.I18N_CHROMIUM_EXECUTABLE });
+  contexto = await navegador.newContext({ viewport: { width: 390, height: 844 } });
+  await contexto.addCookies([{ name: "scrutiniums_session", value: servidor.cookie, url: servidor.origem }]);
+}, 90_000);
+afterAll(async () => { await navegador?.close(); await servidor?.parar(); });
+
+describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte persistente", () => {
+  it("tabela e CSV preservam todos os fluxos e os valores da fonte", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      await page.locator("#px-fluxos-tabela summary").click();
+      const linhas = await page.locator("#px-fluxos-tabela tbody tr").allTextContents();
+      expect(linhas).toHaveLength(gold.natureza.atual.length);
+      for (const [i, x] of gold.natureza.atual.entries()) {
+        expect(linhas[i]).toContain(x.q.toLocaleString("pt-BR"));
+        expect(linhas[i]).toContain(x.v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        expect(linhas[i]).toContain(x.t.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+      const download = page.waitForEvent("download");
+      await page.locator('#px-fluxos-tabela button').click();
+      const arquivo = await (await download).path();
+      const rows = readFileSync(arquivo!, "utf8").trim().split("\n").slice(1).map(l => l.split(";"));
+      expect(rows).toHaveLength(gold.natureza.atual.length);
+      for (const [i, x] of gold.natureza.atual.entries()) {
+        expect(rows[i].slice(0, 2)).toEqual([gold.mes_tx, x.k]);
+        expect(rows[i].slice(2).map(v => Number(v.replace(",", ".")))).toEqual([x.q, x.v, x.t]);
+      }
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("alternância por teclado mantém foco, tabela aberta e recorte após recarregar/voltar", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      await page.locator("#px-fluxos-tabela summary").click();
+      const valor = page.locator('#px-natureza button[onclick="pxSet(\'hmnat\',\'v\')"]');
+      await valor.focus(); await page.keyboard.press("Enter");
+      await page.waitForURL(/xhmnat=v/);
+      expect(await valor.getAttribute("aria-pressed")).toBe("true");
+      expect(await valor.evaluate(e => e === document.activeElement)).toBe(true);
+      expect(await page.locator("#px-fluxos-tabela").getAttribute("open")).not.toBeNull();
+      const recorte = page.url();
+      await page.reload();
+      await page.locator(".px-heatmap").waitFor();
+      expect(await valor.getAttribute("aria-pressed")).toBe("true");
+      await page.goto(servidor.origem + "/observatorio/credit");
+      await page.goBack();
+      await page.locator(".px-heatmap").waitFor();
+      expect(page.url()).toBe(recorte);
+      expect(await valor.getAttribute("aria-pressed")).toBe("true");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    } finally { await page.close(); }
+  }, 60_000);
+  it("gráficos de série do Pulso cabem no celular com eixos legíveis", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.setViewportSize({ width: 320, height: 844 });
+      await page.goto(servidor.origem + "/observatorio/credit");
+      await page.locator("#view-pulse .line-chart").first().waitFor();
+      await expect.poll(() => page.evaluate(() => [...document.querySelectorAll("#view-pulse .line-chart")].every(e => Math.abs(e.getBoundingClientRect().width - Number((e as HTMLElement).dataset.lineWidth)) < 2))).toBe(true);
+      const textos = await page.locator("#view-pulse .line-chart svg text").evaluateAll(nodes => nodes.map(e => {
+        const r = e.getBoundingClientRect(), svg = e.closest("svg")!.getBoundingClientRect();
+        return { text: e.textContent, width: r.width, inside: r.left >= svg.left - 1 && r.right <= svg.right + 1, size: parseFloat(getComputedStyle(e).fontSize) * svg.width / e.closest("svg")!.viewBox.baseVal.width };
+      }).filter(r => r.width > 0));
+      expect(textos.length).toBeGreaterThan(20);
+      expect(textos.filter(r => !r.inside || r.size < 11.9)).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    } finally { await page.close(); }
+  }, 60_000);
+  it("comparação trimestral exporta cada período e instrumento do recorte selecionado", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      await page.locator('#px-evol button[onclick="pxSet(\'metr\',\'v\')"]').click();
+      await page.locator('#px-versus button[onclick="pxToggleInst(\'Boleto\')"]').click();
+      const selecionados = ["Pix", "CartaoCredito", "CartaoDebito", "TED"];
+      const periodos = gold.tri.periodos.filter((p: string) => p >= "2019");
+      await page.locator(".px-comparacao-tabela summary").click();
+      const linhas = await page.locator(".px-comparacao-tabela tbody tr").allTextContents();
+      expect(linhas).toHaveLength(periodos.length);
+      const download = page.waitForEvent("download");
+      await page.locator(".px-comparacao-tabela button").click();
+      const arquivo = await (await download).path();
+      const csv = readFileSync(arquivo!, "utf8").trim().split("\n");
+      expect(csv).toHaveLength(periodos.length + 1);
+      expect(csv[0]).not.toContain("Boleto");
+      const ordem = Object.keys(gold.tri.nomes).filter(i => selecionados.includes(i));
+      for (const [i, p] of periodos.entries()) {
+        const valores: number[] = ordem.map(k => gold.tri.dados[p]?.[k]?.v || 0);
+        const total = valores.reduce((s, n) => s + n, 0);
+        const esperados = valores.map(n => total ? Number((n / total * 100).toFixed(1)) : null);
+        const campos = csv[i + 1].split(";");
+        expect(campos[0]).toBe(p.slice(0, 7));
+        expect(campos.slice(1).map(v => v === "" ? null : Number(v.replace(",", ".")))).toEqual(esperados);
+        for (const valor of esperados) if (valor !== null) expect(linhas[i]).toContain(valor.toLocaleString("pt-BR", {minimumFractionDigits: 1, maximumFractionDigits: 1}) + "%");
+      }
+    } finally { await page.close(); }
+  }, 60_000);
+  it("filtros do Crédito e do Consignado preservam foco e referência após atualização", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/credit");
+      const pf = page.locator('#view-pulse button[onclick="setFilter(\'seg\',\'pf\')"]').first();
+      await pf.focus(); await page.keyboard.press("Enter");
+      await page.waitForURL(/seg=pf/);
+      expect(await pf.evaluate(e => e === document.activeElement)).toBe(true);
+      await page.goto(servidor.origem + "/observatorio/payroll-lending-aging");
+      const regiao = page.locator('#cg-mapa select');
+      await regiao.focus(); await regiao.selectOption("Norte");
+      await page.waitForURL(/cgregiao=Norte/);
+      expect(await regiao.evaluate(e => e === document.activeElement)).toBe(true);
+      await page.reload();
+      expect(await regiao.inputValue()).toBe("Norte");
+      const cabecalhos = await page.locator('#cg-expo .charttable thead').allTextContents();
+      expect(cabecalhos.join(" ")).toContain("Servidores públicos");
+      expect(cabecalhos.join(" ")).not.toContain("Série 1");
+      await page.goto(servidor.origem + "/observatorio/payroll-lending-aging?cgcam=invalida&cgregiao=invalida&cgconf=invalida");
+      expect(await regiao.inputValue()).toBe("todas");
+      expect(await page.locator('#cg-mapa button[onclick="cgFiltra(\'cam\',\'p60\')"]').getAttribute('class')).not.toContain('ghost');
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("cada tabela mantém seu próprio estado e o foco ao redimensionar", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      const med = page.locator('#px-med .line-chart details.charttable');
+      await med.first().waitFor({state: "attached"});
+      expect(await med.count()).toBe(2);
+      await med.nth(1).locator('summary').click();
+      const evol = page.locator('#px-evol details.charttable');
+      await evol.locator('summary').click();
+      await page.locator('#px-evol button[onclick="pxSet(\'metr\',\'v\')"]').click();
+      expect(await med.nth(0).getAttribute('open')).toBeNull();
+      expect(await med.nth(1).getAttribute('open')).not.toBeNull();
+      expect(await evol.getAttribute('open')).not.toBeNull();
+      await evol.locator('summary').focus();
+      await page.setViewportSize({width: 768, height: 900});
+      await expect.poll(() => evol.locator('summary').evaluate(e => e === document.activeElement)).toBe(true);
+      expect(await evol.getAttribute('open')).not.toBeNull();
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("voltar e avançar entre URLs Pix reidrata os padrões quando o parâmetro está ausente", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      const boleto = page.locator('#px-versus button[onclick="pxToggleInst(\'Boleto\')"]');
+      await boleto.waitFor();
+      // Entradas na mesma sessão SPA: goto isoladamente mascararia estado herdado.
+      await page.evaluate(() => { history.pushState({}, '', '/observatorio/pix?xinsts=Pix&xsetorTE=Comercio'); dispatchEvent(new PopStateEvent('popstate')); });
+      await expect.poll(() => boleto.getAttribute('aria-pressed')).toBe('false');
+      await page.goBack();
+      await expect.poll(() => boleto.getAttribute('aria-pressed')).toBe('true');
+      await page.goForward();
+      await expect.poll(() => boleto.getAttribute('aria-pressed')).toBe('false');
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("credores e grupo de instituições mantêm foco e recorte compartilhável", async () => {
+    const page = await contexto.newPage();
+    try {
+      await page.goto(servidor.origem + "/observatorio/subnational-credit");
+      const janela = page.getByRole('combobox', {name: 'janela dos credores'});
+      await janela.focus(); await janela.selectOption('60m');
+      await page.waitForURL(/sncred=60m/);
+      expect(await janela.evaluate(e => e === document.activeElement)).toBe(true);
+      await page.reload(); expect(await janela.inputValue()).toBe('60m');
+      await page.goto(servidor.origem + "/observatorio/institutions");
+      const grupo = page.locator("select[onchange*=instGroup]");
+      await grupo.focus();
+      const valor = await grupo.locator('option').last().getAttribute('value');
+      await grupo.selectOption(valor!);
+      expect(await grupo.evaluate(e => e === document.activeElement)).toBe(true);
+      await page.reload(); expect(await grupo.inputValue()).toBe(valor);
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("todos os textos SVG de Setores e Consignado respeitam o piso nas quatro larguras", async () => {
+    const page = await contexto.newPage();
+    try {
+      for (const width of [320, 390, 768, 1440]) for (const rota of ['sectors', 'payroll-lending-aging']) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/' + rota);
+        await page.locator(rota === 'sectors' ? '#view-sectors svg text' : '#cg-expo .line-chart svg text').first().waitFor();
+        await expect.poll(() => page.locator('section.view.active svg text').evaluateAll(nodes => nodes.map(e => {
+          const m = (e as SVGGraphicsElement).getScreenCTM();
+          const tamanho = m ? parseFloat(getComputedStyle(e).fontSize) * Math.hypot(m.a, m.b) : 0;
+          return {texto: e.textContent, tamanho, visivel: e.getBoundingClientRect().width > 0};
+        }).filter(t => t.visivel && t.tamanho < 11.9)), {message: rota + ' / ' + width}).toEqual([]);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      }
+    } finally { await page.close(); }
+  }, 90_000);
+  it("CSV do Pulso equivale à figura e à tabela nos quatro modos, com bandas e recorte", async () => {
+    const page = await contexto.newPage();
+    const fonte = JSON.parse(readFileSync('public/obs/data/gold/pulse.json', 'utf8'));
+    try {
+      for (const modo of ['nivel', 'yoy', 'b100', 'real']) {
+        await page.goto(servidor.origem + '/observatorio/credit?range=24&transf=' + modo);
+        const card = page.locator('#pu-saldo');
+        await card.locator('svg[data-chart]').waitFor();
+        const dados = await card.locator('svg[data-chart]').evaluate(e => JSON.parse(decodeURIComponent(e.getAttribute('data-chart')!)));
+        const linhas = await card.locator('.line-chart tbody tr').evaluateAll(rows => rows.map(r => [...r.children].map(c => c.textContent!.trim())));
+        expect(linhas.length).toBe(dados.xs.length);
+        expect(dados.series[0].vals.filter((v: number | null) => v !== null)).toHaveLength(24);
+        if (modo === 'nivel') {
+          expect(dados.unit).toBe('R$ bilhões');
+          expect(dados.series[0].vals.slice(0, 24)).toEqual(fonte.series.saldo_total.obs.slice(-24).map((o: {v: number}) => o.v / 1000));
+          expect(dados.band).not.toBeNull();
+          expect(dados.series[1].label).toContain('previsão');
+        } else {
+          expect(dados.band).toBeNull();
+          expect(dados.status).toBe('calculado');
+          if (modo === 'b100') expect(dados.series[0].vals[0]).toBe(100);
+        }
+        const caption = await card.locator('caption').textContent();
+        expect(caption).toContain(dados.unit);
+        expect(caption).toContain(dados.status);
+        const download = page.waitForEvent('download');
+        await card.getByRole('button', {name: 'baixar CSV do gráfico', exact: true}).click();
+        const file = await (await download).path();
+        const csv = readFileSync(file!, 'utf8').trim().split('\n');
+        expect(csv.join('\n')).toContain('# Unidade: ' + dados.unit);
+        expect(csv.join('\n')).toContain('# Natureza: ' + dados.status);
+        const registros = csv.filter(l => !l.replace(/^\uFEFF/, '').startsWith('#'));
+        const campos = registros.map(l => l.split(';').map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"')));
+        expect(campos[0]).toHaveLength(linhas[0].length);
+        if (modo === 'nivel') expect(campos[0].slice(-2).join(' ')).toContain('previsão p10');
+        expect(campos.slice(1)).toHaveLength(linhas.length);
+        for (const [i, row] of campos.slice(1).entries()) {
+          expect(row[0]).toBe(dados.xs[i]);
+          expect(row.slice(1)).toEqual(linhas[i].slice(1).map(v => v === '–' ? '' : v.replace(/\./g, '')));
+        }
+        await page.reload();
+        expect(await page.locator(`#view-pulse button[onclick="setFilter('transf','${modo}')"]`).getAttribute('class')).toContain('active');
+      }
+      // Contexto macro também respeita a janela, sem exportar toda a base silenciosamente.
+      const extra = page.locator('#pu-selic_meta');
+      const dadosExtra = await extra.locator('svg[data-chart]').evaluate(e => JSON.parse(decodeURIComponent(e.getAttribute('data-chart')!)));
+      const downloadExtra = page.waitForEvent('download');
+      await extra.getByRole('button', {name: 'baixar CSV do gráfico', exact: true}).click();
+      const arquivoExtra = await (await downloadExtra).path();
+      const exportado = readFileSync(arquivoExtra!, 'utf8').trim().split('\n').filter(l => !l.replace(/^\uFEFF/, '').startsWith('#'));
+      expect(exportado.length - 1).toBe(24);
+      expect(dadosExtra.xs).toHaveLength(24);
+      expect(await extra.getByText('Base observada completa', {exact: true}).count()).toBe(1);
+    } finally { await page.close(); }
+  }, 120_000);
+
+  it("matriz setorial identifica todos os eixos sem hover em celular e desktop", async () => {
+    const page = await contexto.newPage();
+    try {
+      for (const width of [320, 1440]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/pix');
+        const legenda = page.locator('.px-setor-legenda');
+        if (width === 320) await expect.poll(() => page.locator('#view-pix .subnav-caps').evaluate(e => getComputedStyle(e).position)).toBe('static');
+        await legenda.waitFor();
+        const itens = await legenda.locator('li').allTextContents();
+        expect(itens.length).toBeGreaterThan(10);
+        expect(itens.join(' ')).toContain('Administração pública');
+        expect(itens.join(' ')).toContain('Construção');
+        expect(itens.join(' ')).toContain('Saúde humana');
+        expect(await page.locator('#px-epae th').filter({hasText: 'Pagador ↓'}).evaluate(e => e.getBoundingClientRect().width)).toBeLessThanOrEqual(113);
+        const labels = await page.locator('#px-epae th[aria-label]').evaluateAll(nodes => nodes.map(e => ({nome: e.getAttribute('aria-label')!, id: e.textContent!.trim().slice(0, 2)})));
+        expect(labels.length).toBeGreaterThan(10);
+        for (const label of labels) {
+          const nome = label.nome.slice(label.nome.indexOf(' — ') + 3);
+          expect(itens.some(item => item.startsWith(label.id + ' ') && item.endsWith(nome))).toBe(true);
+          expect(nome).not.toContain('…');
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      }
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("cinco municípios preservam comparação tabular e rolagem por teclado no celular", async () => {
+    const page = await contexto.newPage();
+    try {
+      for (const width of [320, 390]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/payroll-lending-aging');
+        for (let i = 0; i < 5; i++) await page.locator('#cg-mapa .penlista button').nth(i).click();
+        const regiao = page.getByRole('region', {name: 'Comparação de indicadores dos municípios selecionados'});
+        const tabela = regiao.locator('table');
+        expect(await tabela.locator('thead th').count()).toBe(7);
+        expect(await tabela.locator('thead th').last().textContent()).toBe('Natureza do dado');
+        expect(await tabela.getAttribute('class')).not.toContain('t-stack');
+        const celulaInicial = await tabela.locator('tbody tr').first().locator('td').first().evaluate(e => {
+          const cont = e.closest('.tblwrap')!, tabela = e.closest('table')!;
+          const r = e.getBoundingClientRect(), area = cont.getBoundingClientRect();
+          const medir = (n: Element) => { const b = n.getBoundingClientRect(), c = getComputedStyle(n); return { texto: n.textContent?.trim().slice(0, 80), x: b.x, right: b.right, width: b.width, font: c.font, whiteSpace: c.whiteSpace, borderLeft: c.borderLeftWidth, borderRight: c.borderRightWidth }; };
+          return { cabe: r.right <= area.right + 1, celula: medir(e), area: medir(cont), primeiraColuna: medir(e.previousElementSibling!), cabecalho: medir(tabela.querySelectorAll('thead th')[1]), clientWidth: cont.clientWidth, offsetWidth: (cont as HTMLElement).offsetWidth, scrollLeft: cont.scrollLeft, scrollWidth: cont.scrollWidth, viewport: innerWidth, userAgent: navigator.userAgent, fontes: { status: document.fonts.status, faces: [...document.fonts].map(f => ({family: f.family, weight: f.weight, status: f.status})) } };
+        });
+        expect(celulaInicial.cabe, JSON.stringify({ width, chromium: navegador.version(), ...celulaInicial })).toBe(true);
+        const antes = await tabela.locator('tbody tr').allTextContents();
+        expect(antes.length).toBeGreaterThan(10);
+        await regiao.focus();
+        await page.keyboard.press('End');
+        await page.keyboard.press('ArrowRight');
+        await expect.poll(() => regiao.evaluate(e => e.scrollLeft)).toBeGreaterThan(0);
+        expect(await regiao.evaluate(e => e === document.activeElement)).toBe(true);
+        expect(await tabela.locator('tbody tr').allTextContents()).toEqual(antes);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      }
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("âncoras de Pix e Subnacional chegam descobertas nas quatro larguras", async () => {
+    const page = await contexto.newPage();
+    await page.emulateMedia({reducedMotion: 'reduce'});
+    try {
+      for (const width of [320, 390, 768, 1440]) for (const [rota, alvo] of [['pix', 'px-epae'], ['subnational-credit', 'sn-divida']]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/' + rota);
+        await page.locator(`.view.active .subnav-caps a[href="#${alvo}"]`).click();
+        await expect.poll(() => page.locator('#' + alvo).evaluate(e => {
+          const heading = e.querySelector('h3')!.getBoundingClientRect();
+          const nav = e.closest('section.view')!.querySelector('.subnav-caps')!;
+          const fim = getComputedStyle(nav).position === 'sticky' ? nav.getBoundingClientRect().bottom : 0;
+          return heading.top >= fim && heading.top < innerHeight;
+        }), {message: rota + ' / ' + width}).toBe(true);
+      }
+      await page.goto(servidor.origem + '/observatorio/pix?sec=px-epae');
+      await expect.poll(() => page.locator('#px-epae h3').evaluate(e => { const top = e.getBoundingClientRect().top; return top > 72 && top < innerHeight; })).toBe(true);
+    } finally { await page.close(); }
+  }, 90_000);
+  it("matriz setorial preserva fluxos positivos pequenos, totais e limites de cor", async () => {
+    const page = await contexto.newPage();
+    const matriz = gold.epae_matriz.matriz as Record<string, Record<string, number | null>>;
+    const normalizar = (nome: string) => nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const nomes = [...new Set([...Object.keys(matriz), ...Object.values(matriz).flatMap(row => Object.keys(row))])];
+    const chaves = new Map(nomes.map(nome => [normalizar(nome), nome]));
+    const fonteNome = (label: string) => chaves.get(normalizar(label.slice(label.indexOf(' — ') + 3)))!;
+    const numero = (texto: string) => Number(texto.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.'));
+    const positivos = Object.values(matriz).flatMap(row => Object.values(row)).filter((v): v is number => v !== null && v > 0);
+    try {
+      await page.goto(servidor.origem + '/observatorio/pix');
+      const card = page.locator('#px-epae .card').filter({hasText: 'Mapa de calor — setor pagador'});
+      await card.locator('table').waitFor();
+      const headers = await card.locator('thead th[aria-label]').evaluateAll(nodes => nodes.map(n => n.getAttribute('aria-label')!));
+      const colunas = headers.map(fonteNome);
+      expect(colunas.every(Boolean)).toBe(true);
+      const rows = await card.locator('tbody tr').evaluateAll(nodes => nodes.map(row => ({
+        pagador: row.querySelector('th')!.getAttribute('aria-label')!,
+        total: row.querySelector('th .src')!.textContent!,
+        cells: [...row.querySelectorAll(':scope > td')].map(td => ({texto: td.textContent!.trim(), dica: decodeURIComponent(td.getAttribute('data-tip') || '')})),
+      })));
+      let contagemPositiva = 0, pequenos = 0, zeros = 0, ausentes = 0;
+      for (const row of rows) {
+        const pagador = fonteNome(row.pagador);
+        expect(pagador).toBeTruthy();
+        const soma = Object.values(matriz[pagador]).reduce<number>((s, v) => s + (v || 0), 0);
+        if (soma > 0 && soma < 1) expect(numero(row.total)).toBeCloseTo(soma, 3);
+        for (const [i, cell] of row.cells.entries()) {
+          const valor = matriz[pagador][colunas[i]];
+          if (valor == null) { expect(cell.texto).toBe('·'); ausentes++; continue; }
+          if (valor === 0) { expect(numero(cell.texto)).toBe(0); expect(cell.texto).not.toBe('·'); zeros++; continue; }
+          contagemPositiva++;
+          expect(numero(cell.texto), `${pagador} → ${colunas[i]}`).toBeGreaterThan(0);
+          if (valor < 1) {
+            expect(numero(cell.texto)).toBeCloseTo(valor, 3);
+            expect(cell.dica).toContain(valor.toLocaleString('pt-BR', {minimumFractionDigits:3, maximumFractionDigits:3}) + ' bi');
+          }
+          if (valor < .005) pequenos++;
+        }
+      }
+      expect(contagemPositiva).toBe(positivos.length);
+      expect(pequenos).toBe(positivos.filter(v => v < .005).length);
+      expect(pequenos).toBeGreaterThan(0);
+      expect(zeros).toBeGreaterThan(0);
+      expect(ausentes).toBeGreaterThan(0);
+      expect(numero(await card.locator('[data-limite="min"]').innerText())).toBeCloseTo(Math.min(...positivos), 3);
+      expect(numero(await card.locator('[data-limite="max"]').innerText())).toBeCloseTo(Math.max(...positivos), 3);
+      expect(await card.innerText()).not.toContain('4 ordens');
+      const scroller = card.locator('.tblwrap');
+      await scroller.scrollIntoViewIfNeeded();
+      await page.evaluate(() => scrollBy(0, -120));
+      await scroller.evaluate(e => { e.scrollTop = 250; e.scrollLeft = 500; });
+      await expect.poll(() => card.evaluate(e => {
+        const canto = e.querySelector('thead th')!;
+        const r = canto.getBoundingClientRect();
+        const area = e.querySelector('.tblwrap')!.getBoundingClientRect();
+        const cabecalhos = [...e.querySelectorAll('thead th')].slice(1).filter(th => {
+          const b = th.getBoundingClientRect();
+          return b.left >= r.right && b.right <= area.right + 1;
+        });
+        return document.elementFromPoint(r.left + 12, r.top + 12)?.closest('th') === canto
+          && cabecalhos.length > 0 && cabecalhos.every(th => {
+            const b = th.getBoundingClientRect();
+            return b.top >= area.top - 1 && document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)?.closest('th') === th;
+          });
+      })).toBe(true);
+      for (const setor of ['Servicos domesticos', 'Organismos internacionais e outras instituicoes extraterritoriais', 'Outros']) {
+        await page.goto(servidor.origem + '/observatorio/pix?xsetorTE=' + encodeURIComponent(setor));
+        const painel = page.locator('#px-epae .card').filter({has: page.locator('h4', {hasText: '— de quais setores vem o dinheiro'})});
+        await painel.locator('.panbar').first().waitFor();
+        const barras = await painel.locator('.panbar').evaluateAll(nodes => nodes.map(n => ({nome:n.querySelector('span')!.textContent!, valor:n.querySelector('b')!.textContent!})));
+        for (const barra of barras) {
+          const key = chaves.get(normalizar(barra.nome))!;
+          const v = matriz[key][setor];
+          if (v != null && v > 0 && v < 1) { expect(numero(barra.valor)).toBeGreaterThan(0); expect(numero(barra.valor)).toBeCloseTo(v, 3); }
+        }
+      }
+    } finally { await page.close(); }
+  }, 90_000);
+
+  it("eixo trimestral customizado reserva a última data em quatro larguras e nas duas métricas", async () => {
+    const page = await contexto.newPage();
+    const erros: string[] = [];
+    page.on("pageerror", e => erros.push(e.message));
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      const grafico = page.locator('svg[aria-label="participação por instrumento (trimestral)"]');
+      await grafico.waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      const datasFonte = gold.tri.periodos.filter((p: string) => p >= "2019").map((p: string) =>
+        ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(p.slice(5, 7)) - 1] + "/" + p.slice(0, 4),
+      );
+      for (const metr of ["q", "v"]) {
+        await page.locator(`#px-evol button[onclick="pxSet('metr','${metr}')"]`).click();
+        let dados: string | undefined;
+        for (const width of [1440, 768, 390, 320]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await expect.poll(() => grafico.evaluate(svg => {
+            const bloco = svg.closest<HTMLElement>(".line-chart")!;
+            return Math.abs(bloco.getBoundingClientRect().width - Number(bloco.dataset.lineWidth));
+          })).toBeLessThan(2);
+          const medir = () => grafico.evaluate(svg => {
+            const b = svg.getBoundingClientRect(), vb = (svg as SVGSVGElement).viewBox.baseVal;
+            // Identifica todas as datas pintadas, independentemente da classe usada pelo helper.
+            const datas = [...svg.querySelectorAll("text")].filter(t => /^[a-zç]{3}\/\d{4}$/.test(t.textContent || "")).map(t => {
+              const r = t.getBoundingClientRect();
+              return { texto: t.textContent, inicio: r.left, fim: r.right, w: r.width, fonte: parseFloat(getComputedStyle(t).fontSize) * b.width / vb.width };
+            }).filter(t => t.w > 0);
+            const problemas = datas.flatMap((t, i) => [
+              ...(t.inicio < b.left - .5 || t.fim > b.right + .5 ? [`fora: ${t.texto}`] : []),
+              ...(t.fonte < 11.9 ? [`fonte: ${t.texto}`] : []),
+              ...(i && t.inicio < datas[i - 1].fim + 10 ? [`colisão: ${datas[i - 1].texto} / ${t.texto}`] : []),
+            ]);
+            const opts = JSON.parse(decodeURIComponent(svg.closest<HTMLElement>(".line-chart")!.dataset.lineOptions!));
+            const linhas = [...svg.closest(".line-chart")!.querySelectorAll("tbody tr")].map(r => r.textContent);
+            return { largura: b.width, datas, problemas, dados: JSON.stringify({ periods: opts.periods, series: opts.series, linhas }) };
+          });
+          await expect.poll(async () => (await medir()).problemas, { message: `Pix ${metr}, ${width}px` }).toEqual([]);
+          const atual = await medir();
+          expect(atual.datas.length).toBeGreaterThanOrEqual(2);
+          expect(atual.datas[0].texto).toBe(datasFonte[0]);
+          expect(atual.datas.at(-1)!.texto).toBe(datasFonte.at(-1));
+          if (width === 1440) expect(atual.largura).toBeLessThan(720); // figura em duas colunas
+          if (dados === undefined) dados = atual.dados;
+          else expect(atual.dados).toBe(dados);
+        }
+      }
+      expect(erros).toEqual([]);
+    } finally { await page.close(); }
+  }, 90_000);
+
+});
