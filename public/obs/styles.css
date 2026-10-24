@@ -1410,3 +1410,8 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 .cgdisp-wrap .cgdisp { width:720px; min-width:720px; max-width:none; display:block; }
 
 @media (max-width:640px) { :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }
+
+.px-setor-legenda { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:6px 20px; list-style:none; padding:0; font-size:var(--tipo-rotulo); color:var(--text-2); }
+.px-setor-legenda b { display:inline-block; min-width:2em; font-variant-numeric:lining-nums tabular-nums; color:var(--text); }
+
+@media (max-width:700px) { :is(#view-pix, #view-subnacional) .subnav-caps { position:static !important; } }

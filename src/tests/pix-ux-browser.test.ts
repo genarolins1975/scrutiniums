@@ -205,5 +205,108 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
       }
     } finally { await page.close(); }
   }, 90_000);
+  it("CSV do Pulso equivale à figura e à tabela nos quatro modos, com bandas e recorte", async () => {
+    const page = await contexto.newPage();
+    const fonte = JSON.parse(readFileSync('public/obs/data/gold/pulse.json', 'utf8'));
+    try {
+      for (const modo of ['nivel', 'yoy', 'b100', 'real']) {
+        await page.goto(servidor.origem + '/observatorio/credit?range=24&transf=' + modo);
+        const card = page.locator('#pu-saldo');
+        await card.locator('svg[data-chart]').waitFor();
+        const dados = await card.locator('svg[data-chart]').evaluate(e => JSON.parse(decodeURIComponent(e.getAttribute('data-chart')!)));
+        const linhas = await card.locator('.line-chart tbody tr').evaluateAll(rows => rows.map(r => [...r.children].map(c => c.textContent!.trim())));
+        expect(linhas.length).toBe(dados.xs.length);
+        expect(dados.series[0].vals.filter((v: number | null) => v !== null)).toHaveLength(24);
+        if (modo === 'nivel') {
+          expect(dados.unit).toBe('R$ bilhões');
+          expect(dados.series[0].vals.slice(0, 24)).toEqual(fonte.series.saldo_total.obs.slice(-24).map((o: {v: number}) => o.v / 1000));
+          expect(dados.band).not.toBeNull();
+          expect(dados.series[1].label).toContain('previsão');
+        } else {
+          expect(dados.band).toBeNull();
+          expect(dados.status).toBe('calculado');
+          if (modo === 'b100') expect(dados.series[0].vals[0]).toBe(100);
+        }
+        const caption = await card.locator('caption').textContent();
+        expect(caption).toContain(dados.unit);
+        expect(caption).toContain(dados.status);
+        const download = page.waitForEvent('download');
+        await card.getByRole('button', {name: 'baixar CSV do gráfico', exact: true}).click();
+        const file = await (await download).path();
+        const csv = readFileSync(file!, 'utf8').trim().split('\n');
+        expect(csv.join('\n')).toContain('# Unidade: ' + dados.unit);
+        expect(csv.join('\n')).toContain('# Natureza: ' + dados.status);
+        const registros = csv.filter(l => !l.replace(/^\uFEFF/, '').startsWith('#'));
+        const campos = registros.map(l => l.split(';').map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"')));
+        expect(campos[0]).toHaveLength(linhas[0].length);
+        if (modo === 'nivel') expect(campos[0].slice(-2).join(' ')).toContain('previsão p10');
+        expect(campos.slice(1)).toHaveLength(linhas.length);
+        for (const [i, row] of campos.slice(1).entries()) {
+          expect(row[0]).toBe(dados.xs[i]);
+          expect(row.slice(1)).toEqual(linhas[i].slice(1).map(v => v === '–' ? '' : v.replace(/\./g, '')));
+        }
+        await page.reload();
+        expect(await page.locator(`#view-pulse button[onclick="setFilter('transf','${modo}')"]`).getAttribute('class')).toContain('active');
+      }
+      // Contexto macro também respeita a janela, sem exportar toda a base silenciosamente.
+      const extra = page.locator('#pu-selic_meta');
+      const dadosExtra = await extra.locator('svg[data-chart]').evaluate(e => JSON.parse(decodeURIComponent(e.getAttribute('data-chart')!)));
+      const downloadExtra = page.waitForEvent('download');
+      await extra.getByRole('button', {name: 'baixar CSV do gráfico', exact: true}).click();
+      const arquivoExtra = await (await downloadExtra).path();
+      const exportado = readFileSync(arquivoExtra!, 'utf8').trim().split('\n').filter(l => !l.replace(/^\uFEFF/, '').startsWith('#'));
+      expect(exportado.length - 1).toBe(24);
+      expect(dadosExtra.xs).toHaveLength(24);
+      expect(await extra.getByText('Base observada completa', {exact: true}).count()).toBe(1);
+    } finally { await page.close(); }
+  }, 120_000);
+
+  it("matriz setorial identifica todos os eixos sem hover em celular e desktop", async () => {
+    const page = await contexto.newPage();
+    try {
+      for (const width of [320, 1440]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/pix');
+        const legenda = page.locator('.px-setor-legenda');
+        if (width === 320) await expect.poll(() => page.locator('#view-pix .subnav-caps').evaluate(e => getComputedStyle(e).position)).toBe('static');
+        await legenda.waitFor();
+        const itens = await legenda.locator('li').allTextContents();
+        expect(itens.length).toBeGreaterThan(10);
+        const labels = await page.locator('#px-epae th[aria-label]').evaluateAll(nodes => nodes.map(e => ({nome: e.getAttribute('aria-label')!, id: e.textContent!.trim().slice(0, 2)})));
+        expect(labels.length).toBeGreaterThan(10);
+        for (const label of labels) {
+          const nome = label.nome.slice(label.nome.indexOf(' — ') + 3);
+          expect(itens.some(item => item.startsWith(label.id + ' ') && item.endsWith(nome))).toBe(true);
+          expect(nome).not.toContain('…');
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      }
+    } finally { await page.close(); }
+  }, 60_000);
+
+  it("cinco municípios preservam comparação tabular e rolagem por teclado no celular", async () => {
+    const page = await contexto.newPage();
+    try {
+      for (const width of [320, 390]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/payroll-lending-aging');
+        for (let i = 0; i < 5; i++) await page.locator('#cg-mapa .penlista button').nth(i).click();
+        const regiao = page.getByRole('region', {name: 'Comparação de indicadores dos municípios selecionados'});
+        const tabela = regiao.locator('table');
+        expect(await tabela.locator('thead th').count()).toBe(7);
+        expect(await tabela.locator('thead th').last().textContent()).toBe('Natureza do dado');
+        expect(await tabela.getAttribute('class')).not.toContain('t-stack');
+        const antes = await tabela.locator('tbody tr').allTextContents();
+        expect(antes.length).toBeGreaterThan(10);
+        await regiao.focus();
+        await page.keyboard.press('End');
+        await page.keyboard.press('ArrowRight');
+        await expect.poll(() => regiao.evaluate(e => e.scrollLeft)).toBeGreaterThan(0);
+        expect(await regiao.evaluate(e => e === document.activeElement)).toBe(true);
+        expect(await tabela.locator('tbody tr').allTextContents()).toEqual(antes);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      }
+    } finally { await page.close(); }
+  }, 60_000);
 
 });

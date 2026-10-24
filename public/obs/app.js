@@ -90,6 +90,7 @@ function buildQuery(view) {
   if (f.seg !== "total") qs.set("seg", f.seg);
   if (f.range !== 60) qs.set("range", f.range);
   if (f.growth !== "nominal") qs.set("growth", f.growth);
+  if (view === "pulse" && f.transf !== "nivel") qs.set("transf", f.transf);
   if (f.instGroup !== "todos") qs.set("grupo", f.instGroup);
   if (!PATH_MODE) { // em modo hash, o código vai na query (#inst?cod=…)
     if (view === "inst" && f.instCod) qs.set("cod", f.instCod);
@@ -167,6 +168,13 @@ function parseHash() {
   if (qs.get("seg")) state.filters.seg = qs.get("seg");
   if (qs.get("range")) state.filters.range = parseInt(qs.get("range"), 10);
   if (qs.get("growth")) state.filters.growth = qs.get("growth");
+  if (currentView() === "pulse") {
+    // Uma URL compartilhada descreve o recorte sem herdar preferências de outra visita.
+    for (const [k, valores] of Object.entries({ seg: ["total", "pf", "pj"], growth: ["nominal", "real"], transf: ["nivel", "yoy", "b100", "real"] })) {
+      state.filters[k] = valores.includes(qs.get(k)) ? qs.get(k) : valores[0];
+    }
+    state.filters.range = [24, 60, 200].includes(Number(qs.get("range"))) ? Number(qs.get("range")) : 60;
+  }
   if (qs.get("grupo")) state.filters.instGroup = qs.get("grupo");
   if (qs.get("sec")) state._secAlvo = qs.get("sec"); // permalink de seção (P2)
   if (!PATH_MODE) { // deep-link local: #inst?cod=… / #sector?cod=… / #product?slug=…
@@ -264,7 +272,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.125.0";
+const APP_VERSION = "0.126.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -1061,7 +1069,7 @@ function lineChart(opts) {
   // alternativa tabular acessível (WCAG): mesmos dados do gráfico
   if (!opts.noTable) {
     const heads = opts.series.map((sx, i) => sx.label || "série " + (i + 1));
-    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><thead><tr><th>Período</th>${heads.map(h2 => `<th style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th style='text-align:right'>banda p10</th><th style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
+    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><caption>${attr(opts.fonte || "Série apresentada")} · ${attr(opts.unit || "unidade indicada no título")}${opts.status ? " · " + attr(opts.status) : ""} · ${dateLabel(allX[0])} a ${dateLabel(allX[allX.length - 1])}</caption><thead><tr><th scope="col">Período</th>${heads.map(h2 => `<th scope="col" style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th scope='col' style='text-align:right'>banda p10</th><th scope='col' style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
       allX.map((x, i) => `<tr><td>${dateLabel(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
       `</tbody></table></div></details>`;
   }
@@ -2144,7 +2152,7 @@ function renderPix() {
     epae = sechead("Pix e atividade econômica — quem recebe, por setor", `EPAE · ${E.mes} · fluxo financeiro RECEBIDO — não é receita, consumo nem faturamento`) + `
       <div class="ov-2col-eq">
       <div class="card"><h4>Setores que mais recebem via Pix</h4>
-        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(s.setor.length > 42 ? s.setor.slice(0, 40) + "…" : s.setor, s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
+        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(s.setor, s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
         <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
       <div class="card"><h4>${sel.setor}</h4>
         <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
@@ -2178,11 +2186,11 @@ function renderPix() {
     <div class="ov-2col-eq" style="margin-top:10px">
       <div class="card"><h4>O que as famílias pagam a cada setor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">Pix de pessoas físicas a cada seção da CNAE · ${fmt.my(EM.mes)} · % sobre o Pix PF→PJ (mesmo conceito do painel de bets)</div>
-        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(r.setor.length > 42 ? r.setor.slice(0, 40) + "…" : r.setor, r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
+        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(r.setor, r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
         <div class="src">clique num setor para ver de quem ele recebe</div></div>
       <div class="card"><h4>${selTE.setor} — de quais setores vem o dinheiro ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">matriz setor-pagador × setor-recebedor · ${fmt.my(EM.mes)} · R$ bilhões</div>
-        ${pagadores.map(([pag, v]) => panBar(pag.length > 42 ? pag.slice(0, 40) + "…" : pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
+        ${pagadores.map(([pag, v]) => panBar(pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
         ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
         <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
     </div>
@@ -2198,10 +2206,11 @@ function renderPix() {
       const somaCol = rc => pagadores2.reduce((s2, pg) => s2 + ((EM.matriz[pg] || {})[rc] || 0), 0);
       const linhas2 = pagadores2.slice().sort((a2, b2) => somaLinha(b2) - somaLinha(a2));
       const cols2 = [...colSet].sort((a2, b2) => somaCol(b2) - somaCol(a2));
+      const setoresLegenda = [...new Set([...linhas2, ...cols2])].sort((a, b) => a.localeCompare(b, "pt-BR"));
+      const idSetor = nome => String(setoresLegenda.indexOf(nome) + 1).padStart(2, "0");
       const todosV = [];
       linhas2.forEach(pg => cols2.forEach(rc => { const v2 = (EM.matriz[pg] || {})[rc]; if (v2 > 0) todosV.push(Math.log10(v2)); }));
       const logScale = panScale(todosV, "seq");
-      const abrev = s2 => s2.length > 15 ? s2.slice(0, 14) + "…" : s2;
       const cel2 = (pg, rc) => {
         const v2 = (EM.matriz[pg] || {})[rc];
         if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
@@ -2210,10 +2219,11 @@ function renderPix() {
         return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}"><span class="px-cell-value">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</span></td>`;
       };
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
-        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · passe o mouse para o par completo</div>
+        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · os números identificam os setores na legenda completa abaixo; deslize a tabela para comparar colunas</div>
         <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:var(--tipo-rotulo)"><thead>
-          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:var(--tipo-rotulo);padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo)" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th scope="col" aria-label="${attr(idSetor(rc) + " — " + rc)}" style="min-width:44px;font-size:var(--tipo-rotulo)">${idSetor(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + pg)}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <h5>Identificação dos setores</h5><ol class="px-setor-legenda">${setoresLegenda.map(nome => `<li><b>${idSetor(nome)}</b> ${nome}</li>`).join("")}</ol>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
   }
@@ -4052,10 +4062,11 @@ function inadFanChart(seg) {
 }
 
 /* ---------- PULSO DO CRÉDITO ---------- */
+const pulsoMoeda = v => v == null ? "–" : "R$ " + fmt.n(v / 1000, 3) + " bi";
 const PULSE_SECTIONS = [
   { title: "1 · Oferta (estoque e fluxo)", cards: [
-    { key: "saldo", title: "Saldo da carteira (estoque)", fmt: v => "R$ " + fmt.triFromMi(v) },
-    { key: "concessoes", title: "Concessões mensais (fluxo)", fmt: v => "R$ " + fmt.bi(v) }] },
+    { key: "saldo", title: "Saldo da carteira (estoque)", fmt: pulsoMoeda },
+    { key: "concessoes", title: "Concessões mensais (fluxo)", fmt: pulsoMoeda }] },
   { title: "2 · Preço", cards: [
     { key: "taxa", title: "Taxa média de juros", fmt: v => fmt.n(v, 1) + "% a.a." },
     { key: "spread", title: "Spread médio", fmt: v => fmt.n(v, 1) + " p.p." }] },
@@ -4192,7 +4203,7 @@ function variacaoPulso(s, key, growth) {
   return {
     monetaria,
     valor: monetaria ? (serie && serie.length ? serie[serie.length - 1].v : null) : _d12(s),
-    rotulo: monetaria ? "% " + (real ? "a/a real (defl. IPCA)" : "a/a nominal") : " p.p. em 12 meses",
+    rotulo: monetaria ? "% sobre o mesmo mês do ano anterior" + (real ? " (real, deflacionado pelo IPCA)" : " (nominal)") : " p.p. sobre o mesmo mês do ano anterior",
   };
 }
 
@@ -4216,12 +4227,16 @@ function renderPulse() {
     const emNivel = f.transf === "nivel" || !trPedida;
     const avisoTransf = f.transf !== "nivel" && !trPedida
       ? `<div class="src">transformação "${(PULSE_TRANSF.find(t => t[0] === f.transf) || [])[1]}" não se aplica a esta série (${s.meta.unit}) — exibindo o nível.</div>` : "";
-    const series = [{ pts: tr.pts, color: "#1d4e89", label: c.title.toLowerCase() }];
+    const series = [{ pts: tr.pts, color: "#1d4e89", label: c.title.toLowerCase() + " (" + tr.status + ")" }];
     let band = null;
     if (emNivel && fc && fc.ok) {
       series.push({ pts: [{ x: last.ref, y: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, y: p.p50 }))], color: "#1d4e89", dash: "5,4", label: "previsão p50" });
       band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
     }
+    const escalaTela = /^R\$ milhões/.test(tr.unit) ? 1000 : 1;
+    const unidadeTela = escalaTela === 1000 ? tr.unit.replace("milhões", "bilhões") : tr.unit;
+    const seriesTela = series.map(sr => ({ ...sr, pts: sr.pts.map(p => ({ ...p, y: p.y == null ? null : p.y / escalaTela })) }));
+    const bandaTela = band ? { pts: band.pts.map(p => ({ ...p, lo: p.lo == null ? null : p.lo / escalaTela, hi: p.hi == null ? null : p.hi / escalaTela })) } : null;
     const { valor: variacao, rotulo: growthLabel, monetaria } = variacaoPulso(s, c.key, f.growth);
     const rgs = state.data.regimes_series && state.data.regimes_series.series ? state.data.regimes_series.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
     const annotations = [];
@@ -4231,15 +4246,17 @@ function renderPulse() {
     return `<div class="card" id="pu-${c.key}">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
-      <div class="delta ${yoy > 0 ? "up" : "down"}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
+      <div class="delta ${yoy > 0 ? "up" : "down"}">${variacao != null ? (variacao > 0 ? "Alta de " : variacao < 0 ? "Queda de " : "Sem variação: ") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
       ${avisoTransf}
-      ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
+      ${lineChart({ series: seriesTela, band: bandaTela, dec: escalaTela === 1000 ? 3 : undefined, aria: c.title + " — " + segLabel, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: unidadeTela, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
       ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
       ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="/observatorio/scenarios" onclick="nav('scenarios');return false">backtest completo →</a></div>` : ""}
-      ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
-      ${srcLine(s.meta, s.qualidade)}
-      <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar CSV</button>
+      ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: unidadeTela })}
+      <div class="src">${qBadge(s.qualidade)} · Frequência: ${s.meta.freq} · Unidade na fonte original: ${s.meta.unit}</div>
+      <details class="charttable"><summary>Definição e metodologia da série</summary><p class="src">${s.meta.methodology}</p></details>
+      <button class="btn ghost small" onclick="exportarRecorteGrafico(this)">baixar CSV do gráfico</button>
+      <details class="charttable"><summary>Base observada completa</summary><button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar série observada completa (CSV)</button></details>
     </div>`;
   };
 
@@ -4273,13 +4290,13 @@ function renderPulse() {
     const seg = segName().toLowerCase();
     return abertura({
       natureza: "observado", placar: [
-        { l: `Saldo · ${seg}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
-        { l: `Concessões no mês · ${seg}`, v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
+        { l: `Saldo · ${seg}`, v: uS ? pulsoMoeda(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
+        { l: `Concessões no mês · ${seg}`, v: uC ? pulsoMoeda(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
         { l: "Taxa média de juros", v: uT ? fmt.pct(uT.v, 1) + " a.a." : null, sub: uT ? `${_d12(sv("taxa")) != null ? fmt.pp(_d12(sv("taxa"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uT.ref)}` : "" },
         { l: "Inadimplência acima de 90 dias", v: uI ? fmt.pct(uI.v, 2) : null, sub: uI ? `${_d12(sv("inad")) != null ? fmt.pp(_d12(sv("inad"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uI.ref)}` : "" },
       ],
       sintese: [
-        uS ? `Em ${fmt.my(uS.ref)}, o saldo de crédito (${seg}) soma ${fmt.brlBiDeMilhoes(uS.v)}${_yoy(sv("saldo")) != null ? `, ${fmt.n(_yoy(sv("saldo")), 1)}% acima de um ano antes` : ""}${uC && _yoy(sv("concessoes")) != null ? `; as concessões do mês ${_yoy(sv("concessoes")) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sv("concessoes"))), 1)}% a/a` : ""}.` : null,
+        uS ? `Em ${fmt.my(uS.ref)}, o saldo de crédito (${seg}) soma ${pulsoMoeda(uS.v)}${_yoy(sv("saldo")) != null ? `, ${fmt.n(Math.abs(_yoy(sv("saldo"))), 1)}% ${_yoy(sv("saldo")) >= 0 ? "acima" : "abaixo"} do mesmo mês do ano anterior` : ""}${uC && _yoy(sv("concessoes")) != null ? `; as concessões do mês ${_yoy(sv("concessoes")) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sv("concessoes"))), 1)}% a/a` : ""}.` : null,
         uT && uI ? `A taxa média está em ${fmt.pct(uT.v, 1)} ao ano e a inadimplência acima de 90 dias em ${fmt.pct(uI.v, 2)}${_d12(sv("inad")) != null ? ` (${fmt.pp(_d12(sv("inad")))} p.p. em doze meses)` : ""}.` : null,
         p12 ? `A projeção-base leva a inadimplência a ${fmt.pct(p12.p50, 2)} em ${fmt.my(p12.ref_date)}, banda de ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)}.` : null,
       ],
@@ -4309,7 +4326,7 @@ function extraCard(k) {
     <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(last.v, 2)} <span style="font-size:var(--tipo-rotulo);color:var(--text-3)">${s.meta.unit}</span></div>
     ${lineChart({ series: [{ pts: s.obs.slice(-state.filters.range).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: s.meta.name }], h: 110, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" })}
     ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `até ${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
-    <button class="btn ghost small" onclick="exportSeries('${k}')">baixar CSV</button></div>`;
+    <button class="btn ghost small" onclick="exportarRecorteGrafico(this)">baixar CSV do gráfico</button><details class="charttable"><summary>Base observada completa</summary><button class="btn ghost small" onclick="exportSeries('${k}')">baixar série observada completa (CSV)</button></details></div>`;
 }
 
 /* ---------- INDICADORES ANTECEDENTES ---------- */
@@ -5171,6 +5188,7 @@ function renderScenarios() {
 }
 
 
+/* @chunk:municipal:ini */
 /* ---------- DÍVIDA ATIVA DA UNIÃO (PGFN) ----------
    Universo separado do crédito do SFN, e a página diz isso antes do primeiro
    número. Duas armadilhas da fonte aparecem como conteúdo, não como nota de
@@ -5332,7 +5350,6 @@ function renderPgfn() {
 function round2(x) { return Math.round(x * 100) / 100; }
 
 
-/* @chunk:municipal:ini */
 /* ---------- DESENROLA BRASIL ----------
    A base do BCB tem sete colunas. Um painel honesto do Desenrola precisa dizer, o
    tempo todo, o que elas permitem e o que não permitem concluir — e por isso esta
@@ -6793,6 +6810,19 @@ function buildReport() {
   setTimeout(() => { window.print(); showView("scenarios"); }, 150);
 }
 function download(name, content, mime) { dlFile(name, content, mime); } // alias legado do helper único
+/* Exporta o payload da figura, depois da transformação e do recorte. O CSV
+   observado completo continua disponível separadamente, sem mudar a fonte. */
+window.exportarRecorteGrafico = botao => {
+  const svg = botao.closest(".card")?.querySelector(".line-chart svg[data-chart]");
+  if (!svg) return;
+  const g = JSON.parse(decodeURIComponent(svg.dataset.chart));
+  const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+  const numero = v => v == null ? "" : fmt.n(v, g.dec).replace(/\./g, "");
+  const cabecalho = ["período", ...g.series.map((sr, i) => (sr.label || "série " + (i + 1)) + " (" + g.unit + ")"), ...(g.band ? ["previsão p10 (" + g.unit + ")", "previsão p90 (" + g.unit + ")"] : [])];
+  const linhas = g.xs.map((x, i) => [x, ...g.series.map(sr => numero(sr.vals[i])), ...(g.band ? [numero(g.band.lo[i]), numero(g.band.hi[i])] : [])].map(q).join(";"));
+  const metadados = [`# Fonte: ${g.fonte}`, `# Natureza: ${g.status || "identificada nas séries"}`, `# Unidade: ${g.unit}`, `# Período: ${g.xs[0]} a ${g.xs[g.xs.length - 1]}`, "# Célula vazia: observação ausente; não representa zero."];
+  download(`credito_recorte_${botao.closest(".card").id || "serie"}.csv`, "\uFEFF" + metadados.join("\n") + "\n" + cabecalho.map(q).join(";") + "\n" + linhas.join("\n"), "text/csv;charset=utf-8");
+};
 function exportSeries(key) {
   const s = state.data.pulse.series[key];
   if (!s) return;
@@ -7012,7 +7042,7 @@ function renderInstitutions() {
     <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
     <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
     <span class="seg">${[["ativo", "por ativo"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
-    <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
+    <button class="btn ghost small" onclick="exportInstitutions()">baixar base completa (JSON)</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${instForaDoCorte(inst)}
@@ -11662,13 +11692,14 @@ function cgPerfil(D, sel, comparar) {
     ${cols.length > 1 ? `<button class="btn ghost small" onclick="cgLimpa()">limpar comparação</button>` : ""}
   </div>
   <div class="card cgperfil">
-    <table class="data">
-      <thead><tr><th>Indicador</th>${cols.map(m => `<th style="text-align:right">${m.n}<small>${m.uf}</small></th>`).join("")}<th></th></tr></thead>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Comparação de indicadores dos municípios selecionados"><table class="data comparacao-tabular" data-movel="1">
+      <thead><tr><th scope="col">Indicador</th>${cols.map(m => `<th scope="col" style="text-align:right">${m.n}<small>${m.uf}</small></th>`).join("")}<th scope="col">Natureza do dado</th></tr></thead>
       <tbody>${linhas(cols[0]).map((_, i) => `<tr>
         <th scope="row">${linhas(cols[0])[i][0]}</th>
         ${cols.map(m => `<td style="text-align:right">${linhas(m)[i][1]}</td>`).join("")}
         <td>${cgSelo(linhas(cols[0])[i][2])}</td></tr>`).join("")}</tbody>
-    </table>
+    </table></div>
+    <p class="src">Deslize horizontalmente ou use as setas com foco na tabela para comparar todos os municípios.</p>
     <p class="src">Confiabilidade: ${cols.map(m => `<span class="morselo" style="--c:${CG_SELCOR[m.sel]}">${m.n}: ${m.sel.replace("_", " ")}</span>`).join(" ")}</p>
     ${cols.some(m => m.incoerente) ? `<div class="judalerta" role="note">Ao menos um dos municípios
       selecionados reprova no teste de coerência: o peso calculado supera o teto que o Censo dá
@@ -12696,7 +12727,7 @@ function renderPresencaMun() {
    arquivo (dev), a checagem de presença torna tudo transparente. */
 const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc", subnacional: "renderSubnacional" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
-const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
+const CHUNK_OF_VIEW = { pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
   consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes", subnacional: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {

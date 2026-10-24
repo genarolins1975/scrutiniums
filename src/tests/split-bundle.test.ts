@@ -49,7 +49,7 @@ describe("fonte canônica: marcadores e despacho", () => {
 
   it("cada rota de chunk tem o renderizador dentro da região do chunk certo", () => {
     const mapa: Record<string, string> = {
-      desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
+      pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
       bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
     };
     for (const [view, chunk] of Object.entries(mapa)) {
@@ -76,13 +76,13 @@ describe("artefatos do build", () => {
     for (const f of ["public/obs/app-municipal.min.js", "public/obs/app-emergentes.min.js"]) {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
-    for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
+    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
       "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
     const eme = read("public/obs/app-emergentes.min.js");
-    for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
+    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
       expect(mun.includes(`function ${fn}(`), fn).toBe(true);
     }
     // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário

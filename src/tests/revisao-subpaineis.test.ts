@@ -43,7 +43,7 @@ describe("revisão individual: regressões observadas na navegação real", () =
     for (const key of ["inad", "taxa", "spread"]) {
       const result = delta(series, key, "real");
       expect(result.valor).toBeCloseTo(0.92);
-      expect(result.rotulo).toBe(" p.p. em 12 meses");
+      expect(result.rotulo).toBe(" p.p. sobre o mesmo mês do ano anterior");
     }
   });
   it("saldo e concessões conservam crescimento nominal ou real e ausência explícita", () => {

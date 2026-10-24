@@ -208,8 +208,23 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
     const d = elemento(casos.nova, 'data-fatia="destinos"');
     expect(texto(d)).not.toMatch(/\(previsto\)|Em desenvolvimento|Versão em desenvolvimento/);
     for (const a of d.match(/<a [\s\S]*?<\/a>/g) ?? []) expect(a).not.toContain('data-prontidao="preparacao"');
-    // "cobertura parcial" só pelo selo
-    const soltos = texto(d.replace(/<span data-prontidao="parcial"[^>]*><span aria-hidden="true">[^<]*<\/span>cobertura parcial(<span class="sr-only">[^<]*<\/span>)?<\/span>/g, "")).match(/cobertura parcial/g) ?? [];
+    // Homologação de 24/10: resumos canônicos agora estão visíveis. Uma ressalva narrativa como a de Mobilidade
+    // pode mencionar cobertura parcial sem ser um selo. Validar TODAS as narrativas contra o catálogo antes
+    // de excluí-las da checagem dos rótulos; um bloco arbitrário ou um selo escrito à mão continua reprovando.
+    const colecoes = inventario().flatMap(o => o.colecoes);
+    const narrativas = {
+      entrada: colecoes.flatMap(c => c.resumoEntrada ? [c.resumoEntrada] : []),
+      pagina: colecoes.flatMap(c => c.paginas.flatMap(p => p.rota && p.resumo && p.resumo !== p.titulo ? [p.resumo] : [])),
+    };
+    let rotulos = d;
+    for (const [tipo, esperadas] of Object.entries(narrativas)) {
+      const re = new RegExp(`<span [^>]*data-resumo-${tipo}=""[^>]*>[\\s\\S]*?<\\/span>`, "g");
+      const encontradas = rotulos.match(re) ?? [];
+      expect(encontradas.map(texto).sort(), tipo).toEqual(esperadas.map(texto).sort());
+      rotulos = rotulos.replace(re, "");
+    }
+    // Fora das narrativas validadas, "cobertura parcial" é estado: só pelo selo único.
+    const soltos = texto(rotulos.replace(/<span data-prontidao="parcial"[^>]*><span aria-hidden="true">[^<]*<\/span>cobertura parcial(<span class="sr-only">[^<]*<\/span>)?<\/span>/g, "")).match(/cobertura parcial/g) ?? [];
     expect(soltos).toEqual([]);
   });
 
