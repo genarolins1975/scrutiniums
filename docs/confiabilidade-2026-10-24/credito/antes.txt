@@ -1,0 +1,168 @@
+FFFFFFFFFE.FFFFF.
+======================================================================
+ERROR: test_retificacao_preserva_valor_anterior_e_retorno_a_hash_antigo (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_retificacao_preserva_valor_anterior_e_retorno_a_hash_antigo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 65, in test_retificacao_preserva_valor_anterior_e_retorno_a_hash_antigo
+    old = self.con.execute('SELECT volume FROM desenrola_historico WHERE bronze_sha=?', (old_sha,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: desenrola_historico
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='<html>bloqueio</html>')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 52, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertEqual(self.snapshot(), anterior)
+AssertionError: Lists differ: [] != [('2026-08', 'faixa1', 'SP', '123', 'Banco[77 chars]b8')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('2026-08', 'faixa1', 'SP', '123', 'Banco', 2, 1200.5, '943235378dfd173623bc40d841b61e15f3f9e1b8f0d2c3cfcc9dc1b567d239b8')
+
+- []
++ [('2026-08',
++   'faixa1',
++   'SP',
++   '123',
++   'Banco',
++   2,
++   1200.5,
++   '943235378dfd173623bc40d841b61e15f3f9e1b8f0d2c3cfcc9dc1b567d239b8')]
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='coluna_nova\n1\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 52, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertEqual(self.snapshot(), anterior)
+AssertionError: Lists differ: [] != [('2026-08', 'faixa1', 'SP', '123', 'Banco[77 chars]b8')]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('2026-08', 'faixa1', 'SP', '123', 'Banco', 2, 1200.5, '943235378dfd173623bc40d841b61e15f3f9e1b8f0d2c3cfcc9dc1b567d239b8')
+
+- []
++ [('2026-08',
++   'faixa1',
++   'SP',
++   '123',
++   'Banco',
++   2,
++   1200.5,
++   '943235378dfd173623bc40d841b61e15f3f9e1b8f0d2c3cfcc9dc1b567d239b8')]
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202608;1;SP;123;Banco;2;1.200,50\n202609;1;RJ;456;Outro;inválido;5\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 52, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertEqual(self.snapshot(), anterior)
+AssertionError: Lists differ: [('20[47 chars].5, '83e37fc7645a25afce5c1eee7fddb70d4a59abb3d[21 chars]84')] != [('20[47 chars].5, '943235378dfd173623bc40d841b61e15f3f9e1b8f[21 chars]b8')]
+
+First differing element 0:
+('202[46 chars].5, '83e37fc7645a25afce5c1eee7fddb70d4a59abb3d[20 chars]884')
+('202[46 chars].5, '943235378dfd173623bc40d841b61e15f3f9e1b8f[20 chars]9b8')
+
+  [('2026-08',
+    'faixa1',
+    'SP',
+    '123',
+    'Banco',
+    2,
+    1200.5,
+-   '83e37fc7645a25afce5c1eee7fddb70d4a59abb3d70fd42f00c03085a7dbd884')]
++   '943235378dfd173623bc40d841b61e15f3f9e1b8f0d2c3cfcc9dc1b567d239b8')]
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202608;1;SP;123;Banco;2;\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202608;1;SP;123;Banco;2;NaN\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202608;1;SP;123;Banco;-1;1.200,50\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202613;1;SP;123;Banco;2;1.200,50\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) (texto='DATA_BASE;TIPO_DESENROLA;UNIDADE_FEDERACAO;COD_CONGLOMERADO_FINANCEIRO;NOME_CONGLOMERADO_FINANCEIRO;NUMERO_OPERACOES;VOLUME_OPERACOES\n202608;1;SP;123;Banco;2;1.200,50\n202608;1;SP;123;Banco;3;1.200,50\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 51, in test_arquivo_invalido_preserva_todas_as_linhas_anteriores
+    self.assertFalse(resultado[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_403_nao_muda_a_janela_nem_repete_com_data_fixa (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_403_nao_muda_a_janela_nem_repete_com_data_fixa)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 107, in test_403_nao_muda_a_janela_nem_repete_com_data_fixa
+    self.assertEqual(http.call_count, 1)
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_janela_diaria_preserva_inicio_historico_e_so_grava_apos_todas (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_janela_diaria_preserva_inicio_historico_e_so_grava_apos_todas)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 114, in test_janela_diaria_preserva_inicio_historico_e_so_grava_apos_todas
+    self.assertFalse(bcb_sgs.collect(self.con, self.cfg)[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida) (body=b'[{"data":"01/01/2026","valor":"NaN"}]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 93, in test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida
+    self.assertFalse(self.collect(body)[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida) (body=b'[{"data":"31/02/2026","valor":"1"}]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 93, in test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida
+    self.assertFalse(self.collect(body)[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida) (body=b'[{"data":"01/01/2026","valor":"3"},{"data":"02/01/2026","valor":""}]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 93, in test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida
+    self.assertFalse(self.collect(body)[0]['ok'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.014s
+
+FAILED (failures=14, errors=1)

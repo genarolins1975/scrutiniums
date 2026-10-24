@@ -102,6 +102,15 @@ def xml_escape(s):
             .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
+class CollectionError(RuntimeError):
+    """Falha diagnosticável sem perder o código HTTP ou o número de tentativas."""
+    def __init__(self, url, error, attempts):
+        self.status = getattr(error, "code", None)
+        self.attempts = attempts
+        self.kind = "acesso_negado" if self.status in (401, 403) else "http" if self.status else "rede"
+        super().__init__(f"Falha ao coletar {url}: {error} (tentativas={attempts}; causa={self.kind})")
+
+
 def http_get(url, timeout=45, retries=3, backoff=2.0, accept="application/json"):
     """GET com retry exponencial. Retorna (bytes, meta) ou lança após esgotar tentativas.
 
@@ -110,6 +119,8 @@ def http_get(url, timeout=45, retries=3, backoff=2.0, accept="application/json")
     cabeçalho, não do User-Agent, e foi medido em sete combinações. Passe `accept="*/*"`
     ou `accept=None` para baixar planilhas e ZIPs de fontes que se comportam assim.
     """
+    if retries < 1:
+        raise ValueError("retries deve ser pelo menos 1")
     last_err = None
     cabecalhos = {"User-Agent": USER_AGENT}
     if accept:
@@ -135,8 +146,14 @@ def http_get(url, timeout=45, retries=3, backoff=2.0, accept="application/json")
             # HTTPException cobre IncompleteRead: o download cortado do SCR.data
             # (05/09/2026) não era retentado porque não é OSError
             last_err = e
-            time.sleep(backoff * (attempt + 1))
-    raise RuntimeError(f"Falha ao coletar {url}: {last_err}")
+            # Não insistir em bloqueio/autenticação nem repetir requisição inválida.
+            # Somente timeout/rate limit/5xx e falhas de transporte podem ser transitórios.
+            code = getattr(e, "code", None)
+            if code is not None and code not in (408, 429) and code < 500:
+                break
+            if attempt + 1 < retries:
+                time.sleep(backoff * (2 ** attempt))
+    raise CollectionError(url, last_err, attempt + 1)
 
 
 def http_download(url, path, timeout=600, retries=3, backoff=5.0, bloco=1 << 20):

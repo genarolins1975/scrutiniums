@@ -36,6 +36,17 @@ def _limpa_nome(nome):
                   flags=re.IGNORECASE)
 
 
+def itens_validos(body):
+    """Uma resposta de erro sem `items` nunca equivale a zero processos."""
+    d = json.loads(body)
+    if not isinstance(d, dict) or not isinstance(d.get("items"), list):
+        raise ValueError("DJEN: resposta sem lista items; registros anteriores preservados")
+    if any(not isinstance(it, dict) or not it.get("nomeClasse") or
+           not (it.get("numeroprocessocommascara") or it.get("numero_processo")) for it in d["items"]):
+        raise ValueError("DJEN: item fora do esquema; registros anteriores preservados")
+    return d["items"]
+
+
 def collect(con, cfg):
     c = cfg.get("djen")
     if not c:
@@ -44,13 +55,13 @@ def collect(con, cfg):
         numero_processo TEXT PRIMARY KEY, tribunal TEXT, orgao TEXT, classe TEXT,
         empresas TEXT, cnpjs TEXT, valor_mencionado TEXT, tipos_documento TEXT,
         ultima_publicacao TEXT, n_publicacoes INTEGER, link TEXT, collected_at TEXT)""")
-    con.execute("DELETE FROM rj_fichas")  # janela móvel: recarrega a cada execução
     fim = date.today()
     ini = fim - timedelta(days=c["janela_dias"])
     results = []
     for trib in c["tribunais"]:
         fichas = {}
         paginas_ok = 0
+        con.execute("SAVEPOINT djen_tribunal")
         try:
             for pagina in range(1, c["max_paginas_por_tribunal"] + 1):
                 params = {
@@ -61,10 +72,10 @@ def collect(con, cfg):
                 }
                 url = c["base_url"] + "?" + urllib.parse.urlencode(params)
                 body, meta = common.http_get(url, timeout=90)
-                d = json.loads(body)
-                items = d.get("items", [])
-                if pagina == 1:
-                    common.save_bronze("djen", f"rj_{trib}_p1", body, meta)
+                items = itens_validos(body)
+                caminho, sha = common.save_bronze("djen", f"rj_{trib}_p{pagina}", body, meta)
+                common.record_lineage(con, f"rj_fichas:{trib}", caminho, sha,
+                                      "Página DJEN validada; filtro de classe e PJ no cliente")
                 paginas_ok += 1
                 for it in items:
                     classe = (it.get("nomeClasse") or "").upper()
@@ -98,6 +109,9 @@ def collect(con, cfg):
                 if len(items) < c["itens_por_pagina"]:
                     break
                 time.sleep(c["pausa_s"])
+            else:
+                raise ValueError("DJEN: limite de páginas atingido sem fim da resposta; tribunal anterior preservado")
+            con.execute("DELETE FROM rj_fichas WHERE tribunal=?", (trib,))
             n_pj = 0
             for num, f in fichas.items():
                 if not f["empresas"]:
@@ -109,18 +123,18 @@ def collect(con, cfg):
                              f["valor_mencionado"], json.dumps(sorted(f["tipos"]), ensure_ascii=False),
                              f["ultima"], f["n"], f["link"], common.now_utc()))
                 n_pj += 1
-            common.record_lineage(con, f"rj_fichas:{trib}", f"djen/rj_{trib}_p1", "-",
-                                  "Comunica PJe: busca textual + filtro de classe no cliente; "
-                                  "PJ por heurística de forma societária; CNPJ/valor por regex")
+            con.execute("RELEASE djen_tribunal")
             results.append({"key": f"djen_{trib}", "ok": True, "fichas_pj": n_pj,
                             "processos_vistos": len(fichas), "paginas": paginas_ok})
         except Exception as e:
+            con.execute("ROLLBACK TO djen_tribunal")
+            con.execute("RELEASE djen_tribunal")
             msg = str(e)
             if "403" in msg:
                 # CloudFront devolve 403 para a origem do runner e para redes fora do Brasil
                 # (medido em 06/09/2026 com quatro User-Agents e cabeçalhos de navegador):
                 # é bloqueio de CDN por origem, não erro de consulta; nomear evita re-diagnóstico
-                msg = "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+                msg = "HTTP 403 da CDN (CloudFront), registrado anteriormente; acesso negado nesta coleta, sem confirmar a causa geográfica. Registros anteriores preservados."
             results.append({"key": f"djen_{trib}", "ok": False, "error": msg,
                             "fichas_parciais": len(fichas)})
     return results
