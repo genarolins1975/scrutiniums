@@ -68,6 +68,13 @@ class VigiaRTN(unittest.TestCase):
                 self.assertIsNone(planilha)
                 self.assertTrue(nv)
 
+    def test_menu_com_mes_e_ano_nao_prova_edicao_da_pagina(self):
+        pagina = b'<title>Resultado do Tesouro Nacional</title><nav>agosto de 2026 setembro de 2026</nav>'
+        publicados, _, nv = V.verificar(DADOS, lambda _: (200, pagina), dt.date(2026, 10, 24))
+        self.assertFalse(publicados)
+        self.assertTrue(nv)
+        self.assertIn("inconclusiva", V.corpo(DADOS, publicados, None, nv))
+
     def test_indisponibilidade_tem_codigo_diferente_de_edicao_nova(self):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(V.main(buscar=tesouro(falhar=True), hoje=dt.date(2026, 10, 24)), 4)
