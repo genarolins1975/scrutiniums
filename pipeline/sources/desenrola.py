@@ -32,6 +32,8 @@ sempre, compara o sha256 com o último bronze e só reprocessa quando muda.
 """
 import csv
 import io
+import math
+from datetime import datetime
 
 from pipeline import common
 
@@ -59,13 +61,22 @@ def _ensure(con):
     CREATE TABLE IF NOT EXISTS desenrola_coleta(
         coletado_em TEXT, bronze_sha TEXT, linhas INTEGER, meses INTEGER,
         data_base_min TEXT, data_base_max TEXT, PRIMARY KEY(bronze_sha));
+    CREATE TABLE IF NOT EXISTS desenrola_historico(
+        data_base TEXT, tipo TEXT, uf TEXT, cod_congl TEXT, nome_congl TEXT,
+        n_operacoes INTEGER, volume REAL, bronze_sha TEXT,
+        PRIMARY KEY(bronze_sha, data_base, tipo, uf, cod_congl));
     """)
 
 
 def _num(s):
     """Volume vem com milhar por ponto e decimal por vírgula (padrão brasileiro)."""
     s = (s or "").strip()
-    return float(s.replace(".", "").replace(",", ".")) if s else 0.0
+    if not s:
+        raise ValueError("volume ausente; ausência não é zero")
+    value = float(s.replace(".", "").replace(",", "."))
+    if not math.isfinite(value) or value < 0:
+        raise ValueError("volume inválido no Desenrola")
+    return value
 
 
 def collect(con, cfg=None):
@@ -77,7 +88,8 @@ def collect(con, cfg=None):
     caminho, sha = common.save_bronze("desenrola", "dados_desenrola.csv", body, {**meta, "dataset": DATASET})
 
     ja = con.execute("SELECT linhas FROM desenrola_coleta WHERE bronze_sha=?", (sha,)).fetchone()
-    if ja:
+    vigente = {r[0] for r in con.execute("SELECT DISTINCT bronze_sha FROM desenrola_op")}
+    if ja and vigente == {sha}:
         return [{"key": "desenrola", "ok": True, "note": "arquivo inalterado desde a última coleta",
                  "linhas": ja[0]}]
 
@@ -104,35 +116,55 @@ def collect(con, cfg=None):
                  "error": f"colunas ausentes no CSV: {sorted(faltando)} (esquema da fonte mudou); "
                           f"cabeçalho recebido: {campos[:10]}; início: {inicio[:80]!r}"}]
 
-    linhas, meses, fora = 0, set(), 0
-    con.execute("DELETE FROM desenrola_op")  # a fonte republica a série inteira a cada mês
-    for r in rdr:
-        db = (r["DATA_BASE"] or "").strip()
-        if len(db) != 6 or not db.isdigit():
-            fora += 1
-            continue
-        tipo = (r["TIPO_DESENROLA"] or "").strip()
-        if tipo not in TIPOS:
-            fora += 1
-            continue
-        uf = (r["UNIDADE_FEDERACAO"] or "").strip().upper()
-        if uf not in UFS:
-            fora += 1
-            continue
-        data_base = f"{db[:4]}-{db[4:]}"
-        meses.add(data_base)
-        con.execute("INSERT OR REPLACE INTO desenrola_op VALUES(?,?,?,?,?,?,?,?)",
-                    (data_base, TIPOS[tipo][0], uf,
-                     (r["COD_CONGLOMERADO_FINANCEIRO"] or "").strip(),
-                     (r["NOME_CONGLOMERADO_FINANCEIRO"] or "").strip(),
-                     int(r["NUMERO_OPERACOES"] or 0), _num(r["VOLUME_OPERACOES"]), sha))
-        linhas += 1
+    # Parse completo antes da troca: o orquestrador dá commit mesmo após falha de coleta.
+    rows, meses, chaves = [], set(), set()
+    try:
+        for r in rdr:
+            if None in r or any(r.get(k) is None for k in obrigatorias):
+                raise ValueError("linha incompleta ou com colunas excedentes")
+            db = r["DATA_BASE"].strip()
+            if len(db) != 6 or not db.isdigit():
+                raise ValueError("data-base inválida")
+            datetime.strptime(db, "%Y%m")
+            tipo = r["TIPO_DESENROLA"].strip()
+            uf = r["UNIDADE_FEDERACAO"].strip().upper()
+            cod = r["COD_CONGLOMERADO_FINANCEIRO"].strip()
+            nome = r["NOME_CONGLOMERADO_FINANCEIRO"].strip()
+            if tipo not in TIPOS or uf not in UFS or not cod or not nome:
+                raise ValueError("tipo, UF ou identificação fora do contrato")
+            n = int(r["NUMERO_OPERACOES"])
+            if n < 0:
+                raise ValueError("número de operações negativo")
+            data_base = f"{db[:4]}-{db[4:]}"
+            chave = (data_base, TIPOS[tipo][0], uf, cod)
+            if chave in chaves:
+                raise ValueError("chave duplicada no CSV Desenrola")
+            chaves.add(chave); meses.add(data_base)
+            rows.append((*chave, nome, n, _num(r["VOLUME_OPERACOES"]), sha))
+        if not rows:
+            raise ValueError("CSV sem observações; versão anterior preservada")
+        anteriores = {r[0] for r in con.execute("SELECT DISTINCT data_base FROM desenrola_op")}
+        if anteriores - meses:
+            raise ValueError("meses da série anterior ausentes na republicação; requer revisão")
+    except (ValueError, TypeError, KeyError, csv.Error) as e:
+        return [{"key": "desenrola", "ok": False, "error": str(e)}]
 
-    con.execute("INSERT OR REPLACE INTO desenrola_coleta VALUES(?,?,?,?,?,?)",
-                (common.now_utc(), sha, linhas, len(meses), min(meses) if meses else None,
-                 max(meses) if meses else None))
-    common.record_lineage(con, "desenrola.json", caminho, sha,
-                          "CSV agregado do SCR -> desenrola_op (uma linha por data-base × tipo × UF × conglomerado)")
+    con.execute("SAVEPOINT desenrola_versao")
+    try:
+        con.execute("INSERT OR IGNORE INTO desenrola_historico SELECT * FROM desenrola_op")
+        # A fonte republica a série inteira; substituir somente após validá-la por completo.
+        con.execute("DELETE FROM desenrola_op")
+        con.executemany("INSERT INTO desenrola_op VALUES(?,?,?,?,?,?,?,?)", rows)
+        con.execute("INSERT OR IGNORE INTO desenrola_historico SELECT * FROM desenrola_op")
+        con.execute("INSERT OR REPLACE INTO desenrola_coleta VALUES(?,?,?,?,?,?)",
+                    (common.now_utc(), sha, len(rows), len(meses), min(meses), max(meses)))
+        common.record_lineage(con, "desenrola.json", caminho, sha,
+                              "CSV integralmente validado; troca atômica; versões anteriores em desenrola_historico e bronze")
+        con.execute("RELEASE desenrola_versao")
+    except Exception as e:
+        con.execute("ROLLBACK TO desenrola_versao")
+        con.execute("RELEASE desenrola_versao")
+        return [{"key": "desenrola", "ok": False, "error": str(e)}]
     con.commit()
-    return [{"key": "desenrola", "ok": True, "linhas": linhas, "meses": len(meses),
-             "descartadas": fora, "periodo": f"{min(meses)}→{max(meses)}" if meses else None}]
+    return [{"key": "desenrola", "ok": True, "linhas": len(rows), "meses": len(meses),
+             "descartadas": 0, "periodo": f"{min(meses)}→{max(meses)}"}]

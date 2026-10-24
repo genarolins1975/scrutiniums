@@ -1,0 +1,71 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1258 KB → core 564 KB + municipal 155 KB + emergentes 342 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1588 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 14 arquivo(s) alterado(s).
+  teste  src/tests/desenrola-data.test.ts  (cita pipeline/sources/desenrola.py)
+  teste  src/tests/energia-conta.test.ts  (cita pipeline/common.py)
+  teste  src/tests/p0-correcoes.test.ts  (cita pipeline/common.py)
+  teste  src/tests/p1-dados.test.ts  (cita pipeline/sources/desenrola.py)
+  teste  src/tests/p1-tecnico.test.ts  (cita pipeline/common.py)
+  teste  src/tests/pipeline-0709.test.ts  (cita pipeline/common.py)
+[MIXED_EXPORTS] Entry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/confiabilidade-operacoes
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  6 passed (6)
+      Tests  198 passed | 1 skipped (199)
+   Start at  09:25:33
+   Duration  3.82s (transform 327ms, setup 0ms, import 1.62s, tests 903ms, environment 1ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-24)
+  ok            2 s  Lint
+  ok            9 s  Tipos
+  ok            6 s  Derivados (npm run preparar)
+  ok            3 s  Cobertura bilíngue confere com as fontes de código
+  ok           20 s  Testes afetados
+  tempo de parede: 32 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

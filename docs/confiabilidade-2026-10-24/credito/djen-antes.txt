@@ -1,0 +1,51 @@
+FFFF
+======================================================================
+FAIL: test_esquema_sem_items_nao_significa_ausencia_de_processos (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_esquema_sem_items_nao_significa_ausencia_de_processos) (modulo='pipeline.sources.djen')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 173, in test_esquema_sem_items_nao_significa_ausencia_de_processos
+    self.assertFalse(mod.collect(con, cfg)[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_esquema_sem_items_nao_significa_ausencia_de_processos (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_esquema_sem_items_nao_significa_ausencia_de_processos) (modulo='pipeline.sources.djen_credores')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 173, in test_esquema_sem_items_nao_significa_ausencia_de_processos
+    self.assertFalse(mod.collect(con, cfg)[0]['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar) (modulo='pipeline.sources.djen')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 163, in test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar
+    self.assertEqual(con.execute(f'SELECT tribunal FROM {tabela}').fetchall(), [('TJSP',)])
+AssertionError: Lists differ: [] != [('TJSP',)]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('TJSP',)
+
+- []
++ [('TJSP',)]
+
+======================================================================
+FAIL: test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar) (modulo='pipeline.sources.djen_credores')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scrutiniums-pr365-final/pipeline/tests/test_coleta_credito_integridade.py", line 163, in test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar
+    self.assertEqual(con.execute(f'SELECT tribunal FROM {tabela}').fetchall(), [('TJSP',)])
+AssertionError: Lists differ: [] != [('TJSP',)]
+
+Second list contains 1 additional elements.
+First extra element 0:
+('TJSP',)
+
+- []
++ [('TJSP',)]
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+FAILED (failures=4)
