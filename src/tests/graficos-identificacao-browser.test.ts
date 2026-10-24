@@ -76,8 +76,11 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
 
  it("resize mantém foco na figura, dados e traços editoriais de previsão",async()=>{
   const browser=await nativo(16,1440);const page=await browser.context.newPage();try{
-   await ir(page,"credit");const grafico=page.locator("#view-pulse svg.chart[data-ix]").first();await grafico.focus();await page.keyboard.press("ArrowRight");
-   const antes=await dadosSeries(page);await page.setViewportSize({width:390,height:900});
+   await ir(page,"credit");
+   // A moldura responsiva nasce após o HTML inicial; uma amostra vazia não é linha de base.
+   await expect.poll(()=>page.locator("#view-pulse svg.chart[data-chart]").evaluateAll(svgs=>svgs.length>0&&svgs.every(svg=>svg.closest(".line-chart")))).toBe(true);
+   const grafico=page.locator("#view-pulse svg.chart[data-ix]").first();await grafico.focus();await page.keyboard.press("ArrowRight");
+   const antes=await dadosSeries(page);expect(antes.length).toBeGreaterThan(0);await page.setViewportSize({width:390,height:900});
    await expect.poll(()=>page.evaluate(()=>document.activeElement?.matches("svg.chart[data-ix]")||false)).toBe(true);
    await expect.poll(()=>page.locator("#view-pulse .line-chart").evaluateAll(bs=>bs.every(b=>!b.getBoundingClientRect().width||Math.abs(b.getBoundingClientRect().width-Number((b as HTMLElement).dataset.lineWidth))<2))).toBe(true);
    const depois=await dadosSeries(page);expect(depois.map(d=>d.values)).toEqual(antes.map(d=>d.values));
