@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,9 +21,13 @@ def transformar(raw, manifesto):
     s = resultados[0]['series'][0]
     if s['localidade']['id'] != '1' or s['localidade']['nivel']['id'] != 'N1':
         raise ValueError('Território deve ser Brasil')
-    esperados = [f'{a}{m:02d}' for a in range(2023, 2027) for m in range(1, 13) if f'{a}{m:02d}' <= '202607']
+    base = manifesto.get('basePrecos', '')
+    if not re.fullmatch(r'20\d{2}-(0[1-9]|1[0-2])', base) or base < '2023-01':
+        raise ValueError('Base de preços inválida no manifesto da edição')
+    esperados = [f'{a}{m:02d}' for a in range(2023, int(base[:4]) + 1) for m in range(1, 13)
+                 if f'{a}{m:02d}' <= base.replace('-', '')]
     if set(s['serie']) != set(esperados):
-        raise ValueError('Exige 43 meses contínuos, janeiro/2023 a julho/2026')
+        raise ValueError(f'Exige {len(esperados)} meses contínuos, janeiro/2023 até {base}')
     registros = [dict(periodo=k[:4]+'-'+k[4:], indice=float(s['serie'][k])) for k in esperados]
     if any(not math.isfinite(r['indice']) or r['indice'] <= 0 for r in registros):
         raise ValueError('Índice ausente, não finito ou não positivo')
@@ -38,10 +43,12 @@ def transformar(raw, manifesto):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--verificar', action='store_true')
+    ap.add_argument('--origem', type=Path, default=ROOT/'data/contas-publicas/ipca-2026-10-12')
+    ap.add_argument('--destino', type=Path, default=ROOT/'src/lib/contas-publicas/snapshots/ipca.json')
     args = ap.parse_args()
-    origem = ROOT/'data/contas-publicas/ipca-2026-10-12'
+    origem = args.origem
     out = transformar((origem/'ipca.json').read_bytes(), json.loads((origem/'manifesto.json').read_text()))
-    destino = ROOT/'src/lib/contas-publicas/snapshots/ipca.json'
+    destino = args.destino
     texto = json.dumps(out, ensure_ascii=False, indent=2)+'\n'
     if args.verificar:
         if destino.read_text() != texto:
@@ -50,7 +57,7 @@ def main():
         temporario = destino.with_suffix('.tmp')
         temporario.write_text(texto)
         temporario.replace(destino)
-    print('IPCA: 43 meses, unidade, território e SHA256 conferidos.')
+    print(f"IPCA: {len(out['registros'])} meses, unidade, território e SHA256 conferidos.")
 
 
 if __name__ == '__main__':
