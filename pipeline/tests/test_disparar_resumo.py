@@ -3,9 +3,11 @@ import unittest
 import contextlib
 import io
 import os
+import urllib.request
+import urllib.error
 from datetime import date
 from unittest.mock import Mock, patch
-from scripts.disparar_resumo import executar, main, FalhaLote
+from scripts.disparar_resumo import executar, main, FalhaLote, SemRedirecionamento
 
 
 class LotesResumo(unittest.TestCase):
@@ -16,7 +18,7 @@ class LotesResumo(unittest.TestCase):
         self.assertEqual(disparo.call_count,2)
 
     def test_simulacao_e_uma_chamada_sem_envio(self):
-        disparo = Mock(return_value={'simulacao':True,'enviados':0,'destinatarios':550})
+        disparo = Mock(return_value={'simulacao':True,'enviados':0,'falhas':0,'destinatarios':550})
         self.assertEqual(executar(disparo,registrar=lambda _:None),0)
         disparo.assert_called_once_with(True)
 
@@ -47,11 +49,17 @@ class LotesResumo(unittest.TestCase):
         fixture = 'somente-fixture-de-teste\n'
         saida = io.StringIO()
         with patch.dict(os.environ, {'BOLETIM_SECRET':fixture}), \
-             patch('urllib.request.urlopen',side_effect=ValueError(f'Invalid header value {fixture!r}')), \
+             patch('urllib.request.OpenerDirector.open',side_effect=ValueError(f'Invalid header value {fixture!r}')), \
              contextlib.redirect_stderr(saida):
             self.assertEqual(main(),1)
         self.assertNotIn('somente-fixture',saida.getvalue())
         self.assertIn('ValueError',saida.getvalue())
+
+    def test_redirecionamento_nao_encaminha_autorizacao_a_outro_destino(self):
+        req = urllib.request.Request('https://scrutiniums.com/api/resumo/enviar')
+        for codigo in [301,302,303,307,308]:
+            with self.subTest(codigo=codigo), self.assertRaises(urllib.error.HTTPError):
+                SemRedirecionamento().redirect_request(req,None,codigo,'redirect',{},'https://outro.test/')
 
     def test_resposta_invalida_ou_simulacao_nao_confirmada_e_erro(self):
         for resposta, simular in [({},False),({'enviados':0},True),
