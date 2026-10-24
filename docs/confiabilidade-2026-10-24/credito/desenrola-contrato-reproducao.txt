@@ -1,0 +1,21 @@
+# Reprodução da rodada de 25/10 sobre o estado de 24/10 (CSV real do BCB baixado às 15:58 UTC, sha256 14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7)
+
+## Com a correção
+24/10, código antigo: [{'key': 'desenrola', 'ok': True, 'linhas': 11242, 'meses': 36, 'descartadas': 2396, 'periodo': '2023-09→2026-08'}]
+   silver: (11242, '2026-08', 0)
+25/10, coletor com contrato: {'key': 'desenrola', 'ok': False, 'error': "TIPO_DESENROLA '4' fora do contrato (documentados: 1, 2 e 3)", 'bronze_sha': '14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7'}
+   silver preservado: (11242, '2026-08')
+   build: {'ok': False, 'motivo': 'silver fora do contrato'}
+   candidata: o silver vem do arquivo 14b4deec1cc2 do BCB, que não passou no contrato da coleta: TIPO_DESENROLA '4' fora do contrato (documentados: 1, 2 e 3)
+REGRESSÃO DE GOLD — última publicação mantida para:
+  - desenrola.json (stub de erro)
+  restaurados declarados em meta.json: desenrola.json (há 30 d)
+publicação mantida: 2026-06 34 meses, 2685590 operações, bronze c8bdd0b174ff
+restaurados: {'desenrola.json': {'motivo': 'stub de erro', 'gerado_em_publicado': '2026-09-24T15:25:02+00:00', 'dias': 30}}
+
+## Código da main 66106a7e (contraprova)
+24/10, código antigo: [{'key': 'desenrola', 'ok': True, 'linhas': 11242, 'meses': 36, 'descartadas': 2396, 'periodo': '2023-09→2026-08'}]
+   silver: (11242, '2026-08', 0)
+25/10, coletor com contrato: {'key': 'desenrola', 'ok': True, 'note': 'arquivo inalterado desde a última coleta', 'linhas': 11242}
+   silver preservado: (11242, '2026-08')
+   build: {'ok': True, 'operacoes_pf': 2681845, 'volume_pf_bi': 4.51, 'conglomerados': 59, 'meses': 36}

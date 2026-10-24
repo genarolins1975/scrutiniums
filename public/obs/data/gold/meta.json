@@ -1748,7 +1748,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "desenrola": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-18T15:09:35+00:00",
       "arquivos": [
         "desenrola.json"
       ],
@@ -1780,8 +1780,8 @@
         "pix": "2026-09",
         "estban": "2026-06",
         "openfinance": "2026-10",
-        "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "pgfn": "2026-06",
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },

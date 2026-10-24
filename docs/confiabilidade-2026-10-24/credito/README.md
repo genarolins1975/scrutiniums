@@ -65,3 +65,13 @@ O bloqueio de rede da primeira auditoria deixou de valer. O código deste PR (`c
 1. Desenrola tipo 4: aguardar a documentação do BCB (com consulta formal) ou publicar os tipos 1 a 3 até 08/2026 declarando o tipo 4 fora do recorte.
 2. Taxa de 0,00% publicada pela fonte: exibir como publicada, com ressalva, ou tratar como valor a confirmar com o BCB. Hoje trava dez grupos.
 3. Endurecimentos opcionais neste PR: uma nova tentativa limitada quando o SGS responder HTML com HTTP 200; `Accept: */*` no download do CSV do Desenrola; cobertura por tribunal declarada no agregado judicial.
+
+## Depois do merge: Desenrola publicado sem o tipo 4 (24/10/2026, 15:19 UTC)
+
+**Evidência.** A rodada agendada [40096454928](https://github.com/genarolins1975/scrutiniums/actions/runs/40096454928) começou às 13:02 UTC no commit `9f1505ad`, antes do merge deste PR (13:30), e publicou o grupo `desenrola` em `66106a7e`. O coletor anterior ao contrato descartou em silêncio as 2.396 linhas de `TIPO_DESENROLA` 4 do CSV `14b4deec…` (`descartadas: 2396`). No CSV oficial baixado às 15:58 UTC, o tipo 4 soma 1.908.562 operações e R$ 3.664,08 milhões de 05 a 08/2026 (377.130, 659.071, 459.587 e 412.774 por mês). O painel passou a mostrar 646 operações em junho/2026 (eram 5.585 na versão de 24/09) e um total acumulado menor (2.681.845 contra 2.685.590) com o período estendido até 08/2026, sem declarar o recorte.
+
+**Por que a rodada seguinte repetiria a publicação.** O silver gravado pelo código antigo tem o mesmo sha do arquivo do BCB; o atalho "arquivo inalterado" do coletor devolvia sucesso sem validar, e o build refazia a mesma gold. A cópia durável anterior do estado foi substituída às 15:02 UTC. [Reprodução com o CSV real](desenrola-contrato-reproducao.txt) ([script](desenrola-contrato-reproducao.py)).
+
+**Correção.** Cada arquivo recebe um veredito do contrato (`desenrola_contrato`). O atalho só vale para arquivo aceito; arquivo sem veredito passa pela validação inteira. O build só publica silver de arquivo aceito; caso contrário grava stub declarado, e a sentinela (`scripts/sanidade_gold.py`) mantém no ar a última publicação íntegra e a registra em `restaurados`, o que retém o grupo no portão. A vintage `desenrola` passa a contar só arquivos aceitos. A gold volta à versão de 24/09/2026 (data base 06/2026, bronze `c8bdd0b1…`), byte a byte. Nenhuma fórmula, tipo ou recorte foi alterado.
+
+**Pendente do dono.** Consulta formal ao BCB sobre o tipo 4. Quando houver documentação e decisão, o tipo entra em `TIPOS` e o arquivo passa no contrato.
