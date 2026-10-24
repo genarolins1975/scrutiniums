@@ -1,0 +1,105 @@
+test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) ...
+  test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={}) ... FAIL
+  test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={'hits': {}}) ... FAIL
+  test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={'hits': {'hits': [], 'total': {'value': 0, 'relation': 'gte'}}}) ... FAIL
+test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series) ... FAIL
+test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) ...
+  test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) (falhar=False) ... FAIL
+  test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) (falhar=True) ... FAIL
+test_pagina_curta_incompativel_com_total_e_truncada (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_pagina_curta_incompativel_com_total_e_truncada) ... FAIL
+test_paginacao_truncada_preserva_serie_anterior (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_paginacao_truncada_preserva_serie_anterior) ... FAIL
+
+======================================================================
+FAIL: test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 53, in test_esquema_ausente_nao_e_lista_vazia_de_processos
+    with self.assertRaises(ValueError): d._fetch_class('https://fonte.test','tjsp','129','',100,2,0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={'hits': {}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 53, in test_esquema_ausente_nao_e_lista_vazia_de_processos
+    with self.assertRaises(ValueError): d._fetch_class('https://fonte.test','tjsp','129','',100,2,0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) (corpo={'hits': {'hits': [], 'total': {'value': 0, 'relation': 'gte'}}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 53, in test_esquema_ausente_nao_e_lista_vazia_de_processos
+    with self.assertRaises(ValueError): d._fetch_class('https://fonte.test','tjsp','129','',100,2,0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 75, in test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series
+    self.assertFalse(next(r for r in resultados if r['key']=='funil_tjrj')['ok'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) (falhar=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 37, in test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha
+    self.assertEqual(feitos, ['tjsp','tjrj'])
+AssertionError: Lists differ: ['tjsp', 'tjsp'] != ['tjsp', 'tjrj']
+
+First differing element 1:
+'tjsp'
+'tjrj'
+
+- ['tjsp', 'tjsp']
+?             ^^
+
++ ['tjsp', 'tjrj']
+?             ^^
+
+
+======================================================================
+FAIL: test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) (falhar=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 37, in test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha
+    self.assertEqual(feitos, ['tjsp','tjrj'])
+AssertionError: Lists differ: ['tjsp', 'tjsp'] != ['tjsp', 'tjrj']
+
+First differing element 1:
+'tjsp'
+'tjrj'
+
+- ['tjsp', 'tjsp']
+?             ^^
+
++ ['tjsp', 'tjrj']
+?             ^^
+
+
+======================================================================
+FAIL: test_pagina_curta_incompativel_com_total_e_truncada (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_pagina_curta_incompativel_com_total_e_truncada)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 60, in test_pagina_curta_incompativel_com_total_e_truncada
+    self.assertEqual(len(docs),1); self.assertTrue(truncado)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_paginacao_truncada_preserva_serie_anterior (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_paginacao_truncada_preserva_serie_anterior)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_datajud_retomada.py", line 47, in test_paginacao_truncada_preserva_serie_anterior
+    self.assertFalse(next(r for r in resultado if r['key']==key)['ok'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.009s
+
+FAILED (failures=8)

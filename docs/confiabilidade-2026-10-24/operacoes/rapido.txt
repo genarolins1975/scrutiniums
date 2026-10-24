@@ -34,7 +34,7 @@ npm notice
 Cobertura i18n gerada e validada a partir de 1588 fontes de código.
 
 ▶ Testes afetados: node scripts/testes-afetados.mjs
-Base origin/main: 12 arquivo(s) alterado(s).
+Base origin/main: 13 arquivo(s) alterado(s).
   teste  src/tests/notificacoes-operacao.test.ts  (teste alterado)
   teste  src/tests/acesso-invariantes.test.ts  (cita src/tests/notificacoes-operacao.test.ts)
   teste  src/tests/atualizacao-agendada.test.ts  (cita .github/workflows/alertas-atualizacao.yml)
@@ -89,17 +89,17 @@ Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e
 
  Test Files  40 passed (40)
       Tests  1452 passed | 79 skipped (1531)
-   Start at  09:16:20
-   Duration  22.15s (transform 1.55s, setup 0ms, import 21.96s, tests 33.05s, environment 4ms)
+   Start at  09:31:55
+   Duration  49.33s (transform 3.22s, setup 0ms, import 53.58s, tests 70.56s, environment 5ms)
 
 
 verificar:rapido (5 vCPU, 33 GB, 2026-10-24)
-  ok            2 s  Lint
-  ok            9 s  Tipos
-  ok            6 s  Derivados (npm run preparar)
-  ok            3 s  Cobertura bilíngue confere com as fontes de código
-  ok           37 s  Testes afetados
-  tempo de parede: 49 s
+  ok            5 s  Lint
+  ok           22 s  Tipos
+  ok           14 s  Derivados (npm run preparar)
+  ok            6 s  Cobertura bilíngue confere com as fontes de código
+  ok     1 min 18 s  Testes afetados
+  tempo de parede: 1 min 47 s
 npm notice
 npm notice New major version of npm available! 11.9.0 -> 12.2.1
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1

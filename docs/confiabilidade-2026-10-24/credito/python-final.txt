@@ -1,0 +1,526 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas compileall,python
+
+
+▶ Módulos Python compilam: python3 -m compileall -q pipeline
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest discover -s pipeline/tests -t .
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s......................./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.................................................................................................................................s................................................/workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+..../workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.../workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.................../workspace/confiabilidade-operacoes/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.............................................................................................s......................................................................................................................................................................................s................................................................................................................./workspace/confiabilidade-operacoes/pipeline/tests/test_energia_infra.py:195: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpak5oj79x/t.csv' mode='r' encoding='utf-8'>
+  bruto = open(os.path.join(d, "t.csv"), encoding="utf-8", newline="").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........................................................................................................s..........................Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze restaurado: 1 arquivos extraídos; 0 já presentes preservados
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 3 arquivos; 0 recursos sem bronze; 10 assets
+Bronze restaurado: 2 arquivos extraídos; 1 já presentes preservados
+Bronze durável: 0 arquivos; 0 recursos sem bronze; 1 assets
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/energia/run.py", line 131, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/energia/run.py", line 131, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+..REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+......................................................................................................................................................................ss.ss............s...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................../workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpt0foymmx/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpt0foymmx/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpt0foymmx/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpt0foymmx/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpt0foymmx/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpt0foymmx/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpt0foymmx/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0wd3xwad/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0wd3xwad/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0wd3xwad/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.manifesto'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.00'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.01'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0wd3xwad/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.manifesto'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.00'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0wd3xwad/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.01'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0wd3xwad/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0inl5oil/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp0inl5oil/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0inl5oil/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0inl5oil/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp0inl5oil/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0inl5oil/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp0inl5oil/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpaeuez7rf/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpaeuez7rf/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpaeuez7rf/w/data/bronze/fonte/a.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.w, "data", "bronze", "fonte", "a.json"), "w").write("{}")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpaeuez7rf/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpaeuez7rf/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpaeuez7rf/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqiaafigz/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpqiaafigz/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpqiaafigz/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpqiaafigz/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_estado_duravel.py:152: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  w = open(os.path.join(RAIZ, ".github", "workflows", "atualizar-dados.yml"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..................................................................................................................................................................../workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw_nhdn7y/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw_nhdn7y/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw_nhdn7y/apagados' mode='r' encoding='UTF-8'>
+  apagados = open(self.log).read().split() if os.path.exists(self.log) else []
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf5a12azc/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf5a12azc/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf5a12azc/apagados' mode='r' encoding='UTF-8'>
+  apagados = open(self.log).read().split() if os.path.exists(self.log) else []
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyd0qar7z/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyd0qar7z/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/atualizar-energia.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........REGRESSOES_ENERGIA=[{"gold": "publicacao.json", "motivo": "Listagens ausentes no cenário sintético"}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+Publicado: 33 territórios
+{"comarcas": 2563, "defensorias_uf_ano": 108, "tribunais": 27, "snapshot_sha256": "bdc06e9c40e2ca78db9613aafff5def1d94b8a9e478e4fd9c453c42202d61f65"}
+AEPS 2022 (atendimento) indisponível (404)
+AEPS 2023 (atendimento) indisponível (404)
+AEPS 2022 (atendimento) indisponível (404)
+AEPS 2023 (atendimento) indisponível (404)
+AEPS 2024 (atendimento) indisponível (404)
+...................................................../workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpk7gtjcey/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp3cif47t0/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpe7secy2w/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpbttgderw/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/confiabilidade-operacoes/pipeline/tests/test_previsao_pld_commit.py:135: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  self.texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.....................................................................................................................................s............................................................................................................../workspace/confiabilidade-operacoes/pipeline/tests/test_testes_reprovados.py:126: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  w = open(os.path.join(RAIZ, ".github", "workflows", "atualizar-dados.yml"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pipeline/tests/test_testes_reprovados.py:132: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/.gitignore' mode='r' encoding='utf-8'>
+  self.assertIn("/" + nome, open(os.path.join(RAIZ, ".gitignore"), encoding="utf-8").read(), nome)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.....................................................
+----------------------------------------------------------------------
+Ran 2417 tests in 225.322s
+
+OK (skipped=11)
+Gold de queimadas confere com o seed.
+Gold de queimadas_municipios confere com o seed.
+Gold de desastres confere com o seed.
+Gold de emissoes confere com o seed.
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest discover -s pesquisa/tests -t .
+........................./workspace/confiabilidade-operacoes/pesquisa/tests/test_camada_notas.py:239: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/notas/teste_02o5hcpd/2026-07/validacao_mecanica_0.json' mode='r' encoding='utf-8'>
+  v0 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_0.json"), encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/confiabilidade-operacoes/pesquisa/tests/test_camada_notas.py:240: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/confiabilidade-operacoes/notas/teste_02o5hcpd/2026-07/validacao_mecanica_1.json' mode='r' encoding='utf-8'>
+  v1 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_1.json"), encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+................................................
+----------------------------------------------------------------------
+Ran 73 tests in 3.803s
+
+OK
+2026-06    base 2026-06: formato anterior à constituição v2, não conta para degrau
+{
+ "degrau": 1,
+ "ciclos_limpos_consecutivos": 0,
+ "n_minimo": 3,
+ "motivos_para_permanecer_no_1": [
+  "0 de 3 ciclos aprovados e auditados sem erro factual",
+  "bateria mecânica sem medida em ciclo (nenhum ciclo no formato da constituição v2)"
+ ]
+}
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude pipeline.eficiencia_resultados.test_captura_recaptura pipeline.eficiencia_resultados.test_habitacao pipeline.eficiencia_resultados.test_habitacao_cenarios pipeline.eficiencia_resultados.test_conectividade pipeline.eficiencia_resultados.test_cesta_conjunta pipeline.eficiencia_resultados.test_precisao_candidatas pipeline.eficiencia_resultados.test_revisao_v3
+..................................................................
+----------------------------------------------------------------------
+Ran 66 tests in 5.215s
+
+OK
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-24)
+  ok            1 s  Módulos Python compilam
+  ok     4 min 03 s  Testes Python (pipeline e camada de pesquisa)
+  ok            0 s  Árvore versionada igual à do início
+  tempo de parede: 4 min 04 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

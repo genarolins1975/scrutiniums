@@ -67,11 +67,13 @@ def verificar(dados, buscar=http, hoje=None):
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: {str(e)[:120]}")
             continue
         if codigo == 200:
-            texto = html.unescape(re.sub(r"<[^>]+>", " ", conteudo.decode("utf-8", errors="replace")))
-            texto = re.sub(r"\s+", " ", texto).lower()
-            # 200 também pode ser login, desafio ou página genérica. Não confirma edição.
-            if ("resultado do tesouro nacional" in texto and str(ano) in texto and
-                    (MESES[mes - 1] in texto or f"{ano}/{mes}" in texto or f"{mes:02d}/{ano}" in texto)):
+            pagina = conteudo.decode("utf-8", errors="replace")
+            titulos = re.findall(r"<(title|h1)\b[^>]*>(.*?)</\1\s*>", pagina, flags=re.I | re.S)
+            textos = [re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t))).lower()
+                      for _, t in titulos]
+            # Exigir identificação no título: menus do portal podem listar outros meses/anos.
+            periodo = rf"\b(?:{MESES[mes - 1]}(?: de)? {ano}|{ano}/0?{mes}|{mes:02d}/{ano})\b"
+            if any("resultado do tesouro nacional" in t and re.search(periodo, t) for t in textos):
                 publicados.append((ano, mes, url))
             else:
                 nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP 200 sem conteúdo identificável da edição")
@@ -99,7 +101,8 @@ def corpo(dados, publicados, planilha, nao_verificado):
     if not (publicados or planilha or nao_verificado):
         return None
     ano, mes = map(int, dados["referenciaRTN"].split("-"))
-    linhas = ["## Contas Públicas Federais: edição nova do RTN", "",
+    titulo = "edição nova do RTN" if publicados or planilha else "verificação do RTN inconclusiva"
+    linhas = [f"## Contas Públicas Federais: {titulo}", "",
               f"O painel integra o RTN até {MESES[mes - 1]} de {ano} (`referenciaRTN` {dados['referenciaRTN']}).", ""]
     if publicados:
         linhas.append("Boletins publicados depois da edição integrada:")

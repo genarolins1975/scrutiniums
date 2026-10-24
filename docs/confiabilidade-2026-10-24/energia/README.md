@@ -4,7 +4,7 @@
 
 O [PR 363](https://github.com/genarolins1975/scrutiniums/pull/363) foi integrado em 23/10 às 08:07 UTC. A [execução posterior 40051919220](https://github.com/genarolins1975/scrutiniums/actions/runs/40051919220), em 24/10, passou pela preparação/coleta, mas reteve a publicação por testes. [Detalhamento atual na issue 297](https://github.com/genarolins1975/scrutiniums/issues/297#issuecomment-6379519867).
 
-As sete golds principais da main continuam geradas em 30/09: PLD, hidrologia, carga, geração, rede, CMO e síntese. A data de 23/10 citada pelo alerta vinha do manifesto, não desses produtos. A [issue 295](https://github.com/genarolins1975/scrutiniums/issues/295) continua pertinente.
+A meta principal registra 30/09, mas a conferência dos arquivos mostra PLD, hidrologia e rede gerados em 30/09; carga, geração, CMO e síntese em 01/10. Nenhum dos sete tem geração posterior a 01/10. A data de 23/10 citada pelo alerta vinha do manifesto, não desses produtos. A [issue 295](https://github.com/genarolins1975/scrutiniums/issues/295) continua pertinente.
 
 ## Defeitos corrigidos com reprodução
 
@@ -25,3 +25,5 @@ O artefato `energia-retida` (65.889.941 bytes) existe e não expirou. O proxy lo
 Continuam por reproduzir: regressão do builder Empresas; aliases de distribuidoras; limite editorial de palavras; conciliação RALIE/SIGA; quantidade de tarifas; veredito de PLD; previsão hídrica e coordenadas/usinas da malha. Não se atribui cada uma a defeito de teste ou de fonte sem a reprodução.
 
 Este PR resolve os defeitos demonstrados de retenção e diagnóstico. **A atualização diária não está normalizada nem a gold nova homologada.** Não houve publicação, alteração de dados ou execução de workflow que escreva na main.
+
+`npm run verificar:rapido` aprovado ([log](rapido.txt)).
