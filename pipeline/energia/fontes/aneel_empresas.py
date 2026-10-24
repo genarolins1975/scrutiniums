@@ -158,9 +158,11 @@ def proprietarios_siga(valor):
     for m in _PROPRIETARIO.finditer(s):
         if m.start() != pos:
             return None
+        # desde 23/10/2026 o SIGA publica "&" como "&amp-" ("J&amp-F S.A."); o nome volta a "&", como nos cadastros
+        nome = texto(m.group("nome"))
         itens.append({
             "pct": float(m.group("pct").replace(",", ".")),
-            "nome": texto(m.group("nome")),
+            "nome": nome.replace("&amp-", "&") if nome else nome,
             "cnpj": entidades.cnpj(m.group("doc")) if m.group("doc") else None,
             "regime": m.group("regime"),
         })

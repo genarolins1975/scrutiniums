@@ -229,6 +229,8 @@ class ReconciliacaoProprietariosSiga(unittest.TestCase):
         self.assertEqual([(x["nome"], x["cnpj"], x["regime"]) for x in p], [("DME DISTRIBUICAO S.A. - DMED", None, "SP")])
         p = ae.proprietarios_siga("50% para JOAO DA SILVA (APE), 50% para COMPANHIA X (CX) (PIE)")
         self.assertEqual([(x["nome"], x["pct"]) for x in p], [("JOAO DA SILVA", 50.0), ("COMPANHIA X (CX)", 50.0)])
+        # o "&" chega como "&amp-" e volta a "&", a grafia dos cadastros da ANEEL
+        self.assertEqual(ae.proprietarios_siga("100% para J&amp-F S.A. (REG)")[0]["nome"], "J&F S.A.")
         # e a lista longa chega cortada em 500 caracteres no meio de um item: estado não lido, nunca vínculo parcial
         cortado = ", ".join(f"1% para EMPRESA {i:03d} LTDA (REG)" for i in range(40))[:500]
         linhas = [{"IdeNucleoCEG": "000001", "DscPropriRegimePariticipacao": cortado},
@@ -239,36 +241,72 @@ class ReconciliacaoProprietariosSiga(unittest.TestCase):
 
     def test_cnpj_pelo_nome_da_captura_anterior(self):
         # captura anterior com CNPJ; nova sem CNPJ: nome único liga; participação que só um CNPJ tinha liga; nome que apontou
-        # para dois CNPJs (homônimos em usinas diferentes) fica sem vínculo; nome nunca visto fica sem vínculo
+        # para dois CNPJs (homônimos em usinas diferentes) fica sem vínculo; nome nunca visto fica sem vínculo; o par só
+        # vale com o nome confirmado num cadastro da ANEEL (Agentes de Geração aqui; a razão social do cadastro de agentes
+        # também confirma)
         con = base.conecta(":memory:")
         v0, _ = base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-16T01:44:11Z", None, "a" * 64, 1, "t", None)
-        v1, _ = base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-24T03:06:24Z", None, "b" * 64, 1, "t", None)
+        base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-24T03:06:24Z", None, "b" * 64, 1, "t", None)
+        va, _ = base.registra_vintage(con, mod.DS_AGENTES, mod.REC_AGENTES, "u", "2026-10-03T03:55:32Z", None, "c" * 64, 1, "t", None)
+        base.grava_registros(con, mod.DS_AGENTES, va, [("33333333000133", "razao_social", "Gama  S.A.")])
         base.grava_registros(con, mod.DS_SIGA, v0, [
             ("1|11111111000111", "pct", "100.0000"),
             ("2|22222222000122", "pct", "60.0000"), ("2|33333333000133", "pct", "40.0000"),
-            ("3|44444444000144", "pct", "100.0000"), ("4|55555555000155", "pct", "100.0000")])
+            ("3|44444444000144", "pct", "100.0000"), ("4|55555555000155", "pct", "100.0000"),
+            ("6|66666666000166", "pct", "100.0000"), ("7|77777777000177", "pct", "100.0000"),
+            ("8|88888888000188", "pct", "100.0000")])
+        agger = {"x": [{"cnpj": c14, "nome": nome} for c14, nome in (
+            ("11111111000111", "ALFA SA"), ("22222222000122", "BETA SA"), ("44444444000144", "PREFEITURA"),
+            ("55555555000155", "Prefeitura"), ("66666666000166", "VELHO DONO SA"), ("77777777000177", "DELTA SA"),
+            ("88888888000188", "Delta SA"))]}
         usinas = {
             "1": {"proprietarios": [{"nome": "ALFA SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]},
             "2": {"proprietarios": [{"nome": "BETA SA", "pct": 60.0, "cnpj": None, "regime": "PIE"},
-                                    {"nome": "GAMA SA", "pct": 40.0, "cnpj": None, "regime": "PIE"}]},
+                                    {"nome": "GAMA S.A.", "pct": 40.0, "cnpj": None, "regime": "PIE"}]},
             "3": {"proprietarios": [{"nome": "PREFEITURA", "pct": 100.0, "cnpj": None, "regime": "APE"}]},
             "4": {"proprietarios": [{"nome": "PREFEITURA", "pct": 100.0, "cnpj": None, "regime": "APE"}]},
             "5": {"proprietarios": [{"nome": "ALFA SA", "pct": 70.0, "cnpj": None, "regime": "PIE"},
                                     {"nome": "NOVA LTDA", "pct": 30.0, "cnpj": None, "regime": "PIE"}]},
+            # a usina 6 trocou de dono entre as capturas: o nome novo pareia com o CNPJ antigo e não se confirma
+            "6": {"proprietarios": [{"nome": "NOVO DONO SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]},
+            # a 7 também passou ao NOVO DONO, e a 8 continua com a DELTA: o nome novo fica sem vínculo nas duas usinas
+            "7": {"proprietarios": [{"nome": "NOVO DONO SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]},
+            "8": {"proprietarios": [{"nome": "DELTA SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]},
         }
-        res = mod._cnpj_pela_captura_anterior(con, usinas, {"capturado_em": "2026-10-24T03:06:24Z"})
+        res = mod._cnpj_pela_captura_anterior(con, usinas, {"capturado_em": "2026-10-24T03:06:24Z"}, agger)
         cnpj = {(k, p["nome"]): p["cnpj"] for k, u in usinas.items() for p in u["proprietarios"]}
         self.assertEqual(cnpj[("1", "ALFA SA")], "11111111000111")
-        self.assertEqual((cnpj[("2", "BETA SA")], cnpj[("2", "GAMA SA")]), ("22222222000122", "33333333000133"))
+        self.assertEqual((cnpj[("2", "BETA SA")], cnpj[("2", "GAMA S.A.")]), ("22222222000122", "33333333000133"))
         self.assertEqual((cnpj[("3", "PREFEITURA")], cnpj[("4", "PREFEITURA")]), (None, None))
         self.assertEqual((cnpj[("5", "ALFA SA")], cnpj[("5", "NOVA LTDA")]), ("11111111000111", None))
-        self.assertEqual(res, {"arquivo_sem_cnpj": True, "captura_anterior": "2026-10-16T01:44:11Z", "parcelas_sem_cnpj": 7,
-                               "ligadas_por_nome": 4, "nomes_ambiguos": 1})
+        self.assertEqual((cnpj[("6", "NOVO DONO SA")], cnpj[("7", "NOVO DONO SA")]), (None, None))
+        self.assertEqual(cnpj[("8", "DELTA SA")], "88888888000188")
+        self.assertEqual(res, {"arquivo_sem_cnpj": True, "captura_anterior": "2026-10-16T01:44:11Z", "parcelas_sem_cnpj": 10,
+                               "ligadas_por_nome": 5, "nomes_ambiguos": 1, "nomes_sem_confirmacao": 1})
+        # sem nenhum cadastro que confirme o nome, nada é ligado
+        sem_cadastro = {"1": {"proprietarios": [{"nome": "ALFA SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]}}
+        res = mod._cnpj_pela_captura_anterior(con, sem_cadastro, {"capturado_em": "2026-10-24T03:06:24Z"}, {})
+        self.assertEqual((res["ligadas_por_nome"], res["nomes_sem_confirmacao"], sem_cadastro["1"]["proprietarios"][0]["cnpj"]), (0, 1, None))
         # no formato antigo (com CNPJ), parcela sem CNPJ é pessoa física: nada é ligado pelo nome
         antigo = {"1": {"proprietarios": [{"nome": "ALFA SA", "pct": 50.0, "cnpj": "11111111000111", "regime": "PIE"},
                                           {"nome": "JOAO", "pct": 50.0, "cnpj": None, "regime": "APE"}]}}
-        res = mod._cnpj_pela_captura_anterior(con, antigo, {"capturado_em": "2026-10-24T03:06:24Z"})
+        res = mod._cnpj_pela_captura_anterior(con, antigo, {"capturado_em": "2026-10-24T03:06:24Z"}, agger)
         self.assertEqual((res["arquivo_sem_cnpj"], res["ligadas_por_nome"], antigo["1"]["proprietarios"][1]["cnpj"]), (False, 0, None))
+        con.close()
+
+    def test_siga_sem_cnpj_e_sem_captura_anterior(self):
+        # o primeiro arquivo sem CNPJ, sem captura anterior no silver: nada é ligado e a ressalva diz isso
+        con = base.conecta(":memory:")
+        base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-24T03:06:24Z", None, "b" * 64, 1, "t", None)
+        usinas = {"1": {"proprietarios": [{"nome": "ALFA SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]}}
+        res = mod._cnpj_pela_captura_anterior(con, usinas, {"capturado_em": "2026-10-24T03:06:24Z"}, {})
+        self.assertEqual((res["arquivo_sem_cnpj"], res["captura_anterior"], res["ligadas_por_nome"]), (True, None, 0))
+        texto = mod._ressalva_siga_sem_cnpj(res, "2026-10-23")
+        self.assertIn("não há captura anterior do SIGA no silver para ligar os nomes", texto)
+        self.assertIn("as 1 parcelas ficam sem CNPJ", texto)
+        com = mod._ressalva_siga_sem_cnpj({**res, "captura_anterior": "2026-10-16T01:44:11Z"}, None)
+        self.assertIn("data não informada", com)
+        self.assertIn("na captura de 16/10/2026", com)
         con.close()
 
     def test_tolerancia_de_arredondamento_por_parcela(self):
