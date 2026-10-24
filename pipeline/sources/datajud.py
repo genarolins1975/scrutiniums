@@ -13,7 +13,7 @@ Decisões metodológicas (validadas empiricamente em 2026-07):
 - Sem filtro de grau: G1/G2 do mesmo caso compartilham numeroProcesso — deduplicação local
   por numeroProcesso, mantendo a menor data de ajuizamento.
 - Paginação por search_after com pausas (API tem limite de taxa); truncamentos são
-  LOGADOS, nunca silenciosos.
+  LOGADOS e retidos; nunca substituem a série anterior.
 - Série mensal = contagem de ajuizamentos; meses sem casos são zeros LEGÍTIMOS (contagem
   de eventos). Cobertura do DataJud é menor em anos antigos — série publicada a partir
   de `serie_inicio` (2019) com nota de qualidade.
@@ -29,6 +29,20 @@ from pipeline import common
 # na próxima execução; as séries por tribunal já no silver seguem valendo e o agregado é
 # reconstruído a partir delas (rebuild_agregados).
 ORCAMENTO_S = 900
+
+
+def _ordem_tentativas(con, tarefas):
+    """Fila persistente: quem foi pulado ou tentado há mais tempo vem primeiro."""
+    con.execute("""CREATE TABLE IF NOT EXISTS datajud_tentativas(
+        chave TEXT PRIMARY KEY, ordem INTEGER, tentada_em TEXT)""")
+    anteriores = dict(con.execute("SELECT chave, ordem FROM datajud_tentativas"))
+    return sorted(tarefas, key=lambda item: anteriores.get(item[0], 0))
+
+
+def _registrar_tentativa(con, chave):
+    con.execute("""INSERT OR REPLACE INTO datajud_tentativas
+        VALUES(?, (SELECT COALESCE(MAX(ordem), 0) + 1 FROM datajud_tentativas), ?)""",
+        (chave, common.now_utc()))
 
 
 def exige_resposta_completa(d):
@@ -62,7 +76,10 @@ def _post(url, payload, api_key, timeout=90, retries=3):
                 return exige_resposta_completa(json.loads(resp.read()))
         except Exception as e:
             last = e
-            time.sleep(5 * (attempt + 1))  # backoff educado (limite de taxa da API pública)
+            if getattr(e, "code", None) in (401, 403):
+                break  # autorização/bloqueio exige decisão, não repetição
+            if attempt + 1 < retries:
+                time.sleep(5 * (attempt + 1))  # limite de taxa da API pública
     raise RuntimeError(f"DataJud POST falhou: {last}")
 
 
@@ -88,6 +105,9 @@ def _fetch_class(base, trib, classe, api_key, page_size, max_pages, pausa):
     docs = []
     search_after = None
     truncated = False
+    total_esperado = None
+    if max_pages < 1:
+        raise ValueError("DataJud sem orçamento de páginas; série anterior preservada")
     for page in range(max_pages):
         q = {
             "size": page_size,
@@ -103,20 +123,32 @@ def _fetch_class(base, trib, classe, api_key, page_size, max_pages, pausa):
         if search_after:
             q["search_after"] = search_after
         d = _post(url, q, api_key)
-        hits = d.get("hits", {}).get("hits", [])
+        bloco = d.get("hits") if isinstance(d, dict) else None
+        total_info = bloco.get("total") if isinstance(bloco, dict) else None
+        hits = bloco.get("hits") if isinstance(bloco, dict) else None
+        total = total_info.get("value") if isinstance(total_info, dict) else None
+        if (not isinstance(hits, list) or type(total) is not int or total < 0 or
+                total_info.get("relation", "eq") != "eq"):
+            raise ValueError("esquema ou total inexato no DataJud; ausência não é zero")
+        if total_esperado is not None and total != total_esperado:
+            raise ValueError("total do DataJud mudou durante a paginação; requer nova coleta")
+        total_esperado = total
         if not hits:
             break
         for h in hits:
-            src = h.get("_source", {})
-            docs.append((src.get("numeroProcesso"), src.get("dataAjuizamento")))
+            src = h.get("_source") if isinstance(h, dict) else None
+            if not isinstance(src, dict) or not src.get("numeroProcesso"):
+                raise ValueError("processo sem identificação no DataJud")
+            docs.append((src["numeroProcesso"], src.get("dataAjuizamento")))
         search_after = hits[-1].get("sort")
-        total = d.get("hits", {}).get("total", {}).get("value", 0)
+        if len(hits) == page_size and not search_after and len(docs) < total:
+            raise ValueError("DataJud sem cursor para completar a paginação")
         if len(hits) < page_size:
             break
         if page == max_pages - 1 and len(docs) < total:
             truncated = True
         time.sleep(pausa)
-    return docs, truncated
+    return docs, truncated or len(docs) < (total_esperado or 0)
 
 
 # Marcos processuais (códigos TPU observados nos próprios dados; rótulos = nome oficial do movimento)
@@ -143,10 +175,11 @@ def collect_funil(con, cfg, estourou=lambda: False):
         tribunal TEXT, codigo INTEGER, nome TEXT, docs INTEGER, total_classe INTEGER,
         collected_at TEXT, PRIMARY KEY(tribunal, codigo))""")
     results = []
-    for trib in c["tribunais"]:
+    for chave, trib in _ordem_tentativas(con, [(f"funil_{t}", t) for t in c["tribunais"]]):
         if estourou():
             results.append({"key": f"funil_{trib}", "ok": False, "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
             continue
+        _registrar_tentativa(con, chave)
         try:
             q = {"size": 0, "track_total_hits": True,
                  "query": {"term": {"classe.codigo": 129}},
@@ -269,62 +302,71 @@ def collect(con, cfg):
     inicio = c.get("serie_inicio", "2019-01")
     agg_by_class = {}  # classe_slug -> {ym: count} agregado dos tribunais
     t0 = time.monotonic()
-    estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S
-    for trib in c["tribunais"]:
-        for classe, slug in c["classes"].items():
-            if estourou():
-                results.append({"key": f"{slug}_{trib}", "ok": False,
-                                "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
-                continue
-            try:
-                docs, truncated = _fetch_class(c["base_url"], trib, classe, c["api_key_publica"],
-                                               c["page_size"], c["max_pages_por_consulta"],
-                                               c["pausa_entre_requisicoes_s"])
-                # dedupe por numeroProcesso (G1/G2), menor data válida
-                best = {}
-                descartadas = 0
-                for num, raw in docs:
-                    ym = _parse_data_ajuizamento(raw)
-                    if ym is None:
-                        descartadas += 1
-                        continue
-                    if num not in best or ym < best[num]:
-                        best[num] = ym
-                counts = {}
-                for ym in best.values():
-                    counts[ym] = counts.get(ym, 0) + 1
-                # bronze: subconjunto essencial do payload original (nº processo + data), auditável
-                raw_payload = json.dumps({"tribunal": trib, "classe": classe,
-                                          "docs": sorted(best.items())}, ensure_ascii=False).encode()
-                bronze_file, sha = common.save_bronze(
-                    "datajud", f"{slug}_{trib}", raw_payload,
-                    {"url": f"{c['base_url']}/api_publica_{trib}/_search", "collected_at": common.now_utc(),
-                     "docs_baixados": len(docs), "processos_unicos": len(best),
-                     "datas_invalidas_descartadas": descartadas, "truncado": truncated})
-                key = f"{slug}_{trib}"
-                # série mensal de `inicio` até M-2: os 2 meses mais recentes são PARCIAIS
-                # (atraso de remessa dos tribunais ao DataJud) e não são publicados
-                rows = _monthly_rows(counts, inicio)
-                nome_classe = "Recuperações judiciais" if classe == "129" else "Falências"
-                common.upsert_meta(con, "CNJ/DataJud", f"classe {classe}", key,
-                                   f"{nome_classe} ajuizadas — {trib.upper()} (novos processos/mês)",
-                                   "processos/mês", "mensal",
-                                   "Contagem de ajuizamentos (classe TPU) na API pública do DataJud; "
-                                   "dedupe por nº de processo; datas interpretadas localmente",
-                                   f"{c['base_url']}/api_publica_{trib}/_search", "pj", "recuperacao_judicial")
-                common.insert_obs(con, key, rows, sha)
-                common.record_lineage(con, f"series:{key}", bronze_file, sha,
-                                      "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal")
-                agg = agg_by_class.setdefault(slug, {})
-                for ym, n in counts.items():
-                    if ym >= inicio:
-                        agg[ym] = agg.get(ym, 0) + n
-                results.append({"key": key, "ok": True, "processos": len(best),
-                                "descartadas": descartadas, "truncado": truncated})
-            except Exception as e:
-                results.append({"key": f"{slug}_{trib}", "ok": False, "error": str(e)})
-    rebuild_agregados(con, cfg)
+    estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S / 3
+    # Antes a classe paginada consumia todo o tempo e o funil nunca era tentado.
+    # Reservar um terço do limite existente ao funil; o restante atende as séries.
     results.extend(collect_funil(con, cfg, estourou))
+    estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S
+    tarefas = [(f"{slug}_{trib}", (trib, classe, slug)) for trib in c["tribunais"]
+               for classe, slug in c["classes"].items()]
+    for chave, (trib, classe, slug) in _ordem_tentativas(con, tarefas):
+        if estourou():
+            results.append({"key": f"{slug}_{trib}", "ok": False,
+                            "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
+            continue
+        _registrar_tentativa(con, chave)
+        try:
+            docs, truncated = _fetch_class(c["base_url"], trib, classe, c["api_key_publica"],
+                                           c["page_size"], c["max_pages_por_consulta"],
+                                           c["pausa_entre_requisicoes_s"])
+            if truncated:
+                raise ValueError("DataJud paginado incompleto; série anterior preservada")
+            # dedupe por numeroProcesso (G1/G2), menor data válida
+            best = {}
+            descartadas = 0
+            for num, raw in docs:
+                ym = _parse_data_ajuizamento(raw)
+                if ym is None:
+                    descartadas += 1
+                    continue
+                if num not in best or ym < best[num]:
+                    best[num] = ym
+            if docs and not best:
+                raise ValueError("DataJud sem data válida nos processos; não publicar zeros")
+            counts = {}
+            for ym in best.values():
+                counts[ym] = counts.get(ym, 0) + 1
+            # bronze: subconjunto essencial do payload original (nº processo + data), auditável
+            raw_payload = json.dumps({"tribunal": trib, "classe": classe,
+                                      "docs": sorted(best.items())}, ensure_ascii=False).encode()
+            bronze_file, sha = common.save_bronze(
+                "datajud", f"{slug}_{trib}", raw_payload,
+                {"url": f"{c['base_url']}/api_publica_{trib}/_search", "collected_at": common.now_utc(),
+                 "docs_baixados": len(docs), "processos_unicos": len(best),
+                 "datas_invalidas_descartadas": descartadas, "truncado": truncated})
+            key = f"{slug}_{trib}"
+            # série mensal de `inicio` até M-2: os 2 meses mais recentes são PARCIAIS
+            # (atraso de remessa dos tribunais ao DataJud) e não são publicados
+            rows = _monthly_rows(counts, inicio)
+            nome_classe = "Recuperações judiciais" if classe == "129" else "Falências"
+            common.upsert_meta(con, "CNJ/DataJud", f"classe {classe}", key,
+                               f"{nome_classe} ajuizadas — {trib.upper()} (novos processos/mês)",
+                               "processos/mês", "mensal",
+                               "Contagem de ajuizamentos (classe TPU) na API pública do DataJud; "
+                               "dedupe por nº de processo; datas interpretadas localmente",
+                               f"{c['base_url']}/api_publica_{trib}/_search", "pj", "recuperacao_judicial")
+            common.insert_obs(con, key, rows, sha)
+            common.record_lineage(con, f"series:{key}", bronze_file, sha,
+                                  "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal")
+            agg = agg_by_class.setdefault(slug, {})
+            for ym, n in counts.items():
+                if ym >= inicio:
+                    agg[ym] = agg.get(ym, 0) + n
+            results.append({"key": key, "ok": True, "processos": len(best),
+                            "descartadas": descartadas, "truncado": truncated})
+        except Exception as e:
+            results.append({"key": f"{slug}_{trib}", "ok": False, "error": str(e)})
+    rebuild_agregados(con, cfg)
     return results
 
 

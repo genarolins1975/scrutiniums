@@ -1,0 +1,32 @@
+test_403_nao_repete_requisicao_nem_aguarda (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_403_nao_repete_requisicao_nem_aguarda) ... ok
+test_esquema_ausente_nao_e_lista_vazia_de_processos (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_esquema_ausente_nao_e_lista_vazia_de_processos) ... ok
+test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_funil_tem_janela_propria_sem_consumir_toda_a_coleta_de_series) ... ok
+test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_orcamento_retomado_prioriza_tribunal_pulado_inclusive_apos_falha) ... ok
+test_pagina_curta_incompativel_com_total_e_truncada (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_pagina_curta_incompativel_com_total_e_truncada) ... ok
+test_paginacao_truncada_preserva_serie_anterior (pipeline.tests.test_datajud_retomada.RetomadaDataJud.test_paginacao_truncada_preserva_serie_anterior) ... ok
+test_completa_passa (pipeline.tests.test_datajud_parcial.RespostaCompleta.test_completa_passa) ... ok
+test_shard_recusado_e_falha (pipeline.tests.test_datajud_parcial.RespostaCompleta.test_shard_recusado_e_falha) ... ok
+test_timed_out_e_falha (pipeline.tests.test_datajud_parcial.RespostaCompleta.test_timed_out_e_falha) ... ok
+test_collect_refaz_o_incoerente_alem_da_cota (pipeline.tests.test_datajud_parcial.SilverIncoerente.test_collect_refaz_o_incoerente_alem_da_cota) ... ok
+test_incoerentes_acha_so_o_tribunal_invertido (pipeline.tests.test_datajud_parcial.SilverIncoerente.test_incoerentes_acha_so_o_tribunal_invertido) ... ok
+test_sem_incoerencia_o_rodizio_nao_muda (pipeline.tests.test_datajud_parcial.SilverIncoerente.test_sem_incoerencia_o_rodizio_nao_muda) ... ok
+test_cobranca_esgota_e_falha (pipeline.tests.test_datajud_parcial.TresClientes.test_cobranca_esgota_e_falha) ... ok
+test_cobranca_tenta_de_novo_e_fica_com_a_completa (pipeline.tests.test_datajud_parcial.TresClientes.test_cobranca_tenta_de_novo_e_fica_com_a_completa) ... ok
+test_judicial_esgota_e_falha (pipeline.tests.test_datajud_parcial.TresClientes.test_judicial_esgota_e_falha) ... ok
+test_rj_esgota_e_falha (pipeline.tests.test_datajud_parcial.TresClientes.test_rj_esgota_e_falha) ... ok
+test_esquema_sem_items_nao_significa_ausencia_de_processos (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_esquema_sem_items_nao_significa_ausencia_de_processos) ... ok
+test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar (pipeline.tests.test_coleta_credito_integridade.DJENIntegro.test_falha_nao_apaga_tribunal_e_outro_tribunal_pode_atualizar) ... ok
+test_arquivo_invalido_preserva_todas_as_linhas_anteriores (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_arquivo_invalido_preserva_todas_as_linhas_anteriores) ... ok
+test_retificacao_preserva_valor_anterior_e_retorno_a_hash_antigo (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_retificacao_preserva_valor_anterior_e_retorno_a_hash_antigo) ... ok
+test_zero_explicito_e_idempotencia (pipeline.tests.test_coleta_credito_integridade.DesenrolaIntegro.test_zero_explicito_e_idempotencia) ... ok
+test_403_nao_muda_a_janela_nem_repete_com_data_fixa (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_403_nao_muda_a_janela_nem_repete_com_data_fixa) ... ok
+test_janela_diaria_preserva_inicio_historico_e_so_grava_apos_todas (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_janela_diaria_preserva_inicio_historico_e_so_grava_apos_todas) ... ok
+test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_resposta_invalida_nao_atualiza_nem_marca_coleta_bem_sucedida) ... ok
+test_retificacao_registrada_sem_duplicar_na_repeticao (pipeline.tests.test_coleta_credito_integridade.SGSIntegro.test_retificacao_registrada_sem_duplicar_na_repeticao) ... ok
+test_bloqueio_nao_e_retentado (pipeline.tests.test_coleta_credito_integridade.Transporte.test_bloqueio_nao_e_retentado) ... ok
+test_timeout_e_503_tem_limite_e_backoff_sem_espera_final (pipeline.tests.test_coleta_credito_integridade.Transporte.test_timeout_e_503_tem_limite_e_backoff_sem_espera_final) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.035s
+
+OK

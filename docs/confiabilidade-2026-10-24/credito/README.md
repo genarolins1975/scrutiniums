@@ -26,3 +26,11 @@ Nenhuma fórmula, taxonomia processual, política de acesso ou fonte foi substit
 ## Limites e próximo passo
 
 A normalização da coleta viva de SGS/Desenrola e a verificação das alternativas oficiais judiciais dependem de acesso às fontes. Os domínios foram incluídos no rascunho de rede do ambiente, ainda sujeito a publicação da configuração. Não se declara série atualizada nem defeito do provedor resolvido por estes testes. É necessária uma coleta real e sua validação antes de aprovar dados novos para produção. Conteúdo inválido permanece retido, com erro explícito.
+
+## Complemento: DataJud e demais fontes
+
+A revisão das falhas auxiliares encontrou fila fixa que adia reiteradamente os mesmos tribunais e publicação de consulta paginada incompleta. [Antes](datajud-antes.txt): cinco testes, oito falhas em subcasos. Agora a fila persistente prioriza tarefas nunca tentadas/mais antigas, mesmo após erro, e o funil dispõe de um terço do orçamento existente de 900 segundos antes da coleta de séries. Esquema ausente, total inexato/inconsistente, cursor ausente, paginação truncada e todos os documentos sem data válida retêm a série. HTTP 401/403 não é repetido. Não altera metodologia de contagem, classes ou calendário.
+
+[Depois](datajud-depois.txt): 27 testes aprovados (seis novos, mais as regressões de resposta parcial e integridade de Crédito). [Verificador rápido final](rapido-final.txt): aprovado, mantendo também o teste existente do orçamento. O log completo acima corresponde à implementação anterior a este complemento; a suíte Python final e a validação de integração são identificadas separadamente.
+
+[Inventário das oito famílias com falha e limitações](fontes-auxiliares.md). As respostas de Pilar 3 e do TST e o arquivo manual Trends continuam dependendo de fonte/arquivo autorizado; não foram substituídos por estimativa ou fonte incompatível.
