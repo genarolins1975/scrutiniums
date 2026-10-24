@@ -1471,3 +1471,8 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 
 /* Notas analíticas preservam palavras longas mesmo com preferência nativa de fonte ampliada. */
 #view-pix .card li { overflow-wrap:anywhere; }
+
+/* Grupos de medidas acompanham a preferência de fonte. Os mínimos em rem
+   preservam as larguras originais a 16px e fazem a grade refluir com texto ampliado. */
+.pan-kpi-rem { grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--pan-kpi-min,12.8125rem)),1fr)); }
+.pan-kpi-rem > div { min-inline-size:0; overflow-wrap:anywhere; }

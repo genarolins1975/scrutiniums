@@ -46,6 +46,31 @@ async function medirBusca(page: Page) {
   }));
 }
 
+
+/** Colunas não podem comprimir a introdução nem permitir que glifos atinjam a busca. */
+async function medirAbertura(page: Page) {
+  return page.locator('[data-fatia="abertura"]').evaluate(section => {
+    const intro=section.children[0], paragraph=intro.querySelector('p')!, search=section.querySelector('.bp-busca--pagina')!;
+    const block=section.getBoundingClientRect(), p=paragraph.getBoundingClientRect(), box=search.getBoundingClientRect();
+    const paragraphFont=parseFloat(getComputedStyle(paragraph).fontSize);
+    const obstacles=[...search.querySelectorAll('label,form,input')].map(e=>({tag:e.tagName,bounds:e.getBoundingClientRect()}));
+    const collisions: {text:string;target:string;right:number;targetLeft:number}[]=[];
+    const paragraphOverflow: {text:string;right:number;limit:number}[]=[];
+    const walker=document.createTreeWalker(intro,NodeFilter.SHOW_TEXT);let node:Node|null;
+    while((node=walker.nextNode())) {
+      if(!node.textContent?.trim())continue;
+      const range=document.createRange();range.selectNodeContents(node);
+      for(const r of range.getClientRects()) {
+        if(r.width<.1||r.height<.1)continue;
+        if(paragraph.contains(node)&&(r.left<p.left-1||r.right>p.right+1))paragraphOverflow.push({text:node.textContent,right:r.right,limit:p.right});
+        for(const {tag,bounds:b} of obstacles)if(Math.min(r.right,b.right)-Math.max(r.left,b.left)>1&&Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top)>1)collisions.push({text:node.textContent,target:tag,right:r.right,targetLeft:b.left});
+      }
+    }
+    // Mesmo em duas colunas, reservar uma medida de leitura; em telas menores, usar toda a largura disponível.
+    return {available:block.width,paragraphWidth:p.width,searchWidth:box.width,minimumReadingWidth:Math.min(block.width,14*paragraphFont),collisions,paragraphOverflow};
+  });
+}
+
 const cases = [16,32].flatMap(font => [320,390,768,1440].map(width => ({font,width})));
 describe.skipIf(!temBuild && !exigirBuild)("Mapa: preferência nativa de fonte, busca e metadados", () => {
   it.each(cases)("fonte $font px e viewport $width px: todas as coleções e popup sem colisões", async ({font,width}) => {
@@ -54,12 +79,17 @@ describe.skipIf(!temBuild && !exigirBuild)("Mapa: preferência nativa de fonte, 
     writeFileSync(join(profile,'Default','Preferences'),JSON.stringify({webkit:{webprefs:{default_font_size:font,default_fixed_font_size:font===16?13:26}}}));
     let context: BrowserContext | undefined;
     try {
-      context=await chromium.launchPersistentContext(profile,{executablePath:process.env.I18N_CHROMIUM_EXECUTABLE,viewport:{width,height:900},reducedMotion:'reduce'});
+      context=await chromium.launchPersistentContext(profile,{channel:'chromium',executablePath:process.env.I18N_CHROMIUM_EXECUTABLE,viewport:{width,height:900},reducedMotion:'reduce'});
       await context.addCookies([{name:'scrutiniums_session',value:servidor.cookie,url:servidor.origem}]);
       const page=await context.newPage();await page.goto(servidor.origem+'/app/observatorios',{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
       await page.waitForFunction(()=>Object.keys(document.querySelector('.bp-busca--pagina')??{}).some(k=>k.startsWith('__reactFiber$')));
       const root=await page.evaluate(()=>({font:getComputedStyle(document.documentElement).fontSize,zoom:getComputedStyle(document.documentElement).zoom,dpr:devicePixelRatio}));
       expect(root).toEqual({font:font+'px',zoom:'1',dpr:1});
+      const opening=await medirAbertura(page);
+      expect(opening.collisions,JSON.stringify(opening)).toEqual([]);
+      expect(opening.paragraphOverflow,JSON.stringify(opening)).toEqual([]);
+      expect(opening.paragraphWidth).toBeGreaterThanOrEqual(opening.minimumReadingWidth-1);
+      expect(opening.searchWidth).toBeGreaterThanOrEqual(opening.minimumReadingWidth-1);
       const expected=OBSERVATORIOS.flatMap(o=>o.colecoes.map(c=>c.id)).sort();
       const closed=await medirItens(page);expect(closed.map(c=>c.id).sort()).toEqual(expected);
       expect(closed.filter(c=>!c.metadata||c.violations.length||c.height<44)).toEqual([]);

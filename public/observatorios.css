@@ -202,7 +202,7 @@
 .observatorio-credito .obs-trocar summary:hover { color:var(--bp-destaque); }
 .observatorio-credito .obs-trocar summary::-webkit-details-marker { display:none; }
 .observatorio-credito .obs-trocar-menu { position:fixed; left:16px; right:16px; z-index:52; margin-top:4px; padding:8px; display:flex; flex-direction:column; max-height:80vh; overflow-y:auto; background:var(--surface); border:1px solid var(--border); box-shadow:0 8px 24px rgb(var(--cor-carvao-rgb) / .12); }
-@media(min-width:640px) { .observatorio-credito .obs-trocar-menu { position:absolute; left:0; right:auto; width:20rem; } .observatorio-credito .obs-trocar-menu a { min-height:36px; padding:6px 12px; } }
+@media(min-width:640px) { .observatorio-credito .obs-trocar-menu { position:absolute; left:var(--obs-menu-ajuste,0px); right:auto; width:min(20rem,calc(100vw - 32px)); } .observatorio-credito .obs-trocar-menu a { min-height:36px; padding:6px 12px; } }
 .observatorio-credito .obs-trocar-menu p { margin:0; padding:8px 12px 4px; font-size:var(--tipo-rotulo); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
 .observatorio-credito .obs-trocar-menu a { display:flex; align-items:center; min-height:44px; padding:8px 12px; font-size:var(--tipo-tabela); line-height:1.35; color:var(--text); text-decoration:none; }
 .observatorio-credito .obs-trocar-menu a[aria-current] { font-weight:600; }

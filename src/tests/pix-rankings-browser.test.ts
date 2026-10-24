@@ -13,15 +13,38 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
   it.each([16,32])('separa nomes e medidas com fonte nativa de %ipx nas quatro larguras',async fonte=>{
     const profile=mkdtempSync(tmpdir()+'/pix-rankings-');mkdirSync(profile+'/Default');
     writeFileSync(profile+'/Default/Preferences',JSON.stringify({webkit:{webprefs:{default_font_size:fonte,default_fixed_font_size:fonte===16?13:26}}}));
-    const context=await chromium.launchPersistentContext(profile,{executablePath:process.env.I18N_CHROMIUM_EXECUTABLE,headless:true,reducedMotion:'reduce'});
+    // Chromium completo lê Preferences; o headless-shell padrão não aplica a fonte nativa no CI.
+    const context=await chromium.launchPersistentContext(profile,{channel:'chromium',executablePath:process.env.I18N_CHROMIUM_EXECUTABLE,headless:true,reducedMotion:'reduce'});
     await context.addCookies([{name:'scrutiniums_session',value:servidor.cookie,url:servidor.origem}]);
     const page=await context.newPage();const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+    const medirKpis=()=>page.locator('.view.active .pan-kpi-rem').evaluateAll(groups=>groups.map(group=>({
+      textos:[...group.children].map(cell=>cell.textContent!),
+      falhas:[...group.children].flatMap(cell=>{
+        const area=cell.getBoundingClientRect(),bad:Array<{texto:string;left:number;right:number;area:[number,number]}>=[];
+        const walker=document.createTreeWalker(cell,NodeFilter.SHOW_TEXT);let node;
+        while(node=walker.nextNode()){
+          if(!node.textContent?.trim()||node.parentElement?.closest('.sr-only'))continue;
+          const range=document.createRange();range.selectNodeContents(node);
+          for(const r of Array.from(range.getClientRects()))if(r.width>0&&(r.left<area.left-1||r.right>area.right+1))bad.push({texto:node.textContent,left:r.left,right:r.right,area:[area.left,area.right]});
+        }
+        return bad;
+      })
+    })));
+    let instituicoesReferencia:string[][]|undefined;
+    let kpisReferencia:string[][]|undefined;
     let referencia:Array<{nome:string;medidas:string;escala:string}>|undefined;
     try{
       for(const width of [1440,768,390,320]){
         await page.setViewportSize({width,height:900});await page.goto(servidor.origem+'/observatorio/pix');
         await page.locator('#view-pix .panbar').first().waitFor();await page.evaluate(()=>document.fonts.ready);
         expect(await page.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).fontSize))).toBe(fonte);
+        // A normalização editorial de datas ocorre após o render; comparar o estado apresentado.
+        await expect.poll(async()=>(await page.locator('#view-pix .pan-kpi-rem').allTextContents()).join(' ')).not.toMatch(/\b\d{4}-(?:\d{2}|T[1-4])\b/);
+        // Grupos de medidas também refluem: síntese, setor selecionado e último mês do MED.
+        const kpis=await medirKpis();
+        expect(kpis).toHaveLength(3);
+        expect(kpis.flatMap(g=>g.falhas)).toEqual([]);
+        if(!kpisReferencia)kpisReferencia=kpis.map(g=>g.textos);else expect(kpis.map(g=>g.textos)).toEqual(kpisReferencia);
         const bars=page.locator('#view-pix .panbar');
         const medidas=await bars.evaluateAll(nodes=>nodes.map(n=>{
           const spans=n.querySelectorAll(':scope > span'),label=spans[0],value=spans[spans.length-1],track=n.querySelector('.track')!;
@@ -46,7 +69,14 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         escalas.forEach((p,i)=>expect(p).toBeCloseTo(gold.epae.setores[i].v/max*100,3));
         const widths=await ranking.locator('.panbar .track').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));
         expect(Math.max(...widths)-Math.min(...widths)).toBeLessThanOrEqual(1);
+        await page.goto(servidor.origem+'/observatorio/institutions');
+        await page.locator('#view-institutions .pan-kpi-rem').waitFor();await page.evaluate(()=>document.fonts.ready);
+        const cooperativas=await medirKpis();expect(cooperativas).toHaveLength(1);
+        expect(cooperativas[0].textos).toHaveLength(4);
+        expect(cooperativas.flatMap(g=>g.falhas)).toEqual([]);
+        if(!instituicoesReferencia)instituicoesReferencia=cooperativas.map(g=>g.textos);else expect(cooperativas.map(g=>g.textos)).toEqual(instituicoesReferencia);
       }
+      await page.goto(servidor.origem+'/observatorio/pix');
       // O ranking continua sendo um controle por teclado, além da leitura visual.
       const ranking=page.locator('#px-epae .card').filter({has:page.getByRole('heading',{name:'Setores que mais recebem via Pix',exact:true})});
       const alvo=ranking.locator('[role="button"]').nth(2);await alvo.focus();await page.keyboard.press('Enter');

@@ -9,9 +9,10 @@
 .retomarItem ul { margin: 0; padding: 0; list-style: none; }
 @media (min-width: 1024px) { .retomar { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); } }
 
-/* abertura: o título e a frase à esquerda, a busca à direita a partir de 1024 px; empilhados no celular */
+/* A abertura mantém largura de leitura para introdução e busca. A fonte ampliada faz a grade
+ * empilhar; a fração limita a duas colunas sem reservar 42rem antes de dimensionar o texto. */
 .abertura { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px 48px; align-items: end; padding: 32px 0 32px; }
-@media (min-width: 1024px) { .abertura { grid-template-columns: minmax(0, 1fr) minmax(0, 42rem); } }
+@media (min-width: 1024px) { .abertura { grid-template-columns: repeat(auto-fit, minmax(min(100%, max(24rem, calc((100% - 48px) / 2))), 1fr)); } }
 
 /* Cada observatório ocupa uma faixa. No desktop, identidade à esquerda e duas colunas de coleções à direita.
  * A ordem visual continua a do DOM: não há masonry nem buraco determinado pela seção vizinha. */

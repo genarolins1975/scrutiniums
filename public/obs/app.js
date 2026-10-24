@@ -1957,7 +1957,7 @@ function renderPix() {
     fontes: "BCB (Pix, Meios de Pagamento, SPI, EPAE) · IBGE (população, IPCA)",
     actions: `<button class="btn ghost small" onclick="pxCSV()">baixar CSV</button>`,
   });
-  const kpis = `<div class="pan-kpi">
+  const kpis = `<div class="pan-kpi pan-kpi-rem">
     <div class="card kpi"><h4>Transações no mês</h4><div class="big pixnum">${fmt.n(k.qtd.v / 1e9, 2)} bi</div><div class="src">${fmt.pp(k.qtd.yoy)}% em 12m · ${X.mes} · universo doc 1201 (MPV) · ${badge("observado")}</div></div>
     <div class="card kpi"><h4>Valor movimentado</h4><div class="big pixnum">${fmt.money(k.valor.v)}</div><div class="src">${fmt.pp(k.valor.yoy)}% em 12m (nominal) · ${badge("observado")}</div></div>
     <div class="card kpi"><h4>Valor médio por transação</h4><div class="big">R$ ${fmt.n(k.ticket.v, 0)}</div><div class="src">${fmt.pp(k.ticket.yoy)}% em 12m — média esconde a diferença P2P × empresas (ver Natureza) · ${badge("calculado")}</div></div>
@@ -2171,7 +2171,7 @@ function renderPix() {
         ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(s.setor), s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
         <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
       <div class="card"><h4>${rotuloSetorPix(sel.setor)}</h4>
-        <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
+        <div class="pan-kpi pan-kpi-rem" style="--pan-kpi-min:8.125rem">
           <div><div class="src">recebe/mês</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(sel.v)}</div></div>
           <div><div class="src">participação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sel.part, 1)}%</div></div>
           <div><div class="src">tíquete</div><div class="big" style="font-size:var(--tipo-numero-p)">R$ ${fmt.n(sel.t, 0)}</div></div>
@@ -2269,7 +2269,7 @@ function renderPix() {
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.aceitas_100mil })), label: "aceitas/100 mil", color: "#b91c1c" }], h: 200, unit: "por 100 mil transações", fonte: "BCB MED", aria: "incidência de contestações aceitas", annotations: marcosRegulatorios("pix") })}
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.pct_devolucao })), label: "% devolvido", color: "var(--pix)" }], h: 160, unit: "% do valor contestado devolvido", aria: "taxa de devolução do MED" })}</div>
     <div class="card"><h4>Último mês (${md0.p || "–"})</h4>
-      <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
+      <div class="pan-kpi pan-kpi-rem" style="--pan-kpi-min:9.375rem">
         <div><div class="src">Pix contestados</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.contestados_q)}</div></div>
         <div><div class="src">contestações aceitas</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.aceitas_q)}</div></div>
         <div><div class="src">valor contestado (aceitas)</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(md0.valor_contestado)}</div></div>
@@ -7208,8 +7208,8 @@ function coopSecao(inst) {
   const atTodos = insts.reduce((s, i) => s + i.ativo_total_brl, 0);
   const centrais = coops.filter(i => i.tcb === "B3C").length;
   return `<div class="card" style="margin-top:12px"><h4>Cooperativas de crédito no corte ${badge("observado", "classificação TCB do IF.data: B3C = centrais/confederações, B3S = singulares; os bancos cooperativos (Sicredi, Sicoob) são B1 e entram como bancos")}</h4>
-    <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">
-      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:var(--tipo-numero-p)">${coops.length} cooperativas</div></div>
+    <div class="pan-kpi pan-kpi-rem" style="--pan-kpi-min:10.625rem">
+      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:var(--tipo-numero-p)">${coops.length} <small>cooperativas</small></div></div>
       <div><div class="src">centrais/confederações</div><div class="big" style="font-size:var(--tipo-numero-p)">${centrais}</div></div>
       <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(atCoop)}</div></div>
       <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
@@ -13268,6 +13268,19 @@ document.addEventListener("keydown", e => {
   ["obsTrocar"].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
+    const menu = el.querySelector(".obs-trocar-menu");
+    const conterMenu = () => {
+      if (!el.open || !menu) return;
+      menu.style.setProperty("--obs-menu-ajuste", "0px");
+      if (!matchMedia("(min-width:640px)").matches) return;
+      const r = menu.getBoundingClientRect();
+      // Mantém a âncora original quando cabe; corrige apenas a sobra lateral.
+      const ajuste = Math.max(16 - r.left, Math.min(0, document.documentElement.clientWidth - 16 - r.right));
+      menu.style.setProperty("--obs-menu-ajuste", ajuste + "px");
+    };
+    el.addEventListener("toggle", conterMenu);
+    window.addEventListener("resize", conterMenu);
+    document.fonts?.addEventListener("loadingdone", conterMenu);
     document.addEventListener("pointerdown", e => { if (el.open && !el.contains(e.target)) el.open = false; });
     el.addEventListener("keydown", e => {
       if (e.key === "Escape" && el.open) { el.open = false; const s = el.querySelector("summary"); if (s) s.focus(); }
