@@ -65,7 +65,23 @@ def _ensure(con):
         data_base TEXT, tipo TEXT, uf TEXT, cod_congl TEXT, nome_congl TEXT,
         n_operacoes INTEGER, volume REAL, bronze_sha TEXT,
         PRIMARY KEY(bronze_sha, data_base, tipo, uf, cod_congl));
+    CREATE TABLE IF NOT EXISTS desenrola_contrato(
+        bronze_sha TEXT PRIMARY KEY, aceito INTEGER, motivo TEXT, avaliado_em TEXT);
     """)
+
+
+def _avaliar(con, sha, aceito, motivo=None):
+    """Registra o veredito do contrato para o arquivo. O build só publica silver de
+    arquivo aceito: em 24/10/2026 o código anterior ao contrato gravou o CSV de
+    08/2026 descartando em silêncio 2.396 linhas do tipo 4 (1,9 milhão de operações),
+    e o atalho de arquivo inalterado repetiria esse silver todos os dias."""
+    con.execute("INSERT OR REPLACE INTO desenrola_contrato VALUES(?,?,?,?)",
+                (sha, 1 if aceito else 0, motivo, common.now_utc()))
+
+
+def _rejeitar(con, sha, motivo):
+    _avaliar(con, sha, False, motivo)
+    return [{"key": "desenrola", "ok": False, "error": motivo, "bronze_sha": sha}]
 
 
 def _num(s):
@@ -89,7 +105,9 @@ def collect(con, cfg=None):
 
     ja = con.execute("SELECT linhas FROM desenrola_coleta WHERE bronze_sha=?", (sha,)).fetchone()
     vigente = {r[0] for r in con.execute("SELECT DISTINCT bronze_sha FROM desenrola_op")}
-    if ja and vigente == {sha}:
+    aceito = con.execute("SELECT aceito FROM desenrola_contrato WHERE bronze_sha=?", (sha,)).fetchone()
+    # arquivo gravado antes do contrato (sem veredito) passa de novo pela validação inteira
+    if ja and vigente == {sha} and aceito == (1,):
         return [{"key": "desenrola", "ok": True, "note": "arquivo inalterado desde a última coleta",
                  "linhas": ja[0]}]
 
@@ -97,8 +115,7 @@ def collect(con, cfg=None):
     if inicio[:1] == b"<" or b"<html" in inicio.lower():
         # o portal devolveu uma página (bloqueio, manutenção ou captcha), não o CSV:
         # nomear a causa evita o diagnóstico errado "esquema mudou" (runner de 05 e 06/09/2026)
-        return [{"key": "desenrola", "ok": False,
-                 "error": f"resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): {inicio[:120]!r}"}]
+        return _rejeitar(con, sha, f"resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): {inicio[:120]!r}")
     try:
         texto = body.decode("utf-8-sig")
     except UnicodeDecodeError:
@@ -112,9 +129,8 @@ def collect(con, cfg=None):
     if faltando:
         # o esquema mudou: falhar alto é melhor do que gravar número errado em silêncio,
         # e o cabeçalho recebido vai junto para o diagnóstico ser possível sem o bronze
-        return [{"key": "desenrola", "ok": False,
-                 "error": f"colunas ausentes no CSV: {sorted(faltando)} (esquema da fonte mudou); "
-                          f"cabeçalho recebido: {campos[:10]}; início: {inicio[:80]!r}"}]
+        return _rejeitar(con, sha, f"colunas ausentes no CSV: {sorted(faltando)} (esquema da fonte mudou); "
+                                   f"cabeçalho recebido: {campos[:10]}; início: {inicio[:80]!r}")
 
     # Parse completo antes da troca: o orquestrador dá commit mesmo após falha de coleta.
     rows, meses, chaves = [], set(), set()
@@ -130,8 +146,10 @@ def collect(con, cfg=None):
             uf = r["UNIDADE_FEDERACAO"].strip().upper()
             cod = r["COD_CONGLOMERADO_FINANCEIRO"].strip()
             nome = r["NOME_CONGLOMERADO_FINANCEIRO"].strip()
-            if tipo not in TIPOS or uf not in UFS or not cod or not nome:
-                raise ValueError("tipo, UF ou identificação fora do contrato")
+            if tipo not in TIPOS:
+                raise ValueError(f"TIPO_DESENROLA {tipo!r} fora do contrato (documentados: 1, 2 e 3)")
+            if uf not in UFS or not cod or not nome:
+                raise ValueError("UF ou identificação fora do contrato")
             n = int(r["NUMERO_OPERACOES"])
             if n < 0:
                 raise ValueError("número de operações negativo")
@@ -147,7 +165,7 @@ def collect(con, cfg=None):
         if anteriores - meses:
             raise ValueError("meses da série anterior ausentes na republicação; requer revisão")
     except (ValueError, TypeError, KeyError, csv.Error) as e:
-        return [{"key": "desenrola", "ok": False, "error": str(e)}]
+        return _rejeitar(con, sha, str(e))
 
     con.execute("SAVEPOINT desenrola_versao")
     try:
@@ -158,6 +176,7 @@ def collect(con, cfg=None):
         con.execute("INSERT OR IGNORE INTO desenrola_historico SELECT * FROM desenrola_op")
         con.execute("INSERT OR REPLACE INTO desenrola_coleta VALUES(?,?,?,?,?,?)",
                     (common.now_utc(), sha, len(rows), len(meses), min(meses), max(meses)))
+        _avaliar(con, sha, True)
         common.record_lineage(con, "desenrola.json", caminho, sha,
                               "CSV integralmente validado; troca atômica; versões anteriores em desenrola_historico e bronze")
         con.execute("RELEASE desenrola_versao")

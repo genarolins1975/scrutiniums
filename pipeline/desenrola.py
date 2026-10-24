@@ -300,6 +300,21 @@ def build(con, cfg=None):
                                              "motivo": "base do Desenrola ainda não coletada"})
         return {"ok": False, "motivo": "sem dados"}
     col = col[0]
+    try:
+        contrato = con.execute("SELECT aceito, motivo FROM desenrola_contrato WHERE bronze_sha=?",
+                               (col["bronze_sha"],)).fetchone()
+    except Exception:
+        contrato = None
+    if not contrato or contrato[0] != 1:
+        # stub declarado: a sentinela (scripts/sanidade_gold.py) mantém no ar a última
+        # publicação íntegra e a registra em meta.json `restaurados`, que retém o grupo
+        motivo = (contrato[1] if contrato else None) or "arquivo sem validação registrada"
+        common.write_gold("desenrola.json", {
+            "disponivel": False,
+            "motivo": (f"o silver vem do arquivo {col['bronze_sha'][:12]} do BCB, que não passou no "
+                       f"contrato da coleta: {motivo}"),
+            "bronze_sha": col["bronze_sha"]})
+        return {"ok": False, "motivo": "silver fora do contrato"}
 
     try:
         geo = {r["uf"]: r for r in _rows(con, "SELECT cod, uf, nome, regiao, populacao, pop_ano, svg_d FROM geo_uf")}

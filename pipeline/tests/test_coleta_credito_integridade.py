@@ -69,6 +69,83 @@ class DesenrolaIntegro(unittest.TestCase):
         self.assertEqual(self.snapshot()[0][6], 1200.5)
 
 
+
+class DesenrolaContrato(unittest.TestCase):
+    """24/10/2026: o código anterior ao contrato gravou o CSV de 08/2026 descartando o
+    tipo 4 sem aviso; o arquivo inalterado não pode repetir esse silver no build."""
+    COM_TIPO_4 = VALID + '202608;4;SP;123;Banco;377130;759.760.000,00\n'
+
+    def setUp(self):
+        self.con = sqlite3.connect(':memory:')
+        self.addCleanup(self.con.close)
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        for alvo, valor in [('BRONZE', self.tmp.name), ('GOLD', self.tmp.name)]:
+            p = patch.object(common, alvo, valor); p.start(); self.addCleanup(p.stop)
+        p = patch.object(common, 'record_lineage'); p.start(); self.addCleanup(p.stop)
+
+    def collect(self, text):
+        with patch.object(common, 'http_get', return_value=(text.encode(), {'status': 200})):
+            return desenrola.collect(self.con)
+
+    def build(self):
+        from pipeline import desenrola as builder
+        resultado = builder.build(self.con)
+        return resultado, json.loads((Path(self.tmp.name) / 'desenrola.json').read_text())
+
+    def veredito(self, texto):
+        sha = hashlib.sha256(texto.encode()).hexdigest()
+        return self.con.execute('SELECT aceito, motivo FROM desenrola_contrato WHERE bronze_sha=?', (sha,)).fetchone()
+
+    def test_tipo_nao_documentado_rejeita_nomeando_o_tipo_e_preserva_o_silver(self):
+        self.assertTrue(self.collect(VALID)[0]['ok'])
+        anterior = self.con.execute('SELECT * FROM desenrola_op').fetchall()
+        resultado = self.collect(self.COM_TIPO_4)[0]
+        self.con.commit()
+        self.assertFalse(resultado['ok'])
+        self.assertIn("'4'", resultado['error'])
+        self.assertEqual(self.con.execute('SELECT * FROM desenrola_op').fetchall(), anterior)
+        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 0)
+        self.assertEqual(self.veredito(VALID)[0], 1)
+
+    def test_silver_gravado_antes_do_contrato_e_revalidado_e_nao_e_publicado(self):
+        # estado deixado pela rodada de 24/10: silver e coleta do arquivo com tipo 4,
+        # só com os tipos 1 a 3, e nenhum veredito do contrato
+        desenrola._ensure(self.con)
+        sha = hashlib.sha256(self.COM_TIPO_4.encode()).hexdigest()
+        self.con.execute("INSERT INTO desenrola_op VALUES('2026-08','faixa1','SP','123','Banco',2,1200.5,?)", (sha,))
+        self.con.execute("INSERT INTO desenrola_coleta VALUES('2026-10-24T13:23:24+00:00',?,1,1,'2026-08','2026-08')", (sha,))
+        resultado = self.collect(self.COM_TIPO_4)[0]
+        self.assertFalse(resultado['ok'])
+        self.assertNotIn('note', resultado)
+        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 0)
+        saida, gold = self.build()
+        self.assertFalse(saida['ok'])
+        self.assertIs(gold['disponivel'], False)
+        self.assertEqual(gold['bronze_sha'], sha)
+        self.assertIn('fora do contrato', gold['motivo'])
+
+    def test_silver_sem_veredito_nao_e_publicado_mesmo_sem_coleta_no_dia(self):
+        desenrola._ensure(self.con)
+        self.con.execute("INSERT INTO desenrola_op VALUES('2026-08','faixa1','SP','123','Banco',2,1200.5,'legado')")
+        self.con.execute("INSERT INTO desenrola_coleta VALUES('2026-10-24T13:23:24+00:00','legado',1,1,'2026-08','2026-08')")
+        saida, gold = self.build()
+        self.assertFalse(saida['ok'])
+        self.assertIn('sem validação registrada', gold['motivo'])
+
+    def test_arquivo_aceito_segue_para_o_build_e_o_atalho_de_inalterado(self):
+        self.assertTrue(self.collect(VALID)[0]['ok'])
+        self.assertIn('note', self.collect(VALID)[0])
+        saida, gold = self.build()
+        self.assertNotEqual(saida.get('motivo'), 'silver fora do contrato')
+        self.assertIsNot(gold.get('disponivel'), False)
+
+    def test_arquivo_novo_valido_depois_de_rejeicao_volta_a_publicar(self):
+        self.assertFalse(self.collect(self.COM_TIPO_4)[0]['ok'])
+        self.assertTrue(self.collect(VALID)[0]['ok'])
+        saida, gold = self.build()
+        self.assertIsNot(gold.get('disponivel'), False)
+
 class SGSIntegro(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)

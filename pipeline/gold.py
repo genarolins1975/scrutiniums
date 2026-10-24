@@ -1036,7 +1036,8 @@ def build_all(con, cfg, fetch_status):
         "estban": _vg("SELECT MAX(data_base) FROM estban_coleta"),
         "openfinance": _vg("SELECT MAX(coletado_em) FROM of_ranking_hist"),
         "pgfn": _vg_trimestre("SELECT MAX(trimestre) FROM pgfn_uf"),
-        "desenrola": _vg("SELECT MAX(data_base_max) FROM desenrola_coleta"),
+        "desenrola": _vg("SELECT MAX(c.data_base_max) FROM desenrola_coleta c JOIN desenrola_contrato v "
+                         "ON v.bronze_sha = c.bronze_sha AND v.aceito = 1"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
