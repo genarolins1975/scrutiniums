@@ -1,0 +1,54 @@
+[
+  {
+    "caso": "direto-local",
+    "headers": {
+      "origin": "http://localhost:38427"
+    },
+    "novoStatus": 204,
+    "antigoStatus": 303,
+    "antigoLocation": "http://localhost:38427/setor-eletrico"
+  },
+  {
+    "caso": "host-publico-http",
+    "headers": {
+      "host": "app.example.test",
+      "origin": "http://app.example.test"
+    },
+    "novoStatus": 403,
+    "antigoStatus": 403,
+    "antigoLocation": null
+  },
+  {
+    "caso": "proxy-tls-host-publico",
+    "headers": {
+      "host": "scrutiniums.com",
+      "origin": "https://scrutiniums.com",
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "scrutiniums.com"
+    },
+    "novoStatus": 403,
+    "antigoStatus": 303,
+    "antigoLocation": "https://localhost:38427/setor-eletrico"
+  },
+  {
+    "caso": "proxy-tls-host-interno",
+    "headers": {
+      "host": "internal.example.test",
+      "origin": "https://scrutiniums.com",
+      "x-forwarded-proto": "https",
+      "x-forwarded-host": "scrutiniums.com"
+    },
+    "novoStatus": 403,
+    "antigoStatus": 303,
+    "antigoLocation": "https://localhost:38427/setor-eletrico"
+  },
+  {
+    "caso": "origem-externa",
+    "headers": {
+      "origin": "https://evil.example.test"
+    },
+    "novoStatus": 403,
+    "antigoStatus": 403,
+    "antigoLocation": null
+  }
+]

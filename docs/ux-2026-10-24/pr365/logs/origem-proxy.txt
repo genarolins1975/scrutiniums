@@ -1,0 +1,160 @@
+{
+  "build": "TTwbz4-734bV6VVI1HyWJ",
+  "commit": "00f9a3838221be975718c3e1af67ef95fc096e48",
+  "metodo": "next start local com Host/Origin e forwarded simulando proxy; não é deployment Vercel",
+  "casos": [
+    {
+      "nome": "direto local autenticado",
+      "headers": {
+        "origin": "http://localhost:33529"
+      },
+      "esperado": 204,
+      "status": 204,
+      "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:53:26 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+      "cache": "no-store",
+      "ok": true
+    },
+    {
+      "nome": "proxy TLS host canônico",
+      "headers": {
+        "host": "scrutiniums.com",
+        "origin": "https://scrutiniums.com",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "scrutiniums.com"
+      },
+      "esperado": 204,
+      "status": 204,
+      "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:53:26 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+      "cache": "no-store",
+      "ok": true
+    },
+    {
+      "nome": "proxy TLS host interno, origem canônica",
+      "headers": {
+        "host": "internal.example.test",
+        "origin": "https://scrutiniums.com",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "scrutiniums.com"
+      },
+      "esperado": 204,
+      "status": 204,
+      "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:53:26 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+      "cache": "no-store",
+      "ok": true
+    },
+    {
+      "nome": "proxy TLS www canônico",
+      "headers": {
+        "host": "www.scrutiniums.com",
+        "origin": "https://www.scrutiniums.com",
+        "x-forwarded-proto": "https",
+        "x-forwarded-host": "www.scrutiniums.com"
+      },
+      "esperado": 204,
+      "status": 204,
+      "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:53:26 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+      "cache": "no-store",
+      "ok": true
+    },
+    {
+      "nome": "origem externa",
+      "headers": {
+        "origin": "https://evil.example.test"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "forwarded externo não confiável",
+      "headers": {
+        "origin": "https://evil.example.test",
+        "x-forwarded-host": "evil.example.test",
+        "x-forwarded-proto": "https"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "sem Origin",
+      "headers": {},
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "Origin null",
+      "headers": {
+        "origin": "null"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "Origin com caminho",
+      "headers": {
+        "origin": "https://scrutiniums.com/caminho"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "Origin com credenciais",
+      "headers": {
+        "origin": "https://alguem@scrutiniums.com"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "Origin FTP",
+      "headers": {
+        "origin": "ftp://scrutiniums.com"
+      },
+      "esperado": 403,
+      "status": 403,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "sem sessão com origem válida",
+      "headers": {
+        "origin": "http://localhost:33529"
+      },
+      "esperado": 401,
+      "status": 401,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    },
+    {
+      "nome": "caminho fora do catálogo",
+      "headers": {
+        "origin": "http://localhost:33529"
+      },
+      "esperado": 400,
+      "status": 400,
+      "cookie": null,
+      "cache": null,
+      "ok": true
+    }
+  ],
+  "erros": []
+}

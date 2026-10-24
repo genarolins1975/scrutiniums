@@ -1,0 +1,353 @@
+[
+  {
+    "href": "/observatorios/familias",
+    "texto": "Famílias→",
+    "h1": "Quanto custa viver e quanto pesa a dívida das famílias?",
+    "horizontal": false,
+    "url": "/observatorios/familias",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/trabalho-renda",
+    "texto": "Renda e trabalho→",
+    "h1": "Trabalho e renda na vida das pessoas.",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/trabalho-renda",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/observatorio/payroll-lending-aging",
+    "texto": "Dívida e crédito das famílias→",
+    "h1": "Consignado e aposentados",
+    "horizontal": false,
+    "url": "/observatorio/payroll-lending-aging",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/assistencia-social",
+    "texto": "Proteção social→",
+    "h1": "Quando a pessoa precisa, o apoio público chega?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/assistencia-social",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/habitacao",
+    "texto": "Moradia→",
+    "h1": "O que falta para morar com dignidade?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/habitacao",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/custo-de-vida",
+    "texto": "Custo de vida→",
+    "h1": "Quanto subiu o custo de vida na minha cidade?",
+    "horizontal": false,
+    "url": "/custo-de-vida",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/observatorios/servicos-publicos",
+    "texto": "Serviços Públicos→",
+    "h1": "Escola, saúde, segurança e justiça chegam a quem precisa?",
+    "horizontal": false,
+    "url": "/observatorios/servicos-publicos",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/educacao-municipal",
+    "texto": "Educação→",
+    "h1": "Como está a escola pública em cada município?",
+    "horizontal": false,
+    "url": "/educacao-municipal",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/saude-capitais",
+    "texto": "Saúde→",
+    "h1": "Quanto se aplica em Saúde e o que se observa nas capitais?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/saude-capitais",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/seguranca-publica",
+    "texto": "Segurança pública→",
+    "h1": "Quanta violência cada estado registra?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/seguranca-publica",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/judiciario",
+    "texto": "Justiça→",
+    "h1": "Quanto a Justiça demora, quanto custa e de que depende?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/judiciario",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal/cultura",
+    "texto": "Cultura→",
+    "h1": "O que os espaços culturais oferecem ao público?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/cultura",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/eficiencia-estatal",
+    "texto": "Síntese das capitais→",
+    "h1": "Como se vive em Recife?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/observatorios/contas-publicas",
+    "texto": "Contas Públicas→",
+    "h1": "De onde vem e para onde vai o dinheiro dos impostos?",
+    "horizontal": false,
+    "url": "/observatorios/contas-publicas",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/contas-publicas",
+    "texto": "Contas Federais→",
+    "h1": "Quanto do orçamento federal vira pagamento?",
+    "horizontal": false,
+    "url": "/contas-publicas",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/contas-publicas-estaduais",
+    "texto": "Contas Estaduais→",
+    "h1": "Como estão as contas do seu estado?",
+    "horizontal": false,
+    "url": "/contas-publicas-estaduais",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/observatorio/subnational-credit",
+    "texto": "Dívida e crédito dos governos→",
+    "h1": "Crédito a estados e municípios ●Natureza do dado: Observado ◆Natureza do dado: Calculado",
+    "horizontal": false,
+    "url": "/observatorio/subnational-credit",
+    "status": 200,
+    "erros": []
+  },
+  {
+    "href": "/observatorios/energia-e-infraestrutura",
+    "texto": "Energia e Infraestrutura→",
+    "h1": "De onde vêm a energia e a água, e quanto custam?",
+    "horizontal": false,
+    "url": "/observatorios/energia-e-infraestrutura",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/setor-eletrico",
+    "texto": "Setor Elétrico→",
+    "h1": "De onde vem a energia e quanto ela custa?",
+    "horizontal": false,
+    "url": "/setor-eletrico",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/gas-natural",
+    "texto": "Gás Natural→",
+    "h1": "De onde vem o gás e quanto ele custa?",
+    "horizontal": false,
+    "url": "/gas-natural",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/combustiveis",
+    "texto": "Combustíveis→",
+    "h1": "Quanto custa encher o tanque no meu estado?",
+    "horizontal": false,
+    "url": "/combustiveis",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/saneamento",
+    "texto": "Saneamento→",
+    "h1": "Quem ainda está sem água e esgoto, e quanto custa?",
+    "horizontal": false,
+    "url": "/saneamento",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/eficiencia-estatal/mobilidade-transporte",
+    "texto": "Mobilidade→",
+    "h1": "Quanto custa, em tempo e dinheiro, chegar aonde se precisa?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/mobilidade-transporte",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/conectividade",
+    "texto": "Conectividade→",
+    "h1": "Quem tem internet de verdade no Brasil?",
+    "horizontal": false,
+    "url": "/conectividade",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/observatorios/economia",
+    "texto": "Economia→",
+    "h1": "O que o Brasil produz, vende ao mundo e financia?",
+    "horizontal": false,
+    "url": "/observatorios/economia",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/observatorio",
+    "texto": "Crédito e sistema financeiro→",
+    "h1": "O crédito que conecta pessoas e negócios.",
+    "horizontal": false,
+    "url": "/observatorio/map",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/observatorio/pix",
+    "texto": "Pagamentos→",
+    "h1": "Pix e pagamentos ●Natureza do dado: Observado ◆Natureza do dado: Calculado",
+    "horizontal": false,
+    "url": "/observatorio/pix",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/observatorio/sectors",
+    "texto": "Empresas e risco→",
+    "h1": "Risco setorial",
+    "horizontal": false,
+    "url": "/observatorio/sectors",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/agronegocio",
+    "texto": "Agronegócio→",
+    "h1": "Como está o agronegócio brasileiro?",
+    "horizontal": false,
+    "url": "/agronegocio",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/territorio",
+    "texto": "Território e Clima→",
+    "h1": "O que está mudando no ambiente e quem sente primeiro?",
+    "horizontal": false,
+    "url": "/territorio",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/agronegocio/ambiente",
+    "texto": "Desmatamento e emissões→",
+    "h1": "Quanto se desmata e quanto o campo emite?",
+    "horizontal": false,
+    "url": "/agronegocio/ambiente",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/eficiencia-estatal/meio-ambiente-clima",
+    "texto": "Cidades e clima→",
+    "h1": "Quantas casas estão expostas a inundações, e para onde vai o lixo?",
+    "horizontal": false,
+    "url": "/eficiencia-estatal/meio-ambiente-clima",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/territorio/queimadas",
+    "texto": "Fogo e queimadas→",
+    "h1": "Onde e quanto o fogo aparece no Brasil?",
+    "horizontal": false,
+    "url": "/territorio/queimadas",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  },
+  {
+    "href": "/territorio/desastres",
+    "texto": "Desastres→",
+    "h1": "Onde os desastres atingem os municípios?",
+    "horizontal": false,
+    "url": "/territorio/desastres",
+    "status": 200,
+    "erros": [
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)",
+      "Failed to load resource: the server responded with a status of 429 (Too Many Requests)"
+    ]
+  }
+]

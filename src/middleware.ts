@@ -5,6 +5,7 @@ import { COOKIE_DESTINO, desvioDoAperitivo, ehApiDeDados, ehRotaPublica, fichaCo
 import { analisarUrlPagina } from "@/lib/i18n-url";
 import { parDeIdioma } from "@/lib/i18n-rotas";
 import type { Idioma } from "@/lib/idioma";
+import { COOKIE_OBSERVATORIO, VALIDADE_ULTIMO_ACESSO, ultimoAcessoDoCaminho } from "@/lib/observatorios/ultimoAcesso";
 
 /**
  * Proteção de rotas com validação forte na borda: o cookie de sessão é
@@ -62,6 +63,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // página aberta de uma coleção (método, aperitivo com sessão): com sessão, também é o último acesso (Iniciativa M1)
+  const valorAberto = ehRotaPublica(pathname) && paginaHtml(request) ? ultimoAcessoDoCaminho(caminhoPolitica) : null;
+  if (valorAberto && (desvio ? sessaoAperitivo : await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value))) {
+    return marcarUltimoAcesso(request, NextResponse.next(), valorAberto);
+  }
   if (ehRotaPublica(pathname)) return NextResponse.next();
 
   const verified = await verifySessionCookie(
@@ -93,7 +99,8 @@ export async function middleware(request: NextRequest) {
   if (pagina?.idioma === "en") {
     // O Next também procura rotas estáticas pela grafia decodificada. O parser
     // já validou os escapes; decodificar aqui não muda a URL nem abre a rota.
-    return protegerAdmin(request, decodeURIComponent(pagina.caminhoPt), "en");
+    const res = await protegerAdmin(request, decodeURIComponent(pagina.caminhoPt), "en");
+    return marcarUltimoAcesso(request, res, paginaHtml(request) ? ultimoAcessoDoCaminho(pagina.caminhoPt) : null);
   }
   if (!pagina) {
     try {
@@ -107,8 +114,42 @@ export async function middleware(request: NextRequest) {
       // Escape inválido não fornece um caminho de política alternativo.
     }
   }
+  // painel de uma coleção ou entrada de observatório, com sessão: grava o último acesso (Iniciativa M1)
+  const valorPainel = !pathname.startsWith("/app") && paginaHtml(request) ? ultimoAcessoDoCaminho(pathname) : null;
+  if (valorPainel) return marcarUltimoAcesso(request, NextResponse.next(), valorPainel);
   if (!pathname.startsWith("/app")) return NextResponse.next();
   return protegerAdmin(request, pathname, "pt");
+}
+
+/**
+ * Navegação de documento: GET que pede HTML. A navegação no cliente do App Router e o pré-carregamento chegam aqui sem os
+ * cabeçalhos RSC (o Next os retira antes do middleware) e sem pedir HTML: não contam, porque não há como separar o clique do
+ * pré-carregamento, e um link visível não pode virar "último acesso" sem clique. Os links do mapa são de documento (LinkMedido).
+ */
+function paginaHtml(request: NextRequest): boolean {
+  if (request.method !== "GET") return false;
+  if (/prefetch/i.test(request.headers.get("sec-purpose") ?? request.headers.get("purpose") ?? "")) return false;
+  return request.headers.get("accept")?.includes("text/html") ?? false;
+}
+
+/**
+ * Último acesso (Iniciativa M1 do parecer de UX de 23/10/2026): com sessão válida, a página de uma coleção ou a entrada de um
+ * observatório grava o cookie que o mapa da conta lê para o cartão "Continuar em …" (valores em
+ * src/lib/observatorios/ultimoAcesso.ts). Só regrava quando o valor muda, para não pôr Set-Cookie em toda resposta. Custo: uma
+ * busca numa lista estática, sem banco.
+ */
+function marcarUltimoAcesso(request: NextRequest, res: NextResponse, valor: string | null): NextResponse {
+  if (!valor || request.cookies.get(COOKIE_OBSERVATORIO)?.value === valor) return res;
+  // rewrite para 404 (admin sem permissão, endereço inexistente) não é visita a uma coleção
+  if (res.headers.get("x-middleware-rewrite")) return res;
+  res.cookies.set(COOKIE_OBSERVATORIO, valor, {
+    path: "/",
+    maxAge: VALIDADE_ULTIMO_ACESSO,
+    sameSite: "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+  return res;
 }
 
 async function protegerAdmin(request: NextRequest, caminhoPolitica: string, idioma: Idioma): Promise<NextResponse> {

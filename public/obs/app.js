@@ -12914,6 +12914,7 @@ function showViewSilent(v) {
   refazCasca();
   pingView(v);
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
+  guardarContinuidade();
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
   if (pend) {
     const sec = document.getElementById("view-" + v);
@@ -12950,8 +12951,30 @@ function showViewSilent(v) {
       conta.hidden = false;
       TRILHA_LOGADO = logado;
       refazTrilha();
+      guardarContinuidade();
     });
 })();
+// Mesmo cookie do mapa, apenas depois de exibir a página e confirmar a sessão.
+// Serializar mantém a ordem inclusive ao voltar/avançar rapidamente no navegador.
+let continuidadePendente = Promise.resolve();
+let continuidadeCaminho = "";
+function guardarContinuidade() {
+  if (!TRILHA_LOGADO) return;
+  const caminho = caminhoDaVista();
+  if (caminho === continuidadeCaminho) return;
+  continuidadeCaminho = caminho;
+  continuidadePendente = continuidadePendente.then(async () => {
+    const controle = new AbortController();
+    const prazo = setTimeout(() => controle.abort(), 2500);
+    try {
+      await fetch("/api/conta/ultimo-acesso", {
+        method: "POST", credentials: "same-origin", signal: controle.signal,
+        headers: { "Content-Type": "application/json" }, body: JSON.stringify({ caminho }),
+      });
+    } finally { clearTimeout(prazo); }
+  }).catch(() => undefined);
+}
+
 /* Seletor de observatório (details) da barra comum. Fecha com Esc (foco volta ao
    resumo), com clique fora e quando o foco sai do menu. */
 (function initObsSwitcher() {
@@ -13048,6 +13071,18 @@ document.addEventListener("click", e => {
   const v = parseHash();
   if (RENDER[v]) showViewSilent(v);
   else location.assign(url.href);
+});
+
+// Saída do mapa vem depois do roteador da coleção: cada destino tem um único responsável.
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target instanceof Element ? e.target.closest("a[href]") : null;
+  if (!a || a.target || a.hasAttribute("download")) return;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin || url.pathname !== "/app/observatorios") return;
+  e.preventDefault();
+  // A continuidade é auxiliar: uma fila longa ou rede indisponível não prende a saída.
+  Promise.race([continuidadePendente, new Promise(r => setTimeout(r, 2500))]).then(() => location.assign(url.href));
 });
 
 /* ---------- acessibilidade: teclado para clicáveis não nativos (padrão tabindex+keydown da SPA) ---------- */

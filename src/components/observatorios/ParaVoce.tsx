@@ -3,7 +3,7 @@ import Link from "@/components/i18n/LinkIdioma";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { tx } from "@/lib/energia/idioma";
 import type { Idioma } from "@/lib/idioma";
-import { paraVoce, type EntradaParaVoce, type IdPergunta } from "@/lib/observatorios/paraVoce";
+import { paraVoce, type EntradaParaVoce, type IdPergunta, type PerguntaParaVoce } from "@/lib/observatorios/paraVoce";
 import styles from "./ParaVoce.module.css";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 
@@ -19,17 +19,32 @@ import { prefetchDoLink } from "@/lib/rotasPublicas";
  *
  * `artes` põe a gravura da entrada no topo do cartão da pergunta (faixa 16:9, decorativa, aria-hidden), com
  * a nota de que são ilustrações geradas por IA e não representam dados. Use as peças de ArteParaVoce.
+ *
+ * `perguntas` substitui `entrada` quando a lista não é a de uma entrada (o mapa da conta, Iniciativa M1 de 23/10/2026, com
+ * paraVoceDoMapa): nesse modo, o cartão sem número diz por quê (`semNumero`), no lugar do número. Todo cartão marca a prova:
+ * `data-prova-numero` (fonte · período) ou `data-sem-numero` (o motivo). Com `forma="lista"`, quando nenhuma pergunta tem
+ * número (o mapa enquanto a UF da conta não escolhe os números), as perguntas saem como lista de links, sem cartão vazio, e o
+ * motivo é dito uma vez, na frase ao lado do título.
  */
 export function ParaVoce({
   entrada,
+  perguntas: lista,
+  descricao,
   idioma = "pt",
   conteiner = "mx-auto max-w-page px-6",
   className = "border-b border-linha",
   children = null,
   artes,
+  forma = "cartoes",
+  tituloLista,
 }: Readonly<{
-  entrada: EntradaParaVoce;
+  /** "lista": perguntas sem número como links em grade, com o título da lista acima (só com `perguntas`). */
+  forma?: "cartoes" | "lista";
+  /** Título da lista, quando `forma="lista"` (ex.: "No seu estado"). */
+  tituloLista?: string;
   idioma?: Idioma;
+  /** A frase ao lado do título; por padrão, a das entradas. */
+  descricao?: string;
   /** Classes do contêiner interno, no padrão da página (ed-pagina, max-w-page; vazio quando o pai já limita a largura). */
   conteiner?: string;
   /** Classes da seção: a régua de baixo sai quando a seção seguinte já abre com uma. */
@@ -37,31 +52,52 @@ export function ParaVoce({
   children?: ReactNode;
   /** Gravura por pergunta, no topo do cartão. */
   artes?: Partial<Record<IdPergunta, ReactNode>>;
-}>) {
-  const perguntas = paraVoce(entrada, idioma);
+} & ({ entrada: EntradaParaVoce; perguntas?: undefined } | { entrada?: undefined; perguntas: PerguntaParaVoce[] })>) {
+  const perguntas = lista ?? paraVoce(entrada!, idioma);
   const t = (pt: string, en: string) => tx(pt, en, idioma);
-  const colunas = perguntas.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+  const colunas = perguntas.length === 4 ? "md:grid-cols-2 lg:grid-cols-4" : perguntas.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
   return (
-    <section aria-labelledby="para-voce-titulo" data-para-voce={entrada} className={`para-voce ${className}`}>
+    <section aria-labelledby="para-voce-titulo" data-para-voce={entrada ?? "mapa"} className={`para-voce ${className}`}>
       <div className={`${conteiner} py-8 md:py-12`}>
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <h2 id="para-voce-titulo" className="font-serif text-[clamp(1.5rem,2.6vw,1.9rem)] leading-tight text-carvao">
             {t("Para você", "For you")}
           </h2>
           <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            {t(
+            {descricao ?? t(
               "Perguntas sobre o seu caso que a plataforma já responde, a um clique. Cada número traz fonte e período; o destino mostra o detalhe.",
               "Questions about your own case that the platform already answers, one click away. Each number shows its source and period; the destination shows the detail.",
             )}
           </p>
         </div>
+        {forma === "lista" && lista ? (
+          <div className="mt-6" data-para-voce-lista="">
+            {tituloLista && <h3 className="t-h3 text-carvao">{tituloLista}</h3>}
+            <ul className="mt-2 grid gap-x-8 md:grid-cols-2 lg:grid-cols-4">
+              {perguntas.map((p) => (
+                <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.numero ? undefined : (p.semNumero ?? "")} className="min-w-0 border-t border-linha">
+                  <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex min-h-[44px] items-center justify-between gap-x-3 py-2 t-corpo text-carvao">
+                    <span className="group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">{p.pergunta}</span>
+                    <span aria-hidden="true" className="text-mineral">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
         <ul className={`mt-6 grid gap-px border border-linha bg-linha ${colunas}`}>
           {perguntas.map((p) => (
-            <li key={p.id} data-para-voce-pergunta={p.id} className="min-w-0 bg-papel">
+            <li
+              key={p.id}
+              data-para-voce-pergunta={p.id}
+              data-prova-numero={p.numero ? `${p.numero.fonte} · ${p.numero.periodo}` : undefined}
+              data-sem-numero={p.numero ? undefined : (p.semNumero ?? "")}
+              className="min-w-0 bg-papel"
+            >
               <Link href={p.href} prefetch={prefetchDoLink(p.href)} className="group flex h-full min-h-[44px] flex-col p-4 sm:p-5 md:p-6">
-                {artes?.[p.id] && (
+                {artes?.[p.id as IdPergunta] && (
                   <span aria-hidden="true" className={`${styles.arte} -mx-4 -mt-4 mb-4 sm:-mx-5 sm:-mt-5 sm:mb-5 md:-mx-6 md:-mt-6 md:mb-6`} data-para-voce-arte="">
-                    {artes[p.id]}
+                    {artes[p.id as IdPergunta]}
                   </span>
                 )}
                 <span className="font-serif text-lg leading-snug text-carvao group-hover:underline group-hover:decoration-linha group-hover:underline-offset-4">
@@ -70,6 +106,7 @@ export function ParaVoce({
                 <span className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.resposta}</span>
                 {/* o espaço sobra acima do número: os números dos cartões ficam na mesma linha */}
                 <span aria-hidden="true" className="grow" />
+                {lista && !p.numero && p.semNumero && <span className="t-meta mt-4 block border-t border-linha pt-3 text-mineral">{p.semNumero}</span>}
                 {p.numero && (
                   <span className="mt-4 block border-t border-linha pt-3" data-para-voce-numero="">
                     <span className="block text-xs leading-snug text-carvao-muted">{p.numero.rotulo}</span>
@@ -97,6 +134,7 @@ export function ParaVoce({
             </li>
           ))}
         </ul>
+        )}
         {artes && Object.keys(artes).length > 0 && (
           <p className="mt-3 text-xs leading-relaxed text-mineral">
             {t(

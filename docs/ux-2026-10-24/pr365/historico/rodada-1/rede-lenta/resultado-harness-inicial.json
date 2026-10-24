@@ -1,0 +1,125 @@
+{
+  "build": "flnjhzmx0hqyM9lsdCCmm",
+  "method": "POST real via fetch sem cookie jar; resposta retida antes de route.fulfill. Cookie apenas aplicado pelo navegador à resposta entregue.",
+  "cases": [
+    {
+      "name": "Next: POST1000ms, retorno ao mapa espera continuidade",
+      "requests": [
+        {
+          "path": "/setor-eletrico/visao-geral",
+          "delay": 1000,
+          "start": 1792803774502,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:02:54 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803774523,
+          "finish": 1792803775526
+        }
+      ],
+      "errors": [],
+      "ok": false,
+      "failure": "Error: Condição não atingida em 8000ms\n    at until (file:///tmp/pr365-rede-lenta.mjs:13:128)\n    at async file:///tmp/pr365-rede-lenta.mjs:35:252\n    at async scenario (file:///tmp/pr365-rede-lenta.mjs:30:6)\n    at async file:///tmp/pr365-rede-lenta.mjs:34:2",
+      "finalCookie": "c%3Asetor-eletrico",
+      "documents": [
+        "http://localhost:33991/app/observatorios"
+      ]
+    },
+    {
+      "name": "SPA: POST1000ms, saída para mapa entrega Pagamentos",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 1000,
+          "start": 1792803783740,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:03:03 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803783756,
+          "finish": 1792803784759
+        }
+      ],
+      "errors": [],
+      "ok": false,
+      "failure": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href=\"/app/observatorios\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"obs-trocar-conta\" href=\"/app/observatorios\">Escolher na minha conta →</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /tmp/pr365-rede-lenta.mjs:38:343\n    at async scenario (/tmp/pr365-rede-lenta.mjs:30:6)\n    at async file:///tmp/pr365-rede-lenta.mjs:37:2",
+      "finalCookie": "c%3Apagamentos",
+      "documents": [
+        "http://localhost:33991/observatorio"
+      ]
+    },
+    {
+      "name": "SPA: POST6000ms abortado, saída não fica presa",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 6000,
+          "start": 1792803814895,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:03:34 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803814916,
+          "finish": 1792803820919
+        }
+      ],
+      "errors": [],
+      "ok": false,
+      "failure": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href=\"/app/observatorios\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"obs-trocar-conta\" href=\"/app/observatorios\">Escolher na minha conta →</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /tmp/pr365-rede-lenta.mjs:41:343\n    at async scenario (/tmp/pr365-rede-lenta.mjs:30:6)\n    at async file:///tmp/pr365-rede-lenta.mjs:40:2",
+      "finalCookie": "c:credito",
+      "documents": [
+        "http://localhost:33991/observatorio"
+      ]
+    },
+    {
+      "name": "Next A: resposta atrasada não sobrescreve documento B",
+      "requests": [
+        {
+          "path": "/setor-eletrico/visao-geral",
+          "delay": 1800,
+          "start": 1792803846639,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:04:06 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803846655,
+          "finish": 1792803848456
+        }
+      ],
+      "errors": [],
+      "ok": false,
+      "failure": "Error: Condição não atingida em 8000ms\n    at until (file:///tmp/pr365-rede-lenta.mjs:13:128)\n    at async file:///tmp/pr365-rede-lenta.mjs:44:262\n    at async scenario (file:///tmp/pr365-rede-lenta.mjs:30:6)\n    at async file:///tmp/pr365-rede-lenta.mjs:43:2",
+      "finalCookie": "c%3Agas",
+      "documents": [
+        "http://localhost:33991/app/observatorios",
+        "http://localhost:33991/gas-natural"
+      ]
+    },
+    {
+      "name": "SPA A: resposta atrasada não sobrescreve documento B",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 1800,
+          "start": 1792803855950,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:04:15 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803855961,
+          "finish": 1792803857763
+        }
+      ],
+      "errors": [],
+      "ok": false,
+      "failure": "Error: Condição não atingida em 8000ms\n    at until (file:///tmp/pr365-rede-lenta.mjs:13:128)\n    at async file:///tmp/pr365-rede-lenta.mjs:47:350\n    at async scenario (file:///tmp/pr365-rede-lenta.mjs:30:6)\n    at async file:///tmp/pr365-rede-lenta.mjs:46:2",
+      "finalCookie": "c%3Agas",
+      "documents": [
+        "http://localhost:33991/observatorio",
+        "http://localhost:33991/gas-natural"
+      ]
+    }
+  ],
+  "errors": [
+    "Next: POST1000ms, retorno ao mapa espera continuidade: Condição não atingida em 8000ms",
+    "SPA: POST1000ms, saída para mapa entrega Pagamentos: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href=\"/app/observatorios\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"obs-trocar-conta\" href=\"/app/observatorios\">Escolher na minha conta →</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+    "SPA: POST6000ms abortado, saída não fica presa: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href=\"/app/observatorios\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"obs-trocar-conta\" href=\"/app/observatorios\">Escolher na minha conta →</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+    "Next A: resposta atrasada não sobrescreve documento B: Condição não atingida em 8000ms",
+    "SPA A: resposta atrasada não sobrescreve documento B: Condição não atingida em 8000ms"
+  ]
+}

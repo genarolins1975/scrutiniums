@@ -1,0 +1,1125 @@
+{
+  "build": "TTwbz4-734bV6VVI1HyWJ",
+  "configuracoes": [
+    {
+      "width": 390,
+      "primeiro": {
+        "x": 24,
+        "y": 365.578125,
+        "width": 342,
+        "height": 178.1875
+      },
+      "medidas": {
+        "horizontal": false,
+        "pequenos": [],
+        "piso": 12
+      },
+      "axe": [],
+      "erros": []
+    },
+    {
+      "width": 1440,
+      "primeiro": {
+        "x": 136,
+        "y": 320.90625,
+        "width": 1168,
+        "height": 89
+      },
+      "medidas": {
+        "horizontal": false,
+        "pequenos": [],
+        "piso": 12
+      },
+      "axe": [],
+      "erros": []
+    }
+  ],
+  "links": [
+    {
+      "href": "/educacao-municipal",
+      "status": 200,
+      "final": "/educacao-municipal",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/educacao-municipal-capitais",
+      "status": 200,
+      "final": "/eficiencia-estatal/educacao-municipal-capitais",
+      "ok": true
+    },
+    {
+      "href": "/perguntas/servicos-publicos",
+      "status": 200,
+      "final": "/perguntas/servicos-publicos",
+      "ok": true
+    },
+    {
+      "href": "/buscar?q=Ideb",
+      "status": 200,
+      "final": "/buscar",
+      "ok": true
+    },
+    {
+      "href": "/combustiveis/no-meu-estado",
+      "status": 200,
+      "final": "/combustiveis/no-meu-estado",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/gas-de-cozinha",
+      "status": 200,
+      "final": "/gas-natural/gas-de-cozinha",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/seguranca-publica/estados",
+      "status": 200,
+      "final": "/eficiencia-estatal/seguranca-publica/estados",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas-estaduais",
+      "status": 200,
+      "final": "/contas-publicas-estaduais",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/conta-de-luz",
+      "status": 200,
+      "final": "/setor-eletrico/conta-de-luz",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/municipio",
+      "status": 200,
+      "final": "/saneamento/municipio",
+      "ok": true
+    },
+    {
+      "href": "/conectividade",
+      "status": 200,
+      "final": "/conectividade",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/previdencia",
+      "status": 200,
+      "final": "/contas-publicas/previdencia",
+      "ok": true
+    },
+    {
+      "href": "/territorio/queimadas",
+      "status": 200,
+      "final": "/territorio/queimadas",
+      "ok": true
+    },
+    {
+      "href": "/territorio/desastres",
+      "status": 200,
+      "final": "/territorio/desastres",
+      "ok": true
+    },
+    {
+      "href": "/custo-de-vida",
+      "status": 200,
+      "final": "/custo-de-vida",
+      "ok": true
+    },
+    {
+      "href": "/observatorios/familias",
+      "status": 200,
+      "final": "/observatorios/familias",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/trabalho-renda",
+      "status": 200,
+      "final": "/eficiencia-estatal/trabalho-renda",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/formal-employment",
+      "status": 200,
+      "final": "/observatorio/formal-employment",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/payroll-lending-aging",
+      "status": 200,
+      "final": "/observatorio/payroll-lending-aging",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/conduct-enforcement",
+      "status": 200,
+      "final": "/observatorio/conduct-enforcement",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/debt-collection-lawsuits",
+      "status": 200,
+      "final": "/observatorio/debt-collection-lawsuits",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/bets-financial-risk",
+      "status": 200,
+      "final": "/observatorio/bets-financial-risk",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/financial-fraud",
+      "status": 200,
+      "final": "/observatorio/financial-fraud",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/lawsuits",
+      "status": 200,
+      "final": "/observatorio/lawsuits",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/desenrola",
+      "status": 200,
+      "final": "/observatorio/desenrola",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/credit",
+      "status": 200,
+      "final": "/observatorio/credit",
+      "ok": true
+    },
+    {
+      "href": "/observatorio-do-credito/quanto-meu-banco-cobra",
+      "status": 200,
+      "final": "/observatorio-do-credito/quanto-meu-banco-cobra",
+      "ok": true
+    },
+    {
+      "href": "/observatorio-do-credito/simulador-da-parcela",
+      "status": 200,
+      "final": "/observatorio-do-credito/simulador-da-parcela",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/assistencia-social",
+      "status": 200,
+      "final": "/eficiencia-estatal/assistencia-social",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/seguranca-alimentar",
+      "status": 200,
+      "final": "/eficiencia-estatal/seguranca-alimentar",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/inclusao-energetica",
+      "status": 200,
+      "final": "/setor-eletrico/inclusao-energetica",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/tarifa-social",
+      "status": 200,
+      "final": "/saneamento/tarifa-social",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/habitacao",
+      "status": 200,
+      "final": "/eficiencia-estatal/habitacao",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/housing-credit",
+      "status": 200,
+      "final": "/observatorio/housing-credit",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/prato",
+      "status": 200,
+      "final": "/agronegocio/prato",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/alimentos-consumo",
+      "status": 200,
+      "final": "/agronegocio/alimentos-consumo",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/preco-regulado",
+      "status": 200,
+      "final": "/saneamento/preco-regulado",
+      "ok": true
+    },
+    {
+      "href": "/observatorios/servicos-publicos",
+      "status": 200,
+      "final": "/observatorios/servicos-publicos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/saude-capitais",
+      "status": 200,
+      "final": "/eficiencia-estatal/saude-capitais",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/saude-ambiente",
+      "status": 200,
+      "final": "/saneamento/saude-ambiente",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/seguranca-publica",
+      "status": 200,
+      "final": "/eficiencia-estatal/seguranca-publica",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/judiciario",
+      "status": 200,
+      "final": "/eficiencia-estatal/judiciario",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/acesso-justica",
+      "status": 200,
+      "final": "/eficiencia-estatal/acesso-justica",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/cultura",
+      "status": 200,
+      "final": "/eficiencia-estatal/cultura",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal",
+      "status": 200,
+      "final": "/eficiencia-estatal",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/indice-de-resultados",
+      "status": 200,
+      "final": "/eficiencia-estatal/indice-de-resultados",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/laboratorio-cesta",
+      "status": 200,
+      "final": "/eficiencia-estatal/laboratorio-cesta",
+      "ok": true
+    },
+    {
+      "href": "/observatorios/contas-publicas",
+      "status": 200,
+      "final": "/observatorios/contas-publicas",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas",
+      "status": 200,
+      "final": "/contas-publicas",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/por-area",
+      "status": 200,
+      "final": "/contas-publicas/por-area",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/panorama",
+      "status": 200,
+      "final": "/contas-publicas/panorama",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/planejamento",
+      "status": 200,
+      "final": "/contas-publicas/planejamento",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/execucao",
+      "status": 200,
+      "final": "/contas-publicas/execucao",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/restos-a-pagar",
+      "status": 200,
+      "final": "/contas-publicas/restos-a-pagar",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/custos",
+      "status": 200,
+      "final": "/contas-publicas/custos",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/metas",
+      "status": 200,
+      "final": "/contas-publicas/metas",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/beneficios",
+      "status": 200,
+      "final": "/contas-publicas/beneficios",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/riscos",
+      "status": 200,
+      "final": "/contas-publicas/riscos",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/metodologia",
+      "status": 200,
+      "final": "/contas-publicas/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/glossario",
+      "status": 200,
+      "final": "/contas-publicas/glossario",
+      "ok": true
+    },
+    {
+      "href": "/contas-publicas/dados",
+      "status": 200,
+      "final": "/contas-publicas/dados",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/subnational-credit",
+      "status": 200,
+      "final": "/observatorio/subnational-credit",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/federal-tax-debt",
+      "status": 200,
+      "final": "/observatorio/federal-tax-debt",
+      "ok": true
+    },
+    {
+      "href": "/observatorios/energia-e-infraestrutura",
+      "status": 200,
+      "final": "/observatorios/energia-e-infraestrutura",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico",
+      "status": 200,
+      "final": "/setor-eletrico",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/visao-geral",
+      "status": 200,
+      "final": "/setor-eletrico/visao-geral",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/territorio",
+      "status": 200,
+      "final": "/setor-eletrico/territorio",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/agua-e-clima",
+      "status": 200,
+      "final": "/setor-eletrico/agua-e-clima",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/geracao",
+      "status": 200,
+      "final": "/setor-eletrico/geracao",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/geracao/curtailment",
+      "status": 200,
+      "final": "/setor-eletrico/geracao/curtailment",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/carga",
+      "status": 200,
+      "final": "/setor-eletrico/carga",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/rede",
+      "status": 200,
+      "final": "/setor-eletrico/rede",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/pld",
+      "status": 200,
+      "final": "/setor-eletrico/pld",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/pld/modelos",
+      "status": 200,
+      "final": "/setor-eletrico/pld/modelos",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/mercado",
+      "status": 200,
+      "final": "/setor-eletrico/mercado",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/leiloes",
+      "status": 200,
+      "final": "/setor-eletrico/leiloes",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/perdas",
+      "status": 200,
+      "final": "/setor-eletrico/perdas",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/qualidade",
+      "status": 200,
+      "final": "/setor-eletrico/qualidade",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/empresas",
+      "status": 200,
+      "final": "/setor-eletrico/empresas",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/expansao",
+      "status": 200,
+      "final": "/setor-eletrico/expansao",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/transicao",
+      "status": 200,
+      "final": "/setor-eletrico/transicao",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/regulacao",
+      "status": 200,
+      "final": "/setor-eletrico/regulacao",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/aprenda",
+      "status": 200,
+      "final": "/setor-eletrico/aprenda",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/dados",
+      "status": 200,
+      "final": "/setor-eletrico/dados",
+      "ok": true
+    },
+    {
+      "href": "/setor-eletrico/metodologia",
+      "status": 200,
+      "final": "/setor-eletrico/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural",
+      "status": 200,
+      "final": "/gas-natural",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/producao",
+      "status": 200,
+      "final": "/gas-natural/producao",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/aproveitamento",
+      "status": 200,
+      "final": "/gas-natural/aproveitamento",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/importacao",
+      "status": 200,
+      "final": "/gas-natural/importacao",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/precos",
+      "status": 200,
+      "final": "/gas-natural/precos",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/gnv-e-gas-encanado",
+      "status": 200,
+      "final": "/gas-natural/gnv-e-gas-encanado",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/mercado",
+      "status": 200,
+      "final": "/gas-natural/mercado",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/infraestrutura",
+      "status": 200,
+      "final": "/gas-natural/infraestrutura",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/regulacao",
+      "status": 200,
+      "final": "/gas-natural/regulacao",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/dados",
+      "status": 200,
+      "final": "/gas-natural/dados",
+      "ok": true
+    },
+    {
+      "href": "/gas-natural/metodologia",
+      "status": 200,
+      "final": "/gas-natural/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/combustiveis",
+      "status": 200,
+      "final": "/combustiveis",
+      "ok": true
+    },
+    {
+      "href": "/saneamento",
+      "status": 200,
+      "final": "/saneamento",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/acesso",
+      "status": 200,
+      "final": "/saneamento/acesso",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/desigualdades",
+      "status": 200,
+      "final": "/saneamento/desigualdades",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/continuidade",
+      "status": 200,
+      "final": "/saneamento/continuidade",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/esgoto",
+      "status": 200,
+      "final": "/saneamento/esgoto",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/prestadores",
+      "status": 200,
+      "final": "/saneamento/prestadores",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/prestadores/comparar",
+      "status": 200,
+      "final": "/saneamento/prestadores/comparar",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/investimento",
+      "status": 200,
+      "final": "/saneamento/investimento",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/financiamento",
+      "status": 200,
+      "final": "/saneamento/financiamento",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/planejamento",
+      "status": 200,
+      "final": "/saneamento/planejamento",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/contratado",
+      "status": 200,
+      "final": "/saneamento/contratado",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/responsaveis",
+      "status": 200,
+      "final": "/saneamento/responsaveis",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/resiliencia",
+      "status": 200,
+      "final": "/saneamento/resiliencia",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/comparar",
+      "status": 200,
+      "final": "/saneamento/comparar",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/internacional",
+      "status": 200,
+      "final": "/saneamento/internacional",
+      "ok": true
+    },
+    {
+      "href": "/saneamento/metodologia",
+      "status": 200,
+      "final": "/saneamento/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/mobilidade-transporte",
+      "status": 200,
+      "final": "/eficiencia-estatal/mobilidade-transporte",
+      "ok": true
+    },
+    {
+      "href": "/observatorios/economia",
+      "status": 200,
+      "final": "/observatorios/economia",
+      "ok": true
+    },
+    {
+      "href": "/observatorio",
+      "status": 200,
+      "final": "/observatorio",
+      "ok": true
+    },
+    {
+      "href": "/observatorio-do-credito/metodologia",
+      "status": 200,
+      "final": "/observatorio-do-credito/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/map",
+      "status": 200,
+      "final": "/observatorio/map",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/overview",
+      "status": 200,
+      "final": "/observatorio/overview",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/credit-panorama",
+      "status": 200,
+      "final": "/observatorio/credit-panorama",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/states",
+      "status": 200,
+      "final": "/observatorio/states",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/credit-penetration",
+      "status": 200,
+      "final": "/observatorio/credit-penetration",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/leading-signals",
+      "status": 200,
+      "final": "/observatorio/leading-signals",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/search-trends",
+      "status": 200,
+      "final": "/observatorio/search-trends",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/institutions",
+      "status": 200,
+      "final": "/observatorio/institutions",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/products",
+      "status": 200,
+      "final": "/observatorio/products",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/interest-rates",
+      "status": 200,
+      "final": "/observatorio/interest-rates",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/sfn-entries-exits",
+      "status": 200,
+      "final": "/observatorio/sfn-entries-exits",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/compare",
+      "status": 200,
+      "final": "/observatorio/compare",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/market",
+      "status": 200,
+      "final": "/observatorio/market",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/broad-credit",
+      "status": 200,
+      "final": "/observatorio/broad-credit",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/rural-credit",
+      "status": 200,
+      "final": "/observatorio/rural-credit",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/directed-credit-bndes",
+      "status": 200,
+      "final": "/observatorio/directed-credit-bndes",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/funding",
+      "status": 200,
+      "final": "/observatorio/funding",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/consortia",
+      "status": 200,
+      "final": "/observatorio/consortia",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/loan-maturity",
+      "status": 200,
+      "final": "/observatorio/loan-maturity",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/fidc-receivables",
+      "status": 200,
+      "final": "/observatorio/fidc-receivables",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/operational-indicators",
+      "status": 200,
+      "final": "/observatorio/operational-indicators",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/scenarios",
+      "status": 200,
+      "final": "/observatorio/scenarios",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/alerts",
+      "status": 200,
+      "final": "/observatorio/alerts",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/regulacao",
+      "status": 200,
+      "final": "/observatorio/regulacao",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/research",
+      "status": 200,
+      "final": "/observatorio/research",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/methodology",
+      "status": 200,
+      "final": "/observatorio/methodology",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/pix",
+      "status": 200,
+      "final": "/observatorio/pix",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/open-finance",
+      "status": 200,
+      "final": "/observatorio/open-finance",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/sectors",
+      "status": 200,
+      "final": "/observatorio/sectors",
+      "ok": true
+    },
+    {
+      "href": "/observatorio/recoveries",
+      "status": 200,
+      "final": "/observatorio/recoveries",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio",
+      "status": 200,
+      "final": "/agronegocio",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/tamanho",
+      "status": 200,
+      "final": "/agronegocio/tamanho",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/conjuntura",
+      "status": 200,
+      "final": "/agronegocio/conjuntura",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/insumos",
+      "status": 200,
+      "final": "/agronegocio/insumos",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/mercados",
+      "status": 200,
+      "final": "/agronegocio/mercados",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/produtores",
+      "status": 200,
+      "final": "/agronegocio/produtores",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/apoio",
+      "status": 200,
+      "final": "/agronegocio/apoio",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/producao",
+      "status": 200,
+      "final": "/agronegocio/producao",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/custos-renda",
+      "status": 200,
+      "final": "/agronegocio/custos-renda",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/credito-protecao",
+      "status": 200,
+      "final": "/agronegocio/credito-protecao",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/logistica-mercados",
+      "status": 200,
+      "final": "/agronegocio/logistica-mercados",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/empresas-trabalho",
+      "status": 200,
+      "final": "/agronegocio/empresas-trabalho",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/politicas-inclusao",
+      "status": 200,
+      "final": "/agronegocio/politicas-inclusao",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/panorama",
+      "status": 200,
+      "final": "/agronegocio/panorama",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/atlas",
+      "status": 200,
+      "final": "/agronegocio/atlas",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/comparar",
+      "status": 200,
+      "final": "/agronegocio/comparar",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/cadeias",
+      "status": 200,
+      "final": "/agronegocio/cadeias",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/sintese",
+      "status": 200,
+      "final": "/agronegocio/sintese",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/aprenda",
+      "status": 200,
+      "final": "/agronegocio/aprenda",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/glossario",
+      "status": 200,
+      "final": "/agronegocio/glossario",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/metodologia",
+      "status": 200,
+      "final": "/agronegocio/metodologia",
+      "ok": true
+    },
+    {
+      "href": "/territorio",
+      "status": 200,
+      "final": "/territorio",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/ambiente",
+      "status": 200,
+      "final": "/agronegocio/ambiente",
+      "ok": true
+    },
+    {
+      "href": "/agronegocio/clima-ambiente",
+      "status": 200,
+      "final": "/agronegocio/clima-ambiente",
+      "ok": true
+    },
+    {
+      "href": "/territorio/emissoes",
+      "status": 200,
+      "final": "/territorio/emissoes",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/meio-ambiente-clima",
+      "status": 200,
+      "final": "/eficiencia-estatal/meio-ambiente-clima",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/trabalho-renda/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/trabalho-renda/metodos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/assistencia-social/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/assistencia-social/metodos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/seguranca-publica/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/seguranca-publica/metodos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/cultura/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/cultura/metodos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/mobilidade-transporte/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/mobilidade-transporte/metodos",
+      "ok": true
+    },
+    {
+      "href": "/eficiencia-estatal/meio-ambiente-clima/metodos",
+      "status": 200,
+      "final": "/eficiencia-estatal/meio-ambiente-clima/metodos",
+      "ok": true
+    }
+  ],
+  "continuidade": [
+    {
+      "caso": "Next Link, prefetch e retorno ao mapa",
+      "ok": true,
+      "documentos": []
+    },
+    {
+      "caso": "Crédito→Pix, voltar/avançar e Continuar em Pagamentos",
+      "ok": true
+    }
+  ],
+  "erros": []
+}

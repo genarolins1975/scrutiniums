@@ -1,4 +1,5 @@
 import { getDb, newId, schema } from "./db";
+import { OBSERVATORIOS } from "./observatorios/lista";
 
 /**
  * Telemetria de navegação da área logada — SEM PII.
@@ -159,12 +160,24 @@ export const VIEW_SECTIONS = [
   "app:observatorios",
 ] as const;
 
-export type ViewSection = (typeof VIEW_SECTIONS)[number];
+/**
+ * Cliques no mapa da conta (Iniciativa M1 do parecer de UX de 23/10/2026, LinkMedido): `mapa:<coleção>` e
+ * `mapa:o:<observatório>`, gerados do registro (src/lib/observatorios/lista.ts), no lugar do evento "observatorio_aberto" do
+ * antigo POST. Só ids do registro; nada de caminho livre.
+ */
+export const SECOES_DO_MAPA: Record<string, string> = Object.fromEntries(
+  OBSERVATORIOS.flatMap((o) => [
+    [`mapa:o:${o.id}`, `Mapa da conta · ${o.nomeCurto}`],
+    ...o.colecoes.map((c) => [`mapa:${c.id}`, `Mapa da conta · ${c.nome}`]),
+  ]),
+);
 
-const SECTIONS = new Set<string>(VIEW_SECTIONS);
+export type ViewSection = (typeof VIEW_SECTIONS)[number] | `mapa:${string}`;
+
+const SECTIONS = new Set<string>([...VIEW_SECTIONS, ...Object.keys(SECOES_DO_MAPA)]);
 
 /** Rótulos exibidos no painel de administração. */
-export const SECTION_LABELS: Record<ViewSection, string> = {
+export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "obs:mapa": "Observatório · Início do painel",
   "obs:overview": "Observatório · Visão geral",
   "obs:panorama": "Observatório · Quem toma crédito e onde",
@@ -304,7 +317,8 @@ export function isViewSection(value: string): value is ViewSection {
 }
 
 export function sectionLabel(section: string): string {
-  return isViewSection(section) ? SECTION_LABELS[section] : section;
+  if (!isViewSection(section)) return section;
+  return SECOES_DO_MAPA[section] ?? SECTION_LABELS[section as (typeof VIEW_SECTIONS)[number]];
 }
 
 /** Prefixo do nome do evento de visita em product_events. */

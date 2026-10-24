@@ -1,0 +1,29 @@
+{
+ "data": "2026-10-24",
+ "build": "tnEt0wD5K5bo3Ayunr8ee",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /observatorio,/setor-eletrico,/eficiencia-estatal --saida /tmp/pr365-definitivo/referencias --larguras 1440 --modos com --conta nova",
+ "tempo": "0 min 06 s",
+ "resultados": [
+  {
+   "rota": "/observatorio,/setor-eletrico,/eficiencia-estatal",
+   "modo": "com",
+   "largura": 1440,
+   "status": 404,
+   "final": "/observatorio,/setor-eletrico,/eficiencia-estatal",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 356,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ],
+   "login": [
+    "/entrar?_rsc=77yha"
+   ],
+   "captura": "observatorio_setor_eletrico_eficiencia_estatal-1440-com-sessao.jpg",
+   "primeiraTela": "observatorio_setor_eletrico_eficiencia_estatal-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

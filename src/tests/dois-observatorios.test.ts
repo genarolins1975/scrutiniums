@@ -85,9 +85,10 @@ describe("registro de domínios", () => {
     expect(ler("src/components/home/SecaoObservatorios.tsx")).toContain("DOMINIOS.map");
     // o seletor lista as coleções do registro; a Síntese das capitais é a coleção da Eficiência Estatal (Iniciativa 1, 21/10/2026)
     expect(ler("src/components/layout/NavegacaoContexto.tsx")).toContain("o.colecoes.map");
-    // a escolha pós login agrupa os cartões das coleções pelos seis observatórios
-    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OBSERVATORIOS.map");
-    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).toContain("OPCOES_OBSERVATORIOS.filter");
+    // o mapa da conta agrupa as coleções pelos seis observatórios do registro; desde a Iniciativa M1 do parecer de UX de
+    // 23/10/2026 não há mais cartão por domínio (OPCOES_OBSERVATORIOS) no mapa: a Síntese das capitais é uma coleção com link
+    expect(ler("src/lib/observatorios/mapaConta.ts")).toContain("OBSERVATORIOS.map");
+    expect(ler("src/app/app/(foco)/observatorios/page.tsx")).not.toContain("OPCOES_OBSERVATORIOS");
     expect(ler("src/components/layout/PublicHeader.tsx")).toContain("<AbasCabecalho");
     // o cabeçalho público lista os seis observatórios; a Eficiência Estatal chega por eles (src/lib/observatorios/registro.ts)
     expect(ler("src/components/layout/navCabecalho.ts")).toContain("OBSERVATORIOS");

@@ -1,0 +1,57 @@
+{
+ "data": "2026-10-24",
+ "build": "tnEt0wD5K5bo3Ayunr8ee",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /observatorio /setor-eletrico /eficiencia-estatal --saida /tmp/pr365-definitivo/referencias --larguras 1440 --modos com --conta nova",
+ "tempo": "0 min 14 s",
+ "resultados": [
+  {
+   "rota": "/observatorio",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/observatorio/map",
+   "barra": true,
+   "cromo": 228,
+   "topoH1": 338,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "observatorio-1440-com-sessao.jpg",
+   "primeiraTela": "observatorio-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/setor-eletrico",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/setor-eletrico",
+   "barra": true,
+   "cromo": 222,
+   "topoH1": 312,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "setor_eletrico-1440-com-sessao.jpg",
+   "primeiraTela": "setor_eletrico-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/eficiencia-estatal",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/eficiencia-estatal",
+   "barra": true,
+   "cromo": 222,
+   "topoH1": 308,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "eficiencia_estatal-1440-com-sessao.jpg",
+   "primeiraTela": "eficiencia_estatal-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

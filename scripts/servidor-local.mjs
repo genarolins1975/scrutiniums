@@ -26,7 +26,7 @@ const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const require = createRequire(import.meta.url);
 export const NOME_COOKIE = "scrutiniums_session";
 
-export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-local" } = {}) {
+export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-local", preparar = null } = {}) {
   if (!existsSync(join(raiz, ".next/BUILD_ID"))) throw new Error("Sem build em .next: rode npm run build antes.");
   const temporario = await mkdtemp(join(tmpdir(), "scrutiniums-local-"));
   const pastaBundle = await mkdtemp(join(raiz, "node_modules/.servidor-local-"));
@@ -56,6 +56,8 @@ export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-lo
       phoneVerifiedAt: agora, onboardingStatus: "COMPLETE", createdAt: agora, updatedAt: agora });
     await db.insert(schema.sessions).values({ id: `${usuario}-sessao`, userId: usuario,
       tokenHash: createHash("sha256").update(token).digest("hex"), expiresAt: expira, createdAt: agora });
+    // dados a mais da conta (recortes, avisos), gravados antes de o servidor abrir o banco
+    if (preparar) await preparar(db, schema, usuario);
     await db.$client.close();
     if (anterior === undefined) delete process.env.DATABASE_URL; else process.env.DATABASE_URL = anterior;
 
