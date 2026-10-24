@@ -1398,3 +1398,15 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 
 /* Contém o texto assistivo de natureza dentro da célula rolável. */
 .seal { position: relative; }
+
+/* Abertura das páginas homologadas: referências e ações partilham a linha. */
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left { display: contents; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > * { grid-column: 1 / -1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > .ph-fontes { grid-column: 1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead > .ph-actions { grid-column: 2; align-self: start; }
+
+/* Dispersão estadual: preserva os rótulos de 12 px e oferece tabela equivalente. */
+.cgdisp-wrap .cgdisp { width:720px; min-width:720px; max-width:none; display:block; }
+
+@media (max-width:640px) { :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }

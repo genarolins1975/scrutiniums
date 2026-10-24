@@ -20,6 +20,8 @@
   .secao { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 2fr); gap: 32px; }
   .secao .colecoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; margin-top: 0; align-items: start; }
   .colecoes > li { min-width: 0; }
+  /* A lista aberta usa a linha inteira, sem deixar um vazio junto das páginas longas. */
+  .colecoes > li:has(.paginas[open]) { grid-column: 1 / -1; }
 }
 .cabecalhoSecao { min-width: 0; }
 .secao { min-width: 0; scroll-margin-top: 180px; }

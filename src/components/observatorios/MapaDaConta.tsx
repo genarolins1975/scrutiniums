@@ -239,6 +239,9 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
         </LinkMedido>
         {c.prontidao && <SeloProntidao valor={c.prontidao} />}
       </h3>
+      {c.resumoEntrada && (
+        <p className="t-meta mb-2 text-carvao-muted" data-resumo-entrada="">Na entrada: {c.resumoEntrada}</p>
+      )}
       {c.paginas.length > 0 ? (
         <details id={`paginas-${c.id}`} className={styles.paginas}>
           <summary className="t-meta text-mineral" data-estado-colecao="">

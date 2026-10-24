@@ -8,6 +8,7 @@ vi.mock("@/lib/frescor/dominios", () => ({
     publicadoEm: "2026-10-24T12:00:00Z", parteMaisRecente: null,
   })),
 }));
+import { paineis } from "@/lib/observatorios/registro";
 import { diretorioDoMapa } from "@/lib/observatorios/mapaConta";
 
 const colecoes = () => diretorioDoMapa(new Date("2026-10-24T13:00:00Z")).secoes.flatMap(o => o.colecoes);
@@ -29,4 +30,11 @@ describe("período dos indicadores no mapa", () => {
       expect(linhas.filter(c => c.fontes.length === 0).every(c => c.dadosAte === null)).toBe(true);
     },
   );
+});
+
+it("o resumo do mapa é o da rota de entrada exata, nunca o de uma página vizinha", () => {
+  const entradas = new Map(paineis().filter(p => !p.duplicataDe).map(p => [p.rota, p.resumo]));
+  const linhas = colecoes();
+  expect(linhas.some(c => c.resumoEntrada)).toBe(true);
+  for (const c of linhas) expect(c.resumoEntrada, c.href).toBe(entradas.get(c.href));
 });
