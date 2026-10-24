@@ -1,0 +1,15 @@
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/tests/busca-indice.test.ts > índice da busca > todo apelido de _nomes aponta para um nome que existe na lista de bancos ou de distribuidoras
+AssertionError: expected [ 'Neoenergia Brasília', …(3) ] to deeply equal []
+ FAIL  src/tests/energia-conteudo-r8-R.test.ts > vereditos novos: forma > as seleções que o leitor vê de abertura ficam em 40 palavras
+AssertionError: Em set/2026, a MMGD, estimada pelo ONS e não medida, foi 11,32% da carga global do SIN. Em 2026, o pico do dia caiu mais vezes entre 18h e 19h na curva de carga e entre 19h e 20h na carga líquida de MMGD.: expected 44 to be less than or equal to 40
+ FAIL  src/tests/energia-conteudo-r8-T2.test.ts > conciliação (ii): RALIE e SIGA em construção (classificação 2: fonte, data e medida diferentes) > os números do texto batem com o cruzamento feito linha a linha nos dois CSV
+AssertionError: expected 2156 to be 2218 // Object.is equality
+ FAIL  src/tests/energia-gold-contrato.test.ts > gold de energia: presença e integridade > meta.json não registra builder falho nem regressão retida
+AssertionError: expected [ { gold: 'empresas.json', …(1) } ] to deeply equal []
+ FAIL  src/tests/energia-inicial.test.ts > a página renderizada > o seletor único diz quantas distribuidoras há em cada página, com a contagem do DEC que fecha com a da Visão geral, e guarda a escolha só no navegador
+AssertionError: expected ' Scrutiniums Setor Elétrico ▾ Família…' to contain 'Conta de luz: 99 com tarifa em vigor.'
+ Test Files  6 failed (6)
+      Tests  6 failed | 275 passed (281)
+ FAIL  src/tests/energia-pld.test.ts > limites vigentes diante dos valores: pico do gráfico, CMO acima dos tetos e limites desenhados só quando alguém os alcança > distância semanal entre submercados: de quanto a quanto vai cada produto, em R$/MWh e sem razão, e sem explicar o motivo
+AssertionError: pld: expected 'A média do PLD foi igual nos quatro s…' to contain 'de R$ 70,63/MWh'

@@ -1,0 +1,110 @@
+..............[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/energia/run.py", line 153, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/confiabilidade-operacoes/pipeline/energia/run.py", line 153, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/confiabilidade-operacoes/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+..REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+......
+----------------------------------------------------------------------
+Ran 22 tests in 2.716s
+
+OK
+REGRESSOES_ENERGIA=[{"gold": "publicacao.json", "motivo": "Listagens ausentes no cenário sintético"}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
