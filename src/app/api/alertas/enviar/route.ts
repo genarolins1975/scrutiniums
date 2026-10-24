@@ -36,6 +36,14 @@ const INTERVALO_MS = 400;
 const ORCAMENTO_MS = 240_000;
 const pausa = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/** GET só simula; não chama envio em versões antigas que ainda não oferecem este método. */
+export async function GET(req: Request) {
+  if (new URL(req.url).searchParams.get("simular") !== "1") {
+    return NextResponse.json({ error: "GET disponível somente para simulação." }, { status: 405 });
+  }
+  return POST(req);
+}
+
 export async function POST(req: Request) {
   let autorizado = bearerDisparoValido(req);
   if (!autorizado) {
@@ -49,6 +57,13 @@ export async function POST(req: Request) {
   const assinaturas = await assinaturasComEmail();
   const publicadas = referenciasPublicadas(assinaturas.map((a) => a.dominio));
   const alvo = assinaturas.filter((a) => referenciaAvancou(a.referenciaAvisada, publicadas.get(a.dominio)?.referencia ?? null));
+  if (new URL(req.url).searchParams.get("simular") === "1") {
+    const dominios = [...new Set(alvo.map((a) => a.dominio))];
+    const previas = dominios.map((dominio) => ({ dominio, referencia: publicadas.get(dominio)!.referencia,
+      assunto: emailAlerta(dominio as DominioFrescorId, null, publicadas.get(dominio)!).subject }));
+    return NextResponse.json({ simulacao: true, assinaturas: assinaturas.length, destinatarios: alvo.length,
+      previas, enviados: 0, falhas: 0, pendentes: 0 }, { headers: { "Cache-Control": "private, no-store" } });
+  }
   let enviados = 0;
   let falhas = 0;
   let pendentes = 0;

@@ -131,6 +131,7 @@ jobs:
           elif [ "$CODIGO" != "0" ]; then
             printf 'O vigia de edição do RTN quebrou (código %s): %s/%s/actions/runs/%s\n\nVigia cego é pior que alerta falso.\n' \
               "$CODIGO" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > /tmp/rtn-erro.md
+            cat /tmp/rtn.md >> /tmp/rtn-erro.md
             scripts/issue_dedup.sh "Contas Públicas Federais: edição nova do RTN aguardando integração" /tmp/rtn-erro.md
           fi
 

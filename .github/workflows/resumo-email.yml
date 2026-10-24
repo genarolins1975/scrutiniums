@@ -11,6 +11,11 @@ on:
   schedule:
     - cron: "47 21 * * *" # reserva diária, 18:47 em São Paulo
   workflow_dispatch:
+    inputs:
+      simular:
+        description: "Validar conteúdo e destinatários sem enviar nem reservar mensagens"
+        type: boolean
+        default: true
 
 permissions: {}
 
@@ -22,7 +27,7 @@ concurrency:
 jobs:
   enviar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20 # espera de deploy (10 min) mais o teto HTTP (310 s) e preparação
     steps:
       - name: Esperar o deploy da publicação nova
         if: github.event_name == 'workflow_run'
@@ -32,11 +37,15 @@ jobs:
       - name: Disparar envio do resumo
         env:
           BOLETIM_SECRET: ${{ secrets.BOLETIM_SECRET }}
+          SIMULAR: ${{ github.event_name == 'workflow_dispatch' && inputs.simular || false }}
         run: |
           if [ "${#BOLETIM_SECRET}" -lt 16 ]; then
             echo "::error::BOLETIM_SECRET ausente ou com menos de 16 caracteres no GitHub Actions; o mesmo valor precisa estar na Vercel (OPERACOES.md)"
             exit 1
           fi
-          curl -sS --fail-with-body -X POST \
-            "https://scrutiniums.com/api/resumo/enviar" \
+          DESTINO="https://scrutiniums.com/api/resumo/enviar"
+          METODO=POST
+          if [ "$SIMULAR" = "true" ]; then DESTINO="${DESTINO}?simular=1"; METODO=GET; fi
+          curl -sS --fail-with-body --connect-timeout 15 --max-time 310 -X "$METODO" \
+            "$DESTINO" \
             -H "Authorization: Bearer ${BOLETIM_SECRET}"

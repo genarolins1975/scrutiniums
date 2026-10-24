@@ -455,12 +455,11 @@ jobs:
           git checkout -- public/energia
           git clean -fdq public/energia
           echo "retida=1" >> "$GITHUB_OUTPUT"
-          ULTIMA=$(python3 -c "import json;print(json.load(open('public/energia/gold/manifesto.json')).get('gerado_em') or 'data não informada')")
           {
             echo "Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}"
             echo
-            echo "A gold de energia reconstruída hoje não passou nos testes e NÃO foi publicada. O site segue"
-            echo "servindo a gold publicada, gerada em ${ULTIMA}."
+            echo "A gold de energia reconstruída hoje não passou nos testes e NÃO foi publicada."
+            python3 scripts/energia_publicacao_retida.py
             echo
             echo "Testes reprovados nesta execução:"
             python3 scripts/testes_reprovados.py vitest-resultado.json testes-codigos.txt pipeline-testes.log

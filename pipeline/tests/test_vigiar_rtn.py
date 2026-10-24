@@ -23,7 +23,8 @@ def tesouro(publicados=(), planilha=None, falhar=False):
             recurso = {"id": "527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6", "url": planilha or DADOS["fonteRTN"]}
             return 200, json.dumps({"result": {"resources": [{"id": "outro", "url": "x"}, recurso]}}).encode()
         ano, mes = map(int, url.rstrip("/").rsplit("/", 2)[1:])
-        return (200, b"<html>") if (ano, mes) in publicados else (404, b"")
+        conteudo = f"<html><title>Resultado do Tesouro Nacional — {V.MESES[mes-1]} de {ano}</title></html>".encode()
+        return (200, conteudo) if (ano, mes) in publicados else (404, b"")
     return buscar
 
 
@@ -58,6 +59,18 @@ class VigiaRTN(unittest.TestCase):
         self.assertEqual(publicados, [])
         self.assertEqual(len(nv), 3)  # agosto, setembro e o CKAN
         self.assertIn("Não verificado", V.corpo(DADOS, publicados, planilha, nv))
+
+    def test_200_vazio_ou_desafio_nao_confirma_edicao(self):
+        for conteudo in [b'', b'<html>Access denied</html>', b'<html>Login</html>']:
+            with self.subTest(conteudo=conteudo):
+                publicados, planilha, nv = V.verificar(DADOS, lambda _: (200, conteudo), dt.date(2026, 10, 24))
+                self.assertEqual(publicados, [])
+                self.assertIsNone(planilha)
+                self.assertTrue(nv)
+
+    def test_indisponibilidade_tem_codigo_diferente_de_edicao_nova(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(V.main(buscar=tesouro(falhar=True), hoje=dt.date(2026, 10, 24)), 4)
 
 
 if __name__ == "__main__":
