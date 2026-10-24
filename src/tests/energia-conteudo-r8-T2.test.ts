@@ -553,21 +553,24 @@ describe("conciliação (iii): 22.798 usinas e 220.658,9 MW contra 22.665 e 220.
   })();
   const kw = (u: Record<string, string>) => Number(u.kw_fiscalizado || 0);
 
-  it("a diferença é a soma de 123 usinas sem proprietário ou com participações fora de 100% e 10 sem potência fiscalizada", () => {
+  it("a diferença é a soma das usinas sem proprietário ou com participações fora de 100%, das com a lista cortada pela fonte e das sem potência fiscalizada", () => {
     const dentro = usinas.filter((u) => (u.estado_vinculo === "vinculado" || u.estado_vinculo === "inclui_sem_documento") && kw(u) > 0);
     const fora = usinas.filter((u) => !dentro.includes(u));
     const semParticipacao = fora.filter((u) => u.estado_vinculo === "sem_proprietario" || u.estado_vinculo === "soma_divergente");
+    // SIGA de 23/10/2026: a lista de proprietários cortada em 500 caracteres fica no estado não lido, sem vínculo parcial
+    const naoLido = fora.filter((u) => u.estado_vinculo === "nao_lido");
     const semPotencia = fora.filter((u) => kw(u) === 0);
     expect(usinas.length).toBe(GE.cadastro.ativos.operacao.usinas);
     expect(dentro.length).toBe(GE.controle.fronteira.usinas);
-    expect(fora.length).toBe(semParticipacao.length + semPotencia.length);
+    expect(fora.length).toBe(semParticipacao.length + naoLido.length + semPotencia.length);
     // as usinas fora por falta de potência são todas de participação válida: a causa do resto é só a potência zero
     expect(semPotencia.every((u) => u.estado_vinculo === "vinculado" || u.estado_vinculo === "inclui_sem_documento")).toBe(true);
     expect(Math.abs(fora.reduce((s, u) => s + kw(u), 0) / 1000 - (GE.controle.fronteira.mw_fora as number))).toBeLessThan(0.1);
 
     const t = E.textoFronteiraNoCadastro(GE.controle.fronteira, GE.cadastro.ativos);
     expect(t).toContain(`ficam de fora ${num(fora.length, 0)} usinas e ${num(GE.controle.fronteira.mw_fora, 1)} MW`);
-    expect(t).toContain(`sendo ${num(semParticipacao.length, 0)} usinas sem proprietário informado ou com participações que não somam 100% e ${num(semPotencia.length, 0)} sem potência fiscalizada para contar`);
+    const cortadas = naoLido.length ? `, ${num(naoLido.length, 0)} com a lista de proprietários cortada pela fonte` : "";
+    expect(t).toContain(`sendo ${num(semParticipacao.length, 0)} usinas sem proprietário informado ou com participações que não somam 100%${cortadas} e ${num(semPotencia.length, 0)} sem potência fiscalizada para contar`);
   });
 
   it("a síntese e o painel de controle trazem a explicação ao lado dos dois números", () => {

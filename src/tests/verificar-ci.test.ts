@@ -77,6 +77,22 @@ describe("verificar:pr acompanha o CI", () => {
     const ids = ETAPAS_PR.map((e) => e.id);
     expect(ids.indexOf("build")).toBeGreaterThanOrEqual(0);
     expect(ids.indexOf("vitest")).toBeGreaterThan(ids.indexOf("build"));
-    expect(ETAPAS_PR.find((e) => e.id === "vitest")?.env).toEqual({ EXIGIR_BUILD_HTML: "1" });
+    expect(ETAPAS_PR.find((e) => e.id === "vitest")?.env).toEqual({ EXIGIR_BUILD_HTML: "1", TESTES_SEM_RETRATO: "1" });
+  });
+
+  it("retrato fica fora das barreiras e roda à parte, sem reprovar (decisão do dono de 24/10/2026)", () => {
+    const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+    const energia = readFileSync(".github/workflows/atualizar-energia.yml", "utf8");
+    // os passos que barram (Python e Vitest do CI, testes antes de publicar a gold) pulam os retratos
+    expect(ci).toMatch(/name: Testes Python \(pipeline e camada de pesquisa\)[\s\S]*?TESTES_SEM_RETRATO: "1"[\s\S]*?python3 -m unittest discover -s pipeline\/tests/);
+    expect(ci).toMatch(/EXIGIR_BUILD_HTML: "1"\n\s+TESTES_SEM_RETRATO: "1"\n\s+run: npx vitest run --shard/);
+    expect(energia).toMatch(/name: Testes antes de publicar[\s\S]*?TESTES_SEM_RETRATO: "1"[\s\S]*?npx vitest run/);
+    // e rodam num job que não entra no CI verde, e num passo do workflow de energia que relata em issue
+    expect(ci).toContain("run: node scripts/testes-retrato.mjs");
+    expect(ci.match(/needs: \[mudancas, estatico, python, testes, judiciario\]/)).not.toBeNull();
+    expect(energia).toContain("node scripts/testes-retrato.mjs --saida retratos.md");
+    expect(energia).toContain('TITULO="Setor Elétrico: retratos divergem da gold do dia; reconferir"');
+    expect(ETAPAS_PR.find((e) => e.id === "python")?.env).toEqual({ TESTES_SEM_RETRATO: "1" });
+    expect(ETAPAS_PR.find((e) => e.id === "retratos")).toMatchObject({ cmds: ["node scripts/testes-retrato.mjs"], informativa: true });
   });
 });

@@ -829,6 +829,16 @@ class TestPrevisao(unittest.TestCase):
         with self.assertRaises(ValueError):
             cl.le_previsao(_texto("openmeteo_precip_trecho.json"), 3)       # ponto faltando não é completado
 
+    def test_chuva_prevista_negativa_vira_zero(self):
+        # 24/10/2026: −0,1 mm na bacia do Uruguai (rodada de 23/10 00Z), artefato numérico do modelo; temperatura negativa
+        # é dado e não muda, e ausência continua ausência
+        resp = json.dumps([{"location_id": 0, "daily": {"time": ["2026-10-24", "2026-10-25", "2026-10-26"],
+                                                         "precipitation_sum": [-0.1, None, 2.4],
+                                                         "temperature_2m_mean": [-1.5, 3.0, None]}}])
+        p = cl.le_previsao(resp, 1)[0]
+        self.assertEqual(p["precipitation_sum"], {"2026-10-24": 0.0, "2026-10-25": None, "2026-10-26": 2.4})
+        self.assertEqual(p["temperature_2m_mean"], {"2026-10-24": -1.5, "2026-10-25": 3.0, "2026-10-26": None})
+
     def test_agrega_com_as_regras_da_estimativa(self):
         p = cl.le_previsao(_texto("openmeteo_precip_trecho.json"), 2)
         t = cl.le_previsao(_texto("openmeteo_temp_trecho.json"), 2)

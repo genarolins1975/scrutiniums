@@ -140,9 +140,11 @@ def le_cadastro_agentes(linhas):
 
 # Um proprietário: "<pct>% para <nome> - <CNPJ formatado ou vazio> (<REGIME>)", separados por
 # ", ". O nome pode conter " - " e vírgulas (ex.: "DME DISTRIBUICAO S.A. - DMED"), por isso o
-# CNPJ formatado (ou o vazio antes do parêntese) é a âncora do fim de cada item.
+# CNPJ formatado (ou o vazio antes do parêntese) é a âncora do fim de cada item. Desde 23/10/2026
+# o SIGA publica "<pct>% para <nome> (<REGIME>)", sem o separador e sem o CNPJ: o regime entre
+# parênteses seguido de vírgula ou do fim do texto passa a ser a âncora, e o CNPJ fica ausente.
 _PROPRIETARIO = re.compile(
-    r"(?P<pct>\d+(?:[.,]\d+)?)%\s+para\s+(?P<nome>.*?)\s+-\s+(?P<doc>\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2})?\s*"
+    r"(?P<pct>\d+(?:[.,]\d+)?)%\s+para\s+(?P<nome>.*?)(?:\s+-\s+(?P<doc>\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2})?)?\s*"
     r"\((?P<regime>[A-Z]+)\)(?:,\s*|$)")
 
 
@@ -156,9 +158,11 @@ def proprietarios_siga(valor):
     for m in _PROPRIETARIO.finditer(s):
         if m.start() != pos:
             return None
+        # desde 23/10/2026 o SIGA publica "&" como "&amp-" ("J&amp-F S.A."); o nome volta a "&", como nos cadastros
+        nome = texto(m.group("nome"))
         itens.append({
             "pct": float(m.group("pct").replace(",", ".")),
-            "nome": texto(m.group("nome")),
+            "nome": nome.replace("&amp-", "&") if nome else nome,
             "cnpj": entidades.cnpj(m.group("doc")) if m.group("doc") else None,
             "regime": m.group("regime"),
         })
@@ -203,6 +207,8 @@ def le_siga(linhas):
             "lat": lat, "lon": lon,
             "proprietarios_texto": bruto,
             "proprietarios": props,
+            # texto presente que não foi lido por inteiro (fora do formato ou cortado pela fonte): nunca vira vínculo parcial
+            "nao_lido": props is None and bruto is not None and not bruto.lower().startswith(("não informado", "nao informado")),
         }
         if k in out:
             if out[k] == reg:
@@ -218,6 +224,12 @@ def le_siga(linhas):
                 ocorr["proprietarios_nao_lidos"].append(k)
         out[k] = reg
     return out, ocorr
+
+
+def estado_da_usina(u):
+    """Estado do vínculo de uma usina lida por le_siga: 'nao_lido' quando o texto de proprietários existe mas não foi
+    lido por inteiro; nos demais casos, estado_vinculo da lista de proprietários."""
+    return "nao_lido" if u.get("nao_lido") else estado_vinculo(u["proprietarios"])
 
 
 def estado_vinculo(props):

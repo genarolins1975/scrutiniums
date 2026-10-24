@@ -1446,6 +1446,11 @@ describe("limites vigentes diante dos valores: pico do gráfico, CMO acima dos t
     for (const [k, rotulo] of [["decomp", "O CMO semanal do DECOMP"], ["dessem", "A média do CMO do DESSEM"], ["pld", "A média do PLD"]] as const) {
       const v = sem.por_sm.map((x) => x[k] as number);
       const item = p.itens.find((x) => x.startsWith(rotulo))!;
+      // os quatro iguais têm frase própria, com o valor e sem faixa (semana de 17 a 23/10/2026: o PLD igual nos quatro submercados)
+      if (new Set(v.map((x) => Math.round(x * 100))).size === 1) {
+        expect(item, k).toBe(`${rotulo} foi igual nos quatro submercados, ${reais(v[0])}/MWh.`);
+        continue;
+      }
       expect(item, k).toContain(`de ${reais(Math.min(...v))}/MWh`);
       expect(item, k).toContain(`a ${reais(Math.max(...v))}/MWh`);
       expect(item, k).toContain(`distância de ${reais(Math.max(...v) - Math.min(...v))}/MWh`);
@@ -1464,6 +1469,9 @@ describe("limites vigentes diante dos valores: pico do gráfico, CMO acima dos t
     // o ramo do empate fica testado num clone em que três submercados empatam no menor CMO do DECOMP
     const empate = { ...sem, por_sm: sem.por_sm.map((x) => ({ ...x, decomp: x.sm === "N" ? 20 : 10 })) };
     expect(partesDistanciaSemanal(empate)!.itens[0]).toContain("(SE/CO, Sul e Nordeste, mesmo valor)");
+    // e o dos quatro iguais, num clone em que o PLD é o mesmo nos quatro submercados
+    const quatroIguais = { ...sem, por_sm: sem.por_sm.map((x) => ({ ...x, pld: 70.63 })) };
+    expect(partesDistanciaSemanal(quatroIguais)!.itens[2]).toBe(`A média do PLD foi igual nos quatro submercados, ${reais(70.63)}/MWh.`);
     expect(p.ressalva).toContain("não dizem por que os valores diferem");
     expect(textoDistanciaSemanal(sem)).toBe(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`);
     expect(`${p.introducao} ${p.itens.join(" ")} ${p.ressalva}`).not.toMatch(SEM_TRAVESSAO);

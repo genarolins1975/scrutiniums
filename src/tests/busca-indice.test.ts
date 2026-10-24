@@ -116,10 +116,19 @@ describe("índice da busca", () => {
 
   it("todo apelido de _nomes aponta para um nome que existe na lista de bancos ou de distribuidoras", () => {
     const brutas = nomesDasListas();
-    const existentes = new Set([...brutas.banco, ...brutas.distribuidora].map(normalizar));
+    // a lista de distribuidoras é a das que têm tarifa em vigor na gold do dia: as que estão entre um reajuste e a publicação da
+    // tarifa nova (sem_vigente, 22/10/2026: Neoenergia Brasília, EDP SP e Equatorial GO) continuam sendo distribuidoras conhecidas
+    const conta = JSON.parse(readFileSync(join(raiz, "public/energia/gold/conta.json"), "utf-8")) as {
+      tarifas: { sem_vigente?: { sigla: string }[] };
+    };
+    const existentes = new Set([...brutas.banco, ...brutas.distribuidora, ...(conta.tarifas.sem_vigente ?? []).map((d) => d.sigla)].map(normalizar));
     expect(brutas.distribuidora.length).toBeGreaterThan(50);
     expect(brutas.banco.length).toBeGreaterThan(50);
-    const soltos = Object.keys(arquivo()._nomes).filter((nome) => !existentes.has(normalizar(nome)));
+    // a fonte também renomeia (23/10/2026: ÂMBAR ENERGIA RR passou a Âmbar Roraima): o nome antigo fica entre os apelidos, e o grupo
+    // vale enquanto o nome ou um dos apelidos estiver nas listas; grupo sem nenhum nome conhecido é erro de digitação
+    const soltos = Object.entries(arquivo()._nomes)
+      .filter(([nome, apelidos]) => ![nome, ...apelidos].some((n) => existentes.has(normalizar(n))))
+      .map(([nome]) => nome);
     expect(soltos).toEqual([]);
   });
 

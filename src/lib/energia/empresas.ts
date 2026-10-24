@@ -3012,14 +3012,16 @@ export function textoFronteiraNoCadastro(f: Controle["fronteira"], a: Ativos, id
   const fora = a.operacao.usinas - f.usinas;
   if (fora <= 0) return "";
   const semParticipacao = a.estados.filter((e) => e.estado === "sem_proprietario" || e.estado === "soma_divergente").reduce((n, e) => n + e.usinas_operacao, 0);
-  const resto = fora - semParticipacao;
+  // lista de proprietários cortada pela fonte (SIGA desde 23/10/2026): fora da fronteira por outro motivo, dito à parte
+  const naoLido = a.estados.filter((e) => e.estado === "nao_lido").reduce((n, e) => n + e.usinas_operacao, 0);
+  const resto = fora - semParticipacao - naoLido;
   const I = (v: number | null | undefined) => inteiro(v, idioma);
   const W = (v: number | null | undefined) => mwTexto(v, 1, idioma);
   return tx(
     `A fronteira (${W(f.mw)} em ${I(f.usinas)} usinas) é menor que o total em operação do cadastro (${W(f.mw_operacao_total)} em ${I(a.operacao.usinas)} usinas): ficam de fora ${I(fora)} usinas e ${W(f.mw_fora)}, ` +
-      `sendo ${I(semParticipacao)} usinas sem proprietário informado ou com participações que não somam 100%${resto > 0 ? ` e ${I(resto)} sem potência fiscalizada para contar` : ""}.`,
+      `sendo ${I(semParticipacao)} usinas sem proprietário informado ou com participações que não somam 100%${naoLido > 0 ? `, ${I(naoLido)} com a lista de proprietários cortada pela fonte` : ""}${resto > 0 ? ` e ${I(resto)} sem potência fiscalizada para contar` : ""}.`,
     `The boundary (${W(f.mw)} in ${I(f.usinas)} plants) is smaller than the registry's total in operation (${W(f.mw_operacao_total)} in ${I(a.operacao.usinas)} plants): ${I(fora)} plants and ${W(f.mw_fora)} are left out, ` +
-      `of which ${I(semParticipacao)} plants have no reported owner or stakes that do not add up to 100%${resto > 0 ? ` and ${I(resto)} have no inspected capacity to count` : ""}.`,
+      `of which ${I(semParticipacao)} plants have no reported owner or stakes that do not add up to 100%${naoLido > 0 ? `, ${I(naoLido)} have their owner list cut off by the source` : ""}${resto > 0 ? ` and ${I(resto)} have no inspected capacity to count` : ""}.`,
     idioma,
   );
 }
