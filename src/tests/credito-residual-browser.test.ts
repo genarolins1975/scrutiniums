@@ -1,5 +1,4 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
 import { chromium, type Browser, type BrowserContext } from "playwright";
 import { subirServidor, temBuild, exigirBuild, type ServidorProducao } from "./suporte/servidor-producao";
 
@@ -142,10 +141,10 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
       await page.locator('[onclick="setFilter(\'sortInst\',\'nome\')"]').click();
       const antes=await page.locator('#view-institutions .inst-nome').allTextContents();
       expect(antes.length).toBeGreaterThan(0);
-      await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:(v:string)=>{(window as any).__copiado=v;return Promise.resolve();}}}));
+      await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:(v:string)=>{(window as unknown as Window & { __copiado: string }).__copiado=v;return Promise.resolve();}}}));
       await page.locator('#view-institutions .ph-menu summary').click();
       await page.locator('#view-institutions .ph-menu').getByRole('button',{name:'copiar URL',exact:true}).click();
-      const url=await page.evaluate(()=>(window as any).__copiado);
+      const url=await page.evaluate(()=>(window as unknown as Window & { __copiado: string }).__copiado);
       expect(new URL(url).searchParams.get('tipo')).toBe('coop');
       expect(new URL(url).searchParams.get('ordem')).toBe('nome');
       expect(new URL(url).searchParams.get('grupo')).toBe('S5');
@@ -154,7 +153,7 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
       expect(await nova.locator('#view-institutions .inst-nome').allTextContents()).toEqual(antes);
       expect(await nova.locator('[onchange="setFilter(\'instGroup\', this.value)"]').inputValue()).toBe('S5');
       // Uma ida e volta pelo roteador cliente: não se contam as entradas criadas pelo boot de cada documento.
-      await nova.evaluate(()=>(window as any).nav('pulse'));
+      await nova.evaluate(()=>(window as unknown as Window & { nav: (vista: string) => void }).nav('pulse'));
       await nova.waitForURL('**/observatorio/credit*');
       await nova.locator('#view-pulse.active .pagehead').waitFor();
       await nova.goBack();
