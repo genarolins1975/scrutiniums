@@ -223,6 +223,54 @@ class ReconciliacaoProprietariosSiga(unittest.TestCase):
         self.assertIsNone(ae.proprietarios_siga(""))
         self.assertEqual(ae.estado_vinculo("nao_lido"), "nao_lido")
 
+    def test_formato_de_23_10_2026_sem_cnpj_e_cortado_em_500(self):
+        # desde 23/10/2026 o SIGA publica "<pct>% para <nome> (<REGIME>)": sem o separador e sem o CNPJ
+        p = ae.proprietarios_siga("100% para DME DISTRIBUICAO S.A. - DMED (SP)")
+        self.assertEqual([(x["nome"], x["cnpj"], x["regime"]) for x in p], [("DME DISTRIBUICAO S.A. - DMED", None, "SP")])
+        p = ae.proprietarios_siga("50% para JOAO DA SILVA (APE), 50% para COMPANHIA X (CX) (PIE)")
+        self.assertEqual([(x["nome"], x["pct"]) for x in p], [("JOAO DA SILVA", 50.0), ("COMPANHIA X (CX)", 50.0)])
+        # e a lista longa chega cortada em 500 caracteres no meio de um item: estado não lido, nunca vínculo parcial
+        cortado = ", ".join(f"1% para EMPRESA {i:03d} LTDA (REG)" for i in range(40))[:500]
+        linhas = [{"IdeNucleoCEG": "000001", "DscPropriRegimePariticipacao": cortado},
+                  {"IdeNucleoCEG": "000002", "DscPropriRegimePariticipacao": "Não Informado"}]
+        usinas, oc = ae.le_siga(linhas)
+        self.assertEqual(oc["proprietarios_nao_lidos"], ["1"])
+        self.assertEqual((ae.estado_da_usina(usinas["1"]), ae.estado_da_usina(usinas["2"])), ("nao_lido", "sem_proprietario"))
+
+    def test_cnpj_pelo_nome_da_captura_anterior(self):
+        # captura anterior com CNPJ; nova sem CNPJ: nome único liga; participação que só um CNPJ tinha liga; nome que apontou
+        # para dois CNPJs (homônimos em usinas diferentes) fica sem vínculo; nome nunca visto fica sem vínculo
+        con = base.conecta(":memory:")
+        v0, _ = base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-16T01:44:11Z", None, "a" * 64, 1, "t", None)
+        v1, _ = base.registra_vintage(con, mod.DS_SIGA, mod.REC_SIGA, "u", "2026-10-24T03:06:24Z", None, "b" * 64, 1, "t", None)
+        base.grava_registros(con, mod.DS_SIGA, v0, [
+            ("1|11111111000111", "pct", "100.0000"),
+            ("2|22222222000122", "pct", "60.0000"), ("2|33333333000133", "pct", "40.0000"),
+            ("3|44444444000144", "pct", "100.0000"), ("4|55555555000155", "pct", "100.0000")])
+        usinas = {
+            "1": {"proprietarios": [{"nome": "ALFA SA", "pct": 100.0, "cnpj": None, "regime": "PIE"}]},
+            "2": {"proprietarios": [{"nome": "BETA SA", "pct": 60.0, "cnpj": None, "regime": "PIE"},
+                                    {"nome": "GAMA SA", "pct": 40.0, "cnpj": None, "regime": "PIE"}]},
+            "3": {"proprietarios": [{"nome": "PREFEITURA", "pct": 100.0, "cnpj": None, "regime": "APE"}]},
+            "4": {"proprietarios": [{"nome": "PREFEITURA", "pct": 100.0, "cnpj": None, "regime": "APE"}]},
+            "5": {"proprietarios": [{"nome": "ALFA SA", "pct": 70.0, "cnpj": None, "regime": "PIE"},
+                                    {"nome": "NOVA LTDA", "pct": 30.0, "cnpj": None, "regime": "PIE"}]},
+        }
+        res = mod._cnpj_pela_captura_anterior(con, usinas, {"capturado_em": "2026-10-24T03:06:24Z"})
+        cnpj = {(k, p["nome"]): p["cnpj"] for k, u in usinas.items() for p in u["proprietarios"]}
+        self.assertEqual(cnpj[("1", "ALFA SA")], "11111111000111")
+        self.assertEqual((cnpj[("2", "BETA SA")], cnpj[("2", "GAMA SA")]), ("22222222000122", "33333333000133"))
+        self.assertEqual((cnpj[("3", "PREFEITURA")], cnpj[("4", "PREFEITURA")]), (None, None))
+        self.assertEqual((cnpj[("5", "ALFA SA")], cnpj[("5", "NOVA LTDA")]), ("11111111000111", None))
+        self.assertEqual(res, {"arquivo_sem_cnpj": True, "captura_anterior": "2026-10-16T01:44:11Z", "parcelas_sem_cnpj": 7,
+                               "ligadas_por_nome": 4, "nomes_ambiguos": 1})
+        # no formato antigo (com CNPJ), parcela sem CNPJ é pessoa física: nada é ligado pelo nome
+        antigo = {"1": {"proprietarios": [{"nome": "ALFA SA", "pct": 50.0, "cnpj": "11111111000111", "regime": "PIE"},
+                                          {"nome": "JOAO", "pct": 50.0, "cnpj": None, "regime": "APE"}]}}
+        res = mod._cnpj_pela_captura_anterior(con, antigo, {"capturado_em": "2026-10-24T03:06:24Z"})
+        self.assertEqual((res["arquivo_sem_cnpj"], res["ligadas_por_nome"], antigo["1"]["proprietarios"][1]["cnpj"]), (False, 0, None))
+        con.close()
+
     def test_tolerancia_de_arredondamento_por_parcela(self):
         def props(*pcts):
             return [{"pct": p, "cnpj": f"{i:014d}", "nome": "x", "regime": "PIE"} for i, p in enumerate(pcts, 1)]

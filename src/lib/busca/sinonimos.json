@@ -87,6 +87,6 @@
     "EMS": ["Enersul", "Energisa Mato Grosso do Sul"],
     "ETO": ["Celtins", "Energisa Tocantins"],
     "Âmbar Amazonas": ["Amazonas Energia"],
-    "ÂMBAR ENERGIA RR": ["Roraima Energia", "Boa Vista Energia"]
+    "Âmbar Roraima": ["ÂMBAR ENERGIA RR", "Roraima Energia", "Boa Vista Energia"]
   }
 }

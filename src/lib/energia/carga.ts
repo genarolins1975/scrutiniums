@@ -981,10 +981,12 @@ export function vereditoPerfil(p: P026, sm: Regiao, idioma: Idioma = idiomaEnerg
     if (!ml) partes.push(tx(`${base} na curva de carga ${quem}.`, `${base} in the load curve ${quem}.`, idioma));
     else if (ml.hora === moda.hora) partes.push(tx(`${base}, na curva de carga e na carga líquida de MMGD.`, `${base}, in the load curve and in the load net of MMGD.`, idioma));
     else
+      // horas diferentes nas duas medidas: a frase cita só a carga líquida pelo nome, para o veredito caber nas 40 palavras
+      // de abertura (24/10/2026: 44 palavras com as duas medidas nomeadas)
       partes.push(
         tx(
-          `${base} na curva de carga e ${entreHoras(ml.hora, "pt")} na carga líquida de MMGD.`,
-          `${base} in the load curve and ${entreHoras(ml.hora, "en")} in the load net of MMGD.`,
+          `${base}; na carga líquida de MMGD, ${entreHoras(ml.hora, "pt")}.`,
+          `${base}; in the load net of MMGD, ${entreHoras(ml.hora, "en")}.`,
           idioma,
         ),
       );

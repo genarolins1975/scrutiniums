@@ -419,9 +419,13 @@ jobs:
       # bash -e padrão, uma falha do vitest impedia a suíte Python de rodar (mesmo
       # defeito corrigido no Crédito em 13/10/2026). A lista de testes reprovados vai
       # para a issue: a causa muda de um dia para outro e a issue precisa dizer qual é.
+      # Retratos (testes que fixam números de um retrato datado da fonte, pipeline/tests/retrato.py) não barram a
+      # publicação (decisão do dono de 24/10/2026): ficam de fora aqui e rodam no passo seguinte, que relata.
       - name: Testes antes de publicar
         id: testes
         continue-on-error: true
+        env:
+          TESTES_SEM_RETRATO: "1"
         run: |
           set +e
           npm ci || exit 1
@@ -435,6 +439,16 @@ jobs:
           P=${PIPESTATUS[0]}
           echo "vitest=$V pipeline=$P" | tee testes-codigos.txt
           [ "$V$P" = "00" ]
+
+      # Sobre a gold do dia, antes da retenção ou do commit. Nunca reprova aqui: a divergência vira issue de
+      # reconferência no fim, e um retrato que não rodou (código 2) deixa a execução vermelha depois da publicação.
+      - name: Retratos da gold do dia (não barram a publicação)
+        id: retratos
+        if: always() && steps.testes.outcome != 'skipped'
+        run: |
+          set +e
+          node scripts/testes-retrato.mjs --saida retratos.md
+          echo "codigo=$?" >> "$GITHUB_OUTPUT"
 
       # De 01/10 a 18/10/2026 a gold de energia ficou retida todos os dias sem que
       # ninguém soubesse: este passo só emitia ::error e a execução terminava verde,
@@ -451,7 +465,7 @@ jobs:
           # 23/10/2026 o diagnóstico das retenções de 20 a 22/10 precisou reconstruir a gold da cópia durável (3,3 GB).
           mkdir -p "$RUNNER_TEMP/energia-retida"
           tar -czf "$RUNNER_TEMP/energia-retida/gold-retida.tar.gz" public/energia || echo "::warning::gold retida não foi empacotada para o artefato"
-          cp vitest-resultado.json pipeline-testes.log testes-codigos.txt energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
+          cp vitest-resultado.json pipeline-testes.log testes-codigos.txt retratos.md energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
           git checkout -- public/energia
           git clean -fdq public/energia
           echo "retida=1" >> "$GITHUB_OUTPUT"
@@ -504,6 +518,43 @@ jobs:
           path: ${{ runner.temp }}/energia-retida/
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Avisar retratos divergentes
+        if: always() && steps.retratos.outputs.codigo != '' && steps.retratos.outputs.codigo != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          CODIGO: ${{ steps.retratos.outputs.codigo }}
+          RETIDA: ${{ steps.reter.outputs.retida }}
+        run: |
+          {
+            echo "Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}"
+            echo
+            if [ "$RETIDA" = "1" ]; then
+              echo "A gold do dia foi retida por outros testes (ver a issue de retenção)."
+            else
+              echo "A gold do dia foi publicada: retrato não barra a publicação (decisão do dono de 24/10/2026)."
+            fi
+            echo
+            if [ "$CODIGO" = "1" ]; then
+              echo "Retratos que divergem da gold do dia (números fixados num retrato datado da fonte; reconferir e atualizar o retrato):"
+            else
+              echo "Os retratos não rodaram por inteiro (erro de ferramenta):"
+            fi
+            cat retratos.md 2>/dev/null
+          } > /tmp/energia-retratos.md
+          TITULO="Setor Elétrico: retratos divergem da gold do dia; reconferir"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body-file /tmp/energia-retratos.md
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body-file /tmp/energia-retratos.md
+          fi
+          if [ "$CODIGO" != "1" ]; then
+            echo "::error::os retratos não rodaram por inteiro; ver a issue '$TITULO'"
+            exit 1
+          fi
 
       # A retenção deixa a execução VERMELHA. A issue já foi aberta ou comentada no
       # passo anterior.

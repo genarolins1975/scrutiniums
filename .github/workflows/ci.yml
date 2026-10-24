@@ -153,7 +153,9 @@ jobs:
       - name: Testes Python (pipeline e camada de pesquisa)
         # stdlib, sem rede: regra nominal, relatório automático, pacote de fatos,
         # validador e casos sentinela, conferidos contra a gold publicada; nada
-        # aqui escreve em data/ ou public/
+        # aqui escreve em data/ ou public/. Retratos ficam de fora (job retratos).
+        env:
+          TESTES_SEM_RETRATO: "1"
         run: |
           python3 -m unittest discover -s pipeline/tests -t .
           python3 -m unittest discover -s pesquisa/tests -t .
@@ -259,6 +261,7 @@ jobs:
         # é o que mostra a linha; a partição dos arquivos é determinística.
         env:
           EXIGIR_BUILD_HTML: "1"
+          TESTES_SEM_RETRATO: "1"
         run: npx vitest run --shard=${{ matrix.shard }}
       - name: Árvore versionada permanece limpa após build e testes
         run: |
@@ -333,6 +336,28 @@ jobs:
           git diff --cached --exit-code
           test -z "$(git status --porcelain --untracked-files=normal)"
 
+  retratos:
+    name: Retratos da gold publicada (não bloqueia)
+    # Testes que fixam números de um retrato datado da fonte (pipeline/tests/retrato.py, src/tests/suporte/retrato.ts).
+    # Decisão do dono de 24/10/2026: não barram o CI nem a publicação; quando a gold nova os faz divergir, este job
+    # fica vermelho para avisar e o workflow de energia abre a issue de reconferência. Fora do CI verde de propósito.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Dependências
+        run: |
+          npm ci
+          pip install -r pipeline/energia/requirements.txt
+      - name: Retratos
+        run: node scripts/testes-retrato.mjs
   verde:
     name: CI verde
     # Um só nome de verificação para a proteção de branch, independente de quantos jobs

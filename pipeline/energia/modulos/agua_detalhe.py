@@ -3359,7 +3359,8 @@ def _proveniencias_e_evidencias(con, con_p, d, downloads):
              "Ponto de grade do modelo (0,25°) mais próximo de cada ponto da bacia; chuva de modelo tem viés próprio, "
              "diferente do da estimativa por satélite.",
              "Não há avaliação de acerto desta previsão neste módulo; as rodadas ficam guardadas para avaliação futura."],
-            transformacoes=["média ponderada pela área (chuva) e pela população (temperatura), mesmas regras da estimativa"],
+            transformacoes=["média ponderada pela área (chuva) e pela população (temperatura), mesmas regras da estimativa",
+                            "chuva diária negativa num ponto (artefato numérico do modelo) vira 0 mm antes da média"],
             download="/energia/series/agua_previsao.csv")
     return prov, _evidencias(con, con_p, d, downloads)
 

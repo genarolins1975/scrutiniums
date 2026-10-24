@@ -42,6 +42,7 @@ from pipeline.energia.fontes import epe_territorio as et  # noqa: E402
 from pipeline.energia.fontes import ibge_territorio as it  # noqa: E402
 from pipeline.energia.fontes import ons_territorio as ot  # noqa: E402
 from pipeline.energia.modulos import territorio as t  # noqa: E402
+from pipeline.tests.retrato import retrato  # noqa: E402
 
 DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energia_territorio")
 GOLD = os.path.join(base.GOLD, "territorio.json")
@@ -593,6 +594,7 @@ class GoldPublicada(unittest.TestCase):
             self.assertEqual(self.col(cod, "mmgd_un"), un, cod)
             self.assertAlmostEqual(self.col(cod, "mmgd_kw"), kw, delta=0.01, msg=cod)
 
+    @retrato("SIGA de 30/09/2026 relido por outro script em 01/10/2026")
     def test_usinas_iguais_ao_csv_original_do_siga(self):
         # siga-empreendimentos-geracao-diario.csv (bronze de 30/09/2026) relido por outro
         # script em 01/10/2026: fase Operação, DscMuninicpios igual ao município, CEG sem
@@ -613,9 +615,19 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(max(self.m["linhas"], key=lambda l: l[U["usi_op_n"]])[0], "3550308")
         self.assertEqual(max(self.m["linhas"], key=lambda l: l[U["usi_reg_n"]])[0], "1505809")
         ctl = next(c for c in self.g["controles"] if c["nome"].startswith("Extremos da contagem municipal"))
-        self.assertEqual(ctl["resultado"], "aprovado")
         self.assertIn("São Paulo (SP) 222", ctl["detalhe"])
         self.assertIn("Portel (PA) 5708", ctl["detalhe"])
+
+    def test_controle_dos_extremos_da_contagem_municipal(self):
+        # a parte que vale para qualquer captura do SIGA (os números fixos ficam no retrato acima): o controle aprova e cita,
+        # com a contagem publicada, o município com mais usinas e o com mais registros
+        U = self.C
+        mais_usinas = max(self.m["linhas"], key=lambda l: l[U["usi_op_n"]])
+        mais_registros = max(self.m["linhas"], key=lambda l: l[U["usi_reg_n"]])
+        ctl = next(c for c in self.g["controles"] if c["nome"].startswith("Extremos da contagem municipal"))
+        self.assertEqual(ctl["resultado"], "aprovado")
+        self.assertIn(f" {mais_usinas[U['usi_op_n']]}", ctl["detalhe"])
+        self.assertIn(f" {mais_registros[U['usi_reg_n']]}", ctl["detalhe"])
 
     def test_relacao_igual_a_refeita_dos_arquivos_originais(self):
         # Reconstrução independente (script à parte, sem código do pipeline, 01/10/2026):
@@ -855,6 +867,16 @@ class GoldPublicada(unittest.TestCase):
         self.assertIn("meia_hora.", E["municipios_com_submercado"]["consulta"])
         self.assertNotIn("carga_global_mwmed", E["municipios_com_submercado"]["consulta"])
 
+    def test_coordenadas_conferidas_na_malha_maxima(self):
+        # a parte que vale para qualquer captura do SIGA (os números fixos ficam no retrato abaixo)
+        self.assertEqual(self.u["conferencia_coordenada"], "maxima")
+        r = self.g["resumo"]["usinas"]
+        self.assertEqual(r["coordenada_fora_na_malha_simplificada"] - r["simplificada_fora_maxima_dentro"]
+                         + r["simplificada_dentro_maxima_fora"], r["coordenada_fora_do_municipio_declarado"])
+        self.assertEqual(r["conferencia_coordenada"]["conferencia"], "maxima")
+        self.assertEqual(len(r["conferencia_coordenada"]["arquivos"]), 27)
+
+    @retrato("SIGA de 30/09/2026 conferido na malha municipal de 2025")
     def test_coordenadas_na_malha_maxima(self):
         U = {k: i for i, k in enumerate(self.u["campos"])}
         self.assertEqual(self.u["conferencia_coordenada"], "maxima")

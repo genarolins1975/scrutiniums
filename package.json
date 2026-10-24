@@ -17,6 +17,7 @@
     "verificar:rapido": "node scripts/verificar.mjs rapido",
     "verificar:pr": "node scripts/verificar.mjs pr",
     "testes:lentos": "node scripts/testes-lentos.mjs",
+    "testes:retrato": "node scripts/testes-retrato.mjs",
     "wcag": "node scripts/auditoria-wcag.mjs"
   },
   "dependencies": {

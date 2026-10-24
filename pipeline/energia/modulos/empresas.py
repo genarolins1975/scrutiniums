@@ -161,7 +161,7 @@ REGISTRO = {
     ],
     "arquivos": {
         _url(CSV_AGENTES): "cnpj (14 dígitos); sigla; razao_social; ativo (1 = situação A no cadastro); comercializacao; distribuicao; geracao; transmissao (1 = ramo declarado ativo no cadastro, autodeclarado: não define distribuidora); proprietario_siga (1 = aparece como proprietário de usina no SIGA); distribuidora_regulada (1 = está no índice de distribuidoras do módulo); cvm_cd (código CVM quando é companhia aberta). Um CNPJ por linha, data do cadastro na coluna data_cadastro.",
-        _url(CSV_ATIVOS): "Uma linha por usina e proprietário do SIGA: nucleo_ceg; ceg; usina; tipo (SigTipoGeracao); fase; uf; kw_outorgado; kw_fiscalizado (vazio = não informado); estado_vinculo (vinculado, inclui_sem_documento, soma_divergente, sem_proprietario); soma_pct (soma das participações publicadas); proprietario_cnpj (vazio = proprietário sem CNPJ, pessoa física cujo nome não é republicado aqui); proprietario_nome (só para CNPJ); pct (participação publicada, %); regime (PIE, APE, SP ou REG); controle_majoritario (1 = participação acima de 50% numa usina com soma válida); grupo_cnpj (topo da cadeia de controladores únicos declarada no Polímero; igual ao proprietário quando não há controlador único); conferencia_agentes (igual, cnpj_diferente, percentual_diferente, ausente_em_agentes, sem_proprietario_no_siga). Potência em kW como publicada.",
+        _url(CSV_ATIVOS): "Uma linha por usina e proprietário do SIGA: nucleo_ceg; ceg; usina; tipo (SigTipoGeracao); fase; uf; kw_outorgado; kw_fiscalizado (vazio = não informado); estado_vinculo (vinculado, inclui_sem_documento, soma_divergente, sem_proprietario, nao_lido = lista cortada pela fonte ou fora do formato, sem vínculo); soma_pct (soma das participações publicadas); proprietario_cnpj (vazio = proprietário sem CNPJ, pessoa física cujo nome não é republicado aqui ou, desde que o SIGA deixou de publicar o CNPJ em 23/10/2026, nome sem CNPJ conhecido na captura anterior); proprietario_nome (só para CNPJ); pct (participação publicada, %); regime (PIE, APE, SP ou REG); controle_majoritario (1 = participação acima de 50% numa usina com soma válida); grupo_cnpj (topo da cadeia de controladores únicos declarada no Polímero; igual ao proprietário quando não há controlador único); conferencia_agentes (igual, cnpj_diferente, percentual_diferente, ausente_em_agentes, sem_proprietario_no_siga, nao_lido_no_siga). Potência em kW como publicada.",
         _url(CSV_PROPRIETARIOS): "Um CNPJ por linha (proprietário direto no SIGA): cnpj; nome; no_cadastro_agentes (1/0); usinas (todas as fases); usinas_operacao; mw_bruto_operacao (potência fiscalizada somada das usinas em operação em que tem qualquer participação; soma bruta, não usar em agregados); mw_proporcional (Σ potência fiscalizada × participação, só usinas em operação com soma válida); mw_controle_direto (Σ potência das usinas em operação em que tem mais de 50%); usinas_controle_direto (usinas em operação com potência fiscalizada em que tem mais de 50%: mesmo critério de mw_controle_direto); grupo_cnpj; grupo_nome; regimes. MW = kW ÷ 1.000.",
         _url(CSV_GRUPOS): "Um grupo por linha (topo de cadeia de controle): grupo_cnpj; nome; empresas_com_usinas (proprietários diretos no grupo); usinas_controle; mw_controle (Σ potência das usinas em operação cujo proprietário majoritário pertence ao grupo); mw_proporcional (Σ potência × participação detida por empresas do grupo; partição da potência sem dupla contagem); participacao_pct (mw_proporcional ÷ fronteira × 100); motivo_parada (por que a cadeia termina ali); acima (controlador sem CNPJ acima do topo, só quando é pessoa jurídica estrangeira declarada pela fonte ou rótulo coletivo; vazio nos demais casos, inclusive pessoa física); listada_cvm (1 = companhia aberta com registro ATIVO no cadastro da CVM, de qualquer setor de atividade; 0 = sem registro ativo).",
         _url(CSV_CADEIA): "Arestas do grafo societário vigente (Polímero, trimestre de referência): pai_cnpj; pai_nome; socio_cnpj (vazio = pessoa física, fundo ou ente sem CNPJ); socio_nome (nome só quando o sócio tem CNPJ, é pessoa jurídica estrangeira declarada pela fonte ou é rótulo coletivo de uma lista fechada, como ações em tesouraria ou pulverizadas; senão o marcador 'pessoa física' ou 'sócio sem documento': nenhum nome de pessoa é republicado); perfil (PJ, PF, DC = demais controladores); controlador (1/0); pct_direto (participação do sócio no pai, %; vazio quando a fonte só permite o percentual em relação ao agente declarante e o pai aparece em mais de um caminho); origem (propria = declarada pelo próprio pai; terceiros = lida nas árvores de outros agentes); declaracao (trimestre da declaração usada); concordancia (listas que concordam sobre o controlador ÷ listas); primeiro_trimestre; ultimo_trimestre (vigência da aresta em toda a base).",
@@ -179,6 +179,13 @@ REGISTRO = {
 }
 
 VERSAO_PROCESSAMENTO = "1"
+# Versão do processamento do SIGA, somada à de cima na marca: 2 = formato de 23/10/2026 (proprietário sem CNPJ,
+# lista cortada em 500 caracteres), com o CNPJ ligado pelo nome à captura anterior (_cnpj_pela_captura_anterior).
+VERSAO_SIGA = "2"
+# Desde 23/10/2026 a ANEEL corta o campo de proprietários do SIGA em 500 caracteres: a lista cortada no meio de um
+# item fica no estado não lido (nunca vínculo parcial). Acima desta fração das usinas, a leitura é tratada como crítica.
+LIMITE_TEXTO_SIGA = 500
+LIMITE_CORTADOS_SIGA = 0.005
 # Listas de maiores (proprietários diretos e grupos) publicadas na gold; as listas inteiras ficam
 # nos CSV. A gold tem teto de cerca de 400 KB (contrato dos módulos, seção 1).
 LIMITE_LISTAS = 30
@@ -192,10 +199,10 @@ CONTAS_DESTAQUE = ("receita", "ebit", "lucro_liquido", "divida_bruta", "patrimon
 ESTADOS = ["vinculado", "inclui_sem_documento", "soma_divergente", "sem_proprietario", "nao_lido"]
 ROTULO_ESTADO = {
     "vinculado": "Todos os proprietários com CNPJ e participações somando 100%",
-    "inclui_sem_documento": "Participações somam 100%, com algum proprietário sem CNPJ (pessoa física)",
+    "inclui_sem_documento": "Participações somam 100%, com algum proprietário sem CNPJ (pessoa física ou nome sem CNPJ conhecido)",
     "soma_divergente": "Participações publicadas não somam 100% (ex.: matriz e filial com 100% cada)",
     "sem_proprietario": "Proprietário não informado no SIGA",
-    "nao_lido": "Campo de proprietários fora do formato publicado",
+    "nao_lido": "Lista de proprietários cortada pela fonte ou fora do formato publicado (sem vínculo)",
 }
 ROTULO_REGIME = {k: v for k, v in ae.REGIMES.items()}
 
@@ -452,18 +459,68 @@ def _processa_siga(con, v):
     Proprietário sem CNPJ não gera registro (o nome de pessoa física não é republicado);
     fica contado no estado da usina."""
     usinas, oc = ae.le_siga(ckan.le_csv_bronze(v["arquivo"], encoding="utf-8-sig", separador=";"))
+    por_nome = _cnpj_pela_captura_anterior(con, usinas, v)
     linhas = []
     for k, u in usinas.items():
         props = u["proprietarios"]
-        est = ae.estado_vinculo(props)
+        est = ae.estado_da_usina(u)
         soma = sum(p["pct"] for p in props) if props else None
         linhas += [(f"{k}|_", "estado", est), (f"{k}|_", "soma_pct", None if soma is None else f"{soma:.4f}"),
                    (f"{k}|_", "sem_documento", str(sum(1 for p in props or [] if not p["cnpj"])))]
         for cnpj14, pct, regime in _agrega_por_cnpj(props or []):
             linhas += [(f"{k}|{cnpj14}", "pct", f"{pct:.4f}"), (f"{k}|{cnpj14}", "regime", regime)]
     linhas.append(("_arquivo", "data_geracao", oc["data_geracao"]))
+    # reprocessamento da mesma vintage por versão nova (VERSAO_SIGA): a leitura anterior sai antes de gravar a nova, só
+    # depois de a leitura dar certo (o INSERT OR IGNORE com a vintage na chave manteria a leitura antiga)
+    con.execute("DELETE FROM registros WHERE dataset=? AND vintage_id=?", (DS_SIGA, v["vintage_id"]))
     novas, rev = base.grava_registros(con, DS_SIGA, v["vintage_id"], linhas)
-    return {"usinas": len(usinas), "novas": novas, "revisoes": rev, "linhas": oc["linhas"]}
+    return {"usinas": len(usinas), "novas": novas, "revisoes": rev, "linhas": oc["linhas"], "cnpj_por_nome": por_nome}
+
+
+def _cnpj_pela_captura_anterior(con, usinas, vintage):
+    """Desde 23/10/2026 o SIGA publica os proprietários sem CNPJ. Para cada usina que está nas duas capturas, o nome
+    publicado agora é pareado ao CNPJ que a mesma usina tinha na captura anterior (proprietário único nas duas, ou
+    participação que só um CNPJ tinha); o nome que aponta para um único CNPJ em todo o arquivo liga as parcelas sem CNPJ
+    de qualquer usina, e o nome que aponta para mais de um fica sem vínculo. Nunca por semelhança de nome. Altera as
+    parcelas em `usinas` (cnpj e cnpj_por_nome) e devolve a contagem."""
+    parcelas = [p for u in usinas.values() for p in (u["proprietarios"] or [])]
+    sem = [p for p in parcelas if p["cnpj"] is None]
+    # só o arquivo sem nenhum CNPJ (formato de 23/10/2026); no formato antigo, parcela sem CNPJ é pessoa física
+    arquivo_sem_cnpj = bool(parcelas) and len(sem) == len(parcelas)
+    res = {"arquivo_sem_cnpj": arquivo_sem_cnpj, "captura_anterior": None, "parcelas_sem_cnpj": len(sem),
+           "ligadas_por_nome": 0, "nomes_ambiguos": 0}
+    anteriores = [x for x in base.vintages_do_dataset(con, DS_SIGA)
+                  if x["recurso"] == REC_SIGA and x["capturado_em"] < vintage["capturado_em"]]
+    if not arquivo_sem_cnpj or not anteriores:
+        return res
+    ant = max(anteriores, key=lambda x: x["capturado_em"])
+    res["captura_anterior"] = ant["capturado_em"]
+    antigos = collections.defaultdict(dict)
+    for ch, campos in base.registros_como_estavam_em(con, DS_SIGA, ant["capturado_em"]).items():
+        k, _, c14 = ch.partition("|")
+        if c14 and c14 != "_" and campos.get("pct"):
+            antigos[k][c14] = float(campos["pct"])
+    pares = collections.defaultdict(set)
+    for k, u in usinas.items():
+        props, velho = u["proprietarios"] or [], antigos.get(k)
+        if not props or not velho:
+            continue
+        if len(props) == 1 and len(velho) == 1:
+            pares[props[0]["nome"]].add(next(iter(velho)))
+            continue
+        pcts = [round(p["pct"], 4) for p in props]
+        for p in props:
+            cands = [c14 for c14, pct in velho.items() if abs(pct - p["pct"]) < 0.00005]
+            if pcts.count(round(p["pct"], 4)) == 1 and len(cands) == 1:
+                pares[p["nome"]].add(cands[0])
+    mapa = {nome: next(iter(cs)) for nome, cs in pares.items() if len(cs) == 1}
+    res["nomes_ambiguos"] = sum(1 for cs in pares.values() if len(cs) > 1)
+    for p in sem:
+        c14 = mapa.get(p["nome"])
+        if c14:
+            p["cnpj"], p["cnpj_por_nome"] = c14, True
+            res["ligadas_por_nome"] += 1
+    return res
 
 
 def _agrega_por_cnpj(props):
@@ -613,9 +670,10 @@ def coletar(con, ctx):
         con.commit()
     _coleta_siga(con, status, hoje)
     vt = _vigente(con, DS_SIGA, REC_SIGA)
-    if vt and not _ja_processado(con, DS_SIGA, vt["vintage_id"] + "#v" + VERSAO_PROCESSAMENTO):
+    marca_siga = vt["vintage_id"] + "#v" + VERSAO_PROCESSAMENTO + "#siga" + VERSAO_SIGA if vt else None
+    if vt and not _ja_processado(con, DS_SIGA, marca_siga):
         status[f"{DS_SIGA}:processamento"] = _processa_siga(con, vt)
-        _marca(con, DS_SIGA, vt["vintage_id"] + "#v" + VERSAO_PROCESSAMENTO)
+        _marca(con, DS_SIGA, marca_siga)
         con.commit()
     v = _coleta_ckan(con, status, "composicao-societaria-polimero", DS_POLIMERO,
                      lambda r: (r.get("format") or "").upper() in ("PARQUET", "PDF"), 30)
@@ -729,7 +787,7 @@ def _ativos(usinas, grafo, conf_agentes):
     linhas = []
     for k, u in usinas.items():
         props = u["proprietarios"]
-        est = ae.estado_vinculo(props)
+        est = ae.estado_da_usina(u)
         u["estado"] = est
         op = u["fase"] == "Operação"
         kw = u["kw_fiscalizado"] if op else None
@@ -1276,6 +1334,7 @@ def construir(con, ctx):
 
     # ---------------------------------------------------------------- leitura
     usinas, oc_siga = ae.le_siga(ckan.le_csv_bronze(v_siga["arquivo"], encoding="utf-8-sig", separador=";"))
+    por_nome = _cnpj_pela_captura_anterior(con, usinas, v_siga)
     agger, oc_agger = ({}, {})
     if v_agger:
         agger, oc_agger = ae.le_agentes_geracao(ckan.le_csv_bronze(v_agger["arquivo"], encoding="utf-8-sig", separador=";"))
@@ -1293,8 +1352,21 @@ def construir(con, ctx):
     data_agger = oc_agger.get("data_geracao") if oc_agger else None
 
     # ---------------------------------------------------------------- validação de esquema e domínio
-    if oc_siga["proprietarios_nao_lidos"]:
-        criticas.append(f"{len(oc_siga['proprietarios_nao_lidos'])} usinas com o campo de proprietários fora do formato do SIGA")
+    cortados = [k for k in oc_siga["proprietarios_nao_lidos"]
+                if len(usinas[k]["proprietarios_texto"] or "") >= LIMITE_TEXTO_SIGA - 5]
+    fora_formato = [k for k in oc_siga["proprietarios_nao_lidos"] if k not in set(cortados)]
+    if fora_formato:
+        criticas.append(f"{len(fora_formato)} usinas com o campo de proprietários fora do formato do SIGA")
+    if len(cortados) > LIMITE_CORTADOS_SIGA * max(1, len(usinas)):
+        criticas.append(f"{len(cortados)} usinas com a lista de proprietários cortada pela fonte em {LIMITE_TEXTO_SIGA} caracteres")
+    elif cortados:
+        ressalvas.append(f"{len(cortados)} usinas com a lista de proprietários cortada pela fonte em {LIMITE_TEXTO_SIGA} caracteres: "
+                         "ficam no estado não lido, sem vínculo parcial")
+    if por_nome["arquivo_sem_cnpj"]:
+        ressalvas.append(f"o SIGA de {c.data_br(data_siga) if data_siga else 'data não informada'} não publica o CNPJ dos proprietários: "
+                         f"{_br_num(por_nome['ligadas_por_nome'], 0)} de {_br_num(por_nome['parcelas_sem_cnpj'], 0)} parcelas ligadas pelo nome idêntico ao CNPJ "
+                         f"que a mesma usina tinha na captura de {c.data_br(por_nome['captura_anterior'][:10])}; as demais ficam sem CNPJ "
+                         f"({por_nome['nomes_ambiguos']} nomes apontavam para mais de um CNPJ)")
     if oc_siga["duplicadas_divergentes"]:
         ressalvas.append(f"{len(oc_siga['duplicadas_divergentes'])} núcleos de CEG repetidos com conteúdo diferente no SIGA; vale a primeira linha")
     negativos = [k for k, u in usinas.items() if (u["kw_fiscalizado"] or 0) < 0 or (u["kw_outorgado"] or 0) < 0]
@@ -1315,6 +1387,9 @@ def construir(con, ctx):
     conf_por_usina = {}
     for k, u in usinas.items():
         props = u["proprietarios"]
+        if u.get("nao_lido"):
+            conf_por_usina[k] = "nao_lido_no_siga"
+            continue
         if not props:
             conf_por_usina[k] = "sem_proprietario_no_siga"
             continue
@@ -1474,7 +1549,7 @@ def construir(con, ctx):
         periodo={"inicio": data_siga, "fim": data_siga}, entidade="Usinas em operação no SIGA (Brasil)",
         universo=f"{_br_num(sum(at['estados'][e]['usinas_operacao'] for e in ESTADOS), 0)} usinas em fase Operação",
         fonte=evid.fonte_de_vintage("ANEEL", "SIGA: Sistema de Informações de Geração da ANEEL", URL_SIGA, v_siga),
-        consulta="SIGA diário, DscFaseUsina = 'Operação'; DscPropriRegimePariticipacao lido por inteiro; vinculado = todas as parcelas com CNPJ e soma das participações a 100% ± 0,005 p.p. por parcela",
+        consulta="SIGA diário, DscFaseUsina = 'Operação'; DscPropriRegimePariticipacao lido por inteiro; vinculado = todas as parcelas com CNPJ (publicado pelo SIGA ou, desde 23/10/2026, quando o SIGA deixou de publicá-lo, ligado pelo nome idêntico ao CNPJ da captura anterior) e soma das participações a 100% ± 0,005 p.p. por parcela",
         formula="100 × Σ potência fiscalizada das usinas vinculadas ÷ Σ potência fiscalizada das usinas em operação",
         numerador={"descricao": "Σ potência fiscalizada das usinas em operação vinculadas (kW)", "valor": _r(vinc["kw_operacao"], 1)},
         denominador={"descricao": "Σ potência fiscalizada das usinas em operação (kW)", "valor": _r(total_kw_op, 1)},

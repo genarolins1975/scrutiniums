@@ -923,7 +923,15 @@ class GoldPublicada(unittest.TestCase):
             self.assertEqual(p0["cvu_semana_vigente"], 180.51)                    # MARANHAOIV, semana de 26/09/2026 (deck do PMO)
         jl = next(u for u in self.g["termica"]["usinas_12m"] if u["id"] == "UTE.CM.SC.001260-2.01")
         self.assertIsNone(jl["cvu_semana_vigente"])                              # duas parcelas com CVU: um por parcela
-        self.assertEqual({p_["cod"]: p_["cvu_semana_vigente"] for p_ in jl["parcelas"]}, {26: 518.9, 27: 416.39})
+        # o CVU de cada parcela é o do CSV semanal na semana vigente, como o do código 36 acima (o CVU muda de semana para
+        # semana: na de 24/10/2026, 522,87 e 419,92); o valor fixo vale para a semana em que foi conferido no deck do PMO
+        cvu_csv = {int(r["cod_usina"]): float(r["cvu_rs_mwh"]) for r in self._csv("/energia/series/geracao_cvu_semanal.csv")
+                   if r["cod_usina"] in ("26", "27") and r["semana_inicio"] == sem["inicio"]}
+        parcelas = {p_["cod"]: p_["cvu_semana_vigente"] for p_ in jl["parcelas"]}
+        self.assertEqual(parcelas, cvu_csv)
+        self.assertEqual(set(parcelas), {26, 27})
+        if sem["inicio"] == "2026-09-26":
+            self.assertEqual(parcelas, {26: 518.9, 27: 416.39})                  # JORGE LACERDA, semana de 26/09/2026
 
     def test_correspondencia_temporal_aneel_mmgd_e_geracao(self):
         ctx = self.g["capacidade"]["contexto"]

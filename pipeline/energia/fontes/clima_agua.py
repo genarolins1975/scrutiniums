@@ -366,9 +366,15 @@ def le_previsao(dados, n_pontos):
     for x in sorted(enumerate(lst), key=lambda t: t[1].get("location_id", t[0])):
         dia = x[1].get("daily") or {}
         dias = dia.get("time") or []
-        out.append({v: {k: (None if val is None else float(val)) for k, val in zip(dias, dia.get(v) or [])}
+        out.append({v: {k: (None if val is None else _sem_chuva_negativa(v, float(val))) for k, val in zip(dias, dia.get(v) or [])}
                     for v in dia if v != "time"})
     return out
+
+
+def _sem_chuva_negativa(variavel, valor):
+    """Chuva prevista negativa é artefato numérico do modelo (24/10/2026: −0,1 mm na bacia do Uruguai, rodada de
+    23/10 00Z) e vira 0 mm, transformação declarada na proveniência da previsão. Temperatura não é tocada."""
+    return 0.0 if variavel.startswith("precipitation") and valor < 0 else valor
 
 
 def primeiro_dia_completo(inicializacao):

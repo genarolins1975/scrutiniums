@@ -19,6 +19,9 @@
  * - a árvore limpa no fim compara com o estado do início (o CI começa de clone limpo): a
  *   verificação falha se alguma etapa alterou arquivo versionado ou criou arquivo não ignorado;
  * - `pip install` das dependências de energia só acontece se o pyarrow faltar.
+ * Retratos (testes que fixam números de um retrato datado da fonte) ficam fora das etapas de teste com
+ * TESTES_SEM_RETRATO=1, como no CI, e rodam na etapa informativa "retratos", que relata e não reprova (decisão do
+ * dono de 24/10/2026; no CI, job "Retratos da gold publicada", fora do CI verde).
  * src/tests/verificar-ci.test.ts confere que todo comando de verificação do ci.yml está aqui.
  */
 import { spawn, spawnSync } from "node:child_process";
@@ -44,7 +47,7 @@ export const ETAPAS_PR = [
   { id: "gold-grupos", nome: "Contrato de grupos e publicação seletiva da gold", cmds: ["python3 -m unittest pipeline.tests.test_publicar_gold"] },
   { id: "compileall", nome: "Módulos Python compilam", cmds: ["python3 -m compileall -q pipeline"] },
   { id: "pyarrow", nome: "Dependências do pipeline de energia", cmds: ['python3 -c "import pyarrow" 2>/dev/null || pip install -r pipeline/energia/requirements.txt'] },
-  { id: "python", nome: "Testes Python (pipeline e camada de pesquisa)", cmds: [
+  { id: "python", nome: "Testes Python (pipeline e camada de pesquisa)", env: { TESTES_SEM_RETRATO: "1" }, cmds: [
     "python3 -m unittest discover -s pipeline/tests -t .",
     "python3 -m unittest discover -s pesquisa/tests -t .",
     `python3 -m unittest ${TESTES_EFICIENCIA.join(" ")}`,
@@ -72,7 +75,8 @@ export const ETAPAS_PR = [
   { id: "build", nome: "Build de produção", cmds: ["npm run build"], heap: true },
   { id: "judiciario", nome: "Fluxos e telas do Judiciário com sessão local", cmds: ["node scripts/obee/judiciario-verificacao.mjs"] },
   { id: "cobertura", nome: "Cobertura bilíngue confere com as fontes de código", cmds: ["node scripts/cobertura-i18n.mjs --check"] },
-  { id: "vitest", nome: "Testes (inclui a verificação obrigatória do HTML gerado)", cmds: ["npx vitest run"], env: { EXIGIR_BUILD_HTML: "1" } },
+  { id: "vitest", nome: "Testes (inclui a verificação obrigatória do HTML gerado)", cmds: ["npx vitest run"], env: { EXIGIR_BUILD_HTML: "1", TESTES_SEM_RETRATO: "1" } },
+  { id: "retratos", nome: "Retratos da gold publicada (informativo, não reprova)", cmds: ["node scripts/testes-retrato.mjs"], informativa: true },
 ];
 
 /** Verificação do Agronegócio (agro-interface.yml), opcional porque é outro workflow. */
@@ -122,9 +126,9 @@ function rodarParalelo(etapas) {
 
 function resumo(titulo, resultados, totalMs) {
   console.log(`\n${titulo} (${cpus().length} vCPU, ${Math.round(totalmem() / 2 ** 30)} GB, ${new Date().toISOString().slice(0, 10)})`);
-  for (const r of resultados) console.log(`  ${r.ok ? "ok   " : "FALHA"}  ${tempo(r.ms).padStart(10)}  ${r.etapa.nome}${r.ok ? "" : `  (${r.falhou})`}`);
+  for (const r of resultados) console.log(`  ${r.ok ? "ok   " : r.etapa.informativa ? "AVISO" : "FALHA"}  ${tempo(r.ms).padStart(10)}  ${r.etapa.nome}${r.ok ? "" : `  (${r.falhou})`}`);
   console.log(`  tempo de parede: ${tempo(totalMs)}`);
-  return resultados.every((r) => r.ok) ? 0 : 1;
+  return resultados.every((r) => r.ok || r.etapa.informativa) ? 0 : 1;
 }
 
 export async function rapido(argv) {
@@ -134,7 +138,7 @@ export async function rapido(argv) {
   const preparar = { id: "preparar", nome: "Derivados (npm run preparar)", cmds: ["node scripts/preparar.mjs"] };
   const resultados = await rodarParalelo([ETAPAS_PR.find((e) => e.id === "lint"), ETAPAS_PR.find((e) => e.id === "tipos"), preparar]);
   resultados.push(rodarSerial(ETAPAS_PR.find((e) => e.id === "cobertura")));
-  resultados.push(rodarSerial({ id: "afetados", nome: "Testes afetados", cmds: [["node scripts/testes-afetados.mjs", ...base].join(" ")] }));
+  resultados.push(rodarSerial({ id: "afetados", nome: "Testes afetados", cmds: [["node scripts/testes-afetados.mjs", ...base].join(" ")], env: { TESTES_SEM_RETRATO: "1" } }));
   return resumo("verificar:rapido", resultados, Date.now() - inicio);
 }
 
@@ -155,9 +159,9 @@ export function pr(argv) {
   for (const etapa of etapas) {
     const r = rodarSerial(etapa);
     resultados.push(r);
-    if (!r.ok) break;
+    if (!r.ok && !etapa.informativa) break;
   }
-  if (resultados.every((r) => r.ok)) {
+  if (resultados.every((r) => r.ok || r.etapa.informativa)) {
     const t0 = Date.now();
     try { assertWorktreeUnchanged(RAIZ, antes); resultados.push({ etapa: { nome: "Árvore versionada igual à do início" }, ok: true, ms: Date.now() - t0 }); }
     catch (erro) { console.error(erro.message); resultados.push({ etapa: { nome: "Árvore versionada igual à do início" }, ok: false, ms: Date.now() - t0, falhou: "git status" }); }
