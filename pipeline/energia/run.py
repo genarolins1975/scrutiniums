@@ -23,6 +23,28 @@ from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld,
 from pipeline.energia.gold import comum as c  # noqa: E402
 from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
+ARQUIVOS_OPERACAO = {
+    "pld.json": ("pld_horario.csv", "pld_diario.csv"),
+    "hidrologia.json": ("ear_diario.csv", "ena_diario.csv"),
+    "carga.json": ("carga_diaria.csv",),
+    "geracao.json": ("geracao_diaria.csv",),
+    "rede.json": ("intercambio_diario.csv",),
+    "cmo.json": ("cmo_semanal.csv",),
+}
+
+
+def publicar_operacao(nome, construir_novo, regressoes, falhas):
+    """Gold e downloads da operação pertencem à mesma versão, também na retenção."""
+    guardados = base.guarda_arquivos(f"/energia/series/{n}" for n in ARQUIVOS_OPERACAO[nome])
+    try:
+        novo = construir_novo()
+        if not _integro(novo):
+            base.restaura_arquivos(guardados)
+        return publicar(nome, novo, regressoes, falhas)
+    except Exception:
+        base.restaura_arquivos(guardados)
+        raise
+
 
 def _integro(g):
     return isinstance(g, dict) and g.get("disponivel") is True
@@ -83,7 +105,7 @@ def main(argv):
                      ("carga.json", carga.construir), ("geracao.json", geracao.construir),
                      ("rede.json", rede.construir), ("cmo.json", cmo.construir)):
         print(f"[energia] gold {nome}", flush=True)
-        g[nome] = publicar(nome, construir_validado(nome, fn), regressoes, falhas)
+        g[nome] = publicar_operacao(nome, lambda: construir_validado(nome, fn), regressoes, falhas)
     # sintese.json (Visão geral) é construída pelo módulo visao (pipeline/energia/modulos/visao.py,
     # ordem 98), depois de todos os módulos temáticos cujas golds ela lê
     # previsões e modelos: violação de governança derruba a publicação (a anterior fica)
@@ -188,6 +210,7 @@ def main(argv):
         "builders_falhos": falhas,
         "duracao_s": round(time.time() - t0, 1),
         "coleta_executada": not sem_coleta,
+        "status_coleta": {k: v for k, v in status_coleta.items() if k != "modulos"},
         "status_coleta_modulos": status_modulos,
         # recapturas de vintages órfãs nesta execução e as adiadas para a próxima (base.ORCAMENTO_ORFAS_S)
         "recaptura_orfas": base.resumo_orfas(),

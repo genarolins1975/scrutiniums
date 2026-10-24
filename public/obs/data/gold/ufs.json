@@ -1,6 +1,6 @@
 {
   "disponivel": true,
-  "gerado_em": "2026-10-23T16:24:24+00:00",
+  "gerado_em": "2026-10-24T15:02:12+00:00",
   "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
   "datas": {
     "scr": "2026-08",
@@ -567,11 +567,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 10946,
-        "var_12m_pct": 11.65,
-        "casos_12m_todos": 18577,
+        "casos_12m": 10935,
+        "var_12m_pct": 11.92,
+        "casos_12m_todos": 18540,
         "por_mil_hab": 3.4,
-        "por_bi_carteira": 178.6
+        "por_bi_carteira": 178.4
       },
       "prazo": {
         "data_base": "2026-08",
@@ -863,11 +863,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 12642,
-        "var_12m_pct": 24.9,
-        "casos_12m_todos": 23780,
-        "por_mil_hab": 2.93,
-        "por_bi_carteira": 155.4
+        "casos_12m": 12572,
+        "var_12m_pct": 24.7,
+        "casos_12m_todos": 23634,
+        "por_mil_hab": 2.91,
+        "por_bi_carteira": 154.5
       },
       "prazo": {
         "data_base": "2026-08",
@@ -1159,11 +1159,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 1639,
-        "var_12m_pct": 11.12,
-        "casos_12m_todos": 8837,
-        "por_mil_hab": 2.03,
-        "por_bi_carteira": 82.2
+        "casos_12m": 1648,
+        "var_12m_pct": 12.34,
+        "casos_12m_todos": 8791,
+        "por_mil_hab": 2.04,
+        "por_bi_carteira": 82.7
       },
       "prazo": {
         "data_base": "2026-08",
@@ -2047,11 +2047,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 10431,
-        "var_12m_pct": 120.62,
-        "casos_12m_todos": 23287,
-        "por_mil_hab": 3.48,
-        "por_bi_carteira": 57.6
+        "casos_12m": 13000,
+        "var_12m_pct": 115.48,
+        "casos_12m_todos": 28619,
+        "por_mil_hab": 4.34,
+        "por_bi_carteira": 71.8
       },
       "prazo": {
         "data_base": "2026-08",
@@ -2103,7 +2103,7 @@
         "emprego.retencao_pct": 3,
         "consorcios.cotas": 18,
         "consorcios.por_mil_hab": 11,
-        "cobranca.por_mil_hab": 11,
+        "cobranca.por_mil_hab": 8,
         "cobranca.por_bi_carteira": 26,
         "pgfn.insc_pf_por_mil_hab": 1
       },
@@ -2399,7 +2399,7 @@
         "emprego.retencao_pct": 17,
         "consorcios.cotas": 14,
         "consorcios.por_mil_hab": 7,
-        "cobranca.por_mil_hab": 10,
+        "cobranca.por_mil_hab": 11,
         "cobranca.por_bi_carteira": 15,
         "pgfn.insc_pf_por_mil_hab": 15
       },
@@ -2639,11 +2639,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 36783,
-        "var_12m_pct": 29.3,
-        "casos_12m_todos": 110431,
-        "por_mil_hab": 4.95,
-        "por_bi_carteira": 105.1
+        "casos_12m": 36621,
+        "var_12m_pct": 29.23,
+        "casos_12m_todos": 109921,
+        "por_mil_hab": 4.93,
+        "por_bi_carteira": 104.6
       },
       "prazo": {
         "data_base": "2026-08",
@@ -2935,11 +2935,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 14262,
-        "var_12m_pct": 30.9,
-        "casos_12m_todos": 29893,
-        "por_mil_hab": 2.03,
-        "por_bi_carteira": 123.3
+        "casos_12m": 14333,
+        "var_12m_pct": 31.56,
+        "casos_12m_todos": 29914,
+        "por_mil_hab": 2.04,
+        "por_bi_carteira": 123.9
       },
       "prazo": {
         "data_base": "2026-08",
@@ -3231,11 +3231,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 67338,
-        "var_12m_pct": -16.12,
-        "casos_12m_todos": 152584,
-        "por_mil_hab": 3.15,
-        "por_bi_carteira": 99.0
+        "casos_12m": 67723,
+        "var_12m_pct": -15.58,
+        "casos_12m_todos": 153742,
+        "por_mil_hab": 3.17,
+        "por_bi_carteira": 99.6
       },
       "prazo": {
         "data_base": "2026-08",
@@ -3287,7 +3287,7 @@
         "emprego.retencao_pct": 24,
         "consorcios.cotas": 2,
         "consorcios.por_mil_hab": 14,
-        "cobranca.por_mil_hab": 14,
+        "cobranca.por_mil_hab": 13,
         "cobranca.por_bi_carteira": 22,
         "pgfn.insc_pf_por_mil_hab": 22
       },
@@ -6543,7 +6543,7 @@
         "emprego.retencao_pct": 15,
         "consorcios.cotas": 27,
         "consorcios.por_mil_hab": 24,
-        "cobranca.por_mil_hab": 13,
+        "cobranca.por_mil_hab": 14,
         "cobranca.por_bi_carteira": 5,
         "pgfn.insc_pf_por_mil_hab": 7
       },
@@ -7727,7 +7727,7 @@
         "emprego.retencao_pct": 22,
         "consorcios.cotas": 1,
         "consorcios.por_mil_hab": 12,
-        "cobranca.por_mil_hab": 8,
+        "cobranca.por_mil_hab": 9,
         "cobranca.por_bi_carteira": 24,
         "pgfn.insc_pf_por_mil_hab": 14
       },
@@ -7967,11 +7967,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 6274,
-        "var_12m_pct": 24.46,
-        "casos_12m_todos": 15074,
-        "por_mil_hab": 3.95,
-        "por_bi_carteira": 103.7
+        "casos_12m": 6324,
+        "var_12m_pct": 25.85,
+        "casos_12m_todos": 15080,
+        "por_mil_hab": 3.99,
+        "por_bi_carteira": 104.6
       },
       "prazo": {
         "data_base": "2026-08",
@@ -8023,7 +8023,7 @@
         "emprego.retencao_pct": 27,
         "consorcios.cotas": 21,
         "consorcios.por_mil_hab": 4,
-        "cobranca.por_mil_hab": 9,
+        "cobranca.por_mil_hab": 10,
         "cobranca.por_bi_carteira": 21,
         "pgfn.insc_pf_por_mil_hab": 9
       },

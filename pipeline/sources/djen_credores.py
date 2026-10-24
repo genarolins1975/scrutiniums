@@ -17,7 +17,7 @@ import re
 import time
 
 from pipeline import common
-from pipeline.sources.djen import TAG_RE, CNPJ_RE
+from pipeline.sources.djen import TAG_RE, CNPJ_RE, itens_validos
 
 BANCOS_RE = re.compile(
     r"\b(BANCO(?:\s+[A-ZÀ-Ú&.]{2,18}){1,3}|ITA[ÚU] UNIBANCO|BRADESCO|SANTANDER|"
@@ -88,12 +88,12 @@ def collect(con, cfg):
         con.execute("ALTER TABLE rj_credores ADD COLUMN passivo_classes TEXT")
     except Exception:
         pass  # coluna já existe
-    con.execute("DELETE FROM rj_credores")
     fim = date.today()
     ini = fim - timedelta(days=60)
     results = []
     for trib in c["tribunais"]:
         casos = {}
+        con.execute("SAVEPOINT djen_credores_tribunal")
         try:
             for pagina in range(1, 9):
                 params = {"pagina": pagina, "itensPorPagina": 100,
@@ -102,10 +102,10 @@ def collect(con, cfg):
                           "dataDisponibilizacaoFim": fim.isoformat()}
                 url = c["base_url"] + "?" + urllib.parse.urlencode(params)
                 body, meta = common.http_get(url, timeout=90)
-                d = json.loads(body)
-                items = d.get("items", [])
-                if pagina == 1:
-                    common.save_bronze("djen", f"credores_{trib}_p1", body, meta)
+                items = itens_validos(body)
+                caminho, sha = common.save_bronze("djen", f"credores_{trib}_p{pagina}", body, meta)
+                common.record_lineage(con, f"rj_credores:{trib}", caminho, sha,
+                                      "Página DJEN validada; extração de credores do texto oficial")
                 for it in items:
                     classe = (it.get("nomeClasse") or "").upper()
                     if not ("RECUPERA" in classe or "FALÊNCIA" in classe or "FALENCIA" in classe):
@@ -131,6 +131,9 @@ def collect(con, cfg):
                 if len(items) < 100:
                     break
                 time.sleep(c["pausa_s"])
+            else:
+                raise ValueError("DJEN: limite de páginas atingido sem fim da resposta; tribunal anterior preservado")
+            con.execute("DELETE FROM rj_credores WHERE tribunal=?", (trib,))
             n_com_banco = 0
             for num, f in casos.items():
                 if not f["bancos"] and not f["passivo"] and not f["classes_qgc"]:
@@ -148,8 +151,11 @@ def collect(con, cfg):
                              f["ultima"], f["n"], common.now_utc(),
                              json.dumps(f["classes_qgc"], ensure_ascii=False)))
                 n_com_banco += 1
+            con.execute("RELEASE djen_credores_tribunal")
             results.append({"key": f"credores_{trib}", "ok": True, "casos": n_com_banco})
         except Exception as e:
+            con.execute("ROLLBACK TO djen_credores_tribunal")
+            con.execute("RELEASE djen_credores_tribunal")
             results.append({"key": f"credores_{trib}", "ok": False, "error": str(e)})
     results.extend(enrich_cnpjs(con, cfg))
     return results

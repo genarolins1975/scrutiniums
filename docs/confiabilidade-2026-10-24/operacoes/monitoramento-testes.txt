@@ -1,0 +1,10 @@
+test_bloqueio_nao_prova_disponibilidade_nem_ausencia (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_bloqueio_nao_prova_disponibilidade_nem_ausencia) ... ok
+test_falhas_auxiliares_identificam_data_do_registro_sem_simular_coleta_atual (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_falhas_auxiliares_identificam_data_do_registro_sem_simular_coleta_atual) ... ok
+test_relatorio_preserva_grupos_e_separa_producao (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_relatorio_preserva_grupos_e_separa_producao) ... ok
+test_sem_sla_nao_inventa_prazo (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_sem_sla_nao_inventa_prazo) ... ok
+test_tres_causas_diferentes (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_tres_causas_diferentes) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.953s
+
+OK

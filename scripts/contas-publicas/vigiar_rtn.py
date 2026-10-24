@@ -16,6 +16,7 @@ não repetir comentário igual); outra saída = o vigia quebrou. Fonte que não 
 "não verificado".
 """
 import datetime as dt
+import html
 import json
 import re
 import sys
@@ -61,12 +62,25 @@ def verificar(dados, buscar=http, hoje=None):
     for ano, mes in meses_seguintes(dados["referenciaRTN"], hoje):
         url = BOLETIM.format(ano=ano, mes=mes)
         try:
-            codigo, _ = buscar(url)
+            codigo, conteudo = buscar(url)
         except Exception as e:  # noqa: BLE001
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: {str(e)[:120]}")
             continue
         if codigo == 200:
-            publicados.append((ano, mes, url))
+            pagina = conteudo.decode("utf-8", errors="replace")
+            titulos = re.findall(r"<(title|h1)\b[^>]*>(.*?)</\1\s*>", pagina, flags=re.I | re.S)
+            textos = [re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t))).lower()
+                      for _, t in titulos]
+            # Exigir identificação no título: menus do portal podem listar outros meses/anos.
+            # O portal titula a edição como "... (RTN) - 2026 - Agosto" (página de agosto/2026,
+            # conferida em 24/10/2026); as formas "agosto de 2026" e "2026/08" continuam aceitas.
+            nome = MESES[mes - 1]
+            periodo = (rf"\b(?:{nome}(?: de)? {ano}|{ano}/0?{mes}|{mes:02d}/{ano}"
+                       rf"|{ano}\s*[-–—]\s*{nome}|{nome}\s*[-–—]\s*{ano})\b")
+            if any("resultado do tesouro nacional" in t and re.search(periodo, t) for t in textos):
+                publicados.append((ano, mes, url))
+            else:
+                nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP 200 sem conteúdo identificável da edição")
         elif codigo != 404:
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP {codigo}")
     planilha = None
@@ -91,7 +105,8 @@ def corpo(dados, publicados, planilha, nao_verificado):
     if not (publicados or planilha or nao_verificado):
         return None
     ano, mes = map(int, dados["referenciaRTN"].split("-"))
-    linhas = ["## Contas Públicas Federais: edição nova do RTN", "",
+    titulo = "edição nova do RTN" if publicados or planilha else "verificação do RTN inconclusiva"
+    linhas = [f"## Contas Públicas Federais: {titulo}", "",
               f"O painel integra o RTN até {MESES[mes - 1]} de {ano} (`referenciaRTN` {dados['referenciaRTN']}).", ""]
     if publicados:
         linhas.append("Boletins publicados depois da edição integrada:")
@@ -121,7 +136,7 @@ def main(buscar=http, hoje=None, caminho=DADOS):
         print(f"Nenhuma edição do RTN depois de {dados['referenciaRTN']}.")
         return 0
     print(texto)
-    return 3
+    return 3 if publicados or planilha else 4
 
 
 if __name__ == "__main__":
