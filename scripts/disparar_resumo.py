@@ -18,6 +18,12 @@ class FalhaLote(RuntimeError):
     """Diagnóstico controlado, sem resposta HTTP ou conteúdo de credenciais."""
 
 
+class SemRedirecionamento(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        # Nunca encaminhar o Authorization a um destino indicado por redirecionamento.
+        raise urllib.error.HTTPError(req.full_url, code, 'Redirecionamento recusado', headers, fp)
+
+
 def dia_brasilia():
     return datetime.now(ZoneInfo('America/Sao_Paulo')).date()
 
@@ -32,7 +38,9 @@ def executar(disparar, *, simular=True, max_lotes=MAX_LOTES, dia=dia_brasilia, r
         if not isinstance(resposta, dict):
             raise FalhaLote('Resposta de envio fora do contrato.')
         if simular:
-            if resposta.get('simulacao') is not True or resposta.get('enviados') != 0:
+            if (resposta.get('simulacao') is not True or resposta.get('enviados') != 0 or
+                    resposta.get('falhas') != 0 or type(resposta.get('destinatarios')) is not int or
+                    resposta['destinatarios'] < 0):
                 raise FalhaLote('O destino não confirmou simulação sem envio.')
             registrar(json.dumps({'simulacao': True, 'destinatarios': resposta.get('destinatarios'),
                                   'assunto': resposta.get('assunto'), 'enviados': 0}, ensure_ascii=False))
@@ -64,7 +72,8 @@ def main():
             method='GET' if modo_simulado else 'POST',
             headers={'Authorization': 'Bearer ' + secret})
         # Não repetir falha de transporte/HTTP: a confirmação de envio pode ter se perdido.
-        with urllib.request.urlopen(req, timeout=310) as resposta:
+        opener = urllib.request.build_opener(SemRedirecionamento())
+        with opener.open(req, timeout=310) as resposta:
             return json.load(resposta)
     try:
         executar(disparar, simular=simular)

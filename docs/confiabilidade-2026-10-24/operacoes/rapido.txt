@@ -91,8 +91,8 @@ Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e
 
  Test Files  40 passed (40)
       Tests  1452 passed | 79 skipped (1531)
-   Start at  09:57:53
-   Duration  20.92s (transform 1.59s, setup 0ms, import 20.71s, tests 31.02s, environment 4ms)
+   Start at  10:04:27
+   Duration  22.18s (transform 1.57s, setup 0ms, import 23.29s, tests 31.52s, environment 3ms)
 
 
 verificar:rapido (5 vCPU, 33 GB, 2026-10-24)
@@ -100,8 +100,8 @@ verificar:rapido (5 vCPU, 33 GB, 2026-10-24)
   ok            9 s  Tipos
   ok            5 s  Derivados (npm run preparar)
   ok            3 s  Cobertura bilíngue confere com as fontes de código
-  ok           35 s  Testes afetados
-  tempo de parede: 47 s
+  ok           37 s  Testes afetados
+  tempo de parede: 49 s
 npm notice
 npm notice New major version of npm available! 11.9.0 -> 12.2.1
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
