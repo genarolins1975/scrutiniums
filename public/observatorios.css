@@ -248,7 +248,7 @@
 .bp-busca-rodape { border-top:1px solid var(--bp-regra,var(--cor-linha)); }
 .bp-busca-vazio a, .bp-busca-rodape a { display:inline-flex; align-items:center; min-height:44px; color:var(--bp-destaque,var(--cor-destaque)); text-decoration:underline; text-underline-offset:4px; }
 .bp-busca-fechar { flex-shrink:0; min-height:44px; margin-left:8px; padding:0 4px; border:0; background:none; cursor:pointer; font-family:var(--font-label,"Archivo Narrow"),system-ui,sans-serif; font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--bp-tinta,var(--cor-carvao)); }
-.bp-busca--pagina { margin-left:0; flex:none; width:100%; max-width:42rem; }
+.bp-busca--pagina { margin-left:0; flex:none; min-width:0; width:100%; max-width:42rem; }
 .bp-busca--pagina input.bp-busca-campo { min-height:48px; font-size:16px; }
 .bp-busca--pagina .bp-busca-painel { left:0; right:auto; width:100%; }
 @media(max-width:639px) {

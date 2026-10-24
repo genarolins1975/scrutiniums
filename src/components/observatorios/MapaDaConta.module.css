@@ -45,9 +45,11 @@
 .estado { display: flex; align-items: center; min-height: 44px; margin: 0; }
 
 /* páginas da coleção: o estado é o summary (44 px), a lista abre embaixo, uma página por linha */
-.paginas summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 16px; min-height: 44px; cursor: pointer; list-style: none; }
+.paginas summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-height: 44px; cursor: pointer; list-style: none; }
+/* O metadado reserva largura tipográfica; a ação passa para outra linha quando o texto cresce. */
+.paginas summary > span:first-child { flex: 1 1 14ch; min-width: 0; }
 .paginas summary::-webkit-details-marker { display: none; }
-.abrir { display: inline-flex; align-items: center; gap: 8px; color: var(--cor-carvao); white-space: nowrap; }
+.abrir { display: inline-flex; margin-left: auto; align-items: center; gap: 8px; color: var(--cor-carvao); white-space: nowrap; }
 .aberto { display: none; }
 .paginas[open] .aberto { display: inline; }
 .paginas[open] .fechado { display: none; }
