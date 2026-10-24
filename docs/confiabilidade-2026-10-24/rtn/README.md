@@ -10,7 +10,7 @@ O importador do IPCA tinha o fim da sequência fixado em julho/2026. Passa a der
 
 ## Validação
 
-`python -m unittest pipeline.tests.test_vigiar_rtn pipeline.tests.test_ipca_edicao pipeline.tests.test_atualizacao_por_grupo` e `python scripts/contas-publicas/importar-ipca.py --verificar`. O log está em `testes.log`. Os casos de edição posterior são sintéticos e explicitamente identificados; não são apresentados como IPCA de agosto coletado.
+`python -m unittest pipeline.tests.test_vigiar_rtn pipeline.tests.test_ipca_edicao pipeline.tests.test_atualizacao_por_grupo` e `python scripts/contas-publicas/importar-ipca.py --verificar`. O log está em [testes.txt](testes.txt). Os casos de edição posterior são sintéticos e explicitamente identificados; não são apresentados como IPCA de agosto coletado.
 
 ## Bloqueio externo e próxima ação
 
