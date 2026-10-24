@@ -1,0 +1,3 @@
+gold preservada: {'disponivel': True, 'gerado_em': '2026-09-30', 'valor': 1}
+CSV após retenção: 'valor\n999\n'
+regressões: [{'gold': 'carga.json', 'motivo': 'horizonte inválido'}]
