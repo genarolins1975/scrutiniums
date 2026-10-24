@@ -14,6 +14,10 @@ URL = 'https://scrutiniums.com/api/resumo/enviar'
 MAX_LOTES = 8  # 8 × 310 s + espera de deploy de 600 s cabem no job de 60 minutos
 
 
+class FalhaLote(RuntimeError):
+    """Diagnóstico controlado, sem resposta HTTP ou conteúdo de credenciais."""
+
+
 def dia_brasilia():
     return datetime.now(ZoneInfo('America/Sao_Paulo')).date()
 
@@ -23,29 +27,29 @@ def executar(disparar, *, simular=True, max_lotes=MAX_LOTES, dia=dia_brasilia, r
     total = 0
     for lote in range(1, max_lotes + 1):
         if dia() != inicio:
-            raise RuntimeError('Janela diária de envio encerrou com destinatários pendentes; requer intervenção.')
+            raise FalhaLote('Janela diária de envio encerrou com destinatários pendentes; requer intervenção.')
         resposta = disparar(simular)
         if not isinstance(resposta, dict):
-            raise ValueError('Resposta de envio fora do contrato.')
+            raise FalhaLote('Resposta de envio fora do contrato.')
         if simular:
             if resposta.get('simulacao') is not True or resposta.get('enviados') != 0:
-                raise ValueError('O destino não confirmou simulação sem envio.')
+                raise FalhaLote('O destino não confirmou simulação sem envio.')
             registrar(json.dumps({'simulacao': True, 'destinatarios': resposta.get('destinatarios'),
                                   'assunto': resposta.get('assunto'), 'enviados': 0}, ensure_ascii=False))
             return 0
         for chave in ['enviados', 'falhas', 'pendentes']:
             if type(resposta.get(chave)) is not int or resposta[chave] < 0:
-                raise ValueError(f'Resposta de envio com {chave} inválido.')
+                raise FalhaLote(f'Resposta de envio com {chave} inválido.')
         total += resposta['enviados']
         registrar(json.dumps({'lote': lote, 'enviados': resposta['enviados'],
                               'falhas': resposta['falhas'], 'pendentes': resposta['pendentes']}))
         if resposta['falhas']:
-            raise RuntimeError('Provedor informou falha; nenhuma repetição automática de envio.')
+            raise FalhaLote('Provedor informou falha; nenhuma repetição automática de envio.')
         if not resposta['pendentes']:
             return total
         # A próxima chamada seleciona somente as assinaturas ainda elegíveis;
         # reservas atômicas e a periodicidade continuam sendo decididas pela rota.
-    raise RuntimeError(f'Limite de {max_lotes} lotes atingido com destinatários pendentes; não concluído.')
+    raise FalhaLote(f'Limite de {max_lotes} lotes atingido com destinatários pendentes; não concluído.')
 
 
 def main():
@@ -65,10 +69,12 @@ def main():
     try:
         executar(disparar, simular=simular)
         return 0
+    except FalhaLote as erro:
+        print(f'Falha no lote: {erro}', file=sys.stderr)
     except urllib.error.HTTPError as erro:
         print(f'Falha HTTP {erro.code}; lote não repetido.', file=sys.stderr)
     except Exception as erro:
-        print(f'Falha no disparo: {type(erro).__name__}: {erro}', file=sys.stderr)
+        print(f'Falha no disparo: {type(erro).__name__}; lote não repetido.', file=sys.stderr)
     return 1
 
 

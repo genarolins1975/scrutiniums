@@ -1,8 +1,11 @@
 """Continuação de lotes sem rede, credenciais ou mensagens reais."""
 import unittest
+import contextlib
+import io
+import os
 from datetime import date
-from unittest.mock import Mock
-from scripts.disparar_resumo import executar
+from unittest.mock import Mock, patch
+from scripts.disparar_resumo import executar, main, FalhaLote
 
 
 class LotesResumo(unittest.TestCase):
@@ -40,10 +43,20 @@ class LotesResumo(unittest.TestCase):
             executar(disparo,simular=False,dia=dias,registrar=lambda _:None)
         self.assertEqual(disparo.call_count,1)
 
+    def test_erro_de_cabecalho_nao_expoe_credencial_sintetica(self):
+        fixture = 'somente-fixture-de-teste\n'
+        saida = io.StringIO()
+        with patch.dict(os.environ, {'BOLETIM_SECRET':fixture}), \
+             patch('urllib.request.urlopen',side_effect=ValueError(f'Invalid header value {fixture!r}')), \
+             contextlib.redirect_stderr(saida):
+            self.assertEqual(main(),1)
+        self.assertNotIn('somente-fixture',saida.getvalue())
+        self.assertIn('ValueError',saida.getvalue())
+
     def test_resposta_invalida_ou_simulacao_nao_confirmada_e_erro(self):
         for resposta, simular in [({},False),({'enviados':0},True),
                                   ({'enviados':0,'falhas':0,'pendentes':-1},False)]:
-            with self.subTest(resposta=resposta), self.assertRaises(ValueError):
+            with self.subTest(resposta=resposta), self.assertRaises(FalhaLote):
                 executar(Mock(return_value=resposta),simular=simular,registrar=lambda _:None)
 
 
