@@ -339,7 +339,7 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
   it("matriz setorial preserva fluxos positivos pequenos, totais e limites de cor", async () => {
     const page = await contexto.newPage();
     const matriz = gold.epae_matriz.matriz as Record<string, Record<string, number | null>>;
-    const normalizar = (nome: string) => nome.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    const normalizar = (nome: string) => nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const nomes = [...new Set([...Object.keys(matriz), ...Object.values(matriz).flatMap(row => Object.keys(row))])];
     const chaves = new Map(nomes.map(nome => [normalizar(nome), nome]));
     const fonteNome = (label: string) => chaves.get(normalizar(label.slice(label.indexOf(' — ') + 3)))!;
