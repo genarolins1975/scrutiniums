@@ -34,3 +34,5 @@ A revisão das falhas auxiliares encontrou fila fixa que adia reiteradamente os 
 [Depois](datajud-depois.txt): 27 testes aprovados (seis novos, mais as regressões de resposta parcial e integridade de Crédito). [Verificador rápido final](rapido-final.txt): aprovado, mantendo também o teste existente do orçamento. O log completo acima corresponde à implementação anterior a este complemento; a suíte Python final e a validação de integração são identificadas separadamente.
 
 [Inventário das oito famílias com falha e limitações](fontes-auxiliares.md). As respostas de Pilar 3 e do TST e o arquivo manual Trends continuam dependendo de fonte/arquivo autorizado; não foram substituídos por estimativa ou fonte incompatível.
+
+Complemento DataJud: `npm run verificar:pr -- --etapas compileall,python` aprovado em 4 min 04 s, com toda a suíte Python e complementares. [Log final](python-final.txt).
