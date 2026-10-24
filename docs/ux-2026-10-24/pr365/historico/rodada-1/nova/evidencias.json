@@ -1,0 +1,41 @@
+{
+ "data": "2026-10-24",
+ "build": "flnjhzmx0hqyM9lsdCCmm",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /app/observatorios --saida /tmp/pr365-depois/nova --larguras 390,1440 --modos com --conta nova",
+ "tempo": "0 min 12 s",
+ "resultados": [
+  {
+   "rota": "/app/observatorios",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/app/observatorios",
+   "barra": true,
+   "cromo": 102,
+   "topoH1": 134,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "app_observatorios-390-com-sessao.jpg",
+   "primeiraTela": "app_observatorios-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/app/observatorios",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/app/observatorios",
+   "barra": true,
+   "cromo": 151,
+   "topoH1": 183,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "app_observatorios-1440-com-sessao.jpg",
+   "primeiraTela": "app_observatorios-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

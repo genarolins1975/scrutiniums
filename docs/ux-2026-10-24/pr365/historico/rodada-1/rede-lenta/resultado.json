@@ -1,0 +1,123 @@
+{
+  "build": "flnjhzmx0hqyM9lsdCCmm",
+  "method": "POST real via fetch sem cookie jar; resposta retida antes de route.fulfill. Cookie apenas aplicado pelo navegador à resposta entregue.",
+  "cases": [
+    {
+      "name": "Next: POST1000ms, retorno ao mapa espera continuidade",
+      "requests": [
+        {
+          "path": "/setor-eletrico/visao-geral",
+          "delay": 1000,
+          "start": 1792803902345,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:05:02 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803902407,
+          "finish": 1792803903410
+        }
+      ],
+      "errors": [],
+      "continuar": "ONDE VOCÊ PAROU\n\nContinuar em Setor Elétrico\n→\n\nObservatório Energia e Infraestrutura",
+      "ok": true,
+      "finalCookie": "c:setor-eletrico",
+      "documents": [
+        "http://localhost:40709/app/observatorios"
+      ]
+    },
+    {
+      "name": "SPA: POST1000ms, saída para mapa entrega Pagamentos",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 1000,
+          "start": 1792803904686,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:05:04 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803904705,
+          "finish": 1792803905707
+        }
+      ],
+      "errors": [],
+      "navigationMs": 953,
+      "ok": true,
+      "finalCookie": "c:pagamentos",
+      "documents": [
+        "http://localhost:40709/observatorio",
+        "http://localhost:40709/app/observatorios"
+      ]
+    },
+    {
+      "name": "SPA: POST6000ms abortado, saída não fica presa",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 6000,
+          "start": 1792803907093,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:05:07 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803907107,
+          "finish": 1792803913111
+        }
+      ],
+      "errors": [],
+      "navigationMs": 2354,
+      "cookieOnArrival": "c:credito",
+      "limitation": "POST abortado pode preservar coleção anterior; navegação deve continuar.",
+      "ok": true,
+      "finalCookie": "c:credito",
+      "documents": [
+        "http://localhost:40709/observatorio",
+        "http://localhost:40709/app/observatorios"
+      ]
+    },
+    {
+      "name": "Next A: resposta atrasada não sobrescreve documento B",
+      "requests": [
+        {
+          "path": "/setor-eletrico/visao-geral",
+          "delay": 1800,
+          "start": 1792803914333,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Asetor-eletrico; Path=/; Expires=Sun, 24 Oct 2027 01:05:14 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803914344,
+          "finish": 1792803916146
+        }
+      ],
+      "errors": [],
+      "cookieAfterB": "c:gas",
+      "ok": true,
+      "finalCookie": "c:gas",
+      "documents": [
+        "http://localhost:40709/app/observatorios",
+        "http://localhost:40709/gas-natural"
+      ]
+    },
+    {
+      "name": "SPA A: resposta atrasada não sobrescreve documento B",
+      "requests": [
+        {
+          "path": "/observatorio/pix",
+          "delay": 1800,
+          "start": 1792803918111,
+          "response": 204,
+          "delivered": true,
+          "cookie": "scrutiniums_observatorio=c%3Apagamentos; Path=/; Expires=Sun, 24 Oct 2027 01:05:18 GMT; Max-Age=31536000; Secure; HttpOnly; SameSite=lax",
+          "ready": 1792803918132,
+          "finish": 1792803919934
+        }
+      ],
+      "errors": [],
+      "cookieAfterB": "c:gas",
+      "ok": true,
+      "finalCookie": "c:gas",
+      "documents": [
+        "http://localhost:40709/observatorio",
+        "http://localhost:40709/gas-natural"
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "conta": "nova",
+    "arquivo": "app_observatorios-1440-com-sessao-primeira-tela.jpg",
+    "sha256_tnEt": "499ace458d70e26c4a6c3b3f09ceb71bb28c79803ee1f4c954c7d5389e5eb58f",
+    "sha256_TTwbz": "499ace458d70e26c4a6c3b3f09ceb71bb28c79803ee1f4c954c7d5389e5eb58f",
+    "identico": true
+  },
+  {
+    "conta": "nova",
+    "arquivo": "app_observatorios-1440-com-sessao.jpg",
+    "sha256_tnEt": "161e55d6b668808138f0b91de6596887a4f12be178a44993c219172b6eceeefe",
+    "sha256_TTwbz": "161e55d6b668808138f0b91de6596887a4f12be178a44993c219172b6eceeefe",
+    "identico": true
+  },
+  {
+    "conta": "nova",
+    "arquivo": "app_observatorios-390-com-sessao-primeira-tela.jpg",
+    "sha256_tnEt": "d3ad6aea05bcc084edb0fe325cef307120bb0fc79daa48fa83c60598c8a38657",
+    "sha256_TTwbz": "d3ad6aea05bcc084edb0fe325cef307120bb0fc79daa48fa83c60598c8a38657",
+    "identico": true
+  },
+  {
+    "conta": "nova",
+    "arquivo": "app_observatorios-390-com-sessao.jpg",
+    "sha256_tnEt": "72c6ae6b3441553af5dc597285fa19b541825cda31cae195eea6d23667dfd538",
+    "sha256_TTwbz": "72c6ae6b3441553af5dc597285fa19b541825cda31cae195eea6d23667dfd538",
+    "identico": true
+  },
+  {
+    "conta": "volta",
+    "arquivo": "app_observatorios-1440-com-sessao-primeira-tela.jpg",
+    "sha256_tnEt": "e6bce2afdfb473475d5b87a3022e2cb1825b009a47bdf17472921bbf25926032",
+    "sha256_TTwbz": "e6bce2afdfb473475d5b87a3022e2cb1825b009a47bdf17472921bbf25926032",
+    "identico": true
+  },
+  {
+    "conta": "volta",
+    "arquivo": "app_observatorios-1440-com-sessao.jpg",
+    "sha256_tnEt": "e013248aafaf309bb9f3d2f09e1bfb2100ffd194e3b8344d64c19448204a0f17",
+    "sha256_TTwbz": "e013248aafaf309bb9f3d2f09e1bfb2100ffd194e3b8344d64c19448204a0f17",
+    "identico": true
+  },
+  {
+    "conta": "volta",
+    "arquivo": "app_observatorios-390-com-sessao-primeira-tela.jpg",
+    "sha256_tnEt": "a917637ee79b04590593e54b6e4cfe52676e86ebaf6925c34d76cc3f07252fd3",
+    "sha256_TTwbz": "a917637ee79b04590593e54b6e4cfe52676e86ebaf6925c34d76cc3f07252fd3",
+    "identico": true
+  },
+  {
+    "conta": "volta",
+    "arquivo": "app_observatorios-390-com-sessao.jpg",
+    "sha256_tnEt": "69af7c03ff08dc44c7937a62e2d92fa8b033f677ea3b3747a9eb6e46b0fc7d6b",
+    "sha256_TTwbz": "69af7c03ff08dc44c7937a62e2d92fa8b033f677ea3b3747a9eb6e46b0fc7d6b",
+    "identico": true
+  }
+]

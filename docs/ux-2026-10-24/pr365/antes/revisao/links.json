@@ -1,0 +1,317 @@
+{
+  "build": "n5jnelc85mcfTIBM_YejT",
+  "collections": [
+    {
+      "text": "Renda e trabalho→",
+      "href": "/eficiencia-estatal/trabalho-renda",
+      "status": 200,
+      "final": "/eficiencia-estatal/trabalho-renda",
+      "unexpectedLogin": false,
+      "title": "Trabalho e renda · Renda e trabalho · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Dívida e crédito das famílias→",
+      "href": "/observatorio/payroll-lending-aging",
+      "status": 200,
+      "final": "/observatorio/payroll-lending-aging",
+      "unexpectedLogin": false,
+      "title": "Consignado e aposentados · Dívida e crédito das famílias · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Proteção social→",
+      "href": "/eficiencia-estatal/assistencia-social",
+      "status": 200,
+      "final": "/eficiencia-estatal/assistencia-social",
+      "unexpectedLogin": false,
+      "title": "Assistência social e cuidado · Proteção social · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Moradia→",
+      "href": "/eficiencia-estatal/habitacao",
+      "status": 200,
+      "final": "/eficiencia-estatal/habitacao",
+      "unexpectedLogin": false,
+      "title": "Habitação — panorama · Moradia · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Custo de vida→",
+      "href": "/custo-de-vida",
+      "status": 200,
+      "final": "/custo-de-vida",
+      "unexpectedLogin": false,
+      "title": "Quanto subiu o custo de vida na minha cidade? · Custo de vida · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Educação→",
+      "href": "/educacao-municipal",
+      "status": 200,
+      "final": "/educacao-municipal",
+      "unexpectedLogin": false,
+      "title": "Como está a escola pública em cada município? · Educação nos municípios · Educação · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Saúde→",
+      "href": "/eficiencia-estatal/saude-capitais",
+      "status": 200,
+      "final": "/eficiencia-estatal/saude-capitais",
+      "unexpectedLogin": false,
+      "title": "Saúde nas capitais · Saúde · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Segurança pública→",
+      "href": "/eficiencia-estatal/seguranca-publica",
+      "status": 200,
+      "final": "/eficiencia-estatal/seguranca-publica",
+      "unexpectedLogin": false,
+      "title": "Segurança pública · OBEE · Segurança pública · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Justiça→",
+      "href": "/eficiencia-estatal/judiciario",
+      "status": 200,
+      "final": "/eficiencia-estatal/judiciario",
+      "unexpectedLogin": false,
+      "title": "Por dentro da Justiça · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Cultura→",
+      "href": "/eficiencia-estatal/cultura",
+      "status": 200,
+      "final": "/eficiencia-estatal/cultura",
+      "unexpectedLogin": false,
+      "title": "Cultura · Cultura · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Síntese das capitais→",
+      "href": "/eficiencia-estatal",
+      "status": 200,
+      "final": "/eficiencia-estatal",
+      "unexpectedLogin": false,
+      "title": "Síntese das capitais · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Contas Federais→",
+      "href": "/contas-publicas",
+      "status": 200,
+      "final": "/contas-publicas",
+      "unexpectedLogin": false,
+      "title": "Contas Federais · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Contas Estaduais→",
+      "href": "/contas-publicas-estaduais",
+      "status": 200,
+      "final": "/contas-publicas-estaduais",
+      "unexpectedLogin": false,
+      "title": "Contas Estaduais (piloto) · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Dívida e crédito dos governos→",
+      "href": "/observatorio/subnational-credit",
+      "status": 200,
+      "final": "/observatorio/subnational-credit",
+      "unexpectedLogin": false,
+      "title": "Crédito a estados e municípios · Dívida e crédito dos governos · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Setor Elétrico→",
+      "href": "/setor-eletrico",
+      "status": 200,
+      "final": "/setor-eletrico",
+      "unexpectedLogin": false,
+      "title": "Setor Elétrico · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Gás Natural→",
+      "href": "/gas-natural",
+      "status": 200,
+      "final": "/gas-natural",
+      "unexpectedLogin": false,
+      "title": "Gás Natural · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Combustíveis→",
+      "href": "/combustiveis",
+      "status": 200,
+      "final": "/combustiveis",
+      "unexpectedLogin": false,
+      "title": "Preço da gasolina, do etanol e do diesel por estado · Combustíveis · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Saneamento→",
+      "href": "/saneamento",
+      "status": 200,
+      "final": "/saneamento",
+      "unexpectedLogin": false,
+      "title": "Saneamento · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Mobilidade→",
+      "href": "/eficiencia-estatal/mobilidade-transporte",
+      "status": 200,
+      "final": "/eficiencia-estatal/mobilidade-transporte",
+      "unexpectedLogin": false,
+      "title": "Panorama · Mobilidade · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Conectividade→",
+      "href": "/conectividade",
+      "status": 200,
+      "final": "/conectividade",
+      "unexpectedLogin": false,
+      "title": "Quem tem internet de verdade no Brasil? · Conectividade · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Crédito e sistema financeiro→",
+      "href": "/observatorio",
+      "status": 200,
+      "final": "/observatorio",
+      "unexpectedLogin": false,
+      "title": "Crédito e sistema financeiro · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Pagamentos→",
+      "href": "/observatorio/pix",
+      "status": 200,
+      "final": "/observatorio/pix",
+      "unexpectedLogin": false,
+      "title": "Pix e pagamentos · Pagamentos · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Empresas e risco→",
+      "href": "/observatorio/sectors",
+      "status": 200,
+      "final": "/observatorio/sectors",
+      "unexpectedLogin": false,
+      "title": "Risco setorial · Empresas e risco · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Agronegócio→",
+      "href": "/agronegocio",
+      "status": 200,
+      "final": "/agronegocio",
+      "unexpectedLogin": false,
+      "title": "Agronegócio · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Desmatamento e emissões→",
+      "href": "/agronegocio/ambiente",
+      "status": 200,
+      "final": "/agronegocio/ambiente",
+      "unexpectedLogin": false,
+      "title": "Quanto se desmata e quanto o campo emite? · Desmatamento e emissões · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Cidades e clima→",
+      "href": "/eficiencia-estatal/meio-ambiente-clima",
+      "status": 200,
+      "final": "/eficiencia-estatal/meio-ambiente-clima",
+      "unexpectedLogin": false,
+      "title": "Panorama · Meio ambiente e clima · Cidades e clima · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Fogo e queimadas→",
+      "href": "/territorio/queimadas",
+      "status": 200,
+      "final": "/territorio/queimadas",
+      "unexpectedLogin": false,
+      "title": "Queimadas e focos de calor · Fogo e queimadas · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Desastres→",
+      "href": "/territorio/desastres",
+      "status": 200,
+      "final": "/territorio/desastres",
+      "unexpectedLogin": false,
+      "title": "Desastres reconhecidos · Desastres · Scrutiniums",
+      "hasNext404": false
+    }
+  ],
+  "observatories": [
+    {
+      "text": "Famílias→",
+      "href": "/observatorios/familias",
+      "status": 200,
+      "final": "/observatorios/familias",
+      "unexpectedLogin": false,
+      "title": "Observatório das Famílias: Quanto custa viver e quanto pesa a dívida das famílias? · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Serviços Públicos→",
+      "href": "/observatorios/servicos-publicos",
+      "status": 200,
+      "final": "/observatorios/servicos-publicos",
+      "unexpectedLogin": false,
+      "title": "Observatório dos Serviços Públicos: Escola, saúde, segurança e justiça chegam a quem precisa? · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Contas Públicas→",
+      "href": "/observatorios/contas-publicas",
+      "status": 200,
+      "final": "/observatorios/contas-publicas",
+      "unexpectedLogin": false,
+      "title": "Observatório das Contas Públicas: De onde vem e para onde vai o dinheiro dos impostos? · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Energia e Infraestrutura→",
+      "href": "/observatorios/energia-e-infraestrutura",
+      "status": 200,
+      "final": "/observatorios/energia-e-infraestrutura",
+      "unexpectedLogin": false,
+      "title": "Observatório de Energia e Infraestrutura: De onde vêm a energia e a água, e quanto custam? · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Economia→",
+      "href": "/observatorios/economia",
+      "status": 200,
+      "final": "/observatorios/economia",
+      "unexpectedLogin": false,
+      "title": "Observatório da Economia: O que o Brasil produz, vende ao mundo e financia? · Scrutiniums",
+      "hasNext404": false
+    },
+    {
+      "text": "Território e Clima→",
+      "href": "/territorio",
+      "status": 200,
+      "final": "/territorio",
+      "unexpectedLogin": false,
+      "title": "Observatório do Território e Clima: O que está mudando no ambiente e quem sente primeiro? · Scrutiniums",
+      "hasNext404": false
+    }
+  ],
+  "anonymousMap": {
+    "status": 307,
+    "location": "/entrar?de=%2Fapp%2Fobservatorios"
+  }
+}

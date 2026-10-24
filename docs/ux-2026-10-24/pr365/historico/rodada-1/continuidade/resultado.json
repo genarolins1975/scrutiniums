@@ -1,0 +1,16 @@
+{
+  "configuracoes": [],
+  "links": [],
+  "continuidade": [
+    {
+      "caso": "Next Link, prefetch e retorno ao mapa",
+      "ok": true,
+      "documentos": []
+    },
+    {
+      "caso": "Crédito→Pix, voltar/avançar e Continuar em Pagamentos",
+      "ok": true
+    }
+  ],
+  "erros": []
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "modo": "sem hostname/porta, como launcher minimal",
+    "trustHostHeader": false,
+    "url": "http://n/api/conta/ultimo-acesso",
+    "mesmaOrigem": false
+  },
+  {
+    "modo": "sem hostname/porta, como launcher minimal",
+    "trustHostHeader": true,
+    "url": "https://scrutiniums.com/api/conta/ultimo-acesso",
+    "mesmaOrigem": true
+  }
+]
