@@ -1,0 +1,8 @@
+{
+  "url": "https://scrutiniums.com/energia/gold/meta.json",
+  "verificado_em": "2026-10-24T09:33:43.684883+00:00",
+  "status": 200,
+  "tipo": "text/html; charset=utf-8",
+  "url_final": "https://scrutiniums.com/entrar?de=%2Fenergia%2Fgold%2Fmeta.json",
+  "erro": "Expecting value: line 1 column 1 (char 0)"
+}
