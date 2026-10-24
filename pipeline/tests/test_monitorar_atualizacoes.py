@@ -1,5 +1,5 @@
 import unittest
-from scripts.monitorar_atualizacoes import diagnosticar, prazo_vintage, relatorio
+from scripts.monitorar_atualizacoes import diagnosticar, posterior, prazo_vintage, relatorio
 
 
 class Monitoramento(unittest.TestCase):
@@ -46,6 +46,25 @@ class Monitoramento(unittest.TestCase):
                              'situacao','historico','falha','acao'} <= x.keys())
             if x['publicacao']: self.assertIsNone(x['publicacao']['producao_em'])
             self.assertIsNone(x['disponivel_na_origem'])
+
+    def test_diagnostico_do_topo_nao_vale_para_arquivo_publicado_depois(self):
+        # 24/10/2026: Desenrola coletado às 13:23 e publicado às 15:02; o topo de meta.json
+        # (falha de HTML e restauração) era de 18/10 e o inventário dizia "retida"
+        topo = '2026-10-18T15:09:35+00:00'
+        self.assertTrue(posterior('2026-10-24T13:23:24+00:00', topo))
+        self.assertFalse(posterior('2026-09-24T15:25:02+00:00', topo))
+        self.assertFalse(posterior(None, topo))
+        self.assertFalse(posterior('2026-10-24T13:23:24Z', None))
+        self.assertTrue(posterior('2026-10-24T13:23:24Z', topo))
+
+    def test_cada_registro_de_credito_respeita_a_data_do_proprio_arquivo(self):
+        r = relatorio(hoje='2026-10-24')
+        topo = __import__('json').loads((__import__('pathlib').Path(__file__).resolve().parents[2]
+                                         / 'public/obs/data/gold/meta.json').read_text())['gerado_em']
+        for x in r['registros']:
+            if x['id'] in {'desenrola', 'judicial', 'scr', 'ifdata', 'pix'} and posterior(x['captura'], topo):
+                self.assertIsNone(x['falha_registrada_em'], x['id'])
+                self.assertNotEqual(x['diagnostico'], 'publicacao_retida', x['id'])
 
 
 if __name__ == '__main__':

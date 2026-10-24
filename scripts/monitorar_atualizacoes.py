@@ -34,6 +34,18 @@ def diagnosticar(*, referencia, captura, prazo=None, hoje, falha=None, retida=Fa
     return ('defasada' if atrasada else 'atual' if prazo else 'indisponivel'), 'origem_nao_verificada', 'Confirmar disponibilidade na fonte; o envelhecimento sozinho não identifica a causa.'
 
 
+def posterior(a, b):
+    """True só quando as duas datas existem e a primeira é mais recente."""
+    def instante(v):
+        try:
+            d = datetime.fromisoformat(str(v).replace('Z', '+00:00'))
+            return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+        except (TypeError, ValueError):
+            return None
+    x, y = instante(a), instante(b)
+    return bool(x and y and x > y)
+
+
 def ler(root, caminho):
     return json.loads((root/caminho).read_text())
 
@@ -134,9 +146,13 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
         arquivo = 'public/obs/data/gold/'+nome; d = ler(root, arquivo)
         ref = d.get('data_base') or d.get('mes') or meta.get('vintages', {}).get('datajud' if grupo == 'judicial' else grupo)
         st = meta.get('fontes_status', {}).get(coletor, {})
+        # fontes_status e restaurados são da rodada que gravou o topo de meta.json; um arquivo
+        # coletado ou publicado depois não herda esse diagnóstico (Desenrola, 24/10/2026)
+        falha = None if posterior(d.get('coletado_em'), metadados_credito_em) else st.get('falhas') or None
+        retida = nome in meta.get('restaurados', {}) and not posterior(d.get('gerado_em'), metadados_credito_em)
         adicionar('credito', grupo, arquivo, {'orgao': orgao, 'url': url}, ref, d.get('coletado_em'),
                   periodicidade, {'disponivel': d.get('disponivel')}, prazo=prazo_vintage(ref, "datajud" if grupo == "judicial" else grupo),
-                  falha=st.get('falhas') or None, retida=nome in meta.get('restaurados', {}), snapshot=d.get('bronze_sha'))
+                  falha=falha, retida=retida, snapshot=d.get('bronze_sha'))
     for coletor in ['djen', 'djen_credores']:
         for f in meta.get('fontes_status', {}).get(coletor, {}).get('falhas', []):
             adicionar('credito', f['key'], meta_path, {'orgao': 'CNJ / DJEN', 'url': cfg['djen']['base_url']},
