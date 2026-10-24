@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-23T16:23:41+00:00",
+ "gerado_em": "2026-10-24T15:01:31+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 193,
-  "total_editais": 707,
+  "total_editais": 709,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1006,6 +1006,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE MUZAMBINHO",
+    "municipio": "Muzambinho",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/18668624000147/2026/92"
+   },
+   {
     "ente": "MUNICIPIO DE MANDAGUARI",
     "municipio": "Mandaguari",
     "uf": "PR",
@@ -1013,6 +1022,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-23",
     "url": "https://pncp.gov.br/compras/76285345000109/2026/282"
+   },
+   {
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
+    "municipio": "Aparecida",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/43672880000155/2026/118"
    },
    {
     "ente": "MUNICIPIO DE VARZEA PAULISTA",
@@ -1094,24 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-19",
     "url": "https://pncp.gov.br/compras/46523080000160/2026/174"
-   },
-   {
-    "ente": "MUNICIPIO DE BOFETE",
-    "municipio": "Bofete",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-19",
-    "url": "https://pncp.gov.br/compras/46634143000156/2026/435"
-   },
-   {
-    "ente": "DEFENSORIA PUBLICA DO ESTADO DE PERNAMBUCO",
-    "municipio": "Recife",
-    "uf": "PE",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-19",
-    "url": "https://pncp.gov.br/compras/02899512000167/2026/55"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
