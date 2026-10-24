@@ -1,0 +1,72 @@
+{
+  "verificado_em": "2026-10-24T10:18:16.537892+00:00",
+  "main": "7d4c2ee77282c0d6c22fd3902869b9d2ac82cd7f",
+  "prs": [
+    {
+      "number": 375,
+      "url": "https://github.com/genarolins1975/scrutiniums/pull/375",
+      "head": "ca5880e991bca67a766a377eb22be96b772f90cd",
+      "branch": "codex/confiabilidade-credito",
+      "state": "open",
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "ci": {
+        "id": 40082251521,
+        "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40082251521",
+        "conclusion": "success"
+      }
+    },
+    {
+      "number": 376,
+      "url": "https://github.com/genarolins1975/scrutiniums/pull/376",
+      "head": "aaadffd4aa979e08faeefd757582a80633b626ac",
+      "branch": "codex/confiabilidade-energia",
+      "state": "open",
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "ci": {
+        "id": 40082118340,
+        "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40082118340",
+        "conclusion": "success"
+      }
+    },
+    {
+      "number": 377,
+      "url": "https://github.com/genarolins1975/scrutiniums/pull/377",
+      "head": "401f4a0dc01288e8785357a79b287b8976c25fce",
+      "branch": "codex/confiabilidade-rtn",
+      "state": "open",
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "ci": {
+        "id": 40082120522,
+        "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40082120522",
+        "conclusion": "success"
+      }
+    },
+    {
+      "number": 378,
+      "url": "https://github.com/genarolins1975/scrutiniums/pull/378",
+      "head": "643a6e3240d82ddf24e42e2b5c275e3ba22727c0",
+      "branch": "codex/confiabilidade-operacoes",
+      "state": "open",
+      "mergeable": true,
+      "mergeable_state": "clean",
+      "ci": {
+        "id": 40084521787,
+        "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40084521787",
+        "conclusion": "success"
+      }
+    }
+  ],
+  "review_threads": [
+    {
+      "id": "PRRT_kwDOTnzOxs6v3WCU",
+      "isResolved": true
+    },
+    {
+      "id": "PRRT_kwDOTnzOxs6v3WCV",
+      "isResolved": true
+    }
+  ]
+}

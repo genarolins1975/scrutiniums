@@ -28,3 +28,7 @@ Preparação: `bash scripts/preparar-sessao.sh` em cada checkout. Node 22.23.3, 
 O CI independente de cada PR verifica seu próprio SHA; as descrições apontam para as execuções correspondentes. Os dois achados da revisão automática do PR #378 foram tratados com regressões: continuação dentro da janela diária e prazo `datajud` de 75 dias para Judicial. O disparador falha explicitamente se exceder oito lotes, mudar de dia com pendências ou receber erro; não oculta entregas pendentes, não segue redirects nem expõe o segredo.
 
 A coleta oficial atual e a disponibilidade autenticada em produção permanecem **não homologadas**. [Relatório executivo e dependências externas](../operacoes/RELATORIO.md). CI verde não comprova atualização de dados. Este commit posterior apenas anexa evidências aos commits testados.
+
+## Conferência remota de encerramento
+
+Em 24/10/2026, os quatro PRs estão abertos, sem conflitos, e os CIs dos respectivos commits estão aprovados. Os dois apontamentos procedentes da revisão automática foram respondidos e resolvidos. A main permanece `7d4c2ee77282c0d6c22fd3902869b9d2ac82cd7f`. [Registro da API, commits e links dos CIs](ci-final.json). Isso encerra a validação dessas correções de código, não a homologação das coletas reais pendentes.
