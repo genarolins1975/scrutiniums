@@ -8,10 +8,10 @@ const fonte = JSON.parse(readFileSync("public/obs/data/gold/consignado.json", "u
 const estados = (fonte.estados as Estado[]).filter((e): e is Estado & { outras_censo: number; cons_por_60: number } => e.outras_censo != null && e.cons_por_60 != null);
 const xs = estados.map(e => e.outras_censo), ys = estados.map(e => e.cons_por_60);
 const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
-// Contrato da figura original: o posicionamento das siglas não desloca os dados nem muda as bolhas.
+// A margem visual acomoda ticks; a posição normalizada no domínio e o raio continuam iguais aos dados.
 const pontosOriginais = estados.map(e => ({ uf: e.uf,
-  x: +(60 + 640 * (e.outras_censo - x0) / Math.max(x1 - x0, 1e-9)).toFixed(1),
-  y: +(250 - 210 * (e.cons_por_60 - y0) / Math.max(y1 - y0, 1e-9)).toFixed(1),
+  x: (e.outras_censo - x0) / Math.max(x1 - x0, 1e-9),
+  y: (e.cons_por_60 - y0) / Math.max(y1 - y0, 1e-9),
   r: +(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1),
 }));
 let servidor: ServidorProducao;
@@ -48,12 +48,20 @@ describe.skipIf(!temBuild && !exigirBuild)("Gráficos: identificação sem colis
             if (a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y) colisoes.push([a.uf, b.uf]);
           }
           const fora = caixas.filter(b => b.x < limite.left - .5 || b.x + b.w > limite.right + .5 || b.y < limite.top - .5 || b.y + b.h > limite.bottom + .5).map(b => b.uf);
-          const pontos = grupos.map(g => { const c = g.querySelector("circle")!; return { uf: g.dataset.uf, x: +c.getAttribute("cx")!, y: +c.getAttribute("cy")!, r: +c.getAttribute("r")! }; });
+          const [horizontal, vertical] = [...svg.querySelectorAll<SVGLineElement>(":scope > line")];
+          const esquerda = horizontal.x1.baseVal.value, direita = horizontal.x2.baseVal.value;
+          const baixo = horizontal.y1.baseVal.value, topo = vertical.y1.baseVal.value;
+          const pontos = grupos.map(g => { const c = g.querySelector("circle")!; return { uf: g.dataset.uf, x: (+c.getAttribute("cx")! - esquerda) / (direita - esquerda), y: (baixo - +c.getAttribute("cy")!) / (baixo - topo), r: +c.getAttribute("r")! }; });
           return { colisoes, fora, pontos, guias: svg.querySelectorAll(".cgdisp-guia").length };
         });
         expect(resultado.colisoes, `rótulos sobrepostos em ${width}px`).toEqual([]);
         expect(resultado.fora, `rótulos fora do SVG em ${width}px`).toEqual([]);
-        expect(resultado.pontos).toEqual(pontosOriginais);
+        expect(resultado.pontos.map(p => p.uf)).toEqual(pontosOriginais.map(p => p.uf));
+        resultado.pontos.forEach((p, i) => {
+          expect(p.x).toBeCloseTo(pontosOriginais[i].x, 3);
+          expect(p.y).toBeCloseTo(pontosOriginais[i].y, 3);
+          expect(p.r).toBe(pontosOriginais[i].r);
+        });
         expect(resultado.guias).toBe(estados.length);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
       }
@@ -86,7 +94,7 @@ describe.skipIf(!temBuild && !exigirBuild)("Gráficos: identificação sem colis
     const page = await contexto.newPage();
     try {
       await page.goto(servidor.origem + "/observatorio/credit");
-      await page.locator("#view-pulse .line-chart svg").first().waitFor();
+      await page.locator("#view-pulse .line-chart svg.chart").first().waitFor();
       await page.evaluate(() => document.fonts.ready);
       let dados: string | undefined;
       for (const width of [320, 390, 768, 1440]) {

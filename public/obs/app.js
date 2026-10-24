@@ -963,6 +963,10 @@ function rotulosEixoSemColisao(rotulos, folga = 12) {
 }
 function lineChart(opts) {
   const W = opts.w || 720, H = opts.h || 240;
+  // Traços editoriais explícitos (previsão/cenário) sempre prevalecem.
+  const padroes = ["", "7,3", "2,3", "7,3,2,3", "7,3,2,3,2,3"];
+  const distinguir = opts.series.length <= padroes.length && !opts.series.some(s => s.dash != null);
+  const traco = (s, i) => s.dash ?? (distinguir ? padroes[i] : "");
   const all = [];
   opts.series.forEach(s => s.pts.forEach(p => { if (p.y != null) all.push(p.y); }));
   if (opts.band) opts.band.pts.forEach(p => { all.push(p.lo, p.hi); });
@@ -1046,7 +1050,7 @@ function lineChart(opts) {
   opts.series.forEach((s, si) => {
     let continua = false;
     const d = s.pts.map(p => { if (p.y == null) { continua = false; return ""; } const cmd = continua ? "L" : "M"; continua = true; return `${cmd}${X(p.x)},${Y(p.y)}`; }).join(" ");
-    out += `<path class="serie s${si}" d="${d}" fill="none" style="stroke:${ccol(s.color)}" stroke-width="${s.w || 1.8}" stroke-linejoin="round" stroke-linecap="round" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""}/>`;
+    out += `<path class="serie s${si}" d="${d}" fill="none" style="stroke:${ccol(s.color)}" stroke-width="${s.w || 1.8}" stroke-linejoin="round" stroke-linecap="round" ${traco(s, si) ? `stroke-dasharray="${traco(s, si)}"` : ""}/>`;
   });
   // rótulos DIRETOS no fim de cada linha: nome curto na cor da série, com
   // anti-colisão vertical simples (melhor prática de identificação de séries)
@@ -1093,7 +1097,8 @@ function lineChart(opts) {
       allX.map((x, i) => `<tr><td>${dateLabel(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
       `</tbody></table></div></details>`;
   }
-  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify(opts))}" data-line-width="${W}">${out}</div>`;
+  const identificacao = `${opts.unit ? `<p class="src chart-unit">Unidade: ${attr(opts.unit)}</p>` : ""}<div class="legend chart-series" role="group" aria-label="Séries do gráfico">${opts.series.map((s, i) => `<span><svg width="32" height="12" viewBox="0 0 32 12" aria-hidden="true" focusable="false"><path d="M0 6H32" fill="none" stroke="${ccol(s.color)}" stroke-width="2" stroke-dasharray="${traco(s, i)}"/></svg> ${attr(s.label || "Série " + (i + 1))}</span>`).join("")}</div>`;
+  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify(opts))}" data-line-width="${W}">${identificacao}${out}</div>`;
 }
 
 /* ---------- tooltip + crosshair (delegação global) ---------- */
@@ -2024,14 +2029,14 @@ function renderPix() {
       <div class="card"><h4>Participação na ${metr === "q" ? "quantidade" : "soma de valor"} — trimestral</h4>${stack}</div>
       <div class="card"><h4>Fotografia do trimestre ${X.kpis.part_tri.tri}</h4>
         ${foto.map(x => panBar(X.tri.nomes[x.i], x[metr === "q" ? "q" : "v"], fotoMax, v2 => metr === "q" ? fmt.n(v2 / 1e9, 1) + " bi" : fmt.money(v2), `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
-        <div class="src" style="margin-top:6px">tíquete = valor ÷ quantidade — TED concentra grandes valores; cartão de crédito embute financiamento; nenhum instrumento é substituto perfeito de outro.</div></div>
+        <div class="src" style="margin-top:6px">Fotografia de todos os instrumentos com transações no trimestre. Seleção: só área empilhada. Cartão de crédito inclui financiamento.</div></div>
     </div>
     <div class="ov-2col-eq" style="margin-top:14px">
     <div class="card"><h4 style="margin-top:0">Crescimento comparado — instrumentos MENSAIS (base 100 em jun/2021)</h4>${cmpMensal}</div>
     <div class="card"><h4 style="margin-top:0">Como ler esta comparação</h4>
     ${entenda("pxcmp", [["Regra temporal", "Pix, TED, boleto e cheque têm série mensal; cartões e demais são trimestrais — por isso a comparação completa usa trimestres, e os mensais entram somados por trimestre."],
       ["DOC e TEC", "descontinuados em 2024 — os zeros finais são reais, não ausência de dado."],
-      ["Leitura", "quantidade, valor e tíquete contam histórias diferentes: o Pix domina a quantidade; TED domina o valor médio."]])}</div></div>`;
+      ["Leitura", "Quantidade = número de transações; valor = montante; tíquete = valor ÷ quantidade. Use o mesmo período. Área empilhada: apenas instrumentos selecionados."]])}</div></div>`;
 
   /* ---------- 4. quem usa ---------- */
   const us = X.usuarios_serie;
@@ -2059,6 +2064,7 @@ function renderPix() {
   // filtro pelo PAGADOR: PF = P2*, PJ = B2* (governo e n.d. só em Todos)
   const natpag = px.natpag || "todos";
   const natRows = X.natureza.atual.filter(x => natpag === "todos" || (natpag === "pf" ? x.k.startsWith("P2") : x.k.startsWith("B2")));
+  const natLider = natRows.reduce((maior, x) => Number.isFinite(x.q) && (!maior || x.q > maior.q) ? x : maior, null);
   /* heat map pagador × recebedor a partir das classes da própria fonte:
      P2B lê-se "linha Pessoa, coluna Empresa" — nada é estimado, só re-arranjado */
   const hmnat = px.hmnat || "q";
@@ -2092,7 +2098,7 @@ function renderPix() {
     <div class="card"><h4>Quantidade e tíquete por natureza
       <span class="seg" style="margin-left:8px">${[["todos", "Total"], ["pf", "Pagador PF"], ["pj", "Pagador PJ"]].map(([v2, l]) => `<button aria-pressed="${!!(natpag === v2)}" class="${natpag === v2 ? "on" : ""}" onclick="pxSet('natpag','${v2}')">${l}</button>`).join("")}</span></h4>
       ${natRows.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => quantidadeCompacta(v2, 1e9, 2, "bi"), `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
-      ${leitura([["Leitura", "P2P domina a quantidade com tíquete baixo; B2B tem poucas transações com tíquete alto — o Pix combina papéis de transferência pessoal, maquininha e tesouraria"], ["Governo", "fluxos G2P/P2G identificados pela fonte"]])}</div>
+      ${leitura([["Leitura", natLider ? `${fmt.my(X.mes_tx)} · Maior quantidade no recorte: ${NATL[natLider.k] || natLider.k}, ${quantidadeCompacta(natLider.q, 1e9, 2, "bi")} transações (${fmt.n(natLider.part_q, 1)}% do total transacional do mês). Tíquete = valor médio por transação.` : "Sem quantidade disponível neste recorte."], ["Governo", "fluxos G2P/P2G identificados pela fonte"]])}</div>
     <div class="card"><h4>Uso comercial: participação do P2B na quantidade</h4>
       ${lineChart({ series: [{ pts: X.natureza.serie_p2b.map(o => ({ x: o.p, y: o.v })), label: "P2B", color: "var(--pix)" }, { pts: X.natureza.serie_p2p.map(o => ({ x: o.p, y: o.v })), label: "P2P", color: "#64748b" }], h: 200, unit: "% da quantidade", aria: "participação de P2B e P2P" })}
       <h4 style="margin-top:12px">Quem paga, por faixa etária</h4>
@@ -2122,6 +2128,11 @@ function renderPix() {
   };
   const gvals = G.ufs.map(gval);
   const gscale = panScale(gvals, gmet === "yoy_v" ? "div0" : "seq");
+  const gv = gvals.filter(v => v != null);
+  const gspan = Math.max(...gv.map(Math.abs));
+  const glo = gmet === "yoy_v" ? -gspan : Math.min(...gv), ghi = gmet === "yoy_v" ? gspan : Math.max(...gv);
+  const gleg = gv.length ? [glo, (glo + ghi) / 2, ghi].map(v => `<span><i class="sw" aria-hidden="true" style="background:${gscale(v)}"></i>${GMETS[gmet][1](v)}</span>`).join("") : "Sem dados no recorte";
+
   const gpaths = G.ufs.map(u => {
     const d = (G.geo.paths || {})[u.uf];
     if (!d) return "";
@@ -2147,6 +2158,8 @@ function renderPix() {
     </div>
     <div class="ov-2col-eq">
       <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
+      <p class="src">${GMETS[gmet][0]} · escala contínua${gmet === "yoy_v" ? ", centrada em zero" : ""}</p><div class="legend" role="group" aria-label="Referências numéricas da escala de cor">${gleg}</div>
+      <details class="charttable"><summary>Dados do mapa por UF</summary><div class="tblwrap"><table class="data compact"><caption>${GMETS[gmet][0]} · ${persp === "rec" ? "Recebedor" : "Pagador"} · ${gnat} · ${G.mes}</caption><thead><tr><th scope="col">Estado</th><th scope="col">${GMETS[gmet][0]}</th></tr></thead><tbody>${G.ufs.map(u => `<tr><th scope="row">${attr(u.nome)} (${u.uf})</th><td class="num">${gval(u) == null ? "Não publicado" : GMETS[gmet][1](gval(u))}</td></tr>`).join("")}</tbody></table></div></details>
       <div class="src" style="margin-top:6px">${G.nota_perspectiva} Na perspectiva do recebedor, as métricas por habitante e o valor médio são derivados dos mesmos números publicados (habitantes = transações pagas ÷ transações por habitante); o crescimento 12m existe só para o pagador. O recorte PF/PJ da fonte existe para o valor PAGO.</div></div>
       <div class="card"><h4>Municípios — os maiores por valor pago</h4>
       ${M2 === undefined ? `<button class="btn" onclick="pxLoadMun()">carregar ranking municipal (5,5 mil municípios)</button>` :
@@ -2267,6 +2280,7 @@ function renderPix() {
     <div class="ov-2col-eq">
     <div class="card"><h4>Contestações aceitas a cada 100 mil transações</h4>
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.aceitas_100mil })), label: "aceitas/100 mil", color: "#b91c1c" }], h: 200, unit: "por 100 mil transações", fonte: "BCB MED", aria: "incidência de contestações aceitas", annotations: marcosRegulatorios("pix") })}
+      <h5>Parcela do valor contestado que foi devolvida</h5>
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.pct_devolucao })), label: "% devolvido", color: "var(--pix)" }], h: 160, unit: "% do valor contestado devolvido", aria: "taxa de devolução do MED" })}</div>
     <div class="card"><h4>Último mês (${md0.p || "–"})</h4>
       <div class="pan-kpi pan-kpi-rem" style="--pan-kpi-min:9.375rem">
@@ -2278,7 +2292,7 @@ function renderPix() {
         <div><div class="src">chaves com marcação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n0(md0.chaves_marcadas)}</div></div>
       </div>
       ${entenda("pxmed", [["Cadeia de conceitos", "transação CONTESTADA → contestação ACEITA → DEVOLUÇÃO (integral ou parcial). 'Marcação de fraude' é um registro no DICT, não sentença."],
-        ["Por que a devolução parcial", "o MED só alcança o saldo remanescente na conta do recebedor — daí o % devolvido baixo."],
+        ["Como interpretar a devolução", "Devolução integral ou parcial depende de recursos recuperáveis. O percentual do BCB não identifica causas ou saldo de cada caso."],
         ["O que NÃO afirmamos", "nenhum campo aqui é 'fraude confirmada'; a fonte pública não oferece essa classificação."]])}</div>
     </div>`;
 
@@ -4162,7 +4176,7 @@ function pulseTransform(s, transf, range) {
 const PULSE_CMP_CORES = ["#1d4e89", "#b45309", "#0e7c7b"];
 window.pulseCmpSet = (k, v) => {
   state.pulseCmp = { ...(state.pulseCmp || {}), [k]: v || null };
-  renderPulse();
+  comFocoPreservado(renderPulse);
 };
 window.pulseCmpCSV = () => {
   const pc = state.pulseCmp || {};
@@ -4187,7 +4201,14 @@ function pulseComparadorSec() {
   const pc = state.pulseCmp || (state.pulseCmp = { a: "saldo_total", b: "inad_total", c: null, transf: "b100" });
   const transf = pc.transf === "yoy" ? "yoy" : "b100";
   const opcoes = sel => Object.entries(P.series)
-    .map(([k, s]) => `<option value="${k}" ${sel === k ? "selected" : ""}>${s.meta.name.length > 48 ? s.meta.name.slice(0, 47) + "…" : s.meta.name}</option>`).join("");
+    .map(([k, s]) => `<option value="${k}" ${sel === k ? "selected" : ""}>${attr(s.meta.name)}</option>`).join("");
+  const seletor = slot => {
+    const id = "pulse-cmp-" + slot;
+    const nome = P.series[pc[slot]]?.meta.name || "Nenhuma série selecionada";
+    return `<div class="pulse-cmp-controle"><label for="${id}">série ${slot.toUpperCase()}</label>
+      <select id="${id}" aria-describedby="${id}-nome" onchange="pulseCmpSet('${slot}', this.value)">${slot === "c" ? '<option value="">—</option>' : ""}${opcoes(pc[slot])}</select>
+      <p id="${id}-nome" class="src pulse-cmp-nome">${attr(nome)}</p></div>`;
+  };
   const chaves = [pc.a, pc.b, pc.c].filter(Boolean);
   const series = [];
   const omitidas = [];
@@ -4195,7 +4216,7 @@ function pulseComparadorSec() {
     const s = P.series[k]; if (!s) return;
     const t = pulseTransform(s, transf, state.filters.range);
     if (!t) { omitidas.push(s.meta.name); return; }
-    series.push({ pts: t.pts, color: PULSE_CMP_CORES[i % 3], label: s.meta.name.slice(0, 34), w: 2 });
+    series.push({ pts: t.pts, color: PULSE_CMP_CORES[i % 3], label: s.meta.name, w: 2 });
   });
   const grafico = series.length >= 2 ? lineChart({
     series, h: 230, unit: transf === "yoy" ? "% a/a" : "índice",
@@ -4203,17 +4224,14 @@ function pulseComparadorSec() {
   }) : `<p class="src">escolha pelo menos duas séries com a transformação aplicável.</p>`;
   return `
   <h3>Comparar séries</h3>
-  <div class="card">
+  <div class="card pulse-comparador">
     <h4>Trajetórias na mesma régua</h4>
     <div class="controls">
-      <label>série A <select onchange="pulseCmpSet('a', this.value)">${opcoes(pc.a)}</select></label>
-      <label>série B <select onchange="pulseCmpSet('b', this.value)">${opcoes(pc.b)}</select></label>
-      <label>série C <select onchange="pulseCmpSet('c', this.value)"><option value="">—</option>${opcoes(pc.c)}</select></label>
+      ${["a", "b", "c"].map(seletor).join("")}
       <span class="seg">${[["b100", "base-100"], ["yoy", "variação a/a"]].map(([v, l]) =>
         `<button class="${transf === v ? "active" : ""}" onclick="pulseCmpSet('transf','${v}')">${l}</button>`).join("")}</span>
       <button class="btn ghost small" onclick="pulseCmpCSV()">baixar CSV</button>
     </div>
-    <div class="legend">${series.map(sr => `<span><span class="sw" style="background:${sr.color}"></span>${sr.label}</span>`).join("")}</div>
     ${grafico}
     <p class="src">Unidades distintas nunca dividem um eixo em nível — por isso a sobreposição só existe em
     <b>base-100</b> (cada série rebaseada no início da janela: compara trajetórias, não tamanhos) ou
@@ -4518,22 +4536,28 @@ function renderSectors() {
   ${renderExposuresSection()}
   ${papel ? `<h3>Indicador antecedente em triagem</h3>
   <div class="grid g2"><div class="card"><h4>${papel.meta.name} ${badge("observado")} <span class="seal aprox">ANTECEDENTE EM TRIAGEM</span></h4>
-  ${lineChart({ series: [{ pts: papel.obs.slice(-72).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b" }], h: 160 })}
+  ${lineChart({ series: [{ pts: papel.obs.slice(-72).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: papel.meta.name }], h: 160, unit: papel.meta.unit, fonte: papel.meta.source + " " + papel.meta.series_code })}
   ${chartFooter({ fonte: papel.meta.source + " " + papel.meta.series_code, periodo: `até ${fmt.my(papel.obs[papel.obs.length - 1].ref)}`, atualizado: papel.meta.last_collected_at ? papel.meta.last_collected_at.slice(0, 10) : "–", unidade: papel.meta.unit, nota: "Promoção a antecedente exige ganho fora da amostra e estabilidade em avaliações futuras." })}
   </div></div>` : ""}`;
 }
+
+// Dois identificadores abreviados no gold têm nome integral no explorer (CNAE).
+const setorLabel = (k) => ({
+  comercio_reparacao_de_veiculos_automotores_e_mot: "Comércio; reparação de veículos automotores e motocicletas",
+  agricultura_pecuaria_producao_florestal_pesca_e_: "Agricultura, pecuária, produção florestal, pesca e aquicultura",
+})[k] || (k === "outros" ? "outros (não classificados)" : k.replace(/_/g, " "));
 
 function renderExposuresSection() {
   // section ancorada: destino das pontes vindas de PGFN e RJ
   const ex = state.data.exposures;
   if (!ex || !ex.ok) return "";
-  const nice = s => s.replace(/_/g, " ").replace(/\b\w/, c => c.toUpperCase()).slice(0, 46);
+  const nice = s => setorLabel(s).replace(/\b\w/, c => c.toUpperCase());
   const rows = Object.entries(ex.setores).map(([slug, s]) => `
     <tr>
       <td>${nice(slug)}</td>
       <td>${fmt.money(s.total_brl)}</td>
-      <td>${s.top_volume.slice(0, 3).map(i => `${i.nome.slice(0, 18)} (${fmt.money(i.volume_brl)})`).join("<br>")}</td>
-      <td>${s.top_exposicao_relativa.slice(0, 3).map(i => `<span class="clickable" onclick="nav('institutions')">${i.nome.slice(0, 18)}</span> (${i.share_da_propria_carteira_pj_pct}% da própria carteira PJ)`).join("<br>")}</td>
+      <td>${s.top_volume.slice(0, 3).map(i => `${attr(i.nome)} (${fmt.money(i.volume_brl)})`).join("<br>")}</td>
+      <td>${s.top_exposicao_relativa.slice(0, 3).map(i => `<span class="clickable" onclick="nav('institutions')">${attr(i.nome)}</span> (${i.share_da_propria_carteira_pj_pct}% da própria carteira PJ)`).join("<br>")}</td>
     </tr>`).join("");
   return `
   <section id="sec-exposicoes">
@@ -4542,7 +4566,7 @@ function renderExposuresSection() {
   <div class="tblwrap"><table class="data"><thead><tr><th>Setor (CNAE, 9 grupos)</th><th>Carteira do sistema</th><th>Maiores credores (volume)</th><th>Maior exposição relativa</th></tr></thead><tbody>${rows}</tbody></table></div>
   <div class="note"><b>Método:</b> ${ex.metodo}<br><b>Limitações:</b> ${ex.limitacoes}</div>
   <h3>Crédito a micro e pequenas empresas — participação na carteira PJ ${badge("observado")}</h3>
-  <div class="grid g2"><div class="card">${ex.ranking_pme.slice(0, 10).map(x => `<div class="contrib"><span class="lbl" style="width:210px">${x.nome.slice(0, 30)}</span><span class="bar pos" style="width:${x.pme_share_pct}px"></span><span class="num">${x.pme_share_pct}% <span class="src">(PJ ${fmt.money(x.carteira_pj_brl)})</span></span></div>`).join("")}
+  <div class="grid g2"><div class="card exposicao-ranking-pme">${ex.ranking_pme.slice(0, 10).map(x => `<div class="contrib contrib-comparavel"><span class="lbl">${attr(x.nome)}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar pos" style="width:${x.pme_share_pct}px"></span></span><span class="num">${x.pme_share_pct}% <span class="src">(PJ ${fmt.money(x.carteira_pj_brl)})</span></span></div>`).join("")}
   <div class="src">apenas carteiras PJ ≥ R$ 1 bi · fonte IF.data ${ex.anomes}</div></div></div>
   </section>`;
 }
@@ -4593,7 +4617,7 @@ function renderSectorPage() {
   <div class="grid g2" style="margin-top:12px">
     <div class="card"><h4>Exposição das instituições ao setor ${expo ? badge("observado") : ""}</h4>
       ${expo ? `<div class="src">Carteira do sistema no grupo CNAE correspondente: <b>${fmt.money(expo.total_brl)}</b> (IF.data ${ex.anomes})</div>
-        <div class="src" style="margin-top:4px"><b>Maiores credores:</b><br>${expo.top_volume.map(i => `<span class="clickable" onclick="openInstPage('${i.cod_inst}')">${i.nome.slice(0, 26)}</span> — ${fmt.money(i.volume_brl)}`).join("<br>")}</div>`
+        <div class="src" style="margin-top:4px"><b>Maiores credores:</b><br>${expo.top_volume.map(i => `<span class="clickable" onclick="openInstPage('${i.cod_inst}')">${attr(i.nome)}</span> — ${fmt.money(i.volume_brl)}`).join("<br>")}</div>`
       : `<p class="src">Este recorte da ${PPESQ.fonte.replace("IBGE ", "")} não tem correspondente direto nos 9 grupos CNAE das carteiras (apenas transformação e extrativas têm) — exposição não exibida para evitar atribuição indevida.</p>`}</div>
     <div class="card"><h4>Recuperações judiciais do setor</h4>
       <p class="src">Informação não disponível nas fontes públicas integradas: o DataJud não traz CNAE dos processos. Normalização por nº de empresas/estoque de crédito entra com Receita/SCR (fase futura). O componente setorial de RJ do score permanece demonstrativo e sinalizado.</p></div>
@@ -5871,13 +5895,21 @@ window.penFiltra = (campo, valor) => {
   if (campo !== "sel") state.pen.sel = null;
   renderPenetracao();
 };
+/* A seleção municipal abre uma consulta: o foco acompanha o título do perfil,
+   sem criar parada extra de Tab nem deixar o teclado no BODY após o render. */
+function focarPerfilMunicipal(alvo) {
+  if (!alvo || !alvo.closest("section.view.active")) return;
+  const titulo = alvo.querySelector("h3,h4") || alvo;
+  titulo.setAttribute("tabindex", "-1");
+  titulo.focus({ preventScroll: true });
+  rolarSecao(alvo, "smooth");
+}
 window.penSel = cod => {
   state.pen = { ...(state.pen || {}), sel: cod };
   renderPenetracao();
   // o perfil fica logo abaixo do mapa; quem clica numa linha do ranking ou numa bolha
   // da dispersão está longe dele e não veria a mudança
-  requestAnimationFrame(() => document.getElementById("pen-perfil")
-    ?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+  requestAnimationFrame(() => focarPerfilMunicipal(document.getElementById("pen-perfil")));
 };
 window.penBusca = (v, confirmado) => {
   /* A primeira versão selecionava (e re-renderizava a página inteira, destruindo o
@@ -6891,6 +6923,98 @@ window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
 /* @chunk:emergentes:ini */
+/* Bloco "companhia listada" da ficha da IF: guidance × realizado, custos de
+   TI, remuneração da administração e folha — tudo junto pela RAIZ do CNPJ da
+   holding listada (cadastro CVM, via perfil operacional), nunca por nome.
+   Cada sub-bloco só aparece quando a IF tem o dado; ausência não vira zero. */
+function instListadaSecao(pg, cab) {
+  const r = operResolve(pg.cod_inst, cab && cab.cnpj);
+  const c8 = (r && r.piloto && r.piloto.cnpj8) || null;
+  const partes = [instRegimeAviso(pg, r), instGuidanceIF(c8), instTiIF(c8), instRemuneracaoIF(c8), instFolhaIF(c8)]
+    .filter(Boolean);
+  return partes.join("");
+}
+
+function instRegimeAviso(pg, r) {
+  /* quase sempre vazio — mas quando a IF da página está na lista vigente de
+     regimes do BCB, isso é a PRIMEIRA coisa que a ficha deve dizer */
+  const R = state.data.regimes;
+  if (!R || !R.disponivel) return "";
+  const cands = new Set([pg.cod_inst,
+    (r && r.piloto && r.piloto.cnpj8) || "", (r && r.piloto && r.piloto.cnpj8_rede) || ""]);
+  const hit = (R.vigentes || []).find(v => cands.has(v.cnpj8));
+  if (!hit) return "";
+  return `<div class="note warn" style="margin-top:12px"><b>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB:</b>
+    ${hit.tipo}, decretado em ${hit.inicio}${hit.responsavel ? ` · responsável nomeado: ${hit.responsavel}` : ""}.
+    <span class="src">Lista oficial vigente (BCB/Olinda), atualização diária — detalhes na aba Pulso do crédito.</span></div>`;
+}
+
+function instGuidanceIF(c8) {
+  const G = state.data.guidance;
+  if (!c8 || !G || !G.disponivel) return "";
+  const ciclos = (G.ciclos || []).filter(c => c.cnpj8 === c8);
+  if (!ciclos.length) return "";
+  const ordenados = ciclos.slice().sort((a, b) => b.ano - a.ano);
+  return `<div id="s-guidance" class="card" style="margin-top:12px"><h4>${termo("guidance","Guidance")} × entregue — promessas da própria companhia ${badge("observado", G.fonte.nota)}</h4>
+    ${ordenados.map(guidCicloBloco).join("")}
+    <p class="src">${(G.cautelas || [])[0] || ""}</p>
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel} · <a href="/observatorio/institutions" onclick="nav('institutions');return false">todos os bancos com guidance →</a></p></div>`;
+}
+
+function instTiIF(c8) {
+  const O = state.data.operacional;
+  const TI = O && O.custos_ti;
+  if (!c8 || !TI) return "";
+  const obs = (TI.observacoes || []).filter(o => o.cnpj8 === c8)
+    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
+  if (!obs.length) return "";
+  return `<div id="s-ti" class="card" style="margin-top:12px"><h4>Quanto custa a TI ${badge("observado", TI.fonte && TI.fonte.nota)}</h4>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Rubrica (conceito do próprio banco)</th><th class="num">Valor</th><th>Referência</th></tr></thead>
+      <tbody>${obs.map(o => `<tr>
+        <td>${o.metrica}${o.conceito_nota ? ` <span title="${attr(o.conceito_nota)}">ⓘ</span>` : ""}<div class="src">${o.regime || ""}</div></td>
+        <td class="num"><b>${fmt.n0(o.valor)}</b> ${o.unidade}${o.comparativos ? `<div class="src">${Object.entries(o.comparativos).map(([a, v]) => `${a}: ${fmt.n0(v)}`).join(" · ")}</div>` : ""}</td>
+        <td class="src">${fmt.d(o.data_ref)}<br><a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 40)}</a> · ${o.pagina}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Conceitos contábeis DIFEREM entre bancos (a nota de cada rubrica declara o alcance) — nunca compare os valores entre instituições. Extração aprovada por revisor.</p></div>`;
+}
+
+function instRemuneracaoIF(c8) {
+  const O = state.data.operacional;
+  const RM = O && O.remuneracao;
+  if (!c8 || !RM) return "";
+  const emp = (RM.empresas || []).find(e => e.cnpj8 === c8);
+  if (!emp) return "";
+  const linha = (orgao, d) => {
+    if (!d || !d.realizado) return "";
+    const rz = d.realizado, pv = d.previsto;
+    return `<tr><td>${orgao}</td>
+      <td class="num"><b>${fmt.money(rz.total_brl)}</b><div class="src">exercício ${rz.exercicio}</div></td>
+      <td class="num">${rz.membros != null ? fmt.n(rz.membros, 1) : "–"}</td>
+      <td class="num">${rz.media_por_membro_brl != null ? fmt.money(rz.media_por_membro_brl) : "–"}</td>
+      <td class="num">${rz.maior != null ? fmt.money(rz.maior) : "–"}<div class="src">(8.3)</div></td>
+      <td class="num">${pv ? `${fmt.money(pv.total_brl)}<div class="src">${pv.exercicio}</div>` : "–"}</td></tr>`;
+  };
+  return `<div id="s-rem" class="card" style="margin-top:12px"><h4>Quanto ganha a administração ${badge("observado", RM.fonte && RM.fonte.nota)}</h4>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Órgão</th><th class="num">Total realizado</th><th class="num">Membros (média)</th><th class="num">Média/membro</th><th class="num">Maior individual</th><th class="num">Previsto</th></tr></thead>
+      <tbody>${linha("Diretoria Estatutária", emp.orgaos["Diretoria Estatutária"])}${linha("Conselho de Administração", emp.orgaos["Conselho de Administração"])}</tbody></table></div>
+    ${(RM.cautelas || []).slice(0, 2).map(x => `<p class="src">${x}</p>`).join("")}
+    <p class="src">CVM/FRE ${emp.fre_ano} — dados estruturados declarados pela própria companhia · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">ver todos os bancos →</a></p></div>`;
+}
+
+function instFolhaIF(c8) {
+  const FB = state.data.folha_bancos;
+  const bal = FB && FB.balanco;
+  if (!c8 || !bal) return "";
+  const obs = (bal.observacoes || []).filter(o => o.cnpj8 === c8)
+    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
+  if (!obs.length) return "";
+  return `<div id="s-folha" class="card" style="margin-top:12px"><h4>Folhas de pagamento no balanço ${badge("observado", bal.fonte && bal.fonte.nota)}</h4>
+    ${obs.map(o => `<p style="margin:6px 0">${o.metrica}: <b>${fmt.n0(o.valor)} ${o.unidade}</b>
+      <span class="src">· ref. ${fmt.d(o.data_ref)} · <a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 44)}</a> · ${o.pagina}</span></p>`).join("")}
+    <p class="src">O que o banco pagou (e amortiza) pelo direito de operar folhas — competição por captação estável. Extração aprovada por revisor · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">contexto completo →</a></p></div>`;
+}
+
 function renderSobre() {
   const el = document.getElementById("view-sobre");
   el.innerHTML = `
@@ -6933,9 +7057,9 @@ function instDetalheHtml(i) {
         ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
           ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
           ${i.carteira_perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${i.carteira_perfil.hhi_setorial}${i.carteira_perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${i.carteira_perfil.hhi_cobertura_pct}% setorialmente identificados — "outros" é agregado, nunca entra ao quadrado</span>` : ""}` : ""}
-          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}` : ""}
-          ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
-          ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${setorLabel(n)} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ")} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ")} ${s}%`).join(" · ")}` : ""}
         </div>` : ""}
         ${i.captacao ? `<h5>Custo de captação ${badge("calculado", i.captacao.formula)}</h5><div class="src">
           <b>${fmt.n(i.captacao.custo_aa_pct, 2)}% a.a.</b> (estimado; DRE de ${i.captacao.meses_dre} meses anualizada${i.captacao.media_pontas ? ", média das pontas" : ", ponta única"})
@@ -6970,7 +7094,7 @@ function instForaDoCorte(inst) {
 /* Régua da Basileia por grupo de pares (item 3): cada conglomerado é um ponto na linha do seu grupo; a faixa é a metade
    central do grupo e o traço, a mediana, ambos lidos de grupos[g].stats. Grupo que usa o conjunto completo como régua
    (pool_fallback) mostra só os pontos. Sem linha de mínimo regulatório: o S5 segue regime simplificado, com outra régua. */
-function instReguaBasileia(inst) {
+function instReguaBasileia(inst, largura = 760) {
   const ordem = ["S1", "S2", "S3", "S4", "S5", "S?"];
   const linhas = ordem.filter(g => inst.grupos && inst.grupos[g]).map(g => {
     const membros = (inst.instituicoes || []).filter(i => i.grupo_pares === g);
@@ -6981,19 +7105,21 @@ function instReguaBasileia(inst) {
   if (valores.length < 5) return "";
   const tri = fmtTri(inst.anomes);
   const max = Math.ceil(Math.max(...valores) / 10) * 10;
-  const W = 760, esq = 128, dir = 16, passo = 44, topo = 8, H = topo + linhas.length * passo + 30;
+  const W = Math.max(180, Math.floor(largura)), estreito = W < 480, esq = estreito ? 18 : 128, dir = 18, passo = estreito ? 72 : 44, topo = estreito ? 26 : 8, H = topo + linhas.length * passo + 30;
   const x = v => esq + (v / max) * (W - esq - dir);
   const semDado = (inst.instituicoes || []).filter(i => i.basileia_pct == null).length;
-  // largura mínima fixa: no celular o gráfico rola dentro da moldura (tblwrap) em vez de encolher até cortar o extremo
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="min-width:600px;max-width:none;height:auto" aria-label="Índice de Basileia de ${valores.length} conglomerados em ${tri}, por grupo de pares, de 0 a ${max}%">`;
-  for (let t = 0; t <= max; t += 10) {
+  // Recalcula apenas coordenadas e espaçamento: o domínio, os pontos e os quartis não mudam.
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" data-regua-width="${W}" style="width:100%;height:auto;display:block" aria-label="Índice de Basileia de ${valores.length} conglomerados em ${tri}, por grupo de pares, de 0 a ${max}%">`;
+  const salto = Math.max(10, Math.ceil(max / Math.max(1, Math.floor((W - esq - dir) / 48)) / 10) * 10);
+  const marcas = [...new Set([...Array.from({ length: Math.floor(max / salto) + 1 }, (_, i) => i * salto), max])];
+  for (const t of marcas) {
     svg += `<line x1="${x(t)}" x2="${x(t)}" y1="${topo}" y2="${H - 26}" style="stroke:var(--border)" stroke-width="1"/>`;
-    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="middle" style="fill:var(--text-2)">${t}%</text>`;
+    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="${t === 0 ? "start" : t === max ? "end" : "middle"}" style="fill:var(--text-2)">${t}%</text>`;
   }
   linhas.forEach((l, k) => {
     const cy = topo + k * passo + passo / 2;
-    svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
-    svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} de ${l.n}</text>`;
+    svg += `<text x="${estreito ? esq : 0}" y="${cy - (estreito ? 20 : 2)}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
+    svg += `<text x="${estreito ? W - dir : 0}" text-anchor="${estreito ? "end" : "start"}" y="${cy + (estreito ? -20 : 13)}" font-size="12" style="fill:var(--text-2)">${l.pts.length} de ${l.n}</text>`;
     if (l.st && l.st.q1 != null && l.st.q3 != null) {
       svg += `<rect x="${x(l.st.q1)}" y="${cy - 11}" width="${Math.max(1, x(l.st.q3) - x(l.st.q1))}" height="22" style="fill:color-mix(in srgb, var(--accent) 16%, transparent)"/>`;
       if (l.st.mediana != null) svg += `<line x1="${x(l.st.mediana)}" x2="${x(l.st.mediana)}" y1="${cy - 13}" y2="${cy + 13}" style="stroke:var(--text)" stroke-width="2"/>`;
@@ -7020,6 +7146,15 @@ function instReguaBasileia(inst) {
     ${tabela}
     <div class="src">Fonte: BCB IF.data (Olinda), conglomerados prudenciais, ${tri}. ${semDado ? `${fmt.n0(semDado)} dos ${fmt.n0((inst.instituicoes || []).length)} avaliados não reportam Basileia e ficam fora do gráfico. ` : ""}A posição no grupo não é nota de solidez: o requisito de capital depende do segmento e dos colchões de cada instituição.</div>
   </div>`;
+}
+function dimensionaBasileia(raiz) {
+  const svg = raiz?.querySelector("#inst-regua-basileia svg");
+  if (!svg) return;
+  const largura = Math.floor(svg.parentElement.getBoundingClientRect().width);
+  if (!largura || Math.abs(largura - Number(svg.dataset.reguaWidth)) < 2) return;
+  const temporario = document.createElement("div");
+  temporario.innerHTML = instReguaBasileia(state.data.institutions, largura);
+  svg.replaceWith(temporario.querySelector("svg"));
 }
 function renderInstitutions() {
   const el = document.getElementById("view-institutions");
@@ -7124,7 +7259,7 @@ function renderInstitutions() {
    ranking nem média de cumprimento entre bancos. */
 /* Rótulo de setor CNAE: o balde "outros" da fonte é um agregado residual —
    nunca aparece como se fosse um setor. */
-const setorLabel = (k) => k === "outros" ? "outros (não classificados)" : k.replace(/_/g, " ");
+
 
 /* Bloco de um ciclo de guidance — compartilhado entre a seção da aba
    Instituições e a ficha individual da IF, para as duas superfícies nunca
@@ -7458,9 +7593,9 @@ function renderInstPageData(el, pg) {
     <div id="s-carteira" class="card"><h4>Composição da carteira ${pg.carteira.donut_cliente ? badge("observado") : ""}</h4>
       ${pg.carteira.donut_cliente ? donut(pg.carteira.donut_cliente) : "<p class='src'>detalhamento de carteira não reportado por esta instituição no IF.data.</p>"}
       ${pg.carteira.perfil ? `<div class="src" style="margin-top:8px">
-        ${pg.carteira.perfil.top_mod_pf ? `<b>Modalidades PF:</b> ${pg.carteira.perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_mod_pf ? `<b>Modalidades PF:</b> ${pg.carteira.perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ")} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ")} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${setorLabel(n)} ${s}%`).join(" · ")}<br>` : ""}
         ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
         ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
     </div>
@@ -10421,14 +10556,14 @@ function renderSubnacional() {
   /* ---------- credores e finalidades ---------- */
   const barras = (lista, cor, campo = "share_valor_pct") => {
     const mx = Math.max(...lista.map(x => x[campo] || 0), 1);
-    return lista.map(x => `<div class="contrib"><span class="lbl" style="width:190px" title="${attr(x.nome)}">${x.nome.length > 34 ? x.nome.slice(0, 32) + "…" : x.nome}</span><span class="bar ${cor}" style="width:${Math.max(2, (x[campo] || 0) / mx * 150)}px"></span><span class="num">${pct(x[campo])} <span class="src">${brl(x.valor)} · ${n0(x.n)} op.${x.estados_n ? ` (${n0(x.estados_n)} de estados)` : ""}</span></span></div>`).join("");
+    return lista.map(x => `<div class="contrib contrib-comparavel"><span class="lbl">${attr(x.nome)}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar ${cor}" style="width:${Math.max(2, (x[campo] || 0) / mx * 150)}px"></span></span><span class="num">${pct(x[campo])} <span class="src">${brl(x.valor)} · ${n0(x.n)} op.${x.estados_n ? ` (${n0(x.estados_n)} de estados)` : ""}</span></span></div>`).join("");
   };
-  const credores = secWrap("sn-credores", `${sechead("Com quem e para quê", `12 meses até ${D.mes} · share do valor com parecer favorável`)}
+  const credores = secWrap("sn-credores", `${sechead("Com quem e para quê", `credores: ${F.cred === "60m" ? "60" : "12"} meses · finalidades: 12 meses · até ${D.mes} · participação no valor com parecer favorável`)}
   <div class="grid g2">
     <div class="card"><h4>Credores ${badge("observado")}</h4>
       <div class="controls"><label class="src">janela <select onchange="snSet('cred', this.value)" aria-label="janela dos credores"><option value="12m" ${F.cred !== "60m" ? "selected" : ""}>12 meses</option><option value="60m" ${F.cred === "60m" ? "selected" : ""}>60 meses</option></select></label></div>
       ${barras(F.cred === "60m" ? D.credores_60m : D.credores_12m, "pos")}
-      <p class="src">Bancos públicos federais (Banco do Brasil, Caixa, BNDES) dominam o valor; agências de fomento estaduais e o BRDE dominam a contagem de operações pequenas de municípios. Credores em moeda estrangeira aparecem só na contagem.</p></div>
+      <p class="src">Ranking por valor, na janela selecionada; contagem ao lado. Quantidade não mede valor. Somam-se reais; operações em outras moedas só entram na contagem, sem conversão.</p></div>
     <div class="card"><h4>Finalidades ${badge("observado")}</h4>
       ${barras(D.finalidades_12m, "pos")}
       <h5 style="margin-top:12px">Tipo de credor</h5>
@@ -10457,7 +10592,7 @@ function renderSubnacional() {
   const funil = secWrap("sn-funil", `${sechead("O que a verificação decidiu", `pleitos de mercado com status em 12 meses até ${D.mes}`)}
   <div class="grid g2">
     <div class="card"><h4>Status dos pleitos ${badge("observado")}</h4>
-      ${D.status_12m.map(s => `<div class="contrib"><span class="lbl" style="width:190px">${s.nome.split(":")[0].split(",")[0]}</span><span class="bar ${s.id === "arquivado" ? "neg" : "pos"}" style="width:${Math.max(2, (s.share_n_pct || 0) / stMax * 150)}px"></span><span class="num">${pct(s.share_n_pct)} <span class="src">${n0(s.n)} · ${brl(s.valor)}</span></span></div>`).join("")}
+      ${D.status_12m.map(s => `<div class="contrib contrib-comparavel"><span class="lbl">${attr(s.nome)}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar ${s.id === "arquivado" ? "neg" : "pos"}" style="width:${Math.max(2, (s.share_n_pct || 0) / stMax * 150)}px"></span></span><span class="num">${pct(s.share_n_pct)} <span class="src">${n0(s.n)} · ${brl(s.valor)}</span></span></div>`).join("")}
       <p class="src">Taxa de deferimento de ${pct(K.taxa_deferimento_12m_pct)}: liberados ÷ (liberados + arquivados). Em tramitação: ${n0(K.em_tramitacao_n)} pleitos (${brl(K.em_tramitacao_valor)}) com status desde ${K.em_tramitacao_desde}; pleitos parados há mais de três anos ficam fora.</p></div>
     <div class="card"><h4>Dois ritos, dois desfechos ${badge("observado")}</h4>
       ${D.status_12m.map(s => `<p class="src"><b>${s.nome.split(":")[0].split(" (")[0]}</b>: ${s.nome.includes(":") ? s.nome.split(":")[1].trim() : s.nome.includes("(") ? s.nome.slice(s.nome.indexOf("(") + 1, -1) : ""}</p>`).join("")}
@@ -10509,13 +10644,13 @@ function renderSubnacional() {
         ${lineChart({ series: seriesG, h: 180, endLabels: rotulosFim, unit: "R$ bi", dec: 1, fonte: "Tesouro Nacional (CODIV)", status: "observado", aria: "valor dos contratos internos com garantia da União por ano, estados e municípios" })}
         <p class="src">Contratos internos por ano de assinatura, em reais. ${G.nota}</p></div>
       <div class="card"><h4>Credores e mutuários ${badge("observado")}</h4>
-        ${(G.credores_internas || []).slice(0, 5).map(c => `<div class="contrib"><span class="lbl" style="width:150px">${c.nome}</span><span class="bar pos" style="width:${Math.max(2, c.valor / Math.max(G.credores_internas[0].valor, 1) * 150)}px"></span><span class="num">${brl(c.valor)} <span class="src">${n0(c.n)} contratos internos</span></span></div>`).join("")}
+        ${(G.credores_internas || []).slice(0, 5).map(c => `<div class="contrib contrib-comparavel"><span class="lbl">${c.nome}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar pos" style="width:${Math.max(2, c.valor / Math.max(G.credores_internas[0].valor, 1) * 150)}px"></span></span><span class="num">${brl(c.valor)} <span class="src">${n0(c.n)} contratos internos</span></span></div>`).join("")}
         <p class="src">Externos: ${(G.credores_externas || []).slice(0, 5).map(c => `${c.nome} (${n0(c.n)})`).join(" · ")}.</p>
         <h5 style="margin-top:12px">Por tipo de mutuário</h5>${(G.tipos || []).map(t => `<p class="src">• ${t.tipo}: ${n0(t.n)} contratos, ${brl(t.internas_valor)} internos, ${n0(t.externas_n)} externos</p>`).join("")}
         <h5 style="margin-top:12px">UFs com mais valor garantido (contratos internos)</h5>
         <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Contratos</th><th style="text-align:right">Internos</th><th style="text-align:right">Externos</th></tr></thead>
         <tbody>${ufsG.map(u => `<tr><td><b>${u.uf}</b> ${u.nome}</td><td style="text-align:right">${n0(u.n)} <span class="src">${n0(u.estado_n)} do estado</span></td><td style="text-align:right">${brl(u.internas_valor)}</td><td style="text-align:right">${n0(u.externas_n)}${u.externas_usd ? ` <span class="src">${usd(u.externas_usd)}</span>` : ""}</td></tr>`).join("")}</tbody></table></div>
-        <p class="src">${n0(KG.municipios_sem_uf)} contratos de municípios homônimos ficam sem UF. Os dez maiores contratos internos: ${(G.maiores_internas || []).slice(0, 5).map(m => `${m.mutuario} (${m.credor}, ${m.ano}, ${brl(m.valor)})`).join("; ")}.</p></div>
+        <p class="src">${n0(KG.municipios_sem_uf)} contratos de municípios homônimos ficam sem UF. Contratos internos de maior valor (até cinco): ${(G.maiores_internas || []).slice(0, 5).map(m => `${m.mutuario} (${m.credor}, ${m.ano}, ${brl(m.valor)})`).join("; ")}.</p></div>
     </div>`);
   } else if (D.garantias) {
     garSec = secWrap("sn-garantias", `${sechead("O que a União garante", "Tesouro Transparente")}<div class="card"><p class="src">${D.garantias.motivo || "indisponível"}</p></div>`);
@@ -11139,8 +11274,7 @@ window.morFiltra = (k, v) => { state.mor = { ...(state.mor || {}), [k]: v }; ren
 window.morSel = cod => {
   state.mor = { ...(state.mor || {}), sel: cod };
   renderMoradia();
-  const alvo = document.getElementById("mor-quem");
-  if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+  focarPerfilMunicipal(document.querySelector("#mor-quem .morperfil"));
 };
 window.morSim = (k, v) => {
   const n = Number(v);
@@ -11196,6 +11330,55 @@ const CG_SELCOR = { alta: "var(--positive)", media: "var(--warning)", baixa: "va
 
 function cgEscala(vals, pal) {
   return penEscala(vals, null, pal === "quente" ? "var(--warning)" : "var(--teal)");
+}
+
+// A tabela usa a mesma base filtrada e camada do mapa. A paginação não muda o recorte.
+let cgTabelaDados;
+function cgTabelaMapa(base, cam, D) {
+  const natureza = ["cons_ben", "indice"].includes(cam) ? "estimado" : ["p60", "prural"].includes(cam) ? "observado" : "calculado";
+  const censo = "IBGE, Censo 2022", mps = `MPS, dezembro/${D.ano}`, scr = `BCB, SCR ${fmt.my(D.scr.data_base)}`;
+  const fontes = ["p60", "env"].includes(cam) ? censo : ["prural", "pass"].includes(cam) ? mps : cam === "cons_ben" ? `${mps}; ${scr}` : `${mps}; ${censo}${cam === "indice" ? `; ${scr}` : ""}${["peso", "indice"].includes(cam) ? "; IPCA, preços de julho/2022" : ""}`;
+  const unidade = CG_CAMADAS[cam].u || { env: "pessoas de 60+ por 100 pessoas de 0 a 14 anos", ben100_60: "benefícios por 100 pessoas de 60+", indice: "pontos (0 a 100)" }[cam];
+  const ressalva = cam === "cons_ben" ? "Saldo estadual repartido por aposentadorias e pensões; não é carteira municipal observada." : cam === "indice" ? "Combina exposição municipal alocada e cenário aritmético de 84 meses. Mede sensibilidade do contexto, não conduta." : "";
+  const aberta = document.getElementById("cg-tabela-mapa")?.open;
+  cgTabelaDados = { base, cam, natureza, fontes, unidade, ressalva, q: cgTabelaDados?.q || "", pagina: cgTabelaDados?.pagina || 0 };
+  return `<details class="charttable" id="cg-tabela-mapa" ${aberta ? "open" : ""} ontoggle="if(this.open)cgTabelaPagina()"><summary>Dados do mapa: ${fmt.n0(base.length)} municípios no recorte</summary>
+    <p class="src">${ressalva} Mesma camada e filtros do mapa. N.d. indica medida indisponível. A cor satura nos percentis 5 e 95; os valores da tabela e do CSV não são limitados pelos percentis.</p>
+    <label for="cg-tabela-busca">Buscar município ou UF</label><input id="cg-tabela-busca" type="search" value="${attr(cgTabelaDados.q)}" oninput="cgTabelaBusca(this.value)" aria-controls="cg-tabela-linhas" style="width:100%;min-width:0">
+    <div class="controls"><button type="button" class="btn ghost small" id="cg-tabela-anterior" onclick="cgTabelaPagina(-1)">Página anterior</button><button type="button" class="btn ghost small" id="cg-tabela-proxima" onclick="cgTabelaPagina(1)">Próxima página</button><button type="button" class="btn ghost small" onclick="cgTabelaCSV()">Baixar CSV deste recorte</button></div>
+    <p class="src" id="cg-tabela-status" role="status" aria-live="polite"></p>
+    <div class="tblwrap"><table class="data compact" data-movel="1"><caption>${CG_CAMADAS[cam].l} · ${unidade} · ${natureza} · ${fontes} · todos os municípios do recorte, em páginas de 50</caption><thead><tr><th scope="col">Município</th><th scope="col">UF</th><th scope="col">${CG_CAMADAS[cam].l}</th><th scope="col">Confiabilidade</th></tr></thead><tbody id="cg-tabela-linhas"></tbody></table></div></details>`;
+}
+function cgTabelaLinhas() {
+  const q = _norm(cgTabelaDados.q.trim());
+  return cgTabelaDados.base.filter(m => !q || _norm(m.n + " " + m.uf).includes(q));
+}
+function cgTabelaBusca(q) {
+  cgTabelaDados.q = q; cgTabelaDados.pagina = 0; cgTabelaPagina();
+}
+function cgTabelaPagina(delta = 0) {
+  const corpo = document.getElementById("cg-tabela-linhas");
+  if (!corpo || !cgTabelaDados) return;
+  const ativo = document.activeElement;
+  const linhas = cgTabelaLinhas(), total = linhas.length;
+  const ultima = Math.max(0, Math.ceil(total / 50) - 1);
+  const pagina = cgTabelaDados.pagina = Math.max(0, Math.min(ultima, cgTabelaDados.pagina + delta));
+  const inicio = pagina * 50, C = CG_CAMADAS[cgTabelaDados.cam];
+  corpo.innerHTML = linhas.slice(inicio, inicio + 50).map(m => `<tr><th scope="row">${attr(m.n)}</th><td>${attr(m.uf)}</td><td class="num">${C.fmt(m)}</td><td>${attr((m.sel || "sem classificação").replaceAll("_", " "))}</td></tr>`).join("") || '<tr><td colspan="4">Nenhum município corresponde à busca neste recorte. Altere a busca ou os filtros do mapa.</td></tr>';
+  document.getElementById("cg-tabela-status").textContent = total ? `${fmt.n0(inicio + 1)} a ${fmt.n0(Math.min(total, inicio + 50))} de ${fmt.n0(total)} municípios. Página ${pagina + 1} de ${ultima + 1}.` : "Nenhum município encontrado.";
+  const anterior = document.getElementById("cg-tabela-anterior"), proxima = document.getElementById("cg-tabela-proxima");
+  anterior.disabled = pagina === 0; proxima.disabled = pagina === ultima;
+  if ((ativo === anterior && anterior.disabled) || (ativo === proxima && proxima.disabled)) {
+    (!anterior.disabled ? anterior : !proxima.disabled ? proxima : document.getElementById("cg-tabela-busca")).focus({ preventScroll: true });
+  }
+  acessibilizaRolagem(document.getElementById("cg-tabela-mapa"));
+}
+function cgTabelaCSV() {
+  if (!cgTabelaDados) return;
+  const { cam, natureza, fontes, unidade, ressalva } = cgTabelaDados, C = CG_CAMADAS[cam], F = state.cg || {};
+  const cab = `# ${C.l}\n# Natureza: ${natureza}\n# Fonte e referência: ${fontes}\n# Unidade: ${unidade}\n${ressalva ? "# Ressalva: " + ressalva + "\n" : ""}# Região: ${F.regiao || "todas"}; confiabilidade: ${F.conf || "exclui_baixa"}; busca: ${cgTabelaDados.q}\n# Valores sem saturação por percentis; célula vazia indica medida indisponível.\n`;
+  const linhas = cgTabelaLinhas().map(m => [m.n, m.uf, m[cam] == null ? "" : C.fmt(m), unidade, m.sel].map(csvEsc).join(";"));
+  dlFile(`consignado_mapa_${cam}.csv`, "\uFEFF" + cab + "municipio;uf;valor_apresentado;unidade;confiabilidade\n" + linhas.join("\n"), "text/csv;charset=utf-8");
 }
 
 function renderConsignado() {
@@ -11350,6 +11533,11 @@ function renderConsignado() {
   /* ============ 4. mapa ============ */
   const porCod = Object.fromEntries(base.map(m => [m.c, m]));
   const escala = cgEscala(base.map(m => m[cam]), C.pal);
+  const cv = base.map(m => m[cam]).filter(v => v != null).sort((a, b) => a - b);
+  const cq = p => cv[Math.round(p * (cv.length - 1))];
+  const clo = cq(.05), chi = cq(.95);
+  const cleg = cv.length ? [clo, (clo + chi) / 2, chi].map((v, i) => `<span><i class="sw" aria-hidden="true" style="background:${escala(v)}"></i>${i === 0 ? "Até " : i === 2 ? "A partir de " : ""}${C.fmt({ [cam]: v })}</span>`).join("") : "Sem dados no recorte";
+
   const paths = malha ? Object.entries(malha.paths).map(([cod, d]) => {
     const m = porCod[cod];
     if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
@@ -11384,6 +11572,8 @@ function renderConsignado() {
     <div class="card">
       ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(C.l)}"><g transform="${malha.transform}">${paths}</g></svg>`
               : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">${C.l} · escala contínua, saturada nos percentis 5 e 95</p><div class="legend" role="group" aria-label="Referências numéricas da escala de cor">${cleg}</div>
+      ${cgTabelaMapa(base, cam, D)}
       <p class="src">Paleta fria para envelhecimento e previdência, quente para exposição ao
       consignado — envelhecer não é risco, e a cor não deve sugerir que seja. Sombreado entre o
       percentil 5 e o 95 do recorte.</p>
@@ -11440,7 +11630,7 @@ function cgExposicao(D) {
 
   <div class="card"><table class="data cgseg">
     <thead><tr><th>Vínculo do tomador</th><th style="text-align:right">Saldo</th>
-      <th style="text-align:right">Inadimplência</th><th style="text-align:right">Taxa a.a.</th>
+      <th style="text-align:right">Inadimplência</th><th style="text-align:right">Juros de novas operações<br>(% a.a.)</th>
       <th style="text-align:right">Prazo da concessão</th></tr></thead>
     <tbody>
       <tr class="cgdestaque"><td><b>Beneficiários do INSS</b></td>
@@ -11458,10 +11648,13 @@ function cgExposicao(D) {
         <td style="text-align:right">${fmt.n(a.total.inad, 2)}%</td>
         <td style="text-align:right">${fmt.n(a.total.taxa, 2)}%</td><td style="text-align:right">–</td></tr>
     </tbody></table>
-    <p class="src">${cgSelo("observado")} A inadimplência do consignado do INSS é de
-    ${fmt.n(a.inss.inad, 2)}%, contra ${fmt.n(a.privado.inad, 2)}% no consignado privado. O custo
-    do crédito é de ${fmt.n(a.inss.icc, 2)}% ao ano e o prazo médio de concessão chegou a
-    ${fmt.n(a.inss.prazo_conc, 1)} meses.</p>
+    <p class="src">${cgSelo("observado")} Em ${fmt.my(G.data_base)}, os juros médios das novas operações de consignado INSS são
+    ${fmt.n(a.inss.taxa, 2)}% a.a. (<a href="https://api.bcb.gov.br/dados/serie/bcdata.sgs.20746/dados?formato=json">BCB/SGS 20746</a>).
+    O Indicador de Custo do Crédito (ICC), referente à carteira existente, é ${fmt.n(a.inss.icc, 2)}% a.a.
+    (<a href="https://api.bcb.gov.br/dados/serie/bcdata.sgs.27677/dados?formato=json">BCB/SGS 27677</a>), no mesmo mês.
+    São recortes distintos: contratações do mês e operações em carteira.</p>
+    <p class="src">A inadimplência do consignado INSS é de ${fmt.n(a.inss.inad, 2)}%, contra
+    ${fmt.n(a.privado.inad, 2)}% no consignado privado; o prazo médio de concessão é de ${fmt.n(a.inss.prazo_conc, 1)} meses.</p>
   </div>
 
   <div class="card">
@@ -11563,10 +11756,10 @@ function cgCircularidade(D) {
   const est = D.estados.filter(e => e.outras_censo != null && e.cons_por_60 != null);
   const xs = est.map(e => e.outras_censo), ys = est.map(e => e.cons_por_60);
   const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
-  const px = v => 60 + 640 * (v - x0) / Math.max(x1 - x0, 1e-9);
-  const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
+  const px = v => 96 + 604 * (v - x0) / Math.max(x1 - x0, 1e-9);
+  const py = v => 260 - 220 * (v - y0) / Math.max(y1 - y0, 1e-9);
   const ref = C.especificacoes.find(e => e.referencia);
-  const rotulos = cgPosicionaRotulos(est.map(e => ({ ...e, x: px(e.outras_censo), y: py(e.cons_por_60), r: 4 + 9 * Math.sqrt(e.a60 / 4e6) })));
+  const rotulos = cgPosicionaRotulos(est.map(e => ({ ...e, x: px(e.outras_censo), y: py(e.cons_por_60), r: 4 + 9 * Math.sqrt(e.a60 / 4e6) })), { esq: 100, dir: 712, topo: 20, baixo: 248 });
   const descricao = e => `${e.nome} (${e.uf}): rendimento de outras fontes ${fmt.n(e.outras_censo, 1)}%; consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}; população de 60 anos ou mais ${fmt.n0(e.a60)} pessoas.`;
   const ufSelecionada = state.cg?.dispersaoUf || "";
   const selecionado = est.find(e => e.uf === ufSelecionada);
@@ -11590,7 +11783,8 @@ function cgCircularidade(D) {
   </div>
 
   <div class="card">
-    <table class="data cgespec">
+    <p class="src tabela-deslize">Compare as colunas deslizando horizontalmente ou usando as setas com foco na tabela.</p>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Especificações da correlação: comparação por colunas"><table class="data cgespec cg-analitica">
       <thead><tr><th>Especificação</th><th style="text-align:right">Correlação</th><th>Por que difere</th></tr></thead>
       <tbody>${C.especificacoes.map(e => `<tr class="${e.referencia ? "cgdestaque" : ""}">
         <td>${e.rotulo}${e.referencia ? " <b>(referência)</b>" : ""}</td>
@@ -11600,7 +11794,7 @@ function cgCircularidade(D) {
         <td style="text-align:right">${fmt.n(C.correlacao_mecanica, 3)}</td>
         <td class="src">Mede a fórmula de alocação, não o mundo. Nenhuma afirmação da página se apoia nela.</td></tr>
       </tbody></table>
-    <p class="src">${cgSelo("observado")} Correlação de Pearson entre ${C.n_uf} unidades da federação.</p>
+    </div><p class="src">${cgSelo("observado")} Correlação de Pearson entre ${C.n_uf} unidades da federação.</p>
   </div>
 
   <div class="card">
@@ -11624,15 +11818,19 @@ function cgCircularidade(D) {
       </select>
     </label>
     <p class="src cgdisp-leitura" aria-live="polite" data-padrao="${attr(leituraPadrao)}">${selecionado ? descricao(selecionado) : leituraPadrao}</p>
-    <div class="tblwrap cgdisp-wrap" tabindex="0" role="region" aria-label="Dispersão por estado, com rolagem horizontal"><svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
-      <line x1="60" y1="250" x2="700" y2="250" stroke="var(--border)"></line>
-      <line x1="60" y1="40" x2="60" y2="250" stroke="var(--border)"></line>
+    <div class="tblwrap cgdisp-wrap" tabindex="0" role="region" aria-label="Dispersão por estado, com rolagem horizontal"><svg viewBox="0 0 720 320" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
+      <line x1="96" y1="260" x2="700" y2="260" stroke="var(--border)"></line>
+      <line x1="96" y1="40" x2="96" y2="260" stroke="var(--border)"></line>
+      ${[0, .5, 1].map(t => {
+        const vx = x0 + (x1 - x0) * t, vy = y0 + (y1 - y0) * t;
+        return `<text x="${px(vx)}" y="280" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}" font-size="12" fill="var(--text-2)">${fmt.n(vx, 1)}</text><text x="88" y="${py(vy) + 4}" text-anchor="end" font-size="12" fill="var(--text-2)">${fmt.n0(vy)}</text>`;
+      }).join("")}
       ${rotulos.map(e => `<g class="cgdisp-uf${e.uf === ufSelecionada ? " is-active" : ""}" data-uf="${e.uf}" role="img" aria-label="${attr(descricao(e))}">
         <line class="cgdisp-guia" x1="${e.inicio.x.toFixed(1)}" y1="${e.inicio.y.toFixed(1)}" x2="${e.fim.x.toFixed(1)}" y2="${e.fim.y.toFixed(1)}" aria-hidden="true"></line>
         <circle cx="${e.x.toFixed(1)}" cy="${e.y.toFixed(1)}" r="${e.r.toFixed(1)}" fill="var(--teal)" fill-opacity=".45" stroke="var(--teal)"></circle>
         <rect class="cgdisp-fundo" x="${e.caixa.x.toFixed(1)}" y="${e.caixa.y.toFixed(1)}" width="${e.caixa.w}" height="${e.caixa.h}" aria-hidden="true"></rect>
         <text class="cgdisp-rotulo" x="${e.lx.toFixed(1)}" y="${(e.ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
-      <text x="380" y="282" text-anchor="middle" font-size="12" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
+      <text x="398" y="308" text-anchor="middle" font-size="12" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
       <text x="16" y="145" font-size="12" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
     </svg></div>
     <details class="charttable"><summary>Dados da dispersão em tabela</summary><div class="tblwrap"><table class="data compact" data-movel="1"><thead><tr><th scope="col">Estado</th><th scope="col">Rendimento de outras fontes (%)</th><th scope="col">Consignado por pessoa de 60+ (R$)</th><th scope="col">População de 60+ (pessoas)</th></tr></thead><tbody>${est.map(e => `<tr><th scope="row">${e.nome} (${e.uf})</th><td class="num">${fmt.n(e.outras_censo, 1)}</td><td class="num">${fmt.n0(e.cons_por_60)}</td><td class="num">${fmt.n0(e.a60)}</td></tr>`).join("")}</tbody></table></div></details>
@@ -11646,7 +11844,8 @@ function cgCircularidade(D) {
     <p class="desprosa">A direção da associação é robusta, mas nenhuma explicação testada a
     sustenta. Quatro candidatos foram medidos, e os quatro falham — um deles com o sinal
     contrário ao que a hipótese previa.</p>
-    <table class="data"><thead><tr><th>Candidato a mecanismo</th>
+    <p class="src tabela-deslize">Compare as colunas deslizando horizontalmente ou usando as setas com foco na tabela.</p>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Mecanismos testados: comparação por colunas"><table class="data cg-analitica"><thead><tr><th>Candidato a mecanismo</th>
       <th style="text-align:right">Com consignado por 60+</th>
       <th style="text-align:right">Com dependência</th><th>Leitura</th></tr></thead>
       <tbody>${C.mecanismo.testados.map(m => `<tr>
@@ -11654,7 +11853,7 @@ function cgCircularidade(D) {
         <td style="text-align:right">${m.com_consignado_por_60 != null ? fmt.n(m.com_consignado_por_60, 3) : "–"}</td>
         <td style="text-align:right">${m.com_peso != null ? fmt.n(m.com_peso, 3) : "–"}</td>
         <td class="src">${m.leitura}</td></tr>`).join("")}</tbody></table>
-    <div class="judalerta" role="note">${C.mecanismo.conclusao}</div>
+    </div><div class="judalerta" role="note">${C.mecanismo.conclusao}</div>
   </div>
 
   <div class="judalerta" role="note">
@@ -11895,8 +12094,7 @@ window.cgSel = cod => {
   if (s.sel && s.sel !== cod && comp.length < 4 && !comp.includes(s.sel)) comp.push(s.sel);
   state.cg = { ...s, sel: cod, comp: comp.filter(c => c !== cod) };
   renderConsignado();
-  const alvo = document.getElementById("cg-perfil");
-  if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+  focarPerfilMunicipal(document.getElementById("cg-perfil"));
 };
 window.cgTira = cod => {
   const s = state.cg || {};
@@ -11919,7 +12117,7 @@ const RU_CORES = { custeio: "#1d4e89", investimento: "#0e7c7b", comercializacao:
 window.ruSet = (k, v) => { state.ru[k] = v; renderRural(); };
 window.ruSel = cod => {
   state.ru.sel = cod; renderRural();
-  setTimeout(() => { const n = document.getElementById("ru-perfil"); if (n) n.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+  setTimeout(() => focarPerfilMunicipal(document.getElementById("ru-perfil")), 60);
 };
 function renderRural() {
   const el = document.getElementById("view-rural");
@@ -12197,98 +12395,6 @@ function operBlocoInst(cab) {
     ${state.filters.instCod && state.filters.instCod.startsWith("C") ? "conglomerado prudencial" : "nível de consolidação"});
     empregados são o declarado pela companhia listada no FRE.
     <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">ver o painel completo →</a></p></div>`;
-}
-
-/* Bloco "companhia listada" da ficha da IF: guidance × realizado, custos de
-   TI, remuneração da administração e folha — tudo junto pela RAIZ do CNPJ da
-   holding listada (cadastro CVM, via perfil operacional), nunca por nome.
-   Cada sub-bloco só aparece quando a IF tem o dado; ausência não vira zero. */
-function instListadaSecao(pg, cab) {
-  const r = operResolve(pg.cod_inst, cab && cab.cnpj);
-  const c8 = (r && r.piloto && r.piloto.cnpj8) || null;
-  const partes = [instRegimeAviso(pg, r), instGuidanceIF(c8), instTiIF(c8), instRemuneracaoIF(c8), instFolhaIF(c8)]
-    .filter(Boolean);
-  return partes.join("");
-}
-
-function instRegimeAviso(pg, r) {
-  /* quase sempre vazio — mas quando a IF da página está na lista vigente de
-     regimes do BCB, isso é a PRIMEIRA coisa que a ficha deve dizer */
-  const R = state.data.regimes;
-  if (!R || !R.disponivel) return "";
-  const cands = new Set([pg.cod_inst,
-    (r && r.piloto && r.piloto.cnpj8) || "", (r && r.piloto && r.piloto.cnpj8_rede) || ""]);
-  const hit = (R.vigentes || []).find(v => cands.has(v.cnpj8));
-  if (!hit) return "";
-  return `<div class="note warn" style="margin-top:12px"><b>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB:</b>
-    ${hit.tipo}, decretado em ${hit.inicio}${hit.responsavel ? ` · responsável nomeado: ${hit.responsavel}` : ""}.
-    <span class="src">Lista oficial vigente (BCB/Olinda), atualização diária — detalhes na aba Pulso do crédito.</span></div>`;
-}
-
-function instGuidanceIF(c8) {
-  const G = state.data.guidance;
-  if (!c8 || !G || !G.disponivel) return "";
-  const ciclos = (G.ciclos || []).filter(c => c.cnpj8 === c8);
-  if (!ciclos.length) return "";
-  const ordenados = ciclos.slice().sort((a, b) => b.ano - a.ano);
-  return `<div id="s-guidance" class="card" style="margin-top:12px"><h4>${termo("guidance","Guidance")} × entregue — promessas da própria companhia ${badge("observado", G.fonte.nota)}</h4>
-    ${ordenados.map(guidCicloBloco).join("")}
-    <p class="src">${(G.cautelas || [])[0] || ""}</p>
-    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel} · <a href="/observatorio/institutions" onclick="nav('institutions');return false">todos os bancos com guidance →</a></p></div>`;
-}
-
-function instTiIF(c8) {
-  const O = state.data.operacional;
-  const TI = O && O.custos_ti;
-  if (!c8 || !TI) return "";
-  const obs = (TI.observacoes || []).filter(o => o.cnpj8 === c8)
-    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
-  if (!obs.length) return "";
-  return `<div id="s-ti" class="card" style="margin-top:12px"><h4>Quanto custa a TI ${badge("observado", TI.fonte && TI.fonte.nota)}</h4>
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Rubrica (conceito do próprio banco)</th><th class="num">Valor</th><th>Referência</th></tr></thead>
-      <tbody>${obs.map(o => `<tr>
-        <td>${o.metrica}${o.conceito_nota ? ` <span title="${attr(o.conceito_nota)}">ⓘ</span>` : ""}<div class="src">${o.regime || ""}</div></td>
-        <td class="num"><b>${fmt.n0(o.valor)}</b> ${o.unidade}${o.comparativos ? `<div class="src">${Object.entries(o.comparativos).map(([a, v]) => `${a}: ${fmt.n0(v)}`).join(" · ")}</div>` : ""}</td>
-        <td class="src">${fmt.d(o.data_ref)}<br><a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 40)}</a> · ${o.pagina}</td></tr>`).join("")}</tbody></table></div>
-    <p class="src">Conceitos contábeis DIFEREM entre bancos (a nota de cada rubrica declara o alcance) — nunca compare os valores entre instituições. Extração aprovada por revisor.</p></div>`;
-}
-
-function instRemuneracaoIF(c8) {
-  const O = state.data.operacional;
-  const RM = O && O.remuneracao;
-  if (!c8 || !RM) return "";
-  const emp = (RM.empresas || []).find(e => e.cnpj8 === c8);
-  if (!emp) return "";
-  const linha = (orgao, d) => {
-    if (!d || !d.realizado) return "";
-    const rz = d.realizado, pv = d.previsto;
-    return `<tr><td>${orgao}</td>
-      <td class="num"><b>${fmt.money(rz.total_brl)}</b><div class="src">exercício ${rz.exercicio}</div></td>
-      <td class="num">${rz.membros != null ? fmt.n(rz.membros, 1) : "–"}</td>
-      <td class="num">${rz.media_por_membro_brl != null ? fmt.money(rz.media_por_membro_brl) : "–"}</td>
-      <td class="num">${rz.maior != null ? fmt.money(rz.maior) : "–"}<div class="src">(8.3)</div></td>
-      <td class="num">${pv ? `${fmt.money(pv.total_brl)}<div class="src">${pv.exercicio}</div>` : "–"}</td></tr>`;
-  };
-  return `<div id="s-rem" class="card" style="margin-top:12px"><h4>Quanto ganha a administração ${badge("observado", RM.fonte && RM.fonte.nota)}</h4>
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Órgão</th><th class="num">Total realizado</th><th class="num">Membros (média)</th><th class="num">Média/membro</th><th class="num">Maior individual</th><th class="num">Previsto</th></tr></thead>
-      <tbody>${linha("Diretoria Estatutária", emp.orgaos["Diretoria Estatutária"])}${linha("Conselho de Administração", emp.orgaos["Conselho de Administração"])}</tbody></table></div>
-    ${(RM.cautelas || []).slice(0, 2).map(x => `<p class="src">${x}</p>`).join("")}
-    <p class="src">CVM/FRE ${emp.fre_ano} — dados estruturados declarados pela própria companhia · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">ver todos os bancos →</a></p></div>`;
-}
-
-function instFolhaIF(c8) {
-  const FB = state.data.folha_bancos;
-  const bal = FB && FB.balanco;
-  if (!c8 || !bal) return "";
-  const obs = (bal.observacoes || []).filter(o => o.cnpj8 === c8)
-    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
-  if (!obs.length) return "";
-  return `<div id="s-folha" class="card" style="margin-top:12px"><h4>Folhas de pagamento no balanço ${badge("observado", bal.fonte && bal.fonte.nota)}</h4>
-    ${obs.map(o => `<p style="margin:6px 0">${o.metrica}: <b>${fmt.n0(o.valor)} ${o.unidade}</b>
-      <span class="src">· ref. ${fmt.d(o.data_ref)} · <a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 44)}</a> · ${o.pagina}</span></p>`).join("")}
-    <p class="src">O que o banco pagou (e amortiza) pelo direito de operar folhas — competição por captação estável. Extração aprovada por revisor · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">contexto completo →</a></p></div>`;
 }
 
 function cmpRedeFase0(insts, datas) {
@@ -13052,7 +13158,7 @@ function dimensionaSeries(raiz) {
     const aberta = bloco.querySelector("details")?.open;
     const ativo = document.activeElement;
     const foco = bloco.contains(ativo);
-    const seletorFoco = ativo?.matches("summary") ? "summary" : ativo?.matches(".tblwrap") ? ".tblwrap" : ativo?.matches("button") ? "button" : "svg";
+    const seletorFoco = ativo?.matches("summary") ? "summary" : ativo?.matches(".tblwrap") ? ".tblwrap" : ativo?.matches("button") ? "button" : "svg.chart";
     const rolagem = bloco.querySelector(".tblwrap");
     const topo = rolagem?.scrollTop || 0, esquerda = rolagem?.scrollLeft || 0;
     const temporario = document.createElement("div");
@@ -13131,6 +13237,7 @@ function agendaAcessibilidade() {
     adaptaTabelasMoveis(ativa);
     acessibilizaRolagem(ativa);
     dimensionaSeries(ativa);
+    if (typeof dimensionaBasileia === "function") dimensionaBasileia(ativa);
     datasNaTela(ativa);
     ajustaFonteSvg(ativa);
     aplicaCapitulos();
