@@ -272,6 +272,10 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
         await legenda.waitFor();
         const itens = await legenda.locator('li').allTextContents();
         expect(itens.length).toBeGreaterThan(10);
+        expect(itens.join(' ')).toContain('Administração pública');
+        expect(itens.join(' ')).toContain('Construção');
+        expect(itens.join(' ')).toContain('Saúde humana');
+        expect(await page.locator('#px-epae th').filter({hasText: 'Pagador ↓'}).evaluate(e => e.getBoundingClientRect().width)).toBeLessThanOrEqual(113);
         const labels = await page.locator('#px-epae th[aria-label]').evaluateAll(nodes => nodes.map(e => ({nome: e.getAttribute('aria-label')!, id: e.textContent!.trim().slice(0, 2)})));
         expect(labels.length).toBeGreaterThan(10);
         for (const label of labels) {
@@ -296,6 +300,10 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
         expect(await tabela.locator('thead th').count()).toBe(7);
         expect(await tabela.locator('thead th').last().textContent()).toBe('Natureza do dado');
         expect(await tabela.getAttribute('class')).not.toContain('t-stack');
+        expect(await tabela.locator('tbody tr').first().locator('td').first().evaluate(e => {
+          const r = e.getBoundingClientRect(), area = e.closest('.tblwrap')!.getBoundingClientRect();
+          return r.right <= area.right + 1;
+        })).toBe(true);
         const antes = await tabela.locator('tbody tr').allTextContents();
         expect(antes.length).toBeGreaterThan(10);
         await regiao.focus();
@@ -308,5 +316,25 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
       }
     } finally { await page.close(); }
   }, 60_000);
+
+  it("âncoras de Pix e Subnacional chegam descobertas nas quatro larguras", async () => {
+    const page = await contexto.newPage();
+    await page.emulateMedia({reducedMotion: 'reduce'});
+    try {
+      for (const width of [320, 390, 768, 1440]) for (const [rota, alvo] of [['pix', 'px-epae'], ['subnational-credit', 'sn-divida']]) {
+        await page.setViewportSize({width, height: 900});
+        await page.goto(servidor.origem + '/observatorio/' + rota);
+        await page.locator(`.view.active .subnav-caps a[href="#${alvo}"]`).click();
+        await expect.poll(() => page.locator('#' + alvo).evaluate(e => {
+          const heading = e.querySelector('h3')!.getBoundingClientRect();
+          const nav = e.closest('section.view')!.querySelector('.subnav-caps')!;
+          const fim = getComputedStyle(nav).position === 'sticky' ? nav.getBoundingClientRect().bottom : 0;
+          return heading.top >= fim && heading.top < innerHeight;
+        }), {message: rota + ' / ' + width}).toBe(true);
+      }
+      await page.goto(servidor.origem + '/observatorio/pix?sec=px-epae');
+      await expect.poll(() => page.locator('#px-epae h3').evaluate(e => { const top = e.getBoundingClientRect().top; return top > 72 && top < innerHeight; })).toBe(true);
+    } finally { await page.close(); }
+  }, 90_000);
 
 });

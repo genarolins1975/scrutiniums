@@ -882,7 +882,7 @@ function posRender(v) {
     state._secAlvo = null;
     requestAnimationFrame(() => {
       const n = document.getElementById(alvo);
-      if (n) { n.scrollIntoView({ block: "start" }); n.classList.add("sec-alvo"); setTimeout(() => n.classList.remove("sec-alvo"), 2400); }
+      if (n) { rolarSecao(n); n.classList.add("sec-alvo"); setTimeout(() => n.classList.remove("sec-alvo"), 2400); }
     });
   }
   if (window.__EMBED__) embRecorta(v);
@@ -1841,6 +1841,14 @@ window.judCSV = () => {
 const PX_COLORS = { Pix: "var(--pix)", TED: "#1d4e89", Boleto: "#b45309", Cheque: "#64748b", DOC: "#8d94a3",
   TEC: "#8d94a3", CartaoCredito: "#6b46a3", CartaoDebito: "var(--c-gray)", CartaoPrePago: "#b91c1c",
   TransIntrabancaria: "#525a68", Convenios: "#d9a514", DebitoDireto: "#2f7d4f", Saques: "#c2540a" };
+/* Grafia editorial apenas na apresentação; chaves da fonte e recortes não mudam. */
+function rotuloSetorPix(nome) {
+  const palavras = { administracao: "administração", publica: "pública", fisica: "física", servicos: "serviços", imobiliarias: "imobiliárias", cientificas: "científicas", tecnicas: "técnicas", comercio: "comércio", reparacao: "reparação", veiculos: "veículos", construcao: "construção", educacao: "educação", gas: "gás", industrias: "indústrias", transformacao: "transformação", informacao: "informação", comunicacao: "comunicação", instituicoes: "instituições", saude: "saúde", domesticos: "domésticos", agua: "água", gestao: "gestão", residuos: "resíduos", descontaminacao: "descontaminação", alimentacao: "alimentação", recreacao: "recreação", pecuaria: "pecuária", producao: "produção" };
+  return String(nome).replace(/\p{L}+/gu, palavra => {
+    const correta = palavras[palavra.toLowerCase()];
+    return correta ? (palavra[0] === palavra[0].toUpperCase() ? correta[0].toUpperCase() + correta.slice(1) : correta) : palavra;
+  });
+}
 function pxAtualiza(mutacao) {
   const acao = document.activeElement?.getAttribute("onclick");
   const chaveDetalhe = d => {
@@ -2152,9 +2160,9 @@ function renderPix() {
     epae = sechead("Pix e atividade econômica — quem recebe, por setor", `EPAE · ${E.mes} · fluxo financeiro RECEBIDO — não é receita, consumo nem faturamento`) + `
       <div class="ov-2col-eq">
       <div class="card"><h4>Setores que mais recebem via Pix</h4>
-        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(s.setor, s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
+        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(s.setor), s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
         <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
-      <div class="card"><h4>${sel.setor}</h4>
+      <div class="card"><h4>${rotuloSetorPix(sel.setor)}</h4>
         <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
           <div><div class="src">recebe/mês</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(sel.v)}</div></div>
           <div><div class="src">participação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sel.part, 1)}%</div></div>
@@ -2186,11 +2194,11 @@ function renderPix() {
     <div class="ov-2col-eq" style="margin-top:10px">
       <div class="card"><h4>O que as famílias pagam a cada setor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">Pix de pessoas físicas a cada seção da CNAE · ${fmt.my(EM.mes)} · % sobre o Pix PF→PJ (mesmo conceito do painel de bets)</div>
-        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(r.setor, r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
+        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(r.setor), r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
         <div class="src">clique num setor para ver de quem ele recebe</div></div>
-      <div class="card"><h4>${selTE.setor} — de quais setores vem o dinheiro ${badge("observado")}</h4>
+      <div class="card"><h4>${rotuloSetorPix(selTE.setor)} — de quais setores vem o dinheiro ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">matriz setor-pagador × setor-recebedor · ${fmt.my(EM.mes)} · R$ bilhões</div>
-        ${pagadores.map(([pag, v]) => panBar(pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
+        ${pagadores.map(([pag, v]) => panBar(rotuloSetorPix(pag), v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
         ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
         <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
     </div>
@@ -2221,9 +2229,9 @@ function renderPix() {
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · os números identificam os setores na legenda completa abaixo; deslize a tabela para comparar colunas</div>
         <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:var(--tipo-rotulo)"><thead>
-          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th scope="col" aria-label="${attr(idSetor(rc) + " — " + rc)}" style="min-width:44px;font-size:var(--tipo-rotulo)">${idSetor(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + pg)}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
-        <h5>Identificação dos setores</h5><ol class="px-setor-legenda">${setoresLegenda.map(nome => `<li><b>${idSetor(nome)}</b> ${nome}</li>`).join("")}</ol>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface);width:100px;min-width:100px;max-width:112px;white-space:normal">Pagador ↓<br>Recebedor →</th>${cols2.map(rc => `<th scope="col" aria-label="${attr(idSetor(rc) + " — " + rotuloSetorPix(rc))}" style="min-width:44px;font-size:var(--tipo-rotulo)">${idSetor(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + rotuloSetorPix(pg))}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <h5>Identificação dos setores</h5><ol class="px-setor-legenda">${setoresLegenda.map(nome => `<li><b>${idSetor(nome)}</b> ${rotuloSetorPix(nome)}</li>`).join("")}</ol>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
   }
@@ -3250,13 +3258,21 @@ function subnavFixa(itens) {
    exportação: só o que está visível de cada vez. */
 function capModo() { return !!loadLS("obc_capitulos", false); }
 window.capSet = on => { saveLS("obc_capitulos", !!on); if (!on) state._capAtivo = null; rerenderCurrent(); };
+function rolarSecao(alvo, comportamento = "auto") {
+  if (!alvo) return;
+  const nav = alvo.closest("section.view")?.querySelector(".subnav-caps");
+  const fixa = nav && ["sticky", "fixed"].includes(getComputedStyle(nav).position);
+  alvo.style.scrollMarginTop = ((fixa ? nav.getBoundingClientRect().height : 0) + 12) + "px";
+  const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  alvo.scrollIntoView({ block: "start", behavior: reduzido ? "auto" : comportamento });
+}
 window.capIr = id => {
   const n = document.getElementById(id);
-  if (!capModo()) { if (n) n.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  if (!capModo()) { rolarSecao(n, "smooth"); return; }
   state._capAtivo = id;
   aplicaCapitulos();
   const sec = document.getElementById(id);
-  if (sec) { sec.scrollIntoView({ block: "start" }); }
+  if (sec) rolarSecao(sec);
   try { const u = new URL(location.href); u.searchParams.set("sec", id); history.replaceState(null, "", u.toString()); } catch (e) {}
 };
 function aplicaCapitulos() {

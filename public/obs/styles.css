@@ -1415,3 +1415,8 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 .px-setor-legenda b { display:inline-block; min-width:2em; font-variant-numeric:lining-nums tabular-nums; color:var(--text); }
 
 @media (max-width:700px) { :is(#view-pix, #view-subnacional) .subnav-caps { position:static !important; } }
+
+.cgperfil .comparacao-tabular th[scope="row"],
+.cgperfil .comparacao-tabular thead th:first-child { min-width:140px; max-width:140px; width:140px; white-space:normal; overflow-wrap:anywhere; }
+
+#view-pix .panbar > span:first-child { white-space:normal !important; overflow:visible !important; }
