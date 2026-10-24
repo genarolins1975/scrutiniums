@@ -300,10 +300,13 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
         expect(await tabela.locator('thead th').count()).toBe(7);
         expect(await tabela.locator('thead th').last().textContent()).toBe('Natureza do dado');
         expect(await tabela.getAttribute('class')).not.toContain('t-stack');
-        expect(await tabela.locator('tbody tr').first().locator('td').first().evaluate(e => {
-          const r = e.getBoundingClientRect(), area = e.closest('.tblwrap')!.getBoundingClientRect();
-          return r.right <= area.right + 1;
-        })).toBe(true);
+        const celulaInicial = await tabela.locator('tbody tr').first().locator('td').first().evaluate(e => {
+          const cont = e.closest('.tblwrap')!, tabela = e.closest('table')!;
+          const r = e.getBoundingClientRect(), area = cont.getBoundingClientRect();
+          const medir = (n: Element) => { const b = n.getBoundingClientRect(), c = getComputedStyle(n); return { texto: n.textContent?.trim().slice(0, 80), x: b.x, right: b.right, width: b.width, font: c.font, whiteSpace: c.whiteSpace, borderLeft: c.borderLeftWidth, borderRight: c.borderRightWidth }; };
+          return { cabe: r.right <= area.right + 1, celula: medir(e), area: medir(cont), primeiraColuna: medir(e.previousElementSibling!), cabecalho: medir(tabela.querySelectorAll('thead th')[1]), clientWidth: cont.clientWidth, offsetWidth: (cont as HTMLElement).offsetWidth, scrollLeft: cont.scrollLeft, scrollWidth: cont.scrollWidth, viewport: innerWidth, userAgent: navigator.userAgent, fontes: { status: document.fonts.status, faces: [...document.fonts].map(f => ({family: f.family, weight: f.weight, status: f.status})) } };
+        });
+        expect(celulaInicial.cabe, JSON.stringify({ width, chromium: navegador.version(), ...celulaInicial })).toBe(true);
         const antes = await tabela.locator('tbody tr').allTextContents();
         expect(antes.length).toBeGreaterThan(10);
         await regiao.focus();
@@ -413,6 +416,57 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
           if (v != null && v > 0 && v < 1) { expect(numero(barra.valor)).toBeGreaterThan(0); expect(numero(barra.valor)).toBeCloseTo(v, 3); }
         }
       }
+    } finally { await page.close(); }
+  }, 90_000);
+
+  it("eixo trimestral customizado reserva a última data em quatro larguras e nas duas métricas", async () => {
+    const page = await contexto.newPage();
+    const erros: string[] = [];
+    page.on("pageerror", e => erros.push(e.message));
+    try {
+      await page.goto(servidor.origem + "/observatorio/pix");
+      const grafico = page.locator('svg[aria-label="participação por instrumento (trimestral)"]');
+      await grafico.waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      const datasFonte = gold.tri.periodos.filter((p: string) => p >= "2019").map((p: string) =>
+        ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(p.slice(5, 7)) - 1] + "/" + p.slice(0, 4),
+      );
+      for (const metr of ["q", "v"]) {
+        await page.locator(`#px-evol button[onclick="pxSet('metr','${metr}')"]`).click();
+        let dados: string | undefined;
+        for (const width of [1440, 768, 390, 320]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await expect.poll(() => grafico.evaluate(svg => {
+            const bloco = svg.closest<HTMLElement>(".line-chart")!;
+            return Math.abs(bloco.getBoundingClientRect().width - Number(bloco.dataset.lineWidth));
+          })).toBeLessThan(2);
+          const medir = () => grafico.evaluate(svg => {
+            const b = svg.getBoundingClientRect(), vb = (svg as SVGSVGElement).viewBox.baseVal;
+            // Identifica todas as datas pintadas, independentemente da classe usada pelo helper.
+            const datas = [...svg.querySelectorAll("text")].filter(t => /^[a-zç]{3}\/\d{4}$/.test(t.textContent || "")).map(t => {
+              const r = t.getBoundingClientRect();
+              return { texto: t.textContent, inicio: r.left, fim: r.right, w: r.width, fonte: parseFloat(getComputedStyle(t).fontSize) * b.width / vb.width };
+            }).filter(t => t.w > 0);
+            const problemas = datas.flatMap((t, i) => [
+              ...(t.inicio < b.left - .5 || t.fim > b.right + .5 ? [`fora: ${t.texto}`] : []),
+              ...(t.fonte < 11.9 ? [`fonte: ${t.texto}`] : []),
+              ...(i && t.inicio < datas[i - 1].fim + 10 ? [`colisão: ${datas[i - 1].texto} / ${t.texto}`] : []),
+            ]);
+            const opts = JSON.parse(decodeURIComponent(svg.closest<HTMLElement>(".line-chart")!.dataset.lineOptions!));
+            const linhas = [...svg.closest(".line-chart")!.querySelectorAll("tbody tr")].map(r => r.textContent);
+            return { largura: b.width, datas, problemas, dados: JSON.stringify({ periods: opts.periods, series: opts.series, linhas }) };
+          });
+          await expect.poll(async () => (await medir()).problemas, { message: `Pix ${metr}, ${width}px` }).toEqual([]);
+          const atual = await medir();
+          expect(atual.datas.length).toBeGreaterThanOrEqual(2);
+          expect(atual.datas[0].texto).toBe(datasFonte[0]);
+          expect(atual.datas.at(-1)!.texto).toBe(datasFonte.at(-1));
+          if (width === 1440) expect(atual.largura).toBeLessThan(720); // figura em duas colunas
+          if (dados === undefined) dados = atual.dados;
+          else expect(atual.dados).toBe(dados);
+        }
+      }
+      expect(erros).toEqual([]);
     } finally { await page.close(); }
   }, 90_000);
 

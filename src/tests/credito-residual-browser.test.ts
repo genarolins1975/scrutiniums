@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { chromium, type Browser, type BrowserContext } from "playwright";
 import { subirServidor, temBuild, exigirBuild, type ServidorProducao } from "./suporte/servidor-producao";
@@ -230,5 +231,61 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
       expect(pedidos).toBe(1);expect(documentos).toBe(1);expect(erros).toEqual([]);
     } finally {await cold.close();}
   },60_000);
+
+  it.each(['institutions','institutions/C0010069'])("%s oferece a fórmula inteira por teclado e toque, igual à gold", async rota => {
+    const guidance = JSON.parse(readFileSync('public/obs/data/gold/guidance.json','utf8')) as {ciclos:Array<{id:string;cnpj8:string;metricas:Array<{nome:string;formula?:string}>}>};
+    const ciclos = rota === 'institutions' ? guidance.ciclos : guidance.ciclos.filter(c=>c.cnpj8==='60872504');
+    const formulas = new Map(ciclos.flatMap(c=>c.metricas.filter(m=>m.formula).map(m=>[c.id+'|'+m.nome,m.formula!] as const)));
+    expect(formulas.size).toBeGreaterThan(0);
+    const touch = await navegador.newContext({viewport:{width:320,height:900},hasTouch:true});
+    await touch.addCookies([{name:'scrutiniums_session',value:servidor.cookie,url:servidor.origem}]);
+    const page=await touch.newPage();
+    try {
+      for(const width of [320,390,1440]) {
+        await page.setViewportSize({width,height:900});
+        await page.goto(servidor.origem+'/observatorio/'+rota);
+        const detalhes=page.locator('.view.active details.guid-formula');
+        await expect.poll(()=>detalhes.count()).toBe(formulas.size);
+        for(const detalhe of await detalhes.all()) {
+          const metrica=await detalhe.getAttribute('data-guid-metrica');
+          const esperado=formulas.get((await detalhe.getAttribute('data-guid-ciclo'))+'|'+metrica);
+          const summary=detalhe.locator('summary'), texto=detalhe.locator('p');
+          expect(await summary.getAttribute('aria-label')).toBe('Como foi calculado: '+metrica);
+          expect(await summary.evaluate(e=>e.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+          expect(await detalhe.locator('[title], [tabindex="-1"]').count()).toBe(0);
+          const valores=await detalhe.locator('xpath=ancestor::tr').locator('td').allTextContents();
+          await summary.focus();await page.keyboard.press('Enter');
+          expect(await detalhe.getAttribute('open')).not.toBeNull();
+          expect(await summary.evaluate(e=>e===document.activeElement)).toBe(true);
+          expect(await texto.isVisible()).toBe(true);expect(await texto.textContent()).toBe(esperado);
+          await page.keyboard.press('Space');expect(await detalhe.getAttribute('open')).toBeNull();
+          await summary.tap();expect(await detalhe.getAttribute('open')).not.toBeNull();
+          expect(await texto.textContent()).toBe(esperado);
+          await summary.tap();expect(await detalhe.getAttribute('open')).toBeNull();
+          expect(await detalhe.locator('xpath=ancestor::tr').locator('td').allTextContents()).toEqual(valores);
+        }
+        if(rota.includes('/')) {
+          const histograma=page.locator('#s-pares .histograma');
+          if(await histograma.evaluate(e=>e.scrollWidth>e.clientWidth+2)) {
+            await expect.poll(()=>histograma.getAttribute('tabindex')).toBe('0');
+            await histograma.focus();await page.keyboard.press('ArrowRight');
+            await expect.poll(()=>histograma.evaluate(e=>e.scrollLeft)).toBeGreaterThan(0);
+            expect(await histograma.evaluate(e=>e===document.activeElement)).toBe(true);
+          }
+        }
+        expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+      }
+      // Caracteres de comparação e markup continuam texto literal, sem perda de operandos.
+      const ciclo=guidance.ciclos.find(c=>c.metricas.some(m=>m.formula))!;
+      const literal='(a < b) & (c > d) <em>não é HTML</em>';
+      const preservado=await page.evaluate(({ciclo,literal})=>{
+        const c={...ciclo,metricas:[{...ciclo.metricas.find(m=>m.formula)!,formula:literal}]};
+        const html=(window as unknown as {guidCicloBloco:(c:unknown)=>string}).guidCicloBloco(c);
+        const dom=new DOMParser().parseFromString(html,'text/html');
+        return {texto:dom.querySelector('.guid-formula p')!.textContent,tags:dom.querySelectorAll('.guid-formula p em').length};
+      },{ciclo,literal});
+      expect(preservado).toEqual({texto:literal,tags:0});
+    } finally {await touch.close();}
+  },120_000);
 
 });

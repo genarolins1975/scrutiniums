@@ -1919,8 +1919,17 @@ function pxStackedArea(periods, series, opts) {
     out += `<path d="${d}" fill="${ccol(sr.color)}" opacity="0.82" data-tip="${tip}"></path>`;
     base = top;
   });
-  const step = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(W / 110))));
-  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="${i === 0 ? "start" : i === n - 1 ? "end" : "middle"}" font-size="12" style="fill:var(--c-axis-text)">${fmt.my(p)}</text>`; });
+  // Eixos customizados seguem o mesmo contrato de intervalos e medição real
+  // de lineChart: a data final reserva sua largura inteira, inclusive ao redimensionar.
+  const rotulosX = periods.map((p, i) => {
+    const texto = fmt.my(p), tx = X(i), largura = texto.length * 7.6;
+    const ancora = i === 0 ? "start" : i === n - 1 ? "end" : "middle";
+    const inicio = tx - (ancora === "end" ? largura : ancora === "middle" ? largura / 2 : 0);
+    return { texto, tx, ancora, inicio, fim: inicio + largura };
+  });
+  for (const r of rotulosEixoSemColisao(rotulosX)) {
+    out += `<text class="xl" x="${r.tx}" y="${H - 8}" text-anchor="${r.ancora}" font-size="12" style="fill:var(--c-axis-text)">${r.texto}</text>`;
+  }
   out += "</svg>";
   out += `<div class="stacklegend">${series.map(sr => `<span><span class="sw" style="background:${ccol(sr.color)}"></span>${sr.label}</span>`).join("")}</div>`;
   out += `<details class="charttable px-comparacao-tabela"><summary>Dados em tabela: toda a série de participação</summary><div class="tblwrap"><table class="data compact" data-movel="1"><caption>BCB MPV · participação na ${opts.metr === "v" ? "movimentação em reais" : "quantidade de transações"} (%) dos instrumentos selecionados · trimestral</caption><thead><tr><th scope="col">Trimestre</th>${series.map(sr => `<th scope="col">${sr.label}</th>`).join("")}</tr></thead><tbody>${periods.map((p, i) => `<tr><th scope="row">${fmt.my(p)}</th>${series.map(sr => `<td class="num">${totals[i] ? fmt.n((sr.vals[i] || 0) / totals[i] * 100, 1) + "%" : "–"}</td>`).join("")}</tr>`).join("")}</tbody></table></div><button class="btn ghost small" onclick="pxComparacaoCSV(this)">Baixar CSV desta comparação</button></details>`;
@@ -4753,7 +4762,7 @@ function histogram(vals, mine, w = 340, h = 90) {
   vals.forEach(v => bins[Math.min(nb - 1, Math.floor((v - lo) / (hi - lo) * nb))]++);
   const mx = Math.max(...bins);
   const bw = w / nb;
-  let out = `<svg width="${w}" height="${h}" aria-hidden="true">`;
+  let out = `<div class="tblwrap histograma" aria-label="Distribuição das instituições por faixa; use as setas para rolar"><svg width="${w}" height="${h}" aria-hidden="true">`;
   bins.forEach((b, i) => {
     const bh = b / mx * (h - 18);
     const b0 = lo + (hi - lo) * i / nb, b1 = lo + (hi - lo) * (i + 1) / nb;
@@ -4762,7 +4771,7 @@ function histogram(vals, mine, w = 340, h = 90) {
   });
   const mp = (mine - lo) / (hi - lo) * w;
   out += `<line x1="${mp}" x2="${mp}" y1="4" y2="${h - 14}" style="stroke:var(--text)" stroke-width="2.5"/>`;
-  out += `<text x="4" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg>`;
+  out += `<text x="4" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="12" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg></div>`;
   out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:200px"><table class="data compact"><thead><tr><th>Faixa</th><th style="text-align:right">Instituições</th></tr></thead><tbody>` +
     bins.map((b, i) => `<tr><td>${fmt.n(lo + (hi - lo) * i / nb, 1)} – ${fmt.n(lo + (hi - lo) * (i + 1) / nb, 1)}</td><td style="text-align:right">${b}</td></tr>`).join("") +
     `</tbody></table></div></details>`;
@@ -7130,6 +7139,7 @@ function guidFaixa(m) {
   return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
 }
 function guidCicloBloco(c) {
+  const texto = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   return `
     <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
       <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
@@ -7137,7 +7147,7 @@ function guidCicloBloco(c) {
     <div class="tblwrap"><table class="data compact">
       <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
       <tbody>${(c.metricas || []).map(m => `<tr>
-        <td>${m.nome}${m.formula ? ` ${dica(m.formula)}` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
+        <td>${m.nome}${m.formula ? `<details class="decomp guid-formula" data-guid-ciclo="${texto(c.id)}" data-guid-metrica="${texto(m.nome)}"><summary aria-label="Como foi calculado: ${texto(m.nome)}">Como foi calculado</summary><p class="src">${texto(m.formula)}</p></details>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
         <td>${guidFaixa(m)}</td><td>${guidSitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
     ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
       <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
@@ -13275,7 +13285,10 @@ function updateAlertBadge() {
   el.textContent = n;
   el.hidden = n === 0;
 }
-window.showView = v => {
+// Inicializar um documento canoniza a entrada atual; só uma navegação cria outra.
+// pushState no boot apagava a entrada futura ao voltar de uma página da conta.
+window.showView = (v, { replace = false } = {}) => {
+  const writeHistory = replace ? "replaceState" : "pushState";
   if (PATH_MODE) {
     let path = ROUTES[v] || "/overview";
     if (v === "inst" && state.filters.instCod) path = "/institutions/" + state.filters.instCod;
@@ -13283,9 +13296,9 @@ window.showView = v => {
     if (v === "sector" && state.filters.sectorCod) path = "/sectors/" + state.filters.sectorCod;
     if (v === "presmun" && state.filters.presCod) path = "/presenca/" + state.filters.presCod;
     if (v === "estado" && state.filters.ufSel) path = "/states/" + state.filters.ufSel;
-    history.pushState(null, "", BASE + path + buildQuery(v));
+    history[writeHistory](null, "", BASE + path + buildQuery(v));
   } else {
-    history.pushState(null, "", "#" + v + buildQuery(v));
+    history[writeHistory](null, "", "#" + v + buildQuery(v));
   }
   showViewSilent(v);
 };
@@ -14420,5 +14433,5 @@ function renderCompare() {
     v = RENDER[window.__EMBED__.view] ? window.__EMBED__.view : "overview";
     state._secAlvo = null; // no embed o recorte substitui o scroll
   }
-  showView(RENDER[v] ? v : "overview");
+  showView(RENDER[v] ? v : "overview", { replace: true });
 })();

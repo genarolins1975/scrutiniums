@@ -64,6 +64,10 @@
 }
 @media (max-width:639px) and (pointer:coarse) { .trilha li > a, .trilha li > [aria-current] { line-height:44px; } }
 /* Itens do seletor de coleção (SwitcherObservatorio): 34 itens por página, então classes curtas em vez das utilitárias */
+/* O painel segue a escala do texto, limitado à tela mesmo quando a fonte padrão cresce. */
+@media(min-width:640px) {
+  .bp .bp-linha > details > .bp-seletor-painel { position:fixed; left:50%; right:auto; transform:translateX(-50%); width:min(34rem, calc(100vw - 2rem)); }
+}
 .sel-item { display:flex; align-items:center; min-height:36px; padding:6px 12px; }
 @media (pointer:coarse) { .sel-item { min-height:44px; } }
 .sel-col { font-size:.875rem; line-height:1.25rem; color:var(--cor-carvao); }
@@ -255,9 +259,11 @@
   .bp-busca[data-folha] .bp-busca-painel { position:static; flex:1 1 auto; width:auto; max-height:none; padding:12px 0; border:0; box-shadow:none; }
   .bp-busca input.bp-busca-campo { min-height:44px; font-size:16px; }
   .bp-busca-tecla { display:none; }
-  /* com a lupa, a linha da marca não quebra: o nome da coleção no seletor encurta com reticências */
-  .bp-linha:has(.bp-busca) { flex-wrap:nowrap; }
-  .bp-linha:has(.bp-busca) > details { min-width:0; flex:0 1 auto; }
+  /* A largura tipográfica reserva espaço ao seletor; com fonte ampliada, a conta desce inteira, alinhada à direita. */
+  .bp-linha:has(.bp-busca) { flex-wrap:wrap; }
+  .bp-linha:has(.bp-busca) > details { min-width:0; flex:1 1 5ch; }
+  .bp-linha:has(.bp-busca) > .bp-acoes { margin-left:auto; max-width:100%; flex-wrap:wrap; }
+  .bp-linha:has(.bp-busca) > .bp-acoes > a { max-width:100%; white-space:normal; }
   .bp-linha:has(.bp-busca) > details > summary { max-width:100%; }
   .bp-linha:has(.bp-busca) > details > summary > span:not([aria-hidden]):not(.sr-only) { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 }

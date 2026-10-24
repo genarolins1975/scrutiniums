@@ -89,7 +89,7 @@ export function SeletorColecoes({
         </span>
       </summary>
       {/* no celular o menu ocupa a largura útil (fixo, 1rem de margem) para não sair da tela; no desktop, duas colunas */}
-      <div className="fixed inset-x-4 z-40 mt-1 hidden max-h-[80vh] overflow-y-auto border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block sm:absolute sm:inset-x-auto sm:left-0 sm:w-[34rem]">
+      <div className="bp-seletor-painel fixed inset-x-4 z-40 mt-1 hidden max-h-[80vh] overflow-y-auto border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block sm:absolute sm:inset-x-auto sm:left-0 sm:w-[34rem]">
         <div className="sm:columns-2 sm:gap-2">
           {indice.observatorios.map((o) => (
             <div key={o.id} className="break-inside-avoid pb-1">

@@ -221,7 +221,7 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
   padding: 18px 20px; position: relative; box-shadow: var(--sh-subtle);
 }
-.card h4 { margin: 0 0 4px; font-size: var(--tipo-corpo); font-weight: var(--fw-semibold); color: var(--text-2); }
+.card h4 { overflow-wrap:anywhere; margin: 0 0 4px; font-size: var(--tipo-corpo); font-weight: var(--fw-semibold); color: var(--text-2); }
 .card .big {
   font-size: var(--tipo-numero-m); font-weight: var(--fw-bold); letter-spacing: var(--tr-tight); line-height: var(--lh-tight);
   margin: 4px 0 2px; color: var(--text);
@@ -1417,7 +1417,7 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 @media (max-width:700px) { :is(#view-pix, #view-subnacional) .subnav-caps { position:static !important; } }
 
 .cgperfil .comparacao-tabular th[scope="row"],
-.cgperfil .comparacao-tabular thead th:first-child { min-width:140px; max-width:140px; width:140px; white-space:normal; overflow-wrap:anywhere; }
+.cgperfil .comparacao-tabular thead th:first-child { min-width:128px; max-width:128px; width:128px; white-space:normal; overflow-wrap:anywhere; }
 
 #view-pix .panbar > span:first-child { white-space:normal !important; overflow:visible !important; }
 
@@ -1440,12 +1440,12 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { display:inline-flex; align-items:center; min-inline-size:24px; min-block-size:24px; vertical-align:middle; }
 :is(#view-sectors, #view-institutions) table.data td > a + .star { margin-inline-start:4px; }
 /* Disclosures: alvo real, sem sobrepor controles vizinhos ou substituir o marcador nativo. */
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary {
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
   min-block-size:24px; padding-block:4px; box-sizing:border-box;
 }
 @media (max-width:768px), (any-pointer:coarse) {
   .star, :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { min-inline-size:44px; min-block-size:44px; }
-  :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary {
+  :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
     min-block-size:44px; padding-block:12px;
   }
 }
@@ -1462,6 +1462,9 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 #view-consignado .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
 
 /* Linhas de medidas refluem quando o texto cresce; barras mantêm sua escala. */
-#view-sectors .contrib, .pxstats > div { flex-wrap:wrap; }
-#view-sectors .contrib .lbl, #view-sectors .contrib .num, .pxstats > div > * { min-width:0; max-width:100%; overflow-wrap:anywhere; }
-#view-sectors .contrib .bar { flex-shrink:0; }
+#view-sectors .contrib, #view-subnacional .contrib, .pxstats > div { flex-wrap:wrap; }
+#view-sectors .contrib .lbl, #view-sectors .contrib .num, #view-subnacional .contrib .lbl, #view-subnacional .contrib .num, .pxstats > div > * { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+#view-sectors .contrib .bar, #view-subnacional .contrib .bar { flex-shrink:0; }
+
+/* Notas analíticas preservam palavras longas mesmo com preferência nativa de fonte ampliada. */
+#view-pix .card li { overflow-wrap:anywhere; }
