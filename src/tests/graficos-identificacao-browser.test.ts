@@ -9,6 +9,7 @@ const goldPix = JSON.parse(readFileSync("public/obs/data/gold/pix.json", "utf8")
 const goldCg = JSON.parse(readFileSync("public/obs/data/gold/consignado.json", "utf8"));
 const goldMun = JSON.parse(readFileSync("public/obs/data/gold/consignado_mun.json", "utf8")).municipios as Array<{n:string;uf:string;reg:string;sel:string;p60:number|null;cons_ben:number|null}>;
 const goldInst = JSON.parse(readFileSync("public/obs/data/gold/institutions.json", "utf8"));
+const fichaInst = JSON.parse(readFileSync("public/obs/data/gold/inst/C0010069.json", "utf8"));
 const basileia = ["S1","S2","S3","S4","S5","S?"].flatMap(g => (goldInst.instituicoes as Array<{grupo_pares:string;basileia_pct:number|null}>).filter(i=>i.grupo_pares===g&&i.basileia_pct!=null).map(i=>i.basileia_pct!));
 const rotas = ["credit","pix","payroll-lending-aging","sectors","subnational-credit","institutions"];
 const n = (v:number,dec=1) => v.toLocaleString("pt-BR",{minimumFractionDigits:dec,maximumFractionDigits:dec});
@@ -23,7 +24,14 @@ async function nativo(font:number,width=390) {
  try {context=await chromium.launchPersistentContext(profile,{channel:"chromium",executablePath:process.env.I18N_CHROMIUM_EXECUTABLE,viewport:{width,height:900},reducedMotion:"reduce"});await context.addCookies([{name:"scrutiniums_session",value:servidor.cookie,url:servidor.origem}]);return {context,close:async()=>{await context!.close();rmSync(profile,{recursive:true,force:true});}};}
  catch(e){await context?.close();rmSync(profile,{recursive:true,force:true});throw e;}
 }
-async function ir(page:Page,rota:string){await page.goto(servidor.origem+"/observatorio/"+rota);await page.locator("section.view.active h1").waitFor();await page.evaluate(()=>document.fonts.ready);}
+async function ir(page:Page,rota:string){
+ await page.goto(servidor.origem+"/observatorio/"+rota);
+ await page.locator(rota.startsWith("institutions/") ? "#view-inst h2" : "section.view.active h1").first().waitFor();
+ await page.evaluate(()=>document.fonts.ready);
+ // A rotina da aplicação adapta tabelas depois do primeiro HTML. Aguardar sua condição final,
+ // inclusive em larguras sem o fallback CSS móvel, antes de julgar overflow da página.
+ if(rotas.includes(rota))await expect.poll(()=>page.locator("section.view.active").evaluate(raiz=>raiz.querySelectorAll(".card > table.data, .view > table.data, details > table.data").length)).toBe(0);
+}
 async function dadosSeries(page:Page) {
  return page.locator("section.view.active .line-chart:has(svg[data-chart])").evaluateAll(blocos=>blocos.filter(b=>b.getBoundingClientRect().width>0).map(b=>{
   const svg=b.querySelector<SVGSVGElement>("svg.chart[data-chart]")!;
@@ -62,7 +70,7 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
     for(const t of [0,.5,1]){expect(ticks).toContain(n(Math.min(...xs)+(Math.max(...xs)-Math.min(...xs))*t,1));expect(ticks).toContain(n(Math.min(...ys)+(Math.max(...ys)-Math.min(...ys))*t,0));}
     expect(await page.locator(".cgdisp-uf").count()).toBe(est.length);
    }
-   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${rota}/${width}/${font}`).toBe(true);
+   expect.soft(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${rota}/${width}/${font}`).toBe(true);
   }}expect(erros).toEqual([]);}finally{await browser.close();}
  },240_000);
 
@@ -97,6 +105,8 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
  it("tabela municipal percorre o recorte inteiro e CSV equivale à busca/camada",async()=>{
   const browser=await nativo(16);const page=await browser.context.newPage();try{
    await ir(page,"payroll-lending-aging");await page.locator("#cg-mapa button[onclick=\"cgFiltra('conf','todas')\"]").click();await page.locator("#cg-tabela-mapa summary").click();
+   // O evento nativo toggle é uma tarefa posterior ao clique e preenche o tbody sob demanda.
+   await expect.poll(()=>page.locator("#cg-tabela-linhas tr").count()).toBe(50);
    const base=goldMun;const vistos:string[]=[];
    for(let i=0;i<Math.ceil(base.length/50);i++){
     const rows=await page.locator("#cg-tabela-linhas tr").allTextContents();const trecho=base.slice(i*50,i*50+50);expect(rows).toHaveLength(trecho.length);
@@ -146,12 +156,36 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
   }finally{await browser.close();}
  },90_000);
 
+ it("metadados das nove camadas distinguem observado, calculado e estimado",async()=>{
+  const browser=await nativo(16);const page=await browser.context.newPage();try{
+   await ir(page,"payroll-lending-aging");await page.locator("#cg-tabela-mapa summary").click();
+   const casos=[
+    {cam:"p60",natureza:"observado",unidade:"%",fonte:"Censo 2022"},
+    {cam:"env",natureza:"calculado",unidade:"pessoas de 60+ por 100 pessoas de 0 a 14 anos",fonte:"Censo 2022"},
+    {cam:"ben100_60",natureza:"calculado",unidade:"benefícios por 100 pessoas de 60+",fonte:`dezembro/${goldCg.ano}`},
+    {cam:"v_hab",natureza:"calculado",unidade:"R$",fonte:`dezembro/${goldCg.ano}`},
+    {cam:"peso",natureza:"calculado",unidade:"%",fonte:"IPCA, preços de julho/2022"},
+    {cam:"prural",natureza:"observado",unidade:"%",fonte:`dezembro/${goldCg.ano}`},
+    {cam:"pass",natureza:"calculado",unidade:"%",fonte:`dezembro/${goldCg.ano}`},
+    {cam:"cons_ben",natureza:"estimado",unidade:"R$",fonte:"BCB, SCR"},
+    {cam:"indice",natureza:"estimado",unidade:"pontos (0 a 100)",fonte:"IPCA, preços de julho/2022"},
+   ];
+   for(const c of casos){await page.locator(`#cg-mapa button[onclick="cgFiltra('cam','${c.cam}')"]`).click();
+    await expect.poll(()=>page.locator("#cg-tabela-mapa caption").innerText()).toContain(c.natureza);
+    const caption=await page.locator("#cg-tabela-mapa caption").innerText();expect(caption).toContain(c.unidade);expect(caption).toContain(c.fonte);
+    expect(await page.locator("#cg-tabela-mapa").getAttribute("open")).not.toBeNull();
+    if(c.cam==="indice")expect(await page.locator("#cg-tabela-mapa > p").first().innerText()).toContain("cenário aritmético de 84 meses");
+    if(c.cam==="cons_ben")expect(await page.locator("#cg-tabela-mapa > p").first().innerText()).toContain("não é carteira municipal observada");
+   }
+  }finally{await browser.close();}
+ },60_000);
+
  it("helper da ficha carrega no acesso frio e na navegação cliente",async()=>{
   const browser=await nativo(16);const page=await browser.context.newPage();const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));try{
-   await ir(page,"institutions/C0010069");await page.locator("#view-inst h1").waitFor();
+   await ir(page,"institutions/C0010069");await expect.poll(()=>page.locator("#view-inst h2").first().innerText()).toContain(fichaInst.cabecalho.nome_comercial);
    expect(await page.evaluate(()=>["instListadaSecao","instRegimeAviso","instGuidanceIF","instTiIF","instRemuneracaoIF","instFolhaIF"].map(k=>typeof (window as unknown as Record<string,unknown>)[k]))).toEqual(Array(6).fill("function"));
    await ir(page,"institutions");await page.evaluate(()=>document.documentElement.dataset.clientProof="same-document");
-   await page.locator('#view-institutions a[href="/observatorio/institutions/C0010069"]').first().click();await page.locator("#view-inst h1").waitFor();
+   await page.locator('#view-institutions a[href="/observatorio/institutions/C0010069"]').first().click();await expect.poll(()=>page.locator("#view-inst h2").first().innerText()).toContain(fichaInst.cabecalho.nome_comercial);
    expect(await page.evaluate(()=>document.documentElement.dataset.clientProof)).toBe("same-document");expect(errors).toEqual([]);
   }finally{await browser.close();}
  },90_000);

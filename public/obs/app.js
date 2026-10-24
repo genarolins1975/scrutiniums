@@ -316,7 +316,7 @@ const VIEW_DATA = {
   desenrola: ["desenrola", "pulse", "regulacao"],
   penetracao: ["penetracao", "penetracao_mun", "penetracao_malha"],
   moradia: ["moradia", "moradia_mun", "penetracao_malha"],
-  consignado: ["consignado", "consignado_mun", "penetracao_malha", "regulacao"],
+  consignado: ["consignado", "consignado_mun", "penetracao_malha", "geometria_uf", "regulacao"],
   openfinance: ["openfinance"],
   scenarios: ["scenario", "institutions"],
   alerts: ["sectors", "scenario", "quality"],
@@ -1002,7 +1002,7 @@ function lineChart(opts) {
   let bandData = null;
   if (opts.band) {
     const m = new Map(opts.band.pts.map(p => [p.x, p]));
-    bandData = { lo: allX.map(x => m.has(x) ? m.get(x).lo : null), hi: allX.map(x => m.has(x) ? m.get(x).hi : null) };
+    bandData = { lo: allX.map(x => m.has(x) ? m.get(x).lo : null), hi: allX.map(x => m.has(x) ? m.get(x).hi : null), ...(opts.band.labels ? { labels: opts.band.labels } : {}) };
   }
   const payload = encodeURIComponent(JSON.stringify({
     xs: allX, series: seriesData, band: bandData, dec, dailyDates,
@@ -1028,7 +1028,7 @@ function lineChart(opts) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
     const up = bp.map(p => `${X(p.x)},${Y(p.hi)}`).join(" ");
     const dn = bp.slice().reverse().map(p => `${X(p.x)},${Y(p.lo)}`).join(" ");
-    out += `<polygon points="${up} ${dn}" style="fill:var(--c-band)" stroke="none"/>`;
+    out += `<polygon points="${up} ${dn}" style="fill:var(--c-band);stroke:var(--text-2)" stroke-width="1.5" stroke-dasharray="1,3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
   }
   if (opts.forecastStart != null && allX.includes(opts.forecastStart)) {
     const x = X(opts.forecastStart);
@@ -1093,12 +1093,12 @@ function lineChart(opts) {
   // alternativa tabular acessível (WCAG): mesmos dados do gráfico
   if (!opts.noTable) {
     const heads = opts.series.map((sx, i) => sx.label || "série " + (i + 1));
-    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><caption>${attr(opts.fonte || "Série apresentada")} · ${attr(opts.unit || "unidade indicada no título")}${opts.status ? " · " + attr(opts.status) : ""} · ${dateLabel(allX[0])} a ${dateLabel(allX[allX.length - 1])}</caption><thead><tr><th scope="col">Período</th>${heads.map(h2 => `<th scope="col" style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th scope='col' style='text-align:right'>banda p10</th><th scope='col' style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
+    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><caption>${attr(opts.fonte || "Série apresentada")} · ${attr(opts.unit || "unidade indicada no título")}${opts.status ? " · " + attr(opts.status) : ""} · ${dateLabel(allX[0])} a ${dateLabel(allX[allX.length - 1])}</caption><thead><tr><th scope="col">Período</th>${heads.map(h2 => `<th scope="col" style="text-align:right">${h2}</th>`).join("")}${opts.band ? (opts.band.labels || ["p10", "p90"]).map(l => `<th scope="col" style="text-align:right">banda ${attr(l)}</th>`).join("") : ""}</tr></thead><tbody>` +
       allX.map((x, i) => `<tr><td>${dateLabel(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
       `</tbody></table></div></details>`;
   }
   const identificacao = `${opts.unit ? `<p class="src chart-unit">Unidade: ${attr(opts.unit)}</p>` : ""}<div class="legend chart-series" role="group" aria-label="Séries do gráfico">${opts.series.map((s, i) => `<span><svg width="32" height="12" viewBox="0 0 32 12" aria-hidden="true" focusable="false"><path d="M0 6H32" fill="none" stroke="${ccol(s.color)}" stroke-width="2" stroke-dasharray="${traco(s, i)}"/></svg> ${attr(s.label || "Série " + (i + 1))}</span>`).join("")}</div>`;
-  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify(opts))}" data-line-width="${W}">${identificacao}${out}</div>`;
+  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify(opts))}" data-line-width="${W}">${identificacao}${opts.band ? '<p class="src"><span class="sw faixa-amostra" aria-hidden="true"></span> Faixa sombreada: limites pontilhados.</p>' : ""}${out}</div>`;
 }
 
 /* ---------- tooltip + crosshair (delegação global) ---------- */
@@ -1153,7 +1153,7 @@ function chartShowIndex(svg, i, clientAnchor) {
     html += `<div class="tt-row"><span class="tt-lbl"><span class="sw" style="background:${s.color}"></span>${s.label || "valor"}</span><span class="tt-val">${v == null ? "–" : fmt.n(v, c.dec)}${c.unit ? " " + c.unit : ""}${si === 0 ? dtxt : ""}</span></div>`;
   });
   if (c.band && c.band.lo[i] != null) {
-    html += `<div class="tt-row"><span class="tt-lbl"><span class="sw" style="background:var(--c-band)"></span>banda p10–p90</span><span class="tt-val">${fmt.n(c.band.lo[i], c.dec)} – ${fmt.n(c.band.hi[i], c.dec)}</span></div>`;
+    html += `<div class="tt-row"><span class="tt-lbl"><span class="sw faixa-amostra" style="background:var(--c-band)"></span>banda ${attr((c.band.labels || ["p10", "p90"]).join("–"))}</span><span class="tt-val">${fmt.n(c.band.lo[i], c.dec)} – ${fmt.n(c.band.hi[i], c.dec)}</span></div>`;
   }
   if (c.status || c.fonte) html += `<div class="tt-meta">${[c.status, c.fonte].filter(Boolean).join(" · ")}</div>`;
   const r = svg.getBoundingClientRect();
@@ -2157,8 +2157,8 @@ function renderPix() {
       ${persp === "pag" && gmet === "v_abs" ? `<span class="seg">${[["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button aria-pressed="${!!(gnat === v2)}" class="${gnat === v2 ? "on" : ""}" onclick="pxSet('gnat','${v2}')">${l}</button>`).join("")}</span>` : ""}
     </div>
     <div class="ov-2col-eq">
-      <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
-      <p class="src">${GMETS[gmet][0]} · escala contínua${gmet === "yoy_v" ? ", centrada em zero" : ""}</p><div class="legend" role="group" aria-label="Referências numéricas da escala de cor">${gleg}</div>
+      <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g>${contornosUF(G.geo)}</svg>
+      <p class="src">${GMETS[gmet][0]} · escala contínua${gmet === "yoy_v" ? ", centrada em zero" : ""}</p><div class="legend geo-escala" role="group" aria-label="Referências numéricas da escala de cor">${gleg}</div>
       <details class="charttable"><summary>Dados do mapa por UF</summary><div class="tblwrap"><table class="data compact"><caption>${GMETS[gmet][0]} · ${persp === "rec" ? "Recebedor" : "Pagador"} · ${gnat} · ${G.mes}</caption><thead><tr><th scope="col">Estado</th><th scope="col">${GMETS[gmet][0]}</th></tr></thead><tbody>${G.ufs.map(u => `<tr><th scope="row">${attr(u.nome)} (${u.uf})</th><td class="num">${gval(u) == null ? "Não publicado" : GMETS[gmet][1](gval(u))}</td></tr>`).join("")}</tbody></table></div></details>
       <div class="src" style="margin-top:6px">${G.nota_perspectiva} Na perspectiva do recebedor, as métricas por habitante e o valor médio são derivados dos mesmos números publicados (habitantes = transações pagas ÷ transações por habitante); o crescimento 12m existe só para o pagador. O recorte PF/PJ da fonte existe para o valor PAGO.</div></div>
       <div class="card"><h4>Municípios — os maiores por valor pago</h4>
@@ -2389,6 +2389,13 @@ window.panLoadExplorer = async () => {
 };
 window.panExpSet = (k, v) => { state.pan.exp[k] = v; if (k === "fato") { state.pan.exp.grupo = null; state.pan.exp.filtros = {}; } renderPanorama(); };
 window.panExpFiltro = (dim, v) => { state.pan.exp.filtros[dim] = v; renderPanorama(); };
+
+// Mesma geometria UF do Pix; o contorno não muda a cor ou a escala dos municípios.
+function contornosUF(geo) {
+  if (!geo) return "";
+  const paths = Object.values(geo.paths).map(d => `<path d="${d}"/>`).join("");
+  return `<g class="geo-limites" transform="${geo.transform}" aria-hidden="true">${paths}<g class="geo-tinta">${paths}</g></g>`;
+}
 
 function panScale(vals, kind, brRef) {
   const valid = vals.filter(v => v != null);
@@ -4097,7 +4104,7 @@ function inadFanChart(seg) {
     if (rs.cusum && rs.cusum.ultimo_disparo) out2.push({ x: rs.cusum.ultimo_disparo.data, label: "CUSUM " + rs.cusum.ultimo_disparo.direcao, color: "#6b46a3" });
     return out2;
   })();
-  return `<div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado (linha contínua)</span><span>― ― previsão p50</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda p10–p90</span>${annotations.length ? '<span class="src">marcadores = eventos estatísticos (hipóteses, não fatos)</span>' : ""}</div>`
+  return `<div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado (linha contínua)</span><span>― ― previsão p50</span><span><span class="sw faixa-amostra" style="background:var(--c-band);height:10px"></span>banda p10–p90</span>${annotations.length ? '<span class="src">marcadores = eventos estatísticos (hipóteses, não fatos)</span>' : ""}</div>`
     + lineChart({ series, band, h: 220, forecastStart: last.ref, annotations, aria: "inadimplência com projeção", unit: "%", fonte: inad.meta.source + " " + inad.meta.series_code, status: "observado + previsão" })
     + chartFooter({ fonte: inad.meta.source + " série " + inad.meta.series_code, periodo: `${fmt.my(inad.obs[Math.max(0, inad.obs.length - 48)].ref)}–${fmt.my(last.ref)} + 12m projetados`, atualizado: inad.meta.last_collected_at ? inad.meta.last_collected_at.slice(0, 10) : "–", unidade: inad.meta.unit, nota: fInad && fInad.ok ? fInad.metodo : "" });
 }
@@ -4566,7 +4573,7 @@ function renderExposuresSection() {
   <div class="tblwrap"><table class="data"><thead><tr><th>Setor (CNAE, 9 grupos)</th><th>Carteira do sistema</th><th>Maiores credores (volume)</th><th>Maior exposição relativa</th></tr></thead><tbody>${rows}</tbody></table></div>
   <div class="note"><b>Método:</b> ${ex.metodo}<br><b>Limitações:</b> ${ex.limitacoes}</div>
   <h3>Crédito a micro e pequenas empresas — participação na carteira PJ ${badge("observado")}</h3>
-  <div class="grid g2"><div class="card exposicao-ranking-pme">${ex.ranking_pme.slice(0, 10).map(x => `<div class="contrib contrib-comparavel"><span class="lbl">${attr(x.nome)}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar pos" style="width:${x.pme_share_pct}px"></span></span><span class="num">${x.pme_share_pct}% <span class="src">(PJ ${fmt.money(x.carteira_pj_brl)})</span></span></div>`).join("")}
+  <div class="grid g2"><div class="card exposicao-ranking-pme">${ex.ranking_pme.slice(0, 10).map(x => `<div class="contrib contrib-comparavel"><span class="lbl">${attr(x.nome)}</span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar pos" style="width:${x.pme_share_pct}px"></span></span><span class="num">${String(x.pme_share_pct).replace(".", ",")}% <span class="src">(PJ ${fmt.money(x.carteira_pj_brl)})</span></span></div>`).join("")}
   <div class="src">apenas carteiras PJ ≥ R$ 1 bi · fonte IF.data ${ex.anomes}</div></div></div>
   </section>`;
 }
@@ -5223,7 +5230,7 @@ function renderScenarios() {
   ${scnExpectativas(scenario.expectativas)}
   <div class="card" style="margin-top:14px">
     <h4>Inadimplência ${segName()}: base ${badge("previsao")} vs. cenário ${badge("cenario")}</h4>
-    <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado / base (tracejada)</span><span><span class="sw" style="background:var(--c-forecast)"></span>cenário</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda do cenário</span></div>
+    <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado / base (tracejada)</span><span><span class="sw" style="background:var(--c-forecast)"></span>cenário</span><span><span class="sw faixa-amostra" style="background:var(--c-band);height:10px"></span>banda do cenário</span></div>
     ${chart}
     ${chartFooter({ fonte: "BCB/SGS 21082 + elasticidades documentadas", periodo: "36m observados + 12m", atualizado: (metaDaPagina().gerado_em || "–").slice(0, 10), unidade: "%", nota: scenario.nota })}
   </div>
@@ -6877,7 +6884,7 @@ window.exportarRecorteGrafico = botao => {
   const g = JSON.parse(decodeURIComponent(svg.dataset.chart));
   const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
   const numero = v => v == null ? "" : fmt.n(v, g.dec).replace(/\./g, "");
-  const cabecalho = ["período", ...g.series.map((sr, i) => (sr.label || "série " + (i + 1)) + " (" + g.unit + ")"), ...(g.band ? ["previsão p10 (" + g.unit + ")", "previsão p90 (" + g.unit + ")"] : [])];
+  const cabecalho = ["período", ...g.series.map((sr, i) => (sr.label || "série " + (i + 1)) + " (" + g.unit + ")"), ...(g.band ? (g.band.labels ? g.band.labels.map(l => "banda " + l) : ["previsão p10", "previsão p90"]).map(l => l + " (" + g.unit + ")") : [])];
   const linhas = g.xs.map((x, i) => [x, ...g.series.map(sr => numero(sr.vals[i])), ...(g.band ? [numero(g.band.lo[i]), numero(g.band.hi[i])] : [])].map(q).join(";"));
   const metadados = [`# Fonte: ${g.fonte}`, `# Natureza: ${g.status || "identificada nas séries"}`, `# Unidade: ${g.unit}`, `# Período: ${g.xs[0]} a ${g.xs[g.xs.length - 1]}`, "# Célula vazia: observação ausente; não representa zero."];
   download(`credito_recorte_${botao.closest(".card").id || "serie"}.csv`, "\uFEFF" + metadados.join("\n") + "\n" + cabecalho.map(q).join(";") + "\n" + linhas.join("\n"), "text/csv;charset=utf-8");
@@ -7121,7 +7128,7 @@ function instReguaBasileia(inst, largura = 760) {
     svg += `<text x="${estreito ? esq : 0}" y="${cy - (estreito ? 20 : 2)}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
     svg += `<text x="${estreito ? W - dir : 0}" text-anchor="${estreito ? "end" : "start"}" y="${cy + (estreito ? -20 : 13)}" font-size="12" style="fill:var(--text-2)">${l.pts.length} de ${l.n}</text>`;
     if (l.st && l.st.q1 != null && l.st.q3 != null) {
-      svg += `<rect x="${x(l.st.q1)}" y="${cy - 11}" width="${Math.max(1, x(l.st.q3) - x(l.st.q1))}" height="22" style="fill:color-mix(in srgb, var(--accent) 16%, transparent)"/>`;
+      svg += `<rect x="${x(l.st.q1)}" y="${cy - 11}" width="${Math.max(1, x(l.st.q3) - x(l.st.q1))}" height="22" style="fill:color-mix(in srgb, var(--accent) 16%, transparent);stroke:var(--text-2)" stroke-width="1.2" vector-effect="non-scaling-stroke"/>`;
       if (l.st.mediana != null) svg += `<line x1="${x(l.st.mediana)}" x2="${x(l.st.mediana)}" y1="${cy - 13}" y2="${cy + 13}" style="stroke:var(--text)" stroke-width="2"/>`;
     }
     l.pts.forEach(p => {
@@ -7141,7 +7148,7 @@ function instReguaBasileia(inst, largura = 760) {
     `</tbody></table></div></details>`;
   return `<div class="card" id="inst-regua-basileia" style="margin-top:24px">
     <h4>Onde cada conglomerado está no Índice de Basileia, dentro do seu grupo de pares</h4>
-    <p class="src">Índice de Basileia (%), ${tri}. Cada ponto é um conglomerado; a faixa é a metade central do grupo e o traço, a mediana. A contagem diz quantos do grupo têm Basileia reportada. Grupo com régua do conjunto completo mostra só os pontos.</p>
+    <p class="src">Índice de Basileia (%), ${tri}. Cada ponto é um conglomerado; a faixa delimitada é a metade central do grupo (Q1–Q3) e o traço vertical espesso, a mediana. A contagem diz quantos do grupo têm Basileia reportada. Grupo com régua do conjunto completo mostra só os pontos.</p>
     <div class="tblwrap" style="overflow-x:auto">${svg}</div>
     ${tabela}
     <div class="src">Fonte: BCB IF.data (Olinda), conglomerados prudenciais, ${tri}. ${semDado ? `${fmt.n0(semDado)} dos ${fmt.n0((inst.instituicoes || []).length)} avaliados não reportam Basileia e ficam fora do gráfico. ` : ""}A posição no grupo não é nota de solidez: o requisito de capital depende do segmento e dos colchões de cada instituição.</div>
@@ -7150,7 +7157,7 @@ function instReguaBasileia(inst, largura = 760) {
 function dimensionaBasileia(raiz) {
   const svg = raiz?.querySelector("#inst-regua-basileia svg");
   if (!svg) return;
-  const largura = Math.floor(svg.parentElement.getBoundingClientRect().width);
+  const largura = Math.floor(svg.getBoundingClientRect().width);
   if (!largura || Math.abs(largura - Number(svg.dataset.reguaWidth)) < 2) return;
   const temporario = document.createElement("div");
   temporario.innerHTML = instReguaBasileia(state.data.institutions, largura);
@@ -8474,7 +8481,7 @@ function renderJuros() {
       { pts: serie.map(o => ({ x: o.ref, y: o.mediana })), label: "mediana entre IFs", color: "#1d4e89", w: 2.2 },
       { pts: serie.map(o => ({ x: o.ref, y: o.min })), label: "IF mais barata", color: "#2f7d4f", dash: "4,3", w: 1.4 },
     ],
-    band: { pts: serie.map(o => ({ x: o.ref, lo: o.p25, hi: o.p75 })) },
+    band: { labels: ["p25", "p75"], pts: serie.map(o => ({ x: o.ref, lo: o.p25, hi: o.p75 })) },
     h: 260, unit: "% a.a.", fonte: "BCB txjuros", dec: 1,
     aria: `evolução mensal da taxa da modalidade ${M.modalidade}`,
   }) : "<p class='src'>histórico mensal ainda curto para gráfico</p>";
@@ -10896,9 +10903,9 @@ function renderMoradia() {
       <p class="desprosa">O ESTBAN é a única fonte pública do Banco Central com crédito imobiliário por
       município. Mas o verbete 169 soma quatro rubricas contábeis distintas, e uma delas não é crédito
       imobiliário.</p>
-      <table class="data"><thead><tr><th>Conta COSIF</th><th>Título</th><th>Função contábil oficial</th></tr></thead>
+      <div class="tblwrap"><table class="data"><thead><tr><th>Conta COSIF</th><th>Título</th><th>Função contábil oficial</th></tr></thead>
       <tbody>${D.verbete169.contas.map(c => `<tr class="${c.habitacional === false ? "morfora" : ""}">
-        <td><code>${c.conta}</code></td><td>${c.titulo}</td><td class="src">${c.funcao}</td></tr>`).join("")}</tbody></table>
+        <td><code>${c.conta}</code></td><td>${c.titulo}</td><td class="src">${c.funcao}</td></tr>`).join("")}</tbody></table></div>
       <p class="src"><b>Não distingue:</b> ${D.verbete169.nao_distingue.join(" · ")}.</p>
       <div class="judalerta" role="note">${D.verbete169.alerta}</div>
       <p class="src">${D.verbete169.fonte} ${D.verbete169.invercao_cosif}</p>
@@ -11343,7 +11350,7 @@ function cgTabelaMapa(base, cam, D) {
   const aberta = document.getElementById("cg-tabela-mapa")?.open;
   cgTabelaDados = { base, cam, natureza, fontes, unidade, ressalva, q: cgTabelaDados?.q || "", pagina: cgTabelaDados?.pagina || 0 };
   return `<details class="charttable" id="cg-tabela-mapa" ${aberta ? "open" : ""} ontoggle="if(this.open)cgTabelaPagina()"><summary>Dados do mapa: ${fmt.n0(base.length)} municípios no recorte</summary>
-    <p class="src">${ressalva} Mesma camada e filtros do mapa. N.d. indica medida indisponível. A cor satura nos percentis 5 e 95; os valores da tabela e do CSV não são limitados pelos percentis.</p>
+    <p class="src">${ressalva} Mesma camada e filtros do mapa. Busque município ou UF e escolha o nome para abrir o perfil. N.d. indica medida indisponível. A cor satura nos percentis 5 e 95; os valores da tabela e do CSV não são limitados pelos percentis.</p>
     <label for="cg-tabela-busca">Buscar município ou UF</label><input id="cg-tabela-busca" type="search" value="${attr(cgTabelaDados.q)}" oninput="cgTabelaBusca(this.value)" aria-controls="cg-tabela-linhas" style="width:100%;min-width:0">
     <div class="controls"><button type="button" class="btn ghost small" id="cg-tabela-anterior" onclick="cgTabelaPagina(-1)">Página anterior</button><button type="button" class="btn ghost small" id="cg-tabela-proxima" onclick="cgTabelaPagina(1)">Próxima página</button><button type="button" class="btn ghost small" onclick="cgTabelaCSV()">Baixar CSV deste recorte</button></div>
     <p class="src" id="cg-tabela-status" role="status" aria-live="polite"></p>
@@ -11364,7 +11371,7 @@ function cgTabelaPagina(delta = 0) {
   const ultima = Math.max(0, Math.ceil(total / 50) - 1);
   const pagina = cgTabelaDados.pagina = Math.max(0, Math.min(ultima, cgTabelaDados.pagina + delta));
   const inicio = pagina * 50, C = CG_CAMADAS[cgTabelaDados.cam];
-  corpo.innerHTML = linhas.slice(inicio, inicio + 50).map(m => `<tr><th scope="row">${attr(m.n)}</th><td>${attr(m.uf)}</td><td class="num">${C.fmt(m)}</td><td>${attr((m.sel || "sem classificação").replaceAll("_", " "))}</td></tr>`).join("") || '<tr><td colspan="4">Nenhum município corresponde à busca neste recorte. Altere a busca ou os filtros do mapa.</td></tr>';
+  corpo.innerHTML = linhas.slice(inicio, inicio + 50).map(m => `<tr><th scope="row"><button type="button" class="linkish" style="white-space:normal;text-align:left" onclick="cgSel('${m.c}')" aria-label="${attr("Abrir perfil de " + m.n + " (" + m.uf + ")")}">${attr(m.n)}</button></th><td>${attr(m.uf)}</td><td class="num">${C.fmt(m)}</td><td>${attr((m.sel || "sem classificação").replaceAll("_", " "))}</td></tr>`).join("") || '<tr><td colspan="4">Nenhum município corresponde à busca neste recorte. Altere a busca ou os filtros do mapa.</td></tr>';
   document.getElementById("cg-tabela-status").textContent = total ? `${fmt.n0(inicio + 1)} a ${fmt.n0(Math.min(total, inicio + 50))} de ${fmt.n0(total)} municípios. Página ${pagina + 1} de ${ultima + 1}.` : "Nenhum município encontrado.";
   const anterior = document.getElementById("cg-tabela-anterior"), proxima = document.getElementById("cg-tabela-proxima");
   anterior.disabled = pagina === 0; proxima.disabled = pagina === ultima;
@@ -11547,7 +11554,7 @@ function renderConsignado() {
       <div class="tt-row"><span class="tt-lbl">peso na renda</span><span class="tt-val">${m.peso != null ? fmt.n(m.peso, 1) + "%" : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">confiabilidade</span><span class="tt-val">${m.sel.replace("_", " ")}</span></div>`);
     return `<path d="${d}" fill="${escala(m[cam])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
-      onclick="cgSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + C.fmt(m))}"></path>`;
+      tabindex="-1" onclick="cgSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + C.fmt(m))}"></path>`;
   }).join("") : "";
 
   const lista = base.filter(m => m[cam] != null).sort((a, b) => b[cam] - a[cam]).slice(0, 25);
@@ -11570,9 +11577,9 @@ function renderConsignado() {
   </div>
   <div class="penlayout">
     <div class="card">
-      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(C.l)}"><g transform="${malha.transform}">${paths}</g></svg>`
+      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(C.l)}"><g transform="${malha.transform}">${paths}</g>${contornosUF(state.data.geometria_uf)}</svg>`
               : `<p class="src">malha municipal ainda carregando…</p>`}
-      <p class="src">${C.l} · escala contínua, saturada nos percentis 5 e 95</p><div class="legend" role="group" aria-label="Referências numéricas da escala de cor">${cleg}</div>
+      <p class="src">${C.l} · escala contínua, saturada nos percentis 5 e 95</p><div class="legend geo-escala" role="group" aria-label="Referências numéricas da escala de cor">${cleg}</div>
       ${cgTabelaMapa(base, cam, D)}
       <p class="src">Paleta fria para envelhecimento e previdência, quente para exposição ao
       consignado — envelhecer não é risco, e a cor não deve sugerir que seja. Sombreado entre o
@@ -12009,13 +12016,14 @@ function cgPerfil(D, sel, comparar) {
   ];
   const alvos = sel ? [sel, ...comparar.filter(m => m.c !== sel.c)] : comparar;
   if (!alvos.length) {
-    return `<section id="cg-perfil">${sechead("Perfil municipal", "selecione no mapa")}
-      <p class="src">Clique num município no Mapa de dependência previdenciária para abrir o perfil. É possível
+    return `<section id="cg-perfil">${sechead("Perfil municipal", "selecione no mapa ou na tabela")}
+      <p class="src">Escolha um município no mapa ou pelo nome na tabela completa para abrir o perfil. É possível
       comparar até cinco municípios lado a lado.</p></section>`;
   }
   const cols = alvos.slice(0, 5);
   return `<section id="cg-perfil">${sechead("Perfil municipal", `${cols.length} município${cols.length > 1 ? "s" : ""} em comparação`)}
   <div class="controls">
+    <button type="button" class="btn ghost small" onclick="document.getElementById('cg-tabela-mapa').open=true;document.getElementById('cg-tabela-busca').focus()">Voltar à busca de municípios</button>
     ${cols.map(m => `<span class="cgchip">${m.n}<small>${m.uf}</small>
       <button type="button" onclick="cgTira('${m.c}')" aria-label="${attr("remover " + m.n)}">×</button></span>`).join("")}
     ${cols.length > 1 ? `<button class="btn ghost small" onclick="cgLimpa()">limpar comparação</button>` : ""}
@@ -12243,7 +12251,7 @@ function renderRural() {
       ${I.disponivel ? `<div class="src" style="margin-bottom:6px">${fmt.n0(I.n_ifs)} instituições · top-5 ${pct(I.top5_share)} · cooperativas ${pct(I.cooperativas_share)} · ${termo("hhi", "HHI")} ${fmt.n0(I.hhi)} · ${I.janela.meses} meses (${I.janela.ini} a ${I.janela.fim})</div>
       <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>#</th><th>Instituição</th><th>Segmento</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th><th style="text-align:right">PRONAF</th></tr></thead>
       <tbody>${(I.top || []).map((x, i) => `<tr><td>${i + 1}</td><td><b>${x.nome}</b></td><td class="src">${x.segmento_nome}</td><td style="text-align:right">${brl(x.valor)}</td><td style="text-align:right">${pct(x.share, 1)}</td><td style="text-align:right">${pct(x.pronaf_share)}</td></tr>`).join("")}</tbody></table></div>
-      <div style="margin-top:8px">${(I.por_segmento || []).map(sg => `<div class="contrib"><span class="lbl" style="width:230px">${sg.nome} <span class="src">(${sg.n})</span></span><span class="bar pos" style="width:${Math.min(140, (sg.share || 0) * 1.4)}px"></span><span class="num">${pct(sg.share, 1)}</span></div>`).join("")}</div>`
+      <div style="margin-top:8px">${(I.por_segmento || []).map(sg => `<div class="contrib contrib-comparavel"><span class="lbl">${sg.nome} <span class="src">(${sg.n})</span></span><span class="contrib-linha-barra" aria-hidden="true"><span class="bar pos" style="width:${Math.min(140, (sg.share || 0) * 1.4)}px"></span></span><span class="num">${pct(sg.share, 1)}</span></div>`).join("")}</div>`
       : `<p class="src">recorte por instituição ainda não coletado nesta execução.</p>`}</div>
   </div>`);
 
@@ -13918,7 +13926,7 @@ function taxasSection(p) {
   const serieAtiva = cortou ? (tSeg ? tSeg.serie : null) : it.serie;
   const serieChart = (serieAtiva && serieAtiva.length >= 4) ? lineChart({
     series: [{ pts: serieAtiva.map(x => ({ x: x.inicio, y: x.mediana_aa })), color: "#1d4e89", label: cortou ? `mediana — ${PMX_SEG}` : "mediana do universo" }],
-    band: { pts: serieAtiva.map(x => ({ x: x.inicio, lo: x.p25_aa, hi: x.p75_aa })) },
+    band: { labels: ["p25", "p75"], pts: serieAtiva.map(x => ({ x: x.inicio, lo: x.p25_aa, hi: x.p75_aa })) },
     h: 170, unit: "% a.a.", fonte: "BCB txjuros", status: "observado", dec: 1,
   }) + `<div class="src">banda = quartis (p25–p75) entre instituições da janela${cortou ? ` do ${PMX_SEG}` : ""} · ${serieAtiva.length} janelas desde ${fmt.d(serieAtiva[0].inicio)}</div>`
     : (cortou && !tSeg ? `<p class="src">Sem recorte de taxa para ${PMX_SEG} nesta modalidade: menos de 5 instituições do segmento na janela — omitido, nunca aproximado.</p>` : "");

@@ -56,8 +56,12 @@ async function medirListas(page: Page, seletor: string) {
   }).filter(c=>c.medidas.length));
 }
 async function csvAnual(page: Page) {
-  const download=page.waitForEvent("download");await page.locator('button[onclick="snCSV()"]').click();
-  return readFileSync((await (await download).path())!,"utf8");
+  const botao=page.locator('button[onclick="snCSV()"]');
+  const menu=botao.locator("xpath=ancestor::details[1]");
+  if (!await menu.evaluate(e=>(e as HTMLDetailsElement).open)) await menu.locator("summary").click();
+  await botao.waitFor({state:"visible"});
+  const [download]=await Promise.all([page.waitForEvent("download"),botao.click()]);
+  return readFileSync((await download.path())!,"utf8");
 }
 describe.skipIf(!temBuild&&!exigirBuild)("Rankings com origem comum após reflow",()=>{
   it.each([16,32])("fonte nativa%i: bases, larguras, nomes, medidas eCSV permanecem consistentes",async fonte=>{

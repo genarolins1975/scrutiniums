@@ -50,8 +50,8 @@ async function payload(card: Locator): Promise<Chart> {
   return card.locator("svg[data-chart]").evaluate(e=>JSON.parse(decodeURIComponent(e.getAttribute("data-chart")!)));
 }
 async function baixar(page: Page, botao: Locator) {
-  const download=page.waitForEvent("download");await botao.click();
-  return readFileSync((await (await download).path())!,"utf8").replace(/^\uFEFF/,"").trim();
+  const [download]=await Promise.all([page.waitForEvent("download"),botao.click()]);
+  return readFileSync((await download.path())!,"utf8").replace(/^\uFEFF/,"").trim();
 }
 describe.skipIf(!temBuild&&!exigirBuild)("Identidades completas de séries e instituições",()=>{
   it.each([16,32])("fonte nativa%i: comparador conserva identidade, foco lógico, valores e CSV",async fonte=>{
@@ -67,7 +67,8 @@ describe.skipIf(!temBuild&&!exigirBuild)("Identidades completas de séries e ins
           const options=await select.locator('option[value]:not([value=""])').evaluateAll(os=>os.map(o=>({key:(o as HTMLOptionElement).value,text:o.textContent})));
           expect(options).toEqual(Object.entries(pulse.series).map(([key,s])=>({key,text:s.meta.name})));
           await select.focus();const anterior=await select.inputValue();
-          await page.keyboard.press("ArrowDown");await page.keyboard.press("Enter");
+          // Abre o popup antes de escolher: ArrowDown fechado já confirma no Chromium.
+          await page.keyboard.press("Alt+ArrowDown");await page.keyboard.press("ArrowDown");await page.keyboard.press("Enter");
           await expect.poll(()=>select.inputValue()).not.toBe(anterior);
           expect(await select.evaluate(e=>e===document.activeElement)).toBe(true);
           const selected=await select.inputValue();
