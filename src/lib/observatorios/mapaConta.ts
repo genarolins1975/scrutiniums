@@ -12,7 +12,7 @@ import { OBSERVATORIOS, type Observatorio, type ObservatorioId } from "./lista";
 import { navegacaoDaColecao } from "./navegacaoColecao";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { dadosFrescor } from "@/lib/frescor/dominios";
-import { dataPublicacao, rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
+import { rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
 import type { Prontidao } from "@/components/observatorios/SeloProntidao";
 
 /**
@@ -100,7 +100,7 @@ export function diretorioDoMapa(agora: Date = new Date()): { secoes: SecaoObserv
           href: c.href,
           contagem: 1 + existentes.length,
           paginas: c.paginas,
-          dadosAte: principal ? (rotuloReferencia(principal.referencia) ?? dataPublicacao(principal.publicadoEm)) : null,
+          dadosAte: principal ? rotuloReferencia(principal.referencia) : null,
           atraso: sit && (sit.estado === "atrasado" || sit.estado === "retida") ? textoSituacao(sit) : null,
           prontidao: estado === "piloto" ? "piloto" : existentes.length > 0 && existentes.every((p) => p.situacao === "parcial") ? "parcial" : null,
           fontes,

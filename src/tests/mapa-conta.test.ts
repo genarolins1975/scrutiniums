@@ -158,6 +158,20 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
     expect(d).not.toMatch(/<form|data-view/);
   });
 
+  it("páginas previstas explicam a ausência no conteúdo, sem depender de hover ou texto oculto", () => {
+    const previstas = inventario().flatMap(o => o.colecoes.flatMap(c => c.paginas.filter(p => !p.rota)));
+    expect(previstas.length).toBeGreaterThan(0);
+    for (const h of Object.values(casos)) {
+      const d = elemento(h, 'data-fatia="destinos"');
+      const motivos = [...d.matchAll(/<p [^>]*data-pendencia-pagina=""[^>]*>[\s\S]*?<\/p>/g)].map(m => m[0]);
+      expect(motivos).toHaveLength(previstas.length);
+      for (const motivo of motivos) {
+        expect(texto(motivo).length).toBeGreaterThan(20);
+        expect(motivo).not.toMatch(/sr-only|hidden/);
+      }
+    }
+  });
+
   it("nenhum nome de domínio antigo, nenhum 'Explorar'", () => {
     const nomesDeColecao = new Set(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.nome)));
     for (const h of Object.values(casos)) {

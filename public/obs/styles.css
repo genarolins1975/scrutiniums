@@ -1360,3 +1360,41 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 }
 .kpi-linha { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 8px; font-size: var(--tipo-meta); color: var(--text-2); }
 .kpi-linha .seal { padding: 0; border: 0; background: transparent; letter-spacing: 0; text-transform: none; font-family: var(--sans); font-size: var(--tipo-meta); }
+
+/* Pix: o valor fica em papel opaco sobre a escala; nenhuma combinação da
+   matriz depende da luminância do preenchimento para ser lida. */
+.px-heatmap { text-align: center; min-width: 480px; }
+.px-heatmap th[scope="row"] { text-align: left; }
+.px-cell-value { display: inline-block; padding: 6px 8px; background: var(--surface); color: var(--text); border-radius: var(--r-xs); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.px-cell-share { display: block; font-size: var(--tipo-meta); color: inherit; }
+#view-pix caption { text-align: left; padding: 8px 0; color: var(--text-2); font-size: var(--tipo-meta); }
+#view-pix .seg button, #view-pix .instpick button { min-height: 44px; }
+#view-pix td.num { white-space: nowrap; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.chart-annotations { font-size: var(--tipo-meta); line-height: var(--lh-normal); padding-left: 24px; }
+
+@media (max-width: 640px) {
+  #view-pix .panbar { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 10px 0; }
+  #view-pix .panbar > span:first-child { white-space: normal !important; overflow: visible !important; }
+  #view-pix .panbar .track { grid-column: 1 / -1; grid-row: 2; }
+  #view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); }
+}
+
+.line-chart { min-width: 0; width: 100%; }
+.tabela-deslize { display: none; }
+#view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); line-height: var(--lh-normal); max-width: 75ch; }
+@media (max-width: 768px) {
+  table.comparacao-tabular { min-width: 640px; }
+  .tabela-deslize { display: block; }
+}
+
+/* Seleções longas preservam opções completas sem alargar a página. */
+.view .controls, .view .controls label, .view .card { min-width: 0; }
+.view select { max-width: 100%; min-width: 0; }
+
+.view input, .view .controls > *, .view .controls label { max-width: 100%; box-sizing: border-box; }
+#instSearch { min-width: 0 !important; width: min(100%, 420px); }
+.cgpirl { grid-template-columns: 8ch minmax(0, 1fr) 5ch; }
+.cgpir { min-width: 0; max-width: 100%; }
+
+/* Contém o texto assistivo de natureza dentro da célula rolável. */
+.seal { position: relative; }

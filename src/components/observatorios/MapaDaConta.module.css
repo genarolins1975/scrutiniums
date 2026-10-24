@@ -13,11 +13,17 @@
 .abertura { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px 48px; align-items: end; padding: 32px 0 32px; }
 @media (min-width: 1024px) { .abertura { grid-template-columns: minmax(0, 1fr) minmax(0, 42rem); } }
 
-/* destinos: seis seções em grade (nunca columns), cada uma inteira na sua célula; duas colunas a partir de 1024 px */
+/* Cada observatório ocupa uma faixa. No desktop, identidade à esquerda e duas colunas de coleções à direita.
+ * A ordem visual continua a do DOM: não há masonry nem buraco determinado pela seção vizinha. */
 .destinos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px 48px; align-items: start; padding-top: 40px; border-top: 1px solid var(--cor-linha); }
-@media (min-width: 1024px) { .destinos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .secao { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 2fr); gap: 32px; }
+  .secao .colecoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; margin-top: 0; align-items: start; }
+  .colecoes > li { min-width: 0; }
+}
+.cabecalhoSecao { min-width: 0; }
 .secao { min-width: 0; scroll-margin-top: 180px; }
-.filete { height: 2px; margin-bottom: 14px; }
+.filete { height: 3px; margin-bottom: 14px; }
 .titulo { display: inline-flex; align-items: center; gap: 0 0.3em; min-height: 44px; color: inherit; text-decoration: none; }
 @media (hover: hover) and (pointer: fine) { .titulo:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; } }
 /* todo destino leva a seta: link é o que navega; o abridor das páginas não leva */
@@ -72,3 +78,5 @@
 .indice a > span:first-child { min-width: 0; }
 .indice a > span:last-child { flex: none; }
 @media (min-width: 768px) { .indice { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.paginas li > a { display: flex; padding: 8px 0; }
