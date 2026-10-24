@@ -2,11 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { buscar, emOrdemDeTela, type Resultado } from "@/lib/busca/buscar";
+import { buscar, emOrdemDeTela, type RespostaBusca, type Resultado } from "@/lib/busca/buscar";
 import type { IndiceBusca } from "@/lib/busca/tipos";
 import { medirBusca } from "@/lib/busca/medir";
+import { rotuloDoParcial } from "@/lib/busca/textos";
+import { normalizar } from "@/lib/busca/normalizar";
 import { useSessao } from "@/components/acesso/sessao";
 import { ListaResultados } from "./ListaResultados";
+import { NaoCobre } from "./NaoCobre";
+import { VersaoAberta } from "./VersaoAberta";
 
 // um só download por página, compartilhado pelos campos dela; falha de rede libera uma nova tentativa no próximo foco
 let carga: Promise<IndiceBusca | null> | null = null;
@@ -31,6 +35,19 @@ function ehAtalho(e: globalThis.KeyboardEvent): boolean {
 
 const ROTULO = "Buscar na Scrutiniums";
 
+/** Pausa na digitação antes de contar a busca sem resultado (MEDICAO_DE_USO.md §8a). */
+const PAUSA_MEDICAO_MS = 1500;
+/** Termos sem resultado já contados nesta página: um por termo, mesmo que o leitor volte a ele. */
+const semResultadoMedidos = new Set<string>();
+
+/** O que a busca fez: a correção aplicada, o rótulo do parcial ou a contagem. */
+function fraseDoResultado(resposta: RespostaBusca | null, n: number): string {
+  if (!resposta || n === 0) return "";
+  const correcao = resposta.correcao ? `Mostrando resultados para “${resposta.correcao.para}”. ` : "";
+  if (resposta.parcial) return correcao + rotuloDoParcial(resposta);
+  return correcao + (resposta.cortado ? `Os ${n} primeiros resultados.` : `${n} ${n === 1 ? "resultado" : "resultados"}.`);
+}
+
 function Lupa({ className }: { className?: string }) {
   return (
     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" className={className}>
@@ -54,9 +71,6 @@ function Lupa({ className }: { className?: string }) {
  * em tela cheia; "/" e Ctrl K levam ao campo, sem animação. `variante="pagina"`: o campo dentro de uma página (entrada de uma
  * coleção, mapa da conta), que com `filtro` procura só na coleção e oferece a busca em toda a plataforma, e com `municipio`
  * aponta para a busca por cidade da coleção.
- *
- * Na página (mapa da conta e entradas, Iniciativa M1 de 23/10/2026), o primeiro resultado com página já aparece marcado como
- * ativo enquanto o leitor não usa as setas: é o que o Enter vai abrir. `rotuloVisivel` mostra o rótulo do campo acima dele.
  */
 export function BuscaPlataforma({
   variante = "barra",
@@ -72,7 +86,6 @@ export function BuscaPlataforma({
   /** Só os destinos de uma coleção do registro, com o nome dela para o aviso. */
   filtro?: { colecao: string; nome: string };
   rotulo?: string;
-  /** O rótulo do campo à vista, acima dele (só na variante "pagina"); sem isso, só para leitor de tela. */
   rotuloVisivel?: boolean;
   /** A busca por cidade da coleção (o índice não tem municípios): com termo, o painel aponta para ela levando o que foi digitado. */
   municipio?: { href: string; rotulo: string };
@@ -86,18 +99,26 @@ export function BuscaPlataforma({
   const [indice, setIndice] = useState<IndiceBusca | null>(null);
   const [aberta, setAberta] = useState(false);
   const [ativo, setAtivo] = useState(-1);
+  // "Buscar 'saneamneto' mesmo assim": o termo como foi escrito, sem a correção, até o leitor digitar de novo
+  const [exato, setExato] = useState(false);
   const [folha, setFolha] = useState(false);
   const campo = useRef<HTMLInputElement>(null);
   const lupa = useRef<HTMLButtonElement>(null);
   const voltarPara = useRef<HTMLElement | null>(null);
 
-  const resposta = useMemo(() => (indice && termo.trim() ? buscar(indice, termo, { colecao: filtro?.colecao }) : null), [indice, termo, filtro?.colecao]);
+  const resposta = useMemo(
+    () => (indice && termo.trim() ? buscar(indice, termo, { colecao: filtro?.colecao, semCorrecao: exato }) : null),
+    [indice, termo, filtro?.colecao, exato],
+  );
   const lista = useMemo(() => (resposta ? emOrdemDeTela(resposta.grupos) : []), [resposta]);
+  // a coleção do primeiro resultado é a primeira do primeiro grupo (os grupos seguem a ordem dos resultados)
+  const versaoDoPrimeiro = resposta?.grupos[0]?.colecoes[0]?.colecao?.aberta;
+  // a opção que o Enter abre: a ativa ou, antes de qualquer seta, a primeira com página
+  const destacada = ativo >= 0 ? ativo : lista.findIndex((r) => r.href);
   const mostra = aberta && !!resposta;
-  // na página, sem escolha pelas setas, o ativo é o primeiro resultado com página (o que o Enter abre); na barra, só pelas setas
-  const ativoVisivel = mostra && lista.length > 0 ? (ativo >= 0 ? ativo : barra ? -1 : lista.findIndex((r) => r.href)) : -1;
   const opcao = (n: number) => `${id}-op-${n}`;
-  const paraTudo = `/buscar${termo.trim() ? `?q=${encodeURIComponent(termo.trim())}` : ""}`;
+  // "mesmo assim" acompanha o leitor até /buscar: sem exato=1 a página aplicaria a correção de novo
+  const paraTudo = `/buscar${termo.trim() ? `?q=${encodeURIComponent(termo.trim())}${exato ? "&exato=1" : ""}` : ""}`;
 
   function preparar() {
     setAberta(true);
@@ -123,6 +144,21 @@ export function BuscaPlataforma({
     }
     voltarPara.current = null;
   }
+
+  // a busca da barra sem resultado completo conta uma vez por termo, depois de 1,5 s sem digitar (decisão do dono de 23/10/2026):
+  // é o que o painel precisa ver para achar destino ou sinônimo que falta; digitar e apagar antes da pausa não conta. Só a busca
+  // de toda a plataforma: na busca local (filtro), o termo pode ter resultado em outra coleção, e o painel não guarda a coleção
+  useEffect(() => {
+    const t = termo.trim();
+    if (filtro?.colecao || !t || !resposta || (lista.length > 0 && !resposta.parcial)) return;
+    const chave = normalizar(t);
+    if (semResultadoMedidos.has(chave)) return;
+    const espera = setTimeout(() => {
+      semResultadoMedidos.add(chave);
+      medirBusca(t, "sem_resultado");
+    }, PAUSA_MEDICAO_MS);
+    return () => clearTimeout(espera);
+  }, [filtro?.colecao, termo, resposta, lista.length]);
 
   // a folha em tela cheia recebe o foco ao abrir; a página atrás não rola
   useEffect(() => {
@@ -170,8 +206,7 @@ export function BuscaPlataforma({
   function aoEnviar(e: FormEvent<HTMLFormElement>) {
     // com resultado à vista, Enter abre o ativo ou o primeiro com página; sem ele, o formulário segue para /buscar
     if (!mostra || lista.length === 0) return;
-    const alvo = ativoVisivel >= 0 ? ativoVisivel : lista.findIndex((r) => r.href);
-    if (alvo >= 0 && abrir(alvo)) e.preventDefault();
+    if (destacada >= 0 && abrir(destacada)) e.preventDefault();
   }
 
   function aoTeclarNoCampo(e: KeyboardEvent<HTMLInputElement>) {
@@ -179,8 +214,7 @@ export function BuscaPlataforma({
       if (!lista.length) return;
       e.preventDefault();
       setAberta(true);
-      const a = ativoVisivel;
-      setAtivo(e.key === "ArrowDown" ? Math.min(a + 1, lista.length - 1) : a <= 0 ? lista.length - 1 : a - 1);
+      setAtivo((a) => (e.key === "ArrowDown" ? Math.min(a + 1, lista.length - 1) : a <= 0 ? lista.length - 1 : a - 1));
     } else if (e.key === "Escape") {
       e.preventDefault();
       fechar(true);
@@ -188,14 +222,8 @@ export function BuscaPlataforma({
   }
 
   const classe = barra ? "bp-busca" : "bp-busca bp-busca--pagina";
-  const comRotulo = rotuloVisivel && !barra;
   return (
     <div className={classe} data-busca-plataforma="" data-folha={folha ? "" : undefined}>
-      {comRotulo && (
-        <label htmlFor={`${id}-q`} className="rotulo mb-2 block text-carvao-muted">
-          {rotulo}
-        </label>
-      )}
       {barra && (
         <button ref={lupa} type="button" className="bp-busca-lupa" aria-label={rotulo} aria-haspopup="dialog" aria-expanded={folha} onClick={abrirFolha}>
           <Lupa />
@@ -211,8 +239,14 @@ export function BuscaPlataforma({
           if (!folha && !e.currentTarget.contains(e.relatedTarget as Node | null)) setAberta(false);
         }}
       >
+        {/* busca local: o rótulo visível diz que ela procura só na coleção (I4 item 7 do parecer de UX de 23/10/2026) */}
+        {!barra && (filtro || rotuloVisivel) && (
+          <label htmlFor={`${id}-q`} className="rotulo mb-2 block text-mineral">
+            {filtro ? `Buscar só em ${filtro.nome}` : rotulo}
+          </label>
+        )}
         <form action="/buscar" method="get" role="search" aria-label={rotulo} className="bp-busca-form" onSubmit={aoEnviar}>
-          {!comRotulo && (
+          {!(!barra && (filtro || rotuloVisivel)) && (
             <label htmlFor={`${id}-q`} className="sr-only">
               {rotulo}
             </label>
@@ -227,12 +261,13 @@ export function BuscaPlataforma({
             aria-autocomplete="list"
             aria-expanded={mostra}
             aria-controls={`${id}-lista`}
-            aria-activedescendant={ativoVisivel >= 0 ? opcao(ativoVisivel) : undefined}
+            aria-activedescendant={mostra && ativo >= 0 ? opcao(ativo) : undefined}
             aria-describedby={`${id}-estado`}
             value={termo}
             onChange={(e) => {
               setTermo(e.target.value);
               setAtivo(-1);
+              setExato(false);
               preparar();
             }}
             onFocus={preparar}
@@ -244,6 +279,7 @@ export function BuscaPlataforma({
             maxLength={120}
             className="bp-busca-campo"
           />
+          {exato && <input type="hidden" name="exato" value="1" />}
           {barra && (
             <kbd className="bp-busca-tecla" aria-hidden="true">
               /
@@ -263,27 +299,64 @@ export function BuscaPlataforma({
                 : ""
               : !indice
                 ? "Carregando o índice…"
-                : lista.length === 0
-                  ? ""
-                  : resposta?.cortado
-                    ? `Os ${lista.length} primeiros resultados.`
-                    : `${lista.length} ${lista.length === 1 ? "resultado" : "resultados"}.`}
+                : fraseDoResultado(resposta, lista.length)}
           </p>
-          <div id={`${id}-lista`} role="listbox" aria-label="Resultados da busca" className="bp-busca-lista">
-            {resposta && (
-              <ListaResultados grupos={resposta.grupos} comSessao={sessao} opcao={{ id: opcao, ativa: ativoVisivel, aoEscolher: escolheu }} />
-            )}
-          </div>
-          {resposta && lista.length === 0 && (
-            <p className="bp-busca-vazio">
-              Nenhum resultado para <q>{termo.trim()}</q>
-              {filtro ? ` em ${filtro.nome}` : ""}.{" "}
-              <Link href="/buscar" prefetch={false}>
-                Veja as coleções
-              </Link>
-              .
+          {resposta?.correcao && lista.length > 0 && (
+            <p className="bp-busca-estado">
+              <button
+                type="button"
+                className="bp-busca-acao"
+                // o foco fica no campo: no Safari o botão não recebe foco no clique e a lista fecharia antes dele
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setExato(true);
+                  campo.current?.focus();
+                }}
+              >
+                Buscar “{resposta.correcao.de}” mesmo assim
+              </button>
             </p>
           )}
+          <div id={`${id}-lista`} role="listbox" aria-label="Resultados da busca" className="bp-busca-lista">
+            {resposta && (
+              <ListaResultados grupos={resposta.grupos} comSessao={sessao} opcao={{ id: opcao, ativa: ativo, destacada, aoEscolher: escolheu }} />
+            )}
+          </div>
+          {/* a linha "versão aberta" do primeiro resultado fechado fica fora da listbox: dentro de uma opção, o link não seria
+              alcançável pelas setas nem pelo Tab (decisão do dono de 23/10/2026, achado A7) */}
+          {lista[0]?.href && versaoDoPrimeiro && !sessao && <VersaoAberta destino={lista[0].href} versao={versaoDoPrimeiro} />}
+          {resposta?.sugestoes && (
+            <p className="bp-busca-vazio">
+              Você quis dizer{" "}
+              {resposta.sugestoes.map((s, k) => (
+                <span key={s}>
+                  {k > 0 && (k === resposta.sugestoes!.length - 1 ? " ou " : ", ")}
+                  <button
+                    type="button"
+                    className="bp-busca-acao"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      setTermo(s);
+                      setAtivo(-1);
+                      campo.current?.focus();
+                    }}
+                  >
+                    {s}
+                  </button>
+                </span>
+              ))}
+              ?
+            </p>
+          )}
+          {resposta && indice && lista.length === 0 && !resposta.sugestoes &&
+            (filtro ? (
+              // na busca local, o tema pode estar em outra coleção: o rodapé leva à busca em toda a plataforma
+              <p className="bp-busca-vazio">
+                Nenhum resultado para <q>{termo.trim()}</q> em {filtro.nome}.
+              </p>
+            ) : (
+              <NaoCobre termo={termo.trim()} indice={indice} comSessao={sessao} classe="bp-busca-nao-cobre" />
+            ))}
           {termo.trim() && municipio && (
             <p className="bp-busca-vazio">
               Procura um município? A busca por cidade está em{" "}

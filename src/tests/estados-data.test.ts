@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { resolverMeta } from "@/lib/observatorioHead";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Páginas por UF. O que se trava:
@@ -77,7 +78,8 @@ describe.skipIf(!comDado)("rotas por UF: head, sitemap e SPA", () => {
     expect(app).toContain('estados: "renderEstados", estado: "renderEstados"');
     expect(app).toContain('if (p.startsWith("/states/") && p.length > 8) return "estado";');
     expect(app).toContain("window.ufNav = uf =>");
-    expect(html).toContain('data-view="estados">Estados</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/states")).toBe("Estados");
     expect(html).toContain('id="view-estados"');
     expect(html).toContain('id="view-estado"');
     expect(read("src/lib/data/observatorioAbas.ts")).toContain('{ prefixo: "/states/", view: "estado", rotulo: "Estados" }');

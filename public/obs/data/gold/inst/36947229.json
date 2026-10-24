@@ -9,7 +9,7 @@
   "sede": "Monte Belo/MG",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 387,
+  "n_pares": 386,
   "conglomerado_prudencial": "C0085173",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:01+00:00",
+  "atualizado_em": "2026-10-23T16:23:55+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 36.947.229"
  },
@@ -61,7 +61,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 386,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -125,7 +125,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.3,
+   "q1": 16.2,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -225,7 +225,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.66,
+   "mediana_grupo": 3.68,
    "percentil": 69.9
   },
   {
@@ -234,8 +234,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.96,
-   "percentil": 33.2
+   "mediana_grupo": 4.1,
+   "percentil": 33.0
   }
  ],
  "carteira": {
@@ -774,7 +774,6 @@
     39.71,
     2.32,
     6.72,
-    -6.67,
     0.0,
     12.04,
     18.52,
@@ -843,7 +842,7 @@
     55.04
    ],
    "meu": 1.08,
-   "mediana": 3.96
+   "mediana": 4.1
   },
   "alav": {
    "valores": [
@@ -1167,7 +1166,6 @@
     2.22,
     1.5,
     15.99,
-    1.34,
     114.62,
     3.89,
     1.44,
@@ -1236,7 +1234,7 @@
     9.56
    ],
    "meu": 7.58,
-   "mediana": 3.66
+   "mediana": 3.68
   }
  },
  "comparacao_pares": {

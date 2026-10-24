@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { ExploradorSaude } from "@/components/eficiencia/saude/ExploradorSaude";
-import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
-import { dadosSaude, goldSaude } from "@/lib/eficiencia/saude/dados";
+import { PaginaTemaSaude } from "@/components/eficiencia/saude/PaginaTemaSaude";
 
 export const dynamic = "force-static";
 
@@ -12,10 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/eficiencia-estatal/saude-capitais/atendimento-e-resultados" },
 };
 
+/** Atendimento e resultados no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o modelo único dos temas da Saúde nas capitais. */
 export default function Pagina() {
-  const g = goldSaude();
-  if (!g) {
-    return <Indisponivel titulo="Módulo indisponível" motivo="A base do módulo não foi encontrada nesta publicação. Nenhum número é exibido no lugar." faltante={["public/eficiencia/gold/saude_capitais.json"]} />;
-  }
-  return <ExploradorSaude tema="resultados" dados={dadosSaude(g, "resultados")} contextos={contextosSaude(g)} />;
+  return <PaginaTemaSaude tema="resultados" />;
 }

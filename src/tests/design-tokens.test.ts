@@ -280,6 +280,16 @@ describe("séries de gráfico: 3:1 sobre papel e marfim (WCAG 1.4.11)", () => {
   }
 });
 
+describe("sem tokens de domínio para a aplicação do Crédito", () => {
+  // Iniciativa 2 do parecer de UX de 23/10/2026: os 42 --cor-credito-* (30 do tema escuro, positivo/negativo de julgamento) saíram;
+  // a aplicação lê a paleta da plataforma. Token novo tem nome de papel, nunca de domínio.
+  it("nenhum --cor-credito-* em globals.css, nos derivados nem nas folhas do escopo", () => {
+    for (const arq of ["src/app/globals.css", "public/obs/tokens.css", "src/lib/tokens.gerado.ts", ...arquivosDoEscopo()]) {
+      expect(ler(arq), arq).not.toMatch(/cor-credito-/);
+    }
+  });
+});
+
 describe("uso dos tokens", () => {
   it("energia-soft nunca é usado como cor de texto", () => {
     for (const arq of arquivosDoEscopo().filter((a) => /\.tsx?$/.test(a))) expect(ler(arq), arq).not.toMatch(/\btext-energia-soft\b/);

@@ -178,9 +178,21 @@ export async function migrate(db: Db): Promise<void> {
       dia DATE NOT NULL,
       termo TEXT NOT NULL,
       com_conta BOOLEAN NOT NULL,
+      evento TEXT NOT NULL DEFAULT 'abriu',
+      fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false,
       buscas INTEGER NOT NULL DEFAULT 0,
-      PRIMARY KEY (dia, termo, com_conta)
+      PRIMARY KEY (dia, termo, com_conta, evento)
     )`,
+    // Ciclo 2 da busca (23/10/2026, decisão do dono): o evento entra na chave (busca aberta ou sem resultado na barra) e o
+    // termo fora do vocabulário do índice ganha marca própria. Migração da tabela de 22/10/2026, uma vez só (idempotente).
+    `DO $$ BEGIN
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'uso_busca_dia' AND column_name = 'evento') THEN
+        ALTER TABLE uso_busca_dia ADD COLUMN evento TEXT NOT NULL DEFAULT 'abriu';
+        ALTER TABLE uso_busca_dia ADD COLUMN fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false;
+        ALTER TABLE uso_busca_dia DROP CONSTRAINT uso_busca_dia_pkey;
+        ALTER TABLE uso_busca_dia ADD PRIMARY KEY (dia, termo, com_conta, evento);
+      END IF;
+    END $$`,
     // Fim do acesso antecipado por código: contas paradas na etapa do código
     // ou na lista de espera são promovidas a acesso completo (idempotente).
     `UPDATE users SET onboarding_status = 'COMPLETE'

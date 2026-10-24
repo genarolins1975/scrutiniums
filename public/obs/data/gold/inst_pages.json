@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-10-22T15:47:50+00:00",
+ "gerado_em": "2026-10-23T16:23:42+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-22T15:47:50+00:00",
+    "atualizado_em": "2026-10-23T16:23:42+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1172,13 +1172,22 @@
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 7053022596.0,
+    "chamadas_semana": 6368773133.0,
     "share_pct": 8.6,
     "familias_api": null,
     "papeis": null,
     "match_diretorio": false
    },
    "reclamacoes": [
+    {
+     "periodo": "2026-T3",
+     "indice": 43.2,
+     "posicao": 114,
+     "reclamacoes": 29086,
+     "clientes": 98429795.0,
+     "cnpj": "",
+     "nome_fonte": "ITAU (conglomerado)"
+    },
     {
      "periodo": "2026-T2",
      "indice": 46.87,
@@ -1203,15 +1212,6 @@
      "posicao": 99,
      "reclamacoes": 31413,
      "clientes": 100321592.0,
-     "cnpj": "",
-     "nome_fonte": "ITAU (conglomerado)"
-    },
-    {
-     "periodo": "2025-T3",
-     "indice": 45.13,
-     "posicao": 106,
-     "reclamacoes": 28923,
-     "clientes": 100248541.0,
      "cnpj": "",
      "nome_fonte": "ITAU (conglomerado)"
     }
@@ -1269,7 +1269,7 @@
      "status": "calculado"
     },
     {
-     "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 46.87 (posição 101 do arquivo) — indicador operacional/reputacional, não de solvência.",
+     "frase": "No Ranking de Reclamações do BCB (2026-T3), índice 43.2 (posição 114 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
     },
@@ -1302,7 +1302,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-22T15:47:50+00:00",
+    "atualizado_em": "2026-10-23T16:23:42+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2407,6 +2407,15 @@
    "openfinance": null,
    "reclamacoes": [
     {
+     "periodo": "2026-T3",
+     "indice": 71.51,
+     "posicao": 41,
+     "reclamacoes": 3106,
+     "clientes": 3074036.0,
+     "cnpj": "",
+     "nome_fonte": "BCO DAYCOVAL S.A (conglomerado)"
+    },
+    {
      "periodo": "2026-T2",
      "indice": 60.17,
      "posicao": 36,
@@ -2430,15 +2439,6 @@
      "posicao": 39,
      "reclamacoes": 2078,
      "clientes": 2467294.0,
-     "cnpj": "",
-     "nome_fonte": "BCO DAYCOVAL S.A (conglomerado)"
-    },
-    {
-     "periodo": "2025-T3",
-     "indice": 39.19,
-     "posicao": 43,
-     "reclamacoes": 2233,
-     "clientes": 2428902.0,
      "cnpj": "",
      "nome_fonte": "BCO DAYCOVAL S.A (conglomerado)"
     }
@@ -2505,7 +2505,7 @@
      "status": "calculado"
     },
     {
-     "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 60.17 (posição 36 do arquivo) — indicador operacional/reputacional, não de solvência.",
+     "frase": "No Ranking de Reclamações do BCB (2026-T3), índice 71.51 (posição 41 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
     },
@@ -2533,7 +2533,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-22T15:47:50+00:00",
+    "atualizado_em": "2026-10-23T16:23:42+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -3666,6 +3666,15 @@
    "openfinance": null,
    "reclamacoes": [
     {
+     "periodo": "2026-T3",
+     "indice": 291.44,
+     "posicao": 209,
+     "reclamacoes": 736,
+     "clientes": 747506.0,
+     "cnpj": "",
+     "nome_fonte": "VOLKSWAGEN (conglomerado)"
+    },
+    {
      "periodo": "2026-T2",
      "indice": 243.71,
      "posicao": 186,
@@ -3689,15 +3698,6 @@
      "posicao": 182,
      "reclamacoes": 494,
      "clientes": 626072.0,
-     "cnpj": "",
-     "nome_fonte": "VOLKSWAGEN (conglomerado)"
-    },
-    {
-     "periodo": "2025-T3",
-     "indice": 197.55,
-     "posicao": 183,
-     "reclamacoes": 504,
-     "clientes": 590017.0,
      "cnpj": "",
      "nome_fonte": "VOLKSWAGEN (conglomerado)"
     }
@@ -3755,7 +3755,7 @@
      "status": "calculado"
     },
     {
-     "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 243.71 (posição 186 do arquivo) — indicador operacional/reputacional, não de solvência.",
+     "frase": "No Ranking de Reclamações do BCB (2026-T3), índice 291.44 (posição 209 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
     },
@@ -3771,7 +3771,7 @@
   "basileia_pct": 93,
   "carteira_detalhada_pct": 90,
   "historico_5t_pct": 99,
-  "reclamacoes_match_pct": 30,
+  "reclamacoes_match_pct": 31,
   "openfinance_match_pct": 41
  },
  "hierarquia_fontes": [

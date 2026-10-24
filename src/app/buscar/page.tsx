@@ -4,11 +4,13 @@ import { cookies } from "next/headers";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { ListaResultados } from "@/components/busca/ListaResultados";
+import { NaoCobre } from "@/components/busca/NaoCobre";
 import { MedeBusca } from "@/components/busca/MedeBusca";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { buscar } from "@/lib/busca/buscar";
 import { indiceDeBusca } from "@/lib/busca/indice";
 import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
+import { rotuloDoParcial } from "@/lib/busca/textos";
 import { inventario } from "@/lib/observatorios/inventario";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { getSessionUser } from "@/lib/session";
@@ -34,11 +36,16 @@ async function temSessao(): Promise<boolean> {
   }
 }
 
-export default async function BuscarPage({ searchParams }: { searchParams: { q?: string | string[] } }) {
+const comTermo = (q: string, exato = false) => `/buscar?q=${encodeURIComponent(q)}${exato ? "&exato=1" : ""}`;
+
+export default async function BuscarPage({ searchParams }: { searchParams: { q?: string | string[]; exato?: string } }) {
   const q = (Array.isArray(searchParams.q) ? searchParams.q[0] : searchParams.q ?? "").slice(0, 120).trim();
+  // exato=1: o termo como foi escrito, sem a correção ("Buscar 'saneamneto' mesmo assim")
+  const exato = searchParams.exato === "1";
   const comSessao = await temSessao();
   const indice = indiceDeBusca();
-  const resposta = q ? buscar(indice, q) : null;
+  const resposta = q ? buscar(indice, q, { semCorrecao: exato }) : null;
+  const link = "underline decoration-linha underline-offset-4 hover:decoration-carvao";
 
   return (
     <div className="flex min-h-screen flex-col bg-papel">
@@ -69,16 +76,33 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
         {resposta ? (
           <section aria-live="polite" className="mt-8 max-w-3xl">
             <MedeBusca termo={q} />
-            {resposta.resultados.length === 0 ? (
+            {resposta.sugestoes ? (
               <p className="text-base text-carvao">
-                Nenhum resultado para <q>{q}</q>. Tente outra palavra, o nome de uma fonte (ONS, IBGE, ANP) ou{" "}
-                <Link href="/buscar" className="underline decoration-linha underline-offset-4 hover:decoration-carvao">
-                  veja as coleções
-                </Link>
-                .
+                Nenhum resultado para <q>{q}</q>. Você quis dizer{" "}
+                {resposta.sugestoes.map((s, k) => (
+                  <span key={s}>
+                    {k > 0 && (k === resposta.sugestoes!.length - 1 ? " ou " : ", ")}
+                    <Link href={comTermo(s)} prefetch={false} className={link}>
+                      {s}
+                    </Link>
+                  </span>
+                ))}
+                ?
               </p>
+            ) : resposta.resultados.length === 0 ? (
+              <NaoCobre termo={q} indice={indice} comSessao={comSessao} classe="text-base text-carvao" />
             ) : (
               <>
+                {resposta.correcao && (
+                  <p className="mb-2 text-base text-carvao">
+                    Mostrando resultados para <q>{resposta.correcao.para}</q>.{" "}
+                    <Link href={comTermo(resposta.correcao.de, true)} prefetch={false} className={link}>
+                      Buscar <q>{resposta.correcao.de}</q> mesmo assim
+                    </Link>
+                    .
+                  </p>
+                )}
+                {resposta.parcial && <p className="mb-2 text-base text-carvao">{rotuloDoParcial(resposta)}</p>}
                 <p className="mb-6 text-sm text-carvao-muted">
                   {resposta.cortado ? `Os ${resposta.resultados.length} primeiros resultados` : `${resposta.resultados.length} ${resposta.resultados.length === 1 ? "resultado" : "resultados"}`}
                   {!comSessao && " · os marcados com o cadeado pedem a conta gratuita"}

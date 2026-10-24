@@ -183,7 +183,9 @@ describe("Crédito preservado", () => {
     // o seletor da barra comum (desktop e celular) substituiu o da barra lateral, que o repetia
     expect(html).toContain('class="obs-trocar"');
     expect(html).toContain('href="/setor-eletrico"');
-    expect(html).toContain('class="mobile-obs"');
+    // o atalho fixo "Setor Elétrico →" da antiga barra de celular saiu com ela (Iniciativa 2 do parecer de UX de 23/10/2026):
+    // no celular o seletor da linha da marca guarda os mesmos destinos, como nas páginas da plataforma
+    expect(html).not.toContain('class="mobile-obs"');
     expect(html).toContain('href="/app/observatorios"');
   });
 });

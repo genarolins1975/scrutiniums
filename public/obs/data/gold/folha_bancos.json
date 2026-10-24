@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-22T15:47:49+00:00",
+ "gerado_em": "2026-10-23T16:23:41+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,28 +131,28 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 190,
-  "total_editais": 703,
+  "total_contratos_if": 193,
+  "total_editais": 707,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 61,
+    "contratos": 62,
     "ufs": 19,
     "como_receita": 10
    },
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 50,
+    "contratos": 51,
     "ufs": 16,
     "como_receita": 16
    },
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 18,
+    "contratos": 19,
     "ufs": 7,
     "como_receita": 7
    },
@@ -403,6 +403,51 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "46710422000151-2-000034/2026",
+    "ente": "MUNICIPIO DE ITUVERAVA",
+    "esfera": "Municipal",
+    "municipio": "Ituverava",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-20",
+    "vig_fim": "2031-10-19",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "BANCO SANTANDER (BRASIL) S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/46710422000151/2026/34"
+   },
+   {
+    "controle": "03184041000173-2-000228/2026",
+    "ente": "MUNICIPIO DE TRES LAGOAS",
+    "esfera": "Municipal",
+    "municipio": "Três Lagoas",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-20",
+    "vig_fim": "2031-10-19",
+    "valor": 15400000.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/03184041000173/2026/228"
+   },
+   {
+    "controle": "83009910000162-2-000348/2026",
+    "ente": "MUNICIPIO DE FAXINAL DOS GUEDES",
+    "esfera": "Municipal",
+    "municipio": "Faxinal dos Guedes",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-10-14",
+    "vig_fim": "2031-10-14",
+    "valor": 455000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83009910000162/2026/348"
+   },
    {
     "controle": "87849923000109-2-001153/2026",
     "ente": "MUNICIPIO DE BENTO GONCALVES",
@@ -957,54 +1002,36 @@
     "banco": "Banco Bradesco S/A",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/06742480000142/2026/239"
-   },
-   {
-    "controle": "56983778000112-2-000006/2026",
-    "ente": "CAMARA MUNICIPAL DE AMERICANA",
-    "esfera": "Municipal",
-    "municipio": "Americana",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-11",
-    "vig_fim": "2036-08-10",
-    "valor": 10000.0,
-    "receita": true,
-    "banco": "BANCO SANTANDER BRASIL SA",
-    "cnpj8": "90400888",
-    "url": "https://pncp.gov.br/contratos/56983778000112/2026/6"
-   },
-   {
-    "controle": "87990800000185-2-000092/2026",
-    "ente": "MUNICIPIO DE CACHOEIRINHA",
-    "esfera": "Municipal",
-    "municipio": "Cachoeirinha",
-    "uf": "RS",
-    "modalidade": "Credenciamento",
-    "assinatura": "2026-08-10",
-    "vig_fim": "2027-08-10",
-    "valor": 0.01,
-    "receita": false,
-    "banco": "COOP. DE CRED. E INVESTIMENTO COM INTERAÇÃO SOLIDARIA RAIZ - CRESOL RAIZ",
-    "cnpj8": "17343510",
-    "url": "https://pncp.gov.br/contratos/87990800000185/2026/92"
-   },
-   {
-    "controle": "46668596000101-2-000029/2026",
-    "ente": "MUNICIPIO DE CRUZEIRO",
-    "esfera": "Municipal",
-    "municipio": "Cruzeiro",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-06",
-    "vig_fim": "2031-08-06",
-    "valor": 3511628.6,
-    "receita": false,
-    "banco": "ITAU UNIBANCO S/A",
-    "cnpj8": "60701190",
-    "url": "https://pncp.gov.br/contratos/46668596000101/2026/29"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE MANDAGUARI",
+    "municipio": "Mandaguari",
+    "uf": "PR",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/76285345000109/2026/282"
+   },
+   {
+    "ente": "MUNICIPIO DE VARZEA PAULISTA",
+    "municipio": "Várzea Paulista",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/45780087000103/2026/123"
+   },
+   {
+    "ente": "MUNICIPIO DE MAGE",
+    "municipio": "Magé",
+    "uf": "RJ",
+    "modalidade": "Pregão - Presencial",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-22",
+    "url": "https://pncp.gov.br/compras/29138351000145/2026/57"
+   },
    {
     "ente": "MUNICIPIO DE COTIA",
     "municipio": "Cotia",
@@ -1013,6 +1040,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-22",
     "url": "https://pncp.gov.br/compras/46523049000120/2026/183"
+   },
+   {
+    "ente": "MUNICIPIO DE SANTO ANTONIO DE PADUA",
+    "municipio": "Santo Antônio de Pádua",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-22",
+    "url": "https://pncp.gov.br/compras/29114139000148/2026/15"
    },
    {
     "ente": "MUNICIPIO DE FAXINAL DOS GUEDES",
@@ -1076,42 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-19",
     "url": "https://pncp.gov.br/compras/02899512000167/2026/55"
-   },
-   {
-    "ente": "MUNICIPIO DE CASTANHAL",
-    "municipio": "Castanhal",
-    "uf": "PA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-16",
-    "url": "https://pncp.gov.br/compras/05121991000184/2026/109"
-   },
-   {
-    "ente": "MUNICIPIO DE UBA",
-    "municipio": "Ubá",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-16",
-    "url": "https://pncp.gov.br/compras/18128207000101/2026/287"
-   },
-   {
-    "ente": "MUNICIPIO DE DOM FELICIANO",
-    "municipio": "Dom Feliciano",
-    "uf": "RS",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-16",
-    "url": "https://pncp.gov.br/compras/88601943000110/2026/307"
-   },
-   {
-    "ente": "MUNICIPIO DE IBIUNA",
-    "municipio": "Ibiúna",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-15",
-    "url": "https://pncp.gov.br/compras/46634531000137/2026/320"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

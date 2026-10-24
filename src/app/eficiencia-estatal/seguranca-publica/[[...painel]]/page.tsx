@@ -9,6 +9,9 @@ import {prefetchDoLink} from '@/lib/rotasPublicas';
 import {amplitude, goldSeguranca, GRUPOS, HREF_CSV, HREF_GOLD, indicador, linhasNacionais, nomeUF, pacoteEstados, pacotePoliciaSaude, ROTA, serieBR, seriePct, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
 import {contagemComUnidade, dataBr, inteiro, listaNatural, numero, percentualVariacao, reais, ROTULO_SITUACAO} from '@/lib/eficiencia/seguranca/formato';
 import type {GoldSeguranca, GrupoId} from '@/lib/eficiencia/seguranca/tipos';
+import {FiguraAnalitica, PaginaPainel} from '@/components/painel';
+import {fichaDaFigura} from '@/lib/eficiencia/fichaDaFigura';
+import {TEMAS_EFICIENCIA} from '@/lib/eficiencia/temas';
 
 type Grupo = keyof typeof GRUPOS;
 const rotas = ['', 'estados', 'letalidade', 'mulheres', 'patrimonio', 'resposta', 'recursos', 'metodos'];
@@ -127,32 +130,52 @@ function Panorama({g}: {g: GoldSeguranca}) {
   </section>;
 }
 
+/**
+ * Comparação por estado no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026); os outros capítulos seguem como estão. O
+ * parágrafo de abertura se divide entre o lead (o que se compara) e o "como interpretar" da figura (o que o leitor escolhe e como ler a
+ * posição); a comparação e a conta da polícia com a saúde viram duas FiguraAnalitica, cada uma com as fichas das fontes que usa, e o
+ * "Antes de comparar" vira o ParaLer da página. Anos, períodos e datas continuam vindo da gold.
+ */
 function Estados({g}: {g: GoldSeguranca}) {
   const p = pacoteEstados(g, (i) => i.grupo !== 'recursos');
   const ausH = g.ausencias.filter((a) => a.indicador === 'homicidio');
   const anosAusentesH = [...new Set(ausH.map((a) => a.ano))].sort();
   const ufsAusentesH = [...new Set(ausH.map((a) => a.uf))].sort();
-  return <section className="mt-8">
-    <p className="rotulo text-obee-dark">27 UFs · {g.anos[0]} a {g.anos.at(-1)} · taxa por 100 mil habitantes</p>
-    <h1 className="mt-3 max-w-3xl font-serif text-3xl sm:text-4xl">A violência registrada é comparável entre os estados?</h1>
-    <p className="mt-4 max-w-3xl leading-relaxed">Em taxa por 100 mil habitantes, sim, dentro de cada registro: a polícia de cada estado classifica e envia os seus números, e a saúde codifica a causa de cada óbito. Escolha o indicador, o ano e uma UF. A referência é o Brasil do mesmo ano; a posição e a distância descrevem onde a UF está, não se está bem ou mal.</p>
-    <div className="mt-8"><PorEstado pacote={p} inicial="homicidio"/></div>
-    <section id="policia-e-saude" className="mt-14 border-t border-linha pt-8">
-      <h2 className="font-serif text-2xl sm:text-3xl">Polícia e saúde contam de formas diferentes</h2>
-      <p className="mt-3 max-w-3xl leading-relaxed">Vítimas de homicídio doloso registradas pela polícia (UF do fato) e óbitos por agressão no SIM (UF de residência), na mesma escala. Onde a saúde classifica muitas mortes como de intenção indeterminada, o SIM capta menos; onde a polícia deixa de classificar, o registro policial capta menos.</p>
-      <div className="mt-6"><PoliciaSaude pacote={pacotePoliciaSaude(g)}/></div>
-    </section>
-    <section className="mt-12 border-l-4 border-obee pl-5">
-      <h2 className="font-serif text-2xl">Antes de comparar</h2>
-      <ul className="mt-3 max-w-3xl list-disc space-y-2 pl-5 leading-relaxed">
-        {anosAusentesH.length > 0 && <li>Em {listaNatural(anosAusentesH.map(String))}, o homicídio doloso de {ufsAusentesH.length === 1 ? 'uma UF' : `${ufsAusentesH.length} UFs`} ({listaNatural(ufsAusentesH)}) não chegou completo ao Sinesp; esses anos aparecem como ausência, não como queda. Outros indicadores têm ausências próprias, listadas no método.</li>}
-        <li>O Sinesp traz o que as polícias estaduais registraram e classificaram. Mudança de sistema ou de regra de classificação numa UF muda a série dela.</li>
-        <li>A população é a do IBGE, {g.fontes.ibge.rotulo}, {g.fontes.ibge.base}. Taxas publicadas antes, com as estimativas da época, diferem destas.</li>
-        <li>O dado mais recente do SIM é preliminar e costuma subir quando se torna final.</li>
-      </ul>
-      <Link className="mt-4 inline-flex min-h-[44px] items-center text-obee-dark underline" href={`${ROTA}/metodos`}>Ver a lista de ausências e o método →</Link>
-    </section>
-  </section>;
+  const periodo = {inicio: String(g.anos[0]), fim: String(g.anos.at(-1))};
+  const base = {referencia: periodo, versao: g.versao, sha256: g.hash_dados, snapshot: HREF_GOLD.replace(/^\//, 'public/')};
+  const sinesp = fichaDaFigura({...base, indicador: 'Ocorrências e vítimas registradas pelas polícias estaduais, por UF, e taxa por 100 mil habitantes', natureza: 'CALCULADO', orgao: 'Ministério da Justiça e Segurança Pública', conjunto: 'Sinesp VDE', recurso: 'Bases anuais do Sinesp VDE, uma planilha por ano', url: g.fontes.sinesp.pagina, unidade: 'ocorrências ou vítimas; taxa por 100 mil habitantes', frequencia: 'Mensal, somada nos 12 meses do ano', capturadoEm: g.fontes.sinesp.capturado_em, formula: 'Taxa = contagem do ano ÷ população residente da UF (IBGE) × 100 mil', limitacoes: ['O Sinesp traz o que as polícias estaduais registraram e classificaram. Mudança de sistema ou de regra de classificação numa UF muda a série dela.', 'Ano que não chegou completo ao Sinesp aparece como ausência, não como queda.']});
+  const sim = fichaDaFigura({...base, indicador: 'Óbitos por agressão, por UF de residência, e taxa por 100 mil habitantes', natureza: 'CALCULADO', orgao: 'Ministério da Saúde', conjunto: 'SIM, pelo TabNet do DATASUS', recurso: 'Óbitos por causas externas, por UF de residência', url: g.fontes.sim.pagina, unidade: 'óbitos; taxa por 100 mil habitantes', frequencia: 'Anual', capturadoEm: g.fontes.sim.capturado_em, limitacoes: ['O dado mais recente do SIM é preliminar e costuma subir quando se torna final.']});
+  const ibge = fichaDaFigura({...base, indicador: 'População residente por UF, total e mulheres', natureza: 'ESTIMADO', orgao: 'IBGE', conjunto: g.fontes.ibge.rotulo, recurso: g.fontes.ibge.nome, url: g.fontes.ibge.url, unidade: 'pessoas', frequencia: 'Anual (população em 1º de julho)', capturadoEm: g.fontes.ibge.capturado_em, limitacoes: [`A população é a do IBGE, ${g.fontes.ibge.rotulo}, ${g.fontes.ibge.base}. Taxas publicadas antes, com as estimativas da época, diferem destas.`]});
+  return <PaginaPainel rota={`${ROTA}/estados`} principal={false}
+    abertura={{grupo: TEMAS_EFICIENCIA.seguranca.nome, acento: 'obee', titulo: 'A violência registrada é comparável entre os estados?',
+      lead: 'Em taxa por 100 mil habitantes, sim, dentro de cada registro: a polícia de cada estado classifica e envia os seus números, e a saúde codifica a causa de cada óbito.',
+      recorte: {periodo: `${g.anos[0]} a ${g.anos.at(-1)}`, universo: '27 UFs', unidade: 'taxa por 100 mil habitantes', fonte: 'Sinesp (polícias), SIM (saúde) e IBGE (população)'},
+      limite: 'se a situação de uma UF é boa ou ruim: a posição e a distância para o Brasil descrevem onde ela está entre as que têm dado, e diferenças pequenas podem vir de classificação e de registro.',
+      fontesDatasSiglas: <><p>{p.rotuloFonte.sinesp}; {p.rotuloFonte.sim}; população: {p.rotuloFonte.ibge}, {g.fontes.ibge.base}.</p><p>Sinesp VDE: Validador de Dados Estatísticos do Sistema Nacional de Informações de Segurança Pública. SIM: Sistema de Informações sobre Mortalidade. UF: unidade da Federação.</p></>}}
+    figuras={<>
+      <FiguraAnalitica id="por-estado" pergunta="Como cada UF se compara à taxa do Brasil?" subtitulo="Indicador escolhido · taxa por 100 mil habitantes ou contagem · 27 UFs, ano escolhido" natureza="CALCULADO" idioma="pt"
+        proveniencia={sinesp} complementares={[{rotulo: 'Sobre o SIM', p: sim}, {rotulo: 'Sobre a população', p: ibge}]}
+        comoInterpretar="Escolha o indicador, o ano e uma UF. A referência é o Brasil do mesmo ano; a posição e a distância descrevem onde a UF está, não se está bem ou mal."
+        naoConcluir="A posição descreve onde a UF está entre as que têm dado, não se a situação é boa ou ruim; diferenças pequenas podem vir de classificação e de registro."
+        tabela={{naFigura: 'logo abaixo do gráfico, com contagem, denominador, taxa, diferença para o Brasil, posição e situação de cada UF.'}}>
+        <PorEstado pacote={p} inicial="homicidio"/>
+      </FiguraAnalitica>
+      <FiguraAnalitica id="policia-e-saude" pergunta="Polícia e saúde contam de formas diferentes" subtitulo="Homicídio doloso (Sinesp, UF do fato) e óbito por agressão (SIM, UF de residência) · por 100 mil habitantes · 27 UFs" natureza="CALCULADO" idioma="pt"
+        proveniencia={sim} complementares={[{rotulo: 'Sobre o Sinesp', p: sinesp}, {rotulo: 'Sobre a população', p: ibge}]}
+        comoInterpretar="Vítimas de homicídio doloso registradas pela polícia (UF do fato) e óbitos por agressão no SIM (UF de residência), na mesma escala. Onde a saúde classifica muitas mortes como de intenção indeterminada, o SIM capta menos; onde a polícia deixa de classificar, o registro policial capta menos."
+        naoConcluir="A diferença entre os dois registros não é erro de um deles, porque cada um conta uma coisa: a razão varia por UF e não mede qual registro está certo."
+        tabela={{naFigura: 'logo abaixo do gráfico, com as duas taxas e a razão entre os registros de cada UF.'}}>
+        <PoliciaSaude pacote={pacotePoliciaSaude(g)}/>
+      </FiguraAnalitica>
+    </>}
+    notas={{id: 'antes-de-comparar', titulo: 'Antes de comparar', itens: [
+      ...(anosAusentesH.length > 0 ? [{termo: 'Ausência não é queda', definicao: <>Em {listaNatural(anosAusentesH.map(String))}, o homicídio doloso de {ufsAusentesH.length === 1 ? 'uma UF' : `${ufsAusentesH.length} UFs`} ({listaNatural(ufsAusentesH)}) não chegou completo ao Sinesp; esses anos aparecem como ausência, não como queda. Outros indicadores têm ausências próprias, listadas no método.</>}] : []),
+      {termo: 'Registro policial', definicao: 'O Sinesp traz o que as polícias estaduais registraram e classificaram. Mudança de sistema ou de regra de classificação numa UF muda a série dela.'},
+      {termo: 'População', definicao: `A população é a do IBGE, ${g.fontes.ibge.rotulo}, ${g.fontes.ibge.base}. Taxas publicadas antes, com as estimativas da época, diferem destas.`},
+      {termo: 'Dado preliminar do SIM', definicao: 'O dado mais recente do SIM é preliminar e costuma subir quando se torna final.'},
+    ], nota: <Link className="inline-flex min-h-[44px] items-center underline" href={`${ROTA}/metodos`}>Ver a lista de ausências e o método →</Link>}}
+    metodo={<><p>Contagens, taxas, posições, diferenças e coberturas vêm prontas da base do painel, gerada a partir das fontes abaixo; a página só escolhe o recorte. {p.rotuloFonte.sinesp}; {p.rotuloFonte.sim}; população: {p.rotuloFonte.ibge}.</p><p>A lista completa de ausências por indicador, UF e ano, as regras de cada medida e os arquivos estão em <Link className="underline" href={`${ROTA}/metodos`}>Dados e métodos</Link>.</p></>}
+  />;
 }
 
 function Recursos({g}: {g: GoldSeguranca}) {

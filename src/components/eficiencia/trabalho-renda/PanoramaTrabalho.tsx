@@ -1,8 +1,159 @@
-'use client';
-import Link from 'next/link';
-import {useMemo} from 'react';
-import {campo,tiposUrl} from '@/lib/energia/estadoUrl';
-import {useEstadoUrl} from '@/components/energia/useEstadoUrl';
-import {GraficoSerie} from './ExploradorTrabalho';
-import {BASE,DIMENSOES,formato,total,type Snapshot} from './modelo';
-export function PanoramaTrabalho({dados}:{dados:Snapshot}){const territorios=useMemo(()=>dados.territorios.filter(t=>t.nivel!=='municipio'),[dados]);const esquema=useMemo(()=>({ter:campo(tiposUrl.opcao(territorios.map(t=>t.id)),territorios.find(t=>t.nivel==='brasil')?.id??territorios[0].id)}),[territorios]);const [estado,definir]=useEstadoUrl(esquema);const brasil=territorios.find(t=>t.id===estado.ter);const serie=dados.observacoes.filter(o=>o.indicadorId==='desocupacao'&&o.territorioId===brasil?.id&&o.sexo==='total'&&total(o.grupo)).sort((a,b)=>a.periodo.localeCompare(b.periodo));const destaques=['desocupacao','participacao','rendimento-trabalho'].map(id=>{const med=dados.indicadores.find(i=>i.id===id);const o=dados.observacoes.filter(o=>o.indicadorId===id&&o.territorioId===brasil?.id&&o.sexo==='total'&&total(o.grupo)).sort((a,b)=>a.periodo.localeCompare(b.periodo)).at(-1);return {med,o}});return <><header className="tr-hero"><p className="rotulo tr-kicker">Observatório das Famílias · Renda e trabalho</p><h1>Trabalho e renda na vida das pessoas.</h1><p className="tr-lead">Quem consegue trabalhar, em quais condições e com que renda? Explore a conjuntura do mercado de trabalho e o retrato das famílias, com os universos e calendários de cada fonte à vista.</p></header><div className="tr-controls"><label>Território do panorama<select value={estado.ter} onChange={e=>definir({ter:e.target.value})}>{territorios.map(t=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></label></div><div className="tr-kpis">{destaques.map(({med,o})=><div key={med?.id} className="tr-kpi"><span>{med?.nome} · {brasil?.nome}</span><strong>{formato(o?.valor??null,med?.unidade??'')}</strong><span>{o?.periodoNome??'Não disponível'} · {dados.fontes.find(f=>f.id===med?.fonteId)?.nome}</span></div>)}</div><p className="tr-note"><strong>Contexto e atuação pública são dimensões distintas.</strong> Emprego e renda descrevem a situação dos moradores. Esses resultados, isoladamente, não medem a eficiência de uma prefeitura. A despesa municipal na função Trabalho está disponível em Recursos públicos, com seu próprio perímetro e conferência contábil.</p><section className="tr-section"><div className="tr-section-head"><h2>A desocupação ao longo do tempo</h2><p>{brasil?.nome} · pessoas de 14 anos ou mais na força de trabalho. Taxa em %. Estimativas amostrais; diferenças pequenas não demonstram mudança estatisticamente significativa.</p></div><div className="tr-chart"><GraficoSerie pontos={serie} unidade="%" selecionado={serie.at(-1)?.periodo??''}/><p className="tr-source">IBGE · PNAD Contínua trimestral. Fonte e valores exatos disponíveis no painel de acesso ao trabalho.</p></div><details><summary>Tabela equivalente · desocupação · {brasil?.nome}</summary><div className="tr-table-scroll" tabIndex={0} role="region" aria-label="Série de desocupação"><table><caption>Taxa de desocupação · pessoas de 14 anos ou mais na força de trabalho</caption><thead><tr><th scope="col">Período</th><th scope="col">Taxa · %</th></tr></thead><tbody>{serie.map(o=><tr key={o.periodo}><th scope="row">{o.periodoNome}</th><td>{formato(o.valor,'%')}</td></tr>)}</tbody></table></div></details><Link href={`${BASE}/acesso-ao-trabalho?ter=${estado.ter}`}>Explorar a série, exportação e comparação →</Link></section><section className="tr-section"><div className="tr-section-head"><h2>Entre pela pergunta que importa.</h2><p>Escolha um percurso. Dentro dos painéis, território, período e população podem ser explorados e compartilhados.</p></div><div className="tr-grid">{[{titulo:'Oportunidades',texto:'Participar do mercado, procurar trabalho e conseguir uma ocupação são situações diferentes.',slug:'acesso-ao-trabalho',cta:'Explorar acesso ao trabalho'},{titulo:'Condições de trabalho',texto:'A informalidade descreve uma dimensão das condições de trabalho. Remuneração e participação completam o contexto.',slug:'qualidade-do-trabalho',cta:'Explorar informalidade'},{titulo:'Renda e poder de compra',texto:'Acompanhe o rendimento real habitual dos ocupados. A referência de preços e o universo acompanham a medida.',slug:'renda-do-trabalho',cta:'Explorar renda do trabalho'},{titulo:'Vida das famílias',texto:'Compare média e mediana da renda domiciliar por pessoa. O Censo 2022 oferece um retrato estrutural, inclusive municipal.',slug:'renda-das-familias',cta:'Explorar renda das famílias'}].map((c,i)=><article key={c.slug} className="tr-chapter"><p className="rotulo tr-kicker">0{i+1} · Percurso de leitura</p><h3>{c.titulo}</h3><p>{c.texto}</p><Link href={`${BASE}/${c.slug}?ter=${estado.ter}`}>{c.cta} →</Link></article>)}</div></section><section className="tr-section"><h2>Dois calendários, duas perguntas.</h2><div className="tr-grid"><div><h3>Conjuntura · PNAD Contínua</h3><p className="tr-chart-description">Séries trimestrais do Brasil e das Unidades da Federação. A pesquisa amostral permite acompanhar trabalho e rendimento ao longo do tempo; estimativas estão sujeitas à incerteza amostral.</p></div><div><h3>Estrutura · Censo 2022</h3><p className="tr-chart-description">Retrato da renda domiciliar por pessoa no ano do Censo. Detalha o território, mas não atualiza a conjuntura. O município descreve moradores, não postos de trabalho localizados nele.</p></div></div><Link className="tr-button" href={`${BASE}/comparar`}>Comparar territórios e medidas →</Link></section><section className="tr-section"><div className="tr-section-head"><h2>Todas as dimensões, cobertura explícita.</h2><p>A agenda tem 12 dimensões. Uma dimensão parcial não significa que todas as suas perguntas estejam respondidas; as lacunas permanecem identificadas.</p></div>{DIMENSOES.map((d,i)=><details key={d.nome}><summary><span className="tr-tag">{String(i+1).padStart(2,'0')} · {d.estado}</span> {d.nome}</summary><p><strong>{d.pergunta}</strong></p><p>{d.nota}</p>{d.slug!==undefined&&<Link href={`${BASE}${d.slug?`/${d.slug}`:''}`}>Abrir conteúdo publicado →</Link>}</details>)}</section><section className="tr-section"><h2>Fontes e atualidade</h2><p className="tr-chart-description">Captura: {new Date(dados.capturadoEm).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})} (Brasília). Cada indicador conserva seu período de referência, universo e limitação. A data da captura não atualiza o período dos dados.</p><details><summary>IBGE · pesquisas domiciliares e Censo</summary><p>PNAD Contínua: trabalho, rendimento e programas sociais. Censo 2022: retrato da renda domiciliar por pessoa.</p><ul>{dados.fontes.filter(f=>!f.id.includes('caged')).map(f=><li key={f.id}><a href={f.consulta}>{f.nome}</a></li>)}</ul></details><details><summary>Ministério do Trabalho · emprego formal</summary><p>Estoque nacional de vínculos do Novo Caged divulgado no SGS do Banco Central e sua variação mensal calculada. Sem ajuste sazonal.</p><ul>{dados.fontes.filter(f=>f.id.includes('caged')).map(f=><li key={f.id}><a href={f.consulta}>{f.nome}</a></li>)}</ul></details><details><summary>Tesouro Nacional · recursos municipais</summary><p>Siconfi: despesa liquidada na função 11 Trabalho, nas 26 capitais estaduais, com conferência DCA × RREO. Fontes individuais e notas estão no painel.</p><Link href={`${BASE}/recursos`}>Consultar recursos e proveniência →</Link></details><div className="tr-footer-nav"><Link href={`${BASE}/metodos`}>Definições, reprodução e limites →</Link><Link href="/eficiencia-estatal">Todos os recursos do Estado →</Link></div></section></>}
+"use client";
+import Link from "next/link";
+import { useId, useMemo } from "react";
+import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
+import { Controles, FaixaNumeros, FiguraAnalitica, GraficoLinhas, LeituraGuiada, NumeroIndicador, type NumeroProps } from "@/components/painel";
+import { comLacunas, naturezaDe, provenienciaTrabalho, useBaseTrabalho } from "./ExploradorTrabalho";
+import { BASE, formato, total, type Snapshot } from "./modelo";
+
+/**
+ * O panorama de Trabalho e renda no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): três ilhas de cliente que seguem o
+ * território da URL (?ter=, o mesmo que os painéis do tema leem) e leem a base pelo ProvedorTrabalho, uma vez só no HTML: os três números
+ * do território, a figura da desocupação ao longo do tempo (com o controle do território logo antes) e os percursos de leitura, que levam
+ * o território escolhido aos painéis. A página do servidor (PaginaTrabalho) monta a abertura, as dimensões e o método.
+ */
+
+const DESTAQUES = ["desocupacao", "participacao", "rendimento-trabalho"] as const;
+
+/** O território em vigor: Brasil ou uma Unidade da Federação (o panorama não desce ao município). */
+function useTerritorioPanorama(dados: Snapshot) {
+  const territorios = useMemo(() => dados.territorios.filter((t) => t.nivel !== "municipio"), [dados]);
+  const nacional = territorios.find((t) => t.nivel === "brasil") ?? territorios[0];
+  const esquema = useMemo(() => ({ ter: campo(tiposUrl.opcao(territorios.map((t) => t.id)), nacional.id) }), [territorios, nacional.id]);
+  const [estado, definir] = useEstadoUrl(esquema);
+  const ter = territorios.find((t) => t.id === estado.ter) ?? nacional;
+  const serieDe = (id: string) =>
+    dados.observacoes.filter((o) => o.indicadorId === id && o.territorioId === ter.id && o.sexo === "total" && total(o.grupo)).sort((a, b) => a.periodo.localeCompare(b.periodo));
+  return { territorios, nacional, ter, estado, definir, serieDe };
+}
+
+/** A faixa: o último valor publicado de desocupação, participação e rendimento real habitual do trabalho no território. */
+export function FaixaPanoramaTrabalho() {
+  const dados = useBaseTrabalho();
+  const { ter, serieDe } = useTerritorioPanorama(dados);
+  const numeros: NumeroProps[] = DESTAQUES.flatMap((id): NumeroProps[] => {
+    const med = dados.indicadores.find((i) => i.id === id);
+    if (!med) return [];
+    const o = serieDe(id).at(-1);
+    const fonte = (dados.fontes.find((f) => f.id === med.fonteId)?.nome ?? med.fonteId).split(" · ").slice(0, 2).join(", ");
+    const base = { rotulo: `${med.nome} · ${ter.nome}`, fonte, natureza: naturezaDe(med) };
+    return [
+      o && o.valor !== null
+        ? { ...base, valor: o.valor, valorTexto: formato(o.valor, med.unidade), formato: "texto" as const, unidade: "", periodo: o.periodoNome }
+        : { ...base, valor: null, motivoAusencia: "Este território não tem observação publicada para a medida.", unidade: med.unidade, periodo: o?.periodoNome ?? "Não disponível" },
+    ];
+  });
+  return (
+    <FaixaNumeros nota="Último trimestre publicado de cada medida, no território escolhido logo abaixo. Estimativas amostrais da PNAD Contínua." idioma="pt">
+      {numeros.map((n, i) => (
+        <NumeroIndicador key={n.rotulo} {...n} tamanho={i === 0 ? "g" : "m"} idioma="pt" />
+      ))}
+    </FaixaNumeros>
+  );
+}
+
+/** O território (controle) e a desocupação ao longo do tempo, na figura do kit. */
+export function FiguraPanoramaTrabalho({ rota }: { rota: string }) {
+  const dados = useBaseTrabalho();
+  const id = useId();
+  const { territorios, nacional, ter, estado, definir, serieDe } = useTerritorioPanorama(dados);
+  const med = dados.indicadores.find((i) => i.id === "desocupacao");
+  const serie = serieDe("desocupacao");
+  if (!med) return null;
+  const fonte = dados.fontes.find((f) => f.id === med.fonteId);
+  const lacunas = comLacunas(serie);
+  const disponiveis = serie.filter((o) => o.valor !== null);
+  const primeiro = disponiveis[0];
+  const ult = disponiveis.at(-1);
+  return (
+    <>
+      <Controles rotulo="Território do panorama" resumo={`Mostrando ${ter.nome}.`} limpar={ter.id === nacional.id ? undefined : { href: rota }} idioma="pt">
+        <label htmlFor={`${id}-ter`} className="flex min-w-[12rem] flex-col text-sm text-carvao">
+          Território do panorama
+          <select id={`${id}-ter`} value={estado.ter} onChange={(e) => definir({ ter: e.target.value })} className="mt-1 block min-h-[44px] w-full border border-linha bg-superficie px-3 text-sm text-carvao">
+            {territorios.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.nome}
+              </option>
+            ))}
+          </select>
+        </label>
+      </Controles>
+      <FiguraAnalitica
+        id="desocupacao"
+        idioma="pt"
+        pergunta="A desocupação ao longo do tempo"
+        subtitulo={`Taxa de desocupação · % · ${ter.nome} · pessoas de 14 anos ou mais na força de trabalho`}
+        natureza={naturezaDe(med)}
+        proveniencia={provenienciaTrabalho(dados, med, fonte, serie)}
+        leitura={
+          primeiro && ult && primeiro !== ult ? (
+            <LeituraGuiada>
+              A série disponível vai de {primeiro.periodoNome} ({formato(primeiro.valor, "%")}) a {ult.periodoNome} ({formato(ult.valor, "%")}).
+            </LeituraGuiada>
+          ) : undefined
+        }
+        comoInterpretar="Cada ponto mantém o trimestre da fonte, sem interpolação: período sem observação fica como lacuna e interrompe a linha."
+        naoConcluir="Estimativas amostrais; diferenças pequenas não demonstram mudança estatisticamente significativa. A taxa descreve os moradores, não o efeito de uma política pública."
+        tabela={{
+          titulo: `Taxa de desocupação · pessoas de 14 anos ou mais na força de trabalho · ${ter.nome}`,
+          colunas: ["Período", "Taxa · %"],
+          linhas: lacunas.map((p) => [p.nome, p.valor === null ? null : formato(p.valor, "%")]),
+          limite: 200,
+        }}
+        complemento={
+          <Link href={`${BASE}/acesso-ao-trabalho?ter=${ter.id}`} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">
+            Explorar a série, exportação e comparação →
+          </Link>
+        }
+      >
+        {disponiveis.length > 1 ? (
+          <GraficoLinhas
+            titulo={`Taxa de desocupação · ${ter.nome}`}
+            series={[{ id: "desocupacao", nome: `Taxa de desocupação · ${ter.nome}`, pontos: lacunas.map((p) => ({ x: p.nome, y: p.valor })) }]}
+            eixoY={{ unidade: "%", zero: true, casas: 1 }}
+            formatoX="texto"
+            altura={280}
+          />
+        ) : (
+          <p data-grafico="ponto-unico" className="t-corpo max-w-prose2 border-l-2 border-linha pl-3 text-carvao">
+            {formato(ult?.valor ?? null, "%")} · {ult?.periodoNome ?? "Sem observação no território"}. Uma única referência temporal está disponível; não há uma linha de evolução.
+          </p>
+        )}
+      </FiguraAnalitica>
+    </>
+  );
+}
+
+const PERCURSOS = [
+  { titulo: "Oportunidades", texto: "Participar do mercado, procurar trabalho e conseguir uma ocupação são situações diferentes.", slug: "acesso-ao-trabalho", cta: "Explorar acesso ao trabalho" },
+  { titulo: "Condições de trabalho", texto: "A informalidade descreve uma dimensão das condições de trabalho. Remuneração e participação completam o contexto.", slug: "qualidade-do-trabalho", cta: "Explorar informalidade" },
+  { titulo: "Renda e poder de compra", texto: "Acompanhe o rendimento real habitual dos ocupados. A referência de preços e o universo acompanham a medida.", slug: "renda-do-trabalho", cta: "Explorar renda do trabalho" },
+  { titulo: "Vida das famílias", texto: "Compare média e mediana da renda domiciliar por pessoa. O Censo 2022 oferece um retrato estrutural, inclusive municipal.", slug: "renda-das-familias", cta: "Explorar renda das famílias" },
+];
+
+/** "Entre pela pergunta que importa": os quatro percursos, que levam o território escolhido (?ter=) aos painéis. */
+export function PercursosTrabalho() {
+  const dados = useBaseTrabalho();
+  const { ter } = useTerritorioPanorama(dados);
+  return (
+    <nav aria-labelledby="percursos-trabalho" className="mt-8">
+      <h2 id="percursos-trabalho" className="t-h2 text-carvao">
+        Entre pela pergunta que importa.
+      </h2>
+      <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">Escolha um percurso. Dentro dos painéis, território, período e população podem ser explorados e compartilhados.</p>
+      <ul className="mt-2 grid gap-x-12 md:grid-cols-2">
+        {PERCURSOS.map((c) => (
+          <li key={c.slug} className="border-b border-linha py-4">
+            <h3 className="t-h3 text-carvao">{c.titulo}</h3>
+            <p className="t-meta mt-1 text-carvao-muted">{c.texto}</p>
+            <Link href={`${BASE}/${c.slug}?ter=${ter.id}`} className="inline-flex min-h-[44px] items-center text-sm text-obee-dark underline underline-offset-4">
+              {c.cta} →
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}

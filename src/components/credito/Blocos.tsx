@@ -11,7 +11,16 @@ import { paginaCredito, type PaginaCredito } from "@/lib/credito/navegacao";
  * Casca das páginas Next do Crédito: visita registrada (sem dado pessoal), cabeçalho comum com a navegação do módulo,
  * conteúdo, "Para ir além" e rodapé. A apresentação aberta (/observatorio-do-credito) tem casca própria e não usa esta.
  */
-export function CascaCredito({ atual, children }: { atual: PaginaCredito["slug"]; children: ReactNode }) {
+export function CascaCredito({
+  atual,
+  children,
+  molde = false,
+}: {
+  atual: PaginaCredito["slug"];
+  children: ReactNode;
+  /** Página no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o PaginaPainel abre o próprio <main id="conteudo">. */
+  molde?: boolean;
+}) {
   const pagina = paginaCredito(atual);
   return (
     <div className="flex min-h-screen flex-col bg-papel">
@@ -26,9 +35,13 @@ export function CascaCredito({ atual, children }: { atual: PaginaCredito["slug"]
         <CabecalhoPlataforma colecao="credito" destinoConta={pagina.href} />
         <NavegacaoColecao colecao="credito" />
       </header>
-      <main id="conteudo" className="ed-pagina flex-1 pb-16">
-        {children}
-      </main>
+      {molde ? (
+        <div className="flex-1 pb-10">{children}</div>
+      ) : (
+        <main id="conteudo" className="ed-pagina flex-1 pb-16">
+          {children}
+        </main>
+      )}
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>

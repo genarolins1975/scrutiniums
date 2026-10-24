@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Emprego formal (Novo Caged). O que se trava:
@@ -154,7 +155,8 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('emprego: "emergentes"');
     expect(app).toMatch(/\n  emprego: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.emp = {");
-    expect(html).toContain('data-view="emprego">Emprego formal</button>');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/formal-employment")).toBe("Emprego formal");
     expect(html).toContain('id="view-emprego"');
     expect(app).toContain('["emprego", "Emprego formal", "emprego"]');
     expect(app).toContain('["#uf-emprego", "Emprego"]');

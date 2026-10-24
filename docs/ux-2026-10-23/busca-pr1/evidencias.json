@@ -1,0 +1,299 @@
+{
+ "data": "2026-10-23",
+ "build": "ZlWOAOLLkn_MabrdFyCNw",
+ "maquina": "4 vCPU, 16 GB",
+ "comando": "npm run evidencias -- --rotas /buscar?q=hospitais /buscar?q=juros do cartão /buscar?q=saneamneto /buscar?q=agências reguladoras --saida docs/ux-2026-10-23/busca-pr1 --larguras 390,1440",
+ "tempo": "0 min 49 s",
+ "resultados": [
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_hospitais-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_hospitais-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_hospitais-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=hospitais",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=hospitais",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_hospitais-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_hospitais-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=juros do cartão",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=juros%20do%20cart%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_juros_do_cart_o-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_juros_do_cart_o-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=juros do cartão",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=juros%20do%20cart%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_juros_do_cart_o-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_juros_do_cart_o-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=juros do cartão",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=juros%20do%20cart%C3%A3o",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_juros_do_cart_o-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_juros_do_cart_o-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=juros do cartão",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=juros%20do%20cart%C3%A3o",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_juros_do_cart_o-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_juros_do_cart_o-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_saneamneto-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_saneamneto-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_saneamneto-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=saneamneto",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=saneamneto",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_saneamneto-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_saneamneto-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 141,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "buscar_q_ag_ncias_reguladoras-390-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/buscar?q=agências reguladoras",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/buscar?q=ag%C3%AAncias%20reguladoras",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 162,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [
+    "/entrar?_rsc=e97is"
+   ],
+   "captura": "buscar_q_ag_ncias_reguladoras-1440-com-sessao.jpg",
+   "primeiraTela": "buscar_q_ag_ncias_reguladoras-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

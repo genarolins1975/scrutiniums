@@ -3,6 +3,7 @@ import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import type { GrupoObservatorio, Resultado } from "@/lib/busca/buscar";
 import type { TipoEntrada } from "@/lib/busca/tipos";
+import { VersaoAberta } from "./VersaoAberta";
 
 /** O que é o destino, em uma palavra, antes do resumo. */
 const ROTULO_TIPO: Record<TipoEntrada, string> = {
@@ -17,8 +18,10 @@ const ROTULO_TIPO: Record<TipoEntrada, string> = {
 
 /**
  * Resultados da busca da plataforma, agrupados por observatório e coleção: título, o que o destino é e o resumo em uma linha,
- * com o selo "com conta" nos destinos fechados quando não há sessão. Página prevista aparece como "ainda sem página", sem
- * link. Sem estado próprio: serve à página /buscar (servidor) e à lista do campo de busca da barra (BuscaPlataforma), que
+ * com o selo "com conta" nos destinos fechados quando não há sessão, e "via <termo>" quando foi um termo, e não o título ou
+ * o resumo, que trouxe o destino. Página prevista aparece como "ainda sem página", sem link. Sem sessão, o primeiro resultado
+ * fechado ganha a linha "Versão aberta do tema" quando a coleção tem página aberta (VersaoAberta); no campo da barra, a linha
+ * vai logo depois da listbox, porque um link dentro de uma opção não é alcançável pelas setas nem pelo Tab. Sem estado próprio: serve à página /buscar (servidor) e à lista do campo de busca da barra (BuscaPlataforma), que
  * passa `opcao` para dar a cada item o papel de opção da listbox e marcar a ativa.
  */
 export function ListaResultados({
@@ -29,8 +32,11 @@ export function ListaResultados({
   grupos: GrupoObservatorio[];
   /** true: ninguém precisa do selo. false ou null (sessão ainda desconhecida no navegador): o selo decide sozinho. */
   comSessao: boolean | null;
-  /** Na listbox do campo: id e estado de cada opção, pela ordem de tela. */
-  opcao?: { id: (n: number) => string; ativa: number; aoEscolher?: (r: Resultado) => void };
+  /**
+   * Na listbox do campo: id e estado de cada opção, pela ordem de tela. `destacada` é a que o Enter abre (a ativa ou, antes de
+   * qualquer seta, a primeira com página) e leva a marca visível desde o começo (M1 do parecer de UX de 23/10/2026).
+   */
+  opcao?: { id: (n: number) => string; ativa: number; destacada?: number; aoEscolher?: (r: Resultado) => void };
 }) {
   let n = -1;
   // ids dos títulos únicos na página: o campo da barra e o de /buscar podem listar o mesmo observatório ao mesmo tempo
@@ -56,6 +62,7 @@ export function ListaResultados({
                   n += 1;
                   const atual = n;
                   const ativa = opcao?.ativa === atual;
+                  const marcada = ativa || opcao?.destacada === atual;
                   const corpo = (
                     <>
                       <span className="block text-base leading-snug text-carvao">
@@ -65,6 +72,8 @@ export function ListaResultados({
                       <span className="mt-0.5 block truncate text-sm text-carvao-muted">
                         <span className="text-mineral">{ROTULO_TIPO[r.tipo]}</span>
                         {r.situacao === "parcial" && <span className="text-mineral"> · cobertura parcial</span>}
+                        {/* a expressão dos termos que trouxe o destino, para a busca não parecer arbitrária */}
+                        {r.via && <span className="text-mineral"> · via {r.via}</span>}
                         {r.resumo && <> · {r.resumo}</>}
                       </span>
                     </>
@@ -75,7 +84,7 @@ export function ListaResultados({
                       id={opcao?.id(atual)}
                       role={opcao ? "option" : undefined}
                       aria-selected={opcao ? ativa : undefined}
-                      data-ativa={ativa ? "" : undefined}
+                      data-ativa={marcada ? "" : undefined}
                     >
                       {r.href ? (
                         <Link
@@ -83,7 +92,7 @@ export function ListaResultados({
                           prefetch={prefetchDoLink(r.href)}
                           tabIndex={opcao ? -1 : undefined}
                           onClick={opcao?.aoEscolher ? () => opcao.aoEscolher!(r) : undefined}
-                          className={`-mx-2 block min-h-[44px] px-2 py-2 motion-safe:transition-colors motion-safe:duration-100 hover:bg-papel ${ativa ? "bg-papel" : ""}`}
+                          className={`-mx-2 block min-h-[44px] px-2 py-2 motion-safe:transition-colors motion-safe:duration-100 hover:bg-papel ${marcada ? "bg-papel" : ""}`}
                         >
                           {corpo}
                         </Link>
@@ -95,6 +104,8 @@ export function ListaResultados({
                           {r.resumo && <span className="mt-0.5 block truncate text-sm">{r.resumo}</span>}
                         </span>
                       )}
+                      {/* na listbox do campo a linha fica fora da lista (BuscaPlataforma), onde o Tab a alcança */}
+                      {atual === 0 && !opcao && r.href && c.colecao?.aberta && !comSessao && <VersaoAberta destino={r.href} versao={c.colecao.aberta} />}
                     </li>
                   );
                 })}

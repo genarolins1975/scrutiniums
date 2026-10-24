@@ -62,7 +62,8 @@ export function AberturaPainel({
           </DetalheDoNivel>
         )}
       </div>
-      <p className="t-corpo mt-2 max-w-3xl text-carvao" data-limite="">
+      {/* o mesmo filete do "não permite concluir" de cada figura (FiguraAnalitica), em todos os domínios */}
+      <p className="t-corpo mt-3 max-w-3xl border-l border-carvao pl-4 text-carvao" data-limite="">
         <span className="font-medium">{tx("Não permite concluir:", "What it does not allow you to conclude:", l)}</span> {limite}
       </p>
     </header>

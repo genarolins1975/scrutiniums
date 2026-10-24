@@ -7,7 +7,7 @@ import { DOMINIOS } from "@/lib/dominios";
 import { OBSERVATORIOS } from "@/lib/observatorios/registro";
 import { OBSERVATORIO_PRINCIPAL, destinoObservatorio, type ObservatorioId } from "@/lib/observatorios/lista";
 import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
-import { MARCADOR_FIM, MARCADOR_INICIO, htmlBarraSpa } from "@/lib/observatorios/barraSpa";
+import { MARCADOR_FIM, MARCADOR_INICIO, MARCADOR_NAV_FIM, MARCADOR_NAV_INICIO, htmlBarraSpa, htmlNavegacaoSpa } from "@/lib/observatorios/barraSpa";
 import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
@@ -191,6 +191,16 @@ describe("com e sem sessão: a barra não aponta para o login de quem entrou nem
     const acesso = ler("src/components/energia/AcessoConta.tsx");
     expect(acesso).toContain('fetch("/api/auth/estado", { cache: "no-store" })');
     expect(ler("src/components/layout/CabecalhoPlataforma.tsx")).toContain("<AcessoConta destino={destinoConta} />");
+  });
+
+  it("na SPA do Crédito, abaixo da barra e da trilha vem a navegação da coleção da plataforma, e nenhuma barra lateral", () => {
+    // Iniciativa 2 do parecer de UX de 23/10/2026: a navegação é a da coleção dona do endereço, gerada do registro
+    // (src/lib/observatorios/barraSpa.ts e cascaPura.ts), com o mesmo HTML de NavegacaoColecao (teste credito-casca)
+    const nav = spa.slice(spa.indexOf(MARCADOR_NAV_INICIO), spa.indexOf(MARCADOR_NAV_FIM) + MARCADOR_NAV_FIM.length);
+    expect(nav, "rode node scripts/barra-spa.mjs").toBe(htmlNavegacaoSpa());
+    expect(spa.indexOf(MARCADOR_NAV_INICIO)).toBeGreaterThan(spa.indexOf('id="obsTrilha"'));
+    expect(nav).toContain('<nav aria-label="Navegação da coleção Crédito e sistema financeiro" class="nav-colecao border-b border-linha bg-superficie" data-nav-colecao="credito">');
+    for (const antigo of ["sidebar", "mobilebar", "scrim", 'class="brand"', "sidefoot", "data-view"]) expect(spa, antigo).not.toContain(antigo);
   });
 
   it("na SPA do Crédito, a conta da barra segue a sessão: 'Minha conta' com 204, 'Entrar' com volta sem ela", () => {

@@ -32,6 +32,7 @@ import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
+import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
 export { OBSERVATORIOS } from "./lista";
@@ -66,13 +67,13 @@ export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
 function paineisCredito(): Painel[] {
   const raiz: Painel = { rota: "/observatorio", titulo: "Crédito", observatorio: "economia", colecao: "credito", origem: "credito" };
   // páginas Next do Crédito (consultas de juros e método), logo depois da raiz: são as mais procuradas pelo leitor
-  const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito" }));
+  const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito", resumo: p.resumo, termos: p.termos }));
   return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
     const destino = DESTINO_ABAS_CREDITO[a.caminho];
     if (!destino) throw new Error(`aba do Crédito sem observatório: ${a.caminho}`);
     const [observatorio, colecao] = destino;
     return {
-      rota: `/observatorio${a.caminho}`, titulo: a.titulo, observatorio, colecao, origem: "credito",
+      rota: `/observatorio${a.caminho}`, titulo: a.titulo, observatorio, colecao, origem: "credito", resumo: a.pergunta, termos: a.termos,
     };
   })];
 }
@@ -107,22 +108,30 @@ function paineisEficiencia(): Painel[] {
     if (!destino) throw new Error(`tema da Eficiência Estatal sem observatório: ${d.id}`);
     const [observatorio, colecao] = destino;
     return {
-      rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const,
+      rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const, resumo: d.pergunta ?? d.descricao, termos: d.termos,
     };
   });
   return [
-    { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
+      resumo: "Como está a minha capital nos serviços públicos?", termos: ["capitais", "comparação", "serviços públicos", "minha capital"] },
+    { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
+      resumo: "Como as capitais se saem num índice dos resultados dos serviços públicos?", termos: ["índice de resultados", "capitais", "serviços públicos", "ranking"] },
+    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
+      resumo: "Como o índice das capitais muda com outras escolhas de indicadores e pesos?", termos: ["laboratório", "pesos", "revisão do índice", "sensibilidade"] },
+    { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia",
+      resumo: "Quanto tempo a Justiça leva e onde estão as filas?", termos: ["CNJ", "tempo do processo", "fila", "tribunais"] },
     // duplicata resolvida em 18/10/2026 (REAGRUPAMENTO.md): a página fica publicada e avisa qual é o painel principal (copias.ts)
-    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/trabalho-renda/emprego-formal", titulo: "Emprego formal nacional", observatorio: "familias", colecao: "renda", origem: "eficiencia",
+      resumo: "Como anda o emprego formal no Brasil?", termos: ["emprego formal", "CAGED", "admissões", "desligamentos"] },
     // resíduos e drenagem tratam de cidades e clima; o painel principal é Meio ambiente e clima (copias.ts)
-    { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
-    { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/saneamento/residuos", titulo: "Resíduos sólidos", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia",
+      resumo: "Como as cidades coletam e destinam o lixo?", termos: ["lixo", "resíduos sólidos", "coleta", "aterro"] },
+    { rota: "/eficiencia-estatal/saneamento/drenagem", titulo: "Drenagem e risco de inundação", observatorio: "territorio-e-clima", colecao: "cidades-clima", origem: "eficiencia",
+      resumo: "As cidades estão preparadas para chuvas fortes?", termos: ["drenagem", "inundação", "alagamento", "chuva"] },
     ...temas,
     // comparação por UF do painel Segurança pública (pipeline/seguranca, 20/10/2026): o destino mais procurado do tema
-    { rota: "/eficiencia-estatal/seguranca-publica/estados", titulo: "Violência por estado", observatorio: "servicos-publicos", colecao: "seguranca", origem: "eficiencia" },
+    { rota: "/eficiencia-estatal/seguranca-publica/estados", titulo: "Violência por estado", observatorio: "servicos-publicos", colecao: "seguranca", origem: "eficiencia",
+      resumo: "Quanta violência cada estado registra?", termos: ["homicídios", "estados", "UF", "violência", "feminicídio"] },
   ];
 }
 
@@ -130,40 +139,53 @@ function paineisEficiencia(): Painel[] {
 
 const AGRO_FAMILIAS = new Set(["prato", "alimentos-consumo"]);
 const AGRO_TERRITORIO = new Set(["ambiente", "clima-ambiente"]);
-const AGRO_EXTRAS: [string, string][] = [
-  ["", "Agronegócio"], ["panorama", "Panorama"], ["atlas", "Atlas"], ["comparar", "Comparador"], ["cadeias", "Cadeias"],
-  ["sintese", "Síntese"], ["aprenda", "Aprenda"], ["glossario", "Glossário"], ["metodologia", "Método"],
+/** Páginas do Agronegócio fora das perguntas e dos capítulos: rota, título, a pergunta que respondem e os termos da busca. */
+const AGRO_EXTRAS: [string, string, string, string[]][] = [
+  ["", "Agronegócio", "Qual o tamanho, o custo e o alcance do agro brasileiro?", ["agro", "agricultura", "pecuária", "campo"]],
+  ["panorama", "Panorama", "O que os principais indicadores dizem sobre o agro?", ["panorama", "indicadores", "resumo"]],
+  ["atlas", "Atlas", "O que cada estado produz no campo?", ["mapa", "estados", "produção por estado"]],
+  ["comparar", "Comparador", "Como estados e cadeias do agro se comparam lado a lado?", ["comparar", "comparador", "estados", "cadeias"]],
+  ["cadeias", "Cadeias", "Como funciona cada cadeia, do campo ao consumo?", ["soja", "milho", "café", "carne", "cadeia produtiva"]],
+  ["sintese", "Síntese", "O que os capítulos do agro dizem em conjunto?", ["síntese", "conclusões", "resumo"]],
+  ["aprenda", "Aprenda", "O que significa cada conceito do agro?", ["aprenda", "conceitos", "didático"]],
+  ["glossario", "Glossário", "Quais são as definições dos termos usados no Agronegócio?", ["glossário", "termos", "definições"]],
+  ["metodologia", "Método", "Como os números do agro são calculados e com que limites?", ["metodologia", "fontes", "limites"]],
 ];
 
 function paineisAgro(): Painel[] {
   const destino = (slug: string): Destino =>
     AGRO_FAMILIAS.has(slug) ? ["familias", "custo-de-vida"] : AGRO_TERRITORIO.has(slug) ? ["territorio-e-clima", "desmatamento"] : ["economia", "agro"];
-  const itens: [string, string][] = [
-    ...PERGUNTAS_AGRO.map((p): [string, string] => [p.id, p.curto]),
-    ...CAPITULOS_AGRO.map((c): [string, string] => [c.id, c.nome]),
+  const itens: [string, string, string, readonly string[]][] = [
+    ...PERGUNTAS_AGRO.map((p): [string, string, string, readonly string[]] => [p.id, p.curto, p.titulo, p.termos]),
+    ...CAPITULOS_AGRO.map((c): [string, string, string, readonly string[]] => [c.id, c.nome, c.pergunta, c.termos]),
     ...AGRO_EXTRAS,
   ];
-  return itens.map(([slug, titulo]) => {
+  return itens.map(([slug, titulo, resumo, termos]) => {
     const [observatorio, colecao] = destino(slug);
     return {
-      rota: `/agronegocio${slug ? `/${slug}` : ""}`, titulo, observatorio, colecao, origem: "agro" as const,
+      rota: `/agronegocio${slug ? `/${slug}` : ""}`, titulo, observatorio, colecao, origem: "agro" as const, resumo, termos,
     };
   });
 }
 
 // --------------------------------------------- coleções que entram inteiras
 
-function inteira(origem: DominioId, observatorio: ObservatorioId, colecao: string, itens: { rota: string; titulo: string }[]): Painel[] {
+type ItemInteiro = { rota: string; titulo: string; resumo?: string; termos?: readonly string[] };
+
+function inteira(origem: DominioId, observatorio: ObservatorioId, colecao: string, itens: ItemInteiro[]): Painel[] {
   return itens.map((i) => ({ ...i, observatorio, colecao, origem }));
 }
 
 function paineisColecoesInteiras(): Painel[] {
   return [
     ...inteira("energia", "energia-e-infraestrutura", "setor-eletrico",
-      DESTINOS_NAVEGACAO.filter((d) => d.publicado && !d.href.includes("#")).map((d) => ({ rota: d.href, titulo: d.rotulo }))),
+      // a pergunta da página e o vocabulário leigo do Setor Elétrico (busca-sinonimos.ts) são os termos da busca
+      DESTINOS_NAVEGACAO.filter((d) => d.publicado && !d.href.includes("#")).map((d) => ({
+        rota: d.href, titulo: d.rotulo, resumo: d.pergunta, termos: [d.pergunta, ...sinonimosDe(d.href)].slice(0, 12),
+      }))),
     ...inteira("gas", "energia-e-infraestrutura", "gas", [
       { rota: "/gas-natural", titulo: "Gás Natural" },
-      ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo })),
+      ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo, resumo: p.pergunta, termos: p.termos })),
     ]),
     // coleção própria com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
     // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
@@ -171,21 +193,21 @@ function paineisColecoesInteiras(): Painel[] {
       PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
-      ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo })),
-      ...FERRAMENTAS_SANEAMENTO.map((f) => ({ rota: `/saneamento/${f.slug}`, titulo: f.rotulo })),
+      ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo, resumo: c.pergunta, termos: c.termos })),
+      ...FERRAMENTAS_SANEAMENTO.map((f) => ({ rota: `/saneamento/${f.slug}`, titulo: f.rotulo, resumo: f.pergunta, termos: f.termos })),
     ]),
     ...inteira("contas", "contas-publicas", "federais", [
       { rota: "/contas-publicas", titulo: "Contas Federais" },
       // painel Previdência e INSS (20/10/2026): benefícios do INSS por tipo, estado e município e resultado do Regime Geral,
       // com pipeline e gold próprios (pipeline/previdencia); o endereço é o único aberto do tema, como aperitivo sem sessão
-      { rota: PAINEL_PREVIDENCIA.href, titulo: PAINEL_PREVIDENCIA.titulo },
+      { rota: PAINEL_PREVIDENCIA.href, titulo: PAINEL_PREVIDENCIA.titulo, resumo: PAINEL_PREVIDENCIA.pergunta, termos: PAINEL_PREVIDENCIA.termos },
       // complemento do capítulo Panorama (20/10/2026): a despesa por área, pela classificação funcional do SIOP
-      { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo },
+      { rota: PAINEL_AREAS.href, titulo: PAINEL_AREAS.titulo, resumo: PAINEL_AREAS.pergunta, termos: PAINEL_AREAS.termos },
       // só os capítulos com dados; os em preparação não têm página (Onda 3)
-      ...CAPITULOS_CONTAS.map((c) => ({ rota: `/contas-publicas/${c.id}`, titulo: c.titulo })),
-      { rota: "/contas-publicas/metodologia", titulo: "Metodologia" },
-      { rota: "/contas-publicas/glossario", titulo: "Glossário" },
-      { rota: "/contas-publicas/dados", titulo: "Dados" },
+      ...CAPITULOS_CONTAS.map((c) => ({ rota: `/contas-publicas/${c.id}`, titulo: c.titulo, resumo: c.pergunta, termos: c.termos })),
+      { rota: "/contas-publicas/metodologia", titulo: "Metodologia", resumo: "Como cada número das Contas Federais é calculado e com que fonte?", termos: ["metodologia", "fontes", "SIOP", "Tesouro"] },
+      { rota: "/contas-publicas/glossario", titulo: "Glossário", resumo: "O que significa cada termo do orçamento federal?", termos: ["glossário", "empenho", "LOA", "resultado primário"] },
+      { rota: "/contas-publicas/dados", titulo: "Dados", resumo: "Onde baixar as bases das Contas Federais?", termos: ["download", "dados abertos", "csv", "fontes"] },
     ]),
     ...inteira("estados", "contas-publicas", "estaduais", [{ rota: "/contas-publicas-estaduais", titulo: "Contas Estaduais" }]),
   ];
@@ -217,9 +239,12 @@ export const ATALHOS: Atalho[] = [
 /** Painéis mantidos pelo próprio Observatório do Território e Clima, com pipeline e gold próprios (public/territorio). */
 function paineisTerritorio(): Painel[] {
   return [
-    { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null },
-    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "desastres", origem: null },
-    { rota: "/territorio/emissoes", titulo: "Emissões pelo inventário oficial", observatorio: "territorio-e-clima", colecao: "desmatamento", origem: null },
+    { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null,
+      resumo: "Onde e quanto o fogo aparece?", termos: ["INPE", "focos de calor", "queimadas", "biomas", "Pantanal"] },
+    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "desastres", origem: null,
+      resumo: "Onde os desastres atingem os municípios?", termos: ["defesa civil", "enchente", "seca", "reconhecimento federal"] },
+    { rota: "/territorio/emissoes", titulo: "Emissões pelo inventário oficial", observatorio: "territorio-e-clima", colecao: "desmatamento", origem: null,
+      resumo: "Quanto o Brasil emite de gases de efeito estufa?", termos: ["emissões", "gases de efeito estufa", "inventário oficial", "carbono"] },
   ];
 }
 

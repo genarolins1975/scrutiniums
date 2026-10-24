@@ -34,6 +34,24 @@ const COM_CONTA = [
   "/conectividade", "/educacao-municipal", "/observatorio/map", "/observatorio/interest-rates", "/app/conta",
   // páginas no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026, painel-molde.test.ts): a conta de luz aqui é o painel completo
   "/setor-eletrico/qualidade", "/setor-eletrico/conta-de-luz",
+  // PR 1 da Iniciativa 1: as demais páginas do Grupo 1 no molde de painel (as outras já estavam na lista)
+  "/agronegocio/atlas", "/agronegocio/clima-ambiente", "/agronegocio/prato", "/agronegocio/tamanho", "/contas-publicas/metas",
+  "/contas-publicas/por-area", "/eficiencia-estatal/assistencia-social/necessidades", "/eficiencia-estatal/cultura/rede",
+  "/eficiencia-estatal/educacao-municipal-capitais", "/eficiencia-estatal/energia-conectividade", "/eficiencia-estatal/habitacao/deficit",
+  "/eficiencia-estatal/indice-de-resultados", "/eficiencia-estatal/judiciario/panorama", "/eficiencia-estatal/meio-ambiente-clima/riscos",
+  "/eficiencia-estatal/mobilidade-transporte/tempo", "/eficiencia-estatal/saude-capitais/gastos",
+  "/eficiencia-estatal/seguranca-publica/estados", "/eficiencia-estatal/trabalho-renda/acesso-ao-trabalho",
+  "/gas-natural/gnv-e-gas-encanado", "/observatorio-do-credito/quanto-meu-banco-cobra", "/observatorio-do-credito/simulador-da-parcela",
+  "/saneamento/preco-regulado/simulador", "/saneamento/tarifa-social", "/setor-eletrico/inclusao-energetica/tarifa-social",
+  "/territorio/desastres", "/territorio/queimadas",
+  // PR 2a da Iniciativa 1 (Grupo 2, Eficiência Estatal)
+  "/eficiencia-estatal/habitacao", "/eficiencia-estatal/habitacao/aluguel-renda", "/eficiencia-estatal/habitacao/inadequacao",
+  "/eficiencia-estatal/cultura", "/eficiencia-estatal/cultura/recursos", "/eficiencia-estatal/trabalho-renda/qualificacao",
+  "/eficiencia-estatal/trabalho-renda/recursos", "/eficiencia-estatal/assistencia-social", "/eficiencia-estatal/assistencia-social/acesso",
+  "/eficiencia-estatal/assistencia-social/acompanhamento", "/eficiencia-estatal/assistencia-social/cuidado",
+  "/eficiencia-estatal/assistencia-social/recursos", "/eficiencia-estatal/seguranca-alimentar",
+  "/eficiencia-estatal/seguranca-alimentar/acesso", "/eficiencia-estatal/seguranca-alimentar/necessidades",
+  "/eficiencia-estatal/seguranca-alimentar/qualidade", "/eficiencia-estatal/seguranca-alimentar/recursos",
 ];
 
 describe("piso de 12 px", () => {

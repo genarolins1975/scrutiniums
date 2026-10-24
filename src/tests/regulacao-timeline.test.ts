@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
 
 /**
  * Timeline regulatória transversal. O coração editorial: nenhum link é
@@ -72,7 +73,8 @@ describe("gold regulacao.json publicado", () => {
 
 describe("SPA e camada indexável", () => {
   it("a aba existe, com filtro por painel e o aviso anticausal", () => {
-    expect(indexHtml).toContain('data-view="regulacao"');
+    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
+    expect(rotuloNaNavegacao("/observatorio/regulacao")).toBe("Marcos regulatórios");
     expect(indexHtml).toContain('id="view-regulacao"');
     expect(appJs).toContain('regulacao: "renderRegulacao"');
     expect(appJs).toMatch(/Coincidência no tempo não é efeito/);

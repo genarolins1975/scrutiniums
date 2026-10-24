@@ -183,6 +183,68 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     }
   }, 120_000);
 
+  it("ciclo 2 da busca (23/10/2026): o primeiro resultado vem marcado antes da seta, a correção e o parcial se explicam", async () => {
+    const ctx = await contexto(1440, false);
+    try {
+      const { page, noLogin } = await abrir(ctx, "/");
+      const campo = page.locator(`${CAMPO} input[name=q]`);
+      const estado = page.locator("[data-barra-plataforma] #bp-busca-estado");
+      const opcoes = page.locator("[data-barra-plataforma] [role=option]");
+      await campo.click();
+      await page.keyboard.type("saneamneto");
+      await expect.poll(() => opcoes.count(), { timeout: 15_000 }).toBeGreaterThan(0);
+      await expect.poll(() => estado.textContent()).toContain("Mostrando resultados para “saneamento”");
+      // a opção que o Enter abre tem a marca antes de qualquer seta, sem virar a opção ativa do leitor de tela
+      expect(await opcoes.first().getAttribute("data-ativa")).toBe("");
+      expect(await campo.getAttribute("aria-activedescendant")).toBeNull();
+      // "mesmo assim": o termo como foi escrito, sem resultado, e o foco continua no campo
+      await page.locator("[data-barra-plataforma] button.bp-busca-acao", { hasText: "mesmo assim" }).click();
+      await expect.poll(() => opcoes.count()).toBe(0);
+      expect(await campo.evaluate((el) => el === document.activeElement)).toBe(true);
+      // a escolha acompanha o leitor até /buscar (Enter e "Ver na página de busca"): sem exato=1 a página corrigiria de novo
+      expect(await page.locator(`${CAMPO} input[name=exato]`).getAttribute("value")).toBe("1");
+      expect(await page.locator("[data-barra-plataforma] .bp-busca-rodape a").getAttribute("href")).toBe("/buscar?q=saneamneto&exato=1");
+      // parcial: nenhuma página tem as duas palavras; o rótulo diz por quais chegou ao mais próximo
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type("orçamento da ANEEL");
+      await expect.poll(() => estado.textContent(), { timeout: 15_000 }).toContain("O mais próximo, por “orçamento” e “ANEEL”");
+      expect(await opcoes.count()).toBeGreaterThan(1);
+      // bloco 4: sem nada que case, a busca diz que o tema não é coberto e oferece os seis observatórios
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type("xyzabc");
+      const naoCobre = page.locator("[data-barra-plataforma] [data-busca-nao-cobre]");
+      await expect.poll(() => naoCobre.count(), { timeout: 15_000 }).toBe(1);
+      expect(await naoCobre.textContent()).toContain("A Scrutiniums ainda não cobre");
+      expect(await naoCobre.locator("li").count()).toBe(6);
+      // versão aberta (achado A7): sem sessão, o primeiro resultado de "PLD" pede conta e a linha aparece fora da listbox, num
+      // link que o Tab alcança (dentro de uma opção, nem as setas nem o Tab chegariam a ele)
+      await page.keyboard.press("Control+a");
+      await page.keyboard.type("PLD");
+      const versao = page.locator("[data-barra-plataforma] [data-versao-aberta]");
+      await expect.poll(() => versao.count(), { timeout: 15_000 }).toBe(1);
+      expect(await page.locator("[data-barra-plataforma] [role=listbox] [data-versao-aberta]").count()).toBe(0);
+      expect(await versao.getAttribute("tabindex")).toBeNull();
+      expect(await versao.getAttribute("href")).toBe("/setor-eletrico/conta-de-luz");
+      expect(noLogin).toEqual([]);
+      await page.close();
+    } finally {
+      await ctx.close();
+    }
+  }, 120_000);
+
+  it("um motor só (ciclo 2 da busca, bloco 5): com sessão, a entrada do Setor Elétrico tem um campo além da barra, com o rótulo do filtro", async () => {
+    const ctx = await contexto(1440, true);
+    try {
+      const { page } = await abrir(ctx, "/setor-eletrico");
+      const fora = page.locator("form[role=search]:not([data-barra-plataforma] form)");
+      expect(await fora.count()).toBe(1);
+      expect(await page.locator("label[for=busca-local-q]").textContent()).toBe("Buscar só em Setor Elétrico");
+      await page.close();
+    } finally {
+      await ctx.close();
+    }
+  }, 120_000);
+
   it("sem sessão, digitar não dispara requisição a página fechada (nenhum pré-carregamento cai no login)", async () => {
     const ctx = await contexto(1440, false);
     try {

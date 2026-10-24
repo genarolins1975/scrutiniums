@@ -178,7 +178,7 @@ const SECTIONS = new Set<string>([...VIEW_SECTIONS, ...Object.keys(SECOES_DO_MAP
 
 /** Rótulos exibidos no painel de administração. */
 export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
-  "obs:mapa": "Observatório · Mapa do Observatório",
+  "obs:mapa": "Observatório · Início do painel",
   "obs:overview": "Observatório · Visão geral",
   "obs:panorama": "Observatório · Quem toma crédito e onde",
   "obs:pulse": "Observatório · Pulso do crédito",

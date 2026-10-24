@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-22T15:48:10+00:00",
+ "gerado_em": "2026-10-23T16:24:05+00:00",
  "versao_metodologica": "v1.0 (MVP Fase 1)",
  "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes.",
  "sintese": {
@@ -2399,6 +2399,10 @@
    {
     "p": "202606",
     "v": 69.635
+   },
+   {
+    "p": "202609",
+    "v": 70.03
    }
   ],
   "rj_yoy": [

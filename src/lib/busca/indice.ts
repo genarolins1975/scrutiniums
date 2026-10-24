@@ -11,7 +11,8 @@
  *
  * `aberta` vem de ehRotaPublica. Os sinônimos vêm de um único arquivo (sinonimos.json). Destino novo entra na busca pelo
  * registro ou pelo catálogo, nunca por aqui. O índice não leva número, série nem arquivo: só títulos, resumos, endereços,
- * situação e termos; scripts/busca-indice.mjs o grava em public/busca/indice.json.
+ * situação e termos. A rota src/app/busca/indice.json/route.ts (force-static) o grava no build e o serve em
+ * /busca/indice.json, aberto sem conta pelo endereço exato (ARQUIVOS_DAS_CONSULTAS).
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -21,7 +22,7 @@ import { inventario } from "@/lib/observatorios/inventario";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { todasAsPerguntas } from "@/lib/observatorios/paraVoce";
 import { CONSULTAS, portas } from "@/lib/perguntas/portas";
-import { LEVA_2, ehRotaPublica, itemAprovado } from "@/lib/rotasPublicas";
+import { APERITIVOS, LEVA_2, ehRotaPublica, itemAprovado } from "@/lib/rotasPublicas";
 import { GLOSSARIO as GLOSSARIO_CREDITO } from "@/lib/data/glossario";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { GLOSSARIO as GLOSSARIO_CONTAS } from "@/lib/contas-publicas/glossario";
@@ -33,7 +34,7 @@ import sinonimos from "./sinonimos.json";
 import { EXEMPLOS_BUSCA } from "./exemplos";
 import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 import { normalizar } from "./normalizar";
-import type { EntradaBusca, IndiceBusca, SituacaoEntrada, TipoEntrada, TipoLugar } from "./tipos";
+import type { EntradaBusca, IndiceBusca, SituacaoEntrada, TipoEntrada, TipoLugar, VersaoAberta } from "./tipos";
 
 /** Resumo de uma linha: o índice viaja ao navegador e deve ficar leve. */
 const LIMITE_RESUMO = 140;
@@ -102,9 +103,12 @@ class Montagem {
 
 /* ------------------------------------------------------------------ sinônimos */
 
-const GRUPOS = Object.entries(sinonimos as Record<string, string | string[]>)
+const GRUPOS = Object.entries(sinonimos as Record<string, unknown>)
   .filter(([chave]) => !chave.startsWith("_"))
   .map(([chave, lista]) => [chave, ...(lista as string[])]);
+
+/** Apelidos de nomes próprios das listas de bancos e distribuidoras: o nome como está na lista e os apelidos ("Neoenergia PE" é a Celpe). */
+const NOMES = Object.entries((sinonimos as { _nomes: Record<string, string[]> })._nomes);
 
 /** Contém a expressão inteira (palavras completas), já normalizada. */
 const contem = (texto: string, expressao: string) => ` ${texto} `.includes(` ${expressao} `);
@@ -115,6 +119,17 @@ function comSinonimos(termos: string[]): string[] {
   const extra: string[] = [];
   for (const grupo of GRUPOS) if (grupo.some((s) => contem(texto, normalizar(s)))) extra.push(...grupo);
   return [...termos, ...extra];
+}
+
+/**
+ * As listas de nomes recebem só os apelidos de `_nomes`, nunca os grupos temáticos: uma palavra comum dentro de uma razão social
+ * ("Safra", "Amazônia", "Fibra") anexava o grupo inteiro e levava "pecuária" ou "Anatel" à consulta de bancos (diagnóstico da
+ * busca de 23/10/2026, achado A3).
+ */
+function comApelidos(nomes: string[]): string[] {
+  const presentes = new Set(nomes.map(normalizar));
+  const extra = NOMES.filter(([nome]) => presentes.has(normalizar(nome))).flatMap(([, apelidos]) => apelidos);
+  return [...nomes, ...extra];
 }
 
 /* ------------------------------------------------------------------ lugares */
@@ -133,23 +148,55 @@ const nomesCapitais = (): string[] => capitais.capitais.map((c) => c.nome);
 const nomesUf = (): string[] => Object.values(NOME_UF);
 
 /** Distribuidoras com tarifa vigente (sigla e razão social da ANEEL), as mesmas da Conta de luz. */
+/**
+ * Razão social sem o que ninguém digita (S.A., LTDA, "DISTRIBUIDORA DE ENERGIA", "COOPERATIVA DE ELETRIFICAÇÃO RURAL DA REGIÃO
+ * DE"): sobram o nome de fantasia e o lugar. O índice desce inteiro no primeiro foco e tem peso alvo de 150 KB (bloco 3 do ciclo
+ * 2 da busca, 23/10/2026: com o resumo e os termos de cada página, encurtar os nomes vem antes de subir o teto).
+ */
+export function encurtarRazaoSocial(nome: string): string {
+  return nome
+    .replace(/\bCOOPERATIVA( REGIONAL)? DE (ELETRIFICACAO|ELETRIFICAO|ELETRIF|DISTRIBUICAO|ELETRICIDADE|ENERGIA|ELETR\.)( E GERACAO)?( RURAL)?( E (DESENVOLVIMENTO|DESENV\.)( RURAL)?)?( DE ENERGIA)?( ELETRICA)?( DA REGIAO)?( D[AEO]S?)?\b/gi, "COOPERATIVA ")
+    .replace(/\b(S\.?\/?A\.?|S A|LTDA\.?|LTD)(?=\s|$|-)/gi, " ")
+    .replace(/-?\s*\b(DISTRIBUIDORA|DISTRIBUICAO)( E GERACAO)?( DE (ENERGIA|ELETRICIDADE)( ELETRICA)?)?\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .replace(/^[\s.\-]+|[\s.\-]+$/g, "")
+    .trim();
+}
+
 const distribuidoras = (): string[] =>
   lerPublico(
     "energia/gold/conta.json",
-    (j) => ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => [d.sigla, d.nome]),
+    (j) =>
+      ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => {
+        const nome = encurtarRazaoSocial(d.nome);
+        return normalizar(nome) === normalizar(d.sigla) ? [d.sigla] : [d.sigla, nome];
+      }),
     [] as string[],
   );
 
-/** Instituições com taxa publicada pelo Banco Central, as mesmas da consulta "Quanto meu banco cobra?", sem as abreviaturas da razão social. */
+/**
+ * Instituições com taxa publicada pelo Banco Central, as mesmas da consulta "Quanto meu banco cobra?", sem as abreviaturas da razão
+ * social e com "BCO" por extenso ("BANCO DO BRASIL", "BANCO DA AMAZONIA": quem digita o nome do banco o acha inteiro).
+ */
 const bancos = (): string[] =>
   lerPublico(
     "obs/data/gold/juros.json",
     (j) =>
       ((j as { perfis_if: { nome: string }[] }).perfis_if ?? []).map((b) =>
-        b.nome.replace(/\b(BCO|S\.?\/?A\.?|LTDA\.?|CFI|SCFI|DTVM|CCTVM)\b/gi, " ").replace(/\s+/g, " ").trim(),
+        b.nome
+          .replace(/\bBCO\b/gi, "BANCO")
+          .replace(/\b(S\.?\/?A\.?|LTDA\.?|CFI|SCFI|DTVM|CCTVM)(?=\s|$)/gi, " ")
+          .replace(/(\s+\.)+(?=\s|$)/g, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
       ),
     [] as string[],
   );
+
+/** As listas de nomes como vêm das bases, antes dos apelidos (para o teste conferir que cada apelido aponta para um nome que existe). */
+export function nomesDasListas(): { banco: string[]; distribuidora: string[] } {
+  return { banco: bancos(), distribuidora: distribuidoras() };
+}
 
 /** As listas de lugares e nomes que levam a cada consulta pessoal, pelo padrão da pergunta ("minha cidade", "meu estado"...). */
 function lugaresDaConsulta(titulo: string, href: string): TipoLugar[] {
@@ -226,12 +273,13 @@ export function indiceDeBusca(): IndiceBusca {
         m.add({
           tipo: "pagina",
           titulo: p.titulo,
-          resumo: destino?.resumo ?? (p.situacao === "previsto" ? (p.pendencia ?? "") : ""),
+          // o Setor Elétrico tem resumo próprio no catálogo da navegação, mais descritivo que a pergunta
+          resumo: destino?.resumo ?? p.resumo ?? (p.situacao === "previsto" ? (p.pendencia ?? "") : ""),
           href: p.rota,
           observatorio: o.id,
           colecao: c.id,
           situacao: p.situacao as SituacaoEntrada,
-          termos: [destino?.pergunta, destino?.rotulo],
+          termos: [...(p.termos ?? []), destino?.pergunta, destino?.rotulo],
         });
       }
       // método, dados e glossário da coleção: os atalhos da navegação única
@@ -296,15 +344,40 @@ export function indiceDeBusca(): IndiceBusca {
     m.add({ tipo: "verbete", titulo: g.termo, resumo: g.definicao, href: `/agronegocio/glossario#${ancoraConceitoAgro(g.termo)}`, observatorio: "economia", colecao: "agro", situacao: "publicado", termos: ["glossário"] });
   }
 
-  const colecoes = obs.flatMap((o) => o.colecoes.map((c) => ({ id: c.id, observatorio: o.id, nome: c.nome, href: c.href })));
+  const entradas = comVocabularioDoSetorEletrico(m.entradas());
+  const abertas = versoesAbertas(entradas);
+  const colecoes = obs.flatMap((o) =>
+    o.colecoes.map((c) => {
+      const aberta = abertas.get(`${o.id}/${c.id}`);
+      return { id: c.id, observatorio: o.id, nome: c.nome, href: c.href, ...(aberta ? { aberta } : {}) };
+    }),
+  );
   cache = {
     versao: 1,
     observatorios: obs.map((o) => ({ id: o.id, nome: o.nomeCurto })),
     colecoes,
     exemplos: [...EXEMPLOS_BUSCA],
-    // nomes com sinônimo (Nu Financeira → Nubank) levam o grupo junto: a lista do cabeçalho já sai expandida
-    lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comSinonimos(v)))])) as Record<TipoLugar, string[]>,
-    entradas: comVocabularioDoSetorEletrico(m.entradas()),
+    // nomes com apelido (NU FINANCEIRA → Nubank, Neoenergia PE → Celpe) levam o apelido junto: a lista do cabeçalho já sai expandida
+    lugares: Object.fromEntries(Object.entries(lugares).map(([k, v]) => [k, Array.from(new Set(comApelidos(v)))])) as Record<TipoLugar, string[]>,
+    entradas,
   };
   return cache;
+}
+
+/**
+ * A versão aberta de cada tema, presa à coleção (decisão do dono de 23/10/2026, achado A7 do diagnóstico da busca): a página
+ * que o princípio do aperitivo deixa aberta (APERITIVOS em rotasPublicas.ts), na coleção da entrada que a serve; sem entrada
+ * aberta no índice (a apresentação do Crédito), na coleção do painel completo, com o nome do tema.
+ */
+function versoesAbertas(entradas: EntradaBusca[]): Map<string, VersaoAberta> {
+  const m = new Map<string, VersaoAberta>();
+  for (const a of APERITIVOS) {
+    if (!ehRotaPublica(a.rota)) continue;
+    const propria = entradas.find((e) => e.href === a.rota && e.aberta && e.colecao);
+    const dona = propria ?? entradas.find((e) => e.href === a.painelCompleto && e.colecao);
+    if (!dona) continue;
+    const chave = `${dona.observatorio}/${dona.colecao}`;
+    if (!m.has(chave)) m.set(chave, { titulo: propria?.titulo ?? a.tema, href: a.rota });
+  }
+  return m;
 }

@@ -520,7 +520,20 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     // o ramo do mesmo dia fica sempre testado no componente: com a média das 24 horas do CSV quando o dia está
     // publicado e, sem ele, com uma média sintética independente no lugar da que a página PLD passaria
     const mediaDia = horas.length > 0 ? media(horas) : 123.45;
-    const pub = P.previsao_atual!.ja_publicado_no_corte!;
+    const publicadoGold = P.previsao_atual!.ja_publicado_no_corte!;
+    // rodada sem nenhuma hora do SE/CO capturada depois do corte (a de 23/10/2026): a página diz isso e não compara; para o ramo da
+    // comparação continuar testado, o SE/CO recebe 17 horas sintéticas, como a média sintética acima
+    const sinteticas = Array.from({ length: 17 }, (_, i) => [`${dia}T${String(i + 7).padStart(2, "0")}:00`, 100] as [string, number]);
+    const pub =
+      publicadoGold.submercados.SE.horas > 0
+        ? publicadoGold
+        : {
+            ...publicadoGold,
+            submercados: {
+              ...publicadoGold.submercados,
+              SE: { ...publicadoGold.submercados.SE, horas: 17, primeira: sinteticas[0][0], ultima: sinteticas[16][0], media: 100, minimo: 100, maximo: 100, valores: sinteticas },
+            },
+          };
     const mesmoDia = renderToStaticMarkup(
       createElement(PrevisoesAtual, {
         linhas: [],

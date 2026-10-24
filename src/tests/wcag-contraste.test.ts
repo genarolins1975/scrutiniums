@@ -11,7 +11,8 @@ import { TOKENS } from "../lib/tokens.gerado";
  * em docs/AUDITORIA_WCAG.md. Ela encontrou 161 nós reprovados em contraste, e
  * todos vinham de SEIS tokens — não de casos isolados. Este teste fecha essa
  * porta: recalcula a razão de contraste de cada par (cor de texto × fundo) que
- * o CSS de fato usa, nos dois temas, e reprova antes do deploy.
+ * o CSS de fato usa e reprova antes do deploy. Desde 23/10/2026 a aplicação tem um tema só, o da plataforma (Iniciativa 2 do
+ * parecer de UX: o tema escuro próprio saiu, porque a barra, a navegação e o fim de página da plataforma não o têm).
  *
  * Por que aqui e não no navegador: o que regride é o token. Quem mexer numa cor
  * do :root descobre no `npm test`, sem precisar subir servidor nem baixar
@@ -43,7 +44,7 @@ function mistura(x: string, y: string, p: number) {
   return "#" + a.map((v, i) => Math.round(v * p + b[i] * (1 - p)).toString(16).padStart(2, "0")).join("");
 }
 
-/* ---------- tokens dos dois temas ----------
+/* ---------- tokens ----------
    Desde a Iniciativa 5 a SPA lê os valores dos tokens da plataforma (src/app/globals.css, servidos em public/obs/tokens.css):
    var(--x) é resolvido primeiro no próprio bloco e depois em TOKENS; color-mix(in srgb, A p%, B) é calculado. */
 function brutos(bloco: string): Record<string, string> {
@@ -79,9 +80,7 @@ function resolver(mapa: Record<string, string>): Record<string, string> {
   return out;
 }
 const brutoClaro = brutos(css.slice(css.indexOf(":root {"), css.indexOf("}", css.indexOf(":root {"))));
-const iEscuro = css.indexOf('[data-theme="dark"] {');
 const claro = resolver(brutoClaro);
-const escuro = resolver({ ...brutoClaro, ...brutos(css.slice(iEscuro, css.indexOf("}", iEscuro))) });
 
 /**
  * Pares realmente usados na interface. Vêm da auditoria com axe: cada linha
@@ -90,28 +89,37 @@ const escuro = resolver({ ...brutoClaro, ...brutos(css.slice(iEscuro, css.indexO
  */
 const PARES: Array<{ onde: string; texto: string; fundo: string; tinta?: number }> = [
   { onde: ".src / .filterbar (texto auxiliar sobre cartão)", texto: "--text-3", fundo: "--surface-2" },
-  { onde: ".seal.desc (selo descontinuado)", texto: "--text-3", fundo: "--surface-2" },
+  { onde: ".seal.desc / .seal.ctx (selo descontinuado e de contexto, sobre a superfície)", texto: "--text-3", fundo: "--surface" },
   { onde: ".sel .src (auxiliar sobre tinta do acento)", texto: "--text-3", fundo: "--accent-soft" },
   { onde: ".src sobre a superfície do cartão", texto: "--text-3", fundo: "--surface" },
   { onde: ".guiamais (entenda esta página)", texto: "--accent", fundo: "--surface" },
-  { onde: ".seal.est / .seal.demo / .qbadge.q-mid / .nivel.nd", texto: "--warning", fundo: "--warning-soft" },
+  { onde: ".qbadge.q-mid / .nivel.nd", texto: "--warning", fundo: "--warning-soft" },
   { onde: ".alert.atencao .lvl", texto: "--warning", fundo: "--surface" },
   { onde: ".alert.informativo .lvl", texto: "--unavail", fundo: "--surface" },
-  { onde: ".seal.obs (dado observado)", texto: "--positive", fundo: "--positive-soft" },
-  { onde: ".alert.critico .lvl / .seal negativo", texto: "--negative", fundo: "--negative-soft" },
-  { onde: ".seal.prev (previsão)", texto: "--accent-ink", fundo: "--accent-soft" },
+  { onde: ".qbadge.q-high", texto: "--positive", fundo: "--positive-soft" },
+  { onde: ".alert.critico .lvl / .qbadge.q-low", texto: "--negative", fundo: "--negative-soft" },
   { onde: "nav.tabs button.active", texto: "--accent-ink", fundo: "--accent-soft" },
-  { onde: ".seal.calc / .nivel.nb (tinta 12% do próprio tom)", texto: "--teal", fundo: "--surface", tinta: 0.12 },
-  { onde: ".seal.cen (cenário)", texto: "--forecast", fundo: "--forecast-soft" },
+  { onde: ".nivel.nb (tinta 12% do próprio tom)", texto: "--teal", fundo: "--surface", tinta: 0.12 },
+  // selos na forma do SeloNatureza: tom da natureza sobre a superfície, borda na mesma cor (Iniciativa 2, 23/10/2026)
+  { onde: ".seal.obs (observado)", texto: "--cor-natureza-observado", fundo: "--surface" },
+  { onde: ".seal.calc (calculado)", texto: "--cor-natureza-calculado", fundo: "--surface" },
+  { onde: ".seal.est / .seal.demo (estimado, demonstrativo)", texto: "--cor-natureza-estimado", fundo: "--surface" },
+  { onde: ".seal.prev / .seal.exp (previsto, experimental)", texto: "--cor-natureza-previsto", fundo: "--surface" },
+  { onde: ".seal.cen (cenário)", texto: "--cor-natureza-cenario", fundo: "--surface" },
+  { onde: ".seal.aprox (aproximação)", texto: "--text-2", fundo: "--surface" },
   { onde: "texto principal sobre o cartão", texto: "--text", fundo: "--surface" },
   { onde: "texto secundário sobre o cartão", texto: "--text-2", fundo: "--surface" },
 ];
 
-const AA = 4.5; // texto normal; a SPA usa 9,5–13 px, então nenhum se qualifica como "grande"
+const AA = 4.5; // texto normal; selos e rótulos têm 12 a 13 px, então nenhum se qualifica como "grande"
 
-describe.each([["claro", claro], ["escuro", escuro]])("contraste AA — tema %s", (tema, T) => {
+describe("contraste AA", () => {
+  const T = claro;
+  const tema = "da aplicação";
   it.each(PARES)("$onde", ({ texto, fundo, tinta }) => {
-    const fg = T[texto], base = T[fundo];
+    // o que a folha não redefine é lido direto dos tokens da plataforma (os selos usam --cor-natureza-*)
+    const plataforma = TOKENS as Record<string, string>;
+    const fg = T[texto] ?? plataforma[texto.slice(2)], base = T[fundo] ?? plataforma[fundo.slice(2)];
     expect(fg, `token ${texto} não encontrado no tema ${tema}`).toBeTruthy();
     expect(base, `token ${fundo} não encontrado no tema ${tema}`).toBeTruthy();
     const bg = tinta ? mistura(fg, base, tinta) : base;
@@ -124,7 +132,7 @@ describe.each([["claro", claro], ["escuro", escuro]])("contraste AA — tema %s"
 });
 
 describe("contraste: os tokens de gráfico usados como texto seguem os semânticos", () => {
-  it.each([["claro", claro], ["escuro", escuro]])(
+  it.each([["claro", claro]])(
     "linha 2 e 3 e cinza acompanham teal, warning e unavail — tema %s",
     (_tema, T: any) => {
       // .comp (Mercado) pinta texto com as cores das séries: se divergirem dos
@@ -135,7 +143,7 @@ describe("contraste: os tokens de gráfico usados como texto seguem os semântic
       expect(T["--c-gray"]).toBe(T["--unavail"]);
     });
 
-  it.each([["claro", claro], ["escuro", escuro]])(
+  it.each([["claro", claro]])(
     "as cores de série passam em AA como texto sobre o cartão — tema %s",
     (_tema, T: any) => {
       for (const t of ["--c-line1", "--c-line2", "--c-line3", "--c-gray", "--c-pos", "--c-neg", "--c-forecast"]) {
@@ -146,7 +154,7 @@ describe("contraste: os tokens de gráfico usados como texto seguem os semântic
     });
 
   it("o tom do Pix passa em AA sobre a própria tinta", () => {
-    // valor de --pix lido do token da plataforma (--cor-credito-pix, src/app/globals.css)
+    // valor de --pix lido do token da plataforma (--cor-conect, src/app/globals.css; antes --cor-credito-pix)
     const iPix = css.indexOf(":root { --pix:");
     const pix = resolver(brutos(css.slice(iPix, css.indexOf("}", iPix))))["--pix"];
     expect(pix).toBeTruthy();

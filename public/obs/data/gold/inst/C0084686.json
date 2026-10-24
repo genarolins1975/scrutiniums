@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-22T15:48:03+00:00",
+  "atualizado_em": "2026-10-23T16:23:58+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
@@ -31,11 +31,6 @@
     "tipo": "ok",
     "texto": "ROE do período de 7.0%.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "ok",
-    "texto": "Índice de reclamações 50.0 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-    "base": "BCB rdrweb"
    }
   ],
   "pontos_atencao": [
@@ -43,6 +38,11 @@
     "tipo": "warn",
     "texto": "Carteira cresceu 47.7% em 4 trimestres, acima de 30%.",
     "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "tipo": "warn",
+    "texto": "Índice de reclamações 103.7 (acima da mediana do ranking 66.1) — indicador operacional, não de solvência.",
+    "base": "BCB rdrweb"
    }
   ],
   "mudancas_recentes": [
@@ -228,8 +228,8 @@
    "base": "calculado sobre IF.data"
   },
   {
-   "tipo": "ok",
-   "texto": "Índice de reclamações 50.0 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+   "tipo": "warn",
+   "texto": "Índice de reclamações 103.7 (acima da mediana do ranking 66.1) — indicador operacional, não de solvência.",
    "base": "BCB rdrweb"
   }
  ],
@@ -481,6 +481,15 @@
  "atraso_produtos": null,
  "reclamacoes": [
   {
+   "periodo": "2026-T3",
+   "indice": 103.74,
+   "reclamacoes": 2948,
+   "clientes": 13285389.0,
+   "posicao_arquivo": 194,
+   "nome_fonte": "STONE IP (conglomerado)",
+   "casamento": "nome_identico_bcb"
+  },
+  {
    "periodo": "2026-T2",
    "indice": 49.96,
    "reclamacoes": 2088,
@@ -504,15 +513,6 @@
    "reclamacoes": 1606,
    "clientes": 14153075.0,
    "posicao_arquivo": 167,
-   "nome_fonte": "STONE IP (conglomerado)",
-   "casamento": "nome_identico_bcb"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 13.03,
-   "reclamacoes": 1390,
-   "clientes": 13301438.0,
-   "posicao_arquivo": 169,
    "nome_fonte": "STONE IP (conglomerado)",
    "casamento": "nome_identico_bcb"
   }

@@ -39,8 +39,9 @@ import {
  */
 
 const MENSAGEM_ERRO = { pt: "Não foi possível gerar a imagem neste navegador.", en: "The image could not be generated in this browser." }; // i18n: dado (escolhido por porIdioma)
+// alvo de toque de 44 px com qualquer ponteiro, sem mudar o desenho: a margem negativa devolve os 20 px a mais (a linha continua com 24 px)
 const CLASSE_BOTAO =
-  "rotulo inline-flex min-h-[24px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao [@media(pointer:coarse)]:min-h-[44px]"; // i18n: dado
+  "rotulo -my-[10px] inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao"; // i18n: dado
 
 /** Elementos do svg que são do momento da interação (cruz do cursor, seleção por arrasto) e não entram na imagem. */
 const TRANSITORIOS = "title, desc, script, foreignObject, [data-cursor], [data-selecao], [data-nao-exportar]";

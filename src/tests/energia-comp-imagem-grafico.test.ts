@@ -442,7 +442,9 @@ describe("o botão e o HTML do servidor dos gráficos", () => {
   const multiplos = renderToStaticMarkup(
     createElement(PequenosMultiplos, { titulo: "Carga por subsistema", dados, chaveX: "d", paineis: [{ id: "a", titulo: "A" }, { id: "b", titulo: "B" }, { id: "c", titulo: "C", nota: "sem medição" }], unidade: "MWmed" }),
   );
-  const espaco = /<span aria-hidden="true" class="invisible ml-auto w-\[6\.3rem\] print:hidden [^"]*min-h-\[24px\][^"]*\[@media\(pointer:coarse\)\]:min-h-\[44px\]">\u00a0<\/span>/;
+  // alvo de 44 px com qualquer ponteiro (auditoria de interface da Mobilidade, PR 1 da Iniciativa 1 de 23/10/2026), e a margem negativa
+  // mantém a linha de 24 px do desenho: antes eram 24 px com mouse e 44 px só no toque
+  const espaco = /<span aria-hidden="true" class="invisible ml-auto w-\[6\.3rem\] print:hidden [^"]*-my-\[10px\][^"]*min-h-\[44px\][^"]*">\u00a0<\/span>/;
 
   it("no servidor não há <button> do botão nem o texto 'Baixar imagem': só um espaço invisível, sem texto, do tamanho do botão", () => {
     for (const [nome, h] of Object.entries({ linhas, barrasV, barrasH, pontos, multiplos })) {
@@ -511,7 +513,7 @@ describe("BaixarImagem depois da hidratação", () => {
     const { BaixarImagem } = await import("@/components/energia/BaixarImagem");
     const { createElement: criar } = await import("react");
     const h = renderToStaticMarkup(criar(BaixarImagem, { raiz: { current: null }, titulo: "Carga diária", unidade: "MWmed" }));
-    expect(h).toMatch(/<button type="button" aria-label="Baixar imagem do gráfico: Carga diária" class="[^"]*min-h-\[24px\][^"]*\[@media\(pointer:coarse\)\]:min-h-\[44px\][^"]*">Baixar imagem<\/button>/);
+    expect(h).toMatch(/<button type="button" aria-label="Baixar imagem do gráfico: Carga diária" class="[^"]*-my-\[10px\][^"]*min-h-\[44px\][^"]*">Baixar imagem<\/button>/);
     expect(h).toContain("print:hidden");
     expect(h).toContain("data-baixar-imagem");
     expect(h).toMatch(/<span role="status" aria-live="polite" class="sr-only"><\/span>/);

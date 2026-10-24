@@ -703,8 +703,10 @@ describe("a página renderizada", () => {
     ];
     expect(ordem.every((x) => x > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
-    // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice)
-    expect(html).toContain("Busque por pergunta");
+    // a busca é real: o campo e o índice vêm do mesmo conteúdo que a página publica (o teste da busca confere o índice). Desde o
+    // bloco 4 do ciclo 2 da busca (23/10/2026), o rótulo é o do próprio campo, que diz que ele procura só nesta coleção; o
+    // rótulo de fora ("Busque por pergunta, assunto...") saiu para a página não ter dois rótulos para um campo
+    expect(texto(html)).toContain("Buscar só em Setor Elétrico");
     // o que a abertura antiga dizia (por que importa e o que não permite concluir) continua no bloco "Sobre o observatório", recolhido
     const sobre = html.slice(html.indexOf('id="recolhido-sobre"'), html.indexOf('id="recolhido-camadas"'));
     expect(texto(sobre)).toContain("Acompanhe preços, geração e reservatórios. Compare tarifas, interrupções e perdas por região.");
