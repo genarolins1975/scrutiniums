@@ -5,7 +5,7 @@
 "use strict";
 
 /* ---------- estado, filtros persistentes e roteamento ---------- */
-const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", transf: "nivel", instGroup: "todos", sortInst: "ativo" };
+const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", transf: "nivel", instGroup: "todos", instTipo: "todos", sortInst: "ativo" };
 const CMP_DEFAULT_METS = ["ativo_total", "patrimonio_liquido", "carteira_credito", "carteira_pf", "carteira_pj",
   "captacoes", "lucro_liquido", "roe_periodo", "npl_pct", "ativos_problematicos_pct", "provisao_credito",
   "cobertura_pct", "indice_basileia", "indice_capital_principal", "cart_ativo_pct"];
@@ -92,6 +92,10 @@ function buildQuery(view) {
   if (f.growth !== "nominal") qs.set("growth", f.growth);
   if (view === "pulse" && f.transf !== "nivel") qs.set("transf", f.transf);
   if (f.instGroup !== "todos") qs.set("grupo", f.instGroup);
+  if (view === "institutions") {
+    if (f.instTipo && f.instTipo !== "todos") qs.set("tipo", f.instTipo);
+    if (f.sortInst !== "ativo") qs.set("ordem", f.sortInst);
+  }
   if (!PATH_MODE) { // em modo hash, o código vai na query (#inst?cod=…)
     if (view === "inst" && f.instCod) qs.set("cod", f.instCod);
     if (view === "sector" && f.sectorCod) qs.set("cod", f.sectorCod);
@@ -176,6 +180,11 @@ function parseHash() {
     state.filters.range = [24, 60, 200].includes(Number(qs.get("range"))) ? Number(qs.get("range")) : 60;
   }
   if (qs.get("grupo")) state.filters.instGroup = qs.get("grupo");
+  if (currentView() === "institutions") {
+    for (const [k, param, valores] of [["instGroup", "grupo", ["todos", "S?", "S1", "S2", "S3", "S4", "S5"]], ["instTipo", "tipo", ["todos", "banco", "coop", "naobanco"]], ["sortInst", "ordem", ["ativo", "inad", "deterioracao", "nome"]]]) {
+      state.filters[k] = valores.includes(qs.get(param)) ? qs.get(param) : valores[0];
+    }
+  }
   if (qs.get("sec")) state._secAlvo = qs.get("sec"); // permalink de seção (P2)
   if (!PATH_MODE) { // deep-link local: #inst?cod=… / #sector?cod=… / #product?slug=…
     if (qs.get("cod") && currentView() === "inst") state.filters.instCod = qs.get("cod");
@@ -913,14 +922,14 @@ function embRecorta(v) {
 }
 function favStar(type, key, label) {
   const isFav = state.favorites.some(f => f.type === type && f.key === key);
-  return `<button class="star ${isFav ? "on" : ""}" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${attr(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
+  return `<button class="star ${isFav ? "on" : ""}" aria-pressed="${isFav}" aria-label="${attr(label || key)}: ${isFav ? "remover dos" : "salvar nos"} favoritos" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${attr(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
 }
-window.toggleFav = (type, key, el, label) => {
+window.toggleFav = (type, key, el, label) => comFocoPreservado(() => {
   const i = state.favorites.findIndex(f => f.type === type && f.key === key);
   if (i >= 0) state.favorites.splice(i, 1); else state.favorites.push({ type, key, label });
   saveLS("obc_favs", state.favorites);
   rerenderCurrent();
-};
+});
 
 /* ---------- gráficos SVG ---------- */
 /* cores legadas → tokens (permite dark mode sem tocar em cada chamada) */
@@ -940,6 +949,18 @@ function leitura(itens) {
   return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
 }
 
+/* As extremidades ocupam intervalos inteiros, não metades: a primeira data
+   ancora à esquerda e a última à direita. A seleção só rareia os rótulos. */
+function rotulosEixoSemColisao(rotulos, folga = 12) {
+  if (rotulos.length < 2) return rotulos;
+  const primeiro = rotulos[0], ultimo = rotulos[rotulos.length - 1];
+  if (primeiro.fim + folga > ultimo.inicio) return [ultimo];
+  const visiveis = [primeiro];
+  for (const r of rotulos.slice(1, -1)) {
+    if (r.inicio >= visiveis[visiveis.length - 1].fim + folga && r.fim + folga <= ultimo.inicio) visiveis.push(r);
+  }
+  return [...visiveis, ultimo];
+}
 function lineChart(opts) {
   const W = opts.w || 720, H = opts.h || 240;
   const all = [];
@@ -990,15 +1011,14 @@ function lineChart(opts) {
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${y}" y2="${y}" style="stroke:var(--c-grid)"/>`;
     out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
   }
-  const larguraLegenda = Math.max(...allX.map(x => dateLabel(x).length)) * 7.6 + 20;
-  const intervalos = Math.max(1, Math.floor((W - M.l - M.r) / larguraLegenda));
-  const indices = [...new Set(Array.from({ length: intervalos + 1 }, (_, j) => Math.round(j * (allX.length - 1) / intervalos)))];
-  for (const i of indices) {
-    const tx = X(allX[i]);
-    // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
-    const meiaLegenda = dateLabel(allX[i]).length * 3.8 + 6;
-    const anc = tx > W - meiaLegenda ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="12" style="fill:var(--c-axis-text)">${dateLabel(allX[i])}</text>`;
+  const rotulosX = allX.map((x, i) => {
+    const texto = dateLabel(x), tx = X(x), largura = texto.length * 7.6;
+    const ancora = i === 0 ? "start" : i === allX.length - 1 ? "end" : "middle";
+    const inicio = tx - (ancora === "end" ? largura : ancora === "middle" ? largura / 2 : 0);
+    return { texto, tx, ancora, inicio, fim: inicio + largura };
+  });
+  for (const r of rotulosEixoSemColisao(rotulosX)) {
+    out += `<text class="xl" x="${r.tx}" y="${H - 8}" text-anchor="${r.ancora}" font-size="12" style="fill:var(--c-axis-text)">${r.texto}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -1662,6 +1682,7 @@ window.trCSV = () => {
 };
 
 /* ================= SOBRE ================= */
+/* @chunk:emergentes:ini */
 function renderSobre() {
   const el = document.getElementById("view-sobre");
   el.innerHTML = `
@@ -1688,6 +1709,8 @@ function renderSobre() {
   </div>`;
 }
 
+
+/* @chunk:emergentes:fim */
 
 /* ================= AÇÕES JUDICIAIS E INSTITUIÇÕES FINANCEIRAS ================= */
 const JUD_CORES = { revisionais: "#1d4e89", indenizatorias: "#6b46a3", garantias_cobranca: "#8d94a3",
@@ -10441,7 +10464,7 @@ function renderSubnacional() {
     const chaveDv = ["dcl_rcl_pct", "dcl", "dcl_hab", "uniao_share_pct", "uso_limite_pct"].includes(F.dv) ? F.dv : "dcl_rcl_pct";
     const ufsDv = DV.ufs.filter(u => u.disponivel).sort((a, b) => ((b[chaveDv] != null ? b[chaveDv] : -1e18) - (a[chaveDv] != null ? a[chaveDv] : -1e18)));
     const SD = (DV.serie_anual || []);
-    const seriesD = [{ pts: SD.map(a => ({ x: String(a.ano), y: a.dcl_rcl_pct })), color: "#b45309", label: "DCL ÷ RCL, 27 UFs" }];
+    const seriesD = [{ pts: SD.map(a => ({ x: String(a.ano), y: a.dcl_rcl_pct })), color: "#b45309", label: "DCL ÷ RCL, 27 UFs", short: "DCL ÷ RCL" }];
     dividaSec = secWrap("sn-divida", `${sechead("Quanto os estados devem", `Siconfi, RGF Anexo 02 · ${KD.periodo || "–"} · ${n0(KD.n_ufs)} de 27 UFs com entrega`)}
     <div class="grid g2">
       <div class="card"><h4>Dívida consolidada líquida dos estados e do DF ${badge("observado")}</h4>
@@ -11463,6 +11486,69 @@ function cgExposicao(D) {
 }
 
 /* ============ 6. circularidade ============ */
+/* Mantém os centros e raios das bolhas; só procura espaço para as siglas.
+   Ordem determinística: os aglomerados mais densos reservam espaço primeiro. */
+function cgPosicionaRotulos(pontos, limites = { esq: 42, dir: 712, topo: 20, baixo: 246 }) {
+  const largura = 28, altura = 20, folga = 3;
+  const caixas = [], linhas = [];
+  const sobrepoe = (a, b) => a.x < b.x + b.w + folga && a.x + a.w + folga > b.x && a.y < b.y + b.h + folga && a.y + a.h + folga > b.y;
+  const tocaBolha = (b, p) => Math.hypot(p.x - Math.max(b.x, Math.min(p.x, b.x + b.w)), p.y - Math.max(b.y, Math.min(p.y, b.y + b.h))) < p.r + folga;
+  const cruza = (a, b, c, d) => {
+    const lado = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+    return lado(a, b, c) * lado(a, b, d) < 0 && lado(c, d, a) * lado(c, d, b) < 0;
+  };
+  const cortaCaixa = (a, b, c) => {
+    const v = [{ x: c.x, y: c.y }, { x: c.x + c.w, y: c.y }, { x: c.x + c.w, y: c.y + c.h }, { x: c.x, y: c.y + c.h }];
+    return v.some((p, i) => cruza(a, b, p, v[(i + 1) % 4]));
+  };
+  const densidade = p => pontos.reduce((s, q) => s + (p !== q && Math.hypot(p.x - q.x, p.y - q.y) < 55 ? 1 : 0), 0);
+  const ordem = pontos.slice().sort((a, b) => densidade(b) - densidade(a) || a.x - b.x || a.uf.localeCompare(b.uf));
+  const resultado = new Map();
+  for (const p of ordem) {
+    let melhor = null;
+    const avalia = (lx, ly) => {
+      const caixa = { x: lx - largura / 2, y: ly - altura / 2, w: largura, h: altura };
+      if (caixa.x < limites.esq || caixa.x + caixa.w > limites.dir || caixa.y < limites.topo || caixa.y + caixa.h > limites.baixo) return;
+      if (caixas.some(b => sobrepoe(caixa, b)) || pontos.some(q => tocaBolha(caixa, q))) return;
+      const dx = lx - p.x, dy = ly - p.y, distancia = Math.hypot(dx, dy);
+      const inicio = { x: p.x + dx * p.r / distancia, y: p.y + dy * p.r / distancia };
+      const fator = Math.max(Math.abs(dx) / (largura / 2), Math.abs(dy) / (altura / 2));
+      const fim = { x: lx - dx / fator, y: ly - dy / fator };
+      const cortes = caixas.filter(b => cortaCaixa(inicio, fim, b)).length + linhas.filter(l => cortaCaixa(l.inicio, l.fim, caixa)).length;
+      const cruzamentos = linhas.filter(l => cruza(inicio, fim, l.inicio, l.fim)).length;
+      const custo = distancia * distancia + cortes * 1e6 + cruzamentos * 10000;
+      if (!melhor || custo < melhor.custo) melhor = { ...p, lx, ly, caixa, inicio, fim, custo };
+    };
+    for (let raio = p.r + 22; raio <= 190; raio += 10) {
+      for (let angulo = 0; angulo < 360; angulo += 15) {
+        const rad = angulo * Math.PI / 180;
+        avalia(p.x + Math.cos(rad) * raio, p.y + Math.sin(rad) * raio);
+      }
+    }
+    // Busca na área inteira também cobre um conjunto degenerado de pontos coincidentes.
+    if (!melhor) for (let y = limites.topo + altura / 2; y <= limites.baixo - altura / 2; y += altura + folga) {
+      for (let x = limites.esq + largura / 2; x <= limites.dir - largura / 2; x += largura + folga) avalia(x, y);
+    }
+    if (melhor) { caixas.push(melhor.caixa); linhas.push(melhor); resultado.set(p.uf, melhor); }
+  }
+  return pontos.map(p => resultado.get(p.uf));
+}
+
+function cgDispersaoMostra(seletor) {
+  state.cg = { ...(state.cg || {}), dispersaoUf: seletor.value };
+  const card = seletor.closest(".card");
+  const grupos = [...card.querySelectorAll(".cgdisp-uf")];
+  const escolhido = grupos.find(g => g.dataset.uf === seletor.value);
+  grupos.forEach(g => g.classList.toggle("is-active", g === escolhido));
+  const leitura = card.querySelector(".cgdisp-leitura");
+  leitura.textContent = escolhido?.getAttribute("aria-label") || leitura.dataset.padrao;
+  if (escolhido) {
+    const rolagem = card.querySelector(".cgdisp-wrap");
+    const rotulo = escolhido.querySelector(".cgdisp-rotulo").getBoundingClientRect();
+    rolagem.scrollLeft += rotulo.left + rotulo.width / 2 - rolagem.getBoundingClientRect().left - rolagem.clientWidth / 2;
+  }
+}
+
 function cgCircularidade(D) {
   const C = D.circularidade;
   const est = D.estados.filter(e => e.outras_censo != null && e.cons_por_60 != null);
@@ -11471,6 +11557,11 @@ function cgCircularidade(D) {
   const px = v => 60 + 640 * (v - x0) / Math.max(x1 - x0, 1e-9);
   const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
   const ref = C.especificacoes.find(e => e.referencia);
+  const rotulos = cgPosicionaRotulos(est.map(e => ({ ...e, x: px(e.outras_censo), y: py(e.cons_por_60), r: 4 + 9 * Math.sqrt(e.a60 / 4e6) })));
+  const descricao = e => `${e.nome} (${e.uf}): rendimento de outras fontes ${fmt.n(e.outras_censo, 1)}%; consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}; população de 60 anos ou mais ${fmt.n0(e.a60)} pessoas.`;
+  const ufSelecionada = state.cg?.dispersaoUf || "";
+  const selecionado = est.find(e => e.uf === ufSelecionada);
+  const leituraPadrao = "Escolha uma UF para destacar o ponto e ler suas medidas. As linhas-guia ligam cada sigla ao ponto original.";
 
   return `<section id="cg-circ">${sechead("O que é observado e o que é mecânico", "quatro especificações da mesma pergunta")}
   <p class="desprosa">A pergunta natural do painel é se municípios mais dependentes de
@@ -11517,15 +11608,21 @@ function cgCircularidade(D) {
 
   <div class="card">
     <h4>Dependência previdenciária e consignado, por unidade da federação</h4>
-    <p class="src">Arraste horizontalmente para explorar a dispersão. A tabela abaixo contém os mesmos estados e medidas.</p><div class="tblwrap cgdisp-wrap" tabindex="0" role="region" aria-label="Dispersão por estado, com rolagem horizontal"><svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
+    <p class="src">Arraste horizontalmente para explorar a dispersão. A tabela abaixo contém os mesmos estados e medidas.</p>
+    <label class="cgdisp-controle" for="cg-dispersao-uf">Consultar estado
+      <select id="cg-dispersao-uf" onchange="cgDispersaoMostra(this)">
+        <option value="">Escolha uma UF</option>${est.map(e => `<option value="${e.uf}" ${e.uf === ufSelecionada ? "selected" : ""}>${e.uf} — ${e.nome}</option>`).join("")}
+      </select>
+    </label>
+    <p class="src cgdisp-leitura" aria-live="polite" data-padrao="${attr(leituraPadrao)}">${selecionado ? descricao(selecionado) : leituraPadrao}</p>
+    <div class="tblwrap cgdisp-wrap" tabindex="0" role="region" aria-label="Dispersão por estado, com rolagem horizontal"><svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
       <line x1="60" y1="250" x2="700" y2="250" stroke="var(--border)"></line>
       <line x1="60" y1="40" x2="60" y2="250" stroke="var(--border)"></line>
-      ${est.map(e => `<g role="group" aria-label="${attr(`${e.nome}: outras fontes ${fmt.n(e.outras_censo, 1)}%, consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}`)}">
-        <circle cx="${px(e.outras_censo).toFixed(1)}" cy="${py(e.cons_por_60).toFixed(1)}"
-          r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
-          stroke="var(--teal)"></circle>
-        <text x="${(px(e.outras_censo) + 8).toFixed(1)}" y="${(py(e.cons_por_60) + 4).toFixed(1)}"
-          font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
+      ${rotulos.map(e => `<g class="cgdisp-uf${e.uf === ufSelecionada ? " is-active" : ""}" data-uf="${e.uf}" role="img" aria-label="${attr(descricao(e))}">
+        <line class="cgdisp-guia" x1="${e.inicio.x.toFixed(1)}" y1="${e.inicio.y.toFixed(1)}" x2="${e.fim.x.toFixed(1)}" y2="${e.fim.y.toFixed(1)}" aria-hidden="true"></line>
+        <circle cx="${e.x.toFixed(1)}" cy="${e.y.toFixed(1)}" r="${e.r.toFixed(1)}" fill="var(--teal)" fill-opacity=".45" stroke="var(--teal)"></circle>
+        <rect class="cgdisp-fundo" x="${e.caixa.x.toFixed(1)}" y="${e.caixa.y.toFixed(1)}" width="${e.caixa.w}" height="${e.caixa.h}" aria-hidden="true"></rect>
+        <text class="cgdisp-rotulo" x="${e.lx.toFixed(1)}" y="${(e.ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
       <text x="380" y="282" text-anchor="middle" font-size="12" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
       <text x="16" y="145" font-size="12" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
     </svg></div>
@@ -12751,7 +12848,7 @@ function renderPresencaMun() {
    arquivo (dev), a checagem de presença torna tudo transparente. */
 const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc", subnacional: "renderSubnacional" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
-const CHUNK_OF_VIEW = { pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
+const CHUNK_OF_VIEW = { sobre: "emergentes", pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
   consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes", subnacional: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
@@ -12867,9 +12964,9 @@ function pingView(v) {
    às colunas da direita, porque o contêiner não recebia foco. O tabindex só
    entra onde há rolagem de fato — pôr foco em contêiner que não rola criaria
    paradas de tabulação vazias, que é o defeito oposto. */
-/* Abaixo de 640 px a tabela solta num cartão rola sozinha (display:block, styles.css "transbordos a 390 px"): ela mesma
-   recebe o foco e o nome, sem trocar o papel de tabela por região (três nós reprovados em payroll-lending-aging a 390 px na
-   medição de 23/10/2026, Iniciativa 2 do parecer de UX). */
+/* Nas seis rotas auditadas, tabelas soltas recebem um .tblwrap em qualquer largura.
+   A tabela mantém sua semântica; só o contêiner rolável recebe papel de região e foco.
+   Nas demais rotas, a tabela que já rola diretamente conserva seu papel nativo. */
 const TABELA_QUE_ROLA = ".card > table.data, .view > table.data, details > table.data";
 function acessibilizaRolagem(raiz) {
   (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x, " + TABELA_QUE_ROLA).forEach(el => {
@@ -12892,13 +12989,16 @@ function acessibilizaRolagem(raiz) {
 /* Reavalia depois de cada render e a cada mudança de largura: o que rola em
    375 px pode não rolar em 1440 px, e vice-versa. */
 let _rolagemAgendada = 0;
-/* Tabelas largas em celular: em vez de comprimir a tabela desktop, cada linha vira um
-   bloco com rótulo:valor por célula. O rótulo vem do cabeçalho e é anotado aqui, uma vez
-   por tabela — o CSS só ativa a apresentação empilhada abaixo de 700px, e apenas para
-   tabelas com cinco ou mais colunas (as estreitas, como rankings de três colunas,
-   continuam tabelas, que é o formato certo para elas). */
+/* Crédito/Pix preservam comparação por colunas em tabelas nativas com rolagem local,
+   inclusive quando apenas o texto é ampliado. Nas demais rotas, o contrato legado
+   empilha tabelas simples com cinco ou mais colunas abaixo de 700px. */
 function adaptaTabelasMoveis(raiz) {
   if (!raiz) return;
+  const tabular = raiz.matches("#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional");
+  if (tabular) raiz.querySelectorAll(TABELA_QUE_ROLA).forEach(t => {
+    const cont = document.createElement("div"); cont.className = "tblwrap";
+    t.before(cont); cont.append(t);
+  });
   raiz.querySelectorAll("table.data:not([data-movel])").forEach(t => {
     t.setAttribute("data-movel", "1");
     // Só cabeçalho simples: uma linha de th, mesma contagem de colunas do corpo.
@@ -12912,7 +13012,7 @@ function adaptaTabelasMoveis(raiz) {
     const corpo = t.querySelector("tbody tr");
     if (ths.length < 5 || !corpo || corpo.children.length !== ths.length) return;
     if (ths.filter(Boolean).length < ths.length - 1) return;  // cabeçalho sem texto útil
-    if (raiz.matches("#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional") && t.parentElement.classList.contains("tblwrap")) {
+    if (tabular && t.parentElement.classList.contains("tblwrap")) {
       t.classList.add("comparacao-tabular");
       const ajuda = document.createElement("p"); ajuda.className = "src tabela-deslize";
       ajuda.textContent = "Todas as colunas estão disponíveis nesta tabela. Deslize horizontalmente ou use as setas com foco na tabela.";
@@ -12931,7 +13031,7 @@ function adaptaTabelasMoveis(raiz) {
 /* Piso tipográfico também dentro dos SVG (E4 da avaliação de 05/09): o texto
    de um gráfico escala com o viewBox, e um rótulo de 10 unidades num gráfico
    de 720 desenhado em 480 px vira 6,7 px. Quando a escala é menor que 1, o
-   svg ganha a variável que restitui o piso de 10,5 px renderizados; os
+   svg ganha a variável que restitui o piso de 12 px renderizados; os
    rótulos do eixo x, que já não cabiam, são rareados na mesma passada. */
 const FS_PISO_SVG = 12;
 function dimensionaSeries(raiz) {
@@ -12971,11 +13071,16 @@ function ajustaFonteSvg(raiz) {
       svg.classList.add("fs-piso");
       svg.style.setProperty("--svg-fs", (FS_PISO_SVG / escala).toFixed(2) + "px");
     } else { svg.classList.remove("fs-piso"); svg.style.removeProperty("--svg-fs"); }
-    const xl = svg.querySelectorAll("text.xl");
-    if (xl.length > 1) {
-      const larg = Math.max(...[...xl].map(t => (t.textContent || "").length)) * FS_PISO_SVG * 0.62 + 10;
-      const k = Math.max(1, Math.ceil(xl.length * larg / Math.max(w, 1)));
-      xl.forEach((t, i) => { t.style.display = i % k === 0 ? "" : "none"; });
+    const xl = [...svg.querySelectorAll("text.xl")];
+    if (xl.length) {
+      // Confere os intervalos efetivamente pintados, após fonte, escala e tradução
+      // das datas. Reabre todos antes de medir para também funcionar ao ampliar.
+      xl.forEach(t => { t.style.display = ""; });
+      const borda = svg.getBoundingClientRect();
+      const candidatos = xl.map(no => { const b = no.getBoundingClientRect(); return { no, inicio: b.left, fim: b.right }; })
+        .filter(r => r.inicio >= borda.left - .5 && r.fim <= borda.right + .5);
+      const visiveis = new Set(rotulosEixoSemColisao(candidatos).map(r => r.no));
+      xl.forEach(t => { t.style.display = visiveis.has(t) ? "" : "none"; });
     }
   });
 }
@@ -13014,11 +13119,11 @@ function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
   _rolagemAgendada = setTimeout(() => {
     const ativa = document.querySelector("section.view.active");
-    acessibilizaRolagem(ativa);
     adaptaTabelasMoveis(ativa);
+    acessibilizaRolagem(ativa);
     dimensionaSeries(ativa);
-    ajustaFonteSvg(ativa);
     datasNaTela(ativa);
+    ajustaFonteSvg(ativa);
     aplicaCapitulos();
   }, 120);
 }
@@ -13028,6 +13133,8 @@ window.addEventListener("resize", agendaAcessibilidade);
 document.addEventListener("DOMContentLoaded", () => {
   const alvo = document.getElementById("main");
   if (alvo && window.MutationObserver) new MutationObserver(agendaAcessibilidade).observe(alvo, { childList: true, subtree: true });
+  if (alvo && window.ResizeObserver) new ResizeObserver(() => acessibilizaRolagem(document.querySelector("section.view.active"))).observe(alvo);
+  document.fonts?.addEventListener("loadingdone", agendaAcessibilidade);
 });
 
 /* Trilha "Você está em" da barra comum (gerada em index.html por src/lib/observatorios/barraSpa.ts, com o índice dos
@@ -13139,6 +13246,12 @@ function guardarContinuidade() {
     } finally { clearTimeout(prazo); }
   }).catch(() => undefined);
 }
+
+// O menu é recriado a cada filtro; delegação preserva Escape em todas as vistas.
+document.addEventListener("keydown", e => {
+  const menu = e.target.closest?.(".ph-menu[open]");
+  if (e.key === "Escape" && menu) { e.preventDefault(); menu.open = false; menu.querySelector("summary").focus(); }
+});
 
 /* Seletor de observatório (details) da barra comum. Fecha com Esc (foco volta ao
    resumo), com clique fora e quando o foco sai do menu. */

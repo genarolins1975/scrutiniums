@@ -37,7 +37,7 @@ function regioes(nomeAlvo: string) {
 describe("fonte canônica: marcadores e despacho", () => {
   it("marcadores pareados e regiões não vazias", () => {
     expect(regioes("municipal").length).toBe(2);
-    expect(regioes("emergentes").length).toBe(1);
+    expect(regioes("emergentes").length).toBe(2);
   });
 
   it("RENDER despacha por nome e ensureChunk checa presença antes de buscar", () => {
@@ -50,7 +50,7 @@ describe("fonte canônica: marcadores e despacho", () => {
   it("cada rota de chunk tem o renderizador dentro da região do chunk certo", () => {
     const mapa: Record<string, string> = {
       pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
-      bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
+      sobre: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
     };
     for (const [view, chunk] of Object.entries(mapa)) {
       expect(app).toContain(`${view}: "${chunk}"`); // no CHUNK_OF_VIEW
@@ -77,7 +77,7 @@ describe("artefatos do build", () => {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
     for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
-      "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
+      "renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
@@ -87,7 +87,7 @@ describe("artefatos do build", () => {
     }
     // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário
     // Instituições (lista e ficha) foi para o chunk emergentes na v0.101.0; histogram e openInstPage ficam no core
-    for (const fn of ["renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
+    for (const fn of ["renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
       expect(eme.includes(`function ${fn}(`), fn).toBe(true);
     }
     for (const fn of ["histogram"]) {
