@@ -336,5 +336,84 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
       await expect.poll(() => page.locator('#px-epae h3').evaluate(e => { const top = e.getBoundingClientRect().top; return top > 72 && top < innerHeight; })).toBe(true);
     } finally { await page.close(); }
   }, 90_000);
+  it("matriz setorial preserva fluxos positivos pequenos, totais e limites de cor", async () => {
+    const page = await contexto.newPage();
+    const matriz = gold.epae_matriz.matriz as Record<string, Record<string, number | null>>;
+    const normalizar = (nome: string) => nome.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    const nomes = [...new Set([...Object.keys(matriz), ...Object.values(matriz).flatMap(row => Object.keys(row))])];
+    const chaves = new Map(nomes.map(nome => [normalizar(nome), nome]));
+    const fonteNome = (label: string) => chaves.get(normalizar(label.slice(label.indexOf(' — ') + 3)))!;
+    const numero = (texto: string) => Number(texto.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.'));
+    const positivos = Object.values(matriz).flatMap(row => Object.values(row)).filter((v): v is number => v !== null && v > 0);
+    try {
+      await page.goto(servidor.origem + '/observatorio/pix');
+      const card = page.locator('#px-epae .card').filter({hasText: 'Mapa de calor — setor pagador'});
+      await card.locator('table').waitFor();
+      const headers = await card.locator('thead th[aria-label]').evaluateAll(nodes => nodes.map(n => n.getAttribute('aria-label')!));
+      const colunas = headers.map(fonteNome);
+      expect(colunas.every(Boolean)).toBe(true);
+      const rows = await card.locator('tbody tr').evaluateAll(nodes => nodes.map(row => ({
+        pagador: row.querySelector('th')!.getAttribute('aria-label')!,
+        total: row.querySelector('th .src')!.textContent!,
+        cells: [...row.querySelectorAll(':scope > td')].map(td => ({texto: td.textContent!.trim(), dica: decodeURIComponent(td.getAttribute('data-tip') || '')})),
+      })));
+      let contagemPositiva = 0, pequenos = 0, zeros = 0, ausentes = 0;
+      for (const row of rows) {
+        const pagador = fonteNome(row.pagador);
+        expect(pagador).toBeTruthy();
+        const soma = Object.values(matriz[pagador]).reduce<number>((s, v) => s + (v || 0), 0);
+        if (soma > 0 && soma < 1) expect(numero(row.total)).toBeCloseTo(soma, 3);
+        for (const [i, cell] of row.cells.entries()) {
+          const valor = matriz[pagador][colunas[i]];
+          if (valor == null) { expect(cell.texto).toBe('·'); ausentes++; continue; }
+          if (valor === 0) { expect(numero(cell.texto)).toBe(0); expect(cell.texto).not.toBe('·'); zeros++; continue; }
+          contagemPositiva++;
+          expect(numero(cell.texto), `${pagador} → ${colunas[i]}`).toBeGreaterThan(0);
+          if (valor < 1) {
+            expect(numero(cell.texto)).toBeCloseTo(valor, 3);
+            expect(cell.dica).toContain(valor.toLocaleString('pt-BR', {minimumFractionDigits:3, maximumFractionDigits:3}) + ' bi');
+          }
+          if (valor < .005) pequenos++;
+        }
+      }
+      expect(contagemPositiva).toBe(positivos.length);
+      expect(pequenos).toBe(positivos.filter(v => v < .005).length);
+      expect(pequenos).toBeGreaterThan(0);
+      expect(zeros).toBeGreaterThan(0);
+      expect(ausentes).toBeGreaterThan(0);
+      expect(numero(await card.locator('[data-limite="min"]').innerText())).toBeCloseTo(Math.min(...positivos), 3);
+      expect(numero(await card.locator('[data-limite="max"]').innerText())).toBeCloseTo(Math.max(...positivos), 3);
+      expect(await card.innerText()).not.toContain('4 ordens');
+      const scroller = card.locator('.tblwrap');
+      await scroller.scrollIntoViewIfNeeded();
+      await page.evaluate(() => scrollBy(0, -120));
+      await scroller.evaluate(e => { e.scrollTop = 250; e.scrollLeft = 500; });
+      await expect.poll(() => card.evaluate(e => {
+        const canto = e.querySelector('thead th')!;
+        const r = canto.getBoundingClientRect();
+        const area = e.querySelector('.tblwrap')!.getBoundingClientRect();
+        const cabecalhos = [...e.querySelectorAll('thead th')].slice(1).filter(th => {
+          const b = th.getBoundingClientRect();
+          return b.left >= r.right && b.right <= area.right + 1;
+        });
+        return document.elementFromPoint(r.left + 12, r.top + 12)?.closest('th') === canto
+          && cabecalhos.length > 0 && cabecalhos.every(th => {
+            const b = th.getBoundingClientRect();
+            return b.top >= area.top - 1 && document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)?.closest('th') === th;
+          });
+      })).toBe(true);
+      for (const setor of ['Servicos domesticos', 'Organismos internacionais e outras instituicoes extraterritoriais', 'Outros']) {
+        await page.goto(servidor.origem + '/observatorio/pix?xsetorTE=' + encodeURIComponent(setor));
+        const painel = page.locator('#px-epae .card').filter({has: page.locator('h4', {hasText: '— de quais setores vem o dinheiro'})});
+        await painel.locator('.panbar').first().waitFor();
+        const barras = await painel.locator('.panbar').evaluateAll(nodes => nodes.map(n => ({nome:n.querySelector('span')!.textContent!, valor:n.querySelector('b')!.textContent!})));
+        for (const barra of barras) {
+          const key = chaves.get(normalizar(barra.nome))!;
+          const v = matriz[key][setor];
+          if (v != null && v > 0 && v < 1) { expect(numero(barra.valor)).toBeGreaterThan(0); expect(numero(barra.valor)).toBeCloseTo(v, 3); }
+        }
+      }
+    } finally { await page.close(); }
+  }, 90_000);
 
 });

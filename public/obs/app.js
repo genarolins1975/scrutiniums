@@ -1849,6 +1849,11 @@ function rotuloSetorPix(nome) {
     return correta ? (palavra[0] === palavra[0].toUpperCase() ? correta[0].toUpperCase() + correta.slice(1) : correta) : palavra;
   });
 }
+/* A gold setorial publica fluxos positivos a partir de 0,001 bilhão.
+   Abaixo de 1 bi, conservar três casas evita confundir fluxo pequeno com zero. */
+function pxValorSetorial(valor, casas = 1) {
+  return fmt.n(valor, Math.abs(valor) < 1 ? 3 : casas);
+}
 function pxAtualiza(mutacao) {
   const acao = document.activeElement?.getAttribute("onclick");
   const chaveDetalhe = d => {
@@ -2194,19 +2199,19 @@ function renderPix() {
     <div class="ov-2col-eq" style="margin-top:10px">
       <div class="card"><h4>O que as famílias pagam a cada setor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">Pix de pessoas físicas a cada seção da CNAE · ${fmt.my(EM.mes)} · % sobre o Pix PF→PJ (mesmo conceito do painel de bets)</div>
-        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(r.setor), r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
+        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(r.setor), r.v, maxPF, v2 => "R$ " + pxValorSetorial(v2) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${pxValorSetorial(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
         <div class="src">clique num setor para ver de quem ele recebe</div></div>
       <div class="card"><h4>${rotuloSetorPix(selTE.setor)} — de quais setores vem o dinheiro ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">matriz setor-pagador × setor-recebedor · ${fmt.my(EM.mes)} · R$ bilhões</div>
-        ${pagadores.map(([pag, v]) => panBar(rotuloSetorPix(pag), v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
+        ${pagadores.map(([pag, v]) => panBar(rotuloSetorPix(pag), v, maxPag, v2 => "R$ " + pxValorSetorial(v2) + " bi")).join("")}
         ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
         <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
     </div>
     ${(function(){
       /* Mapa de calor setor-pagador × setor-recebedor: a matriz inteira de uma
-         vez. Os valores variam 4 ordens de grandeza (PF→Comércio ~R$ 110 bi ×
-         fluxos de R$ 0,03 bi) — a COR usa escala logarítmica, declarada; o
-         número da célula é o valor real. */
+         vez. Os valores cobrem amplitudes muito distintas (fluxos grandes ×
+         fluxos pequenos) — a COR usa escala logarítmica, declarada; o
+         número da célula mostra o valor sem transformação logarítmica. */
       const pagadores2 = Object.keys(EM.matriz);
       const colSet = new Set();
       pagadores2.forEach(pg => Object.keys(EM.matriz[pg] || {}).forEach(rc => colSet.add(rc)));
@@ -2219,18 +2224,21 @@ function renderPix() {
       const todosV = [];
       linhas2.forEach(pg => cols2.forEach(rc => { const v2 = (EM.matriz[pg] || {})[rc]; if (v2 > 0) todosV.push(Math.log10(v2)); }));
       const logScale = panScale(todosV, "seq");
+      const limitesLog = todosV.length ? [Math.min(...todosV), Math.max(...todosV)] : [];
       const cel2 = (pg, rc) => {
         const v2 = (EM.matriz[pg] || {})[rc];
         if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
         const tip = encodeURIComponent(`<div class="tt-date">${pg} → ${rc}</div>
-          <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${fmt.n(v2, v2 < 1 ? 2 : 1)} bi</span></div>`);
-        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}"><span class="px-cell-value">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</span></td>`;
+          <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${pxValorSetorial(v2)} bi</span></div>`);
+        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}"><span class="px-cell-value">${pxValorSetorial(v2, v2 >= 10 ? 0 : 1)}</span></td>`;
       };
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
-        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · os números identificam os setores na legenda completa abaixo; deslize a tabela para comparar colunas</div>
-        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:var(--tipo-rotulo)"><thead>
+        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor usa escala logarítmica; os números mostram os valores sem transformação logarítmica · os identificadores numéricos indicam os setores na legenda completa abaixo; deslize a tabela para comparar colunas</div>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact px-setor-matriz" style="font-size:var(--tipo-rotulo)"><thead>
           <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface);width:100px;min-width:100px;max-width:112px;white-space:normal">Pagador ↓<br>Recebedor →</th>${cols2.map(rc => `<th scope="col" aria-label="${attr(idSetor(rc) + " — " + rotuloSetorPix(rc))}" style="min-width:44px;font-size:var(--tipo-rotulo)">${idSetor(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + rotuloSetorPix(pg))}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + rotuloSetorPix(pg))}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src" style="display:block">R$ ${pxValorSetorial(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="heatleg px-setor-escala" aria-label="Limites da escala logarítmica de cor">${limitesLog.length ? limitesLog.map((limite, i) => `<span><span class="lg" aria-hidden="true" style="background:${logScale(limite)}"></span> ${i ? "Máximo" : "Mínimo positivo"}: R$ <b data-limite="${i ? "max" : "min"}">${fmt.n(Math.pow(10, limite), 3)}</b> bi</span>`).join(" · ") : "Sem fluxos positivos para construir a escala."}</div>
+        <p class="src">Distâncias iguais na escala representam multiplicações iguais no valor. Zero publicado aparece como 0,000; ausência de publicação aparece como “·”.</p>
         <h5>Identificação dos setores</h5><ol class="px-setor-legenda">${setoresLegenda.map(nome => `<li><b>${idSetor(nome)}</b> ${rotuloSetorPix(nome)}</li>`).join("")}</ol>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
