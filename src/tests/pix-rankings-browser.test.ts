@@ -113,6 +113,11 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         }));
         expect(contencao).toEqual([]);
         const selo=cabecalhos.nth(3).locator('.seal');expect(await selo.getAttribute('data-natureza')).toBe('OBSERVADO');
+        expect(await selo.evaluate(e=>{
+          const texto=Array.from(e.childNodes).find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent?.trim())!;
+          const range=document.createRange();range.selectNodeContents(texto);
+          return Array.from(range.getClientRects()).filter(r=>r.width>0).length;
+        })).toBe(1);
         const rolagem=page.locator('#view-institutions .tblwrap').filter({has:page.locator('.inst-ranking')});
         const limites=await rolagem.evaluate(e=>({max:e.scrollWidth-e.clientWidth,passo:Math.max(40,e.clientWidth-40)}));
         const vistos=new Set<number>();

@@ -1481,4 +1481,4 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 /* Cabeçalhos do ranking acomodam nome e natureza em linhas independentes.
    O selo participa do tamanho da própria célula, sem avançar sobre a coluna seguinte. */
 .inst-ranking thead th { white-space:normal; vertical-align:top; }
-.inst-ranking thead th .seal { display:flex; width:fit-content; margin-top:4px; }
+.inst-ranking thead th .seal { display:flex; width:max-content; max-inline-size:none; white-space:nowrap; overflow-wrap:normal; margin-top:4px; }
