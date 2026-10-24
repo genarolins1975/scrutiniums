@@ -11189,6 +11189,7 @@ function renderMoradia() {
   }) + indice + abertura + achados
     + blocoMora + blocoOnde + blocoQuem + blocoPeso + blocoPot + blocoMet;
 
+  adaptaTabelasMoveis(el);
   agendaAcessibilidade();
 }
 
@@ -11620,6 +11621,7 @@ function renderConsignado() {
   // Esta rota pode renderizar novamente quando chega a malha municipal.
   // Ajustar antes de pintar evita um quadro de série desktop reduzida no celular.
   dimensionaSeries(el);
+  adaptaTabelasMoveis(el);
   agendaAcessibilidade();
 }
 
@@ -13118,7 +13120,7 @@ let _rolagemAgendada = 0;
 function adaptaTabelasMoveis(raiz) {
   if (!raiz) return;
   const tabular = raiz.matches("#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional");
-  if (tabular) raiz.querySelectorAll(TABELA_QUE_ROLA).forEach(t => {
+  if (tabular || raiz.matches("#view-moradia")) raiz.querySelectorAll(TABELA_QUE_ROLA).forEach(t => {
     const cont = document.createElement("div"); cont.className = "tblwrap";
     t.before(cont); cont.append(t);
   });

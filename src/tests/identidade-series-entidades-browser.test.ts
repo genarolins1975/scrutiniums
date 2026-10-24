@@ -82,7 +82,7 @@ describe.skipIf(!temBuild&&!exigirBuild)("Identidades completas de séries e ins
         }
         const keys=["saldo_total","inad_total"],names=keys.map(k=>pulse.series[k].meta.name);
         await expect.poll(async()=>(await payload(card)).series.map(s=>s.label)).toEqual(names);
-        expect(await card.locator(".legend > span").allTextContents()).toEqual(names);
+        expect((await card.locator(".legend > span").allTextContents()).map(texto=>texto.trim())).toEqual(names);
         expect(await glifosIntegrais(card.locator(".legend > span,.pulse-cmp-nome"))).toEqual([]);
         const d=await payload(card);
         for(let j=0;j<keys.length;j++){

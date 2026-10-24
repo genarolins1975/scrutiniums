@@ -108,7 +108,8 @@ describe.skipIf(!temBuild&&!exigirBuild)("Rankings municipais: identidade, reflo
         };
         await ativar(0,'Enter');await ativar(1,'Space');
         if(width<500)await ativar(atual.length-1,'touch');
-        expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+        const largura=await page.evaluate(()=>({documento:document.documentElement.scrollWidth,viewport:innerWidth}));
+        expect(largura.documento<=largura.viewport+1,`${caso.rota} ${width}px/${caso.fonte}px após seleção: documento=${largura.documento}px, viewport=${largura.viewport}px`).toBe(true);
       }
     });
   },240_000);
