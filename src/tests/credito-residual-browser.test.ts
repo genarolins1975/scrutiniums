@@ -173,7 +173,7 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
     } finally {await page.close();await limpo.close();}
   },90_000);
 
-  it("selos completos quebram com fonte duplicada sem recorte", async () => {
+  it("selos completos permanecem contidos com fonte duplicada", async () => {
     const page=await contexto.newPage();
     try {
       for(const width of [320,390,768,1440]) for(const rota of ['credit','payroll-lending-aging','pix','sectors','institutions','subnational-credit']) {
@@ -189,8 +189,14 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
           }).map(e=>({e,font:parseFloat(getComputedStyle(e).fontSize),line:parseFloat(getComputedStyle(e).lineHeight)}));
           for(const {e,font,line} of medidas){(e as HTMLElement).style.setProperty('font-size',font*2+'px','important');if(Number.isFinite(line))(e as HTMLElement).style.setProperty('line-height',line*2+'px','important');}
         });
-        const problemas=await page.locator('.view.active .seal').evaluateAll(nodes=>nodes.filter(e=>e.getBoundingClientRect().width>0).map(e=>({texto:e.textContent,scroll:e.scrollWidth,client:e.clientWidth,white:getComputedStyle(e).whiteSpace})).filter(e=>e.scroll>e.client+1||e.white==='nowrap'));
-        expect(problemas).toEqual([]);
+        // O selo pode ocupar uma linha intrínseca no TH; validar conteúdo, não a propriedade white-space.
+        const problemas=await page.locator('.view.active .seal').evaluateAll(nodes=>nodes.filter(e=>e.getBoundingClientRect().width>0&&e.checkVisibility({visibilityProperty:true})).map(e=>{
+          const box=e.getBoundingClientRect(),cell=e.closest('th,td')?.getBoundingClientRect(),walker=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let node:Node|null;const fora:string[]=[];
+          if(cell&&(box.left<cell.left-1||box.right>cell.right+1||box.top<cell.top-1||box.bottom>cell.bottom+1))fora.push('selo fora da célula');
+          while((node=walker.nextNode())){if(!node.textContent?.trim()||node.parentElement?.closest('.sr-only'))continue;const range=document.createRange();range.selectNodeContents(node);for(const r of Array.from(range.getClientRects()))if(r.width>0&&(r.left<box.left-1||r.right>box.right+1||r.top<box.top-1||r.bottom>box.bottom+1))fora.push(node.textContent);}
+          return{texto:e.textContent,scroll:e.scrollWidth,client:e.clientWidth,fora};
+        }).filter(e=>e.scroll>e.client+1||e.fora.length>0));
+        expect(problemas,`selos em ${rota}, ${width}px`).toEqual([]);
         await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), {message:`overflow em ${rota}, ${width}px`}).toBe(true);
         if(rota==='payroll-lending-aging'&&width===768){
           const scroll=page.locator('#cg-circ .tblwrap:has(> table.cgespec)');
