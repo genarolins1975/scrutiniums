@@ -77,6 +77,7 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
     hoje = hoje or datetime.now(timezone.utc).isoformat()
     execucoes = execucoes or {}
     registros, historicos = [], {}
+    metadados_credito_em = None
 
     def adicionar(dominio, id_, arquivo, fonte, referencia, captura, periodicidade, integridade,
                   prazo=None, falha=None, retida=False, snapshot=None):
@@ -91,7 +92,9 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
                           'captura': captura, 'publicacao': publicacao, 'periodicidade': periodicidade,
                           'prazo_existente': prazo, 'integridade_declarada': integridade, 'situacao': estado,
                           'historico': {'commit_anterior': anterior, 'snapshot': snapshot},
-                          'falha': falha or (execucao if retida else None), 'diagnostico': causa, 'acao': acao,
+                          'falha': falha or (execucao if retida else None),
+                          'falha_registrada_em': metadados_credito_em if dominio == 'credito' and falha else None,
+                          'diagnostico': causa, 'acao': acao,
                           'evidencia': arquivo, 'execucao': execucao or None,
                           'disponivel_na_origem': None})
 
@@ -112,6 +115,7 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
 
     meta_path = 'public/obs/data/gold/meta.json'
     meta = ler(root, meta_path); quality = ler(root, 'public/obs/data/gold/quality.json')
+    metadados_credito_em = meta.get('gerado_em')
     cfg = ler(root, 'config/config.json')
     falhas_sgs = {f['key']: f.get('erro') for f in meta.get('fontes_status', {}).get('bcb_sgs', {}).get('falhas', [])}
     for serie in cfg['sgs_series']:
@@ -137,6 +141,23 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
         for f in meta.get('fontes_status', {}).get(coletor, {}).get('falhas', []):
             adicionar('credito', f['key'], meta_path, {'orgao': 'CNJ / DJEN', 'url': cfg['djen']['base_url']},
                       None, None, 'janela móvel definida em config/config.json', None, falha=f.get('erro'))
+
+    # Fontes auxiliares também ficam visíveis; o erro pode pertencer a um snapshot retido.
+    auxiliares = [
+        ('datajud', 'CNJ / DataJud', cfg['datajud']['base_url'], 'janela mensal com meses parciais omitidos'),
+        ('pilar3', 'BCB / cadastro DASFN e instituições registradas',
+         'https://olinda.bcb.gov.br/olinda/servico/DASFN/versao/v1/odata/Recursos', 'trimestral'),
+        ('reclamacoes_consig', 'Senacon / consumidor.gov.br',
+         'https://www.consumidor.gov.br/pages/publicacao/externo/', 'mensal'),
+        ('trends_manual', 'Google Trends / arquivo manual documentado',
+         'https://trends.google.com/trends/', 'importação manual; sem SLA automático'),
+    ]
+    for coletor, orgao, url, periodicidade in auxiliares:
+        for falha in meta.get('fontes_status', {}).get(coletor, {}).get('falhas', []):
+            chave = falha['key']
+            adicionar('credito', coletor+':'+chave, meta_path, {'orgao': orgao, 'url': url},
+                      quality.get(chave, {}).get('ultima_ref'), None, periodicidade, None,
+                      falha=falha.get('erro'))
 
     arquivo = 'src/lib/contas-publicas/snapshots/dados.json'; d = ler(root, arquivo)
     adicionar('rtn', 'rtn', arquivo, {'orgao': 'Tesouro Nacional', 'url': d['fonteRTN']}, d['referenciaRTN'],

@@ -24,9 +24,9 @@ python3 -m unittest pipeline.tests.test_monitorar_atualizacoes -v
 python3 scripts/monitorar_atualizacoes.py --consultar-execucoes --saida /tmp/monitoramento
 ```
 
-[Notificações](notificacoes-testes.txt): 38 testes aprovados em três arquivos, com serviços simulados; nenhum envio real. [Monitoramento](monitoramento-testes.txt): quatro testes aprovados. [Inventário capturado](inventario.json): 324 registros; 3 dentro do prazo existente, 304 retidos e 17 sem diagnóstico suficiente. Essas contagens são de registros/proveniências, não de coleções únicas. “Atual” significa dentro do prazo existente, sem comprovar ausência de edição mais recente.
+[Notificações](notificacoes-testes.txt): 38 testes aprovados em três arquivos, com serviços simulados; nenhum envio real. [Monitoramento](monitoramento-testes.txt): cinco testes aprovados. [Inventário capturado](inventario.json): 373 registros; 3 dentro do prazo existente, 312 retidos e 58 sem diagnóstico suficiente. Essas contagens são de registros/proveniências, não de coleções únicas. “Atual” significa dentro do prazo existente, sem comprovar ausência de edição mais recente.
 
-O inventário cobre proveniências publicadas de Energia, 142 séries SGS, grupos críticos e falhas DJEN. Metadados ausentes permanecem nulos; geração, captura, commit e produção não são confundidos. A data de produção permanece nula porque não foi homologada. Não é certificação de integridade: testes declarados nos metadados são identificados como tal.
+O inventário cobre proveniências publicadas de Energia, 142 séries SGS, grupos críticos, falhas DJEN e fontes auxiliares DataJud, Pilar 3, reclamações e Trends manual. Metadados ausentes permanecem nulos; geração, captura, commit e produção não são confundidos. A data de produção permanece nula porque não foi homologada. Não é certificação de integridade: testes declarados nos metadados são identificados como tal.
 
 ## Dependência externa e instrução ao mantenedor
 
@@ -38,3 +38,7 @@ O inventário cobre proveniências publicadas de Energia, 142 séries SGS, grupo
 A publicação de dados permanece independente das notificações. Nenhuma fórmula, base, regra de acesso ou dado publicado foi alterado. Não houve merge nem deploy.
 
 `npm run verificar:rapido` aprovado: lint, tipos, cobertura e 1.452 testes afetados (79 ignorados pelo modo sem build). [Log](rapido.txt). A primeira tentativa falhou porque o clone não tinha a referência origin/main; a referência foi obtida e o comando completo foi repetido.
+
+As falhas de Crédito incluem `falha_registrada_em`: o bloco de coleta retido é de 18/10, não prova de falha ativa em 24/10. A atualidade do diagnóstico é separada da data desta auditoria.
+
+[Relatório executivo da missão e limites de homologação](RELATORIO.md). [Suíte completa da integração inicial](integracao-completo.txt): aprovada, com 9.515 testes Vitest e 224 verificações do Judiciário.

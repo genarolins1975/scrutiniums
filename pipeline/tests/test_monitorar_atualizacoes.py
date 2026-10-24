@@ -20,6 +20,17 @@ class Monitoramento(unittest.TestCase):
         self.assertIsNone(prazo_vintage('2026-08', 'fonte_sem_contrato'))
         self.assertEqual(prazo_vintage('2026-08', 'sgs'), '2026-11-15')
 
+    def test_falhas_auxiliares_identificam_data_do_registro_sem_simular_coleta_atual(self):
+        r = relatorio(hoje='2026-10-24')
+        for prefixo in ['pilar3:', 'datajud:', 'trends_manual:', 'reclamacoes_consig:']:
+            registros = [x for x in r['registros'] if x['id'].startswith(prefixo)]
+            self.assertTrue(registros, prefixo)
+            for x in registros:
+                self.assertTrue(x['falha'])
+                self.assertTrue(x['falha_registrada_em'])
+                self.assertIsNone(x['captura'])
+                self.assertIsNone(x['disponivel_na_origem'])
+
     def test_relatorio_preserva_grupos_e_separa_producao(self):
         r = relatorio(hoje='2026-10-24', execucoes={'credito': {'retida': True}, 'energia': {'retida': True}})
         pix = next(x for x in r['registros'] if x['id'] == 'pix')
