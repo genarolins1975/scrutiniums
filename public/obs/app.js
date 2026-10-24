@@ -316,7 +316,7 @@ const VIEW_DATA = {
   desenrola: ["desenrola", "pulse", "regulacao"],
   penetracao: ["penetracao", "penetracao_mun", "penetracao_malha"],
   moradia: ["moradia", "moradia_mun", "penetracao_malha"],
-  consignado: ["consignado", "consignado_mun", "penetracao_malha", "geometria_uf", "regulacao"],
+  consignado: ["consignado", "consignado_mun", "penetracao_malha", "regulacao"],
   openfinance: ["openfinance"],
   scenarios: ["scenario", "institutions"],
   alerts: ["sectors", "scenario", "quality"],
@@ -361,9 +361,9 @@ function metaDaPagina(view = currentView()) {
    o .json() estoura e, sem o teste de r.ok, o screener entrava em refetch
    infinito (auditoria de 06/09/2026, achado T1). */
 const GOLD_FALHAS = {};
-async function fetchGold(f) {
+async function fetchGold(f, caminho = `${DATA_BASE}${f}.json`) {
   try {
-    const r = await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`);
+    const r = await fetch(`${caminho}?v=${APP_VERSION}`);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     state.data[f] = await r.json();
     delete GOLD_FALHAS[f];
@@ -373,11 +373,14 @@ function goldIndisponivel(oque, f) {
   return `<div class="card" style="margin-top:20px"><p class="src">${oque} indisponível nesta carga (${attr(GOLD_FALHAS[f] || "arquivo não veio")}). A última publicação íntegra continua nas demais abas; recarregue a página para tentar de novo.</p></div>`;
 }
 async function loadAll() {
-  await Promise.all(CORE_FILES.map(fetchGold));
+  await Promise.all(CORE_FILES.map(f => fetchGold(f)));
 }
 async function ensureData(v) {
   const need = (VIEW_DATA[v] || []).filter(f => state.data[f] === undefined);
-  if (need.length) await Promise.all(need.map(fetchGold));
+  const cargas = need.map(f => fetchGold(f));
+  // Contornos são um recurso cartográfico estático, fora do ciclo de publicação dos indicadores gold.
+  if (v === "consignado" && state.data.geometria_uf === undefined) cargas.push(fetchGold("geometria_uf", "/obs/geo/uf.json"));
+  if (cargas.length) await Promise.all(cargas);
 }
 
 /* Marcos regulatórios transversais (gold regulacao.json) como marcadores
@@ -3646,7 +3649,7 @@ function renderOverview() {
   const cfgLazy = ovBlocosCfg();
   const faltam = [...new Set(OV_BLOCOS.filter(([k]) => cfgLazy[k]).flatMap(([k]) => OV_BLOCO_DATA[k] || []))]
     .filter(f => state.data[f] === undefined);
-  if (faltam.length) Promise.all(faltam.map(fetchGold)).then(() => { if (currentView() === "overview") renderOverview(); });
+  if (faltam.length) Promise.all(faltam.map(f => fetchGold(f))).then(() => { if (currentView() === "overview") renderOverview(); });
   const seg = state.filters.seg;
   // fetchGold marca null quando o gold falha; com filtro de segmento salvo no
   // localStorage, o acesso encadeado sem guarda derrubava a Visão geral inteira.

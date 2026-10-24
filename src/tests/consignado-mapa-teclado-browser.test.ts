@@ -9,7 +9,10 @@ describe.skipIf(!temBuild&&!exigirBuild)("Mapa municipal: alternativa completa p
  it("busca abre perfis fora do ranking, compara e retorna sem milhares de paradas",async()=>{
   const browser=await chromium.launch({channel:"chromium",executablePath:process.env.I18N_CHROMIUM_EXECUTABLE});const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:"reduce"});await context.addCookies([{name:"scrutiniums_session",value:servidor.cookie,url:servidor.origem}]);const page=await context.newPage();const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));
   try{
+   const geometria = page.waitForResponse(r=>new URL(r.url()).pathname==="/obs/geo/uf.json");
    await page.goto(servidor.origem+"/observatorio/payroll-lending-aging");await page.locator("#cg-mapa .penmapa path[onclick]").first().waitFor();
+   expect((await geometria).status()).toBe(200);
+   expect(await page.locator("#cg-mapa .penmapa .geo-limites > path").count()).toBe(27);
    const base=JSON.parse(readFileSync("public/obs/data/gold/consignado_mun.json","utf8")).municipios as Array<{c:string;n:string;uf:string;sel:string;p60:number|null}>;
    const ranking=await page.locator("#cg-mapa .penrank button").evaluateAll(bs=>bs.map(b=>b.getAttribute("onclick")));
    const alvos=base.filter(m=>m.sel!=="baixa"&&!ranking.includes(`cgSel('${m.c}')`)).slice(0,2);expect(alvos).toHaveLength(2);
