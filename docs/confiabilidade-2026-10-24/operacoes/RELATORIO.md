@@ -4,7 +4,18 @@
 
 Base auditada: `7d4c2ee77282c0d6c22fd3902869b9d2ac82cd7f`. O ambiente original e os arquivos de Famílias do usuário foram preservados.
 
-## Tabela executiva
+## Atualização: homologação contra as fontes reais (24/10/2026, 10:30 a 12:30 UTC)
+
+Nesta segunda etapa a rede alcançou BCB, Tesouro, IBGE (SIDRA), ANEEL, ONS, Open-Meteo e os logs e artefatos do GitHub. CCEE, DJEN e o endpoint `servicodados` do IBGE continuaram recusando. Os bloqueios de rede 1 e 2 da lista abaixo deixaram de valer para esta sessão. Nenhum PR foi integrado, nenhum dado publicado e nenhuma notificação enviada.
+
+| Domínio | O que a fonte real mostrou | Estado | Depende de |
+|---|---|---|---|
+| Setor Elétrico | As 9 falhas da candidata retida foram reproduzidas. Causa principal: o SIGA diário da ANEEL de 23/10 deixou de trazer CNPJ dos proprietários (0 de 25.058 linhas), o que explica 5 delas. As demais: tarifas com vigência encerrada e troca de sigla, chuva prevista negativa no Open-Meteo, um texto acima de 40 palavras, teste do PLD sem o caso de quatro valores iguais (corrigido no [PR #376](https://github.com/genarolins1975/scrutiniums/pull/376)) | Retenção correta; gold ainda em 30/09 e 01/10 | Quatro decisões do dono ([detalhe](../energia/README.md)) |
+| RTN | Agosto/2026 publicado em 29/09; identidades com resíduo zero; IPCA de agosto pelo SIDRA = 7.633,23; retificação de pessoal de julho (R$ 20,1 milhões a menos). O vigia não reconhecia o título real da edição; corrigido no [PR #377](https://github.com/genarolins1975/scrutiniums/pull/377) | Atualização pronta para preparar; snapshot ainda em julho/2026 | Decisão sobre o SIDRA como origem do IPCA; parametrizar a URL no importador ([detalhe](../rtn/README.md)) |
+| Crédito | 11 coletores reais: falhas de SGS, DJEN, IF.data e DataJud retidas sem apagar dado. Desenrola com tipo 4 não documentado. Dez grupos parados na main desde 22/10 por um 0,00% que o próprio BCB publica (BCO RNX, semana de 02/10) | Comportamento do PR homologado; coleta completa não homologada | Duas decisões do dono ([detalhe](../credito/README.md)) |
+| Notificações | Logs lidos: `BOLETIM_SECRET` vazio no GitHub Actions em 22 de 22 execuções do resumo e 4 de 4 dos alertas, desde 13/10; nenhuma requisição saiu | Causa confirmada no GitHub; Vercel não verificada | O mantenedor cadastrar o secret ([detalhe](README.md)) |
+
+## Tabela executiva (primeira etapa)
 
 | Problema | Causa demonstrada | Correção | Testes | Situação final do domínio |
 |---|---|---|---|---|

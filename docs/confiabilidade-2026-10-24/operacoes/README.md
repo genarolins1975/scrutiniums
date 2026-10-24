@@ -4,6 +4,10 @@
 
 As execuções [resumo 40042804768](https://github.com/genarolins1975/scrutiniums/actions/runs/40042804768) e [alertas 39982207894](https://github.com/genarolins1975/scrutiniums/actions/runs/39982207894) falharam no envio. Os workflows exigem BOLETIM_SECRET com pelo menos 16 caracteres e o mesmo valor no destino. **A causa dessas duas execuções não foi reconfirmada**: o download dos logs foi bloqueado pelo proxy e a integração não tem permissão para listar metadados de secrets (HTTP 403). Ausência histórica do segredo é hipótese, não diagnóstico atual comprovado.
 
+**Reconfirmação em 24/10/2026, 10:50 UTC (logs lidos nesta sessão).** Nas duas execuções acima, o passo de envio mostra `BOLETIM_SECRET:` vazio no ambiente do job e para na guarda do próprio workflow ("BOLETIM_SECRET ausente ou com menos de 16 caracteres no GitHub Actions"), com código 1, antes do `curl`. O mesmo ocorre na primeira execução do resumo, [38450968466](https://github.com/genarolins1975/scrutiniums/actions/runs/38450968466), de 13/10/2026. Pela API de execuções: **22 de 22 execuções do resumo e 4 de 4 dos alertas falharam**, de 13/10 a 24/10/2026; nenhuma teve sucesso. Os workflows mapeiam `secrets.BOLETIM_SECRET` sem `environment`, portanto o valor vem dos secrets de Actions do repositório.
+
+Evidência: o secret não está disponível para esses workflows no GitHub Actions desde a criação deles, e nenhuma requisição desses workflows chegou a `scrutiniums.com`. Não verificado: a variável na Vercel (sem acesso) e a lista de nomes de secrets (a API respondeu 403 a esta integração). Inferência: a causa das falhas é a configuração no GitHub, não o endpoint nem o provedor de e-mail. Com este PR integrado e o secret ainda ausente, o resumo termina em erro explícito (`scripts/disparar_resumo.py`) e os alertas na mesma guarda, sem envio.
+
 No código, o resumo devolvia HTTP 200 mesmo quando o provedor falhava; faltavam teto de duração e simulação sem efeitos. Os alertas já tinham orçamento de tempo e passam a compartilhar o modo de simulação. A autenticação existente foi preservada.
 
 ## Correção
