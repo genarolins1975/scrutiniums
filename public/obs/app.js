@@ -5,7 +5,7 @@
 "use strict";
 
 /* ---------- estado, filtros persistentes e roteamento ---------- */
-const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", transf: "nivel", instGroup: "todos", sortInst: "ativo" };
+const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", transf: "nivel", instGroup: "todos", instTipo: "todos", sortInst: "ativo" };
 const CMP_DEFAULT_METS = ["ativo_total", "patrimonio_liquido", "carteira_credito", "carteira_pf", "carteira_pj",
   "captacoes", "lucro_liquido", "roe_periodo", "npl_pct", "ativos_problematicos_pct", "provisao_credito",
   "cobertura_pct", "indice_basileia", "indice_capital_principal", "cart_ativo_pct"];
@@ -39,12 +39,13 @@ state.sn = { cred: "12m", uf: "valor", serie: "valor", dv: "dcl_rcl_pct" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
-state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
+const PX_DEFAULTS = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
   gmet: "q_hab", gpersp: "pag", setor: null, munq: "" };
+state.px = { ...PX_DEFAULTS, insts: PX_DEFAULTS.insts.slice() };
 
 function loadLS(k, dflt) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : dflt; } catch (e) { return dflt; } }
 function saveLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-function setFilter(k, v) { state.filters[k] = v; saveLS("obc_filters", state.filters); syncHash(); rerenderCurrent(); }
+function setFilter(k, v) { comFocoPreservado(() => { state.filters[k] = v; saveLS("obc_filters", state.filters); syncHash(); rerenderCurrent(); }); }
 
 const ROUTES = { mapa: "/map", overview: "/overview", pulse: "/credit",
   sectors: "/sectors", rj: "/recoveries", institutions: "/institutions", inst: "/institutions/",
@@ -89,7 +90,12 @@ function buildQuery(view) {
   if (f.seg !== "total") qs.set("seg", f.seg);
   if (f.range !== 60) qs.set("range", f.range);
   if (f.growth !== "nominal") qs.set("growth", f.growth);
+  if (view === "pulse" && f.transf !== "nivel") qs.set("transf", f.transf);
   if (f.instGroup !== "todos") qs.set("grupo", f.instGroup);
+  if (view === "institutions") {
+    if (f.instTipo && f.instTipo !== "todos") qs.set("tipo", f.instTipo);
+    if (f.sortInst !== "ativo") qs.set("ordem", f.sortInst);
+  }
   if (!PATH_MODE) { // em modo hash, o código vai na query (#inst?cod=…)
     if (view === "inst" && f.instCod) qs.set("cod", f.instCod);
     if (view === "sector" && f.sectorCod) qs.set("cod", f.sectorCod);
@@ -110,6 +116,12 @@ function buildQuery(view) {
     if (state.jud.ramo !== "civel") qs.set("jramo", state.jud.ramo);
     if (state.jud.ordem !== "bruto") qs.set("jordem", state.jud.ordem);
   }
+  if (view === "subnacional" && state.sn) {
+    for (const k of ["cred", "uf", "serie", "dv"]) qs.set("sn" + k, state.sn[k]);
+  }
+  if (view === "consignado" && state.cg) {
+    for (const k of ["cam", "regiao", "conf"]) if (state.cg[k]) qs.set("cg" + k, state.cg[k]);
+  }
   if (view === "pix" && state.px) {
     if (state.px.modo !== "nivel") qs.set("xmodo", state.px.modo);
     if (state.px.val !== "nominal") qs.set("xval", state.px.val);
@@ -117,6 +129,8 @@ function buildQuery(view) {
     if (state.px.gmet !== "q_hab") qs.set("xgmet", state.px.gmet);
     if (state.px.gpersp !== "pag") qs.set("xpersp", state.px.gpersp);
     if (state.px.setor) qs.set("xsetor", state.px.setor);
+    for (const k of ["hmnat", "natpag", "usnat", "gnat", "setorTE"]) if (state.px[k]) qs.set("x" + k, state.px[k]);
+    qs.set("xinsts", state.px.insts.join("."));
   }
   if (view === "market" && state.mkt) {
     if (state.mkt.tab !== "acoes") qs.set("mtab", state.mkt.tab);
@@ -153,11 +167,24 @@ function syncHash() {
   }
 }
 function parseHash() {
+  if (currentView() === "pix") state.px = { ...PX_DEFAULTS, insts: PX_DEFAULTS.insts.slice() };
   const qs = new URLSearchParams(PATH_MODE ? location.search : (location.hash.split("?")[1] || ""));
   if (qs.get("seg")) state.filters.seg = qs.get("seg");
   if (qs.get("range")) state.filters.range = parseInt(qs.get("range"), 10);
   if (qs.get("growth")) state.filters.growth = qs.get("growth");
+  if (currentView() === "pulse") {
+    // Uma URL compartilhada descreve o recorte sem herdar preferências de outra visita.
+    for (const [k, valores] of Object.entries({ seg: ["total", "pf", "pj"], growth: ["nominal", "real"], transf: ["nivel", "yoy", "b100", "real"] })) {
+      state.filters[k] = valores.includes(qs.get(k)) ? qs.get(k) : valores[0];
+    }
+    state.filters.range = [24, 60, 200].includes(Number(qs.get("range"))) ? Number(qs.get("range")) : 60;
+  }
   if (qs.get("grupo")) state.filters.instGroup = qs.get("grupo");
+  if (currentView() === "institutions") {
+    for (const [k, param, valores] of [["instGroup", "grupo", ["todos", "S?", "S1", "S2", "S3", "S4", "S5"]], ["instTipo", "tipo", ["todos", "banco", "coop", "naobanco"]], ["sortInst", "ordem", ["ativo", "inad", "deterioracao", "nome"]]]) {
+      state.filters[k] = valores.includes(qs.get(param)) ? qs.get(param) : valores[0];
+    }
+  }
   if (qs.get("sec")) state._secAlvo = qs.get("sec"); // permalink de seção (P2)
   if (!PATH_MODE) { // deep-link local: #inst?cod=… / #sector?cod=… / #product?slug=…
     if (qs.get("cod") && currentView() === "inst") state.filters.instCod = qs.get("cod");
@@ -165,6 +192,17 @@ function parseHash() {
     if (qs.get("slug") && currentView() === "product") state.filters.productSlug = qs.get("slug");
     if (qs.get("cod") && currentView() === "presmun") state.filters.presCod = qs.get("cod");
     if (qs.get("uf") && currentView() === "estado") state.filters.ufSel = qs.get("uf").toUpperCase();
+  }
+  if (currentView() === "consignado") {
+    state.cg = { ...(state.cg || {}) };
+    for (const [k, valores] of Object.entries({ cam: ["p60", "env", "ben100_60", "v_hab", "peso", "prural", "pass", "cons_ben", "indice"], regiao: ["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"], conf: ["exclui_baixa", "todas"] })) {
+      state.cg[k] = valores.includes(qs.get("cg" + k)) ? qs.get("cg" + k) : valores[0];
+    }
+  }
+  if (currentView() === "subnacional") {
+    for (const [k, valores] of Object.entries({ cred: ["12m", "60m"], uf: ["valor", "valor_hab", "n"], serie: ["valor", "n"], dv: ["dcl_rcl_pct", "dcl", "dcl_hab", "uniao_share_pct", "uso_limite_pct"] })) {
+      state.sn[k] = valores.includes(qs.get("sn" + k)) ? qs.get("sn" + k) : valores[0];
+    }
   }
   // estado do comparador via URL (compartilhável)
   if (qs.get("insts")) state.cmp.insts = qs.get("insts").split(".").filter(Boolean).slice(0, 10);
@@ -196,6 +234,12 @@ function parseHash() {
   if (qs.get("xgmet")) state.px.gmet = qs.get("xgmet");
   if (qs.get("xpersp")) state.px.gpersp = qs.get("xpersp");
   if (qs.get("xsetor")) state.px.setor = qs.get("xsetor");
+  for (const [k, permitidos] of Object.entries({ hmnat: ["q", "v", "t"], natpag: ["todos", "pf", "pj"], usnat: ["ambas", "total", "pf", "pj"], gnat: ["total", "pf", "pj"] })) {
+    const valor = qs.get("x" + k);
+    state.px[k] = permitidos.includes(valor) ? valor : permitidos[0];
+  }
+  if (qs.get("xsetorTE")) state.px.setorTE = qs.get("xsetorTE");
+  if (qs.get("xinsts")) { const insts = qs.get("xinsts").split(".").filter(i => Object.hasOwn(PX_COLORS, i)); if (insts.length) state.px.insts = insts; }
   if (qs.get("mtab")) state.mkt.tab = qs.get("mtab");
   if (qs.get("mmodo")) state.mkt.modo = qs.get("mmodo");
   if (qs.get("memp")) state.mkt.emp = qs.get("memp");
@@ -237,7 +281,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.124.0";
+const APP_VERSION = "0.126.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -784,7 +828,7 @@ function sealFor(tipo) {
 function qBadge(q) {
   if (!q) return "";
   const c = q.score >= 80 ? "q-high" : q.score >= 60 ? "q-mid" : "q-low";
-  return `<span class="qbadge ${c}" title="completude ${q.componentes.completude} · atualidade ${q.componentes.atualidade} · histórico ${q.componentes.historico} · estabilidade ${q.componentes.estabilidade} · transparência ${q.componentes.transparencia}">qualidade ${q.score}</span>`;
+  return `<span class="qbadge ${c}" title="completude ${q.componentes.completude} · atualidade ${q.componentes.atualidade} · histórico ${q.componentes.historico} · estabilidade ${q.componentes.estabilidade} · transparência ${q.componentes.transparencia}">qualidade ${fmt.n(q.score, 1)}</span>`;
 }
 function confBadge(level, motivo) {
   const c = level === "alta" ? "q-high" : level === "moderada" ? "q-mid" : "q-low";
@@ -847,7 +891,7 @@ function posRender(v) {
     state._secAlvo = null;
     requestAnimationFrame(() => {
       const n = document.getElementById(alvo);
-      if (n) { n.scrollIntoView({ block: "start" }); n.classList.add("sec-alvo"); setTimeout(() => n.classList.remove("sec-alvo"), 2400); }
+      if (n) { rolarSecao(n); n.classList.add("sec-alvo"); setTimeout(() => n.classList.remove("sec-alvo"), 2400); }
     });
   }
   if (window.__EMBED__) embRecorta(v);
@@ -878,14 +922,14 @@ function embRecorta(v) {
 }
 function favStar(type, key, label) {
   const isFav = state.favorites.some(f => f.type === type && f.key === key);
-  return `<button class="star ${isFav ? "on" : ""}" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${attr(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
+  return `<button class="star ${isFav ? "on" : ""}" aria-pressed="${isFav}" aria-label="${attr(label || key)}: ${isFav ? "remover dos" : "salvar nos"} favoritos" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${attr(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
 }
-window.toggleFav = (type, key, el, label) => {
+window.toggleFav = (type, key, el, label) => comFocoPreservado(() => {
   const i = state.favorites.findIndex(f => f.type === type && f.key === key);
   if (i >= 0) state.favorites.splice(i, 1); else state.favorites.push({ type, key, label });
   saveLS("obc_favs", state.favorites);
   rerenderCurrent();
-};
+});
 
 /* ---------- gráficos SVG ---------- */
 /* cores legadas → tokens (permite dark mode sem tocar em cada chamada) */
@@ -905,6 +949,18 @@ function leitura(itens) {
   return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
 }
 
+/* As extremidades ocupam intervalos inteiros, não metades: a primeira data
+   ancora à esquerda e a última à direita. A seleção só rareia os rótulos. */
+function rotulosEixoSemColisao(rotulos, folga = 12) {
+  if (rotulos.length < 2) return rotulos;
+  const primeiro = rotulos[0], ultimo = rotulos[rotulos.length - 1];
+  if (primeiro.fim + folga > ultimo.inicio) return [ultimo];
+  const visiveis = [primeiro];
+  for (const r of rotulos.slice(1, -1)) {
+    if (r.inicio >= visiveis[visiveis.length - 1].fim + folga && r.fim + folga <= ultimo.inicio) visiveis.push(r);
+  }
+  return [...visiveis, ultimo];
+}
 function lineChart(opts) {
   const W = opts.w || 720, H = opts.h || 240;
   const all = [];
@@ -922,11 +978,11 @@ function lineChart(opts) {
   // séries não negativas (contagens, valores) não devem ganhar eixo negativo pelo respiro
   if (!useLog && opts.lo0 !== false && lo < 0 && Math.min(...all) >= 0) lo = 0;
   const dec = opts.dec != null ? opts.dec : (Math.abs(Tinv(hi)) > 200 ? 0 : Math.abs(Tinv(hi)) > 20 ? 1 : 2);
-  const ticks = 4, tickVals = [], tickLbls = [];
+  const ticks = H < 120 ? 2 : 4, tickVals = [], tickLbls = [];
   for (let i = 0; i <= ticks; i++) { const v = lo + (hi - lo) * i / ticks; tickVals.push(v); tickLbls.push(fmt.n(Tinv(v), dec)); }
   // margem esquerda dinâmica: nunca truncar rótulos do eixo Y
   const maxLbl = Math.max(...tickLbls.map(t => t.length));
-  const M = { t: 14, r: opts.endLabels ? 100 : 16, b: 26, l: Math.max(40, 12 + maxLbl * 6.3) };
+  const M = { t: 14, r: opts.endLabels ? 132 : 16, b: 26, l: Math.max(40, 12 + maxLbl * 7.6) };
   const allX = [...new Set(opts.series.flatMap(s => s.pts.map(p => p.x)).concat(opts.band ? opts.band.pts.map(p => p.x) : []))].sort();
   // Mais de uma observação no mesmo mês exige a data completa; não agregar nem mudar a série.
   const dailyDates = allX.some((x, i) => i > 0 && /^\d{4}-\d{2}-\d{2}$/.test(x) && x.slice(0, 7) === allX[i - 1].slice(0, 7));
@@ -955,12 +1011,14 @@ function lineChart(opts) {
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${y}" y2="${y}" style="stroke:var(--c-grid)"/>`;
     out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="12" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
   }
-  const step = Math.max(1, Math.floor(allX.length / 6));
-  for (let i = 0; i < allX.length; i += step) {
-    const tx = X(allX[i]);
-    // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
-    const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="12" style="fill:var(--c-axis-text)">${dateLabel(allX[i])}</text>`;
+  const rotulosX = allX.map((x, i) => {
+    const texto = dateLabel(x), tx = X(x), largura = texto.length * 7.6;
+    const ancora = i === 0 ? "start" : i === allX.length - 1 ? "end" : "middle";
+    const inicio = tx - (ancora === "end" ? largura : ancora === "middle" ? largura / 2 : 0);
+    return { texto, tx, ancora, inicio, fim: inicio + largura };
+  });
+  for (const r of rotulosEixoSemColisao(rotulosX)) {
+    out += `<text class="xl" x="${r.tx}" y="${H - 8}" text-anchor="${r.ancora}" font-size="12" style="fill:var(--c-axis-text)">${r.texto}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -971,7 +1029,7 @@ function lineChart(opts) {
   if (opts.forecastStart != null && allX.includes(opts.forecastStart)) {
     const x = X(opts.forecastStart);
     out += `<line x1="${x}" x2="${x}" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--c-axis)" stroke-dasharray="2,3"/>`;
-    out += `<text x="${x + 5}" y="${M.t + 9}" font-size="12" style="fill:var(--c-axis-text)">início da previsão</text>`;
+    out += `<text text-anchor="end" x="${Math.min(W - M.r, x + 5)}" y="${M.t + 9}" font-size="12" style="fill:var(--c-axis-text)">início da previsão</text>`;
   }
   (opts.annotations || []).forEach((an, ai) => {
     if (!allX.includes(an.x)) return;
@@ -980,13 +1038,14 @@ function lineChart(opts) {
     // alturas alternadas (quatro faixas) e âncora invertida perto da borda direita: rótulos não se sobrepõem
     const aTy = M.t + 10 + (ai % 4) * 12;
     const aRight = ax > W - M.r - 90;
-    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="12" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
+    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="12" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${ai + 1}</text>`;
   });
   (opts.hlines || []).forEach(hl => {
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="12" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
   });
   opts.series.forEach((s, si) => {
-    const d = s.pts.filter(p => p.y != null).map((p, i) => `${i ? "L" : "M"}${X(p.x)},${Y(p.y)}`).join(" ");
+    let continua = false;
+    const d = s.pts.map(p => { if (p.y == null) { continua = false; return ""; } const cmd = continua ? "L" : "M"; continua = true; return `${cmd}${X(p.x)},${Y(p.y)}`; }).join(" ");
     out += `<path class="serie s${si}" d="${d}" fill="none" style="stroke:${ccol(s.color)}" stroke-width="${s.w || 1.8}" stroke-linejoin="round" stroke-linecap="round" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""}/>`;
   });
   // rótulos DIRETOS no fim de cada linha: nome curto na cor da série, com
@@ -1026,14 +1085,15 @@ function lineChart(opts) {
   out += `<g class="xhair"><line x1="0" x2="0" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--c-axis)" stroke-width="1"/>`;
   seriesData.forEach((s, si) => { out += `<circle class="c${si}" r="3.4" style="fill:${s.color};stroke:var(--c-halo);stroke-width:1.5" cx="-20" cy="-20"/>`; });
   out += `</g></svg>`;
+  if (opts.annotations?.length) out += `<ol class="chart-annotations">${opts.annotations.map(an => `<li>${dateLabel(an.x)}: ${an.label}</li>`).join("")}</ol>`;
   // alternativa tabular acessível (WCAG): mesmos dados do gráfico
   if (!opts.noTable) {
     const heads = opts.series.map((sx, i) => sx.label || "série " + (i + 1));
-    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><thead><tr><th>Período</th>${heads.map(h2 => `<th style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th style='text-align:right'>banda p10</th><th style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
+    out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:260px"><table class="data compact"><caption>${attr(opts.fonte || "Série apresentada")} · ${attr(opts.unit || "unidade indicada no título")}${opts.status ? " · " + attr(opts.status) : ""} · ${dateLabel(allX[0])} a ${dateLabel(allX[allX.length - 1])}</caption><thead><tr><th scope="col">Período</th>${heads.map(h2 => `<th scope="col" style="text-align:right">${h2}</th>`).join("")}${opts.band ? "<th scope='col' style='text-align:right'>banda p10</th><th scope='col' style='text-align:right'>banda p90</th>" : ""}</tr></thead><tbody>` +
       allX.map((x, i) => `<tr><td>${dateLabel(x)}</td>${seriesData.map(sd => `<td style="text-align:right">${sd.vals[i] != null ? fmt.n(sd.vals[i], dec) : "–"}</td>`).join("")}${bandData ? `<td style="text-align:right">${bandData.lo[i] != null ? fmt.n(bandData.lo[i], dec) : "–"}</td><td style="text-align:right">${bandData.hi[i] != null ? fmt.n(bandData.hi[i], dec) : "–"}</td>` : ""}</tr>`).join("") +
       `</tbody></table></div></details>`;
   }
-  return out;
+  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify(opts))}" data-line-width="${W}">${out}</div>`;
 }
 
 /* ---------- tooltip + crosshair (delegação global) ---------- */
@@ -1622,32 +1682,6 @@ window.trCSV = () => {
 };
 
 /* ================= SOBRE ================= */
-function renderSobre() {
-  const el = document.getElementById("view-sobre");
-  el.innerHTML = `
-  <div class="pagehead">
-    <div class="ph-left">
-      ${rotuloContexto()}
-      <h2>Sobre o Observatório</h2>
-    </div>
-  </div>
-  <div >
-    <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
-    <h3 style="margin-top:28px">Sobre o autor</h3>
-    <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
-    <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
-    <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
-    <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
-    <h3 style="margin-top:28px">Para a imprensa</h3>
-    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
-    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="/observatorio/overview" onclick="nav('overview');return false">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="/observatorio/alerts" onclick="nav('alerts');return false">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
-    <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
-    <h3 style="margin-top:28px">Participe</h3>
-    <p><a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões e correções</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> (consultas determinísticas sobre os dados carregados).</p>
-    <p style="margin-top:20px"><a href="${LINKEDIN_URL}" target="_blank" rel="noopener">LinkedIn</a></p>
-  </div>`;
-}
-
 
 /* ================= AÇÕES JUDICIAIS E INSTITUIÇÕES FINANCEIRAS ================= */
 const JUD_CORES = { revisionais: "#1d4e89", indenizatorias: "#6b46a3", garantias_cobranca: "#8d94a3",
@@ -1799,15 +1833,40 @@ window.judCSV = () => {
 
 /* ================= PIX E MEIOS DE PAGAMENTO (BCB Olinda: Pix, MPV, SPI, EPAE) ================= */
 const PX_COLORS = { Pix: "var(--pix)", TED: "#1d4e89", Boleto: "#b45309", Cheque: "#64748b", DOC: "#8d94a3",
-  TEC: "#8d94a3", CartaoCredito: "#6b46a3", CartaoDebito: "#0e7c7b", CartaoPrePago: "#b91c1c",
+  TEC: "#8d94a3", CartaoCredito: "#6b46a3", CartaoDebito: "var(--c-gray)", CartaoPrePago: "#b91c1c",
   TransIntrabancaria: "#525a68", Convenios: "#d9a514", DebitoDireto: "#2f7d4f", Saques: "#c2540a" };
-window.pxSet = (k, v) => { state.px[k] = v; syncHash(); renderPix(); };
-window.pxToggleInst = i => {
+/* Grafia editorial apenas na apresentação; chaves da fonte e recortes não mudam. */
+function rotuloSetorPix(nome) {
+  const palavras = { administracao: "administração", publica: "pública", fisica: "física", servicos: "serviços", imobiliarias: "imobiliárias", cientificas: "científicas", tecnicas: "técnicas", comercio: "comércio", reparacao: "reparação", veiculos: "veículos", construcao: "construção", educacao: "educação", gas: "gás", industrias: "indústrias", transformacao: "transformação", informacao: "informação", comunicacao: "comunicação", instituicoes: "instituições", saude: "saúde", domesticos: "domésticos", agua: "água", gestao: "gestão", residuos: "resíduos", descontaminacao: "descontaminação", alimentacao: "alimentação", recreacao: "recreação", pecuaria: "pecuária", producao: "produção" };
+  return String(nome).replace(/\p{L}+/gu, palavra => {
+    const correta = palavras[palavra.toLowerCase()];
+    return correta ? (palavra[0] === palavra[0].toUpperCase() ? correta[0].toUpperCase() + correta.slice(1) : correta) : palavra;
+  });
+}
+/* A gold setorial publica fluxos positivos a partir de 0,001 bilhão.
+   Abaixo de 1 bi, conservar três casas evita confundir fluxo pequeno com zero. */
+function pxValorSetorial(valor, casas = 1) {
+  return fmt.n(valor, Math.abs(valor) < 1 ? 3 : casas);
+}
+function pxAtualiza(mutacao) {
+  const acao = document.activeElement?.getAttribute("onclick");
+  const chaveDetalhe = d => {
+    if (d.id) return d.id;
+    const secao = d.closest("section[id]"), grafico = d.closest(".line-chart");
+    const indice = grafico && secao ? [...secao.querySelectorAll(".line-chart")].indexOf(grafico) : "";
+    return `${secao?.id}:${indice}:${d.querySelector("summary")?.textContent}`;
+  };
+  const abertos = new Map([...document.querySelectorAll("#view-pix details")].map(d => [chaveDetalhe(d), d.open]));
+  mutacao(); syncHash(); renderPix();
+  document.querySelectorAll("#view-pix details").forEach((d) => { d.open = abertos.get(chaveDetalhe(d)) || false; });
+  if (acao) [...document.querySelectorAll("#view-pix [onclick]")].find(b => b.getAttribute("onclick") === acao)?.focus({ preventScroll: true });
+}
+window.pxSet = (k, v) => pxAtualiza(() => { state.px[k] = v; });
+window.pxToggleInst = i => pxAtualiza(() => {
   const s = state.px.insts;
   state.px.insts = s.includes(i) ? s.filter(x => x !== i) : [...s, i];
   if (!state.px.insts.length) state.px.insts = ["Pix"];
-  syncHash(); renderPix();
-};
+});
 window.pxLoadMun = async () => {
   if (state.data.pix_mun === undefined) {
     state.data.pix_mun = null; renderPix();
@@ -1823,10 +1882,12 @@ window.pxLoadMun = async () => {
 function comFocoPreservado(rerender) {
   const el = document.activeElement;
   const id = el && el.id;
+  const evento = el?.hasAttribute("onchange") ? "onchange" : "onclick";
+  const acao = el?.getAttribute(evento);
   const pos = el && el.selectionStart;
   rerender();
-  if (id) {
-    const novo = document.getElementById(id);
+  if (id || acao) {
+    const novo = id ? document.getElementById(id) : [...document.querySelectorAll(`[${evento}]`)].find(n => n.getAttribute(evento) === acao);
     if (novo) {
       novo.focus();
       if (pos != null && novo.setSelectionRange) {
@@ -1842,7 +1903,7 @@ window.pxMunFiltro = () => {
 
 function pxStackedArea(periods, series, opts) {
   // participação empilhada (0–100%); séries: [{label, color, vals[]}] alinhadas a periods
-  const W = 720, H = opts.h || 260, M = { t: 12, r: 14, b: 26, l: 40 };
+  const W = opts.w || 720, H = opts.h || 260, M = { t: 12, r: 14, b: 26, l: 40 };
   const n = periods.length;
   const X = i => M.l + i / Math.max(n - 1, 1) * (W - M.l - M.r);
   const Y = v => M.t + (1 - v / 100) * (H - M.t - M.b);
@@ -1858,14 +1919,20 @@ function pxStackedArea(periods, series, opts) {
     out += `<path d="${d}" fill="${ccol(sr.color)}" opacity="0.82" data-tip="${tip}"></path>`;
     base = top;
   });
-  const step = Math.max(1, Math.ceil(n / 8));
-  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="12" style="fill:var(--c-axis-text)">${p}</text>`; });
+  const step = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(W / 110))));
+  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="${i === 0 ? "start" : i === n - 1 ? "end" : "middle"}" font-size="12" style="fill:var(--c-axis-text)">${fmt.my(p)}</text>`; });
   out += "</svg>";
   out += `<div class="stacklegend">${series.map(sr => `<span><span class="sw" style="background:${ccol(sr.color)}"></span>${sr.label}</span>`).join("")}</div>`;
-  out += `<details class="charttable"><summary>dados em tabela (participação %, período final)</summary><div class="tblwrap" style="max-height:220px"><table class="data compact"><thead><tr><th>Instrumento</th><th style="text-align:right">${periods[n - 1]}</th></tr></thead><tbody>${series.map(sr => `<tr><td>${sr.label}</td><td style="text-align:right">${totals[n - 1] ? fmt.n((sr.vals[n - 1] || 0) / totals[n - 1] * 100, 1) : "–"}%</td></tr>`).join("")}</tbody></table></div></details>`;
-  return out;
+  out += `<details class="charttable px-comparacao-tabela"><summary>Dados em tabela: toda a série de participação</summary><div class="tblwrap"><table class="data compact" data-movel="1"><caption>BCB MPV · participação na ${opts.metr === "v" ? "movimentação em reais" : "quantidade de transações"} (%) dos instrumentos selecionados · trimestral</caption><thead><tr><th scope="col">Trimestre</th>${series.map(sr => `<th scope="col">${sr.label}</th>`).join("")}</tr></thead><tbody>${periods.map((p, i) => `<tr><th scope="row">${fmt.my(p)}</th>${series.map(sr => `<td class="num">${totals[i] ? fmt.n((sr.vals[i] || 0) / totals[i] * 100, 1) + "%" : "–"}</td>`).join("")}</tr>`).join("")}</tbody></table></div><button class="btn ghost small" onclick="pxComparacaoCSV(this)">Baixar CSV desta comparação</button></details>`;
+
+  return `<div class="line-chart" data-line-options="${encodeURIComponent(JSON.stringify({ ...opts, stacked: true, periods, series }))}" data-line-width="${W}">${out}</div>`;
 }
 
+function quantidadeCompacta(v, divisor, casas, unidade) {
+  if (v == null) return "–";
+  const escala = v / divisor, limite = Math.pow(10, -casas);
+  return escala > 0 && escala < limite ? `menos de ${fmt.n(limite, casas)} ${unidade}` : `${fmt.n(escala, casas)} ${unidade}`;
+}
 function renderPix() {
   const el = document.getElementById("view-pix");
   const X = state.data.pix;
@@ -1877,19 +1944,18 @@ function renderPix() {
   /* ---------- 1. Pix em uma visão ---------- */
   const head = pageHead({
     title: "Pix e pagamentos", vintage: X.mes,
-    seals: `${badge("observado", "BCB: Pix_DadosAbertos, MPV, SPI")} ${badge("calculado", "valores reais (IPCA), base 100, participações e médias móveis calculados")}`,
-    desc: "Como o Pix evoluiu, quem usa, para quê, onde, e como se compara a cartões, TED, boletos e os demais instrumentos.",
+    desc: "Como o Pix é usado e como se compara aos outros meios de pagamento?",
     fontes: "BCB (Pix, Meios de Pagamento, SPI, EPAE) · IBGE (população, IPCA)",
     actions: `<button class="btn ghost small" onclick="pxCSV()">baixar CSV</button>`,
   });
   const kpis = `<div class="pan-kpi">
-    <div class="card kpi"><h4>Transações no mês</h4><div class="big pixnum">${fmt.n(k.qtd.v / 1e9, 2)} bi</div><div class="src">${fmt.pp(k.qtd.yoy)}% em 12m · ${X.mes} · universo doc 1201 (MPV)</div></div>
+    <div class="card kpi"><h4>Transações no mês</h4><div class="big pixnum">${fmt.n(k.qtd.v / 1e9, 2)} bi</div><div class="src">${fmt.pp(k.qtd.yoy)}% em 12m · ${X.mes} · universo doc 1201 (MPV) · ${badge("observado")}</div></div>
     <div class="card kpi"><h4>Valor movimentado</h4><div class="big pixnum">${fmt.money(k.valor.v)}</div><div class="src">${fmt.pp(k.valor.yoy)}% em 12m (nominal) · ${badge("observado")}</div></div>
-    <div class="card kpi"><h4>Valor médio por transação</h4><div class="big">R$ ${fmt.n(k.ticket.v, 0)}</div><div class="src">${fmt.pp(k.ticket.yoy)}% em 12m — média esconde a diferença P2P × empresas (ver Natureza)</div></div>
-    <div class="card kpi"><h4>Usuários cadastrados (DICT)</h4><div class="big">${fmt.n(k.usuarios.v / 1e6, 1)} mi</div><div class="src">PF ${fmt.n(k.usuarios.pf / 1e6, 0)} mi · PJ ${fmt.n(k.usuarios.pj / 1e6, 1)} mi · estoque em ${k.usuarios.data} — não é "usuário ativo" (sem definição oficial)</div></div>
-    <div class="card kpi"><h4>Participação na quantidade</h4><div class="big pixnum">${fmt.n(k.part_tri.v, 1)}%</div><div class="src">das transações entre os instrumentos comparáveis · ${k.part_tri.tri} (trimestral)</div></div>
+    <div class="card kpi"><h4>Valor médio por transação</h4><div class="big">R$ ${fmt.n(k.ticket.v, 0)}</div><div class="src">${fmt.pp(k.ticket.yoy)}% em 12m — média esconde a diferença P2P × empresas (ver Natureza) · ${badge("calculado")}</div></div>
+    <div class="card kpi"><h4>Usuários cadastrados (DICT)</h4><div class="big">${fmt.n(k.usuarios.v / 1e6, 1)} mi</div><div class="src">PF ${fmt.n(k.usuarios.pf / 1e6, 0)} mi · PJ ${fmt.n(k.usuarios.pj / 1e6, 1)} mi · estoque em ${k.usuarios.data} — não é "usuário ativo" (sem definição oficial) · ${badge("observado")}</div></div>
+    <div class="card kpi"><h4>Participação na quantidade</h4><div class="big pixnum">${fmt.n(k.part_tri.v, 1)}%</div><div class="src">das transações entre os instrumentos comparáveis · ${k.part_tri.tri} (trimestral) · ${badge("calculado")}</div></div>
   </div>`;
-  const sintese = `<p class="pan-sintese">${X.sintese}</p><div class="src">Texto automático determinístico · composições cobrem ${X.cobertura_tx_pct}% da quantidade (base transacional/SPI; restante liquidado nos livros dos participantes)</div>`;
+  const sintese = `<p class="pan-sintese">${numerosNoTexto(X.sintese)}</p><div class="src">Texto automático determinístico · composições cobrem ${X.cobertura_tx_pct}% da quantidade (base transacional/SPI; restante liquidado nos livros dos participantes)</div>`;
 
   /* ---------- 2. evolução ---------- */
   // o Pix só existe a partir de nov/2020: meses anteriores do MPV são zeros reais
@@ -1910,9 +1976,9 @@ function renderPix() {
     : metr === "q" ? "bilhões de transações por mês" : (real ? "R$ trilhões (constantes)" : "R$ trilhões");
   const evol = sechead("Como o Pix evoluiu desde o lançamento?", `mensal desde 2020-11 · ${metr === "q" ? "quantidade" : real ? "valor real (IPCA)" : "valor nominal"}`) + `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
-      <span class="seg">${[["q", "Quantidade"], ["v", "Valor"]].map(([v2, l]) => `<button class="${metr === v2 ? "on" : ""}" onclick="pxSet('metr','${v2}')">${l}</button>`).join("")}</span>
-      <span class="seg">${[["nivel", "Nível"], ["base100", "Base 100"], ["var12", "Var. 12m"]].map(([v2, l]) => `<button class="${modo === v2 ? "on" : ""}" onclick="pxSet('modo','${v2}')">${l}</button>`).join("")}</span>
-      ${metr === "v" ? `<span class="seg">${[["nominal", "Nominal"], ["real", "Real (IPCA)"]].map(([v2, l]) => `<button class="${px.val === v2 ? "on" : ""}" onclick="pxSet('val','${v2}')">${l}</button>`).join("")}</span>` : ""}
+      <span class="seg">${[["q", "Quantidade"], ["v", "Valor"]].map(([v2, l]) => `<button aria-pressed="${!!(metr === v2)}" class="${metr === v2 ? "on" : ""}" onclick="pxSet('metr','${v2}')">${l}</button>`).join("")}</span>
+      <span class="seg">${[["nivel", "Nível"], ["base100", "Base 100"], ["var12", "Var. 12m"]].map(([v2, l]) => `<button aria-pressed="${!!(modo === v2)}" class="${modo === v2 ? "on" : ""}" onclick="pxSet('modo','${v2}')">${l}</button>`).join("")}</span>
+      ${metr === "v" ? `<span class="seg">${[["nominal", "Nominal"], ["real", "Real (IPCA)"]].map(([v2, l]) => `<button aria-pressed="${!!(px.val === v2)}" class="${px.val === v2 ? "on" : ""}" onclick="pxSet('val','${v2}')">${l}</button>`).join("")}</span>` : ""}
     </div>
     <div class="ov-2col">
       <div class="card">${lineChart({ series: [{ pts: ptsPix, label: "Pix", color: "var(--pix)" }, { pts: mm(ptsPix, 12), label: "média móvel 12m", color: "#64748b" }], h: 250, dec: modo === "nivel" ? 2 : 1, unit: unidade, fonte: "BCB MPV", aria: "evolução do Pix" })}</div>
@@ -1932,7 +1998,7 @@ function renderPix() {
   const cmpMensal = lineChart({ series: mensais.map(i => { const arr = X.series[i] || []; const pts = arr.map(o => ({ x: o.p, y: metr === "q" ? o.q : o.v })).filter(p => p.y > 0); const b = pts.length ? pts.find(p => p.x >= "2021-06").y : 1; return { pts: pts.filter(p => p.x >= "2021-06").map(p => ({ x: p.x, y: p.y / b * 100 })), label: i, color: PX_COLORS[i] }; }), h: 250, unit: "base 100 = jun/2021", fonte: "BCB MPV mensal", aria: "crescimento comparado dos instrumentos mensais" });
   const tris = X.tri.periodos.filter(t => t >= "2019");
   const instSel = px.insts;
-  const stack = pxStackedArea(tris.map(t => t.slice(0, 7)), Object.keys(X.tri.nomes).filter(i => instSel.includes(i)).map(i => ({ label: X.tri.nomes[i], color: PX_COLORS[i], vals: tris.map(t => ((X.tri.dados[t] || {})[i] || {})[metr === "q" ? "q" : "v"] || 0) })), { aria: "participação por instrumento (trimestral)" });
+  const stack = pxStackedArea(tris.map(t => t.slice(0, 7)), Object.keys(X.tri.nomes).filter(i => instSel.includes(i)).map(i => ({ label: X.tri.nomes[i], color: PX_COLORS[i], vals: tris.map(t => ((X.tri.dados[t] || {})[i] || {})[metr === "q" ? "q" : "v"] || 0) })), { aria: "participação por instrumento (trimestral)", metr });
   // ausência declarada: sem série trimestral (fonte do BCB em pane e sem
   // publicação anterior para carregar), o capítulo diz isso em vez de quebrar
   const t0d = X.tri.dados[X.tri.tri0] || {};
@@ -1944,7 +2010,7 @@ function renderPix() {
     está indisponível na fonte do BCB e não há publicação anterior para manter no ar. O capítulo volta
     automaticamente quando a fonte voltar.</p></div>`
     : sechead("Como o Pix se compara aos outros instrumentos?", `comparação completa é TRIMESTRAL (cartões e outros não têm série mensal); nada foi interpolado`) + `
-    <div class="instpick">${Object.keys(X.tri.nomes).map(i => `<button class="${instSel.includes(i) ? "on" : ""}" onclick="pxToggleInst('${i}')">${X.tri.nomes[i]}</button>`).join("")}</div>
+    <div class="instpick">${Object.keys(X.tri.nomes).map(i => `<button aria-pressed="${!!(instSel.includes(i))}" class="${instSel.includes(i) ? "on" : ""}" onclick="pxToggleInst('${i}')">${X.tri.nomes[i]}</button>`).join("")}</div>
     <div class="ov-2col-eq">
       <div class="card"><h4>Participação na ${metr === "q" ? "quantidade" : "soma de valor"} — trimestral</h4>${stack}</div>
       <div class="card"><h4>Fotografia do trimestre ${X.kpis.part_tri.tri}</h4>
@@ -1964,14 +2030,14 @@ function renderPix() {
   const quem = sechead("Quem usa o Pix?", "estoques de fim de período — nunca somados no tempo · chave ≠ usuário") + `
     <div class="ov-2col-eq">
     <div class="card"><h4>Usuários cadastrados no DICT
-      <span class="seg" style="margin-left:8px">${[["ambas", "PF × PJ"], ["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button class="${(px.usnat || "ambas") === v2 ? "on" : ""}" onclick="pxSet('usnat','${v2}')">${l}</button>`).join("")}</span></h4>
+      <span class="seg" style="margin-left:8px">${[["ambas", "PF × PJ"], ["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button aria-pressed="${!!((px.usnat || "ambas") === v2)}" class="${(px.usnat || "ambas") === v2 ? "on" : ""}" onclick="pxSet('usnat','${v2}')">${l}</button>`).join("")}</span></h4>
       ${lineChart({ series: (px.usnat === "total" ? [{ pts: us.map(o => ({ x: o.p, y: o.total })), label: "Total", color: "var(--pix)" }]
         : px.usnat === "pf" ? [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }]
         : px.usnat === "pj" ? [{ pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }]
         : [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }, { pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }]), h: 220, unit: "usuários (estoque)", fonte: "DICT", aria: "usuários cadastrados no DICT" })}
       ${leitura([["PJ", `${fmt.n((us[us.length - 1].pj) / 1e6, 1)} mi de empresas cadastradas`], ["Conceito", "cadastro no DICT = ter chave registrada; não mede atividade"]])}</div>
     <div class="card"><h4>Chaves Pix — estoque em ${chv.data || "–"}</h4>
-      ${(chv.por_tipo || []).map(t2 => panBar(t2.k, t2.q, chv.por_tipo[0].q, v2 => fmt.n(v2 / 1e6, 1) + " mi")).join("")}
+      ${(chv.por_tipo || []).map(t2 => panBar(t2.k, t2.q, chv.por_tipo[0].q, v2 => quantidadeCompacta(v2, 1e6, 1, "mi"))).join("")}
       ${leitura([["Total", chv.total ? `${fmt.n(chv.total / 1e6, 0)} mi de chaves em ${chv.n_participantes} participantes` : "–"],
         ["Chaves por usuário", chv.total && k.usuarios.v ? fmt.n(chv.total / k.usuarios.v, 2) + " (uma pessoa pode ter várias chaves)" : "–"],
         ["Nota", `snapshot completo mais recente publicado pela fonte: ${chv.data}${chv.anterior ? "" : ""}`]])}
@@ -1995,32 +2061,33 @@ function renderPix() {
     if (x.k.length === 3 && HML[x.k[0]] && HML[x.k[2]]) { hmCells[x.k] = x; hmTot += hmVal(x) || 0; }
   }
   const hmScale = panScale(Object.values(hmCells).map(hmVal), "seq");
-  const hmFmt = v2 => v2 == null ? "–" : hmnat === "q" ? fmt.n(v2 / 1e9, 2) + " bi" : hmnat === "v" ? fmt.money(v2) : "R$ " + fmt.n(v2, 0);
-  const hmGrid = `<div class="tblwrap"><table class="data compact" style="text-align:center"><thead>
-      <tr><th style="text-align:left">pagador ↓ · recebedor →</th>${["P", "B", "G"].map(r => `<th>${HML[r]}</th>`).join("")}</tr></thead>
-    <tbody>${["P", "B", "G"].map(pg => `<tr><td style="text-align:left"><b>${HML[pg]}</b></td>${["P", "B", "G"].map(rc => {
+  const hmFmt = v2 => v2 == null ? "–" : hmnat === "q" ? (v2 > 0 && v2 < 1e7 ? "menos de 0,01 bi" : quantidadeCompacta(v2, 1e9, 2, "bi")) : hmnat === "v" ? fmt.money(v2) : "R$ " + fmt.n(v2, 0);
+  const hmGrid = `<div class="tblwrap"><table class="data compact px-heatmap" data-movel="1"><caption>${hmnat === "q" ? "Quantidade (bilhões de transações)" : hmnat === "v" ? "Valor movimentado (R$)" : "Valor médio por transação (R$)"} · ${dataTela(X.mes_tx)} · BCB, base transacional</caption><thead>
+      <tr><th style="text-align:left">pagador ↓ · recebedor →</th>${["P", "B", "G"].map(r => `<th scope="col">${HML[r]}</th>`).join("")}</tr></thead>
+    <tbody>${["P", "B", "G"].map(pg => `<tr><th scope="row">${HML[pg]}</th>${["P", "B", "G"].map(rc => {
       const cel = hmCells[`${pg}2${rc}`];
       const v2 = cel ? hmVal(cel) : null;
       const tip = cel ? encodeURIComponent(`<div class="tt-date">${HML[pg]} → ${HML[rc]}</div>
         <div class="tt-row"><span class="tt-lbl">transações</span><span class="tt-val">${fmt.n(cel.q / 1e9, 2)} bi (${fmt.n(cel.part_q, 1)}%)</span></div>
         <div class="tt-row"><span class="tt-lbl">valor</span><span class="tt-val">${fmt.money(cel.v)}</span></div>
         <div class="tt-row"><span class="tt-lbl">tíquete</span><span class="tt-val">R$ ${fmt.n(cel.t, 0)}</span></div>`) : "";
-      return `<td style="background:${hmScale(v2)}" ${tip ? `data-tip="${tip}"` : ""}>${hmFmt(v2)}${cel && hmnat !== "t" && hmTot ? `<div class="src">${fmt.n(hmVal(cel) / hmTot * 100, 1)}%</div>` : ""}</td>`;
+      return `<td style="background:${hmScale(v2)}" ${tip ? `data-tip="${tip}"` : ""}><span class="px-cell-value">${hmFmt(v2)}${cel && hmnat !== "t" && hmTot ? `<span class="px-cell-share">${fmt.n(hmVal(cel) / hmTot * 100, 1)}%</span>` : ""}</span></td>`;
     }).join("")}</tr>`).join("")}</tbody></table></div>`;
   const natureza = sechead("Para que o Pix é usado?", `natureza dos fluxos · base transacional ${X.mes_tx} (cobertura ${X.cobertura_tx_pct}%)`) + `
     <div class="card" style="margin-bottom:10px"><h4>Mapa de calor — quem paga × quem recebe
-      <span class="seg" style="margin-left:8px">${[["q", "Quantidade"], ["v", "Valor"], ["t", "Tíquete médio"]].map(([v2, l]) => `<button class="${hmnat === v2 ? "on" : ""}" onclick="pxSet('hmnat','${v2}')">${l}</button>`).join("")}</span></h4>
+      <span class="seg" style="margin-left:8px">${[["q", "Quantidade"], ["v", "Valor"], ["t", "Tíquete médio"]].map(([v2, l]) => `<button aria-pressed="${!!(hmnat === v2)}" class="${hmnat === v2 ? "on" : ""}" onclick="pxSet('hmnat','${v2}')">${l}</button>`).join("")}</span></h4>
       ${hmGrid}
-      <div class="src" style="margin-top:6px">Classes da própria fonte (P2P, P2B, …) re-arranjadas em matriz — nada estimado. Passe o mouse para quantidade, valor e tíquete de cada fluxo; % sobre o total do mês. Tíquete não soma — por isso não exibe participação.</div></div>
+      <details class="charttable" id="px-fluxos-tabela"><summary>Todos os fluxos em tabela: quantidade, valor e tíquete</summary><div class="tblwrap"><table class="data compact" data-movel="1"><caption>BCB, base transacional · ${dataTela(X.mes_tx)} · valores sem abreviação</caption><thead><tr><th scope="col">Fluxo</th><th scope="col">Transações</th><th scope="col">Valor (R$)</th><th scope="col">Tíquete (R$)</th></tr></thead><tbody>${X.natureza.atual.map(x => `<tr><th scope="row">${NATL[x.k] || x.k}</th><td class="num">${fmt.n0(x.q)}</td><td class="num">${fmt.n(x.v, 2)}</td><td class="num">${fmt.n(x.t, 2)}</td></tr>`).join("")}</tbody></table></div><button class="btn ghost small" onclick="pxFluxosCSV()">Baixar CSV dos fluxos</button></details>
+      <div class="src" style="margin-top:6px">Classes da própria fonte (P2P, P2B, …) re-arranjadas em matriz — nada estimado. Cor mais intensa indica maior valor na medida selecionada; os números permitem a mesma comparação sem cor. A tabela traz todas as medidas. Percentuais sobre os fluxos identificados na matriz, no mês. Tíquete não soma — por isso não exibe participação.</div></div>
     <div class="ov-2col-eq">
     <div class="card"><h4>Quantidade e tíquete por natureza
-      <span class="seg" style="margin-left:8px">${[["todos", "Total"], ["pf", "Pagador PF"], ["pj", "Pagador PJ"]].map(([v2, l]) => `<button class="${natpag === v2 ? "on" : ""}" onclick="pxSet('natpag','${v2}')">${l}</button>`).join("")}</span></h4>
-      ${natRows.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+      <span class="seg" style="margin-left:8px">${[["todos", "Total"], ["pf", "Pagador PF"], ["pj", "Pagador PJ"]].map(([v2, l]) => `<button aria-pressed="${!!(natpag === v2)}" class="${natpag === v2 ? "on" : ""}" onclick="pxSet('natpag','${v2}')">${l}</button>`).join("")}</span></h4>
+      ${natRows.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => quantidadeCompacta(v2, 1e9, 2, "bi"), `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
       ${leitura([["Leitura", "P2P domina a quantidade com tíquete baixo; B2B tem poucas transações com tíquete alto — o Pix combina papéis de transferência pessoal, maquininha e tesouraria"], ["Governo", "fluxos G2P/P2G identificados pela fonte"]])}</div>
     <div class="card"><h4>Uso comercial: participação do P2B na quantidade</h4>
       ${lineChart({ series: [{ pts: X.natureza.serie_p2b.map(o => ({ x: o.p, y: o.v })), label: "P2B", color: "var(--pix)" }, { pts: X.natureza.serie_p2p.map(o => ({ x: o.p, y: o.v })), label: "P2P", color: "#64748b" }], h: 200, unit: "% da quantidade", aria: "participação de P2B e P2P" })}
       <h4 style="margin-top:12px">Quem paga, por faixa etária</h4>
-      ${X.natureza.idade_pagador.filter(x => !["Nao se aplica", "Nao informado"].includes(x.k)).map(x => panBar(x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}%`)).join("")}
+      ${X.natureza.idade_pagador.filter(x => !["Nao se aplica", "Nao informado"].includes(x.k)).map(x => panBar(x.k, x.q, natMax, v2 => quantidadeCompacta(v2, 1e9, 2, "bi"), `${fmt.n(x.part_q, 1)}%`)).join("")}
       <div class="src" style="margin-top:4px">idade disponível apenas para pagadores PF; "não se aplica" = PJ.</div></div>
     </div>`;
 
@@ -2065,9 +2132,9 @@ function renderPix() {
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
       <span class="seg">${Object.entries(GMETS).map(([k2, [l]]) => k2 === "yoy_v" && persp === "rec"
         ? `<button disabled title="o crescimento 12m só existe na perspectiva do pagador" style="opacity:.4;cursor:not-allowed">${l.split(" (")[0]}</button>`
-        : `<button class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
-      <span class="seg">${[["pag", "Pagador"], ["rec", "Recebedor"]].map(([v2, l]) => `<button class="${persp === v2 ? "on" : ""}" onclick="pxSet('gpersp','${v2}')">${l}</button>`).join("")}</span>
-      ${persp === "pag" && gmet === "v_abs" ? `<span class="seg">${[["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button class="${gnat === v2 ? "on" : ""}" onclick="pxSet('gnat','${v2}')">${l}</button>`).join("")}</span>` : ""}
+        : `<button aria-pressed="${!!(gmet === k2)}" class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
+      <span class="seg">${[["pag", "Pagador"], ["rec", "Recebedor"]].map(([v2, l]) => `<button aria-pressed="${!!(persp === v2)}" class="${persp === v2 ? "on" : ""}" onclick="pxSet('gpersp','${v2}')">${l}</button>`).join("")}</span>
+      ${persp === "pag" && gmet === "v_abs" ? `<span class="seg">${[["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button aria-pressed="${!!(gnat === v2)}" class="${gnat === v2 ? "on" : ""}" onclick="pxSet('gnat','${v2}')">${l}</button>`).join("")}</span>` : ""}
     </div>
     <div class="ov-2col-eq">
       <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
@@ -2092,9 +2159,9 @@ function renderPix() {
     epae = sechead("Pix e atividade econômica — quem recebe, por setor", `EPAE · ${E.mes} · fluxo financeiro RECEBIDO — não é receita, consumo nem faturamento`) + `
       <div class="ov-2col-eq">
       <div class="card"><h4>Setores que mais recebem via Pix</h4>
-        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" style="cursor:pointer">${panBar(s.setor.length > 42 ? s.setor.slice(0, 40) + "…" : s.setor, s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
+        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(s.setor), s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
         <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
-      <div class="card"><h4>${sel.setor}</h4>
+      <div class="card"><h4>${rotuloSetorPix(sel.setor)}</h4>
         <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
           <div><div class="src">recebe/mês</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.money(sel.v)}</div></div>
           <div><div class="src">participação</div><div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(sel.part, 1)}%</div></div>
@@ -2126,19 +2193,19 @@ function renderPix() {
     <div class="ov-2col-eq" style="margin-top:10px">
       <div class="card"><h4>O que as famílias pagam a cada setor ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">Pix de pessoas físicas a cada seção da CNAE · ${fmt.my(EM.mes)} · % sobre o Pix PF→PJ (mesmo conceito do painel de bets)</div>
-        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" style="cursor:pointer">${panBar(r.setor.length > 42 ? r.setor.slice(0, 40) + "…" : r.setor, r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
+        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer">${panBar(rotuloSetorPix(r.setor), r.v, maxPF, v2 => "R$ " + pxValorSetorial(v2) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${pxValorSetorial(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
         <div class="src">clique num setor para ver de quem ele recebe</div></div>
-      <div class="card"><h4>${selTE.setor} — de quais setores vem o dinheiro ${badge("observado")}</h4>
+      <div class="card"><h4>${rotuloSetorPix(selTE.setor)} — de quais setores vem o dinheiro ${badge("observado")}</h4>
         <div class="src" style="margin-bottom:6px">matriz setor-pagador × setor-recebedor · ${fmt.my(EM.mes)} · R$ bilhões</div>
-        ${pagadores.map(([pag, v]) => panBar(pag.length > 42 ? pag.slice(0, 40) + "…" : pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
+        ${pagadores.map(([pag, v]) => panBar(rotuloSetorPix(pag), v, maxPag, v2 => "R$ " + pxValorSetorial(v2) + " bi")).join("")}
         ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
         <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
     </div>
     ${(function(){
       /* Mapa de calor setor-pagador × setor-recebedor: a matriz inteira de uma
-         vez. Os valores variam 4 ordens de grandeza (PF→Comércio ~R$ 110 bi ×
-         fluxos de R$ 0,03 bi) — a COR usa escala logarítmica, declarada; o
-         número da célula é o valor real. */
+         vez. Os valores cobrem amplitudes muito distintas (fluxos grandes ×
+         fluxos pequenos) — a COR usa escala logarítmica, declarada; o
+         número da célula mostra o valor sem transformação logarítmica. */
       const pagadores2 = Object.keys(EM.matriz);
       const colSet = new Set();
       pagadores2.forEach(pg => Object.keys(EM.matriz[pg] || {}).forEach(rc => colSet.add(rc)));
@@ -2146,22 +2213,27 @@ function renderPix() {
       const somaCol = rc => pagadores2.reduce((s2, pg) => s2 + ((EM.matriz[pg] || {})[rc] || 0), 0);
       const linhas2 = pagadores2.slice().sort((a2, b2) => somaLinha(b2) - somaLinha(a2));
       const cols2 = [...colSet].sort((a2, b2) => somaCol(b2) - somaCol(a2));
+      const setoresLegenda = [...new Set([...linhas2, ...cols2])].sort((a, b) => a.localeCompare(b, "pt-BR"));
+      const idSetor = nome => String(setoresLegenda.indexOf(nome) + 1).padStart(2, "0");
       const todosV = [];
       linhas2.forEach(pg => cols2.forEach(rc => { const v2 = (EM.matriz[pg] || {})[rc]; if (v2 > 0) todosV.push(Math.log10(v2)); }));
       const logScale = panScale(todosV, "seq");
-      const abrev = s2 => s2.length > 15 ? s2.slice(0, 14) + "…" : s2;
+      const limitesLog = todosV.length ? [Math.min(...todosV), Math.max(...todosV)] : [];
       const cel2 = (pg, rc) => {
         const v2 = (EM.matriz[pg] || {})[rc];
         if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
         const tip = encodeURIComponent(`<div class="tt-date">${pg} → ${rc}</div>
-          <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${fmt.n(v2, v2 < 1 ? 2 : 1)} bi</span></div>`);
-        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
+          <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${pxValorSetorial(v2)} bi</span></div>`);
+        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:var(--tipo-rotulo);padding:2px 3px;text-align:right" data-tip="${tip}"><span class="px-cell-value">${pxValorSetorial(v2, v2 >= 10 ? 0 : 1)}</span></td>`;
       };
       return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
-        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · passe o mouse para o par completo</div>
-        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:var(--tipo-rotulo)"><thead>
-          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:var(--tipo-rotulo);padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
-          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo)" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor usa escala logarítmica; os números mostram os valores sem transformação logarítmica · os identificadores numéricos indicam os setores na legenda completa abaixo; deslize a tabela para comparar colunas</div>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact px-setor-matriz" style="font-size:var(--tipo-rotulo)"><thead>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface);width:100px;min-width:100px;max-width:112px;white-space:normal">Pagador ↓<br>Recebedor →</th>${cols2.map(rc => `<th scope="col" aria-label="${attr(idSetor(rc) + " — " + rotuloSetorPix(rc))}" style="min-width:44px;font-size:var(--tipo-rotulo)">${idSetor(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><th scope="row" aria-label="${attr(idSetor(pg) + " — " + rotuloSetorPix(pg))}" style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:var(--tipo-rotulo);min-width:80px"><b>${idSetor(pg)}</b> <span class="src" style="display:block">R$ ${pxValorSetorial(somaLinha(pg), 0)} bi</span></th>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="heatleg px-setor-escala" aria-label="Limites da escala logarítmica de cor">${limitesLog.length ? limitesLog.map((limite, i) => `<span><span class="lg" aria-hidden="true" style="background:${logScale(limite)}"></span> ${i ? "Máximo" : "Mínimo positivo"}: R$ <b data-limite="${i ? "max" : "min"}">${fmt.n(Math.pow(10, limite), 3)}</b> bi</span>`).join(" · ") : "Sem fluxos positivos para construir a escala."}</div>
+        <p class="src">Distâncias iguais na escala representam multiplicações iguais no valor. Zero publicado aparece como 0,000; ausência de publicação aparece como “·”.</p>
+        <h5>Identificação dos setores</h5><ol class="px-setor-legenda">${setoresLegenda.map(nome => `<li><b>${idSetor(nome)}</b> ${rotuloSetorPix(nome)}</li>`).join("")}</ol>
         <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
     })()}`;
   }
@@ -2172,12 +2244,12 @@ function renderPix() {
   const func = sechead("Funcionalidades: QR Code, aproximação, Pix Automático e iniciadores", `forma de iniciação · base transacional (cobertura ${X.cobertura_tx_pct}%)`) + `
     <div class="ov-2col-eq">
     <div class="card"><h4>Como as transações são iniciadas (${X.mes_tx})</h4>
-      ${F.atual.map(x => panBar(F.nomes[x.k] || x.k, x.q, F.atual[0].q, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}%`)).join("")}
+      ${F.atual.map(x => panBar(F.nomes[x.k] || x.k, x.q, F.atual[0].q, v2 => quantidadeCompacta(v2, 1e9, 2, "bi"), `${fmt.n(x.part_q, 1)}%`)).join("")}
       ${leitura([["QR dinâmico", "gerado por transação, típico de cobrança comercial — é o proxy observável de 'Pix Cobrança' (a fonte não publica série própria da funcionalidade)"], ["Sem dados públicos", "Pix Cobrança como produto e transações agendadas não têm série oficial — nada foi estimado"]])}</div>
     <div class="card"><h4>Adoção das funcionalidades novas</h4>
       ${shareChart([[F.serie_auto, "Pix Automático", "var(--pix)"], [F.serie_inic, "Iniciador (Open Finance)", "#6b46a3"], [F.serie_apdn, "Aproximação (dinâmico)", "#b45309"], [F.serie_apes, "Aproximação (estático)", "#d9a514"]])}
       <h5 style="margin:10px 0 4px">Pix Saque e Pix Troco (finalidade)</h5>
-      ${X.finalidades.atual.filter(x => x.k !== "Pix").map(x => panBar(x.k, x.q, X.finalidades.atual.find(y => y.k !== "Pix").q, v2 => fmt.n(v2 / 1e6, 1) + " mi", `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+      ${X.finalidades.atual.filter(x => x.k !== "Pix").map(x => panBar(x.k, x.q, X.finalidades.atual.find(y => y.k !== "Pix").q, v2 => quantidadeCompacta(v2, 1e6, 1, "mi"), `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
     </div></div>`;
 
   /* ---------- 9. MED ---------- */
@@ -2227,10 +2299,25 @@ function renderPix() {
      A mudança: funcionalidades subiu para junto de natureza (ambos são "como
      se paga"), e a geografia desceu para junto dos setores (ambos são "para
      onde vai"). MED e infraestrutura fecham, antes da metodologia. */
-  el.innerHTML = head + sintese + kpis
+  el.innerHTML = head + kpis + sintese
     + subnavFixa([["#px-evol", "Evolução"], ["#px-versus", "Comparados"], ["#px-quem", "Quem usa"], ["#px-natureza", "Natureza"], ["#px-func", "Funcionalidades"], ["#px-epae", "Setores"], ["#px-geo", "Geografia"], ["#px-med", "Segurança (MED)"], ["#px-infra", "SPI"]])
     + secWrap("px-evol", evol) + secWrap("px-versus", versus) + secWrap("px-quem", quem) + secWrap("px-natureza", natureza) + secWrap("px-func", func) + secWrap("px-epae", epae + epaeMatriz) + secWrap("px-geo", geog) + secWrap("px-med", medS) + secWrap("px-infra", infra) + metodo;
 }
+window.pxComparacaoCSV = botao => {
+  const { periods, series, metr } = JSON.parse(decodeURIComponent(botao.closest(".line-chart").dataset.lineOptions));
+  const quote = v => '"' + String(v).replace(/"/g, '""') + '"';
+  const linhas = periods.map((p, i) => {
+    const total = series.reduce((s, sr) => s + (sr.vals[i] || 0), 0);
+    return [p, ...series.map(sr => total ? fmt.n((sr.vals[i] || 0) / total * 100, 1) : "")].join(";");
+  });
+  dlFile(`pix_comparacao_trimestral_${metr === "v" ? "valor" : "quantidade"}.csv`, "\uFEFFtrimestre;" + series.map(sr => quote(sr.label + " (%)")).join(";") + "\n" + linhas.join("\n"), "text/csv;charset=utf-8");
+};
+window.pxFluxosCSV = () => {
+  const X = state.data.pix; if (!X?.disponivel) return;
+  const csvNumero = n => n == null ? "" : String(n).replace(".", ",");
+  const rows = X.natureza.atual.map(o => [X.mes_tx, o.k, o.q, csvNumero(o.v), csvNumero(o.t)].join(";"));
+  dlFile("pix_fluxos.csv", "\uFEFFmes;fluxo;transacoes;valor_brl;valor_medio_brl\n" + rows.join("\n"), "text/csv;charset=utf-8");
+};
 window.pxCSV = () => {
   const X = state.data.pix; if (!X || !X.disponivel) return;
   const rows = X.series.Pix.map(o => [o.p, o.q, o.v, o.vr ? Math.round(o.vr) : "", o.t].join(";"));
@@ -3173,13 +3260,21 @@ function subnavFixa(itens) {
    exportação: só o que está visível de cada vez. */
 function capModo() { return !!loadLS("obc_capitulos", false); }
 window.capSet = on => { saveLS("obc_capitulos", !!on); if (!on) state._capAtivo = null; rerenderCurrent(); };
+function rolarSecao(alvo, comportamento = "auto") {
+  if (!alvo) return;
+  const nav = alvo.closest("section.view")?.querySelector(".subnav-caps");
+  const fixa = nav && ["sticky", "fixed"].includes(getComputedStyle(nav).position);
+  alvo.style.scrollMarginTop = ((fixa ? nav.getBoundingClientRect().height : 0) + 12) + "px";
+  const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  alvo.scrollIntoView({ block: "start", behavior: reduzido ? "auto" : comportamento });
+}
 window.capIr = id => {
   const n = document.getElementById(id);
-  if (!capModo()) { if (n) n.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  if (!capModo()) { rolarSecao(n, "smooth"); return; }
   state._capAtivo = id;
   aplicaCapitulos();
   const sec = document.getElementById(id);
-  if (sec) { sec.scrollIntoView({ block: "start" }); }
+  if (sec) rolarSecao(sec);
   try { const u = new URL(location.href); u.searchParams.set("sec", id); history.replaceState(null, "", u.toString()); } catch (e) {}
 };
 function aplicaCapitulos() {
@@ -3985,10 +4080,11 @@ function inadFanChart(seg) {
 }
 
 /* ---------- PULSO DO CRÉDITO ---------- */
+const pulsoMoeda = v => v == null ? "–" : "R$ " + fmt.n(v / 1000, 3) + " bi";
 const PULSE_SECTIONS = [
   { title: "1 · Oferta (estoque e fluxo)", cards: [
-    { key: "saldo", title: "Saldo da carteira (estoque)", fmt: v => "R$ " + fmt.triFromMi(v) },
-    { key: "concessoes", title: "Concessões mensais (fluxo)", fmt: v => "R$ " + fmt.bi(v) }] },
+    { key: "saldo", title: "Saldo da carteira (estoque)", fmt: pulsoMoeda },
+    { key: "concessoes", title: "Concessões mensais (fluxo)", fmt: pulsoMoeda }] },
   { title: "2 · Preço", cards: [
     { key: "taxa", title: "Taxa média de juros", fmt: v => fmt.n(v, 1) + "% a.a." },
     { key: "spread", title: "Spread médio", fmt: v => fmt.n(v, 1) + " p.p." }] },
@@ -4125,7 +4221,7 @@ function variacaoPulso(s, key, growth) {
   return {
     monetaria,
     valor: monetaria ? (serie && serie.length ? serie[serie.length - 1].v : null) : _d12(s),
-    rotulo: monetaria ? "% " + (real ? "a/a real (defl. IPCA)" : "a/a nominal") : " p.p. em 12 meses",
+    rotulo: monetaria ? "% sobre o mesmo mês do ano anterior" + (real ? " (real, deflacionado pelo IPCA)" : " (nominal)") : " p.p. sobre o mesmo mês do ano anterior",
   };
 }
 
@@ -4149,12 +4245,16 @@ function renderPulse() {
     const emNivel = f.transf === "nivel" || !trPedida;
     const avisoTransf = f.transf !== "nivel" && !trPedida
       ? `<div class="src">transformação "${(PULSE_TRANSF.find(t => t[0] === f.transf) || [])[1]}" não se aplica a esta série (${s.meta.unit}) — exibindo o nível.</div>` : "";
-    const series = [{ pts: tr.pts, color: "#1d4e89", label: c.title.toLowerCase() }];
+    const series = [{ pts: tr.pts, color: "#1d4e89", label: c.title.toLowerCase() + " (" + tr.status + ")" }];
     let band = null;
     if (emNivel && fc && fc.ok) {
       series.push({ pts: [{ x: last.ref, y: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, y: p.p50 }))], color: "#1d4e89", dash: "5,4", label: "previsão p50" });
       band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
     }
+    const escalaTela = /^R\$ milhões/.test(tr.unit) ? 1000 : 1;
+    const unidadeTela = escalaTela === 1000 ? tr.unit.replace("milhões", "bilhões") : tr.unit;
+    const seriesTela = series.map(sr => ({ ...sr, pts: sr.pts.map(p => ({ ...p, y: p.y == null ? null : p.y / escalaTela })) }));
+    const bandaTela = band ? { pts: band.pts.map(p => ({ ...p, lo: p.lo == null ? null : p.lo / escalaTela, hi: p.hi == null ? null : p.hi / escalaTela })) } : null;
     const { valor: variacao, rotulo: growthLabel, monetaria } = variacaoPulso(s, c.key, f.growth);
     const rgs = state.data.regimes_series && state.data.regimes_series.series ? state.data.regimes_series.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
     const annotations = [];
@@ -4164,15 +4264,17 @@ function renderPulse() {
     return `<div class="card" id="pu-${c.key}">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
-      <div class="delta ${yoy > 0 ? "up" : "down"}">${variacao != null ? (variacao > 0 ? "▲ " : variacao < 0 ? "▼ " : "") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
+      <div class="delta ${yoy > 0 ? "up" : "down"}">${variacao != null ? (variacao > 0 ? "Alta de " : variacao < 0 ? "Queda de " : "Sem variação: ") + fmt.n(Math.abs(variacao), monetaria ? 1 : 2) + growthLabel : "Variação indisponível"} · ref. ${fmt.my(last.ref)}</div>
       ${avisoTransf}
-      ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
+      ${lineChart({ series: seriesTela, band: bandaTela, dec: escalaTela === 1000 ? 3 : undefined, aria: c.title + " — " + segLabel, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: unidadeTela, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
       ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
       ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="/observatorio/scenarios" onclick="nav('scenarios');return false">backtest completo →</a></div>` : ""}
-      ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
-      ${srcLine(s.meta, s.qualidade)}
-      <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar CSV</button>
+      ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: unidadeTela })}
+      <div class="src">${qBadge(s.qualidade)} · Frequência: ${s.meta.freq} · Unidade na fonte original: ${s.meta.unit}</div>
+      <details class="charttable"><summary>Definição e metodologia da série</summary><p class="src">${s.meta.methodology}</p></details>
+      <button class="btn ghost small" onclick="exportarRecorteGrafico(this)">baixar CSV do gráfico</button>
+      <details class="charttable"><summary>Base observada completa</summary><button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar série observada completa (CSV)</button></details>
     </div>`;
   };
 
@@ -4197,7 +4299,7 @@ function renderPulse() {
 
   el.innerHTML = `
   ${pageHead({ title: "Pulso do crédito",
-    desc: "Séries oficiais do BCB organizadas em oferta, preço, qualidade e composição, com projeções e bandas. Estoque (saldo) e fluxo (concessões) claramente separados.",
+    desc: "Como evoluem o saldo, as novas concessões, os juros e a inadimplência? Séries do BCB com projeções e incerteza declarada.",
     fontes: "BCB/SGS (códigos validados por série)" })}
   ${(() => {
     const sv = k => pulse.series[`${k}_${f.seg}`];
@@ -4206,13 +4308,13 @@ function renderPulse() {
     const seg = segName().toLowerCase();
     return abertura({
       natureza: "observado", placar: [
-        { l: `Saldo · ${seg}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
-        { l: `Concessões no mês · ${seg}`, v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
+        { l: `Saldo · ${seg}`, v: uS ? pulsoMoeda(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
+        { l: `Concessões no mês · ${seg}`, v: uC ? pulsoMoeda(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
         { l: "Taxa média de juros", v: uT ? fmt.pct(uT.v, 1) + " a.a." : null, sub: uT ? `${_d12(sv("taxa")) != null ? fmt.pp(_d12(sv("taxa"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uT.ref)}` : "" },
         { l: "Inadimplência acima de 90 dias", v: uI ? fmt.pct(uI.v, 2) : null, sub: uI ? `${_d12(sv("inad")) != null ? fmt.pp(_d12(sv("inad"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uI.ref)}` : "" },
       ],
       sintese: [
-        uS ? `Em ${fmt.my(uS.ref)}, o saldo de crédito (${seg}) soma ${fmt.brlBiDeMilhoes(uS.v)}${_yoy(sv("saldo")) != null ? `, ${fmt.n(_yoy(sv("saldo")), 1)}% acima de um ano antes` : ""}${uC && _yoy(sv("concessoes")) != null ? `; as concessões do mês ${_yoy(sv("concessoes")) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sv("concessoes"))), 1)}% a/a` : ""}.` : null,
+        uS ? `Em ${fmt.my(uS.ref)}, o saldo de crédito (${seg}) soma ${pulsoMoeda(uS.v)}${_yoy(sv("saldo")) != null ? `, ${fmt.n(Math.abs(_yoy(sv("saldo"))), 1)}% ${_yoy(sv("saldo")) >= 0 ? "acima" : "abaixo"} do mesmo mês do ano anterior` : ""}${uC && _yoy(sv("concessoes")) != null ? `; as concessões do mês ${_yoy(sv("concessoes")) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sv("concessoes"))), 1)}% a/a` : ""}.` : null,
         uT && uI ? `A taxa média está em ${fmt.pct(uT.v, 1)} ao ano e a inadimplência acima de 90 dias em ${fmt.pct(uI.v, 2)}${_d12(sv("inad")) != null ? ` (${fmt.pp(_d12(sv("inad")))} p.p. em doze meses)` : ""}.` : null,
         p12 ? `A projeção-base leva a inadimplência a ${fmt.pct(p12.p50, 2)} em ${fmt.my(p12.ref_date)}, banda de ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)}.` : null,
       ],
@@ -4242,7 +4344,7 @@ function extraCard(k) {
     <div class="big" style="font-size:var(--tipo-numero-p)">${fmt.n(last.v, 2)} <span style="font-size:var(--tipo-rotulo);color:var(--text-3)">${s.meta.unit}</span></div>
     ${lineChart({ series: [{ pts: s.obs.slice(-state.filters.range).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: s.meta.name }], h: 110, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" })}
     ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `até ${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
-    <button class="btn ghost small" onclick="exportSeries('${k}')">baixar CSV</button></div>`;
+    <button class="btn ghost small" onclick="exportarRecorteGrafico(this)">baixar CSV do gráfico</button><details class="charttable"><summary>Base observada completa</summary><button class="btn ghost small" onclick="exportSeries('${k}')">baixar série observada completa (CSV)</button></details></div>`;
 }
 
 /* ---------- INDICADORES ANTECEDENTES ---------- */
@@ -4302,20 +4404,20 @@ function setorRegua(sectors) {
   const linhas = PESQ.map(([p, rot]) => ({ p, rot, pts: st.filter(x => (x.pesquisa || "industria") === p) })).filter(l => l.pts.length);
   const v = st.map(x => x.score);
   const lo = Math.max(0, Math.floor(Math.min(...v, 50) / 10) * 10), hi = Math.min(100, Math.ceil(Math.max(...v, 50) / 10) * 10);
-  const W = 760, esq = 112, dir = 16, passo = 46, topo = 22, H = topo + linhas.length * passo + 30;
+  const W = Math.max(260, Math.min(760, typeof document === "undefined" ? 760 : (document.getElementById("view-sectors")?.clientWidth - 40 || 760))), esq = W < 500 ? 80 : 112, dir = 16, passo = 70, topo = 22, H = topo + linhas.length * passo + 30;
   const x = s => esq + (s - lo) / (hi - lo) * (W - esq - dir);
   const refMax = st.map(s => s.ref).filter(Boolean).sort().pop();
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="min-width:600px;max-width:none;height:auto" aria-label="Score de estresse de ${st.length} atividades, de ${lo} a ${hi}, por pesquisa do IBGE">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" style="width:100%;height:auto" aria-label="Score de estresse de ${st.length} atividades, de ${lo} a ${hi}, por pesquisa do IBGE">`;
   for (let t = lo; t <= hi; t += 10) {
     svg += `<line x1="${x(t)}" x2="${x(t)}" y1="${topo}" y2="${H - 26}" style="stroke:var(--border)" stroke-width="1"/>`;
-    svg += `<text x="${x(t)}" y="${H - 8}" font-size="12" text-anchor="middle" style="fill:var(--text-2)">${t}</text>`;
+    svg += `<text x="${x(t)}" y="${H - 8}" font-size="13" text-anchor="middle" style="fill:var(--text-2)">${t}</text>`;
   }
   svg += `<line x1="${x(50)}" x2="${x(50)}" y1="${topo - 4}" y2="${H - 26}" style="stroke:var(--text)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-  svg += `<text x="${x(50) + 6}" y="${topo - 8}" font-size="12" style="fill:var(--text)">50 = média da própria história</text>`;
+  svg += `<text x="${esq}" y="${topo - 8}" font-size="13" style="fill:var(--text)">50 = média histórica</text>`;
   linhas.forEach((l, k) => {
     const cy = topo + k * passo + passo / 2;
     svg += `<text x="0" y="${cy - 2}" font-size="13" style="fill:var(--text)">${l.rot}</text>`;
-    svg += `<text x="0" y="${cy + 13}" font-size="12" style="fill:var(--text-2)">${l.pts.length} atividades</text>`;
+    svg += `<text x="0" y="${cy + 13}" font-size="13" style="fill:var(--text-2)">${l.pts.length} atividades</text>`;
     /* pontos que se tocariam (score igual ou vizinho) sobem ou descem uma faixa de 10 px: nenhum encobre o outro */
     const postos = [];
     l.pts.slice().sort((a, b) => a.score - b.score).forEach(s => {
@@ -4336,7 +4438,7 @@ function setorRegua(sectors) {
     `</tbody></table></div></details>`;
   return `<div class="card" id="setor-regua" style="margin-top:8px">
     <h4>Onde cada atividade está no score de estresse</h4>
-    <p class="src">Score de 0 a 100${refMax ? `, IBGE até ${fmt.my(refMax)}` : ""}. Cada ponto é uma atividade; acima de 50, mais estresse que a média da sua própria história. Compare posições dentro de cada pesquisa: os universos são distintos, e o score compara cada atividade com o próprio passado, não os níveis entre pesquisas.</p>
+    <p class="src">Score de 0 a 100${refMax ? `, IBGE até ${fmt.my(refMax)}` : ""}. 50 = média da própria história. Cada ponto é uma atividade; acima de 50, mais estresse que a média da sua própria história. Compare posições dentro de cada pesquisa: os universos são distintos, e o score compara cada atividade com o próprio passado, não os níveis entre pesquisas.</p>
     <div class="tblwrap" style="overflow-x:auto">${svg}</div>
     ${tabela}
   </div>`;
@@ -4354,7 +4456,7 @@ function renderSectors() {
   const linhaSetor = s => `
     <tr>
       <td><a href="/observatorio/sectors/${s.codigo}" onclick="nav('sector',{sectorCod:'${s.codigo}'});return false">${s.nome}</a> ${favStar("sectors", s.codigo, s.nome)}</td>
-      <td><span class="scorebar"><i style="left:${s.score * 0.9}px"></i></span> <b>${s.score}</b><div class="src">${s.faixa}</div></td>
+      <td><span class="scorebar"><i style="left:${s.score * 0.9}px"></i></span> <b>${fmt.n(s.score, 1)}</b><div class="src">${s.faixa}</div></td>
       <td>${s.tendencia} <span class="src">(${fmt.pp(s.tendencia_valor_pp)} p.p./3m)</span></td>
       <td>${s.velocidade} <span class="src">(${fmt.pp(s.velocidade_valor_pp)} p.p.)</span></td>
       <td>${fmt.n(s.yoy_producao_pct, 1)}% <span class="src">(${fmt.my(s.ref)})</span></td>
@@ -4375,7 +4477,7 @@ function renderSectors() {
   const papel = pulse && pulse.series.papelao;
   el.innerHTML = `
   ${pageHead({ title: "Risco setorial",
-    desc: "Score de estresse por atividade a partir do volume real de cada setor (indústria pela PIM, serviços pela PMS e comércio pela PMC), das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
+    desc: "Quais atividades mostram mais estresse em relação ao próprio passado? Score calculado a partir do volume real de cada setor (indústria pela PIM, serviços pela PMS e comércio pela PMC), das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). O nome de cada atividade abre a sua ficha completa.",
     fontes: "IBGE PIM-PF · PMS · PMC, BCB/SGS (crédito PJ), MTE/Novo Caged via BCB/SGS (emprego), BCB IF.data (exposições)" })}
   ${(() => {
     const st = sectors.setores || [];
@@ -4393,7 +4495,7 @@ function renderSectors() {
       ],
       sintese: [
         st.length ? `${elevados.length} das ${st.length} atividades acompanhadas estão em estresse elevado e ${piorando.length} pioram na janela de três meses.` : null,
-        pior ? `O maior score é de ${pior.nome} (${fmt.n(pior.score, 1)}, ${pior.tendencia}), com volume ${_pp1(pior.yoy_producao_pct)}% a/a.` : null,
+        pior ? `A atividade com maior score é ${pior.nome.replace(/^[\d.]+\s+/, "")} (CNAE ${pior.codigo}): ${fmt.n(pior.score, 1)}, ${pior.tendencia}, com volume ${_pp1(pior.yoy_producao_pct)}% a/a.` : null,
         "O score compara cada atividade com a própria história; não é inadimplência setorial, que as fontes públicas não publicam.",
       ],
       ref: `IBGE ${refMax ? fmt.my(refMax) : "–"} · emprego ${sectors.emprego_ref || "–"} · regras em Metodologia`,
@@ -4461,7 +4563,7 @@ function renderSectorPage() {
   <h2>${s.nome}</h2>
   ${guiaPagina("sector")}
   <div class="grid g3">
-    <div class="card"><h4>Nível de risco ${badge("calculado")}</h4><div class="big">${s.score}</div>
+    <div class="card"><h4>Nível de risco ${badge("calculado")}</h4><div class="big">${fmt.n(s.score, 1)}</div>
       <div class="delta neutral">${s.faixa} · tendência: <b>${s.tendencia}</b> (${fmt.pp(s.tendencia_valor_pp)} p.p./3m) · velocidade: ${s.velocidade}</div>
       <span class="scorebar" style="width:150px"><i style="left:${s.score * 1.5}px"></i></span></div>
     <div class="card"><h4>Decomposição do score</h4>
@@ -5104,6 +5206,7 @@ function renderScenarios() {
 }
 
 
+/* @chunk:municipal:ini */
 /* ---------- DÍVIDA ATIVA DA UNIÃO (PGFN) ----------
    Universo separado do crédito do SFN, e a página diz isso antes do primeiro
    número. Duas armadilhas da fonte aparecem como conteúdo, não como nota de
@@ -5265,7 +5368,6 @@ function renderPgfn() {
 function round2(x) { return Math.round(x * 100) / 100; }
 
 
-/* @chunk:municipal:ini */
 /* ---------- DESENROLA BRASIL ----------
    A base do BCB tem sete colunas. Um painel honesto do Desenrola precisa dizer, o
    tempo todo, o que elas permitem e o que não permitem concluir — e por isso esta
@@ -6726,6 +6828,19 @@ function buildReport() {
   setTimeout(() => { window.print(); showView("scenarios"); }, 150);
 }
 function download(name, content, mime) { dlFile(name, content, mime); } // alias legado do helper único
+/* Exporta o payload da figura, depois da transformação e do recorte. O CSV
+   observado completo continua disponível separadamente, sem mudar a fonte. */
+window.exportarRecorteGrafico = botao => {
+  const svg = botao.closest(".card")?.querySelector(".line-chart svg[data-chart]");
+  if (!svg) return;
+  const g = JSON.parse(decodeURIComponent(svg.dataset.chart));
+  const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+  const numero = v => v == null ? "" : fmt.n(v, g.dec).replace(/\./g, "");
+  const cabecalho = ["período", ...g.series.map((sr, i) => (sr.label || "série " + (i + 1)) + " (" + g.unit + ")"), ...(g.band ? ["previsão p10 (" + g.unit + ")", "previsão p90 (" + g.unit + ")"] : [])];
+  const linhas = g.xs.map((x, i) => [x, ...g.series.map(sr => numero(sr.vals[i])), ...(g.band ? [numero(g.band.lo[i]), numero(g.band.hi[i])] : [])].map(q).join(";"));
+  const metadados = [`# Fonte: ${g.fonte}`, `# Natureza: ${g.status || "identificada nas séries"}`, `# Unidade: ${g.unit}`, `# Período: ${g.xs[0]} a ${g.xs[g.xs.length - 1]}`, "# Célula vazia: observação ausente; não representa zero."];
+  download(`credito_recorte_${botao.closest(".card").id || "serie"}.csv`, "\uFEFF" + metadados.join("\n") + "\n" + cabecalho.map(q).join(";") + "\n" + linhas.join("\n"), "text/csv;charset=utf-8");
+};
 function exportSeries(key) {
   const s = state.data.pulse.series[key];
   if (!s) return;
@@ -6767,6 +6882,34 @@ window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
 /* @chunk:emergentes:ini */
+function renderSobre() {
+  const el = document.getElementById("view-sobre");
+  el.innerHTML = `
+  <div class="pagehead">
+    <div class="ph-left">
+      ${rotuloContexto()}
+      <h2>Sobre o Observatório</h2>
+    </div>
+  </div>
+  <div >
+    <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
+    <h3 style="margin-top:28px">Sobre o autor</h3>
+    <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
+    <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
+    <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
+    <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
+    <h3 style="margin-top:28px">Para a imprensa</h3>
+    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
+    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="/observatorio/overview" onclick="nav('overview');return false">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="/observatorio/alerts" onclick="nav('alerts');return false">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
+    <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
+    <h3 style="margin-top:28px">Participe</h3>
+    <p><a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões e correções</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> (consultas determinísticas sobre os dados carregados).</p>
+    <p style="margin-top:20px"><a href="${LINKEDIN_URL}" target="_blank" rel="noopener">LinkedIn</a></p>
+  </div>`;
+}
+
+
+
 /* ---------- INSTITUIÇÕES (lista e ficha; chunk emergentes desde a v0.101.0) ---------- */
 /* Detalhe de cada linha (decomposição, choques, carteira, captação, modelo de negócio) só é
    montado quando o leitor abre o details: com 100 linhas, o corpo fechado somava 24,6 mil das
@@ -6910,7 +7053,7 @@ function renderInstitutions() {
   }).join("");
   el.innerHTML = `
   ${pageHead({ title: "Instituições",
-    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1 a S5), com mediana, quartis e variação trimestral. O nome de cada instituição abre a sua ficha completa.",
+    desc: "Como os bancos se comparam a seus pares? Conglomerados do mesmo grupo (S1 a S5), com mediana, quartis e variação trimestral. O nome abre a ficha completa.",
     fontes: "BCB IF.data (Olinda + interface)" })}
   ${(() => {
     const todos = inst.instituicoes || [];
@@ -6945,7 +7088,7 @@ function renderInstitutions() {
     <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
     <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
     <span class="seg">${[["ativo", "por ativo"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
-    <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
+    <button class="btn ghost small" onclick="exportInstitutions()">baixar base completa (JSON)</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${instForaDoCorte(inst)}
@@ -10206,7 +10349,7 @@ window.fiCSV = () => {
 };
 
 /* ---------- Crédito a estados e municípios (Sadipem, Tesouro Nacional) ---------- */
-function snSet(k, v) { state.sn[k] = v; renderSubnacional(); }
+function snSet(k, v) { comFocoPreservado(() => { state.sn[k] = v; syncHash(); renderSubnacional(); }); }
 window.snSet = snSet;
 function renderSubnacional() {
   const el = document.getElementById("view-subnacional");
@@ -10226,7 +10369,7 @@ function renderSubnacional() {
   const head = pageHead({
     title: "Crédito a estados e municípios", vintage: D.mes,
     seals: `${badge("observado", "pedidos de verificação de limites (PVL) do Sadipem, registro administrativo da STN")} ${badge("calculado", "agregações por ano, credor, finalidade e UF; shares e posições calculados")}`,
-    desc: "Quanto crédito recebeu parecer favorável na verificação de limites da LRF para estados e municípios, com quem, para quê e onde; quanto os estados devem e o que a União garante.",
+    desc: "Quanto crédito recebeu parecer favorável para estados e municípios? Verificação de limites da LRF: com quem, para quê e onde; dívida estadual e garantias da União.",
     fontes: "Tesouro Nacional (Sadipem, Siconfi RGF e garantias da União, Tesouro Transparente); IBGE (população)",
     actions: `<button class="btn ghost small" onclick="snCSV()">baixar CSV (série anual)</button>`,
   });
@@ -10320,7 +10463,7 @@ function renderSubnacional() {
     const chaveDv = ["dcl_rcl_pct", "dcl", "dcl_hab", "uniao_share_pct", "uso_limite_pct"].includes(F.dv) ? F.dv : "dcl_rcl_pct";
     const ufsDv = DV.ufs.filter(u => u.disponivel).sort((a, b) => ((b[chaveDv] != null ? b[chaveDv] : -1e18) - (a[chaveDv] != null ? a[chaveDv] : -1e18)));
     const SD = (DV.serie_anual || []);
-    const seriesD = [{ pts: SD.map(a => ({ x: a.ano + "-07-01", y: a.dcl_rcl_pct })), color: "#b45309", label: "DCL ÷ RCL, 27 UFs" }];
+    const seriesD = [{ pts: SD.map(a => ({ x: String(a.ano), y: a.dcl_rcl_pct })), color: "#b45309", label: "DCL ÷ RCL, 27 UFs", short: "DCL ÷ RCL" }];
     dividaSec = secWrap("sn-divida", `${sechead("Quanto os estados devem", `Siconfi, RGF Anexo 02 · ${KD.periodo || "–"} · ${n0(KD.n_ufs)} de 27 UFs com entrega`)}
     <div class="grid g2">
       <div class="card"><h4>Dívida consolidada líquida dos estados e do DF ${badge("observado")}</h4>
@@ -11055,7 +11198,7 @@ function renderConsignado() {
     return;
   }
   const F = state.cg || {};
-  const cam = F.cam || "p60";
+  const cam = Object.hasOwn(CG_CAMADAS, F.cam) ? F.cam : "p60";
   const C = CG_CAMADAS[cam];
   const regiao = F.regiao || "todas";
   const conf = F.conf || "exclui_baixa";
@@ -11255,10 +11398,10 @@ function renderConsignado() {
 
   el.innerHTML = pageHead({
     title: "Consignado e aposentados",
-    desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante, separando o que é observado do que é estimado.",
+    desc: "Onde o envelhecimento e os benefícios tornam o consignado relevante? Dados observados e estimativas são identificados separadamente.",
     fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
   }) + ((D.sgs && D.sgs.atual && D.sgs.atual.inss && D.sgs.atual.privado) ? placar([
-    { v: fmt.n(D.sgs.atual.inss.inad, 2) + "%", l: "Inadimplência — consignado INSS", sub: `SGS · ${D.sgs.data_base}`, href: "#cg-geral" },
+    { v: fmt.n(D.sgs.atual.inss.inad, 2) + "%", l: "Inadimplência — consignado INSS", sub: `SGS · ${fmt.my(D.sgs.data_base)}`, href: "#cg-geral" },
     { v: fmt.n(D.sgs.atual.privado.inad, 2) + "%", l: "Inadimplência — consignado privado", sub: `${fmt.n(D.sgs.atual.privado.inad / D.sgs.atual.inss.inad, 1)}× a do INSS, no mesmo conceito SGS`, href: "#cg-geral" },
     D.reclamacoes && D.reclamacoes.total ? { nat: "calculado", v: fmt.n0(D.reclamacoes.total), l: "Reclamações de beneficiários INSS", sub: `${D.reclamacoes.de} a ${D.reclamacoes.ate}`, href: "#cg-idade" } : null,
     D.sgs.atual.total && D.sgs.atual.total.saldo ? { nat: "calculado", v: fmt.money(D.sgs.atual.total.saldo * 1e6), l: "Carteira total do consignado", sub: "INSS + privado + público", href: "#cg-geral" } : null,
@@ -11267,6 +11410,9 @@ function renderConsignado() {
     + cgRisco(D, base) + cgInstituicoes(D)
     + cgPerfil(D, sel, comparar) + cgMetodo(D);
 
+  // Esta rota pode renderizar novamente quando chega a malha municipal.
+  // Ajustar antes de pintar evita um quadro de série desktop reduzida no celular.
+  dimensionaSeries(el);
   agendaAcessibilidade();
 }
 
@@ -11312,12 +11458,12 @@ function cgExposicao(D) {
     <h4>Saldo por vínculo do tomador</h4>
     ${lineChart({
       series: [
-        { name: "INSS", pts: G.series.saldo.map(p => ({ x: p.d, y: p.inss / 1000 })) },
-        { name: "Servidores públicos", pts: G.series.saldo.map(p => ({ x: p.d, y: p.publico / 1000 })) },
-        { name: "Setor privado", pts: G.series.saldo.map(p => ({ x: p.d, y: p.privado / 1000 })) },
-      ], unit: " bi", dec: 0, h: 240,
+        { label: "INSS", color: "var(--c-line1)", pts: G.series.saldo.map(p => ({ x: p.d, y: p.inss / 1000 })) },
+        { label: "Servidores públicos", color: "var(--c-line2)", pts: G.series.saldo.map(p => ({ x: p.d, y: p.publico / 1000 })) },
+        { label: "Setor privado", color: "var(--c-line3)", pts: G.series.saldo.map(p => ({ x: p.d, y: p.privado / 1000 })) },
+      ], unit: "R$ bilhões", dec: 0, h: 240,
       annotations: D.linha_do_tempo.filter(e => e.d >= G.series.saldo[0].d && e.tipo === "margem")
-        .map(e => ({ x: e.d.slice(0, 7), label: e.t.slice(0, 22) }))
+        .map(e => ({ x: e.d.slice(0, 7), label: e.t }))
         .concat(marcosRegulatorios("consignado").map(m => ({ ...m, color: "#6b46a3" }))),
       aria: "saldo de consignado por vínculo do tomador, em bilhões de reais",
       fonte: "BCB, Sistema Gerenciador de Séries Temporais",
@@ -11339,6 +11485,69 @@ function cgExposicao(D) {
 }
 
 /* ============ 6. circularidade ============ */
+/* Mantém os centros e raios das bolhas; só procura espaço para as siglas.
+   Ordem determinística: os aglomerados mais densos reservam espaço primeiro. */
+function cgPosicionaRotulos(pontos, limites = { esq: 42, dir: 712, topo: 20, baixo: 246 }) {
+  const largura = 28, altura = 20, folga = 3;
+  const caixas = [], linhas = [];
+  const sobrepoe = (a, b) => a.x < b.x + b.w + folga && a.x + a.w + folga > b.x && a.y < b.y + b.h + folga && a.y + a.h + folga > b.y;
+  const tocaBolha = (b, p) => Math.hypot(p.x - Math.max(b.x, Math.min(p.x, b.x + b.w)), p.y - Math.max(b.y, Math.min(p.y, b.y + b.h))) < p.r + folga;
+  const cruza = (a, b, c, d) => {
+    const lado = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+    return lado(a, b, c) * lado(a, b, d) < 0 && lado(c, d, a) * lado(c, d, b) < 0;
+  };
+  const cortaCaixa = (a, b, c) => {
+    const v = [{ x: c.x, y: c.y }, { x: c.x + c.w, y: c.y }, { x: c.x + c.w, y: c.y + c.h }, { x: c.x, y: c.y + c.h }];
+    return v.some((p, i) => cruza(a, b, p, v[(i + 1) % 4]));
+  };
+  const densidade = p => pontos.reduce((s, q) => s + (p !== q && Math.hypot(p.x - q.x, p.y - q.y) < 55 ? 1 : 0), 0);
+  const ordem = pontos.slice().sort((a, b) => densidade(b) - densidade(a) || a.x - b.x || a.uf.localeCompare(b.uf));
+  const resultado = new Map();
+  for (const p of ordem) {
+    let melhor = null;
+    const avalia = (lx, ly) => {
+      const caixa = { x: lx - largura / 2, y: ly - altura / 2, w: largura, h: altura };
+      if (caixa.x < limites.esq || caixa.x + caixa.w > limites.dir || caixa.y < limites.topo || caixa.y + caixa.h > limites.baixo) return;
+      if (caixas.some(b => sobrepoe(caixa, b)) || pontos.some(q => tocaBolha(caixa, q))) return;
+      const dx = lx - p.x, dy = ly - p.y, distancia = Math.hypot(dx, dy);
+      const inicio = { x: p.x + dx * p.r / distancia, y: p.y + dy * p.r / distancia };
+      const fator = Math.max(Math.abs(dx) / (largura / 2), Math.abs(dy) / (altura / 2));
+      const fim = { x: lx - dx / fator, y: ly - dy / fator };
+      const cortes = caixas.filter(b => cortaCaixa(inicio, fim, b)).length + linhas.filter(l => cortaCaixa(l.inicio, l.fim, caixa)).length;
+      const cruzamentos = linhas.filter(l => cruza(inicio, fim, l.inicio, l.fim)).length;
+      const custo = distancia * distancia + cortes * 1e6 + cruzamentos * 10000;
+      if (!melhor || custo < melhor.custo) melhor = { ...p, lx, ly, caixa, inicio, fim, custo };
+    };
+    for (let raio = p.r + 22; raio <= 190; raio += 10) {
+      for (let angulo = 0; angulo < 360; angulo += 15) {
+        const rad = angulo * Math.PI / 180;
+        avalia(p.x + Math.cos(rad) * raio, p.y + Math.sin(rad) * raio);
+      }
+    }
+    // Busca na área inteira também cobre um conjunto degenerado de pontos coincidentes.
+    if (!melhor) for (let y = limites.topo + altura / 2; y <= limites.baixo - altura / 2; y += altura + folga) {
+      for (let x = limites.esq + largura / 2; x <= limites.dir - largura / 2; x += largura + folga) avalia(x, y);
+    }
+    if (melhor) { caixas.push(melhor.caixa); linhas.push(melhor); resultado.set(p.uf, melhor); }
+  }
+  return pontos.map(p => resultado.get(p.uf));
+}
+
+function cgDispersaoMostra(seletor) {
+  state.cg = { ...(state.cg || {}), dispersaoUf: seletor.value };
+  const card = seletor.closest(".card");
+  const grupos = [...card.querySelectorAll(".cgdisp-uf")];
+  const escolhido = grupos.find(g => g.dataset.uf === seletor.value);
+  grupos.forEach(g => g.classList.toggle("is-active", g === escolhido));
+  const leitura = card.querySelector(".cgdisp-leitura");
+  leitura.textContent = escolhido?.getAttribute("aria-label") || leitura.dataset.padrao;
+  if (escolhido) {
+    const rolagem = card.querySelector(".cgdisp-wrap");
+    const rotulo = escolhido.querySelector(".cgdisp-rotulo").getBoundingClientRect();
+    rolagem.scrollLeft += rotulo.left + rotulo.width / 2 - rolagem.getBoundingClientRect().left - rolagem.clientWidth / 2;
+  }
+}
+
 function cgCircularidade(D) {
   const C = D.circularidade;
   const est = D.estados.filter(e => e.outras_censo != null && e.cons_por_60 != null);
@@ -11347,6 +11556,11 @@ function cgCircularidade(D) {
   const px = v => 60 + 640 * (v - x0) / Math.max(x1 - x0, 1e-9);
   const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
   const ref = C.especificacoes.find(e => e.referencia);
+  const rotulos = cgPosicionaRotulos(est.map(e => ({ ...e, x: px(e.outras_censo), y: py(e.cons_por_60), r: 4 + 9 * Math.sqrt(e.a60 / 4e6) })));
+  const descricao = e => `${e.nome} (${e.uf}): rendimento de outras fontes ${fmt.n(e.outras_censo, 1)}%; consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}; população de 60 anos ou mais ${fmt.n0(e.a60)} pessoas.`;
+  const ufSelecionada = state.cg?.dispersaoUf || "";
+  const selecionado = est.find(e => e.uf === ufSelecionada);
+  const leituraPadrao = "Escolha uma UF para destacar o ponto e ler suas medidas. As linhas-guia ligam cada sigla ao ponto original.";
 
   return `<section id="cg-circ">${sechead("O que é observado e o que é mecânico", "quatro especificações da mesma pergunta")}
   <p class="desprosa">A pergunta natural do painel é se municípios mais dependentes de
@@ -11393,18 +11607,25 @@ function cgCircularidade(D) {
 
   <div class="card">
     <h4>Dependência previdenciária e consignado, por unidade da federação</h4>
-    <svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
+    <p class="src">Arraste horizontalmente para explorar a dispersão. A tabela abaixo contém os mesmos estados e medidas.</p>
+    <label class="cgdisp-controle" for="cg-dispersao-uf">Consultar estado
+      <select id="cg-dispersao-uf" onchange="cgDispersaoMostra(this)">
+        <option value="">Escolha uma UF</option>${est.map(e => `<option value="${e.uf}" ${e.uf === ufSelecionada ? "selected" : ""}>${e.uf} — ${e.nome}</option>`).join("")}
+      </select>
+    </label>
+    <p class="src cgdisp-leitura" aria-live="polite" data-padrao="${attr(leituraPadrao)}">${selecionado ? descricao(selecionado) : leituraPadrao}</p>
+    <div class="tblwrap cgdisp-wrap" tabindex="0" role="region" aria-label="Dispersão por estado, com rolagem horizontal"><svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
       <line x1="60" y1="250" x2="700" y2="250" stroke="var(--border)"></line>
       <line x1="60" y1="40" x2="60" y2="250" stroke="var(--border)"></line>
-      ${est.map(e => `<g role="group" aria-label="${attr(`${e.nome}: outras fontes ${fmt.n(e.outras_censo, 1)}%, consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}`)}">
-        <circle cx="${px(e.outras_censo).toFixed(1)}" cy="${py(e.cons_por_60).toFixed(1)}"
-          r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
-          stroke="var(--teal)"></circle>
-        <text x="${(px(e.outras_censo) + 8).toFixed(1)}" y="${(py(e.cons_por_60) + 4).toFixed(1)}"
-          font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
+      ${rotulos.map(e => `<g class="cgdisp-uf${e.uf === ufSelecionada ? " is-active" : ""}" data-uf="${e.uf}" role="img" aria-label="${attr(descricao(e))}">
+        <line class="cgdisp-guia" x1="${e.inicio.x.toFixed(1)}" y1="${e.inicio.y.toFixed(1)}" x2="${e.fim.x.toFixed(1)}" y2="${e.fim.y.toFixed(1)}" aria-hidden="true"></line>
+        <circle cx="${e.x.toFixed(1)}" cy="${e.y.toFixed(1)}" r="${e.r.toFixed(1)}" fill="var(--teal)" fill-opacity=".45" stroke="var(--teal)"></circle>
+        <rect class="cgdisp-fundo" x="${e.caixa.x.toFixed(1)}" y="${e.caixa.y.toFixed(1)}" width="${e.caixa.w}" height="${e.caixa.h}" aria-hidden="true"></rect>
+        <text class="cgdisp-rotulo" x="${e.lx.toFixed(1)}" y="${(e.ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
       <text x="380" y="282" text-anchor="middle" font-size="12" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
       <text x="16" y="145" font-size="12" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
-    </svg>
+    </svg></div>
+    <details class="charttable"><summary>Dados da dispersão em tabela</summary><div class="tblwrap"><table class="data compact" data-movel="1"><thead><tr><th scope="col">Estado</th><th scope="col">Rendimento de outras fontes (%)</th><th scope="col">Consignado por pessoa de 60+ (R$)</th><th scope="col">População de 60+ (pessoas)</th></tr></thead><tbody>${est.map(e => `<tr><th scope="row">${e.nome} (${e.uf})</th><td class="num">${fmt.n(e.outras_censo, 1)}</td><td class="num">${fmt.n0(e.cons_por_60)}</td><td class="num">${fmt.n0(e.a60)}</td></tr>`).join("")}</tbody></table></div></details>
     <p class="src">${cgSelo("observado")} Especificação de referência, r = ${fmt.n(ref ? ref.r : C.referencia, 3)}.
     Tamanho do círculo proporcional à população de 60 anos ou mais. Os dois eixos vêm de fontes
     distintas e nenhum termo é compartilhado entre eles.</p>
@@ -11591,13 +11812,14 @@ function cgPerfil(D, sel, comparar) {
     ${cols.length > 1 ? `<button class="btn ghost small" onclick="cgLimpa()">limpar comparação</button>` : ""}
   </div>
   <div class="card cgperfil">
-    <table class="data">
-      <thead><tr><th>Indicador</th>${cols.map(m => `<th style="text-align:right">${m.n}<small>${m.uf}</small></th>`).join("")}<th></th></tr></thead>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Comparação de indicadores dos municípios selecionados"><table class="data comparacao-tabular" data-movel="1">
+      <thead><tr><th scope="col">Indicador</th>${cols.map(m => `<th scope="col" style="text-align:right">${m.n}<small>${m.uf}</small></th>`).join("")}<th scope="col">Natureza do dado</th></tr></thead>
       <tbody>${linhas(cols[0]).map((_, i) => `<tr>
         <th scope="row">${linhas(cols[0])[i][0]}</th>
         ${cols.map(m => `<td style="text-align:right">${linhas(m)[i][1]}</td>`).join("")}
         <td>${cgSelo(linhas(cols[0])[i][2])}</td></tr>`).join("")}</tbody>
-    </table>
+    </table></div>
+    <p class="src">Deslize horizontalmente ou use as setas com foco na tabela para comparar todos os municípios.</p>
     <p class="src">Confiabilidade: ${cols.map(m => `<span class="morselo" style="--c:${CG_SELCOR[m.sel]}">${m.n}: ${m.sel.replace("_", " ")}</span>`).join(" ")}</p>
     ${cols.some(m => m.incoerente) ? `<div class="judalerta" role="note">Ao menos um dos municípios
       selecionados reprova no teste de coerência: o peso calculado supera o teto que o Censo dá
@@ -11656,7 +11878,7 @@ function cgMetodo(D) {
   </section>`;
 }
 
-window.cgFiltra = (k, v) => { state.cg = { ...(state.cg || {}), [k]: v }; renderConsignado(); };
+window.cgFiltra = (k, v) => comFocoPreservado(() => { state.cg = { ...(state.cg || {}), [k]: v }; syncHash(); renderConsignado(); });
 window.cgSel = cod => {
   const s = state.cg || {};
   const comp = s.comp || [];
@@ -12625,7 +12847,7 @@ function renderPresencaMun() {
    arquivo (dev), a checagem de presença torna tudo transparente. */
 const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc", subnacional: "renderSubnacional" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
-const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
+const CHUNK_OF_VIEW = { sobre: "emergentes", pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
   consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes", subnacional: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
@@ -12741,9 +12963,9 @@ function pingView(v) {
    às colunas da direita, porque o contêiner não recebia foco. O tabindex só
    entra onde há rolagem de fato — pôr foco em contêiner que não rola criaria
    paradas de tabulação vazias, que é o defeito oposto. */
-/* Abaixo de 640 px a tabela solta num cartão rola sozinha (display:block, styles.css "transbordos a 390 px"): ela mesma
-   recebe o foco e o nome, sem trocar o papel de tabela por região (três nós reprovados em payroll-lending-aging a 390 px na
-   medição de 23/10/2026, Iniciativa 2 do parecer de UX). */
+/* Nas seis rotas auditadas, tabelas soltas recebem um .tblwrap em qualquer largura.
+   A tabela mantém sua semântica; só o contêiner rolável recebe papel de região e foco.
+   Nas demais rotas, a tabela que já rola diretamente conserva seu papel nativo. */
 const TABELA_QUE_ROLA = ".card > table.data, .view > table.data, details > table.data";
 function acessibilizaRolagem(raiz) {
   (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x, " + TABELA_QUE_ROLA).forEach(el => {
@@ -12766,13 +12988,16 @@ function acessibilizaRolagem(raiz) {
 /* Reavalia depois de cada render e a cada mudança de largura: o que rola em
    375 px pode não rolar em 1440 px, e vice-versa. */
 let _rolagemAgendada = 0;
-/* Tabelas largas em celular: em vez de comprimir a tabela desktop, cada linha vira um
-   bloco com rótulo:valor por célula. O rótulo vem do cabeçalho e é anotado aqui, uma vez
-   por tabela — o CSS só ativa a apresentação empilhada abaixo de 700px, e apenas para
-   tabelas com cinco ou mais colunas (as estreitas, como rankings de três colunas,
-   continuam tabelas, que é o formato certo para elas). */
+/* Crédito/Pix preservam comparação por colunas em tabelas nativas com rolagem local,
+   inclusive quando apenas o texto é ampliado. Nas demais rotas, o contrato legado
+   empilha tabelas simples com cinco ou mais colunas abaixo de 700px. */
 function adaptaTabelasMoveis(raiz) {
   if (!raiz) return;
+  const tabular = raiz.matches("#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional");
+  if (tabular) raiz.querySelectorAll(TABELA_QUE_ROLA).forEach(t => {
+    const cont = document.createElement("div"); cont.className = "tblwrap";
+    t.before(cont); cont.append(t);
+  });
   raiz.querySelectorAll("table.data:not([data-movel])").forEach(t => {
     t.setAttribute("data-movel", "1");
     // Só cabeçalho simples: uma linha de th, mesma contagem de colunas do corpo.
@@ -12786,6 +13011,13 @@ function adaptaTabelasMoveis(raiz) {
     const corpo = t.querySelector("tbody tr");
     if (ths.length < 5 || !corpo || corpo.children.length !== ths.length) return;
     if (ths.filter(Boolean).length < ths.length - 1) return;  // cabeçalho sem texto útil
+    if (tabular && t.parentElement.classList.contains("tblwrap")) {
+      t.classList.add("comparacao-tabular");
+      const ajuda = document.createElement("p"); ajuda.className = "src tabela-deslize";
+      ajuda.textContent = "Todas as colunas estão disponíveis nesta tabela. Deslize horizontalmente ou use as setas com foco na tabela.";
+      t.parentElement.before(ajuda);
+      return;
+    }
     t.classList.add("t-stack");
     t.querySelectorAll("tbody tr").forEach(tr => {
       [...tr.children].forEach((td, i) => {
@@ -12798,9 +13030,36 @@ function adaptaTabelasMoveis(raiz) {
 /* Piso tipográfico também dentro dos SVG (E4 da avaliação de 05/09): o texto
    de um gráfico escala com o viewBox, e um rótulo de 10 unidades num gráfico
    de 720 desenhado em 480 px vira 6,7 px. Quando a escala é menor que 1, o
-   svg ganha a variável que restitui o piso de 10,5 px renderizados; os
+   svg ganha a variável que restitui o piso de 12 px renderizados; os
    rótulos do eixo x, que já não cabiam, são rareados na mesma passada. */
-const FS_PISO_SVG = 10.5;
+const FS_PISO_SVG = 12;
+function dimensionaSeries(raiz) {
+  if (!raiz) return;
+  raiz.querySelectorAll(".line-chart[data-line-options]").forEach(bloco => {
+    const largura = Math.floor(bloco.getBoundingClientRect().width);
+    if (!largura || Math.abs(largura - Number(bloco.dataset.lineWidth)) < 2) return;
+    const opts = JSON.parse(decodeURIComponent(bloco.dataset.lineOptions));
+    const aberta = bloco.querySelector("details")?.open;
+    const ativo = document.activeElement;
+    const foco = bloco.contains(ativo);
+    const seletorFoco = ativo?.matches("summary") ? "summary" : ativo?.matches(".tblwrap") ? ".tblwrap" : ativo?.matches("button") ? "button" : "svg";
+    const rolagem = bloco.querySelector(".tblwrap");
+    const topo = rolagem?.scrollTop || 0, esquerda = rolagem?.scrollLeft || 0;
+    const temporario = document.createElement("div");
+    const dimensoes = { ...opts, w: largura, h: Math.max(160, opts.h || 240) };
+    temporario.innerHTML = opts.stacked ? pxStackedArea(opts.periods, opts.series, dimensoes) : lineChart(dimensoes);
+    const novo = temporario.firstElementChild;
+    if (aberta && novo.querySelector("details")) novo.querySelector("details").open = true;
+    bloco.replaceWith(novo);
+    if (foco) {
+      const alvo = novo.querySelector(seletorFoco);
+      if (seletorFoco === ".tblwrap") alvo?.setAttribute("tabindex", "0");
+      alvo?.focus({ preventScroll: true });
+    }
+    const novaRolagem = novo.querySelector(".tblwrap");
+    if (novaRolagem) { novaRolagem.scrollTop = topo; novaRolagem.scrollLeft = esquerda; }
+  });
+}
 function ajustaFonteSvg(raiz) {
   (raiz || document).querySelectorAll("svg.chart[viewBox]").forEach(svg => {
     const vb = (svg.getAttribute("viewBox") || "").split(/\s+/).map(Number);
@@ -12811,11 +13070,16 @@ function ajustaFonteSvg(raiz) {
       svg.classList.add("fs-piso");
       svg.style.setProperty("--svg-fs", (FS_PISO_SVG / escala).toFixed(2) + "px");
     } else { svg.classList.remove("fs-piso"); svg.style.removeProperty("--svg-fs"); }
-    const xl = svg.querySelectorAll("text.xl");
-    if (xl.length > 1) {
-      const larg = Math.max(...[...xl].map(t => (t.textContent || "").length)) * FS_PISO_SVG * 0.62 + 10;
-      const k = Math.max(1, Math.ceil(xl.length * larg / Math.max(w, 1)));
-      xl.forEach((t, i) => { t.style.display = i % k === 0 ? "" : "none"; });
+    const xl = [...svg.querySelectorAll("text.xl")];
+    if (xl.length) {
+      // Confere os intervalos efetivamente pintados, após fonte, escala e tradução
+      // das datas. Reabre todos antes de medir para também funcionar ao ampliar.
+      xl.forEach(t => { t.style.display = ""; });
+      const borda = svg.getBoundingClientRect();
+      const candidatos = xl.map(no => { const b = no.getBoundingClientRect(); return { no, inicio: b.left, fim: b.right }; })
+        .filter(r => r.inicio >= borda.left - .5 && r.fim <= borda.right + .5);
+      const visiveis = new Set(rotulosEixoSemColisao(candidatos).map(r => r.no));
+      xl.forEach(t => { t.style.display = visiveis.has(t) ? "" : "none"; });
     }
   });
 }
@@ -12832,9 +13096,13 @@ function dataIsoNoTexto(t) {
     return +mes === (+ano + 1) % 100 ? m : fmt.my(m);
   });
 }
+function numerosNoTexto(t) {
+  return String(t).replace(/(?<![\d.,])([+-]?\d+)\.(\d{1,2})(?![\d.,])(?=\s*(?:%|bilh|trilh|milh|bi\b|tri\b|p\.p\.))/g, "$1,$2")
+    .replace(/\b(20\d{2})-T([1-4])\b/g, "$2º tri/$1");
+}
 function datasNaTela(raiz) {
   if (!raiz || typeof document.createTreeWalker !== "function") return;
-  const tem = /(?:19|20)\d{2}-(?:0[1-9]|1[0-2])/;
+  const tem = /(?:19|20)\d{2}-(?:0[1-9]|1[0-2]|T[1-4])|\d+\.\d/;
   const w = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
     acceptNode: n => tem.test(n.nodeValue) && !(n.parentElement && n.parentElement.closest("script, style, code, pre, textarea"))
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
@@ -12842,7 +13110,7 @@ function datasNaTela(raiz) {
   const nos = [];
   while (w.nextNode()) nos.push(w.currentNode);
   for (const n of nos) {
-    const novo = dataIsoNoTexto(n.nodeValue);
+    const novo = numerosNoTexto(dataIsoNoTexto(n.nodeValue));
     if (novo !== n.nodeValue) n.nodeValue = novo;
   }
 }
@@ -12850,10 +13118,11 @@ function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
   _rolagemAgendada = setTimeout(() => {
     const ativa = document.querySelector("section.view.active");
-    acessibilizaRolagem(ativa);
     adaptaTabelasMoveis(ativa);
-    ajustaFonteSvg(ativa);
+    acessibilizaRolagem(ativa);
+    dimensionaSeries(ativa);
     datasNaTela(ativa);
+    ajustaFonteSvg(ativa);
     aplicaCapitulos();
   }, 120);
 }
@@ -12863,6 +13132,8 @@ window.addEventListener("resize", agendaAcessibilidade);
 document.addEventListener("DOMContentLoaded", () => {
   const alvo = document.getElementById("main");
   if (alvo && window.MutationObserver) new MutationObserver(agendaAcessibilidade).observe(alvo, { childList: true, subtree: true });
+  if (alvo && window.ResizeObserver) new ResizeObserver(() => acessibilizaRolagem(document.querySelector("section.view.active"))).observe(alvo);
+  document.fonts?.addEventListener("loadingdone", agendaAcessibilidade);
 });
 
 /* Trilha "Você está em" da barra comum (gerada em index.html por src/lib/observatorios/barraSpa.ts, com o índice dos
@@ -12974,6 +13245,12 @@ function guardarContinuidade() {
     } finally { clearTimeout(prazo); }
   }).catch(() => undefined);
 }
+
+// O menu é recriado a cada filtro; delegação preserva Escape em todas as vistas.
+document.addEventListener("keydown", e => {
+  const menu = e.target.closest?.(".ph-menu[open]");
+  if (e.key === "Escape" && menu) { e.preventDefault(); menu.open = false; menu.querySelector("summary").focus(); }
+});
 
 /* Seletor de observatório (details) da barra comum. Fecha com Esc (foco volta ao
    resumo), com clique fora e quando o foco sai do menu. */

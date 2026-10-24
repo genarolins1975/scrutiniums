@@ -49,8 +49,8 @@ describe("fonte canônica: marcadores e despacho", () => {
 
   it("cada rota de chunk tem o renderizador dentro da região do chunk certo", () => {
     const mapa: Record<string, string> = {
-      desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
-      bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
+      pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
+      sobre: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
     };
     for (const [view, chunk] of Object.entries(mapa)) {
       expect(app).toContain(`${view}: "${chunk}"`); // no CHUNK_OF_VIEW
@@ -76,18 +76,18 @@ describe("artefatos do build", () => {
     for (const f of ["public/obs/app-municipal.min.js", "public/obs/app-emergentes.min.js"]) {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
-    for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
-      "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
+    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
+      "renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
     const eme = read("public/obs/app-emergentes.min.js");
-    for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
+    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
       expect(mun.includes(`function ${fn}(`), fn).toBe(true);
     }
     // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário
     // Instituições (lista e ficha) foi para o chunk emergentes na v0.101.0; histogram e openInstPage ficam no core
-    for (const fn of ["renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
+    for (const fn of ["renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
       expect(eme.includes(`function ${fn}(`), fn).toBe(true);
     }
     for (const fn of ["histogram"]) {

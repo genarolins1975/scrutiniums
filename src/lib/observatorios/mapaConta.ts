@@ -12,7 +12,7 @@ import { OBSERVATORIOS, type Observatorio, type ObservatorioId } from "./lista";
 import { navegacaoDaColecao } from "./navegacaoColecao";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { dadosFrescor } from "@/lib/frescor/dominios";
-import { dataPublicacao, rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
+import { rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
 import type { Prontidao } from "@/components/observatorios/SeloProntidao";
 
 /**
@@ -61,6 +61,8 @@ export type LinhaColecao = {
   id: string;
   nome: string;
   href: string;
+  /** Pergunta/resumo da página de entrada existente no catálogo; nunca inferido de outra página. */
+  resumoEntrada?: string;
   /** A entrada mais as páginas que existem (publicadas ou parciais); as previstas não contam. */
   contagem: number;
   /** Páginas além da entrada, como o inventário as lista (previstas incluídas, sem link). */
@@ -98,10 +100,13 @@ export function diretorioDoMapa(agora: Date = new Date()): { secoes: SecaoObserv
           id: c.id,
           nome: c.nome,
           href: c.href,
+          resumoEntrada: c.resumoEntrada,
           contagem: 1 + existentes.length,
           paginas: c.paginas,
-          dadosAte: principal ? (rotuloReferencia(principal.referencia) ?? dataPublicacao(principal.publicadoEm)) : null,
-          atraso: sit && (sit.estado === "atrasado" || sit.estado === "retida") ? textoSituacao(sit) : null,
+          dadosAte: principal ? rotuloReferencia(principal.referencia) : null,
+          atraso: sit && (sit.estado === "atrasado" || sit.estado === "retida")
+            ? textoSituacao(sit).replace("Publicação retida em parte", "Parte dos dados está com atualização atrasada")
+            : null,
           prontidao: estado === "piloto" ? "piloto" : existentes.length > 0 && existentes.every((p) => p.situacao === "parcial") ? "parcial" : null,
           fontes,
         };

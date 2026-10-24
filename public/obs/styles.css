@@ -513,7 +513,7 @@ details.decomp summary:hover { text-decoration: underline; }
 .mcard svg { margin-top: 4px; }
 
 .sechead { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin: 34px 0 14px; }
-.sechead h3 { margin: 0; }
+.sechead h3 { margin: 0; min-inline-size:0; max-inline-size:100%; overflow-wrap:anywhere; }
 .sechead .seesub { color: var(--text-3); font-size: var(--tipo-tabela); }
 
 .ov-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); gap: 22px; align-items: stretch; }
@@ -1360,3 +1360,108 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 }
 .kpi-linha { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 8px; font-size: var(--tipo-meta); color: var(--text-2); }
 .kpi-linha .seal { padding: 0; border: 0; background: transparent; letter-spacing: 0; text-transform: none; font-family: var(--sans); font-size: var(--tipo-meta); }
+
+/* Pix: o valor fica em papel opaco sobre a escala; nenhuma combinação da
+   matriz depende da luminância do preenchimento para ser lida. */
+.px-heatmap { text-align: center; min-width: 480px; }
+.px-heatmap th[scope="row"] { text-align: left; }
+.px-cell-value { display: inline-block; padding: 6px 8px; background: var(--surface); color: var(--text); border-radius: var(--r-xs); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.px-cell-share { display: block; font-size: var(--tipo-meta); color: inherit; }
+#view-pix caption { text-align: left; padding: 8px 0; color: var(--text-2); font-size: var(--tipo-meta); }
+#view-pix .seg button, #view-pix .instpick button { min-height: 44px; }
+#view-pix td.num { white-space: nowrap; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.chart-annotations { font-size: var(--tipo-meta); line-height: var(--lh-normal); padding-left: 24px; }
+
+@media (max-width: 640px) {
+  #view-pix .panbar { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 10px 0; }
+  #view-pix .panbar > span:first-child { white-space: normal !important; overflow: visible !important; }
+  #view-pix .panbar .track { grid-column: 1 / -1; grid-row: 2; }
+  #view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); }
+}
+
+.line-chart { min-width: 0; width: 100%; }
+.tabela-deslize { display: none; }
+#view-pix .pan-sintese { font-family: var(--sans); font-size: var(--tipo-corpo); line-height: var(--lh-normal); max-width: 75ch; }
+@media (max-width: 768px) {
+  table.comparacao-tabular { min-width: 640px; }
+  .tabela-deslize { display: block; }
+}
+
+/* Seleções longas preservam opções completas sem alargar a página. */
+.view .controls, .view .controls label, .view .card { min-width: 0; }
+.view select { max-width: 100%; min-width: 0; }
+
+.view input, .view .controls > *, .view .controls label { max-width: 100%; box-sizing: border-box; }
+#instSearch { min-width: 0 !important; width: min(100%, 420px); }
+.cgpirl { grid-template-columns: 8ch minmax(0, 1fr) 5ch; }
+.cgpir { min-width: 0; max-width: 100%; }
+
+/* Contém o texto assistivo de natureza dentro da célula rolável. */
+.seal { position: relative; }
+
+/* Abertura das páginas homologadas: referências e ações partilham a linha. */
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left { display: contents; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > * { grid-column: 1 / -1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > .ph-fontes { grid-column: 1; }
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead > .ph-actions { grid-column: 2; align-self: start; }
+
+/* Dispersão estadual: preserva os rótulos de 12 px e oferece tabela equivalente. */
+.cgdisp-wrap .cgdisp { width:720px; min-width:720px; max-width:none; display:block; }
+
+@media (max-width:640px) { :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }
+
+.px-setor-legenda { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:6px 20px; list-style:none; padding:0; font-size:var(--tipo-rotulo); color:var(--text-2); }
+.px-setor-legenda b { display:inline-block; min-width:2em; font-variant-numeric:lining-nums tabular-nums; color:var(--text); }
+
+@media (max-width:700px) { :is(#view-pix, #view-subnacional) .subnav-caps { position:static !important; } }
+
+.cgperfil .comparacao-tabular th[scope="row"],
+.cgperfil .comparacao-tabular thead th:first-child { min-width:140px; max-width:140px; width:140px; white-space:normal; overflow-wrap:anywhere; }
+
+#view-pix .panbar > span:first-child { white-space:normal !important; overflow:visible !important; }
+
+.px-setor-matriz tbody th[scope="row"] { top:auto; z-index:1; }
+#view-pix .px-setor-matriz thead th { position:sticky; top:0; z-index:2; }
+#view-pix .px-setor-matriz thead th:first-child { z-index:3; }
+
+/* Dispersão por UF: centros imutáveis; siglas e linhas-guia ocupam posições calculadas. */
+.cgdisp-guia { stroke: var(--text-2); stroke-width: 1; opacity: .7; }
+.cgdisp-fundo { fill: var(--surface); }
+.cgdisp-uf.is-active circle { stroke-width: 3; fill-opacity: .85; }
+.cgdisp-uf.is-active .cgdisp-guia { stroke: var(--text); stroke-width: 2; opacity: 1; }
+.cgdisp-uf.is-active .cgdisp-rotulo { fill: var(--text); font-weight: 700; }
+.cgdisp-controle { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 0; }
+.cgdisp-controle select { min-height: 44px; max-width: 100%; }
+.cgdisp-leitura { margin: 8px 0 12px; }
+
+/* O componente de favorito tem área real; ícone mantém tamanho e centralização. */
+.star { color:var(--text-2); display:inline-flex; align-items:center; justify-content:center; min-inline-size:24px; min-block-size:24px; box-sizing:border-box; vertical-align:middle; }
+:is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { display:inline-flex; align-items:center; min-inline-size:24px; min-block-size:24px; vertical-align:middle; }
+:is(#view-sectors, #view-institutions) table.data td > a + .star { margin-inline-start:4px; }
+/* Disclosures: alvo real, sem sobrepor controles vizinhos ou substituir o marcador nativo. */
+:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary {
+  min-block-size:24px; padding-block:4px; box-sizing:border-box;
+}
+@media (max-width:768px), (any-pointer:coarse) {
+  .star, :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { min-inline-size:44px; min-block-size:44px; }
+  :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary {
+    min-block-size:44px; padding-block:12px;
+  }
+}
+
+/* A natureza deve continuar inteira e legível com ampliação apenas do texto. */
+.seal { white-space:normal; max-inline-size:100%; box-sizing:border-box; overflow-wrap:anywhere; }
+.seal > [aria-hidden="true"] { flex-shrink:0; }
+
+/* O termo Aposentado/pensionista pode exceder a nota com texto ampliado. */
+#view-consignado .judalerta { overflow-wrap:anywhere; }
+
+/* A régua de indicadores refluí com o tamanho do texto, sem comprimir números em duas colunas fixas. */
+#view-consignado .pgkpi { grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr)); column-gap:var(--sp-4); }
+#view-consignado .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
+
+/* Linhas de medidas refluem quando o texto cresce; barras mantêm sua escala. */
+#view-sectors .contrib, .pxstats > div { flex-wrap:wrap; }
+#view-sectors .contrib .lbl, #view-sectors .contrib .num, .pxstats > div > * { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+#view-sectors .contrib .bar { flex-shrink:0; }

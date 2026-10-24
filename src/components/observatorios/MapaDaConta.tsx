@@ -108,6 +108,7 @@ export function MapaDaConta({
       <div data-fatia="destinos" className={styles.destinos}>
         {secoes.map((o) => (
           <section key={o.id} id={`obs-${o.id}`} aria-labelledby={`obs-${o.id}-titulo`} className={styles.secao} data-observatorio={o.id}>
+            <div className={styles.cabecalhoSecao}>
             <div aria-hidden="true" className={`${styles.filete} ${ACENTO[o.acento].filete}`} />
             <h2 id={`obs-${o.id}-titulo`} className="t-h2 text-carvao">
               {o.entrada ? (
@@ -127,6 +128,7 @@ export function MapaDaConta({
                 <ParceriaTecnica variante="compacto" idioma="pt" />
               </div>
             )}
+            </div>
             <ul className={styles.colecoes}>
               {o.colecoes.map((c) => (
                 <li key={c.id}>
@@ -222,7 +224,7 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
   const estado = (
     <>
       {plural(c.contagem, "página", "páginas")}
-      {c.dadosAte && <> · dados até {c.dadosAte}</>}
+      {c.dadosAte ? <> · dados até {c.dadosAte}</> : <> · referência por página</>}
       {c.atraso && <> · {minuscula(c.atraso)}</>}
     </>
   );
@@ -237,6 +239,9 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
         </LinkMedido>
         {c.prontidao && <SeloProntidao valor={c.prontidao} />}
       </h3>
+      {c.resumoEntrada && (
+        <p className="t-meta mb-2 text-carvao-muted">Na entrada: <span data-resumo-entrada="">{c.resumoEntrada}</span></p>
+      )}
       {c.paginas.length > 0 ? (
         <details id={`paginas-${c.id}`} className={styles.paginas}>
           <summary className="t-meta text-mineral" data-estado-colecao="">
@@ -252,15 +257,25 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
               <li key={p.rota ?? `previsto:${p.titulo}`}>
                 {p.rota ? (
                   <Link href={p.rota} prefetch={false} className={`${styles.alvo} t-corpo text-carvao`}>
-                    {p.titulo}
-                    {p.situacao === "parcial" && <SeloProntidao valor="parcial" className="ml-2" />}
+                    <span>
+                      {p.titulo}
+                      {p.situacao === "parcial" && <SeloProntidao valor="parcial" className="ml-2" />}
+                      {p.resumo && p.resumo !== p.titulo && (
+                        <span className="t-meta mt-1 block font-normal text-carvao-muted" data-resumo-pagina="">{p.resumo}</span>
+                      )}
+                    </span>
                   </Link>
                 ) : (
                   // prevista: sem página, nunca link
-                  <span className={`${styles.alvo} t-corpo text-carvao-muted`} title={p.pendencia}>
-                    {p.titulo}
-                    <SeloProntidao valor="preparacao" detalhe={p.pendencia} className="ml-2" />
-                  </span>
+                  <div className="py-2">
+                    <span className="t-corpo text-carvao-muted">
+                      {p.titulo}
+                      <SeloProntidao valor="preparacao" className="ml-2" />
+                    </span>
+                    <p className="t-meta mt-1 text-carvao-muted" data-pendencia-pagina="">
+                      {p.pendencia ?? "Esta página ainda não foi publicada. As páginas disponíveis estão na mesma coleção."}
+                    </p>
+                  </div>
                 )}
               </li>
             ))}
@@ -303,7 +318,10 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
         </ul>
         <p className="mt-4">
           &ldquo;Dados até&rdquo; é a referência mais recente dos números principais da fonte da coleção. Coleção sem fonte própria de atualização fica
-          sem essa data. Ausência de dado é declarada, nunca estimada.
+          com a indicação “referência por página”: consulte o período no destino e as fontes abaixo. A data de publicação
+          não substitui a referência dos indicadores. “Publicação retida em parte” significa que algumas partes foram
+          atualizadas e outras ultrapassaram o prazo esperado; os dias se referem ao atraso da atualização, não à idade do dado.
+          Ausência de dado é declarada, nunca estimada.
         </p>
       </div>
       <h3 className="t-h3 mt-8 text-carvao">Fontes e atualização</h3>
