@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { POST } from "@/app/api/conta/ultimo-acesso/route";
 import { getSessionUser } from "@/lib/session";
@@ -15,6 +15,7 @@ function pedido(caminho: unknown, origin: string | null = origem, cookie?: strin
   });
 }
 beforeEach(() => { vi.clearAllMocks(); sessao.mockResolvedValue({ id: "teste" } as NonNullable<Awaited<ReturnType<typeof getSessionUser>>>); });
+afterEach(() => { vi.unstubAllEnvs(); });
 
 describe("continuidade de uma navegação exibida no cliente", () => {
   it("mantém cookie, escopo, duração e privacidade existentes", async () => {
@@ -29,11 +30,28 @@ describe("continuidade de uma navegação exibida no cliente", () => {
     expect(r.status).toBe(204);
     expect(r.headers.get("set-cookie")).toBeNull();
   });
-  it.each([null, "null", "https://outro.example"])("recusa origem %s antes de consultar sessão", async origin => {
+  it.each([null, "null", "https://outro.example", "https://scrutiniums.com/caminho", "ftp://scrutiniums.com"])("recusa origem %s antes de consultar sessão", async origin => {
     const r = await POST(pedido("/observatorio", origin));
     expect(r.status).toBe(403);
     expect(sessao).not.toHaveBeenCalled();
     expect(r.headers.get("set-cookie")).toBeNull();
+  });
+  it.each(["scrutiniums.com", "www.scrutiniums.com", "preview.example.test"])("aceita Origin/Host públicos %s com URL interna do next start", async host => {
+    const r = await POST(new NextRequest("http://localhost:3000/api/conta/ultimo-acesso", {
+      method: "POST", headers: { origin: `https://${host}`, host }, body: JSON.stringify({ caminho: "/observatorio/pix" }),
+    }));
+    expect(r.status).toBe(204);
+    expect(r.cookies.get(COOKIE_OBSERVATORIO)?.value).toBe("c:pagamentos");
+  });
+  it.each([false, true])("só confia em x-forwarded-host com proxy declarado: %s", async confiavel => {
+    vi.stubEnv("VERCEL", "");
+    vi.stubEnv("TRUST_PROXY", confiavel ? "1" : "");
+    const r = await POST(new NextRequest("http://localhost:3000/api/conta/ultimo-acesso", {
+      method: "POST", headers: { origin: "https://preview.example.test", host: "localhost:3000", "x-forwarded-host": "preview.example.test" },
+      body: JSON.stringify({ caminho: "/observatorio/pix" }),
+    }));
+    expect(r.status).toBe(confiavel ? 204 : 403);
+    if (!confiavel) expect(r.headers.get("set-cookie")).toBeNull();
   });
   it("não grava para quem não tem sessão", async () => {
     sessao.mockResolvedValue(null);
