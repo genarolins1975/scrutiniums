@@ -72,7 +72,11 @@ def verificar(dados, buscar=http, hoje=None):
             textos = [re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t))).lower()
                       for _, t in titulos]
             # Exigir identificação no título: menus do portal podem listar outros meses/anos.
-            periodo = rf"\b(?:{MESES[mes - 1]}(?: de)? {ano}|{ano}/0?{mes}|{mes:02d}/{ano})\b"
+            # O portal titula a edição como "... (RTN) - 2026 - Agosto" (página de agosto/2026,
+            # conferida em 24/10/2026); as formas "agosto de 2026" e "2026/08" continuam aceitas.
+            nome = MESES[mes - 1]
+            periodo = (rf"\b(?:{nome}(?: de)? {ano}|{ano}/0?{mes}|{mes:02d}/{ano}"
+                       rf"|{ano}\s*[-–—]\s*{nome}|{nome}\s*[-–—]\s*{ano})\b")
             if any("resultado do tesouro nacional" in t and re.search(periodo, t) for t in textos):
                 publicados.append((ano, mes, url))
             else:

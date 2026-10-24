@@ -75,6 +75,24 @@ class VigiaRTN(unittest.TestCase):
         self.assertTrue(nv)
         self.assertIn("inconclusiva", V.corpo(DADOS, publicados, None, nv))
 
+    def test_titulo_real_do_portal_confirma_so_a_propria_edicao(self):
+        # <title> da página https://www.tesourotransparente.gov.br/publicacoes/boletim-resultado-do-tesouro-nacional-rtn/2026/8,
+        # HTTP 200 em 24/10/2026 10:34 UTC (sha256 da página dd90a348...6e75); a de 2026/9 respondeu 404.
+        real = "<title>Boletim Resultado do Tesouro Nacional (RTN) - 2026 - Agosto \u2014 Tesouro Transparente</title>".encode()
+        def buscar(url):
+            if "/ckan/api/" in url:
+                raise TimeoutError("fora do escopo deste caso")
+            return (200, real) if url.endswith("/2026/8") else (404, b"")
+        publicados, _, _ = V.verificar(DADOS, buscar, dt.date(2026, 10, 24))
+        self.assertEqual([(a, m) for a, m, _ in publicados], [(2026, 8)])
+        # o mesmo título servido no endereço de setembro não prova setembro
+        publicados, _, nv = V.verificar(DADOS, lambda u: (200, real) if "/ckan/api/" not in u else (404, b""), dt.date(2026, 10, 24))
+        self.assertEqual([(a, m) for a, m, _ in publicados], [(2026, 8)])
+        self.assertTrue(any("setembro de 2026" in x for x in nv))
+        # página de listagem do ano, sem o nome do boletim, não confirma
+        ano = b"<title>2026 \xe2\x80\x94 Tesouro Transparente</title>"
+        self.assertEqual(V.verificar(DADOS, lambda u: (200, ano) if "/ckan/api/" not in u else (404, b""), dt.date(2026, 10, 24))[0], [])
+
     def test_indisponibilidade_tem_codigo_diferente_de_edicao_nova(self):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(V.main(buscar=tesouro(falhar=True), hoje=dt.date(2026, 10, 24)), 4)

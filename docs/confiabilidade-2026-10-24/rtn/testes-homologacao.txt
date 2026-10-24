@@ -1,0 +1,34 @@
+test_200_vazio_ou_desafio_nao_confirma_edicao (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_200_vazio_ou_desafio_nao_confirma_edicao) ... ok
+test_boletim_publicado_vira_issue_com_assinatura (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_boletim_publicado_vira_issue_com_assinatura) ... ok
+test_fonte_fora_do_ar_nao_e_silencio (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_fonte_fora_do_ar_nao_e_silencio) ... ok
+test_indisponibilidade_tem_codigo_diferente_de_edicao_nova (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_indisponibilidade_tem_codigo_diferente_de_edicao_nova) ... ok
+test_menu_com_mes_e_ano_nao_prova_edicao_da_pagina (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_menu_com_mes_e_ano_nao_prova_edicao_da_pagina) ... ok
+test_meses_seguintes_param_no_mes_anterior_ao_corrente (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_meses_seguintes_param_no_mes_anterior_ao_corrente) ... ok
+test_nada_novo_e_silencio (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_nada_novo_e_silencio) ... ok
+test_planilha_nova_no_ckan (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_planilha_nova_no_ckan) ... ok
+test_titulo_real_do_portal_confirma_so_a_propria_edicao (pipeline.tests.test_vigiar_rtn.VigiaRTN.test_titulo_real_do_portal_confirma_so_a_propria_edicao) ... ok
+test_edicao_publicada_reproduz_exatamente (pipeline.tests.test_ipca_edicao.EdicaoIPCA.test_edicao_publicada_reproduz_exatamente) ... ok
+test_edicao_sintetica_posterior_preserva_historico_e_formula (pipeline.tests.test_ipca_edicao.EdicaoIPCA.test_edicao_sintetica_posterior_preserva_historico_e_formula) ... ok
+test_mes_ausente_hash_errado_ou_valor_invalido_reprovam (pipeline.tests.test_ipca_edicao.EdicaoIPCA.test_mes_ausente_hash_errado_ou_valor_invalido_reprovam) ... ok
+test_arvore_suja_no_dominio_e_falha_de_infraestrutura (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_arvore_suja_no_dominio_e_falha_de_infraestrutura) ... ok
+test_coleta_que_falha_mantem_o_seed_e_nao_bloqueia_o_outro_grupo (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_coleta_que_falha_mantem_o_seed_e_nao_bloqueia_o_outro_grupo) ... ok
+test_fonte_igual_nao_gera_mudanca_nem_publicacao (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_fonte_igual_nao_gera_mudanca_nem_publicacao) ... ok
+test_grupo_reprovado_e_retido_e_o_aprovado_publica (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_grupo_reprovado_e_retido_e_o_aprovado_publica) ... ok
+test_guarda_reprova_coleta_que_troca_dado_por_erro (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_guarda_reprova_coleta_que_troca_dado_por_erro) ... ok
+test_mudanca_com_mesmo_stat_do_indice_e_detectada_e_revertida (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_mudanca_com_mesmo_stat_do_indice_e_detectada_e_revertida) ... ok
+test_publicar_nao_empurra_se_o_codigo_novo_reprova (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_publicar_nao_empurra_se_o_codigo_novo_reprova) ... ok
+test_publicar_recusa_quando_os_dados_mudaram_no_remoto (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_publicar_recusa_quando_os_dados_mudaram_no_remoto) ... ok
+test_publicar_retesta_quando_o_codigo_mudou_no_remoto (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_publicar_retesta_quando_o_codigo_mudou_no_remoto) ... ok
+test_reproducao_reprovada_retem_todos_os_grupos (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_reproducao_reprovada_retem_todos_os_grupos) ... ok
+test_sem_coleta_publica_a_reproducao_quando_a_gold_nao_se_reproduz (pipeline.tests.test_atualizacao_por_grupo.CicloPorGrupo.test_sem_coleta_publica_a_reproducao_quando_a_gold_nao_se_reproduz) ... ok
+test_caminhos_sobrepostos_sao_recusados (pipeline.tests.test_atualizacao_por_grupo.Configuracao.test_caminhos_sobrepostos_sao_recusados) ... ok
+test_carimbos_ignorados_no_sinal (pipeline.tests.test_atualizacao_por_grupo.Configuracao.test_carimbos_ignorados_no_sinal) ... ok
+test_configuracoes_versionadas (pipeline.tests.test_atualizacao_por_grupo.Configuracao.test_configuracoes_versionadas) ... ok
+test_sobreposicao (pipeline.tests.test_atualizacao_por_grupo.Configuracao.test_sobreposicao) ... ok
+test_tempo_esgotado_encerra_tambem_os_processos_filhos (pipeline.tests.test_atualizacao_por_grupo.TempoEsgotado.test_tempo_esgotado_encerra_tambem_os_processos_filhos) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 6.776s
+
+OK
+IPCA: 43 meses, unidade, território e SHA256 conferidos.
