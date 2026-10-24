@@ -1,0 +1,8 @@
+FAIL: test_previsao_rotulada_e_separada (pipeline.tests.test_energia_agua.TestGoldPublicada.test_previsao_rotulada_e_separada)
+AssertionError: False is not true
+FAIL: test_coordenadas_na_malha_maxima (pipeline.tests.test_energia_territorio.GoldPublicada.test_coordenadas_na_malha_maxima)
+AssertionError: 1385 != 1379
+FAIL: test_usinas_iguais_ao_csv_original_do_siga (pipeline.tests.test_energia_territorio.GoldPublicada.test_usinas_iguais_ao_csv_original_do_siga)
+AssertionError: 32 != 31 : 3106200
+Ran 2400 tests in 221.555s
+FAILED (failures=3, skipped=8)

@@ -1446,6 +1446,11 @@ describe("limites vigentes diante dos valores: pico do gráfico, CMO acima dos t
     for (const [k, rotulo] of [["decomp", "O CMO semanal do DECOMP"], ["dessem", "A média do CMO do DESSEM"], ["pld", "A média do PLD"]] as const) {
       const v = sem.por_sm.map((x) => x[k] as number);
       const item = p.itens.find((x) => x.startsWith(rotulo))!;
+      // os quatro iguais têm frase própria (a da gold da execução 40051919220, PLD de R$ 70,63/MWh nos quatro, em 24/10/2026)
+      if (new Set(v.map((x) => Math.round(x * 100))).size === 1) {
+        expect(item, k).toBe(`${rotulo} foi igual nos quatro submercados, ${reais(v[0])}/MWh.`);
+        continue;
+      }
       expect(item, k).toContain(`de ${reais(Math.min(...v))}/MWh`);
       expect(item, k).toContain(`a ${reais(Math.max(...v))}/MWh`);
       expect(item, k).toContain(`distância de ${reais(Math.max(...v) - Math.min(...v))}/MWh`);
