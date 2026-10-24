@@ -25,3 +25,5 @@ O artefato `energia-retida` (65.889.941 bytes) existe e não expirou. O proxy lo
 Continuam por reproduzir: regressão do builder Empresas; aliases de distribuidoras; limite editorial de palavras; conciliação RALIE/SIGA; quantidade de tarifas; veredito de PLD; previsão hídrica e coordenadas/usinas da malha. Não se atribui cada uma a defeito de teste ou de fonte sem a reprodução.
 
 Este PR resolve os defeitos demonstrados de retenção e diagnóstico. **A atualização diária não está normalizada nem a gold nova homologada.** Não houve publicação, alteração de dados ou execução de workflow que escreva na main.
+
+`npm run verificar:rapido` aprovado ([log](rapido.txt)).
