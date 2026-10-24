@@ -9,9 +9,9 @@ Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF 
 Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
 
  Test Files  3 passed (3)
-      Tests  38 passed (38)
-   Start at  09:07:15
-   Duration  10.61s (transform 627ms, setup 0ms, import 604ms, tests 11.69s, environment 0ms)
+      Tests  50 passed (50)
+   Start at  09:51:49
+   Duration  4.24s (transform 234ms, setup 0ms, import 239ms, tests 2.49s, environment 0ms)
 
 npm notice
 npm notice New major version of npm available! 11.9.0 -> 12.2.1

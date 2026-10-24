@@ -1,0 +1,18 @@
+test_continua_lote_semanal_na_mesma_segunda_ate_concluir (pipeline.tests.test_disparar_resumo.LotesResumo.test_continua_lote_semanal_na_mesma_segunda_ate_concluir) ... ok
+test_erro_de_cabecalho_nao_expoe_credencial_sintetica (pipeline.tests.test_disparar_resumo.LotesResumo.test_erro_de_cabecalho_nao_expoe_credencial_sintetica) ... ok
+test_falha_do_provedor_nao_e_repetida (pipeline.tests.test_disparar_resumo.LotesResumo.test_falha_do_provedor_nao_e_repetida) ... ok
+test_limite_com_pendentes_nao_termina_verde (pipeline.tests.test_disparar_resumo.LotesResumo.test_limite_com_pendentes_nao_termina_verde) ... ok
+test_resposta_invalida_ou_simulacao_nao_confirmada_e_erro (pipeline.tests.test_disparar_resumo.LotesResumo.test_resposta_invalida_ou_simulacao_nao_confirmada_e_erro) ... ok
+test_simulacao_e_uma_chamada_sem_envio (pipeline.tests.test_disparar_resumo.LotesResumo.test_simulacao_e_uma_chamada_sem_envio) ... ok
+test_timeout_nao_e_repetido (pipeline.tests.test_disparar_resumo.LotesResumo.test_timeout_nao_e_repetido) ... ok
+test_virada_do_dia_nao_apaga_pendencia_por_filtro_de_periodicidade (pipeline.tests.test_disparar_resumo.LotesResumo.test_virada_do_dia_nao_apaga_pendencia_por_filtro_de_periodicidade) ... ok
+test_bloqueio_nao_prova_disponibilidade_nem_ausencia (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_bloqueio_nao_prova_disponibilidade_nem_ausencia) ... ok
+test_falhas_auxiliares_identificam_data_do_registro_sem_simular_coleta_atual (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_falhas_auxiliares_identificam_data_do_registro_sem_simular_coleta_atual) ... ok
+test_relatorio_preserva_grupos_e_separa_producao (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_relatorio_preserva_grupos_e_separa_producao) ... ok
+test_sem_sla_nao_inventa_prazo (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_sem_sla_nao_inventa_prazo) ... ok
+test_tres_causas_diferentes (pipeline.tests.test_monitorar_atualizacoes.Monitoramento.test_tres_causas_diferentes) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.667s
+
+OK

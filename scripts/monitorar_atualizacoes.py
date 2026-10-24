@@ -135,7 +135,7 @@ def relatorio(root=ROOT, hoje=None, execucoes=None):
         ref = d.get('data_base') or d.get('mes') or meta.get('vintages', {}).get('datajud' if grupo == 'judicial' else grupo)
         st = meta.get('fontes_status', {}).get(coletor, {})
         adicionar('credito', grupo, arquivo, {'orgao': orgao, 'url': url}, ref, d.get('coletado_em'),
-                  periodicidade, {'disponivel': d.get('disponivel')}, prazo=prazo_vintage(ref, grupo),
+                  periodicidade, {'disponivel': d.get('disponivel')}, prazo=prazo_vintage(ref, "datajud" if grupo == "judicial" else grupo),
                   falha=st.get('falhas') or None, retida=nome in meta.get('restaurados', {}), snapshot=d.get('bronze_sha'))
     for coletor in ['djen', 'djen_credores']:
         for f in meta.get('fontes_status', {}).get(coletor, {}).get('falhas', []):
