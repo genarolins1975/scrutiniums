@@ -228,7 +228,7 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
 }
 .card .delta { font-size: var(--tipo-tabela); }
 .card.kpi h4 { font-size: var(--tipo-tabela); }
-.kpirow { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 14px; }
+.kpirow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,11.25rem), 1fr)); gap: 12px; margin-top: 14px; }
 
 /* Alta e queda sem cor de julgamento (Iniciativa 2 do parecer de UX de 23/10/2026): subir não é bom nem ruim por si; a direção é
    dita em palavras e pelo sinal, e as classes good/bad saíram do app.js. */
@@ -391,6 +391,7 @@ table.data.compact th { position: static; }
 .alert .expl { color: var(--text-2); font-size: var(--tipo-tabela); margin-top: 4px; }
 
 .note {
+  overflow-wrap:anywhere;
   background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm);
   padding: 11px 15px; font-size: var(--tipo-tabela); color: var(--text-2); margin: 14px 0;
 }
@@ -693,10 +694,10 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .instpick { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; }
 .instpick button { border: 1px solid var(--border); background: var(--surface); color: var(--text-2); border-radius: var(--r-full); padding: 3px 11px; font-size: var(--tipo-meta); cursor: pointer; }
 .instpick button.on { background: var(--pix-soft); border-color: color-mix(in srgb, var(--pix) 45%, transparent); color: var(--pix); font-weight: var(--fw-bold); }
-.pxstats { display: grid; gap: 10px; margin-top: 10px; }
+.pxstats { display: grid; grid-template-columns:minmax(0,1fr); gap: 10px; margin-top: 10px; }
 .pxstats > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 7px; }
 .pxstats > div:last-child { border-bottom: 0; }
-.pxstats b { font-size: var(--tipo-lead); font-weight: var(--fw-normal); letter-spacing: var(--tr-normal); white-space: nowrap; }
+.pxstats b { font-size: var(--tipo-lead); font-weight: var(--fw-normal); letter-spacing: var(--tr-normal); white-space:normal; }
 
 /* ---------- Ações judiciais ---------- */
 .judalerta { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface); padding: 16px 18px; margin: 16px 0 6px; }
@@ -1476,3 +1477,8 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
    preservam as larguras originais a 16px e fazem a grade refluir com texto ampliado. */
 .pan-kpi-rem { grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--pan-kpi-min,12.8125rem)),1fr)); }
 .pan-kpi-rem > div { min-inline-size:0; overflow-wrap:anywhere; }
+
+/* Cabeçalhos do ranking acomodam nome e natureza em linhas independentes.
+   O selo participa do tamanho da própria célula, sem avançar sobre a coluna seguinte. */
+.inst-ranking thead th { white-space:normal; vertical-align:top; }
+.inst-ranking thead th .seal { display:flex; width:fit-content; margin-top:4px; }

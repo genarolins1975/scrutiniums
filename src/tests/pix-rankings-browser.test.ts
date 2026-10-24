@@ -30,6 +30,9 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         return bad;
       })
     })));
+    let leituraReferencia:string[]|undefined;
+    let notasReferencia:string[]|undefined;
+    let pulsoReferencia:string[]|undefined;
     let instituicoesReferencia:string[][]|undefined;
     let kpisReferencia:string[][]|undefined;
     let referencia:Array<{nome:string;medidas:string;escala:string}>|undefined;
@@ -45,6 +48,23 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         expect(kpis).toHaveLength(3);
         expect(kpis.flatMap(g=>g.falhas)).toEqual([]);
         if(!kpisReferencia)kpisReferencia=kpis.map(g=>g.textos);else expect(kpis.map(g=>g.textos)).toEqual(kpisReferencia);
+        const leitura=page.locator('#view-pix .pxstats');
+        await expect.poll(async()=>(await leitura.textContent())||'').not.toMatch(/\b\d{4}-\d{2}\b/);
+        const linhas=await leitura.locator(':scope > div').evaluateAll(nodes=>nodes.map(row=>{
+          const area=row.getBoundingClientRect(),grupo=row.parentElement!.getBoundingClientRect(),card=row.closest('.card')!.getBoundingClientRect();
+          const campos=[...row.children].map(field=>{
+            const r=field.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(field);
+            return {texto:field.textContent!,left:r.left,right:r.right,top:r.top,bottom:r.bottom,
+              integral:Array.from(range.getClientRects()).every(t=>t.left>=area.left-1&&t.right<=area.right+1)};
+          });
+          const a=campos[0],b=campos[1];
+          return {texto:row.textContent!,contido:area.left>=grupo.left-1&&area.right<=grupo.right+1&&area.left>=card.left&&area.right<=card.right,
+            campos,semColisao:a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top};
+        }));
+        expect(linhas).toHaveLength(4);
+        expect(linhas.filter(l=>!l.contido||!l.semColisao||l.campos.some(c=>!c.integral))).toEqual([]);
+        const textosLeitura=linhas.map(l=>l.texto);
+        if(!leituraReferencia)leituraReferencia=textosLeitura;else expect(textosLeitura).toEqual(leituraReferencia);
         const bars=page.locator('#view-pix .panbar');
         const medidas=await bars.evaluateAll(nodes=>nodes.map(n=>{
           const spans=n.querySelectorAll(':scope > span'),label=spans[0],value=spans[spans.length-1],track=n.querySelector('.track')!;
@@ -60,6 +80,13 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         expect(medidas.filter(m=>!m.integral||!m.separado||m.externo)).toEqual([]);
         const conteudo=medidas.map(({nome,medidas,escala})=>({nome,medidas,escala}));
         if(!referencia)referencia=conteudo;else expect(conteudo).toEqual(referencia);
+        const canto=page.locator('#view-pix .px-setor-matriz thead th').first();
+        expect(await canto.textContent()).toBe('Pagador ↓Recebedor →');
+        expect(await canto.evaluate(th=>{
+          const box=th.getBoundingClientRect(),walker=document.createTreeWalker(th,NodeFilter.SHOW_TEXT);let node;
+          while(node=walker.nextNode()){const range=document.createRange();range.selectNodeContents(node);if(Array.from(range.getClientRects()).some(r=>r.left<box.left-1||r.right>box.right+1))return false;}
+          return true;
+        })).toBe(true);
         const ranking=page.locator('#px-epae .card').filter({has:page.getByRole('heading',{name:'Setores que mais recebem via Pix',exact:true})});
         const nomes=await ranking.locator('.panbar > span:first-child').allTextContents();
         const norm=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -71,10 +98,73 @@ describe.skipIf(!temBuild&&!exigirBuild)('Pix: identificação integral nos rank
         expect(Math.max(...widths)-Math.min(...widths)).toBeLessThanOrEqual(1);
         await page.goto(servidor.origem+'/observatorio/institutions');
         await page.locator('#view-institutions .pan-kpi-rem').waitFor();await page.evaluate(()=>document.fonts.ready);
+        const cabecalhos=page.locator('#view-institutions .inst-ranking thead th');
+        expect(await cabecalhos.count()).toBe(7);
+        const contencao=await cabecalhos.evaluateAll(ths=>ths.flatMap((th,index)=>{
+          const area=th.getBoundingClientRect(),falhas:Array<{index:number;texto:string;tipo:string}>=[];
+          for(const seal of Array.from(th.querySelectorAll('.seal'))){const r=seal.getBoundingClientRect();if(r.left<area.left-1||r.right>area.right+1)falhas.push({index,texto:seal.textContent!,tipo:'selo fora da célula'});}
+          const walker=document.createTreeWalker(th,NodeFilter.SHOW_TEXT);let node;
+          while(node=walker.nextNode()){
+            if(!node.textContent?.trim()||node.parentElement?.closest('.sr-only'))continue;
+            const range=document.createRange();range.selectNodeContents(node);
+            for(const r of Array.from(range.getClientRects()))if(r.width>0&&(r.left<area.left-1||r.right>area.right+1||r.top<area.top-1||r.bottom>area.bottom+1))falhas.push({index,texto:node.textContent,tipo:'texto fora da célula'});
+          }
+          return falhas;
+        }));
+        expect(contencao).toEqual([]);
+        const selo=cabecalhos.nth(3).locator('.seal');expect(await selo.getAttribute('data-natureza')).toBe('OBSERVADO');
+        const rolagem=page.locator('#view-institutions .tblwrap').filter({has:page.locator('.inst-ranking')});
+        const limites=await rolagem.evaluate(e=>({max:e.scrollWidth-e.clientWidth,passo:Math.max(40,e.clientWidth-40)}));
+        const vistos=new Set<number>();
+        for(let x=0;x<limites.max+limites.passo;x+=limites.passo){
+          await rolagem.evaluate((e,x)=>{e.scrollLeft=x;scrollTo(0,e.getBoundingClientRect().top+scrollY-300);},Math.min(x,limites.max));
+          const pintura=await rolagem.evaluate(e=>{
+            const area=e.getBoundingClientRect(),vistos:number[]=[],falhas:string[]=[];
+            e.querySelectorAll('thead th').forEach((th,index)=>{
+              const walker=document.createTreeWalker(th,NodeFilter.SHOW_TEXT);let node;
+              while(node=walker.nextNode()){
+                if(!node.textContent?.trim()||node.parentElement?.closest('.sr-only'))continue;
+                const range=document.createRange();range.selectNodeContents(node);
+                for(const r of Array.from(range.getClientRects())){
+                  const left=Math.max(r.left,area.left+2),right=Math.min(r.right,area.right-2),y=(r.top+r.bottom)/2;
+                  if(right-left<3||y<area.top+1||y>area.bottom-1||y<0||y>innerHeight)continue;
+                  vistos.push(index);if(document.elementFromPoint((left+right)/2,y)?.closest('th')!==th)falhas.push(index+': '+node.textContent);
+                }
+              }
+            });return{vistos,falhas};
+          });
+          pintura.vistos.forEach(i=>vistos.add(i));expect(pintura.falhas).toEqual([]);
+        }
+        expect([...vistos].sort()).toEqual([0,1,2,3,4,5,6]);
         const cooperativas=await medirKpis();expect(cooperativas).toHaveLength(1);
         expect(cooperativas[0].textos).toHaveLength(4);
         expect(cooperativas.flatMap(g=>g.falhas)).toEqual([]);
         if(!instituicoesReferencia)instituicoesReferencia=cooperativas.map(g=>g.textos);else expect(cooperativas.map(g=>g.textos)).toEqual(instituicoesReferencia);
+        const notas=await page.locator('#view-institutions .note').evaluateAll(nodes=>nodes.map(e=>{
+          const area=e.getBoundingClientRect(),falhas:string[]=[];const walker=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let node;
+          while(node=walker.nextNode()){
+            if(!node.textContent?.trim()||node.parentElement?.closest('.sr-only'))continue;
+            const range=document.createRange();range.selectNodeContents(node);
+            if(Array.from(range.getClientRects()).some(r=>r.width>0&&(r.left<area.left-1||r.right>area.right+1)))falhas.push(node.textContent);
+          }return{texto:e.textContent!,falhas};
+        }));
+        expect(notas.some(n=>n.texto.includes('— acompanhamento:'))).toBe(true);
+        expect(notas.flatMap(n=>n.falhas)).toEqual([]);
+        if(!notasReferencia)notasReferencia=notas.map(n=>n.texto);else expect(notas.map(n=>n.texto)).toEqual(notasReferencia);
+        await page.goto(servidor.origem+'/observatorio/credit');
+        await page.locator('#view-pulse .abertura .kpirow .big').first().waitFor();await page.evaluate(()=>document.fonts.ready);
+        const pulso=await page.locator('#view-pulse .abertura .kpirow .big').evaluateAll(nodes=>nodes.map(e=>{
+          const area=e.closest('.card')!.getBoundingClientRect(),falhas:string[]=[];const walker=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);let node;
+          while(node=walker.nextNode()){
+            const texto=node.textContent||'',range=document.createRange();range.selectNodeContents(node);
+            if(Array.from(range.getClientRects()).some(r=>r.width>0&&(r.left<area.left-1||r.right>area.right+1)))falhas.push('fora: '+texto);
+            const re=/[0-9][0-9.,]*/g;let match;
+            while(match=re.exec(texto)){range.setStart(node,match.index);range.setEnd(node,match.index+match[0].length);if(Array.from(range.getClientRects()).filter(r=>r.width>0).length!==1)falhas.push('número dividido: '+match[0]);}
+          }return{texto:e.textContent!,falhas};
+        }));
+        expect(pulso).toHaveLength(4);expect(pulso.flatMap(p=>p.falhas)).toEqual([]);
+        if(!pulsoReferencia)pulsoReferencia=pulso.map(p=>p.texto);else expect(pulso.map(p=>p.texto)).toEqual(pulsoReferencia);
+
       }
       await page.goto(servidor.origem+'/observatorio/pix');
       // O ranking continua sendo um controle por teclado, além da leitura visual.
