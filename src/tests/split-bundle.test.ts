@@ -37,7 +37,7 @@ function regioes(nomeAlvo: string) {
 describe("fonte canônica: marcadores e despacho", () => {
   it("marcadores pareados e regiões não vazias", () => {
     expect(regioes("municipal").length).toBe(2);
-    expect(regioes("emergentes").length).toBe(2);
+    expect(regioes("emergentes").length).toBe(1);
   });
 
   it("RENDER despacha por nome e ensureChunk checa presença antes de buscar", () => {

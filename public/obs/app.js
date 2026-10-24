@@ -1682,35 +1682,6 @@ window.trCSV = () => {
 };
 
 /* ================= SOBRE ================= */
-/* @chunk:emergentes:ini */
-function renderSobre() {
-  const el = document.getElementById("view-sobre");
-  el.innerHTML = `
-  <div class="pagehead">
-    <div class="ph-left">
-      ${rotuloContexto()}
-      <h2>Sobre o Observatório</h2>
-    </div>
-  </div>
-  <div >
-    <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
-    <h3 style="margin-top:28px">Sobre o autor</h3>
-    <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
-    <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
-    <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
-    <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
-    <h3 style="margin-top:28px">Para a imprensa</h3>
-    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
-    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="/observatorio/overview" onclick="nav('overview');return false">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="/observatorio/alerts" onclick="nav('alerts');return false">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
-    <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
-    <h3 style="margin-top:28px">Participe</h3>
-    <p><a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões e correções</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> (consultas determinísticas sobre os dados carregados).</p>
-    <p style="margin-top:20px"><a href="${LINKEDIN_URL}" target="_blank" rel="noopener">LinkedIn</a></p>
-  </div>`;
-}
-
-
-/* @chunk:emergentes:fim */
 
 /* ================= AÇÕES JUDICIAIS E INSTITUIÇÕES FINANCEIRAS ================= */
 const JUD_CORES = { revisionais: "#1d4e89", indenizatorias: "#6b46a3", garantias_cobranca: "#8d94a3",
@@ -6911,6 +6882,34 @@ window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
 /* @chunk:emergentes:ini */
+function renderSobre() {
+  const el = document.getElementById("view-sobre");
+  el.innerHTML = `
+  <div class="pagehead">
+    <div class="ph-left">
+      ${rotuloContexto()}
+      <h2>Sobre o Observatório</h2>
+    </div>
+  </div>
+  <div >
+    <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
+    <h3 style="margin-top:28px">Sobre o autor</h3>
+    <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
+    <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
+    <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
+    <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
+    <h3 style="margin-top:28px">Para a imprensa</h3>
+    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
+    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="/observatorio/overview" onclick="nav('overview');return false">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="/observatorio/alerts" onclick="nav('alerts');return false">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
+    <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
+    <h3 style="margin-top:28px">Participe</h3>
+    <p><a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões e correções</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> (consultas determinísticas sobre os dados carregados).</p>
+    <p style="margin-top:20px"><a href="${LINKEDIN_URL}" target="_blank" rel="noopener">LinkedIn</a></p>
+  </div>`;
+}
+
+
+
 /* ---------- INSTITUIÇÕES (lista e ficha; chunk emergentes desde a v0.101.0) ---------- */
 /* Detalhe de cada linha (decomposição, choques, carteira, captação, modelo de negócio) só é
    montado quando o leitor abre o details: com 100 linhas, o corpo fechado somava 24,6 mil das
