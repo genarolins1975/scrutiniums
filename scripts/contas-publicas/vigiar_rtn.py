@@ -16,6 +16,7 @@ não repetir comentário igual); outra saída = o vigia quebrou. Fonte que não 
 "não verificado".
 """
 import datetime as dt
+import html
 import json
 import re
 import sys
@@ -61,12 +62,19 @@ def verificar(dados, buscar=http, hoje=None):
     for ano, mes in meses_seguintes(dados["referenciaRTN"], hoje):
         url = BOLETIM.format(ano=ano, mes=mes)
         try:
-            codigo, _ = buscar(url)
+            codigo, conteudo = buscar(url)
         except Exception as e:  # noqa: BLE001
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: {str(e)[:120]}")
             continue
         if codigo == 200:
-            publicados.append((ano, mes, url))
+            texto = html.unescape(re.sub(r"<[^>]+>", " ", conteudo.decode("utf-8", errors="replace")))
+            texto = re.sub(r"\s+", " ", texto).lower()
+            # 200 também pode ser login, desafio ou página genérica. Não confirma edição.
+            if ("resultado do tesouro nacional" in texto and str(ano) in texto and
+                    (MESES[mes - 1] in texto or f"{ano}/{mes}" in texto or f"{mes:02d}/{ano}" in texto)):
+                publicados.append((ano, mes, url))
+            else:
+                nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP 200 sem conteúdo identificável da edição")
         elif codigo != 404:
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP {codigo}")
     planilha = None
@@ -121,7 +129,7 @@ def main(buscar=http, hoje=None, caminho=DADOS):
         print(f"Nenhuma edição do RTN depois de {dados['referenciaRTN']}.")
         return 0
     print(texto)
-    return 3
+    return 3 if publicados or planilha else 4
 
 
 if __name__ == "__main__":
