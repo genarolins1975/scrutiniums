@@ -22,7 +22,8 @@ import { exigirBuild, htmlDe, raiz, subirServidor, temBuild, type ServidorProduc
  *  - nenhuma data ISO no texto visível; nenhum font-size nem `columns` no CSS da página.
  */
 
-const ORDEM = ["retomar", "abertura", "para-voce", "destinos", "metodo"];
+// Homologação do PR365: título e busca precedem o histórico, inclusive na conta recorrente.
+const ORDEM = ["abertura", "retomar", "para-voce", "destinos", "metodo"];
 const VAZIOS = ["ainda sem último acesso", "nenhum ainda", "nenhum configurado", "só o painel de entrada"];
 
 const texto = (h: string) =>
@@ -124,7 +125,7 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
       expect(f, nome).toEqual(ORDEM.filter((x) => f.includes(x)));
       expect(new Set(f).size, nome).toBe(f.length);
     }
-    expect(fatias(casos.nova)).toEqual(ORDEM.slice(1));
+    expect(fatias(casos.nova)).toEqual(ORDEM.filter((f) => f !== "retomar"));
     expect(fatias(casos.volta)).toEqual(ORDEM);
     const r = elemento(casos.volta, 'data-fatia="retomar"');
     expect(r).toMatch(/<a [^>]*href="\/setor-eletrico"[^>]*>Continuar em Setor Elétrico/);

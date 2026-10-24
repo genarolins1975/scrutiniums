@@ -79,6 +79,7 @@ export function BuscaPlataforma({
   municipio,
   rotulo = ROTULO,
   rotuloVisivel = false,
+  preservarConsulta = false,
 }: {
   variante?: "barra" | "pagina";
   /** Texto de exemplo do campo (EXEMPLO_DO_CAMPO, lido no servidor). */
@@ -87,6 +88,8 @@ export function BuscaPlataforma({
   filtro?: { colecao: string; nome: string };
   rotulo?: string;
   rotuloVisivel?: boolean;
+  /** No mapa da conta, consulta compartilhável e restaurável pela URL. */
+  preservarConsulta?: boolean;
   /** A busca por cidade da coleção (o índice não tem municípios): com termo, o painel aponta para ela levando o que foi digitado. */
   municipio?: { href: string; rotulo: string };
 }) {
@@ -105,6 +108,32 @@ export function BuscaPlataforma({
   const campo = useRef<HTMLInputElement>(null);
   const lupa = useRef<HTMLButtonElement>(null);
   const voltarPara = useRef<HTMLElement | null>(null);
+
+  const [urlPronta, setUrlPronta] = useState(false);
+  useEffect(() => {
+    if (!preservarConsulta) return;
+    let vivo = true;
+    const restaurar = () => {
+      const q = new URLSearchParams(window.location.search);
+      const texto = (q.get("q") ?? "").slice(0, 120);
+      setTermo(texto);
+      setExato(q.get("exato") === "1");
+      setAtivo(-1);
+      setAberta(!!texto);
+      if (texto) carregarIndice().then(i => vivo && i && setIndice(i));
+      setUrlPronta(true);
+    };
+    restaurar();
+    window.addEventListener("popstate", restaurar);
+    return () => { vivo = false; window.removeEventListener("popstate", restaurar); };
+  }, [preservarConsulta]);
+  useEffect(() => {
+    if (!preservarConsulta || !urlPronta) return;
+    const url = new URL(window.location.href);
+    if (termo) url.searchParams.set("q", termo); else url.searchParams.delete("q");
+    if (exato) url.searchParams.set("exato", "1"); else url.searchParams.delete("exato");
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+  }, [preservarConsulta, urlPronta, termo, exato]);
 
   const resposta = useMemo(
     () => (indice && termo.trim() ? buscar(indice, termo, { colecao: filtro?.colecao, semCorrecao: exato }) : null),

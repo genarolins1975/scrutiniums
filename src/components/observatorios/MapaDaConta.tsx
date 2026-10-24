@@ -13,6 +13,7 @@ import type { LinhaColecao, SecaoObservatorio } from "@/lib/observatorios/mapaCo
 import type { PerguntaParaVoce } from "@/lib/observatorios/paraVoce";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import type { UltimoAcesso } from "@/lib/observatorios/ultimoAcesso";
+import { EstadoMapa } from "./EstadoMapa";
 import styles from "./MapaDaConta.module.css";
 
 /** O que a fatia "retomar" mostra; cada parte só existe quando há conteúdo. */
@@ -31,8 +32,8 @@ const minuscula = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
  * e de quem volta. Tarefa em uma frase: quem chega decide em uma tela para onde vai; quem volta retoma de onde parou.
  *
  * Fatias, nesta ordem, cada uma marcada `data-fatia` (conferidas por src/tests/mapa-conta.test.ts):
- *  1. `retomar`: só quando há último acesso, recorte salvo ou aviso; nunca estado vazio;
- *  2. `abertura`: o H1, uma frase e a busca da plataforma;
+ *  1. `abertura`: H1, busca da plataforma e índice dos seis observatórios;
+ *  2. `retomar`: só quando há último acesso, recorte salvo ou aviso; nunca estado vazio;
  *  3. `para-voce`: as perguntas do estado e da cidade do leitor, no mesmo componente das entradas;
  *  4. `destinos`: as 28 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
  *  5. `metodo`: um só `<details>`, com o inventário, a legenda dos selos e as fontes de cada coleção.
@@ -57,7 +58,7 @@ export function MapaDaConta({
   const temRetomar = !!retomar.continuar || retomar.recortes.length > 0 || retomar.avisos.length > 0;
   return (
     <div id="conteudo" data-mapa-conta="" className="mx-auto w-full max-w-page px-6 pb-12">
-      {temRetomar && <FatiaRetomar retomar={retomar} />}
+      <EstadoMapa />
 
       <section data-fatia="abertura" aria-labelledby="mapa-titulo" className={styles.abertura}>
         <div>
@@ -68,8 +69,17 @@ export function MapaDaConta({
             Vinte e oito coleções em seis observatórios. Busque pelo tema, pelo lugar ou pela pergunta, ou escolha abaixo.
           </p>
         </div>
-        <BuscaPlataforma variante="pagina" exemplo={exemplo} rotulo="Busca em toda a plataforma" rotuloVisivel />
+        <BuscaPlataforma variante="pagina" exemplo={exemplo} rotulo="Busca em toda a plataforma" rotuloVisivel preservarConsulta />
+        <nav aria-label="Ir para um observatório" className={styles.indice}>
+          {secoes.map((o) => (
+            <a key={o.id} href={`#obs-${o.id}`} className={`${styles.alvo} t-corpo text-carvao`}>
+              <span>{o.nomeCurto}</span><span aria-hidden="true">↓</span>
+            </a>
+          ))}
+        </nav>
       </section>
+
+      {temRetomar && <FatiaRetomar retomar={retomar} />}
 
       <div data-fatia="para-voce">
         {paraVoce.comNumeros ? (
@@ -228,7 +238,7 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
         {c.prontidao && <SeloProntidao valor={c.prontidao} />}
       </h3>
       {c.paginas.length > 0 ? (
-        <details className={styles.paginas}>
+        <details id={`paginas-${c.id}`} className={styles.paginas}>
           <summary className="t-meta text-mineral" data-estado-colecao="">
             <span>{estado}</span>
             <span className={styles.abrir}>
@@ -268,7 +278,7 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
 /** Um só `<details>` no fim: o inventário, a legenda dos selos e as fontes de cada coleção, na ordem do diretório. */
 function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; totais: TotaisInventario }>) {
   return (
-    <details data-fatia="metodo" className={styles.metodo}>
+    <details id="mapa-metodo" data-fatia="metodo" className={styles.metodo}>
       <summary className="t-h3 text-carvao">
         Como este mapa é montado
         <span aria-hidden="true" className={styles.sinal} />
@@ -322,7 +332,7 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
                   ) : metodo ? (
                     <p className="t-meta mt-1 text-carvao-muted">
                       Sem fonte única de atualização: fontes e períodos de cada página no{" "}
-                      <Link href={metodo} prefetch={false} className="underline decoration-linha underline-offset-4 hover:decoration-carvao">
+                      <Link href={metodo} prefetch={false} className={`${styles.alvo} underline decoration-linha underline-offset-4 hover:decoration-carvao`}>
                         método da coleção
                       </Link>
                       .

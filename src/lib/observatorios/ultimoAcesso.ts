@@ -1,7 +1,8 @@
 /**
  * Último acesso do leitor (Iniciativa M1 do parecer de UX de 23/10/2026): o cookie que o mapa da conta lê para o cartão
  * "Continuar em …". Desde 23/10/2026 quem grava é o middleware (src/middleware.ts), em toda navegação de página com sessão
- * cujo caminho é uma coleção ou a entrada de um observatório; antes era o POST /app/observatorios/entrar, só quando o
+ * cujo caminho é uma coleção ou a entrada de um observatório. O POST /api/conta/ultimo-acesso complementa a gravação após
+ * a navegação efetiva no cliente (Next e SPA), com a mesma sessão, cookie e validade; nunca no prefetch. Antes era o POST /app/observatorios/entrar, só quando o
  * leitor saía pelo mapa.
  *
  * Valores, sem dado pessoal:
