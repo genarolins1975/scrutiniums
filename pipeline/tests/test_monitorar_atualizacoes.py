@@ -33,6 +33,9 @@ class Monitoramento(unittest.TestCase):
 
     def test_relatorio_preserva_grupos_e_separa_producao(self):
         r = relatorio(hoje='2026-10-24', execucoes={'credito': {'retida': True}, 'energia': {'retida': True}})
+        judicial = next(x for x in r['registros'] if x['id'] == 'judicial')
+        self.assertEqual(judicial['prazo_existente'], prazo_vintage(judicial['referencia'], 'datajud'))
+        self.assertIsNotNone(judicial['prazo_existente'])
         pix = next(x for x in r['registros'] if x['id'] == 'pix')
         self.assertNotEqual(pix['situacao'], 'retida')
         energia = [x for x in r['registros'] if x['dominio'] == 'energia']

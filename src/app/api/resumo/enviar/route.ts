@@ -85,5 +85,5 @@ export async function POST(req: Request) {
     }
   }
   return NextResponse.json({ edicao: resumo.edicao, destinatarios: alvo.length, enviados, falhas, pendentes },
-    { status: falhas > 0 ? 502 : 200 });
+    { status: falhas > 0 ? 502 : pendentes > 0 ? 202 : 200 });
 }

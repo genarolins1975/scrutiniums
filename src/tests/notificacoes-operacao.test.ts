@@ -47,6 +47,7 @@ describe("Operação de notificações sem envio real", () => {
     vi.spyOn(Date, "now").mockImplementation(() => relogio);
     m.purge.mockImplementation(async () => { relogio = 241_000; });
     const r = await resumo(new Request("https://scrutiniums.test/api/resumo/enviar", { method: "POST" }));
+    expect(r.status).toBe(202);
     expect((await r.json()).pendentes).toBe(1);
     expect(m.reserve).not.toHaveBeenCalled(); expect(m.send).not.toHaveBeenCalled();
   });

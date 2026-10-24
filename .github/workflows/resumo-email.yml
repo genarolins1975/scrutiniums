@@ -17,7 +17,8 @@ on:
         type: boolean
         default: true
 
-permissions: {}
+permissions:
+  contents: read
 
 # um disparo por vez; a rota também reserva cada envio de forma atômica
 concurrency:
@@ -27,8 +28,12 @@ concurrency:
 jobs:
   enviar:
     runs-on: ubuntu-latest
-    timeout-minutes: 20 # espera de deploy (10 min) mais o teto HTTP (310 s) e preparação
+    timeout-minutes: 60 # até oito lotes de 310 s, espera de deploy e preparação
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: /scripts/disparar_resumo.py
+          sparse-checkout-cone-mode: false
       - name: Esperar o deploy da publicação nova
         if: github.event_name == 'workflow_run'
         # a rota lê o gold empacotado no deploy da Vercel, que nasce do push do pipeline
@@ -38,14 +43,5 @@ jobs:
         env:
           BOLETIM_SECRET: ${{ secrets.BOLETIM_SECRET }}
           SIMULAR: ${{ github.event_name == 'workflow_dispatch' && inputs.simular || false }}
-        run: |
-          if [ "${#BOLETIM_SECRET}" -lt 16 ]; then
-            echo "::error::BOLETIM_SECRET ausente ou com menos de 16 caracteres no GitHub Actions; o mesmo valor precisa estar na Vercel (OPERACOES.md)"
-            exit 1
-          fi
-          DESTINO="https://scrutiniums.com/api/resumo/enviar"
-          METODO=POST
-          if [ "$SIMULAR" = "true" ]; then DESTINO="${DESTINO}?simular=1"; METODO=GET; fi
-          curl -sS --fail-with-body --connect-timeout 15 --max-time 310 -X "$METODO" \
-            "$DESTINO" \
-            -H "Authorization: Bearer ${BOLETIM_SECRET}"
+        # Continua somente resposta bem-sucedida com pendentes; não repete erro HTTP/transporte.
+        run: python3 scripts/disparar_resumo.py

@@ -13,7 +13,7 @@ Base auditada: `7d4c2ee77282c0d6c22fd3902869b9d2ac82cd7f`. O ambiente original e
 | Desenrola | Troca de tabela antes da validação completa; ausência convertida em zero | CSV validado antes da troca, histórico por hash, zero explícito e idempotência | Retenção diante de arquivo inválido, retificação e retorno a versão anterior | Mesmo PR; recurso oficial atual depende de acesso |
 | Judicial/DJEN | Falha apagava tribunal; paginação/esquema incompletos aceitos; DataJud repetia tarefas após esgotar orçamento | Retenção por tribunal, fila persistente DataJud e rejeição de consulta incompleta | Independência dos tribunais, 403, esquema, truncamento e duas rodadas com timeout | Mesmo PR; DJEN/TST e alternativas nominais dependem de fonte autorizada, sem contornar WAF |
 | RTN | HTTP 200 genérico tratado como nova edição; IPCA encerrava em mês fixo | Confirmação no título e IPCA definido pelo manifesto | 27 testes; 43 meses do IPCA vigente reproduzidos | [PR #377](https://github.com/genarolins1975/scrutiniums/pull/377); ainda julho/2026, edição nova não capturada |
-| Notificações | Resumo retornava 200 após falha do provedor; ausência de simulação segura | 502 em falha, orçamento, GET autenticado sem efeitos; monitoramento independente | 38 testes de notificações e 5 de monitoramento | [PR #378](https://github.com/genarolins1975/scrutiniums/pull/378); configuração real de BOLETIM_SECRET não confirmada |
+| Notificações | Resumo retornava 200 após falha do provedor; ausência de simulação segura | 502 em falha, orçamento, GET autenticado sem efeitos; monitoramento independente | 50 testes de notificações e 5 de monitoramento | [PR #378](https://github.com/genarolins1975/scrutiniums/pull/378); configuração real de BOLETIM_SECRET não confirmada |
 
 ## Evidência
 
@@ -29,7 +29,7 @@ Preparação com `bash scripts/preparar-sessao.sh`, Node 22.23.3, Python 3.12, p
 
 `npm run verificar:pr` passou na integração local `c161dfd2fde6866e165098e4c118c2064f1e3a72`: 2.423 testes Python principais e complementares, build, lint, tipos, 68 telas/224 verificações do Judiciário, 385 arquivos Vitest com 9.515 aprovados, 12 skipped preexistentes e 1 todo. Tempo: 18 min 41 s. [Log integral](integracao-completo.txt).
 
-Esse commit reúne as implementações iniciais dos quatro PRs; os complementos posteriores são Python (DataJud, reconhecimento do título RTN e diagnóstico das fontes auxiliares). A suíte Python final de Crédito já passou com 2.417 testes principais, mais 73 de pesquisa e 66 complementares; RTN passou em 27 testes focados; monitoramento em cinco. A revalidação da composição final e o CI de cada cabeça são registrados nas descrições dos PRs. Não se atribui o log anterior a um commit posterior.
+Esse commit reúne as implementações iniciais dos quatro PRs; os complementos posteriores incluem DataJud, reconhecimento do título RTN, diagnóstico das fontes auxiliares e continuação dos lotes de notificação. A suíte Python final de Crédito já passou com 2.417 testes principais, mais 73 de pesquisa e 66 complementares; RTN passou em 27 testes focados; monitoramento em cinco. A revalidação da composição final e o CI de cada cabeça são registrados nas descrições dos PRs. Não se atribui o log anterior a um commit posterior.
 
 `npm run verificar:rapido` passou em cada domínio; [log final de Operações](rapido.txt). Não foram removidos ou enfraquecidos testes para permitir publicação. As falhas sintéticas esperadas aparecem nos logs como parte da prova de retenção.
 
