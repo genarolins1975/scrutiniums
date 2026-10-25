@@ -278,6 +278,9 @@ export const FORA_DO_MOLDE: Record<string, string> = {
   "/contas-publicas/previdencia": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/custo-de-vida": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/educacao-municipal": "entrada no molde EntradaColecao (entradas-molde.ts)",
+  // Pedido do dono, PR 1 de Educação (25/10/2026): ficha individual com ordem editorial própria;
+  // valores, acesso e navegação conferidos em educacao.test.ts e educacao-ficha-navegador.test.ts.
+  "/educacao-municipal/municipio/[ibge]": "ficha individual de município, com identidade, séries, componentes e método na ordem determinada pelo dono",
   "/eficiencia-estatal": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/eficiencia-estatal/acesso-justica/dados": "página de dados (catálogo, arquivos e reprodução)",
   "/eficiencia-estatal/assistencia-social/dados": "página de dados (catálogo, arquivos e reprodução)",

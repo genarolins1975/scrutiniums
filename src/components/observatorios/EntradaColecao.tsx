@@ -13,7 +13,7 @@ import type { NumeroPorta } from "@/lib/perguntas/tipos";
  * Molde único das páginas de entrada (Iniciativa 4 do parecer de UX de 21/10/2026; skill observatorio-layout, §4 "Página de
  * entrada"). Todas as fatias saem do servidor, nesta ordem, cada uma marcada com `data-fatia` para o teste conferir:
  *
- *  1. `abertura`: RotuloContexto, H1 pergunta (até 60 caracteres) e uma frase (até 220). Nada mais antes dos números.
+ *  1. `abertura`: RotuloContexto, H1 pergunta (até 60 caracteres) e uma frase (até 220). Opcionalmente, `seu-municipio` traz o extrato escolhido antes dos números (pedido Educação, 25/10/2026).
  *  2. `escala`: de um a quatro números (NumeroEscala), cada um com fonte, período, nota opcional e "Ver no painel"; na versão
  *     aperitivo, no lugar dela, a `consulta` do leitor (o caso dele, com fonte e período).
  *  3. `para-voce`: o bloco ParaVoce.
@@ -70,6 +70,7 @@ export function EntradaColecao({
   figuraEscala,
   consulta,
   paraVoce,
+  seuMunicipio,
   destinos,
   secaoPropria,
   artefato,
@@ -105,6 +106,8 @@ export function EntradaColecao({
   /** Aperitivo: a consulta do leitor, no lugar da escala. */
   consulta?: ReactNode;
   paraVoce?: ReactNode;
+  /** Extrato escolhido pelo leitor, antes da escala nacional (Educação, pedido de 25/10/2026). */
+  seuMunicipio?: ReactNode;
   destinos?: ReactNode;
   secaoPropria?: ReactNode;
   /** Um ModeloDidatico. */
@@ -142,6 +145,7 @@ export function EntradaColecao({
             {titulo}
           </h1>
           <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">{frase}</p>
+          {seuMunicipio && <div data-fatia="seu-municipio">{seuMunicipio}</div>}
           {escala && escala.length > 0 && <Escala escala={escala} nota={notaEscala} idioma={idioma} />}
           {figuraEscala}
         </div>

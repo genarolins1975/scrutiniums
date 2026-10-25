@@ -87,6 +87,8 @@ export type Aperitivo = {
   painelCompleto: string;
   /** Prefixo das fichas por código IBGE do tema, que pedem conta e, sem sessão, voltam à página do tema. */
   fichasIbge?: string;
+  /** Mantém a consulta com sessão como resumo, com link para a ficha (Educação). */
+  manterConsultaComSessao?: boolean;
 };
 
 export const APERITIVOS: readonly Aperitivo[] = Object.freeze([
@@ -108,7 +110,7 @@ export const APERITIVOS: readonly Aperitivo[] = Object.freeze([
   { tema: "Conectividade", rota: "/conectividade", versaoAberta: "/aperitivo/conectividade", painelCompleto: "/conectividade" },
   // painel novo Educação nos municípios (Serviços Públicos), aprovado pelo dono em 20/10/2026: sem sessão, "Como está a escola
   // pública da minha cidade?" (só o Ideb mais recente da rede municipal do município escolhido); com sessão, o painel completo
-  { tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal" },
+  { tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal", fichasIbge: "/educacao-municipal/municipio", manterConsultaComSessao: true },
   // apresentação do Crédito, aberta desde 13/10/2026: é a página única do tema; o observatório completo segue com conta
   { tema: "Crédito", rota: "/observatorio-do-credito", versaoAberta: null, painelCompleto: "/observatorio" },
 ] satisfies Aperitivo[]);
@@ -180,6 +182,8 @@ export type ItemLeva2 = {
   rotas: readonly string[];
   /** Ficha por município: o prefixo seguido de "/" e do código IBGE de sete dígitos. */
   fichasIbge?: string;
+  /** Mantém a consulta com sessão como resumo, com link para a ficha (Educação). */
+  manterConsultaComSessao?: boolean;
   /** Arquivos que a consulta busca no navegador, cada um pelo endereço exato. */
   arquivos: readonly string[];
   /**
@@ -420,7 +424,7 @@ export function desvioDoAperitivo(caminho: string): DesvioDoAperitivo | null {
 export function fichaComSessao(caminho: string, ibge: string | null): string | null {
   if (!ibge || !CODIGO_IBGE.test(ibge)) return null;
   const semBarra = caminho.length > 1 && caminho.endsWith("/") ? caminho.slice(0, -1) : caminho;
-  const a = APERITIVOS.find((x) => x.fichasIbge && x.rota === semBarra);
+  const a = APERITIVOS.find((x) => x.fichasIbge && !x.manterConsultaComSessao && x.rota === semBarra);
   return a ? `${a.fichasIbge}/${ibge}` : null;
 }
 

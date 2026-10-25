@@ -41,7 +41,8 @@ const PAINEIS: string[] = [
 const H1_PENDENTE: Record<string, string> = {};
 
 /** Ordem das fatias do molde (data-fatia). */
-const ORDEM = ["abertura", "escala", "consulta", "para-voce", "destinos", "secao-propria", "artefato", "caminhos", "recolhidos", "convite", "metodo"];
+// Pedido do dono, PROMPT_CODEX_EDUCACAO.md PR 1 (25/10/2026): extrato opcional antes da escala, sem mudar as demais fatias.
+const ORDEM = ["abertura", "seu-municipio", "escala", "consulta", "para-voce", "destinos", "secao-propria", "artefato", "caminhos", "recolhidos", "convite", "metodo"];
 
 const texto = (h: string) => h.replace(/<[^>]+>/g, "").replace(/&nbsp;|\s+/g, " ").replace(/&amp;/g, "&").trim();
 
