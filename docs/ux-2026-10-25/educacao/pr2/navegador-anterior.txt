@@ -1,0 +1,41 @@
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/educacao-2
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/educacao-artefatos-navegador.test.ts (3 tests | 1 failed) 124837ms
+     × 768: filtros por teclado, equivalência e acesso 36711ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/educacao-artefatos-navegador.test.ts > Educação: análises e mapa no navegador > 768: filtros por teclado, equivalência e acesso
+AssertionError: expected 'ai' to be 'af' // Object.is equality
+
+Expected: "af"
+Received: "ai"
+
+ ❯ src/tests/educacao-artefatos-navegador.test.ts:60:72
+     58|       expect(await etapa.inputValue()).toBe('af');
+     59|       await p.reload({waitUntil:'networkidle'}); await aguardarHidrata…
+     60|       expect(await mapa.getByLabel('Etapa',{exact:true}).inputValue())…
+       |                                                                        ^
+     61|       expect(await p.evaluate(()=>document.documentElement.scrollWidth…
+     62|       const anonimo=await navegador.newContext();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 86 passed (87)
+   Start at  19:39:16
+   Duration  254.74s (transform 2.34s, setup 0ms, import 6.15s, tests 236.17s, environment 1ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
