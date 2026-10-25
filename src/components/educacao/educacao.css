@@ -48,7 +48,7 @@
 .edm-secao > h2 { max-width: 40ch; }
 .edm-intro { margin-top: 12px; max-width: 70ch; font-size: 16px; line-height: 1.65; }
 .edm-sub { margin-top: 48px; }
-.edm-sub > h3 + p { margin-top: 8px; max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.edm-sub > h2 + p, .edm-sub > h3 + p { margin-top: 8px; max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--cor-carvao-muted); }
 @media (max-width: 760px) { .edm-secao { margin-top: 60px; } .edm-sub { margin-top: 40px; } }
 
 .edm-busca { margin-top: 24px; max-width: 760px; }
@@ -213,3 +213,29 @@
 .edm-toque { transition: transform 140ms var(--edm-saida), background-color 160ms ease, color 160ms ease; }
 .edm-toque:active { transform: scale(0.97); }
 @media (prefers-reduced-motion: reduce) { .edm-toque, .edm-toque:active { transition: none; transform: none; } }
+
+/* Educação PR 1: extrato escolhido antes da escala, séries na largura da coluna. */
+.edm-extrato-entrada { max-width: none; margin-top: 24px; padding: 16px 20px; }
+.edm-extrato-entrada header { padding-bottom: 8px; }
+.edm-extrato-entrada dl { margin-top: 10px; }
+.edm-extrato-entrada .edm-fonte { margin-top: 8px; }
+.edm-series { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.edm-series .edm-so-largo { max-width: 100%; }
+.edm-componentes-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.edm-svg .edm-meta-cheia { fill: var(--edm-acento-escuro); }
+.edm-legenda .edm-meta-cheia { background: var(--edm-acento-escuro); }
+.edm-lab-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.edm-ficha { max-width: 1240px; margin-inline: auto; padding: 24px; }
+.edm-ficha > header p { margin-top: 12px; }
+.edm-ficha [data-modelo-didatico] { margin-top: 24px; }
+@media (max-width: 640px) { .edm-componentes-grade { grid-template-columns: minmax(0, 1fr); } }
+
+@media (min-width: 640px) and (max-width: 900px) {
+  .edm-raiz [data-frescor-faixa="linha"] > p { display: none; }
+  .edm-raiz [data-frescor-faixa="linha"] > details { display: block; }
+}
+@media (max-width: 640px) {
+  .edm-extrato-entrada dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .edm-extrato-entrada .edm-valor { font-size: 2rem; }
+  .edm-extrato-entrada header .edm-competencia { font-size: 12px; }
+}

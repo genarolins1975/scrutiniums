@@ -33,6 +33,8 @@ export const TITULO_CAPITAIS = "Educação nas capitais";
 /** Endereço público com o município escolhido (a busca e a volta do login usam o mesmo). */
 export const hrefMunicipio = (ibge: string) => `${ROTA_EDUCACAO}?ibge=${ibge}`;
 
+export const hrefFichaMunicipio = (ibge: string) => `${ROTA_EDUCACAO}/municipio/${ibge}`;
+
 export const NOME_ETAPA: Record<Etapa, string> = { ai: "Anos iniciais", af: "Anos finais" };
 export const SERIES_ETAPA: Record<Etapa, string> = { ai: "1º ao 5º ano", af: "6º ao 9º ano" };
 export const NOME_REDE: Record<Rede, string> = { municipal: "Rede municipal", publica: "Rede pública" };

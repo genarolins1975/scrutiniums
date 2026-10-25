@@ -1,0 +1,31 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas judiciario,cobertura,vitest
+
+
+▶ Fluxos e telas do Judiciário com sessão local: node scripts/obee/judiciario-verificacao.mjs
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: URL internacional sobrevive ao reload 390px
+    at check (file:///workspace/scrutiniums/scripts/obee/judiciario-verificacao.mjs:29:70)
+    at file:///workspace/scrutiniums/scripts/obee/judiciario-verificacao.mjs:239:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  FALHA  4 min 29 s  Fluxos e telas do Judiciário com sessão local  (node scripts/obee/judiciario-verificacao.mjs)
+  tempo de parede: 4 min 29 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

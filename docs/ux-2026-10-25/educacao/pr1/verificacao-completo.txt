@@ -1,0 +1,1230 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr
+
+
+▶ Gerar app.min.js: node scripts/minify-obs.mjs
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+
+▶ Tipos: npx tsc --noEmit
+
+▶ Contrato de grupos e publicação seletiva da gold: python3 -m unittest pipeline.tests.test_publicar_gold
+............................
+----------------------------------------------------------------------
+Ran 28 tests in 1.134s
+
+OK
+
+▶ Módulos Python compilam: python3 -m compileall -q pipeline
+
+▶ Dependências do pipeline de energia: python3 -c "import pyarrow" 2>/dev/null || pip install -r pipeline/energia/requirements.txt
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest discover -s pipeline/tests -t .
+......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................s......................./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.................................................................................................................................s................................................/workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+..../workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+./workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.../workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.................../workspace/scrutiniums/pipeline/energia/gold/comum.py:296: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  return datetime.utcnow().date()
+.............................................................................................s......................................................................................................................................................................................s................................................................................................................./workspace/scrutiniums/pipeline/tests/test_energia_infra.py:195: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpf6kjbqdm/t.csv' mode='r' encoding='utf-8'>
+  bruto = open(os.path.join(d, "t.csv"), encoding="utf-8", newline="").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........................................................................................................s..........................Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze restaurado: 1 arquivos extraídos; 0 já presentes preservados
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 1 arquivos; 0 recursos sem bronze; 10 assets
+Bronze durável: 3 arquivos; 0 recursos sem bronze; 10 assets
+Bronze restaurado: 2 arquivos extraídos; 1 já presentes preservados
+Bronze durável: 0 arquivos; 0 recursos sem bronze; 1 assets
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/scrutiniums/pipeline/energia/run.py", line 153, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scrutiniums/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] gold tema.json
+Traceback (most recent call last):
+  File "/workspace/scrutiniums/pipeline/energia/run.py", line 153, in main
+    fontes_publicadas = metadados.publicar_historico(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scrutiniums/pipeline/tests/test_energia_meta.py", line 460, in falha
+    raise ValueError('histórico de capturas: CSV divergente das vintages de origem')
+ValueError: histórico de capturas: CSV divergente das vintages de origem
+[energia] gold publicacao.json
+[energia] gold visao.json
+..REGRESSOES_ENERGIA=[{"gold": "meta.json", "motivo": "histórico de capturas: histórico de capturas: CSV divergente das vintages de origem", "arquivos_restaurados": ["capturas_fontes.csv", "capturas_fontes.parquet"]}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 0
+[energia] coletando ONS…
+[energia] tentando CCEE direta…
+[energia] colhendo catálogo…
+[energia] gold pld.json
+[energia] gold hidrologia.json
+[energia] gold carga.json
+[energia] gold geracao.json
+[energia] gold rede.json
+[energia] gold cmo.json
+[energia] coletando módulo ultimo_tema…
+[energia] gold ultimo_tema.json
+[energia] coletando módulo dados…
+[energia] gold publicacao.json
+[energia] gold visao.json
+......................................................................................................................................................................ss.ss............s......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................../workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp84425x7f/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp84425x7f/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp84425x7f/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp84425x7f/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp84425x7f/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp84425x7f/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp84425x7f/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpscq3phfn/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpscq3phfn/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpscq3phfn/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.manifesto'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.00'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:126: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.01'>
+  guardados = {n: open(os.path.join(self.rel, "pipeline-estado", n), "rb").read() for n in self._ativos()}
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpscq3phfn/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.manifesto'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.00'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:130: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpscq3phfn/rel/pipeline-estado/pipeline-estado.20261016000000.tar.zst.01'>
+  open(os.path.join(self.rel, "pipeline-estado", n), "wb").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpscq3phfn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfkv2u3dn/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfkv2u3dn/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpfkv2u3dn/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfkv2u3dn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpfkv2u3dn/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfkv2u3dn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpfkv2u3dn/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp5koumno7/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp5koumno7/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:82: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp5koumno7/w/data/bronze/fonte/a.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.w, "data", "bronze", "fonte", "a.json"), "w").write("{}")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmp5koumno7/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp5koumno7/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmp5koumno7/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpsipi_seo/bin/gh' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:54: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpsipi_seo/bin/zstd' mode='w' encoding='UTF-8'>
+  open(p, "w").write(corpo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:69: ResourceWarning: unclosed file <_io.BufferedWriter name='/tmp/tmpsipi_seo/w/data/silver/observatorio.db'>
+  open(p, "wb").write(os.urandom(n))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:41: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpsipi_seo/w/data/silver/observatorio.db'>
+  return hashlib.sha256(open(p, "rb").read()).hexdigest()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_estado_duravel.py:152: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  w = open(os.path.join(RAIZ, ".github", "workflows", "atualizar-dados.yml"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+............................................................................................................................................................................../workspace/scrutiniums/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp83m0i0a3/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp83m0i0a3/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_podar_cache.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp83m0i0a3/apagados' mode='r' encoding='UTF-8'>
+  apagados = open(self.log).read().split() if os.path.exists(self.log) else []
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl0q5qotr/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl0q5qotr/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_podar_cache.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl0q5qotr/apagados' mode='r' encoding='UTF-8'>
+  apagados = open(self.log).read().split() if os.path.exists(self.log) else []
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_podar_cache.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeucpzemm/bin/gh' mode='w' encoding='UTF-8'>
+  open(gh, "w").write(GH_FALSO)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_podar_cache.py:53: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpeucpzemm/caches.json' mode='w' encoding='UTF-8'>
+  json.dump(CACHES, open(caches, "w"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/atualizar-energia.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_podar_cache.py:84: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  txt = open(os.path.join(WF, nome), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........REGRESSOES_ENERGIA=[{"gold": "publicacao.json", "motivo": "Listagens ausentes no cenário sintético"}]
+[energia] órfãs: {"orcamento_s": 2400, "gasto_s": 0.0, "recapturadas": 0, "adiadas": 0, "prazo_coleta_s": 4800, "adiadas_prazo": 0}
+[energia] concluído em 0.0 s; falhas: 0; regressões: 1
+Publicado: 33 territórios
+{"comarcas": 2563, "defensorias_uf_ano": 108, "tribunais": 27, "snapshot_sha256": "bdc06e9c40e2ca78db9613aafff5def1d94b8a9e478e4fd9c453c42202d61f65"}
+AEPS 2022 (atendimento) indisponível (404)
+AEPS 2023 (atendimento) indisponível (404)
+AEPS 2022 (atendimento) indisponível (404)
+AEPS 2023 (atendimento) indisponível (404)
+AEPS 2024 (atendimento) indisponível (404)
+...................................................../workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp_stclfke/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpyzmx8s1b/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpfzz3oq0j/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/modelos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/previsoes_desempenho.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/series/previsoes_apuracao.csv' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:49: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, rel), "w").write(conteudo)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:57: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/outro/README' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.outro, "README"), "w").write("y\n")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:62: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/pipeline/energia/previsoes/emissoes/2026-10.jsonl' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "pipeline/energia/previsoes/emissoes/2026-10.jsonl"), "w").write('{"origem": "2026-10-19"}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/previsoes.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/previsoes.json"), "w").write('{"rodada": 1}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:64: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/metricas.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/metricas.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:65: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/arquivos.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/arquivos.json"), "w").write('{"reescrito": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:66: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpw3tzek0w/runner/public/energia/gold/manifesto.json' mode='w' encoding='UTF-8'>
+  open(os.path.join(self.runner, "public/energia/gold/manifesto.json"), "w").write('{"novo": true}\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:20: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./workspace/scrutiniums/pipeline/tests/test_previsao_pld_commit.py:135: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/previsao-pld.yml' mode='r' encoding='utf-8'>
+  self.texto = open(WF, encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.....................................................................................................................................s............................................................................................................../workspace/scrutiniums/pipeline/tests/test_testes_reprovados.py:126: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.github/workflows/atualizar-dados.yml' mode='r' encoding='utf-8'>
+  w = open(os.path.join(RAIZ, ".github", "workflows", "atualizar-dados.yml"), encoding="utf-8").read()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pipeline/tests/test_testes_reprovados.py:132: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/.gitignore' mode='r' encoding='utf-8'>
+  self.assertIn("/" + nome, open(os.path.join(RAIZ, ".gitignore"), encoding="utf-8").read(), nome)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........................................................
+----------------------------------------------------------------------
+Ran 2450 tests in 301.675s
+
+OK (skipped=11)
+Gold de queimadas confere com o seed.
+Gold de queimadas_municipios confere com o seed.
+Gold de desastres confere com o seed.
+Gold de emissoes confere com o seed.
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest discover -s pesquisa/tests -t .
+........................./workspace/scrutiniums/pesquisa/tests/test_camada_notas.py:239: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/notas/teste_8v_be8cq/2026-07/validacao_mecanica_0.json' mode='r' encoding='utf-8'>
+  v0 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_0.json"), encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/scrutiniums/pesquisa/tests/test_camada_notas.py:240: ResourceWarning: unclosed file <_io.TextIOWrapper name='/workspace/scrutiniums/notas/teste_8v_be8cq/2026-07/validacao_mecanica_1.json' mode='r' encoding='utf-8'>
+  v1 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_1.json"), encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+................................................
+----------------------------------------------------------------------
+Ran 73 tests in 2.839s
+
+OK
+2026-06    base 2026-06: formato anterior à constituição v2, não conta para degrau
+{
+ "degrau": 1,
+ "ciclos_limpos_consecutivos": 0,
+ "n_minimo": 3,
+ "motivos_para_permanecer_no_1": [
+  "0 de 3 ciclos aprovados e auditados sem erro factual",
+  "bateria mecânica sem medida em ciclo (nenhum ciclo no formato da constituição v2)"
+ ]
+}
+
+▶ Testes Python (pipeline e camada de pesquisa): python3 -m unittest pipeline.eficiencia_resultados.test_motor pipeline.eficiencia_resultados.test_expansao pipeline.eficiencia_resultados.test_saude_municipal pipeline.eficiencia_resultados.test_precisao_saude pipeline.eficiencia_resultados.test_captura_recaptura pipeline.eficiencia_resultados.test_habitacao pipeline.eficiencia_resultados.test_habitacao_cenarios pipeline.eficiencia_resultados.test_conectividade pipeline.eficiencia_resultados.test_cesta_conjunta pipeline.eficiencia_resultados.test_precisao_candidatas pipeline.eficiencia_resultados.test_revisao_v3
+..................................................................
+----------------------------------------------------------------------
+Ran 66 tests in 3.688s
+
+OK
+
+▶ Reconciliação aritmética alternativa do OBEE: python3 -m unittest scripts.test_auditar_cesta_obee_v3
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.629s
+
+OK
+
+▶ Reconciliação aritmética alternativa do OBEE: python3 scripts/auditar-cesta-obee-v3.py | python3 -c "import json,sys; sys.exit(json.load(sys.stdin) != json.load(open('docs/obee/resultados/reconciliacao-aritmetica-v3.json')))"
+
+▶ Reconciliação aritmética alternativa do OBEE: python3 -m unittest scripts.test_obee_sensibilidade_pares scripts.test_obee_robustez_ampliada
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 1.180s
+
+OK
+
+▶ Reconciliação aritmética alternativa do OBEE: python3 docs/obee/resultados/review-ui/generate.py
+/workspace/scrutiniums/docs/obee/resultados/revisao-interativa-v3.html
+
+▶ Reconciliação aritmética alternativa do OBEE: git diff --exit-code docs/obee/resultados/revisao-interativa-v3.html
+
+▶ Precisão complementar da cesta OBEE: python3 -m unittest scripts.test_obee_precisao_cesta
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.074s
+
+OK
+
+▶ Precisão complementar da cesta OBEE: python3 scripts/obee_precisao_cesta.py --check
+182 registros; sete medidas; precisão municipal não quantificada
+
+▶ Precisão complementar da cesta OBEE: python3 -m unittest scripts.test_obee_renda_sensibilidade
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.631s
+
+OK
+
+▶ Precisão complementar da cesta OBEE: python3 scripts/obee_renda_sensibilidade.py --check
+{"rank_correlation": 0.9700803697943285, "max_absolute_percentile_change": 15.384615384615385, "income_pairs": {"pairs": 325, "strict_reversals": 20, "ties_created": 0, "ties_broken": 1, "ties_preserved": 0}}
+
+▶ Índice de resultados v4 do OBEE: python3 -m unittest pipeline.eficiencia_resultados.test_indice_v4
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 1.228s
+
+OK
+
+▶ Índice de resultados v4 do OBEE: python3 -m pipeline.eficiencia_resultados.indice_v4 --check
+{"cities": 26, "pairs": 325, "pair_status": {"mantida": 261, "pode_empatar": 2, "pode_inverter": 61, "empate": 1}, "pairs_with_dominance": 55, "pairs_reversing_with_weights_50pct": 82, "mean_score": 50.0, "score_min": 11.263736263736265, "score_max": 89.83516483516483}
+
+▶ Índice de resultados v4 do OBEE: python3 -m pipeline.eficiencia_resultados.indice_v4 --verificar
+{"packet_sha256": "b318342ab0aad847eba6d946203c8d3bdfdb289632cc703bb3d9ac3e4c1656d8", "ok": true}
+
+▶ Índice de resultados v4 do OBEE: python3 scripts/obee_interface_v4.py --check
+{"interface_v4": "ok", "files": 4}
+
+▶ Índice de resultados v4 do OBEE: python3 scripts/obee_contornos_capitais.py --check
+{"contornos": "ok", "capitais": 26}
+
+▶ Build de produção: npm run build
+
+> scrutiniums@0.1.0 prebuild
+> node scripts/preparar.mjs
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+> scrutiniums@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/1216) ...
+   Generating static pages (304/1216) 
+   Generating static pages (608/1216) 
+   Generating static pages (912/1216) 
+ ✓ Generating static pages (1216/1216)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                      Size     First Load JS
+┌ ƒ /                                                            3.33 kB         115 kB
+├ ○ /_not-found                                                  186 B          87.9 kB
+├ ○ /agronegocio                                                 4.97 kB         119 kB
+├ ● /agronegocio/[capitulo]                                      35.2 kB         145 kB
+├   ├ /agronegocio/producao
+├   ├ /agronegocio/custos-renda
+├   ├ /agronegocio/alimentos-consumo
+├   └ [+5 more paths]
+├ ○ /agronegocio/ambiente                                        430 B           102 kB
+├ ○ /agronegocio/apoio                                           430 B           102 kB
+├ ○ /agronegocio/aprenda                                         1.19 kB         108 kB
+├ ƒ /agronegocio/atlas                                           3.95 kB         202 kB
+├ ○ /agronegocio/cadeias                                         413 B           102 kB
+├ ● /agronegocio/cadeias/[cadeia]                                3.67 kB         105 kB
+├   ├ /agronegocio/cadeias/soja
+├   ├ /agronegocio/cadeias/milho
+├   ├ /agronegocio/cadeias/cana
+├   └ [+9 more paths]
+├ ○ /agronegocio/comparar                                        11.7 kB         137 kB
+├ ○ /agronegocio/conjuntura                                      430 B           102 kB
+├ ○ /agronegocio/glossario                                       196 B           107 kB
+├ ○ /agronegocio/insumos                                         430 B           102 kB
+├ ○ /agronegocio/mercados                                        430 B           102 kB
+├ ○ /agronegocio/metodologia                                     195 B          96.7 kB
+├ ○ /agronegocio/panorama                                        413 B           102 kB
+├ ○ /agronegocio/prato                                           196 B           187 kB
+├ ○ /agronegocio/produtores                                      430 B           102 kB
+├ ƒ /agronegocio/sintese                                         510 B           102 kB
+├ ○ /agronegocio/tamanho                                         195 B           187 kB
+├ ƒ /aperitivo/conectividade                                     3.94 kB        96.5 kB
+├ ○ /aperitivo/conta-de-luz                                      186 B           188 kB
+├ ƒ /aperitivo/educacao-municipal                                3.96 kB         105 kB
+├ ○ /aperitivo/gas-de-cozinha                                    2.99 kB         137 kB
+├ ○ /aperitivo/minha-capital                                     3.87 kB         135 kB
+├ ƒ /aperitivo/previdencia                                       924 B            97 kB
+├ ƒ /aperitivo/saneamento                                        3.21 kB         134 kB
+├ ƒ /api/admin/eu                                                0 B                0 B
+├ ƒ /api/agro/eventos                                            0 B                0 B
+├ ƒ /api/alertas/enviar                                          0 B                0 B
+├ ƒ /api/alertas/sair                                            0 B                0 B
+├ ƒ /api/auth/entrar/check                                       0 B                0 B
+├ ƒ /api/auth/entrar/start                                       0 B                0 B
+├ ƒ /api/auth/estado                                             0 B                0 B
+├ ƒ /api/auth/eu                                                 0 B                0 B
+├ ƒ /api/auth/login                                              0 B                0 B
+├ ƒ /api/auth/sair                                               0 B                0 B
+├ ƒ /api/boletim/enviar                                          0 B                0 B
+├ ƒ /api/boletim/sair                                            0 B                0 B
+├ ƒ /api/conta/alertas                                           0 B                0 B
+├ ƒ /api/conta/alertas/[dominio]                                 0 B                0 B
+├ ƒ /api/conta/boletim                                           0 B                0 B
+├ ƒ /api/conta/citacao                                           0 B                0 B
+├ ƒ /api/conta/perfil                                            0 B                0 B
+├ ƒ /api/conta/recortes                                          0 B                0 B
+├ ƒ /api/conta/recortes/[id]                                     0 B                0 B
+├ ƒ /api/conta/senha                                             0 B                0 B
+├ ƒ /api/conta/sessoes                                           0 B                0 B
+├ ƒ /api/conta/telefone/check                                    0 B                0 B
+├ ƒ /api/conta/telefone/start                                    0 B                0 B
+├ ƒ /api/conta/ultimo-acesso                                     0 B                0 B
+├ ƒ /api/eficiencia-mobilidade/exportar                          0 B                0 B
+├ ƒ /api/eficiencia-mobilidade/oportunidades                     0 B                0 B
+├ ƒ /api/onboarding/email/start                                  0 B                0 B
+├ ƒ /api/onboarding/phone/check                                  0 B                0 B
+├ ƒ /api/onboarding/phone/start                                  0 B                0 B
+├ ƒ /api/onboarding/profile                                      0 B                0 B
+├ ƒ /api/resumo/assinar                                          0 B                0 B
+├ ƒ /api/resumo/assinatura/confirmar                             0 B                0 B
+├ ƒ /api/resumo/assinatura/sair                                  0 B                0 B
+├ ƒ /api/resumo/enviar                                           0 B                0 B
+├ ƒ /api/sugestoes                                               0 B                0 B
+├ ƒ /api/telemetria                                              0 B                0 B
+├ ƒ /api/uso                                                     0 B                0 B
+├ ƒ /api/uso/busca                                               0 B                0 B
+├ ƒ /app/admin                                                   1.64 kB        89.4 kB
+├ ƒ /app/conta                                                   8.76 kB         132 kB
+├ ƒ /app/observatorios                                           1.76 kB         120 kB
+├ ƒ /app/observatorios/entrar                                    0 B                0 B
+├ ƒ /boletim/sair                                                3.73 kB         115 kB
+├ ○ /busca/indice.json                                           0 B                0 B
+├ ƒ /buscar                                                      3.22 kB         115 kB
+├ ƒ /cadastro                                                    2.29 kB        98.8 kB
+├ ƒ /cadastro/acesso                                             186 B          87.9 kB
+├ ƒ /cadastro/perfil                                             7.1 kB         94.9 kB
+├ ƒ /cadastro/telefone                                           4.86 kB         115 kB
+├ ƒ /cadastro/verificar-email                                    186 B          87.9 kB
+├ ○ /combustiveis                                                6.86 kB         173 kB
+├ ○ /combustiveis/no-meu-estado                                  6.21 kB         214 kB
+├ ƒ /conectividade                                               3.02 kB         136 kB
+├ ○ /conectividade/brasil-mensal.csv                             0 B                0 B
+├ ○ /conectividade/por-estado.csv                                0 B                0 B
+├ ○ /conectividade/por-municipio.csv                             0 B                0 B
+├ ○ /contas-publicas                                             4.86 kB         199 kB
+├ ƒ /contas-publicas-estaduais                                   80.5 kB         201 kB
+├ ○ /contas-publicas-estaduais/catalogo.json                     0 B                0 B
+├ ƒ /contas-publicas-estaduais/cobertura.csv                     0 B                0 B
+├ ƒ /contas-publicas-estaduais/comparacao.csv                    0 B                0 B
+├ ○ /contas-publicas-estaduais/dados.json                        0 B                0 B
+├ ƒ /contas-publicas-estaduais/despesas.csv                      0 B                0 B
+├ ƒ /contas-publicas-estaduais/educacao.csv                      0 B                0 B
+├ ƒ /contas-publicas-estaduais/educacao.json                     0 B                0 B
+├ ƒ /contas-publicas-estaduais/financiamento.csv                 0 B                0 B
+├ ○ /contas-publicas-estaduais/fluxo.json                        0 B                0 B
+├ ƒ /contas-publicas-estaduais/saldos.csv                        0 B                0 B
+├ ● /contas-publicas/[capitulo]                                  35.1 kB         216 kB
+├   ├ /contas-publicas/panorama
+├   ├ /contas-publicas/planejamento
+├   ├ /contas-publicas/execucao
+├   └ [+5 more paths]
+├ ○ /contas-publicas/beneficios.json                             0 B                0 B
+├ ○ /contas-publicas/catalogo.json                               0 B                0 B
+├ ○ /contas-publicas/custos.json                                 0 B                0 B
+├ ○ /contas-publicas/dados                                       9.56 kB         118 kB
+├ ○ /contas-publicas/divida.json                                 0 B                0 B
+├ ○ /contas-publicas/escala.json                                 0 B                0 B
+├ ○ /contas-publicas/fluxo.json                                  0 B                0 B
+├ ○ /contas-publicas/funcoes.json                                0 B                0 B
+├ ○ /contas-publicas/glossario                                   2.59 kB         103 kB
+├ ○ /contas-publicas/ipca.json                                   0 B                0 B
+├ ƒ /contas-publicas/metas-dados.json                            0 B                0 B
+├ ○ /contas-publicas/metodologia                                 186 B          87.9 kB
+├ ƒ /contas-publicas/por-area                                    5.87 kB         197 kB
+├ ○ /contas-publicas/por-area/funcoes.csv                        0 B                0 B
+├ ƒ /contas-publicas/previdencia                                 2.11 kB         114 kB
+├ ○ /contas-publicas/previdencia/anuario-inss.csv                0 B                0 B
+├ ○ /contas-publicas/previdencia/beneficios-brasil-mensal.csv    0 B                0 B
+├ ○ /contas-publicas/previdencia/beneficios-por-estado.csv       0 B                0 B
+├ ○ /contas-publicas/previdencia/beneficios-por-municipio.csv    0 B                0 B
+├ ○ /contas-publicas/previdencia/resultado-rgps.csv              0 B                0 B
+├ ○ /contas-publicas/rap.json                                    0 B                0 B
+├ ○ /contas-publicas/serie.json                                  0 B                0 B
+├ ○ /custo-de-vida                                               7.87 kB         178 kB
+├ ○ /custo-de-vida/na-minha-cidade                               1.02 kB         136 kB
+├ ○ /dados                                                       3.41 kB         119 kB
+├ ● /dados/[slug]                                                1.94 kB         123 kB
+├   ├ /dados/inadimplencia
+├   ├ /dados/inadimplencia-familias
+├   ├ /dados/juros-medios
+├   └ [+5 more paths]
+├ ● /dados/[slug]/opengraph-image                                0 B                0 B
+├   ├ /dados/inadimplencia/opengraph-image
+├   ├ /dados/inadimplencia-familias/opengraph-image
+├   ├ /dados/juros-medios/opengraph-image
+├   └ [+5 more paths]
+├ ○ /dados/api                                                   3.41 kB         119 kB
+├ ○ /dados/ibcc                                                  1.94 kB         123 kB
+├ ○ /dados/ibcc/opengraph-image                                  0 B                0 B
+├ ○ /dados/opengraph-image                                       0 B                0 B
+├ ƒ /educacao-municipal                                          554 B           137 kB
+├ ○ /educacao-municipal/censo-escolar-por-municipio.csv          0 B                0 B
+├ ○ /educacao-municipal/ideb-anos-finais-por-municipio.csv       0 B                0 B
+├ ○ /educacao-municipal/ideb-anos-iniciais-por-municipio.csv     0 B                0 B
+├ ƒ /educacao-municipal/municipio/[ibge]                         293 B           137 kB
+├ ○ /educacao-municipal/resumo-por-estado.csv                    0 B                0 B
+├ ○ /eficiencia-estatal                                          14.8 kB         148 kB
+├ ○ /eficiencia-estatal/acesso-justica                           195 B          96.7 kB
+├ ○ /eficiencia-estatal/acesso-justica/cobertura                 190 B           104 kB
+├ ○ /eficiencia-estatal/acesso-justica/conciliacao               200 B           104 kB
+├ ○ /eficiencia-estatal/acesso-justica/dados                     195 B          96.7 kB
+├ ○ /eficiencia-estatal/acesso-justica/recursos                  200 B           104 kB
+├ ○ /eficiencia-estatal/acesso-justica/tempo-resposta            200 B           104 kB
+├ ○ /eficiencia-estatal/assistencia-social                       320 B           191 kB
+├ ○ /eficiencia-estatal/assistencia-social/acesso                320 B           191 kB
+├ ○ /eficiencia-estatal/assistencia-social/acompanhamento        2.07 kB         192 kB
+├ ○ /eficiencia-estatal/assistencia-social/cuidado               320 B           191 kB
+├ ○ /eficiencia-estatal/assistencia-social/dados                 2.81 kB        90.6 kB
+├ ○ /eficiencia-estatal/assistencia-social/metodos               186 B          87.9 kB
+├ ○ /eficiencia-estatal/assistencia-social/necessidades          320 B           191 kB
+├ ○ /eficiencia-estatal/assistencia-social/recursos              320 B           191 kB
+├ ● /eficiencia-estatal/cultura/[[...painel]]                    19.4 kB         208 kB
+├   ├ /eficiencia-estatal/cultura
+├   ├ /eficiencia-estatal/cultura/rede
+├   ├ /eficiencia-estatal/cultura/acesso
+├   └ [+4 more paths]
+├ ○ /eficiencia-estatal/educacao-municipal-capitais              3.98 kB         213 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais/atendimento  166 B           137 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais/comparar     7.99 kB         136 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais/gastos       167 B           137 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais/metodos      199 B          96.7 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais/resultados   166 B           137 kB
+├ ● /eficiencia-estatal/energia-conectividade/[[...painel]]      2.82 kB         211 kB
+├   ├ /eficiencia-estatal/energia-conectividade
+├   ├ /eficiencia-estatal/energia-conectividade/acesso
+├   ├ /eficiencia-estatal/energia-conectividade/continuidade
+├   └ [+3 more paths]
+├ ○ /eficiencia-estatal/energia-conectividade/dados.csv          0 B                0 B
+├ ○ /eficiencia-estatal/habitacao                                189 B           182 kB
+├ ○ /eficiencia-estatal/habitacao/aluguel-renda                  198 B           192 kB
+├ ○ /eficiencia-estatal/habitacao/dados                          193 B           182 kB
+├ ○ /eficiencia-estatal/habitacao/deficit                        198 B           192 kB
+├ ○ /eficiencia-estatal/habitacao/inadequacao                    198 B           192 kB
+├ ○ /eficiencia-estatal/indice-de-resultados                     10.3 kB         225 kB
+├ ○ /eficiencia-estatal/judiciario                               3.59 kB         106 kB
+├ ● /eficiencia-estatal/judiciario/[capitulo]                    18.1 kB         210 kB
+├   ├ /eficiencia-estatal/judiciario/panorama
+├   ├ /eficiencia-estatal/judiciario/internacional
+├   ├ /eficiencia-estatal/judiciario/recursos
+├   └ [+8 more paths]
+├ ● /eficiencia-estatal/judiciario/tribunais/[id]                199 B          96.7 kB
+├   ├ /eficiencia-estatal/judiciario/tribunais/tjsp
+├   ├ /eficiencia-estatal/judiciario/tribunais/tjba
+├   ├ /eficiencia-estatal/judiciario/tribunais/tjrj
+├   └ [+54 more paths]
+├ ƒ /eficiencia-estatal/laboratorio-cesta                        0 B                0 B
+├ ● /eficiencia-estatal/meio-ambiente-clima/[[...painel]]        2.98 kB         218 kB
+├   ├ /eficiencia-estatal/meio-ambiente-clima
+├   ├ /eficiencia-estatal/meio-ambiente-clima/riscos
+├   ├ /eficiencia-estatal/meio-ambiente-clima/prevencao
+├   └ [+2 more paths]
+├ ● /eficiencia-estatal/mobilidade-transporte/[[...painel]]      2.17 kB         210 kB
+├   ├ /eficiencia-estatal/mobilidade-transporte
+├   ├ /eficiencia-estatal/mobilidade-transporte/tempo
+├   ├ /eficiencia-estatal/mobilidade-transporte/transporte
+├   └ [+6 more paths]
+├ ○ /eficiencia-estatal/retrato-26-capitais.csv                  0 B                0 B
+├ ○ /eficiencia-estatal/saneamento                               193 B           182 kB
+├ ○ /eficiencia-estatal/saneamento/agua                          197 B           191 kB
+├ ○ /eficiencia-estatal/saneamento/dados                         191 B           182 kB
+├ ○ /eficiencia-estatal/saneamento/drenagem                      198 B           191 kB
+├ ○ /eficiencia-estatal/saneamento/esgoto                        198 B           191 kB
+├ ○ /eficiencia-estatal/saneamento/recursos                      197 B           191 kB
+├ ○ /eficiencia-estatal/saneamento/residuos                      198 B           191 kB
+├ ○ /eficiencia-estatal/saude-capitais                           3.19 kB         236 kB
+├ ○ /eficiencia-estatal/saude-capitais/atendimento-e-resultados  323 B           233 kB
+├ ○ /eficiencia-estatal/saude-capitais/comparar                  5.68 kB         137 kB
+├ ○ /eficiencia-estatal/saude-capitais/gastos                    323 B           233 kB
+├ ○ /eficiencia-estatal/saude-capitais/metodos                   4.89 kB        92.7 kB
+├ ○ /eficiencia-estatal/saude-capitais/rede-e-atencao-primaria   323 B           233 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar                      189 B           182 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/acesso               1.98 kB         193 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/dados                2.59 kB        90.4 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/metodos              796 B          93.4 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/necessidades         2.98 kB         194 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/qualidade            192 B           182 kB
+├ ○ /eficiencia-estatal/seguranca-alimentar/recursos             308 B           191 kB
+├ ● /eficiencia-estatal/seguranca-publica/[[...painel]]          11.9 kB         198 kB
+├   ├ /eficiencia-estatal/seguranca-publica
+├   ├ /eficiencia-estatal/seguranca-publica/estados
+├   ├ /eficiencia-estatal/seguranca-publica/letalidade
+├   └ [+5 more paths]
+├ ○ /eficiencia-estatal/trabalho-renda                           199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/acesso-ao-trabalho        199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/cadastro-unico            200 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/comparar                  200 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/desigualdade              199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/emprego-formal            199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/metodos                   199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/ocupacoes                 199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/protecao-da-renda         199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/qualidade-do-trabalho     200 B           202 kB
+├ ƒ /eficiencia-estatal/trabalho-renda/qualificacao              189 B           182 kB
+├ ƒ /eficiencia-estatal/trabalho-renda/qualificacao/dados.csv    0 B                0 B
+├ ○ /eficiencia-estatal/trabalho-renda/recursos                  6.07 kB         195 kB
+├ ○ /eficiencia-estatal/trabalho-renda/renda-das-familias        199 B           202 kB
+├ ○ /eficiencia-estatal/trabalho-renda/renda-do-trabalho         199 B           202 kB
+├ ƒ /en                                                          3.33 kB         115 kB
+├ ○ /en/aperitivo/conta-de-luz                                   182 B           188 kB
+├ ƒ /en/cadastro                                                 2.29 kB        98.8 kB
+├ ƒ /en/entrar                                                   150 B           129 kB
+├ ƒ /en/entrar/sms                                               151 B           129 kB
+├ ƒ /en/entrar/sms/verificar                                     150 B           129 kB
+├ ƒ /en/glossario                                                2.94 kB         114 kB
+├ ○ /en/imprensa                                                 2.94 kB         114 kB
+├ ○ /en/observatorio-do-credito                                  165 B           123 kB
+├ ƒ /en/privacidade                                              2.94 kB         114 kB
+├ ○ /en/setor-eletrico                                           209 B           212 kB
+├ ○ /en/setor-eletrico/agua-e-clima                              224 B           269 kB
+├ ○ /en/setor-eletrico/agua-e-clima/afluencia                    5.23 kB         266 kB
+├ ○ /en/setor-eletrico/agua-e-clima/chuva-e-temperatura          221 B           279 kB
+├ ○ /en/setor-eletrico/agua-e-clima/reservatorios                224 B           272 kB
+├ ○ /en/setor-eletrico/aprenda                                   178 B           163 kB
+├ ● /en/setor-eletrico/aprenda/[conceito]                        186 B           164 kB
+├   ├ /en/setor-eletrico/aprenda/pld
+├   ├ /en/setor-eletrico/aprenda/mcp
+├   ├ /en/setor-eletrico/aprenda/cmo
+├   └ [+51 more paths]
+├ ○ /en/setor-eletrico/aprenda/trilhas                           2.12 kB         144 kB
+├ ● /en/setor-eletrico/aprenda/trilhas/[trilha]                  185 B           167 kB
+├   ├ /en/setor-eletrico/aprenda/trilhas/agua-operacao-preco
+├   └ /en/setor-eletrico/aprenda/trilhas/custo-tarifa-orcamento
+├ ○ /en/setor-eletrico/carga                                     225 B           260 kB
+├ ○ /en/setor-eletrico/carga/clima-e-calendario                  217 B           252 kB
+├ ○ /en/setor-eletrico/carga/perfil-horario                      225 B           283 kB
+├ ○ /en/setor-eletrico/conta-de-luz                              228 B           306 kB
+├ ○ /en/setor-eletrico/conta-de-luz/reajustes-e-subsidios        215 B           270 kB
+├ ○ /en/setor-eletrico/dados                                     215 B           235 kB
+├ ● /en/setor-eletrico/dados/[dataset]                           173 B           146 kB
+├   ├ /en/setor-eletrico/dados/ccee-pld-horario
+├   ├ /en/setor-eletrico/dados/ons-ear-subsistema
+├   ├ /en/setor-eletrico/dados/ons-ena-subsistema
+├   └ [+118 more paths]
+├ ○ /en/setor-eletrico/dados/reproducao                          206 B           209 kB
+├ ○ /en/setor-eletrico/dados/saude                               3.14 kB         230 kB
+├ ○ /en/setor-eletrico/empresas                                  3.67 kB         186 kB
+├ ● /en/setor-eletrico/empresas/[entidade]                       218 B           237 kB
+├   ├ /en/setor-eletrico/empresas/ceb
+├   ├ /en/setor-eletrico/empresas/cergapa
+├   ├ /en/setor-eletrico/empresas/chesp
+├   └ [+126 more paths]
+├ ○ /en/setor-eletrico/empresas/analise                          186 B           162 kB
+├ ○ /en/setor-eletrico/empresas/ativos                           212 B           226 kB
+├ ○ /en/setor-eletrico/empresas/controle                         212 B           223 kB
+├ ○ /en/setor-eletrico/empresas/distribuidoras                   218 B           232 kB
+├ ○ /en/setor-eletrico/empresas/financas                         216 B           230 kB
+├ ○ /en/setor-eletrico/empresas/listadas                         210 B           218 kB
+├ ● /en/setor-eletrico/empresas/listadas/[papel]                 218 B           240 kB
+├   ├ /en/setor-eletrico/empresas/listadas/eqtl3
+├   ├ /en/setor-eletrico/empresas/listadas/enev3
+├   ├ /en/setor-eletrico/empresas/listadas/cple3
+├   └ [+9 more paths]
+├ ○ /en/setor-eletrico/expansao                                  1.46 kB         193 kB
+├ ○ /en/setor-eletrico/expansao/carteira                         2.84 kB         260 kB
+├ ○ /en/setor-eletrico/expansao/cenarios                         216 B           234 kB
+├ ○ /en/setor-eletrico/expansao/cronograma                       215 B           235 kB
+├ ○ /en/setor-eletrico/expansao/geracao-e-transmissao            3.15 kB         260 kB
+├ ○ /en/setor-eletrico/geracao                                   223 B           272 kB
+├ ○ /en/setor-eletrico/geracao/capacidade                        217 B           257 kB
+├ ○ /en/setor-eletrico/geracao/curtailment                       211 B           236 kB
+├ ○ /en/setor-eletrico/geracao/restricoes                        215 B           257 kB
+├ ○ /en/setor-eletrico/geracao/termica                           220 B           261 kB
+├ ○ /en/setor-eletrico/inclusao-energetica                       1.46 kB         193 kB
+├ ○ /en/setor-eletrico/inclusao-energetica/acesso                223 B           272 kB
+├ ○ /en/setor-eletrico/inclusao-energetica/cobertura             224 B           275 kB
+├ ○ /en/setor-eletrico/inclusao-energetica/orcamento             221 B           260 kB
+├ ○ /en/setor-eletrico/inclusao-energetica/tarifa-social         230 B           285 kB
+├ ○ /en/setor-eletrico/leiloes                                   221 B           256 kB
+├ ○ /en/setor-eletrico/leiloes/transmissao                       224 B           258 kB
+├ ○ /en/setor-eletrico/mercado                                   1.97 kB         254 kB
+├ ○ /en/setor-eletrico/mercado/agentes                           2.71 kB         221 kB
+├ ○ /en/setor-eletrico/mercado/comercializacao                   392 B           139 kB
+├ ○ /en/setor-eletrico/mercado/encargos                          377 B           252 kB
+├ ○ /en/setor-eletrico/mercado/mre-e-gsf                         2.71 kB         221 kB
+├ ○ /en/setor-eletrico/metodologia                               210 B           217 kB
+├ ○ /en/setor-eletrico/metodologia/avaliacao                     214 B           251 kB
+├ ○ /en/setor-eletrico/perdas                                    218 B           256 kB
+├ ○ /en/setor-eletrico/perdas/composicao                         212 B           239 kB
+├ ○ /en/setor-eletrico/perdas/custo-e-contexto                   212 B           235 kB
+├ ○ /en/setor-eletrico/perdas/regulatorio                        213 B           239 kB
+├ ○ /en/setor-eletrico/pld                                       221 B           261 kB
+├ ○ /en/setor-eletrico/pld/cmo-e-formacao                        216 B           250 kB
+├ ○ /en/setor-eletrico/pld/diferencas-regionais                  224 B           263 kB
+├ ○ /en/setor-eletrico/pld/historico                             222 B           253 kB
+├ ○ /en/setor-eletrico/pld/limites                               217 B           250 kB
+├ ○ /en/setor-eletrico/pld/modelos                               218 B           232 kB
+├ ● /en/setor-eletrico/pld/modelos/[modelo]                      3.01 kB         219 kB
+├   ├ /en/setor-eletrico/pld/modelos/b0
+├   ├ /en/setor-eletrico/pld/modelos/c1
+├   ├ /en/setor-eletrico/pld/modelos/c2-p
+├   └ [+2 more paths]
+├ ○ /en/setor-eletrico/pld/previsoes                             217 B           246 kB
+├ ○ /en/setor-eletrico/qualidade                                 226 B           291 kB
+├ ○ /en/setor-eletrico/qualidade/comparar-distribuidoras         224 B           263 kB
+├ ○ /en/setor-eletrico/rede                                      220 B           261 kB
+├ ○ /en/setor-eletrico/rede/balanco-e-exterior                   217 B           251 kB
+├ ○ /en/setor-eletrico/rede/programado                           216 B           253 kB
+├ ○ /en/setor-eletrico/rede/restricoes                           217 B           253 kB
+├ ○ /en/setor-eletrico/regulacao                                 216 B           239 kB
+├ ○ /en/setor-eletrico/regulacao/consultas-e-agenda              216 B           242 kB
+├ ○ /en/setor-eletrico/regulacao/linha-do-tempo                  210 B           228 kB
+├ ○ /en/setor-eletrico/territorio                                212 B           252 kB
+├ ○ /en/setor-eletrico/territorio/atlas                          183 B           163 kB
+├ ○ /en/setor-eletrico/transicao                                 1.94 kB         194 kB
+├ ○ /en/setor-eletrico/transicao/emissoes                        1.41 kB         236 kB
+├ ○ /en/setor-eletrico/transicao/energia-estimada                3.23 kB         233 kB
+├ ○ /en/setor-eletrico/transicao/mmgd                            224 B           258 kB
+├ ○ /en/setor-eletrico/transicao/riscos                          183 B           192 kB
+├ ○ /en/setor-eletrico/visao-geral                               211 B           252 kB
+├ ○ /en/sobre                                                    2.94 kB         114 kB
+├ ○ /en/sobre/erros                                              2.94 kB         114 kB
+├ ○ /en/sobre/governanca                                         2.94 kB         114 kB
+├ ƒ /en/termos                                                   2.94 kB         114 kB
+├ ƒ /entrar                                                      149 B           129 kB
+├ ƒ /entrar/sms                                                  150 B           129 kB
+├ ƒ /entrar/sms/verificar                                        151 B           129 kB
+├ ƒ /entrar/verificar                                            186 B          87.9 kB
+├ ○ /gas-natural                                                 962 B           134 kB
+├ ○ /gas-natural/aproveitamento                                  5.16 kB         169 kB
+├ ○ /gas-natural/dados                                           609 B           131 kB
+├ ○ /gas-natural/gas-de-cozinha                                  1.05 kB         226 kB
+├ ○ /gas-natural/gnv-e-gas-encanado                              355 B           226 kB
+├ ○ /gas-natural/importacao                                      183 B           167 kB
+├ ○ /gas-natural/infraestrutura                                  185 B           167 kB
+├ ○ /gas-natural/mercado                                         180 B           158 kB
+├ ○ /gas-natural/metodologia                                     609 B           131 kB
+├ ○ /gas-natural/precos                                          180 B           158 kB
+├ ○ /gas-natural/producao                                        183 B           167 kB
+├ ○ /gas-natural/regulacao                                       609 B           131 kB
+├ ƒ /glossario                                                   2.94 kB         114 kB
+├ ○ /icon.svg                                                    0 B                0 B
+├ ○ /imprensa                                                    2.94 kB         114 kB
+├ ○ /observatorio-do-credito                                     165 B           123 kB
+├ ○ /observatorio-do-credito/metodologia                         1.6 kB          132 kB
+├ ƒ /observatorio-do-credito/quanto-meu-banco-cobra              2.94 kB         211 kB
+├ ƒ /observatorio-do-credito/simulador-da-parcela                7.57 kB         216 kB
+├ ƒ /observatorio/[[...rota]]                                    0 B                0 B
+├ ● /observatorios/[id]                                          5.47 kB         139 kB
+├   ├ /observatorios/familias
+├   ├ /observatorios/servicos-publicos
+├   ├ /observatorios/contas-publicas
+├   └ [+2 more paths]
+├ ○ /opengraph-image                                             0 B                0 B
+├ ● /perguntas/[porta]                                           1.14 kB         117 kB
+├   ├ /perguntas/familias
+├   ├ /perguntas/servicos-publicos
+├   ├ /perguntas/contas-publicas
+├   └ [+3 more paths]
+├ ƒ /privacidade                                                 2.94 kB         114 kB
+├ ○ /resumo                                                      4.94 kB         121 kB
+├ ƒ /resumo/assinatura/confirmar                                 3.79 kB         115 kB
+├ ƒ /resumo/assinatura/sair                                      3.79 kB         115 kB
+├ ○ /resumo/feed.xml                                             0 B                0 B
+├ ○ /resumo/opengraph-image                                      0 B                0 B
+├ ○ /robots.txt                                                  0 B                0 B
+├ ○ /saneamento                                                  2.93 kB         136 kB
+├ ○ /saneamento/acesso                                           8.82 kB         209 kB
+├ ○ /saneamento/comparar                                         5.95 kB         149 kB
+├ ○ /saneamento/continuidade                                     10.4 kB         215 kB
+├ ○ /saneamento/contratado                                       5.67 kB         170 kB
+├ ○ /saneamento/desigualdades                                    10.4 kB         211 kB
+├ ○ /saneamento/esgoto                                           8.82 kB         203 kB
+├ ○ /saneamento/financiamento                                    522 B           153 kB
+├ ○ /saneamento/internacional                                    4.99 kB         169 kB
+├ ○ /saneamento/investimento                                     8.81 kB         203 kB
+├ ○ /saneamento/metodologia                                      2.83 kB         133 kB
+├ ○ /saneamento/municipio                                        3.52 kB         212 kB
+├ ƒ /saneamento/municipio/[id]                                   1.21 kB         132 kB
+├ ○ /saneamento/planejamento                                     8.83 kB         217 kB
+├ ○ /saneamento/preco-regulado                                   716 B           147 kB
+├ ○ /saneamento/preco-regulado/contrapartidas                    609 B           131 kB
+├ ○ /saneamento/preco-regulado/formacao                          526 B           153 kB
+├ ○ /saneamento/preco-regulado/reajustes                         609 B           131 kB
+├ ○ /saneamento/preco-regulado/riscos                            609 B           131 kB
+├ ○ /saneamento/preco-regulado/simulador                         31.6 kB         243 kB
+├ ○ /saneamento/prestadores                                      2.78 kB         156 kB
+├ ƒ /saneamento/prestadores/[id]                                 2.83 kB         133 kB
+├ ○ /saneamento/prestadores/comparar                             7.07 kB         138 kB
+├ ○ /saneamento/prestadores/divida                               6.91 kB         162 kB
+├ ○ /saneamento/resiliencia                                      2.78 kB         156 kB
+├ ○ /saneamento/responsaveis                                     2.83 kB         133 kB
+├ ○ /saneamento/saude-ambiente                                   10.4 kB         204 kB
+├ ○ /saneamento/tarifa-social                                    847 B           250 kB
+├ ○ /setor-eletrico                                              209 B           212 kB
+├ ○ /setor-eletrico/agua-e-clima                                 224 B           269 kB
+├ ○ /setor-eletrico/agua-e-clima/afluencia                       5.23 kB         266 kB
+├ ○ /setor-eletrico/agua-e-clima/chuva-e-temperatura             222 B           279 kB
+├ ○ /setor-eletrico/agua-e-clima/reservatorios                   224 B           272 kB
+├ ○ /setor-eletrico/aprenda                                      179 B           163 kB
+├ ● /setor-eletrico/aprenda/[conceito]                           182 B           164 kB
+├   ├ /setor-eletrico/aprenda/pld
+├   ├ /setor-eletrico/aprenda/mcp
+├   ├ /setor-eletrico/aprenda/cmo
+├   └ [+51 more paths]
+├ ○ /setor-eletrico/aprenda/trilhas                              2.12 kB         144 kB
+├ ● /setor-eletrico/aprenda/trilhas/[trilha]                     182 B           167 kB
+├   ├ /setor-eletrico/aprenda/trilhas/agua-operacao-preco
+├   └ /setor-eletrico/aprenda/trilhas/custo-tarifa-orcamento
+├ ○ /setor-eletrico/carga                                        225 B           260 kB
+├ ○ /setor-eletrico/carga/clima-e-calendario                     217 B           252 kB
+├ ○ /setor-eletrico/carga/perfil-horario                         224 B           283 kB
+├ ○ /setor-eletrico/conta-de-luz                                 228 B           306 kB
+├ ○ /setor-eletrico/conta-de-luz/municipios.json                 0 B                0 B
+├ ○ /setor-eletrico/conta-de-luz/reajustes-e-subsidios           215 B           270 kB
+├ ○ /setor-eletrico/dados                                        215 B           235 kB
+├ ● /setor-eletrico/dados/[dataset]                              173 B           146 kB
+├   ├ /setor-eletrico/dados/ccee-pld-horario
+├   ├ /setor-eletrico/dados/ons-ear-subsistema
+├   ├ /setor-eletrico/dados/ons-ena-subsistema
+├   └ [+118 more paths]
+├ ○ /setor-eletrico/dados/reproducao                             207 B           209 kB
+├ ○ /setor-eletrico/dados/saude                                  3.14 kB         230 kB
+├ ○ /setor-eletrico/empresas                                     3.67 kB         186 kB
+├ ● /setor-eletrico/empresas/[entidade]                          217 B           237 kB
+├   ├ /setor-eletrico/empresas/ceb
+├   ├ /setor-eletrico/empresas/cergapa
+├   ├ /setor-eletrico/empresas/chesp
+├   └ [+126 more paths]
+├ ○ /setor-eletrico/empresas/analise                             185 B           162 kB
+├ ○ /setor-eletrico/empresas/ativos                              213 B           226 kB
+├ ○ /setor-eletrico/empresas/controle                            211 B           223 kB
+├ ○ /setor-eletrico/empresas/distribuidoras                      218 B           232 kB
+├ ○ /setor-eletrico/empresas/financas                            216 B           230 kB
+├ ○ /setor-eletrico/empresas/listadas                            209 B           218 kB
+├ ● /setor-eletrico/empresas/listadas/[papel]                    219 B           240 kB
+├   ├ /setor-eletrico/empresas/listadas/eqtl3
+├   ├ /setor-eletrico/empresas/listadas/enev3
+├   ├ /setor-eletrico/empresas/listadas/cple3
+├   └ [+9 more paths]
+├ ○ /setor-eletrico/expansao                                     1.46 kB         193 kB
+├ ○ /setor-eletrico/expansao/carteira                            2.84 kB         260 kB
+├ ○ /setor-eletrico/expansao/cenarios                            214 B           234 kB
+├ ○ /setor-eletrico/expansao/cronograma                          215 B           235 kB
+├ ○ /setor-eletrico/expansao/geracao-e-transmissao               3.15 kB         260 kB
+├ ○ /setor-eletrico/geracao                                      224 B           272 kB
+├ ○ /setor-eletrico/geracao/capacidade                           218 B           257 kB
+├ ○ /setor-eletrico/geracao/curtailment                          210 B           236 kB
+├ ○ /setor-eletrico/geracao/restricoes                           214 B           257 kB
+├ ○ /setor-eletrico/geracao/termica                              221 B           261 kB
+├ ○ /setor-eletrico/inclusao-energetica                          1.46 kB         193 kB
+├ ○ /setor-eletrico/inclusao-energetica/acesso                   223 B           272 kB
+├ ○ /setor-eletrico/inclusao-energetica/cobertura                224 B           275 kB
+├ ○ /setor-eletrico/inclusao-energetica/orcamento                221 B           260 kB
+├ ○ /setor-eletrico/inclusao-energetica/tarifa-social            230 B           285 kB
+├ ○ /setor-eletrico/leiloes                                      221 B           256 kB
+├ ○ /setor-eletrico/leiloes/transmissao                          224 B           258 kB
+├ ○ /setor-eletrico/mercado                                      1.97 kB         254 kB
+├ ○ /setor-eletrico/mercado/agentes                              2.71 kB         221 kB
+├ ○ /setor-eletrico/mercado/comercializacao                      392 B           139 kB
+├ ○ /setor-eletrico/mercado/encargos                             377 B           252 kB
+├ ○ /setor-eletrico/mercado/mre-e-gsf                            2.71 kB         221 kB
+├ ○ /setor-eletrico/metodologia                                  210 B           217 kB
+├ ○ /setor-eletrico/metodologia/avaliacao                        214 B           251 kB
+├ ○ /setor-eletrico/perdas                                       218 B           256 kB
+├ ○ /setor-eletrico/perdas/composicao                            212 B           239 kB
+├ ○ /setor-eletrico/perdas/custo-e-contexto                      212 B           235 kB
+├ ○ /setor-eletrico/perdas/regulatorio                           212 B           239 kB
+├ ○ /setor-eletrico/pld                                          221 B           261 kB
+├ ○ /setor-eletrico/pld/cmo-e-formacao                           216 B           250 kB
+├ ○ /setor-eletrico/pld/diferencas-regionais                     224 B           263 kB
+├ ○ /setor-eletrico/pld/historico                                222 B           253 kB
+├ ○ /setor-eletrico/pld/limites                                  216 B           250 kB
+├ ○ /setor-eletrico/pld/modelos                                  217 B           232 kB
+├ ● /setor-eletrico/pld/modelos/[modelo]                         3.01 kB         219 kB
+├   ├ /setor-eletrico/pld/modelos/b0
+├   ├ /setor-eletrico/pld/modelos/c1
+├   ├ /setor-eletrico/pld/modelos/c2-p
+├   └ [+2 more paths]
+├ ○ /setor-eletrico/pld/previsoes                                217 B           246 kB
+├ ○ /setor-eletrico/qualidade                                    227 B           291 kB
+├ ○ /setor-eletrico/qualidade/comparar-distribuidoras            224 B           263 kB
+├ ○ /setor-eletrico/rede                                         222 B           261 kB
+├ ○ /setor-eletrico/rede/balanco-e-exterior                      217 B           251 kB
+├ ○ /setor-eletrico/rede/programado                              217 B           253 kB
+├ ○ /setor-eletrico/rede/restricoes                              217 B           253 kB
+├ ○ /setor-eletrico/regulacao                                    216 B           239 kB
+├ ○ /setor-eletrico/regulacao/consultas-e-agenda                 217 B           242 kB
+├ ○ /setor-eletrico/regulacao/linha-do-tempo                     211 B           228 kB
+├ ○ /setor-eletrico/territorio                                   213 B           252 kB
+├ ○ /setor-eletrico/territorio/atlas                             183 B           163 kB
+├ ○ /setor-eletrico/transicao                                    1.94 kB         194 kB
+├ ○ /setor-eletrico/transicao/emissoes                           1.41 kB         236 kB
+├ ○ /setor-eletrico/transicao/energia-estimada                   3.23 kB         233 kB
+├ ○ /setor-eletrico/transicao/mmgd                               224 B           258 kB
+├ ○ /setor-eletrico/transicao/riscos                             182 B           192 kB
+├ ○ /setor-eletrico/visao-geral                                  211 B           252 kB
+├ ○ /sitemap.xml                                                 0 B                0 B
+├ ○ /sobre                                                       2.94 kB         114 kB
+├ ○ /sobre/erros                                                 2.94 kB         114 kB
+├ ○ /sobre/governanca                                            2.94 kB         114 kB
+├ ƒ /termos                                                      2.94 kB         114 kB
+├ ○ /territorio                                                  706 B           115 kB
+├ ○ /territorio/desastres                                        3.17 kB         182 kB
+├ ○ /territorio/emissoes                                         804 B          97.3 kB
+├ ○ /territorio/metodologia                                      804 B          97.3 kB
+├ ○ /territorio/queimadas                                        1.3 kB          186 kB
+├ ○ /territorio/queimadas/municipio                              3.68 kB         105 kB
+└ ƒ /territorio/queimadas/municipio/[ibge]                       3.27 kB         105 kB
++ First Load JS shared by all                                    87.8 kB
+  ├ chunks/52117-0c5952e9123a1cc1.js                             31.9 kB
+  ├ chunks/fd9d1056-ecdcaa7034ead55e.js                          53.6 kB
+  └ other shared chunks (total)                                  2.21 kB
+
+
+ƒ Middleware                                                     33.9 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+▶ Fluxos e telas do Judiciário com sessão local: node scripts/obee/judiciario-verificacao.mjs
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Duplicata internacional não altera peso da referência 390px
+    at check (file:///workspace/scrutiniums/scripts/obee/judiciario-verificacao.mjs:29:70)
+    at file:///workspace/scrutiniums/scripts/obee/judiciario-verificacao.mjs:270:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  ok            6 s  Gerar app.min.js
+  ok            3 s  Lint
+  ok           21 s  Tipos
+  ok            2 s  Contrato de grupos e publicação seletiva da gold
+  ok            0 s  Módulos Python compilam
+  ok            0 s  Dependências do pipeline de energia
+  ok     5 min 15 s  Testes Python (pipeline e camada de pesquisa)
+  ok            2 s  Reconciliação aritmética alternativa do OBEE
+  ok            1 s  Precisão complementar da cesta OBEE
+  ok            2 s  Índice de resultados v4 do OBEE
+  ok     5 min 39 s  Build de produção
+  FALHA  5 min 24 s  Fluxos e telas do Judiciário com sessão local  (node scripts/obee/judiciario-verificacao.mjs)
+  tempo de parede: 16 min 57 s
