@@ -1,0 +1,48 @@
+{
+  "commit": "3e3b770a4",
+  "modo": "next dev, sessão real temporária",
+  "results": [
+    {
+      "route": "/saneamento/contratado",
+      "width": 390,
+      "status": 200,
+      "height": 38739,
+      "viewport": 390
+    },
+    {
+      "route": "/saneamento",
+      "width": 390,
+      "status": 200,
+      "height": 9160,
+      "viewport": 390
+    },
+    {
+      "route": "/saneamento/municipio/2611606",
+      "width": 390,
+      "status": 200,
+      "height": 13314,
+      "viewport": 390
+    },
+    {
+      "route": "/saneamento/contratado",
+      "width": 1440,
+      "status": 200,
+      "height": 23541,
+      "viewport": 1440
+    },
+    {
+      "route": "/saneamento",
+      "width": 1440,
+      "status": 200,
+      "height": 5099,
+      "viewport": 1440
+    },
+    {
+      "route": "/saneamento/municipio/2611606",
+      "width": 1440,
+      "status": 200,
+      "height": 7887,
+      "viewport": 1440
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -20,7 +21,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Para onde vai o esgoto?",
   description:
-    "Destino do esgoto dos moradores pelo Censo 2022, coleta e tratamento declarados ao SINISA 2024 com denominadores explícitos, ligações possíveis ainda não feitas e as estações de tratamento informadas.",
+    `Destino do esgoto dos moradores pelo Censo 2022, coleta e tratamento declarados ao ${rotuloSinisa()} com denominadores explícitos, ligações possíveis ainda não feitas e as estações de tratamento informadas.`,
   alternates: { canonical: "/saneamento/esgoto" },
 };
 
@@ -105,7 +106,7 @@ export default function Pagina() {
           }
           recorte={
             <>
-              Censo 2022: {inteiro(mor?.total)} moradores em domicílios particulares permanentes ocupados. SINISA 2024:{" "}
+              Censo 2022: {inteiro(mor?.total)} moradores em domicílios particulares permanentes ocupados. {rotuloSinisa()}:{" "}
               {inteiro(m?.cobertura.esgoto_participantes)} municípios com indicadores de esgoto e {inteiro(m?.cobertura.esgoto_delegacao_sem_atendimento)} com
               serviço delegado sem atendimento, que entram no denominador da consolidação oficial.
             </>
@@ -130,7 +131,7 @@ export default function Pagina() {
               valor: `${numero(ind.IES0001, 1)}%`,
               contexto: (
                 <>
-                  SINISA 2024 · {inteiro(br?.sinisa.esgoto.pop_atendida)} pessoas sobre {inteiro(br?.cobertura_sinisa.esgoto_dfe0001)} habitantes do
+                  {rotuloSinisa()} · {inteiro(br?.sinisa.esgoto.pop_atendida)} pessoas sobre {inteiro(br?.cobertura_sinisa.esgoto_dfe0001)} habitantes do
                   módulo.
                 </>
               ),
@@ -138,17 +139,17 @@ export default function Pagina() {
             {
               rotulo: "Domicílios com coleta e tratamento (IES0007)",
               valor: `${numero(ind.IES0007, 1)}%`,
-              contexto: <>SINISA 2024 · economias residenciais ativas com tratamento sobre domicílios informados pelo município (OGM4006).</>,
+              contexto: <>{rotuloSinisa()} · economias residenciais ativas com tratamento sobre domicílios informados pelo município (OGM4006).</>,
             },
             {
               rotulo: "Esgoto tratado sobre coletado (IES2004)",
               valor: `${numero(ind.IES2004, 1)}%`,
-              contexto: <>SINISA 2024 · volumes; inclui esgoto importado de outro município.</>,
+              contexto: <>{rotuloSinisa()} · volumes; inclui esgoto importado de outro município.</>,
             },
             {
               rotulo: "Esgoto tratado sobre a água consumida (IES2003)",
               valor: `${numero(ind.IES2003, 1)}%`,
-              contexto: <>SINISA 2024 · aproxima o tratamento do esgoto gerado, usando o consumo de água como referência.</>,
+              contexto: <>{rotuloSinisa()} · aproxima o tratamento do esgoto gerado, usando o consumo de água como referência.</>,
             },
           ]}
         />
@@ -186,7 +187,7 @@ export default function Pagina() {
           texto="Para cada 100 m³ de água consumida, quanto volta como esgoto coletado e quanto é tratado, segundo os prestadores. Ordenado pelo tratado."
         >
           <GraficoBarras
-            titulo="Esgoto coletado e tratado referidos à água consumida, por UF (SINISA 2024, %)"
+            titulo={`Esgoto coletado e tratado referidos à água consumida, por UF (${rotuloSinisa()}, %)`}
             dados={volumesUf.map((u) => ({ id: u.id, rotulo: u.rotulo, coletado: u.coletado, tratado: u.tratado }))}
             chaveCategoria="id"
             chaveRotulo="rotulo"
@@ -203,7 +204,7 @@ export default function Pagina() {
             permite="Comparar, entre UFs, quanto do volume equivalente ao consumo de água chega à rede e quanto é tratado."
             naoPermite="Converter volumes em pessoas, nem medir a carga poluidora removida: o indicador ignora a eficiência da estação e a água que não vira esgoto."
           />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF, indicadores IES2002 e IES2003.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, consolidado por UF, indicadores IES2002 e IES2003.</Fonte>
         </Secao>
 
         <Secao
@@ -215,7 +216,7 @@ export default function Pagina() {
             <FiguraOds
               codigo="EN_WWT_WWDS"
               titulo="Esgoto doméstico tratado com segurança"
-              extra={<>No SINISA 2024, o esgoto tratado sobre a água consumida (IES2003) do Brasil é {numero(ind.IES2003, 1)}%.</>}
+              extra={<>No {rotuloSinisa()}, o esgoto tratado sobre a água consumida (IES2003) do Brasil é {numero(ind.IES2003, 1)}%.</>}
             />
             <FiguraJmp campo="rede_tratada" />
           </MundoNoCapitulo>
@@ -228,7 +229,7 @@ export default function Pagina() {
         >
           <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do destino do esgoto" />
           <Fonte>
-            IBGE, Censos 2010 e 2022; Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal de esgoto publicada em
+            IBGE, Censos 2010 e 2022; Ministério das Cidades, {rotuloSinisa()}, base municipal de esgoto publicada em
             18/12/2025.
           </Fonte>
         </Secao>
@@ -244,7 +245,7 @@ export default function Pagina() {
               {
                 rotulo: "Imóveis com rede de esgoto disponível e sem ligação (GTE0005)",
                 valor: inteiro(br?.factiveis.esgoto.imoveis),
-                contexto: <>Soma dos {inteiro(br?.factiveis.esgoto.municipios_informantes)} municípios que informaram o campo ao SINISA 2024.</>,
+                contexto: <>Soma dos {inteiro(br?.factiveis.esgoto.municipios_informantes)} municípios que informaram o campo ao {rotuloSinisa()}.</>,
               },
               {
                 rotulo: "Imóveis com rede de água disponível e sem ligação (GTA0007)",
@@ -262,7 +263,7 @@ export default function Pagina() {
         <Secao
           id="estacoes"
           titulo="Estações de tratamento declaradas"
-          texto="Cadastro de estações de tratamento de esgoto (ETEs) informadas pelos prestadores ao SINISA 2024, com nível de tratamento, capacidade e volume tratado quando informados."
+          texto={`Cadastro de estações de tratamento de esgoto (ETEs) informadas pelos prestadores ao ${rotuloSinisa()}, com nível de tratamento, capacidade e volume tratado quando informados.`}
         >
           <Numeros
             colunas={3}
@@ -331,7 +332,7 @@ export default function Pagina() {
             </a>
             .
           </Nota>
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), planilha de estações de tratamento de esgoto.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, planilha de estações de tratamento de esgoto.</Fonte>
         </Secao>
       </main>
     </>

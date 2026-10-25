@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -21,7 +22,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "A conta cabe no orçamento? A tarifa social chega a quem precisa?",
   description:
-    "Regras da tarifa social da Lei 14.898/2024, o que os prestadores declararam ao SINISA 2024, economias com tarifa social para cada 100 famílias elegíveis do CadÚnico, desconto efetivo nas tabelas verificadas e peso da conta na renda de famílias no limite de elegibilidade.",
+    `Regras da tarifa social da Lei 14.898/2024, o que os prestadores declararam ao ${rotuloSinisa()}, economias com tarifa social para cada 100 famílias elegíveis do CadÚnico, desconto efetivo nas tabelas verificadas e peso da conta na renda de famílias no limite de elegibilidade.`,
   alternates: { canonical: "/saneamento/tarifa-social" },
 };
 
@@ -107,7 +108,7 @@ export default function Pagina() {
       }
     : null;
 
-  // Alcance: economias com tarifa social (SINISA 2024) sobre famílias elegíveis do CadÚnico (dez/2024).
+  // Alcance: economias com tarifa social (SINISA, referência 2024) sobre famílias elegíveis do CadÚnico (dez/2024).
   const m = meta();
   const ags = agregados();
   const br = agregado("BR");
@@ -155,7 +156,7 @@ export default function Pagina() {
     valor == null || !Number.isFinite(valor)
       ? { ...extra, rotulo, valor: null, motivoAusencia: AUSENTE }
       : { ...extra, rotulo, valor, formato: casas === 0 ? "inteiro" : "decimal", casas };
-  const SINISA = "SINISA 2025 (ano de referência 2024)";
+  const SINISA = `${rotuloSinisa()}`;
   const numerosDeclaracoes: NumeroProps[] = [
     n("Municípios com tarifa social de água declarada", municipiosCom.size, {
       unidade: "municípios",
@@ -192,7 +193,7 @@ export default function Pagina() {
     n(
       "Economias com tarifa social por 100 famílias elegíveis",
       razaoBr,
-      { unidade: "por 100 famílias", periodo: `2024 e ${mesAno(mesRef)}`, fonte: "SINISA 2024 e MDS, CadÚnico", natureza: "CALCULADO", nota: <>Brasil, mesmo universo: {inteiro(ts?.economias)} ÷ {inteiro(ts?.familias_mesmo_universo)} famílias.</> },
+      { unidade: "por 100 famílias", periodo: `2024 e ${mesAno(mesRef)}`, fonte: `${rotuloSinisa()} e MDS, CadÚnico`, natureza: "CALCULADO", nota: <>Brasil, mesmo universo: {inteiro(ts?.economias)} ÷ {inteiro(ts?.familias_mesmo_universo)} famílias.</> },
       1,
     ),
     n("Municípios cujo prestador declara não oferecer tarifa social", ts?.municipios_nao_oferece, {
@@ -232,7 +233,7 @@ export default function Pagina() {
   const porFamilias = [...linhasAlcance].sort((a, b) => (b.familias ?? -1) - (a.familias ?? -1));
   const fonteCobertura = (
     <>
-      Ministério das Cidades, SINISA 2025 (ano de referência 2024), campos GFI1019 e GFI1036 por prestador e município; MDS, SAGI, API MI Social (base do VIS Data), CadÚnico de {mesAno(mesRef)} e{" "}
+      Ministério das Cidades, {rotuloSinisa()}, campos GFI1019 e GFI1036 por prestador e município; MDS, SAGI, API MI Social (base do VIS Data), CadÚnico de {mesAno(mesRef)} e{" "}
       {mesAno(mesAtual)}, consulta em {m?.cadunico.capturado_em.slice(0, 10).split("-").reverse().join("/")}.
     </>
   );
@@ -254,7 +255,7 @@ export default function Pagina() {
           titulo: "A conta cabe no orçamento? A tarifa social chega?",
           lead: "A Lei 14.898/2024 criou regras nacionais para a tarifa social de água e esgoto. Antes dela, cada prestador definia a sua, com critérios e descontos próprios.",
           recorte: {
-            periodo: "SINISA 2024; tabelas vigentes em 2026",
+            periodo: `${rotuloSinisa()}; tabelas vigentes em 2026`,
             universo: `${inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de ${new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores`,
             unidade: "economias, famílias, R$ e % da renda",
             fonte: "Ministério das Cidades, SINISA; MDS, CadÚnico; atos dos reguladores",
@@ -268,7 +269,7 @@ export default function Pagina() {
                 relação às famílias elegíveis do CadÚnico e o peso da conta na renda de famílias no limite da elegibilidade.
               </p>
               <p>
-                SINISA 2024: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de {new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores, vigentes em 2026.
+                {rotuloSinisa()}: {inteiro(vinculos)} vínculos prestador × município de água; tabelas verificadas de {new Set(TARIFAS.map((t) => t.prestadorSinisa)).size} prestadores, vigentes em 2026.
               </p>
               <p>SINISA: Sistema Nacional de Informações em Saneamento Básico. CadÚnico: Cadastro Único para Programas Sociais. BPC: Benefício de Prestação Continuada.</p>
             </>
@@ -342,7 +343,7 @@ export default function Pagina() {
                   {inteiro(semResposta)} vínculos não responderam se há tarifa social. O valor médio declarado da tarifa social (GFI1037) tem registros incompatíveis com uma conta mensal,
                   alguns acima de R$ 100 mil, e não é publicado, nem aqui nem na ficha de cada município.
                 </Nota>
-                <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), informações financeiras por prestador e município, campos GFI1019 a GFI1037.</Fonte>
+                <Fonte>Ministério das Cidades, {rotuloSinisa()}, informações financeiras por prestador e município, campos GFI1019 a GFI1037.</Fonte>
               </div>
             </Recolhido>
 
@@ -410,7 +411,7 @@ export default function Pagina() {
             <FiguraAnalitica
               id="cobertura"
               pergunta="A tarifa social chega às famílias elegíveis?"
-              subtitulo={`Economias com tarifa social por 100 famílias elegíveis, por UF · SINISA 2024 e CadÚnico ${mesAno(mesRef)} · 27 UFs`}
+              subtitulo={`Economias com tarifa social por 100 famílias elegíveis, por UF · ${rotuloSinisa()} e CadÚnico ${mesAno(mesRef)} · 27 UFs`}
               natureza="CALCULADO"
               comoInterpretar={
                 <>
@@ -436,7 +437,7 @@ export default function Pagina() {
                 },
               ]}
               tabela={{
-                titulo: `Economias com tarifa social por 100 famílias elegíveis, por UF (SINISA 2024 e CadÚnico ${mesAno(mesRef)})`,
+                titulo: `Economias com tarifa social por 100 famílias elegíveis, por UF (${rotuloSinisa()} e CadÚnico ${mesAno(mesRef)})`,
                 colunas: ["UF", "Por 100 famílias"],
                 linhas: porUf.map((u) => [u.rotulo, u.v]),
                 casas: [null, 1],
@@ -459,7 +460,7 @@ export default function Pagina() {
             >
               <GraficoBarras
                 semTabela
-                titulo={`Economias com tarifa social por 100 famílias elegíveis, por UF (SINISA 2024 e CadÚnico ${mesAno(mesRef)})`}
+                titulo={`Economias com tarifa social por 100 famílias elegíveis, por UF (${rotuloSinisa()} e CadÚnico ${mesAno(mesRef)})`}
                 dados={porUf}
                 chaveCategoria="id"
                 chaveRotulo="rotulo"

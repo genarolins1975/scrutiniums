@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "./edicao";
 import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
 import { meta } from "@/lib/saneamento/gold";
 import { ROTA } from "@/lib/saneamento/capitulos";
@@ -62,7 +63,7 @@ export function provenienciaSinisa(b: Base & { planilha?: string }): Provenienci
     b,
     {
       orgao: "Ministério das Cidades",
-      dataset: `${s?.edicao ?? "SINISA"} (ano de referência ${s?.ano_referencia ?? "não informado"})`,
+      dataset: rotuloSinisa(),
       recurso: p ? `${p.arquivo}, aba ${p.aba}` : "Resultados do SINISA por prestador e município",
       url_dataset: s?.pagina ?? "",
       url_primaria: s?.pagina ?? "",

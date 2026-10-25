@@ -1,3 +1,4 @@
+import { apresentarEdicaoSinisa, rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -23,7 +24,7 @@ const CONTRATO: [string, string][] = [
   ["Sem média de percentuais", "Territórios agregam pela soma: Σ numerador ÷ Σ denominador. Para o Censo, vale a tabulação do IBGE em cada nível; para o SINISA, o consolidado oficial do ministério. A NR 8 não tem agregado oficial e soma numeradores e denominadores municipais."],
   ["Zero, ausência e não informado", "Zero declarado aparece como zero. Campo vazio é ausência e aparece como \"sem dado\", com o motivo publicado pela fonte quando existe (não calculado, divisão por zero, consultar prestador). Nada é preenchido."],
   ["Valores nominais", "Reais correntes do ano de referência, sem correção monetária. Nenhuma série monetária do Observatório mistura anos sem deflator declarado."],
-  ["Validade temporal", "Censo 2022 e SINISA 2024 ficam lado a lado com os anos nos rótulos. Tabelas tarifárias valem pela vigência do ato. Nenhuma comparação apresenta períodos diferentes como simultâneos."],
+  ["Validade temporal", `Censo 2022 e ${rotuloSinisa()} ficam lado a lado com os anos nos rótulos. Tabelas tarifárias valem pela vigência do ato. Nenhuma comparação apresenta períodos diferentes como simultâneos.`],
   ["Sem imputação silenciosa", "Municípios fora de um módulo ficam fora da soma e a cobertura é informada. Não há estimativa para quem não declarou."],
   ["Sem dado pessoal, com uma exceção declarada", "As bases são agregadas por município, prestador ou estação. Exceção, capítulo 7: o nome de pessoa física que a companhia aberta declara à CVM como controladora ou participante de acordo de acionistas aparece na posição acionária, como consta no Formulário de Referência público. CPF não é coletado nem publicado; as demais pessoas físicas entram somadas, sem nome."],
   ["Divergências explicadas", "Quando duas bases discordam, a diferença é calculada, publicada e explicada nas conferências abaixo; nunca redistribuída."],
@@ -102,7 +103,7 @@ export default function Pagina() {
           }
           recorte={
             <>
-              SINISA 2025 (ano de referência 2024), publicação de {m?.sinisa.publicacao.split("-").reverse().join("/") ?? "sem dado"}, retificação municipal de
+              {rotuloSinisa()}, publicação de {m?.sinisa.publicacao.split("-").reverse().join("/") ?? "sem dado"}, retificação municipal de
               água em {m?.sinisa.retificacao_agua_municipal.split("-").reverse().join("/") ?? "sem dado"}; IBGE, Censos 2010 e 2022 e estimativa de população
               2024. Captura em {m?.sinisa.capturado_em.slice(0, 10).split("-").reverse().join("/") ?? "sem dado"}.
             </>
@@ -143,7 +144,7 @@ export default function Pagina() {
               <thead>
                 <tr className="border-b border-carvao text-left">
                   <th scope="col" className="py-2 pr-4 font-medium">Indicador</th>
-                  <th scope="col" className="py-2 pr-4 font-medium">Campos do SINISA 2024</th>
+                  <th scope="col" className="py-2 pr-4 font-medium">Campos do {rotuloSinisa()}</th>
                   <th scope="col" className="py-2 font-medium">Onde aparece</th>
                 </tr>
               </thead>
@@ -238,7 +239,7 @@ export default function Pagina() {
             ))}
           </div>
           <Nota titulo="Os mesmos números do Observatório de Eficiência do Estado">
-            O capítulo de saneamento do Observatório de Eficiência do Estado usa os mesmos arquivos consolidados do SINISA 2024 (sha256 idênticos).
+            O capítulo de saneamento do Observatório de Eficiência do Estado usa os mesmos arquivos consolidados do {rotuloSinisa()} (sha256 idênticos).
             A diferença de população no módulo de esgoto, antes registrada como divergência aberta, é a conferência acima: os{" "}
             {inteiro(m?.cobertura.esgoto_delegacao_sem_atendimento)} municípios com delegação sem atendimento entram no denominador do consolidado e
             ficam fora dos indicadores municipais.
@@ -272,7 +273,7 @@ export default function Pagina() {
                   <tr className="border-b border-linha align-top">
                     <th scope="row" className="py-2 pr-4 text-left font-normal">
                       <a href={m.sinisa.gestao_municipal.url} className="text-obee-dark underline underline-offset-2" rel="noopener noreferrer">
-                        SINISA, Gestão Municipal 2024 (planilha)
+                        {rotuloSinisa("curta")}, Gestão Municipal (planilha)
                       </a>
                     </th>
                     <td className="py-2 pr-4 text-right">sem dado</td>
@@ -371,7 +372,7 @@ export default function Pagina() {
               </summary>
               <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                 Formulário de Referência {cvm.ano}, arquivo anual das companhias abertas, capturado em {data(cvm.capturado_em)}
-                {cvm.zip.last_modified ? `; Last-Modified do servidor: ${cvm.zip.last_modified}` : ""}. Critério: {cvm.criterio}. Ficha do prestador ligada só
+                {cvm.zip.last_modified ? `; Last-Modified do servidor: ${cvm.zip.last_modified}` : ""}. Critério: {apresentarEdicaoSinisa(cvm.criterio)}. Ficha do prestador ligada só
                 quando a ficha cobre ao menos {numero(cvm.regras.limiar_ficha * 100, 0)}% dos municípios que declaram o CNPJ; sem casamento por nome.
                 Pessoas físicas: {cvm.regras.pessoa_fisica}.
               </p>
@@ -510,7 +511,7 @@ export default function Pagina() {
               financeiras auditadas; ficam só nos capítulos que os tratam, com a marca (seção Valores financeiros, acima).
             </li>
             <li>
-              O Censo 2022 e o SINISA 2024 medem coisas diferentes (ligação declarada pelo morador; atendimento declarado pelo prestador) em anos
+              O Censo 2022 e o {rotuloSinisa()} medem coisas diferentes (ligação declarada pelo morador; atendimento declarado pelo prestador) em anos
               diferentes. Os dois aparecem lado a lado e nunca são combinados numa mesma razão.
             </li>
             <li>Não há base nacional de tarifas nem de atos regulatórios: o capítulo 5 trabalha com amostra verificada, declarada como tal.</li>

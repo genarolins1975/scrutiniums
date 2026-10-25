@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -19,7 +20,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Quantas pessoas ainda estão sem atendimento adequado?",
   description:
-    "Moradores sem ligação à rede de água e sem rede de esgoto nos 5.570 municípios, pelo Censo 2022, e população não atendida declarada pelos prestadores ao SINISA 2024.",
+    `Moradores sem ligação à rede de água e sem rede de esgoto nos 5.570 municípios, pelo Censo 2022, e população não atendida declarada pelos prestadores ao ${rotuloSinisa()}.`,
   alternates: { canonical: "/saneamento/acesso" },
 };
 
@@ -110,14 +111,14 @@ export default function Pagina() {
           texto={
             <p>
               Duas fontes respondem de jeitos diferentes. O Censo 2022 pergunta a cada domicílio como chega a água e para onde vai o esgoto.
-              O SINISA 2024 reúne o que os prestadores declaram sobre a população que atendem com rede. Os números ficam lado a lado, nunca
+              O {rotuloSinisa()} reúne o que os prestadores declaram sobre a população que atendem com rede. Os números ficam lado a lado, nunca
               somados, porque a população, o ano e o conceito são outros.
             </p>
           }
           recorte={
             <>
               5.570 municípios no Censo 2022 (moradores em domicílios particulares permanentes ocupados).{" "}
-              {m ? `${inteiro(m.cobertura.agua_participantes)} municípios no módulo de água e ${inteiro(m.cobertura.esgoto_participantes)} com indicadores de esgoto no SINISA 2024` : ""}{" "}
+              {m ? `${inteiro(m.cobertura.agua_participantes)} municípios no módulo de água e ${inteiro(m.cobertura.esgoto_participantes)} com indicadores de esgoto no ${rotuloSinisa()}` : ""}{" "}
               (população estimada pelo IBGE para 2024).
             </>
           }
@@ -157,7 +158,7 @@ export default function Pagina() {
               valor: inteiro(naoAt),
               contexto: (
                 <>
-                  SINISA 2024 · {numero(100 - (br?.sinisa.agua.indicadores.IAG0001 ?? NaN), 2)}% da população dos {inteiro(br?.cobertura_sinisa.agua_participantes)} municípios do
+                  {rotuloSinisa()} · {numero(100 - (br?.sinisa.agua.indicadores.IAG0001 ?? NaN), 2)}% da população dos {inteiro(br?.cobertura_sinisa.agua_participantes)} municípios do
                   módulo (IAG0001 = {numero(br?.sinisa.agua.indicadores.IAG0001, 2)}%).
                 </>
               ),
@@ -176,8 +177,7 @@ export default function Pagina() {
         >
           <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal de carência de água e esgoto" />
           <Fonte>
-            IBGE, Censo Demográfico 2022, tabelas SIDRA 6894 e 7555; Censo 2010, tabelas 3217 e 3216; Ministério das Cidades, SINISA 2025
-            (ano de referência 2024), base municipal com retificação de água de 25/05/2026. Malha municipal do IBGE.
+            IBGE, Censo Demográfico 2022, tabelas SIDRA 6894 e 7555; Censo 2010, tabelas 3217 e 3216; Ministério das Cidades, {rotuloSinisa()}, base municipal com retificação de água de 25/05/2026. Malha municipal do IBGE.
           </Fonte>
         </Secao>
 
@@ -234,7 +234,7 @@ export default function Pagina() {
             pessoas atendidas.
           </Nota>
           <Fonte>
-            Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base municipal com retificação de água de{" "}
+            Ministério das Cidades, {rotuloSinisa()}, consolidado por UF e base municipal com retificação de água de{" "}
             {data(m?.sinisa.retificacao_agua_municipal)}; população residente estimada pelo IBGE para 2024 (DFE0001).
           </Fonte>
         </Secao>
@@ -354,7 +354,7 @@ export default function Pagina() {
               <dd className="mt-1 text-carvao-muted">
                 Imóveis com rede na frente que não se ligaram (conexões factíveis). Os prestadores declararam {inteiro(br?.factiveis.agua.imoveis)} imóveis em
                 água ({inteiro(br?.factiveis.agua.municipios_informantes)} municípios informantes) e {inteiro(br?.factiveis.esgoto.imoveis)} em esgoto (
-                {inteiro(br?.factiveis.esgoto.municipios_informantes)} municípios). SINISA 2024, GTA0007 e GTE0005; quem não informou fica fora da soma.
+                {inteiro(br?.factiveis.esgoto.municipios_informantes)} municípios). {rotuloSinisa()}, GTA0007 e GTE0005; quem não informou fica fora da soma.
               </dd>
             </div>
             <div>
@@ -372,7 +372,7 @@ export default function Pagina() {
               </dd>
             </div>
           </dl>
-          <Fonte>IBGE, Censo 2022; Ministério das Cidades, SINISA 2025, base municipal.</Fonte>
+          <Fonte>IBGE, Censo 2022; Ministério das Cidades, {rotuloSinisa()}, base municipal.</Fonte>
         </Secao>
       </main>
     </>

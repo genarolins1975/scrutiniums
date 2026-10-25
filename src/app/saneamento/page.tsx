@@ -1,3 +1,5 @@
+import { numeroContaResidencial } from "@/lib/saneamento/escala-conta";
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -59,11 +61,12 @@ export default function Pagina() {
       rotulo: "Esgoto coletado que é tratado",
       valor: pctOuNulo(br?.sinisa.esgoto.indicadores.IES2004),
       unidade: "do esgoto coletado",
-      periodo: "2024",
-      fonte: "Ministério das Cidades, SINISA 2024",
+      periodo: rotuloSinisa("ano"),
+      fonte: `Ministério das Cidades, ${rotuloSinisa("curta")}`,
       nota: `Sobre a água consumida: ${numero(br?.sinisa.esgoto.indicadores.IES2003, 1)}%.`,
       href: `${ROTA}/esgoto`,
     },
+    numeroContaResidencial(),
   ];
   const semManchete = new Set<number>(CAPITULOS_SEM_MANCHETE_FINANCEIRA);
 
@@ -84,7 +87,7 @@ export default function Pagina() {
         frase="Dados oficiais de acesso, tarifa, prestadores, reguladores, investimentos e metas, organizados pelas perguntas da sociedade. Os números trazem fonte, período e limitação; a conclusão fica com o leitor."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/saneamento"]} conteiner="mx-auto max-w-page px-6" />}
         escala={escala}
-        notaEscala={`Censo 2022: moradores em domicílios particulares permanentes ocupados. SINISA 2024: ${inteiro(m?.cobertura.agua_participantes)} municípios no módulo de água e ${inteiro(m?.cobertura.esgoto_participantes)} com indicadores de esgoto; valores declarados pelos prestadores. As medidas têm universos diferentes e não se somam.`}
+        notaEscala={`Censo 2022: moradores em domicílios particulares permanentes ocupados. ${rotuloSinisa()}: ${inteiro(m?.cobertura.agua_participantes)} municípios no módulo de água e ${inteiro(m?.cobertura.esgoto_participantes)} com indicadores de esgoto; valores declarados pelos prestadores. As medidas têm universos diferentes e não se somam.`}
         paraVoce={
           <ParaVoce entrada="/saneamento">
             <BuscaMunicipio grande />
@@ -266,7 +269,7 @@ export default function Pagina() {
             <h3 className="font-serif text-xl text-carvao">Fontes e atualização</h3>
             <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm leading-relaxed sm:grid-cols-2 lg:grid-cols-3">
               <div>
-                <dt className="font-medium text-carvao">SINISA 2025, ano de referência 2024</dt>
+                <dt className="font-medium text-carvao">{rotuloSinisa()}</dt>
                 <dd className="text-carvao-muted">
                   Ministério das Cidades. Publicado em {data(m?.sinisa.publicacao)}; base municipal de água retificada em{" "}
                   {data(m?.sinisa.retificacao_agua_municipal)}. Capturado em {data(m?.sinisa.capturado_em)}.

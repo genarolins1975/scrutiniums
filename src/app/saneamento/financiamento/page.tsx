@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -18,7 +19,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "De onde vem o dinheiro do saneamento?",
   description:
-    "Investimento em água e esgoto autodeclarado pelos prestadores ao SINISA 2024, sem conferência com demonstrações financeiras auditadas, por origem dos recursos (próprios, onerosos e não onerosos), por quem investe (o prestador ou o governo estadual), por natureza jurídica do prestador e por UF.",
+    `Investimento em água e esgoto autodeclarado pelos prestadores ao ${rotuloSinisa()}, sem conferência com demonstrações financeiras auditadas, por origem dos recursos (próprios, onerosos e não onerosos), por quem investe (o prestador ou o governo estadual), por natureza jurídica do prestador e por UF.`,
   alternates: { canonical: "/saneamento/financiamento" },
 };
 
@@ -200,7 +201,7 @@ export default function Pagina() {
             naoPermite="Tratar um ano como padrão: a composição muda com a liberação de financiamentos e programas federais."
           />
           <Fonte>
-            Ministério das Cidades, SINISA 2025 (ano de referência 2024), consolidado por UF e base prestador × município, campos GFI2021 a GFI2023,
+            Ministério das Cidades, {rotuloSinisa()}, consolidado por UF e base prestador × município, campos GFI2021 a GFI2023,
             GFI2033 a GFI2035, GFI2121 a GFI2123 e GFI2133 a GFI2135, {AUTODECLARADO}.
           </Fonte>
         </Secao>

@@ -66,7 +66,7 @@ export type Municipio = {
   plano_ano: number | null;
   reg_ag: string | null;
   reg_es: string | null;
-  /** Tarifa social de água declarada ao SINISA 2024: oferece, nao_oferece ou null (sem resposta). */
+  /** Tarifa social de água declarada ao SINISA, referência 2024: oferece, nao_oferece ou null (sem resposta). */
   ts_estado: "oferece" | "nao_oferece" | null;
   /** Economias residenciais com tarifa social (GFI1036, soma dos prestadores de água); 0 quando não oferece. */
   ts_economias: number | null;

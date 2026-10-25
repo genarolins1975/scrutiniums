@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ROTA } from "@/lib/saneamento/capitulos";
@@ -258,7 +259,7 @@ export function NiveisTratamento({ contagem, emOperacao, semNivel }: { contagem:
           exemplo, dispensam o decantador primário. O cadastro registra só o nível declarado pelo prestador. {inteiro(semNivel)} das {inteiro(emOperacao)}{" "}
           estações em operação ({numero(razaoPct(semNivel, emOperacao), 1)}%) não informam o nível e ficam fora das barras. Descrição didática dos níveis
           segundo a literatura técnica de tratamento de esgotos (por exemplo, von Sperling, Introdução à qualidade das águas e ao tratamento de esgotos,
-          DESA/UFMG); contagens do SINISA 2025, ano de referência 2024, planilha de estações de tratamento de esgoto.
+          DESA/UFMG); contagens do {rotuloSinisa()}, planilha de estações de tratamento de esgoto.
         </>
       }
     >
@@ -414,8 +415,7 @@ export function BalancoHidrico({ perdasBrasil }: { perdasBrasil: number | null }
           Publishing, 2000), simplificado. As caixas mostram categorias, não proporções. O SINISA não separa perdas aparentes de reais: o indicador
           IAG2013 mede as perdas totais na distribuição, pela fórmula (volume produzido + importado − exportado − consumido − autorizado não
           faturado) ÷ (produzido + importado). No Brasil, em 2024, o consolidado oficial é{" "}
-          <span className="font-medium text-carvao">{perdasBrasil == null ? "sem dado" : `${numero(perdasBrasil, 1)}%`}</span> (SINISA 2025, ano de
-          referência 2024). Perda aparente não é água desperdiçada no caminho, e perda real não aparece na conta de ninguém.
+          <span className="font-medium text-carvao">{perdasBrasil == null ? "sem dado" : `${numero(perdasBrasil, 1)}%`}</span> ({rotuloSinisa()}). Perda aparente não é água desperdiçada no caminho, e perda real não aparece na conta de ninguém.
         </>
       }
     >
@@ -478,7 +478,7 @@ export function TresTs({ proprios, onerosos, naoOnerosos }: { proprios: number; 
         <span className="font-medium">Financiamento</span> (empréstimos, debêntures) não é uma quarta fonte: adianta o dinheiro da obra e é pago
         depois, com tarifas, tributos ou transferências.
       </div>
-      <p className="rotulo mt-6 text-mineral">No SINISA 2024, de {reaisCompacto(total)} com origem declarada</p>
+      <p className="rotulo mt-6 text-mineral">No {rotuloSinisa()}, de {reaisCompacto(total)} com origem declarada</p>
       <ul className="mt-2 grid grid-cols-1 gap-x-8 sm:grid-cols-3">
         {sinisa.map((s) => (
           <li key={s.nome} className="border-t border-linha py-3">

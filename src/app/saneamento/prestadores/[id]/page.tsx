@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,7 +25,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
   const nome = p.sigla ? `${p.nome} (${p.sigla})` : p.nome ?? p.id;
   return {
     title: `${nome}: municípios, atendimento, perdas e investimento`,
-    description: `Ficha de ${nome} no SINISA 2024: natureza jurídica, municípios atendidos, população, perdas, receita e despesa por metro cúbico, investimento e balanço declarado.`,
+    description: `Ficha de ${nome} no ${rotuloSinisa()}: natureza jurídica, municípios atendidos, população, perdas, receita e despesa por metro cúbico, investimento e balanço declarado.`,
     alternates: { canonical: `${ROTA}/prestadores/${p.id}` },
   };
 }
@@ -113,7 +114,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
           ]}
         />
 
-        <Secao id="medidas" titulo="Operação, finanças e investimento declarados" texto="Fórmulas oficiais do SINISA aplicadas às somas que o prestador declarou em todos os municípios em que atua, ano de referência 2024.">
+        <Secao id="medidas" titulo="Operação, finanças e investimento declarados" texto={`Fórmulas oficiais do SINISA aplicadas às somas que o prestador declarou em todos os municípios em que atua, ano de referência ${rotuloSinisa("ano")}.`}>
           <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Medidas do prestador (rolável)">
             <table className="w-full min-w-[36rem] border-collapse text-sm">
               <caption className="sr-only">Medidas do prestador</caption>
@@ -176,7 +177,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
               ))}
             </dl>
           ) : (
-            <Nota>O prestador não declarou balanço ao SINISA 2024 ou não tem balanço próprio (administração direta).</Nota>
+            <Nota>O prestador não declarou balanço ao {rotuloSinisa()} ou não tem balanço próprio (administração direta).</Nota>
           )}
           {b && (
             <Nota>
@@ -184,7 +185,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
               Quando a empresa tem outras atividades, o balanço pode ser o da empresa inteira.
             </Nota>
           )}
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), planilhas de balanço dos prestadores locais e regionais, campos GFI3001 a GFI3011.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, planilhas de balanço dos prestadores locais e regionais, campos GFI3001 a GFI3011.</Fonte>
         </Secao>
 
         {controle && cvm && (
@@ -234,13 +235,13 @@ export default function Pagina({ params }: { params: { id: string } }) {
             </Nota>
             <Fonte>
               CVM, dados abertos, Formulário de Referência {cvm.ano}, arquivo posicao_acionaria, capturado em {data(cvm.capturado_em)}. O CNPJ {controle.cnpj} foi
-              ligado a esta ficha pelos municípios que o declaram como prestador no SINISA 2024. Árvore completa em{" "}
+              ligado a esta ficha pelos municípios que o declaram como prestador no {rotuloSinisa()}. Árvore completa em{" "}
               <a className="text-obee-dark underline" href="/saneamento/gold/controle_societario.csv">controle_societario.csv</a>.
             </Fonte>
           </Secao>
         )}
 
-        <Secao id="municipios" titulo="Em que municípios atua e sob qual instrumento?" texto="Vínculos declarados ao SINISA 2024: serviço, forma de prestação, instrumento e término da vigência informados.">
+        <Secao id="municipios" titulo="Em que municípios atua e sob qual instrumento?" texto={`Vínculos declarados ao ${rotuloSinisa()}: serviço, forma de prestação, instrumento e término da vigência informados.`}>
           <TabelaDados
             titulo="Municípios atendidos"
             arquivo={`saneamento-prestador-${p.id}-municipios-2024.csv`}

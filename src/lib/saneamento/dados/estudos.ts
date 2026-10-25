@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 /**
  * Dois estudos de formação e revisão de tarifa, sob modelos regulatórios
  * distintos, reconstruídos a partir de documentos oficiais consultados em
@@ -121,7 +122,7 @@ export const ESTUDOS: Estudo[] = [
       { rotulo: "Reajuste pela inflação (IPCA jun/2024 a out/2025)", valor: 6.1106, unidade: "%", casas: 4, fonte: "Deliberação 1.749, art. 1º" },
     ],
     obrigacoes: [
-      { premissa: "Cobertura de água (ICA) de 97% em 2026 e 99% de 2027 em diante", obrigacao: "Metas de cobertura da URAE-1, base para avaliação de caducidade até 2030", resultado: "Verificação anual da ARSESP pelo Anexo II; o SINISA 2024 mede outro conceito (ao lado, por prestador)", providencia: "Fator U e Fator Q não aplicados no 1º reajuste", fonte: "Anexo VII, item 3.7; NT Equilíbrio, PDF p.5" },
+      { premissa: "Cobertura de água (ICA) de 97% em 2026 e 99% de 2027 em diante", obrigacao: "Metas de cobertura da URAE-1, base para avaliação de caducidade até 2030", resultado: `Verificação anual da ARSESP pelo Anexo II; o ${rotuloSinisa()} mede outro conceito (ao lado, por prestador)`, providencia: "Fator U e Fator Q não aplicados no 1º reajuste", fonte: "Anexo VII, item 3.7; NT Equilíbrio, PDF p.5" },
       { premissa: "Cobertura de esgoto (ICE) de 90% em 2026, 93% em 2027, 96% em 2028 e 99% de 2029 em diante", obrigacao: "Metas contratuais, universalização até 31/12/2029", resultado: "Sem aferição publicada pelo regulador para 2026 nos documentos consultados", providencia: "Não aplicável neste reajuste", fonte: "Anexo VII, item 3.7; Contrato, PDF p.6 e p.26" },
       { premissa: "Tratamento do esgoto coletado (IEC) de 85% em 2026 e 99% de 2029 em diante", obrigacao: "Meta contratual de tratamento", resultado: "Sem aferição publicada para 2026 nos documentos consultados", providencia: "Não aplicável neste reajuste", fonte: "Anexo VII, item 3.7" },
       { premissa: "Investimento realizado entra na base de remuneração", obrigacao: "Base atualizada com laudos de dezembro de 2023 e 2024 homologados", resultado: "Base líquida de R$ 85.856,72 mi remunerada a 11,91%", providencia: "Investimento não realizado não entra na base (Cl. 37, § 1º)", fonte: "NT Equilíbrio, PDF p.15-17 e p.56; Contrato, Cl. 37" },
@@ -219,7 +220,7 @@ export const ESTUDOS: Estudo[] = [
       { rotulo: "Glosa prudencial sobre investimentos de 2021-2024", valor: 5, unidade: "%", casas: 0, fonte: "NT 006/2025, PDF p.81" },
     ],
     obrigacoes: [
-      { premissa: "Plano de investimentos de R$ 6.824,50 mi em 2025-2028", obrigacao: "Investimento considerado na tarifa; diferença entre previsto e realizado compensada na revisão seguinte", resultado: "Execução do ciclo ainda não aferida; o SINISA 2024 é anterior ao ciclo", providencia: "Compensação prevista para a 4ª revisão", fonte: "NT 006/2025, Tabela 25 e PDF p.90-91" },
+      { premissa: "Plano de investimentos de R$ 6.824,50 mi em 2025-2028", obrigacao: "Investimento considerado na tarifa; diferença entre previsto e realizado compensada na revisão seguinte", resultado: `Execução do ciclo ainda não aferida; os dados de ${rotuloSinisa()} são anteriores ao ciclo`, providencia: "Compensação prevista para a 4ª revisão", fonte: "NT 006/2025, Tabela 25 e PDF p.90-91" },
       { premissa: "Redução de perdas de 0,31% ao ano", obrigacao: "Trajetória regulatória de perdas usada nos custos", resultado: "Perdas na distribuição de 2024 ao lado (SINISA, prestador)", providencia: "Sem aplicação de mecanismo específico nos documentos consultados", fonte: "NT 006/2025, PDF p.11" },
       { premissa: "Qualidade do serviço (Fator Q)", obrigacao: "Ajuste anual por desempenho", resultado: "Fator Q de 0,0000% nos reajustes de 2024 e 2026", providencia: "Aplicação depende de deliberação do Conselho Diretor", fonte: "DOE do IRT 2024; DIOE 12131 (IRT 2026)" },
     ],

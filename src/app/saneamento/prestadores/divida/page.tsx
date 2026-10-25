@@ -1,3 +1,4 @@
+import { apresentarEdicaoSinisa, rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -121,7 +122,7 @@ function Conteudo({ g, pergunta, situacao, pendencia }: { g: GoldDivida; pergunt
         }
         recorte={
           <>
-            {inteiro(lista.length)} companhias: {inteiro(operadoras.length)} prestadoras declaradas por municípios no SINISA 2024 e{" "}
+            {inteiro(lista.length)} companhias: {inteiro(operadoras.length)} prestadoras declaradas por municípios no {rotuloSinisa()} e{" "}
             {inteiro(holdings.length)} holdings de grupo que as controlam. Demonstração consolidada; fotografia de {data(g.referencia_trimestral)} e série
             anual desde {primeiroAno}. Valores nominais, em reais de cada data.
           </>
@@ -454,7 +455,7 @@ function TabelaFotografia({ operadoras, holdings, fichas, logos }: { operadoras:
             ))}
           </tr>
         </thead>
-        {grupo("Prestadoras", "declaradas por municípios no SINISA 2024", operadoras)}
+        {grupo("Prestadoras", `declaradas por municípios no ${rotuloSinisa()}`, operadoras)}
         {grupo("Holdings de grupo", "consolidam as prestadoras que controlam: não some com as linhas acima", holdings)}
       </table>
     </div>
@@ -528,7 +529,7 @@ function Metodo({ g, lista, logos }: { g: GoldDivida; lista: CompanhiaDivida[]; 
         <section aria-labelledby="metodo-universo">
           <h3 id="metodo-universo" className="font-serif text-lg">Quem está e por quê</h3>
           <p className="mt-2 max-w-prose2 text-carvao-muted">
-            Prestadora: {g.criterio.operadora}. Holding: {g.criterio.holding}. Nenhum vínculo é feito por nome. Uma companhia cuja ficha de prestador
+            Prestadora: {apresentarEdicaoSinisa(g.criterio.operadora)}. Holding: {g.criterio.holding}. Nenhum vínculo é feito por nome. Uma companhia cuja ficha de prestador
             existe no capítulo 7 leva o link para ela na tabela.
           </p>
           <div className="tabela-scroll mt-3" tabIndex={0} role="region" aria-label="Companhias do capítulo (rolável)">
@@ -576,7 +577,7 @@ function Metodo({ g, lista, logos }: { g: GoldDivida; lista: CompanhiaDivida[]; 
           {g.fora_do_recorte.length > 0 && (
             <p className="mt-3 max-w-prose2 text-xs text-carvao-muted">
               Registradas no setor de saneamento da CVM e fora do recorte ({inteiro(g.fora_do_recorte.length)}): {g.fora_do_recorte.map((x) => x.denominacao).join("; ")}. Motivo
-              comum: {g.fora_do_recorte[0].motivo}. O setor da CVM reúne também gás canalizado e resíduos.
+              comum: {apresentarEdicaoSinisa(g.fora_do_recorte[0].motivo)}. O setor da CVM reúne também gás canalizado e resíduos.
             </p>
           )}
         </section>
@@ -620,7 +621,7 @@ function Metodo({ g, lista, logos }: { g: GoldDivida; lista: CompanhiaDivida[]; 
               <a className="text-obee-dark underline underline-offset-2" href={g.fontes.cadastro.pagina}>Página do conjunto</a>.
             </li>
             <li>
-              SINISA 2024, módulo Gestão Municipal (CNPJ declarado por município) e Formulário de Referência da CVM (cadeia de controle), já usados no
+              {rotuloSinisa()}, módulo Gestão Municipal (CNPJ declarado por município) e Formulário de Referência da CVM (cadeia de controle), já usados no
               capítulo 7.
             </li>
           </ul>

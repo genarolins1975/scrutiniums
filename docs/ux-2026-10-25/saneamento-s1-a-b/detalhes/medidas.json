@@ -1,0 +1,30 @@
+[
+  {
+    "height": 32606,
+    "scrollWidth": 320,
+    "width": 320,
+    "keyboardScroll": 40,
+    "notes": 24
+  },
+  {
+    "height": 29619,
+    "scrollWidth": 390,
+    "width": 390,
+    "keyboardScroll": 40,
+    "notes": 24
+  },
+  {
+    "height": 23782,
+    "scrollWidth": 768,
+    "width": 768,
+    "keyboardScroll": 40,
+    "notes": 24
+  },
+  {
+    "height": 20795,
+    "scrollWidth": 1440,
+    "width": 1440,
+    "keyboardScroll": 40,
+    "notes": 24
+  }
+]

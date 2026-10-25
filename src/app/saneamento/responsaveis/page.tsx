@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -15,7 +16,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Quem responde pelas metas, fiscaliza e atende o cidadão?",
   description:
-    "Titular, prestador e regulador de cada município; catálogo das entidades reguladoras declaradas ao SINISA 2024 por CNPJ; conselhos, ouvidorias e consórcios declarados pelos municípios.",
+    `Titular, prestador e regulador de cada município; catálogo das entidades reguladoras declaradas ao ${rotuloSinisa()} por CNPJ; conselhos, ouvidorias e consórcios declarados pelos municípios.`,
   alternates: { canonical: "/saneamento/responsaveis" },
 };
 
@@ -82,7 +83,7 @@ export default function Pagina() {
               controle social os municípios declaram ter.
             </p>
           }
-          recorte={<>Módulo Gestão Municipal do SINISA 2024: {inteiro(g?.respondentes)} municípios responderam; {inteiro(g?.nao_respondentes)} não responderam.</>}
+          recorte={<>Módulo Gestão Municipal do {rotuloSinisa()}: {inteiro(g?.respondentes)} municípios responderam; {inteiro(g?.nao_respondentes)} não responderam.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -179,7 +180,7 @@ export default function Pagina() {
             permite="Saber quais entidades os municípios declaram como reguladoras e quantos municípios cada uma alcança."
             naoPermite="Confirmar que existe contrato de delegação da regulação nem avaliar a atuação da entidade: o SINISA registra a declaração do município. Quando a UF de um município difere da sede do regulador, a declaração pode estar errada ou refletir convênio."
           />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), módulo Gestão Municipal, aba Detalhamento Reguladores.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, módulo Gestão Municipal, aba Detalhamento Reguladores.</Fonte>
         </Secao>
 
         <Secao id="controle-social" titulo="Que canais de controle social os municípios declaram?" texto="Proporção dos municípios respondentes de cada UF que declararam regulação, conselho específico, ouvidoria e participação em consórcio.">

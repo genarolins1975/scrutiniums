@@ -111,7 +111,7 @@ const pct = (n: number | null | undefined, d: number | null | undefined): number
 
 /**
  * Mesmo ano (2022) e perguntas parecidas, lado a lado: o JMP de 2022 contra o Censo 2022 (moradores em domicílios particulares permanentes
- * ocupados) e, quando há equivalente, o SINISA 2024. Nenhuma linha é tratada como a mesma medida; a nota diz o que muda.
+ * ocupados) e, quando há equivalente, o SINISA, referência 2024. Nenhuma linha é tratada como a mesma medida; a nota diz o que muda.
  */
 export function conciliacao(br: Agregado, jmp2022: EstimativaJmp): LinhaConciliacao[] {
   const c = br.censo2022.moradores;

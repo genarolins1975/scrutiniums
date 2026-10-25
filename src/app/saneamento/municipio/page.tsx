@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -28,7 +29,7 @@ export default function Pagina() {
   const m = meta();
   const lista = municipios();
   const capitais = CAPITAIS.map((id) => lista.find((x) => x.id === id)).filter(Boolean).sort((a, b) => a!.nome.localeCompare(b!.nome, "pt-BR"));
-  const recorte = <>{inteiro(m?.cobertura.municipios_ibge)} municípios no índice do IBGE; Censo 2022, SINISA 2024 e módulo Gestão Municipal, quando o município participou.</>;
+  const recorte = <>{inteiro(m?.cobertura.municipios_ibge)} municípios no índice do IBGE; Censo 2022, {rotuloSinisa()} e módulo Gestão Municipal, quando o município participou.</>;
   return (
     <>
       <header>
@@ -46,9 +47,9 @@ export default function Pagina() {
           lead: "Uma ficha por município reúne carência, atendimento declarado, prestador e regulador, tarifa social, plano, investimento e continuidade, cada número com sua fonte e seu ano.",
           acao: <BuscaMunicipio grande rotulo="Digite o nome do município" />,
           recorte: {
-            periodo: "Censo 2022 e SINISA 2024",
+            periodo: `Censo 2022 e ${rotuloSinisa()}`,
             universo: `${inteiro(m?.cobertura.municipios_ibge)} municípios no índice do IBGE`,
-            fonte: "IBGE, Censo 2022; Ministério das Cidades, SINISA 2024 e módulo Gestão Municipal",
+            fonte: `IBGE, Censo 2022; Ministério das Cidades, ${rotuloSinisa()} e módulo Gestão Municipal`,
           },
           limite:
             "como o município se compara aos demais nem a qualidade da gestão: a ficha reúne números de bases e anos diferentes, e o SINISA só traz o município quando ele participou.",
