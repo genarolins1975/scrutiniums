@@ -78,3 +78,5 @@ Preparação da sessão executada. Pipeline Educação: 24 testes aprovados. Ver
 A etapa do Judiciário falhou em duas execuções: restauração da URL internacional após reload e duplicata internacional na referência, ambas a 390 px. Nenhum teste foi enfraquecido ou excluído, e o código do Judiciário não foi alterado. A verificação geral ainda não está integralmente verde.
 
 Repetição isolada de Equatorial PI: os três testes passaram em 5,3 s, sem alterar timeout ou asserções. O filtro executou apenas essa página; os demais casos já constam da execução completa.
+
+Verificação rápida após corrigir o inventário: **188 arquivos e 4759 testes aprovados**, com 7 skips e um todo preexistentes. Lint, tipos, derivados e cobertura também aprovados. Registro em `verificacao-rapido-corrigido.txt`. O build e as capturas finais não mudaram: a correção foi somente no inventário de testes.
