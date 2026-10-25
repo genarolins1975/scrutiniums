@@ -1,6 +1,6 @@
 ### Evidências de página (2026-10-25)
 
-Build UnLnWHF3bX_3IM7IY411k, `next start` local com banco temporário e sessão de teste. Máquina: 5 vCPU, 33 GB. Comando: `npm run evidencias -- --rotas /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela /observatorio/desenrola --saida /workspace/.pacote-c-2026-10-25/depois`. Tempo: 1 min 33 s.
+Build wRgtjUDrkqaEkC953_ot_, `next start` local com banco temporário e sessão de teste. Máquina: 5 vCPU, 33 GB. Comando: `npm run evidencias -- --rotas /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela /observatorio/desenrola --saida /workspace/.pacote-c-2026-10-25/depois-revisao`. Tempo: 1 min 32 s.
 
 Cromo: do topo da barra comum ao início do conteúdo, em px, com o orçamento da Iniciativa 2 a 390 e 1440 px. Axe: violações WCAG 2.1 A e AA (regra e número de nós). Login: requisições feitas pela página (arquivos, dados, APIs) que caíram em /entrar; o redirecionamento da própria página aparece na coluna Endereço final.
 

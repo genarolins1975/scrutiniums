@@ -1,6 +1,6 @@
 {
-  "codigo": "2e1a5e2e489dd48105eac065236f58ae8f522329",
-  "build_final": "UnLnWHF3bX_3IM7IY411k",
+  "codigo": "e0677e6c88bf6f06294f595b1a5483697c3e08b9",
+  "build_final": "wRgtjUDrkqaEkC953_ot_",
   "arquivos_sha256": {
     "antes/observatorio_desenrola-1440-com-sessao-primeira-tela.jpg": "555a3b44be92e02764faf23661b4c5920cee05f83b95dc008389a29ecc18fcf5",
     "antes/observatorio_desenrola-1440-com-sessao.jpg": "62fce383b90951300cdb17ad36be151c43c1026a3ac926028071430fd40bfa0c",
@@ -82,6 +82,14 @@
     "jornadas/simulador-zero-1440.jpg": "749e1d6d74b320aeacd8a273e1e3b0141551f9f9167a55b4b1e6a75b0d0e0c66",
     "jornadas/simulador-zero-320.jpg": "ee3f6a000db3129cd7174773c28be0d32c850d9bc2cc5e462ec7187d67dee382",
     "jornadas/simulador-zero-390.jpg": "50e04441d5ef6d620e2aaa25b8af149222c8315d891e49a05009ca688dffe8b4",
-    "jornadas/simulador-zero-768.jpg": "052d8a9c851f4972ee68de0a4fb938c440b3ecb1bc1100afffae90e9a3912c3e"
+    "jornadas/simulador-zero-768.jpg": "052d8a9c851f4972ee68de0a4fb938c440b3ecb1bc1100afffae90e9a3912c3e",
+    "recuperacao/sem-referencia-1440-ausente.jpg": "3cf836ed889508428e4e1574f22f11588681fc8bebd22ff7d1d405a39dd13ad9",
+    "recuperacao/sem-referencia-1440-sem-banco.jpg": "c4545d7eeae2c0b73bb2303ad6bd28b315df29c60a6bc4545338987b96904de8",
+    "recuperacao/sem-referencia-320-ausente.jpg": "7c2bfdad4d89a94893145d5eb7ea9fd23a315ffed5a943e1924d668e5e6c9e18",
+    "recuperacao/sem-referencia-320-sem-banco.jpg": "2cf8140d8c1b4c27780c79df61afbfe2925fd0d7c97e438f6680fab4c2a63520",
+    "recuperacao/sem-referencia-390-ausente.jpg": "38e2e3304e95c73918d29755ecb5161d0b22ff7a21df2f13cf7698e080136ccc",
+    "recuperacao/sem-referencia-390-sem-banco.jpg": "13f58f832cd50177126cc2006ad7a6e85cb017f52db3e7427626261a22c79fcf",
+    "recuperacao/sem-referencia-768-ausente.jpg": "ff91bd06b788dc584962220b3a48ed61fe279476a8b1664cf597ab339fbe7a68",
+    "recuperacao/sem-referencia-768-sem-banco.jpg": "93712a5d8fa501bde4d2043dfa69055e3206adba9ca106192d9a30f9f1a89339"
   }
 }

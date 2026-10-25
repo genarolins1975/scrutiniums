@@ -1,0 +1,22 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Rolagem horizontal indevida no Desenrola
++ actual - expected
+
++ [
++   320
++ ]
+- []
+
+    at file:///workspace/scrutiniums/docs/ux-2026-10-25/pacote-c/verificar-jornadas.mjs:115:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [ 320 ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

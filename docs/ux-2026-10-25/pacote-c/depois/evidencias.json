@@ -1,9 +1,9 @@
 {
  "data": "2026-10-25",
- "build": "UnLnWHF3bX_3IM7IY411k",
+ "build": "wRgtjUDrkqaEkC953_ot_",
  "maquina": "5 vCPU, 33 GB",
- "comando": "npm run evidencias -- --rotas /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela /observatorio/desenrola --saida /workspace/.pacote-c-2026-10-25/depois",
- "tempo": "1 min 33 s",
+ "comando": "npm run evidencias -- --rotas /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela /observatorio/desenrola --saida /workspace/.pacote-c-2026-10-25/depois-revisao",
+ "tempo": "1 min 32 s",
  "resultados": [
   {
    "rota": "/observatorio-do-credito/quanto-meu-banco-cobra",

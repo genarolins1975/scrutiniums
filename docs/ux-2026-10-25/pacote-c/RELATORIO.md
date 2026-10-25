@@ -1,6 +1,6 @@
 # Pacote C: taxas zero e recorte do Desenrola
 
-25/10/2026. Base: `e2487b49a565d14d334cee0fd80225c1b20b4d6d`. Escopo autorizado: somente pacote C. PR sem merge; decisão D2 pendente do dono. Não se publica nem se substitui a gold de produção neste PR.
+25/10/2026. Base: `e2487b49a565d14d334cee0fd80225c1b20b4d6d`. Escopo autorizado: somente pacote C. A publicação foi autorizada pelo dono em 25/10/2026, depois da entrega inicial. Este PR não versiona nem substitui a gold de produção; as consultas ao BCB permanecem pendentes.
 
 ## O que muda para o leitor
 
@@ -29,7 +29,7 @@ O download direto do CSV do BCB recebeu HTTP 403. Os downloads do artefato e dos
 - Desenrola: CSV integral coletado pela execução de 24/10/2026 às 13:23:24 UTC (metadado do bronze), SHA-256 `14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7`, 13.638 linhas. São publicáveis 11.242 linhas dos tipos 1 a 3; 2.396 linhas do tipo 4, de 2026-05 a 2026-08, ficam separadas e preservadas.
 - A gold reconstruída declara 2.681.845 operações de pessoas físicas. O número vem da captura; não foi ajustado para coincidir com uma publicação anterior. Tipo 3 continua fora do total de pessoas físicas, e tipo 4 não é somado a nenhum universo.
 
-Com o código e teste anteriores, substituindo temporariamente apenas `juros.json` pela reconstrução, a suíte teve exatamente uma falha e 17 aprovações: a proibição global de “0,00% ao ano”. Os arquivos foram restaurados ao fim. Depois da mudança, seis arquivos de teste que leem os dados de juros/Desenrola tiveram 103 aprovações sobre as duas golds reconstruídas. Os 18 testes de integridade da coleta também passaram.
+Com o código e teste anteriores, substituindo temporariamente apenas `juros.json` pela reconstrução, a suíte teve exatamente uma falha e 17 aprovações: a proibição global de “0,00% ao ano”. Os arquivos foram restaurados ao fim. Depois da mudança, seis arquivos de teste que leem os dados de juros/Desenrola tiveram 104 aprovações sobre as duas golds reconstruídas, na rodada final. Os 18 testes de integridade da coleta também passaram.
 
 ## Bloqueio adicional encontrado, fora do pacote
 
@@ -58,21 +58,36 @@ Portanto: a falha do zero foi reproduzida e corrigida, mas **não está comprova
 |---|---|
 | `bash scripts/preparar-sessao.sh` com Chromium do sistema | Aprovado; dependências e derivados disponíveis |
 | `python3 -m unittest pipeline.tests.test_coleta_credito_integridade` | 18 testes aprovados, incluindo o CSV real com tipos 1 a 4 |
-| Seis suítes de conteúdo sobre as golds reconstruídas | 103 testes aprovados; [log](logs/depois-candidata-final.txt) |
-| `npm run verificar:rapido` | Aprovado em 3min09s: 253 arquivos, 6.876 testes aprovados |
-| `npm run verificar:pr` | Aprovado em 20min33s: 402 arquivos Vitest, 9.609 testes aprovados; build, lint, tipos, Python e verificações OBEE aprovados |
+| Seis suítes de conteúdo sobre as golds reconstruídas | 104 testes aprovados; [log](logs/revisao-candidata.txt) |
+| `npm run verificar:rapido` | Aprovado após a revisão em 3min11s: 253 arquivos, 6.877 testes aprovados |
+| `npm run verificar:pr` (rodada inicial, antes do ajuste de recuperação) | Aprovado em 20min33s: 402 arquivos Vitest, 9.609 testes aprovados; build, lint, tipos, Python e verificações OBEE aprovados |
 | `npm run evidencias` | 12 cenários antes e 18 depois, a 390, 768 e 1440 px, com e sem sessão; sem violações axe, erro de console ou overflow nesses cenários |
 | `node verificar-jornadas.mjs …` | **Reprovado** somente no critério de rolagem do Desenrola a 320 px: documento de 323 px. As quatro jornadas funcionais e o formulário sem JavaScript chegaram ao fim |
 | Mapeamento completo do portão seletivo | **Reprovado** na leitura dinâmica de `rankings-municipais-reflow-browser.test.ts`, preexistente e fora do escopo |
 
-O Vitest reportou 12 `skipped` e 1 `todo` já existentes; a suíte Python principal reportou 2.450 testes e 10 `skipped` existentes. Nenhum foi introduzido aqui. O Judiciário executou 68 telas e 224 checks sem erros. [Log completo](logs/completo.txt), [log rápido](logs/rapido.txt). Chromium: `/usr/bin/chromium`; Node: heap de 4 GB; dependências Python em ambiente isolado.
+O Vitest reportou 12 `skipped` e 1 `todo` já existentes; a suíte Python principal reportou 2.450 testes e 10 `skipped` existentes. Nenhum foi introduzido aqui. O Judiciário executou 68 telas e 224 checks sem erros. [Log completo](logs/completo.txt), [log rápido final](logs/revisao-rapido.txt). Chromium: `/usr/bin/chromium`; Node: heap de 4 GB; dependências Python em ambiente isolado.
 
 
 A primeira tentativa de `verificar:pr` parou ao instalar `pyarrow` em `/home/agent/.local/lib`, somente para leitura. A dependência foi instalada em um ambiente Python isolado em `/workspace`; o comando completo foi repetido. A tentativa interrompida está preservada no log e não é contada como aprovação.
 
+## Revisão automática antes da publicação
+
+O [achado P2 do PR #384](https://github.com/genarolins1975/scrutiniums/pull/384#discussion_r4370718876) identificou um caso válido: quando nenhuma taxa era elegível, o simulador orientava trocar de recorte, mas não renderizava o seletor. A correção mantém o formulário GET, segmento, modalidade e banco, preservando valor, prazo e CET. Escolher um banco com zero continua permitindo o cálculo com a taxa publicada e a nota; não se inventa mediana.
+
+Após a correção, passaram 34 testes específicos, o `verificar:rapido` (6.877 testes), novo build e 104 testes de conteúdo sobre a captura reconstruída. O CI completo é repetido no commit enviado ao PR. O log `completo.txt` é da rodada inicial e não é apresentado como execução local posterior à revisão.
+
+[Resultado das nove jornadas de recuperação](recuperacao/resultado.json): os estados sem banco e com banco ausente foram exercitados a 320, 390, 768 e 1440 px; um nono caso usa o formulário GET sem JavaScript. Troca de modalidade e seleção de banco zero recuperam o cálculo, mantêm os parâmetros necessários e limpam a taxa digitada do recorte anterior. Axe sem violações e sem overflow nesses estados. A gold sintética é restaurada no `finally`.
+
+| Cenário sintético, identificado na imagem | 320 px | 390 px | 768 px | 1440 px |
+|---|---|---|---|---|
+| Sem banco escolhido | [captura](recuperacao/sem-referencia-320-sem-banco.jpg) | [captura](recuperacao/sem-referencia-390-sem-banco.jpg) | [captura](recuperacao/sem-referencia-768-sem-banco.jpg) | [captura](recuperacao/sem-referencia-1440-sem-banco.jpg) |
+| Banco ausente da modalidade | [captura](recuperacao/sem-referencia-320-ausente.jpg) | [captura](recuperacao/sem-referencia-390-ausente.jpg) | [captura](recuperacao/sem-referencia-768-ausente.jpg) | [captura](recuperacao/sem-referencia-1440-ausente.jpg) |
+
+As capturas de `depois/` e `jornadas/` foram refeitas com o build corrigido. O teste das jornadas reais conserva a reprovação por overflow preexistente do Desenrola a 320 px, com saída 1. A revisão automática de código não equivale a homologação humana independente de UX.
+
 ## Evidências de interface e acessibilidade
 
-Código das capturas finais: [2e1a5e2e4](https://github.com/genarolins1975/scrutiniums/commit/2e1a5e2e489dd48105eac065236f58ae8f522329), build `UnLnWHF3bX_3IM7IY411k`. Build da linha de base: `VD-uX5OYW_29xpwKa1e0b`, no commit de partida. Os commits seguintes acrescentam somente documentação.
+Código das capturas finais: [e0677e6c8](https://github.com/genarolins1975/scrutiniums/commit/e0677e6c88bf6f06294f595b1a5483697c3e08b9), build `wRgtjUDrkqaEkC953_ot_`. Build da linha de base: `VD-uX5OYW_29xpwKa1e0b`, no commit de partida. Os commits seguintes acrescentam somente documentação.
 
 - [Antes, gold publicada](antes/evidencias.md): duas rotas, três larguras, com e sem sessão. A gold ainda não contém os dois casos do pacote.
 - [Depois, mesma gold publicada](depois/evidencias.md): acrescenta o simulador à regressão. Sem sessão, a evidência é do redirecionamento ao login; não é abertura de rota fechada.
@@ -116,4 +131,4 @@ Acessibilidade automática e inspeção das ressalvas não constituem homologaç
 3. Rodar os testes de conteúdo com as duas golds reconstruídas em substituição temporária; restaurar os bytes ao fim. Não publicar essa substituição de teste.
 4. Para jornadas, usar `verificar-jornadas.mjs RAIZ PASTA_SAIDA EVIDENCIAS`, sobre o build local e sem outra suíte em curso; o script restaura as golds no `finally`.
 
-D2 continua pendente: aprovação pelo dono do tratamento proposto e decisão de merge. As consultas ao BCB sobre o zero e o tipo 4 estão preparadas em `OPERACOES.md`, sem envio, protocolo ou resposta inventados. Nenhuma mudança foi enviada à produção.
+O dono autorizou a publicação em 25/10/2026 (“Pode publicar”), resolvendo D2 para o tratamento implementado; o merge aguarda o CI da revisão final. As consultas ao BCB sobre o zero e o tipo 4 estão preparadas em `OPERACOES.md`, sem envio, protocolo ou resposta inventados. O estado posterior de merge e deploy está registrado no PR #384; este relatório documenta a verificação anterior à publicação.

@@ -1,0 +1,29 @@
+
+> scrutiniums@0.1.0 evidencias
+> node scripts/evidencias.mjs --rotas /observatorio-do-credito/quanto-meu-banco-cobra /observatorio-do-credito/simulador-da-parcela /observatorio/desenrola --saida /workspace/.pacote-c-2026-10-25/depois-revisao
+
+sem sessão  390 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  390 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  390 /observatorio/desenrola  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  768 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  768 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  768 /observatorio/desenrola  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /observatorio/desenrola  HTTP 200 cromo=0 axe=0 console=0 login=0
+com sessão  390 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=138 axe=0 console=0 login=0
+com sessão  390 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=183 axe=0 console=0 login=0
+com sessão  390 /observatorio/desenrola  HTTP 200 cromo=138 axe=0 console=0 login=0
+com sessão  768 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=275 axe=0 console=0 login=0
+com sessão  768 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=316 axe=0 console=0 login=0
+com sessão  768 /observatorio/desenrola  HTTP 200 cromo=231 axe=0 console=0 login=0
+com sessão 1440 /observatorio-do-credito/quanto-meu-banco-cobra  HTTP 200 cromo=187 axe=0 console=0 login=0
+com sessão 1440 /observatorio-do-credito/simulador-da-parcela  HTTP 200 cromo=228 axe=0 console=0 login=0
+com sessão 1440 /observatorio/desenrola  HTTP 200 cromo=187 axe=0 console=0 login=0
+
+18 páginas em 1 min 32 s. Tabela em /workspace/.pacote-c-2026-10-25/depois-revisao/evidencias.md
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
