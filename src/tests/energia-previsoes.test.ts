@@ -502,6 +502,12 @@ describe.skipIf(!temCelulas)("P013: grade, gráfico, tabela e exportação com a
       if (!cs.length) continue;
       const min = cs.reduce((a, c) => (c.previsao! < a.previsao! ? c : a));
       const max = cs.reduce((a, c) => (c.previsao! > a.previsao! ? c : a));
+      // Rodada de 25/10/2026: as 16 células semanais ficaram entre 70,6258 e 70,6261 (todas
+      // R$ 70,63/MWh); com os submercados iguais a resposta usa a frase própria, sem nomear um.
+      if (Math.abs(max.previsao! - min.previsao!) < 0.005) {
+        expect(t).toContain(`R$ ${br2(min.previsao!)}/MWh em todos os submercados`);
+        continue;
+      }
       expect(t).toContain(`R$ ${br2(min.previsao!)}/MWh (${CURTO[min.submercado]})`);
       expect(t).toContain(`R$ ${br2(max.previsao!)}/MWh (${CURTO[max.submercado]})`);
     }
