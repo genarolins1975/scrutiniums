@@ -1,0 +1,146 @@
+{
+  "build": "UnLnWHF3bX_3IM7IY411k",
+  "data": "2026-10-25T11:33:25.532Z",
+  "registros": [
+    {
+      "largura": 320,
+      "rota": "/observatorio-do-credito/quanto-meu-banco-cobra?seg=pf&mod=credito-pessoal-nao-consignado-prefixado&banco=80271455",
+      "teclado": [
+        "Tab",
+        "Shift+Tab",
+        "Enter",
+        "Espaço"
+      ],
+      "filtros": true,
+      "historico": true,
+      "recarga": true,
+      "simulador": true,
+      "ressalva": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      },
+      "rolagemDesenrola": {
+        "largura": 320,
+        "documento": 323,
+        "indevida": true
+      },
+      "axe": {
+        "juros": [],
+        "simulador": [],
+        "desenrola": []
+      },
+      "erros": []
+    },
+    {
+      "largura": 390,
+      "rota": "/observatorio-do-credito/quanto-meu-banco-cobra?seg=pf&mod=credito-pessoal-nao-consignado-prefixado&banco=80271455",
+      "teclado": [
+        "Tab",
+        "Shift+Tab",
+        "Enter",
+        "Espaço"
+      ],
+      "filtros": true,
+      "historico": true,
+      "recarga": true,
+      "simulador": true,
+      "ressalva": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      },
+      "rolagemDesenrola": {
+        "largura": 390,
+        "documento": 390,
+        "indevida": false
+      },
+      "axe": {
+        "juros": [],
+        "simulador": [],
+        "desenrola": []
+      },
+      "erros": []
+    },
+    {
+      "largura": 768,
+      "rota": "/observatorio-do-credito/quanto-meu-banco-cobra?seg=pf&mod=credito-pessoal-nao-consignado-prefixado&banco=80271455",
+      "teclado": [
+        "Tab",
+        "Shift+Tab",
+        "Enter",
+        "Espaço"
+      ],
+      "filtros": true,
+      "historico": true,
+      "recarga": true,
+      "simulador": true,
+      "ressalva": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      },
+      "rolagemDesenrola": {
+        "largura": 768,
+        "documento": 768,
+        "indevida": false
+      },
+      "axe": {
+        "juros": [],
+        "simulador": [],
+        "desenrola": []
+      },
+      "erros": []
+    },
+    {
+      "largura": 1440,
+      "rota": "/observatorio-do-credito/quanto-meu-banco-cobra?seg=pf&mod=credito-pessoal-nao-consignado-prefixado&banco=80271455",
+      "teclado": [
+        "Tab",
+        "Shift+Tab",
+        "Enter",
+        "Espaço"
+      ],
+      "filtros": true,
+      "historico": true,
+      "recarga": true,
+      "simulador": true,
+      "ressalva": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      },
+      "rolagemDesenrola": {
+        "largura": 1440,
+        "documento": 1440,
+        "indevida": false
+      },
+      "axe": {
+        "juros": [],
+        "simulador": [],
+        "desenrola": []
+      },
+      "erros": []
+    },
+    {
+      "semJavaScript": true,
+      "formularioGet": true
+    }
+  ]
+}

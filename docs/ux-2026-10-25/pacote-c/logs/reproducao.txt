@@ -1,0 +1,51 @@
+{
+  "csv_sha256": "14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7",
+  "juros": {
+    "ok": true,
+    "modalidades": 20,
+    "ifs": 166
+  },
+  "coleta": [
+    {
+      "key": "desenrola",
+      "ok": true,
+      "linhas": 11242,
+      "meses": 36,
+      "descartadas": 0,
+      "fora_do_recorte": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      },
+      "periodo": "2023-09→2026-08"
+    }
+  ],
+  "repeticao": [
+    {
+      "key": "desenrola",
+      "ok": true,
+      "note": "arquivo inalterado desde a última coleta",
+      "linhas": 11242,
+      "fora_do_recorte": {
+        "linhas": 2396,
+        "tipos": [
+          "4"
+        ],
+        "periodo_inicio": "2026-05",
+        "periodo_fim": "2026-08",
+        "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+      }
+    }
+  ],
+  "desenrola": {
+    "ok": true,
+    "operacoes_pf": 2681845,
+    "volume_pf_bi": 4.51,
+    "conglomerados": 59,
+    "meses": 36
+  }
+}
