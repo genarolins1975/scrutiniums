@@ -1,3 +1,4 @@
+import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import type { Metadata } from "next";
 import { TextoComDatas } from "@/components/TextoComDatas";
 import { ESTADO_PUBLICACAO, FichaConteudo } from "@/components/eficiencia/FichaConteudo";
@@ -667,6 +668,7 @@ export default function PaginaMetodos() {
           </section>
           <ComoLer g={g} />
           <Metodos g={g} ctx={ctx} />
+          <EscoresServicos capitulo="education" preparacao />
         </div>
       )}
     </>

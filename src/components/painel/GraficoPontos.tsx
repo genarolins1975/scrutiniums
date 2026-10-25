@@ -77,6 +77,8 @@ export type GraficoPontosProps = {
   /** Cor do contorno do losango (referência), token CSS. */
   corReferencia?: string;
   zeroNoEixo?: boolean;
+  /** Limites naturais conhecidos do indicador, como Ideb de zero a dez. */
+  limitesEixo?: [number, number];
   ordemInicial?: OrdemPontos;
   /** Ordem controlada (ex.: vinda da URL); com ela, use onOrdenar para atualizar. */
   ordem?: OrdemPontos;
@@ -143,6 +145,7 @@ function GraficoPontosLargo({
   corValor = "var(--cor-energia)", // i18n: dado
   corReferencia = "var(--cor-carvao-muted)",
   zeroNoEixo = false,
+  limitesEixo,
   ordemInicial = { por: "valor", direcao: "desc" }, // i18n: dado
   ordem: ordemControlada,
   onOrdenar,
@@ -239,7 +242,7 @@ function GraficoPontosLargo({
   const colunaRotulo = rotuloEmCima ? 0 : Math.round(Math.min(200, Math.max(88, w * 0.3)));
   const colunaDif = w < LARGURA_ESTREITA ? 76 : 104;
   const dom = dominioBonito(
-    lista.flatMap((p) => [p.valor, p.referencia]),
+    [...lista.flatMap((p) => [p.valor, p.referencia]), ...(limitesEixo ?? [])],
     { zero: zeroNoEixo },
   );
   // a trilha deixa 22 px nas pontas para o rótulo da primeira e da última marca ("74.000") não sair do gráfico

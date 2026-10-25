@@ -1,3 +1,4 @@
+import { goldEducacao as goldCapitais } from "@/lib/eficiencia/dados";
 import { anosComIdeb, rotuloPorte } from "./dados";
 import { num } from "./formato";
 import { DO_ESTADO } from "@/lib/previdencia/paginas";
@@ -51,5 +52,7 @@ export function comConta(g: GoldEducacao, municipio?: { m: MunicipioGold; uf: st
   }
   itens.push(`Mapa de ${num(g.municipios.total)} municípios e séries de ${Object.keys(g.municipios.por_uf).length} UFs, com os motivos de ausência`);
   itens.push("Arquivos CSV: Ideb e componentes desde " + anos[0] + ", matrículas, escolas e resumo por estado");
+  const nCapitais = goldCapitais()?.universo.capitais.length;
+  if (nCapitais) itens.push(`${nCapitais} capitais: gasto, alunos, aprovação e Ideb, com a ponte por matrícula`);
   return itens;
 }
