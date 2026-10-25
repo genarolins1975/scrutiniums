@@ -364,4 +364,31 @@ describe("D2: taxa zero preservada e comparação explícita (pacote C, 25/10/20
     } finally { spy.mockRestore(); }
     expect(compararTaxas(amostra([0, 10]).modalidades[0]).stats).toEqual({ n: 1, min: 10, p25: 10, mediana: 10, p75: 10, max: 10 });
   });
+
+  it("mantém a troca de recorte no simulador sem taxa elegível e permite usar o zero de um banco", () => {
+    // Revisão #384, 25/10/2026: ausência de referência não pode remover a saída do recorte.
+    const g = amostra([0, 0]);
+    const m = g.modalidades[0];
+    const outra = gold.modalidades.find((candidata) => candidata.modalidade !== m.modalidade && candidata.segmento === m.segmento)!;
+    g.modalidades.push(outra);
+    const ausente = outra.ranking.find((r) => !m.ranking.some((linha) => linha.cnpj8 === r.cnpj8))!.cnpj8;
+    const spy = vi.spyOn(juros, "goldJuros").mockReturnValue(g);
+    try {
+      for (const banco of [undefined, ausente]) {
+        const h = html(createElement(SimuladorDaParcela, { searchParams: { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco, valor: "3.000", prazo: "12", cet: "15" } }));
+        expect(h).toContain('data-ausencia');
+        for (const campo of ["seg", "mod", "banco"]) expect(h).toMatch(new RegExp(`<select[^>]+name="${campo}"`));
+        expect(h).toContain(`value="${slugModalidade(outra.modalidade)}"`);
+        for (const r of m.ranking) expect(h).toContain(`value="${r.cnpj8}"`);
+        expect(h).toMatch(/<form[^>]+method="get"[^>]+action="\/observatorio-do-credito\/simulador-da-parcela"/);
+        for (const [campo, valor] of Object.entries({ valor: "3.000", prazo: "12", cet: "15" })) expect(h).toContain(`name="${campo}" value="${valor}"`);
+        expect(h).not.toContain('name="taxa"');
+        expect(texto(h)).not.toMatch(/undefined|NaN/);
+      }
+      const recuperado = html(createElement(SimuladorDaParcela, { searchParams: { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco: m.ranking[0].cnpj8 } }));
+      expect(recuperado).toContain(`data-taxa-zero="${m.ranking[0].cnpj8}"`);
+      expect(recuperado).toContain('name="taxa"');
+      expect(recuperado).not.toContain('data-ausencia');
+    } finally { spy.mockRestore(); }
+  });
 });

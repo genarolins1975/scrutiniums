@@ -120,7 +120,8 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
     </p>
   );
 
-  // sem a publicação das taxas, a página declara a ausência no formato de antes: não há recorte nem número para o molde
+  // Sem referência não se inventa taxa; com gold, mantém o caminho para outro recorte
+  // (revisão do PR #384, 25/10/2026: todas as taxas podem ser zero).
   if (!gold || !c || !referencia) {
     return (
       <CascaCredito atual="simulador-da-parcela">
@@ -133,6 +134,24 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
             {gold && c ? "Não há taxa elegível para pré-preencher esta modalidade e semana. Escolha outra modalidade ou uma instituição que tenha informado taxa." : "A publicação das taxas por instituição não está disponível nesta versão do site; o simulador não pré-preenche taxa. Nenhum número é mostrado no lugar dela."}
           </p>
         </div>
+        {gold && c && (
+          <div className="mt-6">
+            <Controles rotulo="Taxa de referência" idioma="pt">
+              <div className="w-full">
+                <SeletorJuros
+                  base={pagina.href}
+                  opcoes={opcoesSeletor(gold)}
+                  seg={c.segmento}
+                  mod={c.slug}
+                  banco={c.banco?.cnpj8 ?? ""}
+                  manter={{ valor: iniciais.valor, prazo: iniciais.prazo, cet: iniciais.cet }}
+                  limpar={["taxa", "un"]}
+                  rotuloBanco="Banco ou instituição"
+                />
+              </div>
+            </Controles>
+          </div>
+        )}
         <SecaoCredito id="como-calculamos" titulo="Como calculamos">
           <details className="max-w-prose2 border-t border-linha pt-3 text-sm leading-relaxed text-carvao-muted">
             <summary className="flex min-h-[44px] cursor-pointer items-center text-carvao">Fórmulas, hipóteses e o que fica de fora</summary>

@@ -41,10 +41,11 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
 
 ## Crédito: consultas ao BCB pendentes do dono (D2, 25/10/2026)
 
-O pacote C implementa a recomendação D2 do comitê de 25/10/2026 para revisão;
-**o merge espera a decisão D2 do dono**. As duas consultas abaixo ainda não foram
-enviadas. Registrar aqui protocolo, data, resposta e efeito no contrato quando o dono
-as realizar; a preparação do código não equivale a confirmação do BCB.
+O dono autorizou a publicação do pacote C em 25/10/2026 (“Pode publicar”, nesta tarefa;
+registro no [PR #384](https://github.com/genarolins1975/scrutiniums/pull/384)), aprovando o
+tratamento da recomendação D2. As duas consultas abaixo ainda não foram enviadas.
+Registrar aqui protocolo, data, resposta e efeito no contrato quando o dono as
+realizar; a autorização de publicação não equivale a confirmação do BCB.
 
 | Consulta | Evidência e pergunta | Tratamento proposto até a resposta |
 |---|---|---|
