@@ -1,0 +1,8 @@
+{
+  "base": "a82e140dd38672d4af855191ef5c727fae3bfd23",
+  "candidato": "758a8b175427200165c6a26753af8a1abdd27a12",
+  "comandos_antes": 29,
+  "comandos_depois": 29,
+  "sql_identico_exceto_espacos": true,
+  "getDb_e_exports_finais_identicos": true
+}

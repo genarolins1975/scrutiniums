@@ -6,12 +6,14 @@
  *
  * node scripts/medir-esquema.mjs --esperado 1 --saida /tmp/esquema-depois.json
  * Para a linha de base, use o build anterior e --esperado 29.
+ * A jornada legada usa o Chromium configurado por scripts/preparar-sessao.sh.
  */
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { sql } from "drizzle-orm";
+import { chromium } from "playwright";
 import { subirServidorLocal } from "./servidor-local.mjs";
 
 const argumentos = process.argv.slice(2);
@@ -23,6 +25,7 @@ const preload = fileURLToPath(new URL("./suporte/medir-esquema-preload.mjs", imp
 const anterior = process.env.NODE_OPTIONS;
 process.env.NODE_OPTIONS = `${anterior ?? ""} --import=${JSON.stringify(preload)}`;
 let servidor;
+let navegador;
 try {
   servidor = await subirServidorLocal();
   const consultas = [...servidor.logs().matchAll(/MEDICAO_ESQUEMA (\{[^\n]+\})/g)].map((m) => JSON.parse(m[1]));
@@ -62,6 +65,7 @@ try {
   // No build corrigido, a partida não promove a conta: quem faz isso é a
   // rota legada. Verifica o efeito colateral descrito no prompt ponta a ponta.
   if (esperado === 1) {
+    navegador = await chromium.launch({ executablePath: process.env.I18N_CHROMIUM_EXECUTABLE || undefined, headless: true });
     for (const status of ["ACCESS_PENDING", "WAITLIST"]) {
       // O auxiliar fecha o PGlite que preparou. Cada cenário usa outro banco;
       // descarta-se aqui apenas o singleton do processo de medição já fechado.
@@ -69,17 +73,22 @@ try {
       servidor = await subirServidorLocal({ preparar: async (db, _schema, usuario) => {
         await db.execute(sql`UPDATE users SET onboarding_status = ${status} WHERE id = ${usuario}`);
       } });
-      const headers = { cookie: `${servidor.cookie.name}=${servidor.cookie.value}` };
-      const antes = await fetch(servidor.origem + "/app/observatorios", { headers, redirect: "manual" });
-      assert.equal(antes.status, 307);
-      assert(antes.headers.get("location")?.includes("/cadastro/acesso"));
-      const promover = await fetch(servidor.origem + "/cadastro/acesso", { headers, redirect: "manual" });
-      assert.equal(promover.status, 307);
-      assert(promover.headers.get("location")?.includes("/app/observatorios"));
-      const depois = await fetch(servidor.origem + "/app/observatorios", { headers, redirect: "manual" });
-      assert.equal(depois.status, 200);
-      await depois.text();
-      resultado.contas_legadas.push({ status_inicial: status, antes: antes.status, promocao: promover.status, mapa_depois: depois.status });
+      const contexto = await navegador.newContext();
+      await contexto.addCookies([servidor.cookie]);
+      const pagina = await contexto.newPage();
+      const navegacoes = [];
+      pagina.on("response", (resposta) => {
+        if (resposta.request().isNavigationRequest()) navegacoes.push({ caminho: new URL(resposta.url()).pathname, status: resposta.status() });
+      });
+      // O Next também pode redirecionar no HTML progressivo (HTTP 200).
+      // Verifica a navegação efetiva, sem supor que todo redirect é HTTP 307.
+      const promoveu = pagina.waitForResponse((r) => new URL(r.url()).pathname === "/cadastro/acesso", { timeout: 30_000 });
+      await pagina.goto(servidor.origem + "/app/observatorios", { waitUntil: "commit" });
+      await promoveu;
+      await pagina.waitForURL(servidor.origem + "/app/observatorios", { waitUntil: "networkidle" });
+      assert.match(await pagina.locator("h1").innerText(), /Encontre o painel/);
+      resultado.contas_legadas.push({ status_inicial: status, navegacoes, destino: new URL(pagina.url()).pathname });
+      await contexto.close();
       await servidor.encerrar();
       servidor = null;
     }
@@ -87,6 +96,7 @@ try {
   await writeFile(opcao("--saida"), JSON.stringify(resultado, null, 2) + "\n");
   console.log(JSON.stringify(resultado, null, 2));
 } finally {
+  if (navegador) await navegador.close();
   if (servidor) await servidor.encerrar();
   if (anterior === undefined) delete process.env.NODE_OPTIONS;
   else process.env.NODE_OPTIONS = anterior;

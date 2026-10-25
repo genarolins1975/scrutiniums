@@ -1,0 +1,76 @@
+{
+  "data": "2026-10-25T06:44:57.758Z",
+  "checkout_commit": "758a8b175427200165c6a26753af8a1abdd27a12",
+  "build_id": "VD-uX5OYW_29xpwKa1e0b",
+  "ambiente": "Next start local; PGlite temporário previamente inicializado; sessão sintética; sem latência de rede simulada",
+  "consultas_esquema_primeira_conexao": [
+    {
+      "operacao": "SELECT",
+      "ms": 290.85
+    }
+  ],
+  "total_consultas_esquema": 1,
+  "mapa_aquecido": [
+    {
+      "ttfb_ms": 381.84,
+      "total_ms": 395.14
+    },
+    {
+      "ttfb_ms": 60.52,
+      "total_ms": 70.24
+    },
+    {
+      "ttfb_ms": 66.64,
+      "total_ms": 74.31
+    },
+    {
+      "ttfb_ms": 63.95,
+      "total_ms": 70.83
+    },
+    {
+      "ttfb_ms": 48.47,
+      "total_ms": 55.54
+    }
+  ],
+  "sem_sessao_status": 307,
+  "com_sessao_status": 200,
+  "contas_legadas": [
+    {
+      "status_inicial": "ACCESS_PENDING",
+      "navegacoes": [
+        {
+          "caminho": "/app/observatorios",
+          "status": 200
+        },
+        {
+          "caminho": "/cadastro/acesso",
+          "status": 200
+        },
+        {
+          "caminho": "/app/observatorios",
+          "status": 200
+        }
+      ],
+      "destino": "/app/observatorios"
+    },
+    {
+      "status_inicial": "WAITLIST",
+      "navegacoes": [
+        {
+          "caminho": "/app/observatorios",
+          "status": 200
+        },
+        {
+          "caminho": "/cadastro/acesso",
+          "status": 200
+        },
+        {
+          "caminho": "/app/observatorios",
+          "status": 200
+        }
+      ],
+      "destino": "/app/observatorios"
+    }
+  ],
+  "limite": "O build pode anteceder o HEAD: confira sua procedência no relatório. Os tempos locais não medem o Postgres nem o TTFB frio da Vercel."
+}

@@ -1,0 +1,150 @@
+{
+  "data": "2026-10-25T06:14:42.627Z",
+  "fonte_commit": "f7fd36d90734481a8a1b4d47cc89b79e2bcaeeec",
+  "build_id": "DBK1k7d_3L1rtyFjr9Br2",
+  "ambiente": "Next start local; PGlite temporário previamente inicializado; sessão sintética; sem latência de rede simulada",
+  "consultas_esquema_primeira_conexao": [
+    {
+      "operacao": "CREATE",
+      "ms": 502.88
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 30.3
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 1.1
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 0.49
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 0.54
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 0.52
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 0.45
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 4.04
+    },
+    {
+      "operacao": "ALTER",
+      "ms": 1.93
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.58
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.77
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.71
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.92
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 1.48
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.65
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 4.48
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.78
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 1.51
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.78
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.44
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.42
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 1.14
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.44
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.47
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.43
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 15.25
+    },
+    {
+      "operacao": "CREATE",
+      "ms": 0.71
+    },
+    {
+      "operacao": "DO",
+      "ms": 110.34
+    },
+    {
+      "operacao": "UPDATE",
+      "ms": 29.88
+    }
+  ],
+  "total_consultas_esquema": 29,
+  "mapa_aquecido": [
+    {
+      "ttfb_ms": 1066.23,
+      "total_ms": 1082.78
+    },
+    {
+      "ttfb_ms": 146.22,
+      "total_ms": 185.3
+    },
+    {
+      "ttfb_ms": 229.12,
+      "total_ms": 245.77
+    },
+    {
+      "ttfb_ms": 168.44,
+      "total_ms": 180.26
+    },
+    {
+      "ttfb_ms": 112.13,
+      "total_ms": 133.24
+    }
+  ],
+  "sem_sessao_status": 307,
+  "com_sessao_status": 200,
+  "limite": "O build pode anteceder o HEAD: confira sua procedência no relatório. Os tempos locais não medem o Postgres nem o TTFB frio da Vercel."
+}
