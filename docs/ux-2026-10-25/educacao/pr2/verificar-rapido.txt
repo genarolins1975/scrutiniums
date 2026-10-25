@@ -1,0 +1,170 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1596 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 393 arquivo(s) alterado(s).
+  teste  src/tests/educacao-artefatos-navegador.test.ts  (teste alterado)
+  teste  src/tests/educacao-ficha-navegador.test.ts  (teste alterado)
+  teste  src/tests/educacao.test.ts  (teste alterado)
+  teste  src/tests/entrada-molde.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/lib/rotasPublicas.ts)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/conectividade.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/contas-publicas-areas.test.ts  (cita src/lib/uso/rotas-do-app.json)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-conta.test.ts  (cita pipeline/educacao/gold.py)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/educacao/ArtefatosEducacao.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/frescor-dominios.test.ts  (cita src/components/educacao/PainelEducacao.tsx)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/educacao/convite.ts)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/p1-tecnico.test.ts  (cita pipeline/educacao/gold.py)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/para-voce.test.ts  (cita src/components/observatorios/EntradaColecao.tsx)
+  teste  src/tests/perguntas-portas.test.ts  (cita public/educacao/gold/educacao.json)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/educacao/ArtefatosEducacao.tsx)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/educacao-artefatos-navegador.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/educacao-municipal/mapa/page.tsx)
+  fonte  docs/ux-2026-10-25/educacao/pr1/antes/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/depois/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/gold-antes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/medidas-antes/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/medidas-depois/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr2/auditoria-publicados.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr2/depois/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr2/medidas/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr2/repeticao-mapa/evidencias.json  (código alterado; testes que o importam)
+  fonte  next.config.mjs  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/educacao.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/mapa.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/AC.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/AL.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/AM.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/AP.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/BA.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/CE.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/DF.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/ES.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/GO.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/MA.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/MG.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/MS.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/MT.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/PA.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/PB.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/PE.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/PI.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/PR.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/RJ.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/RN.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/RO.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/RR.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/RS.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/SC.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/SE.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/SP.json  (código alterado; testes que o importam)
+  fonte  public/educacao/gold/municipios/TO.json  (código alterado; testes que o importam)
+  fonte  src/app/educacao-municipal/mapa/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/educacao-municipal/municipio/[ibge]/page.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/ArtefatosEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/DecomposicaoIdeb.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/Graficos.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/LaboratorioIdeb.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/MapaEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/PainelEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/educacao.css  (código alterado; testes que o importam)
+  fonte  src/components/observatorios/EntradaColecao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/observatorios/Recolhido.tsx  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/convite.ts  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/dados.ts  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/paginas.ts  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/tipos.ts  (código alterado; testes que o importam)
+  fonte  src/lib/observatorios/registro.ts  (código alterado; testes que o importam)
+  fonte  src/lib/rotasPublicas.ts  (código alterado; testes que o importam)
+  fonte  src/lib/uso/rotas-do-app.json  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/paineis-molde.ts  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/educacao-municipal/mapa/page.tsx; testes que o importam)
+  fonte  src/lib/energia/dados.ts  (cita public/educacao/gold/educacao.json; testes que o importam)
+  fonte  src/lib/energia/datasets.ts  (cita public/educacao/gold/educacao.json; testes que o importam)
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/educacao-2
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  192 passed (192)
+      Tests  4815 passed | 7 skipped | 1 todo (4823)
+   Start at  20:47:45
+   Duration  1142.92s (transform 16.35s, setup 0ms, import 277.07s, tests 773.57s, environment 44ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-25)
+  ok           10 s  Lint
+  ok     2 min 04 s  Tipos
+  ok           23 s  Derivados (npm run preparar)
+  ok           12 s  Cobertura bilíngue confere com as fontes de código
+  ok     20 min 56 s  Testes afetados
+  tempo de parede: 23 min 12 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

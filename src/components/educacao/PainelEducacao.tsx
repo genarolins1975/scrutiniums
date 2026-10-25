@@ -1,3 +1,5 @@
+import { DecomposicaoIdeb } from "./DecomposicaoIdeb";
+import { MetasEducacao, DecadaIdeb, DistribuicoesCidade, QuemAtende } from "./ArtefatosEducacao";
 /**
  * Painel completo "Educação nos municípios" (com conta). Seções por pergunta, na ordem da procura: a escola pública do
  * município do leitor (o Ideb, a série com a meta, do que o índice é feito, a comparação com o estado, o Brasil e as
@@ -15,13 +17,13 @@ import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { BuscaEducacao } from "./BuscaEducacao";
-import { GraficoDistribuicao, GraficoIdeb, type SerieLinha } from "./Graficos";
+import { GraficoDistribuicao, GraficoIdeb, GraficoComponente, type SerieLinha } from "./Graficos";
 import { LaboratorioIdeb } from "./LaboratorioIdeb";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { anosComIdeb, idebRecente, manchete, posicaoNaUf, rotuloPorte, type ConsultaMunicipio } from "@/lib/educacao/dados";
 import { dataBr, ideb, num, parte, pct } from "@/lib/educacao/formato";
 import {
-  DESCRICAO_REDE, DOWNLOADS, NOME_ETAPA, NOME_REDE, PERGUNTA_PAINEL, ROTA_CAPITAIS, ROTA_EDUCACAO, ROTULO_MOTIVO, SERIES_ETAPA, TEXTO_MARCA, TEXTO_MOTIVO, TITULO_CAPITAIS,
+  DESCRICAO_REDE, DOWNLOADS, NOME_ETAPA, NOME_REDE, PERGUNTA_PAINEL, ROTA_CAPITAIS, ROTA_EDUCACAO, ROTULO_MOTIVO, SERIES_ETAPA, TEXTO_MARCA, TEXTO_MOTIVO, TITULO_CAPITAIS, hrefFichaMunicipio,
 } from "@/lib/educacao/paginas";
 import { DO_ESTADO } from "@/lib/previdencia/paginas";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
@@ -42,9 +44,10 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
       idPrincipal="conteudo-educacao"
       acento="obee"
       titulo={PERGUNTA_PAINEL}
-      frase={`O Ideb, a aprendizagem e a aprovação das escolas municipais e públicas de cada cidade, com as matrículas e as escolas da rede. Dados do INEP: Ideb ${g.ideb.ano} e Censo Escolar ${g.censo.ano}.`}
+      frase={`Aprendizagem e aprovação no Índice de Desenvolvimento da Educação Básica (Ideb). Resultados de ${g.ideb.ano} e matrículas do Censo Escolar ${g.censo.ano}.`}
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/educacao-municipal"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaEducacao(g)}
+      seuMunicipio={consulta.estado === "ok" ? <ExtratoMunicipio g={g} m={consulta.m} uf={consulta.uf} arquivo={consulta.arquivo} ficha /> : undefined}
       paraVoce={
         <ParaVoce entrada={ROTA_EDUCACAO}>
           <SecaoMunicipio g={g} c={consulta} />
@@ -84,6 +87,8 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
       ]}
       recolhidos={
         <>
+          <Recolhido id="recolhido-metas" titulo="As metas projetadas pelo INEP" resumo="Quantas redes alcançaram a meta em cada edição, entre as que tinham meta e Ideb."><MetasEducacao g={g} mostrarTitulo={false} /></Recolhido>
+          <Recolhido id="recolhido-decada" titulo="A década do Ideb" resumo="Séries do Brasil e dos estados, com as duas etapas na mesma escala."><DecadaIdeb g={g} mostrarTitulo={false} /></Recolhido>
           <Recolhido id="recolhido-retrato" titulo="O retrato do país" resumo="Os números de abertura numa frase, com a distribuição das redes.">
             <Achado g={g} />
           </Recolhido>
@@ -169,14 +174,14 @@ function SecaoMunicipio({ g, c }: { g: GoldEducacao; c: ConsultaMunicipio }) {
         compõem, ao lado do estado, do Brasil e das cidades do mesmo porte, e as matrículas e as escolas do Censo Escolar {g.censo.ano}.
       </p>
       <div className="edm-busca">
-        <BuscaEducacao rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} ancora="municipio" />
+        <BuscaEducacao rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} />
       </div>
       {c.estado === "invalida" && (
         <p role="status" className="edm-aviso">
           {c.codigo ? `Nenhum município da base tem o código IBGE ${c.codigo}.` : "O endereço não traz um código IBGE de município, que tem sete dígitos."} Busque pelo nome.
         </p>
       )}
-      {c.estado === "ok" ? <Municipio g={g} m={c.m} uf={c.uf} arquivo={c.arquivo} /> : <ComoLer />}
+      {c.estado !== "ok" && <ComoLer />}
     </section>
   );
 }
@@ -188,27 +193,12 @@ function redeDoMunicipio(m: MunicipioGold, etapa: Etapa, anos: number[]): Rede |
   return null;
 }
 
-function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: MunicipioGold; uf: string; arquivo: ArquivoUf }) {
+export function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: MunicipioGold; uf: string; arquivo: ArquivoUf }) {
   const anos = arquivo.anos;
   const porte = rotuloPorte(g, m.porte);
   return (
     <>
-      <article className="edm-extrato" aria-labelledby="extrato-titulo">
-        <header>
-          <h3 id="extrato-titulo">
-            {m.nome} <span className="edm-unidade">{arquivo.nome_uf} ({uf})</span>
-          </h3>
-          <span className="edm-competencia">
-            Ideb {g.ideb.ano} · código IBGE {m.id}
-            {m.pop !== null && <> · {num(m.pop)} habitantes em {g.fontes.populacao.ano}</>}
-          </span>
-        </header>
-        <dl>
-          {ETAPAS.map((e) => (
-            <ExtratoEtapa key={e} g={g} m={m} uf={uf} etapa={e} />
-          ))}
-        </dl>
-      </article>
+      <ExtratoMunicipio g={g} m={m} uf={uf} arquivo={arquivo} />
       {m.capital && (
         <p className="edm-capital">
           <span>{m.nome} é capital: o gasto da prefeitura com educação por matrícula, os alunos por turma e o Ideb lado a lado com as outras 25 capitais estão no painel</span>
@@ -221,26 +211,53 @@ function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: MunicipioGold; u
       <ComoLer />
 
       <div className="edm-sub" id="serie">
-        <h3>O Ideb ao longo do tempo</h3>
+        <h2>O Ideb ao longo do tempo</h2>
         <p>
-          A rede de {m.nome} ao lado da rede pública {DO_ESTADO[uf]} e das redes municipais do Brasil, a cada dois anos desde {anos[0]}. As marcas vazadas são as metas do primeiro ciclo
+          A rede de {m.nome} ao lado da rede pública {DO_ESTADO[uf]} e das redes municipais do Brasil, a cada dois anos desde {anos[0]}. As marcas mostram as metas do primeiro ciclo
           do INEP para a rede municipal, que foram de {arquivo.anos_meta[0]} a {arquivo.anos_meta[arquivo.anos_meta.length - 1]}; {semMeta(anos, arquivo.anos_meta)} não têm meta.
         </p>
-        <div className="edm-graficos-dois">
+        <div className="edm-series">
           {ETAPAS.map((e) => (
             <SerieEtapa key={e} g={g} m={m} uf={uf} etapa={e} anos={anos} anosMeta={arquivo.anos_meta} />
           ))}
         </div>
       </div>
 
-      <Componentes g={g} m={m} anos={anos} anosMeta={arquivo.anos_meta} />
+      <Componentes g={g} m={m} anos={anos} />
+      <DecomposicaoIdeb anos={anos} m={m} />
+      <MetasEducacao g={g} m={m} />
       <Comparacao g={g} m={m} uf={uf} arquivo={arquivo} porte={porte} />
+      <DistribuicoesCidade g={g} m={m} uf={uf} />
+      <QuemAtende m={m} ano={g.censo.ano} />
       <MatriculasEscolas g={g} m={m} uf={uf} />
+      <TabelasComponentes g={g} m={m} anos={anos} anosMeta={arquivo.anos_meta} />
     </>
   );
 }
 
-function ExtratoEtapa({ g, m, uf, etapa }: { g: GoldEducacao; m: MunicipioGold; uf: string; etapa: Etapa }) {
+export function ExtratoMunicipio({ g, m, uf, arquivo, ficha = false }: { g: GoldEducacao; m: MunicipioGold; uf: string; arquivo: ArquivoUf; ficha?: boolean }) {
+  return (
+      <article className={`edm-extrato${ficha ? " edm-extrato-entrada" : ""}`} aria-labelledby="extrato-titulo">
+        <header>
+          <h2 id="extrato-titulo">
+            {ficha ? <>{m.nome} <span className="edm-unidade">{arquivo.nome_uf} ({uf})</span></> : "O resultado das duas etapas"}
+          </h2>
+          <span className="edm-competencia">
+            Ideb {g.ideb.ano}
+          </span>
+        </header>
+        <dl>
+          {ETAPAS.map((e) => (
+            <ExtratoEtapa key={e} g={g} m={m} uf={uf} etapa={e} compacto={ficha} />
+          ))}
+        </dl>
+        {ficha && <Link className="edm-link inline-flex min-h-[44px] items-center" href={hrefFichaMunicipio(m.id)} prefetch={false}>Ficha completa da cidade</Link>}
+        <p className="edm-fonte">Fonte: {g.fontes.ideb.orgao}, Índice de Desenvolvimento da Educação Básica (Ideb) {g.fontes.ideb.edicao}. Cada rede tem seu próprio universo.</p>
+      </article>
+  );
+}
+
+function ExtratoEtapa({ g, m, uf, etapa, compacto = false }: { g: GoldEducacao; m: MunicipioGold; uf: string; etapa: Etapa; compacto?: boolean }) {
   const b = m[etapa];
   const v = idebRecente(b.municipal);
   const k = g.ideb.anos.length - 1;
@@ -251,7 +268,7 @@ function ExtratoEtapa({ g, m, uf, etapa }: { g: GoldEducacao; m: MunicipioGold; 
     <div>
       <dt>
         {NOME_ETAPA[etapa]}, rede municipal
-        <small>{SERIES_ETAPA[etapa]} · {DESCRICAO_REDE.municipal}</small>
+        <small>{SERIES_ETAPA[etapa]}{!compacto && <> · {DESCRICAO_REDE.municipal}</>}</small>
       </dt>
       {v !== null ? (
         <dd className="edm-valor">{ideb(v)}<span className="edm-unidade">de 0 a 10</span></dd>
@@ -262,7 +279,7 @@ function ExtratoEtapa({ g, m, uf, etapa }: { g: GoldEducacao; m: MunicipioGold; 
         </dd>
       )}
       <dd className="edm-detalhe">
-        Rede pública da cidade: {pub !== null ? ideb(pub) : `sem Ideb (${b.motivo_publica ? ROTULO_MOTIVO[b.motivo_publica].toLowerCase() : "sem dado"})`} · rede pública {DO_ESTADO[uf]}: {ideb(est)} · redes municipais
+        {!compacto && <>Rede pública da cidade: {pub !== null ? ideb(pub) : `sem Ideb (${b.motivo_publica ? ROTULO_MOTIVO[b.motivo_publica].toLowerCase() : "sem dado"})`} · </>}Rede pública {DO_ESTADO[uf]}: {ideb(est)} · redes municipais
         do Brasil: {ideb(br)}
       </dd>
     </div>
@@ -280,7 +297,7 @@ function SerieEtapa({ g, m, uf, etapa, anos, anosMeta }: { g: GoldEducacao; m: M
     { nome: "estado", rotulo: uf, classe: "edm-linha-ref", pontos: pontos(est) },
     { nome: "brasil", rotulo: "Brasil", classe: "edm-linha-br", pontos: pontos(br) },
   ];
-  const metas = rede === "municipal" && s ? anosMeta.map((a, i) => ({ x: a, y: s.meta[i] })) : [];
+  const metas = rede === "municipal" && s ? anosMeta.map((a, i) => ({ x: a, y: s.meta[i], observado: s.ideb[anos.indexOf(a)] ?? null })) : [];
   const comDado = s ? anos.filter((_, i) => s.ideb[i] !== null) : [];
   const faltam = s ? anos.filter((a, i) => s.ideb[i] === null && a >= (comDado[0] ?? anos[0])) : [];
   const descricao = s
@@ -288,13 +305,13 @@ function SerieEtapa({ g, m, uf, etapa, anos, anosMeta }: { g: GoldEducacao; m: M
     : `${NOME_ETAPA[etapa]}: ${m.nome} não tem Ideb nesta etapa; o gráfico mostra o estado e o Brasil.`;
   return (
     <figure className="edm-figura">
-      <h4>{NOME_ETAPA[etapa]} ({SERIES_ETAPA[etapa]})</h4>
+      <h3>{NOME_ETAPA[etapa]} ({SERIES_ETAPA[etapa]})</h3>
       <GraficoIdeb series={series} anos={anos} metas={metas} anoNota={anoNota(g)} descricao={descricao} />
-      <div className="edm-legenda" aria-hidden="true">
+      <div className="edm-legenda">
         {s && <span><i />{rede === "municipal" ? `Rede municipal de ${m.nome}` : `Rede pública de ${m.nome}`}</span>}
         <span><i className="edm-l-ref" />Rede pública {DO_ESTADO[uf]}</span>
         <span><i className="edm-l-br" />Redes municipais do Brasil</span>
-        {metas.some((x) => x.y !== null) && <span><i className="edm-l-meta" />Meta do primeiro ciclo</span>}
+        {metas.some((x) => x.y !== null) && <span><i className="edm-l-meta edm-meta-cheia" />Alcançou a meta projetada pelo INEP · <i className="edm-l-meta" />Não alcançou · Sem marca quando falta Ideb</span>}
       </div>
       <figcaption>
         {!s && `${m.nome} não tem Ideb nesta etapa em nenhuma edição. `}
@@ -306,43 +323,47 @@ function SerieEtapa({ g, m, uf, etapa, anos, anosMeta }: { g: GoldEducacao; m: M
   );
 }
 
-function Componentes({ g, m, anos, anosMeta }: { g: GoldEducacao; m: MunicipioGold; anos: number[]; anosMeta: number[] }) {
-  // o mecanismo usa a etapa e a rede mais recentes com Ideb, na ordem: anos iniciais municipal, finais municipal, pública
+function Componentes({ g, m, anos }: { g: GoldEducacao; m: MunicipioGold; anos: number[] }) {
   const k = anos.length - 1;
-  const escolha = ETAPAS.flatMap((e) => (["municipal", "publica"] as Rede[]).map((r) => ({ e, r, s: m[e][r] }))).find((x) => x.s && x.s.ideb[k] !== null);
+  const escolha = (["municipal", "publica"] as Rede[]).flatMap((r) => ETAPAS.map((e) => ({ e, r, s: m[e][r] }))).find((x) => x.s?.ideb[k] != null && x.s.n[k] != null && x.s.p[k] != null);
   return (
     <div className="edm-sub" id="componentes">
-      <h3>Do que o Ideb é feito: aprendizagem e aprovação</h3>
-      <p>
-        O Ideb multiplica duas partes: a nota dos alunos no Saeb, levada para uma escala de 0 a 10 (N), e o indicador de rendimento, que vai de 0 a 1 e cai quando alunos são
-        reprovados ou abandonam a escola (P).
-      </p>
-      {escolha && escolha.s ? (
-        <>
-          <div className="edm-mecanismo" aria-label={`Ideb ${g.ideb.ano} da ${NOME_REDE[escolha.r].toLowerCase()}, ${NOME_ETAPA[escolha.e].toLowerCase()}`}>
-            <div>
-              <h4>Aprendizagem (N)</h4>
-              <span className="edm-valor">{num(escolha.s.n[k], 2)}</span>
-              <p>Saeb {g.ideb.ano}: matemática {num(escolha.s.mat[k], 1)} e português {num(escolha.s.port[k], 1)} pontos, padronizados de 0 a 10</p>
-            </div>
-            <span aria-hidden="true">×</span>
-            <div>
-              <h4>Fluxo (P)</h4>
-              <span className="edm-valor">{num(escolha.s.p[k], 2)}</span>
-              <p>Aprovação de {pct(escolha.s.aprov[k])} na etapa, no Censo Escolar {g.ideb.ano}</p>
-            </div>
-            <span aria-hidden="true">=</span>
-            <div className="edm-mecanismo-ideb">
-              <h4>Ideb {g.ideb.ano}</h4>
-              <span className="edm-valor">{ideb(escolha.s.ideb[k])}</span>
-              <p>{NOME_REDE[escolha.r]}, {NOME_ETAPA[escolha.e].toLowerCase()}; o INEP arredonda para uma casa</p>
-            </div>
+      <h2>Do que o Ideb é feito: aprendizagem e aprovação</h2>
+      <p>O Ideb multiplica a nota padronizada (N) do Sistema de Avaliação da Educação Básica (Saeb) pelo indicador de rendimento (P), que resume a aprovação.</p>
+      {escolha?.s ? (
+        <ModeloDidatico id="laboratorio-municipio" titulo="E se a aprendizagem ou a aprovação mudasse?"
+          descricao={`${NOME_REDE[escolha.r]} de ${m.nome}, ${NOME_ETAPA[escolha.e].toLowerCase()}, INEP, Ideb ${g.ideb.ano}.`}
+          deixaDeFora={["N reúne português e matemática na escala do Saeb", "P é a média harmônica da aprovação de cada ano escolar", "O resultado da rede não descreve cada escola nem demonstra causa"]}>
+          <LaboratorioIdeb n={escolha.s.n[k]!} p={escolha.s.p[k]!} ideb={escolha.s.ideb[k]!} rede={`${NOME_REDE[escolha.r].toLowerCase()} de ${m.nome}`} ano={g.ideb.ano} />
+        </ModeloDidatico>
+      ) : <p className="edm-aviso">{m.nome} não tem componentes completos do Ideb {g.ideb.ano}. As séries preservam as edições anteriores disponíveis.</p>}
+      {ETAPAS.map((e) => {
+        const rede = redeDoMunicipio(m, e, anos);
+        const s = rede ? m[e][rede] : null;
+        if (!s || !rede) return null;
+        return <section key={e} className="edm-sub" aria-label={`${NOME_ETAPA[e]}, componentes`}>
+          <h3>{NOME_ETAPA[e]} · {NOME_REDE[rede]} de {m.nome}</h3>
+          <div className="edm-componentes-grade">
+            {([
+              ["n", "Aprendizagem (N)", "nota padronizada, de 0 a 10", 10],
+              ["p", "Fluxo (P)", "indicador de rendimento, de 0 a 1", 1],
+              ["mat", "Saeb de matemática", "pontos na escala do Saeb", 500],
+              ["port", "Saeb de português", "pontos na escala do Saeb", 500],
+            ] as const).map(([campo, titulo, unidade, max]) => <figure key={campo} className="edm-figura">
+              <h4>{titulo}</h4>
+              <GraficoComponente anos={anos} valores={s[campo]} max={max} unidade={unidade} descricao={`${titulo}, ${NOME_REDE[rede]} de ${m.nome}, ${NOME_ETAPA[e]}, INEP, ${anos[0]} a ${anos.at(-1)}. Lacunas interrompem a linha.`} />
+              <figcaption>{unidade} · INEP, Ideb {g.ideb.ano}. Lacunas são ausência de dado; 2021 requer a ressalva da pandemia.</figcaption>
+            </figure>)}
           </div>
-          <LaboratorioIdeb n={escolha.s.n[k] as number} p={escolha.s.p[k] as number} ideb={escolha.s.ideb[k] as number} rede={`${NOME_REDE[escolha.r].toLowerCase()} de ${m.nome}`} ano={g.ideb.ano} />
-        </>
-      ) : (
-        <p className="edm-aviso">{m.nome} não tem Ideb {g.ideb.ano} em nenhuma etapa e rede; as tabelas abaixo mostram as edições anteriores, quando houver.</p>
-      )}
+        </section>;
+      })}
+    </div>
+  );
+}
+
+function TabelasComponentes({ g, m, anos, anosMeta }: { g: GoldEducacao; m: MunicipioGold; anos: number[]; anosMeta: number[] }) {
+  return (
+    <Recolhido id="tabelas-componentes" titulo="Tabelas completas por edição" resumo="Ideb, meta, aprovação, notas de português e matemática, N e P, com as marcas de ausência do INEP." className="mt-12">
       {ETAPAS.map((e) => {
         const rede = redeDoMunicipio(m, e, anos);
         const s = rede ? m[e][rede] : null;
@@ -359,6 +380,7 @@ function Componentes({ g, m, anos, anosMeta }: { g: GoldEducacao; m: MunicipioGo
                     <th scope="col">Ano</th>
                     <th scope="col">Ideb</th>
                     <th scope="col">Meta</th>
+                    <th scope="col">Situação da meta</th>
                     <th scope="col">Aprovação</th>
                     <th scope="col">Saeb matemática</th>
                     <th scope="col">Saeb português</th>
@@ -376,6 +398,7 @@ function Componentes({ g, m, anos, anosMeta }: { g: GoldEducacao; m: MunicipioGo
                         <th scope="row">{a}</th>
                         <td>{s.ideb[i] === null ? <span className="edm-vazio">Sem Ideb</span> : ideb(s.ideb[i])}</td>
                         <td>{km >= 0 && rede === "municipal" ? (s.meta[km] === null ? <span className="edm-vazio">Sem meta</span> : ideb(s.meta[km])) : <span className="edm-vazio">Sem meta</span>}</td>
+                        <td>{km < 0 || rede !== "municipal" || s.meta[km] == null ? "Sem meta" : s.ideb[i] == null ? "Sem Ideb" : s.ideb[i]! >= s.meta[km]! ? "Alcançou a meta projetada pelo INEP" : "Não alcançou a meta projetada pelo INEP"}</td>
                         <td>{s.aprov[i] === null ? <span className="edm-vazio">Sem dado</span> : pct(s.aprov[i])}</td>
                         <td>{s.mat[i] === null ? <span className="edm-vazio">{marca && TEXTO_MARCA[marca] ? marca : "Sem dado"}</span> : num(s.mat[i], 1)}{s.mat[i] !== null && marca ? ` ${marca}` : ""}</td>
                         <td>{s.port[i] === null ? <span className="edm-vazio">{marca && TEXTO_MARCA[marca] ? marca : "Sem dado"}</span> : num(s.port[i], 1)}{s.port[i] !== null && marca ? ` ${marca}` : ""}</td>
@@ -395,7 +418,7 @@ function Componentes({ g, m, anos, anosMeta }: { g: GoldEducacao; m: MunicipioGo
         divulgado a pedido; *, média calculada com as avaliações estaduais por extravio de provas; **, participação abaixo de 50%. A meta é da rede municipal; a planilha não traz meta
         da rede pública por município.
       </p>
-    </div>
+    </Recolhido>
   );
 }
 
@@ -403,7 +426,7 @@ function Comparacao({ g, m, uf, arquivo, porte }: { g: GoldEducacao; m: Municipi
   const k = g.ideb.anos.length - 1;
   return (
     <div className="edm-sub" id="comparacao">
-      <h3>Comparado ao estado, ao Brasil e a cidades do mesmo porte</h3>
+      <h2>Comparado ao estado, ao Brasil e a cidades do mesmo porte</h2>
       <p>
         Onde a rede municipal de {m.nome} fica entre as redes municipais com Ideb {g.ideb.ano}: no estado e entre as cidades do mesmo porte{porte ? ` (${porte.toLowerCase()})` : ""},
         pela população estimada pelo IBGE para {g.fontes.populacao.ano}. A posição não diz por que a rede está ali.
@@ -417,7 +440,7 @@ function Comparacao({ g, m, uf, arquivo, porte }: { g: GoldEducacao; m: Municipi
           const est = g.ideb.ufs[e][uf]?.publica.ideb[k] ?? null;
           return (
             <figure key={e} className="edm-figura">
-              <h4>{NOME_ETAPA[e]} ({SERIES_ETAPA[e]})</h4>
+              <h3>{NOME_ETAPA[e]} ({SERIES_ETAPA[e]})</h3>
               {v === null ? (
                 <p className="edm-aviso">A rede municipal de {m.nome} não tem Ideb {g.ideb.ano} nesta etapa. {m[e].motivo_municipal ? TEXTO_MOTIVO[m[e].motivo_municipal!] : ""}</p>
               ) : (
@@ -464,7 +487,7 @@ function MatriculasEscolas({ g, m, uf }: { g: GoldEducacao; m: MunicipioGold; uf
   const titulo = `${m.nome}: matrículas da rede municipal por etapa, Censo Escolar ${g.censo.ano}, e a parte que ela atende`;
   return (
     <div className="edm-sub" id="matriculas">
-      <h3>Quantos alunos e escolas a rede municipal tem</h3>
+      <h2>Quantos alunos e escolas a rede municipal tem</h2>
       <p>
         {c.mat_municipal > 0
           ? `A rede municipal de ${m.nome} tem ${num(c.mat_municipal)} matrículas e ${num(c.esc_municipal)} escolas, ${num(c.esc_mun_rural)} delas na zona rural, no Censo Escolar ${g.censo.ano}.`
@@ -714,7 +737,7 @@ function SecaoCapitais() {
 
 /* ------------------------------------------------------------------------------------------------ método */
 
-function Metodo({ g }: { g: GoldEducacao }) {
+export function Metodo({ g, semDownloads = false }: { g: GoldEducacao; semDownloads?: boolean }) {
   const f = g.fontes;
   const div = Object.entries(f.ideb.codigos_divergentes).flatMap(([arquivo, l]) => l.map((d) => ({ arquivo, ...d })));
   return (
@@ -768,6 +791,13 @@ function Metodo({ g }: { g: GoldEducacao }) {
             </p>
           )}
         </div>
+        {!semDownloads && <DownloadsEducacao />}
+    </div>
+  );
+}
+
+export function DownloadsEducacao() {
+  return (
         <div>
           <h3>Arquivos para baixar</h3>
           <div className="edm-arquivos">
@@ -779,6 +809,5 @@ function Metodo({ g }: { g: GoldEducacao }) {
           </div>
           <p className="edm-fonte">CSV com ponto e vírgula, codificação UTF-8, ponto decimal. Ausência fica vazia, nunca zero, com o motivo em coluna própria. Cada linha traz a fonte e a edição.</p>
         </div>
-    </div>
   );
 }

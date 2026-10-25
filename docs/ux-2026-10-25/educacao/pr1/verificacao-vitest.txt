@@ -1,0 +1,80 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas cobertura,vitest
+
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1592 fontes de código.
+
+▶ Testes (inclui a verificação obrigatória do HTML gerado): npx vitest run
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/energia-i18n-html.test.ts (1192 tests | 1 failed) 120100ms
+       × nenhum português sem marca no inglês e nenhum inglês no português 7285ms
+ ❯ src/tests/painel-molde.test.ts (80 tests | 1 failed) 28663ms
+     × toda rota de painel está no molde, a migrar com o grupo, ou fora do molde com o motivo, e só numa lista 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/energia-i18n-html.test.ts > Setor Elétrico em inglês: HTML gerado > /setor-eletrico/empresas/equatorial-pi > nenhum português sem marca no inglês e nenhum inglês no português
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/energia-i18n-html.test.ts:91:5
+     89|     });
+     90|
+     91|     it("nenhum português sem marca no inglês e nenhum inglês no portug…
+       |     ^
+     92|       const { pt, en } = carregar();
+     93|       const v = vazamentosEnergia(pt, en);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/tests/painel-molde.test.ts > molde de painel: inventário > toda rota de painel está no molde, a migrar com o grupo, ou fora do molde com o motivo, e só numa lista
+AssertionError: rotas sem lista: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/educacao-municipal/municipio/[ibge]",
++ ]
+
+ ❯ src/tests/painel-molde.test.ts:59:43
+     57|     const listas = [new Set(NO_MOLDE_PAINEL), new Set(Object.keys(A_MI…
+     58|     const esquecidas = [...universo].filter((r) => !listas.some((l) =>…
+     59|     expect(esquecidas, "rotas sem lista").toEqual([]);
+       |                                           ^
+     60|     const repetidas = [...universo, ...listas.flatMap((l) => [...l])].…
+     61|     expect([...new Set(repetidas)], "rotas em mais de uma lista").toEq…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 404 passed (406)
+      Tests  2 failed | 9637 passed | 12 skipped | 1 todo (9652)
+   Start at  18:32:59
+   Duration  1637.97s (transform 43.15s, setup 0ms, import 253.98s, tests 2922.00s, environment 59ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  ok           16 s  Cobertura bilíngue confere com as fontes de código
+  FALHA  27 min 19 s  Testes (inclui a verificação obrigatória do HTML gerado)  (npx vitest run)
+  tempo de parede: 27 min 36 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

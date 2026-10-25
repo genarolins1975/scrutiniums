@@ -48,7 +48,7 @@
 .edm-secao > h2 { max-width: 40ch; }
 .edm-intro { margin-top: 12px; max-width: 70ch; font-size: 16px; line-height: 1.65; }
 .edm-sub { margin-top: 48px; }
-.edm-sub > h3 + p { margin-top: 8px; max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.edm-sub > h2 + p, .edm-sub > h3 + p { margin-top: 8px; max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--cor-carvao-muted); }
 @media (max-width: 760px) { .edm-secao { margin-top: 60px; } .edm-sub { margin-top: 40px; } }
 
 .edm-busca { margin-top: 24px; max-width: 760px; }
@@ -213,3 +213,76 @@
 .edm-toque { transition: transform 140ms var(--edm-saida), background-color 160ms ease, color 160ms ease; }
 .edm-toque:active { transform: scale(0.97); }
 @media (prefers-reduced-motion: reduce) { .edm-toque, .edm-toque:active { transition: none; transform: none; } }
+
+/* Educação PR 1: extrato escolhido antes da escala, séries na largura da coluna. */
+.edm-extrato-entrada { max-width: none; margin-top: 24px; padding: 16px 20px; }
+.edm-extrato-entrada header { padding-bottom: 8px; }
+.edm-extrato-entrada dl { margin-top: 10px; }
+.edm-extrato-entrada .edm-fonte { margin-top: 8px; }
+.edm-series { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.edm-series .edm-so-largo { max-width: 100%; }
+.edm-componentes-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.edm-svg .edm-meta-cheia { fill: var(--edm-acento-escuro); }
+.edm-legenda .edm-meta-cheia { background: var(--edm-acento-escuro); }
+.edm-lab-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.edm-ficha { max-width: 1240px; margin-inline: auto; padding: 24px; }
+.edm-ficha > header p { margin-top: 12px; }
+.edm-ficha [data-modelo-didatico] { margin-top: 24px; }
+@media (max-width: 640px) { .edm-componentes-grade { grid-template-columns: minmax(0, 1fr); } }
+
+@media (min-width: 640px) and (max-width: 900px) {
+  .edm-raiz [data-frescor-faixa="linha"] > p { display: none; }
+  .edm-raiz [data-frescor-faixa="linha"] > details { display: block; }
+}
+@media (max-width: 640px) {
+  .edm-extrato-entrada dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .edm-extrato-entrada .edm-valor { font-size: 2rem; }
+  .edm-extrato-entrada header .edm-competencia { font-size: 12px; }
+}
+
+/* Derivações da Educação: mesma hierarquia, paleta e equivalentes textuais. */
+.edm-movimentos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; margin-top: 24px; }
+.edm-movimentos > div { border-top: 1px solid var(--cor-linha); padding-top: 16px; }
+.edm-movimentos dt { font-size: 14px; }
+.edm-movimentos dd { margin-top: 8px; font-variant-numeric: tabular-nums; }
+.edm-contribuicoes dd { font-family: var(--font-serif), Georgia, serif; font-size: 26px; }
+.edm-placar-metas { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 20px; margin-top: 20px; }
+.edm-placar-metas > div { border-top: 1px solid var(--cor-linha); padding-top: 12px; }
+.edm-placar-metas dt { font-family: var(--font-serif), Georgia, serif; font-size: 24px; }
+.edm-placar-metas dd { font-size: 14px; line-height: 1.5; margin-top: 8px; }
+.edm-barra-composicao { display: flex; width: 100%; height: 28px; margin-block: 14px; }
+.edm-barra-composicao span + span { border-left: 1px solid var(--cor-superficie); }
+.edm-legenda-composicao { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.edm-legenda-composicao dt { display: flex; align-items: center; gap: 8px; }
+.edm-legenda-composicao i { width: 12px; height: 12px; }
+.edm-legenda-composicao dd { font-variant-numeric: tabular-nums; }
+.edm-mapa-tabela { max-height: 700px; overflow: auto; }
+@media (max-width: 640px) {
+  .edm-movimentos { grid-template-columns: 1fr; }
+  .edm-placar-metas { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+.edm-raiz {
+  --edm-mapa-1: color-mix(in srgb, var(--cor-carvao) 19%, var(--cor-papel));
+  --edm-mapa-2: color-mix(in srgb, var(--cor-carvao) 23%, var(--cor-papel));
+  --edm-mapa-3: color-mix(in srgb, var(--cor-carvao) 27%, var(--cor-papel));
+  --edm-mapa-4: color-mix(in srgb, var(--cor-carvao) 31%, var(--cor-papel));
+  --edm-mapa-5: color-mix(in srgb, var(--cor-carvao) 35%, var(--cor-papel));
+  --edm-mapa-6: color-mix(in srgb, var(--cor-carvao) 39%, var(--cor-papel));
+  --edm-mapa-7: color-mix(in srgb, var(--cor-carvao) 43%, var(--cor-papel));
+  --edm-mapa-8: color-mix(in srgb, var(--cor-carvao) 47%, var(--cor-papel));
+  --edm-mapa-9: color-mix(in srgb, var(--cor-carvao) 51%, var(--cor-papel));
+  --edm-mapa-10: color-mix(in srgb, var(--cor-carvao) 55%, var(--cor-papel));
+  --edm-mapa-11: color-mix(in srgb, var(--cor-carvao) 59%, var(--cor-papel));
+  --edm-mapa-12: color-mix(in srgb, var(--cor-carvao) 63%, var(--cor-papel));
+  --edm-mapa-13: color-mix(in srgb, var(--cor-carvao) 67%, var(--cor-papel));
+  --edm-mapa-14: color-mix(in srgb, var(--cor-carvao) 71%, var(--cor-papel));
+  --edm-mapa-15: color-mix(in srgb, var(--cor-carvao) 75%, var(--cor-papel));
+  --edm-mapa-16: color-mix(in srgb, var(--cor-carvao) 79%, var(--cor-papel));
+  --edm-mapa-17: color-mix(in srgb, var(--cor-carvao) 83%, var(--cor-papel));
+  --edm-mapa-18: color-mix(in srgb, var(--cor-carvao) 87%, var(--cor-papel));
+  --edm-mapa-19: color-mix(in srgb, var(--cor-carvao) 91%, var(--cor-papel));
+  --edm-mapa-20: color-mix(in srgb, var(--cor-carvao) 95%, var(--cor-papel));
+}
+
+@media (min-width: 1100px) { .edm-placar-cidade { grid-template-columns: repeat(8, minmax(0,1fr)); } }

@@ -1,0 +1,114 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas vitest
+
+
+▶ Testes (inclui a verificação obrigatória do HTML gerado): npx vitest run
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/educacao-3
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/ux-orcamentos-cromo.test.ts (5 tests | 2 failed) 310261ms
+     × 1440 px, com sessão: entradas das coleções na navegação única e suas subpáginas 300046ms
+     × 390 px, com sessão: entradas das coleções na navegação única e suas subpáginas 300047ms
+ ❯ src/tests/credito-residual-browser.test.ts (9 tests | 1 failed) 344191ms
+     × selos completos permanecem contidos com fonte duplicada 90029ms
+ ❯ src/tests/painel-molde.test.ts (81 tests | 1 failed) 48346ms
+     × /eficiencia-estatal/educacao-municipal-capitais segue o molde 418ms
+ ❯ src/tests/painel-molde-obee-a.test.ts (18 tests | 1 failed) 6201ms
+     × /eficiencia-estatal/educacao-municipal-capitais 304ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/credito-residual-browser.test.ts > Crédito: regressões da auditoria independente > selos completos permanecem contidos com fonte duplicada
+Error: Test timed out in 90000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/credito-residual-browser.test.ts:176:3
+    174|   },90_000);
+    175|
+    176|   it("selos completos permanecem contidos com fonte duplicada", async …
+       |   ^
+    177|     const page=await contexto.newPage();
+    178|     try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/tests/painel-molde-obee-a.test.ts > molde de painel, Eficiência Estatal (frente obee-a) > /eficiencia-estatal/educacao-municipal-capitais
+AssertionError: /eficiencia-estatal/educacao-municipal-capitais: bloco de primeiro nível em figuras fora do kit (<section class>): expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ Module.conferirPainel src/tests/suporte/molde-painel.ts:135:185
+    133|     for (const bloco of todos(painel, (n) => attr(n, "data-fatia") ===…
+    134|       for (const filho of filhos(bloco)) {
+    135|         expect(aceitos.some((a) => tem(filho, a)), `${rota}: bloco de …
+       |                                                                                                                                                                                         ^
+    136|       }
+    137|     }
+ ❯ src/tests/painel-molde-obee-a.test.ts:72:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/tests/painel-molde.test.ts > molde de painel no HTML do servidor (build de produção, com sessão) > /eficiencia-estatal/educacao-municipal-capitais segue o molde
+AssertionError: /eficiencia-estatal/educacao-municipal-capitais: bloco de primeiro nível em figuras fora do kit (<section class>): expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ conferirPainel src/tests/suporte/molde-painel.ts:135:185
+    133|     for (const bloco of todos(painel, (n) => attr(n, "data-fatia") ===…
+    134|       for (const filho of filhos(bloco)) {
+    135|         expect(aceitos.some((a) => tem(filho, a)), `${rota}: bloco de …
+       |                                                                                                                                                                                         ^
+    136|       }
+    137|     }
+ ❯ src/tests/painel-molde.test.ts:96:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/tests/ux-orcamentos-cromo.test.ts > orçamento de cromo no navegador (build de produção) > 1440 px, com sessão: entradas das coleções na navegação única e suas subpáginas
+ FAIL  src/tests/ux-orcamentos-cromo.test.ts > orçamento de cromo no navegador (build de produção) > 390 px, com sessão: entradas das coleções na navegação única e suas subpáginas
+Error: Test timed out in 300000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/ux-orcamentos-cromo.test.ts:158:8
+    156|   // suíte. O expect de cada caso vem do contexto do teste, como o Vit…
+    157|   for (const largura of [1440, 390] as const) {
+    158|     it.concurrent(`${largura} px, com sessão: entradas das coleções na…
+       |        ^
+    159|       expect(await medir(expect, largura, [...new Set([...Object.value…
+    160|     }, 300_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  4 failed | 405 passed (409)
+      Tests  5 failed | 9648 passed | 12 skipped | 1 todo (9666)
+   Start at  20:39:03
+   Duration  2158.51s (transform 53.70s, setup 0ms, import 283.77s, tests 3916.58s, environment 68ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  FALHA  36 min 00 s  Testes (inclui a verificação obrigatória do HTML gerado)  (npx vitest run)
+  tempo de parede: 36 min 01 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

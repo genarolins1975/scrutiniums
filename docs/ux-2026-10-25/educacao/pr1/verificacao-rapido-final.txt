@@ -1,0 +1,147 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1592 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 179 arquivo(s) alterado(s).
+  teste  src/tests/educacao-ficha-navegador.test.ts  (teste alterado)
+  teste  src/tests/educacao.test.ts  (teste alterado)
+  teste  src/tests/entrada-molde.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/lib/rotasPublicas.ts)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/conectividade.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/contas-publicas-areas.test.ts  (cita src/lib/uso/rotas-do-app.json)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/educacao/Graficos.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/frescor-dominios.test.ts  (cita src/components/educacao/PainelEducacao.tsx)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/educacao/convite.ts)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/para-voce.test.ts  (cita src/components/observatorios/EntradaColecao.tsx)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/educacao/Graficos.tsx)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/educacao-ficha-navegador.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx)
+  fonte  docs/ux-2026-10-25/educacao/pr1/antes/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/depois/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/gold-antes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr1/medidas-antes/medidas.json  (código alterado; testes que o importam)
+  fonte  next.config.mjs  (código alterado; testes que o importam)
+  fonte  src/app/educacao-municipal/municipio/[ibge]/page.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/Graficos.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/LaboratorioIdeb.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/PainelEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/educacao.css  (código alterado; testes que o importam)
+  fonte  src/components/observatorios/EntradaColecao.tsx  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/convite.ts  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/paginas.ts  (código alterado; testes que o importam)
+  fonte  src/lib/rotasPublicas.ts  (código alterado; testes que o importam)
+  fonte  src/lib/uso/rotas-do-app.json  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/educacao-municipal/municipio/[ibge]/page.tsx; testes que o importam)
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/painel-molde.test.ts (80 tests | 1 failed) 70917ms
+     × toda rota de painel está no molde, a migrar com o grupo, ou fora do molde com o motivo, e só numa lista 33ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/painel-molde.test.ts > molde de painel: inventário > toda rota de painel está no molde, a migrar com o grupo, ou fora do molde com o motivo, e só numa lista
+AssertionError: rotas sem lista: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/educacao-municipal/municipio/[ibge]",
++ ]
+
+ ❯ src/tests/painel-molde.test.ts:59:43
+     57|     const listas = [new Set(NO_MOLDE_PAINEL), new Set(Object.keys(A_MI…
+     58|     const esquecidas = [...universo].filter((r) => !listas.some((l) =>…
+     59|     expect(esquecidas, "rotas sem lista").toEqual([]);
+       |                                           ^
+     60|     const repetidas = [...universo, ...listas.flatMap((l) => [...l])].…
+     61|     expect([...new Set(repetidas)], "rotas em mais de uma lista").toEq…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 187 passed (188)
+      Tests  1 failed | 4758 passed | 7 skipped | 1 todo (4767)
+   Start at  18:43:49
+   Duration  501.60s (transform 11.57s, setup 0ms, import 273.19s, tests 638.77s, environment 48ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-25)
+  ok            8 s  Lint
+  ok           23 s  Tipos
+  ok           17 s  Derivados (npm run preparar)
+  ok            7 s  Cobertura bilíngue confere com as fontes de código
+  FALHA  9 min 10 s  Testes afetados  (node scripts/testes-afetados.mjs)
+  tempo de parede: 9 min 40 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

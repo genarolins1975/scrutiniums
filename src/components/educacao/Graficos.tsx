@@ -46,15 +46,17 @@ export function afastar(ys: number[], min: number, topo: number, base: number): 
 }
 
 type PropsSerie = {
+  compacto?: boolean;
   series: SerieLinha[];
   anos: number[];
-  metas?: PontoAno[];
+  metas?: (PontoAno & { observado?: number | null })[];
   /** Ano com nota no topo do gráfico (2021, pandemia). */
   anoNota?: { ano: number; texto: string };
   descricao: string;
 };
 
 export function GraficoIdeb(p: PropsSerie) {
+  if (p.compacto) return <SerieIdeb {...p} largura={ESTREITO} />;
   return (
     <>
       <div className="edm-so-largo"><SerieIdeb {...p} largura={LARGO} /></div>
@@ -92,8 +94,8 @@ function SerieIdeb({ series, anos, metas = [], anoNota, descricao, largura: L }:
       {marcasX.map((a) => (
         <text key={a} x={fx(a)} y={altura - 10} textAnchor="middle">{a}</text>
       ))}
-      {metas.filter((m) => m.y !== null).map((m) => (
-        <circle key={`meta-${m.x}`} cx={fx(m.x)} cy={fy(m.y as number)} r={4} className="edm-meta" />
+      {metas.filter((m) => m.y !== null && m.observado != null).map((m) => (
+        <circle key={`meta-${m.x}`} cx={fx(m.x)} cy={fy(m.y as number)} r={4} className={m.observado! >= m.y! ? "edm-meta edm-meta-cheia" : "edm-meta"} />
       ))}
       {series.map((s) => (
         <path key={s.nome} d={caminho(s.pontos, fx, fy)} className={s.classe} />
@@ -124,6 +126,7 @@ function SerieIdeb({ series, anos, metas = [], anoNota, descricao, largura: L }:
 
 /** Distribuição do Ideb em faixas de meio ponto; a faixa do município no acento e a mediana marcada. */
 export function GraficoDistribuicao(p: PropsDistribuicao) {
+  if (p.compacto) return <Distribuicao {...p} largura={ESTREITO} />;
   return (
     <>
       <div className="edm-so-largo"><Distribuicao {...p} largura={LARGO} /></div>
@@ -132,15 +135,15 @@ export function GraficoDistribuicao(p: PropsDistribuicao) {
   );
 }
 
-type PropsDistribuicao = { faixas: number[]; destaque: number | null; mediana: number; descricao: string; unidade: string };
+type PropsDistribuicao = { compacto?: boolean; escalaCompleta?: boolean; faixas: number[]; destaque: number | null; mediana: number; descricao: string; unidade: string };
 
-function Distribuicao({ faixas, destaque, mediana, descricao, unidade, largura: L }: PropsDistribuicao & { largura: number }) {
+function Distribuicao({ faixas, destaque, mediana, descricao, unidade, escalaCompleta = false, largura: L }: PropsDistribuicao & { largura: number }) {
   const M = { e: 44, d: 16, t: 46, b: 34 };
   const altura = 230;
   const primeira = Math.max(0, Math.min(faixas.findIndex((n) => n > 0), destaque === null ? 99 : Math.floor(destaque * 2)));
   const ultima = Math.min(19, Math.max(19 - [...faixas].reverse().findIndex((n) => n > 0), destaque === null ? 0 : Math.floor(destaque * 2)));
-  const i0 = Math.max(0, primeira - (primeira % 2));
-  const i1 = Math.min(19, ultima + ((ultima + 1) % 2));
+  const i0 = escalaCompleta ? 0 : Math.max(0, primeira - (primeira % 2));
+  const i1 = escalaCompleta ? 19 : Math.min(19, ultima + ((ultima + 1) % 2));
   const vis = faixas.slice(i0, i1 + 1);
   const max = Math.max(1, ...vis);
   const topoY = (() => {
@@ -175,4 +178,21 @@ function Distribuicao({ faixas, destaque, mediana, descricao, unidade, largura: 
       ))}
     </svg>
   );
+}
+
+/** Pequenos múltiplos: a mesma escala em ambas as etapas, sem unir edições ausentes. */
+export function GraficoComponente({ anos, valores, max, unidade, descricao }: { anos: number[]; valores: (number | null)[]; max: number; unidade: string; descricao: string }) {
+  const L = 380, H = 210, e = 44, d = 22, t = 40, b = 30;
+  const fx = (a: number) => e + (a - anos[0]) / Math.max(1, anos[anos.length - 1] - anos[0]) * (L - e - d);
+  const fy = (v: number) => t + (1 - v / max) * (H - t - b);
+  const pontos = anos.map((x, i) => ({ x, y: valores[i] }));
+  return <svg viewBox={`0 0 ${L} ${H}`} className="edm-svg" role="img" aria-label={descricao}>
+    <title>{descricao}</title>
+    {[0, max / 2, max].map((v) => <g key={v}><line x1={e} x2={L-d} y1={fy(v)} y2={fy(v)} className="edm-grade"/><text x={e-8} y={fy(v)+4} textAnchor="end">{num(v, max === 1 ? 1 : 0)}</text></g>)}
+    {anos.includes(2021) && <g><line x1={fx(2021)} x2={fx(2021)} y1={t} y2={H-b} className="edm-nota-linha"/><text x={fx(2021)} y={t-12} textAnchor="middle">2021</text></g>}
+    <path d={caminho(pontos, fx, fy)} className="edm-linha"/>
+    {pontos.filter(p => p.y !== null).map(p => <circle key={p.x} cx={fx(p.x)} cy={fy(p.y!)} r={2.5} className="edm-linha-ponto"/>)}
+    {anos.filter((_, i) => i % 2 === 0).map(a => <text key={a} x={fx(a)} y={H-8} textAnchor="middle">{a}</text>)}
+    <desc>{unidade}</desc>
+  </svg>;
 }

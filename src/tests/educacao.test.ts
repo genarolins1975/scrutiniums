@@ -46,6 +46,11 @@ async function painel(ibge?: string): Promise<string> {
   return renderToStaticMarkup(createElement(Pagina, { searchParams: ibge ? { ibge } : {} }));
 }
 
+async function ficha(ibge: string): Promise<string> {
+  const { default: Pagina } = await import("@/app/educacao-municipal/municipio/[ibge]/page");
+  return renderToStaticMarkup(createElement(Pagina, { params: { ibge } }));
+}
+
 describe("educação nos municípios: lugar no registro, navegação e acesso", () => {
   it("porta da coleção Educação dos Serviços Públicos, antes do painel das capitais, mantido pelo próprio observatório", async () => {
     const { donoDaRota, observatorio } = await import("@/lib/observatorios/registro");
@@ -62,7 +67,7 @@ describe("educação nos municípios: lugar no registro, navegação e acesso", 
 
   it("um endereço público para o tema: aperitivo sem sessão, painel com sessão; gold, arquivos e caminho interno fechados", async () => {
     const { APERITIVOS, desvioDoAperitivo, ehRotaPublica, exigeConta } = await import("@/lib/rotasPublicas");
-    expect(APERITIVOS.find((a) => a.rota === "/educacao-municipal")).toEqual({ tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal" });
+    expect(APERITIVOS.find((a) => a.rota === "/educacao-municipal")).toEqual({ tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal", fichasIbge: "/educacao-municipal/municipio", manterConsultaComSessao: true });
     expect(ehRotaPublica("/educacao-municipal")).toBe(true);
     expect(desvioDoAperitivo("/educacao-municipal")).toEqual({ tipo: "aperitivo", destino: "/aperitivo/educacao-municipal" });
     expect(desvioDoAperitivo("/aperitivo/educacao-municipal")).toEqual({ tipo: "interno" });
@@ -194,8 +199,9 @@ describe("educação nos municípios: painel completo (com sessão)", () => {
     expect(html).not.toContain("com conta</span>");
   });
 
-  it("com o município: série com meta, componentes, laboratório, posição no estado, porte e matrículas", async () => {
-    const html = await painel(SP);
+  // Pedido do dono em PROMPT_CODEX_EDUCACAO.md, PR 1: análises passam para a ficha, preservando todos os invariantes.
+  it("na ficha do município: série com meta, componentes, laboratório, posição no estado, porte e matrículas", async () => {
+    const html = await ficha(SP);
     const t = textoDe(html);
     for (const id of ["serie", "componentes", "comparacao", "matriculas"]) expect(html, id).toContain(`id="${id}"`);
     expect(html).toContain("edm-meta");
@@ -298,5 +304,27 @@ describe("educação nos municípios: entradas e camada aberta citam o painel", 
     for (const n of textos) expect(n, n).not.toMatch(/[–—]|\s-\s|\w-\w/);
     const html = textoDe(await painel(SP)) + textoDe(await aperitivo(SP));
     expect(html).not.toMatch(/\s[–—]\s/);
+  });
+});
+
+describe("Educação PR 1: hierarquia e proteção da ficha", () => {
+  it("ficha sem sessão retorna ao aperitivo, consulta com sessão mantém o resumo e arquivos continuam fechados", async () => {
+    const { desvioDoAperitivo, fichaComSessao, exigeConta } = await import("@/lib/rotasPublicas");
+    expect(desvioDoAperitivo(`/educacao-municipal/municipio/${SP}`)).toEqual({ tipo: "ficha", destino: `/educacao-municipal?ibge=${SP}` });
+    expect(fichaComSessao("/educacao-municipal", SP)).toBeNull();
+    for (const rota of [`/educacao-municipal/municipio/${SP}`, "/educacao/gold/educacao.json", "/educacao/gold/municipios/SP.json"]) expect(exigeConta(rota)).toBe(true);
+  });
+  it("extrato precede a escala, aponta à ficha e não duplica o laboratório municipal", async () => {
+    const html = await painel(SP);
+    expect(html.indexOf('data-fatia="seu-municipio"')).toBeGreaterThan(0);
+    expect(html.indexOf('data-fatia="seu-municipio"')).toBeLessThan(html.indexOf('data-fatia="escala"'));
+    expect(html).toContain(`href="/educacao-municipal/municipio/${SP}"`);
+    expect((html.match(/class="edm-lab"/g) ?? [])).toHaveLength(1);
+    expect(await painel()).not.toContain('data-fatia="seu-municipio"');
+    const detalhe = await ficha(SP);
+    expect((detalhe.match(/class="edm-lab"/g) ?? [])).toHaveLength(1);
+    expect(detalhe).toMatch(/<details[^>]+id="tabelas-componentes"/);
+    expect(detalhe).toContain('data-deixa-de-fora');
+    expect(detalhe).not.toMatch(/NaN|undefined/);
   });
 });

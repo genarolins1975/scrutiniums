@@ -1,0 +1,17 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas judiciario
+
+
+▶ Fluxos e telas do Judiciário com sessão local: node scripts/obee/judiciario-verificacao.mjs
+{"telas":68,"checks":224,"errors":[],"out":"/tmp/judiciario-qa"}
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  ok     7 min 35 s  Fluxos e telas do Judiciário com sessão local
+  ok            0 s  Árvore versionada igual à do início
+  tempo de parede: 7 min 35 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

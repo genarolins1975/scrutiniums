@@ -1,0 +1,113 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr --etapas vitest
+
+
+▶ Testes (inclui a verificação obrigatória do HTML gerado): npx vitest run
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/educacao-2
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/pix-ux-browser.test.ts (15 tests | 1 failed) 233732ms
+     × cinco municípios preservam comparação tabular e rolagem por teclado no celular 60419ms
+ ❯ src/tests/busca-cobertura.test.ts (4 tests | 2 failed) 2691ms
+     × toda página publicada ou parcial tem resumo de uma frase, até 140 caracteres 10ms
+     × toda página publicada ou parcial tem de 3 a 12 termos, sem repetir o título 4ms
+ ❯ src/tests/saneamento-divida.test.ts (14 tests | 1 failed) 6535ms
+     × está registrada no capítulo 7, no menu do Saneamento, na entrada e na matriz de viabilidade 6234ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/busca-cobertura.test.ts > toda página com pergunta e termos > toda página publicada ou parcial tem resumo de uma frase, até 140 caracteres
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/educacao-municipal/mapa: (sem resumo)",
++ ]
+
+ ❯ src/tests/busca-cobertura.test.ts:30:17
+     28|   it("toda página publicada ou parcial tem resumo de uma frase, até 14…
+     29|     const sem = paginas().filter((p) => !p.resumo?.trim() || p.resumo.…
+     30|     expect(sem).toEqual([]);
+       |                 ^
+     31|   });
+     32|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/tests/busca-cobertura.test.ts > toda página com pergunta e termos > toda página publicada ou parcial tem de 3 a 12 termos, sem repetir o título
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/educacao-municipal/mapa: 0 termos",
++ ]
+
+ ❯ src/tests/busca-cobertura.test.ts:40:18
+     38|       })
+     39|       .map((p) => `${p.rota}: ${(p.termos ?? []).length} termos`);
+     40|     expect(fora).toEqual([]);
+       |                  ^
+     41|   });
+     42|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/tests/pix-ux-browser.test.ts > Pix: leitura equivalente e recorte persistente > cinco municípios preservam comparação tabular e rolagem por teclado no celular
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/pix-ux-browser.test.ts:291:3
+    289|   }, 60_000);
+    290|
+    291|   it("cinco municípios preservam comparação tabular e rolagem por tecl…
+       |   ^
+    292|     const page = await contexto.newPage();
+    293|     try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/tests/saneamento-divida.test.ts > página /saneamento/prestadores/divida > está registrada no capítulo 7, no menu do Saneamento, na entrada e na matriz de viabilidade
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/saneamento-divida.test.ts:83:3
+     81|   });
+     82|
+     83|   it("está registrada no capítulo 7, no menu do Saneamento, na entrada…
+       |   ^
+     84|     const sub = capituloPorSlug("prestadores")!.subpaineis!.find((s) =…
+     85|     expect(sub.numero).toBe("7.1");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed | 404 passed (407)
+      Tests  4 failed | 9640 passed | 12 skipped | 1 todo (9657)
+   Start at  19:49:07
+   Duration  2426.63s (transform 81.55s, setup 0ms, import 357.40s, tests 4357.34s, environment 91ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  FALHA  40 min 29 s  Testes (inclui a verificação obrigatória do HTML gerado)  (npx vitest run)
+  tempo de parede: 40 min 29 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

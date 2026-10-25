@@ -69,6 +69,8 @@ const nextConfig = {
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
       "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
+      "/educacao-municipal/mapa": ["./public/educacao/gold/educacao.json", "./public/educacao/gold/mapa.json"],
+      "/educacao-municipal/municipio/*": ["./public/educacao/gold/**/*.json"],
       "/aperitivo/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       // ficha de focos por município (consulta da leva 2, src/lib/rotasPublicas.ts): gerada na primeira visita
       "/territorio/queimadas/municipio/[ibge]": ["./public/territorio/gold/queimadas_municipios.json", "./public/saneamento/gold/indice.json"],

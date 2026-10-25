@@ -1,0 +1,2 @@
+{ ramo: 'federal', valor: 'federal', linhas: 1 }
+{ ramo: 'trabalho', valor: 'trabalho', linhas: 1 }

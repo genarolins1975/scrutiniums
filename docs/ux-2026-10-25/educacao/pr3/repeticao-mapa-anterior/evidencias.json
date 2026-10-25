@@ -1,0 +1,43 @@
+{
+ "data": "2026-10-25",
+ "build": "QdEQE89Q3AcugwG-WUe-N",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /educacao-municipal/mapa --larguras 390,768 --modos com --saida /tmp/educacao-pr3-mapa-repeticao",
+ "tempo": "7 min 22 s",
+ "resultados": [
+  {
+   "rota": "/educacao-municipal/mapa",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/educacao-municipal/mapa",
+   "barra": true,
+   "cromo": 138,
+   "topoH1": 200,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to fetch RSC payload for http://localhost:44711/eficiencia-estatal/educacao-municipal-capitais/metodos. Falling back to browser navigation. ChunkLoadError: Loading chunk 70769 failed.\n(timeout: http://localhost:44711/_next/static/chunks/app/eficiencia-estatal/educacao-municipal-capitais/layout-8841a7d8985cefe2.js)\n    at s.f.j (http://localhost:44711/_next/static/chunks/webpack-3fbdb20228bfbb6d.js:1:3381)\n    at http://localhost:44711/_next/static/chunks/webpack-3fbdb20228bfbb6d.js:1:1385\n    at Array.reduce (<anonymous>)\n    at s.e (http://localhost:44711/_next/static/chunks/webpack-3fbdb20228bfbb6d.js:1:1351)\n    at http://localhost:44711/_next/static/chunks/64651-396aaa1eb8184e91.js:2:18944\n    at http://localhost:44711/_next/static/chunks/64651-396aaa1eb8184e91.js:2:19146\n    at t (http://localhost:44711/_next/static/chunks/64651-396aaa1eb8184e91.js:2:19349)"
+   ],
+   "login": [],
+   "captura": "educacao_municipal_mapa-390-com-sessao.jpg",
+   "primeiraTela": "educacao_municipal_mapa-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/educacao-municipal/mapa",
+   "modo": "com",
+   "largura": 768,
+   "status": 200,
+   "final": "/educacao-municipal/mapa",
+   "barra": true,
+   "cromo": 231,
+   "topoH1": 305,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "educacao_municipal_mapa-768-com-sessao.jpg",
+   "primeiraTela": "educacao_municipal_mapa-768-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

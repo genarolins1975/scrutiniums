@@ -7,7 +7,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { UF_DO_PREFIXO } from "@/lib/previdencia/dados";
-import type { ArquivoUf, Etapa, GoldEducacao, MunicipioGold, Rede, Serie } from "./tipos";
+import type { MapaEducacaoGold, ArquivoUf, Etapa, GoldEducacao, MunicipioGold, Rede, Serie } from "./tipos";
 
 export { UF_DO_PREFIXO };
 export const ARQUIVO_GOLD = join("public", "educacao", "gold", "educacao.json");
@@ -97,3 +97,9 @@ export function rotuloPorte(g: GoldEducacao, id: string | null): string | null {
 
 /** Série da rede numa etapa, ou null. */
 export const serie = (m: MunicipioGold, etapa: Etapa, rede: Rede): Serie | null => m[etapa][rede];
+
+let cacheMapa: MapaEducacaoGold | null = null;
+export function mapaEducacao(): MapaEducacaoGold {
+  cacheMapa ??= JSON.parse(readFileSync(join(process.cwd(), "public", "educacao", "gold", "mapa.json"), "utf-8")) as MapaEducacaoGold;
+  return cacheMapa;
+}
