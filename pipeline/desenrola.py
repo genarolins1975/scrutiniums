@@ -21,6 +21,7 @@ Três separações que o gold impõe e a página herda:
   milhões que renegociaram", ambos números oficiais do mesmo relatório.
 """
 from pipeline import common
+from pipeline.sources.desenrola import recorte_publicado
 
 FONTE_BCB = "BCB — Desenrola Brasil (dados agregados do SCR)"
 URL_DATASET = "https://dadosabertos.bcb.gov.br/dataset/desenrola-brasil"
@@ -292,7 +293,11 @@ def _rows(con, sql, args=()):
 
 def build(con, cfg=None):
     try:
-        col = _rows(con, "SELECT * FROM desenrola_coleta ORDER BY coletado_em DESC LIMIT 1")
+        # 25/10/2026: a ressalva pertence ao bronze vigente, inclusive quando duas
+        # coletas têm o mesmo segundo ou quando a fonte volta a um hash antigo.
+        col = _rows(con, """SELECT * FROM desenrola_coleta
+                            WHERE bronze_sha IN (SELECT DISTINCT bronze_sha FROM desenrola_op)
+                            ORDER BY coletado_em DESC LIMIT 1""")
     except Exception:
         col = []
     if not col:
@@ -508,6 +513,7 @@ def build(con, cfg=None):
         "meses": col["meses"],
         "linhas_base": col["linhas"],
         "aviso_cobertura": AVISO_COBERTURA,
+        "fora_do_recorte": recorte_publicado(con, col["bronze_sha"]),
         "aviso_tipo3": AVISO_TIPO3,
         "aviso_setembro": AVISO_SETEMBRO,
         "como_ler": [

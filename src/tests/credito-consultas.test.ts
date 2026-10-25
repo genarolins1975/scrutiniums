@@ -15,7 +15,8 @@ import QuantoMeuBancoCobra from "@/app/observatorio-do-credito/quanto-meu-banco-
 import SimuladorDaParcela from "@/app/observatorio-do-credito/simulador-da-parcela/page";
 import MetodologiaCredito from "@/app/observatorio-do-credito/metodologia/page";
 import ObservatorioPublicoPage from "@/app/observatorio-do-credito/page";
-import { goldJuros, resolverConsulta, rotuloModalidade, slugModalidade, type GoldJuros } from "@/lib/credito/juros";
+import * as juros from "@/lib/credito/juros";
+import { compararTaxas, NOTA_TAXA_ZERO, goldJuros, resolverConsulta, rotuloModalidade, slugModalidade, type GoldJuros } from "@/lib/credito/juros";
 import { dataBr, diaBrasilia, janela, num } from "@/lib/credito/formato";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
 import { extrairClassificacao, extrairGlossario, extrairNomesInad, extrairNotaReguas, extrairRegras, metodologiaCredito } from "@/lib/credito/metodologia";
@@ -82,8 +83,10 @@ describe("gold de juros", () => {
       for (const r of m.ranking.slice(0, 5)) {
         const k = resolverConsulta(gold, { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco: r.cnpj8 });
         expect(k.modalidade).toBe(m);
+        // D2, pacote C autorizado em 25/10/2026: zero preservado, fora da posição.
+        if (r.taxa_aa === 0) { expect(k.posicao).toBeNull(); continue; }
         const p = k.posicao!;
-        expect(p.menores + p.iguais + p.maiores + 1).toBe(m.stats.n);
+        expect(p.menores + p.iguais + p.maiores + 1).toBe(k.comparacao.ranking.length);
       }
     }
   });
@@ -93,16 +96,20 @@ describe("Quanto meu banco cobra?", () => {
   it("mostra a taxa do banco ao ano e ao mês, a mediana, a distância, a posição, a distribuição, a janela e a fonte datada", () => {
     caminho.atual = "/observatorio-do-credito/quanto-meu-banco-cobra";
     const { mod, linha, seg, slug } = casoReal();
+    // D2, 25/10/2026: a referência exibida usa somente instituições elegíveis.
+    const comparacao = compararTaxas(mod);
+    const stats = comparacao.stats!;
+    const posicao = comparacao.ranking.find((r) => r.cnpj8 === linha.cnpj8)!.posicao;
     const t = texto(html(createElement(QuantoMeuBancoCobra, { searchParams: { seg, mod: slug, banco: linha.cnpj8 } })));
     expect(t).toContain(linha.nome);
     expect(t).toContain(`${num(linha.taxa_aa)}% ao ano`);
     expect(t).toContain(`${num(linha.taxa_am)}% ao mês`);
-    expect(t).toContain(`${num(mod.stats.mediana)}% ao ano`);
-    expect(t).toContain(`Mediana das ${mod.stats.n} instituições`);
-    expect(t).toContain(`${linha.posicao.toLocaleString("pt-BR")}ª de ${mod.stats.n}`);
-    const dist = linha.taxa_aa - mod.stats.mediana;
+    expect(t).toContain(`${num(stats.mediana)}% ao ano`);
+    expect(t).toContain(`Mediana das ${stats.n} instituições`);
+    expect(t).toContain(`${posicao.toLocaleString("pt-BR")}ª de ${stats.n}`);
+    const dist = linha.taxa_aa - stats.mediana;
     if (Math.abs(dist) >= 0.005) expect(t).toContain(`${num(Math.abs(dist))} p.p. ${dist < 0 ? "abaixo" : "acima"}`);
-    for (const v of [mod.stats.min, mod.stats.p25, mod.stats.p75, mod.stats.max]) expect(t).toContain(`${num(v)}% ao ano`);
+    for (const v of [stats.min, stats.p25, stats.p75, stats.max]) expect(t).toContain(`${num(v)}% ao ano`);
     expect(t).toContain(janela(mod.janela));
     expect(t).toContain("Banco Central do Brasil");
     expect(t).toContain(`Publicação processada em ${diaBrasilia(gold.gerado_em)}`);
@@ -129,7 +136,14 @@ describe("Quanto meu banco cobra?", () => {
     expect(t).toContain(`${ausente.nome} não aparece na publicação do Banco Central para ${rotuloModalidade(mod.modalidade).toLowerCase()}`);
     expect(t).toContain("Ausência não é taxa zero");
     expect(t).not.toContain(`Taxa de ${ausente.nome}`);
-    expect(t).not.toMatch(/0,00% ao ano/);
+    // D2 do comitê de 25/10/2026; dono autorizou implementar o pacote C,
+    // mantendo o merge pendente. Ausência não vira zero; zero da fonte exige nota.
+    const comparacao = compararTaxas(mod);
+    for (const r of comparacao.excluidas) {
+      expect(h).toContain(`data-taxa-zero="${r.cnpj8}"`);
+      expect(t).toContain(NOTA_TAXA_ZERO);
+    }
+    expect(comparacao.ranking.every((r) => r.taxa_aa !== 0)).toBe(true);
     // oferece as modalidades em que a instituição informou taxa
     const outra = gold.modalidades.find((m) => m.ranking.some((r) => r.cnpj8 === ausente.cnpj8))!;
     expect(t).toContain(rotuloModalidade(outra.modalidade));
@@ -138,7 +152,7 @@ describe("Quanto meu banco cobra?", () => {
   it("sem banco escolhido, mostra a modalidade; modalidade com janela antiga avisa que o número é mais antigo", () => {
     const { mod, seg, slug } = casoReal();
     const t = texto(html(createElement(QuantoMeuBancoCobra, { searchParams: { seg, mod: slug } })));
-    expect(t).toContain(`${num(mod.stats.p25)}% a ${num(mod.stats.p75)}%`);
+    expect(t).toContain(`${num(compararTaxas(mod).stats!.p25)}% a ${num(compararTaxas(mod).stats!.p75)}%`);
     const antiga = gold.modalidades.find((m) => (Date.parse(gold.gerado_em) - Date.parse(m.janela.fim)) / 86_400_000 > 60);
     if (antiga) {
       const h = html(createElement(QuantoMeuBancoCobra, { searchParams: { seg: antiga.segmento.toLowerCase(), mod: slugModalidade(antiga.modalidade) } }));
@@ -179,8 +193,8 @@ describe("Simulador do custo da dívida", () => {
   it("sem banco, usa a mediana da modalidade e diz que é a mediana; banco ausente não vira taxa do banco", () => {
     const { mod, ausente, seg, slug } = casoReal();
     const sem = html(createElement(SimuladorDaParcela, { searchParams: { seg, mod: slug } }));
-    expect(sem).toContain(`value="${num(mod.stats.mediana)}"`);
-    expect(texto(sem)).toContain(`Mediana das taxas das ${mod.stats.n} instituições`);
+    expect(sem).toContain(`value="${num(compararTaxas(mod).stats!.mediana)}"`);
+    expect(texto(sem)).toContain(`Mediana das taxas das ${compararTaxas(mod).stats!.n} instituições`);
     const aus = texto(html(createElement(SimuladorDaParcela, { searchParams: { seg, mod: slug, banco: ausente.cnpj8 } })));
     expect(aus).toContain(`${ausente.nome} não informou taxa ao Banco Central`);
     expect(aus).toContain("não é a taxa desse banco");
@@ -288,5 +302,66 @@ describe("acesso e navegação", () => {
     const h = html(createElement(QuantoMeuBancoCobra, { searchParams: { seg, mod: slug, banco: linha.cnpj8 } }));
     expect(h.match(/data-barra-plataforma=""/g)).toHaveLength(1);
     expect(h).toMatch(/aria-current="page"[^>]*>Quanto meu banco cobra\?</);
+  });
+});
+
+
+describe("D2: taxa zero preservada e comparação explícita (pacote C, 25/10/2026)", () => {
+  function amostra(taxas: number[]) {
+    const m = structuredClone(gold.modalidades[0]);
+    m.ranking = taxas.map((v, i) => ({ cnpj8: String(i + 1).padStart(8, "0"), nome: `Instituição de teste ${i + 1}`, taxa_am: v / 12, taxa_aa: v, posicao: i + 1, vs_mediana: v - 20 }));
+    m.stats = { n: taxas.length, min: 0, p25: 10, mediana: 20, p75: 20, max: 30 };
+    return { ...gold, modalidades: [m], perfis_if: [] };
+  }
+
+  it("recalcula a mediana, os quartis e as posições sem alterar a gold nem perder empates", () => {
+    const g = amostra([0, 10, 20, 20, 30]);
+    const antes = structuredClone(g);
+    const m = g.modalidades[0];
+    const consulta = (banco: string) => resolverConsulta(g, { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco });
+    const zero = consulta(m.ranking[0].cnpj8);
+    expect(zero.linha?.taxa_aa).toBe(0);
+    expect(zero.posicao).toBeNull();
+    expect(zero.distanciaPp).toBeNull();
+    expect(zero.distanciaPct).toBeNull();
+    expect(zero.comparacao.stats).toEqual({ n: 4, min: 10, p25: 17.5, mediana: 20, p75: 22.5, max: 30 });
+    const k = consulta(m.ranking[2].cnpj8);
+    expect(k.posicao).toEqual({ posicao: 2, n: 4, menores: 1, iguais: 1, maiores: 1 });
+    expect(k.distanciaPp).toBe(0);
+    expect(g).toEqual(antes);
+  });
+
+  it("zero tem nota visível e não entra no gráfico nem na tabela comparativa, inclusive sem banco selecionado", () => {
+    const g = amostra([0, 10, 20, 20, 30]);
+    const m = g.modalidades[0];
+    const spy = vi.spyOn(juros, "goldJuros").mockReturnValue(g);
+    try {
+      for (const banco of [undefined, m.ranking[0].cnpj8, m.ranking[1].cnpj8]) {
+        const h = html(createElement(QuantoMeuBancoCobra, { searchParams: { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco } }));
+        expect(h).toContain(`data-taxa-zero="${m.ranking[0].cnpj8}"`);
+        // Texto decidido pelo dono no pacote C, 25/10/2026, recomendação D2.
+        expect(texto(h)).toContain(NOTA_TAXA_ZERO);
+        const figura = h.slice(h.indexOf('id="distribuicao"'), h.indexOf('id="como-ler"'));
+        expect(figura).not.toContain(m.ranking[0].nome);
+        expect(figura).toContain(m.ranking[1].nome);
+        expect(texto(h)).not.toMatch(/undefined|NaN|2026-\d{2}-\d{2}/);
+      }
+      const h = html(createElement(SimuladorDaParcela, { searchParams: { seg: m.segmento.toLowerCase(), mod: slugModalidade(m.modalidade), banco: m.ranking[0].cnpj8 } }));
+      expect(texto(h)).toContain(NOTA_TAXA_ZERO);
+    } finally { spy.mockRestore(); }
+  });
+
+  it("todos os bancos com zero deixam a comparação ausente, nunca inventam estatísticas", () => {
+    const g = amostra([0, 0]);
+    expect(compararTaxas(g.modalidades[0]).stats).toBeNull();
+    const spy = vi.spyOn(juros, "goldJuros").mockReturnValue(g);
+    try {
+      const h = html(createElement(QuantoMeuBancoCobra));
+      expect(h).toContain('data-comparacao-ausente');
+      expect(h).not.toContain('id="distribuicao"');
+      for (const r of g.modalidades[0].ranking) expect(h).toContain(`data-taxa-zero="${r.cnpj8}"`);
+      expect(texto(h)).not.toMatch(/undefined|NaN/);
+    } finally { spy.mockRestore(); }
+    expect(compararTaxas(amostra([0, 10]).modalidades[0]).stats).toEqual({ n: 1, min: 10, p25: 10, mediana: 10, p75: 10, max: 10 });
   });
 });

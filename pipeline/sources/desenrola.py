@@ -32,6 +32,7 @@ sempre, compara o sha256 com o último bronze e só reprocessa quando muda.
 """
 import csv
 import io
+import json
 import math
 from datetime import datetime
 
@@ -67,6 +68,11 @@ def _ensure(con):
         PRIMARY KEY(bronze_sha, data_base, tipo, uf, cod_congl));
     CREATE TABLE IF NOT EXISTS desenrola_contrato(
         bronze_sha TEXT PRIMARY KEY, aceito INTEGER, motivo TEXT, avaliado_em TEXT);
+    CREATE TABLE IF NOT EXISTS desenrola_recorte(
+        bronze_sha TEXT PRIMARY KEY, resumo TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS desenrola_tipos_nao_documentados(
+        bronze_sha TEXT, linha INTEGER, tipo TEXT, data_base TEXT, registro TEXT NOT NULL,
+        PRIMARY KEY(bronze_sha, linha));
     """)
 
 
@@ -95,6 +101,15 @@ def _num(s):
     return value
 
 
+def recorte_publicado(con, sha):
+    """Metadados do mesmo bronze aceito; o atalho não pode perder a ressalva."""
+    try:
+        row = con.execute("SELECT resumo FROM desenrola_recorte WHERE bronze_sha=?", (sha,)).fetchone()
+    except Exception:
+        return None
+    return json.loads(row[0]) if row else None
+
+
 def collect(con, cfg=None):
     _ensure(con)
     try:
@@ -107,9 +122,10 @@ def collect(con, cfg=None):
     vigente = {r[0] for r in con.execute("SELECT DISTINCT bronze_sha FROM desenrola_op")}
     aceito = con.execute("SELECT aceito FROM desenrola_contrato WHERE bronze_sha=?", (sha,)).fetchone()
     # arquivo gravado antes do contrato (sem veredito) passa de novo pela validação inteira
-    if ja and vigente == {sha} and aceito == (1,):
+    recorte = recorte_publicado(con, sha)
+    if ja and vigente == {sha} and aceito == (1,) and recorte is not None:
         return [{"key": "desenrola", "ok": True, "note": "arquivo inalterado desde a última coleta",
-                 "linhas": ja[0]}]
+                 "linhas": ja[0], "fora_do_recorte": recorte}]
 
     inicio = body[:400].lstrip()
     if inicio[:1] == b"<" or b"<html" in inicio.lower():
@@ -133,9 +149,9 @@ def collect(con, cfg=None):
                                    f"cabeçalho recebido: {campos[:10]}; início: {inicio[:80]!r}")
 
     # Parse completo antes da troca: o orquestrador dá commit mesmo após falha de coleta.
-    rows, meses, chaves = [], set(), set()
+    rows, meses, chaves, separadas = [], set(), set(), []
     try:
-        for r in rdr:
+        for numero_linha, r in enumerate(rdr, start=2):
             if None in r or any(r.get(k) is None for k in obrigatorias):
                 raise ValueError("linha incompleta ou com colunas excedentes")
             db = r["DATA_BASE"].strip()
@@ -146,19 +162,27 @@ def collect(con, cfg=None):
             uf = r["UNIDADE_FEDERACAO"].strip().upper()
             cod = r["COD_CONGLOMERADO_FINANCEIRO"].strip()
             nome = r["NOME_CONGLOMERADO_FINANCEIRO"].strip()
-            if tipo not in TIPOS:
-                raise ValueError(f"TIPO_DESENROLA {tipo!r} fora do contrato (documentados: 1, 2 e 3)")
+            if not tipo:
+                raise ValueError("TIPO_DESENROLA ausente")
             if uf not in UFS or not cod or not nome:
                 raise ValueError("UF ou identificação fora do contrato")
             n = int(r["NUMERO_OPERACOES"])
             if n < 0:
                 raise ValueError("número de operações negativo")
             data_base = f"{db[:4]}-{db[4:]}"
-            chave = (data_base, TIPOS[tipo][0], uf, cod)
+            volume = _num(r["VOLUME_OPERACOES"])
+            chave = (data_base, tipo, uf, cod)
             if chave in chaves:
                 raise ValueError("chave duplicada no CSV Desenrola")
-            chaves.add(chave); meses.add(data_base)
-            rows.append((*chave, nome, n, _num(r["VOLUME_OPERACOES"]), sha))
+            chaves.add(chave)
+            # Pacote C, 25/10/2026, recomendação D2 (merge pendente do dono):
+            # valida os demais campos inclusive no tipo desconhecido; não deixa
+            # essa separação encobrir outra falha que exige reter o arquivo inteiro.
+            if tipo not in TIPOS:
+                separadas.append((sha, numero_linha, tipo, data_base, json.dumps(r, ensure_ascii=False)))
+                continue
+            meses.add(data_base)
+            rows.append((data_base, TIPOS[tipo][0], uf, cod, nome, n, volume, sha))
         if not rows:
             raise ValueError("CSV sem observações; versão anterior preservada")
         anteriores = {r[0] for r in con.execute("SELECT DISTINCT data_base FROM desenrola_op")}
@@ -169,6 +193,20 @@ def collect(con, cfg=None):
 
     con.execute("SAVEPOINT desenrola_versao")
     try:
+        recorte = {"linhas": len(separadas), "tipos": sorted({r[2] for r in separadas}),
+                   "periodo_inicio": min((r[3] for r in separadas), default=None),
+                   "periodo_fim": max((r[3] for r in separadas), default=None)}
+        quantidade = f"{len(separadas):,}".replace(",", ".")
+        linhas = "linha" if len(separadas) == 1 else "linhas"
+        tipos = "um tipo não descrito" if len(recorte["tipos"]) == 1 else "tipos não descritos"
+        verbo = "ficou" if len(separadas) == 1 else "ficaram"
+        recorte["ressalva"] = (
+            f"{quantidade} {linhas} de {tipos} na documentação do BCB "
+            f"({recorte['periodo_inicio']} a {recorte['periodo_fim']}) {verbo} de fora"
+        ) if separadas else None
+        con.execute("INSERT OR REPLACE INTO desenrola_recorte VALUES(?,?)", (sha, json.dumps(recorte, ensure_ascii=False)))
+        con.execute("DELETE FROM desenrola_tipos_nao_documentados WHERE bronze_sha=?", (sha,))
+        con.executemany("INSERT INTO desenrola_tipos_nao_documentados VALUES(?,?,?,?,?)", separadas)
         con.execute("INSERT OR IGNORE INTO desenrola_historico SELECT * FROM desenrola_op")
         # A fonte republica a série inteira; substituir somente após validá-la por completo.
         con.execute("DELETE FROM desenrola_op")
@@ -178,7 +216,7 @@ def collect(con, cfg=None):
                     (common.now_utc(), sha, len(rows), len(meses), min(meses), max(meses)))
         _avaliar(con, sha, True)
         common.record_lineage(con, "desenrola.json", caminho, sha,
-                              "CSV integralmente validado; troca atômica; versões anteriores em desenrola_historico e bronze")
+                              "CSV validado; tipos documentados publicados; demais tipos preservados no bronze e separados com ressalva; troca atômica")
         con.execute("RELEASE desenrola_versao")
     except Exception as e:
         con.execute("ROLLBACK TO desenrola_versao")
@@ -186,4 +224,4 @@ def collect(con, cfg=None):
         return [{"key": "desenrola", "ok": False, "error": str(e)}]
     con.commit()
     return [{"key": "desenrola", "ok": True, "linhas": len(rows), "meses": len(meses),
-             "descartadas": 0, "periodo": f"{min(meses)}→{max(meses)}"}]
+             "descartadas": 0, "fora_do_recorte": recorte, "periodo": f"{min(meses)}→{max(meses)}"}]

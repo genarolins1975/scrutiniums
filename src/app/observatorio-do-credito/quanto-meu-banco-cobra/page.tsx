@@ -4,7 +4,7 @@ import { AberturaCredito, AvisoCet, CascaCredito } from "@/components/credito/Bl
 import { FaixaDistribuicao } from "@/components/credito/FaixaDistribuicao";
 import { SeletorJuros } from "@/components/credito/SeletorJuros";
 import { Controles, FiguraAnalitica, PaginaPainel, type NumeroProps } from "@/components/painel";
-import { goldJuros, hrefConsulta, opcoesSeletor, resolverConsulta, rotuloModalidade, ROTULO_SEGMENTO, type ParametrosConsulta } from "@/lib/credito/juros";
+import { goldJuros, NOTA_TAXA_ZERO, hrefConsulta, opcoesSeletor, resolverConsulta, rotuloModalidade, ROTULO_SEGMENTO, type ParametrosConsulta } from "@/lib/credito/juros";
 import { contagem, dataBr, diaBrasilia, diasDesde, janela, num, taxa } from "@/lib/credito/formato";
 import { PAINEL_JUROS, paginaCredito } from "@/lib/credito/navegacao";
 import { provenienciaJuros } from "@/lib/credito/proveniencia";
@@ -53,7 +53,8 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
   const opcoes = opcoesSeletor(gold);
   const c = resolverConsulta(gold, searchParams);
   const m = c.modalidade;
-  const s = m.stats;
+  const s = c.comparacao.stats;
+  const n = c.comparacao.ranking.length;
   const nomeMod = rotuloModalidade(m.modalidade);
   const atraso = diasDesde(m.janela.fim, gold.gerado_em);
   const processado = diaBrasilia(gold.gerado_em);
@@ -69,7 +70,7 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
 
   // as medidas do recorte, com natureza, fonte e janela de cada uma; a natureza é a que a página já declarava
   const numeros: NumeroProps[] =
-    c.banco && c.linha && c.posicao && c.distanciaPp !== null
+    s && c.banco && c.linha && c.posicao && c.distanciaPp !== null
       ? [
           {
             rotulo: `Taxa de ${c.banco.nome}`,
@@ -82,13 +83,13 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
             nota: <>equivale a {taxa(c.linha.taxa_am, "am")}, como publicado</>,
           },
           {
-            rotulo: `Mediana das ${s.n} instituições`,
+            rotulo: `Mediana das ${n} instituições`,
             valor: s.mediana,
             valorTexto: taxa(s.mediana, "aa"),
             unidade: "",
             periodo: semana,
             fonte: FONTE_CURTA,
-            natureza: "OBSERVADO",
+            natureza: "CALCULADO",
             nota: "metade das instituições informou taxa menor e metade, maior",
           },
           Math.abs(c.distanciaPp) < 0.005
@@ -127,20 +128,26 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
             ),
           },
         ]
-      : [
+      : s ? [
           {
-            rotulo: `Mediana das ${s.n} instituições`,
+            rotulo: `Mediana das ${n} instituições`,
             valor: s.mediana,
             valorTexto: taxa(s.mediana, "aa"),
             unidade: "",
             periodo: semana,
             fonte: FONTE_CURTA,
-            natureza: "OBSERVADO",
+            natureza: "CALCULADO",
             nota: "metade das instituições informou taxa menor e metade, maior",
           },
-          { rotulo: "Metade central das instituições", formato: "texto", valorTexto: `${num(s.p25)}% a ${num(s.p75)}%`, unidade: "", periodo: semana, fonte: FONTE_CURTA, natureza: "OBSERVADO", nota: "ao ano, do primeiro ao terceiro quartil" },
-          { rotulo: "Menor e maior taxa informadas", formato: "texto", valorTexto: `${num(s.min)}% e ${num(s.max)}%`, unidade: "", periodo: semana, fonte: FONTE_CURTA, natureza: "OBSERVADO", nota: "ao ano, nos extremos da distribuição" },
-        ];
+          { rotulo: "Metade central das instituições", formato: "texto", valorTexto: `${num(s.p25)}% a ${num(s.p75)}%`, unidade: "", periodo: semana, fonte: FONTE_CURTA, natureza: "CALCULADO", nota: "ao ano, do primeiro ao terceiro quartil" },
+          { rotulo: "Menor e maior taxa informadas", formato: "texto", valorTexto: `${num(s.min)}% e ${num(s.max)}%`, unidade: "", periodo: semana, fonte: FONTE_CURTA, natureza: "CALCULADO", nota: "ao ano, nos extremos da distribuição" },
+        ] : [];
+  if (c.linha?.taxa_aa === 0) numeros.unshift({
+    rotulo: `Taxa de ${c.banco?.nome}`,
+    valor: c.linha.taxa_aa, valorTexto: taxa(c.linha.taxa_aa, "aa"), unidade: "",
+    periodo: semana, fonte: FONTE_CURTA, natureza: "OBSERVADO",
+    nota: NOTA_TAXA_ZERO,
+  });
 
   return (
     <CascaCredito atual="quanto-meu-banco-cobra" molde>
@@ -161,7 +168,7 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
           ),
           recorte: {
             periodo: semana,
-            universo: `${ROTULO_SEGMENTO[c.segmento]}, ${nomeMod.toLowerCase()}, ${contagem(s.n, "instituição", "instituições")}`,
+            universo: `${ROTULO_SEGMENTO[c.segmento]}, ${nomeMod.toLowerCase()}, ${contagem(n, "instituição", "instituições")}`,
             unidade: "% ao ano",
             fonte: "Banco Central do Brasil, taxas de juros por instituição (txjuros)",
           },
@@ -186,11 +193,23 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
             <div className="pt-8">
               <p className="rotulo text-mineral">{ROTULO_SEGMENTO[c.segmento]}</p>
               <h2 id="resultado-titulo" className="mt-2 font-serif text-[clamp(1.5rem,3.2vw,2.1rem)] leading-tight text-carvao">
-                {c.banco ? <>{c.banco.nome} em {nomeMod.toLowerCase()}</> : <>{nomeMod}: as {contagem(s.n, "instituição", "instituições")}</>}
+                {c.banco ? <>{c.banco.nome} em {nomeMod.toLowerCase()}</> : <>{nomeMod}: as {contagem(n, "instituição", "instituições")}</>}
               </h2>
               <p className="mt-2 text-sm text-carvao-muted">
-                Taxas médias de juros em % ao ano, semana de {janela(m.janela)}. {contagem(s.n, "instituição informou", "instituições informaram")} esta modalidade nessa janela.
+                Taxas médias de juros em % ao ano, semana de {janela(m.janela)}. {contagem(n, "instituição participa", "instituições participam")} da comparação nesta modalidade e janela.
               </p>
+              {c.comparacao.excluidas.length > 0 && (
+                <div className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao" data-taxas-fora-comparacao="">
+                  <p>As taxas de 0,00% ao ano ficam fora da posição, da mediana e da distribuição.</p>
+                  <ul className="mt-2 space-y-2">
+                    {c.comparacao.excluidas.map((r) => (
+                      <li key={r.cnpj8} data-taxa-zero={r.cnpj8}>
+                        <strong>{r.nome}</strong>: {taxa(r.taxa_aa, "aa")} e {taxa(r.taxa_am, "am")}. {NOTA_TAXA_ZERO}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {atraso !== null && atraso > 45 && (
                 <p className="mt-4 max-w-prose2 border-l-2 border-aviso bg-marfim px-4 py-2 text-sm leading-relaxed text-carvao" data-janela-antiga="">
                   A janela mais recente desta modalidade com instituições suficientes terminou em {dataBr(m.janela.fim)}, {atraso} dias antes desta publicação. As semanas seguintes chegaram ao
@@ -204,7 +223,7 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                     Ausência não é taxa zero, e a página não estima um valor no lugar. A instituição não informou taxa nessa modalidade e nessa janela, o que pode acontecer quando ela não
-                    oferece o produto ou não contratou operações na semana. Abaixo, a distribuição das {s.n} instituições que informaram.
+                    oferece o produto ou não contratou operações na semana. Abaixo, a distribuição das {n} instituições que informaram.
                   </p>
                   {c.outrasDoBanco.length > 0 && (
                     <div className="mt-4">
@@ -230,21 +249,25 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
         }
         rotuloNumeros="Medidas da consulta"
         numeros={numeros}
-        figuras={
+        figuras={s ? (
           <FiguraAnalitica
             id="distribuicao"
-            pergunta={`Como as ${s.n} instituições se distribuem`}
+            pergunta={`Como as ${n} instituições se distribuem`}
             subtitulo={`Taxa média de juros de cada instituição, % ao ano, semana de ${janela(m.janela)}. Eixo a partir de zero.`}
             natureza="OBSERVADO"
             complemento={<AvisoCet className="max-w-prose2" />}
+            ressalva={c.comparacao.excluidas.length ? "Taxas de 0,00% ao ano ficam fora desta distribuição, da mediana, das posições e da tabela comparativa. Os valores publicados e as instituições estão identificados acima." : undefined}
             naoConcluir="se a taxa de uma instituição é adequada ao seu caso: cada instituição pesa igual na mediana, grande ou pequena, a taxa de cada cliente varia com prazo, garantias e perfil, e a ordem muda de uma semana para outra."
-            proveniencia={provenienciaJuros(gold, m, { indicador: `Taxa média de juros por instituição: ${nomeMod} (${ROTULO_SEGMENTO[c.segmento]})`, natureza: "OBSERVADO" })}
+            proveniencia={{
+              ...provenienciaJuros(gold, m, { indicador: `Taxa média de juros por instituição: ${nomeMod} (${ROTULO_SEGMENTO[c.segmento]})`, natureza: "OBSERVADO" }),
+              transformacoes: [...Object.values(gold.conceitos), "Nesta consulta, taxas anuais de 0,00% são preservadas com nota e excluídas da posição, da mediana e da distribuição. Quartis por interpolação linear sobre as taxas elegíveis ordenadas."],
+            }}
             tabela={{
-              titulo: `Taxa média de juros de cada instituição em ${nomeMod.toLowerCase()}, semana de ${janela(m.janela)}, da menor para a maior`,
+              titulo: `Taxa média de juros das instituições na comparação em ${nomeMod.toLowerCase()}, semana de ${janela(m.janela)}, da menor para a maior`,
               colunas: ["Posição", "Instituição", "% ao ano", "% ao mês"],
-              linhas: m.ranking.map((r) => [ordinal(r.posicao), r.nome, r.taxa_aa, r.taxa_am]),
+              linhas: c.comparacao.ranking.map((r) => [ordinal(r.posicao), r.nome, r.taxa_aa, r.taxa_am]),
               casas: [null, null, 2, 2],
-              limite: m.ranking.length,
+              limite: n,
             }}
             depois={
               <p className="flex flex-wrap gap-x-6 gap-y-2">
@@ -259,7 +282,7 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
           >
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_17rem]">
               <div data-figura-legado="distribuicao-taxas">
-                <FaixaDistribuicao stats={s} taxas={m.ranking.map((r) => r.taxa_aa)} destaque={c.linha?.taxa_aa ?? null} nomeDestaque={c.banco?.nome} />
+                <FaixaDistribuicao stats={s} taxas={c.comparacao.ranking.map((r) => r.taxa_aa)} destaque={c.posicao ? c.linha!.taxa_aa : null} nomeDestaque={c.banco?.nome} />
               </div>
               <dl className="grid gap-x-8 gap-y-3 self-start border-t border-linha pt-3 text-sm sm:grid-cols-2 lg:grid-cols-1">
                 {[
@@ -276,12 +299,12 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
                 ))}
                 <div className="flex items-baseline justify-between gap-3">
                   <dt className="text-carvao-muted">Instituições</dt>
-                  <dd className="tabular-nums text-carvao">{s.n}</dd>
+                  <dd className="tabular-nums text-carvao">{n}</dd>
                 </div>
               </dl>
             </div>
           </FiguraAnalitica>
-        }
+        ) : <p className="py-6 text-carvao" data-comparacao-ausente="">Nenhuma instituição com taxa elegível nesta modalidade e semana. Não há mediana, posição ou distribuição para comparar.</p>}
         notas={{
           id: "como-ler",
           titulo: "Como ler estes números",
@@ -294,7 +317,7 @@ export default function QuantoMeuBancoCobraPage({ searchParams = {} }: { searchP
             {
               termo: "Mediana entre instituições",
               definicao:
-                "Ordenadas as taxas das instituições que informaram a modalidade, a mediana é a do meio. Cada instituição pesa igual, grande ou pequena. Por isso ela difere da taxa média da modalidade nas séries do Banco Central, em que cada operação pesa pelo valor e os grandes bancos dominam.",
+                "Excluídas as taxas anuais de 0,00%, ordenadas as demais taxas das instituições que informaram a modalidade, a mediana é a do meio. Cada instituição pesa igual, grande ou pequena. Por isso ela difere da taxa média da modalidade nas séries do Banco Central, em que cada operação pesa pelo valor e os grandes bancos dominam.",
             },
             {
               termo: "Janela",
