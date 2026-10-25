@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import path from "path";
 import { sql } from "drizzle-orm";
 import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
@@ -13,7 +14,7 @@ import * as schema from "./schema";
  *   memória via DATABASE_URL=pglite-memory: (usado pelos testes).
  *
  * TODO acesso deve passar por getDb(): a Promise singleton em globalThis
- * garante que a migração idempotente rodou antes de qualquer consulta e
+ * garante que o esquema está em dia (garantirEsquema) antes de qualquer consulta e
  * sobrevive ao hot reload do Next.
  */
 
@@ -52,154 +53,183 @@ async function createDb(): Promise<Db> {
     db = drizzle(client, { schema }) as unknown as Db;
   }
 
-  await migrate(db);
+  await garantirEsquema(db);
   return db;
 }
 
-/** Migração idempotente (CREATE TABLE IF NOT EXISTS) aplicada na primeira conexão; exportada para o teste de reaplicação. */
+/** Comandos do esquema, todos idempotentes (IF NOT EXISTS), na ordem de aplicação. */
+const COMANDOS_ESQUEMA = [
+  `CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    email_verified_at TIMESTAMPTZ,
+    phone_e164 TEXT UNIQUE,
+    phone_verified_at TIMESTAMPTZ,
+    company TEXT,
+    job_title TEXT,
+    onboarding_status TEXT NOT NULL DEFAULT 'EMAIL_PENDING',
+    terms_accepted_at TIMESTAMPTZ,
+    privacy_version TEXT,
+    marketing_opt_in BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
+  )`,
+  // Coluna adicionada depois do lançamento: senha (hash scrypt) opcional.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT`,
+  // Perfil estruturado + CPF (unicidade de conta por pessoa; nunca exibido integral).
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS cpf TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_type TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_area TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_role TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS uf TEXT`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_cpf ON users(cpf) WHERE cpf IS NOT NULL`,
+  // Perfil de uso (19/10/2026): coluna anulável, sem default. Contas
+  // anteriores ficam com NULL e continuam válidas; o cadastro novo exige.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS perfil_uso TEXT`,
+  `CREATE TABLE IF NOT EXISTS verification_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    purpose TEXT NOT NULL,
+    token_hash TEXT NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    used_at TIMESTAMPTZ,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_verification_user ON verification_tokens(user_id, purpose)`,
+  `CREATE TABLE IF NOT EXISTS sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
+    expires_at TIMESTAMPTZ NOT NULL,
+    revoked_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id)`,
+  `CREATE TABLE IF NOT EXISTS audit_logs (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    action TEXT NOT NULL,
+    detail TEXT,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_logs(user_id)`,
+  `CREATE TABLE IF NOT EXISTS product_events (
+    id TEXT PRIMARY KEY,
+    user_id TEXT,
+    name TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_events_name ON product_events(name)`,
+  // Sugestões dos usuários (lidas no painel de administração).
+  `CREATE TABLE IF NOT EXISTS suggestions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    categoria TEXT NOT NULL,
+    texto TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_suggestions_created ON suggestions(created_at)`,
+  `CREATE TABLE IF NOT EXISTS assinaturas_resumo (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    periodicidade TEXT NOT NULL,
+    status TEXT NOT NULL,
+    consentimento_em TIMESTAMPTZ NOT NULL,
+    confirmada_em TIMESTAMPTZ,
+    ultimo_envio_em TIMESTAMPTZ,
+    ultima_edicao TEXT,
+    created_at TIMESTAMPTZ NOT NULL
+  )`,
+  // Recursos da conta (Onda 2): recortes salvos e alertas de atualização por domínio.
+  `CREATE TABLE IF NOT EXISTS recortes_salvos (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    titulo TEXT NOT NULL,
+    caminho TEXT NOT NULL,
+    observatorio TEXT NOT NULL,
+    criado_em TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_recortes_user ON recortes_salvos(user_id, criado_em)`,
+  `CREATE TABLE IF NOT EXISTS alertas_atualizacao (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    dominio TEXT NOT NULL,
+    referencia_avisada TEXT,
+    ultimo_envio_em TIMESTAMPTZ,
+    criado_em TIMESTAMPTZ NOT NULL
+  )`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_alertas_user_dominio ON alertas_atualizacao(user_id, dominio)`,
+  `CREATE INDEX IF NOT EXISTS idx_alertas_dominio ON alertas_atualizacao(dominio)`,
+  // Medição de uso agregada (Onda 2, Q3): um contador por dia, modelo de rota
+  // e presença de conta, sem nenhuma coluna que identifique pessoa. A chave
+  // primária começa pelo dia e serve à janela de 30 dias do painel.
+  `CREATE TABLE IF NOT EXISTS uso_paginas_dia (
+    dia DATE NOT NULL,
+    rota TEXT NOT NULL,
+    observatorio TEXT NOT NULL,
+    com_conta BOOLEAN NOT NULL,
+    visitas INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (dia, rota, com_conta)
+  )`,
+  // Busca da plataforma (Iniciativa 3 do parecer de UX): buscas por dia, termo
+  // normalizado e presença de conta, sem coluna que identifique pessoa.
+  `CREATE TABLE IF NOT EXISTS uso_busca_dia (
+    dia DATE NOT NULL,
+    termo TEXT NOT NULL,
+    com_conta BOOLEAN NOT NULL,
+    evento TEXT NOT NULL DEFAULT 'abriu',
+    fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false,
+    buscas INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (dia, termo, com_conta, evento)
+  )`,
+  // Ciclo 2 da busca (23/10/2026, decisão do dono): o evento entra na chave (busca aberta ou sem resultado na barra) e o
+  // termo fora do vocabulário do índice ganha marca própria. Migração da tabela de 22/10/2026, uma vez só (idempotente).
+  `DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'uso_busca_dia' AND column_name = 'evento') THEN
+      ALTER TABLE uso_busca_dia ADD COLUMN evento TEXT NOT NULL DEFAULT 'abriu';
+      ALTER TABLE uso_busca_dia ADD COLUMN fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false;
+      ALTER TABLE uso_busca_dia DROP CONSTRAINT uso_busca_dia_pkey;
+      ALTER TABLE uso_busca_dia ADD PRIMARY KEY (dia, termo, com_conta, evento);
+    END IF;
+  END $$`,
+  // Fim do acesso antecipado por código: contas paradas na etapa do código
+  // ou na lista de espera são promovidas a acesso completo (idempotente).
+  `UPDATE users SET onboarding_status = 'COMPLETE'
+    WHERE onboarding_status IN ('ACCESS_PENDING', 'WAITLIST')`,
+];
+
+/**
+ * Versão do esquema: impressão digital dos comandos acima. Muda sozinha quando qualquer comando muda, sem número a manter à mão.
+ */
+export const VERSAO_ESQUEMA = createHash("sha256").update(COMANDOS_ESQUEMA.join("\n;\n")).digest("hex").slice(0, 16);
+
+/** Migração idempotente (CREATE TABLE IF NOT EXISTS); exportada para o teste de reaplicação. */
 export async function migrate(db: Db): Promise<void> {
-  const statements = [
-    `CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      email TEXT NOT NULL UNIQUE,
-      email_verified_at TIMESTAMPTZ,
-      phone_e164 TEXT UNIQUE,
-      phone_verified_at TIMESTAMPTZ,
-      company TEXT,
-      job_title TEXT,
-      onboarding_status TEXT NOT NULL DEFAULT 'EMAIL_PENDING',
-      terms_accepted_at TIMESTAMPTZ,
-      privacy_version TEXT,
-      marketing_opt_in BOOLEAN NOT NULL DEFAULT FALSE,
-      created_at TIMESTAMPTZ NOT NULL,
-      updated_at TIMESTAMPTZ NOT NULL
-    )`,
-    // Coluna adicionada depois do lançamento: senha (hash scrypt) opcional.
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT`,
-    // Perfil estruturado + CPF (unicidade de conta por pessoa; nunca exibido integral).
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS cpf TEXT`,
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_type TEXT`,
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_area TEXT`,
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_role TEXT`,
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS uf TEXT`,
-    `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_cpf ON users(cpf) WHERE cpf IS NOT NULL`,
-    // Perfil de uso (19/10/2026): coluna anulável, sem default. Contas
-    // anteriores ficam com NULL e continuam válidas; o cadastro novo exige.
-    `ALTER TABLE users ADD COLUMN IF NOT EXISTS perfil_uso TEXT`,
-    `CREATE TABLE IF NOT EXISTS verification_tokens (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      purpose TEXT NOT NULL,
-      token_hash TEXT NOT NULL,
-      expires_at TIMESTAMPTZ NOT NULL,
-      used_at TIMESTAMPTZ,
-      attempts INTEGER NOT NULL DEFAULT 0,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_verification_user ON verification_tokens(user_id, purpose)`,
-    `CREATE TABLE IF NOT EXISTS sessions (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      token_hash TEXT NOT NULL UNIQUE,
-      expires_at TIMESTAMPTZ NOT NULL,
-      revoked_at TIMESTAMPTZ,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id)`,
-    `CREATE TABLE IF NOT EXISTS audit_logs (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      action TEXT NOT NULL,
-      detail TEXT,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_audit_user ON audit_logs(user_id)`,
-    `CREATE TABLE IF NOT EXISTS product_events (
-      id TEXT PRIMARY KEY,
-      user_id TEXT,
-      name TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_events_name ON product_events(name)`,
-    // Sugestões dos usuários (lidas no painel de administração).
-    `CREATE TABLE IF NOT EXISTS suggestions (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      categoria TEXT NOT NULL,
-      texto TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_suggestions_created ON suggestions(created_at)`,
-    `CREATE TABLE IF NOT EXISTS assinaturas_resumo (
-      id TEXT PRIMARY KEY,
-      email TEXT NOT NULL UNIQUE,
-      periodicidade TEXT NOT NULL,
-      status TEXT NOT NULL,
-      consentimento_em TIMESTAMPTZ NOT NULL,
-      confirmada_em TIMESTAMPTZ,
-      ultimo_envio_em TIMESTAMPTZ,
-      ultima_edicao TEXT,
-      created_at TIMESTAMPTZ NOT NULL
-    )`,
-    // Recursos da conta (Onda 2): recortes salvos e alertas de atualização por domínio.
-    `CREATE TABLE IF NOT EXISTS recortes_salvos (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      titulo TEXT NOT NULL,
-      caminho TEXT NOT NULL,
-      observatorio TEXT NOT NULL,
-      criado_em TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_recortes_user ON recortes_salvos(user_id, criado_em)`,
-    `CREATE TABLE IF NOT EXISTS alertas_atualizacao (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL,
-      dominio TEXT NOT NULL,
-      referencia_avisada TEXT,
-      ultimo_envio_em TIMESTAMPTZ,
-      criado_em TIMESTAMPTZ NOT NULL
-    )`,
-    `CREATE UNIQUE INDEX IF NOT EXISTS idx_alertas_user_dominio ON alertas_atualizacao(user_id, dominio)`,
-    `CREATE INDEX IF NOT EXISTS idx_alertas_dominio ON alertas_atualizacao(dominio)`,
-    // Medição de uso agregada (Onda 2, Q3): um contador por dia, modelo de rota
-    // e presença de conta, sem nenhuma coluna que identifique pessoa. A chave
-    // primária começa pelo dia e serve à janela de 30 dias do painel.
-    `CREATE TABLE IF NOT EXISTS uso_paginas_dia (
-      dia DATE NOT NULL,
-      rota TEXT NOT NULL,
-      observatorio TEXT NOT NULL,
-      com_conta BOOLEAN NOT NULL,
-      visitas INTEGER NOT NULL DEFAULT 0,
-      PRIMARY KEY (dia, rota, com_conta)
-    )`,
-    // Busca da plataforma (Iniciativa 3 do parecer de UX): buscas por dia, termo
-    // normalizado e presença de conta, sem coluna que identifique pessoa.
-    `CREATE TABLE IF NOT EXISTS uso_busca_dia (
-      dia DATE NOT NULL,
-      termo TEXT NOT NULL,
-      com_conta BOOLEAN NOT NULL,
-      evento TEXT NOT NULL DEFAULT 'abriu',
-      fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false,
-      buscas INTEGER NOT NULL DEFAULT 0,
-      PRIMARY KEY (dia, termo, com_conta, evento)
-    )`,
-    // Ciclo 2 da busca (23/10/2026, decisão do dono): o evento entra na chave (busca aberta ou sem resultado na barra) e o
-    // termo fora do vocabulário do índice ganha marca própria. Migração da tabela de 22/10/2026, uma vez só (idempotente).
-    `DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'uso_busca_dia' AND column_name = 'evento') THEN
-        ALTER TABLE uso_busca_dia ADD COLUMN evento TEXT NOT NULL DEFAULT 'abriu';
-        ALTER TABLE uso_busca_dia ADD COLUMN fora_do_vocabulario BOOLEAN NOT NULL DEFAULT false;
-        ALTER TABLE uso_busca_dia DROP CONSTRAINT uso_busca_dia_pkey;
-        ALTER TABLE uso_busca_dia ADD PRIMARY KEY (dia, termo, com_conta, evento);
-      END IF;
-    END $$`,
-    // Fim do acesso antecipado por código: contas paradas na etapa do código
-    // ou na lista de espera são promovidas a acesso completo (idempotente).
-    `UPDATE users SET onboarding_status = 'COMPLETE'
-      WHERE onboarding_status IN ('ACCESS_PENDING', 'WAITLIST')`,
-  ];
-  for (const statement of statements) {
+  for (const statement of COMANDOS_ESQUEMA) {
     await db.execute(sql.raw(statement));
+  }
+}
+
+/**
+ * Esquema na primeira conexão de cada instância. Antes, os 30 comandos rodavam em sequência a cada partida a frio da função
+ * (de 1,3 s a 3,6 s com 30 a 120 ms por ida ao banco, medido em 25/10/2026), e os ALTER TABLE travam a tabela mesmo quando a
+ * coluna já existe. Agora uma consulta confere se esta versão já foi aplicada; só uma versão nova roda a migração e se registra.
+ */
+export async function garantirEsquema(db: Db): Promise<void> {
+  if (await versaoAplicada(db)) return;
+  await migrate(db);
+  await db.execute(sql.raw("CREATE TABLE IF NOT EXISTS esquema_versoes (versao TEXT PRIMARY KEY, aplicada_em TIMESTAMPTZ NOT NULL)"));
+  await db.execute(sql`INSERT INTO esquema_versoes (versao, aplicada_em) VALUES (${VERSAO_ESQUEMA}, now()) ON CONFLICT (versao) DO NOTHING`);
+}
+
+async function versaoAplicada(db: Db): Promise<boolean> {
+  try {
+    const r = await db.execute(sql`SELECT 1 FROM esquema_versoes WHERE versao = ${VERSAO_ESQUEMA} LIMIT 1`);
+    return (r as unknown as { rows: unknown[] }).rows.length > 0;
+  } catch {
+    // banco anterior ao registro de versões: a tabela ainda não existe
+    return false;
   }
 }
 
