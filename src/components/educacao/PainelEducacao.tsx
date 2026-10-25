@@ -1,3 +1,5 @@
+import { DecomposicaoIdeb } from "./DecomposicaoIdeb";
+import { MetasEducacao, DecadaIdeb, DistribuicoesCidade, QuemAtende } from "./ArtefatosEducacao";
 /**
  * Painel completo "Educação nos municípios" (com conta). Seções por pergunta, na ordem da procura: a escola pública do
  * município do leitor (o Ideb, a série com a meta, do que o índice é feito, a comparação com o estado, o Brasil e as
@@ -85,6 +87,8 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
       ]}
       recolhidos={
         <>
+          <Recolhido id="recolhido-metas" titulo="As metas projetadas pelo INEP" resumo="Quantas redes alcançaram a meta em cada edição, entre as que tinham meta e Ideb."><MetasEducacao g={g} mostrarTitulo={false} /></Recolhido>
+          <Recolhido id="recolhido-decada" titulo="A década do Ideb" resumo="Séries do Brasil e dos estados, com as duas etapas na mesma escala."><DecadaIdeb g={g} mostrarTitulo={false} /></Recolhido>
           <Recolhido id="recolhido-retrato" titulo="O retrato do país" resumo="Os números de abertura numa frase, com a distribuição das redes.">
             <Achado g={g} />
           </Recolhido>
@@ -220,7 +224,11 @@ export function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: Municipio
       </div>
 
       <Componentes g={g} m={m} anos={anos} />
+      <DecomposicaoIdeb anos={anos} m={m} />
+      <MetasEducacao g={g} m={m} />
       <Comparacao g={g} m={m} uf={uf} arquivo={arquivo} porte={porte} />
+      <DistribuicoesCidade g={g} m={m} uf={uf} />
+      <QuemAtende m={m} ano={g.censo.ano} />
       <MatriculasEscolas g={g} m={m} uf={uf} />
       <TabelasComponentes g={g} m={m} anos={anos} anosMeta={arquivo.anos_meta} />
     </>

@@ -1,0 +1,25 @@
+{
+ "data": "2026-10-25",
+ "build": "fpE_Ds1-dYEUvyAN397a_",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /educacao-municipal/mapa --larguras 1440 --modos com --saida /tmp/educacao-pr2-mapa-repeticao",
+ "tempo": "5 min 04 s",
+ "resultados": [
+  {
+   "rota": "/educacao-municipal/mapa",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/educacao-municipal/mapa",
+   "barra": true,
+   "cromo": 187,
+   "topoH1": 261,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "educacao_municipal_mapa-1440-com-sessao.jpg",
+   "primeiraTela": "educacao_municipal_mapa-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
  * leitura tenha uma só taxonomia à vista, a das seis perguntas.
  *
  * Cada <details> recolhido leva a classe `group/recolhido`; o indicador lê o
- * estado aberto dela. É um só span decorativo, sem filhos (o contrato da home
+ * estado aberto do details imediatamente acima do summary, sem herdar a abertura de blocos ancestrais. É um só span decorativo, sem filhos (o contrato da home
  * em inglês só admite decoração folha dentro do índice traduzido).
  */
 export const DETALHE_RECOLHIDO = "group/recolhido";
@@ -22,7 +22,7 @@ export function IndicadorRecolhido({ claro = false }: Readonly<{ claro?: boolean
   return (
     <span
       aria-hidden="true"
-      className={`relative h-5 w-5 shrink-0 ${claro ? "text-marfim" : "text-carvao"} before:absolute before:inset-x-0 before:top-1/2 before:h-[1.5px] before:-translate-y-1/2 before:bg-current after:absolute after:inset-y-0 after:left-1/2 after:w-[1.5px] after:-translate-x-1/2 after:bg-current motion-safe:after:transition-transform group-open/recolhido:after:rotate-90`}
+      className={`relative h-5 w-5 shrink-0 ${claro ? "text-marfim" : "text-carvao"} before:absolute before:inset-x-0 before:top-1/2 before:h-[1.5px] before:-translate-y-1/2 before:bg-current after:absolute after:inset-y-0 after:left-1/2 after:w-[1.5px] after:-translate-x-1/2 after:bg-current motion-safe:after:transition-transform [details[open]>summary>&]:after:rotate-90`}
     />
   );
 }

@@ -53,7 +53,7 @@ class TestSeedsVersionados(unittest.TestCase):
 
     def test_publicacao_versionada_e_a_dos_seeds(self):
         out = run.saidas(self.s)
-        self.assertEqual(len(out), 28)  # a gold e um arquivo por UF
+        self.assertEqual(len(out), 29)  # Pedido Educação PR 2: gold, 27 UFs e mapa compacto protegido
         for caminho, texto in out.items():
             self.assertTrue(caminho.exists(), caminho)
             self.assertEqual(caminho.read_bytes().decode("utf-8"), texto, f"{caminho} não é a dos seeds: rode python3 -m pipeline.educacao.run")
@@ -252,3 +252,68 @@ class TestGold(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAnalisesDidaticas(unittest.TestCase):
+    def serie(self, n, p):
+        return {"n": n, "p": p, "ideb": [None if a is None or b is None else round(a*b, 1) for a, b in zip(n, p)],
+                "meta": [3, 4], "marca": [None, None]}
+
+    def test_decomposicao_isola_fator_constante_e_fecha_a_soma(self):
+        for n, p, esperado in [([4, 8], [1, 1], (4, 0)), ([4, 4], [.5, 1], (0, 2)), ([4, 8], [.5, 1], (3, 3))]:
+            a = gold.analise_serie(self.serie(n, p), [2007, 2009], [2007, 2009])["variacoes"][0]
+            self.assertAlmostEqual(a[6], esperado[0])
+            self.assertAlmostEqual(a[7], esperado[1])
+            self.assertAlmostEqual(a[6]+a[7], a[5]-a[4])
+
+    def test_movimento_pequeno_e_logaritmo_indefinido_nao_ganham_contribuicoes(self):
+        for n, p in [([4, 4.02], [.5, .5]), ([4, 8], [.5, .25]), ([0, 4], [1, 1])]:
+            a = gold.analise_serie(self.serie(n, p), [2007, 2009], [2007, 2009])["variacoes"][0]
+            self.assertIsNone(a[6])
+            self.assertIsNone(a[7])
+            self.assertAlmostEqual(a[2], n[1]-n[0])
+            self.assertAlmostEqual(a[3], p[1]-p[0])
+
+    def test_limiar_decimal_exato_nao_depende_do_erro_binario(self):
+        a = gold.analise_serie(self.serie([4, 4.1], [.5, .5]), [2007, 2009], [2007, 2009])["variacoes"][0]
+        self.assertIsNotNone(a[6])
+        self.assertAlmostEqual(a[6], .05)
+
+    def test_ausencia_nao_vira_zero_nem_motivo_de_matricula_de_outro_ano(self):
+        s = self.serie([None, 4], [.8, 1])
+        s["marca"][0] = "ND*"
+        a = gold.analise_serie(s, [2007, 2009], [2007, 2009])
+        self.assertEqual(a["variacoes"], [])
+        self.assertEqual(a["metas"][0], {"ano": 2007, "estado": "sem_ideb", "motivo": "a_pedido"})
+        self.assertEqual(a["metas"][1]["estado"], "alcancou")
+        self.assertEqual(gold.composicao_matriculas(None), [])
+        s["meta"][0] = None
+        sem_ambos = gold.analise_serie(s, [2007, 2009], [2007, 2009])["metas"][0]
+        self.assertEqual(sem_ambos, {"ano": 2007, "estado": "sem_meta", "motivo": "a_pedido"})
+
+    def test_derivacoes_reais_reconciliam_e_corrupcao_e_retida(self):
+        g, ufs = gold.construir(seeds())
+        self.assertEqual(validacoes.validar_analises(g, ufs), [])
+        mapa = gold.mapa_compacto(g, ufs)
+        self.assertEqual(validacoes.validar_mapa(mapa, g, ufs), [])
+        mapa["cobertura"]["SE"]["ai"]["com_ideb"] += 1
+        self.assertTrue(any("cobertura divergente" in x for x in validacoes.validar_mapa(mapa, g, ufs)))
+        mapa["cobertura"]["SE"]["ai"]["com_ideb"] -= 1
+        mapa["municipios"][0]["ai"] = -1
+        self.assertTrue(any("valor ou motivo divergente" in x for x in validacoes.validar_mapa(mapa, g, ufs)))
+        mapa = gold.mapa_compacto(g, ufs)
+        self.assertEqual(len(mapa["municipios"]), g["municipios"]["total"])
+        self.assertEqual(len({m["id"] for m in mapa["municipios"]}), g["municipios"]["total"])
+        for m in mapa["municipios"]:
+            for e in F.ETAPAS:
+                self.assertEqual(m[e] is None, m[f"motivo_{e}"] is not None)
+        m = next(m for a in ufs.values() for m in a["municipios"] if any(v[6] is not None for v in m["analises"]["ai"]["variacoes"]))
+        v = next(v for v in m["analises"]["ai"]["variacoes"] if v[6] is not None)
+        v[6] += .2
+        self.assertTrue(any("contribuições não fecham" in x for x in validacoes.validar_analises(g, ufs)))
+        v[7] -= .2
+        self.assertTrue(any("movimentos logarítmicos" in x for x in validacoes.validar_analises(g, ufs)))
+        v[6] -= .2
+        v[7] += .2
+        m["composicao_matriculas"][0]["partes"]["municipal"] += 1
+        self.assertTrue(any("composição não fecha" in x for x in validacoes.validar_analises(g, ufs)))

@@ -17,15 +17,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+from decimal import Decimal
 import statistics
 import unicodedata
 
 from pipeline.eficiencia.entes import codigos_capitais
 
 from . import fontes as F
-from .validacoes import validar_censo, validar_cruzado, validar_ideb, validar_populacao
+from .validacoes import validar_censo, validar_cruzado, validar_ideb, validar_populacao, validar_analises
 
-VERSAO = "educacao-1.0.0"
+VERSAO = "educacao-1.1.0"
 
 
 class GoldInvalida(ValueError):
@@ -132,6 +134,75 @@ def _sem_captura(obj):
     return obj
 
 
+def analise_serie(serie: dict | None, anos: list[int], anos_meta: list[int]) -> dict:
+    """Metas e divisão logarítmica de todos os pares publicados, sem arredondar N e P da gold.
+
+    Cada variação contém: índices inicial/final, movimentos de N/P, produtos inicial/final e contribuições de N/P.
+    Contribuições nulas significam movimento pequeno ou logaritmo indefinido; nunca contribuição igual a zero.
+    """
+    metas = []
+    for j, ano in enumerate(anos_meta):
+        k = anos.index(ano)
+        meta = serie["meta"][j] if serie else None
+        valor = serie["ideb"][k] if serie else None
+        motivo_historico = None
+        if valor is None:
+            marca = serie["marca"][k] if serie else None
+            motivo_historico = {"ND": "participacao", "ND*": "a_pedido", "ND***": "extravio"}.get(marca)
+            if motivo_historico is None:
+                motivo_historico = "sem_aprovacao" if serie and serie["n"][k] is not None and serie["p"][k] is None else "nao_divulgado"
+        estado = "sem_meta" if meta is None else "sem_ideb" if valor is None else "alcancou" if valor >= meta else "nao_alcancou"
+        metas.append({"ano": ano, "estado": estado, "motivo": motivo_historico})
+    pares = []
+    if serie:
+        completos = [i for i in range(len(anos)) if all(serie[c][i] is not None for c in ("ideb", "n", "p"))]
+        for pos, i in enumerate(completos):
+            for j in completos[pos + 1:]:
+                n0, n1, p0, p1 = serie["n"][i], serie["n"][j], serie["p"][i], serie["p"][j]
+                v0, v1 = n0 * p0, n1 * p1
+                cn = cp = None
+                delta_exato = Decimal(str(n1))*Decimal(str(p1))-Decimal(str(n0))*Decimal(str(p0))
+                if abs(delta_exato) >= Decimal("0.05") and min(n0, n1, p0, p1) > 0:
+                    cn = (math.log(n1) - math.log(n0)) / (math.log(v1) - math.log(v0)) * (v1 - v0)
+                    cp = (v1 - v0) - cn
+                pares.append([i, j, n1 - n0, p1 - p0, v0, v1, cn, cp])
+    return {"metas": metas, "variacoes": pares}
+
+
+def composicao_matriculas(censo: dict | None) -> list[dict]:
+    """Partições exatas das contagens disponíveis; a fonte não separa federal/estadual por etapa."""
+    if censo is None:
+        return []
+    c = censo
+    linhas = [{"etapa": "basica", "total": c["mat_total"], "partes": {r: c[f"mat_{r}"] for r in ("municipal", "estadual", "federal", "privada")}}]
+    for e in ("creche", "pre", "ai", "af"):
+        total, municipal = c[f"{e}_total"], c[f"{e}_mun"]
+        partes = {"municipal": municipal}
+        if e in ("ai", "af"):
+            partes.update({"outras_publicas": c[f"{e}_publica"] - municipal, "privada": total - c[f"{e}_publica"]})
+        else:
+            partes["demais_redes"] = total - municipal
+        linhas.append({"etapa": e, "total": total, "partes": partes})
+    return linhas
+
+
+def mapa_compacto(gold: dict, arquivos: dict) -> dict:
+    """Identificação, resultados, ausência e cobertura por recorte; sem detalhe individual extra."""
+    municipios = [{"id": m["id"], "nome": m["nome"], "uf": uf,
+                   **{e: m[e]["municipal"]["ideb"][-1] if m[e]["municipal"] else None for e in F.ETAPAS},
+                   **{f"motivo_{e}": m[e]["motivo_municipal"] for e in F.ETAPAS}}
+                  for uf, arquivo in arquivos.items() for m in arquivo["municipios"]]
+    cobertura = {}
+    for uf in ["BR", *F.SIGLAS]:
+        recorte = [m for m in municipios if uf == "BR" or m["uf"] == uf]
+        cobertura[uf] = {"total": len(recorte), **{e: {
+            "com_ideb": sum(m[e] is not None for m in recorte),
+            "motivos": {mot: sum(m[f"motivo_{e}"] == mot for m in recorte) for mot in F.MOTIVOS}}
+            for e in F.ETAPAS}}
+    return {"versao": VERSAO, "ano": gold["ideb"]["ano"], "fonte": gold["fontes"]["ideb"]["orgao"],
+            "municipios": municipios, "cobertura": cobertura}
+
+
 def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
     ideb, censo, pop = seeds["ideb"], seeds["censo"], seeds["populacao"]
     problemas = (
@@ -174,6 +245,8 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
                 ideb_mun_ultimo[etapa][cod] = bloco["municipal"]["ideb"][-1]
             m[etapa] = bloco
         m["censo"] = c
+        m["analises"] = {e: analise_serie(m[e]["municipal"], ideb["anos"], ideb["anos_meta"]) for e in F.ETAPAS}
+        m["composicao_matriculas"] = composicao_matriculas(c)
         por_uf[uf].append(m)
 
     ano = ideb["ano"]
@@ -212,6 +285,13 @@ def construir(seeds: dict) -> tuple[dict, dict[str, dict]]:
     for s in F.SIGLAS:
         lista = sorted(por_uf[s], key=lambda m: (_chave_nome(m["nome"] or ""), m["id"]))
         arquivos[s] = {"versao": VERSAO, "uf": s, "nome_uf": F.NOME_UF[s], "anos": ideb["anos"], "anos_meta": ideb["anos_meta"], "censo_ano": censo["ano"], "municipios": lista}
+    gold["metas"] = {e: [
+        {"ano": ano, **{estado: sum(1 for lista in por_uf.values() for m in lista if m["analises"][e]["metas"][j]["estado"] == estado)
+                         for estado in ("alcancou", "nao_alcancou", "sem_ideb", "sem_meta")}}
+        for j, ano in enumerate(ideb["anos_meta"])] for e in F.ETAPAS}
+    problemas = validar_analises(gold, arquivos)
+    if problemas:
+        raise GoldInvalida("análises não publicadas: " + "; ".join(problemas[:20]))
     corpo = json.dumps({"gold": _sem_captura(gold), "ufs": arquivos}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     gold["hash_dados"] = hashlib.sha256(corpo.encode("utf-8")).hexdigest()
     return gold, arquivos

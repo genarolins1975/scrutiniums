@@ -1,0 +1,36 @@
+test_ausencia_nao_vira_zero_nem_motivo_de_matricula_de_outro_ano (pipeline.tests.test_educacao.TestAnalisesDidaticas.test_ausencia_nao_vira_zero_nem_motivo_de_matricula_de_outro_ano) ... ok
+test_decomposicao_isola_fator_constante_e_fecha_a_soma (pipeline.tests.test_educacao.TestAnalisesDidaticas.test_decomposicao_isola_fator_constante_e_fecha_a_soma) ... ok
+test_derivacoes_reais_reconciliam_e_corrupcao_e_retida (pipeline.tests.test_educacao.TestAnalisesDidaticas.test_derivacoes_reais_reconciliam_e_corrupcao_e_retida) ... ok
+test_limiar_decimal_exato_nao_depende_do_erro_binario (pipeline.tests.test_educacao.TestAnalisesDidaticas.test_limiar_decimal_exato_nao_depende_do_erro_binario) ... ok
+test_movimento_pequeno_e_logaritmo_indefinido_nao_ganham_contribuicoes (pipeline.tests.test_educacao.TestAnalisesDidaticas.test_movimento_pequeno_e_logaritmo_indefinido_nao_ganham_contribuicoes) ... ok
+test_ausencia_nao_vira_zero (pipeline.tests.test_educacao.TestGold.test_ausencia_nao_vira_zero)
+Rede sem Ideb no ano mais recente tem o motivo e o valor ausente (null), nunca zero. ... ok
+test_cobertura_soma_o_universo_e_confere_com_o_quadro_1 (pipeline.tests.test_educacao.TestGold.test_cobertura_soma_o_universo_e_confere_com_o_quadro_1) ... ok
+test_distrito_federal_sem_rede_municipal (pipeline.tests.test_educacao.TestGold.test_distrito_federal_sem_rede_municipal) ... ok
+test_ideb_das_capitais_igual_ao_do_painel_das_capitais (pipeline.tests.test_educacao.TestGold.test_ideb_das_capitais_igual_ao_do_painel_das_capitais)
+O painel "Educação nas capitais" (Eficiência Estatal) lê as mesmas planilhas: o Ideb da rede municipal tem de ser o mesmo. ... ok
+test_motivo (pipeline.tests.test_educacao.TestGold.test_motivo) ... ok
+test_universo_e_porte (pipeline.tests.test_educacao.TestGold.test_universo_e_porte) ... ok
+test_ano_do_rotulo_com_nota (pipeline.tests.test_educacao.TestLeituraDasCelulas.test_ano_do_rotulo_com_nota) ... ok
+test_celulas_do_inep (pipeline.tests.test_educacao.TestLeituraDasCelulas.test_celulas_do_inep) ... ok
+test_codigos_trocados_do_inep_ficam_registrados (pipeline.tests.test_educacao.TestSeedsVersionados.test_codigos_trocados_do_inep_ficam_registrados) ... ok
+test_originais_com_sha256_md5_do_inep_e_endereco_oficial (pipeline.tests.test_educacao.TestSeedsVersionados.test_originais_com_sha256_md5_do_inep_e_endereco_oficial) ... ok
+test_publicacao_versionada_e_a_dos_seeds (pipeline.tests.test_educacao.TestSeedsVersionados.test_publicacao_versionada_e_a_dos_seeds) ... ok
+test_seed_do_ideb_comprimido_sem_data_no_cabecalho (pipeline.tests.test_educacao.TestSeedsVersionados.test_seed_do_ideb_comprimido_sem_data_no_cabecalho) ... ok
+test_seeds_passam_em_todas_as_validacoes (pipeline.tests.test_educacao.TestSeedsVersionados.test_seeds_passam_em_todas_as_validacoes) ... ok
+test_censo_parte_maior_que_o_todo (pipeline.tests.test_educacao.TestValidacoesRetem.test_censo_parte_maior_que_o_todo) ... ok
+test_censo_que_nao_soma (pipeline.tests.test_educacao.TestValidacoesRetem.test_censo_que_nao_soma) ... ok
+test_contagem_diferente_da_nota_informativa (pipeline.tests.test_educacao.TestValidacoesRetem.test_contagem_diferente_da_nota_informativa) ... ok
+test_cruzada_populacao_de_outro_ano (pipeline.tests.test_educacao.TestValidacoesRetem.test_cruzada_populacao_de_outro_ano) ... ok
+test_cruzada_rede_com_ideb_e_sem_matricula (pipeline.tests.test_educacao.TestValidacoesRetem.test_cruzada_rede_com_ideb_e_sem_matricula) ... ok
+test_desenho_trocado_e_edicao_velha (pipeline.tests.test_educacao.TestValidacoesRetem.test_desenho_trocado_e_edicao_velha) ... ok
+test_edicao_sem_referencia_do_quadro_1_fica_retida (pipeline.tests.test_educacao.TestValidacoesRetem.test_edicao_sem_referencia_do_quadro_1_fica_retida) ... ok
+test_ideb_que_nao_fecha_com_n_vezes_p (pipeline.tests.test_educacao.TestValidacoesRetem.test_ideb_que_nao_fecha_com_n_vezes_p) ... ok
+test_populacao_que_nao_soma (pipeline.tests.test_educacao.TestValidacoesRetem.test_populacao_que_nao_soma) ... ok
+test_revisao_de_ideb_publicado (pipeline.tests.test_educacao.TestValidacoesRetem.test_revisao_de_ideb_publicado) ... ok
+test_uf_faltando_e_brasil_sem_rede (pipeline.tests.test_educacao.TestValidacoesRetem.test_uf_faltando_e_brasil_sem_rede) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 108.104s
+
+OK

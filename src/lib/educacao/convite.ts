@@ -21,35 +21,35 @@ export function comConta(g: GoldEducacao, municipio?: { m: MunicipioGold; uf: st
     const anosPub = [...new Set(ETAPAS.flatMap((e) => anosComIdeb(m[e].publica, anos)))].sort();
     const [rede, anosRede] = anosMun.length ? ["da rede municipal", anosMun] : ["da rede pública", anosPub];
     if (anosRede.length > 1) {
-      itens.push(`Ficha da cidade: Ideb ${rede} de ${anosRede[0]} a ${anosRede[anosRede.length - 1]}, nas duas etapas quando houver, e metas do INEP até 2021`);
+      itens.push(`Ficha da cidade: Ideb ${rede} de ${anosRede[0]} a ${anosRede[anosRede.length - 1]}, nas duas etapas quando houver, e as ${g.ideb.anos_meta.length} metas por edição do INEP`);
     } else if (anosRede.length === 1) {
       itens.push(`O Ideb ${rede} em ${anosRede[0]}, com todas as partes do cálculo (o INEP não publicou outros anos para ela)`);
     }
-    itens.push("Componentes por edição: aprovação, português e matemática do Saeb. Tabelas completas e laboratório com os valores publicados");
+    itens.push("Componentes, tabelas e laboratório: aprendizagem e aprovação, com decomposição entre edições quando houver dados");
     const temIdebRecente = ETAPAS.some((e) => m[e].municipal?.ideb[anos.length - 1] != null);
     const nUf = g.distribuicao.ai.ufs[uf]?.n;
     itens.push(
       temIdebRecente && nUf
-        ? `A comparação com o estado (a rede pública ${doEstado} e a mediana das ${num(nUf)} redes municipais com Ideb ${ano}), com o Brasil e a posição da rede entre elas`
-        : `A comparação com o estado (a rede pública ${doEstado} e a mediana das redes municipais) e com o Brasil`,
+        ? `Estado, Brasil e ${num(nUf)} redes municipais com Ideb ${ano}: a posição da rede entre elas`
+        : `Comparação com a rede pública ${doEstado}, a mediana municipal do estado e o Brasil`,
     );
     const porte = rotuloPorte(g, m.porte);
     const nPorte = m.porte ? g.distribuicao.ai.portes[m.porte]?.n : null;
-    if (porte && nPorte) itens.push(`Distribuição do Ideb ${ano}: ${num(nPorte)} redes do mesmo porte (${porte.toLowerCase()}), com sua cidade marcada`);
+    if (porte && nPorte) itens.push(`Distribuições do Brasil, estado e ${num(nPorte)} redes do mesmo porte (${porte.toLowerCase()}), com sua cidade marcada`);
     if (m.censo) {
       itens.push(
         m.censo.mat_municipal > 0
-          ? `Matrículas por etapa e escolas municipais urbanas e rurais, ao lado do estado. Censo Escolar ${g.censo.ano}`
+          ? `Composição das matrículas por rede e etapa, escolas municipais e Censo Escolar ${g.censo.ano}`
           : `As matrículas e as escolas públicas do Censo Escolar ${g.censo.ano}, por rede (o município não tem rede municipal com alunos)`,
       );
     }
   } else {
-    itens.push(`Fichas de ${num(g.municipios.total)} municípios: Ideb das redes municipal e pública de ${anos[0]} a ${ano}, com metas do INEP até 2021`);
-    itens.push("Componentes por edição: aprovação, português e matemática do Saeb. Tabelas completas e laboratório com os valores publicados");
+    itens.push(`Fichas de ${num(g.municipios.total)} municípios: Ideb das redes municipal e pública de ${anos[0]} a ${ano}, com as ${g.ideb.anos_meta.length} metas por edição do INEP`);
+    itens.push("Componentes, tabelas e laboratório: aprendizagem e aprovação, com decomposição entre edições quando houver dados");
     itens.push(`A comparação de cada município com o estado, com o Brasil e com as cidades do mesmo porte (${g.portes.length} faixas de população do IBGE)`);
     itens.push(`As matrículas e as escolas de cada rede municipal, por etapa, do Censo Escolar ${g.censo.ano}`);
   }
-  itens.push(`Os ${Object.keys(g.municipios.por_uf).length} estados, redes por porte e municípios sem Ideb ${ano}, com os motivos`);
+  itens.push(`Mapa de ${num(g.municipios.total)} municípios e séries de ${Object.keys(g.municipios.por_uf).length} UFs, com os motivos de ausência`);
   itens.push("Arquivos CSV: Ideb e componentes desde " + anos[0] + ", matrículas, escolas e resumo por estado");
   return itens;
 }

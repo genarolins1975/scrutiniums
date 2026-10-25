@@ -10,6 +10,7 @@
 
 /** Rotas no molde, com sessão (a versão aperitivo, sem sessão, segue no molde das entradas). PR 0: as três páginas de prova do kit; PR 1: o Grupo 1. */
 export const NO_MOLDE_PAINEL: string[] = [
+  "/educacao-municipal/mapa",
   "/setor-eletrico/pld",
   "/setor-eletrico/qualidade",
   "/setor-eletrico/conta-de-luz",

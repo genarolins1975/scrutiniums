@@ -1,0 +1,1 @@
+A base desta entrega é o PR 1, commit 9750d2d0c. As 36 capturas de partida, nas seis rotas, três larguras e dois estados de sessão, estão em [pr1/depois](../pr1/depois/evidencias.md). O mapa era 404 com sessão nesta base.

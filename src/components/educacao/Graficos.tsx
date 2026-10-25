@@ -46,6 +46,7 @@ export function afastar(ys: number[], min: number, topo: number, base: number): 
 }
 
 type PropsSerie = {
+  compacto?: boolean;
   series: SerieLinha[];
   anos: number[];
   metas?: (PontoAno & { observado?: number | null })[];
@@ -55,6 +56,7 @@ type PropsSerie = {
 };
 
 export function GraficoIdeb(p: PropsSerie) {
+  if (p.compacto) return <SerieIdeb {...p} largura={ESTREITO} />;
   return (
     <>
       <div className="edm-so-largo"><SerieIdeb {...p} largura={LARGO} /></div>
@@ -124,6 +126,7 @@ function SerieIdeb({ series, anos, metas = [], anoNota, descricao, largura: L }:
 
 /** Distribuição do Ideb em faixas de meio ponto; a faixa do município no acento e a mediana marcada. */
 export function GraficoDistribuicao(p: PropsDistribuicao) {
+  if (p.compacto) return <Distribuicao {...p} largura={ESTREITO} />;
   return (
     <>
       <div className="edm-so-largo"><Distribuicao {...p} largura={LARGO} /></div>
@@ -132,15 +135,15 @@ export function GraficoDistribuicao(p: PropsDistribuicao) {
   );
 }
 
-type PropsDistribuicao = { faixas: number[]; destaque: number | null; mediana: number; descricao: string; unidade: string };
+type PropsDistribuicao = { compacto?: boolean; escalaCompleta?: boolean; faixas: number[]; destaque: number | null; mediana: number; descricao: string; unidade: string };
 
-function Distribuicao({ faixas, destaque, mediana, descricao, unidade, largura: L }: PropsDistribuicao & { largura: number }) {
+function Distribuicao({ faixas, destaque, mediana, descricao, unidade, escalaCompleta = false, largura: L }: PropsDistribuicao & { largura: number }) {
   const M = { e: 44, d: 16, t: 46, b: 34 };
   const altura = 230;
   const primeira = Math.max(0, Math.min(faixas.findIndex((n) => n > 0), destaque === null ? 99 : Math.floor(destaque * 2)));
   const ultima = Math.min(19, Math.max(19 - [...faixas].reverse().findIndex((n) => n > 0), destaque === null ? 0 : Math.floor(destaque * 2)));
-  const i0 = Math.max(0, primeira - (primeira % 2));
-  const i1 = Math.min(19, ultima + ((ultima + 1) % 2));
+  const i0 = escalaCompleta ? 0 : Math.max(0, primeira - (primeira % 2));
+  const i1 = escalaCompleta ? 19 : Math.min(19, ultima + ((ultima + 1) % 2));
   const vis = faixas.slice(i0, i1 + 1);
   const max = Math.max(1, ...vis);
   const topoY = (() => {
