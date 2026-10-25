@@ -1,0 +1,118 @@
+{
+  "sha256": "f7fb064f3481b2cd9662bf8d8d0352f470e5ecde287d5251623bad6ffb82f297",
+  "coletado_em": "2026-10-25T20:55:50.041135+00:00",
+  "fontes": [
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/relatorios2000a2024",
+      "sha256": "2428b8a436e142682cd63eb6155717f58f2524582dcca427654032f45f6acf07"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/relatorios2025a2030",
+      "sha256": "b8977d383e4ea51f56ed391571aca7af1c109b83b9c17ceef8b926841d658206"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata/202412/cadastro202412_1009.json",
+      "sha256": "9ce0bedccf66db29b665c417817fd03ea4e49c2f3ed0980eb66412dcae990c1f"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata/202412/dados202412_1.json",
+      "sha256": "c0f14556464dfd191df00d6867023fa894174b0eeb007a2bd5f5714187fa0474"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata/202412/dados202412_3.json",
+      "sha256": "4439dd03d28fb5e36cfd1b5bc3fcebcef671d99799c1578a5f2b6e981a6a7c42"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata/202412/info202412.json",
+      "sha256": "9c09219eeb7aa558e0ac74e32b905ba940ec00b0bc01f761b1d086aef86cca28"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata/202412/trel202412_113.json",
+      "sha256": "98c58d07c8ea030146e88762f828c854064002f85fa1e0ff2a1c192fa0730529"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/cadastro202506_1009.json",
+      "sha256": "da6c74e519beed9dbc7405afad9517dedf100cbe244128b1cc5c49a2284cb445"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/dados202506_1.json",
+      "sha256": "8644c5feedfeacb4c1267507f763d35ac05a282657e284a5316c44fae0359ff0"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/dados202506_3.json",
+      "sha256": "a8537bff8e7af0c698a4e76095e13c132496aac8e9343b9f2ea95158dda81ef6"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/info202506.json",
+      "sha256": "9c09219eeb7aa558e0ac74e32b905ba940ec00b0bc01f761b1d086aef86cca28"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/trel202506_116.json",
+      "sha256": "52d05ec5f827067823100db8abbfcf47908aa6d5d874ba4c0ed7122c541d5e0e"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/trel202506_123.json",
+      "sha256": "ba923f370e61d78274a8faf981d036d574451c3b8b66fcb820a154ea277da6b5"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202506/trel202506_128.json",
+      "sha256": "e7f1547810f90e1f0a69b42a0c557297abdb3d3c198cd10d3bc627dbda174a3e"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/cadastro202512_1009.json",
+      "sha256": "3bca620bdcf0c02de3c0eeab05e5e3a687f18a44893252dd40e5e914299fb53f"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/dados202512_1.json",
+      "sha256": "01859bd7ff8cdb394c5ca9f2c4af63fe9c9019cc82417a8bcc832959c9026040"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/dados202512_3.json",
+      "sha256": "e9fb9597f177df1150c8cc73af8e8f064f23f72420ede2e6933b7d48e7e2321a"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/info202512.json",
+      "sha256": "94e348cc4fd201734fcfa27036ed008b1e72dde0cf4e500da4aab32fb81412ef"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/trel202512_116.json",
+      "sha256": "ada0cf2c3764bbe1a72cd3d71a1fe0d41ad780037f7f59237749e557885de781"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/trel202512_123.json",
+      "sha256": "6fcbf3431f2d486db4048159aea1764f172e91bd86451b929fda18a9a21297bf"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/trel202512_128.json",
+      "sha256": "865bb7ded449f27461675f9c37c340b33af84ebb636b221d6cfb85eeeeb6843e"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/cadastro202606_1009.json",
+      "sha256": "16894c0d6a6ddb6ec62df8c79de3ff2db91edd5c3d03ea3661551c9f32653a52"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/dados202606_1.json",
+      "sha256": "bb7e68afe8464c023fb453748ea4d3009c0c7af828328483ac98f9ae36edf8e6"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/dados202606_3.json",
+      "sha256": "4404c6186ac6febb122078dd40dd02e51041100e54c5e0ac4cc5fc7e337a9275"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/info202606.json",
+      "sha256": "7493e647feff953cb74c45a1d45b823c4660717e750879e3475923fd4a142098"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/trel202606_116.json",
+      "sha256": "d6375445130bceb22ccceeff430fc9ae6cad47462469bdf7bf975435b34a8efd"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/trel202606_123.json",
+      "sha256": "0a714dea744b714f863cf0700c78fea09a08546520bf0ec0974226b9333d48dc"
+    },
+    {
+      "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/trel202606_128.json",
+      "sha256": "faa1df65e438582f9386d7ce19a45bbb6f8aaace6c5ad0a20cfe53c6a2e7163e"
+    }
+  ]
+}

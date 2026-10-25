@@ -143,6 +143,12 @@ def _if_contagens(con):
 
 
 def build_all(con, cfg, fetch_status):
+    # Snapshot oficial versionado: coleta independente, build sem rede.
+    try:
+        from pipeline.lucro_banco_gold import construir as construir_lucro, serializar as serializar_lucro
+        common.write_gold("lucro_banco.json", json.loads(serializar_lucro(construir_lucro())))
+    except Exception as e:
+        common.stub("lucro_banco.json", e)
     today = date.today().isoformat()
     horizons = cfg["forecast"]["horizons"]
     bt_pts = cfg["forecast"]["backtest_points"]

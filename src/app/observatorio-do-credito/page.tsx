@@ -21,6 +21,7 @@ import { CircuitoCredito } from "@/components/observatorios/CircuitoCredito";
 import { circuitoCredito } from "@/lib/observatorios/entradas/economia";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
+import { AperitivoLucroBanco } from "@/components/credito/AperitivoLucroBanco";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 
 /**
@@ -225,14 +226,18 @@ export default function ObservatorioPublicoPage() {
         frase="O crédito brasileiro está em dezenas de bases oficiais que quase ninguém consegue cruzar. O Observatório reúne as fontes, reconcilia os conceitos e diz o que cada número permite concluir."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/observatorio-do-credito"]} conteiner="mx-auto max-w-page px-6" />}
         escala={numeros}
+        destaque={<AperitivoLucroBanco />}
         paraVoce={
           <ParaVoce entrada="/observatorio-do-credito" />
         }
         artefato={<CircuitoCredito circuito={circuitoCredito()} recolhido />}
         caminhosAVista={4}
         caminhos={AREAS.map((a) => ({ pergunta: a.pergunta, resumo: a.detalhe, href: a.href, rotulo: a.titulo, numero: numeroDaArea(a.titulo) }))}
-        convite={
-          <div className="border-b border-linha bg-papel">
+        metodoLargo
+        metodo={
+          <>
+          <details className="mx-auto max-w-page border-b border-linha bg-papel px-6 py-6">
+          <summary className="cursor-pointer font-serif text-xl text-carvao">O que mais a conta gratuita permite consultar</summary>
           <ConviteAperitivo
             rota="/observatorio"
             className="mx-auto max-w-page px-6"
@@ -244,11 +249,7 @@ export default function ObservatorioPublicoPage() {
               "Sinais antecedentes, cenários, o resumo diário completo e a central de alertas",
             ]}
           />
-          </div>
-        }
-        metodoLargo
-        metodo={
-          <>
+          </details>
           {r && (
             <div id="hoje" className="space-y-4 pb-10">
               <h3 className="font-serif text-xl text-carvao">O diagnóstico de hoje</h3>

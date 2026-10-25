@@ -49,7 +49,7 @@ export const DESTINO_ABAS_CREDITO: Record<string, Destino> = {
   "/states": ECO_CREDITO, "/credit-penetration": ECO_CREDITO, "/institutions": ECO_CREDITO, "/products": ECO_CREDITO,
   "/interest-rates": ECO_CREDITO, "/sfn-entries-exits": ECO_CREDITO, "/compare": ECO_CREDITO, "/market": ECO_CREDITO,
   "/broad-credit": ECO_CREDITO, "/rural-credit": ECO_CREDITO, "/directed-credit-bndes": ECO_CREDITO,
-  "/funding": ECO_CREDITO, "/consortia": ECO_CREDITO, "/loan-maturity": ECO_CREDITO, "/fidc-receivables": ECO_CREDITO,
+  "/bank-profit": ECO_CREDITO, "/funding": ECO_CREDITO, "/consortia": ECO_CREDITO, "/loan-maturity": ECO_CREDITO, "/fidc-receivables": ECO_CREDITO,
   "/operational-indicators": ECO_CREDITO, "/leading-signals": ECO_CREDITO, "/search-trends": ECO_CREDITO,
   "/scenarios": ECO_CREDITO, "/alerts": ECO_CREDITO, "/regulacao": ECO_CREDITO, "/research": ECO_CREDITO,
   "/methodology": ECO_CREDITO,

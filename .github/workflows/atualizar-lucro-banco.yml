@@ -1,0 +1,41 @@
+name: Atualizar DRE prudencial
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 8 5 * *"
+permissions:
+  contents: write
+concurrency:
+  group: atualizar-lucro-banco
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Coletar catálogo e arquivos oficiais
+        run: python3 -m pipeline.sources.ifdata_dre
+      - name: Construir e validar o conjunto antes de publicar
+        run: |
+          python3 -m pipeline.lucro_banco_gold
+          python3 -m unittest pipeline.tests.test_lucro_banco pipeline.tests.test_lucro_banco_gold
+          python3 -m pipeline.lucro_banco_gold --check
+      - name: Publicar snapshot e gold juntos
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add pipeline/seed/lucro_banco public/obs/data/gold/lucro_banco.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Atualiza DRE prudencial e proveniência IF.data"
+            for tentativa in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+            done
+            echo "::error::Não foi possível publicar após quatro tentativas"
+            exit 1
+          fi

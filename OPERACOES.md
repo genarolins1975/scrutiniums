@@ -97,6 +97,7 @@ Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários 
 
 | Workflow | Domínio | Agenda (UTC) | O que coleta | O que bloqueia a publicação |
 |---|---|---|---|---|
+| `atualizar-lucro-banco.yml` | DRE prudencial | dia 5, 08:25 | catálogo e DRE IF.data, carteiras e cadastro prudencial | reconciliação, conservação dos rateios e reprodução do snapshot |
 | `atualizar-dados.yml` | Crédito | todo dia, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
 | `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | testes da energia |
 | `previsao-pld.yml` | Setor Elétrico, previsão do PLD | todo dia, cinco horários entre 08:47 e 10:37 | rodada da previsão | testes da rodada |

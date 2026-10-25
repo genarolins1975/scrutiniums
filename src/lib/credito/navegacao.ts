@@ -83,7 +83,7 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
   {
     rotulo: "Instituições e funding",
     curto: "Instituições",
-    paginas: ["/observatorio/institutions", "/observatorio/compare", "/observatorio/sfn-entries-exits", "/observatorio/funding", "/observatorio/fidc-receivables", "/observatorio/operational-indicators", "/observatorio/market"],
+    paginas: ["/observatorio/bank-profit", "/observatorio/institutions", "/observatorio/compare", "/observatorio/sfn-entries-exits", "/observatorio/funding", "/observatorio/fidc-receivables", "/observatorio/operational-indicators", "/observatorio/market"],
   },
   {
     rotulo: "Produtos e preços",

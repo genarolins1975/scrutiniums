@@ -403,3 +403,9 @@
 .observatorio-credito .scorebar { background:var(--surface-3); }
 .observatorio-credito .scorebar::after { content:""; position:absolute; left:50%; top:-2px; width:1px; height:11px; background:var(--text-2); }
 
+
+/* A especificidade da SPA não pode reabrir a quebra da trilha no celular. */
+@media(max-width:639px) {
+ .observatorio-credito .obs-trilha ol { flex-wrap:nowrap; }
+ .observatorio-credito .obs-trilha li>a,.observatorio-credito .obs-trilha li>[aria-current] { display:block; }
+}

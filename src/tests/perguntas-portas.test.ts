@@ -122,8 +122,8 @@ describe("O Brasil em perguntas", () => {
     expect(pagina).toMatch(/dynamicParams\s*=\s*false/);
     const link = readFileSync(join(process.cwd(), "src", "components", "layout", "LinkConta.tsx"), "utf-8");
     expect(link).toMatch(/^"use client";/);
-    expect(link).toContain('fetch("/api/auth/eu"');
-    expect(link).toContain("r.status === 204");
+    expect(link).toContain('fetch("/api/auth/estado"');
+    expect(link).toContain("r.logado === true");
     const cabecalho = readFileSync(join(process.cwd(), "src", "components", "layout", "PublicHeader.tsx"), "utf-8");
     expect(cabecalho.match(/<LinkConta/g)).toHaveLength(3);
   });
