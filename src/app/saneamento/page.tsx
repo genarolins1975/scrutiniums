@@ -1,3 +1,4 @@
+import { numeroContaResidencial } from "@/lib/saneamento/escala-conta";
 import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -65,6 +66,7 @@ export default function Pagina() {
       nota: `Sobre a água consumida: ${numero(br?.sinisa.esgoto.indicadores.IES2003, 1)}%.`,
       href: `${ROTA}/esgoto`,
     },
+    numeroContaResidencial(),
   ];
   const semManchete = new Set<number>(CAPITULOS_SEM_MANCHETE_FINANCEIRA);
 

@@ -1,6 +1,6 @@
 # Saneamento, Onda S1: pacotes A e B
 
-Escopo autorizado em 25/10/2026: edição do SINISA, ressalvas e apresentação das notas do capítulo 15. O pacote C não integra esta entrega. A base é `main` em `3e3b770a4`.
+Escopo autorizado em 25/10/2026: edição do SINISA, ressalvas e apresentação das notas do capítulo 15. Este relatório cobre A e B; o pacote C foi acrescentado depois ao mesmo PR e tem [relatório próprio](../saneamento-s1-c/README.md). A base é `main` em `3e3b770a4`.
 
 ## Evidência antes e depois
 
