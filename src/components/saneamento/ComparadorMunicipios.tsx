@@ -1,5 +1,6 @@
 "use client";
 
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import Link from "next/link";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
@@ -24,10 +25,10 @@ type LinhaTexto = { rotulo: string; fonte: string; valor: (m: Municipio) => stri
 const ARRANJO: LinhaTexto[] = [
   { rotulo: "Moradores (Censo 2022)", fonte: "IBGE, Censo 2022", valor: (m) => m.pop22, formato: "inteiro" },
   { rotulo: "População estimada 2024", fonte: "IBGE, estimativa 2024", valor: (m) => m.pop24, formato: "inteiro" },
-  { rotulo: "Natureza do prestador de água", fonte: "SINISA 2024", valor: (m) => m.nat_ag },
-  { rotulo: "Natureza do prestador de esgoto", fonte: "SINISA 2024", valor: (m) => m.nat_es },
-  { rotulo: "Regulador declarado para água", fonte: "SINISA 2024, Gestão Municipal", valor: (m) => m.reg_ag },
-  { rotulo: "Plano municipal de saneamento", fonte: "SINISA 2024, Gestão Municipal", valor: (m) => (m.plano ? `${m.plano}${m.plano_ano ? ` (${m.plano_ano})` : ""}` : null) },
+  { rotulo: "Natureza do prestador de água", fonte: `${rotuloSinisa()}`, valor: (m) => m.nat_ag },
+  { rotulo: "Natureza do prestador de esgoto", fonte: `${rotuloSinisa()}`, valor: (m) => m.nat_es },
+  { rotulo: "Regulador declarado para água", fonte: `${rotuloSinisa()}, Gestão Municipal`, valor: (m) => m.reg_ag },
+  { rotulo: "Plano municipal de saneamento", fonte: `${rotuloSinisa()}, Gestão Municipal`, valor: (m) => (m.plano ? `${m.plano}${m.plano_ano ? ` (${m.plano_ano})` : ""}` : null) },
 ];
 
 function texto(l: LinhaTexto, m: Municipio): string {

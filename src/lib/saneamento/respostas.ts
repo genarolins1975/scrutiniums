@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 /**
  * Resposta curta de cada capítulo para a página de entrada: uma frase factual e um número com prova (valor, o que mede e fonte),
  * calculados com os mesmos campos e a mesma formatação da página do capítulo. O teste `saneamento-entrada` confere que o valor
@@ -12,7 +13,7 @@ import { ANOS_SAUDE } from "@/lib/saneamento/medidas";
 import { TARIFAS, periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
 import { calcularConta } from "@/lib/saneamento/conta";
 import { inteiro, numero, reais } from "@/lib/saneamento/formato";
-import { resumoContratado } from "@/lib/saneamento/contratos";
+import { goldContratado, resumoContratado } from "@/lib/saneamento/contratos";
 
 /**
  * Capítulos cujo número de prova seria um valor financeiro autodeclarado ao SINISA (investimento e origem dos recursos). Pela decisão de
@@ -99,7 +100,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: inteiro(c!.interrupcoes_sistematicas),
       rotulo: "interrupções sistemáticas (racionamento ou rodízio) declaradas",
       frase: `Em 2024, os prestadores declararam ${inteiro(c!.paralisacoes)} paralisações com falta de água e ${inteiro(c!.interrupcoes_sistematicas)} interrupções sistemáticas; ${inteiro(c!.municipios_com_interrupcoes)} municípios tiveram ao menos uma interrupção sistemática.`,
-      fonte: "SINISA 2024, declarado pelos prestadores",
+      fonte: `${rotuloSinisa()}, declarado pelos prestadores`,
     };
   }
 
@@ -109,7 +110,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: pct(es.IES0007),
       rotulo: "dos domicílios com coleta e tratamento de esgoto (IES0007)",
       frase: `A rede coletora atende ${pct(es.IES0001)} da população (IES0001), e ${pct(es.IES2004)} do esgoto coletado é tratado (IES2004).`,
-      fonte: "SINISA 2024",
+      fonte: `${rotuloSinisa()}`,
     };
   }
 
@@ -141,7 +142,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: inteiro(municipiosCom.size),
       rotulo: "municípios com tarifa social de água declarada",
       frase: `Em 2024, os prestadores declararam tarifa social de água em ${inteiro(municipiosCom.size)} municípios, com ${inteiro(economias)} economias residenciais na categoria.`,
-      fonte: "SINISA 2024, declarado pelos prestadores",
+      fonte: `${rotuloSinisa()}, declarado pelos prestadores`,
     };
   }
 
@@ -154,7 +155,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: inteiro(lista.length),
       rotulo: "prestadores declarados ao SINISA",
       frase: `${inteiro(lista.length)} prestadores declararam serviço de água ou esgoto em 2024; os regionais atendem ${pct(pctRegionais)} da população com água.`,
-      fonte: "SINISA 2024",
+      fonte: `${rotuloSinisa()}`,
     };
   }
 
@@ -164,7 +165,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: pct(ag.IAG2013),
       rotulo: "de perdas totais de água na distribuição, Brasil (IAG2013)",
       frase: `No Brasil, as perdas totais na distribuição somam ${pct(ag.IAG2013)} da água produzida e importada; o comparador aplica a mesma fórmula a até quatro prestadores.`,
-      fonte: "SINISA 2024",
+      fonte: `${rotuloSinisa()}`,
     };
   }
 
@@ -179,18 +180,22 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: numero(ritmo, 2),
       rotulo: `pontos percentuais por ano para chegar a ${metaEsgoto}% de coleta com tratamento até 2033`,
       frase: `Com ${pct(es.IES0007)} dos domicílios com coleta e tratamento em 2024 (IES0007), chegar a ${metaEsgoto}% até 2033 exige ${numero(ritmo, 2)} pontos por ano; ${inteiro(g!.plano_sim)} municípios declaram ter plano municipal de saneamento.`,
-      fonte: "SINISA 2024; Lei 11.445/2007, art. 11-B",
+      fonte: `${rotuloSinisa()}; Lei 11.445/2007, art. 11-B`,
     };
   }
 
   // 15. Contratado desde o novo marco: contagem própria da tabela curada (nunca a de parte interessada).
   const rc = resumoContratado();
   if (rc && rc.contratos_de_servico_adjudicados > 0) {
+    const referencia = goldContratado()?.referencia_posicao;
+    const fonteSinisa = referencia
+      ? rotuloSinisa("completa", { edicao: referencia.sinisa_edicao, ano_referencia: referencia.sinisa_ano })
+      : "SINISA, referência não informada";
     out[15] = {
       valor: inteiro(rc.contratos_de_servico_adjudicados),
       rotulo: "leilões de concessão ou PPP com contrato adjudicado desde 2020, na tabela curada",
       frase: `Desde o novo marco, ${inteiro(rc.leiloes_registrados)} leilões e desestatizações estão registrados, ${inteiro(rc.contratos_de_servico_adjudicados)} com contrato de serviço adjudicado; ${inteiro(rc.contratos_com_metas)} ${rc.contratos_com_metas === 1 ? "contrato tem" : "contratos têm"} metas transcritas e ${inteiro(rc.municipios_proxy_sinisa)} municípios declaram ao SINISA concessão iniciada de 2020 em diante.`,
-      fonte: `Tabela curada (fontes por linha), capturada em ${rc.capturado_em.slice(8, 10)}/${rc.capturado_em.slice(5, 7)}/${rc.capturado_em.slice(0, 4)}; SINISA 2024`,
+      fonte: `Tabela curada (fontes por linha), capturada em ${rc.capturado_em.slice(8, 10)}/${rc.capturado_em.slice(5, 7)}/${rc.capturado_em.slice(0, 4)}; ${fonteSinisa}`,
     };
   }
 
@@ -203,7 +208,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: inteiro(regs.length),
       rotulo: "entidades reguladoras declaradas, por CNPJ",
       frase: `Os municípios declararam ${inteiro(regs.length)} entidades reguladoras distintas; ${inteiro(semRegAgua)} municípios respondentes não informaram regulador para a água.`,
-      fonte: "SINISA 2024, módulo Gestão Municipal",
+      fonte: `${rotuloSinisa()}, módulo Gestão Municipal`,
     };
   }
 
@@ -233,7 +238,7 @@ export function respostasDosCapitulos(): Partial<Record<number, Resposta>> {
       valor: inteiro(porManancial),
       rotulo: "municípios com racionamento por baixa disponibilidade do manancial",
       frase: `Em 2024, ${inteiro(porManancial)} municípios declararam racionamento atribuído à baixa disponibilidade do manancial, e ${inteiro(comColapso)} declararam dias de colapso do sistema.`,
-      fonte: "SINISA 2024, declarado pelos prestadores",
+      fonte: `${rotuloSinisa()}, declarado pelos prestadores`,
     };
   }
 

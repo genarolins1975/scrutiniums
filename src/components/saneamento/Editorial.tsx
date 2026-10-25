@@ -107,7 +107,7 @@ export function Ressalva({ permite, naoPermite }: { permite: ReactNode; naoPermi
         <span className="text-carvao">{permite}</span>
       </p>
       <p>
-        <span className="rotulo block text-mineral">Não permite concluir</span>
+        <span className="rotulo block text-mineral">Não permite:</span>
         <span className="text-carvao">{naoPermite}</span>
       </p>
     </div>

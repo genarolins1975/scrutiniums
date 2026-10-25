@@ -1,5 +1,6 @@
 "use client";
 
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -161,7 +162,7 @@ export function ComparadorPrestadores({ sugestoes }: { sugestoes: { id: string; 
         <>
           <div className="tabela-scroll mt-6" tabIndex={0} role="region" aria-label="Comparação de prestadores (rolável)">
             <table className="w-full min-w-[40rem] border-collapse text-sm">
-              <caption className="sr-only">Medidas dos prestadores escolhidos, SINISA 2024</caption>
+              <caption className="sr-only">Medidas dos prestadores escolhidos, {rotuloSinisa()}</caption>
               <thead>
                 <tr className="border-b border-carvao align-bottom">
                   <th scope="col" className="py-2 pr-4 text-left font-medium">Medida</th>

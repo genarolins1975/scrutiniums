@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -56,9 +57,9 @@ export default function Pagina() {
               serviço lado a lado, sem somá-los numa nota.
             </p>
           }
-          recorte={<>Os dois estudos de caso (ARSESP e AGEPAR) e os {porPrestador.length} prestadores com tabela verificada; indicadores de serviço do SINISA 2024.</>}
+          recorte={<>Os dois estudos de caso (ARSESP e AGEPAR) e os {porPrestador.length} prestadores com tabela verificada; indicadores de serviço do {rotuloSinisa()}.</>}
           situacao="parcial"
-          pendencia="Aferições anuais das metas contratuais pelos reguladores não foram localizadas para 2026; o resultado observado usa o SINISA 2024, anterior aos ciclos em análise."
+          pendencia={`Aferições anuais das metas contratuais pelos reguladores não foram localizadas para 2026; o resultado observado usa o ${rotuloSinisa()}, anterior aos ciclos em análise.`}
         />
         <SubnavPreco atual="contrapartidas" />
 
@@ -168,7 +169,7 @@ export default function Pagina() {
           <RessalvaAutodeclarado>Nesta tabela, só a coluna de investimento é valor financeiro do SINISA.</RessalvaAutodeclarado>
           <Nota>
             Consumo médio por pessoa: fórmula do IAG2006 do SINISA, (GTA1211 + GTA1207) ÷ 365 ÷ (GTA0001 + GTA0002), em litros por habitante por
-            dia, aplicada pelo Observatório às somas dos municípios em que o prestador atua, ano de referência 2024. O SINISA divide pela média da
+            dia, aplicada pelo Observatório às somas dos municípios em que o prestador atua, ano de referência {rotuloSinisa("ano")}. O SINISA divide pela média da
             população atendida de 2023 e 2024; as planilhas de 2024 não trazem a de 2023, e o cálculo usa só a de 2024.
             {confConsumo && (
               <>
@@ -183,7 +184,7 @@ export default function Pagina() {
             calculada pelo Observatório. Investimento: o feito pelo prestador e o do governo estadual que ele informa, reais correntes de 2024. A ficha
             de cada prestador traz os componentes e o perímetro.
           </Nota>
-          <Fonte>Tabelas verificadas (5.1); Ministério das Cidades, SINISA 2025 (ano de referência 2024), planilhas por prestador e município.</Fonte>
+          <Fonte>Tabelas verificadas (5.1); Ministério das Cidades, {rotuloSinisa()}, planilhas por prestador e município.</Fonte>
         </Secao>
       </main>
     </>

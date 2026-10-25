@@ -22,6 +22,7 @@ import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 import { goldContratado, metaNoAno, nosTotais, reaisMi, resumoContratado, ROTA_CONTRATADO, serieAnual } from "@/lib/saneamento/contratos";
 import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { inteiro } from "@/lib/saneamento/formato";
+import { rotuloConferencia } from "@/lib/saneamento/contratos-apresentacao";
 import { VIABILIDADE } from "@/lib/saneamento/viabilidade";
 
 /**
@@ -134,7 +135,8 @@ describe("página /saneamento/contratado", () => {
     for (const l of g.leiloes) {
       expect(html, l.id).toContain(`data-leilao="${l.id}"`);
       expect(html).toContain(`href="${l.fonte.url}"`);
-      expect(t).toContain(`(${l.fonte.grau})`);
+      // Pacote B, decisão do dono em 25/10/2026: grau por extenso; a natureza da fonte não muda.
+      expect(t).toContain(rotuloConferencia(l.fonte.grau, l.fonte.tipo_fonte));
     }
     for (const f of g.totais.fora_dos_totais) expect(t).toContain(f.motivo);
     expect(t).not.toMatch(/undefined|NaN/);

@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -16,7 +17,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "A água chega regularmente e com qualidade monitorada?",
   description:
-    "Paralisações, racionamento e rodízio declarados ao SINISA 2024, e qualidade da água no SISAGUA (controle do prestador, vigilância da saúde e plano de amostragem), 2024 e 2025, por UF e por município.",
+    `Paralisações, racionamento e rodízio declarados ao ${rotuloSinisa()}, e qualidade da água no SISAGUA (controle do prestador, vigilância da saúde e plano de amostragem), 2024 e 2025, por UF e por município.`,
   alternates: { canonical: "/saneamento/continuidade" },
 };
 
@@ -87,7 +88,7 @@ export default function Pagina() {
           }
           recorte={
             <>
-              Continuidade: {inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024 (ano de referência). Qualidade: análises
+              Continuidade: {inteiro(c?.municipios_participantes)} municípios do módulo de água do {rotuloSinisa()} (ano de referência). Qualidade: análises
               do SISAGUA de 2024 e 2025 nos {inteiro(meta()?.sisagua.por_ano["2024"]?.municipios.universo)} municípios do IBGE.
             </>
           }
@@ -118,7 +119,7 @@ export default function Pagina() {
             {
               rotulo: "Paralisações com falta de água",
               valor: inteiro(c?.paralisacoes),
-              contexto: <>Duração média de {numero(br?.sinisa.agua.indicadores.IAG3004, 1)} horas (IAG3004), SINISA 2024.</>,
+              contexto: <>Duração média de {numero(br?.sinisa.agua.indicadores.IAG3004, 1)} horas (IAG3004), {rotuloSinisa()}.</>,
             },
             {
               rotulo: "Interrupções sistemáticas (racionamento ou rodízio)",
@@ -194,7 +195,7 @@ export default function Pagina() {
             naoPermite="Comparar a qualidade do serviço entre UFs com segurança: o registro de eventos depende do controle de cada prestador, e quem não registra aparece com zero."
           />
           <Fonte>
-            Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal de água: GTA3001, GTA3003, GTA3005, GTA3006, GTA3007 e
+            Ministério das Cidades, {rotuloSinisa()}, base municipal de água: GTA3001, GTA3003, GTA3005, GTA3006, GTA3007 e
             GTA3008. Horas por evento = soma das horas ÷ soma dos eventos, a mesma fórmula do IAG3004 e do IAG3005.
           </Fonte>
         </Secao>

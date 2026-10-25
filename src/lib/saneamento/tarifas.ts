@@ -1,3 +1,4 @@
+import { apresentarEdicaoSinisa } from "./edicao";
 import dados from "./dados/tarifas.json";
 
 /**
@@ -54,7 +55,11 @@ export type TarifaVerificada = {
   acessado: string;
 };
 
-export const TARIFAS = (dados as unknown as { tarifas: TarifaVerificada[] }).tarifas;
+// Onda S1, 25/10/2026: corrigir o nome da edição na apresentação sem regravar a fonte tarifária.
+export const TARIFAS = (dados as unknown as { tarifas: TarifaVerificada[] }).tarifas.map((t) => ({
+  ...t,
+  observacoes: t.observacoes.map(apresentarEdicaoSinisa),
+}));
 export const ACESSO_TARIFAS = (dados as { acessado: string }).acessado;
 
 const dataBr = (iso: string) => iso.split("-").reverse().join("/");
