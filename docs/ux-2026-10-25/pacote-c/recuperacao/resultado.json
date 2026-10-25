@@ -1,0 +1,84 @@
+{
+  "build": "wRgtjUDrkqaEkC953_ot_",
+  "data": "2026-10-25T11:55:23.606Z",
+  "cenario": "Sintético: todas as taxas da modalidade em zero",
+  "registros": [
+    {
+      "largura": 320,
+      "bancoInicial": null,
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 320,
+      "bancoInicial": "99999999",
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 390,
+      "bancoInicial": null,
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 390,
+      "bancoInicial": "99999999",
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 768,
+      "bancoInicial": null,
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 768,
+      "bancoInicial": "99999999",
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 1440,
+      "bancoInicial": null,
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "largura": 1440,
+      "bancoInicial": "99999999",
+      "outraModalidade": true,
+      "bancoZero": true,
+      "parametrosPreservados": true,
+      "axe": [],
+      "erros": []
+    },
+    {
+      "semJavaScript": true,
+      "formularioGet": true,
+      "bancoZero": true
+    }
+  ]
+}

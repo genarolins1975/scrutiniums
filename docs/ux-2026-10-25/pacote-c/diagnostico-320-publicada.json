@@ -1,0 +1,354 @@
+{
+  "largura": 320,
+  "documento": 323,
+  "elementos": [
+    {
+      "tag": "LI",
+      "id": "",
+      "texto": "Quanto vai custar minha parcela?",
+      "classe": "shrink-0 sm:hidden",
+      "x": 265.71875,
+      "direita": 509.453125,
+      "largura": 243.734375
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "texto": "Quanto vai custar minha parcela?",
+      "classe": "relative flex min-h-[44px] items-center gap-1 whitespace-nowrap px-3 text-sm motion-safe:transition-colors motion-safe:d",
+      "x": 265.71875,
+      "direita": 509.453125,
+      "largura": 243.734375
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2.198.039 81,8% das operações",
+      "secao": "des-alcance",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "81,8% das operações",
+      "secao": "des-alcance",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "487.551 18,2% das operações",
+      "secao": "des-alcance",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "18,2% das operações",
+      "secao": "des-alcance",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2.108.462 78,5% · ticket R$ 1.038",
+      "secao": "des-alcance",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "78,5% · ticket R$ 1.038",
+      "secao": "des-alcance",
+      "classe": "src",
+      "x": 221.359375,
+      "direita": 323,
+      "largura": 101.640625
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "577.128 21,5% · ticket R$ 4.035",
+      "secao": "des-alcance",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "21,5% · ticket R$ 4.035",
+      "secao": "des-alcance",
+      "classe": "src",
+      "x": 228.59375,
+      "direita": 323,
+      "largura": 94.40625
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "709.973 26,4% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "26,4% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "301.586 11,2% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "11,2% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "244.515 9,1% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "9,1% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "153.522 5,7% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "5,7% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "133.343 5,0% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "5,0% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "127.720 4,8% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "4,8% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "121.425 4,5% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "4,5% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "109.576 4,1% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "4,1% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 232.1875,
+      "direita": 323,
+      "largura": 90.8125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "76.567 2,9% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2,9% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 257.796875,
+      "direita": 323,
+      "largura": 65.203125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "75.053 2,8% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2,8% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 257.796875,
+      "direita": 323,
+      "largura": 65.203125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "74.483 2,8% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2,8% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 257.796875,
+      "direita": 323,
+      "largura": 65.203125
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "67.493 2,5% das operações",
+      "secao": "des-regional",
+      "classe": "",
+      "x": 203,
+      "direita": 323,
+      "largura": 120
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "texto": "2,5% das operações",
+      "secao": "des-regional",
+      "classe": "src",
+      "x": 257.796875,
+      "direita": 323,
+      "largura": 65.203125
+    },
+    {
+      "tag": "TABLE",
+      "id": "",
+      "texto": "UFOperações% BRVolumeValor médioPor mil hab.\n      SP São Paulo709.973\n        26,44%R$ 1,",
+      "secao": "des-regional",
+      "classe": "data",
+      "x": 34,
+      "direita": 571.984375,
+      "largura": 537.984375
+    }
+  ]
+}

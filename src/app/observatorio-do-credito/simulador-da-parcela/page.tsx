@@ -5,7 +5,7 @@ import { SeletorJuros } from "@/components/credito/SeletorJuros";
 import { ComparacaoCet, FormularioParcela, ProvedorParcela, ResultadoParcela, type TaxaReferencia } from "@/components/credito/SimuladorParcela";
 import { Controles, PaginaPainel } from "@/components/painel";
 import { Recolhido } from "@/components/observatorios/Recolhido";
-import { ehPosFixada, goldJuros, hrefConsulta, naoEhParcelada, opcoesSeletor, resolverConsulta, rotuloModalidade, ROTULO_SEGMENTO, type ParametrosConsulta } from "@/lib/credito/juros";
+import { ehPosFixada, goldJuros, NOTA_TAXA_ZERO, hrefConsulta, naoEhParcelada, opcoesSeletor, resolverConsulta, rotuloModalidade, ROTULO_SEGMENTO, type ParametrosConsulta } from "@/lib/credito/juros";
 import { diaBrasilia, janela, num } from "@/lib/credito/formato";
 import { paginaCredito } from "@/lib/credito/navegacao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
@@ -102,13 +102,13 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
           descricao: `Taxa média publicada pelo Banco Central para ${c.banco?.nome} em ${nomeMod}, semana de ${janela(c.modalidade.janela)}. Você pode digitar a sua.`,
           periodo,
         }
-      : {
-          aa: c.modalidade.stats.mediana,
+      : c.comparacao.stats ? {
+          aa: c.comparacao.stats.mediana,
           am: null,
           origem: "mediana",
-          descricao: `Mediana das taxas das ${c.modalidade.stats.n} instituições que informaram ${nomeMod} ao Banco Central, semana de ${janela(c.modalidade.janela)}. Você pode digitar a sua.`,
+          descricao: `Mediana das taxas das ${c.comparacao.stats.n} instituições que informaram ${nomeMod} ao Banco Central, semana de ${janela(c.modalidade.janela)}. Você pode digitar a sua.`,
           periodo,
-        };
+        } : null;
   }
 
   const lead =
@@ -120,7 +120,8 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
     </p>
   );
 
-  // sem a publicação das taxas, a página declara a ausência no formato de antes: não há recorte nem número para o molde
+  // Sem referência não se inventa taxa; com gold, mantém o caminho para outro recorte
+  // (revisão do PR #384, 25/10/2026: todas as taxas podem ser zero).
   if (!gold || !c || !referencia) {
     return (
       <CascaCredito atual="simulador-da-parcela">
@@ -130,9 +131,27 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
         </AberturaCredito>
         <div className="max-w-prose2 border border-linha bg-superficie p-5" data-ausencia="">
           <p className="text-sm leading-relaxed text-carvao">
-            A publicação das taxas por instituição não está disponível nesta versão do site; o simulador não pré-preenche taxa. Nenhum número é mostrado no lugar dela.
+            {gold && c ? "Não há taxa elegível para pré-preencher esta modalidade e semana. Escolha outra modalidade ou uma instituição que tenha informado taxa." : "A publicação das taxas por instituição não está disponível nesta versão do site; o simulador não pré-preenche taxa. Nenhum número é mostrado no lugar dela."}
           </p>
         </div>
+        {gold && c && (
+          <div className="mt-6">
+            <Controles rotulo="Taxa de referência" idioma="pt">
+              <div className="w-full">
+                <SeletorJuros
+                  base={pagina.href}
+                  opcoes={opcoesSeletor(gold)}
+                  seg={c.segmento}
+                  mod={c.slug}
+                  banco={c.banco?.cnpj8 ?? ""}
+                  manter={{ valor: iniciais.valor, prazo: iniciais.prazo, cet: iniciais.cet }}
+                  limpar={["taxa", "un"]}
+                  rotuloBanco="Banco ou instituição"
+                />
+              </div>
+            </Controles>
+          </div>
+        )}
         <SecaoCredito id="como-calculamos" titulo="Como calculamos">
           <details className="max-w-prose2 border-t border-linha pt-3 text-sm leading-relaxed text-carvao-muted">
             <summary className="flex min-h-[44px] cursor-pointer items-center text-carvao">Fórmulas, hipóteses e o que fica de fora</summary>
@@ -150,7 +169,7 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
   return (
     <CascaCredito atual="simulador-da-parcela" molde>
       {/* o estado do cálculo vale para o formulário, o resultado e a comparação com o CET; a chave reinicia o cálculo quando o recorte muda */}
-      <ProvedorParcela key={`${c.segmento}|${c.slug}|${c.banco?.cnpj8 ?? ""}`} referencia={referencia} mediana={referencia.origem === "banco" ? c.modalidade.stats.mediana : null} iniciais={iniciais}>
+      <ProvedorParcela key={`${c.segmento}|${c.slug}|${c.banco?.cnpj8 ?? ""}`} referencia={referencia} mediana={referencia.origem === "banco" && c.linha?.taxa_aa !== 0 ? c.comparacao.stats?.mediana ?? null : null} iniciais={iniciais}>
         <PaginaPainel
           rota="/observatorio-do-credito/simulador-da-parcela"
           abertura={{
@@ -206,10 +225,11 @@ export default function SimuladorDaParcelaPage({ searchParams = {} }: { searchPa
                   O endereço pedia {c.ignorados.join(", ")} que não consta da publicação atual. A página usa o recorte padrão no lugar.
                 </p>
               )}
+              {c.linha?.taxa_aa === 0 && <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-taxa-zero={c.banco?.cnpj8}>{NOTA_TAXA_ZERO} O cálculo mantém a taxa publicada; você pode informar a taxa do seu contrato.</p>}
               {c.banco && !c.linha && (
                 <p className="max-w-prose2 border-l-2 border-linha bg-marfim px-4 py-2 text-sm leading-relaxed text-carvao" data-ausencia="">
                   {c.banco.nome} não informou taxa ao Banco Central em {rotuloModalidade(c.modalidade.modalidade).toLowerCase()} na semana de {janela(c.modalidade.janela)}. O cálculo usa a
-                  mediana da modalidade, {num(c.modalidade.stats.mediana)}% ao ano; não é a taxa desse banco.
+                  mediana da modalidade, {num(c.comparacao.stats!.mediana)}% ao ano; não é a taxa desse banco.
                 </p>
               )}
               {(ehPosFixada(c.modalidade.modalidade) || naoEhParcelada(c.modalidade.modalidade)) && (

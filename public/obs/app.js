@@ -5485,6 +5485,7 @@ function renderDesenrola() {
   const avisoDes = `<div class="judalerta" style="max-width:78ch">
     <b>Esta base não cobre o programa inteiro.</b>
     <div style="margin-top:5px">${D.aviso_cobertura}</div>
+    ${D.fora_do_recorte?.linhas > 0 ? `<p data-desenrola-fora-recorte>${xmlEsc(D.fora_do_recorte.ressalva)}. As linhas permanecem na captura original; os totais abaixo usam somente os tipos documentados.</p>` : ""}
     <div style="margin-top:6px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
   </div>`;
   const kpis = `<div id="des-prog" class="desgrupo">

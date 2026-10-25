@@ -1,0 +1,6 @@
+Mapeamento completo do portão, sobre a gold publicada e o inventário atual.
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+  File "/workspace/scrutiniums/scripts/mapa_testes_gold.py", line 80, in gerar
+    raise ValueError(f'Leitura dinâmica de gold sem classificação: {nome}')
+ValueError: Leitura dinâmica de gold sem classificação: src/tests/rankings-municipais-reflow-browser.test.ts

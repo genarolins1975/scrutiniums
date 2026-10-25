@@ -1,0 +1,263 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1588 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 733 arquivo(s) alterado(s).
+  teste  src/tests/credito-consultas.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita public/obs/app.js)
+  teste  src/tests/ampliado-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/avaliacao-set26.test.ts  (cita public/obs/app.js)
+  teste  src/tests/backtest-publicado.test.ts  (cita public/obs/app.js)
+  teste  src/tests/bets-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/bndes-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/cabecalho-movel.test.ts  (cita public/obs/app.js)
+  teste  src/tests/captacao-modelo.test.ts  (cita public/obs/app.js)
+  teste  src/tests/cenario-basileia.test.ts  (cita public/obs/app.js)
+  teste  src/tests/central-alertas.test.ts  (cita public/obs/app.js)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita public/obs/app.js)
+  teste  src/tests/citacao-incorporacao.test.ts  (cita public/obs/app.js)
+  teste  src/tests/cobranca-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/conceitos.test.ts  (cita public/obs/app.js)
+  teste  src/tests/conduta-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/conectividade.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/consorcios-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/coop-interconexao.test.ts  (cita public/obs/app.js)
+  teste  src/tests/credito-casca.test.ts  (cita public/obs/app.js)
+  teste  src/tests/credito-molde-abertura.test.ts  (cita public/obs/app.js)
+  teste  src/tests/custos-ti.test.ts  (cita public/obs/app.js)
+  teste  src/tests/desenrola-data.test.ts  (cita pipeline/desenrola.py)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/dois-observatorios.test.ts  (cita public/obs/app.js)
+  teste  src/tests/embed-permalink.test.ts  (cita public/obs/app.js)
+  teste  src/tests/emprego-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-conta.test.ts  (cita pipeline/desenrola.py)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/epae-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/estados-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/exportacao-universal.test.ts  (cita public/obs/app.js)
+  teste  src/tests/fase2-clientes.test.ts  (cita public/obs/app.js)
+  teste  src/tests/fidc-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/focus-cenarios.test.ts  (cita public/obs/app.js)
+  teste  src/tests/folha-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/fraudes-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/funding-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/fusao-antecedentes.test.ts  (cita public/obs/app.js)
+  teste  src/tests/gold-datas.test.ts  (cita public/obs/app.js)
+  teste  src/tests/guia-navegacao.test.ts  (cita public/obs/app.js)
+  teste  src/tests/guidance-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/hhi-piso.test.ts  (cita public/obs/app.js)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/credito/juros.ts)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/i18n-url.test.ts  (cita public/obs/app.js)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/ifdata-lacunas.test.ts  (cita public/obs/app.js)
+  teste  src/tests/inst-listada.test.ts  (cita public/obs/app.js)
+  teste  src/tests/instituicoes-leve.test.ts  (cita public/obs/app.js)
+  teste  src/tests/juros-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/kit-padronizado.test.ts  (cita public/obs/app.js)
+  teste  src/tests/linhagem-mapa.test.ts  (cita public/obs/app.js)
+  teste  src/tests/mapa-menu.test.ts  (cita public/obs/app.js)
+  teste  src/tests/migracao-npl.test.ts  (cita public/obs/app.js)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/novidades-presets.test.ts  (cita public/obs/app.js)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/observatorio-publico.test.ts  (cita public/obs/app.js)
+  teste  src/tests/operacional-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/p0-correcoes.test.ts  (cita public/obs/app.js)
+  teste  src/tests/p1-dados.test.ts  (cita pipeline/sources/desenrola.py)
+  teste  src/tests/p1-didatico.test.ts  (cita public/obs/app.js)
+  teste  src/tests/p1-tecnico.test.ts  (cita pipeline/desenrola.py)
+  teste  src/tests/p2-rodada1.test.ts  (cita public/obs/app.js)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/penetracao-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/perguntas-portas.test.ts  (cita public/obs/app.js)
+  teste  src/tests/pgfn-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/pilar3-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/pix-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/prazo-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/presenca-mun.test.ts  (cita public/obs/app.js)
+  teste  src/tests/prestamista-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/products-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/produtos-segmento.test.ts  (cita public/obs/app.js)
+  teste  src/tests/pulso-transformacoes.test.ts  (cita public/obs/app.js)
+  teste  src/tests/recordes-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/regimes-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/regra-nominal.test.ts  (cita public/obs/app.js)
+  teste  src/tests/regulacao-timeline.test.ts  (cita public/obs/app.js)
+  teste  src/tests/remuneracao-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/resiliencia-gold.test.ts  (cita public/obs/app.js)
+  teste  src/tests/resumo-canal.test.ts  (cita public/obs/app.js)
+  teste  src/tests/revisao-subpaineis.test.ts  (cita public/obs/app.js)
+  teste  src/tests/rural-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/setorial-pms-pmc.test.ts  (cita public/obs/app.js)
+  teste  src/tests/sfn-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/split-bundle.test.ts  (cita public/obs/app.js)
+  teste  src/tests/subnacional-camada2.test.ts  (cita public/obs/app.js)
+  teste  src/tests/subnacional-data.test.ts  (cita public/obs/app.js)
+  teste  src/tests/telemetry-adminstats.test.ts  (cita public/obs/app.js)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/credito-consultas.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx)
+  teste  src/tests/wcag-contraste.test.ts  (cita public/obs/app.js)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada1/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada2/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada2/svg-customizados.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/pix-precisao-aplicada/cabecalho-antes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/pix-precisao-aplicada/cabecalho-depois.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/pix-precisao-aplicada/diagnostico.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais-depois/ancoras.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais-depois/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais-final/ancoras.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais-final/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais-final/pix-acabamento.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/credito-rodada3/residuos-visuais/medidas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/evidencias-oficiais-rodada2/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/evidencias-oficiais-rodada2/manifesto-capturas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/logs/regressao-43f5955/build-tree-match.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/logs/regressao-43f5955/producao-antes-commit.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-antes-funcional/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-rodada2/expansao/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-rodada2/funcional/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-rodada2/manifesto.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-rodada2/navegacao/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/mapa-rodada2/rede-lenta/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-antes/manifesto.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-antes/recaptura-instituicoes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-antes/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/download-institutions-1440-obc_instituicoes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/download-institutions-390-obc_instituicoes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/jornada-pix-equivalencia.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/jornadas-credito.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/jornadas-mapa.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/manifesto.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/pix-paridade-verificada.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada1/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/favoritos-compartilhar.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/jornada-pix-equivalencia.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/jornadas-credito.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/jornadas-mapa.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/manifesto.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/notas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-historico-paridade.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-modos-paridade.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-modos.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-paridade-verificada.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-setores-paridade.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pix-setores.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/pranchas/coordenadas.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/resultado.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/capturar.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/diagnosticar-texto.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/favoritos-compartilhar.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/jornada-pix-equivalencia.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/jornadas-credito.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/jornadas-mapa.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/pix-modos.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/pix-setores.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/scripts/zoom-nativo.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/texto-ampliado-diagnostico.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/validacao-imagens.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/revisao-rodada2/zoom-nativo.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/scripts/capturar.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/scripts/jornada-pix-equivalencia.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/scripts/jornadas-credito.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/scripts/jornadas-mapa.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-24/homologacao/scripts/recapturar-instituicoes-baseline.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/ambiente.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/busca-producao.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/diagnostico.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/http.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/manifesto-sha256.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/navegador.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/resumo.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/scripts/busca-producao.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/scripts/diagnostico.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/scripts/navegador.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/scripts/preload-diagnostico.mjs  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/velocidade-pos-publicacao/scripts/servidor-local-sem-aquecimento.mjs  (código alterado; testes que o importam)
+  fonte  public/obs/app.js  (código alterado; testes que o importam)
+  fonte  src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/observatorio-do-credito/simulador-da-parcela/page.tsx  (código alterado; testes que o importam)
+  fonte  src/lib/credito/juros.ts  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/observatorio-do-credito/quanto-meu-banco-cobra/page.tsx; testes que o importam)
+  fonte  src/lib/energia/dados.ts  (cita public/obs/app.js; testes que o importam)
+  fonte  src/lib/energia/datasets.ts  (cita public/obs/app.js; testes que o importam)
+  fonte  src/lib/i18n-url.ts  (cita public/obs/app.js; testes que o importam)
+[MIXED_EXPORTS] Entry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  253 passed (253)
+      Tests  6876 passed | 12 skipped | 1 todo (6889)
+   Start at  11:05:26
+   Duration  157.38s (transform 3.90s, setup 0ms, import 88.83s, tests 342.64s, environment 23ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-25)
+  ok            3 s  Lint
+  ok            9 s  Tipos
+  ok            6 s  Derivados (npm run preparar)
+  ok            3 s  Cobertura bilíngue confere com as fontes de código
+  ok     2 min 57 s  Testes afetados
+  tempo de parede: 3 min 09 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

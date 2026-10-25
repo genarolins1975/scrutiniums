@@ -1,0 +1,65 @@
+
+> scrutiniums@0.1.0 verificar:pr
+> node scripts/verificar.mjs pr
+
+
+▶ Gerar app.min.js: node scripts/minify-obs.mjs
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Contrato de grupos e publicação seletiva da gold: python3 -m unittest pipeline.tests.test_publicar_gold
+............................
+----------------------------------------------------------------------
+Ran 28 tests in 0.531s
+
+OK
+
+▶ Módulos Python compilam: python3 -m compileall -q pipeline
+
+▶ Dependências do pipeline de energia: python3 -c "import pyarrow" 2>/dev/null || pip install -r pipeline/energia/requirements.txt
+WARNING: The directory '/home/agent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pyarrow>=15 (from -r pipeline/energia/requirements.txt (line 4))
+  Downloading pyarrow-26.0.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Downloading pyarrow-26.0.0-cp312-cp312-manylinux_2_28_x86_64.whl (53.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.9/53.9 MB 59.3 MB/s  0:00:00
+Installing collected packages: pyarrow
+ERROR: Could not install packages due to an OSError: [Errno 30] Read-only file system: '/home/agent/.local/lib'
+
+
+[notice] A new release of pip is available: 26.2.1 -> 26.2.2
+[notice] To update, run: pip install --upgrade pip
+
+verificar:pr (5 vCPU, 33 GB, 2026-10-25)
+  ok            3 s  Gerar app.min.js
+  ok            2 s  Lint
+  ok            7 s  Tipos
+  ok            1 s  Contrato de grupos e publicação seletiva da gold
+  ok            0 s  Módulos Python compilam
+  FALHA         2 s  Dependências do pipeline de energia  (python3 -c "import pyarrow" 2>/dev/null || pip install -r pipeline/energia/requirements.txt)
+  tempo de parede: 15 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

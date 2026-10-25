@@ -39,6 +39,24 @@ As três primeiras deduplicam: enquanto a issue estiver aberta, ocorrências
 novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
 ≠ 3) também vira issue — vigia cego é pior que alerta falso.
 
+## Crédito: consultas ao BCB pendentes do dono (D2, 25/10/2026)
+
+O dono autorizou a publicação do pacote C em 25/10/2026 (“Pode publicar”, nesta tarefa;
+registro no [PR #384](https://github.com/genarolins1975/scrutiniums/pull/384)), aprovando o
+tratamento da recomendação D2. As duas consultas abaixo ainda não foram enviadas.
+Registrar aqui protocolo, data, resposta e efeito no contrato quando o dono as
+realizar; a autorização de publicação não equivale a confirmação do BCB.
+
+| Consulta | Evidência e pergunta | Tratamento proposto até a resposta |
+|---|---|---|
+| Taxa do BCO RNX S.A., CNPJ-base 80271455 | Olinda, `TaxasJurosDiariaPorInicioPeriodo`: crédito pessoal não consignado prefixado, semana de 02 a 08/10/2026, 0,00% ao mês e ao ano. Confirmar o significado do zero e se haverá retificação; captura de 24/10 reconstruída do estado durável `pipeline-estado.20261024150225` | Preservar o valor e a janela; excluir somente essa taxa da posição, mediana e distribuição em “Quanto meu banco cobra?”, com nota junto da taxa. Recalcular a referência das demais instituições; nenhum valor da fonte é substituído. O simulador mantém a taxa publicada com a nota e não a compara à mediana |
+| `TIPO_DESENROLA` 4 | CSV do BCB de 24/10/2026, SHA-256 `14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7`: 2.396 linhas de 05 a 08/2026. A documentação consultada na auditoria de 24/10, alterada em 11/09/2026, descreve tipos 1 a 3. Solicitar definição, universo, início de vigência e eventual sobreposição | Publicar apenas os tipos documentados, com quantidade de linhas e período excluídos na gold e no aviso de cobertura do painel. Preservar o CSV integral no bronze e as linhas separadas por hash no silver. Qualquer outra falha de validação, inclusive numa linha de tipo desconhecido, retém o arquivo inteiro |
+
+Após eventual resposta sobre o tipo 4, integrar sua definição somente por alteração
+revisada de `TIPOS`, do universo analítico e dos testes. O bronze permite reprocessar a
+captura; não basta remover a ressalva. Os tipos desconhecidos não recebem significado
+inventado nem entram nos totais de pessoas físicas ou de Pequenos Negócios.
+
 ## Mensal
 
 - `auditoria-notas.yml` (dia 5, 12:00 UTC): roda `pesquisa.auditor` sobre as

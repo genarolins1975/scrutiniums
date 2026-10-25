@@ -5,7 +5,7 @@
  *
  * Contrato usado do arquivo: `gerado_em`, `fonte`, `conceitos`, `modalidades[]` (id, segmento, modalidade, janela,
  * stats n/min/p25/mediana/p75/max e ranking com cnpj8, nome, taxa_am, taxa_aa, posicao) e `perfis_if[]` (cnpj8, nome).
- * Nenhum número é recalculado além de diferenças e contagens declaradas na página.
+ * A comparação exclui taxas anuais zero com nota, sem mudar os valores da fonte (pacote C, 25/10/2026).
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -115,6 +115,7 @@ export type Consulta = {
   /** Linha do banco na modalidade, ou null quando a instituição não aparece nela nesta janela. */
   linha: LinhaRanking | null;
   posicao: Posicao | null;
+  comparacao: ReturnType<typeof compararTaxas>;
   /** Taxa do banco menos a mediana, em pontos percentuais ao ano. */
   distanciaPp: number | null;
   /** A mesma distância em % da mediana. */
@@ -124,6 +125,28 @@ export type Consulta = {
   /** Parâmetro pedido que não existe na publicação (endereço antigo ou digitado): a página avisa e usa o padrão. */
   ignorados: string[];
 };
+
+export const NOTA_TAXA_ZERO = "Valor de 0,00% informado pelo banco à fonte nesta semana; fora da comparação.";
+
+/** Pacote C autorizado em 25/10/2026, recomendação D2; merge depende da decisão do dono.
+ * Mantém as linhas originais e recalcula somente o universo comparável, com a mesma
+ * interpolação linear dos quartis do pipeline/juros.py. Sem elegíveis, estatística é ausência.
+ */
+export function compararTaxas(m: ModalidadeJuros) {
+  const excluidas = m.ranking.filter((r) => r.taxa_aa === 0);
+  if (!excluidas.length) return { ranking: m.ranking, stats: m.stats as ModalidadeJuros["stats"] | null, excluidas };
+  const ranking = m.ranking.filter((r) => r.taxa_aa !== 0).sort((a, b) => a.taxa_aa - b.taxa_aa)
+    .map((r, i) => ({ ...r, posicao: i + 1 }));
+  if (!ranking.length) return { ranking, stats: null, excluidas };
+  const taxas = ranking.map((r) => r.taxa_aa);
+  const percentil = (p: number) => {
+    const k = (taxas.length - 1) * p;
+    const f = Math.floor(k);
+    return Math.round((taxas[f] + (taxas[Math.min(f + 1, taxas.length - 1)] - taxas[f]) * (k - f)) * 100) / 100;
+  };
+  const stats = { n: taxas.length, min: taxas[0], p25: percentil(0.25), mediana: percentil(0.5), p75: percentil(0.75), max: taxas[taxas.length - 1] };
+  return { ranking: ranking.map((r) => ({ ...r, vs_mediana: Math.round((r.taxa_aa - stats.mediana) * 100) / 100 })), stats, excluidas };
+}
 
 /** Modalidade padrão do segmento: a que reúne mais instituições na publicação. */
 function padraoDoSegmento(gold: GoldJuros, seg: Segmento): ModalidadeJuros {
@@ -153,20 +176,22 @@ export function resolverConsulta(gold: GoldJuros, params: ParametrosConsulta): C
   if (bancoPedido && !banco) ignorados.push("instituição");
 
   const linha = banco ? modalidade.ranking.find((r) => r.cnpj8 === banco.cnpj8) ?? null : null;
-  const mediana = modalidade.stats.mediana;
+  const comparacao = compararTaxas(modalidade);
+  const mediana = comparacao.stats?.mediana ?? null;
+  const comparavel = linha && linha.taxa_aa !== 0 && mediana !== null;
   let posicao: Posicao | null = null;
-  if (linha) {
-    const taxas = modalidade.ranking.map((r) => r.taxa_aa);
+  if (comparavel) {
+    const taxas = comparacao.ranking.map((r) => r.taxa_aa);
     posicao = {
-      posicao: linha.posicao,
-      n: modalidade.stats.n,
+      posicao: comparacao.ranking.find((r) => r.cnpj8 === linha.cnpj8)!.posicao,
+      n: taxas.length,
       menores: taxas.filter((t) => t < linha.taxa_aa).length,
       iguais: taxas.filter((t) => t === linha.taxa_aa).length - 1,
       maiores: taxas.filter((t) => t > linha.taxa_aa).length,
     };
   }
-  const distanciaPp = linha ? linha.taxa_aa - mediana : null;
-  const distanciaPct = linha && mediana > 0 ? ((linha.taxa_aa - mediana) / mediana) * 100 : null;
+  const distanciaPp = comparavel ? linha.taxa_aa - mediana : null;
+  const distanciaPct = comparavel && mediana > 0 ? ((linha.taxa_aa - mediana) / mediana) * 100 : null;
   const outrasDoBanco = banco
     ? gold.modalidades
         .filter((m) => m !== modalidade && m.ranking.some((r) => r.cnpj8 === banco.cnpj8))
@@ -179,6 +204,7 @@ export function resolverConsulta(gold: GoldJuros, params: ParametrosConsulta): C
     banco,
     linha,
     posicao,
+    comparacao,
     distanciaPp,
     distanciaPct,
     outrasDoBanco,

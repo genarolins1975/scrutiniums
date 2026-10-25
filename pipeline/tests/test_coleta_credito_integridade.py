@@ -1,4 +1,5 @@
 """Falhas de fonte não podem substituir o silver íntegro; sem rede ou credenciais."""
+import gzip
 import hashlib
 import json
 import sqlite3
@@ -97,18 +98,29 @@ class DesenrolaContrato(unittest.TestCase):
         sha = hashlib.sha256(texto.encode()).hexdigest()
         return self.con.execute('SELECT aceito, motivo FROM desenrola_contrato WHERE bronze_sha=?', (sha,)).fetchone()
 
-    def test_tipo_nao_documentado_rejeita_nomeando_o_tipo_e_preserva_o_silver(self):
+    # 25/10/2026: pacote C autorizado para implementar a recomendação D2;
+    # merge ainda depende do dono. Tipo desconhecido não é mais falha global;
+    # a garantia anterior de não descartar em silêncio passa a exigir ressalva.
+    def test_tipo_nao_documentado_separado_com_bronze_e_ressalva(self):
         self.assertTrue(self.collect(VALID)[0]['ok'])
-        anterior = self.con.execute('SELECT * FROM desenrola_op').fetchall()
         resultado = self.collect(self.COM_TIPO_4)[0]
-        self.con.commit()
-        self.assertFalse(resultado['ok'])
-        self.assertIn("'4'", resultado['error'])
-        self.assertEqual(self.con.execute('SELECT * FROM desenrola_op').fetchall(), anterior)
-        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 0)
+        self.assertTrue(resultado['ok'])
+        self.assertEqual(resultado['fora_do_recorte']['linhas'], 1)
+        self.assertEqual(resultado['fora_do_recorte']['tipos'], ['4'])
+        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 1)
         self.assertEqual(self.veredito(VALID)[0], 1)
+        saida, gold = self.build()
+        self.assertTrue(saida['ok'])
+        self.assertEqual(gold['totais_scr']['operacoes'], 2)
+        self.assertEqual(gold['fora_do_recorte'], resultado['fora_do_recorte'])
+        repetida = self.collect(self.COM_TIPO_4)[0]
+        self.assertIn('note', repetida)
+        self.assertEqual(repetida['fora_do_recorte'], gold['fora_do_recorte'])
+        registro = self.con.execute('SELECT registro FROM desenrola_tipos_nao_documentados').fetchone()
+        self.assertEqual(json.loads(registro[0])['NUMERO_OPERACOES'], '377130')
+        self.assertTrue(any(p.read_bytes() == self.COM_TIPO_4.encode() for p in Path(self.tmp.name).rglob('*.json') if not p.name.endswith('.meta.json')))
 
-    def test_silver_gravado_antes_do_contrato_e_revalidado_e_nao_e_publicado(self):
+    def test_silver_gravado_antes_do_contrato_e_revalidado_com_ressalva(self):
         # estado deixado pela rodada de 24/10: silver e coleta do arquivo com tipo 4,
         # só com os tipos 1 a 3, e nenhum veredito do contrato
         desenrola._ensure(self.con)
@@ -116,14 +128,15 @@ class DesenrolaContrato(unittest.TestCase):
         self.con.execute("INSERT INTO desenrola_op VALUES('2026-08','faixa1','SP','123','Banco',2,1200.5,?)", (sha,))
         self.con.execute("INSERT INTO desenrola_coleta VALUES('2026-10-24T13:23:24+00:00',?,1,1,'2026-08','2026-08')", (sha,))
         resultado = self.collect(self.COM_TIPO_4)[0]
-        self.assertFalse(resultado['ok'])
+        # Regra D2 do pacote C, autorizada em 25/10/2026; não aceita o legado sem reconferir.
+        self.assertTrue(resultado['ok'])
         self.assertNotIn('note', resultado)
-        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 0)
+        self.assertEqual(self.veredito(self.COM_TIPO_4)[0], 1)
         saida, gold = self.build()
-        self.assertFalse(saida['ok'])
-        self.assertIs(gold['disponivel'], False)
+        self.assertTrue(saida['ok'])
+        self.assertIs(gold['disponivel'], True)
         self.assertEqual(gold['bronze_sha'], sha)
-        self.assertIn('fora do contrato', gold['motivo'])
+        self.assertEqual(gold['fora_do_recorte']['linhas'], 1)
 
     def test_silver_sem_veredito_nao_e_publicado_mesmo_sem_coleta_no_dia(self):
         desenrola._ensure(self.con)
@@ -141,10 +154,56 @@ class DesenrolaContrato(unittest.TestCase):
         self.assertIsNot(gold.get('disponivel'), False)
 
     def test_arquivo_novo_valido_depois_de_rejeicao_volta_a_publicar(self):
-        self.assertFalse(self.collect(self.COM_TIPO_4)[0]['ok'])
+        # D2 (25/10/2026): conserva a rejeição por outra falha, mesmo com tipo 4.
+        self.assertFalse(self.collect(self.COM_TIPO_4.replace('1.200,50', 'NaN'))[0]['ok'])
         self.assertTrue(self.collect(VALID)[0]['ok'])
         saida, gold = self.build()
         self.assertIsNot(gold.get('disponivel'), False)
+
+    def test_tipo_desconhecido_com_outra_falha_retem_tudo(self):
+        self.assertTrue(self.collect(VALID)[0]['ok'])
+        anterior = self.con.execute('SELECT * FROM desenrola_op').fetchall()
+        for texto in [
+            self.COM_TIPO_4.replace('1.200,50', 'NaN'),
+            self.COM_TIPO_4.replace('759.760.000,00', ''),
+            self.COM_TIPO_4.replace(';4;SP;', ';4;XX;'),
+            self.COM_TIPO_4.replace(';377130;', ';-1;'),
+            self.COM_TIPO_4.replace('202608;4;', '202613;4;'),
+            self.COM_TIPO_4 + self.COM_TIPO_4.splitlines()[-1] + '\n',
+            self.COM_TIPO_4.replace('202608;1;', '202609;1;'),
+        ]:
+            with self.subTest(texto=texto):
+                self.assertFalse(self.collect(texto)[0]['ok'])
+                self.con.commit()
+                self.assertEqual(self.con.execute('SELECT * FROM desenrola_op').fetchall(), anterior)
+                self.assertEqual(self.veredito(texto)[0], 0)
+                self.assertEqual(self.con.execute('SELECT COUNT(*) FROM desenrola_tipos_nao_documentados').fetchone()[0], 0)
+
+    def test_csv_real_tipos_1_a_4_preserva_recorte_e_retorna_a_hash_anterior(self):
+        arquivo = Path(__file__).parent / 'fixtures/desenrola/bcb-2026-10-24.csv.gz'
+        bruto = gzip.decompress(arquivo.read_bytes())
+        self.assertEqual(hashlib.sha256(bruto).hexdigest(), '14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7')
+        resultado = self.collect(bruto.decode('utf-8-sig'))[0]
+        self.assertTrue(resultado['ok'])
+        self.assertEqual(resultado['linhas'], 11242)
+        recorte = resultado['fora_do_recorte']
+        self.assertEqual((recorte['linhas'], recorte['tipos'], recorte['periodo_inicio'], recorte['periodo_fim']), (2396, ['4'], '2026-05', '2026-08'))
+        saida, gold = self.build()
+        self.assertTrue(saida['ok'])
+        self.assertEqual(gold['fora_do_recorte'], recorte)
+        self.assertEqual(gold['data_base'], '2026-08')
+        self.assertEqual({r[0] for r in self.con.execute('SELECT DISTINCT tipo FROM desenrola_op')}, {'faixa1', 'faixa2', 'pequenos_negocios'})
+        self.assertEqual(self.con.execute('SELECT COUNT(*) FROM desenrola_tipos_nao_documentados').fetchone()[0], recorte['linhas'])
+        self.assertTrue(all(str(v) in recorte['ressalva'] for v in ['2.396', '2026-05', '2026-08']))
+        # A mesma captura aceita não perde a ressalva na execução seguinte.
+        self.assertEqual(self.collect(bruto.decode('utf-8-sig'))[0]['fora_do_recorte'], recorte)
+        # Sem o tipo desconhecido, a ressalva some; o histórico do bronze fica.
+        sem_tipo4 = '\n'.join(l for l in bruto.decode('utf-8-sig').splitlines() if ';4;' not in l) + '\n'
+        self.assertTrue(self.collect(sem_tipo4)[0]['ok'])
+        self.assertEqual(self.build()[1]['fora_do_recorte']['linhas'], 0)
+        self.assertTrue(self.collect(bruto.decode('utf-8-sig'))[0]['ok'])
+        self.assertEqual(self.build()[1]['fora_do_recorte'], recorte)
+
 
 class SGSIntegro(unittest.TestCase):
     def setUp(self):
