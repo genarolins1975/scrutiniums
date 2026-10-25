@@ -1,3 +1,4 @@
+import { LaboratoriosCapitais } from "@/components/eficiencia/LaboratoriosCapitais";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { statSync } from "node:fs";
@@ -112,7 +113,7 @@ export default function PaginaPanorama() {
           </Link>
         </p>
       }
-      figuras={<PanoramaInterativo capitulos={capitulos} capitais={capitais} fichas={fichas} fontes={fontes} />}
+      figuras={<><PanoramaInterativo capitulos={capitulos} capitais={capitais} fichas={fichas} fontes={fontes} /><LaboratoriosCapitais dados={dados} contextos={ctx} /></>}
       metodo={
         <>
           <p>Gasto e resultados têm universos e períodos próprios. A leitura conjunta não demonstra causalidade.</p>

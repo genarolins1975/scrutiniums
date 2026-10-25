@@ -42,6 +42,12 @@ function arredonda(v: number, casas: number): number {
   return limpa(Math.round(v * f) / f);
 }
 
+/** Exibição simétrica: meio décimo negativo arredonda como o positivo, sem zero negativo.
+ * Mantém separada a regra que define as classes dos mapas. */
+function arredondaExibicao(v: number, casas: number): number {
+  return limpa(Math.sign(v) * arredonda(Math.abs(v), casas));
+}
+
 /* ---------- ticks e domínio ---------- */
 
 /** Passo "bonito" (1, 2, 2,5, 5 ou 10 vezes uma potência de dez) para cerca de n intervalos. */
@@ -235,7 +241,7 @@ export function semDadoTexto(idioma: Idioma = idiomaEnergia()): string {
  */
 export function formatarValor(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = idiomaEnergia()): string {
   if (!valido(v)) return semDadoTexto(idioma);
-  const r = arredonda(v, casas);
+  const r = arredondaExibicao(v, casas);
   if (unidade === "%") return pct(r, casas, idioma);
   return unidade ? `${num(r, casas, idioma)} ${unidadeConcordante(r, unidade)}` : num(r, casas, idioma);
 }
@@ -243,7 +249,7 @@ export function formatarValor(v: number | null | undefined, casas = 1, unidade =
 /** Diferença com sinal explícito (+ ou −, tipográfico) e unidade; zero após arredondar não leva sinal. */
 export function formatarDiferenca(v: number | null | undefined, casas = 1, unidade = "", idioma: Idioma = idiomaEnergia()): string {
   if (!valido(v)) return semDadoTexto(idioma);
-  const r = arredonda(v, casas);
+  const r = arredondaExibicao(v, casas);
   return sinal(r, casas, unidade ? ` ${unidade}` : "", idioma);
 }
 
@@ -255,7 +261,7 @@ export function diferencaPar(valor: number | null | undefined, referencia: numbe
 /** Sentido da diferença na precisão exibida: o texto nunca contradiz o número mostrado. */
 export function sentidoDiferenca(dif: number | null | undefined, casas = 1): "acima" | "abaixo" | "igual" | null {
   if (!valido(dif)) return null;
-  const r = arredonda(dif, casas);
+  const r = arredondaExibicao(dif, casas);
   return r > 0 ? "acima" : r < 0 ? "abaixo" : "igual";
 }
 

@@ -1,0 +1,120 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido --base codex/educacao-2-artefatos
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1298 KB → core 563 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1597 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs --base codex/educacao-2-artefatos
+Base codex/educacao-2-artefatos: 278 arquivo(s) alterado(s).
+  teste  src/tests/educacao-capitais-artefatos.test.ts  (teste alterado)
+  teste  src/tests/educacao-capitais-navegador.test.ts  (teste alterado)
+  teste  src/tests/energia-comp-escalas.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/tests/educacao-capitais-artefatos.test.ts)
+  teste  src/tests/cabecalho-movel.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/conectividade.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-celular-r10.test.ts  (cita src/components/painel/GraficoPontos.tsx)
+  teste  src/tests/energia-comp-imagem-grafico.test.ts  (cita src/components/painel/GraficoPontos.tsx)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/eficiencia/EscoresServicos.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/educacao/convite.ts)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/obee-educacao.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/eficiencia/EscoresServicos.tsx)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/educacao-capitais-artefatos.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx)
+  fonte  docs/ux-2026-10-25/educacao/pr3/coleta-anterior/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr3/depois/evidencias.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-25/educacao/pr3/medidas-aperitivo/medidas.json  (código alterado; testes que o importam)
+  fonte  src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx  (código alterado; testes que o importam)
+  fonte  src/app/eficiencia-estatal/educacao-municipal-capitais/metodos/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/eficiencia-estatal/educacao-municipal-capitais/page.tsx  (código alterado; testes que o importam)
+  fonte  src/components/eficiencia/EscoresServicos.tsx  (código alterado; testes que o importam)
+  fonte  src/components/eficiencia/LaboratoriosCapitais.tsx  (código alterado; testes que o importam)
+  fonte  src/components/eficiencia/PanoramaInterativo.tsx  (código alterado; testes que o importam)
+  fonte  src/components/observatorios/RecursoResultado.tsx  (código alterado; testes que o importam)
+  fonte  src/components/painel/GraficoPontos.tsx  (código alterado; testes que o importam)
+  fonte  src/lib/educacao/convite.ts  (código alterado; testes que o importam)
+  fonte  src/lib/painel/escalas.ts  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/eficiencia-estatal/educacao-municipal-capitais/layout.tsx; testes que o importam)
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/educacao-3
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  140 passed (140)
+      Tests  4706 passed | 7 skipped | 1 todo (4714)
+   Start at  21:29:17
+   Duration  192.25s (transform 5.58s, setup 0ms, import 121.41s, tests 226.38s, environment 21ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-25)
+  ok           10 s  Lint
+  ok     1 min 48 s  Tipos
+  ok           23 s  Derivados (npm run preparar)
+  ok            7 s  Cobertura bilíngue confere com as fontes de código
+  ok     3 min 42 s  Testes afetados
+  tempo de parede: 5 min 37 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

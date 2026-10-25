@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import type { EstagioServico, TemaServico } from "@/lib/observatorios/entradas/servicos";
@@ -29,7 +30,12 @@ function Estagio({ e }: Readonly<{ e: EstagioServico }>) {
  * Eficiência Estatal descreve cada serviço, com um número publicado onde
  * existe. Mostra a sequência que a análise percorre, não uma relação causal.
  */
-export function RecursoResultado({ temas }: Readonly<{ temas: TemaServico[] }>) {
+export function RecursoResultado({ temas = [], sequencia, descricao }: Readonly<{ temas?: TemaServico[]; sequencia?: { titulo: string; texto: string; numero: NumeroPorta }[]; descricao?: string }>) {
+  if (sequencia) return <ModeloDidatico id="recurso-educacao" titulo="Do recurso ao resultado, educação" descricao={descricao}
+    deixaDeFora={["Não há relação causal demonstrada entre os elos", "Cada medida tem seu ano e seu universo; os valores não se somam", "A sequência não produz nota de eficiência nem avaliação da gestão"]}>
+    <ol className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-5">{sequencia.map((e,i)=><li key={e.titulo} className="border-t border-linha pt-4"><h3 className="font-serif text-xl"><span className="mr-2 text-carvao-muted" aria-hidden="true">{i+1}</span>{e.titulo}</h3><p className="mt-3 text-sm leading-relaxed text-carvao-muted">{e.texto}</p><div className="mt-4"><NumeroEscala n={e.numero}/>{e.numero.nota && <p className="mt-3 text-sm leading-relaxed text-carvao-muted">{e.numero.nota}</p>}</div></li>)}</ol>
+    <p className="mt-6 text-sm text-carvao">Não há relação causal demonstrada entre gasto, atendimento, aprovação e Ideb.</p>
+  </ModeloDidatico>;
   return (
     <ModeloDidatico id="recurso" titulo={<>Do recurso ao resultado</>} descricao={<>Cada serviço é lido em três estágios: quanto se aplica, quem o atendimento alcança e o que a fonte registra como resultado. A sequência organiza a leitura; ela não prova que um estágio causa o seguinte, e a plataforma não calcula nota de eficiência. Onde um estágio ainda não tem número publicado, fica só a descrição.</>} deixaDeFora={["Causa: a sequência organiza a leitura e não prova que um estágio causa o seguinte", "Nota de eficiência, que a plataforma não calcula", "Os estágios ainda sem número publicado, que ficam só com a descrição"]}>
         <div role="table" aria-label="Do recurso ao resultado, por serviço">

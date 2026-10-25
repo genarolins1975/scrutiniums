@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { Controles, FiguraAnalitica, GraficoBarras, LeituraGuiada } from "@/components/painel";
+import { Controles, FiguraAnalitica, LeituraGuiada } from "@/components/painel";
+import { GraficoPontos } from "@/components/painel/GraficoPontos";
 import { ehDespesa, formata, type MedidaId } from "@/lib/eficiencia/consulta";
 import { fraseCapital, listaRotulos } from "@/lib/eficiencia/frases";
 import type { CapituloPanorama, ExtremoPanorama, ReferenciaExternaCapitulo, ResumoMedida } from "@/lib/eficiencia/panorama";
@@ -71,9 +72,9 @@ export function PanoramaInterativo({ capitulos, capitais, fichas, fontes }: { ca
       <Controles rotulo="Escala do gasto" resumo={`Mostrando ${r.rotulo.toLowerCase()}, ${r.contexto}.`} idioma="pt">
         <Alternancia rotulo="Escala do gasto" valor={r.medida as (typeof ABAS)[number]} opcoes={recursos.medidas.map((m) => ({ v: m.medida as (typeof ABAS)[number], t: m.rotulo }))} aoMudar={(m) => definir({ med: m })} />
       </Controles>
-      <Capitulo c={recursos} r={r} cap={cap} fichas={fichas} fontes={fontes} />
+      <Capitulo c={recursos} r={r} cap={cap} capitais={capitais} fichas={fichas} fontes={fontes} />
       {demais.map((c) => (
-        <Capitulo key={c.id} c={c} r={c.medidas[0]} cap={cap} fichas={fichas} fontes={fontes} />
+        <Capitulo key={c.id} c={c} r={c.medidas[0]} cap={cap} capitais={capitais} fichas={fichas} fontes={fontes} />
       ))}
     </>
   );
@@ -122,34 +123,19 @@ function ContextoNacional({ r }: { r: ResumoMedida }) {
 }
 
 /**
- * Um capítulo do panorama como figura do kit: no capítulo de Recursos, menor valor, mediana e maior valor das capitais (e a capital
- * destacada); em Atendimento e Resultados, a mediana das capitais ao lado do agregado nacional da rede municipal (e a capital). A tabela
- * equivalente traz o valor de cada capital, como a visão "Tabela" de antes; as frases e os números são os mesmos.
+ * Um capítulo do panorama como figura do kit: todas as capitais por nome, com a mediana como referência.
+ * Pedido Educação PR 3: a ordenação por valor depende da escolha do leitor. A tabela e as referências nacionais permanecem.
  */
-function Capitulo({ c, r, cap, fichas, fontes }: { c: CapituloPanorama; r: ResumoMedida; cap: string; fichas: Fichas; fontes: Record<string, FonteFicha> }) {
+function Capitulo({ c, r, cap, capitais, fichas, fontes }: { c: CapituloPanorama; r: ResumoMedida; cap: string; capitais: CapitalLista[]; fichas: Fichas; fontes: Record<string, FonteFicha> }) {
+  const [, definir] = useEstadoUrl(ESQUEMA);
   const fmt = (v: number) => formata(r.medida, v);
   const ficha = fichas[r.indicador];
-  const sel = r.pontos.find((p) => p.id === cap);
   const ref = r.referencia;
   const vazio = !r.menor || !r.maior || ref?.mediana == null;
   const ehRecursos = c.id === "gastos";
   const oficial: ReferenciaExternaCapitulo | null = ehRecursos ? null : (r.externas.find((e) => e.classe === "oficial") ?? null);
-  const pontos = vazio
-    ? []
-    : ehRecursos
-      ? [
-          { x: "menor", rotulo: `Menor valor · ${nomesDoExtremo(r.menor!)}`, y: r.menor!.valor },
-          { x: "mediana", rotulo: "Mediana das capitais", y: ref!.mediana! },
-          { x: "maior", rotulo: `Maior valor · ${nomesDoExtremo(r.maior!)}`, y: r.maior!.valor },
-          ...(sel ? [{ x: "capital", rotulo: nomeCapital(sel), y: sel.valor }] : []),
-        ]
-      : [
-          { x: "capitais", rotulo: "Capitais · mediana", y: ref!.mediana! },
-          ...(oficial ? [{ x: "brasil", rotulo: "Brasil · agregado", y: oficial.valor }] : []),
-          ...(sel ? [{ x: "capital", rotulo: nomeCapital(sel), y: sel.valor }] : []),
-        ];
   const coluna = r.medida === "despesa" ? "Despesa total" : r.medida === "despesa_hab" ? "R$ por habitante" : r.medida === "despesa_mat" ? "R$ por matrícula" : r.medida === "atu" ? "Alunos por turma" : "Ideb";
-  const linhas = [...r.pontos.map((p) => [nomeCapital(p), fmt(p.valor)]), ...r.semDado.map((x) => [nomeCapital(x), "Sem dado comparável"])];
+  const linhas = [...r.pontos.map((p) => [nomeCapital(p), fmt(p.valor)]), ...r.semDado.map((x) => [nomeCapital(x), `Sem dado comparável: ${x.motivo}`])];
   const quartis = ref && ref.quartisExibicao && ref.q1 !== null && ref.q3 !== null ? { q1: ref.q1, q3: ref.q3 } : null;
   const resumo = vazio ? null : (
     <ul className="t-meta flex flex-wrap gap-x-4 gap-y-1 text-carvao-muted">
@@ -200,7 +186,7 @@ function Capitulo({ c, r, cap, fichas, fontes }: { c: CapituloPanorama; r: Resum
         <>
           {resumo}
           <NotaCapital r={r} cap={cap} />
-          {ehRecursos && <ContextoNacional r={r} />}
+          <ContextoNacional r={r} />
           {!ehRecursos && !oficial && r.semNacional && <p className="t-meta max-w-prose2 text-carvao-muted">{r.semNacional}</p>}
           <div className="flex flex-wrap items-center gap-x-6">
             <EloAprofunda r={r} cap={cap} />
@@ -214,14 +200,24 @@ function Capitulo({ c, r, cap, fichas, fontes }: { c: CapituloPanorama; r: Resum
           Nenhuma capital tem dado comparável para esta medida neste período.
         </p>
       ) : (
-        <GraficoBarras
+        <GraficoPontos
           titulo={r.titulo}
-          series={[{ id: "valor", nome: r.rotulo, pontos }]}
-          eixoY={{ unidade: UNIDADE[r.medida] ?? r.eixo, zero: true, casas: CASAS[r.medida] ?? 1 }}
-          orientacao="horizontal"
-          rotulosValor
+          itens={[...r.pontos.map(p => ({ id:p.id, rotulo:nomeCapital(p), valor:p.valor, referencia:ref!.mediana! })), ...r.semDado.map(p=>({id:capitais.find(c=>c.nome===p.nome && c.uf===p.uf)!.id,rotulo:nomeCapital(p),valor:null,referencia:ref!.mediana!}))]}
+          unidade={UNIDADE[r.medida] ?? r.eixo}
+          casas={CASAS[r.medida] ?? 1}
+          rotuloValor={r.rotulo}
+          rotuloReferencia="Mediana das capitais"
+          corValor="var(--cor-obee)"
+          corReferencia="var(--cor-carvao-muted)"
+          ordemInicial={{por:"nome",direcao:"asc"}}
+          chaveUrl={`panorama-${c.id}`}
+          zeroNoEixo
+          limitesEixo={r.dominioFixo ?? undefined}
+          alturaMaxima={2000}
           rotulosSaoNomes
-          selecionado={sel ? "capital" : null}
+          selecionado={cap || null}
+          onSelecionar={id=>definir({cap:id ?? ""})}
+          semTabela
         />
       )}
     </FiguraAnalitica>
