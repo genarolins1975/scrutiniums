@@ -29,7 +29,7 @@ obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
 Route (app)                                                      Size     First Load JS
 ┌ ƒ /                                                            3.33 kB         115 kB
 ├ ○ /_not-found                                                  185 B            88 kB
-├ ○ /agronegocio                                                 4.98 kB         119 kB
+├ ○ /agronegocio                                                 4.99 kB         119 kB
 ├ ● /agronegocio/[capitulo]                                      35.2 kB         145 kB
 ├   ├ /agronegocio/producao
 ├   ├ /agronegocio/custos-renda
@@ -39,7 +39,7 @@ Route (app)                                                      Size     First 
 ├ ○ /agronegocio/apoio                                           425 B           102 kB
 ├ ○ /agronegocio/aprenda                                         1.18 kB         108 kB
 ├ ƒ /agronegocio/atlas                                           3.96 kB         202 kB
-├ ○ /agronegocio/cadeias                                         410 B           102 kB
+├ ○ /agronegocio/cadeias                                         409 B           102 kB
 ├ ● /agronegocio/cadeias/[cadeia]                                3.68 kB         105 kB
 ├   ├ /agronegocio/cadeias/soja
 ├   ├ /agronegocio/cadeias/milho
@@ -51,11 +51,11 @@ Route (app)                                                      Size     First 
 ├ ○ /agronegocio/insumos                                         425 B           102 kB
 ├ ○ /agronegocio/mercados                                        425 B           102 kB
 ├ ○ /agronegocio/metodologia                                     195 B          96.7 kB
-├ ○ /agronegocio/panorama                                        410 B           102 kB
+├ ○ /agronegocio/panorama                                        409 B           102 kB
 ├ ○ /agronegocio/prato                                           194 B           187 kB
 ├ ○ /agronegocio/produtores                                      425 B           102 kB
 ├ ƒ /agronegocio/sintese                                         505 B           102 kB
-├ ○ /agronegocio/tamanho                                         196 B           187 kB
+├ ○ /agronegocio/tamanho                                         194 B           187 kB
 ├ ƒ /aperitivo/conectividade                                     3.95 kB        96.6 kB
 ├ ○ /aperitivo/conta-de-luz                                      181 B           188 kB
 ├ ƒ /aperitivo/educacao-municipal                                4.55 kB         106 kB
@@ -115,11 +115,11 @@ Route (app)                                                      Size     First 
 ├ ƒ /cadastro/verificar-email                                    185 B            88 kB
 ├ ○ /combustiveis                                                6.86 kB         173 kB
 ├ ○ /combustiveis/no-meu-estado                                  6.21 kB         214 kB
-├ ƒ /conectividade                                               3.03 kB         136 kB
+├ ƒ /conectividade                                               3.02 kB         136 kB
 ├ ○ /conectividade/brasil-mensal.csv                             0 B                0 B
 ├ ○ /conectividade/por-estado.csv                                0 B                0 B
 ├ ○ /conectividade/por-municipio.csv                             0 B                0 B
-├ ○ /contas-publicas                                             4.87 kB         199 kB
+├ ○ /contas-publicas                                             4.86 kB         199 kB
 ├ ƒ /contas-publicas-estaduais                                   80.6 kB         201 kB
 ├ ○ /contas-publicas-estaduais/catalogo.json                     0 B                0 B
 ├ ƒ /contas-publicas-estaduais/cobertura.csv                     0 B                0 B
@@ -202,7 +202,7 @@ Route (app)                                                      Size     First 
 ├   ├ /eficiencia-estatal/cultura/rede
 ├   ├ /eficiencia-estatal/cultura/acesso
 ├   └ [+4 more paths]
-├ ○ /eficiencia-estatal/educacao-municipal-capitais              9.71 kB         224 kB
+├ ○ /eficiencia-estatal/educacao-municipal-capitais              10.1 kB         225 kB
 ├ ○ /eficiencia-estatal/educacao-municipal-capitais/atendimento  168 B           139 kB
 ├ ○ /eficiencia-estatal/educacao-municipal-capitais/comparar     7.99 kB         137 kB
 ├ ○ /eficiencia-estatal/educacao-municipal-capitais/gastos       168 B           139 kB
@@ -293,7 +293,7 @@ Route (app)                                                      Size     First 
 ├ ○ /en/imprensa                                                 2.95 kB         114 kB
 ├ ○ /en/observatorio-do-credito                                  166 B           123 kB
 ├ ƒ /en/privacidade                                              2.95 kB         114 kB
-├ ○ /en/setor-eletrico                                           212 B           212 kB
+├ ○ /en/setor-eletrico                                           210 B           212 kB
 ├ ○ /en/setor-eletrico/agua-e-clima                              223 B           269 kB
 ├ ○ /en/setor-eletrico/agua-e-clima/afluencia                    5.22 kB         266 kB
 ├ ○ /en/setor-eletrico/agua-e-clima/chuva-e-temperatura          223 B           279 kB
@@ -320,7 +320,7 @@ Route (app)                                                      Size     First 
 ├   ├ /en/setor-eletrico/dados/ons-ena-subsistema
 ├   └ [+118 more paths]
 ├ ○ /en/setor-eletrico/dados/reproducao                          206 B           209 kB
-├ ○ /en/setor-eletrico/dados/saude                               3.14 kB         231 kB
+├ ○ /en/setor-eletrico/dados/saude                               3.14 kB         230 kB
 ├ ○ /en/setor-eletrico/empresas                                  3.67 kB         186 kB
 ├ ● /en/setor-eletrico/empresas/[entidade]                       217 B           238 kB
 ├   ├ /en/setor-eletrico/empresas/ceb
@@ -403,7 +403,7 @@ Route (app)                                                      Size     First 
 ├ ƒ /entrar/sms                                                  151 B           129 kB
 ├ ƒ /entrar/sms/verificar                                        151 B           129 kB
 ├ ƒ /entrar/verificar                                            185 B            88 kB
-├ ○ /gas-natural                                                 963 B           134 kB
+├ ○ /gas-natural                                                 962 B           134 kB
 ├ ○ /gas-natural/aproveitamento                                  5.16 kB         169 kB
 ├ ○ /gas-natural/dados                                           610 B           131 kB
 ├ ○ /gas-natural/gas-de-cozinha                                  1.05 kB         226 kB
@@ -469,7 +469,7 @@ Route (app)                                                      Size     First 
 ├ ○ /saneamento/responsaveis                                     2.85 kB         134 kB
 ├ ○ /saneamento/saude-ambiente                                   10.4 kB         204 kB
 ├ ○ /saneamento/tarifa-social                                    846 B           250 kB
-├ ○ /setor-eletrico                                              213 B           212 kB
+├ ○ /setor-eletrico                                              210 B           212 kB
 ├ ○ /setor-eletrico/agua-e-clima                                 223 B           269 kB
 ├ ○ /setor-eletrico/agua-e-clima/afluencia                       5.22 kB         266 kB
 ├ ○ /setor-eletrico/agua-e-clima/chuva-e-temperatura             222 B           279 kB
@@ -497,7 +497,7 @@ Route (app)                                                      Size     First 
 ├   ├ /setor-eletrico/dados/ons-ena-subsistema
 ├   └ [+118 more paths]
 ├ ○ /setor-eletrico/dados/reproducao                             206 B           209 kB
-├ ○ /setor-eletrico/dados/saude                                  3.14 kB         231 kB
+├ ○ /setor-eletrico/dados/saude                                  3.14 kB         230 kB
 ├ ○ /setor-eletrico/empresas                                     3.67 kB         186 kB
 ├ ● /setor-eletrico/empresas/[entidade]                          216 B           238 kB
 ├   ├ /setor-eletrico/empresas/ceb
@@ -577,7 +577,7 @@ Route (app)                                                      Size     First 
 ├ ○ /sobre/erros                                                 2.95 kB         114 kB
 ├ ○ /sobre/governanca                                            2.95 kB         114 kB
 ├ ƒ /termos                                                      2.95 kB         114 kB
-├ ○ /territorio                                                  709 B           115 kB
+├ ○ /territorio                                                  707 B           115 kB
 ├ ○ /territorio/desastres                                        3.18 kB         182 kB
 ├ ○ /territorio/emissoes                                         804 B          97.3 kB
 ├ ○ /territorio/metodologia                                      804 B          97.3 kB

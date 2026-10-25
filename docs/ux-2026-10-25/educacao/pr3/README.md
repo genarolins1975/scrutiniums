@@ -49,8 +49,31 @@ A coleta final contém 48 casos no build `LCbawtF_QUVd7_Fr6eaCD`. Os relatórios
 
 ## Verificação geral e correção do molde
 
-A suíte completa executou 9666 testes: 9648 aprovados, 12 skips e um todo preexistentes, cinco falhas. Duas apontaram o mesmo problema: os laboratórios estavam fora dos componentes admitidos no primeiro nível da fatia de figuras. O bloco passa a usar `Recolhido`, aberto por padrão, conservando os modelos internos. O contrato foi preservado e ganhou uma asserção sobre a abertura inicial. As outras três falhas foram timeouts: dois casos do cromo da plataforma e um de Crédito com fonte ampliada. As repetições serão registradas após o novo build.
+A suíte completa executou 9666 testes: 9648 aprovados, 12 skips e um todo preexistentes, cinco falhas. Duas apontaram o mesmo problema: os laboratórios estavam fora dos componentes admitidos no primeiro nível da fatia de figuras. O bloco passa a usar `Recolhido`, aberto por padrão, conservando os modelos internos. O contrato foi preservado e ganhou uma asserção sobre a abertura inicial. As outras três falhas foram timeouts: dois casos do cromo da plataforma e um de Crédito com fonte ampliada. O novo build passou. A repetição dos quatro arquivos passou com 113 testes: os contratos confirmaram a correção e os três timeouts não se repetiram ([registro](repeticao-falhas.txt)). Os 41 testes de componentes e arredondamento também passaram após o ajuste ([registro](envelope-unidade.txt)).
 
 O roteiro completo do Judiciário passou: 68 telas, 224 checagens e nenhum erro ([registro](judiciario.txt)). O teste de integridade da árvore também passou.
 
-A coleta de 48 casos após corrigir o arredondamento teve axe 0, console 0 e nenhuma rolagem horizontal em todos os casos. Ela antecede somente o envelope `Recolhido` dos laboratórios; as duas rotas afetadas serão fotografadas novamente no build final. Os demais blocos permanecem idênticos.
+A coleta de 48 casos após corrigir o arredondamento teve axe 0, console 0 e nenhuma rolagem horizontal em todos os casos. Ela antecede somente o envelope `Recolhido` dos laboratórios; as duas rotas afetadas foram fotografadas novamente no build final ([12 casos](depois-envelope/evidencias.md)), também com axe 0, console 0 e nenhuma rolagem horizontal. Os demais blocos permanecem idênticos.
+
+## Resultado final local
+
+A verificação rápida contra a base deste PR (`codex/educacao-2-artefatos`) passou: lint, tipos, derivados, cobertura bilíngue e 140 arquivos de testes, com 4706 aprovados, 7 skips e um todo preexistentes ([registro](verificar-rapido.txt)). Essa execução inclui os testes de navegador das capitais e dos consumidores compartilhados selecionados pelo grafo de dependências. A repetição explícita dos quatro arquivos que haviam falhado passou com 113 testes, sem alterar limites de tempo ou asserções existentes.
+
+As [12 capturas após o envelope](depois-envelope/evidencias.md) complementam as 48 da coleta anterior. Os [24 recortes ampliados](recortes-envelope/) incluem o Ideb de Recife e o bloco aberto dos laboratórios nas três larguras. O build final é `GFOKxgFZcOaJbB-3QGFOq`. Nenhum merge foi realizado.
+
+## Comprimento e cromo do panorama
+
+Comprimentos em pixels das capturas completas com sessão, escala de dispositivo 1. São medidas do panorama, sem aplicar a ele o orçamento específico da entrada municipal.
+
+| Panorama | Largura | Altura antes | Altura depois | Cromo antes/depois |
+|---|---:|---:|---:|---:|
+| Sem seleção | 390 | 9055 | 12704 | 183/183 |
+| Sem seleção | 768 | 6616 | 9823 | 316/316 |
+| Sem seleção | 1440 | 5548 | 8680 | 228/228 |
+| Recife | 390 | 9372 | 16982 | 183/183 |
+| Recife | 768 | 6858 | 12647 | 316/316 |
+| Recife | 1440 | 5790 | 11073 | 228/228 |
+
+Fonte: coleta anterior do PR2 e repetição final do panorama após o envelope. O aumento de altura torna as 26 capitais visíveis e, com seleção, acrescenta os dois modelos solicitados; a entrada municipal e o aperitivo continuam nos seus orçamentos.
+
+A revisão independente final abriu as 12 capturas após o envelope e seis recortes específicos (Ideb e laboratórios nas três larguras). Não encontrou novo defeito concreto. A nota 9 dos critérios visuais observados foi mantida; interação manual global segue NV. O adendo está em [revisao-visual.md](revisao-visual.md).
