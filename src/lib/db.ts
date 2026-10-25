@@ -212,9 +212,9 @@ export async function migrate(db: Db): Promise<void> {
 }
 
 /**
- * Esquema na primeira conexão de cada instância. Antes, os 30 comandos rodavam em sequência a cada partida a frio da função
- * (de 1,3 s a 3,6 s com 30 a 120 ms por ida ao banco, medido em 25/10/2026), e os ALTER TABLE travam a tabela mesmo quando a
- * coluna já existe. Agora uma consulta confere se esta versão já foi aplicada; só uma versão nova roda a migração e se registra.
+ * Esquema na primeira conexão de cada instância. Antes, os 29 comandos rodavam em sequência a cada partida a frio da função,
+ * e os ALTER TABLE travam a tabela mesmo quando a coluna já existe. Agora uma consulta confere se esta versão já foi aplicada;
+ * só uma versão nova roda a migração e se registra. Medição reproduzível: scripts/medir-esquema.mjs.
  */
 export async function garantirEsquema(db: Db): Promise<void> {
   if (await versaoAplicada(db)) return;
@@ -227,9 +227,13 @@ async function versaoAplicada(db: Db): Promise<boolean> {
   try {
     const r = await db.execute(sql`SELECT 1 FROM esquema_versoes WHERE versao = ${VERSAO_ESQUEMA} LIMIT 1`);
     return (r as unknown as { rows: unknown[] }).rows.length > 0;
-  } catch {
-    // banco anterior ao registro de versões: a tabela ainda não existe
-    return false;
+  } catch (erro) {
+    // Só a ausência da tabela significa banco anterior ao registro de versões.
+    // Drizzle envolve o erro do Postgres/PGlite em `cause`. Falhas de conexão
+    // ou permissão devem chegar a getDb(), que libera a próxima tentativa.
+    const causa = erro instanceof Error && erro.cause ? erro.cause : erro;
+    if (typeof causa === "object" && causa !== null && "code" in causa && causa.code === "42P01") return false;
+    throw erro;
   }
 }
 

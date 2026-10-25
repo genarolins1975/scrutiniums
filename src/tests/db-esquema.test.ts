@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { sql } from "drizzle-orm";
 
 process.env.DATABASE_URL = "pglite-memory:";
@@ -51,5 +51,52 @@ describe("esquema na primeira conexão", () => {
     await mod.garantirEsquema(anterior.db);
     expect(anterior.total()).toBeGreaterThan(10);
     expect((await linhas(db, "SELECT versao FROM esquema_versoes ORDER BY versao")).map((l) => l.versao).sort()).toEqual(["anterior", mod.VERSAO_ESQUEMA].sort());
+  });
+
+  it.each(["08006", "42501"])("propaga falha %s sem tentar migrar", async (code) => {
+    const { garantirEsquema, getDb } = await import("@/lib/db");
+    const db = await getDb();
+    const erro = new Error("Falha do driver", { cause: Object.assign(new Error("Banco indisponível ou sem permissão"), { code }) });
+    const executar = vi.spyOn(db, "execute").mockRejectedValue(erro);
+    try {
+      await expect(garantirEsquema(db)).rejects.toBe(erro);
+      expect(executar).toHaveBeenCalledTimes(1);
+    } finally {
+      executar.mockRestore();
+    }
+  });
+
+  it("não registra uma migração incompleta e permite nova tentativa", async () => {
+    const { garantirEsquema, getDb, VERSAO_ESQUEMA } = await import("@/lib/db");
+    const db = await getDb();
+    await db.execute(sql.raw("DELETE FROM esquema_versoes"));
+    const original = db.execute.bind(db);
+    const erro = new Error("Migração interrompida");
+    const executar = vi.spyOn(db, "execute")
+      .mockImplementationOnce(original)
+      .mockImplementationOnce(original)
+      .mockRejectedValueOnce(erro);
+    try {
+      await expect(garantirEsquema(db)).rejects.toBe(erro);
+    } finally {
+      executar.mockRestore();
+    }
+    expect(await linhas(db, "SELECT versao FROM esquema_versoes")).toEqual([]);
+    await garantirEsquema(db);
+    expect(await linhas(db, "SELECT versao FROM esquema_versoes")).toEqual([{ versao: VERSAO_ESQUEMA }]);
+  });
+
+  it("só reaplica a promoção das contas legadas quando a versão está ausente", async () => {
+    const { garantirEsquema, getDb } = await import("@/lib/db");
+    const db = await getDb();
+    await db.execute(sql`INSERT INTO users (id, email, onboarding_status, created_at, updated_at)
+      VALUES ('legada-esquema', 'legada-esquema@example.invalid', 'WAITLIST', now(), now())`);
+    await garantirEsquema(db);
+    expect(await linhas(db, "SELECT onboarding_status FROM users WHERE id = 'legada-esquema'"))
+      .toEqual([{ onboarding_status: "WAITLIST" }]);
+    await db.execute(sql.raw("DELETE FROM esquema_versoes"));
+    await garantirEsquema(db);
+    expect(await linhas(db, "SELECT onboarding_status FROM users WHERE id = 'legada-esquema'"))
+      .toEqual([{ onboarding_status: "COMPLETE" }]);
   });
 });
