@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -114,7 +115,7 @@ export default function Pagina() {
           }
           recorte={
             <>
-              SINISA 2025 (ano de referência 2024) e IBGE. {inteiro(comIaa.length)} municípios com indicador de água calculável pela fórmula da NR 8 e{" "}
+              {rotuloSinisa()} e IBGE. {inteiro(comIaa.length)} municípios com indicador de água calculável pela fórmula da NR 8 e{" "}
               {inteiro(comIae.length)} com indicador de esgoto com tratamento. Módulo Gestão Municipal: {inteiro(g?.respondentes)} municípios
               responderam.
             </>
@@ -185,7 +186,7 @@ export default function Pagina() {
         >
           <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal dos indicadores de atendimento da NR 8" />
           <Fonte>
-            ANA, Norma de Referência 8/2024, fichas IAA e IAE; Ministério das Cidades, SINISA 2025 (2024), campos GTA0009, GTA0016, GTE0009 e
+            ANA, Norma de Referência 8/2024, fichas IAA e IAE; Ministério das Cidades, {rotuloSinisa()}, campos GTA0009, GTA0016, GTE0009 e
             GTE0019; IBGE, estimativa de população 2024 e Censo 2022 (tabelas 6803 e 6894). A referência da UF soma numeradores e denominadores
             municipais: não há agregado oficial.
           </Fonte>
@@ -234,7 +235,7 @@ export default function Pagina() {
             naoPermite="Comparar diretamente o ritmo exigido com o histórico: o Censo mede moradores com rede geral ou pluvial, sem tratamento; o SINISA mede domicílios com coleta e tratamento, sobre o total de domicílios informado pelo município. A coluna histórica é ordem de grandeza, não a mesma régua."
           />
           <Fonte>
-            Lei 11.445/2007, art. 11-B (redação da Lei 14.026/2020); SINISA 2025 (2024), consolidado por UF; IBGE, Censos 2010 e 2022. Ritmo = (meta −
+            Lei 11.445/2007, art. 11-B (redação da Lei 14.026/2020); {rotuloSinisa()}, consolidado por UF; IBGE, Censos 2010 e 2022. Ritmo = (meta −
             valor de 2024) ÷ {ANOS_ATE_META}, zero quando o valor já supera a meta. &quot;Sem dado&quot;: o consolidado oficial publica a UF sem o indicador; o
             Observatório não o recalcula.
           </Fonte>
@@ -261,7 +262,7 @@ export default function Pagina() {
         <Secao
           id="planos"
           titulo="Os municípios têm plano, e de quando?"
-          texto="Resposta dos municípios ao módulo Gestão Municipal do SINISA 2024: se há plano municipal de saneamento básico, o instrumento que o aprovou e a data. A lei prevê revisão periódica dos planos em prazo não superior a dez anos."
+          texto={`Resposta dos municípios ao módulo Gestão Municipal do ${rotuloSinisa()}: se há plano municipal de saneamento básico, o instrumento que o aprovou e a data. A lei prevê revisão periódica dos planos em prazo não superior a dez anos.`}
         >
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             <GraficoBarras
@@ -311,7 +312,7 @@ export default function Pagina() {
             permite="Saber quantos municípios declaram ter plano, de quando é o instrumento e onde a declaração é menos frequente."
             naoPermite="Avaliar a qualidade do plano nem se ele foi revisado: o SINISA registra a data do instrumento informado, não o conteúdo, as metas nem a execução. O ano é o da data do instrumento informada pelo município."
           />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), módulo Gestão Municipal, planilha publicada pelo ministério.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, módulo Gestão Municipal, planilha publicada pelo ministério.</Fonte>
         </Secao>
       </main>
     </>

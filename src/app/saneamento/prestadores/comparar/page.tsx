@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -13,7 +14,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Como os prestadores se comparam?",
   description:
-    "Até quatro prestadores de água e esgoto lado a lado: perímetro, população atendida, perdas, receita e despesa por metro cúbico, investimento e balanço declarados ao SINISA 2024.",
+    `Até quatro prestadores de água e esgoto lado a lado: perímetro, população atendida, perdas, receita e despesa por metro cúbico, investimento e balanço declarados ao ${rotuloSinisa()}.`,
   alternates: { canonical: "/saneamento/prestadores/comparar" },
 };
 
@@ -45,7 +46,7 @@ export default function Pagina() {
               os municípios em que atua. A tabela não tem nota composta nem ordem de mérito: perímetros, contratos e territórios são diferentes.
             </p>
           }
-          recorte={<>SINISA 2025, ano de referência 2024; {lista.length.toLocaleString("pt-BR")} prestadores no cadastro.</>}
+          recorte={<>{rotuloSinisa()}; {lista.length.toLocaleString("pt-BR")} prestadores no cadastro.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -59,7 +60,7 @@ export default function Pagina() {
             Na tabela, as linhas de receita, despesa, investimento, margem e endividamento levam a marca; população, perdas, consumo e estações
             são dados técnicos declarados pelo prestador, com a fórmula ao lado.
           </RessalvaAutodeclarado>
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), planilhas por prestador e município e planilhas de balanço.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, planilhas por prestador e município e planilhas de balanço.</Fonte>
         </Secao>
         <Secao
           id="perdas"

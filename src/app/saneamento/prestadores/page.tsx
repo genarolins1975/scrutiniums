@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -17,7 +18,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Quem presta o serviço de água e esgoto?",
   description:
-    "Cadastro dos 1.797 prestadores declarados ao SINISA 2024, com natureza jurídica, abrangência, municípios, população atendida, perdas e investimento, e ficha de cada um.",
+    `Cadastro dos 1.797 prestadores declarados ao ${rotuloSinisa()}, com natureza jurídica, abrangência, municípios, população atendida, perdas e investimento, e ficha de cada um.`,
   alternates: { canonical: "/saneamento/prestadores" },
 };
 
@@ -76,7 +77,7 @@ export default function Pagina() {
           texto={
             <p>
               O serviço é do município, que pode prestá-lo diretamente, por autarquia ou empresa municipal, ou delegá-lo a uma companhia estadual ou a
-              uma empresa privada por contrato. O cadastro abaixo reúne quem declarou prestar água ou esgoto ao SINISA 2024, com a natureza jurídica
+              uma empresa privada por contrato. O cadastro abaixo reúne quem declarou prestar água ou esgoto ao {rotuloSinisa()}, com a natureza jurídica
               informada e o perímetro de atuação.
             </p>
           }
@@ -88,7 +89,7 @@ export default function Pagina() {
         <Numeros
           colunas={3}
           itens={[
-            { rotulo: "Prestadores declarados", valor: inteiro(lista.length), contexto: <>Locais e regionais, água ou esgoto, SINISA 2024.</> },
+            { rotulo: "Prestadores declarados", valor: inteiro(lista.length), contexto: <>Locais e regionais, água ou esgoto, {rotuloSinisa()}.</> },
             {
               rotulo: "População atendida com água por prestadores regionais",
               valor: `${numero(razaoPct(popRegionais, popAguaTotal), 1)}%`,
@@ -164,7 +165,7 @@ export default function Pagina() {
                 {
                   rotulo: "População atendida com água por essas companhias",
                   valor: `${numero(razaoPct(popCompanhias, popAguaTotal), 1)}%`,
-                  contexto: <>{inteiro(popCompanhias)} de {inteiro(popAguaTotal)} pessoas atendidas com rede de água declaradas no Brasil, SINISA 2024.</>,
+                  contexto: <>{inteiro(popCompanhias)} de {inteiro(popAguaTotal)} pessoas atendidas com rede de água declaradas no Brasil, {rotuloSinisa()}.</>,
                 },
                 {
                   rotulo: "Sem controlador declarado",
@@ -214,7 +215,7 @@ export default function Pagina() {
               naoPermite="Concluir que prestador fora da tabela não tem controle definido: empresas fechadas, sociedades sem registro na CVM, autarquias e serviços municipais não aparecem neste formato. Também não dá para acompanhar mudanças posteriores ao último documento recebido."
             />
             <Nota>
-              Municípios é a contagem dos que declararam o CNPJ da companhia como prestador de água ou esgoto no módulo Gestão Municipal do SINISA 2024.
+              Municípios é a contagem dos que declararam o CNPJ da companhia como prestador de água ou esgoto no módulo Gestão Municipal do {rotuloSinisa()}.
               A posição é a do último FRE de {cvm.ano} recebido pela CVM até a captura, em {data(cvm.capturado_em)}.
             </Nota>
             <Fonte>
@@ -255,7 +256,7 @@ export default function Pagina() {
             rotuloLinhas={{ singular: "prestador", plural: "prestadores" }}
           />
           <Fonte>
-            Ministério das Cidades, SINISA 2025 (ano de referência 2024), planilhas por prestador e município (Locais e Regionais). Perdas: fórmula
+            Ministério das Cidades, {rotuloSinisa()}, planilhas por prestador e município (Locais e Regionais). Perdas: fórmula
             do IAG2013 sobre as somas de volumes do prestador.
           </Fonte>
         </Secao>

@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import DESIGUALDADES from "./dados/desigualdades.json";
 import type { Municipio } from "./tipos";
 import { razaoPct } from "./municipios";
@@ -68,9 +69,9 @@ const naoAtendidaEsgoto = (m: Municipio) =>
 export const FONTE_ROTULO: Record<Fonte, string> = {
   censo2022: "IBGE, Censo Demográfico 2022",
   censo2010_2022: "IBGE, Censos Demográficos 2010 e 2022",
-  sinisa2024: "Ministério das Cidades, SINISA 2025 (ano de referência 2024)",
-  nr8_sinisa2024: "SINISA 2025 (2024) e IBGE, pela ficha da NR ANA 8/2024",
-  sinisa_cadunico2024: "SINISA 2025 (2024) e MDS, CadÚnico de dezembro de 2024",
+  sinisa2024: `Ministério das Cidades, ${rotuloSinisa()}`,
+  nr8_sinisa2024: `${rotuloSinisa()} e IBGE, pela ficha da NR ANA 8/2024`,
+  sinisa_cadunico2024: `${rotuloSinisa()} e MDS, CadÚnico de dezembro de 2024`,
   sisagua: "Ministério da Saúde, SISAGUA (dados abertos)",
   sih_sim: "Ministério da Saúde, DATASUS: SIH/SUS e SIM, por local de residência, 2022 a 2024 (TabNet), e IBGE, Censo 2022",
 };
@@ -79,9 +80,9 @@ export const FONTE_ROTULO: Record<Fonte, string> = {
 export const FONTE_CURTA: Record<Fonte, string> = {
   censo2022: "Censo 2022",
   censo2010_2022: "Censos 2010 e 2022",
-  sinisa2024: "SINISA 2024",
-  nr8_sinisa2024: "NR 8 / SINISA 2024",
-  sinisa_cadunico2024: "SINISA e CadÚnico 2024",
+  sinisa2024: `${rotuloSinisa("curta")}`,
+  nr8_sinisa2024: `NR 8 / ${rotuloSinisa("curta")}`,
+  sinisa_cadunico2024: `${rotuloSinisa("curta")} e CadÚnico 2024`,
   sisagua: "SISAGUA",
   sih_sim: "SIH, SIM e Censo 2022",
 };
@@ -550,8 +551,8 @@ export const MEDIDAS: Medida[] = [
     permite:
       "Ver a parcela da população que o prestador declara atender com rede de água (GTA0001 + GTA0002 sobre DFE0001), na fórmula oficial do IAG0001.",
     naoPermite:
-      "Somar com o Censo, que mede outra população em outro ano, nem concluir que a água chega todo dia ou é potável: a população atendida é declarada pelo prestador, não verificada no domicílio, e soluções alternativas ficam fora.",
-    ausencia: "Município não participou do módulo de água do SINISA 2024 ou o indicador não foi calculado pela regra oficial.",
+      "somar com o Censo, que mede outra população em outro ano; nem concluir que a água chega todo dia ou é potável: a população atendida é declarada pelo prestador, não verificada no domicílio, e soluções alternativas ficam fora.",
+    ausencia: `Município não participou do módulo de água do ${rotuloSinisa()} ou o indicador não foi calculado pela regra oficial.`,
     cortesPct: [50, 75, 90, 99],
     cortesContagem: [2_000, 10_000, 50_000, 250_000],
   },
@@ -572,8 +573,8 @@ export const MEDIDAS: Medida[] = [
     permite:
       "Ver a parcela da população que o prestador declara atender com rede coletora (GTE0001 + GTE0002 sobre DFE0001), na fórmula oficial do IES0001.",
     naoPermite:
-      "Inferir tratamento: rede coletora não assegura que o esgoto seja tratado (IES2004 e IES0007 respondem a isso). A população atendida é declarada pelo prestador, e municípios com delegação sem atendimento ficam sem indicador.",
-    ausencia: "Município sem indicador de esgoto no SINISA 2024 (não participou, delegação sem atendimento ou indicador não calculado pela regra oficial).",
+      "inferir tratamento: rede coletora não assegura que o esgoto seja tratado (IES2004 e IES0007 respondem a isso). A população atendida é declarada pelo prestador, e municípios com delegação sem atendimento ficam sem indicador.",
+    ausencia: `Município sem indicador de esgoto no ${rotuloSinisa()} (não participou, delegação sem atendimento ou indicador não calculado pela regra oficial).`,
     cortesPct: [10, 30, 60, 90],
     cortesContagem: [2_000, 10_000, 50_000, 250_000],
   },
@@ -748,7 +749,7 @@ export const MEDIDAS: Medida[] = [
       "Ver onde o investimento declarado de 2024 se concentrou, por habitante, somando o que o prestador investiu e o que ele informa como investido pelo governo estadual.",
     naoPermite:
       "Avaliar suficiência ou eficiência, nem tomar o valor como contábil: é autodeclarado ao SINISA, sem conferência com demonstrações financeiras auditadas; um ano isolado oscila com o ciclo de obras, e investimento regional pode ser lançado num município que serve outros.",
-    ausencia: "Município sem declaração de água nem de esgoto ao SINISA 2024. Zero declarado aparece como zero.",
+    ausencia: `Município sem declaração de água nem de esgoto ao ${rotuloSinisa()}. Zero declarado aparece como zero.`,
     cortesPct: [10, 50, 100, 250],
     limitesHistograma: [0, 10, 25, 50, 100, 250, 500, 1000],
   },

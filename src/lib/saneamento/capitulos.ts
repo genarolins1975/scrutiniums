@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 /**
  * Arquitetura do Observatório Brasileiro do Saneamento: cinco eixos, quinze
  * capítulos e as ferramentas transversais. Fonte única para cabeçalho, índice
@@ -49,7 +50,7 @@ export const EIXOS: Eixo[] = [
         slug: "acesso",
         rotulo: "Sem atendimento",
         pergunta: "Quantas pessoas ainda estão sem atendimento adequado?",
-        resumo: "Carência de água e esgoto em pessoas e em proporção, nos 5.570 municípios, pelo Censo 2022 e pelo SINISA 2024.",
+        resumo: `Carência de água e esgoto em pessoas e em proporção, nos 5.570 municípios, pelo Censo 2022 e pelo ${rotuloSinisa()}.`,
         termos: ["sem água", "sem esgoto", "carência", "Censo 2022", "SINISA"],
         situacao: "publicado",
       },
@@ -70,7 +71,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "Regularidade e qualidade",
         pergunta: "A água chega regularmente e com qualidade monitorada?",
         resumo:
-          "Paralisações e racionamento declarados ao SINISA 2024; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde, plano de amostragem e população sob formas com controle, de 2014 a 2025.",
+          `Paralisações e racionamento declarados ao ${rotuloSinisa()}; qualidade da água no SISAGUA, com controle do prestador, vigilância da saúde, plano de amostragem e população sob formas com controle, de 2014 a 2025.`,
         termos: ["falta de água", "racionamento", "qualidade da água", "SISAGUA", "paralisações"],
         situacao: "parcial",
         pendencia:
@@ -190,7 +191,7 @@ export const EIXOS: Eixo[] = [
         rotulo: "De onde vem o dinheiro",
         pergunta: "De onde vem o dinheiro e quem suporta o custo?",
         resumo:
-          "Origem dos recursos (próprios, onerosos e não onerosos) do investimento que os prestadores declararam ao SINISA 2024, o próprio e o do governo estadual; autodeclarado, sem conferência com demonstrações financeiras auditadas.",
+          `Origem dos recursos (próprios, onerosos e não onerosos) do investimento que os prestadores declararam ao ${rotuloSinisa()}, o próprio e o do governo estadual; autodeclarado, sem conferência com demonstrações financeiras auditadas.`,
         termos: ["financiamento", "recursos onerosos", "recursos não onerosos", "governo estadual"],
         situacao: "parcial",
         pendencia: "Contratações e desembolsos do BNDES, CAIXA e Transferegov ainda não conciliados com o SINISA; sem conciliação não se somam.",
@@ -251,7 +252,7 @@ export const EIXOS: Eixo[] = [
         slug: "resiliencia",
         rotulo: "Secas e eventos extremos",
         pergunta: "O serviço está preparado para secas, enchentes e crescimento urbano?",
-        resumo: "Interrupções sistemáticas por baixa disponibilidade do manancial e dias de colapso declarados ao SINISA 2024.",
+        resumo: `Interrupções sistemáticas por baixa disponibilidade do manancial e dias de colapso declarados ao ${rotuloSinisa()}.`,
         termos: ["seca", "enchentes", "manancial", "colapso do abastecimento", "eventos extremos"],
         situacao: "parcial",
         pendencia:

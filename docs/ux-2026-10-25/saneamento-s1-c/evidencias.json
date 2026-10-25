@@ -1,0 +1,151 @@
+{
+ "data": "2026-10-25",
+ "build": "-LZ0-TcyTMT-umqSvuZcs",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /saneamento /perguntas/energia-e-infraestrutura --larguras 390,1440 --saida docs/ux-2026-10-25/saneamento-s1-c",
+ "tempo": "0 min 42 s",
+ "resultados": [
+  {
+   "rota": "/saneamento",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/entrar?de=%2Fsaneamento",
+   "barra": false,
+   "cromo": 0,
+   "topoH1": 210,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "saneamento-390-sem-sessao.jpg",
+   "primeiraTela": "saneamento-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/saneamento",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/entrar?de=%2Fsaneamento",
+   "barra": false,
+   "cromo": 0,
+   "topoH1": 206,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "saneamento-1440-sem-sessao.jpg",
+   "primeiraTela": "saneamento-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/saneamento",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/saneamento",
+   "barra": true,
+   "cromo": 195,
+   "topoH1": 283,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "saneamento-390-com-sessao.jpg",
+   "primeiraTela": "saneamento-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/saneamento",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/saneamento",
+   "barra": true,
+   "cromo": 222,
+   "topoH1": 308,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "saneamento-1440-com-sessao.jpg",
+   "primeiraTela": "saneamento-1440-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/energia-e-infraestrutura",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/perguntas/energia-e-infraestrutura",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 261,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=pl03w"
+   ],
+   "captura": "perguntas_energia_e_infraestrutura-390-sem-sessao.jpg",
+   "primeiraTela": "perguntas_energia_e_infraestrutura-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/energia-e-infraestrutura",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/perguntas/energia-e-infraestrutura",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 264,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [
+    "/entrar?_rsc=pl03w"
+   ],
+   "captura": "perguntas_energia_e_infraestrutura-1440-sem-sessao.jpg",
+   "primeiraTela": "perguntas_energia_e_infraestrutura-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/energia-e-infraestrutura",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/perguntas/energia-e-infraestrutura",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 261,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [
+    "/entrar?_rsc=pl03w"
+   ],
+   "captura": "perguntas_energia_e_infraestrutura-390-com-sessao.jpg",
+   "primeiraTela": "perguntas_energia_e_infraestrutura-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/energia-e-infraestrutura",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/perguntas/energia-e-infraestrutura",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 264,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [
+    "/entrar?_rsc=pl03w"
+   ],
+   "captura": "perguntas_energia_e_infraestrutura-1440-com-sessao.jpg",
+   "primeiraTela": "perguntas_energia_e_infraestrutura-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}

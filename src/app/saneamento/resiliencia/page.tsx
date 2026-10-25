@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -15,7 +16,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "O serviço está preparado para secas e eventos extremos?",
   description:
-    "Interrupções sistemáticas por baixa disponibilidade do manancial e dias de colapso do sistema de água declarados pelos prestadores ao SINISA 2024, por UF e município.",
+    `Interrupções sistemáticas por baixa disponibilidade do manancial e dias de colapso do sistema de água declarados pelos prestadores ao ${rotuloSinisa()}, por UF e município.`,
   alternates: { canonical: "/saneamento/resiliencia" },
 };
 
@@ -75,7 +76,7 @@ export default function Pagina() {
               reconhecidos pela União, como secas e estiagens, estão no <a href="/territorio/desastres" className="underline decoration-linha underline-offset-4">painel de desastres</a> do Território e Clima, por estado e tipo.
             </p>
           }
-          recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do SINISA 2024; motivo informado só por quem declarou interrupção sistemática.</>}
+          recorte={<>{inteiro(c?.municipios_participantes)} municípios do módulo de água do {rotuloSinisa()}; motivo informado só por quem declarou interrupção sistemática.</>}
           situacao={cap.situacao}
           pendencia={cap.pendencia}
         />
@@ -144,7 +145,7 @@ export default function Pagina() {
             permite="Separar o racionamento atribuído à falta de água bruta daquele atribuído a sistema insuficiente de produção ou de distribuição."
             naoPermite="Atribuir o evento à mudança do clima nem medir a gravidade da seca: o motivo é escolhido pelo prestador numa lista fechada, e muitos marcaram outro motivo ou remeteram ao dado por prestador."
           />
-          <Fonte>Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal de água, campos GTA3003 e GTA3004.</Fonte>
+          <Fonte>Ministério das Cidades, {rotuloSinisa()}, base municipal de água, campos GTA3003 e GTA3004.</Fonte>
         </Secao>
 
         <Secao

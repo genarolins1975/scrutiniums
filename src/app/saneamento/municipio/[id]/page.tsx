@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import type { Metadata } from "next";
@@ -29,7 +30,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
   if (!m) return { title: "Município não encontrado" };
   return {
     title: `${m.nome} (${m.uf}): água, esgoto, prestador e metas`,
-    description: `Saneamento em ${m.nome} (${m.uf}): carência pelo Censo 2022, atendimento declarado ao SINISA 2024, prestador, regulador, plano, investimento e comparação com a UF.`,
+    description: `Saneamento em ${m.nome} (${m.uf}): carência pelo Censo 2022, atendimento declarado ao ${rotuloSinisa()}, prestador, regulador, plano, investimento e comparação com a UF.`,
     alternates: { canonical: `${ROTA}/municipio/${m.id}` },
   };
 }
@@ -131,7 +132,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
     },
     {
       rotulo: `${ATENDIMENTO_REDE.agua.rotulo} (IAG0001)`,
-      fonte: "SINISA 2024, declarado pelo prestador",
+      fonte: `${rotuloSinisa()}, declarado pelo prestador`,
       m: atAgua.pct,
       uf: uf?.sinisa.agua.indicadores.IAG0001 ?? null,
       br: br?.sinisa.agua.indicadores.IAG0001 ?? null,
@@ -142,7 +143,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
     },
     {
       rotulo: `${ATENDIMENTO_REDE.esgoto.rotulo} (IES0001)`,
-      fonte: "SINISA 2024, declarado pelo prestador",
+      fonte: `${rotuloSinisa()}, declarado pelo prestador`,
       m: atEsgoto.pct,
       uf: uf?.sinisa.esgoto.indicadores.IES0001 ?? null,
       br: br?.sinisa.esgoto.indicadores.IES0001 ?? null,
@@ -153,7 +154,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
     },
     {
       rotulo: "Esgoto tratado sobre coletado (IES2004)",
-      fonte: "SINISA 2024",
+      fonte: `${rotuloSinisa()}`,
       m: m.IES2004,
       uf: uf?.sinisa.esgoto.indicadores.IES2004 ?? null,
       br: br?.sinisa.esgoto.indicadores.IES2004 ?? null,
@@ -164,7 +165,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
     },
     {
       rotulo: "Perdas totais de água na distribuição (IAG2013)",
-      fonte: "SINISA 2024",
+      fonte: `${rotuloSinisa()}`,
       m: m.IAG2013,
       uf: uf?.sinisa.agua.indicadores.IAG2013 ?? null,
       br: br?.sinisa.agua.indicadores.IAG2013 ?? null,
@@ -213,11 +214,11 @@ export default function Pagina({ params }: { params: { id: string } }) {
               <dd className="tabular-nums text-carvao">{inteiro(pop24)}</dd>
             </div>
             <div>
-              <dt className="text-carvao-muted">SINISA 2024, água</dt>
+              <dt className="text-carvao-muted">{rotuloSinisa()}, água</dt>
               <dd className="text-carvao">{SITUACAO_AGUA[ag.situacao]}</dd>
             </div>
             <div>
-              <dt className="text-carvao-muted">SINISA 2024, esgoto</dt>
+              <dt className="text-carvao-muted">{rotuloSinisa()}, esgoto</dt>
               <dd className="text-carvao">{SITUACAO_ESGOTO[es.situacao]}</dd>
             </div>
           </dl>
@@ -285,7 +286,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
 
         <Secao id="quem-presta" titulo="Quem presta o serviço e quem regula?" texto="Declarações dos prestadores (SINISA, Informações) e do município (SINISA, Gestão Municipal), referência 2024.">
           {vinculos.length === 0 ? (
-            <Nota>Nenhum prestador declarou atuação no município ao SINISA 2024.</Nota>
+            <Nota>Nenhum prestador declarou atuação no município ao {rotuloSinisa()}.</Nota>
           ) : (
             <ul className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
               {vinculos.map((v) => {
@@ -371,7 +372,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
               );
             })
           ) : (
-            <Nota>Sem declaração de tarifa no SINISA 2024 para este município.</Nota>
+            <Nota>Sem declaração de tarifa no {rotuloSinisa()} para este município.</Nota>
           )}
           <dl className="mt-6 grid max-w-3xl grid-cols-[1fr_auto] gap-x-6 gap-y-2 border-t border-linha pt-4 text-sm">
             <dt className="text-carvao-muted">Famílias no CadÚnico com renda per capita até meio salário-mínimo, {mesAno(cad?.mes_referencia)}</dt>
@@ -482,7 +483,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
           </Nota>
         </Secao>
 
-        <Secao id="continuidade" titulo="A água chega sem interrupção?" texto="Paralisações e interrupções sistemáticas declaradas pelo prestador ao SINISA 2024.">
+        <Secao id="continuidade" titulo="A água chega sem interrupção?" texto={`Paralisações e interrupções sistemáticas declaradas pelo prestador ao ${rotuloSinisa()}.`}>
           {ag.tecnica ? (
             <dl className="grid grid-cols-1 gap-x-10 gap-y-4 text-sm md:grid-cols-3">
               <div className="border-t border-linha pt-3">
@@ -509,7 +510,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
               </div>
             </dl>
           ) : (
-            <Nota>Sem declaração de continuidade: o município não participou do módulo de água do SINISA 2024.</Nota>
+            <Nota>Sem declaração de continuidade: o município não participou do módulo de água do {rotuloSinisa()}.</Nota>
           )}
           <Nota>Registro declarado pelo prestador. Ausência de registro não prova fornecimento contínuo. A qualidade da água vem do SISAGUA, na seção seguinte.</Nota>
         </Secao>
@@ -532,7 +533,7 @@ export default function Pagina({ params }: { params: { id: string } }) {
         </Secao>
 
         <Fonte>
-          IBGE, Censo 2022 e estimativa 2024; Ministério das Cidades, SINISA 2025 (ano de referência 2024), base municipal
+          IBGE, Censo 2022 e estimativa 2024; Ministério das Cidades, {rotuloSinisa()}, base municipal
           {ag.linha?.tecnica ? `, linha ${ag.linha.tecnica} da planilha técnica de água` : ""}
           {es.linha?.tecnica ? ` e ${es.linha.tecnica} da de esgoto` : ""}
           {gm ? `; Gestão Municipal, linha ${gm.linha}` : ""}; Ministério da Saúde, SISAGUA 2024 e 2025 (controle mensal, plano de amostragem e
@@ -627,7 +628,7 @@ function QualidadeMunicipio({ q }: { q?: Record<string, number> }) {
 
 /**
  * População atendida com rede de abastecimento de água (IAG0001) e com rede coletora de esgoto (IES0001), declarada pelo prestador ao
- * SINISA 2024: percentual, pessoas, a UF como referência de território e o motivo publicado quando falta. Mesmo rótulo, mesmas casas e mesma
+ * SINISA, referência 2024: percentual, pessoas, a UF como referência de território e o motivo publicado quando falta. Mesmo rótulo, mesmas casas e mesma
  * regra de ausência da página aberta (src/lib/saneamento/atendimento.ts).
  */
 function AtendimentoRede({
@@ -669,8 +670,8 @@ function AtendimentoRede({
         ))}
       </dl>
       <Nota>
-        <span className="font-medium text-carvao">Não permite concluir.</span> Água: {medida(ATENDIMENTO_REDE.agua.medida).naoPermite} Esgoto:{" "}
-        {medida(ATENDIMENTO_REDE.esgoto.medida).naoPermite}
+        <span className="font-medium text-carvao">Água. Não permite:</span> {medida(ATENDIMENTO_REDE.agua.medida).naoPermite}{" "}
+        <span className="font-medium text-carvao">Esgoto. Não permite:</span> {medida(ATENDIMENTO_REDE.esgoto.medida).naoPermite}
       </Nota>
     </div>
   );
@@ -737,7 +738,7 @@ function Composicao({ f }: { f: FichaMunicipio }) {
 function Reguladores({ f }: { f: FichaMunicipio }) {
   const gm = f.gestao_municipal;
   if (!gm || gm.respondeu !== "Sim") {
-    return <Nota>O município não respondeu ao módulo Gestão Municipal do SINISA 2024; a entidade reguladora não está declarada.</Nota>;
+    return <Nota>O município não respondeu ao módulo Gestão Municipal do {rotuloSinisa()}; a entidade reguladora não está declarada.</Nota>;
   }
   const lista = (s: "agua" | "esgoto") => (gm.reguladores?.[s] ?? []).filter((r) => r.existe === "Sim");
   return (

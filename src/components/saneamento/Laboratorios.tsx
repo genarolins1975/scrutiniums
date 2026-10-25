@@ -1,5 +1,6 @@
 "use client";
 
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   ANO_CENSO_2010,
@@ -568,7 +569,7 @@ export function LabRitmoMeta({ territorios, metas }: { territorios: TerritorioRi
             que o Censo não mede. Chegar à meta nesta régua não equivale a cumprir a lei, e ficar abaixo dela não equivale a descumpri-la.
           </li>
           <li>Ritmo constante e linear: o modelo não considera crescimento da população, obras contratadas, mudança de política nem saturação perto de 100%.</li>
-          <li>A tabela desta página usa o indicador oficial do SINISA de 2024; o laboratório usa o Censo, a única medida igual nas duas pontas. Os ritmos das duas não se substituem.</li>
+          <li>A tabela desta página usa o indicador oficial do {rotuloSinisa()}; o laboratório usa o Censo, a única medida igual nas duas pontas. Os ritmos das duas não se substituem.</li>
         </ul>
         <p className="mt-3 text-xs">
           Fonte: IBGE, Censos Demográficos 2010 e 2022 (data de referência em 1º de agosto), moradores em domicílios particulares permanentes ocupados; Lei

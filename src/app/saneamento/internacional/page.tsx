@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -317,16 +318,16 @@ export default function Pagina() {
         <Secao
           id="conciliacao"
           titulo="Por que os números do JMP não coincidem com o Censo e o SINISA?"
-          texto="Mesmo ano, perguntas parecidas, definições diferentes. A tabela põe o JMP de 2022 ao lado do Censo 2022 e, quando há equivalente, do SINISA 2024; nenhuma linha é a mesma medida."
+          texto={`Mesmo ano, perguntas parecidas, definições diferentes. A tabela põe o JMP de 2022 ao lado do Censo 2022 e, quando há equivalente, do ${rotuloSinisa()}; nenhuma linha é a mesma medida.`}
         >
           <div className="tabela-scroll" tabIndex={0} role="region" aria-label="JMP, Censo 2022 e SINISA lado a lado (rolável)">
             <table className="w-full min-w-[56rem] border-collapse text-sm">
-              <caption className="sr-only">JMP 2022, Censo 2022 e SINISA 2024 para perguntas parecidas</caption>
+              <caption className="sr-only">JMP 2022, Censo 2022 e {rotuloSinisa()} para perguntas parecidas</caption>
               <thead>
                 <tr className="border-b border-carvao text-left">
                   <th scope="col" className="py-2 pr-4 font-medium">JMP, 2022</th>
                   <th scope="col" className="py-2 pr-4 font-medium">Censo, 2022</th>
-                  <th scope="col" className="py-2 pr-4 font-medium">SINISA, 2024</th>
+                  <th scope="col" className="py-2 pr-4 font-medium">{rotuloSinisa("curta")}</th>
                   <th scope="col" className="py-2 pr-4 text-right font-medium">JMP menos Censo</th>
                   <th scope="col" className="py-2 font-medium">O que muda entre as medidas</th>
                 </tr>
@@ -371,7 +372,7 @@ export default function Pagina() {
           <Fonte>
             WHO/UNICEF Joint Monitoring Programme for Water Supply, Sanitation and Hygiene (JMP), base de domicílios, atualização de {edicaoPt(m.edicao_mes)}
             , capturada em {data(m.capturado_em)}; nomes de países em português da API de países do IBGE (os {inteiro(m.sem_nome_ibge.length)} territórios que o IBGE não
-            lista ficam com o nome em inglês do JMP); IBGE, Censo Demográfico 2022; Ministério das Cidades, SINISA 2025 (ano de referência 2024). Arquivo em{" "}
+            lista ficam com o nome em inglês do JMP); IBGE, Censo Demográfico 2022; Ministério das Cidades, {rotuloSinisa()}. Arquivo em{" "}
             <a className="text-obee-dark underline" href="/saneamento/gold/jmp_paises.csv">jmp_paises.csv</a>.
           </Fonte>
         </Secao>

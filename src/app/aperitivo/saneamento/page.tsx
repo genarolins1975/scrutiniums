@@ -235,13 +235,13 @@ function Resultado({ m, ficha }: { m: Municipio; ficha: FichaMunicipio }) {
       </dl>
 
       <aside aria-label="Como ler estes números" className="mt-8 max-w-4xl border-l-2 border-obee pl-4 text-sm leading-relaxed">
-        <p className="rotulo text-mineral">Não permite concluir</p>
+        <p className="rotulo text-mineral">Limites destes números</p>
         <ul className="mt-1 space-y-1.5 text-carvao">
           <li>
-            <span className="font-medium">Água.</span> {medAgua.naoPermite}
+            <span className="font-medium">Água. Não permite:</span> {medAgua.naoPermite}
           </li>
           <li>
-            <span className="font-medium">Esgoto.</span> {medEsgoto.naoPermite}
+            <span className="font-medium">Esgoto. Não permite:</span> {medEsgoto.naoPermite}
           </li>
         </ul>
       </aside>

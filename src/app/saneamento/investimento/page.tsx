@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -18,7 +19,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Onde o investimento está chegando?",
   description:
-    "Investimento em água e esgoto autodeclarado pelos prestadores ao SINISA 2024, sem conferência com demonstrações financeiras auditadas, por município e UF, por habitante, por destino (ampliação, reposição e outros) e ao lado da carência medida pelo Censo 2022.",
+    `Investimento em água e esgoto autodeclarado pelos prestadores ao ${rotuloSinisa()}, sem conferência com demonstrações financeiras auditadas, por município e UF, por habitante, por destino (ampliação, reposição e outros) e ao lado da carência medida pelo Censo 2022.`,
   alternates: { canonical: "/saneamento/investimento" },
 };
 
@@ -116,7 +117,7 @@ export default function Pagina() {
           }
           recorte={
             <>
-              {inteiro(declarantes.length)} municípios com investimento declarado em água ou esgoto no SINISA 2024. A soma municipal reproduz o
+              {inteiro(declarantes.length)} municípios com investimento declarado em água ou esgoto no {rotuloSinisa()}. A soma municipal reproduz o
               consolidado nacional publicado.
             </>
           }
@@ -141,7 +142,7 @@ export default function Pagina() {
               valor: reaisCompacto(total),
               contexto: (
                 <>
-                  Reais correntes de 2024. {QUEM_DECLARA_INVESTIMENTO}. SINISA 2025 (ano de referência 2024), campos GFI2024, GFI2036, GFI2124 e GFI2136.
+                  Reais correntes de 2024. {QUEM_DECLARA_INVESTIMENTO}. {rotuloSinisa()}, campos GFI2024, GFI2036, GFI2124 e GFI2136.
                   <MarcaAutodeclarado className="mt-1" />
                 </>
               ),
@@ -187,7 +188,7 @@ export default function Pagina() {
         >
           <AtlasMunicipal ids={ATLAS} referencias={refs} nomesUf={nomesUf} titulo="Atlas municipal do investimento por habitante" />
           <Fonte>
-            Ministério das Cidades, SINISA 2025 (ano de referência 2024), informações financeiras GFI2024, GFI2036, GFI2124 e GFI2136, {AUTODECLARADO};
+            Ministério das Cidades, {rotuloSinisa()}, informações financeiras GFI2024, GFI2036, GFI2124 e GFI2136, {AUTODECLARADO};
             IBGE, estimativa de população 2024.
           </Fonte>
         </Secao>
@@ -285,7 +286,7 @@ export default function Pagina() {
             permite="Ver se, em 2024, o investimento declarado por habitante foi maior ou menor nos municípios com mais carência de esgoto."
             naoPermite="Inferir causalidade nem eficiência: os períodos diferem (carência de 2022, investimento de 2024), municípios com carência alta podem ser atendidos por soluções individuais, e um investimento regional pode ter sido lançado num único município."
           />
-          <Fonte>IBGE, Censo 2022 (tabela 7555); SINISA 2025 (2024), base municipal financeira; população estimada IBGE 2024. Grupos com o mesmo número de municípios, ordenados pela proporção municipal.</Fonte>
+          <Fonte>IBGE, Censo 2022 (tabela 7555); {rotuloSinisa()}, base municipal financeira; população estimada IBGE 2024. Grupos com o mesmo número de municípios, ordenados pela proporção municipal.</Fonte>
         </Secao>
 
         <Secao id="obras" titulo="As obras viram serviço?">

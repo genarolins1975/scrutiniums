@@ -1,3 +1,4 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { Metadata } from "next";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -10,7 +11,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Comparar municípios",
   description:
-    "Até quatro municípios lado a lado: carência de água e esgoto pelo Censo 2022, atendimento e tratamento declarados ao SINISA 2024, indicadores da NR 8, investimento, prestador, regulador e plano, com link compartilhável e CSV.",
+    `Até quatro municípios lado a lado: carência de água e esgoto pelo Censo 2022, atendimento e tratamento declarados ao ${rotuloSinisa()}, indicadores da NR 8, investimento, prestador, regulador e plano, com link compartilhável e CSV.`,
   alternates: { canonical: "/saneamento/comparar" },
 };
 
@@ -39,11 +40,11 @@ export default function Pagina() {
           titulo="Comparar municípios"
           texto={
             <p>
-              Escolha até quatro municípios. Cada linha traz sua fonte e seu período: o Censo 2022 fala de moradores, o SINISA 2024 de população
+              Escolha até quatro municípios. Cada linha traz sua fonte e seu período: o Censo 2022 fala de moradores, o {rotuloSinisa()} de população
               estimada e de volumes, e a NR 8 de domicílios. Linhas com fontes diferentes não se comparam entre si, só entre municípios.
             </p>
           }
-          recorte={<>{lista.length.toLocaleString("pt-BR")} municípios do IBGE; Censo 2022 e SINISA 2025 (ano de referência 2024).</>}
+          recorte={<>{lista.length.toLocaleString("pt-BR")} municípios do IBGE; Censo 2022 e {rotuloSinisa()}.</>}
         />
         <Secao id="comparador" titulo="Municípios lado a lado">
           <ComparadorMunicipios sugestoes={sugestoes} />
@@ -51,7 +52,7 @@ export default function Pagina() {
             permite="Ver, para os mesmos municípios, carência, atendimento declarado, tratamento, investimento e arranjo institucional, cada um com sua fonte."
             naoPermite="Ordenar municípios por desempenho de gestão: porte, renda, relevo, densidade e o tipo de contrato mudam o que cada número significa."
           />
-          <Fonte>IBGE, Censos 2010 e 2022 e estimativa 2024; Ministério das Cidades, SINISA 2025 (ano de referência 2024); ANA, NR 8/2024.</Fonte>
+          <Fonte>IBGE, Censos 2010 e 2022 e estimativa 2024; Ministério das Cidades, {rotuloSinisa()}; ANA, NR 8/2024.</Fonte>
         </Secao>
       </main>
     </>

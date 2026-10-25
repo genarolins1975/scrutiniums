@@ -493,7 +493,7 @@ describe.skipIf(!temCelulas)("P013: grade, gráfico, tabela e exportação com a
     linhas.forEach((l, i) => expect(exp.linhas[i][iP10]).toBe(l.p10));
   });
 
-  it("resposta com o menor e o maior número por frequência, contados à parte na gold", () => {
+  it("resposta com valor único ou extremos por frequência, contados à parte na gold", () => {
     const t = respostaP013(G);
     const producao = G.modelos.some((m) => m.estado === "PRODUCAO");
     if (!producao) expect(t).toContain("Não há previsão oficial do PLD: nenhum modelo está aprovado para produção.");
@@ -502,11 +502,28 @@ describe.skipIf(!temCelulas)("P013: grade, gráfico, tabela e exportação com a
       if (!cs.length) continue;
       const min = cs.reduce((a, c) => (c.previsao! < a.previsao! ? c : a));
       const max = cs.reduce((a, c) => (c.previsao! > a.previsao! ? c : a));
-      expect(t).toContain(`R$ ${br2(min.previsao!)}/MWh (${CURTO[min.submercado]})`);
-      expect(t).toContain(`R$ ${br2(max.previsao!)}/MWh (${CURTO[max.submercado]})`);
+      // 25/10/2026: a rodada agendada em main empatou os quatro submercados semanais.
+      // O contrato já apresenta um valor único no empate; a prova numérica continua obrigatória.
+      if (br2(min.previsao!) === br2(max.previsao!)) {
+        expect(t).toContain(`R$ ${br2(min.previsao!)}/MWh`);
+      } else {
+        expect(t).toContain(`R$ ${br2(min.previsao!)}/MWh (${CURTO[min.submercado]})`);
+        expect(t).toContain(`R$ ${br2(max.previsao!)}/MWh (${CURTO[max.submercado]})`);
+      }
     }
     if (celulas.every((c) => c.quantis === null)) expect(t).toContain("Sem faixa de incerteza: nenhum segmento está calibrado.");
     expect(t).not.toMatch(/—|–/);
+  });
+
+  it("mantém a prova numérica quando os submercados empatam e quando o empate se desfaz", () => {
+    // Fixture sintética: não depende de a próxima rodada voltar a ter extremos diferentes.
+    const semanal = 123.45, mensal = 234.56, maior = 345.67;
+    const iguais = celulas.map((c) => ({ ...c, previsao: c.horizonte.startsWith("W") ? semanal : mensal }));
+    const resposta = (cs: typeof iguais) => respostaP013({ ...G, previsao_atual: { ...G.previsao_atual, celulas: cs } } as PrevisoesDesempenhoGold);
+    const valores = (t: string) => Array.from(t.matchAll(/R\$\s+([\d.,]+)\/MWh/g), (m) => m[1]);
+    expect(valores(resposta(iguais))).toEqual([br2(semanal), br2(mensal)]);
+    const diferentes = iguais.map((c) => ({ ...c, previsao: c.horizonte.startsWith("W") && c.submercado === "SE" ? maior : c.previsao }));
+    expect(valores(resposta(diferentes))).toEqual([br2(semanal), br2(maior), br2(mensal)]);
   });
 
   it("resposta muda com o dado: rodada sem número e modelo em produção", () => {

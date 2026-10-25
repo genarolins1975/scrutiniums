@@ -1,9 +1,10 @@
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import type { BalancoPrestador, Prestador } from "./tipos";
 import { MARCA_AUTODECLARADO } from "./autodeclarado";
 
 /**
  * Medidas de prestador calculadas sobre as somas que o próprio prestador
- * declarou em todos os municípios em que atua (perímetro do SINISA 2024).
+ * declarou em todos os municípios em que atua (perímetro do SINISA, referência 2024).
  * Fórmulas oficiais aplicadas às somas; nunca média de percentuais municipais.
  * Valores de balanço vêm em milhares de reais (unidade da planilha).
  */
@@ -33,7 +34,7 @@ const razao = (a: number | null | undefined, b: number | null | undefined, fator
   a == null || b == null || !(b !== 0) ? null : (a / b) * fator;
 
 export const MEDIDAS_PRESTADOR: MedidaPrestador[] = [
-  { id: "mun_agua", rotulo: "Municípios atendidos com água", unidade: "municípios", casas: 0, valor: (p) => p.municipios_agua.length, nota: "Vínculos declarados ao SINISA 2024." },
+  { id: "mun_agua", rotulo: "Municípios atendidos com água", unidade: "municípios", casas: 0, valor: (p) => p.municipios_agua.length, nota: `Vínculos declarados ao ${rotuloSinisa()}.` },
   { id: "mun_esgoto", rotulo: "Municípios atendidos com esgoto", unidade: "municípios", casas: 0, valor: (p) => p.municipios_esgoto.length, nota: "Inclui municípios com delegação sem atendimento." },
   { id: "pop_agua", rotulo: "População atendida com água", unidade: "pessoas", casas: 0, valor: (p) => p.populacao_atendida_agua, nota: "GTA0019, soma dos municípios." },
   { id: "pop_esgoto", rotulo: "População atendida com esgoto", unidade: "pessoas", casas: 0, valor: (p) => p.populacao_atendida_esgoto, nota: "GTE0023, soma dos municípios." },
@@ -120,7 +121,7 @@ export const MEDIDAS_PRESTADOR: MedidaPrestador[] = [
     nota: "Fórmula do IFB3003: (GFI3004 + GFI3005) ÷ GFI3001, em percentual.",
     financeira: true,
   },
-  { id: "etes", rotulo: "Estações de tratamento de esgoto cadastradas", unidade: "estações", casas: 0, valor: (p) => p.etes, nota: "Cadastro de ETEs do SINISA 2024." },
+  { id: "etes", rotulo: "Estações de tratamento de esgoto cadastradas", unidade: "estações", casas: 0, valor: (p) => p.etes, nota: `Cadastro de ETEs do ${rotuloSinisa()}.` },
 ];
 
 export function formatarMedidaPrestador(m: MedidaPrestador, v: number | null): string {

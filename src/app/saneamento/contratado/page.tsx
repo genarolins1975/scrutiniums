@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
+import { apresentarNotaContratado, rotuloConferencia } from "@/lib/saneamento/contratos-apresentacao";
+import { rotuloSinisa } from "@/lib/saneamento/edicao";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -15,7 +18,6 @@ import {
   metaNoAno,
   reaisMi,
   rotuloTempo,
-  ROTULO_GRAU,
   ROTULO_INDICADOR,
   ROTULO_RESULTADO,
   ROTULO_SERVICOS,
@@ -43,6 +45,16 @@ function Rolavel({ rotulo, className = "", children }: { rotulo: string; classNa
     <div className={`tabela-scroll ${className}`} tabIndex={0} role="region" aria-label={rotulo}>
       {children}
     </div>
+  );
+}
+
+/** Onda S1, 25/10/2026: auditoria acessível sem alongar a comparação inicial. */
+function NotasDaLinha({ nota }: { nota: string }) {
+  return (
+    <details className="mt-2 text-xs leading-relaxed text-carvao-muted" data-notas-linha="">
+      <summary className="cursor-pointer py-2 font-medium text-obee-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Notas desta linha</summary>
+      <p className="max-w-[min(65ch,calc(100vw-3rem))] pb-2 [overflow-wrap:anywhere]">{apresentarNotaContratado(nota)}</p>
+    </details>
   );
 }
 
@@ -114,6 +126,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
   const custoUniversalizacao = g.custos.filter((e) => e.natureza === "custo_universalizacao");
   const contratado = g.custos.filter((e) => e.natureza === "contratado");
   const sinisaAno = g.referencia_posicao.sinisa_ano;
+  const edicaoPosicao = { edicao: g.referencia_posicao.sinisa_edicao, ano_referencia: sinisaAno };
 
   return (
     <>
@@ -165,7 +178,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
             ),
           },
           {
-            rotulo: `Municípios com concessão iniciada de ${g.proxy_sinisa.desde} em diante, no SINISA ${sinisaAno}`,
+            rotulo: `Municípios com concessão iniciada de ${g.proxy_sinisa.desde} em diante, no ${rotuloSinisa('curta', edicaoPosicao)}`,
             valor: inteiro(g.proxy_sinisa.municipios),
             contexto: (
               <>
@@ -206,37 +219,38 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         texto={
           <p>
             Uma linha por leilão ou lote, do mais antigo ao mais recente. Outorga (o que o vencedor paga), contraprestação (o que o poder público paga numa PPP) e
-            investimento previsto são naturezas diferentes e nunca se somam. O grau diz como cada linha foi conferida: na página da fonte, ou só em trecho de busca.
-            Totais só somam contratos de serviço adjudicados e conferidos: {t.criterio}.
+            investimento previsto são naturezas diferentes e nunca se somam. A conferência aparece por extenso: fonte oficial quando o documento ou a notícia oficial foi consultado; fonte consultada quando a página é de imprensa; só fonte secundária quando não houve conferência na página.
+            Totais só somam contratos de serviço adjudicados e conferidos: {apresentarNotaContratado(t.criterio)}.
           </p>
         }
       >
+        <p className="mb-2 text-xs text-carvao-muted">Deslize a tabela para comparar os valores e consultar as fontes. As notas de cada leilão abrem abaixo da linha.</p>
         <Rolavel rotulo="Tabela de leilões desde 2020">
-          <table className="w-full min-w-[1040px] border-collapse text-[13px] leading-snug">
+          <table data-comparacao="" className="w-full min-w-[1200px] table-fixed border-collapse text-[13px] leading-snug">
             <thead>
               <tr className="border-b border-carvao text-left align-bottom">
-                <th className="w-[22%] py-2 pr-3 font-medium">Leilão</th>
+                <th className="sticky left-0 z-10 w-[180px] bg-papel py-2 pr-3 font-medium">Leilão</th>
                 <th className="py-2 pr-3 font-medium">Data</th>
                 <th className="py-2 pr-3 font-medium">Tipo e resultado</th>
-                <th className="w-[16%] py-2 pr-3 font-medium">Vencedor</th>
+                <th className="w-[14%] py-2 pr-3 font-medium">Vencedor</th>
                 <th className={`py-2 pr-3 font-medium ${NUM}`}>Outorga</th>
                 <th className={`py-2 pr-3 font-medium ${NUM}`}>Contraprestação</th>
                 <th className={`py-2 pr-3 font-medium ${NUM}`}>Investimento previsto</th>
                 <th className="py-2 pr-3 font-medium">Alcance e prazo</th>
-                <th className="py-2 font-medium">Fonte (grau)</th>
+                <th className="py-2 font-medium">Fonte e conferência</th>
               </tr>
             </thead>
             <tbody>
               {g.leiloes.map((l) => {
                 const fora = t.fora_dos_totais.find((f) => f.id === l.id)?.motivo;
                 return (
-                  <tr key={l.id} className={`border-b border-linha align-top ${fora ? "text-carvao-muted" : ""}`} data-leilao={l.id}>
-                    <td className="py-2.5 pr-3">
+                  <Fragment key={l.id}>
+                  <tr className={`border-b border-linha align-top ${fora ? "text-carvao-muted" : ""}`} data-leilao={l.id}>
+                    <td className="sticky left-0 z-10 bg-papel py-2.5 pr-3">
                       <span className="font-medium text-carvao">{l.uf}</span> <span className="text-carvao">{l.objeto}</span>
                       <span className="block text-xs text-carvao-muted">
                         {l.poder_concedente} · {ROTULO_SERVICOS[l.servicos]}
                       </span>
-                      {l.observacoes && <span className="block text-xs text-carvao-muted">{l.observacoes}</span>}
                       {fora && <span className="block text-xs italic text-carvao-muted">Fora dos totais: {fora}</span>}
                     </td>
                     <td className="whitespace-nowrap py-2.5 pr-3 tabular-nums">{data(l.data_leilao)}</td>
@@ -258,10 +272,19 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                         {dominio(l.fonte.url)}
                       </a>
                       <span className="block text-carvao-muted">
-                        {ROTULO_TIPO_FONTE[l.fonte.tipo_fonte]} ({l.fonte.grau}) · {data(l.fonte.data)}
+                        {ROTULO_TIPO_FONTE[l.fonte.tipo_fonte]} · {data(l.fonte.data)}
+                        <span className="block">{rotuloConferencia(l.fonte.grau, l.fonte.tipo_fonte)}</span>
                       </span>
                     </td>
                   </tr>
+                  {l.observacoes && (
+                    <tr data-nota-leilao={l.id}>
+                      <td colSpan={9} className="border-b border-linha pb-2">
+                        <NotasDaLinha nota={l.observacoes} />
+                      </td>
+                    </tr>
+                  )}
+                  </Fragment>
                 );
               })}
             </tbody>
@@ -297,7 +320,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
           naoPermite={
             <>
               Somar outorga, contraprestação e investimento; comparar valores de anos diferentes sem deflacionar; tratar investimento previsto como executado; tratar
-              linha de grau S como conferida.
+              linha só de fonte secundária como conferida.
             </>
           }
         />
@@ -306,7 +329,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
             Baixar a tabela de leilões (CSV, uma linha por leilão, com fonte, grau e se entra nos totais)
           </a>
         </p>
-        <Fonte>Tabela curada a partir das fontes de cada linha (B3, governos, agências, BNDES e imprensa), acessadas em {data(g.capturado_em)}; graus V e S conforme a conferência.</Fonte>
+        <Fonte>Tabela curada a partir das fontes de cada linha (B3, governos, agências, BNDES e imprensa), acessadas em {data(g.capturado_em)}; a conferência está descrita por extenso em cada linha.</Fonte>
       </Secao>
 
       <Secao
@@ -357,7 +380,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                     </ul>
                   )}
                   <Rolavel rotulo={`Metas por ano: ${c.nome}`} className="mt-4">
-                    <table className="min-w-[420px] border-collapse text-sm">
+                    <table data-comparacao="" className="min-w-[420px] border-collapse text-sm">
                       <thead>
                         <tr className="border-b border-carvao text-left">
                           <th className="py-2 pr-4 font-medium">Indicador</th>
@@ -386,9 +409,9 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                     </table>
                   </Rolavel>
                   <div className="mt-4">
-                    <CurvaMetas contrato={c} anoLegal={anoLegal} />
+                    <CurvaMetas contrato={{ ...c, observacoes: c.observacoes ? apresentarNotaContratado(c.observacoes) : c.observacoes }} anoLegal={anoLegal} />
                   </div>
-                  {c.observacoes && <p className="mt-2 max-w-prose2 text-xs leading-relaxed text-carvao-muted">{c.observacoes}</p>}
+                  {c.observacoes && <NotasDaLinha nota={c.observacoes} />}
                   <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao">
                     {c.calendario === "contratual"
                       ? `Diferença para a meta legal: a lei pede ${numero(g.marco.meta_legal.agua, 0)}% de água e ${numero(g.marco.meta_legal.esgoto, 0)}% de esgoto até ${anoLegal}; este contrato conta as metas em anos de contrato e, sem a data de eficácia no documento, não é possível dizer em que ano civil cada meta vence.`
@@ -416,7 +439,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         titulo={`Onde essas áreas estavam em ${sinisaAno}`}
         texto={
           <p>
-            Para cada bloco com composição municipal pública, a média ponderada pela população dos indicadores do SINISA {sinisaAno} (atendimento com água, IAG0001; com
+            Para cada bloco com composição municipal pública, a média ponderada pela população dos indicadores do {rotuloSinisa('completa', edicaoPosicao)} (atendimento com água, IAG0001; com
             coleta de esgoto, IES0001; coleta com tratamento, IES0007) e a cobertura por rede do Censo 2022, ao lado da meta contratual em vigor até {sinisaAno}. É uma
             posição de partida, não aferição.
           </p>
@@ -424,7 +447,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
       >
         {g.posicao_2024.length ? (
           <Rolavel rotulo="Posição 2024 por bloco">
-            <table className="w-full min-w-[980px] border-collapse text-sm">
+            <table data-comparacao="" className="w-full min-w-[980px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-carvao text-left align-bottom">
                   <th className="py-2 pr-3 font-medium">Bloco</th>
@@ -486,7 +509,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
             <li>Cumprido ou descumprido é conclusão da aferição anual do regulador (NR ANA 8/2024, art. 31), suspensa em 2026; este painel não emite esse selo.</li>
           </ol>
         </Nota>
-        <Fonte>SINISA {sinisaAno} e Censo 2022 por município (gold do observatório), composição dos blocos conforme a fonte de cada abrangência.</Fonte>
+        <Fonte>{rotuloSinisa('curta', edicaoPosicao)} e Censo 2022 por município (gold do observatório), composição dos blocos conforme a fonte de cada abrangência.</Fonte>
       </Secao>
 
       <Secao
@@ -529,7 +552,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                 <div key={titulo}>
                   <h3 className="rotulo text-mineral">{titulo}</h3>
                   <Rolavel rotulo={`Estimativas: ${titulo}`} className="mt-2">
-                    <table className="w-full min-w-[900px] border-collapse text-sm">
+                    <table data-comparacao="" className="w-full min-w-[900px] border-collapse text-sm">
                       <thead>
                         <tr className="border-b border-carvao text-left align-bottom">
                           <th className="py-2 pr-3 font-medium">Fonte</th>
@@ -555,15 +578,15 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                             <td className="py-2 pr-3">{e.horizonte}</td>
                             <td className="py-2 pr-3 text-xs">
                               {e.perimetro}
-                              {e.metodo ? ` · ${e.metodo}` : ""}
-                              {e.observacoes ? ` · ${e.observacoes}` : ""}
+                              {e.metodo ? ` · ${apresentarNotaContratado(e.metodo)}` : ""}
+                              {e.observacoes && <NotasDaLinha nota={e.observacoes} />}
                             </td>
                             <td className="py-2 text-xs">
                               <a href={e.fonte.url} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
                                 {e.fonte.titulo ?? e.fonte.url}
                               </a>
                               <span className="block text-carvao-muted">
-                                {data(e.fonte.data)} · {ROTULO_GRAU[e.fonte.grau]} ({e.fonte.grau})
+                                {data(e.fonte.data)} · {rotuloConferencia(e.fonte.grau)}
                               </span>
                             </td>
                           </tr>
@@ -621,9 +644,9 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                 <li key={n.id}>
                   <span className="font-medium text-carvao">{n.nome}</span>
                   <span className="block text-xs text-carvao-muted">
-                    {n.motivo}
-                    {n.tentativas?.length ? ` · ${n.tentativas.join("; ")}` : ""}
+                    {apresentarNotaContratado(n.motivo)}
                   </span>
+                  {n.tentativas?.length ? <NotasDaLinha nota={n.tentativas.join("; ")} /> : null}
                 </li>
               ))}
               {!semDocumento.length && !g.nao_lidos.length && <li className="text-carvao-muted">nenhum registrado</li>}
