@@ -94,3 +94,18 @@ python3 -m unittest pipeline.tests.test_lucro_banco -v
 22 testes passaram, incluindo conservação exata dos totais em cem carteiras
 sintéticas de tamanhos distintos. Isso não valida rubricas reais, interface,
 build, CI ou produção.
+
+Verificações adicionais nesta máquina:
+
+- `npm run verificar:rapido`: aprovado (lint, tipos, derivados, cobertura
+  bilíngue; testes afetados: 130 aprovados e 1 pulado).
+- Suíte `python -m unittest discover -s pipeline/tests -t .`: 2.472 testes,
+  2.461 aprovados e 11 pulados, saída 0 em 233,682 segundos. Executada com
+  `/workspace/.venvs/scrutiniums/bin/python`, após instalar o requisito
+  `pipeline/energia/requirements.txt` nesse venv. A primeira tentativa com o
+  Python global foi interrompida por ausência de `pyarrow`; não conta como
+  execução aprovada.
+- `git diff --check`: aprovado. A suíte não deixou alterações no checkout.
+
+`verificar:pr`, build de produção, evidências de navegador do painel novo e
+CI remoto ainda não foram executados; o painel e o PR ainda não existem.
