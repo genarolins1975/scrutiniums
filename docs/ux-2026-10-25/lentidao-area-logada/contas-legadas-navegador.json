@@ -1,0 +1,40 @@
+[
+  {
+    "status_inicial": "ACCESS_PENDING",
+    "navegacoes": [
+      {
+        "caminho": "/app/observatorios",
+        "status": 200
+      },
+      {
+        "caminho": "/cadastro/acesso",
+        "status": 200
+      },
+      {
+        "caminho": "/app/observatorios",
+        "status": 200
+      }
+    ],
+    "destino": "/app/observatorios",
+    "titulo": "Encontre o painel"
+  },
+  {
+    "status_inicial": "WAITLIST",
+    "navegacoes": [
+      {
+        "caminho": "/app/observatorios",
+        "status": 200
+      },
+      {
+        "caminho": "/cadastro/acesso",
+        "status": 200
+      },
+      {
+        "caminho": "/app/observatorios",
+        "status": 200
+      }
+    ],
+    "destino": "/app/observatorios",
+    "titulo": "Encontre o painel"
+  }
+]
