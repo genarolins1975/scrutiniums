@@ -22,7 +22,7 @@ vi.mock("@/components/energia/useEstadoUrl", async () => {
 /** PR 3 do pedido do dono: cinco elos reais e preparação sem link, preservando demais consumidores. */
 describe("Educação nas capitais: artefatos e consumidores compartilhados",()=>{
   it("a sequência de cinco elos usa o envelope e conserva a ausência",()=>{
-    const h=renderToStaticMarkup(createElement(RecursoResultado,{sequencia:[{titulo:"Dado ausente",texto:"Universo identificado",numero:{rotulo:"Medida",valor:null,unidade:"alunos",periodo:"edição publicada",fonte:"INEP",nota:"Não divulgado"}}]}));
+    const h=renderToStaticMarkup(createElement(RecursoResultado,{sequencia:[{titulo:"Dado ausente",texto:"Universo identificado",numero:{rotulo:"Medida",valor:null,unidade:"alunos",periodo:"edição publicada",fonte:"INEP",href:"/educacao-municipal",nota:"Não divulgado"}}]}));
     expect(h).toContain('id="recurso-educacao"');
     expect(h).toContain("Não divulgado");
     expect(h).toContain("Universo identificado");

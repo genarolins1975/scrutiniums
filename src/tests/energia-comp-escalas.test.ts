@@ -161,6 +161,19 @@ describe("formatação de valores de gráfico", () => {
     expect(formatarDiferenca(-0.04, 1, "p.p.")).toBe("0,0 p.p.");
   });
 
+  it("meios décimos têm magnitude simétrica no valor, na diferença e no sentido", () => {
+    // Achado Educação: 5,8 menos mediana 6,05 não pode exibir −0,2 enquanto a frase informa 0,3 abaixo.
+    for (const [valor, texto] of [[0.05, "0,1"], [0.25, "0,3"], [1.25, "1,3"]] as const) {
+      expect(formatarValor(valor, 1)).toBe(texto);
+      expect(formatarValor(-valor, 1)).toBe(`−${texto}`);
+      expect(formatarDiferenca(valor, 1)).toBe(`+${texto}`);
+      expect(formatarDiferenca(-valor, 1)).toBe(`−${texto}`);
+      expect(sentidoDiferenca(valor, 1)).toBe("acima");
+      expect(sentidoDiferenca(-valor, 1)).toBe("abaixo");
+    }
+    expect(formatarDiferenca(diferencaPar(5.8, 6.05), 1)).toBe("−0,3");
+  });
+
   it("percentual cola o símbolo; negativo usa o sinal tipográfico", () => {
     expect(formatarValor(12.345, 1, "%")).toBe("12,3%");
     expect(formatarValor(-1234.5, 1, "GWh")).toBe("−1.234,5 GWh");
