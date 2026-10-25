@@ -264,7 +264,14 @@ function paineisFamilias(): Painel[] {
  * ao lado do resultado), e o painel novo leva a ele quando o município é capital: os dois não repetem a mesma análise.
  */
 function paineisServicos(): Painel[] {
-  return [{ rota: ROTA_EDUCACAO, titulo: TITULO_PAINEL_EDUCACAO, observatorio: "servicos-publicos", colecao: "educacao", origem: null }, { rota: `${ROTA_EDUCACAO}/mapa`, titulo: "Mapa do Ideb municipal", observatorio: "servicos-publicos", colecao: "educacao", origem: null }];
+  return [
+    { rota: ROTA_EDUCACAO, titulo: TITULO_PAINEL_EDUCACAO, observatorio: "servicos-publicos", colecao: "educacao", origem: null },
+    {
+      rota: `${ROTA_EDUCACAO}/mapa`, titulo: "Mapa do Ideb municipal", observatorio: "servicos-publicos", colecao: "educacao", origem: null,
+      resumo: "Como o Ideb das redes municipais se distribui no território, por etapa e estado?",
+      termos: ["INEP", "anos iniciais", "anos finais", "rede municipal", "território", "sem resultado"],
+    },
+  ];
 }
 
 /**
