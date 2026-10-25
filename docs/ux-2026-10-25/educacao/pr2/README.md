@@ -57,7 +57,7 @@ A etapa local do Judiciário falhou ao consultar o agregado federal antes de sua
 
 A etapa completa Vitest executou 9657 testes: 9640 passaram, 12 foram pulados pelos contratos existentes, 1 ficou como tarefa futura e 4 falharam. Duas falhas eram o resumo e os termos ausentes no cadastro do mapa, corrigidos em `35fca80cd`; as outras duas eram estouros de tempo em Crédito e Saneamento. A repetição dos três arquivos afetados passou: 33 testes, sem alterar testes ou limites de tempo. [Execução completa](vitest-completo.txt) e [repetição](repeticao-falhas.txt).
 
-As etapas de dados e Python passaram, incluindo 2455 testes Python com 11 ausências preexistentes. Os três cenários de navegador do mapa passaram nas três larguras, com seleção por teclado, URL, recarga e proteção de acesso. A verificação rápida final e o build após o ajuste de busca serão registrados ao terminar.
+As etapas de dados e Python passaram, incluindo 2455 testes Python com 11 ausências preexistentes. Os três cenários de navegador do mapa passaram nas três larguras, com seleção por teclado, URL, recarga e proteção de acesso. O build após o ajuste de busca passou ([registro](build-busca.txt)). A verificação rápida final passou em lint, tipos, derivados, cobertura e 192 arquivos de testes: 4815 aprovados, 7 skips e um todo preexistentes ([registro](verificar-rapido.txt)).
 
 ## Rubrica antes e depois
 
