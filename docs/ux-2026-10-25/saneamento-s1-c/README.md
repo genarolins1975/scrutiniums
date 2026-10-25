@@ -1,6 +1,6 @@
 # Saneamento S1, pacote C
 
-Pedido de 25/10/2026: acrescentar o quarto número de custo à entrada, mantendo A e B no PR #385. A decisão D-S1 sobre adoção do quarto número permanece pendente antes do merge. Não houve merge nem deploy.
+Pedido de 25/10/2026: acrescentar o quarto número de custo à entrada, mantendo A e B no PR #385. O dono autorizou expressamente o merge em 25/10/2026, aprovando a adoção do quarto número (D-S1). As evidências abaixo foram coletadas antes da integração.
 
 ## O que muda para o leitor
 
@@ -56,3 +56,11 @@ Autoavaliação sobre as capturas finais a 390 e 1440 px; a revisão independent
 | Comparabilidade | 9 | Mesmo consumo e motor do simulador; amostra não confundida com média nacional |
 | Interação e acessibilidade | 8 | Link ao simulador testado com teclado e auditoria automatizada; leitor de tela não verificado |
 | Responsividade | 9 | Sem cortes ou rolagem horizontal nas larguras medidas; limites de comprimento atendidos |
+
+## Conferência para integração
+
+A atualização agendada do PLD em `main` empatou os quatro submercados semanais. O CI do PR encontrou uma suposição incorreta no teste de extremos: ele exigia sempre nomes de dois extremos, mesmo quando a página corretamente mostrava um único valor. A branch foi sincronizada com `main`; nenhum dado foi alterado no diff do PR.
+
+O teste agora confere o valor único quando há empate e preserva as asserções de valor e submercado quando há faixa. Uma nova fixture independente da rodada confere o empate e sua transformação em faixa. Os 49 testes de previsão passaram.
+
+Após a sincronização, tipos e build passaram. O filtro rápido executou 164 arquivos: três testes existentes excederam 5 s (conta, Previdência e saúde municipal), sem divergência de asserção. Os três arquivos foram repetidos com um processo e passaram integralmente: 53 testes, sem alteração de limite ou de asserções. O CI completo do novo commit é condição para o merge.
