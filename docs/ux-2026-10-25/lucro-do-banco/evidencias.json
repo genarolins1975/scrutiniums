@@ -1,9 +1,9 @@
 {
  "data": "2026-10-25",
- "build": "839kDMi8HBaKpVkYPaVBS",
+ "build": "YV2zK6pC7mvNhKA2c3aQW",
  "maquina": "5 vCPU, 33 GB",
  "comando": "npm run evidencias -- --rotas /observatorio-do-credito /observatorio/bank-profit --saida docs/ux-2026-10-25/lucro-do-banco",
- "tempo": "0 min 58 s",
+ "tempo": "1 min 08 s",
  "resultados": [
   {
    "rota": "/observatorio-do-credito",
@@ -156,8 +156,8 @@
    "status": 200,
    "final": "/observatorio/bank-profit",
    "barra": true,
-   "cromo": 215,
-   "topoH1": 319,
+   "cromo": 183,
+   "topoH1": 251,
    "rolagemHorizontal": false,
    "axe": [],
    "console": [],
