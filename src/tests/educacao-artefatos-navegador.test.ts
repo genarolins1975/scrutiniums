@@ -56,8 +56,10 @@ describe.skipIf(!temBuild)("Educação: análises e mapa no navegador", () => {
       const etapa=mapa.getByLabel('Etapa',{exact:true});
       await etapa.focus(); await p.keyboard.press('End'); await p.keyboard.press('Enter');
       expect(await etapa.inputValue()).toBe('af');
+      await p.waitForURL(u=>u.searchParams.get('etapa')==='af');
       await p.reload({waitUntil:'networkidle'}); await aguardarHidratacao(p);
-      expect(await mapa.getByLabel('Etapa',{exact:true}).inputValue()).toBe('af');
+      await mapa.locator('svg').first().waitFor();
+      await expect.poll(()=>mapa.getByLabel('Etapa',{exact:true}).inputValue()).toBe('af');
       expect(await p.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(largura);
       const anonimo=await navegador.newContext();
       try {
