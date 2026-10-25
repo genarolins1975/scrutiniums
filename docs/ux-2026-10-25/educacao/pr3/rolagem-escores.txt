@@ -1,0 +1,13 @@
+{ largura: 358, total: 448, deslocamento: 90 }
+{
+  pagina: 390,
+  bloco: 358,
+  paragrafos: [
+    { largura: 358, conteudo: 358 },
+    { largura: 358, conteudo: 358 },
+    { largura: 358, conteudo: 358 },
+    { largura: 358, conteudo: 358 },
+    { largura: 358, conteudo: 358 },
+    { largura: 358, conteudo: 358 }
+  ]
+}

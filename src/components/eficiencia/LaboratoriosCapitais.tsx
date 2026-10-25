@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { Recolhido } from "@/components/observatorios/Recolhido";
 import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { RecursoResultado } from "@/components/observatorios/RecursoResultado";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
@@ -22,7 +23,7 @@ export function LaboratoriosCapitais({ dados, contextos }: { dados: DadosPainel;
   const [s,set] = useEstadoUrl(esquema);
   const cap = dados.capitais.find(c=>c.id===s.cap);
   const ano=Number(s.ponte_ano);
-  if(!cap) return <section className="mt-12 border-t border-linha pt-6"><h2 className="font-serif text-2xl">Da despesa ao resultado da sua capital</h2><p className="mt-3 max-w-prose2 text-carvao-muted">Escolha uma capital em “Destacar capital”, no alto da página, para percorrer os cinco elos e abrir a ponte da despesa por matrícula com os dados dela.</p><a href="#panorama-cap" className="inline-flex min-h-[44px] items-center text-obee-dark underline">Escolher capital</a></section>;
+  if(!cap) return <Recolhido id="laboratorios-capital" titulo="Da despesa ao resultado da sua capital" resumo="Cinco elos e a ponte da despesa por matrícula." nivelTitulo={2} aberto><p className="max-w-prose2 text-carvao-muted">Escolha uma capital em “Destacar capital”, no alto da página, para percorrer os cinco elos e abrir a ponte da despesa por matrícula com os dados dela.</p><a href="#panorama-cap" className="inline-flex min-h-[44px] items-center text-obee-dark underline">Escolher capital</a></Recolhido>;
   const ponto=(med:MedidaId)=> {
     const md=MEDIDA[med];
     const edicao=md.anos==="financeiros" ? ano : dados.anos[md.anos].at(-1)!;
@@ -37,7 +38,7 @@ export function LaboratoriosCapitais({ dados, contextos }: { dados: DadosPainel;
     const p=c.incluidas.find(x=>x.cap.id===cap.id);
     return p ? `${c.incluidas.filter(x=>x.valor>p.valor).length+1}ª entre ${c.incluidas.length} capitais com dado comparável` : "Sem posição: dado ausente ou fora da comparação";
   };
-  return <section className="mt-12" aria-label="Laboratórios da capital">
+  return <Recolhido id="laboratorios-capital" titulo={`Laboratórios de ${cap.nome}`} resumo="Cinco elos e a ponte da despesa por matrícula." nivelTitulo={2} aberto>
     <div className="mb-6 flex flex-wrap gap-6"><div className="grid gap-2"><label htmlFor="ponte-exercicio">Exercício financeiro</label><select id="ponte-exercicio" className={controle} value={s.ponte_ano} onChange={e=>set({ponte_ano:e.target.value})}>{dados.anos.financeiros.map(a=><option key={a}>{a}</option>)}</select></div><div className="grid gap-2"><label htmlFor="ponte-etapa">Etapa para atendimento e resultados</label><select id="ponte-etapa" className={controle} value={s.ponte_etapa} onChange={e=>set({ponte_etapa:e.target.value as typeof s.ponte_etapa})}><option value="anos_iniciais">Anos iniciais</option><option value="anos_finais">Anos finais</option></select></div></div>
     <RecursoResultado sequencia={sequencia} descricao={`${cap.nome} (${cap.uf}). Os cinco elos organizam a leitura. Cada um conserva seu universo e seu período, indicados junto do valor.`}/>
     <ModeloDidatico id="laboratorio-ponte" titulo="Por que a ordem muda quando a razão muda?"
@@ -48,5 +49,5 @@ export function LaboratoriosCapitais({ dados, contextos }: { dados: DadosPainel;
       <p className="mt-3 text-sm text-carvao-muted">Ordem do maior valor para o menor, com a mesma posição para valores empatados. Perímetros e conjuntos comparáveis próprios de cada razão; não é classificação de eficiência. Fonte: Siconfi, INEP e IBGE, exercício {ano}.</p>
       <div className="mt-8"><PonteDaRazao ix={ix} cap={cap} ano={ano} razao={ponto("despesa_mat").p} ficha={ficha(dados,"edu.despesa.ponte_matricula")} ctx={contextos["edu.despesa.ponte_matricula"]}/></div>
     </ModeloDidatico>
-  </section>;
+  </Recolhido>;
 }

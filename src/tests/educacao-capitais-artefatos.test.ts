@@ -46,6 +46,8 @@ describe("Educação nas capitais: artefatos e consumidores compartilhados",()=>
     const g=goldEducacao()!;
     const {LaboratoriosCapitais}=await import("@/components/eficiencia/LaboratoriosCapitais");
     const h=renderToStaticMarkup(createElement(LaboratoriosCapitais,{dados:dadosPainel(g),contextos:contextos(g)}));
+    // O molde admite o kit no primeiro nível; o modelo permanece visível, sem exigir expansão.
+    expect(h).toMatch(/^<details[^>]*\bopen=""[^>]*\bdata-recolhido=""/);
     expect(h).toContain('id="laboratorio-ponte"');
     expect(h).toContain('id="recurso-educacao"');
     expect(h).toContain("Recife");
