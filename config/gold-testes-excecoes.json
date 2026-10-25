@@ -101,5 +101,14 @@
   "pipeline/tests/test_publicar_gold.py": {
     "todos": true,
     "motivo": "Valida o inventário integral, atomicidade, dependências, recomposição e bloqueio por infraestrutura; falha compromete o mecanismo de seleção inteiro."
+  },
+  "src/tests/rankings-municipais-reflow-browser.test.ts": {
+    "adicionar": [
+      "consignado",
+      "moradia",
+      "penetracao",
+      "rural"
+    ],
+    "motivo": "Lê public/obs/data/gold/${caso.gold}.json com caso.gold em consignado_mun, penetracao_mun, moradia_mun e rural_mun (linhas 47 a 50 e 63); cada arquivo pertence ao grupo homônimo. Sem esta classificação o mapeador abortou a publicação inteira de 25/10/2026."
   }
 }
