@@ -52,6 +52,8 @@ export type MunicipioGold = {
   ai: BlocoEtapa;
   af: BlocoEtapa;
   censo: Censo | null;
+  analises: Record<Etapa, AnaliseSerie>;
+  composicao_matriculas: ComposicaoMatriculas[];
 };
 
 export type ArquivoUf = {
@@ -99,8 +101,16 @@ export type GoldEducacao = {
     ufs: Record<Etapa, Record<string, { publica: Serie }>>;
   };
   distribuicao: Record<Etapa, { ano: number; rede: "municipal"; brasil: Estatisticas; portes: Record<string, Estatisticas | null>; ufs: Record<string, Estatisticas | null> }>;
+  metas: Record<Etapa, { ano: number; alcancou: number; nao_alcancou: number; sem_ideb: number; sem_meta: number }[]>;
   cobertura: Record<Etapa, Record<Rede, { com_ideb: number; motivos: Record<Motivo, number> }>>;
   censo: { ano: number; campos: CampoCenso[]; brasil: Censo; ufs: Record<string, Censo> };
   portes: Porte[];
   municipios: { total: number; por_uf: Record<string, number>; capitais: string[] };
 };
+
+/** Derivações publicadas pelo pipeline, sem cálculo analítico no navegador. */
+export type MetaEdicao = { ano: number; estado: "alcancou" | "nao_alcancou" | "sem_ideb" | "sem_meta"; motivo: Motivo | null };
+export type VariacaoIdeb = [inicio: number, fim: number, movimentoN: number, movimentoP: number, produtoInicial: number, produtoFinal: number, contribuicaoN: number | null, contribuicaoP: number | null];
+export type AnaliseSerie = { metas: MetaEdicao[]; variacoes: VariacaoIdeb[] };
+export type ComposicaoMatriculas = { etapa: "basica" | "creche" | "pre" | "ai" | "af"; total: number; partes: Partial<Record<"municipal" | "estadual" | "federal" | "privada" | "outras_publicas" | "demais_redes", number>> };
+export type MapaEducacaoGold = { versao: string; ano: number; fonte: string; cobertura: Record<string, { total: number } & Record<Etapa, { com_ideb: number; motivos: Record<Motivo, number> }>>; municipios: { id: string; nome: string; uf: string; ai: number | null; af: number | null; motivo_ai: Motivo | null; motivo_af: Motivo | null }[] };

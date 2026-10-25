@@ -238,3 +238,102 @@ def validar_cruzado(ideb: dict, censo: dict, pop: dict) -> list[str]:
                 if r and r["ideb"][-1] is not None and linha[campos.index(campo) + 1] == 0:
                     p.append(f"{etapa}, {cod}: rede {rede} com Ideb {ideb['ano']} e nenhuma matrícula no Censo {censo['ano']}")
     return p
+
+
+def validar_analises(gold: dict, arquivos: dict) -> list[str]:
+    """Retém derivação que altera universo, transforma ausência em zero ou não reconcilia a variação."""
+    import math
+    from decimal import Decimal
+    p = []
+    anos, anos_meta = gold["ideb"]["anos"], gold["ideb"]["anos_meta"]
+    contagens = {e: [{x: 0 for x in ("alcancou", "nao_alcancou", "sem_ideb", "sem_meta")} for _ in anos_meta] for e in F.ETAPAS}
+    for arquivo in arquivos.values():
+        for m in arquivo["municipios"]:
+            for e in F.ETAPAS:
+                s = m[e]["municipal"]
+                a = m["analises"][e]
+                if [x["ano"] for x in a["metas"]] != anos_meta:
+                    p.append(f"{m['id']}, {e}: edições das metas divergentes")
+                    continue
+                for j, meta in enumerate(a["metas"]):
+                    k = anos.index(meta["ano"])
+                    alvo = s["meta"][j] if s else None
+                    valor = s["ideb"][k] if s else None
+                    esperado = "sem_meta" if alvo is None else "sem_ideb" if valor is None else "alcancou" if valor >= alvo else "nao_alcancou"
+                    if meta["estado"] != esperado or (valor is None and meta["motivo"] not in F.MOTIVOS) or (valor is not None and meta["motivo"] is not None):
+                        p.append(f"{m['id']}, {e}: situação da meta incompatível")
+                    contagens[e][j][esperado] += 1
+                completos = [] if not s else [i for i in range(len(anos)) if all(s[c][i] is not None for c in ("ideb", "n", "p"))]
+                esperado = {(i, j) for pos, i in enumerate(completos) for j in completos[pos + 1:]}
+                pares = a["variacoes"]
+                if len(pares) != len(esperado) or {(x[0], x[1]) for x in pares} != esperado:
+                    p.append(f"{m['id']}, {e}: pares publicados faltando ou duplicados")
+                for i, j, dn, dp, v0, v1, cn, cp in pares:
+                    if not s or i not in completos or j not in completos:
+                        continue
+                    if any(not math.isfinite(x) for x in (dn, dp, v0, v1)) or any(abs(x-y) > 1e-12 for x, y in (
+                        (dn, s["n"][j]-s["n"][i]), (dp, s["p"][j]-s["p"][i]),
+                        (v0, s["n"][i]*s["p"][i]), (v1, s["n"][j]*s["p"][j]))):
+                        p.append(f"{m['id']}, {e}: movimentos diferem dos componentes publicados")
+                    delta_exato = Decimal(str(s["n"][j]))*Decimal(str(s["p"][j]))-Decimal(str(s["n"][i]))*Decimal(str(s["p"][i]))
+                    dividir = abs(delta_exato) >= Decimal("0.05") and min(s["n"][i], s["n"][j], s["p"][i], s["p"][j]) > 0
+                    if not dividir:
+                        if cn is not None or cp is not None:
+                            p.append(f"{m['id']}, {e}: contribuição em variação pequena ou logaritmo indefinido")
+                    elif cn is None or cp is None or not all(math.isfinite(x) for x in (cn, cp)) or abs(cn+cp-(v1-v0)) > 1e-9:
+                        p.append(f"{m['id']}, {e}: contribuições não fecham a variação")
+                    elif abs(cn*math.log(s["p"][j]/s["p"][i])-cp*math.log(s["n"][j]/s["n"][i])) > 1e-8:
+                        p.append(f"{m['id']}, {e}: parcelas não respeitam os movimentos logarítmicos")
+            c = m["censo"]
+            linhas = m["composicao_matriculas"]
+            if (c is None and linhas) or (c is not None and len(linhas) != 5):
+                p.append(f"{m['id']}: composição sem cobertura coerente")
+            for linha in linhas:
+                chave = "mat_total" if linha["etapa"] == "basica" else linha["etapa"]+"_total"
+                partes = linha["partes"]
+                if not c or linha["total"] != c[chave] or sum(partes.values()) != linha["total"] or any(not isinstance(v, int) or v < 0 for v in partes.values()):
+                    p.append(f"{m['id']}: composição não fecha o total publicado")
+                elif partes.get("municipal") != c["mat_municipal" if linha["etapa"] == "basica" else linha["etapa"]+"_mun"]:
+                    p.append(f"{m['id']}: parcela municipal diverge do Censo")
+                elif linha["etapa"] == "basica" and any(partes.get(r) != c["mat_"+r] for r in ("estadual", "federal", "privada")):
+                    p.append(f"{m['id']}: dependência administrativa diverge do Censo")
+                elif linha["etapa"] in ("ai", "af") and (partes.get("privada") != c[chave]-c[linha["etapa"]+"_publica"] or partes.get("outras_publicas") != c[linha["etapa"]+"_publica"]-c[linha["etapa"]+"_mun"]):
+                    p.append(f"{m['id']}: agrupamento de redes diverge do Censo")
+    for e in F.ETAPAS:
+        for j, linha in enumerate(gold["metas"][e]):
+            if linha["ano"] != anos_meta[j] or any(linha[x] != v for x, v in contagens[e][j].items()) or sum(contagens[e][j].values()) != gold["municipios"]["total"]:
+                p.append(f"{e}: placar nacional não fecha os municípios")
+    return p
+
+
+def validar_mapa(mapa: dict, g: dict, arquivos: dict) -> list[str]:
+    """Reconcilia cada registro e a cobertura com a gold completa antes de publicar."""
+    problemas = []
+    origem = {m['id']: (uf, m) for uf, a in arquivos.items() for m in a['municipios']}
+    registros = mapa.get('municipios', [])
+    if len(registros) != len(origem) or {m['id'] for m in registros} != set(origem):
+        problemas.append('mapa: universo municipal incompleto ou duplicado')
+    if mapa.get('ano') != g['ideb']['ano'] or mapa.get('versao') != g['versao']:
+        problemas.append('mapa: período ou versão divergente')
+    for m in registros:
+        if m['id'] not in origem:
+            continue
+        uf, original = origem[m['id']]
+        if (m['nome'], m['uf']) != (original['nome'], uf):
+            problemas.append(f"mapa: identificação divergente em {m['id']}")
+        for e in F.ETAPAS:
+            serie = original[e]['municipal']
+            valor = serie['ideb'][-1] if serie else None
+            if m[e] != valor or m[f'motivo_{e}'] != original[e]['motivo_municipal']:
+                problemas.append(f"mapa: valor ou motivo divergente em {m['id']}, {e}")
+    for uf in ['BR', *F.SIGLAS]:
+        grupo = [m for u, m in origem.values() if uf == 'BR' or u == uf]
+        cobertura = mapa.get('cobertura', {}).get(uf, {})
+        if cobertura.get('total') != len(grupo):
+            problemas.append(f'mapa: total divergente em {uf}')
+        for e in F.ETAPAS:
+            com_ideb = sum(m[e]['municipal'] is not None and m[e]['municipal']['ideb'][-1] is not None for m in grupo)
+            motivos = {mot: sum(m[e]['motivo_municipal'] == mot for m in grupo) for mot in F.MOTIVOS}
+            if cobertura.get(e) != {'com_ideb': com_ideb, 'motivos': motivos}:
+                problemas.append(f'mapa: cobertura divergente em {uf}, {e}')
+    return problemas

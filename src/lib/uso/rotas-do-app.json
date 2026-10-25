@@ -54,6 +54,7 @@
   "/dados/api",
   "/dados/ibcc",
   "/educacao-municipal",
+  "/educacao-municipal/mapa",
   "/educacao-municipal/municipio/[ibge]",
   "/eficiencia-estatal",
   "/eficiencia-estatal/acesso-justica",

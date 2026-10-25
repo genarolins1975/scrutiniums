@@ -66,7 +66,11 @@ def ler_seeds() -> dict:
 
 def saidas(seeds: dict) -> dict[Path, str]:
     g, por_uf = gold.construir(seeds)
-    out = {GOLD: _json(g)}
+    mapa = gold.mapa_compacto(g, por_uf)
+    problemas = validacoes.validar_mapa(mapa, g, por_uf)
+    if problemas:
+        raise gold.GoldInvalida("mapa não publicado: " + "; ".join(problemas[:20]))
+    out = {GOLD: _json(g), PASTA / "mapa.json": _json(mapa)}
     for uf, dados in por_uf.items():
         out[PASTA_UF / f"{uf}.json"] = _json(dados)
     return out
