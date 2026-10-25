@@ -16,14 +16,14 @@ import { aoEntrarComRecorteEm, hrefEntrar, textosAcesso, useSessao } from "./ses
  * A lista ocupa duas colunas em tela larga, na ordem das seções (de cima para baixo), para não deixar meia
  * página vazia ao lado de uma coluna estreita; a ação é um botão de contorno, com resposta ao toque.
  */
-export function ConviteAperitivo({ rota, comConta, className = "" }: { rota: string; comConta: readonly string[]; className?: string }) {
+export function ConviteAperitivo({ rota, comConta, className = "", idTitulo = "convite-aperitivo-titulo" }: { rota: string; comConta: readonly string[]; className?: string; idTitulo?: string }) {
   const en = rota === "/en" || rota.startsWith("/en/");
   const t = textosAcesso(rota);
   // páginas abertas que já são o aperitivo (Combustíveis, Crédito) chegam também a quem tem conta: para ele, o painel direto
   const logado = useSessao() === true;
   return (
-    <section data-convite-aperitivo="" aria-labelledby="convite-aperitivo-titulo" className={`border-t border-linha pb-6 pt-8 ${className}`}>
-      <h2 id="convite-aperitivo-titulo" className="font-serif text-xl text-carvao sm:text-2xl">
+    <section data-convite-aperitivo="" aria-labelledby={idTitulo} className={`border-t border-linha pb-6 pt-8 ${className}`}>
+      <h2 id={idTitulo} className="font-serif text-xl text-carvao sm:text-2xl">
         {logado ? (en ? "In the full panel" : "No painel completo") : en ? "The full panel, with a free account" : "O painel completo, com a conta gratuita"}
       </h2>
       <ul className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao lg:max-w-none lg:columns-2 lg:gap-x-12">

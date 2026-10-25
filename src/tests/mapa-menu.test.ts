@@ -91,7 +91,7 @@ describe("Grupos do Crédito", () => {
     }
   });
 
-  it("rótulos na navegação iguais a VIEW_TITLES e ao catálogo; grupos com no máximo 7 abas", () => {
+  it("rótulos na navegação iguais a VIEW_TITLES e ao catálogo; grupos com até 7 abas, ou 8 em Instituições com a DRE", () => {
     const titulos = mapa("VIEW_TITLES");
     const cat = read("src/lib/data/observatorioAbas.ts");
     const nav = navegacaoDaColecao("credito").itens.flatMap((i) => i.subpaginas ?? [i]);
@@ -101,6 +101,6 @@ describe("Grupos do Crédito", () => {
       expect(p.rotulo, v).toBe(titulos[v]);
       expect(cat).toContain(`titulo: "${titulos[v]}"`);
     }
-    for (const g of grupos) expect(g.vistas.length).toBeLessThanOrEqual(7);
+    for (const g of grupos) expect(g.vistas.length).toBeLessThanOrEqual(g.rotulo === "Instituições e funding" ? 8 : 7);
   });
 });

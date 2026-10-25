@@ -40,7 +40,7 @@ export function Footer({ compacto = false, idioma = "pt" }: { compacto?: boolean
             <li><Link href={h("/imprensa")} prefetch={prefetchDoLink(h("/imprensa"))} className="hover:text-bronze-soft">{t.paraImprensa}</Link></li>
             <li><Link href={h("/termos")} prefetch={prefetchDoLink(h("/termos"))} className="hover:text-bronze-soft">{t.termos}</Link></li>
             <li><Link href={h("/privacidade")} prefetch={prefetchDoLink(h("/privacidade"))} className="hover:text-bronze-soft">{t.privacidade}</Link></li>
-            <li><Link href={h("/entrar")} prefetch={prefetchDoLink(h("/entrar"))} className="hover:text-bronze-soft">{t.entrar}</Link></li>
+            <li><Link href={h("/entrar")} prefetch={false} className="hover:text-bronze-soft">{t.entrar}</Link></li>
             <li><Link href={h("/cadastro")} prefetch={prefetchDoLink(h("/cadastro"))} className="hover:text-bronze-soft">{t.cadastro}</Link></li>
             <ContatoItens classe="hover:text-bronze-soft" idioma={idioma} />
           </ul>
@@ -135,7 +135,7 @@ function FooterCompacto() {
             <li><LinkIdioma href="/imprensa" prefetch={prefetchDoLink("/imprensa")} className={link}>{t.paraImprensa}</LinkIdioma></li>
             <li><LinkIdioma href="/termos" prefetch={prefetchDoLink("/termos")} className={link}>{t.termos}</LinkIdioma></li>
             <li><LinkIdioma href="/privacidade" prefetch={prefetchDoLink("/privacidade")} className={link}>{t.privacidade}</LinkIdioma></li>
-            <li><LinkIdioma href="/entrar" prefetch={prefetchDoLink("/entrar")} className={link}>{t.entrar}</LinkIdioma></li>
+            <li><LinkIdioma href="/entrar" prefetch={false} className={link}>{t.entrar}</LinkIdioma></li>
             <li><LinkIdioma href="/cadastro" prefetch={prefetchDoLink("/cadastro")} className={link}>{t.cadastro}</LinkIdioma></li>
             <ContatoItens classe={link} idioma={idioma} />
           </ul>

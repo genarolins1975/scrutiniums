@@ -63,6 +63,7 @@ export function EntradaColecao({
   acento,
   titulo,
   frase,
+  destaque,
   aoLadoDoRotulo,
   frescor,
   escala,
@@ -94,6 +95,8 @@ export function EntradaColecao({
   titulo: ReactNode;
   /** Uma frase, até 220 caracteres. */
   frase: ReactNode;
+  /** Artefato prioritário, logo após o título da entrada. */
+  destaque?: ReactNode;
   /** O que vai à direita do rótulo (a parceria técnica). */
   aoLadoDoRotulo?: ReactNode;
   /** FaixaFrescor variante linha, no alto da abertura. */
@@ -141,6 +144,7 @@ export function EntradaColecao({
           <h1 id={idTitulo} className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             {titulo}
           </h1>
+          {destaque}
           <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">{frase}</p>
           {escala && escala.length > 0 && <Escala escala={escala} nota={notaEscala} idioma={idioma} />}
           {figuraEscala}

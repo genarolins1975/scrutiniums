@@ -16,7 +16,7 @@ from pipeline.inst_pages_all import PERIODOS_LBL  # rótulo de trimestre calcula
 
 INDISPONIVEIS = [
     ("LCR / NSFR", "Relatórios de Pilar 3 por instituição ainda não integrados (fase futura); indisponível no IF.data via API."),
-    ("Margem financeira / índice de eficiência", "Exigem o DRE detalhado por conglomerado (relatório 116-118 da interface IF.data) — mapeado, não integrado."),
+    ("Margem financeira / índice de eficiência", "DRE prudencial integrada no painel Como o banco ganha ou perde dinheiro (/observatorio/bank-profit), com margem em R$ e tarifas sobre estrutura. Esta ficha mantém seu conjunto original de indicadores."),
     ("Atrasos 15-90d, inadimplência por IF, provisões, cobertura", "O corte público do IF.data tipo 2 não expõe qualidade de carteira por instituição."),
     ("Ratings e documentos (ITR/DFP/Pilar 3/fatos relevantes)", "Pipelines de CVM/agências/RI não integrados — arquitetura prevista no backlog."),
 ]

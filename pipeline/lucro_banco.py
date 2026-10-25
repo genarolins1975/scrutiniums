@@ -1,7 +1,7 @@
-"""Contratos analíticos do futuro painel de lucro (ainda não publicado).
+"""Contratos analíticos do painel de lucro bancário.
 
-Não é um coletor nem um mapeamento validado do IF.data. O catálogo conserva
-a hierarquia do template; a seleção das rubricas depende de conferência dos
+O coletor ifdata_dre e a gold lucro_banco_gold validam o uso no IF.data.
+O catálogo conserva a hierarquia do template; a seleção das rubricas depende de conferência dos
 originais em três conglomerados e duas datas-base. Testes usam dados sintéticos.
 Valores monetários são Decimal em reais, com sinal contábil preservado.
 """
@@ -65,7 +65,7 @@ def catalogar_rubricas(template, info, relatorio):
 
     Subtotais e filhos coexistem: o catálogo NÃO pode ser somado como uma DRE.
     Referência quebrada ou id duplicado é erro de contrato, não ausência contábil.
-    A interpretação dos nomes/sinais precisa de validação empírica posterior.
+    A interpretação dos nomes/sinais é validada no coletor e na gold por período.
     """
     por_id = {}
     for item in info:
@@ -87,7 +87,8 @@ def catalogar_rubricas(template, info, relatorio):
             lid = meta.get("lid")
             if isinstance(lid, int) and not isinstance(lid, bool) and lid > 0:
                 saida.append({"relatorio": relatorio, "ifd": ifd, "lid": lid,
-                              "nome": nome, "caminho": trilha,
+                              "nome": nome, "en": meta.get("ni") or nome,
+                              "descricao": meta.get("d"), "description": meta.get("di"), "caminho": trilha,
                               "tem_subcolunas": bool(filhos)})
             visitar(filhos, trilha)
 

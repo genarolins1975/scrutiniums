@@ -695,6 +695,18 @@
       "produtores": [
         "pipeline/trends.py"
       ]
+    },
+    "lucro-banco": {
+      "arquivos": [
+        "lucro_banco.json"
+      ],
+      "depende_de": [],
+      "evidencia": "pipeline/lucro_banco_gold.py: DRE e rateios do seed oficial validado",
+      "produtores": [
+        "pipeline/lucro_banco_gold.py",
+        "pipeline/sources/ifdata_dre.py",
+        "pipeline/gold.py"
+      ]
     }
   }
 }

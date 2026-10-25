@@ -262,6 +262,7 @@ export const A_MIGRAR: Record<string, keyof typeof GRUPOS> = {
 
 /** Rotas que não são página de painel, com o motivo. */
 export const FORA_DO_MOLDE: Record<string, string> = {
+  "/observatorio/bank-profit": "aplicação do Crédito; cascata interativa no mesmo shell da coleção",
   "/eficiencia-estatal/cultura/[[...painel]]": "padrão dinâmico da Cultura: cada capítulo está em NO_MOLDE_PAINEL pela rota concreta; metodos é página de método",
   "/eficiencia-estatal/laboratorio-cesta": "rota de servidor (route.ts) que entrega o laboratório de revisão do índice, HTML gerado fora do app",
   "/agronegocio": "entrada no molde EntradaColecao (entradas-molde.ts)",

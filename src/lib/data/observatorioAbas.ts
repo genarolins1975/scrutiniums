@@ -29,6 +29,14 @@ export type AbaObservatorio = {
 
 export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
+    view: "lucro", caminho: "/bank-profit",
+    titulo: "Como o banco ganha ou perde dinheiro",
+    pergunta: "De onde vem o lucro deste banco, e onde ele perde dinheiro?",
+    descricao: "DRE conciliada por conglomerado prudencial, perdas de crédito estimadas por modalidade, simulação didática, margem financeira e tarifas, com fontes e limites explícitos.",
+    termos: ["lucro bancário", "DRE", "PDD", "provisão", "margem financeira", "tarifas", "calote", "IF.data"],
+    gold: "lucro_banco.json",
+  },
+  {
     view: "mapa",
     caminho: "/map",
     // "Mapa do Observatório" até 23/10/2026: o dono decidiu "Início do painel", porque a linha 1 da navegação já tem "Início"

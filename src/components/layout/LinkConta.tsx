@@ -8,8 +8,9 @@ type Destino = { href: string; rotulo: string };
 // Uma consulta por carregamento de página, compartilhada pelos links de conta do cabeçalho.
 let consulta: Promise<boolean> | null = null;
 function temSessao(): Promise<boolean> {
-  consulta ??= fetch("/api/auth/eu", { cache: "no-store", credentials: "same-origin" })
-    .then((r) => r.status === 204)
+  consulta ??= fetch("/api/auth/estado", { cache: "no-store", credentials: "same-origin" })
+    .then((r) => r.ok ? r.json() as Promise<{ logado?: boolean }> : { logado: false })
+    .then((r) => r.logado === true)
     .catch(() => false);
   return consulta;
 }
@@ -35,7 +36,7 @@ export function LinkConta({ autenticado, visitante, logado, className }: Readonl
   }, [autenticado]);
   const d = comSessao ? logado : visitante;
   return (
-    <Link href={d.href} className={className}>
+    <Link href={d.href} prefetch={false} className={className}>
       {d.rotulo}
     </Link>
   );
