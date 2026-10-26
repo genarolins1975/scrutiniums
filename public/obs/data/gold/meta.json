@@ -1289,7 +1289,7 @@
   },
   "grupos": {
     "alerts": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "alerts.json"
       ],
@@ -1322,12 +1322,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "ampliado": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "ampliado.json"
       ],
@@ -1360,12 +1360,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "antecedentes": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "antecedentes.json"
       ],
@@ -1398,12 +1398,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bets": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "bets.json"
       ],
@@ -1436,7 +1436,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -1556,7 +1556,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "comparador": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "compare.json",
         "cmp/*.json"
@@ -1590,12 +1590,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "conduta": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "conduta.json"
       ],
@@ -1628,7 +1628,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -1672,7 +1672,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "consorcios": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "consorcios.json"
       ],
@@ -1705,12 +1705,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "custos-ti": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "custos_ti.json"
       ],
@@ -1743,7 +1743,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -1786,7 +1786,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "emprego-setores-ufs": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "emprego.json",
         "sectors.json",
@@ -1821,12 +1821,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "epae": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "epae.json"
       ],
@@ -1859,7 +1859,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -1902,7 +1902,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fase2-observacoes": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "fase2_observacoes.json"
       ],
@@ -1935,12 +1935,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fidc": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "fidc.json"
       ],
@@ -1973,12 +1973,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "folha": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "folha_bancos.json",
         "folha_balanco.json",
@@ -2013,12 +2013,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fraudes": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "fraudes.json"
       ],
@@ -2051,12 +2051,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "funding": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "funding.json"
       ],
@@ -2089,7 +2089,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2132,7 +2132,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "ibcc": {
-      "gerado_em": "2026-10-22T15:48:29+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "ibcc.json"
       ],
@@ -2287,7 +2287,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "leading": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "leading.json"
       ],
@@ -2320,12 +2320,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lineage": {
-      "gerado_em": "2026-10-22T15:48:29+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "lineage.json"
       ],
@@ -2363,7 +2363,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "market": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "market.json"
       ],
@@ -2396,12 +2396,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "meta": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "meta.json"
       ],
@@ -2434,7 +2434,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2516,7 +2516,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "npl": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "npl.json"
       ],
@@ -2549,7 +2549,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2592,7 +2592,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "operacional": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "operacional.json"
       ],
@@ -2625,7 +2625,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2786,7 +2786,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pilar3": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "pilar3.json"
       ],
@@ -2819,7 +2819,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2863,7 +2863,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prazo": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "prazo.json"
       ],
@@ -2896,12 +2896,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "presenca-mun": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "presenca_mun.json"
       ],
@@ -2934,12 +2934,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prestamista": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "prestamista.json"
       ],
@@ -2972,12 +2972,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "produtos": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "products.json",
         "prod/*.json"
@@ -3011,7 +3011,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -3092,7 +3092,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "recordes": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "recordes.json"
       ],
@@ -3125,12 +3125,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "regimes.json"
       ],
@@ -3163,12 +3163,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes-series": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "regimes_series.json"
       ],
@@ -3201,12 +3201,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regulacao": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "regulacao.json",
         "timeline_regulatoria.json"
@@ -3240,7 +3240,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -3283,7 +3283,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "rj": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "rj.json"
       ],
@@ -3316,7 +3316,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -3398,7 +3398,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "screener": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "screener.json"
       ],
@@ -3431,12 +3431,12 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "sfn": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "sfn.json"
       ],
@@ -3469,7 +3469,7 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -3512,7 +3512,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "trends": {
-      "gerado_em": "2026-10-24T15:02:12+00:00",
+      "gerado_em": "2026-10-26T17:50:29+00:00",
       "arquivos": [
         "trends.json"
       ],
@@ -3545,7 +3545,45 @@
         "estban": "2026-06",
         "openfinance": "2026-10",
         "pgfn": "2026-09",
-        "desenrola": "2026-08"
+        "desenrola": null
+      },
+      "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
+    },
+    "lucro-banco": {
+      "gerado_em": "2026-10-18T15:09:35+00:00",
+      "arquivos": [
+        "lucro_banco.json"
+      ],
+      "vintages": {
+        "sgs": "2026-08",
+        "ifdata": "2026-06",
+        "scr": "2026-08",
+        "b3": "2026-10",
+        "fidc": "2026-09",
+        "datajud": "2026-08",
+        "trends": "2026-06",
+        "txjuros": "2026-10",
+        "susep": "2026-08",
+        "sadipem": "2026-10",
+        "siconfi": "2026-08",
+        "tesouro_garantias": "2026-08",
+        "sicor": "2026-09",
+        "cvm_ofertas": "2026-10",
+        "securit": "2026-09",
+        "bndes": "2026-03",
+        "focus": "2026-10",
+        "sfn_cadastro": "2026-10",
+        "bcb_pas": "2026-10",
+        "cvm_pas": "2026-10",
+        "caged": "2026-08",
+        "cda": "2026-09",
+        "consorcios": "2026-06",
+        "cobranca": "2026-10",
+        "pix": "2026-09",
+        "estban": "2026-06",
+        "openfinance": "2026-10",
+        "pgfn": "2026-06",
+        "desenrola": null
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     }

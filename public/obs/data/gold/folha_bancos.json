@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-24T15:01:31+00:00",
+ "gerado_em": "2026-10-26T17:49:56+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 193,
-  "total_editais": 709,
+  "total_contratos_if": 194,
+  "total_editais": 710,
   "backfill_completo": false,
   "ranking": [
    {
@@ -185,6 +185,13 @@
     "como_receita": 1
    },
    {
+    "cnpj8": "78907607",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CE",
+    "contratos": 3,
+    "ufs": 2,
+    "como_receita": 1
+   },
+   {
     "cnpj8": "25606237",
     "banco": "COOPERATIVA DE POUPANCA E CREDITO DO VALE DO RIO DOCE LTDA. - SICOOB CREDIRIODOCE",
     "contratos": 2,
@@ -194,13 +201,6 @@
    {
     "cnpj8": "81099491",
     "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "78907607",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CENTRO SUL - SICREDI CENTRO SUL PR/SC/RJ",
     "contratos": 2,
     "ufs": 1,
     "como_receita": 0
@@ -403,6 +403,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "32001836000105-2-000348/2026",
+    "ente": "MUNICIPIO DE SAO JOSE DO VALE DO RIO PRETO",
+    "esfera": "Municipal",
+    "municipio": "São José do Vale do Rio Preto",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-22",
+    "vig_fim": "2031-10-22",
+    "valor": 1284450.01,
+    "receita": true,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CE",
+    "cnpj8": "78907607",
+    "url": "https://pncp.gov.br/contratos/32001836000105/2026/348"
+   },
    {
     "controle": "46710422000151-2-000034/2026",
     "ente": "MUNICIPIO DE ITUVERAVA",
@@ -987,24 +1002,18 @@
     "banco": "BANCO BRADESCO",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/78200482000110/2026/100"
-   },
-   {
-    "controle": "06742480000142-2-000239/2026",
-    "ente": "MUNICIPIO DE QUIXELO",
-    "esfera": "Municipal",
-    "municipio": "Quixelô",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-17",
-    "vig_fim": "2027-08-17",
-    "valor": 249550.0,
-    "receita": false,
-    "banco": "Banco Bradesco S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/06742480000142/2026/239"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE NOVA OLINDA",
+    "municipio": "Nova Olinda",
+    "uf": "PB",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-26",
+    "url": "https://pncp.gov.br/compras/08889297000108/2026/57"
+   },
    {
     "ente": "MUNICIPIO DE MUZAMBINHO",
     "municipio": "Muzambinho",
@@ -1103,15 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-20",
     "url": "https://pncp.gov.br/compras/03155934000190/2026/126"
-   },
-   {
-    "ente": "MUNICIPIO DE FRANCO DA ROCHA",
-    "municipio": "Franco da Rocha",
-    "uf": "SP",
-    "modalidade": "Pregão - Presencial",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-19",
-    "url": "https://pncp.gov.br/compras/46523080000160/2026/174"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

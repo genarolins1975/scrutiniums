@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-24T15:02:09+00:00",
+ "gerado_em": "2026-10-26T17:50:26+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (165 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-10-21",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11400
   },
   "janela_12m": {
-   "ini": "2025-10-24",
+   "ini": "2025-10-26",
    "decisoes": 1347,
    "processos": 1278,
    "multas_n": 1289,
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3112
+   "n": 3109
   },
   "anual": [
    {
@@ -941,9 +941,9 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-24",
-   "processos": 65,
-   "acusados": 165
+   "ini": "2025-10-26",
+   "processos": 64,
+   "acusados": 164
   },
   "fases": [
    {

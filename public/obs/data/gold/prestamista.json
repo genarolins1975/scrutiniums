@@ -9,10 +9,10 @@
   "licenca": "dados abertos da SUSEP",
   "nivel": "A — estatística oficial do supervisor de seguros, mensal"
  },
- "gerado_em": "2026-10-24T15:02:14+00:00",
+ "gerado_em": "2026-10-26T17:50:31+00:00",
  "coleta": {
-  "last_modified": "Mon, 19 Oct 2026 03:45:21 GMT",
-  "coletado_em": "2026-10-19T16:37:40+00:00",
+  "last_modified": "Mon, 26 Oct 2026 03:50:49 GMT",
+  "coletado_em": "2026-10-26T16:14:49+00:00",
   "requisicoes": 13,
   "mb_lidos": 41.9
  },
@@ -54,10 +54,10 @@
    "nome": "Sem grupo econômico (empresas independentes)",
    "premio": 10390764700.7579,
    "sinistro": 1961837936.1776087,
-   "comissao": 4371703854.432011,
+   "comissao": 4371997118.762011,
    "n_empresas": 66,
    "share_pct": 33.88,
-   "comissao_pct": 42.07
+   "comissao_pct": 42.08
   },
   {
    "cogrupo": "00035",
@@ -1017,9 +1017,9 @@
    "premio": 2539496342.0860004,
    "premio_ganho": 2261714733.7850003,
    "sinistro_ocorrido": 434942062.524,
-   "comissao": 885752859.24,
+   "comissao": 886046123.57,
    "sinistralidade_pct": 19.23,
-   "comissao_pct": 34.88,
+   "comissao_pct": 34.89,
    "n_empresas": 64,
    "concessoes_pf": 337956000000.0,
    "premio_sobre_concessoes_pct": 0.75,

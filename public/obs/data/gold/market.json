@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-24T15:02:00+00:00",
+ "gerado_em": "2026-10-26T17:50:20+00:00",
  "aviso": "Plataforma acadêmica e analítica. Nada nesta área constitui recomendação de compra ou venda de valores mobiliários, rating ou aconselhamento de investimento.",
  "piloto": false,
  "universo": "bancos e holdings bancárias listados na B3 (18 companhias validadas em 2026-07; BDRs excluídos — demonstrações fora do padrão CVM DFP)",
@@ -445,6 +445,14 @@
      "lucro": 7245808000.0,
      "lucro_ctrl": 7245808000.0,
      "pl": 182736591000.0
+    },
+    {
+     "period_end": "2026-09-30",
+     "kind": "tri",
+     "stmt": "consolidado",
+     "lucro": 7435747000.0,
+     "lucro_ctrl": 7435747000.0,
+     "pl": 196585999000.0
     }
    ],
    "proventos_por_ano": {
@@ -96571,9 +96579,9 @@
    "stmt": "consolidado",
    "pl_ratio": 9.533275055426966,
    "lpa": 2.1367263486648334,
-   "pvp": 1.2481360976520022,
-   "vpa": 16.32033560949011,
-   "pl_base": "2026-06-30",
+   "pvp": 1.1602053897488904,
+   "vpa": 17.557236141101523,
+   "pl_base": "2026-09-30",
    "roe_cia": 13.754094017955424,
    "dist_exercicio": 15348409081.817982,
    "payout": 64.15315610995286,

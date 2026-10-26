@@ -85,76 +85,76 @@
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
      "melhor_defasagem_meses": 8,
-     "correlacao_melhor_defasagem": 0.343,
+     "correlacao_melhor_defasagem": 0.342,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.168
+       "corr": 0.145
       },
       {
        "lag": 1,
-       "corr": 0.271
+       "corr": 0.207
       },
       {
        "lag": 2,
-       "corr": 0.302
+       "corr": 0.246
       },
       {
        "lag": 3,
-       "corr": 0.265
-      },
-      {
-       "lag": 4,
-       "corr": 0.271
-      },
-      {
-       "lag": 5,
-       "corr": 0.285
-      },
-      {
-       "lag": 6,
-       "corr": 0.272
-      },
-      {
-       "lag": 7,
-       "corr": 0.274
-      },
-      {
-       "lag": 8,
-       "corr": 0.343
-      },
-      {
-       "lag": 9,
-       "corr": 0.286
-      },
-      {
-       "lag": 10,
-       "corr": 0.295
-      },
-      {
-       "lag": 11,
        "corr": 0.276
       },
       {
+       "lag": 4,
+       "corr": 0.252
+      },
+      {
+       "lag": 5,
+       "corr": 0.267
+      },
+      {
+       "lag": 6,
+       "corr": 0.302
+      },
+      {
+       "lag": 7,
+       "corr": 0.275
+      },
+      {
+       "lag": 8,
+       "corr": 0.342
+      },
+      {
+       "lag": 9,
+       "corr": 0.321
+      },
+      {
+       "lag": 10,
+       "corr": 0.292
+      },
+      {
+       "lag": 11,
+       "corr": 0.278
+      },
+      {
        "lag": 12,
-       "corr": 0.228
+       "corr": 0.248
       }
      ],
-     "granger_F": 2.45,
-     "granger_significativo_5pct": false,
-     "ganho_oos_pct": 3.9,
-     "estabilidade_metade1": 0.457,
-     "estabilidade_metade2": 0.288,
+     "granger_F": 3.56,
+     "granger_significativo_5pct": true,
+     "ganho_oos_pct": 5.8,
+     "estabilidade_metade1": 0.295,
+     "estabilidade_metade2": 0.343,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
-      "granger_5pct": false,
+      "granger_5pct": true,
       "ganho_oos": true,
       "estabilidade": true
      },
-     "criterios_atendidos": "3/4",
-     "status": "em triagem",
-     "n_obs": 88
+     "criterios_atendidos": "4/4",
+     "status": "promovido",
+     "n_obs": 172
     },
     {
      "candidato": "comprometimento",
@@ -702,76 +702,76 @@
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
      "melhor_defasagem_meses": 8,
-     "correlacao_melhor_defasagem": 0.344,
+     "correlacao_melhor_defasagem": 0.336,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.197
+       "corr": 0.154
       },
       {
        "lag": 1,
-       "corr": 0.285
+       "corr": 0.197
       },
       {
        "lag": 2,
-       "corr": 0.326
+       "corr": 0.265
       },
       {
        "lag": 3,
-       "corr": 0.292
+       "corr": 0.269
       },
       {
        "lag": 4,
-       "corr": 0.262
-      },
-      {
-       "lag": 5,
-       "corr": 0.318
-      },
-      {
-       "lag": 6,
-       "corr": 0.296
-      },
-      {
-       "lag": 7,
-       "corr": 0.274
-      },
-      {
-       "lag": 8,
-       "corr": 0.344
-      },
-      {
-       "lag": 9,
-       "corr": 0.3
-      },
-      {
-       "lag": 10,
-       "corr": 0.256
-      },
-      {
-       "lag": 11,
        "corr": 0.236
       },
       {
+       "lag": 5,
+       "corr": 0.293
+      },
+      {
+       "lag": 6,
+       "corr": 0.304
+      },
+      {
+       "lag": 7,
+       "corr": 0.271
+      },
+      {
+       "lag": 8,
+       "corr": 0.336
+      },
+      {
+       "lag": 9,
+       "corr": 0.308
+      },
+      {
+       "lag": 10,
+       "corr": 0.258
+      },
+      {
+       "lag": 11,
+       "corr": 0.244
+      },
+      {
        "lag": 12,
-       "corr": 0.171
+       "corr": 0.19
       }
      ],
-     "granger_F": 2.08,
-     "granger_significativo_5pct": false,
-     "ganho_oos_pct": 5.2,
-     "estabilidade_metade1": 0.454,
-     "estabilidade_metade2": 0.29,
+     "granger_F": 2.84,
+     "granger_significativo_5pct": true,
+     "ganho_oos_pct": 4.0,
+     "estabilidade_metade1": 0.238,
+     "estabilidade_metade2": 0.342,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
-      "granger_5pct": false,
+      "granger_5pct": true,
       "ganho_oos": true,
       "estabilidade": true
      },
-     "criterios_atendidos": "3/4",
-     "status": "em triagem",
-     "n_obs": 88
+     "criterios_atendidos": "4/4",
+     "status": "promovido",
+     "n_obs": 172
     },
     {
      "candidato": "comprometimento",
@@ -1319,66 +1319,66 @@
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
      "melhor_defasagem_meses": 10,
-     "correlacao_melhor_defasagem": 0.29,
+     "correlacao_melhor_defasagem": 0.268,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.082
+       "corr": 0.086
       },
       {
        "lag": 1,
-       "corr": 0.179
+       "corr": 0.155
       },
       {
        "lag": 2,
-       "corr": 0.198
+       "corr": 0.156
       },
       {
        "lag": 3,
-       "corr": 0.157
+       "corr": 0.208
       },
       {
        "lag": 4,
-       "corr": 0.219
+       "corr": 0.209
       },
       {
        "lag": 5,
-       "corr": 0.167
+       "corr": 0.168
       },
       {
        "lag": 6,
-       "corr": 0.164
+       "corr": 0.222
       },
       {
        "lag": 7,
-       "corr": 0.205
+       "corr": 0.216
       },
       {
        "lag": 8,
-       "corr": 0.259
+       "corr": 0.265
       },
       {
        "lag": 9,
-       "corr": 0.21
+       "corr": 0.266
       },
       {
        "lag": 10,
-       "corr": 0.29
+       "corr": 0.268
       },
       {
        "lag": 11,
-       "corr": 0.286
+       "corr": 0.262
       },
       {
        "lag": 12,
-       "corr": 0.274
+       "corr": 0.268
       }
      ],
-     "granger_F": 1.44,
+     "granger_F": 2.25,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -1.4,
-     "estabilidade_metade1": 0.363,
-     "estabilidade_metade2": 0.26,
+     "ganho_oos_pct": -0.4,
+     "estabilidade_metade1": 0.239,
+     "estabilidade_metade2": 0.292,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -1388,7 +1388,7 @@
      },
      "criterios_atendidos": "2/4",
      "status": "em triagem",
-     "n_obs": 88
+     "n_obs": 172
     },
     {
      "candidato": "comprometimento",
@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-10-24T15:01:31+00:00"
+ "gerado_em": "2026-10-26T17:49:56+00:00"
 }

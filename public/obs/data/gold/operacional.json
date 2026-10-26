@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-24T15:01:31+00:00",
+ "gerado_em": "2026-10-26T17:49:56+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -813,7 +813,7 @@
       },
       "var_aa_pct": -2.4,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -1996,7 +1996,7 @@
       },
       "var_aa_pct": -5.7,
       "fre_ano": 2026,
-      "versao": 6
+      "versao": 7
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -2375,7 +2375,7 @@
       },
       "var_aa_pct": -2.5,
       "fre_ano": 2026,
-      "versao": 7
+      "versao": 8
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -2721,7 +2721,7 @@
       },
       "var_aa_pct": 4.6,
       "fre_ano": 2026,
-      "versao": 7
+      "versao": 8
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -3788,7 +3788,7 @@
       },
       "var_aa_pct": -2.6,
       "fre_ano": 2026,
-      "versao": 5
+      "versao": 7
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -43743,40 +43743,6 @@
     "nome": "BANCO BMG S/A",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 18157789.16,
-       "membros": 9.0,
-       "media_por_membro_brl": 2017532,
-       "composicao": {
-        "salario": 16860000.0,
-        "beneficios": 1297789.16,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 4010473.54,
-       "media_individual": 2017532.13
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 20381354.87,
-       "membros": 9.0,
-       "media_por_membro_brl": 2264595,
-       "composicao": {
-        "salario": 17878212.63,
-        "beneficios": 2503142.24,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -43806,6 +43772,40 @@
         "bonus": 0.0,
         "participacao_resultados": 17662178.95,
         "baseada_acoes": 72260233.63,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 18157789.16,
+       "membros": 9.0,
+       "media_por_membro_brl": 2017532,
+       "composicao": {
+        "salario": 16860000.0,
+        "beneficios": 1297789.16,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 4010473.54,
+       "media_individual": 2017532.13
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 20381354.87,
+       "membros": 9.0,
+       "media_por_membro_brl": 2264595,
+       "composicao": {
+        "salario": 17878212.63,
+        "beneficios": 2503142.24,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
        }
