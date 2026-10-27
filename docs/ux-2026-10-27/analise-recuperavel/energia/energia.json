@@ -1,0 +1,63 @@
+{
+  "commit": "54e2bfd00ff64c567529917b80fec1a9bf418568",
+  "build": "X--ElloZSDGMxGxEB4ivY",
+  "resultados": [
+    {
+      "largura": 390,
+      "idioma": "pt",
+      "caminho": "/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450",
+      "caminhoSalvo": "/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450&perfil=200&leitura=perfil&grupo=todas&uf=&de=&ate=&valores=nominal&cunid=rs&sclasse=residencial&slig=monofasico&sband=vigente",
+      "publico": "BUSCAR PELO MUNICÍPIO\n\nOU ESCOLHA A DISTRIBUIDORA\nDistribuidora (sigla e estado)\nÂmbar Amazonas (AM)\nÂMBAR ENERGIA RR (RR)\nCASTRO-DIS (PR)\nCEA (AP)\nCEDRAP (SP)\nCEEE-D (RS)\nCELESC (PR, SC)\nCELETRO (RS)\nCEMIG-D (MG)\nCEMIRIM (SP)\nCEPRAG (SC)\nCERAL ANITÁPOLIS (SC)\nCERAL ARARUAMA (RJ)\nCERAL-DIS (PR)\nCERCI (RJ)\nCERCOS (SE)\nCERES (MG, RJ)\nCERFOX (RS)\nCERILUZ (RS)\nCERIM (SP)\nCERIPa (SP)\nCERIS (SP)\nCERMC (SP)\nCERMISSÕES (RS)\nCERPRO (SP)\nCERRP (SP)\nCERTAJA (RS)\nCERTEL ENERGIA (RS)\nCERTHIL (RS)\nCETRIL (SP)\nCHESP (GO)\nCOCEL (PR)\nCOELBA (BA)\nCOOPERALIANÇA (SC)\nCOOPERLUZ (RS)\nCOOPERNORTE (RS)\nCOOPERSUL (RS)\nCOPEL-DIS (PR, SC)\nCOPREL (PR, RS)\nCOSERN (RN)\nCPFL Santa Cruz (MG, PR, SP)\nCPFL-PAULISTA (SP)\nCPFL-PIRATINING (SP)\nCRELUZ-D (RS)\nCreral (RS)\nDCELT (SC)\nDEMEI (RS)\nDMED (MG)\nEAC (AC)\nEDP ES (ES)\nEDP SP (SP)\nEFLJC (SC)\nEFLUL (SC)\nELEKTRO (MS, SP)\nELETROCAR (RS)\nELETROPAULO (SP)\nELFSM (ES)\nEMR (MG, RJ)\nEMS (MS)\nEMT (MT)\nENEL CE (CE)\nENEL RJ (MG, RJ)\nEPB (PB)\nEQUATORIAL AL (AL)\nEQUATORIAL GO (GO)\nEQUATORIAL MA (MA)\nEQUATORIAL PA (PA)\nEQUATORIAL PI (PI)\nERO (RO)\nESE (SE)\nESS (MG, PR, SP)\nETO (TO)\nHIDROPAN (RS)\nLIGHT SESA (MG, RJ)\nMUXENERGIA (RS)\nNeoenergia Brasília (DF)\nNeoenergia PE (PB, PE)\nPACTO ENERGIA PR (PR)\nRGE (RS)\nSULGIPE (BA, SE)\nUHENPAL (RS)\nCONSUMO NO MÊS (KWH)\nO consumo vem na fatura, em kWh.\n\nRecife (PE): atendido por Neoenergia PE.\n\nESTIMATIVA MENSAL, NEOENERGIA PE (PB, PE)\n\nR$ 367,97\npor mês, sem tributos\n\n450 kWh no mês, classe residencial, ligação monofásica: R$ 359,49 de energia e uso da rede (TE + TUSD) e R$ 8,48 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 29/04/2026 (REH 3.583/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento.\n\nNão é a fatura. Faltam ICMS, PIS/Pasep, Cofins e a contribuição de iluminação pública, que mudam por estado e por município; multas, parcelamentos e serviços também ficam fora.",
+      "resposta": "Para 450 kWh no mês na Neoenergia PE, a estimativa é de R$ 367,97, sem tributos e sem iluminação pública.",
+      "recarga": true,
+      "transicao": true,
+      "historicoComFoco": true,
+      "ausenciaPreservada": true,
+      "avancadoPreservado": true,
+      "larguraPagina": 390
+    },
+    {
+      "largura": 390,
+      "idioma": "en",
+      "caminho": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450",
+      "caminhoSalvo": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450&perfil=200&leitura=perfil&grupo=todas&uf=&de=&ate=&valores=nominal&cunid=rs&sclasse=residencial&slig=monofasico&sband=vigente",
+      "publico": "SEARCH BY MUNICIPALITY\n\nOR CHOOSE THE DISTRIBUTION UTILITY\nDistribution utility (acronym and state)\nÂmbar Amazonas (AM)\nÂMBAR ENERGIA RR (RR)\nCASTRO-DIS (PR)\nCEA (AP)\nCEDRAP (SP)\nCEEE-D (RS)\nCELESC (PR, SC)\nCELETRO (RS)\nCEMIG-D (MG)\nCEMIRIM (SP)\nCEPRAG (SC)\nCERAL ANITÁPOLIS (SC)\nCERAL ARARUAMA (RJ)\nCERAL-DIS (PR)\nCERCI (RJ)\nCERCOS (SE)\nCERES (MG, RJ)\nCERFOX (RS)\nCERILUZ (RS)\nCERIM (SP)\nCERIPa (SP)\nCERIS (SP)\nCERMC (SP)\nCERMISSÕES (RS)\nCERPRO (SP)\nCERRP (SP)\nCERTAJA (RS)\nCERTEL ENERGIA (RS)\nCERTHIL (RS)\nCETRIL (SP)\nCHESP (GO)\nCOCEL (PR)\nCOELBA (BA)\nCOOPERALIANÇA (SC)\nCOOPERLUZ (RS)\nCOOPERNORTE (RS)\nCOOPERSUL (RS)\nCOPEL-DIS (PR, SC)\nCOPREL (PR, RS)\nCOSERN (RN)\nCPFL Santa Cruz (MG, PR, SP)\nCPFL-PAULISTA (SP)\nCPFL-PIRATINING (SP)\nCRELUZ-D (RS)\nCreral (RS)\nDCELT (SC)\nDEMEI (RS)\nDMED (MG)\nEAC (AC)\nEDP ES (ES)\nEDP SP (SP)\nEFLJC (SC)\nEFLUL (SC)\nELEKTRO (MS, SP)\nELETROCAR (RS)\nELETROPAULO (SP)\nELFSM (ES)\nEMR (MG, RJ)\nEMS (MS)\nEMT (MT)\nENEL CE (CE)\nENEL RJ (MG, RJ)\nEPB (PB)\nEQUATORIAL AL (AL)\nEQUATORIAL GO (GO)\nEQUATORIAL MA (MA)\nEQUATORIAL PA (PA)\nEQUATORIAL PI (PI)\nERO (RO)\nESE (SE)\nESS (MG, PR, SP)\nETO (TO)\nHIDROPAN (RS)\nLIGHT SESA (MG, RJ)\nMUXENERGIA (RS)\nNeoenergia Brasília (DF)\nNeoenergia PE (PB, PE)\nPACTO ENERGIA PR (PR)\nRGE (RS)\nSULGIPE (BA, SE)\nUHENPAL (RS)\nCONSUMPTION IN THE MONTH (KWH)\nConsumption is on the bill, in kWh.\n\nRecife (PE): served by Neoenergia PE.\n\nMONTHLY ESTIMATE, NEOENERGIA PE (PB, PE)\n\nR$ 367.97\nper month, without taxes\n\n450 kWh in the month, residential class, single-phase connection: R$ 359.49 for energy and grid use (TE + TUSD) and R$ 8.48 for the yellow tariff flag.\n\nTARIFF FLAG CONSIDERED\nYellow, Sep 2026, R$ 0.01885/kWh. The tariff flag for Oct 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Sep 2026 (yellow). The estimate uses the latest recorded one, which is not the current month's.\nTARIFF DATE\nValidity period started on Apr 29, 2026 (REH 3.583/2026), in force in the file of Sep 30, 2026.\nSOURCE\nANEEL, applied tariffs of the distribution utilities (conventional residential B1 tariff). Source: ANEEL, tariff flags dataset, activation resource.\n\nIt is not the bill. ICMS, PIS/Pasep, Cofins and the public lighting contribution are missing, and they vary by state and municipality; fines, installments and services are also left out.",
+      "resposta": "For 450 kWh a month at Neoenergia PE, the estimate is R$ 367.97, without taxes and without public lighting.",
+      "recarga": true,
+      "transicao": true,
+      "historicoComFoco": true,
+      "ausenciaPreservada": true,
+      "avancadoPreservado": true,
+      "larguraPagina": 390
+    },
+    {
+      "largura": 1440,
+      "idioma": "pt",
+      "caminho": "/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450",
+      "caminhoSalvo": "/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450&perfil=200&leitura=perfil&grupo=todas&uf=&de=&ate=&valores=nominal&cunid=rs&sclasse=residencial&slig=monofasico&sband=vigente",
+      "publico": "BUSCAR PELO MUNICÍPIO\n\nOU ESCOLHA A DISTRIBUIDORA\nDistribuidora (sigla e estado)\nÂmbar Amazonas (AM)\nÂMBAR ENERGIA RR (RR)\nCASTRO-DIS (PR)\nCEA (AP)\nCEDRAP (SP)\nCEEE-D (RS)\nCELESC (PR, SC)\nCELETRO (RS)\nCEMIG-D (MG)\nCEMIRIM (SP)\nCEPRAG (SC)\nCERAL ANITÁPOLIS (SC)\nCERAL ARARUAMA (RJ)\nCERAL-DIS (PR)\nCERCI (RJ)\nCERCOS (SE)\nCERES (MG, RJ)\nCERFOX (RS)\nCERILUZ (RS)\nCERIM (SP)\nCERIPa (SP)\nCERIS (SP)\nCERMC (SP)\nCERMISSÕES (RS)\nCERPRO (SP)\nCERRP (SP)\nCERTAJA (RS)\nCERTEL ENERGIA (RS)\nCERTHIL (RS)\nCETRIL (SP)\nCHESP (GO)\nCOCEL (PR)\nCOELBA (BA)\nCOOPERALIANÇA (SC)\nCOOPERLUZ (RS)\nCOOPERNORTE (RS)\nCOOPERSUL (RS)\nCOPEL-DIS (PR, SC)\nCOPREL (PR, RS)\nCOSERN (RN)\nCPFL Santa Cruz (MG, PR, SP)\nCPFL-PAULISTA (SP)\nCPFL-PIRATINING (SP)\nCRELUZ-D (RS)\nCreral (RS)\nDCELT (SC)\nDEMEI (RS)\nDMED (MG)\nEAC (AC)\nEDP ES (ES)\nEDP SP (SP)\nEFLJC (SC)\nEFLUL (SC)\nELEKTRO (MS, SP)\nELETROCAR (RS)\nELETROPAULO (SP)\nELFSM (ES)\nEMR (MG, RJ)\nEMS (MS)\nEMT (MT)\nENEL CE (CE)\nENEL RJ (MG, RJ)\nEPB (PB)\nEQUATORIAL AL (AL)\nEQUATORIAL GO (GO)\nEQUATORIAL MA (MA)\nEQUATORIAL PA (PA)\nEQUATORIAL PI (PI)\nERO (RO)\nESE (SE)\nESS (MG, PR, SP)\nETO (TO)\nHIDROPAN (RS)\nLIGHT SESA (MG, RJ)\nMUXENERGIA (RS)\nNeoenergia Brasília (DF)\nNeoenergia PE (PB, PE)\nPACTO ENERGIA PR (PR)\nRGE (RS)\nSULGIPE (BA, SE)\nUHENPAL (RS)\nCONSUMO NO MÊS (KWH)\nO consumo vem na fatura, em kWh.\n\nRecife (PE): atendido por Neoenergia PE.\n\nESTIMATIVA MENSAL, NEOENERGIA PE (PB, PE)\n\nR$ 367,97\npor mês, sem tributos\n\n450 kWh no mês, classe residencial, ligação monofásica: R$ 359,49 de energia e uso da rede (TE + TUSD) e R$ 8,48 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 29/04/2026 (REH 3.583/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento.\n\nNão é a fatura. Faltam ICMS, PIS/Pasep, Cofins e a contribuição de iluminação pública, que mudam por estado e por município; multas, parcelamentos e serviços também ficam fora.",
+      "resposta": "Para 450 kWh no mês na Neoenergia PE, a estimativa é de R$ 367,97, sem tributos e sem iluminação pública.",
+      "recarga": true,
+      "transicao": true,
+      "historicoComFoco": true,
+      "ausenciaPreservada": true,
+      "avancadoPreservado": true,
+      "larguraPagina": 1440
+    },
+    {
+      "largura": 1440,
+      "idioma": "en",
+      "caminho": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450",
+      "caminhoSalvo": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&conta_municipio=PE%7CRecife&skwh=450&perfil=200&leitura=perfil&grupo=todas&uf=&de=&ate=&valores=nominal&cunid=rs&sclasse=residencial&slig=monofasico&sband=vigente",
+      "publico": "SEARCH BY MUNICIPALITY\n\nOR CHOOSE THE DISTRIBUTION UTILITY\nDistribution utility (acronym and state)\nÂmbar Amazonas (AM)\nÂMBAR ENERGIA RR (RR)\nCASTRO-DIS (PR)\nCEA (AP)\nCEDRAP (SP)\nCEEE-D (RS)\nCELESC (PR, SC)\nCELETRO (RS)\nCEMIG-D (MG)\nCEMIRIM (SP)\nCEPRAG (SC)\nCERAL ANITÁPOLIS (SC)\nCERAL ARARUAMA (RJ)\nCERAL-DIS (PR)\nCERCI (RJ)\nCERCOS (SE)\nCERES (MG, RJ)\nCERFOX (RS)\nCERILUZ (RS)\nCERIM (SP)\nCERIPa (SP)\nCERIS (SP)\nCERMC (SP)\nCERMISSÕES (RS)\nCERPRO (SP)\nCERRP (SP)\nCERTAJA (RS)\nCERTEL ENERGIA (RS)\nCERTHIL (RS)\nCETRIL (SP)\nCHESP (GO)\nCOCEL (PR)\nCOELBA (BA)\nCOOPERALIANÇA (SC)\nCOOPERLUZ (RS)\nCOOPERNORTE (RS)\nCOOPERSUL (RS)\nCOPEL-DIS (PR, SC)\nCOPREL (PR, RS)\nCOSERN (RN)\nCPFL Santa Cruz (MG, PR, SP)\nCPFL-PAULISTA (SP)\nCPFL-PIRATINING (SP)\nCRELUZ-D (RS)\nCreral (RS)\nDCELT (SC)\nDEMEI (RS)\nDMED (MG)\nEAC (AC)\nEDP ES (ES)\nEDP SP (SP)\nEFLJC (SC)\nEFLUL (SC)\nELEKTRO (MS, SP)\nELETROCAR (RS)\nELETROPAULO (SP)\nELFSM (ES)\nEMR (MG, RJ)\nEMS (MS)\nEMT (MT)\nENEL CE (CE)\nENEL RJ (MG, RJ)\nEPB (PB)\nEQUATORIAL AL (AL)\nEQUATORIAL GO (GO)\nEQUATORIAL MA (MA)\nEQUATORIAL PA (PA)\nEQUATORIAL PI (PI)\nERO (RO)\nESE (SE)\nESS (MG, PR, SP)\nETO (TO)\nHIDROPAN (RS)\nLIGHT SESA (MG, RJ)\nMUXENERGIA (RS)\nNeoenergia Brasília (DF)\nNeoenergia PE (PB, PE)\nPACTO ENERGIA PR (PR)\nRGE (RS)\nSULGIPE (BA, SE)\nUHENPAL (RS)\nCONSUMPTION IN THE MONTH (KWH)\nConsumption is on the bill, in kWh.\n\nRecife (PE): served by Neoenergia PE.\n\nMONTHLY ESTIMATE, NEOENERGIA PE (PB, PE)\n\nR$ 367.97\nper month, without taxes\n\n450 kWh in the month, residential class, single-phase connection: R$ 359.49 for energy and grid use (TE + TUSD) and R$ 8.48 for the yellow tariff flag.\n\nTARIFF FLAG CONSIDERED\nYellow, Sep 2026, R$ 0.01885/kWh. The tariff flag for Oct 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Sep 2026 (yellow). The estimate uses the latest recorded one, which is not the current month's.\nTARIFF DATE\nValidity period started on Apr 29, 2026 (REH 3.583/2026), in force in the file of Sep 30, 2026.\nSOURCE\nANEEL, applied tariffs of the distribution utilities (conventional residential B1 tariff). Source: ANEEL, tariff flags dataset, activation resource.\n\nIt is not the bill. ICMS, PIS/Pasep, Cofins and the public lighting contribution are missing, and they vary by state and municipality; fines, installments and services are also left out.",
+      "resposta": "For 450 kWh a month at Neoenergia PE, the estimate is R$ 367.97, without taxes and without public lighting.",
+      "recarga": true,
+      "transicao": true,
+      "historicoComFoco": true,
+      "ausenciaPreservada": true,
+      "avancadoPreservado": true,
+      "larguraPagina": 1440
+    }
+  ],
+  "erros": []
+}

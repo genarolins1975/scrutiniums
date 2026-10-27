@@ -1,0 +1,29 @@
+{
+  "build": "7WK2sis8IxzPaxjBcAPJ5",
+  "casos": [
+    {
+      "logado": false,
+      "antes": {
+        "url": "/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, ÂMBAR AMAZONAS (AM)\n\nR$ 536,74\npor mês, sem tributos\n\n600 kWh no mês, classe residencial, ligação monofásica: R$ 525,43 de energia e uso da rede (TE + TUSD) e R$ 11,31 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 26/05/2026 (REH 3.588/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      },
+      "voltar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE (PB, PE)\n\nR$ 367,97\npor mês, sem tributos\n\n450 kWh no mês, classe residencial, ligação monofásica: R$ 359,49 de energia e uso da rede (TE + TUSD) e R$ 8,48 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 29/04/2026 (REH 3.583/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      },
+      "avancar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, ÂMBAR AMAZONAS (AM)\n\nR$ 536,74\npor mês, sem tributos\n\n600 kWh no mês, classe residencial, ligação monofásica: R$ 525,43 de energia e uso da rede (TE + TUSD) e R$ 11,31 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 26/05/2026 (REH 3.588/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      }
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "commit": "bff6a318a63677cccb63980426ee96906b6b13f4",
+  "buildId": "sovLxFGQXUHYW9DceE2Ob",
+  "data": "2026-10-27T16:26:05.675Z",
+  "casos": [
+    {
+      "superficie": "conta",
+      "width": 390,
+      "metricas": {
+        "texto": "Ver endereço e parâmetros",
+        "whiteSpace": "normal",
+        "fonte": "24px",
+        "largura": 276,
+        "scroll": 276,
+        "caixa": {
+          "x": 57,
+          "y": 460.5,
+          "width": 276,
+          "height": 78
+        },
+        "pai": {
+          "x": 57,
+          "y": 59.5,
+          "width": 276,
+          "height": 595,
+          "client": 276,
+          "scroll": 276
+        },
+        "viewport": 390,
+        "pagina": 490,
+        "foco": true
+      },
+      "abre": true,
+      "fecha": true
+    },
+    {
+      "superficie": "conta",
+      "width": 1440,
+      "metricas": {
+        "texto": "Ver endereço e parâmetros",
+        "whiteSpace": "normal",
+        "fonte": "24px",
+        "largura": 310,
+        "scroll": 310,
+        "caixa": {
+          "x": 169,
+          "y": 875.6875,
+          "width": 309.6875,
+          "height": 44
+        },
+        "pai": {
+          "x": 169,
+          "y": 663.1875,
+          "width": 1102,
+          "height": 272.5,
+          "client": 1102,
+          "scroll": 1102
+        },
+        "viewport": 1440,
+        "pagina": 1440,
+        "foco": true
+      },
+      "abre": true,
+      "fecha": true
+    }
+  ],
+  "paragrafos": [
+    {
+      "width": 390,
+      "linhas": [
+        {
+          "texto": "Nos painéis, use Salvar recorte, na barra superior, para guardar a página com os filtros do endereço. O link de cada recorte pode ser compartilhado: quem não tem conta entra ou se cadastra e volta a ele. Até 50 recortes por conta.",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "Ao reabrir, a consulta usa os dados disponíveis naquele momento. Salvar um recorte não arquiva os valores de uma publicação anterior.",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "combustiveis · salvo em 27/10/2026",
+          "fonte": "24px",
+          "entrelinha": "39px"
+        },
+        {
+          "texto": "Pernambuco · 60 litros",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "/combustiveis?uf=PE&litros=60",
+          "fonte": "12px",
+          "entrelinha": "19.5px"
+        },
+        {
+          "texto": "",
+          "fonte": "24px",
+          "entrelinha": "39px"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "linhas": [
+        {
+          "texto": "Nos painéis, use Salvar recorte, na barra superior, para guardar a página com os filtros do endereço. O link de cada recorte pode ser compartilhado: quem não tem conta entra ou se cadastra e volta a ele. Até 50 recortes por conta.",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "Ao reabrir, a consulta usa os dados disponíveis naquele momento. Salvar um recorte não arquiva os valores de uma publicação anterior.",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "combustiveis · salvo em 27/10/2026",
+          "fonte": "24px",
+          "entrelinha": "39px"
+        },
+        {
+          "texto": "Pernambuco · 60 litros",
+          "fonte": "28px",
+          "entrelinha": "45.5px"
+        },
+        {
+          "texto": "/combustiveis?uf=PE&litros=60",
+          "fonte": "12px",
+          "entrelinha": "19.5px"
+        },
+        {
+          "texto": "",
+          "fonte": "24px",
+          "entrelinha": "39px"
+        }
+      ]
+    }
+  ]
+}

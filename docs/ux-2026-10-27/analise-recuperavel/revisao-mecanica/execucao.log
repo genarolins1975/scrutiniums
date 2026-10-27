@@ -1,0 +1,7 @@
+{"idioma":"pt","logado":false,"voltar":{"parametro":"450","input":"450","focado":true},"avancar":{"parametro":"600","input":"600","focado":true}}
+{"idioma":"pt","logado":true,"voltar":{"parametro":"450","input":"450","focado":true},"avancar":{"parametro":"600","input":"600","focado":true}}
+{"idioma":"en","logado":false,"voltar":{"parametro":"450","input":"450","focado":true},"avancar":{"parametro":"600","input":"600","focado":true}}
+{"idioma":"en","logado":true,"voltar":{"parametro":"450","input":"450","focado":true},"avancar":{"parametro":"600","input":"600","focado":true}}
+{"pagina":"/app/conta","width":390,"axe":[]}
+{"pagina":"/app/conta","width":1440,"axe":[]}
+{"commit":"32db0c3d24e17e207ce913555dfabd9a57de31b9","build":"zdkU37XJIzk4uJJiZ55kv","falhas":[]}
