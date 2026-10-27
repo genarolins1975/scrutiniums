@@ -165,7 +165,7 @@ export function Funil({ etapas }: { etapas: EtapaFunil[] }) {
           <li key={etapa.rotulo}>
             <div className="mb-1 flex items-baseline justify-between gap-4 text-sm">
               <span className="text-carvao">
-                <span className="font-serif text-bronze" aria-hidden="true">
+                <span className="font-serif text-bronze-dark" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>{" "}
                 {etapa.rotulo}

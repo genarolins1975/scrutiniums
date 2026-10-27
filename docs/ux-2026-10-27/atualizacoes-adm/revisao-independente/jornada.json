@@ -1,0 +1,15 @@
+{
+  "build": "mXMizLsighsc8Sf0SmbFi",
+  "iniciadaEm": "2026-10-27T10:14:57.000Z",
+  "verificacoes": [
+    "Link do resumo administrativo chega ao quadro; Crédito aparece na primeira tela a 320px.",
+    "Criar com teclado, salvar e recarregar preserva nota, responsável e prazo; resumo recolhido mostra responsável e prazo.",
+    "Concluir e reabrir funciona; quando a linha sai do recorte, o foco retorna ao filtro.",
+    "Filtro na URL, voltar, avançar e recarregar preservam atencao e mostram exatamente 2 áreas; espera por DOM/controle funciona.",
+    "Sem rolagem horizontal a 320px e sem erros JavaScript na jornada independente.",
+    "API autenticada rejeita Origin externo com 403.",
+    "Sem sessão, rota administrativa responde 307 para login."
+  ],
+  "resultado": "aprovada",
+  "encerradaEm": "2026-10-27T10:15:12.372Z"
+}

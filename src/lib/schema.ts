@@ -187,3 +187,19 @@ export const usoBuscaDia = pgTable(
 );
 
 export type User = typeof users.$inferSelect;
+
+/** Fila operacional compartilhada pelos administradores, privada e independente das golds. */
+export const tarefasOperacao = pgTable("tarefas_operacao", {
+  id: text("id").primaryKey(),
+  titulo: text("titulo").notNull(),
+  detalhe: text("detalhe").notNull(),
+  origem: text("origem"),
+  desde: timestamp("desde", { withTimezone: true, mode: "date" }).notNull(),
+  tipo: text("tipo").notNull(),
+  estado: text("estado").notNull(),
+  nota: text("nota").notNull().default(""),
+  responsavel: text("responsavel").notNull().default(""),
+  prazo: text("prazo").notNull().default(""),
+  versao: integer("versao").notNull().default(1),
+  atualizadoEm: timestamp("atualizado_em", { withTimezone: true, mode: "date" }).notNull(),
+});

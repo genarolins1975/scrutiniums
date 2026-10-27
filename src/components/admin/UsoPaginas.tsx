@@ -107,7 +107,7 @@ export function UsoPaginas({ uso }: { uso: UsoDoPeriodo }) {
         <>
           <h3 className="mt-10 font-serif text-xl text-carvao">Por observatório</h3>
           <p className="mt-2 text-xs text-mineral md:hidden">No celular, as duas tabelas rolam para o lado.</p>
-          <div className="tabela-scroll mt-4 overflow-x-auto">
+          <div className="tabela-scroll mt-4 overflow-x-auto" role="region" aria-label="Uso por observatório" tabIndex={0}>
             <table className="w-full min-w-[32rem] border-collapse text-sm" data-uso="observatorios">
               <thead>
                 <tr className="border-b border-linha">
@@ -136,7 +136,7 @@ export function UsoPaginas({ uso }: { uso: UsoDoPeriodo }) {
             Páginas com identificador no endereço contam pelo modelo da rota, como
             /saneamento/municipio/[id].
           </p>
-          <div className="tabela-scroll mt-4 overflow-x-auto">
+          <div className="tabela-scroll mt-4 overflow-x-auto" role="region" aria-label="Uso por página" tabIndex={0}>
             <table className="w-full min-w-[40rem] border-collapse text-sm" data-uso="paginas">
               <thead>
                 <tr className="border-b border-linha">

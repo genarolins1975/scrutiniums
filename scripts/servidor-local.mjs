@@ -26,7 +26,7 @@ const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const require = createRequire(import.meta.url);
 export const NOME_COOKIE = "scrutiniums_session";
 
-export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-local", preparar = null } = {}) {
+export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-local", preparar = null, administrador = false, estadoOperacoes = null } = {}) {
   if (!existsSync(join(raiz, ".next/BUILD_ID"))) throw new Error("Sem build em .next: rode npm run build antes.");
   const temporario = await mkdtemp(join(tmpdir(), "scrutiniums-local-"));
   const pastaBundle = await mkdtemp(join(raiz, "node_modules/.servidor-local-"));
@@ -59,9 +59,15 @@ export async function subirServidorLocal({ raiz = RAIZ, usuario = "evidencias-lo
     // dados a mais da conta (recortes, avisos), gravados antes de o servidor abrir o banco
     if (preparar) await preparar(db, schema, usuario);
     await db.$client.close();
+    // Duas auditorias sequenciais no mesmo processo precisam de bancos distintos.
+    // O db.ts usa uma Promise global; a instância encerrada não pode ser reutilizada.
+    delete globalThis.__scrutiniumsDb;
     if (anterior === undefined) delete process.env.DATABASE_URL; else process.env.DATABASE_URL = anterior;
 
     const env = { NODE_ENV: "production", NEXT_TELEMETRY_DISABLED: "1", DATABASE_URL: bancoUrl, COOKIE_SECRET: segredo };
+    // Auditoria local do ADM: só a conta sintética; nunca herda a lista ou o banco de produção.
+    if (estadoOperacoes) env.OPERACOES_ESTADO_LOCAL = estadoOperacoes;
+    if (administrador) env.ADMIN_EMAILS = `${usuario}@example.invalid`;
     for (const k of ["PATH", "LANG", "LC_ALL", "TZ", "TMPDIR", "TEMP", "TMP", "NODE_EXTRA_CA_CERTS", "NODE_OPTIONS"]) if (process.env[k] !== undefined) env[k] = process.env[k];
     // localhost, não 127.0.0.1: o Next usa localhost nos redirects internos e o cookie não pode trocar de host
     filho = spawn(process.execPath, [join(raiz, "node_modules/next/dist/bin/next"), "start", "--hostname", "localhost", "--port", "0"],

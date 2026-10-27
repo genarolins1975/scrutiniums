@@ -32,7 +32,8 @@ def executar(comando, log, timeout=1200):
     with log.open('w') as saida:
         try:
             processo = subprocess.Popen(comando, cwd=RAIZ, stdout=saida, stderr=subprocess.STDOUT,
-                                        start_new_session=True)
+                                        start_new_session=True, env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=4096",
+                                            "EXIGIR_BUILD_HTML": "1"})
         except OSError as erro:
             saida.write(str(erro))
             return 127, str(erro)
@@ -131,8 +132,17 @@ def rodar_suite(suite, diretorio):
 
 def suites(diretorio):
     diretorio.mkdir(parents=True)
-    # Independentes: Python continua mesmo se o vitest reprovar/abortar (incidente 13/10).
-    return {s: rodar_suite(s, diretorio) for s in ('vitest', 'pipeline', 'pesquisa')}
+    # 27/10/2026: a candidata muda em cada rodada. HTML de build anterior não prova
+    # a composição que será publicada; build ausente tampouco autoriza skips.
+    preparo = repetir_uma_vez(lambda n: classificar(
+        *executar(['npm', 'run', 'build'], diretorio / f'build-{n}.log'), None, 'preparo'))
+    execucoes = {'build': preparo}
+    if not preparo['inconclusivo']:
+        execucoes['vitest'] = rodar_suite('vitest', diretorio)
+    # Python continua mesmo se o build/vitest reprovar. Build falho retém tudo.
+    for suite in ('pipeline', 'pesquisa'):
+        execucoes[suite] = rodar_suite(suite, diretorio)
+    return execucoes
 
 
 def resultados_das_suites(execucoes):
