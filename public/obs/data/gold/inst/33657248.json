@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-24T15:01:40+00:00",
+  "atualizado_em": "2026-10-27T16:59:19+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 33.657.248"
  },
@@ -2069,17 +2069,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.21,
-    1.31
+    0.54,
+    1.24
    ],
    "impacto_basileia_pp": [
-    -0.32,
-    -0.05
+    -0.3,
+    -0.13
    ],
    "basileia_atual_pct": 25.43,
    "basileia_pos_choque_pct": [
-    25.11,
-    25.38
+    25.13,
+    25.3
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },

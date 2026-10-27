@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-26T17:50:26+00:00",
+ "gerado_em": "2026-10-27T16:59:46+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1278 processos sancionadores em 1ª instância, com 1347 decisões por apenado: 1289 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1279 processos sancionadores em 1ª instância, com 1348 decisões por apenado: 1290 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-10-21",
+  "ultima_decisao": "2026-10-27",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16980,
-   "processos": 13069,
-   "apenados_distintos": 11400
+   "decisoes": 16981,
+   "processos": 13070,
+   "apenados_distintos": 11401
   },
   "janela_12m": {
-   "ini": "2025-10-26",
-   "decisoes": 1347,
-   "processos": 1278,
-   "multas_n": 1289,
-   "multas_valor": 71873000.0,
+   "ini": "2025-10-27",
+   "decisoes": 1348,
+   "processos": 1279,
+   "multas_n": 1290,
+   "multas_valor": 71885500.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 149,
    "pj": 392,
-   "pf": 955
+   "pf": 956
   },
   "janela_12m_anterior": {
    "decisoes": 835,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1289,
-    "share": 95.69
+    "n": 1290,
+    "share": 95.7
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.79
+    "share": 3.78
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,13 +91,13 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 865,
-    "share": 64.22
+    "n": 868,
+    "share": 64.39
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 135,
-    "share": 10.02
+    "share": 10.01
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -116,13 +116,13 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 31,
-    "share": 2.3
+    "n": 30,
+    "share": 2.23
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 26,
-    "share": 1.93
+    "n": 25,
+    "share": 1.85
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -153,18 +153,18 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11950,
-    "share": 87.8
+    "n": 11954,
+    "share": 87.83
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 893,
-    "share": 6.56
+    "n": 892,
+    "share": 6.55
    },
    {
     "situacao": "PENALIDADE EXTINTA",
-    "n": 315,
-    "share": 2.31
+    "n": 316,
+    "share": 2.32
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -183,13 +183,13 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 64,
-    "share": 0.47
+    "n": 63,
+    "share": 0.46
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 45,
-    "share": 0.33
+    "n": 43,
+    "share": 0.32
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3109
+   "n": 3110
   },
   "anual": [
    {
@@ -400,14 +400,14 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1197,
-    "processos": 1132,
-    "multas_n": 1145,
-    "multas_valor": 68660500.0,
+    "decisoes": 1198,
+    "processos": 1133,
+    "multas_n": 1146,
+    "multas_valor": 68673000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 855,
+    "pf": 856,
     "pj": 342,
     "incompleto": true,
     "recurso_share": 11.19,
@@ -415,6 +415,16 @@
    }
   ],
   "recentes": [
+   {
+    "pas": "315964",
+    "nome": "WALTER DE SA CAVALCANTE JUNIOR",
+    "pessoa": "PF",
+    "decisao": "2026-10-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "312862",
     "nome": "ALSTOM BRASIL ENERGIA E TRANSPORTE LTDA",
@@ -513,7 +523,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "312200",
@@ -573,7 +583,7 @@
     "pena": "MULTA",
     "multa": 12500.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "312937",
@@ -804,16 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312201",
-    "nome": "JOAO BATISTA DE OLIVEIRA FILHO",
-    "pessoa": "PF",
-    "decisao": "2026-09-14",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-26",
+   "ini": "2025-10-27",
    "processos": 64,
    "acusados": 164
   },
@@ -953,8 +953,8 @@
    },
    {
     "fase": "Julgamento",
-    "n": 108,
-    "share": 18.59
+    "n": 106,
+    "share": 18.24
    },
    {
     "fase": "Citação e envio de defesas",
@@ -968,8 +968,8 @@
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 12,
-    "share": 2.07
+    "n": 14,
+    "share": 2.41
    }
   ],
   "areas": [

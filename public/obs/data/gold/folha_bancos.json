@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-26T17:49:56+00:00",
+ "gerado_em": "2026-10-27T16:59:10+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 194,
-  "total_editais": 710,
+  "total_editais": 714,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1006,6 +1006,42 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE PATIS",
+    "municipio": "Patis",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/01612478000135/2026/58"
+   },
+   {
+    "ente": "MUNICIPIO DE MIRANDA",
+    "municipio": "Miranda",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-26",
+    "url": "https://pncp.gov.br/compras/03452315000168/2026/12"
+   },
+   {
+    "ente": "MUNICIPIO DE TIMBO",
+    "municipio": "Timbó",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-26",
+    "url": "https://pncp.gov.br/compras/83102764000115/2026/403"
+   },
+   {
+    "ente": "MUNICIPIO DE TIMBO",
+    "municipio": "Timbó",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-26",
+    "url": "https://pncp.gov.br/compras/83102764000115/2026/402"
+   },
+   {
     "ente": "MUNICIPIO DE NOVA OLINDA",
     "municipio": "Nova Olinda",
     "uf": "PB",
@@ -1013,24 +1049,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-26",
     "url": "https://pncp.gov.br/compras/08889297000108/2026/57"
-   },
-   {
-    "ente": "MUNICIPIO DE MUZAMBINHO",
-    "municipio": "Muzambinho",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-23",
-    "url": "https://pncp.gov.br/compras/18668624000147/2026/92"
-   },
-   {
-    "ente": "MUNICIPIO DE MANDAGUARI",
-    "municipio": "Mandaguari",
-    "uf": "PR",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-23",
-    "url": "https://pncp.gov.br/compras/76285345000109/2026/282"
    },
    {
     "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
@@ -1042,6 +1060,15 @@
     "url": "https://pncp.gov.br/compras/43672880000155/2026/118"
    },
    {
+    "ente": "MUNICIPIO DE MUZAMBINHO",
+    "municipio": "Muzambinho",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/18668624000147/2026/92"
+   },
+   {
     "ente": "MUNICIPIO DE VARZEA PAULISTA",
     "municipio": "Várzea Paulista",
     "uf": "SP",
@@ -1049,6 +1076,24 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-23",
     "url": "https://pncp.gov.br/compras/45780087000103/2026/123"
+   },
+   {
+    "ente": "MUNICIPIO DE MANDAGUARI",
+    "municipio": "Mandaguari",
+    "uf": "PR",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-23",
+    "url": "https://pncp.gov.br/compras/76285345000109/2026/282"
+   },
+   {
+    "ente": "MUNICIPIO DE SANTO ANTONIO DE PADUA",
+    "municipio": "Santo Antônio de Pádua",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-22",
+    "url": "https://pncp.gov.br/compras/29114139000148/2026/15"
    },
    {
     "ente": "MUNICIPIO DE MAGE",
@@ -1067,51 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-22",
     "url": "https://pncp.gov.br/compras/46523049000120/2026/183"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTO ANTONIO DE PADUA",
-    "municipio": "Santo Antônio de Pádua",
-    "uf": "RJ",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-22",
-    "url": "https://pncp.gov.br/compras/29114139000148/2026/15"
-   },
-   {
-    "ente": "MUNICIPIO DE FAXINAL DOS GUEDES",
-    "municipio": "Faxinal dos Guedes",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-21",
-    "url": "https://pncp.gov.br/compras/83009910000162/2026/133"
-   },
-   {
-    "ente": "CENTRO UNIVERSITARIO MUNICIPAL DE FRANCA",
-    "municipio": "Franca",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-20",
-    "url": "https://pncp.gov.br/compras/47987136000109/2026/396"
-   },
-   {
-    "ente": "CENTRO UNIVERSITARIO MUNICIPAL DE FRANCA",
-    "municipio": "Franca",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-20",
-    "url": "https://pncp.gov.br/compras/47987136000109/2026/390"
-   },
-   {
-    "ente": "MUNICIPIO DE NAVIRAI",
-    "municipio": "Naviraí",
-    "uf": "MS",
-    "modalidade": "Pregão - Presencial",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-20",
-    "url": "https://pncp.gov.br/compras/03155934000190/2026/126"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

@@ -2,47 +2,47 @@
  "tipo": "CENÁRIO",
  "elasticidades": {
   "selic_pp": {
-   "value": 0.098,
+   "value": 0.117,
    "range": [
-    0.068,
-    0.129
+    0.1,
+    0.134
    ],
    "lag_desc": "por p.p. de Selic, efeito acumulado em 12m",
    "fonte": "empírico",
-   "erro_padrao": 0.015,
+   "erro_padrao": 0.009,
    "sinal_esperado_ok": true
   },
   "desemprego_pp": {
-   "value": 0.039,
+   "value": 0.043,
    "range": [
-    -0.029,
-    0.106
+    -0.0,
+    0.086
    ],
    "lag_desc": "por p.p. de desemprego",
    "fonte": "empírico",
-   "erro_padrao": 0.034,
+   "erro_padrao": 0.022,
    "sinal_esperado_ok": true
   },
   "pib_pp": {
-   "value": -0.003,
+   "value": -0.004,
    "range": [
-    -0.027,
-    0.02
+    -0.024,
+    0.016
    ],
    "lag_desc": "por p.p. de crescimento do PIB",
    "fonte": "empírico",
-   "erro_padrao": 0.012,
+   "erro_padrao": 0.01,
    "sinal_esperado_ok": true
   },
   "cambio_pct10": {
-   "value": -0.157,
+   "value": -0.058,
    "range": [
-    -0.241,
-    -0.073
+    -0.096,
+    -0.021
    ],
    "lag_desc": "por 10% de depreciação cambial",
    "fonte": "empírico (sinal contraintuitivo — usar com cautela)",
-   "erro_padrao": 0.042,
+   "erro_padrao": 0.019,
    "sinal_esperado_ok": false
   }
  },
@@ -78,7 +78,7 @@
    "cambio_pct10": 0.0
   },
   "focus_2027": {
-   "selic_pp": -1.75,
+   "selic_pp": -2.0,
    "desemprego_pp": 0.5,
    "pib_pp": -0.25,
    "cambio_pct10": 0.0
@@ -1152,10 +1152,10 @@
   }
  },
  "elasticidades_origem": "empírico",
- "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 74 meses (2020-07 a 2026-08); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade.",
+ "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 158 meses (2013-07 a 2026-08); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade.",
  "expectativas": {
   "disponivel": true,
-  "data": "2026-10-16",
+  "data": "2026-10-23",
   "anos": [
    "2026",
    "2027",
@@ -1171,132 +1171,132 @@
   "tabela": {
    "Câmbio": {
     "2026": {
-     "mediana": 5.132,
-     "media": 5.12,
-     "dp": 0.15,
+     "mediana": 5.0495,
+     "media": 5.05,
+     "dp": 0.16,
      "minimo": 4.5,
-     "maximo": 5.45,
-     "n": 104
+     "maximo": 5.4,
+     "n": 112
     },
     "2027": {
-     "mediana": 5.2213,
-     "media": 5.2,
-     "dp": 0.2,
-     "minimo": 4.6,
-     "maximo": 5.6,
-     "n": 103
-    },
-    "2028": {
-     "mediana": 5.29,
-     "media": 5.25,
+     "mediana": 5.15,
+     "media": 5.14,
      "dp": 0.24,
      "minimo": 4.5,
+     "maximo": 5.85,
+     "n": 111
+    },
+    "2028": {
+     "mediana": 5.2,
+     "media": 5.19,
+     "dp": 0.27,
+     "minimo": 4.5,
      "maximo": 6.0,
-     "n": 82
+     "n": 87
     }
    },
    "IPCA": {
     "2026": {
-     "mediana": 5.219,
-     "media": 5.2,
-     "dp": 0.19,
-     "minimo": 4.5,
-     "maximo": 5.875,
-     "n": 137
+     "mediana": 5.1891,
+     "media": 5.18,
+     "dp": 0.15,
+     "minimo": 4.8,
+     "maximo": 5.7485,
+     "n": 142
     },
     "2027": {
-     "mediana": 4.3206,
-     "media": 4.34,
-     "dp": 0.44,
-     "minimo": 3.1418,
+     "mediana": 4.3368,
+     "media": 4.38,
+     "dp": 0.43,
+     "minimo": 3.2473,
      "maximo": 6.0,
-     "n": 137
+     "n": 142
     },
     "2028": {
      "mediana": 3.75,
-     "media": 3.76,
-     "dp": 0.47,
+     "media": 3.75,
+     "dp": 0.48,
      "minimo": 2.8,
      "maximo": 6.0,
-     "n": 120
+     "n": 124
     }
    },
    "PIB Total": {
     "2026": {
-     "mediana": 1.8301,
-     "media": 1.83,
-     "dp": 0.13,
-     "minimo": 1.3797,
+     "mediana": 1.8,
+     "media": 1.79,
+     "dp": 0.15,
+     "minimo": 1.2515,
      "maximo": 2.2825,
-     "n": 105
+     "n": 113
     },
     "2027": {
-     "mediana": 1.3246,
-     "media": 1.34,
-     "dp": 0.35,
+     "mediana": 1.3145,
+     "media": 1.31,
+     "dp": 0.34,
      "minimo": 0.2933,
      "maximo": 2.3755,
-     "n": 105
+     "n": 113
     },
     "2028": {
      "mediana": 1.81,
-     "media": 1.86,
-     "dp": 0.34,
+     "media": 1.89,
+     "dp": 0.35,
      "minimo": 1.0,
-     "maximo": 2.8001,
-     "n": 80
+     "maximo": 3.0,
+     "n": 83
     }
    },
    "Selic": {
     "2026": {
      "mediana": 13.25,
-     "media": 13.38,
-     "dp": 0.21,
+     "media": 13.31,
+     "dp": 0.18,
      "minimo": 13.0,
      "maximo": 14.0,
-     "n": 133
+     "n": 137
     },
     "2027": {
-     "mediana": 12.0,
-     "media": 11.8,
-     "dp": 0.74,
-     "minimo": 9.75,
+     "mediana": 11.75,
+     "media": 11.6,
+     "dp": 0.78,
+     "minimo": 9.0,
      "maximo": 14.0,
-     "n": 132
+     "n": 136
     },
     "2028": {
-     "mediana": 10.5,
-     "media": 10.43,
-     "dp": 0.9,
+     "mediana": 10.0,
+     "media": 10.23,
+     "dp": 0.88,
      "minimo": 8.0,
      "maximo": 13.5,
-     "n": 111
+     "n": 115
     }
    },
    "Taxa de desocupação": {
     "2026": {
-     "mediana": 5.265,
+     "mediana": 5.2,
      "media": 5.26,
-     "dp": 0.26,
+     "dp": 0.25,
      "minimo": 4.682,
      "maximo": 5.8,
-     "n": 64
+     "n": 70
     },
     "2027": {
-     "mediana": 5.765,
-     "media": 5.79,
-     "dp": 0.41,
-     "minimo": 4.7,
+     "mediana": 5.73,
+     "media": 5.75,
+     "dp": 0.42,
+     "minimo": 4.74,
      "maximo": 6.5,
-     "n": 62
+     "n": 67
     },
     "2028": {
-     "mediana": 6.3,
-     "media": 6.22,
-     "dp": 0.54,
-     "minimo": 5.2,
+     "mediana": 6.2732,
+     "media": 6.19,
+     "dp": 0.61,
+     "minimo": 4.6,
      "maximo": 7.5,
-     "n": 50
+     "n": 54
     }
    }
   },
@@ -2686,6 +2686,31 @@
      "data": "2026-10-16",
      "atual": 13.25,
      "proximo": 12.0
+    },
+    {
+     "data": "2026-10-19",
+     "atual": 13.25,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-10-20",
+     "atual": 13.25,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-10-21",
+     "atual": 13.25,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-10-22",
+     "atual": 13.25,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-10-23",
+     "atual": 13.25,
+     "proximo": 11.75
     }
    ],
    "IPCA": [
@@ -4073,6 +4098,31 @@
      "data": "2026-10-16",
      "atual": 5.219,
      "proximo": 4.3206
+    },
+    {
+     "data": "2026-10-19",
+     "atual": 5.2141,
+     "proximo": 4.2967
+    },
+    {
+     "data": "2026-10-20",
+     "atual": 5.2141,
+     "proximo": 4.2956
+    },
+    {
+     "data": "2026-10-21",
+     "atual": 5.21,
+     "proximo": 4.2965
+    },
+    {
+     "data": "2026-10-22",
+     "atual": 5.2141,
+     "proximo": 4.2984
+    },
+    {
+     "data": "2026-10-23",
+     "atual": 5.1891,
+     "proximo": 4.3368
     }
    ],
    "PIB Total": [
@@ -5460,6 +5510,31 @@
      "data": "2026-10-16",
      "atual": 1.8301,
      "proximo": 1.3246
+    },
+    {
+     "data": "2026-10-19",
+     "atual": 1.8204,
+     "proximo": 1.3196
+    },
+    {
+     "data": "2026-10-20",
+     "atual": 1.8204,
+     "proximo": 1.3196
+    },
+    {
+     "data": "2026-10-21",
+     "atual": 1.8154,
+     "proximo": 1.3196
+    },
+    {
+     "data": "2026-10-22",
+     "atual": 1.8177,
+     "proximo": 1.3246
+    },
+    {
+     "data": "2026-10-23",
+     "atual": 1.8,
+     "proximo": 1.3145
     }
    ],
    "Câmbio": [
@@ -6847,6 +6922,31 @@
      "data": "2026-10-16",
      "atual": 5.132,
      "proximo": 5.2213
+    },
+    {
+     "data": "2026-10-19",
+     "atual": 5.1,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-10-20",
+     "atual": 5.1,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-10-21",
+     "atual": 5.0993,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-10-22",
+     "atual": 5.1,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-10-23",
+     "atual": 5.0495,
+     "proximo": 5.15
     }
    ],
    "Taxa de desocupação": [
@@ -8234,6 +8334,31 @@
      "data": "2026-10-16",
      "atual": 5.265,
      "proximo": 5.765
+    },
+    {
+     "data": "2026-10-19",
+     "atual": 5.3,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-10-20",
+     "atual": 5.3,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-10-21",
+     "atual": 5.3,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-10-22",
+     "atual": 5.3,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-10-23",
+     "atual": 5.2,
+     "proximo": 5.73
     }
    ]
   },
@@ -8241,88 +8366,88 @@
    {
     "reuniao": "R7/2026",
     "mediana": 13.5,
-    "n": 131
+    "n": 133
    },
    {
     "reuniao": "R8/2026",
     "mediana": 13.25,
-    "n": 133
+    "n": 137
    },
    {
     "reuniao": "R1/2027",
     "mediana": 13.0,
-    "n": 128
+    "n": 131
    },
    {
     "reuniao": "R2/2027",
-    "mediana": 13.0,
-    "n": 128
+    "mediana": 12.75,
+    "n": 131
    },
    {
     "reuniao": "R3/2027",
-    "mediana": 12.625,
-    "n": 128
+    "mediana": 12.5,
+    "n": 131
    },
    {
     "reuniao": "R4/2027",
-    "mediana": 12.5,
-    "n": 128
+    "mediana": 12.25,
+    "n": 131
    },
    {
     "reuniao": "R5/2027",
-    "mediana": 12.25,
-    "n": 128
+    "mediana": 12.0,
+    "n": 131
    },
    {
     "reuniao": "R6/2027",
     "mediana": 12.0,
-    "n": 128
+    "n": 131
    },
    {
     "reuniao": "R7/2027",
-    "mediana": 12.0,
-    "n": 128
+    "mediana": 11.75,
+    "n": 131
    },
    {
     "reuniao": "R8/2027",
-    "mediana": 12.0,
-    "n": 132
+    "mediana": 11.75,
+    "n": 136
    },
    {
     "reuniao": "R1/2028",
-    "mediana": 11.75,
-    "n": 116
+    "mediana": 11.5,
+    "n": 118
    },
    {
     "reuniao": "R2/2028",
-    "mediana": 11.5,
-    "n": 116
+    "mediana": 11.25,
+    "n": 118
    },
    {
     "reuniao": "R3/2028",
-    "mediana": 11.25,
-    "n": 116
+    "mediana": 11.0,
+    "n": 118
    },
    {
     "reuniao": "R4/2028",
-    "mediana": 11.0,
-    "n": 115
+    "mediana": 10.75,
+    "n": 117
    },
    {
     "reuniao": "R5/2028",
-    "mediana": 10.75,
-    "n": 107
+    "mediana": 10.5,
+    "n": 112
    },
    {
     "reuniao": "R6/2028",
-    "mediana": 10.5,
-    "n": 95
+    "mediana": 10.25,
+    "n": 105
    }
   ],
   "atual": {
    "selic_meta": {
     "v": 13.75,
-    "ref": "2026-10-22"
+    "ref": "2026-10-26"
    },
    "desemprego": {
     "v": 5.3,
@@ -8345,7 +8470,7 @@
     "cambio_pct10": 0.0
    },
    "focus_2027": {
-    "selic_pp": -1.75,
+    "selic_pp": -2.0,
     "desemprego_pp": 0.5,
     "pib_pp": -0.25,
     "cambio_pct10": 0.0
@@ -8356,30 +8481,30 @@
     "ano": "2026",
     "bruto": {
      "selic_pp": -0.5,
-     "desemprego_pp": -0.04,
-     "pib_pp": 0.22,
-     "cambio_pct10": -0.02
+     "desemprego_pp": -0.1,
+     "pib_pp": 0.19,
+     "cambio_pct10": -0.19
     },
     "esperado": {
      "selic": 13.25,
-     "desemprego": 5.265,
-     "pib": 1.8301,
-     "cambio": 5.132
+     "desemprego": 5.2,
+     "pib": 1.8,
+     "cambio": 5.0495
     }
    },
    "focus_2027": {
     "ano": "2027",
     "bruto": {
-     "selic_pp": -1.75,
-     "desemprego_pp": 0.46,
-     "pib_pp": -0.29,
-     "cambio_pct10": 0.15
+     "selic_pp": -2.0,
+     "desemprego_pp": 0.43,
+     "pib_pp": -0.3,
+     "cambio_pct10": 0.01
     },
     "esperado": {
-     "selic": 12.0,
-     "desemprego": 5.765,
-     "pib": 1.3246,
-     "cambio": 5.2213
+     "selic": 11.75,
+     "desemprego": 5.73,
+     "pib": 1.3145,
+     "cambio": 5.15
     }
    }
   },

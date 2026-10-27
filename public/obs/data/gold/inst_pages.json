@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-10-24T15:01:32+00:00",
+ "gerado_em": "2026-10-27T16:59:11+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-24T15:01:32+00:00",
+    "atualizado_em": "2026-10-27T16:59:11+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1002,7 +1002,7 @@
     },
     {
      "indicador": "Margem financeira / índice de eficiência",
-     "motivo": "Exigem o DRE detalhado por conglomerado (relatório 116-118 da interface IF.data) — mapeado, não integrado."
+     "motivo": "DRE prudencial integrada no painel Como o banco ganha ou perde dinheiro (/observatorio/bank-profit), com margem em R$ e tarifas sobre estrutura. Esta ficha mantém seu conjunto original de indicadores."
     },
     {
      "indicador": "Atrasos 15-90d, inadimplência por IF, provisões, cobertura",
@@ -1081,17 +1081,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.21,
-      1.31
+      0.54,
+      1.24
      ],
      "impacto_basileia_pp": [
-      -0.52,
-      -0.08
+      -0.5,
+      -0.21
      ],
      "basileia_atual_pct": 15.35,
      "basileia_pos_choque_pct": [
-      14.83,
-      15.27
+      14.86,
+      15.14
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -1249,7 +1249,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.83% e 15.27% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.86% e 15.14% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -1302,7 +1302,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-24T15:01:32+00:00",
+    "atualizado_em": "2026-10-27T16:59:11+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2236,7 +2236,7 @@
     },
     {
      "indicador": "Margem financeira / índice de eficiência",
-     "motivo": "Exigem o DRE detalhado por conglomerado (relatório 116-118 da interface IF.data) — mapeado, não integrado."
+     "motivo": "DRE prudencial integrada no painel Como o banco ganha ou perde dinheiro (/observatorio/bank-profit), com margem em R$ e tarifas sobre estrutura. Esta ficha mantém seu conjunto original de indicadores."
     },
     {
      "indicador": "Atrasos 15-90d, inadimplência por IF, provisões, cobertura",
@@ -2315,17 +2315,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.21,
-      1.31
+      0.54,
+      1.24
      ],
      "impacto_basileia_pp": [
-      -0.58,
-      -0.09
+      -0.55,
+      -0.24
      ],
      "basileia_atual_pct": 12.84,
      "basileia_pos_choque_pct": [
-      12.26,
-      12.74
+      12.28,
+      12.6
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -2485,7 +2485,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.26% e 12.74% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.28% e 12.6% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -2533,7 +2533,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T2",
-    "atualizado_em": "2026-10-24T15:01:32+00:00",
+    "atualizado_em": "2026-10-27T16:59:11+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -3499,7 +3499,7 @@
     },
     {
      "indicador": "Margem financeira / índice de eficiência",
-     "motivo": "Exigem o DRE detalhado por conglomerado (relatório 116-118 da interface IF.data) — mapeado, não integrado."
+     "motivo": "DRE prudencial integrada no painel Como o banco ganha ou perde dinheiro (/observatorio/bank-profit), com margem em R$ e tarifas sobre estrutura. Esta ficha mantém seu conjunto original de indicadores."
     },
     {
      "indicador": "Atrasos 15-90d, inadimplência por IF, provisões, cobertura",
@@ -3574,17 +3574,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.21,
-      1.31
+      0.54,
+      1.24
      ],
      "impacto_basileia_pp": [
-      -0.68,
-      -0.11
+      -0.65,
+      -0.28
      ],
      "basileia_atual_pct": 12.49,
      "basileia_pos_choque_pct": [
-      11.81,
-      12.38
+      11.84,
+      12.21
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -3735,7 +3735,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.81% e 12.38% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.84% e 12.21% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },

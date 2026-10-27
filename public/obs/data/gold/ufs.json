@@ -1,6 +1,6 @@
 {
   "disponivel": true,
-  "gerado_em": "2026-10-26T17:50:29+00:00",
+  "gerado_em": "2026-10-27T16:59:50+00:00",
   "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
   "datas": {
     "scr": "2026-08",
@@ -1512,7 +1512,7 @@
         "consorcios.cotas": 4,
         "consorcios.por_mil_hab": 15,
         "cobranca.por_mil_hab": 17,
-        "cobranca.por_bi_carteira": 7,
+        "cobranca.por_bi_carteira": 8,
         "pgfn.insc_pf_por_mil_hab": 23
       },
       "sintese": "O crédito na Bahia somava R$ 304 bilhões em 2026-08, 3,9% do Brasil, R$ 20.416 por habitante (19º entre as 27 UFs), com inadimplência de 6,00% (13º) e crescimento de +11,5% em 12 meses. Penetração de 64% da renda anual (24º), com 93 de 417 municípios abaixo do esperado pelo modelo. 204 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3527,11 +3527,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 15437,
-        "var_12m_pct": 12.56,
-        "casos_12m_todos": 36019,
-        "por_mil_hab": 5.28,
-        "por_bi_carteira": 107.0
+        "casos_12m": 15409,
+        "var_12m_pct": 12.73,
+        "casos_12m_todos": 36529,
+        "por_mil_hab": 5.27,
+        "por_bi_carteira": 106.8
       },
       "prazo": {
         "data_base": "2026-08",
@@ -3823,11 +3823,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 28305,
-        "var_12m_pct": 12.43,
-        "casos_12m_todos": 56886,
-        "por_mil_hab": 7.27,
-        "por_bi_carteira": 106.0
+        "casos_12m": 28339,
+        "var_12m_pct": 12.71,
+        "casos_12m_todos": 56877,
+        "por_mil_hab": 7.28,
+        "por_bi_carteira": 106.1
       },
       "prazo": {
         "data_base": "2026-08",
@@ -4119,11 +4119,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 19427,
-        "var_12m_pct": 9.34,
-        "casos_12m_todos": 36439,
-        "por_mil_hab": 2.23,
-        "por_bi_carteira": 113.9
+        "casos_12m": 19494,
+        "var_12m_pct": 9.74,
+        "casos_12m_todos": 36519,
+        "por_mil_hab": 2.24,
+        "por_bi_carteira": 114.3
       },
       "prazo": {
         "data_base": "2026-08",
@@ -4415,11 +4415,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 6962,
-        "var_12m_pct": 17.66,
-        "casos_12m_todos": 20127,
-        "por_mil_hab": 1.67,
-        "por_bi_carteira": 87.7
+        "casos_12m": 7013,
+        "var_12m_pct": 18.18,
+        "casos_12m_todos": 20162,
+        "por_mil_hab": 1.68,
+        "por_bi_carteira": 88.3
       },
       "prazo": {
         "data_base": "2026-08",
@@ -4711,11 +4711,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 20556,
-        "var_12m_pct": -0.59,
-        "casos_12m_todos": 44331,
-        "por_mil_hab": 2.15,
-        "por_bi_carteira": 116.4
+        "casos_12m": 20768,
+        "var_12m_pct": 0.52,
+        "casos_12m_todos": 44493,
+        "por_mil_hab": 2.17,
+        "por_bi_carteira": 117.6
       },
       "prazo": {
         "data_base": "2026-08",
@@ -5007,11 +5007,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 9078,
-        "var_12m_pct": 7.51,
-        "casos_12m_todos": 17208,
-        "por_mil_hab": 2.68,
-        "por_bi_carteira": 132.1
+        "casos_12m": 9099,
+        "var_12m_pct": 7.82,
+        "casos_12m_todos": 17206,
+        "por_mil_hab": 2.69,
+        "por_bi_carteira": 132.4
       },
       "prazo": {
         "data_base": "2026-08",
@@ -5064,7 +5064,7 @@
         "consorcios.cotas": 16,
         "consorcios.por_mil_hab": 8,
         "cobranca.por_mil_hab": 16,
-        "cobranca.por_bi_carteira": 6,
+        "cobranca.por_bi_carteira": 7,
         "pgfn.insc_pf_por_mil_hab": 11
       },
       "sintese": "O crédito no Piauí somava R$ 69 bilhões em 2026-08, 0,9% do Brasil, R$ 20.301 por habitante (20º entre as 27 UFs), com inadimplência de 5,35% (18º) e crescimento de +10,2% em 12 meses. Penetração de 89% da renda anual (15º), com 4 de 224 municípios abaixo do esperado pelo modelo. 40 municípios têm agência, 96 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5303,11 +5303,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 73155,
-        "var_12m_pct": 18.61,
-        "casos_12m_todos": 161625,
-        "por_mil_hab": 6.15,
-        "por_bi_carteira": 127.3
+        "casos_12m": 77919,
+        "var_12m_pct": 26.74,
+        "casos_12m_todos": 167712,
+        "por_mil_hab": 6.55,
+        "por_bi_carteira": 135.6
       },
       "prazo": {
         "data_base": "2026-08",
@@ -5360,7 +5360,7 @@
         "consorcios.cotas": 3,
         "consorcios.por_mil_hab": 3,
         "cobranca.por_mil_hab": 4,
-        "cobranca.por_bi_carteira": 9,
+        "cobranca.por_bi_carteira": 5,
         "pgfn.insc_pf_por_mil_hab": 16
       },
       "sintese": "O crédito no Paraná somava R$ 575 bilhões em 2026-08, 7,5% do Brasil, R$ 48.344 por habitante (6º entre as 27 UFs), com inadimplência de 4,74% (22º) e crescimento de +10,1% em 12 meses. Penetração de 90% da renda anual (14º), com 76 de 399 municípios abaixo do esperado pelo modelo. 217 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5599,9 +5599,9 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 30274,
-        "var_12m_pct": -23.57,
-        "casos_12m_todos": 68372,
+        "casos_12m": 30276,
+        "var_12m_pct": -23.56,
+        "casos_12m_todos": 68376,
         "por_mil_hab": 1.76,
         "por_bi_carteira": 52.3
       },
@@ -5895,11 +5895,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 9045,
-        "var_12m_pct": 15.87,
-        "casos_12m_todos": 20931,
+        "casos_12m": 9038,
+        "var_12m_pct": 15.81,
+        "casos_12m_todos": 20899,
         "por_mil_hab": 2.62,
-        "por_bi_carteira": 123.0
+        "por_bi_carteira": 122.9
       },
       "prazo": {
         "data_base": "2026-08",
@@ -6191,11 +6191,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 13119,
-        "var_12m_pct": 10.29,
-        "casos_12m_todos": 36067,
-        "por_mil_hab": 7.49,
-        "por_bi_carteira": 202.0
+        "casos_12m": 13065,
+        "var_12m_pct": 10.06,
+        "casos_12m_todos": 35904,
+        "por_mil_hab": 7.46,
+        "por_bi_carteira": 201.1
       },
       "prazo": {
         "data_base": "2026-08",
@@ -6487,11 +6487,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 2341,
-        "var_12m_pct": 35.71,
-        "casos_12m_todos": 4072,
-        "por_mil_hab": 3.17,
-        "por_bi_carteira": 137.5
+        "casos_12m": 2266,
+        "var_12m_pct": 32.44,
+        "casos_12m_todos": 3987,
+        "por_mil_hab": 3.07,
+        "por_bi_carteira": 133.1
       },
       "prazo": {
         "data_base": "2026-08",
@@ -6544,7 +6544,7 @@
         "consorcios.cotas": 27,
         "consorcios.por_mil_hab": 24,
         "cobranca.por_mil_hab": 14,
-        "cobranca.por_bi_carteira": 5,
+        "cobranca.por_bi_carteira": 6,
         "pgfn.insc_pf_por_mil_hab": 7
       },
       "sintese": "O crédito em Roraima somava R$ 17 bilhões em 2026-08, 0,2% do Brasil, R$ 23.049 por habitante (15º entre as 27 UFs), com inadimplência de 6,82% (6º) e crescimento de +18,0% em 12 meses. Penetração de 118% da renda anual (8º), com 0 de 15 municípios abaixo do esperado pelo modelo. 5 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6783,11 +6783,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 69139,
-        "var_12m_pct": 22.41,
-        "casos_12m_todos": 143540,
-        "por_mil_hab": 6.15,
-        "por_bi_carteira": 128.0
+        "casos_12m": 69247,
+        "var_12m_pct": 22.65,
+        "casos_12m_todos": 143643,
+        "por_mil_hab": 6.16,
+        "por_bi_carteira": 128.2
       },
       "prazo": {
         "data_base": "2026-08",
@@ -6840,7 +6840,7 @@
         "consorcios.cotas": 5,
         "consorcios.por_mil_hab": 10,
         "cobranca.por_mil_hab": 5,
-        "cobranca.por_bi_carteira": 8,
+        "cobranca.por_bi_carteira": 9,
         "pgfn.insc_pf_por_mil_hab": 10
       },
       "sintese": "O crédito no Rio Grande do Sul somava R$ 540 bilhões em 2026-08, 7,0% do Brasil, R$ 48.080 por habitante (7º entre as 27 UFs), com inadimplência de 5,11% (20º) e crescimento de +8,1% em 12 meses. Penetração de 128% da renda anual (5º), com 181 de 497 municípios abaixo do esperado pelo modelo. 348 municípios têm agência, 1 depende só de correspondente e nenhum fica sem ponto físico."
@@ -7079,11 +7079,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 79600,
-        "var_12m_pct": 23.74,
-        "casos_12m_todos": 147866,
-        "por_mil_hab": 9.72,
-        "por_bi_carteira": 189.1
+        "casos_12m": 79936,
+        "var_12m_pct": 24.09,
+        "casos_12m_todos": 148251,
+        "por_mil_hab": 9.76,
+        "por_bi_carteira": 189.9
       },
       "prazo": {
         "data_base": "2026-08",
@@ -7671,11 +7671,11 @@
       },
       "cobranca": {
         "mes": "2026-07",
-        "casos_12m": 198766,
-        "var_12m_pct": 30.72,
-        "casos_12m_todos": 459409,
-        "por_mil_hab": 4.31,
-        "por_bi_carteira": 86.1
+        "casos_12m": 199251,
+        "var_12m_pct": 30.65,
+        "casos_12m_todos": 460372,
+        "por_mil_hab": 4.32,
+        "por_bi_carteira": 86.4
       },
       "prazo": {
         "data_base": "2026-08",
