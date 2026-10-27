@@ -47,12 +47,9 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
       frase={`Aprendizagem e aprovação no Índice de Desenvolvimento da Educação Básica (Ideb). Resultados de ${g.ideb.ano} e matrículas do Censo Escolar ${g.censo.ano}.`}
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/educacao-municipal"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaEducacao(g)}
-      seuMunicipio={consulta.estado === "ok" ? <ExtratoMunicipio g={g} m={consulta.m} uf={consulta.uf} arquivo={consulta.arquivo} ficha /> : undefined}
-      paraVoce={
-        <ParaVoce entrada={ROTA_EDUCACAO}>
-          <SecaoMunicipio g={g} c={consulta} />
-        </ParaVoce>
-      }
+      resposta={<SecaoMunicipio g={g} c={consulta} />}
+      contextoEscala="A educação no Brasil"
+      paraVoce={<ParaVoce entrada={ROTA_EDUCACAO} />}
       destinos={destinosDaColecao("educacao")}
       artefato={
         typeof br.n[i] === "number" && typeof br.p[i] === "number" && typeof br.ideb[i] === "number" ? (
@@ -167,21 +164,14 @@ function ComoLer() {
 
 function SecaoMunicipio({ g, c }: { g: GoldEducacao; c: ConsultaMunicipio }) {
   return (
-    <section className="edm-secao" id="municipio" aria-labelledby="municipio-titulo">
-      <h2 id="municipio-titulo">Como está a escola pública do seu município?</h2>
-      <p className="edm-intro">
-        O Ideb da rede municipal e da rede pública de cada um dos {num(g.municipios.total)} municípios, de {g.ideb.anos[0]} a {g.ideb.ano}, com a aprendizagem e a aprovação que o
-        compõem, ao lado do estado, do Brasil e das cidades do mesmo porte, e as matrículas e as escolas do Censo Escolar {g.censo.ano}.
-      </p>
-      <div className="edm-busca">
-        <BuscaEducacao rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} />
-      </div>
+    <section id="municipio" className="scroll-mt-24" aria-label="Educação no município escolhido">
+      <div className="edm-busca"><BuscaEducacao rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} /></div>
       {c.estado === "invalida" && (
         <p role="status" className="edm-aviso">
           {c.codigo ? `Nenhum município da base tem o código IBGE ${c.codigo}.` : "O endereço não traz um código IBGE de município, que tem sete dígitos."} Busque pelo nome.
         </p>
       )}
-      {c.estado !== "ok" && <ComoLer />}
+      {c.estado === "ok" ? <div data-fatia="seu-municipio" data-resposta-especifica=""><ExtratoMunicipio g={g} m={c.m} uf={c.uf} arquivo={c.arquivo} ficha /></div> : <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Busque pelo nome para ver o Ideb da rede municipal, a referência do estado e do Brasil e os motivos de ausência. A ficha reúne a série e o Censo Escolar.</p>}
     </section>
   );
 }
@@ -271,9 +261,9 @@ function ExtratoEtapa({ g, m, uf, etapa, compacto = false }: { g: GoldEducacao; 
         <small>{SERIES_ETAPA[etapa]}{!compacto && <> · {DESCRICAO_REDE.municipal}</>}</small>
       </dt>
       {v !== null ? (
-        <dd className="edm-valor">{ideb(v)}<span className="edm-unidade">de 0 a 10</span></dd>
+        <dd data-valor-resposta="" className="edm-valor">{ideb(v)}<span className="edm-unidade">de 0 a 10</span></dd>
       ) : (
-        <dd className="edm-sem">
+        <dd data-valor-resposta="" className="edm-sem">
           <strong>Sem Ideb {g.ideb.ano}</strong>
           {b.motivo_municipal ? TEXTO_MOTIVO[b.motivo_municipal] : null}
         </dd>

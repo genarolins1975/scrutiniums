@@ -88,7 +88,8 @@ describe("combustíveis: o painel", () => {
     // a ordem das seções no molde único de entrada (Iniciativa 4, 22/10/2026): primeira tela, mecanismo (modelo didático),
     // série, estados e etanol (recolhidos), método recolhido no fim, no <details> único do molde
     // (pelas âncoras das seções: os títulos também aparecem nos caminhos por pergunta, antes dos blocos recolhidos)
-    const ordem = ["Preço médio do litro: Brasil", 'id="como-mede"', 'id="historico"', 'id="estados"', 'id="etanol-gasolina"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
+    // Pedido do dono, 27/10/2026: a conta do tanque precede o panorama. O contrato usa a fatia, não o título editorial.
+    const ordem = ['data-fatia="resposta"', 'id="como-mede"', 'id="historico"', 'id="estados"', 'id="etanol-gasolina"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
     for (const t of ["Como a ANP mede o preço nos postos", "O preço do litro desde 2013", "Como os estados se comparam", "Quanto o litro de etanol custa em relação ao de gasolina", "Método e fontes"]) expect(html).toContain(t);
     expect(ordem.every((p) => p > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);

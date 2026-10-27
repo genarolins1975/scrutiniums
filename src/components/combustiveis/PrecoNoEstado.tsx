@@ -38,7 +38,7 @@ function distancia(dif: number, pct: number): string {
  * em reais e em percentual. A conta do tanque multiplica o preço médio pelos litros escolhidos: é uma conta, não o preço
  * de um posto. Combustível sem preço publicado para a UF aparece como "sem dado", nunca como zero.
  */
-export function PrecoNoEstado({ dados, titulo }: { dados: DadosPrecoNoEstado; titulo?: string }) {
+export function PrecoNoEstado({ dados, titulo, destacarTanque = false }: { dados: DadosPrecoNoEstado; titulo?: string; destacarTanque?: boolean }) {
   const id = useId();
   const opcoes = opcoesUf(dados.ufs);
   const escolha = useSelecaoGas("uf", opcoes.map((o) => o.valor), BRASIL);
@@ -49,20 +49,20 @@ export function PrecoNoEstado({ dados, titulo }: { dados: DadosPrecoNoEstado; ti
   const litrosValidos = Number.isFinite(litros) && litros > 0 && litros <= 1000;
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <div>
+      <div className="flex flex-wrap items-end gap-x-4 gap-y-3">
+        <div className="min-w-0 max-w-full basis-[10rem] flex-1 sm:flex-none">
           <label htmlFor={`${id}-uf`} className="block text-sm text-carvao">Seu estado</label>
           <select
             id={`${id}-uf`}
             value={escolha.valor}
             onChange={(e) => escolha.selecionar(e.target.value)}
-            className="mt-1 min-h-[44px] min-w-[16rem] max-w-full border border-mineral bg-superficie px-3 text-base text-carvao"
+            className="mt-1 min-h-[44px] w-full max-w-[16rem] border border-mineral bg-superficie px-3 text-base text-carvao"
           >
             {opcoes.map((o) => <option key={o.valor} value={o.valor}>{o.rotulo}</option>)}
           </select>
         </div>
-        <div>
-          <label htmlFor={`${id}-litros`} className="block text-sm text-carvao">Litros no tanque</label>
+        <div className="w-24 shrink-0">
+          <label htmlFor={`${id}-litros`} className="block text-sm text-carvao">Litros</label>
           <input
             id={`${id}-litros`}
             type="number"
@@ -72,18 +72,20 @@ export function PrecoNoEstado({ dados, titulo }: { dados: DadosPrecoNoEstado; ti
             step={1}
             value={Number.isFinite(litros) ? litros : ""}
             onChange={(e) => setLitros(e.target.value === "" ? Number.NaN : Number(e.target.value))}
-            className="mt-1 min-h-[44px] w-28 border border-mineral bg-superficie px-3 text-base text-carvao [font-variant-numeric:tabular-nums]"
+            className="mt-1 min-h-[44px] w-24 border border-mineral bg-superficie px-3 text-base text-carvao [font-variant-numeric:tabular-nums]"
             aria-describedby={`${id}-litros-nota`}
           />
         </div>
       </div>
       <p id={`${id}-litros-nota`} className="max-w-prose2 text-xs leading-relaxed text-mineral">
-        A conta do tanque é o preço médio vezes os litros escolhidos (40 litros é só um exemplo). O valor pago varia de posto para posto.
+        Cálculo pela média mensal vezes os litros escolhidos. 40 litros é só um exemplo.
       </p>
+      {!litrosValidos && <p role="status" className="text-sm text-carvao-muted">Informe de 1 a 1.000 litros para calcular o tanque. Os preços por litro continuam disponíveis.</p>}
       {escolha.invalida && <p aria-live="polite" className="text-sm text-carvao-muted">O estado informado no endereço não está na pesquisa. Exibimos a média do Brasil.</p>}
 
-      <div role="status" aria-live="polite">
-        <h2 className="ed-h2 max-w-3xl font-serif text-carvao">{titulo ?? `Preço médio do litro: ${linha ? linha.nome : "Brasil"}, ${mes}`}</h2>
+      <div role="status" aria-live="polite" data-resposta-especifica="">
+        <h2 className="ed-h2 max-w-3xl font-serif text-carvao">{titulo ?? `${destacarTanque ? "Custo do tanque" : "Preço médio do litro"}: ${nome}, ${mes}`}</h2>
+        <p className="mt-2 text-xs leading-relaxed text-mineral">Fonte: ANP, pesquisa de preços nos postos · {mes}. {destacarTanque ? "Custo calculado pela média observada, não uma cotação de posto." : "Média observada na pesquisa."}</p>
         <ul className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
           {dados.produtos.map((p) => {
             const br = dados.brasil[p.id];
@@ -95,14 +97,15 @@ export function PrecoNoEstado({ dados, titulo }: { dados: DadosPrecoNoEstado; ti
                 <p className="text-sm text-carvao-muted">{p.nome}</p>
                 {preco === null ? (
                   <>
-                    <p className="mt-1 text-[1.75rem] leading-tight text-mineral">sem dado</p>
+                    <p data-valor-resposta="" className="mt-1 text-[1.75rem] leading-tight text-mineral">sem dado</p>
                     <p className="mt-1 text-xs leading-relaxed text-mineral">A ANP não publicou preço deste combustível para a UF em {mes}.</p>
                   </>
                 ) : (
                   <>
-                    <p className="mt-1 font-sans text-[1.75rem] leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums]">
-                      {reais(preco, 2)} <span className="text-base text-carvao-muted">por litro</span>
+                    <p data-valor-resposta="" className="mt-1 font-sans text-[1.75rem] leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums]">
+                      {destacarTanque && litrosValidos ? reais(preco * litros, 2) : reais(preco, 2)} <span className="text-base text-carvao-muted">{destacarTanque && litrosValidos ? `para ${num(litros, 0)} litros` : "por litro"}</span>
                     </p>
+                    {destacarTanque && <p className="mt-2 text-sm text-carvao-muted">{reais(preco, 2)} por litro · média observada</p>}
                     <p className="mt-1 text-xs leading-relaxed text-mineral">
                       {mes} · {postos === null ? "postos pesquisados: sem dado" : `${num(postos, 0)} postos pesquisados`}
                     </p>
@@ -110,11 +113,11 @@ export function PrecoNoEstado({ dados, titulo }: { dados: DadosPrecoNoEstado; ti
                       <p className="mt-1 text-xs leading-relaxed text-carvao-muted">Amostra de menos de 10 postos: a média pode variar muito de um mês para outro.</p>
                     )}
                     {uf ? (
-                      <p className="mt-2 text-sm leading-snug text-carvao">{distancia(uf.dif_brasil, uf.dif_brasil_pct)} ({reais(br.medio, 2)})</p>
+                      <p className="mt-2 text-sm leading-snug text-carvao">{destacarTanque && "Preço por litro: "}{distancia(uf.dif_brasil, uf.dif_brasil_pct)} ({reais(br.medio, 2)} por litro)</p>
                     ) : (
                       <p className="mt-2 text-sm leading-snug text-carvao">Menor e maior preço da pesquisa: {reais(br.minimo, 2)} a {reais(br.maximo, 2)}</p>
                     )}
-                    {litrosValidos && (
+                    {litrosValidos && !destacarTanque && (
                       <p className="mt-1 text-sm leading-snug text-carvao-muted [font-variant-numeric:tabular-nums]">
                         {num(litros, 0)} litros: {reais(preco * litros, 2)}
                       </p>

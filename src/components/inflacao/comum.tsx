@@ -46,7 +46,7 @@ export function SeletorArea({ areas, valor, onChange, rotulo = "Sua cidade ou re
         id={id}
         value={valor}
         onChange={(e) => onChange(e.target.value)}
-        className={`mt-1 min-h-[44px] max-w-full border border-mineral bg-superficie px-3 text-carvao ${grande ? "min-w-[18rem] text-base" : "text-sm"}`}
+        className={`mt-1 min-h-[44px] max-w-full border border-mineral bg-superficie px-3 text-carvao ${grande ? "w-[18rem] text-base" : "text-sm"}`}
       >
         {opcoesArea(areas).map((o) => <option key={o.valor} value={o.valor}>{o.rotulo}</option>)}
       </select>

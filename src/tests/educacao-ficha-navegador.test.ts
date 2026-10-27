@@ -33,7 +33,8 @@ describe.skipIf(!temBuild)("Educação: resumo e ficha no navegador", () => {
           await aguardarHidratacao(pagina);
           const medida = await pagina.evaluate(() => ({
             cidade: document.querySelector('[data-fatia="seu-municipio"]')!.getBoundingClientRect().top,
-            escala: document.querySelector('[data-fatia="escala"]')!.getBoundingClientRect().top,
+            // Pedido do dono, 27/10/2026: o contexto nacional continua abaixo, agora recolhido.
+            escala: document.querySelector("#contexto-da-entrada")!.getBoundingClientRect().top,
             altura: document.documentElement.scrollHeight,
             largura: document.documentElement.scrollWidth,
           }));

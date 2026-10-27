@@ -37,14 +37,12 @@ export function PainelConectividade({ g, consulta }: { g: GoldConectividade; con
       rota={ROTA_CONECTIVIDADE}
       acento="obee"
       titulo={PERGUNTA_PAINEL}
-      frase="Quantos acessos de internet há em cada cidade, por fibra ou não, quantas empresas disputam o cliente, e quem está dentro da cobertura 4G e 5G. Dados abertos da Anatel, município a município."
+      frase="Escolha um município para ver os acessos de internet, a presença da fibra e a cobertura móvel declarada à Anatel."
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/conectividade"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaConectividade(g)}
-      paraVoce={
-        <ParaVoce entrada={ROTA_CONECTIVIDADE}>
-          <SecaoMunicipio g={g} c={consulta} logos={logos} />
-        </ParaVoce>
-      }
+      resposta={<ConsultaInicial g={g} c={consulta} />}
+      contextoEscala="A conectividade no Brasil"
+      paraVoce={<ParaVoce entrada={ROTA_CONECTIVIDADE} />}
       destinos={destinosDaColecao("conectividade")}
       artefato={
         <ModeloDidatico
@@ -64,6 +62,7 @@ export function PainelConectividade({ g, consulta }: { g: GoldConectividade; con
       ]}
       recolhidos={
         <>
+          <Recolhido id="detalhes-municipio" titulo={consulta.estado === "ok" ? `Internet em ${consulta.m.nome}: operadoras, cobertura e séries` : "Como os municípios se distribuem"} resumo="Todas as medidas, tabelas e limites da consulta municipal."><SecaoMunicipio g={g} c={consulta} logos={logos} /></Recolhido>
           <Recolhido id="recolhido-retrato" titulo="O retrato do país" resumo="Os números de abertura numa frase, com a referência de cada fonte.">
             <Achado g={g} />
           </Recolhido>
@@ -149,23 +148,41 @@ function ComoLerMunicipio() {
   );
 }
 
+/** Escolha e resposta do mesmo recorte antes do panorama: pedido do dono, 27/10/2026. */
+function ConsultaInicial({ g, c }: { g: GoldConectividade; c: ConsultaMunicipio }) {
+  const r = g.referencia;
+  return <section id="municipio" className="scroll-mt-24" aria-label="Internet no município escolhido">
+    <BuscaConectividade rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} />
+    {c.estado === "invalida" && <p role="status" className="mt-4 text-sm text-carvao-muted">{c.codigo ? `Nenhum município da base da Anatel tem o código IBGE ${c.codigo}.` : "O código IBGE deve ter sete dígitos."} Busque pelo nome.</p>}
+    {c.estado === "ok" ? <div data-resposta-especifica="" className="mt-5">
+      <h2 className="font-serif text-2xl text-carvao">Internet em {c.m.nome} ({c.uf})</h2>
+      <dl className="mt-4 grid gap-5 sm:grid-cols-3">
+        {[
+          { nome: "Acessos fixos por 100 habitantes", valor: c.m.fixa ? num(c.m.fixa.densidade, 1) : SEM_DADO, brasil: num(g.brasil.fixa.densidade, 1), periodo: r.fixa, natureza: "Densidade informada pela Anatel" },
+          { nome: "Acessos fixos por fibra óptica", valor: c.m.fixa ? pct(c.m.fixa.fibra_pct) : SEM_DADO, brasil: pct(g.brasil.fixa.fibra_pct), periodo: r.fixa, natureza: "Calculado: acessos de fibra ÷ acessos fixos" },
+          { nome: "Moradores dentro da cobertura 5G", valor: pct(cobertos(c.m, "g5")), brasil: pct(g.brasil.cobertura.tecnologias.g5?.[0]), periodo: r.cobertura, natureza: "Cobertura declarada à Anatel" },
+        ].map(x => <div key={x.nome} className="border-t border-linha pt-3">
+          <dt className="text-sm text-carvao-muted">{x.nome}</dt>
+          <dd data-valor-resposta="" className="mt-1 text-3xl tabular-nums text-carvao">{x.valor}</dd>
+          <dd className="mt-2 text-sm text-carvao-muted">Brasil: {x.brasil}</dd>
+          <dd className="mt-1 text-xs leading-relaxed text-mineral">Fonte: Anatel · {mesExtenso(x.periodo)} · {x.natureza}</dd>
+        </div>)}
+      </dl>
+      <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Acessos são contratos, não pessoas. Cobertura declarada não garante sinal dentro de casa nem velocidade. Sem dado publicado, não há valor a comparar.</p>
+      <a className="mt-2 inline-flex min-h-[44px] items-center text-sm text-carvao underline underline-offset-4" href="#municipio-detalhes">Ver operadoras, 4G, linhas móveis e séries de {c.m.nome}</a>
+    </div> : <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Busque pelo nome para consultar os dados da cidade e a referência do Brasil. A fonte informa acessos e cobertura declarada; não mede a velocidade dentro de casa.</p>}
+  </section>;
+}
+
 function SecaoMunicipio({ g, c, logos }: { g: GoldConectividade; c: ConsultaMunicipio; logos: Logos }) {
   return (
-    <section className="cn-secao" id="municipio" aria-labelledby="municipio-titulo">
+    <section className="cn-secao" id="municipio-detalhes" aria-labelledby="municipio-titulo">
       <h2 id="municipio-titulo">Como é a internet na sua cidade?</h2>
       <p className="cn-intro">
         Para os {num(g.destaques.municipios)} municípios do país: os acessos de banda larga fixa e por qual meio chegam e quantas empresas atendem; as linhas móveis por geração e
         a parte dos moradores dentro da cobertura 4G e 5G nos municípios que a Anatel publica (nesta edição, {num(g.destaques.sem_dado.movel.length)} sem telefonia móvel e{" "}
         {num(g.destaques.sem_dado.cobertura.length)} sem cobertura); a posição no estado e no país em cada medida, entre os municípios com o valor publicado.
       </p>
-      <div className="cn-busca">
-        <BuscaConectividade rotulo={c.estado === "ok" ? "Escolher outro município" : "Escolha o município"} ancora="municipio" />
-      </div>
-      {c.estado === "invalida" && (
-        <p role="status" className="cn-aviso">
-          {c.codigo ? `Nenhum município da base da Anatel tem o código IBGE ${c.codigo}.` : "O endereço não traz um código IBGE de município, que tem sete dígitos."} Busque pelo nome.
-        </p>
-      )}
       {c.estado === "ok" ? <Municipio g={g} m={c.m} uf={c.uf} arquivo={c.arquivo} logos={logos} /> : <Distribuicao g={g} />}
     </section>
   );

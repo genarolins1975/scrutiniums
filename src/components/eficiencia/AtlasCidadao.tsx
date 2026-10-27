@@ -6,9 +6,10 @@ import dados from '@/lib/eficiencia/atlas-resumo.json';
 import styles from './AtlasCidadao.module.css';
 import {FrequenciaEscolar} from './FrequenciaEscolar';
 import frequencia from '@/lib/eficiencia/frequencia-escolar.json';
+import {Recolhido} from "@/components/observatorios/Recolhido";
 import {ReguaRetrato, SeletoresRetrato} from './entrada/RetratoCapital';
 import {PerguntasCapital} from './entrada/PerguntasCapital';
-import {daCapital, naCapital, type RetratoDados} from '@/lib/eficiencia/entrada-nucleo';
+import {daCapital, naCapital, numero, type RetratoDados} from '@/lib/eficiencia/entrada-nucleo';
 import {SeloComConta} from '@/components/acesso/SeloComConta';
 import {prefetchDoLink} from '@/lib/rotasPublicas';
 import entrada from './entrada/Entrada.module.css';
@@ -69,17 +70,33 @@ export function TituloCapital() {
   return <>Como se vive {naCapital(a.nome).split(' ')[0]} <em>{a.nome}</em>?</>;
 }
 
-/** Seletores, fatos da capital e atalhos, no "Para você". */
+/** Pedido do dono, 27/10/2026: a escolha entrega os resultados da capital antes das medianas e dos caminhos. */
 export function SeletorCapital() {
   const {retrato, selection, select, a, b} = useEscolha();
   return <SeletoresRetrato a={a} b={b} capitais={retrato.capitais}
-    onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}/>;
+    onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}
+    resposta={<section className="mt-6" aria-labelledby="resposta-capital-titulo" data-resposta-especifica="">
+      <h2 id="resposta-capital-titulo" className="font-serif text-2xl text-carvao">Sete resultados de {a.nome}</h2>
+      <p className="mt-2 text-sm text-carvao-muted" role="status">Comparação com {b.nome}. São 26 capitais estaduais, sem o DF; os resultados não atribuem efeito à gestão.</p>
+      <dl className="mt-4 grid gap-x-8 md:grid-cols-2">
+        {retrato.condicoes.map(m => <div key={m.id} data-resultado-capital={m.id} className="border-t border-linha py-3">
+          <dt className="text-sm font-medium text-carvao">{m.curto}</dt>
+          <dd className="mt-2 flex flex-wrap items-baseline gap-x-6 gap-y-1 tabular-nums">
+            <span data-valor-resposta="" className="text-2xl text-carvao">{numero(m.valores[a.id]?.valor ?? null, m.unidade)} <span className="text-xs text-carvao-muted">{a.nome}</span></span>
+            <span className="text-sm text-carvao-muted">{b.nome}: {numero(m.valores[b.id]?.valor ?? null, m.unidade)}</span>
+          </dd>
+          <dd className="mt-2 text-xs leading-relaxed text-mineral">{m.fonte} · {m.periodo} · {m.natureza}</dd>
+          <dd className="mt-1 text-xs leading-relaxed text-carvao-muted">{m.nota} {m.precisao}</dd>
+        </div>)}
+      </dl>
+      <a href="#retrato-titulo" className="inline-flex min-h-[44px] items-center text-sm text-carvao underline underline-offset-4">Ver a posição nas 26 capitais e como compará-las</a>
+    </section>}/>;
 }
 
 /** A régua das sete condições (seção própria da entrada). */
 export function ReguaCapital() {
   const {retrato, a, b} = useEscolha();
-  return <div className={entrada.wrap}><ReguaRetrato a={a} b={b} condicoes={retrato.condicoes} capitais={retrato.capitais} fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao}/></div>;
+  return <div className={entrada.wrap}><Recolhido id="posicoes-capitais" titulo={`Onde ${a.nome} fica entre as 26 capitais`} resumo="As sete posições, os valores originais e os limites de comparação."><ReguaRetrato a={a} b={b} condicoes={retrato.condicoes} capitais={retrato.capitais} fonteContornos={retrato.fonteContornos} fontePopulacao={retrato.fontePopulacao}/></Recolhido></div>;
 }
 
 /** As sete perguntas sobre a vida na capital. */

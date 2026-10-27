@@ -150,10 +150,11 @@ describe("posição em cada entrada: logo depois dos números de abertura", () =
     expect(uso).toBeLessThan(s.indexOf(depois));
   });
 
-  it("na Eficiência Estatal, o bloco traz a escolha da capital, e a régua do retrato é a seção própria logo depois", () => {
-    // molde único (Iniciativa 4, 22/10/2026): os seletores da capital vão para o "Para você"; a régua das sete posições é a seção própria
+  it("na Eficiência Estatal, escolha e resposta precedem os caminhos e a régua continua acessível", () => {
+    // Pedido do dono, 27/10/2026: entregar a resposta específica logo na entrada, antes de Para você.
     const p = ler("src/app/eficiencia-estatal/page.tsx");
-    expect(p).toContain('paraVoce={<ParaVoce entrada="/eficiencia-estatal"><SeletorCapital/></ParaVoce>}');
+    expect(p).toMatch(/resposta=\{<SeletorCapital\s*\/>\}/);
+    expect(p.indexOf("resposta={")).toBeLessThan(p.indexOf("paraVoce={"));
     expect(p).toContain("secaoPropria={<ReguaCapital/>}");
     expect(p.indexOf("<PerguntasDaCapital/>")).toBeGreaterThan(p.indexOf("recolhidos={"));
   });
