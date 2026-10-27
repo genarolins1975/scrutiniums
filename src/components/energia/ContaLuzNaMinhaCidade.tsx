@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
 import { ContaBuscaMunicipio } from "@/components/energia/ContaBuscaMunicipio";
@@ -62,6 +62,12 @@ export function ContaLuzNaMinhaCidade({
   const setCnpj = (valor: string) => definir({ dist: valor ? [valor] : [] });
   const setKwh = (valor: number) => definir({ kwh: valor });
   const [texto, setTexto] = useState<string | null>(null);
+  useEffect(() => {
+    // Voltar/avançar também abandona a edição local, mesmo se o campo continuar focado.
+    const aoVoltar = () => setTexto(null);
+    window.addEventListener("popstate", aoVoltar);
+    return () => window.removeEventListener("popstate", aoVoltar);
+  }, []);
   const { municipio: m, erro: erroMunicipio } = useMunicipioDaConta(lugar);
   const municipio = m ? { m, vinculos: distribuidorasDoMunicipio(m) } : null;
 

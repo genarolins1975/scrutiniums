@@ -14,6 +14,19 @@ const servidor = await subirServidorLocal({ usuario: 'analise-energia' });
 const browser = await chromium.launch({ executablePath: process.env.I18N_CHROMIUM_EXECUTABLE || undefined });
 const resultados = [], erros = [];
 const ir = async (p, rota) => { await p.goto(servidor.origem + rota, { waitUntil: 'networkidle' }); await aguardarHidratacao(p); };
+async function conferirHistoricoComFoco(p, consumo, escolha) {
+  const outra = await escolha.evaluate(el => [...el.options].find(o => o.value && o.value !== el.value).value);
+  await escolha.selectOption(outra);
+  await consumo.fill('600');
+  await p.waitForFunction(() => new URL(location.href).searchParams.get('skwh') === '600');
+  assert.equal(await consumo.evaluate(el => el === document.activeElement), true);
+  await p.goBack();
+  await p.waitForFunction(() => new URL(location.href).searchParams.get('skwh') === '450');
+  assert.equal(await consumo.inputValue(), '450');
+  await p.goForward();
+  await p.waitForFunction(() => new URL(location.href).searchParams.get('skwh') === '600');
+  assert.equal(await consumo.inputValue(), '600');
+}
 try {
   for (const largura of [390, 1440]) for (const idioma of ['pt', 'en']) {
     const rota = `${idioma === 'en' ? '/en' : ''}/setor-eletrico/conta-de-luz`;
@@ -38,6 +51,7 @@ try {
     await p.reload({ waitUntil: 'networkidle' }); await aguardarHidratacao(p);
     await p.locator('[data-municipio-escolhido]').waitFor();
     assert.equal(await p.locator('[data-conta-aperitivo]').innerText(), publico);
+    await conferirHistoricoComFoco(p, consumo, p.locator('[data-conta-aperitivo] select'));
     await ctx.addCookies([servidor.cookie]);
     await ir(p, url.pathname + url.search);
     const consumoCompleto = p.getByLabel(idioma === 'en' ? 'Consumption in the month (kWh)' : 'Consumo no mês (kWh)', { exact: true });
@@ -60,6 +74,7 @@ try {
     const parametrosSalvos = new URL(caminhoSalvo, servidor.origem).searchParams;
     for (const chave of ['dist', 'skwh', 'conta_municipio']) assert.equal(parametrosSalvos.get(chave), url.searchParams.get(chave));
     await p.keyboard.press('Escape');
+    await conferirHistoricoComFoco(p, consumoCompleto, p.getByRole('form', { name: idioma === 'en' ? 'Simulation parameters' : 'Parâmetros da simulação', exact: true }).getByRole('combobox').first());
     // Sem distribuidora identificada, o município não pode receber a tarifa do exemplo inicial.
     const ausente = new URL(url); ausente.searchParams.set('dist', '');
     await ir(p, ausente.pathname + ausente.search);
@@ -88,7 +103,7 @@ try {
     await ir(p, destino);
     const recuperados = await p.getByRole('form', { name: idioma === 'en' ? 'Simulation parameters' : 'Parâmetros da simulação', exact: true }).getByRole('combobox').evaluateAll(els => els.map(el => el.value));
     for (const v of ['tarifa_social', 'bifasico', 'Verde']) assert.ok(recuperados.includes(v), JSON.stringify(recuperados));
-    resultados.push({ largura, idioma, caminho: url.pathname + url.search, caminhoSalvo, publico, resposta, recarga: true, transicao: true, ausenciaPreservada: true, avancadoPreservado: true, larguraPagina });
+    resultados.push({ largura, idioma, caminho: url.pathname + url.search, caminhoSalvo, publico, resposta, recarga: true, transicao: true, historicoComFoco: true, ausenciaPreservada: true, avancadoPreservado: true, larguraPagina });
     console.log(JSON.stringify({ largura, idioma, transicao: true, ausenciaPreservada: true }));
     await ctx.close();
   }

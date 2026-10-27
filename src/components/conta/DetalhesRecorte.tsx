@@ -13,7 +13,8 @@ export function DetalhesRecorte({ caminho }: { caminho: string }) {
       {partes.map((p, i) => <span key={i}>{i > 0 && " · "}{p.nome ? <Nome>{p.texto}</Nome> : p.texto}</span>)}
     </p>}
     <details className="min-w-0 text-xs leading-relaxed text-carvao-muted">
-      <summary className="inline-flex min-h-[44px] cursor-pointer items-center underline underline-offset-4">{tx("Ver endereço e parâmetros", "View address and parameters")}</summary>
+      {/* A barra impede quebra nos seus seletores; o texto deste detalhe precisa caber também com fonte ampliada. */}
+      <summary className="inline-flex min-h-[44px] max-w-full cursor-pointer items-center !whitespace-normal underline underline-offset-4">{tx("Ver endereço e parâmetros", "View address and parameters")}</summary>
       <p className="break-all font-mono text-xs leading-relaxed text-carvao-muted">{caminho}</p>
     </details>
   </div>;

@@ -1,7 +1,7 @@
 "use client";
 
 import { TabelaDados } from "@/components/painel/TabelaDados";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -109,6 +109,12 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
   const info = useMemo(() => (infoCompacta ? expandirInfo(infoCompacta) : {}), [infoCompacta]);
   const s = useMemo(() => ({ ...compacto, distribuidoras: expandirDistribuidorasSim(compacto.distribuidoras) }), [compacto]);
   const [texto, setTexto] = useState<string | null>(null);
+  useEffect(() => {
+    // 27/10/2026: o campo focado precisa acompanhar o consumo restaurado pelo histórico.
+    const aoVoltar = () => setTexto(null);
+    window.addEventListener("popstate", aoVoltar);
+    return () => window.removeEventListener("popstate", aoVoltar);
+  }, []);
   const [aviso, setAviso] = useState<string | null>(null);
   const porCnpj = useMemo(() => new Map(s.distribuidoras.map((d) => [d.cnpj, d])), [s.distribuidoras]);
   const escolhida = v.dist.find((id) => porCnpj.has(id)) ?? null;
