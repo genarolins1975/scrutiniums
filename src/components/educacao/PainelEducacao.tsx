@@ -261,7 +261,7 @@ function ExtratoEtapa({ g, m, uf, etapa, compacto = false }: { g: GoldEducacao; 
         <small>{SERIES_ETAPA[etapa]}{!compacto && <> · {DESCRICAO_REDE.municipal}</>}</small>
       </dt>
       {v !== null ? (
-        <dd data-valor-resposta="" className="edm-valor">{ideb(v)}<span className="edm-unidade">de 0 a 10</span></dd>
+        <dd data-valor-resposta="" className="edm-valor"><span data-quantia-inteira="" className="whitespace-nowrap">{ideb(v)}</span><span className="edm-unidade">de 0 a 10</span></dd>
       ) : (
         <dd data-valor-resposta="" className="edm-sem">
           <strong>Sem Ideb {g.ideb.ano}</strong>

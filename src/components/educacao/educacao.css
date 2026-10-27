@@ -235,7 +235,8 @@
   .edm-raiz [data-frescor-faixa="linha"] > details { display: block; }
 }
 @media (max-width: 640px) {
-  .edm-extrato-entrada dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  /* Revisão independente de 27/10/2026: a coluna acompanha o texto ampliado, preservando o Ideb inteiro. */
+  .edm-extrato-entrada dl { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 16px; }
   .edm-extrato-entrada .edm-valor { font-size: 2rem; }
   .edm-extrato-entrada header .edm-competencia { font-size: 12px; }
 }

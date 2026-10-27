@@ -32,6 +32,14 @@ function distancia(dif: number, pct: number): string {
   return `${reais(Math.abs(dif), 2)} (${num(Math.abs(pct), 1)}%) ${dif > 0 ? "acima" : "abaixo"} da média do Brasil`;
 }
 
+/** Revisão independente, 27/10/2026: a quebra pode vir após R$, nunca entre os algarismos. */
+function ReaisLegiveis({ valor }: { valor: number }) {
+  const texto = reais(valor, 2);
+  const partes = texto.match(/^(R\$\s)(.+)$/);
+  if (!partes) return <>{texto}</>;
+  return <>{partes[1]}<wbr /><span data-quantia-inteira="" className="whitespace-nowrap">{partes[2]}</span></>;
+}
+
 /**
  * Primeira tela do painel e da consulta: o seletor de estado (na URL, `?uf=`) e, para a escolha, o preço médio do litro
  * de cada combustível no último mês da pesquisa da ANP, com os postos pesquisados e a distância para a média do Brasil
@@ -103,7 +111,7 @@ export function PrecoNoEstado({ dados, titulo, destacarTanque = false }: { dados
                 ) : (
                   <>
                     <p data-valor-resposta="" className="mt-1 font-sans text-[1.75rem] leading-tight tracking-tight text-carvao [font-variant-numeric:tabular-nums]">
-                      {destacarTanque && litrosValidos ? reais(preco * litros, 2) : reais(preco, 2)} <span className="text-base text-carvao-muted">{destacarTanque && litrosValidos ? `para ${num(litros, 0)} litros` : "por litro"}</span>
+                      <ReaisLegiveis valor={destacarTanque && litrosValidos ? preco * litros : preco} /> <span className="text-base text-carvao-muted">{destacarTanque && litrosValidos ? `para ${num(litros, 0)} litros` : "por litro"}</span>
                     </p>
                     {destacarTanque && <p className="mt-2 text-sm text-carvao-muted">{reais(preco, 2)} por litro · média observada</p>}
                     <p className="mt-1 text-xs leading-relaxed text-mineral">

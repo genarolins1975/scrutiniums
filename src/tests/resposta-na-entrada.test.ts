@@ -76,6 +76,30 @@ describe("resposta específica na entrada, no build", () => {
     }, 120_000);
   }
 
+  it("texto a 200%: centavos e notas do Ideb continuam indivisíveis, inclusive em 320 px", async () => {
+    // Achados P1 da revisão independente de 27/10/2026: ausência de overflow não prova número legível.
+    for (const largura of [320, 390]) {
+      const c = await contexto(largura);
+      try {
+        const p = await c.newPage();
+        for (const rota of ["/combustiveis?uf=PE", "/educacao-municipal?ibge=2611606"]) {
+          await abrir(p, rota);
+          await p.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
+          for (const litros of rota.startsWith("/combustiveis") ? [40, 60, 1000] : [null]) {
+            if (litros !== null) await p.locator(`${CONSULTA} input[type="number"]`).fill(String(litros));
+            const medidas = await p.locator(`${CONSULTA} [data-quantia-inteira]`).evaluateAll(elementos => elementos.map(e => {
+              const faixa = document.createRange(); faixa.selectNodeContents(e);
+              return { texto: e.textContent, linhas: faixa.getClientRects().length };
+            }));
+            expect(medidas.length, rota).toBeGreaterThan(0);
+            expect(medidas.every(m => m.linhas === 1 && m.texto && !/NaN|undefined/.test(m.texto)), rota).toBe(true);
+            expect(await p.evaluate(() => document.documentElement.scrollWidth), `${rota}: ${litros ?? "Ideb"}`).toBeLessThanOrEqual(largura);
+          }
+        }
+      } finally { await c.close(); }
+    }
+  }, 120_000);
+
   it("capital: os sete valores são os das duas escolhas, com fonte e período, inclusive após voltar e recarregar", async () => {
     const c = await contexto();
     try {
