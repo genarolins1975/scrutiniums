@@ -45,7 +45,7 @@ try {
     await p.locator('[data-municipio]').waitFor({ state: 'attached' });
     assert.match(await p.locator('[data-municipio]').textContent(), /Recife/);
     const resposta = await p.locator('[data-resposta="p049"]').innerText();
-    const valoresCompletos = resposta.match(/R\$\s*[\d.,]+/g) ?? [];
+    const valoresCompletos = resposta.match(/R\$\s*[\d.,]*\d/g) ?? [];
     assert.equal(valoresCompletos[0], totalPublico);
     await consumoCompleto.scrollIntoViewIfNeeded();
     await p.screenshot({ path: join(saida, `energia-${idioma}-${largura}-autenticada.png`) });
@@ -77,10 +77,13 @@ try {
     await p.locator('[data-recorte-completo]').waitFor();
     assert.doesNotMatch(await p.locator('[data-resultado-aperitivo]').innerText(), /R\$\s*\d/);
     await p.locator('[data-recorte-completo] a').click();
+    // O salto ao convite acrescenta sua âncora; o login deve conservar o endereço daquele clique inteiro.
+    const enderecoParaRetorno = new URL(p.url());
+    assert.equal(enderecoParaRetorno.search, avancado.search);
     await p.locator('[data-convite-aperitivo] a').click();
     await p.waitForURL(/\/entrar\?de=/);
     const destino = new URL(p.url()).searchParams.get('de');
-    assert.equal(destino, avancado.pathname + avancado.search);
+    assert.equal(destino, enderecoParaRetorno.pathname + enderecoParaRetorno.search + enderecoParaRetorno.hash);
     await ctx.addCookies([servidor.cookie]);
     await ir(p, destino);
     const recuperados = await p.getByRole('form', { name: idioma === 'en' ? 'Simulation parameters' : 'Parâmetros da simulação', exact: true }).getByRole('combobox').evaluateAll(els => els.map(el => el.value));
