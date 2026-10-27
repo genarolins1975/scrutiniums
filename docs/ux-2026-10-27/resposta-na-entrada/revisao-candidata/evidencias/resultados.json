@@ -1,0 +1,546 @@
+{
+  "commit": "304b6dba31c0810f2eee66c9d0a992c368633a8f",
+  "build": "woQGXRcnqBp8uUHrAebiy",
+  "data": "2026-10-27T12:04:14.042Z",
+  "resultados": [
+    {
+      "nome": "/conectividade busca Recife por teclado",
+      "ok": true,
+      "detalhe": {
+        "url": "/conectividade?ibge=2611606",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 8341,
+        "controle": {
+          "x": 24,
+          "y": 495.125,
+          "width": 342,
+          "height": 52,
+          "top": 495.125,
+          "right": 366,
+          "bottom": 547.125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 672.125,
+          "width": 342,
+          "height": 36,
+          "top": 672.125,
+          "right": 366,
+          "bottom": 708.125,
+          "left": 24
+        },
+        "valorTexto": "18,3",
+        "contextoValor": "Acessos fixos por 100 habitantes18,3Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "INPUT",
+          "id": "busca-Rlgufafcq",
+          "role": "combobox"
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "/conectividade troca para Olinda por toque",
+      "ok": true,
+      "detalhe": {
+        "url": "/conectividade?ibge=2609600",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 8341,
+        "controle": {
+          "x": 24,
+          "y": 495.125,
+          "width": 342,
+          "height": 52,
+          "top": 495.125,
+          "right": 366,
+          "bottom": 547.125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 672.125,
+          "width": 342,
+          "height": 36,
+          "top": 672.125,
+          "right": 366,
+          "bottom": 708.125,
+          "left": 24
+        },
+        "valorTexto": "11,8",
+        "contextoValor": "Acessos fixos por 100 habitantes11,8Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "INPUT",
+          "id": "busca-Rlgufafcq",
+          "role": "combobox"
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "/conectividade nome repetido e Escape",
+      "ok": true,
+      "detalhe": {
+        "opcoes": [
+          "Bom JesusPB",
+          "Bom JesusPI",
+          "Bom JesusRN",
+          "Bom Jesus da LapaBA",
+          "Bom Jesus da PenhaMG",
+          "Bom Jesus da SerraBA",
+          "Bom Jesus das SelvasMA",
+          "Bom Jesus do AmparoMG",
+          "Bom Jesus do GalhoMG",
+          "Bom Jesus do NorteES",
+          "Bom Jesus do TocantinsPA",
+          "Bom Jesus do TocantinsTO"
+        ],
+        "fechado": true
+      }
+    },
+    {
+      "nome": "/conectividade parâmetro inválido",
+      "ok": true,
+      "detalhe": {
+        "texto": "Escolha o município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nNenhum município da base da Anatel tem o código IBGE 7777777. Busque pelo nome.\n\nBusque pelo nome para consultar os dados da cidade e a referência do Brasil. A fonte informa acessos e cobertura declarada; não mede a velocidade dentro de casa.",
+        "url": "/conectividade?ibge=7777777",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 7821,
+        "controle": {
+          "x": 24,
+          "y": 495.125,
+          "width": 342,
+          "height": 52,
+          "top": 495.125,
+          "right": 366,
+          "bottom": 547.125,
+          "left": 24
+        },
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "/educacao-municipal busca Recife por teclado",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2611606",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 7785,
+        "controle": {
+          "x": 24,
+          "y": 537.75,
+          "width": 342,
+          "height": 52,
+          "top": 537.75,
+          "right": 366,
+          "bottom": 589.75,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 772.25,
+          "width": 142,
+          "height": 36.796875,
+          "top": 772.25,
+          "right": 187,
+          "bottom": 809.046875,
+          "left": 45
+        },
+        "valorTexto": "5,8de 0 a 10",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º ano5,8de 0 a 10Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "INPUT",
+          "id": "busca-Rlgufafcq",
+          "role": "combobox"
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "/educacao-municipal troca para Olinda por toque",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2609600",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 7785,
+        "controle": {
+          "x": 24,
+          "y": 537.75,
+          "width": 342,
+          "height": 52,
+          "top": 537.75,
+          "right": 366,
+          "bottom": 589.75,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 772.25,
+          "width": 142,
+          "height": 36.796875,
+          "top": 772.25,
+          "right": 187,
+          "bottom": 809.046875,
+          "left": 45
+        },
+        "valorTexto": "5,6de 0 a 10",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º ano5,6de 0 a 10Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "INPUT",
+          "id": "busca-Rlgufafcq",
+          "role": "combobox"
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "/educacao-municipal nome repetido e Escape",
+      "ok": true,
+      "detalhe": {
+        "opcoes": [
+          "Bom JesusPB",
+          "Bom JesusPI",
+          "Bom JesusRN",
+          "Bom Jesus da LapaBA",
+          "Bom Jesus da PenhaMG",
+          "Bom Jesus da SerraBA",
+          "Bom Jesus das SelvasMA",
+          "Bom Jesus do AmparoMG",
+          "Bom Jesus do GalhoMG",
+          "Bom Jesus do NorteES",
+          "Bom Jesus do TocantinsPA",
+          "Bom Jesus do TocantinsTO"
+        ],
+        "fechado": true
+      }
+    },
+    {
+      "nome": "/educacao-municipal parâmetro inválido",
+      "ok": true,
+      "detalhe": {
+        "texto": "Escolha o município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nNenhum município da base tem o código IBGE 7777777. Busque pelo nome.\n\nBusque pelo nome para ver o Ideb da rede municipal, a referência do estado e do Brasil e os motivos de ausência. A ficha reúne a série e o Censo Escolar.",
+        "url": "/educacao-municipal?ibge=7777777",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 7559,
+        "controle": {
+          "x": 24,
+          "y": 537.75,
+          "width": 342,
+          "height": 52,
+          "top": 537.75,
+          "right": 366,
+          "bottom": 589.75,
+          "left": 24
+        },
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "Conectividade cobertura ausente",
+      "ok": true,
+      "detalhe": {
+        "texto": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nInternet em Boa Esperança do Norte (MT)\nAcessos fixos por 100 habitantes\n10,6\nBrasil: 27,0\nFonte: Anatel · agosto de 2026 · Densidade informada pela Anatel\nAcessos fixos por fibra óptica\n99,8%\nBrasil: 81,1%\nFonte: Anatel · agosto de 2026 · Calculado: acessos de fibra ÷ acessos fixos\nMoradores dentro da cobertura 5G\nSem dado\nBrasil: 73,8%\nFonte: Anatel · setembro de 2026 · Cobertura declarada à Anatel\n\nAcessos são contratos, não pessoas. Cobertura declarada não garante sinal dentro de casa nem velocidade. Sem dado publicado, não há valor a comparar.\n\nVer operadoras, 4G, linhas móveis e séries de Boa Esperança do Norte",
+        "url": "/conectividade?ibge=5101837",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 8416,
+        "controle": {
+          "x": 24,
+          "y": 495.125,
+          "width": 342,
+          "height": 52,
+          "top": 495.125,
+          "right": 366,
+          "bottom": 547.125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 720.125,
+          "width": 342,
+          "height": 36,
+          "top": 720.125,
+          "right": 366,
+          "bottom": 756.125,
+          "left": 24
+        },
+        "valorTexto": "10,6",
+        "contextoValor": "Acessos fixos por 100 habitantes10,6Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "Educação sem Ideb na edição",
+      "ok": true,
+      "detalhe": {
+        "texto": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nFernando de Noronha Pernambuco (PE)\nIdeb 2025\nAnos iniciais, rede municipal\n1º ao 5º ano\nSem Ideb 2025\nA rede não tem alunos nesta etapa no Censo Escolar: na cidade, essa etapa fica com outra rede, em geral a estadual.\nRede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1\nAnos finais, rede municipal\n6º ao 9º ano\nSem Ideb 2025\nA rede não tem alunos nesta etapa no Censo Escolar: na cidade, essa etapa fica com outra rede, em geral a estadual.\nRede pública de Pernambuco: 4,9 · redes municipais do Brasil: 4,9\nFicha completa da cidade\n\nFonte: Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP), Índice de Desenvolvimento da Educação Básica (Ideb) 2025. Cada rede tem seu próprio universo.",
+        "url": "/educacao-municipal?ibge=2605459",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 8061,
+        "controle": {
+          "x": 24,
+          "y": 537.75,
+          "width": 342,
+          "height": 52,
+          "top": 537.75,
+          "right": 366,
+          "bottom": 589.75,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 844.03125,
+          "width": 142,
+          "height": 241.125,
+          "top": 844.03125,
+          "right": 187,
+          "bottom": 1085.15625,
+          "left": 45
+        },
+        "valorTexto": "Sem Ideb 2025A rede não tem alunos nesta etapa no Censo Escolar: na cidade, essa etapa fica com outra rede, em geral a estadual.",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º anoSem Ideb 2025A rede não tem alunos nesta etapa no Censo Escolar: na cidade, essa etapa fica com outra rede, em geral a estadual.Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "Conectividade expansão de contexto e detalhe",
+      "ok": true,
+      "detalhe": {
+        "tabelas": 1,
+        "url": "/conectividade?ibge=2611606#municipio-detalhes",
+        "scrollY": 5764,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 13619,
+        "controle": {
+          "x": 24,
+          "y": -5268.875,
+          "width": 342,
+          "height": 52,
+          "top": -5268.875,
+          "right": 366,
+          "bottom": -5216.875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": -5075.875,
+          "width": 342,
+          "height": 36,
+          "top": -5075.875,
+          "right": 366,
+          "bottom": -5039.875,
+          "left": 24
+        },
+        "valorTexto": "18,3",
+        "contextoValor": "Acessos fixos por 100 habitantes18,3Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "IPCA recorte, grupos e retorno",
+      "ok": true,
+      "detalhe": {
+        "texto": "Sua cidade ou região\nBrasil (as 16 áreas juntas)\nAracaju (SE), só o município\nBelém (PA), região metropolitana\nBelo Horizonte (MG), região metropolitana\nBrasília (DF), só o município\nCampo Grande (MS), só o município\nCuritiba (PR), região metropolitana\nFortaleza (CE), região metropolitana\nGoiânia (GO), só o município\nGrande Vitória (ES), região metropolitana\nPorto Alegre (RS), região metropolitana\nRecife (PE), região metropolitana\nRio Branco (AC), só o município\nRio de Janeiro (RJ), região metropolitana\nSalvador (BA), região metropolitana\nSão Luís (MA), só o município\nSão Paulo (SP), região metropolitana\n\nO IBGE pesquisa 16 áreas: 10 regiões metropolitanas e 6 capitais. Cidade fora da lista não tem IPCA próprio; o índice da área mais próxima não é o seu.\n\nInflação em 12 meses\n\nMunicípio de Goiânia, IPCA índice geral\n\n6,08% em 12 meses\n\nout/2025 a set/2026 · variação acumulada em 12 meses\n\n1,50 ponto percentual acima da do Brasil.\n\nBrasil, IPCA índice geral\n\n4,58% em 12 meses\n\nout/2025 a set/2026 · a referência nacional\n\nSó em setembro de 2026: +1,07% no mês. No ano, de janeiro a setembro: 4,38%.\n\nFonte: IBGE, IPCA, tabela 7060 do SIDRA, divulgada em 09/10/2026. Variação percentual dos preços; a diferença entre a área e o Brasil é a subtração das duas variações, em pontos percentuais (p.p.).\n\nOs nove grupos de despesa\nVariação, peso no orçamento e comparação com o Brasil.",
+        "url": "/custo-de-vida?area=5208707",
+        "scrollY": 755,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 7661,
+        "controle": {
+          "x": 24,
+          "y": -236.6875,
+          "width": 288,
+          "height": 44,
+          "top": -236.6875,
+          "right": 312,
+          "bottom": -192.6875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": -11.390625,
+          "width": 342,
+          "height": 45,
+          "top": -11.390625,
+          "right": 366,
+          "bottom": 33.609375,
+          "left": 24
+        },
+        "valorTexto": "6,08% em 12 meses",
+        "contextoValor": "Município de Goiânia, IPCA índice geral6,08% em 12 mesesout/2025 a set/2026 · variação acumulada em 12 meses1,50 ponto percentual acima da do Brasil.",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "Combustíveis UF, litros e unidade do delta",
+      "ok": false,
+      "erro": "locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-fatia=\"resposta\"]').getByLabel('Litros no tanque')\u001b[22m\n\n    at /workspace/resposta-revisao-final/jornadas-independentes.mjs:44:163\n    at async caso (/workspace/resposta-revisao-final/jornadas-independentes.mjs:23:50)\n    at async file:///workspace/resposta-revisao-final/jornadas-independentes.mjs:44:2"
+    },
+    {
+      "nome": "Síntese troca de capital, comparador e régua",
+      "ok": true,
+      "detalhe": {
+        "svg": 8,
+        "url": "/eficiencia-estatal?territorio=3550308&comparador=3304557&indicador=frequencia&idade=47813#retrato-titulo",
+        "scrollY": 5399,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 9996,
+        "controle": {
+          "x": 24,
+          "y": -4900.875,
+          "width": 165,
+          "height": 48,
+          "top": -4900.875,
+          "right": 189,
+          "bottom": -4852.875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": -4671.875,
+          "width": 139.625,
+          "height": 32,
+          "top": -4671.875,
+          "right": 163.625,
+          "bottom": -4639.875,
+          "left": 24
+        },
+        "valorTexto": "91,1% São Paulo",
+        "contextoValor": "91,1% São PauloRio de Janeiro: 86,7%",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    },
+    {
+      "nome": "Texto 200%: consulta de Educação operável",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2609600",
+        "scrollY": 1260,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 19140,
+        "controle": {
+          "x": 48,
+          "y": 126,
+          "width": 294,
+          "height": 58,
+          "top": 126,
+          "right": 342,
+          "bottom": 184,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 444.390625,
+          "width": 118,
+          "height": 147.1875,
+          "top": 444.390625,
+          "right": 187,
+          "bottom": 591.578125,
+          "left": 69
+        },
+        "valorTexto": "5,6de 0 a 10",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º ano5,6de 0 a 10Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "INPUT",
+          "id": "busca-Rlgufafcq",
+          "role": "combobox"
+        },
+        "fonteRaiz": "32px"
+      }
+    },
+    {
+      "nome": "Sem sessão /conectividade?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/conectividade?ibge=2611606",
+        "h1": "Como é a internet na minha cidade?",
+        "falhas": [],
+        "trecho": "OBSERVATÓRIO DE ENERGIA E INFRAESTRUTURA · CONECTIVIDADE\n\nComo é a internet na minha cidade?\n\nBusque o município e veja quantos acessos de internet fixa ele tem, quantos são por fibra, quantas empresas atendem e quem está dentro da cobertura 4G e 5G.\n\nRecife Pernambuco (PE)\nacessos de agosto de 2026 · cobertura de setembro de 2026 · código IBGE 2611606\nAcessos de banda larga fixa por 100 habitantes\n18,3\n291.415 acessos contratados em agosto de 2026; no Brasil, 27,0 por 100 habitantes.\nAcessos por fibra óptica\n81,0%\n181 empresas vendem banda larga fixa na cidade.\nMoradores dentro da cobertura 5G\n99,9%\n100,0% dentro da cobertura 4G, por qualquer operadora, em setembro de 2026; 1.488.920 moradores no Censo 2022.\n\nAcesso contratado, não pessoa conectada. A Anatel conta os contratos de banda larga fixa que as prestadoras declaram em cada município. Uma casa com um contrato e cinco moradores conta um acesso; uma empresa com cem linhas conta cem.\n\nCobertura é a mancha declarada pela operadora. A parte dos moradores coberta sai do cruzamento entre os mapas das operadoras e os setores do Censo 2022. Estar dentro da mancha não garante sinal dentro de casa nem velocidade.\n\nFonte: Anatel, acessos de banda larga fixa (serviço de comunicação multimídia) (agosto de 2026) e cobertura das redes móveis por município (moradores, domicílios e área cobertos) (setembro de 2026). Dados capturados em 20/10/2026. Densidade como a Anatel publica (acessos por 100 habitantes); partes em %: cálculo da Scrutiniums.\n\nBuscar outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes r"
+      }
+    },
+    {
+      "nome": "Sem sessão /educacao-municipal?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2611606",
+        "h1": "Como está a escola pública da minha cidade?",
+        "falhas": [],
+        "trecho": "OBSERVATÓRIO DOS SERVIÇOS PÚBLICOS · EDUCAÇÃO\n\nComo está a escola pública da minha cidade?\n\nBusque o município e veja o Ideb 2025 das escolas da prefeitura, o índice do INEP que junta o aprendizado dos alunos e a aprovação, nos anos iniciais e finais do ensino fundamental.\n\nRecife Pernambuco (PE)\nIdeb 2025 · rede municipal · código IBGE 2611606\nAnos iniciais\n1º ao 5º ano · escolas da prefeitura\n5,8de 0 a 10\nAnos finais\n6º ao 9º ano · escolas da prefeitura\n4,9de 0 a 10\n\nRecife é capital: o gasto da prefeitura com educação e a comparação com as outras capitais estão no painel\nEducação nas capitais\ncom conta\n\nO Ideb junta aprendizagem e aprovação. É a nota dos alunos na prova do Saeb, em português e matemática, multiplicada por um indicador de aprovação. Vai de 0 a 10 e sai a cada dois anos.\n\nRede municipal é a escola da prefeitura. O número não é o de cada escola nem o da rede estadual: o INEP calcula o resultado com todos os alunos da rede.\n\nFonte: INEP, Ideb 2025, resultados por município, divulgados em 05/08/2026. Dados capturados em 20/10/2026. Escala de 0 a 10, com uma casa decimal, como o INEP publica.\n\nBuscar outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nO painel completo, com a conta gratuita\nFicha da cidade: Ideb da rede municipal de 2005 a 2025, nas duas etapas quando houver, e as 8 metas por edição do INEP\nComponentes, tabelas e laboratório: aprendizagem e aprovação, com decomposição entre edições quando houver dados\nEstado, Brasil e 184 redes municipais com Ideb 2025: a posição da rede entre elas\nDistr"
+      }
+    },
+    {
+      "nome": "Sem sessão /eficiencia-estatal?territorio=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/eficiencia-estatal?territorio=2611606",
+        "h1": "Como está a minha capital?",
+        "falhas": [],
+        "trecho": "OBSERVATÓRIO DOS SERVIÇOS PÚBLICOS · SÍNTESE DAS CAPITAIS · MINHA CAPITAL\n\nComo está a minha capital?\n\nEscolha uma das 26 capitais estaduais e veja quatro resultados na vida dos moradores, cada um com o ano, a fonte e a posição da capital entre as 26.\n\nSUA CAPITAL\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nSão Paulo · SP\nTeresina · PI\nVitória · ES\n\nRecife · PE · 1.488.920 moradores\nIBGE, Censo 2022 (SIDRA 4714), população residente em 31 de julho de 2022\n\nQuatro resultados em Recife\nQual é a renda típica de cada morador?\n\nR$ 970,67\n\nRenda domiciliar por pessoa, mediana · Julho de 2022\n\nPOSIÇÃO\n14º maior valor entre as 26 capitais\n\nValor maior, condição mais favorável. Reais nominais de julho de 2022, sem ajuste de preços entre cidades. Amostra do Censo; erro municipal não quantificado; valores redondos aparecem repetidos.\n\nFonte: IBGE, Censo 2022, SIDRA 10295\n↗\n\nAs crianças de 4 e 5 anos estão na escola?\n\n85,1%\n\nFrequência escolar de 4 e 5 anos · 2022\n\nPOSIÇÃO\n14º maior valor entre as 26 capitais\n\nValor maior, condição mais favorável. Crianças de 4 e 5 anos que frequentam escola ou creche, redes pública e privada. Amostra do Censo; erro municipal não quantificado.\n\nFonte: IBGE, Censo 2022, SIDRA 10056\n↗\n\nQuantos levam mais de uma hora para chegar ao trabalho?\n\n15,0%\n\nMais de uma hora a"
+      }
+    },
+    {
+      "nome": "Sem sessão /combustiveis/no-meu-estado?uf=PE",
+      "ok": true,
+      "detalhe": {
+        "url": "/combustiveis/no-meu-estado?uf=PE",
+        "h1": "Quanto custa encher o tanque no meu estado?",
+        "falhas": [],
+        "trecho": "Quanto custa encher o tanque no meu estado?\n\nEscolha o estado para ver o preço médio do litro de gasolina, etanol e diesel em setembro de 2026, comparado com a média do Brasil.\n\nSeu estado\nBrasil (média nacional)\nAcre\nAlagoas\nAmapá\nAmazonas\nBahia\nCeará\nDistrito Federal\nEspírito Santo\nGoiás\nMaranhão\nMato Grosso\nMato Grosso do Sul\nMinas Gerais\nPará\nParaíba\nParaná\nPernambuco\nPiauí\nRio de Janeiro\nRio Grande do Norte\nRio Grande do Sul\nRondônia\nRoraima\nSanta Catarina\nSão Paulo\nSergipe\nTocantins\nLitros no tanque\n\nA conta do tanque é o preço médio vezes os litros escolhidos (40 litros é só um exemplo). O valor pago varia de posto para posto.\n\nsetembro de 2026 · 27 unidades da federação e o Brasil · R$ por litro\nFonte: ANP, Levantamento de Preços de Combustíveis, série mensal por estado e Brasil\n\nNão permite concluir: o preço que você vai pagar num posto, porque é a média da amostra de postos que a ANP pesquisou no mês; a conta do tanque é essa média vezes os litros escolhidos.\n\nGasolina comum\n\nR$ 6,84por litro\n\nPernambuco · setembro de 2026\n●\nNatureza do dado:\nObservado\n\nFonte: ANP, Levantamento de Preços de Combustíveis\n\n766 postos pesquisados\n\nR$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54)\n\n40 litros: R$ 273,60\n\nEtanol hidratado\n\nR$ 4,93por litro\n\nPernambuco · setembro de 2026\n●\nNatureza do dado:\nObservado\n\nFonte: ANP, Levantamento de Preços de Combustíveis\n\n660 postos pesquisados\n\nR$ 0,85 (20,8%) acima da média do Brasil (R$ 4,08)\n\n40 litros: R$ 197,20\n\nÓleo diesel\n\nR$ 7,42por litro\n\nPernambuco · setembro de 2026\n●\nNatureza do dado:\nObservado\n\nFonte: ANP, Levantamento de Preç"
+      }
+    }
+  ],
+  "erros": []
+}

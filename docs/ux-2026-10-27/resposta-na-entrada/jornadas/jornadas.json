@@ -1,0 +1,1771 @@
+{
+  "build": "joprJiw7FCX_7Z-nqHMuN",
+  "commit": "38c543ae5e536d23f470a3640c8746bc6bdec60a",
+  "data": "2026-10-27T12:28:06.470Z",
+  "resultados": [
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 320,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 544.3125,
+          "width": 272,
+          "height": 44,
+          "top": 544.3125,
+          "right": 296,
+          "bottom": 588.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 702.3125,
+          "width": 272,
+          "height": 557.546875,
+          "top": 702.3125,
+          "right": 296,
+          "bottom": 1259.859375,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 809.109375,
+          "width": 272,
+          "height": 45,
+          "top": 809.109375,
+          "right": 296,
+          "bottom": 854.109375,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 8468
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1797.484375,
+          "width": 224,
+          "height": 44,
+          "top": 1797.484375,
+          "right": 272,
+          "bottom": 1841.484375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 2266.984375,
+          "width": 224,
+          "height": 2253.28125,
+          "top": 2266.984375,
+          "right": 272,
+          "bottom": 4520.265625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2673.765625,
+          "width": 224,
+          "height": 180,
+          "top": 2673.765625,
+          "right": 272,
+          "bottom": 2853.765625,
+          "left": 48
+        },
+        "largura": 320,
+        "altura": 28543
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 320,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 544.3125,
+          "width": 160,
+          "height": 44,
+          "top": 544.3125,
+          "right": 184,
+          "bottom": 588.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 667.3125,
+          "width": 272,
+          "height": 975.890625,
+          "top": 667.3125,
+          "right": 296,
+          "bottom": 1643.203125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 878.203125,
+          "width": 272,
+          "height": 35,
+          "top": 878.203125,
+          "right": 296,
+          "bottom": 913.203125,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 11311
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1969.484375,
+          "width": 224,
+          "height": 44,
+          "top": 1969.484375,
+          "right": 272,
+          "bottom": 2013.484375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 2412.984375,
+          "width": 224,
+          "height": 4276.0625,
+          "top": 2412.984375,
+          "right": 272,
+          "bottom": 6689.046875,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 3239.546875,
+          "width": 224,
+          "height": 210,
+          "top": 3239.546875,
+          "right": 272,
+          "bottom": 3449.546875,
+          "left": 48
+        },
+        "largura": 320,
+        "altura": 40046
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 320,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 574.3125,
+          "width": 272,
+          "height": 52,
+          "top": 574.3125,
+          "right": 296,
+          "bottom": 626.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 682.3125,
+          "width": 272,
+          "height": 701.75,
+          "top": 682.3125,
+          "right": 296,
+          "bottom": 1384.0625,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 767.3125,
+          "width": 272,
+          "height": 36,
+          "top": 767.3125,
+          "right": 296,
+          "bottom": 803.3125,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 9229
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 2108.484375,
+          "width": 224,
+          "height": 58,
+          "top": 2108.484375,
+          "right": 272,
+          "bottom": 2166.484375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 2406.484375,
+          "width": 224,
+          "height": 2431,
+          "top": 2406.484375,
+          "right": 272,
+          "bottom": 4837.484375,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2783.484375,
+          "width": 224,
+          "height": 72,
+          "top": 2783.484375,
+          "right": 272,
+          "bottom": 2855.484375,
+          "left": 48
+        },
+        "largura": 320,
+        "altura": 28793
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 320,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 24,
+          "y": 563.75,
+          "width": 272,
+          "height": 52,
+          "top": 563.75,
+          "right": 296,
+          "bottom": 615.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 675.75,
+          "width": 272,
+          "height": 567.828125,
+          "top": 675.75,
+          "right": 296,
+          "bottom": 1243.578125,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 817.640625,
+          "width": 230,
+          "height": 36.796875,
+          "top": 817.640625,
+          "right": 275,
+          "bottom": 854.4375,
+          "left": 45
+        },
+        "largura": 320,
+        "altura": 8585
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 48,
+          "y": 1723.75,
+          "width": 224,
+          "height": 58,
+          "top": 1723.75,
+          "right": 272,
+          "bottom": 1781.75,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 2005.75,
+          "width": 224,
+          "height": 898.1875,
+          "top": 2005.75,
+          "right": 272,
+          "bottom": 2903.9375,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 2200.03125,
+          "width": 182,
+          "height": 73.59375,
+          "top": 2200.03125,
+          "right": 251,
+          "bottom": 2273.625,
+          "left": 69
+        },
+        "largura": 320,
+        "altura": 25607
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 320,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 498.125,
+          "width": 272,
+          "height": 48,
+          "top": 498.125,
+          "right": 296,
+          "bottom": 546.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 657.125,
+          "width": 272,
+          "height": 1719.5,
+          "top": 657.125,
+          "right": 296,
+          "bottom": 2376.625,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 846.125,
+          "width": 139.625,
+          "height": 32,
+          "top": 846.125,
+          "right": 163.625,
+          "bottom": 878.125,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 11186
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1545.3125,
+          "width": 224,
+          "height": 48,
+          "top": 1545.3125,
+          "right": 272,
+          "bottom": 1593.3125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1728.3125,
+          "width": 224,
+          "height": 7194,
+          "top": 1728.3125,
+          "right": 272,
+          "bottom": 8922.3125,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2473.3125,
+          "width": 224,
+          "height": 128,
+          "top": 2473.3125,
+          "right": 272,
+          "bottom": 2601.3125,
+          "left": 48
+        },
+        "largura": 320,
+        "altura": 32129
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "retrato-titulo",
+          "visivel": true
+        }
+      ]
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 390,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 518.3125,
+          "width": 288,
+          "height": 44,
+          "top": 518.3125,
+          "right": 312,
+          "bottom": 562.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 656.8125,
+          "width": 342,
+          "height": 456.546875,
+          "top": 656.8125,
+          "right": 366,
+          "bottom": 1113.359375,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 743.609375,
+          "width": 342,
+          "height": 45,
+          "top": 743.609375,
+          "right": 366,
+          "bottom": 788.609375,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 7661
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1423.34375,
+          "width": 294,
+          "height": 44,
+          "top": 1423.34375,
+          "right": 342,
+          "bottom": 1467.34375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1853.84375,
+          "width": 294,
+          "height": 1753.6875,
+          "top": 1853.84375,
+          "right": 342,
+          "bottom": 3607.53125,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2163.03125,
+          "width": 294,
+          "height": 180,
+          "top": 2163.03125,
+          "right": 342,
+          "bottom": 2343.03125,
+          "left": 48
+        },
+        "largura": 390,
+        "altura": 21995
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 390,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 483.125,
+          "width": 230,
+          "height": 44,
+          "top": 483.125,
+          "right": 254,
+          "bottom": 527.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 606.125,
+          "width": 342,
+          "height": 947.09375,
+          "top": 606.125,
+          "right": 366,
+          "bottom": 1553.21875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 788.21875,
+          "width": 342,
+          "height": 35,
+          "top": 788.21875,
+          "right": 366,
+          "bottom": 823.21875,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 10357
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1547.34375,
+          "width": 294,
+          "height": 44,
+          "top": 1547.34375,
+          "right": 342,
+          "bottom": 1591.34375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1951.84375,
+          "width": 294,
+          "height": 3234.96875,
+          "top": 1951.84375,
+          "right": 342,
+          "bottom": 5186.8125,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2603.8125,
+          "width": 294,
+          "height": 140,
+          "top": 2603.8125,
+          "right": 342,
+          "bottom": 2743.8125,
+          "left": 48
+        },
+        "largura": 390,
+        "altura": 30947
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 390,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 495.125,
+          "width": 342,
+          "height": 52,
+          "top": 495.125,
+          "right": 366,
+          "bottom": 547.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 603.125,
+          "width": 342,
+          "height": 679,
+          "top": 603.125,
+          "right": 366,
+          "bottom": 1282.125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 688.125,
+          "width": 342,
+          "height": 36,
+          "top": 688.125,
+          "right": 366,
+          "bottom": 724.125,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 8357
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1629.34375,
+          "width": 294,
+          "height": 58,
+          "top": 1629.34375,
+          "right": 342,
+          "bottom": 1687.34375,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1895.34375,
+          "width": 294,
+          "height": 1954.5,
+          "top": 1895.34375,
+          "right": 342,
+          "bottom": 3849.84375,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2168.34375,
+          "width": 294,
+          "height": 72,
+          "top": 2168.34375,
+          "right": 342,
+          "bottom": 2240.34375,
+          "left": 48
+        },
+        "largura": 390,
+        "altura": 22643
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 390,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 24,
+          "y": 537.75,
+          "width": 342,
+          "height": 52,
+          "top": 537.75,
+          "right": 366,
+          "bottom": 589.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 649.75,
+          "width": 342,
+          "height": 414.046875,
+          "top": 649.75,
+          "right": 366,
+          "bottom": 1063.796875,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 788.25,
+          "width": 142,
+          "height": 36.796875,
+          "top": 788.25,
+          "right": 187,
+          "bottom": 825.046875,
+          "left": 45
+        },
+        "largura": 390,
+        "altura": 7801
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 48,
+          "y": 1386,
+          "width": 294,
+          "height": 58,
+          "top": 1386,
+          "right": 342,
+          "bottom": 1444,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1636,
+          "width": 294,
+          "height": 672.625,
+          "top": 1636,
+          "right": 342,
+          "bottom": 2308.625,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 1777.890625,
+          "width": 252,
+          "height": 73.59375,
+          "top": 1777.890625,
+          "right": 321,
+          "bottom": 1851.484375,
+          "left": 69
+        },
+        "largura": 390,
+        "altura": 19285
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 390,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "32px",
+        "controle": {
+          "x": 24,
+          "y": 498.125,
+          "width": 165,
+          "height": 48,
+          "top": 498.125,
+          "right": 189,
+          "bottom": 546.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 570.125,
+          "width": 342,
+          "height": 1569.5,
+          "top": 570.125,
+          "right": 366,
+          "bottom": 2139.625,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 727.125,
+          "width": 139.625,
+          "height": 32,
+          "top": 727.125,
+          "right": 163.625,
+          "bottom": 759.125,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 9996
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1333.5625,
+          "width": 141,
+          "height": 48,
+          "top": 1333.5625,
+          "right": 189,
+          "bottom": 1381.5625,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1429.5625,
+          "width": 294,
+          "height": 5453,
+          "top": 1429.5625,
+          "right": 342,
+          "bottom": 6882.5625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 2030.5625,
+          "width": 279.21875,
+          "height": 64,
+          "top": 2030.5625,
+          "right": 327.21875,
+          "bottom": 2094.5625,
+          "left": 48
+        },
+        "largura": 390,
+        "altura": 24276
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "retrato-titulo",
+          "visivel": true
+        }
+      ]
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 768,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "33.792px",
+        "controle": {
+          "x": 24,
+          "y": 546.921875,
+          "width": 288,
+          "height": 44,
+          "top": 546.921875,
+          "right": 312,
+          "bottom": 590.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 614.921875,
+          "width": 720,
+          "height": 271.75,
+          "top": 614.921875,
+          "right": 744,
+          "bottom": 886.671875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 705.171875,
+          "width": 340,
+          "height": 45,
+          "top": 705.171875,
+          "right": 364,
+          "bottom": 750.171875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 5203
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1234.171875,
+          "width": 576,
+          "height": 44,
+          "top": 1234.171875,
+          "right": 624,
+          "bottom": 1278.171875,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1469.671875,
+          "width": 672,
+          "height": 944.59375,
+          "top": 1469.671875,
+          "right": 720,
+          "bottom": 2414.265625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1721.265625,
+          "width": 296,
+          "height": 180,
+          "top": 1721.265625,
+          "right": 344,
+          "bottom": 1901.265625,
+          "left": 48
+        },
+        "largura": 768,
+        "altura": 13627
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 768,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "33.792px",
+        "controle": {
+          "x": 24,
+          "y": 546.921875,
+          "width": 218,
+          "height": 44,
+          "top": 546.921875,
+          "right": 242,
+          "bottom": 590.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 650.421875,
+          "width": 720,
+          "height": 512.25,
+          "top": 650.421875,
+          "right": 744,
+          "bottom": 1162.671875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 787.671875,
+          "width": 344,
+          "height": 35,
+          "top": 787.671875,
+          "right": 368,
+          "bottom": 822.671875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 7048
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1264.28125,
+          "width": 414,
+          "height": 44,
+          "top": 1264.28125,
+          "right": 462,
+          "bottom": 1308.28125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1468.78125,
+          "width": 672,
+          "height": 1640.1875,
+          "top": 1468.78125,
+          "right": 720,
+          "bottom": 3108.96875,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1830.96875,
+          "width": 304,
+          "height": 140,
+          "top": 1830.96875,
+          "right": 352,
+          "bottom": 1970.96875,
+          "left": 48
+        },
+        "largura": 768,
+        "altura": 18262
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 768,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "33.792px",
+        "controle": {
+          "x": 24,
+          "y": 562.921875,
+          "width": 576,
+          "height": 52,
+          "top": 562.921875,
+          "right": 600,
+          "bottom": 614.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 654.921875,
+          "width": 720,
+          "height": 325.5,
+          "top": 654.921875,
+          "right": 744,
+          "bottom": 980.421875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 739.921875,
+          "width": 226.65625,
+          "height": 36,
+          "top": 739.921875,
+          "right": 250.65625,
+          "bottom": 775.921875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 5794
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1293.78125,
+          "width": 672,
+          "height": 58,
+          "top": 1293.78125,
+          "right": 720,
+          "bottom": 1351.78125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1463.78125,
+          "width": 672,
+          "height": 890,
+          "top": 1463.78125,
+          "right": 720,
+          "bottom": 2353.78125,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1712.78125,
+          "width": 197.328125,
+          "height": 72,
+          "top": 1712.78125,
+          "right": 245.328125,
+          "bottom": 1784.78125,
+          "left": 48
+        },
+        "largura": 768,
+        "altura": 14221
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 768,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 24,
+          "y": 557.875,
+          "width": 576,
+          "height": 52,
+          "top": 557.875,
+          "right": 600,
+          "bottom": 609.875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 653.875,
+          "width": 720,
+          "height": 314.265625,
+          "top": 653.875,
+          "right": 744,
+          "bottom": 968.140625,
+          "left": 24
+        },
+        "valor": {
+          "x": 45,
+          "y": 769.875,
+          "width": 319,
+          "height": 41.390625,
+          "top": 769.875,
+          "right": 364,
+          "bottom": 811.265625,
+          "left": 45
+        },
+        "largura": 768,
+        "altura": 5698
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "30px",
+        "controle": {
+          "x": 48,
+          "y": 1050.5,
+          "width": 672,
+          "height": 58,
+          "top": 1050.5,
+          "right": 720,
+          "bottom": 1108.5,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1204.5,
+          "width": 672,
+          "height": 359.671875,
+          "top": 1204.5,
+          "right": 720,
+          "bottom": 1564.171875,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 1320.5,
+          "width": 295,
+          "height": 82.796875,
+          "top": 1320.5,
+          "right": 364,
+          "bottom": 1403.296875,
+          "left": 69
+        },
+        "largura": 768,
+        "altura": 12056
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 768,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "33.792px",
+        "controle": {
+          "x": 24,
+          "y": 561.921875,
+          "width": 266,
+          "height": 48,
+          "top": 561.921875,
+          "right": 290,
+          "bottom": 609.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 633.921875,
+          "width": 720,
+          "height": 946,
+          "top": 633.921875,
+          "right": 744,
+          "bottom": 1579.921875,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 750.921875,
+          "width": 139.625,
+          "height": 32,
+          "top": 750.921875,
+          "right": 163.625,
+          "bottom": 782.921875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 7077
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 1183.78125,
+          "width": 330,
+          "height": 48,
+          "top": 1183.78125,
+          "right": 378,
+          "bottom": 1231.78125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 1279.78125,
+          "width": 672,
+          "height": 3051,
+          "top": 1279.78125,
+          "right": 720,
+          "bottom": 4330.78125,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1592.78125,
+          "width": 279.21875,
+          "height": 64,
+          "top": 1592.78125,
+          "right": 327.21875,
+          "bottom": 1656.78125,
+          "left": 48
+        },
+        "largura": 768,
+        "altura": 15785
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "retrato-titulo",
+          "visivel": true
+        }
+      ]
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 1440,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "51.2px",
+        "controle": {
+          "x": 136,
+          "y": 512.5,
+          "width": 288,
+          "height": 44,
+          "top": 512.5,
+          "right": 424,
+          "bottom": 556.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 580.5,
+          "width": 1168,
+          "height": 279.8125,
+          "top": 580.5,
+          "right": 1304,
+          "bottom": 860.3125,
+          "left": 136
+        },
+        "valor": {
+          "x": 136,
+          "y": 678.8125,
+          "width": 428,
+          "height": 45,
+          "top": 678.8125,
+          "right": 564,
+          "bottom": 723.8125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 4307
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 874.78125,
+          "width": 576,
+          "height": 44,
+          "top": 874.78125,
+          "right": 624,
+          "bottom": 918.78125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 969.28125,
+          "width": 1344,
+          "height": 619.34375,
+          "top": 969.28125,
+          "right": 1392,
+          "bottom": 1588.625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1186.625,
+          "width": 632,
+          "height": 90,
+          "top": 1186.625,
+          "right": 680,
+          "bottom": 1276.625,
+          "left": 48
+        },
+        "largura": 1440,
+        "altura": 9172
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 1440,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "51.2px",
+        "controle": {
+          "x": 136,
+          "y": 512.5,
+          "width": 218,
+          "height": 44,
+          "top": 512.5,
+          "right": 354,
+          "bottom": 556.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 616,
+          "width": 1168,
+          "height": 325.3125,
+          "top": 616,
+          "right": 1304,
+          "bottom": 941.3125,
+          "left": 136
+        },
+        "valor": {
+          "x": 136,
+          "y": 741.8125,
+          "width": 268,
+          "height": 35,
+          "top": 741.8125,
+          "right": 404,
+          "bottom": 776.8125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5736
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 785.390625,
+          "width": 414,
+          "height": 44,
+          "top": 785.390625,
+          "right": 462,
+          "bottom": 829.390625,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 950.890625,
+          "width": 1344,
+          "height": 1012.84375,
+          "top": 950.890625,
+          "right": 1392,
+          "bottom": 1963.734375,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1222.234375,
+          "width": 288,
+          "height": 140,
+          "top": 1222.234375,
+          "right": 336,
+          "bottom": 1362.234375,
+          "left": 48
+        },
+        "largura": 1440,
+        "altura": 12011
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 1440,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "51.2px",
+        "controle": {
+          "x": 136,
+          "y": 528.5,
+          "width": 576,
+          "height": 52,
+          "top": 528.5,
+          "right": 712,
+          "bottom": 580.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 620.5,
+          "width": 1168,
+          "height": 305.5,
+          "top": 620.5,
+          "right": 1304,
+          "bottom": 926,
+          "left": 136
+        },
+        "valor": {
+          "x": 136,
+          "y": 705.5,
+          "width": 376,
+          "height": 36,
+          "top": 705.5,
+          "right": 512,
+          "bottom": 741.5,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 4802
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 814.890625,
+          "width": 1152,
+          "height": 58,
+          "top": 814.890625,
+          "right": 1200,
+          "bottom": 872.890625,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 952.890625,
+          "width": 1344,
+          "height": 607,
+          "top": 952.890625,
+          "right": 1392,
+          "bottom": 1559.890625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1161.890625,
+          "width": 421.328125,
+          "height": 72,
+          "top": 1161.890625,
+          "right": 469.328125,
+          "bottom": 1233.890625,
+          "left": 48
+        },
+        "largura": 1440,
+        "altura": 9423
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 1440,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "44px",
+        "controle": {
+          "x": 136,
+          "y": 500.65625,
+          "width": 576,
+          "height": 52,
+          "top": 500.65625,
+          "right": 712,
+          "bottom": 552.65625,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 596.65625,
+          "width": 1168,
+          "height": 303.21875,
+          "top": 596.65625,
+          "right": 1304,
+          "bottom": 899.875,
+          "left": 136
+        },
+        "valor": {
+          "x": 157,
+          "y": 721.75,
+          "width": 543,
+          "height": 41.390625,
+          "top": 721.75,
+          "right": 700,
+          "bottom": 763.140625,
+          "left": 157
+        },
+        "largura": 1440,
+        "altura": 4913
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "44px",
+        "controle": {
+          "x": 48,
+          "y": 801.28125,
+          "width": 760,
+          "height": 58,
+          "top": 801.28125,
+          "right": 808,
+          "bottom": 859.28125,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 955.28125,
+          "width": 1344,
+          "height": 348.625,
+          "top": 955.28125,
+          "right": 1392,
+          "bottom": 1303.90625,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 1080.375,
+          "width": 631,
+          "height": 82.796875,
+          "top": 1080.375,
+          "right": 700,
+          "bottom": 1163.171875,
+          "left": 69
+        },
+        "largura": 1440,
+        "altura": 9063
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 1440,
+      "normal": {
+        "scrollY": 0,
+        "fonteRaiz": "16px",
+        "fonteH1": "51.2px",
+        "controle": {
+          "x": 136,
+          "y": 471.1875,
+          "width": 266,
+          "height": 48,
+          "top": 471.1875,
+          "right": 402,
+          "bottom": 519.1875,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 543.1875,
+          "width": 1168,
+          "height": 742,
+          "top": 543.1875,
+          "right": 1304,
+          "bottom": 1285.1875,
+          "left": 136
+        },
+        "valor": {
+          "x": 136,
+          "y": 660.1875,
+          "width": 139.625,
+          "height": 32,
+          "top": 660.1875,
+          "right": 275.625,
+          "bottom": 692.1875,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5962
+      },
+      "texto200": {
+        "scrollY": 0,
+        "fonteRaiz": "32px",
+        "fonteH1": "64px",
+        "controle": {
+          "x": 48,
+          "y": 804.890625,
+          "width": 538,
+          "height": 48,
+          "top": 804.890625,
+          "right": 586,
+          "bottom": 852.890625,
+          "left": 48
+        },
+        "resposta": {
+          "x": 48,
+          "y": 900.890625,
+          "width": 1344,
+          "height": 1966,
+          "top": 900.890625,
+          "right": 1392,
+          "bottom": 2866.890625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 1173.890625,
+          "width": 279.21875,
+          "height": 64,
+          "top": 1173.890625,
+          "right": 327.21875,
+          "bottom": 1237.890625,
+          "left": 48
+        },
+        "largura": 1440,
+        "altura": 10779
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "retrato-titulo",
+          "visivel": true
+        }
+      ]
+    }
+  ]
+}

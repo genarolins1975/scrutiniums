@@ -1,0 +1,126 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1299 KB → core 564 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1599 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 20 arquivo(s) alterado(s).
+  teste  src/tests/combustiveis.test.ts  (teste alterado)
+  teste  src/tests/educacao-ficha-navegador.test.ts  (teste alterado)
+  teste  src/tests/entrada-molde.test.ts  (teste alterado)
+  teste  src/tests/inflacao.test.ts  (teste alterado)
+  teste  src/tests/para-voce.test.ts  (teste alterado)
+  teste  src/tests/resposta-na-entrada.test.ts  (teste alterado)
+  teste  src/tests/ux-orcamentos-comprimento.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/tests/combustiveis.test.ts)
+  teste  src/tests/cabecalho-movel.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita scripts/evidencias-resposta-entrada.mjs)
+  teste  src/tests/conectividade.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/consultas-abertas.test.ts  (cita src/app/eficiencia-estatal/page.tsx)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/educacao.test.ts  (cita src/components/educacao/PainelEducacao.tsx)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/combustiveis/PrecoNoEstado.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/frescor-dominios.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/leva2.test.ts  (cita src/components/combustiveis/PrecoNoEstado.tsx)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/obee-educacao.test.ts  (cita src/app/eficiencia-estatal/page.tsx)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/obee-saude.test.ts  (cita src/app/eficiencia-estatal/page.tsx)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/combustiveis/PrecoNoEstado.tsx)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/combustiveis/page.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/combustiveis.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/combustiveis/page.tsx)
+  fonte  scripts/evidencias-resposta-entrada.mjs  (código alterado; testes que o importam)
+  fonte  src/app/combustiveis/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/custo-de-vida/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/eficiencia-estatal/page.tsx  (código alterado; testes que o importam)
+  fonte  src/components/combustiveis/PrecoNoEstado.tsx  (código alterado; testes que o importam)
+  fonte  src/components/conectividade/PainelConectividade.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/PainelEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/educacao.css  (código alterado; testes que o importam)
+  fonte  src/components/eficiencia/AtlasCidadao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/eficiencia/entrada/RetratoCapital.tsx  (código alterado; testes que o importam)
+  fonte  src/components/inflacao/InflacaoNaArea.tsx  (código alterado; testes que o importam)
+  fonte  src/components/inflacao/comum.tsx  (código alterado; testes que o importam)
+  fonte  src/components/observatorios/EntradaColecao.tsx  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/combustiveis/page.tsx; testes que o importam)
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums-resposta-na-entrada
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  67 passed (67)
+      Tests  2250 passed | 1 skipped (2251)
+   Start at  12:26:18
+   Duration  129.34s (transform 2.59s, setup 0ms, import 37.73s, tests 330.25s, environment 6ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-27)
+  ok            3 s  Lint
+  ok           12 s  Tipos
+  ok            8 s  Derivados (npm run preparar)
+  ok            3 s  Cobertura bilíngue confere com as fontes de código
+  ok     2 min 27 s  Testes afetados
+  tempo de parede: 2 min 43 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

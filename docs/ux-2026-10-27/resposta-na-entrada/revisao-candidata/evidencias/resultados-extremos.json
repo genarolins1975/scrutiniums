@@ -1,0 +1,422 @@
+{
+  "commit": "304b6dba31c0810f2eee66c9d0a992c368633a8f",
+  "build": "woQGXRcnqBp8uUHrAebiy",
+  "data": "2026-10-27T12:09:40.382Z",
+  "resultados": [
+    {
+      "nome": "Valor e unidade texto200 320 /custo-de-vida?area=2601",
+      "ok": true,
+      "detalhe": {
+        "url": "/custo-de-vida?area=2601",
+        "scrollY": 2314,
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 28543,
+        "controle": {
+          "x": 48,
+          "y": -516.515625,
+          "width": 224,
+          "height": 44,
+          "top": -516.515625,
+          "right": 272,
+          "bottom": -472.515625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 359.765625,
+          "width": 224,
+          "height": 180,
+          "top": 359.765625,
+          "right": 272,
+          "bottom": 539.765625,
+          "left": 48
+        },
+        "valorTexto": "4,79% em 12 meses",
+        "contextoValor": "Região metropolitana do Recife, IPCA índice geral4,79% em 12 mesesout/2025 a set/2026 · variação acumulada em 12 meses0,21 ponto percentual acima da do Brasil.",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Sua cidade ou região\nBrasil (as 16 áreas juntas)\nAracaju (SE), só o município\nBelém (PA), região metropolitana\nBelo Horizonte (MG), região metropolitana\nBrasília (DF), só o município\nCampo Grande (MS), só o município\nCuritiba (PR), região metropolitana\nFortaleza (CE), região metropolitana\nGoiânia (GO), só o município\nGrande Vitória (ES), região metropolitana\nPorto Alegre (RS), região metropolitana\nRecife (PE), região metropolitana\nRio Branco (AC), só o município\nRio de Janeiro (RJ), região metropolitana\nSalvador (BA), região metropolitana\nSão Luís (MA), só o município\nSão Paulo (SP), região metropolitana\n\nO IBGE pesquisa 16 áreas: 10 regiões metropolitanas e 6 capitais. Cidade fora da lista não tem IPCA próprio; o índice da área mais próxima não é o seu.\n\nInflação em 12 meses\n\nRegião metropolitana do Recife, IPCA índice geral\n\n4,79% em 12 meses\n\nout/2025 a set/2026 · variação acumulada em 12 meses\n\n0,21 ponto percentual acima da do Brasil.\n\nBrasil, IPCA índice geral\n\n4,58% em 12 meses\n\nout/2025 a set/2026 · a referência nacional\n\nSó em setembro de 2026: +0,65% no mês. No ano, de janeiro a setembro: 4,12%.\n\nFonte: IBGE, IPCA, tabela 7060 do SIDRA, divulgada em 09/10/2026. Variação percentual dos preços; a diferença entre a área e o Brasil é a subtração das duas variações, em ponto"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 320 /combustiveis?uf=PE",
+      "ok": true,
+      "detalhe": {
+        "url": "/combustiveis?uf=PE",
+        "scrollY": 2895,
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 40046,
+        "controle": {
+          "x": 48,
+          "y": -925.515625,
+          "width": 224,
+          "height": 44,
+          "top": -925.515625,
+          "right": 272,
+          "bottom": -881.515625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 344.546875,
+          "width": 224,
+          "height": 210,
+          "top": 344.546875,
+          "right": 272,
+          "bottom": 554.546875,
+          "left": 48
+        },
+        "valorTexto": "R$ 273,60 para 40 litros",
+        "contextoValor": "Gasolina comumR$ 273,60 para 40 litrosR$ 6,84 por litro · média observadasetembro de 2026 · 766 postos pesquisadosPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Seu estado\nBrasil (média nacional)\nAcre\nAlagoas\nAmapá\nAmazonas\nBahia\nCeará\nDistrito Federal\nEspírito Santo\nGoiás\nMaranhão\nMato Grosso\nMato Grosso do Sul\nMinas Gerais\nPará\nParaíba\nParaná\nPernambuco\nPiauí\nRio de Janeiro\nRio Grande do Norte\nRio Grande do Sul\nRondônia\nRoraima\nSanta Catarina\nSão Paulo\nSergipe\nTocantins\nLitros\n\nCálculo pela média mensal vezes os litros escolhidos. 40 litros é só um exemplo.\n\nCusto do tanque: Pernambuco, setembro de 2026\n\nFonte: ANP, pesquisa de preços nos postos · setembro de 2026. Custo calculado pela média observada, não uma cotação de posto.\n\nGasolina comum\n\nR$ 273,60 para 40 litros\n\nR$ 6,84 por litro · média observada\n\nsetembro de 2026 · 766 postos pesquisados\n\nPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)\n\nEtanol hidratado\n\nR$ 197,20 para 40 litros\n\nR$ 4,93 por litro · média observada\n\nsetembro de 2026 · 660 postos pesquisados\n\nPreço por litro: R$ 0,85 (20,8%) acima da média do Brasil (R$ 4,08 por litro)\n\nÓleo diesel\n\nR$ 296,80 para 40 litros\n\nR$ 7,42 por litro · média observada\n\nsetembro de 2026 · 49 postos pesquisados\n\nPreço por litro: R$ 0,72 (10,7%) acima da média do Brasil (R$ 6,70 por litro)\n\nNa planilha, “óleo diesel”; segundo a ANP, hoje o produto é o óleo diesel B S500 comum.\n\nÓleo diesel S10\n\nR$ 282,00 para"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 320 /conectividade?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/conectividade?ibge=2611606",
+        "scrollY": 2369,
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 28793,
+        "controle": {
+          "x": 48,
+          "y": -260.515625,
+          "width": 224,
+          "height": 58,
+          "top": -260.515625,
+          "right": 272,
+          "bottom": -202.515625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 414.484375,
+          "width": 224,
+          "height": 72,
+          "top": 414.484375,
+          "right": 272,
+          "bottom": 486.484375,
+          "left": 48
+        },
+        "valorTexto": "18,3",
+        "contextoValor": "Acessos fixos por 100 habitantes18,3Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nInternet em Recife (PE)\nAcessos fixos por 100 habitantes\n18,3\nBrasil: 27,0\nFonte: Anatel · agosto de 2026 · Densidade informada pela Anatel\nAcessos fixos por fibra óptica\n81,0%\nBrasil: 81,1%\nFonte: Anatel · agosto de 2026 · Calculado: acessos de fibra ÷ acessos fixos\nMoradores dentro da cobertura 5G\n99,9%\nBrasil: 73,8%\nFonte: Anatel · setembro de 2026 · Cobertura declarada à Anatel\n\nAcessos são contratos, não pessoas. Cobertura declarada não garante sinal dentro de casa nem velocidade. Sem dado publicado, não há valor a comparar.\n\nVer operadoras, 4G, linhas móveis e séries de Recife"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 320 /educacao-municipal?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2611606",
+        "scrollY": 1905,
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 25631,
+        "controle": {
+          "x": 48,
+          "y": -181.25,
+          "width": 224,
+          "height": 58,
+          "top": -181.25,
+          "right": 272,
+          "bottom": -123.25,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 340.03125,
+          "width": 83,
+          "height": 220.78125,
+          "top": 340.03125,
+          "right": 152,
+          "bottom": 560.8125,
+          "left": 69
+        },
+        "valorTexto": "5,8de 0 a 10",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º ano5,8de 0 a 10Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nRecife Pernambuco (PE)\nIdeb 2025\nAnos iniciais, rede municipal\n1º ao 5º ano\n5,8de 0 a 10\nRede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1\nAnos finais, rede municipal\n6º ao 9º ano\n4,9de 0 a 10\nRede pública de Pernambuco: 4,9 · redes municipais do Brasil: 4,9\nFicha completa da cidade\n\nFonte: Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP), Índice de Desenvolvimento da Educação Básica (Ideb) 2025. Cada rede tem seu próprio universo."
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 320 /eficiencia-estatal?territorio=3550308&comparador=4106902",
+      "ok": true,
+      "detalhe": {
+        "url": "/eficiencia-estatal?territorio=3550308&comparador=4106902",
+        "scrollY": 2087,
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 32129,
+        "controle": {
+          "x": 48,
+          "y": -541.6875,
+          "width": 224,
+          "height": 48,
+          "top": -541.6875,
+          "right": 272,
+          "bottom": -493.6875,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 386.3125,
+          "width": 224,
+          "height": 128,
+          "top": 386.3125,
+          "right": 272,
+          "bottom": 514.3125,
+          "left": 48
+        },
+        "valorTexto": "91,1% São Paulo",
+        "contextoValor": "91,1% São PauloCuritiba: 89,8%",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Capital\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nSão Paulo · SP\nTeresina · PI\nVitória · ES\nComparar com\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nTeresina · PI\nVitória · ES\nSete resultados de São Paulo\n\nComparação com Curitiba. São 26 capitais estaduais, sem o DF; os resultados não atribuem efeito à gestão.\n\nEscola, 4 e 5 anos\n91,1% São Paulo\nCuritiba: 89,8%\nIBGE, Censo 2022, SIDRA 10056 · 2022 · Condição dos moradores\nCrianças de 4 e 5 anos que frequentam escola ou creche, redes pública e privada. Amostra do Censo; erro municipal não quantificado.\nRenda por pessoa\nR$ 1.340,00 São Paulo\nCuritiba: R$ 1.850,00\nIBGE, Censo 2022, SIDRA 10295 · Julho de 2022 · Condição dos moradores\nReais nominais de julh"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 390 /custo-de-vida?area=2601",
+      "ok": true,
+      "detalhe": {
+        "url": "/custo-de-vida?area=2601",
+        "scrollY": 1803,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 21995,
+        "controle": {
+          "x": 48,
+          "y": -379.65625,
+          "width": 294,
+          "height": 44,
+          "top": -379.65625,
+          "right": 342,
+          "bottom": -335.65625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 360.03125,
+          "width": 294,
+          "height": 180,
+          "top": 360.03125,
+          "right": 342,
+          "bottom": 540.03125,
+          "left": 48
+        },
+        "valorTexto": "4,79% em 12 meses",
+        "contextoValor": "Região metropolitana do Recife, IPCA índice geral4,79% em 12 mesesout/2025 a set/2026 · variação acumulada em 12 meses0,21 ponto percentual acima da do Brasil.",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Sua cidade ou região\nBrasil (as 16 áreas juntas)\nAracaju (SE), só o município\nBelém (PA), região metropolitana\nBelo Horizonte (MG), região metropolitana\nBrasília (DF), só o município\nCampo Grande (MS), só o município\nCuritiba (PR), região metropolitana\nFortaleza (CE), região metropolitana\nGoiânia (GO), só o município\nGrande Vitória (ES), região metropolitana\nPorto Alegre (RS), região metropolitana\nRecife (PE), região metropolitana\nRio Branco (AC), só o município\nRio de Janeiro (RJ), região metropolitana\nSalvador (BA), região metropolitana\nSão Luís (MA), só o município\nSão Paulo (SP), região metropolitana\n\nO IBGE pesquisa 16 áreas: 10 regiões metropolitanas e 6 capitais. Cidade fora da lista não tem IPCA próprio; o índice da área mais próxima não é o seu.\n\nInflação em 12 meses\n\nRegião metropolitana do Recife, IPCA índice geral\n\n4,79% em 12 meses\n\nout/2025 a set/2026 · variação acumulada em 12 meses\n\n0,21 ponto percentual acima da do Brasil.\n\nBrasil, IPCA índice geral\n\n4,58% em 12 meses\n\nout/2025 a set/2026 · a referência nacional\n\nSó em setembro de 2026: +0,65% no mês. No ano, de janeiro a setembro: 4,12%.\n\nFonte: IBGE, IPCA, tabela 7060 do SIDRA, divulgada em 09/10/2026. Variação percentual dos preços; a diferença entre a área e o Brasil é a subtração das duas variações, em ponto"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 390 /combustiveis?uf=PE",
+      "ok": true,
+      "detalhe": {
+        "url": "/combustiveis?uf=PE",
+        "scrollY": 2224,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 30947,
+        "controle": {
+          "x": 48,
+          "y": -676.65625,
+          "width": 294,
+          "height": 44,
+          "top": -676.65625,
+          "right": 342,
+          "bottom": -632.65625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 379.8125,
+          "width": 294,
+          "height": 140,
+          "top": 379.8125,
+          "right": 342,
+          "bottom": 519.8125,
+          "left": 48
+        },
+        "valorTexto": "R$ 273,60 para 40 litros",
+        "contextoValor": "Gasolina comumR$ 273,60 para 40 litrosR$ 6,84 por litro · média observadasetembro de 2026 · 766 postos pesquisadosPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Seu estado\nBrasil (média nacional)\nAcre\nAlagoas\nAmapá\nAmazonas\nBahia\nCeará\nDistrito Federal\nEspírito Santo\nGoiás\nMaranhão\nMato Grosso\nMato Grosso do Sul\nMinas Gerais\nPará\nParaíba\nParaná\nPernambuco\nPiauí\nRio de Janeiro\nRio Grande do Norte\nRio Grande do Sul\nRondônia\nRoraima\nSanta Catarina\nSão Paulo\nSergipe\nTocantins\nLitros\n\nCálculo pela média mensal vezes os litros escolhidos. 40 litros é só um exemplo.\n\nCusto do tanque: Pernambuco, setembro de 2026\n\nFonte: ANP, pesquisa de preços nos postos · setembro de 2026. Custo calculado pela média observada, não uma cotação de posto.\n\nGasolina comum\n\nR$ 273,60 para 40 litros\n\nR$ 6,84 por litro · média observada\n\nsetembro de 2026 · 766 postos pesquisados\n\nPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)\n\nEtanol hidratado\n\nR$ 197,20 para 40 litros\n\nR$ 4,93 por litro · média observada\n\nsetembro de 2026 · 660 postos pesquisados\n\nPreço por litro: R$ 0,85 (20,8%) acima da média do Brasil (R$ 4,08 por litro)\n\nÓleo diesel\n\nR$ 296,80 para 40 litros\n\nR$ 7,42 por litro · média observada\n\nsetembro de 2026 · 49 postos pesquisados\n\nPreço por litro: R$ 0,72 (10,7%) acima da média do Brasil (R$ 6,70 por litro)\n\nNa planilha, “óleo diesel”; segundo a ANP, hoje o produto é o óleo diesel B S500 comum.\n\nÓleo diesel S10\n\nR$ 282,00 para"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 390 /conectividade?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/conectividade?ibge=2611606",
+        "scrollY": 1754,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 22643,
+        "controle": {
+          "x": 48,
+          "y": -124.65625,
+          "width": 294,
+          "height": 58,
+          "top": -124.65625,
+          "right": 342,
+          "bottom": -66.65625,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 414.34375,
+          "width": 294,
+          "height": 72,
+          "top": 414.34375,
+          "right": 342,
+          "bottom": 486.34375,
+          "left": 48
+        },
+        "valorTexto": "18,3",
+        "contextoValor": "Acessos fixos por 100 habitantes18,3Brasil: 27,0Fonte: Anatel · agosto de 2026 · Densidade informada pela Anatel",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nInternet em Recife (PE)\nAcessos fixos por 100 habitantes\n18,3\nBrasil: 27,0\nFonte: Anatel · agosto de 2026 · Densidade informada pela Anatel\nAcessos fixos por fibra óptica\n81,0%\nBrasil: 81,1%\nFonte: Anatel · agosto de 2026 · Calculado: acessos de fibra ÷ acessos fixos\nMoradores dentro da cobertura 5G\n99,9%\nBrasil: 73,8%\nFonte: Anatel · setembro de 2026 · Cobertura declarada à Anatel\n\nAcessos são contratos, não pessoas. Cobertura declarada não garante sinal dentro de casa nem velocidade. Sem dado publicado, não há valor a comparar.\n\nVer operadoras, 4G, linhas móveis e séries de Recife"
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 390 /educacao-municipal?ibge=2611606",
+      "ok": true,
+      "detalhe": {
+        "url": "/educacao-municipal?ibge=2611606",
+        "scrollY": 1424,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 19236,
+        "controle": {
+          "x": 48,
+          "y": -38,
+          "width": 294,
+          "height": 58,
+          "top": -38,
+          "right": 342,
+          "bottom": 20,
+          "left": 48
+        },
+        "valor": {
+          "x": 69,
+          "y": 376.390625,
+          "width": 118,
+          "height": 147.1875,
+          "top": 376.390625,
+          "right": 187,
+          "bottom": 523.578125,
+          "left": 69
+        },
+        "valorTexto": "5,8de 0 a 10",
+        "contextoValor": "Anos iniciais, rede municipal1º ao 5º ano5,8de 0 a 10Rede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Escolher outro município\n\nSem localização automática: a busca é só pelo nome. Para nomes repetidos, acrescente a UF.\n\nRecife Pernambuco (PE)\nIdeb 2025\nAnos iniciais, rede municipal\n1º ao 5º ano\n5,8de 0 a 10\nRede pública de Pernambuco: 5,8 · redes municipais do Brasil: 6,1\nAnos finais, rede municipal\n6º ao 9º ano\n4,9de 0 a 10\nRede pública de Pernambuco: 4,9 · redes municipais do Brasil: 4,9\nFicha completa da cidade\n\nFonte: Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (INEP), Índice de Desenvolvimento da Educação Básica (Ideb) 2025. Cada rede tem seu próprio universo."
+      }
+    },
+    {
+      "nome": "Valor e unidade texto200 390 /eficiencia-estatal?territorio=3550308&comparador=4106902",
+      "ok": true,
+      "detalhe": {
+        "url": "/eficiencia-estatal?territorio=3550308&comparador=4106902",
+        "scrollY": 1613,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 24276,
+        "controle": {
+          "x": 48,
+          "y": -279.4375,
+          "width": 141,
+          "height": 48,
+          "top": -279.4375,
+          "right": 189,
+          "bottom": -231.4375,
+          "left": 48
+        },
+        "valor": {
+          "x": 48,
+          "y": 417.5625,
+          "width": 279.21875,
+          "height": 64,
+          "top": 417.5625,
+          "right": 327.21875,
+          "bottom": 481.5625,
+          "left": 48
+        },
+        "valorTexto": "91,1% São Paulo",
+        "contextoValor": "91,1% São PauloCuritiba: 89,8%",
+        "ativo": {
+          "tag": "BODY",
+          "id": "",
+          "role": null
+        },
+        "fonteRaiz": "32px",
+        "trecho": "Capital\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nSão Paulo · SP\nTeresina · PI\nVitória · ES\nComparar com\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nTeresina · PI\nVitória · ES\nSete resultados de São Paulo\n\nComparação com Curitiba. São 26 capitais estaduais, sem o DF; os resultados não atribuem efeito à gestão.\n\nEscola, 4 e 5 anos\n91,1% São Paulo\nCuritiba: 89,8%\nIBGE, Censo 2022, SIDRA 10056 · 2022 · Condição dos moradores\nCrianças de 4 e 5 anos que frequentam escola ou creche, redes pública e privada. Amostra do Censo; erro municipal não quantificado.\nRenda por pessoa\nR$ 1.340,00 São Paulo\nCuritiba: R$ 1.850,00\nIBGE, Censo 2022, SIDRA 10295 · Julho de 2022 · Condição dos moradores\nReais nominais de julh"
+      }
+    },
+    {
+      "nome": "IPCA área inválida tem aviso e referência Brasil",
+      "ok": true,
+      "detalhe": {
+        "texto": "Sua cidade ou região\nBrasil (as 16 áreas juntas)\nAracaju (SE), só o município\nBelém (PA), região metropolitana\nBelo Horizonte (MG), região metropolitana\nBrasília (DF), só o município\nCampo Grande (MS), só o município\nCuritiba (PR), região metropolitana\nFortaleza (CE), região metropolitana\nGoiânia (GO), só o município\nGrande Vitória (ES), região metropolitana\nPorto Alegre (RS), região metropolitana\nRecife (PE), região metropolitana\nRio Branco (AC), só o município\nRio de Janeiro (RJ), região metropolitana\nSalvador (BA), região metropolitana\nSão Luís (MA), só o município\nSão Paulo (SP), região metropolitana\n\nO IBGE pesquisa 16 áreas: 10 regiões metropolitanas e 6 capitais. Cidade fora da lista não tem IPCA próprio; o índice da área mais próxima não é o seu.\n\nA área informada no endereço não está no IPCA. Exibimos o Brasil.\n\nInflação em 12 meses\n\nBrasil, IPCA índice geral\n\n4,58% em 12 meses\n\nout/2025 a set/2026 · variação acumulada em 12 meses\n\nO índice do Brasil combina as 16 áreas, cada uma com um peso definido pelo IBGE. Escolha a sua cidade ou região para ver a inflação dela ao lado da do país.\n\nSó em setembro de 2026: +0,82% no mês. No ano, de janeiro a setembro: 3,95%.\n\nFonte: IBGE, IPCA, tabela 7060 do SIDRA, divulgada em 09/10/2026. Variação percentual dos preços; a diferença"
+      }
+    },
+    {
+      "nome": "Combustíveis UF inválida tem aviso e referência Brasil",
+      "ok": true,
+      "detalhe": {
+        "texto": "Seu estado\nBrasil (média nacional)\nAcre\nAlagoas\nAmapá\nAmazonas\nBahia\nCeará\nDistrito Federal\nEspírito Santo\nGoiás\nMaranhão\nMato Grosso\nMato Grosso do Sul\nMinas Gerais\nPará\nParaíba\nParaná\nPernambuco\nPiauí\nRio de Janeiro\nRio Grande do Norte\nRio Grande do Sul\nRondônia\nRoraima\nSanta Catarina\nSão Paulo\nSergipe\nTocantins\nLitros\n\nCálculo pela média mensal vezes os litros escolhidos. 40 litros é só um exemplo.\n\nO estado informado no endereço não está na pesquisa. Exibimos a média do Brasil.\n\nCusto do tanque: Brasil, setembro de 2026\n\nFonte: ANP, pesquisa de preços nos postos · setembro de 2026. Custo calculado pela média observada, não uma cotação de posto.\n\nGasolina comum\n\nR$ 261,60 para 40 litros\n\nR$ 6,54 por litro · média observada\n\nsetembro de 2026 · 19.347 postos pesquisados\n\nMenor e maior preço da pesquisa: R$ 5,44 a R$ 8,99\n\nEtanol hidratado\n\nR$ 163,20 para 40 litros\n\nR$ 4,08 por litro · média observada\n\nsetembro de 2026 · 16.508 postos pesquisados\n\nMenor e maior preço da pesquisa: R$ 2,89 a R$ 6,60\n\nÓleo diesel\n\nR$ 268,00 para 40 litros\n\nR$ 6,70 por litro · média observada\n\nsetembro de 2026 · 8.180 postos pesquisados\n\nMenor e maior preço da pesquisa: R$ 5,49 a R$ 8,89\n\nNa planilha, “óleo diesel”; segundo a ANP, hoje o produto é o óleo diesel B S500 comum.\n\nÓleo diesel S10\n\nR$ 286,"
+      }
+    }
+  ],
+  "erros": []
+}

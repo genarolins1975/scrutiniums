@@ -1,0 +1,49 @@
+{
+  "commit": "304b6dba31c0810f2eee66c9d0a992c368633a8f",
+  "build": "woQGXRcnqBp8uUHrAebiy",
+  "data": "2026-10-27T12:07:09.905Z",
+  "resultados": [
+    {
+      "nome": "Combustíveis UF, litros e unidade do delta",
+      "ok": true,
+      "detalhe": {
+        "gasolinaPE60": "Gasolina comum\n\nR$ 410,40 para 60 litros\n\nR$ 6,84 por litro · média observada\n\nsetembro de 2026 · 766 postos pesquisados\n\nPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)",
+        "invalido": "R$ 6,35 por litro",
+        "url": "/combustiveis?uf=SP",
+        "scrollY": 0,
+        "largura": 390,
+        "scrollWidth": 390,
+        "altura": 10395,
+        "controle": {
+          "x": 24,
+          "y": 483.125,
+          "width": 230,
+          "height": 44,
+          "top": 483.125,
+          "right": 254,
+          "bottom": 527.125,
+          "left": 24
+        },
+        "valor": {
+          "x": 24,
+          "y": 848.21875,
+          "width": 342,
+          "height": 35,
+          "top": 848.21875,
+          "right": 366,
+          "bottom": 883.21875,
+          "left": 24
+        },
+        "valorTexto": "R$ 6,35 por litro",
+        "contextoValor": "Gasolina comumR$ 6,35 por litroR$ 6,35 por litro · média observadasetembro de 2026 · 5.420 postos pesquisadosPreço por litro: R$ 0,19 (2,9%) abaixo da média do Brasil (R$ 6,54 por litro)",
+        "ativo": {
+          "tag": "INPUT",
+          "id": ":Rlgufafcq:-litros",
+          "role": null
+        },
+        "fonteRaiz": "16px"
+      }
+    }
+  ],
+  "erros": []
+}

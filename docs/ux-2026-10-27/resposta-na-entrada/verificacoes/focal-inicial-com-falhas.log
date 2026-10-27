@@ -1,0 +1,84 @@
+[33m[MIXED_EXPORTS] [0mEntry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums-resposta-na-entrada
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/ux-orcamentos-comprimento.test.ts (7 tests | 2 failed) 85242ms
+     × 1440 px, com sessão: as 20 entradas no molde cabem em 6500 px 37622ms
+     × 390 px, com sessão: as 20 entradas no molde cabem em 11000 px 34389ms
+ ❯ src/tests/combustiveis.test.ts (10 tests | 1 failed) 2846ms
+     × primeira tela com a pergunta, o seletor e o preço Brasil de cada combustível com mês, postos e fonte 1865ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/combustiveis.test.ts > combustíveis: o painel > primeira tela com a pergunta, o seletor e o preço Brasil de cada combustível com mês, postos e fonte
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/tests/combustiveis.test.ts:93:39
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/tests/ux-orcamentos-comprimento.test.ts > orçamento de comprimento no navegador (build de produção) > 1440 px, com sessão: as 20 entradas no molde cabem em 6500 px
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/eficiencia-estatal: 6914 px (máximo 6500)",
++ ]
+
+ ❯ src/tests/ux-orcamentos-comprimento.test.ts:81:80
+     79|   for (const largura of [1440, 390] as const) {
+     80|     it(`${largura} px, com sessão: as ${ENTRADAS.length} entradas no m…
+     81|       expect(await medir(largura, ENTRADAS, true, ORCAMENTO.entrada[la…
+       |                                                                                ^
+     82|     }, 300_000);
+     83|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/tests/ux-orcamentos-comprimento.test.ts > orçamento de comprimento no navegador (build de produção) > 390 px, com sessão: as 20 entradas no molde cabem em 11000 px
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/eficiencia-estatal: 11596 px (máximo 11000)",
++ ]
+
+ ❯ src/tests/ux-orcamentos-comprimento.test.ts:81:80
+     79|   for (const largura of [1440, 390] as const) {
+     80|     it(`${largura} px, com sessão: as ${ENTRADAS.length} entradas no m…
+     81|       expect(await medir(largura, ENTRADAS, true, ORCAMENTO.entrada[la…
+       |                                                                                ^
+     82|     }, 300_000);
+     83|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 7 passed (9)
+      Tests  3 failed | 153 passed (156)
+   Start at  11:12:10
+   Duration  102.33s (transform 4.93s, setup 0ms, import 4.08s, tests 194.78s, environment 1ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

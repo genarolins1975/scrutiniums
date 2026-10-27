@@ -1,0 +1,56 @@
+import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+const raiz='/workspace/scrutiniums-resposta-na-entrada';
+const saida='/workspace/resposta-revisao-final';
+mkdirSync(saida,{recursive:true});
+const require=createRequire(raiz+'/package.json');
+const {chromium}=require('playwright');
+const {subirServidorLocal}=await import(raiz+'/scripts/servidor-local.mjs');
+const {aguardarHidratacao,aguardarSessaoResolvida}=await import(raiz+'/scripts/ux-cromo-medida.mjs');
+const resultados=[], erros=[];
+const servidor=await subirServidorLocal({raiz,usuario:'revisao-layout-final'});
+const navegador=await chromium.launch({executablePath:'/usr/bin/chromium'});
+const ctx=await navegador.newContext({viewport:{width:390,height:900},hasTouch:true,reducedMotion:'reduce'});
+await ctx.addCookies([servidor.cookie]);
+const pagina=await ctx.newPage(); pagina.setDefaultTimeout(30000);
+pagina.on('pageerror',e=>erros.push(e.message));
+const checar=(ok,motivo)=>{if(!ok)throw new Error(motivo)};
+const quadro=()=>pagina.locator('[data-fatia="resposta"]');
+async function pronta(){await aguardarSessaoResolvida(pagina,true);await aguardarHidratacao(pagina);await pagina.evaluate(()=>document.fonts.ready);await pagina.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
+async function abrir(rota){await pagina.goto(servidor.origem+rota,{waitUntil:'networkidle'});await pronta();}
+async function foto(nome,inteira=false){await pagina.screenshot({path:`${saida}/${nome}.jpg`,fullPage:inteira,quality:80});}
+async function medir(){return await pagina.evaluate(()=>{const r=document.querySelector('[data-fatia="resposta"]'),c=r?.querySelector('input,select'),v=r?.querySelector('[data-valor-resposta]');return{url:location.pathname+location.search+location.hash,scrollY,largura:innerWidth,scrollWidth:document.documentElement.scrollWidth,altura:document.documentElement.scrollHeight,controle:c?.getBoundingClientRect().toJSON(),valor:v?.getBoundingClientRect().toJSON(),valorTexto:v?.textContent,contextoValor:v?.parentElement?.textContent,ativo:{tag:document.activeElement.tagName,id:document.activeElement.id,role:document.activeElement.getAttribute('role')},fonteRaiz:getComputedStyle(document.documentElement).fontSize}});}
+async function caso(nome,func){try{const detalhe=await func();resultados.push({nome,ok:true,detalhe});console.log('OK '+nome)}catch(e){const erro=String(e?.stack??e);resultados.push({nome,ok:false,erro});await foto('falha-'+resultados.length).catch(()=>{});console.log('FALHA '+nome+' '+String(e.message))}writeFileSync(saida+'/resultados-parciais.json',JSON.stringify(resultados,null,2));}
+async function buscar(rota,consulta,codigo,modo){
+ await abrir(rota);const input=quadro().getByRole('combobox');await input.focus();await input.fill(consulta);
+ const opcao=pagina.getByRole('option').filter({hasText:consulta.split(' ')[0]}).first();await opcao.waitFor({state:'visible'});
+ await foto(rota.slice(1).replaceAll('-','_')+'-busca-'+modo);
+ if(modo==='teclado'){await input.press('ArrowDown');await input.press('ArrowUp');await input.press('Enter')}else await opcao.tap();
+ await pagina.waitForURL(u=>u.searchParams.get('ibge')===codigo);await pronta();
+ checar((await quadro().innerText()).includes(consulta.split(' ')[0]),'Resultado não identifica a escolha');
+ const dados=await medir();await foto(rota.slice(1).replaceAll('-','_')+'-escolha-'+modo);return dados;
+}
+try{
+ for(const rota of ['/conectividade','/educacao-municipal']){
+  await caso(rota+' busca Recife por teclado',()=>buscar(rota,'Recife PE','2611606','teclado'));
+  await caso(rota+' troca para Olinda por toque',()=>buscar(rota+'?ibge=2611606','Olinda PE','2609600','toque'));
+  await caso(rota+' nome repetido e Escape',async()=>{await abrir(rota);const inp=quadro().getByRole('combobox');await inp.fill('Bom Jesus');await pagina.getByRole('option').first().waitFor();const nomes=await pagina.getByRole('option').allTextContents();checar(nomes.length>1,'Não há opções para desambiguar');await inp.press('Escape');checar(await inp.inputValue()==='','Escape não limpou');return{opcoes:nomes,fechado:await pagina.getByRole('option').count()===0}});
+  await caso(rota+' parâmetro inválido',async()=>{await abrir(rota+'?ibge=7777777');const texto=await quadro().innerText();checar(texto.includes('7777777'),'Ausência de aviso do parâmetro');checar(await quadro().locator('[data-valor-resposta]').count()===0,'Resposta local indevida no parâmetro inválido');await foto(rota.slice(1)+'-invalido');return{texto,...await medir()}});
+ }
+ await caso('Conectividade cobertura ausente',async()=>{await abrir('/conectividade?ibge=5101837');const txt=await quadro().innerText();checar(txt.includes('Boa Esperança do Norte'),'Identidade ausente');checar(/sem dado|não publicado|indisponível/i.test(txt),'Ausência não explícita');await foto('conectividade-ausencia',true);return{texto:txt,...await medir()}});
+ await caso('Educação sem Ideb na edição',async()=>{await abrir('/educacao-municipal?ibge=2605459');const txt=await quadro().innerText();checar(txt.includes('Fernando de Noronha'),'Identidade ausente');checar(txt.includes('Sem Ideb'),'Ausência não explícita');await foto('educacao-ausencia');return{texto:txt,...await medir()}});
+ await caso('Conectividade expansão de contexto e detalhe',async()=>{await abrir('/conectividade?ibge=2611606');const det=pagina.locator('#contexto-da-entrada');await det.locator('summary').tap();checar(await det.getAttribute('open')!==null,'Contexto não abriu');checar(await det.locator('[data-fatia="escala"]').isVisible(),'Números do contexto invisíveis');await quadro().locator('a[href="#municipio-detalhes"]').tap();checar(await pagina.locator('#municipio-detalhes').isVisible(),'Detalhe invisível');const tabelas=await pagina.locator('#municipio-detalhes table:visible').count();checar(tabelas>0,'Nenhuma tabela visível');await foto('conectividade-detalhe');return{tabelas,...await medir()}});
+ await caso('IPCA recorte, grupos e retorno',async()=>{await abrir('/custo-de-vida');const sel=quadro().locator('select');let opts=await sel.locator('option').evaluateAll(os=>os.map(o=>({value:o.value,label:o.textContent})));const rec=opts.find(o=>o.label.includes('Recife')),go=opts.find(o=>o.label.includes('Goiânia'));checar(rec&&go,'Áreas esperadas ausentes');await sel.selectOption(rec.value);checar((await quadro().innerText()).includes('4,79%'),'IPCA Recife inesperado');await pagina.locator('#grupos-na-area summary').tap();checar(await pagina.locator('#grupos-na-area [data-grupo]').count()===9,'Nove grupos ausentes');await sel.selectOption(go.value);await pagina.reload({waitUntil:'networkidle'});await pronta();checar(await quadro().locator('select').inputValue()===go.value,'Área não preservada');const txt=await quadro().innerText();checar(txt.includes('Goiânia'),'Resposta não acompanhou seleção');await foto('ipca-goiania');return{texto:txt.slice(0,1600),...await medir()}});
+ await caso('Combustíveis UF, litros e unidade do delta',async()=>{await abrir('/combustiveis?uf=PE');const lit=quadro().getByLabel('Litros no tanque');await lit.fill('60');checar((await quadro().locator('[data-combustivel="gasolina"] [data-valor-resposta]').innerText()).includes('410,40'),'Conta de 60 litros não corresponde a 6,84');const txt=await quadro().locator('[data-combustivel="gasolina"]').innerText();checar(txt.includes('por litro'),'Unidade ausente');await foto('combustiveis-60-litros');await quadro().getByLabel('Seu estado').selectOption('SP');checar((await quadro().innerText()).includes('São Paulo'),'UF não mudou');await lit.fill('0');checar((await quadro().innerText()).includes('Informe de 1 a 1.000 litros'),'Volume inválido sem aviso');const invalido=await quadro().locator('[data-combustivel="gasolina"] [data-valor-resposta]').innerText();checar(invalido.includes('por litro')&&!invalido.includes('para 0'),'Zero litros gerou tanque');await foto('combustiveis-volume-invalido');return{gasolinaPE60:txt,invalido,...await medir()}});
+ await caso('Síntese troca de capital, comparador e régua',async()=>{await abrir('/eficiencia-estatal?territorio=2611606&comparador=4106902');const sel=quadro().locator('select');await sel.nth(0).selectOption('3550308');await sel.nth(1).selectOption('3304557');checar((await pagina.locator('h1').innerText()).includes('São Paulo'),'Título fora do recorte');checar((await quadro().innerText()).includes('Rio de Janeiro'),'Comparador não mudou');await foto('sintese-troca');await quadro().locator('a[href="#retrato-titulo"]').tap();checar(await pagina.locator('#retrato-titulo').isVisible(),'Régua invisível');const svg=await pagina.locator('#posicoes-capitais svg').count();checar(svg>=7,'Réguas não preservadas');await foto('sintese-regua');await pagina.reload({waitUntil:'networkidle'});await pronta();checar(await quadro().locator('select').nth(0).inputValue()==='3550308','Capital não restaurada');checar(await quadro().locator('select').nth(1).inputValue()==='3304557','Comparador não restaurado');return{svg,...await medir()}});
+ await caso('Texto 200%: consulta de Educação operável',async()=>{await abrir('/educacao-municipal?ibge=2611606');await pagina.evaluate(()=>document.documentElement.style.fontSize='200%');await pagina.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const inp=quadro().getByRole('combobox');await inp.scrollIntoViewIfNeeded();await inp.fill('Olinda PE');await pagina.getByRole('option').filter({hasText:'Olinda'}).first().tap();await pagina.waitForURL(u=>u.searchParams.get('ibge')==='2609600');await pronta();checar((await quadro().innerText()).includes('Olinda'),'Consulta ampliada falhou');await quadro().scrollIntoViewIfNeeded();await foto('educacao-texto200-consulta');const med=await medir();checar(med.scrollWidth<=med.largura+1,'Overflow horizontal em texto200');return med});
+ const publico=await navegador.newContext({viewport:{width:390,height:900},hasTouch:true,reducedMotion:'reduce'});const p=await publico.newPage();
+ for(const rota of ['/conectividade?ibge=2611606','/educacao-municipal?ibge=2611606','/eficiencia-estatal?territorio=2611606','/combustiveis/no-meu-estado?uf=PE']){
+  await caso('Sem sessão '+rota,async()=>{const req=[];p.on('response',r=>{if(r.status()>=400)req.push({url:new URL(r.url()).pathname,status:r.status()})});await p.goto(servidor.origem+rota,{waitUntil:'networkidle'});const txt=await p.locator('main').innerText();checar(!new URL(p.url()).pathname.startsWith('/login'),'Aperitivo caiu no login');checar(/Recife|Pernambuco|capital|Escolha/i.test(txt),'Consulta pública ausente');await p.screenshot({path:saida+'/publico-'+rota.split('?')[0].replaceAll('/','_')+'.jpg',quality:80});return{url:new URL(p.url()).pathname+new URL(p.url()).search,h1:await p.locator('h1').innerText(),falhas:req,trecho:txt.slice(0,1600)}});
+ }
+ await publico.close();
+}finally{
+ const arquivo={commit:'304b6dba31c0810f2eee66c9d0a992c368633a8f',build:readFileSync(raiz+'/.next/BUILD_ID','utf8').trim(),data:new Date().toISOString(),resultados,erros};
+ writeFileSync(saida+'/resultados.json',JSON.stringify(arquivo,null,2));
+ await navegador.close();await servidor.encerrar();
+}
