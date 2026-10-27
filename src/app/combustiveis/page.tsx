@@ -68,20 +68,18 @@ export default function CombustiveisPage() {
         rota={pagina.href}
         acento="gas"
         titulo={pagina.pergunta}
-        frase="O preço médio do litro de gasolina comum, etanol hidratado e óleo diesel em cada estado e no Brasil, pela pesquisa de preços da ANP nos postos, mês a mês desde janeiro de 2013."
+        frase="Escolha o estado e os litros para calcular o custo do tanque pela média da ANP. O preço de cada posto pode ser diferente."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/combustiveis"]} conteiner="mx-auto max-w-page px-6" />}
         escala={g.produtos.map((p) => numeroDoIndicador(i[`${p.id}_medio_mes`], `Preço médio do litro: ${p.nome.toLowerCase()}`, "#historico"))}
         notaEscala="Médias nacionais de uma amostra de postos no mês: não são o preço de um posto."
-        paraVoce={
-          <ParaVoce entrada="/combustiveis">
-            <section aria-label="Preço no seu estado">
-                <PrecoNoEstado dados={dadosDoEstado(g)} />
-                <div className="mt-4">
-                  <FonteFigura ids={fontesEstado} extra="Distância para o Brasil: preço médio da UF menos a média nacional da ANP do mesmo mês, em reais e em percentual." />
-                </div>
-            </section>
-          </ParaVoce>
+        resposta={
+          <section aria-label="Preço no seu estado">
+            <PrecoNoEstado dados={dadosDoEstado(g)} destacarTanque />
+            <div className="mt-4"><FonteFigura ids={fontesEstado} extra="Distância para o Brasil: preço médio da UF menos a média nacional da ANP do mesmo mês, em reais e em percentual." /></div>
+          </section>
         }
+        contextoEscala="Preços médios no Brasil"
+        paraVoce={<ParaVoce entrada="/combustiveis" />}
         destinos={destinosDaColecao("combustiveis")}
         artefato={
           <ModeloDidatico

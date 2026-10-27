@@ -11,7 +11,7 @@ import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./s
  *  - o Crédito aberto (/observatorio-do-credito sem sessão, a apresentação pública do tema): até 3.500 px a 1440 e 7.000 px a 390;
  *  - o mapa da conta (/app/observatorios, com sessão; Iniciativa M1 do parecer de UX de 23/10/2026): até 3.500 px a 1440 e 7.000 px
  *    a 390, o mesmo orçamento das portas, e o primeiro cartão do "Para você" começa acima de 900 px a 1440;
- *  - o primeiro número da escala começa acima de 900 px a 1440, na primeira tela.
+ *  - a primeira resposta ou número da escala começa acima de 900 px a 1440. Sem município escolhido, mede-se a busca (pedido de 27/10/2026).
  * O que não cabe vai para blocos recolhidos na mesma página, com o conteúdo inteiro no HTML; nada é apagado para caber.
  * Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
  */
@@ -62,7 +62,8 @@ describe.skipIf(!temBuild)("orçamento de comprimento no navegador (build de pro
         await aguardarHidratacao(page);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
         const m = await page.evaluate(() => {
-          const n = document.querySelector("[data-entrada] [data-numero-escala], [data-mapa-conta] [data-para-voce-pergunta]");
+          // Pedido do dono, 27/10/2026: a resposta escolhida tem prioridade sobre o panorama. Mantém o teto de 900 px.
+          const n = document.querySelector('[data-entrada] [data-fatia="resposta"] [data-valor-resposta]') ?? document.querySelector('[data-fatia="resposta"] input, [data-fatia="resposta"] select, [data-entrada] [data-numero-escala], [data-mapa-conta] [data-para-voce-pergunta]');
           return { altura: document.documentElement.scrollHeight, numero: n ? Math.round(n.getBoundingClientRect().top + window.scrollY) : null };
         });
         if (m.altura > teto) fora.push(`${rota}: ${m.altura} px (máximo ${teto})`);

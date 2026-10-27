@@ -64,7 +64,7 @@ export default function InflacaoPage() {
         rota={pagina.href}
         acento="bronze"
         titulo={pagina.pergunta}
-        frase="A inflação oficial, o IPCA do IBGE, nas 16 áreas onde o IBGE pesquisa preços e no Brasil: índice geral e nove grupos de despesa, com o peso de cada grupo, mês a mês desde janeiro de 2020."
+        frase="Escolha uma área para ver a inflação oficial do IBGE e compará-la com a do Brasil, no mesmo período."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/custo-de-vida"]} conteiner="mx-auto max-w-page px-6" />}
         escala={[
           { rotulo: "IPCA do Brasil em 12 meses", valor: pct(br.geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#serie" },
@@ -72,13 +72,10 @@ export default function InflacaoPage() {
           { rotulo: `Maior variação em 12 meses: ${maior.nome}`, valor: pct(g.ultimo[maior.id].geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#areas" },
           { rotulo: `Menor variação em 12 meses: ${menor.nome}`, valor: pct(g.ultimo[menor.id].geral.doze), unidade: "índice geral", periodo: `12 meses até ${mes}`, fonte: `IBGE, IPCA, tabela ${g.fonte.tabela}`, href: "#areas" },
         ]}
-        paraVoce={
-          <ParaVoce entrada="/custo-de-vida">
-            <section aria-label="Inflação na sua cidade">
-              <InflacaoNaArea dados={tela} />
-            </section>
-          </ParaVoce>
-        }
+        resposta={<section aria-label="Inflação na sua cidade"><InflacaoNaArea dados={tela} recolherGrupos /></section>}
+        contextoEscala="O Brasil e as áreas pesquisadas"
+        notaEscala="Compare a variação em 12 meses entre áreas no mesmo período. A variação do mês tem outra janela; não deve ser somada à de 12 meses."
+        paraVoce={<ParaVoce entrada="/custo-de-vida" />}
         destinos={destinosDaColecao("custo-de-vida")}
         artefato={
           <ModeloDidatico

@@ -1,0 +1,1230 @@
+{
+  "base": "-nEfaEVClMB5e_WVWugBV",
+  "data": "2026-10-27T11:13:42.538Z",
+  "resultados": [
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 320,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 576.3125,
+          "width": 272,
+          "height": 44,
+          "top": 576.3125,
+          "right": 296,
+          "bottom": 620.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 773.3125,
+          "width": 272,
+          "height": 623.9375,
+          "top": 773.3125,
+          "right": 296,
+          "bottom": 1397.25,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 9402
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 428.3125,
+          "width": 272,
+          "height": 44,
+          "top": 428.3125,
+          "right": 296,
+          "bottom": 472.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 625.3125,
+          "width": 272,
+          "height": 623.9375,
+          "top": 625.3125,
+          "right": 296,
+          "bottom": 1249.25,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 9402
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 320,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 576.3125,
+          "width": 256,
+          "height": 44,
+          "top": 576.3125,
+          "right": 280,
+          "bottom": 620.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 798.8125,
+          "width": 272,
+          "height": 975.890625,
+          "top": 798.8125,
+          "right": 296,
+          "bottom": 1774.703125,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 12461
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 589.3125,
+          "width": 256,
+          "height": 44,
+          "top": 589.3125,
+          "right": 280,
+          "bottom": 633.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 814.8125,
+          "width": 272,
+          "height": 975.890625,
+          "top": 814.8125,
+          "right": 296,
+          "bottom": 1790.703125,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 12663
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 320,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 606.3125,
+          "width": 272,
+          "height": 52,
+          "top": 606.3125,
+          "right": 296,
+          "bottom": 658.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 714.3125,
+          "width": 272,
+          "height": 701.75,
+          "top": 714.3125,
+          "right": 296,
+          "bottom": 1416.0625,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 10237
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 424.3125,
+          "width": 272,
+          "height": 52,
+          "top": 424.3125,
+          "right": 296,
+          "bottom": 476.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 532.3125,
+          "width": 272,
+          "height": 701.75,
+          "top": 532.3125,
+          "right": 296,
+          "bottom": 1234.0625,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 10237
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 320,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 587.75,
+          "width": 272,
+          "height": 52,
+          "top": 587.75,
+          "right": 296,
+          "bottom": 639.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 699.75,
+          "width": 272,
+          "height": 538.46875,
+          "top": 699.75,
+          "right": 296,
+          "bottom": 1238.21875,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 9454
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": -0.25,
+          "width": 272,
+          "height": 52,
+          "top": -0.25,
+          "right": 296,
+          "bottom": 51.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 111.75,
+          "width": 272,
+          "height": 538.46875,
+          "top": 111.75,
+          "right": 296,
+          "bottom": 650.21875,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 9454
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 320,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 600.125,
+          "width": 272,
+          "height": 48,
+          "top": 600.125,
+          "right": 296,
+          "bottom": 648.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 759.125,
+          "width": 272,
+          "height": 1719.5,
+          "top": 759.125,
+          "right": 296,
+          "bottom": 2478.625,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 13413
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 600.125,
+          "width": 272,
+          "height": 48,
+          "top": 600.125,
+          "right": 296,
+          "bottom": 648.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 759.125,
+          "width": 272,
+          "height": 1719.5,
+          "top": 759.125,
+          "right": 296,
+          "bottom": 2478.625,
+          "left": 24
+        },
+        "largura": 320,
+        "altura": 13413
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 390,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 550.3125,
+          "width": 288,
+          "height": 44,
+          "top": 550.3125,
+          "right": 312,
+          "bottom": 594.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 727.8125,
+          "width": 342,
+          "height": 514.140625,
+          "top": 727.8125,
+          "right": 366,
+          "bottom": 1241.953125,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 8537
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 428.3125,
+          "width": 288,
+          "height": 44,
+          "top": 428.3125,
+          "right": 312,
+          "bottom": 472.3125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 605.8125,
+          "width": 342,
+          "height": 514.140625,
+          "top": 605.8125,
+          "right": 366,
+          "bottom": 1119.953125,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 8537
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 390,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 515.125,
+          "width": 256,
+          "height": 44,
+          "top": 515.125,
+          "right": 280,
+          "bottom": 559.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 737.625,
+          "width": 342,
+          "height": 889.34375,
+          "top": 737.625,
+          "right": 366,
+          "bottom": 1626.96875,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 11313
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 528.125,
+          "width": 256,
+          "height": 44,
+          "top": 528.125,
+          "right": 280,
+          "bottom": 572.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 753.625,
+          "width": 342,
+          "height": 889.34375,
+          "top": 753.625,
+          "right": 366,
+          "bottom": 1642.96875,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 11515
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 390,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 527.125,
+          "width": 342,
+          "height": 52,
+          "top": 527.125,
+          "right": 366,
+          "bottom": 579.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 635.125,
+          "width": 342,
+          "height": 620.5,
+          "top": 635.125,
+          "right": 366,
+          "bottom": 1255.625,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 9228
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 424.125,
+          "width": 342,
+          "height": 52,
+          "top": 424.125,
+          "right": 366,
+          "bottom": 476.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 532.125,
+          "width": 342,
+          "height": 620.5,
+          "top": 532.125,
+          "right": 366,
+          "bottom": 1152.625,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 9228
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 390,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 561.75,
+          "width": 342,
+          "height": 52,
+          "top": 561.75,
+          "right": 366,
+          "bottom": 613.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 673.75,
+          "width": 342,
+          "height": 414.046875,
+          "top": 673.75,
+          "right": 366,
+          "bottom": 1087.796875,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 8641
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 53.75,
+          "width": 342,
+          "height": 52,
+          "top": 53.75,
+          "right": 366,
+          "bottom": 105.75,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 165.75,
+          "width": 342,
+          "height": 414.046875,
+          "top": 165.75,
+          "right": 366,
+          "bottom": 579.796875,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 8641
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 390,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 548.125,
+          "width": 165,
+          "height": 48,
+          "top": 548.125,
+          "right": 189,
+          "bottom": 596.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 620.125,
+          "width": 342,
+          "height": 1549.5,
+          "top": 620.125,
+          "right": 366,
+          "bottom": 2169.625,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 11968
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 548.125,
+          "width": 165,
+          "height": 48,
+          "top": 548.125,
+          "right": 189,
+          "bottom": 596.125,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 620.125,
+          "width": 342,
+          "height": 1549.5,
+          "top": 620.125,
+          "right": 366,
+          "bottom": 2169.625,
+          "left": 24
+        },
+        "largura": 390,
+        "altura": 11968
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 768,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 612.421875,
+          "width": 288,
+          "height": 44,
+          "top": 612.421875,
+          "right": 312,
+          "bottom": 656.421875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 680.421875,
+          "width": 720,
+          "height": 304,
+          "top": 680.421875,
+          "right": 744,
+          "bottom": 984.421875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 5721
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 26.421875,
+          "width": 288,
+          "height": 44,
+          "top": 26.421875,
+          "right": 312,
+          "bottom": 70.421875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 94.421875,
+          "width": 720,
+          "height": 304,
+          "top": 94.421875,
+          "right": 744,
+          "bottom": 398.421875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 5811
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 768,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 582.921875,
+          "width": 256,
+          "height": 44,
+          "top": 582.921875,
+          "right": 280,
+          "bottom": 626.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 705.921875,
+          "width": 720,
+          "height": 473.75,
+          "top": 705.921875,
+          "right": 744,
+          "bottom": 1179.671875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 7555
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 582.921875,
+          "width": 256,
+          "height": 44,
+          "top": 582.921875,
+          "right": 280,
+          "bottom": 626.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 705.921875,
+          "width": 720,
+          "height": 473.75,
+          "top": 705.921875,
+          "right": 744,
+          "bottom": 1179.671875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 7555
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 768,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 598.921875,
+          "width": 576,
+          "height": 52,
+          "top": 598.921875,
+          "right": 600,
+          "bottom": 650.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 690.921875,
+          "width": 720,
+          "height": 325.5,
+          "top": 690.921875,
+          "right": 744,
+          "bottom": 1016.421875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 6324
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 54.921875,
+          "width": 576,
+          "height": 52,
+          "top": 54.921875,
+          "right": 600,
+          "bottom": 106.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 146.921875,
+          "width": 720,
+          "height": 325.5,
+          "top": 146.921875,
+          "right": 744,
+          "bottom": 472.421875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 6324
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 768,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 585.875,
+          "width": 576,
+          "height": 52,
+          "top": 585.875,
+          "right": 600,
+          "bottom": 637.875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 681.875,
+          "width": 720,
+          "height": 314.265625,
+          "top": 681.875,
+          "right": 744,
+          "bottom": 996.140625,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 6209
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 555.875,
+          "width": 576,
+          "height": 52,
+          "top": 555.875,
+          "right": 600,
+          "bottom": 607.875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 651.875,
+          "width": 720,
+          "height": 314.265625,
+          "top": 651.875,
+          "right": 744,
+          "bottom": 966.140625,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 6209
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 768,
+      "normal": {
+        "controle": {
+          "x": 24,
+          "y": 589.921875,
+          "width": 266,
+          "height": 48,
+          "top": 589.921875,
+          "right": 290,
+          "bottom": 637.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 661.921875,
+          "width": 720,
+          "height": 946,
+          "top": 661.921875,
+          "right": 744,
+          "bottom": 1607.921875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 8350
+      },
+      "texto200": {
+        "controle": {
+          "x": 24,
+          "y": 589.921875,
+          "width": 266,
+          "height": 48,
+          "top": 589.921875,
+          "right": 290,
+          "bottom": 637.921875,
+          "left": 24
+        },
+        "resposta": {
+          "x": 24,
+          "y": 661.921875,
+          "width": 720,
+          "height": 946,
+          "top": 661.921875,
+          "right": 744,
+          "bottom": 1607.921875,
+          "left": 24
+        },
+        "largura": 768,
+        "altura": 8350
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/custo-de-vida",
+      "recorte": "?area=2601",
+      "largura": 1440,
+      "normal": {
+        "controle": {
+          "x": 136,
+          "y": 578,
+          "width": 288,
+          "height": 44,
+          "top": 578,
+          "right": 424,
+          "bottom": 622,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 646,
+          "width": 1168,
+          "height": 320.125,
+          "top": 646,
+          "right": 1304,
+          "bottom": 966.125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 4607
+      },
+      "texto200": {
+        "controle": {
+          "x": 136,
+          "y": 7,
+          "width": 288,
+          "height": 44,
+          "top": 7,
+          "right": 424,
+          "bottom": 51,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 75,
+          "width": 1168,
+          "height": 320.125,
+          "top": 75,
+          "right": 1304,
+          "bottom": 395.125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 4607
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/combustiveis",
+      "recorte": "?uf=PE",
+      "largura": 1440,
+      "normal": {
+        "controle": {
+          "x": 136,
+          "y": 548.5,
+          "width": 256,
+          "height": 44,
+          "top": 548.5,
+          "right": 392,
+          "bottom": 592.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 671.5,
+          "width": 1168,
+          "height": 325.3125,
+          "top": 671.5,
+          "right": 1304,
+          "bottom": 996.8125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 6063
+      },
+      "texto200": {
+        "controle": {
+          "x": 136,
+          "y": 548.5,
+          "width": 256,
+          "height": 44,
+          "top": 548.5,
+          "right": 392,
+          "bottom": 592.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 671.5,
+          "width": 1168,
+          "height": 325.3125,
+          "top": 671.5,
+          "right": 1304,
+          "bottom": 996.8125,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 6063
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/conectividade",
+      "recorte": "?ibge=2611606",
+      "largura": 1440,
+      "normal": {
+        "controle": {
+          "x": 136,
+          "y": 564.5,
+          "width": 576,
+          "height": 52,
+          "top": 564.5,
+          "right": 712,
+          "bottom": 616.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 656.5,
+          "width": 1168,
+          "height": 286,
+          "top": 656.5,
+          "right": 1304,
+          "bottom": 942.5,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5102
+      },
+      "texto200": {
+        "controle": {
+          "x": 136,
+          "y": 541.5,
+          "width": 576,
+          "height": 52,
+          "top": 541.5,
+          "right": 712,
+          "bottom": 593.5,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 633.5,
+          "width": 1168,
+          "height": 286,
+          "top": 633.5,
+          "right": 1304,
+          "bottom": 919.5,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5183
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": [
+        {
+          "alvo": "municipio-detalhes",
+          "visivel": true,
+          "tabelas": 1
+        }
+      ]
+    },
+    {
+      "rota": "/educacao-municipal",
+      "recorte": "?ibge=2611606",
+      "largura": 1440,
+      "normal": {
+        "controle": {
+          "x": 136,
+          "y": 528.65625,
+          "width": 576,
+          "height": 52,
+          "top": 528.65625,
+          "right": 712,
+          "bottom": 580.65625,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 624.65625,
+          "width": 1168,
+          "height": 303.21875,
+          "top": 624.65625,
+          "right": 1304,
+          "bottom": 927.875,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5233
+      },
+      "texto200": {
+        "controle": {
+          "x": 136,
+          "y": 528.65625,
+          "width": 576,
+          "height": 52,
+          "top": 528.65625,
+          "right": 712,
+          "bottom": 580.65625,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 624.65625,
+          "width": 1168,
+          "height": 303.21875,
+          "top": 624.65625,
+          "right": 1304,
+          "bottom": 927.875,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 5233
+      },
+      "foco": {
+        "tag": "INPUT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "recorte": "?territorio=3550308&comparador=4106902",
+      "largura": 1440,
+      "normal": {
+        "controle": {
+          "x": 136,
+          "y": 499.1875,
+          "width": 266,
+          "height": 48,
+          "top": 499.1875,
+          "right": 402,
+          "bottom": 547.1875,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 571.1875,
+          "width": 1168,
+          "height": 742,
+          "top": 571.1875,
+          "right": 1304,
+          "bottom": 1313.1875,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 6914
+      },
+      "texto200": {
+        "controle": {
+          "x": 136,
+          "y": 503.1875,
+          "width": 266,
+          "height": 48,
+          "top": 503.1875,
+          "right": 402,
+          "bottom": 551.1875,
+          "left": 136
+        },
+        "resposta": {
+          "x": 136,
+          "y": 575.1875,
+          "width": 1168,
+          "height": 750,
+          "top": 575.1875,
+          "right": 1304,
+          "bottom": 1325.1875,
+          "left": 136
+        },
+        "largura": 1440,
+        "altura": 7156
+      },
+      "foco": {
+        "tag": "SELECT",
+        "contorno": "solid"
+      },
+      "axe": [],
+      "erros": [],
+      "detalhes": []
+    }
+  ]
+}

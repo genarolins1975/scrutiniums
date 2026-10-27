@@ -1,4 +1,6 @@
 'use client';
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import type { ReactNode } from 'react';
 import {daCapital,inteiro,escala,naCapital,numero,type CapitalRetrato,type Medida} from '@/lib/eficiencia/entrada-nucleo';
 import styles from './Entrada.module.css';
 import {SeloComConta} from '@/components/acesso/SeloComConta';
@@ -119,16 +121,13 @@ export function RetratoCapital({a, b, condicoes, capitais, onSelect, fonteContor
  * Os seletores da capital e do comparador, a população, a área e a densidade, e os atalhos da página: a parte da abertura que
  * responde ao caso do leitor. No molde único (Iniciativa 4, 22/10/2026) fica no bloco "Para você" da entrada.
  */
-export function SeletoresRetrato({a, b, capitais, onSelect}: {
+export function SeletoresRetrato({a, b, capitais, onSelect, resposta}: {
   a: CapitalRetrato; b: CapitalRetrato; capitais: CapitalRetrato[];
   onSelect: (campo: 'territorio' | 'comparador', id: string) => void;
+  resposta?: ReactNode;
 }) {
   const densidade = a.populacao !== null && a.areaKm2 ? a.populacao / a.areaKm2 : null;
-  return <div className={styles.heroText}>
-        <div className={styles.selectors}>
-          <label>Capital<select value={a.id} onChange={e => onSelect('territorio', e.target.value)}>{capitais.map(c => <option key={c.id} value={c.id}>{c.nome} · {c.uf}</option>)}</select></label>
-          <label>Comparar com<select value={b.id} onChange={e => onSelect('comparador', e.target.value)}>{capitais.filter(c => c.id !== a.id).map(c => <option key={c.id} value={c.id}>{c.nome} · {c.uf}</option>)}</select></label>
-        </div>
+  const territorio = <>
         <dl className={styles.facts}>
           <div><dt>População</dt><dd>{inteiro(a.populacao)}<small>Censo 2022</small></dd></div>
           <div><dt>Área</dt><dd>{a.areaKm2 === null ? 'Não disponível' : <>{a.areaKm2.toLocaleString('pt-BR', {maximumFractionDigits: 1})}<span className={styles.unit}> km²</span></>}<small>IBGE, área territorial</small></dd></div>
@@ -140,6 +139,14 @@ export function SeletoresRetrato({a, b, capitais, onSelect}: {
           <a href="#cobertura">O que ainda não se sabe <span aria-hidden="true">↓</span></a>
           <a href={`/eficiencia-estatal/indice-de-resultados?territorio=${a.id}&comparador=${b.id}`} aria-label="Índice experimental, no painel do índice, com conta">Índice experimental <span aria-hidden="true">↗</span><SeloComConta href="/eficiencia-estatal/indice-de-resultados"/></a>
         </nav>
+  </>;
+  return <div className={styles.heroText}>
+        <div className={styles.selectors}>
+          <label>Capital<select value={a.id} onChange={e => onSelect('territorio', e.target.value)}>{capitais.map(c => <option key={c.id} value={c.id}>{c.nome} · {c.uf}</option>)}</select></label>
+          <label>Comparar com<select value={b.id} onChange={e => onSelect('comparador', e.target.value)}>{capitais.filter(c => c.id !== a.id).map(c => <option key={c.id} value={c.id}>{c.nome} · {c.uf}</option>)}</select></label>
+        </div>
+        {resposta}
+        {resposta ? <Recolhido id="territorio-capital" titulo="População, área e caminhos da capital" resumo="Dados territoriais e atalhos para aprofundar." className="mt-4">{territorio}</Recolhido> : territorio}
   </div>;
 }
 

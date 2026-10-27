@@ -99,7 +99,11 @@ describe("inflação por cidade: o painel", () => {
     const br = gold.ultimo["1"];
     expect(html).toContain("Quanto subiu o custo de vida na minha cidade?");
     expect(html).toContain("Sua cidade ou região");
-    expect(html).toContain(`Inflação em 12 meses: Brasil, até ${mesExtenso(gold.ultimo_mes)}`);
+    // Pedido do dono, 27/10/2026: resposta específica na entrada; período junto do valor, sem fixar o título editorial.
+    const resposta = html.slice(html.indexOf('data-resposta-especifica'), html.indexOf('id="grupos-na-area"'));
+    expect(resposta).toContain(pct(br.geral.doze));
+    expect(resposta).toContain(mesExtenso(gold.ultimo_mes));
+    expect(resposta).toContain("IBGE, IPCA");
     expect(html).toContain(pct(br.geral.doze));
     expect(html).toContain("IBGE, IPCA, tabela 7060 do SIDRA");
     for (const g of gold.grupos) {
@@ -116,7 +120,8 @@ describe("inflação por cidade: o painel", () => {
     const html = await painel();
     // molde único de entrada (Iniciativa 4, 22/10/2026): a consulta, o modelo didático, as seções recolhidas e o método no
     // <details> único do molde; a ordem pelas âncoras, porque os títulos também aparecem nos caminhos por pergunta
-    const ordem = ["Inflação em 12 meses: Brasil", 'id="como-pesa"', 'id="serie"', 'id="areas"', 'id="itens"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
+    // Pedido do dono, 27/10/2026: a consulta vem antes do contexto; a ordem usa a fatia sem prender a redação.
+    const ordem = ['data-fatia="resposta"', 'id="como-pesa"', 'id="serie"', 'id="areas"', 'id="itens"', 'data-fatia="metodo"'].map((t) => html.indexOf(t));
     expect(ordem.every((p) => p > 0)).toBe(true);
     expect([...ordem].sort((a, b) => a - b)).toEqual(ordem);
     for (const t of ["Como o IPCA pesa o seu orçamento", "A inflação mês a mês desde 2020", "As 16 áreas lado a lado", "Os produtos e serviços que mais subiram e mais caíram", "Método e fontes"]) expect(html).toContain(t);

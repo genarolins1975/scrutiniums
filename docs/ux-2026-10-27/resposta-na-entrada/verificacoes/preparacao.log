@@ -1,0 +1,8 @@
+Preparando a sessão em /workspace/scrutiniums-resposta-na-entrada
+  dependências em dia com o lockfile
+  derivados    materializados e app.min.js gerado (npm run preparar)
+  chromium     AVISO: não foi possível instalar a revisão 1248 (log em /tmp/preparar-sessao.TtQJ1Q.log)
+Pronto em 6 s. Antes de empurrar:
+  npm run verificar:rapido   lint, tipos, cobertura e testes afetados
+  npm run verificar:pr       o que o CI roda, na mesma ordem
+  npm run preparar           derivados de novo, se mudar semente ou app.js

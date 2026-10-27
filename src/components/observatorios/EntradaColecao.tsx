@@ -4,6 +4,7 @@ import { ACENTO } from "@/components/home/acentos";
 import { RotuloContexto } from "@/components/layout/RotuloContexto";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
+import { Recolhido } from "@/components/observatorios/Recolhido";
 import { SeloProntidao, type Prontidao } from "@/components/observatorios/SeloProntidao";
 import type { Dominio } from "@/lib/dominios";
 import type { Idioma } from "@/lib/idioma";
@@ -13,7 +14,8 @@ import type { NumeroPorta } from "@/lib/perguntas/tipos";
  * Molde único das páginas de entrada (Iniciativa 4 do parecer de UX de 21/10/2026; skill observatorio-layout, §4 "Página de
  * entrada"). Todas as fatias saem do servidor, nesta ordem, cada uma marcada com `data-fatia` para o teste conferir:
  *
- *  1. `abertura`: RotuloContexto, H1 pergunta (até 60 caracteres) e uma frase (até 220). Opcionalmente, `seu-municipio` traz o extrato escolhido antes dos números (pedido Educação, 25/10/2026).
+ *  1. `abertura`: RotuloContexto, H1 pergunta (até 60 caracteres) e uma frase (até 220). A `resposta` opcional reúne escolha e resultado
+ *     antes do panorama (pedido do dono, 27/10/2026); `seu-municipio` preserva o extrato da Educação (25/10/2026).
  *  2. `escala`: de um a quatro números (NumeroEscala), cada um com fonte, período, nota opcional e "Ver no painel"; na versão
  *     aperitivo, no lugar dela, a `consulta` do leitor (o caso dele, com fonte e período).
  *  3. `para-voce`: o bloco ParaVoce.
@@ -71,6 +73,8 @@ export function EntradaColecao({
   figuraEscala,
   consulta,
   paraVoce,
+  resposta,
+  contextoEscala,
   seuMunicipio,
   destinos,
   secaoPropria,
@@ -109,6 +113,10 @@ export function EntradaColecao({
   /** Aperitivo: a consulta do leitor, no lugar da escala. */
   consulta?: ReactNode;
   paraVoce?: ReactNode;
+  /** Pedido do dono, 27/10/2026: escolha explícita, resposta e prova antes do panorama nacional. */
+  resposta?: ReactNode;
+  /** Identifica o universo dos números de contexto quando há uma resposta específica acima. */
+  contextoEscala?: string;
   /** Extrato escolhido pelo leitor, antes da escala nacional (Educação, pedido de 25/10/2026). */
   seuMunicipio?: ReactNode;
   destinos?: ReactNode;
@@ -136,10 +144,10 @@ export function EntradaColecao({
 }>) {
   const a = ACENTO[acento];
   return (
-    <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={classe ? `bg-papel ${classe}` : "bg-papel"} tipo={tipo}>
+    <Raiz principal={principal} id={principal ? idPrincipal : undefined} className={`${classe ? `bg-papel ${classe}` : "bg-papel"}${resposta ? " [overflow-wrap:anywhere]" : ""}`} tipo={tipo}>
       <section aria-labelledby={idTitulo} className="border-b border-linha bg-marfim" data-fatia="abertura">
         {frescor}
-        <div className="mx-auto max-w-page px-6 pb-10 pt-8 md:pb-12 md:pt-12">
+        <div className={`mx-auto max-w-page px-6 pb-10 md:pb-12 ${resposta ? "pt-5 md:pt-8" : "pt-8 md:pt-12"}`}>
           <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
             <RotuloContexto rota={rota} className="flex items-center gap-3 text-mineral" marca={<span aria-hidden="true" className={`h-[3px] w-8 shrink-0 ${a.filete}`} />} />
             {aoLadoDoRotulo}
@@ -148,9 +156,10 @@ export function EntradaColecao({
             {titulo}
           </h1>
           {destaque}
-          <p className="mt-6 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">{frase}</p>
+          <p className={`${resposta ? "mt-3" : "mt-6"} max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg`}>{frase}</p>
+          {resposta && <div data-fatia="resposta" className="mt-4">{resposta}</div>}
           {seuMunicipio && <div data-fatia="seu-municipio">{seuMunicipio}</div>}
-          {escala && escala.length > 0 && <Escala escala={escala} nota={notaEscala} idioma={idioma} />}
+          {escala && escala.length > 0 && (contextoEscala ? <Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8"><Escala escala={escala} nota={notaEscala} idioma={idioma} /></Recolhido> : <Escala escala={escala} nota={notaEscala} idioma={idioma} />)}
           {figuraEscala}
         </div>
       </section>

@@ -1,0 +1,485 @@
+{
+  "controles": [
+    {
+      "rota": "/educacao-municipal",
+      "largura": 390,
+      "controles": [
+        {
+          "id": "busca-R71ufafcq",
+          "tipo": "INPUT",
+          "nome": "Escolha o município",
+          "valor": "",
+          "y": 2417
+        },
+        {
+          "id": "Rjefafcq-n",
+          "tipo": "INPUT",
+          "nome": "Aprendizagem: nota do Saeb padronizada (N), de 0 a 10\n6,2352",
+          "valor": "6.2352",
+          "y": 3486
+        },
+        {
+          "id": "Rjefafcq-p",
+          "tipo": "INPUT",
+          "nome": "Fluxo: indicador de rendimento (P), perto da taxa de aprovação\n0,9793",
+          "valor": "97.93",
+          "y": 3595
+        }
+      ]
+    },
+    {
+      "rota": "/conectividade",
+      "largura": 390,
+      "controles": [
+        {
+          "id": "busca-R71ufafcq",
+          "tipo": "INPUT",
+          "nome": "Escolha o município",
+          "valor": "",
+          "y": 2724
+        }
+      ]
+    },
+    {
+      "rota": "/custo-de-vida",
+      "largura": 390,
+      "controles": [
+        {
+          "id": ":Rb1ufafcq:",
+          "tipo": "SELECT",
+          "nome": "Sua cidade ou região",
+          "valor": "1",
+          "y": 2522
+        },
+        {
+          "id": ":R56jefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "1",
+          "y": 5471
+        },
+        {
+          "id": ":Ramjefafcq:-7170",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "21.5",
+          "y": 7991
+        },
+        {
+          "id": ":Ramjefafcq:-7445",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "15.5",
+          "y": 7971
+        },
+        {
+          "id": ":Ramjefafcq:-7486",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "3.5",
+          "y": 8091
+        },
+        {
+          "id": ":Ramjefafcq:-7558",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "4.5",
+          "y": 8071
+        },
+        {
+          "id": ":Ramjefafcq:-7625",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "20.5",
+          "y": 8171
+        },
+        {
+          "id": ":Ramjefafcq:-7660",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "13.5",
+          "y": 8191
+        },
+        {
+          "id": ":Ramjefafcq:-7712",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "10",
+          "y": 8291
+        },
+        {
+          "id": ":Ramjefafcq:-7766",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "6",
+          "y": 8271
+        },
+        {
+          "id": ":Ramjefafcq:-7786",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "4.5",
+          "y": 8371
+        },
+        {
+          "id": ":R4r4cefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "1",
+          "y": 6500
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "doze",
+          "y": 6594
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "mensal",
+          "y": 6594
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "0",
+          "y": 6868
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "69",
+          "y": 6932
+        },
+        {
+          "id": ":R34kefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "geral",
+          "y": 6604
+        },
+        {
+          "id": ":Rb4sefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "1",
+          "y": 6816
+        }
+      ]
+    },
+    {
+      "rota": "/combustiveis",
+      "largura": 390,
+      "controles": [
+        {
+          "id": ":R31ufafcq:-uf",
+          "tipo": "SELECT",
+          "nome": "Seu estado",
+          "valor": "BR",
+          "y": 2607
+        },
+        {
+          "id": ":R31ufafcq:-litros",
+          "tipo": "INPUT",
+          "nome": "Litros no tanque",
+          "valor": "40",
+          "y": 2687
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "0",
+          "y": 5532
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "164",
+          "y": 5596
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "nominal",
+          "y": 7926
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "real",
+          "y": 7974
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "0",
+          "y": 8216
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "164",
+          "y": 8280
+        },
+        {
+          "id": ":Ratscefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "BR",
+          "y": 10330
+        },
+        {
+          "id": ":Ritscefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "gasolina",
+          "y": 10410
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "0",
+          "y": 10698
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "164",
+          "y": 10762
+        },
+        {
+          "id": ":R5skefafcq:",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "gasolina",
+          "y": 8022
+        }
+      ]
+    },
+    {
+      "rota": "/eficiencia-estatal",
+      "largura": 390,
+      "controles": [
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Capital\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRecife · PE\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nSão Paulo · SP\nTeresina · PI\nVitória · ES",
+          "valor": "2611606",
+          "y": 2385
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Comparar com\nAracaju · SE\nBelém · PA\nBelo Horizonte · MG\nBoa Vista · RR\nCampo Grande · MS\nCuiabá · MT\nCuritiba · PR\nFlorianópolis · SC\nFortaleza · CE\nGoiânia · GO\nJoão Pessoa · PB\nMacapá · AP\nMaceió · AL\nManaus · AM\nNatal · RN\nPalmas · TO\nPorto Alegre · RS\nPorto Velho · RO\nRio Branco · AC\nRio de Janeiro · RJ\nSalvador · BA\nSão Luís · MA\nSão Paulo · SP\nTeresina · PI\nVitória · ES",
+          "valor": "4106902",
+          "y": 2385
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "47813",
+          "y": 7858
+        }
+      ]
+    },
+    {
+      "rota": "/contas-publicas-estaduais",
+      "largura": 390,
+      "controles": [
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Ano\n2026 · parcial\n2025\n2024\n2023\n2022\n2021\n2020\n2019\n2018\n2017\n2016\n2015",
+          "valor": "2025",
+          "y": 1815
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Ano do panorama\n2026 · parcial\n2025 · encerramento\n2024 · encerramento\n2023 · encerramento\n2022 · encerramento\n2021 · encerramento\n2020 · encerramento\n2019 · encerramento\n2018 · encerramento\n2017 · encerramento\n2016 · encerramento\n2015 · encerramento",
+          "valor": "2025",
+          "y": 3466
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Medida comparada\nExecução atualizada\nErro da receita\nLiquidação de empenhos\nPagamento do exercício\nMargem corrente\nDívida líquida / RCL ajustada\nImpostos, taxas e contribuições de melhoria · participação na receita corrente\nContribuições · participação na receita corrente\nDemais receitas correntes agrupadas · participação na receita corrente\nParticipação das transferências correntes\nPessoal e encargos · participação na despesa\nJuros da dívida · participação na despesa\nOutras despesas correntes · participação na despesa\nInvestimentos · participação na despesa\nInversões financeiras · participação na despesa\nAmortização da dívida · participação na despesa",
+          "valor": "CE-04",
+          "y": 3547
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Região de referência\nTodas\nCentro-Oeste\nNordeste\nNorte\nSudeste\nSul",
+          "valor": "Todas",
+          "y": 3629
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "Ordem de exibição\nAlfabética · UF\nMaior valor primeiro",
+          "valor": "uf",
+          "y": 3710
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "Incluir Distrito Federal · competências estaduais e municipais",
+          "valor": "on",
+          "y": 3783
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "PE",
+          "y": 6160
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "2025",
+          "y": 6160
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "ensino_medio_regular",
+          "y": 17616
+        },
+        {
+          "id": "",
+          "tipo": "INPUT",
+          "nome": "",
+          "valor": "",
+          "y": 6683
+        },
+        {
+          "id": "",
+          "tipo": "SELECT",
+          "nome": "",
+          "valor": "Todos",
+          "y": 6764
+        },
+        {
+          "id": "ce-lab-spend",
+          "tipo": "INPUT",
+          "nome": "Despesa liquidada\nR$ 80 milhões",
+          "valor": "80",
+          "y": 6882
+        },
+        {
+          "id": "ce-lab-output",
+          "tipo": "INPUT",
+          "nome": "Unidades entregues\n60 de 100",
+          "valor": "60",
+          "y": 6980
+        }
+      ]
+    },
+    {
+      "rota": "/eficiencia-estatal/saude-capitais",
+      "largura": 390,
+      "controles": [
+        {
+          "id": "capital-panorama",
+          "tipo": "SELECT",
+          "nome": "CAPITAL",
+          "valor": "",
+          "y": 481
+        }
+      ]
+    }
+  ],
+  "jornadas": [
+    {
+      "nome": "Compartilhar/reabrir conta de 60 litros em Pernambuco",
+      "antes": {
+        "url": "/combustiveis?uf=PE",
+        "uf": "PE",
+        "litros": "60"
+      },
+      "depois": {
+        "url": "/combustiveis?uf=PE",
+        "uf": "PE",
+        "litros": "40"
+      }
+    },
+    {
+      "nome": "Consignado: abrir tabela e perfil pelo teclado",
+      "focoAposTab": "cg-tabela-busca",
+      "perfil": "Perfil municipal\n1 município em comparação\nVoltar à busca de municípios\nRecife\nPE\n×\nINDICADOR\tRECIFE\nPE\n\tNATUREZA DO DADO\nPOPULAÇÃO TOTAL\t1.488.920\t\n●\nNATUREZA DO DADO:\nOBSERVADO\n60 ANOS OU MAIS\t263.996 (17,7%)\t\n●\nNATUREZA DO DADO:\nOBSERVADO\n65 ANOS OU MAIS\t182.079 (12,2%)\t\n●\nNATUREZA DO DADO:\nOBSERVADO\n80 ANOS OU MAIS\t39.897 (2,7%)\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nIDADE MEDIANA\t37,3 anos\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nÍNDICE DE ENVELHECIMENTO\t100,1\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nBENEFÍCIOS EMITIDOS\t387.161\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nAPOSENTADORIAS\t189.497\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nPENSÕES POR MORTE\t78.588\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nASSISTENCIAIS E LEGISLAÇÃO ESPECÍFICA\t100.713\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nCLIENTELA RURAL\t4,6%\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nVALOR LÍQUIDO MENSAL\tR$ 753,0 mi\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nVALOR POR HABITANTE\tR$ 506\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nVALOR POR PESSOA COM 60+\tR$ 2.852\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nBENEFÍCIOS POR 100 PESSOAS COM 60+\t146,7\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nPESO NA RENDA DOMICILIAR\t18,6%\t\n◆\nNATUREZA DO DADO:\nCALCULADO\nTETO DO CENSO PARA RENDAS NÃO-TRABALHO\t23,4%\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nEXPOSIÇÃO ESTIMADA AO CONSIGNADO\tR$ 1,2 bi\t\n◐\nNATUREZA DO DADO:\nESTIMADO\nFAIXA DA ESTIMATIVA\tR$ 1,1 bi a R$ 1,5 bi\t\n◐\nNATUREZA DO DADO:\nESTIMADO\nEXPOSIÇÃO POR BENEFÍCIO ELEGÍVEL\tR$ 4.514\t\n◐\nNATUREZA DO DADO:\nESTIMADO\nSERVIÇO DA DÍVIDA\t2,8%\t\n◇\nNATUREZA DO DADO:\nCENÁRIO\nSATURAÇÃO\tPenetração elevada\t\n◐\nNATUREZA DO DADO:\nESTIMADO\nRECLAMAÇÕES NO PERÍODO\t824\t\n●\nNATUREZA DO DADO:\nOBSERVADO\nRECLAMAÇÕES POR 100 MIL PESSOAS COM 60+\t312,1\t\n◆\nNATUREZA DO DADO:\nCALCULADO\n\nDeslize horizontalmente ou use as setas com foco na tabela para comparar todos os municípios.\n\nConfiabilidade: RECIFE: ALTA",
+      "focoPerfil": "H3"
+    },
+    {
+      "nome": "Pix: alternar valor pelo teclado e reabrir",
+      "recorte": "?xhmnat=v&xnatpag=todos&xusnat=ambas&xgnat=total&xinsts=Pix.CartaoCredito.CartaoDebito.TED.Boleto",
+      "pressionado": "true"
+    }
+  ],
+  "axeConsignado": [
+    {
+      "id": "aria-prohibited-attr",
+      "impact": "serious",
+      "description": "Ensure ARIA attributes are not prohibited for an element's role",
+      "help": "Elements must only use permitted ARIA attributes",
+      "total": 4110,
+      "amostras": [
+        {
+          "target": [
+            "path[onclick=\"cgSel('1100023')\"]"
+          ],
+          "html": "<path d=\"M-635970,-100004h483...\" fill=\"color-mix(in srgb, v...\" class=\"penmun\" data-tip=\"%3Cdiv%20class%3D%22...\" tabindex=\"-1\" onclick=\"cgSel('1100023')\" aria-label=\"Ariquemes RO: 11,5%\">",
+          "failure": "Fix all of the following:\n  aria-label attribute cannot be used on a path with no valid role attribute."
+        },
+        {
+          "target": [
+            "path[onclick=\"cgSel('1100031')\"]"
+          ],
+          "html": "<path d=\"M-603716,-133186l-33...\" fill=\"color-mix(in srgb, v...\" class=\"penmun\" data-tip=\"%3Cdiv%20class%3D%22...\" tabindex=\"-1\" onclick=\"cgSel('1100031')\" aria-label=\"Cabixi RO: 19,2%\">",
+          "failure": "Fix all of the following:\n  aria-label attribute cannot be used on a path with no valid role attribute."
+        },
+        {
+          "target": [
+            "path[onclick=\"cgSel('1100049')\"]"
+          ],
+          "html": "<path d=\"M-615490,-116191l196...\" fill=\"color-mix(in srgb, v...\" class=\"penmun\" data-tip=\"%3Cdiv%20class%3D%22...\" tabindex=\"-1\" onclick=\"cgSel('1100049')\" aria-label=\"Cacoal RO: 13,3%\">",
+          "failure": "Fix all of the following:\n  aria-label attribute cannot be used on a path with no valid role attribute."
+        }
+      ]
+    }
+  ],
+  "mapa": {
+    "h1": "Encontre o painel",
+    "campos": [
+      {
+        "id": "bp-busca-q",
+        "role": "combobox",
+        "label": null,
+        "placeholder": "conta de luz, Ideb, dívida dos estados…"
+      },
+      {
+        "id": "busca-local-q",
+        "role": "combobox",
+        "label": null,
+        "placeholder": "conta de luz, Ideb, dívida dos estados…"
+      }
+    ]
+  }
+}

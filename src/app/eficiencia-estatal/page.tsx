@@ -59,11 +59,13 @@ export default function PaginaEntradaEficiencia(){
   rota="/eficiencia-estatal"
   acento="obee"
   titulo={<TituloCapital/>}
-  frase="Sete resultados na vida dos moradores, o que a prefeitura aplica em educação e saúde, e o que ainda não se sabe. Cada número com fonte, período e limites."
+  frase="Escolha a capital e uma referência para comparar sete resultados na vida dos moradores."
   frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES['/eficiencia-estatal']} conteiner="mx-auto max-w-page px-6"/>}
   escala={escalaEntrada(retrato)}
   notaEscala="Mediana simples das 26 capitais estaduais, sem o Distrito Federal. Precisão municipal não quantificada nas medidas amostrais."
-  paraVoce={<ParaVoce entrada="/eficiencia-estatal"><SeletorCapital/></ParaVoce>}
+  resposta={<SeletorCapital/>}
+  contextoEscala="Referência: a mediana das 26 capitais"
+  paraVoce={<ParaVoce entrada="/eficiencia-estatal"/>}
   destinos={<div className="mx-auto max-w-page px-6"><MapaCobertura temas={temas}/></div>}
   secaoPropria={<ReguaCapital/>}
   artefato={

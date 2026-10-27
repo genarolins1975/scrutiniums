@@ -1,0 +1,192 @@
+{
+  "commit": "38c543ae5e536d23f470a3640c8746bc6bdec60a",
+  "build": "joprJiw7FCX_7Z-nqHMuN",
+  "data": "2026-10-27T12:27:40.960Z",
+  "resultados": [
+    {
+      "nome": "Conferência visual 1000L a320 texto200",
+      "detalhe": {
+        "url": "/combustiveis?uf=PE",
+        "largura": 320,
+        "scrollWidth": 320,
+        "altura": 40326,
+        "scrollY": 2930,
+        "fonte": "32px",
+        "quantias": [
+          {
+            "texto": "6.840,00",
+            "caixas": [
+              {
+                "x": 48,
+                "y": 380.546875,
+                "width": 236.765625,
+                "height": 68,
+                "top": 380.546875,
+                "right": 284.765625,
+                "bottom": 448.546875,
+                "left": 48
+              }
+            ],
+            "fonte": "56px",
+            "whiteSpace": "nowrap",
+            "container": {
+              "x": 48,
+              "y": 309.546875,
+              "width": 224,
+              "height": 280,
+              "top": 309.546875,
+              "right": 272,
+              "bottom": 589.546875,
+              "left": 48
+            },
+            "rect": {
+              "x": 48,
+              "y": 380.546875,
+              "width": 236.765625,
+              "height": 68,
+              "top": 380.546875,
+              "right": 284.765625,
+              "bottom": 448.546875,
+              "left": 48
+            }
+          },
+          {
+            "texto": "4.930,00",
+            "caixas": [
+              {
+                "x": 48,
+                "y": 1290.546875,
+                "width": 236.765625,
+                "height": 68,
+                "top": 1290.546875,
+                "right": 284.765625,
+                "bottom": 1358.546875,
+                "left": 48
+              }
+            ],
+            "fonte": "56px",
+            "whiteSpace": "nowrap",
+            "container": {
+              "x": 48,
+              "y": 1219.546875,
+              "width": 224,
+              "height": 280,
+              "top": 1219.546875,
+              "right": 272,
+              "bottom": 1499.546875,
+              "left": 48
+            },
+            "rect": {
+              "x": 48,
+              "y": 1290.546875,
+              "width": 236.765625,
+              "height": 68,
+              "top": 1290.546875,
+              "right": 284.765625,
+              "bottom": 1358.546875,
+              "left": 48
+            }
+          },
+          {
+            "texto": "7.420,00",
+            "caixas": [
+              {
+                "x": 48,
+                "y": 2200.546875,
+                "width": 236.765625,
+                "height": 68,
+                "top": 2200.546875,
+                "right": 284.765625,
+                "bottom": 2268.546875,
+                "left": 48
+              }
+            ],
+            "fonte": "56px",
+            "whiteSpace": "nowrap",
+            "container": {
+              "x": 48,
+              "y": 2129.546875,
+              "width": 224,
+              "height": 280,
+              "top": 2129.546875,
+              "right": 272,
+              "bottom": 2409.546875,
+              "left": 48
+            },
+            "rect": {
+              "x": 48,
+              "y": 2200.546875,
+              "width": 236.765625,
+              "height": 68,
+              "top": 2200.546875,
+              "right": 284.765625,
+              "bottom": 2268.546875,
+              "left": 48
+            }
+          },
+          {
+            "texto": "7.050,00",
+            "caixas": [
+              {
+                "x": 48,
+                "y": 3360.546875,
+                "width": 236.765625,
+                "height": 68,
+                "top": 3360.546875,
+                "right": 284.765625,
+                "bottom": 3428.546875,
+                "left": 48
+              }
+            ],
+            "fonte": "56px",
+            "whiteSpace": "nowrap",
+            "container": {
+              "x": 48,
+              "y": 3289.546875,
+              "width": 224,
+              "height": 280,
+              "top": 3289.546875,
+              "right": 272,
+              "bottom": 3569.546875,
+              "left": 48
+            },
+            "rect": {
+              "x": 48,
+              "y": 3360.546875,
+              "width": 236.765625,
+              "height": 68,
+              "top": 3360.546875,
+              "right": 284.765625,
+              "bottom": 3428.546875,
+              "left": 48
+            }
+          }
+        ],
+        "valor": {
+          "x": 48,
+          "y": 309.546875,
+          "width": 224,
+          "height": 280,
+          "top": 309.546875,
+          "right": 272,
+          "bottom": 589.546875,
+          "left": 48
+        },
+        "valorTexto": "R$ 6.840,00 para 1.000 litros",
+        "controle": {
+          "x": 48,
+          "y": -960.515625,
+          "width": 224,
+          "height": 44,
+          "top": -960.515625,
+          "right": 272,
+          "bottom": -916.515625,
+          "left": 48
+        },
+        "texto": "Seu estado\nBrasil (média nacional)\nAcre\nAlagoas\nAmapá\nAmazonas\nBahia\nCeará\nDistrito Federal\nEspírito Santo\nGoiás\nMaranhão\nMato Grosso\nMato Grosso do Sul\nMinas Gerais\nPará\nParaíba\nParaná\nPernambuco\nPiauí\nRio de Janeiro\nRio Grande do Norte\nRio Grande do Sul\nRondônia\nRoraima\nSanta Catarina\nSão Paulo\nSergipe\nTocantins\nLitros\n\nCálculo pela média mensal vezes os litros escolhidos. 40 litros é só um exemplo.\n\nCusto do tanque: Pernambuco, setembro de 2026\n\nFonte: ANP, pesquisa de preços nos postos · setembro de 2026. Custo calculado pela média observada, não uma cotação de posto.\n\nGasolina comum\n\nR$ 6.840,00 para 1.000 litros\n\nR$ 6,84 por litro · média observada\n\nsetembro de 2026 · 766 postos pesquisados\n\nPreço por litro: R$ 0,30 (4,6%) acima da média do Brasil (R$ 6,54 por litro)\n\nEtanol hidratado\n\nR$ 4.930,00 para 1.000 litros\n\nR$ 4,93 por litro · média observada\n\nsetembro de 2026 · 660 postos pesquisados\n\nPreço por litro: R$ 0,85 (20,8%) acima da média do Brasil (R$ 4,08 por litro)\n\nÓleo diesel\n\nR$ 7.420,00 para 1.000 litros\n\nR$ 7,42 por litro · média observada\n\nsetembro de 2026 · 49 postos pesquisados\n\nPreço por litro: R$ 0,72 (10,7%) acima da média do Brasil (R$ 6,70 por litro)\n\nNa planilha, “óleo diesel”; segundo a ANP, hoje o produto é o óleo diesel B S500 comum.\n\nÓleo diesel S10\n\nR$ 7.050,00 para 1.000 litros\n\nR$ 7,05 por litro · média observada\n\nsetembro de 2026 · 644 postos pesquisados\n\nPreço por litro: R$ 0,11 (1,5%) abaixo da média do Brasil (R$ 7,16 por litro)\n\nPernambuco: o litro de etanol custou em média 72,1% do preço do litro de gasolina em setembro de 2026.\n\nFonte: ANP, Levantamento de Preços de Combustíveis: série mensal por estado (recorte GLP, GNV, gasolina, etanol e diesel) (captura 19/10/2026, 20:59 (Brasília)); ANP, Levantamento de Preços de Combustíveis: série mensal Brasil (recorte GLP, GNV, gasolina, etanol e diesel) (captura 19/10/2026, 20:59 (Brasília)). Distância para o Brasil: preço médio da UF menos a média nacional da ANP do mesmo mês, em reais e em percentual.",
+        "grade": null
+      }
+    }
+  ],
+  "erros": []
+}
