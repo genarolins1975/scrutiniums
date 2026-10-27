@@ -28,6 +28,8 @@
  * R$ é dinheiro nominal: campos separados, nunca somados nem divididos entre si.
  */
 import type { Download, Proveniencia } from "./tipos";
+import { NOME_UF } from "@/lib/nomesUf";
+export { NOME_UF } from "@/lib/nomesUf";
 import type {
   CamadaPde,
   ConfiabilidadeFotografia,
@@ -165,19 +167,6 @@ export function codigoUf(sigla: string | null | undefined): string | null {
 export function siglaDoCodigo(codigo: string | null | undefined): string | null {
   return codigo ? (SIGLA_DO_CODIGO[codigo] ?? null) : null;
 }
-/** Nomes próprios das UF (ficam em português nos dois idiomas; a tela os marca com <Nome>). */
-export const NOME_UF: Readonly<Record<string, string>> = {
-  // i18n: dado (nomes próprios)
-  RO: "Rondônia", AC: "Acre", AM: "Amazonas", RR: "Roraima", PA: "Pará", AP: "Amapá", TO: "Tocantins",
-  // i18n: dado (nomes próprios)
-  MA: "Maranhão", PI: "Piauí", CE: "Ceará", RN: "Rio Grande do Norte", PB: "Paraíba", PE: "Pernambuco", AL: "Alagoas", SE: "Sergipe", BA: "Bahia",
-  // i18n: dado (nomes próprios)
-  MG: "Minas Gerais", ES: "Espírito Santo", RJ: "Rio de Janeiro", SP: "São Paulo",
-  // i18n: dado (nomes próprios)
-  PR: "Paraná", SC: "Santa Catarina", RS: "Rio Grande do Sul",
-  // i18n: dado (nomes próprios)
-  MS: "Mato Grosso do Sul", MT: "Mato Grosso", GO: "Goiás", DF: "Distrito Federal",
-};
 export function entidadesUf(): { id: string; rotulo: string; sinonimos: string[] }[] {
   return UFS.map((u) => ({ id: u, rotulo: `${NOME_UF[u]} (${u})`, sinonimos: [u] }));
 }

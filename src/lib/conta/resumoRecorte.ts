@@ -1,4 +1,4 @@
-import { NOME_UF } from "@/lib/energia/expansao";
+import { NOME_UF } from "@/lib/nomesUf";
 import type { Idioma } from "@/lib/idioma";
 
 export type ParteRecorte = { texto: string; nome?: boolean };
@@ -22,7 +22,7 @@ export function resumoRecorte(caminho: string, idioma: Idioma = "pt"): ParteReco
   const formatar = (valor: number) => valor.toLocaleString(idioma === "en" ? "en-GB" : "pt-BR", { maximumFractionDigits: 4 });
   if (rota === "/combustiveis" || rota === "/combustiveis/no-meu-estado") {
     const uf = q.get("uf");
-    if (uf && NOME_UF[uf]) partes.push({ texto: NOME_UF[uf], nome: true });
+    if (uf && Object.hasOwn(NOME_UF, uf)) partes.push({ texto: NOME_UF[uf], nome: true });
     else if (uf === "BR") partes.push({ texto: tx("Brasil", "Brazil") });
     if (q.has("litros")) {
       const litros = numero("litros");
@@ -42,7 +42,7 @@ export function resumoRecorte(caminho: string, idioma: Idioma = "pt"): ParteReco
     }
   } else if (rota === "/setor-eletrico/conta-de-luz") {
     const lugar = q.get("conta_municipio")?.split("|");
-    if (lugar?.length === 2 && NOME_UF[lugar[0]] && lugar[1].length <= 100) partes.push({ texto: `${lugar[1]} (${lugar[0]})`, nome: true });
+    if (lugar?.length === 2 && Object.hasOwn(NOME_UF, lugar[0]) && lugar[1].length <= 100) partes.push({ texto: `${lugar[1]} (${lugar[0]})`, nome: true });
     const kwh = numero("conta_kwh");
     if (kwh !== null && kwh <= 10000) partes.push({ texto: `${formatar(kwh)} kWh` });
   }

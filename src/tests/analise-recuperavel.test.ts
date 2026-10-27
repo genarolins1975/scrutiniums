@@ -28,4 +28,11 @@ describe("Frente 3: recorte reproduzível (pedido do dono, 27/10/2026)", () => {
     expect(resumoRecorte("/combustiveis?litros=" )[0].texto).not.toMatch(/40|zero|NaN/);
     expect(resumoRecorte("/en/setor-eletrico/conta-de-luz?conta_kwh=450")[0].texto).toContain("450 kWh");
   });
+
+  it("um parâmetro desconhecido não é interpretado como propriedade herdada do catálogo de estados", () => {
+    for (const uf of ["__proto__", "constructor", "toString", "ZZ"]) {
+      expect(resumoRecorte(`/combustiveis?uf=${uf}`)).toEqual([]);
+      expect(resumoRecorte(`/setor-eletrico/conta-de-luz?conta_municipio=${uf}%7CRecife`)).toEqual([]);
+    }
+  });
 });
