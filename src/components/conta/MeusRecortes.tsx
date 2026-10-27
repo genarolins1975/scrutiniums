@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Alert } from "@/components/ui/Alert";
+import { CopiarLinkRecorte } from "./CopiarLinkRecorte";
 
 export type RecorteVisivel = { id: string; titulo: string; caminho: string; observatorio: string; criadoEm: string };
 
@@ -20,6 +21,14 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
   const [erro, setErro] = useState("");
   const [ocupado, setOcupado] = useState<string | null>(null);
   const campo = useId();
+  const entrada = useRef<HTMLInputElement>(null);
+  const listaRef = useRef<HTMLDivElement>(null);
+  const botoes = useRef<Record<string, HTMLButtonElement | null>>({});
+  useEffect(() => { if (editando) entrada.current?.focus(); }, [editando]);
+  function encerrarEdicao(id: string) {
+    setEditando(null);
+    requestAnimationFrame(() => botoes.current[id]?.focus());
+  }
 
   async function renomear(id: string) {
     setOcupado(id);
@@ -33,7 +42,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
       const j = (await r.json().catch(() => ({}))) as { recorte?: { titulo: string }; error?: string };
       if (!r.ok || !j.recorte) throw new Error(j.error ?? "Não foi possível renomear. Tente de novo.");
       setLista((l) => l.map((x) => (x.id === id ? { ...x, titulo: j.recorte!.titulo } : x)));
-      setEditando(null);
+      encerrarEdicao(id);
     } catch (e) {
       setErro(e instanceof Error ? e.message : "Não foi possível renomear. Tente de novo.");
     } finally {
@@ -49,6 +58,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
       const r = await fetch(`/api/conta/recortes/${encodeURIComponent(id)}`, { method: "DELETE" });
       if (!r.ok) throw new Error();
       setLista((l) => l.filter((x) => x.id !== id));
+      requestAnimationFrame(() => listaRef.current?.focus());
     } catch {
       setErro("Não foi possível apagar. Tente de novo.");
     } finally {
@@ -57,15 +67,16 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
   }
 
   return (
-    <div className="space-y-5">
+    <div ref={listaRef} tabIndex={-1} aria-label="Meus recortes salvos" className="space-y-5">
       <p className="max-w-prose2 text-sm text-carvao-muted">
         Nos painéis, use <strong className="font-semibold text-carvao">Salvar recorte</strong>, na barra superior, para guardar a
         página com os filtros do endereço. O link de cada recorte pode ser compartilhado: quem não tem conta entra ou se cadastra
         e volta a ele. Até {limite} recortes por conta.
       </p>
+      <p className="max-w-prose2 text-sm text-carvao-muted">Ao reabrir, a consulta usa os dados disponíveis naquele momento. Salvar um recorte não arquiva os valores de uma publicação anterior.</p>
       {erro && <Alert kind="erro">{erro}</Alert>}
       {lista.length === 0 ? (
-        <p className="text-sm text-carvao">Nenhum recorte salvo ainda.</p>
+        <p className="text-sm text-carvao">Nenhum recorte salvo ainda. <Link href="/app" className="underline underline-offset-4">Explore as coleções no Mapa da Conta.</Link></p>
       ) : (
         <ul className="divide-y divide-linha border-y border-linha">
           {lista.map((r) => (
@@ -83,6 +94,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                       Novo título do recorte
                     </label>
                     <input
+                      ref={entrada}
                       id={`${campo}-${r.id}`}
                       value={rascunho}
                       maxLength={120}
@@ -93,7 +105,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                     <button type="submit" className={acao} disabled={ocupado === r.id}>
                       Salvar título
                     </button>
-                    <button type="button" className={acao} onClick={() => setEditando(null)}>
+                    <button type="button" className={acao} onClick={() => encerrarEdicao(r.id)}>
                       Cancelar
                     </button>
                   </form>
@@ -108,8 +120,10 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                 <p className="mt-0.5 break-all font-mono text-xs text-mineral">{r.caminho}</p>
               </div>
               {editando !== r.id && (
-                <div className="flex shrink-0 gap-4">
+                <div className="flex min-w-0 flex-wrap items-start gap-x-4 sm:max-w-xs sm:shrink-0">
+                  <CopiarLinkRecorte caminho={r.caminho} classe={acao} titulo={r.titulo} />
                   <button
+                    ref={(el) => { botoes.current[r.id] = el; }}
                     type="button"
                     className={acao}
                     onClick={() => {

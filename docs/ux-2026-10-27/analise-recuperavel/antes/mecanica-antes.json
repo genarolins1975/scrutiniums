@@ -1,0 +1,141 @@
+{
+  "commit": "3e6ca25b086173dafead7dcff50cfefcb8a7297f",
+  "results": [
+    {
+      "width": 320,
+      "before": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "60"
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Pular para o conteúdoScrutiniumsCombustíveis▾FamíliasRenda e trabalhoDívida e crédito das famíliasPr"
+      },
+      "panel": {
+        "x": 16,
+        "y": 50,
+        "width": 288,
+        "height": 383
+      },
+      "overflow": {
+        "w": 320,
+        "scroll": 320
+      },
+      "tab": {
+        "tag": "BUTTON",
+        "text": "Fechar"
+      },
+      "afterEscape": {
+        "tag": "BUTTON",
+        "text": "Conta: ferramentas e minha conta▾"
+      },
+      "clipboardFailureReported": false,
+      "afterReload": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "40"
+      }
+    },
+    {
+      "width": 390,
+      "before": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "60"
+      },
+      "focus": {
+        "tag": "BODY",
+        "text": "Pular para o conteúdoScrutiniumsCombustíveis▾FamíliasRenda e trabalhoDívida e crédito das famíliasPr"
+      },
+      "panel": {
+        "x": 16,
+        "y": 50,
+        "width": 358,
+        "height": 363.5
+      },
+      "overflow": {
+        "w": 390,
+        "scroll": 390
+      },
+      "tab": {
+        "tag": "BUTTON",
+        "text": "Fechar"
+      },
+      "afterEscape": {
+        "tag": "BUTTON",
+        "text": "Conta: ferramentas e minha conta▾"
+      },
+      "clipboardFailureReported": false,
+      "afterReload": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "40"
+      }
+    },
+    {
+      "width": 768,
+      "before": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "60"
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "text": "Salvar recorte"
+      },
+      "panel": {
+        "x": 257.28125,
+        "y": 193,
+        "width": 480,
+        "height": 344
+      },
+      "overflow": {
+        "w": 768,
+        "scroll": 768
+      },
+      "tab": {
+        "tag": "BUTTON",
+        "text": "Citar"
+      },
+      "afterEscape": {
+        "tag": "BUTTON",
+        "text": "Salvar recorte"
+      },
+      "clipboardFailureReported": false,
+      "afterReload": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "40"
+      }
+    },
+    {
+      "width": 1440,
+      "before": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "60"
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "text": "Salvar recorte"
+      },
+      "panel": {
+        "x": 820,
+        "y": 105,
+        "width": 480,
+        "height": 344
+      },
+      "overflow": {
+        "w": 1440,
+        "scroll": 1440
+      },
+      "tab": {
+        "tag": "BUTTON",
+        "text": "Citar"
+      },
+      "afterEscape": {
+        "tag": "BUTTON",
+        "text": "Salvar recorte"
+      },
+      "clipboardFailureReported": false,
+      "afterReload": {
+        "url": "/combustiveis?uf=PE",
+        "litros": "40"
+      }
+    }
+  ]
+}

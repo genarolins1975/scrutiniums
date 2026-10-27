@@ -1,0 +1,20 @@
+import { describe, expect, it } from "vitest";
+import { campo, escreverEstado, lerEstado, tiposUrl as t } from "@/lib/painel/estadoUrl";
+
+describe("Frente 3: recorte reproduzível (pedido do dono, 27/10/2026)", () => {
+  it("o endereço compartilhado fixa inclusive os padrões que podem mudar na próxima publicação", () => {
+    const original = { ano: campo(t.inteiro(), 2026), entidades: campo(t.lista(t.texto()), ["PE", "SP"]), zero: campo(t.numero(), 0) };
+    const valores = lerEstado(original, "");
+    const busca = escreverEstado(original, valores, "?utm_origem=nota%20econ%C3%B4mica", true);
+    const outraPublicacao = { ano: campo(t.inteiro(), 2027), entidades: campo(t.lista(t.texto()), ["RJ"]), zero: campo(t.numero(), 10) };
+    expect(lerEstado(outraPublicacao, busca)).toEqual(valores);
+    expect(busca).toContain("utm_origem=nota%20econ%C3%B4mica");
+    expect(escreverEstado(original, valores, "")).toBe("");
+  });
+
+  it("compartilhar lista vazia, falso e zero não os transforma em padrões ou ausências", () => {
+    const esquema = { itens: campo(t.lista(t.texto()), ["a"]), corrigido: campo(t.booleano(), true), valor: campo(t.numero(), 20) };
+    const valores = { itens: [], corrigido: false, valor: 0 };
+    expect(lerEstado(esquema, escreverEstado(esquema, valores, "", true))).toEqual(valores);
+  });
+});

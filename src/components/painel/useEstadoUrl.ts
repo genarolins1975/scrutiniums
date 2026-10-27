@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import {
   chavesAlteradas,
   estabilizar,
+  escreverEstado,
   gravarNaUrl,
   lerEstado,
   modoHistorico,
@@ -11,6 +12,7 @@ import {
   type ModoHistorico,
   type ValoresDe,
 } from "@/lib/painel/estadoUrl";
+import { ANALISE_ALTERADA, PREPARAR_ANALISE, proximaRevisaoAnalise, type PreparacaoAnalise } from "@/lib/painel/enderecoAnalise";
 
 /**
  * Estado de consulta sincronizado com a URL (ver src/lib/energia/estadoUrl.ts).
@@ -61,6 +63,7 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
   const esquemaRef = useRef(esquema);
   esquemaRef.current = esquema;
   const pendente = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const revisoes = useRef<Record<string, number>>({});
 
   const aplicar = useCallback((novos: ValoresDe<E>) => {
     valoresRef.current = novos;
@@ -108,13 +111,27 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
       reler();
     };
     const aoGravarOutro = (e: Event) => {
-      if ((e as CustomEvent<{ origem?: string }>).detail?.origem !== origem) reler();
+      // Outra ilha não pode apagar texto que ainda aguarda gravação na URL.
+      if (!pendente.current && (e as CustomEvent<{ origem?: string }>).detail?.origem !== origem) reler();
+    };
+    const aoPreparar = (e: Event) => {
+      const detalhe = (e as CustomEvent<PreparacaoAnalise>).detail;
+      const campos = Object.fromEntries(Object.entries(esquemaRef.current).filter(([chave, campo]) => {
+        const param = campo.param ?? chave;
+        const revisao = revisoes.current[chave] ?? 0;
+        if ((detalhe.prioridades.get(param) ?? -1) > revisao) return false;
+        detalhe.prioridades.set(param, revisao);
+        return true;
+      }));
+      detalhe.busca = escreverEstado<Esquema>(campos, valoresRef.current, detalhe.busca, true);
     };
     window.addEventListener("popstate", aoVoltar);
     window.addEventListener(EVENTO, aoGravarOutro);
+    window.addEventListener(PREPARAR_ANALISE, aoPreparar);
     return () => {
       window.removeEventListener("popstate", aoVoltar);
       window.removeEventListener(EVENTO, aoGravarOutro);
+      window.removeEventListener(PREPARAR_ANALISE, aoPreparar);
       // desmontagem (inclusive por navegação): a gravação pendente é descartada, nunca aplicada à página seguinte
       if (pendente.current) {
         clearTimeout(pendente.current);
@@ -131,11 +148,16 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
       const chaves = chavesAlteradas(esq, atual, parcial);
       if (!chaves.length) return;
       const novos = { ...atual } as ValoresDe<E>;
-      for (const k of chaves) (novos as Record<string, unknown>)[k] = (parcial as Record<string, unknown>)[k];
+      const revisao = proximaRevisaoAnalise();
+      for (const k of chaves) {
+        (novos as Record<string, unknown>)[k] = (parcial as Record<string, unknown>)[k];
+        revisoes.current[k] = revisao;
+      }
       aplicar(novos);
       if (!sincronizar || typeof window === "undefined") return;
+      window.dispatchEvent(new Event(ANALISE_ALTERADA));
       const modo = modoHistorico(esq, chaves, op?.historico);
-      if (modo === "replace") {
+      if (modo === "replace" && atraso > 0) {
         if (pendente.current) clearTimeout(pendente.current);
         pendente.current = setTimeout(() => {
           pendente.current = null;
@@ -150,7 +172,7 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
         pendente.current = null;
         gravar(atual, "replace");
       }
-      gravar(novos, "push");
+      gravar(novos, modo);
     },
     [aplicar, gravar, sincronizar, atraso],
   );
