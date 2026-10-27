@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { CopiarLinkRecorte } from "./CopiarLinkRecorte";
+import { DetalhesRecorte } from "./DetalhesRecorte";
 
 export type RecorteVisivel = { id: string; titulo: string; caminho: string; observatorio: string; criadoEm: string };
 
@@ -117,7 +118,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                 <p className="mt-1 text-xs text-carvao-muted">
                   {r.observatorio} · salvo em {dataBr(r.criadoEm)}
                 </p>
-                <p className="mt-0.5 break-all font-mono text-xs text-mineral">{r.caminho}</p>
+                <DetalhesRecorte caminho={r.caminho} />
               </div>
               {editando !== r.id && (
                 <div className="flex min-w-0 flex-wrap items-start gap-x-4 sm:max-w-xs sm:shrink-0">

@@ -3,7 +3,8 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
-import { ContaBuscaMunicipio, carregarIndiceMunicipios } from "@/components/energia/ContaBuscaMunicipio";
+import { ContaBuscaMunicipio } from "@/components/energia/ContaBuscaMunicipio";
+import { carregarIndiceMunicipios } from "@/lib/energia/indiceMunicipiosCliente";
 import { useMesCorrente } from "@/components/energia/useMesCorrente";
 import { Nome } from "@/components/i18n/Nome";
 import { bandeiraUsada, fonteBandeira, fraseBandeira, situacaoBandeira } from "@/lib/energia/bandeira-do-mes";

@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { Nome } from "@/components/i18n/Nome";
 import { buscarMunicipios, prepararBuscaMunicipios, type IndiceMunicipios, type MunicipioEncontrado } from "@/lib/energia/conta";
 import { useTx } from "@/lib/energia/useIdioma";
+import { carregarIndiceMunicipios } from "@/lib/energia/indiceMunicipiosCliente";
 
 /**
  * Busca da distribuidora pelo município: quem não sabe a sigla da sua distribuidora digita o município e escolhe na lista. O índice
@@ -12,24 +13,6 @@ import { useTx } from "@/lib/energia/useIdioma";
  * todos os municípios. Combobox com lista: setas percorrem, Enter escolhe, Esc fecha; o resultado vai a quem chama (`aoEscolher`), que
  * destaca a distribuidora e diz o que achou.
  */
-
-const URL_INDICE = "/setor-eletrico/conta-de-luz/municipios.json";
-let carga: Promise<IndiceMunicipios> | null = null;
-
-export function carregarIndiceMunicipios(): Promise<IndiceMunicipios> {
-  if (!carga) {
-    carga = fetch(URL_INDICE)
-      .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
-        return r.json() as Promise<IndiceMunicipios>;
-      })
-      .catch((e: unknown) => {
-        carga = null;
-        throw e;
-      });
-  }
-  return carga;
-}
 
 type Situacao = "ocioso" | "carregando" | "pronto" | "erro";
 

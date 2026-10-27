@@ -81,7 +81,7 @@ try {
     if ([390, 1440].includes(largura)) await captura(p, `conta-${largura}-depois`);
     await item.getByRole("button", { name: "Renomear", exact: true }).click();
     await p.waitForFunction(() => document.activeElement?.tagName === "INPUT");
-    await item.getByRole("button", { name: "Cancelar", exact: true }).click();
+    await p.locator("#recortes").getByRole("button", { name: "Cancelar", exact: true }).click();
     await p.waitForFunction(() => document.activeElement?.textContent?.includes("Renomear"));
     const rolagem = await p.evaluate(() => ({ viewport: innerWidth, largura: document.documentElement.scrollWidth }));
     assert.ok(rolagem.largura <= rolagem.viewport, JSON.stringify(rolagem));

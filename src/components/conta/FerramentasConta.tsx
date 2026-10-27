@@ -6,6 +6,7 @@ import { useSessao } from "@/components/acesso/sessao";
 import { prepararEnderecoAnalise } from "@/lib/painel/enderecoAnalise";
 import { useEnderecoAnalise } from "./useEnderecoAnalise";
 import { CopiarLinkRecorte } from "./CopiarLinkRecorte";
+import { DetalhesRecorte } from "./DetalhesRecorte";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { cadenciaDe, textosDominio, type DominioFrescorId } from "@/lib/frescor";
 import {
@@ -273,7 +274,7 @@ function PainelSalvar({ origem }: { origem: string }) {
           className="min-h-[44px] border border-linha bg-papel px-3 py-2 text-base text-carvao focus:border-bronze"
         />
       </div>
-      <p className="break-all font-mono text-xs text-carvao-muted">{caminho}</p>
+      <DetalhesRecorte caminho={caminho} />
       <div className="flex flex-wrap gap-3">
         <button type="submit" className={botao} disabled={estado.tipo === "salvando" || !titulo.trim() || !caminho}>
           {estado.tipo === "salvando" ? tx("Salvando…", "Saving…") : tx("Salvar", "Save")}
@@ -354,6 +355,10 @@ function PainelCitar({ observatorio, dominios }: { observatorio: string; dominio
     }
   }
   const arquivo = `scrutiniums-${slugCitacao(dados.titulo)}`;
+  function baixarReferencia(formato: "bib" | "ris") {
+    const dados = atuais();
+    baixar(`${arquivo}.${formato}`, formato === "bib" ? "application/x-bibtex;charset=utf-8" : "application/x-research-info-systems;charset=utf-8", formato === "bib" ? bibtex(dados) : ris(dados));
+  }
 
   return (
     <div className="mt-3 space-y-4 text-sm">
@@ -393,13 +398,13 @@ function PainelCitar({ observatorio, dominios }: { observatorio: string; dominio
         <button type="button" className={botao} onClick={copiar}>
           {copiado ? tx("Citação copiada", "Citation copied") : tx("Copiar citação", "Copy citation")}
         </button>
-        <button type="button" className={botaoLeve} onClick={() => baixar(`${arquivo}.bib`, "application/x-bibtex;charset=utf-8", bibtex(atuais()))}>
+        <button type="button" className={botaoLeve} onClick={() => baixarReferencia("bib")}>
           {tx("Baixar .bib", "Download .bib")}
         </button>
         <button
           type="button"
           className={botaoLeve}
-          onClick={() => baixar(`${arquivo}.ris`, "application/x-research-info-systems;charset=utf-8", ris(atuais()))}
+          onClick={() => baixarReferencia("ris")}
         >
           {tx("Baixar .ris", "Download .ris")}
         </button>
