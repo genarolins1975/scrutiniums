@@ -43,7 +43,7 @@ export function resumoRecorte(caminho: string, idioma: Idioma = "pt"): ParteReco
   } else if (rota === "/setor-eletrico/conta-de-luz") {
     const lugar = q.get("conta_municipio")?.split("|");
     if (lugar?.length === 2 && Object.hasOwn(NOME_UF, lugar[0]) && lugar[1].length <= 100) partes.push({ texto: `${lugar[1]} (${lugar[0]})`, nome: true });
-    const kwh = numero("conta_kwh");
+    const kwh = numero("skwh");
     if (kwh !== null && kwh <= 10000) partes.push({ texto: `${formatar(kwh)} kWh` });
   }
   return partes;

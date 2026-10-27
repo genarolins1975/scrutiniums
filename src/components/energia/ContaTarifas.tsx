@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ContaBuscaMunicipio } from "@/components/energia/ContaBuscaMunicipio";
+import { useMunicipioDaConta } from "./useMunicipioDaConta";
 import { ContaEscolha, ContaLista, type OpcaoConta } from "@/components/energia/ContaControles";
 import { ContaReferencias } from "@/components/energia/ContaReferencias";
 import { ContaSelecionadas } from "@/components/energia/ContaSelecionadas";
@@ -17,6 +18,7 @@ import { dataBR } from "@/lib/energia/formato";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import {
   CAMPO_DIST,
+  CAMPO_MUNICIPIO_CONTA,
   CAMPO_GRUPO,
   CAMPO_PERFIL,
   CAMPO_UF,
@@ -79,6 +81,7 @@ import type { ResumoTarifas } from "@/lib/energia/tipos-conta";
 
 const ESQUEMA = {
   dist: CAMPO_DIST,
+  lugar: CAMPO_MUNICIPIO_CONTA,
   perfil: CAMPO_PERFIL,
   leitura: campo(tiposUrl.opcao(["perfil", "tarifa"] as const), "perfil", {
     param: "leitura",
@@ -133,7 +136,8 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
   const foraDoDestaque = destaque !== null && !naRanking ? (fora.find((f) => f.id === destaque) ?? null) : null;
   const destaques = useMemo(() => destaquesDoPerfil(vigentes, resumo, perfil, v.dist), [vigentes, resumo, perfil, v.dist]);
   const [aviso, setAviso] = useState<string | null>(null);
-  const [municipio, setMunicipio] = useState<string | null>(null);
+  const { municipio: municipioRecuperado, erro: erroMunicipio, carregando: carregandoMunicipio } = useMunicipioDaConta(v.lugar);
+  const municipio = municipioRecuperado ? textoMunicipioEncontrado(municipioRecuperado, todas, perfil, dataReferencia, idioma) : null;
   const nomes = useMemo(() => new Map([...vigentes.map((x) => [x.cnpj, rotuloDistribuidora(x.sigla, x.cnpj)] as const), ...fora.map((f) => [f.id, f.sigla] as const)]), [vigentes, fora]);
   const anoUcs = useMemo(() => Object.values(info).find((i) => i.anoUcs !== null)?.anoUcs ?? null, [info]);
   const rotulo = (id: string) => nomes.get(id) ?? `CNPJ ${id}`;
@@ -150,18 +154,17 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
             )
           : null,
       );
-      definir({ dist: destacar(v.dist, id) });
+      definir({ dist: destacar(v.dist, id), lugar: "" });
     } else if (destaque) {
       setAviso(null);
-      definir({ dist: remover(v.dist, destaque) });
+      definir({ dist: remover(v.dist, destaque), lugar: "" });
     }
   };
   const escolherMunicipio = (m: MunicipioEncontrado) => {
     const validos = m.vinculos.filter((x) => x.estado !== 0);
     const usados = (validos.length ? validos : m.vinculos).map((x) => x.cnpj).filter((c) => nomes.has(c));
     setAviso(null);
-    setMunicipio(textoMunicipioEncontrado(m, todas, perfil, dataReferencia, idioma));
-    if (usados.length) definir({ dist: usados.slice(0, LIMITE_COMPARACAO) });
+    definir({ dist: usados.slice(0, LIMITE_COMPARACAO), lugar: `${m.uf}|${m.nome}` });
   };
   const resposta = respostaTarifa(dataReferencia, resumo, vigentes, perfil, idioma);
   const chavePerfil = String(perfil) as "100" | "200" | "300";
@@ -251,9 +254,12 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
               )}
             </p>
             <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-              <ContaBuscaMunicipio aoEscolher={escolherMunicipio} />
+              <ContaBuscaMunicipio aoEscolher={escolherMunicipio} valorSelecionado={municipioRecuperado ? `${municipioRecuperado.nome} (${municipioRecuperado.uf})` : ""} />
               <ContaLista rotulo={tx("Distribuidora em destaque", "Highlighted distribution utility")} opcoes={opcoesDistribuidora} opcoesSaoNomes valor={destaque && (naRanking || foraDoDestaque) ? destaque : ""} onEscolher={(id) => selecionar(id || null)} />
             </div>
+            {(erroMunicipio || carregandoMunicipio) && <p role="status" className="text-sm leading-relaxed text-carvao-muted">{erroMunicipio
+              ? tx("Não foi possível recuperar o município deste recorte. Busque novamente ou escolha a distribuidora.", "The municipality in this view could not be restored. Search again or choose the utility.")
+              : tx("Recuperando o município e seus vínculos com distribuidoras…", "Restoring the municipality and its utility links…")}</p>}
             {municipio && (
               <p role="status" className="max-w-prose2 text-sm text-carvao" data-municipio="">
                 {municipio}
@@ -272,12 +278,11 @@ export function ContaTarifas({ vigentes: compactos, resumo, dataReferencia, font
             rotulo={rotulo}
             aoTirar={(id) => {
               setAviso(null);
-              definir({ dist: remover(v.dist, id) });
+              definir({ dist: remover(v.dist, id), lugar: "" });
             }}
             aoLimpar={() => {
               setAviso(null);
-              setMunicipio(null);
-              definir({ dist: [] });
+              definir({ dist: [], lugar: "" });
             }}
             aviso={aviso}
             limite={LIMITE_COMPARACAO}

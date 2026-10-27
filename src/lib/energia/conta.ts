@@ -138,6 +138,8 @@ const leitorCnpj: Leitor<string> = {
  * reajustes, e o voltar do navegador desfaz a escolha.
  */
 export const CAMPO_DIST = campo(tiposUrl.lista(leitorCnpj, { max: LIMITE_COMPARACAO }), [] as string[], { param: "dist" });
+/** 27/10/2026: município explícito do recorte, comum às versões pública e autenticada. */
+export const CAMPO_MUNICIPIO_CONTA = campo(tiposUrl.texto({ max: 120 }), "", { param: "conta_municipio" });
 
 /** Põe a distribuidora em destaque (primeira da lista), sem repetir e sem passar de quatro. */
 export function destacar(lista: readonly string[], id: string): string[] {

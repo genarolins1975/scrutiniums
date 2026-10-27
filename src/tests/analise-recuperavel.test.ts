@@ -26,7 +26,8 @@ describe("Frente 3: recorte reproduzível (pedido do dono, 27/10/2026)", () => {
     expect(resumoRecorte("/combustiveis?uf=PE")).toHaveLength(1);
     expect(resumoRecorte("/rota?segredo=valor&hist.de=x")).toEqual([]);
     expect(resumoRecorte("/combustiveis?litros=" )[0].texto).not.toMatch(/40|zero|NaN/);
-    expect(resumoRecorte("/en/setor-eletrico/conta-de-luz?conta_kwh=450")[0].texto).toContain("450 kWh");
+    // 27/10/2026: a versão pública usa o mesmo parâmetro de consumo do simulador com conta.
+    expect(resumoRecorte("/en/setor-eletrico/conta-de-luz?skwh=450")[0].texto).toContain("450 kWh");
   });
 
   it("um parâmetro desconhecido não é interpretado como propriedade herdada do catálogo de estados", () => {

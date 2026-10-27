@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
 import { ContaBuscaMunicipio } from "@/components/energia/ContaBuscaMunicipio";
-import { carregarIndiceMunicipios } from "@/lib/energia/indiceMunicipiosCliente";
+import { useMunicipioDaConta } from "./useMunicipioDaConta";
 import { useMesCorrente } from "@/components/energia/useMesCorrente";
 import { Nome } from "@/components/i18n/Nome";
 import { bandeiraUsada, fonteBandeira, fraseBandeira, situacaoBandeira } from "@/lib/energia/bandeira-do-mes";
-import { buscarMunicipios, prepararBuscaMunicipios, distribuidorasDoMunicipio, nomeLigacao, rotuloDistribuidora, simular, type MunicipioEncontrado } from "@/lib/energia/conta";
+import { CAMPO_DIST, CAMPO_MUNICIPIO_CONTA, distribuidorasDoMunicipio, nomeLigacao, rotuloDistribuidora, simular, type MunicipioEncontrado } from "@/lib/energia/conta";
 import { formatos } from "@/lib/energia/formato";
 import { bandeiraNoIdioma } from "@/lib/energia/i18n/conta-inclusao";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
@@ -48,29 +48,22 @@ export function ContaLuzNaMinhaCidade({
   const { dataBR, mesAno, num, reais } = formatos(idioma);
   const porCnpj = useMemo(() => new Map(distribuidoras.map((d) => [d[0], d])), [distribuidoras]);
   const esquema = useMemo(() => ({
-    cnpj: campo(tiposUrl.opcao(["", ...distribuidoras.map((d) => d[0])]), "", { param: "conta_dist" }),
-    kwh: campo(tiposUrl.inteiro({ min: 0, max: KWH_MAX }), KWH_INICIAL, { param: "conta_kwh", historico: "replace" }),
-    lugar: campo(tiposUrl.texto({ max: 120 }), "", { param: "conta_municipio" }),
-  }), [distribuidoras]);
-  const [{ cnpj, kwh, lugar }, definir] = useEstadoUrl(esquema);
-  const setCnpj = (valor: string) => definir({ cnpj: valor });
+    dist: CAMPO_DIST,
+    kwh: campo(tiposUrl.inteiro({ min: 0, max: KWH_MAX }), KWH_INICIAL, { param: "skwh", historico: "replace" }),
+    lugar: CAMPO_MUNICIPIO_CONTA,
+    classe: campo(tiposUrl.texto({ max: 40 }), CLASSE, { param: "sclasse" }),
+    ligacao: campo(tiposUrl.texto({ max: 40 }), LIGACAO, { param: "slig" }),
+    bandeira: campo(tiposUrl.texto({ max: 40 }), "vigente", { param: "sband" }),
+  }), []);
+  const [{ dist: selecionadas, kwh, lugar, classe, ligacao, bandeira }, definir] = useEstadoUrl(esquema, { atraso: 0 });
+  // 27/10/2026: um link do simulador completo não pode virar outra estimativa no aperitivo.
+  const exigePainelCompleto = classe !== CLASSE || ligacao !== LIGACAO || bandeira !== "vigente";
+  const cnpj = selecionadas.find((id) => porCnpj.has(id)) ?? "";
+  const setCnpj = (valor: string) => definir({ dist: valor ? [valor] : [] });
   const setKwh = (valor: number) => definir({ kwh: valor });
   const [texto, setTexto] = useState<string | null>(null);
-  const [recuperado, setRecuperado] = useState<{ lugar: string; m: MunicipioEncontrado | null; erro: boolean } | null>(null);
-  const m = recuperado?.lugar === lugar ? recuperado.m : null;
+  const { municipio: m, erro: erroMunicipio } = useMunicipioDaConta(lugar);
   const municipio = m ? { m, vinculos: distribuidorasDoMunicipio(m) } : null;
-  useEffect(() => {
-    if (!lugar) return;
-    let ativo = true;
-    carregarIndiceMunicipios().then((indice) => {
-      // O índice oficial usa nome e UF, sem código IBGE. Ambos precisam coincidir.
-      const [uf, ...partes] = lugar.split("|");
-      const nome = partes.join("|");
-      const encontrado = buscarMunicipios(indice, prepararBuscaMunicipios(indice), nome, indice.m.length).find((m) => m.uf === uf && m.nome === nome) ?? null;
-      if (ativo) setRecuperado({ lugar, m: encontrado, erro: !encontrado });
-    }).catch(() => { if (ativo) setRecuperado({ lugar, m: null, erro: true }); });
-    return () => { ativo = false; };
-  }, [lugar]);
 
   const mesCorrente = useMesCorrente(mesDaPagina);
   const situacao = situacaoBandeira(bandeiraVigente, mesCorrente);
@@ -81,7 +74,7 @@ export function ContaLuzNaMinhaCidade({
 
   const dist = cnpj ? (porCnpj.get(cnpj) ?? null) : null;
   const sigla = dist ? rotuloDistribuidora(dist[1], dist[0]) : "";
-  const r = useMemo(() => (dist ? simular({ residencial: [dist[4], dist[5]] }, CLASSE, kwh, LIGACAO, adicional, regras, idioma) : null), [dist, kwh, adicional, regras, idioma]);
+  const r = useMemo(() => (dist && !exigePainelCompleto ? simular({ residencial: [dist[4], dist[5]] }, CLASSE, kwh, LIGACAO, adicional, regras, idioma) : null), [dist, exigePainelCompleto, kwh, adicional, regras, idioma]);
 
   const kwhValido = (bruto: string) => {
     const n = Number(bruto);
@@ -92,10 +85,9 @@ export function ContaLuzNaMinhaCidade({
   const escolherMunicipio = (m: MunicipioEncontrado) => {
     const vinculos = distribuidorasDoMunicipio(m);
     const lugar = `${m.uf}|${m.nome}`;
-    setRecuperado({ lugar, m, erro: false });
     // uma só distribuidora com tarifa: escolhida direto; mais de uma: o leitor diz qual é a da casa dele
     const comTarifa = vinculos.filter((v) => porCnpj.has(v.cnpj));
-    definir({ lugar, cnpj: vinculos.length === 1 && comTarifa.length === 1 ? comTarifa[0].cnpj : "" });
+    definir({ lugar, dist: vinculos.length === 1 && comTarifa.length === 1 ? [comTarifa[0].cnpj] : [] });
   };
 
   const nomeVinculo = (v: MunicipioEncontrado["vinculos"][number]) => {
@@ -112,7 +104,7 @@ export function ContaLuzNaMinhaCidade({
           <select
             value={cnpj}
             onChange={(e) => {
-              definir({ cnpj: e.target.value, lugar: "" });
+              definir({ dist: e.target.value ? [e.target.value] : [], lugar: "" });
             }}
             className="min-h-[44px] w-full min-w-0 max-w-full border border-linha bg-superficie px-2 text-sm text-carvao"
           >
@@ -155,7 +147,7 @@ export function ContaLuzNaMinhaCidade({
         </div>
       </form>
 
-      {lugar && !municipio && <p role="status" className="text-sm text-carvao-muted">{recuperado?.lugar === lugar && recuperado.erro
+      {lugar && !municipio && <p role="status" className="text-sm text-carvao-muted">{erroMunicipio
         ? tx("Não foi possível recuperar o município deste recorte. Busque novamente ou escolha a distribuidora.", "The municipality in this view could not be restored. Search again or choose the utility.")
         : tx("Recuperando o município e seus vínculos com distribuidoras…", "Restoring the municipality and its utility links…")}</p>}
       {municipio && (
@@ -231,7 +223,12 @@ export function ContaLuzNaMinhaCidade({
             tx("Estimativa mensal", "Monthly estimate")
           )}
         </h2>
-        {!dist ? (
+        {exigePainelCompleto ? (
+          <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao" data-recorte-completo="">
+            {tx("Este recorte usa classe, ligação ou bandeira disponíveis no simulador completo. Entre na conta para recuperar a estimativa com esses parâmetros.", "This view uses a customer class, connection or tariff flag available in the full simulator. Sign in to restore the estimate with those parameters.")}{" "}
+            <a href="#convite-aperitivo-titulo" className="inline-flex min-h-[44px] items-center underline underline-offset-4">{tx("Abrir o painel completo", "Open the full panel")}</a>
+          </p>
+        ) : !dist ? (
           <p className="mt-3 max-w-prose2 font-serif text-xl leading-snug text-carvao-muted">
             {tx("Escolha o município ou a distribuidora para ver a estimativa.", "Choose the municipality or the distribution utility to see the estimate.")}
           </p>
@@ -267,7 +264,7 @@ export function ContaLuzNaMinhaCidade({
           </p>
         )}
 
-        <dl className="mt-5 grid gap-x-8 gap-y-3 text-sm md:grid-cols-3">
+        {!exigePainelCompleto && <dl className="mt-5 grid gap-x-8 gap-y-3 text-sm md:grid-cols-3">
           <div className="min-w-0">
             <dt className="rotulo text-mineral">{tx("Bandeira considerada", "Tariff flag considered")}</dt>
             <dd className="mt-1 leading-relaxed text-carvao" data-bandeira-estado={situacao.estado} data-bandeira-mes={mesCorrente}>
@@ -314,7 +311,7 @@ export function ContaLuzNaMinhaCidade({
               <span className="text-carvao-muted">{fonteBandeira(bandeiraVigente, idioma)}</span>
             </dd>
           </div>
-        </dl>
+        </dl>}
       </section>
 
       <p className="max-w-prose2 border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao" data-ressalva-aperitivo="">

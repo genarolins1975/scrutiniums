@@ -73,6 +73,23 @@ try {
     await p.waitForFunction(() => document.querySelector('.bp-painel p.break-all')?.textContent?.includes('uf=PE'));
     await p.goForward();
     await p.waitForFunction(() => document.querySelector('.bp-painel p.break-all')?.textContent?.includes('uf=SP'));
+    await p.keyboard.press("Escape");
+    if (largura < 640) {
+      await p.locator('.bp-ferramentas-menu .bp-ferramenta').click();
+      await p.getByRole('button', { name: 'Citar esta página', exact: true }).click();
+    } else await p.getByRole('button', { name: 'Citar', exact: true }).click();
+    await p.goBack();
+    await p.waitForFunction(() => new URL(location.href).searchParams.get('uf') === 'PE');
+    for (const formato of ['bib', 'ris']) {
+      const download = p.waitForEvent('download');
+      await p.getByRole('button', { name: `Baixar .${formato}`, exact: true }).click();
+      const arquivo = await download;
+      const conteudo = await readFile(await arquivo.path(), 'utf8');
+      // A referência deve seguir o recorte após o histórico, não o endereço ao abrir o painel.
+      assert.match(conteudo, /uf=PE/);
+      assert.match(conteudo, /litros=60/);
+      assert.doesNotMatch(conteudo, /uf=SP/);
+    }
     await ir(p, "/app/conta#recortes");
     const item = p.locator("#recortes li").filter({ has: p.getByRole("link", { name: titulo, exact: true }) });
     await item.getByRole("link", { name: titulo, exact: true }).waitFor();
@@ -85,7 +102,7 @@ try {
     await p.waitForFunction(() => document.activeElement?.textContent?.includes("Renomear"));
     const rolagem = await p.evaluate(() => ({ viewport: innerWidth, largura: document.documentElement.scrollWidth }));
     assert.ok(rolagem.largura <= rolagem.viewport, JSON.stringify(rolagem));
-    resultados.push({ largura, caminho: corpo.caminho, mesmoResultado: true, recarga: true, historico: true, copiaManual: true, salvoNoBanco: true, foco: true, rolagem });
+    resultados.push({ largura, caminho: corpo.caminho, mesmoResultado: true, recarga: true, historico: true, citacaoBibRis: true, copiaManual: true, salvoNoBanco: true, foco: true, rolagem });
     console.log(JSON.stringify(resultados.at(-1)));
     await ctx.close();
   }

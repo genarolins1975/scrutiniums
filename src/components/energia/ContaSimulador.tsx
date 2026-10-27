@@ -16,6 +16,7 @@ import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import type { Idioma } from "@/lib/idioma";
 import {
   CAMPO_DIST,
+  CAMPO_MUNICIPIO_CONTA,
   CASO_EVIDENCIA_SIMULADOR as CASO_EVIDENCIA,
   REGRAS_DA_CLASSE,
   curvaSimulacao,
@@ -60,6 +61,7 @@ const CLASSES: ClasseSimuladorId[] = ["residencial", "tarifa_social", "desconto_
 
 const ESQUEMA = {
   dist: CAMPO_DIST,
+  lugar: CAMPO_MUNICIPIO_CONTA,
   kwh: campo(tiposUrl.inteiro({ min: 0, max: 10000 }), 150, {
     param: "skwh",
     historico: "replace",
@@ -110,7 +112,8 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
   const [aviso, setAviso] = useState<string | null>(null);
   const porCnpj = useMemo(() => new Map(s.distribuidoras.map((d) => [d.cnpj, d])), [s.distribuidoras]);
   const escolhida = v.dist.find((id) => porCnpj.has(id)) ?? null;
-  const cnpj = escolhida ?? s.referencia.cnpj;
+  // Recorte municipal sem tarifa identificada não pode virar o exemplo de outra distribuidora.
+  const cnpj = escolhida ?? (v.lugar ? "" : s.referencia.cnpj);
   const dist = porCnpj.get(cnpj) ?? null;
   const pedidaFora = v.dist.length > 0 && !escolhida;
 
@@ -157,7 +160,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
           )
         : null,
     );
-    definir({ dist: destacar(v.dist, id) });
+    definir({ dist: destacar(v.dist, id), lugar: "" });
   };
 
   const r = useMemo(
@@ -233,6 +236,7 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
         <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">{tx("Distribuidora", "Distribution utility")}</span>
           <select value={cnpj} onChange={(e) => escolher(e.target.value)} className={CLASSE_SELECT}>
+            {!dist && <option value="" disabled>{tx("Escolha uma distribuidora", "Choose a distribution utility")}</option>}
             {s.distribuidoras.map((d) => (
               // <option> não aceita o <span> de <Nome>: na página inglesa, a própria opção leva a marca de nome próprio
               <option key={d.cnpj} value={d.cnpj} {...(idioma === "en" ? { lang: "pt-BR", translate: "no" as const, "data-i18n-nome": "" } : {})}>
@@ -354,11 +358,11 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
         rotulo={rotuloDist}
         aoTirar={(id) => {
           setAviso(null);
-          definir({ dist: remover(v.dist, id) });
+          definir({ dist: remover(v.dist, id), lugar: "" });
         }}
         aoLimpar={() => {
           setAviso(null);
-          definir({ dist: [] });
+          definir({ dist: [], lugar: "" });
         }}
         aviso={aviso}
         limite={LIMITE_COMPARACAO}
@@ -385,7 +389,10 @@ export function ContaSimulador({ simulador: compacto, evidencia, dataReferencia,
 
       {pedidaFora && (
         <p role="status" className="text-sm text-carvao-muted">
-          {tx(
+          {v.lugar ? tx(
+            `A distribuidora deste recorte não tem tarifa vigente em ${dataBR(dataReferencia)}. Escolha uma distribuidora para calcular a estimativa.`,
+            `The distribution utility in this view has no tariff in force on ${dataBR(dataReferencia)}. Choose a distribution utility to calculate the estimate.`,
+          ) : tx(
             <>
               A distribuidora escolhida no ranking não tem tarifa vigente em {dataBR(dataReferencia)}; a simulação usa a de referência (
               {rotuloDistribuidora(s.referencia.sigla, s.referencia.cnpj)}).
