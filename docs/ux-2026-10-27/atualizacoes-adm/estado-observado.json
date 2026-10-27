@@ -1,0 +1,352 @@
+{
+  "versao": 1,
+  "geradoEm": "2026-10-27T09:15:27.944787+00:00",
+  "repositorio": "genarolins1975/scrutiniums",
+  "execucoes": [
+    {
+      "workflow": "atualizar-dados.yml",
+      "id": 40352170398,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-26T15:43:46Z",
+      "atualizadaEm": "2026-10-26T18:06:41Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40352170398/attempts/1"
+    },
+    {
+      "workflow": "atualizar-lucro-banco.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-energia.yml",
+      "id": 40438017286,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-27T02:22:10Z",
+      "atualizadaEm": "2026-10-27T04:12:01Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40438017286/attempts/1"
+    },
+    {
+      "workflow": "previsao-pld.yml",
+      "id": 40364164513,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "success",
+      "iniciadaEm": "2026-10-26T16:58:05Z",
+      "atualizadaEm": "2026-10-26T16:59:26Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40364164513/attempts/1"
+    },
+    {
+      "workflow": "atualizar-gas.yml",
+      "id": 39142581866,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-18T15:54:22Z",
+      "atualizadaEm": "2026-10-18T16:00:55Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/39142581866/attempts/1"
+    },
+    {
+      "workflow": "atualizar-saneamento.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-saneamento-divida.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-saneamento-contratos.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-agro.yml",
+      "id": 40104493289,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-24T14:53:17Z",
+      "atualizadaEm": "2026-10-24T15:11:08Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40104493289/attempts/1"
+    },
+    {
+      "workflow": "atualizar-territorio.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-inflacao.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-previdencia.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-educacao.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-contas-publicas.yml",
+      "id": 39445278845,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "success",
+      "iniciadaEm": "2026-10-20T15:05:55Z",
+      "atualizadaEm": "2026-10-20T15:23:10Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/39445278845/attempts/1"
+    },
+    {
+      "workflow": "atualizar-contas-estaduais.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-eficiencia.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    },
+    {
+      "workflow": "atualizar-seguranca.yml",
+      "id": 39645325674,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "success",
+      "iniciadaEm": "2026-10-21T17:36:40Z",
+      "atualizadaEm": "2026-10-21T17:54:41Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/39645325674/attempts/1"
+    },
+    {
+      "workflow": "atualizar-conectividade.yml",
+      "id": 40380445645,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-26T18:44:39Z",
+      "atualizadaEm": "2026-10-26T18:48:10Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40380445645/attempts/1"
+    },
+    {
+      "workflow": "vigilancia.yml",
+      "id": 40422925803,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "success",
+      "iniciadaEm": "2026-10-26T23:54:39Z",
+      "atualizadaEm": "2026-10-26T23:55:48Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40422925803/attempts/1"
+    },
+    {
+      "workflow": "resumo-email.yml",
+      "id": 40428811655,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-27T00:49:23Z",
+      "atualizadaEm": "2026-10-27T00:49:32Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40428811655/attempts/1"
+    },
+    {
+      "workflow": "alertas-atualizacao.yml",
+      "id": 40370398015,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-26T17:37:44Z",
+      "atualizadaEm": "2026-10-26T17:37:51Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/40370398015/attempts/1"
+    },
+    {
+      "workflow": "boletim-mensal.yml",
+      "id": 36905540128,
+      "tentativa": 1,
+      "status": "completed",
+      "conclusao": "failure",
+      "iniciadaEm": "2026-10-01T18:15:58Z",
+      "atualizadaEm": "2026-10-01T18:16:05Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/actions/runs/36905540128/attempts/1"
+    },
+    {
+      "workflow": "zenodo-mensal.yml",
+      "id": null,
+      "tentativa": null,
+      "status": "ausente",
+      "conclusao": null,
+      "iniciadaEm": null,
+      "atualizadaEm": null,
+      "url": null
+    }
+  ],
+  "pendencias": [
+    {
+      "id": "issue-395",
+      "titulo": "Vigília quebrada: cheque dominios falhou (código 1)",
+      "desde": "2026-10-26T23:35:59Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/395",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-394",
+      "titulo": "Atualização agendada da Conectividade: publicação retida ou coleta com falha",
+      "desde": "2026-10-26T18:47:46Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/394",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-393",
+      "titulo": "Vigília: fonte do saneamento mudou desde a coleta",
+      "desde": "2026-10-26T16:19:52Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/393",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-386",
+      "titulo": "Pipeline diário interrompido — dados do Observatório podem estar defasados",
+      "desde": "2026-10-25T14:49:32Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/386",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-312",
+      "titulo": "Vigília de frescor: Crédito",
+      "desde": "2026-10-20T22:56:16Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/312",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-304",
+      "titulo": "Contas Públicas Federais: edição nova do RTN aguardando integração",
+      "desde": "2026-10-20T15:23:03Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/304",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-297",
+      "titulo": "Setor Elétrico: testes reprovaram a gold do dia; publicação retida",
+      "desde": "2026-10-20T03:16:29Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/297",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-295",
+      "titulo": "Vigília de frescor: Setor Elétrico",
+      "desde": "2026-10-19T23:19:32Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/295",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-291",
+      "titulo": "Testes de conteúdo reprovaram a gold do dia: publicação retida",
+      "desde": "2026-10-19T18:18:14Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/291",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-116",
+      "titulo": "Setor Elétrico: gold regrediu, publicação anterior mantida",
+      "desde": "2026-10-03T04:10:07Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/116",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-114",
+      "titulo": "Setor Elétrico: histórico de vintages não restaurado",
+      "desde": "2026-09-29T02:42:18Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/114",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-112",
+      "titulo": "Vigília: gold publicado está defasado",
+      "desde": "2026-09-26T15:33:41Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/112",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-89",
+      "titulo": "Vigília: fonte essencial em pane ou data-base parada",
+      "desde": "2026-09-06T14:24:05Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/89",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-27",
+      "titulo": "Gold regrediu para stub de erro — painel mantido com a última publicação",
+      "desde": "2026-08-10T10:46:35Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/27",
+      "tipo": "issue"
+    },
+    {
+      "id": "issue-26",
+      "titulo": "Vigília quebrada: cheque fontes falhou (código 1)",
+      "desde": "2026-08-10T10:42:20Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/issues/26",
+      "tipo": "issue"
+    },
+    {
+      "id": "pr-379",
+      "titulo": "Conferir a correção do SIGA e dos retratos",
+      "desde": "2026-10-24T10:48:44Z",
+      "url": "https://github.com/genarolins1975/scrutiniums/pull/379",
+      "tipo": "pr"
+    }
+  ],
+  "erros": []
+}

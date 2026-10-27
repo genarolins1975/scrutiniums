@@ -1,0 +1,42 @@
+{
+ "data": "2026-10-27",
+ "conta": "adm",
+ "build": "mXMizLsighsc8Sf0SmbFi",
+ "maquina": "5 vCPU, 33 GB",
+ "comando": "npm run evidencias -- --rotas /app/admin/atualizacoes --conta adm --modos com --larguras 390,1440 --estado-operacoes /workspace/adm-estados/inexistente.json --saida /workspace/adm-consolidado/estados/indisponivel",
+ "tempo": "0 min 19 s",
+ "resultados": [
+  {
+   "rota": "/app/admin/atualizacoes",
+   "modo": "com",
+   "largura": 390,
+   "status": 200,
+   "final": "/app/admin/atualizacoes",
+   "barra": true,
+   "cromo": 102,
+   "topoH1": 174,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "app_admin_atualizacoes-390-com-sessao.jpg",
+   "primeiraTela": "app_admin_atualizacoes-390-com-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/app/admin/atualizacoes",
+   "modo": "com",
+   "largura": 1440,
+   "status": 200,
+   "final": "/app/admin/atualizacoes",
+   "barra": true,
+   "cromo": 151,
+   "topoH1": 239,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "app_admin_atualizacoes-1440-com-sessao.jpg",
+   "primeiraTela": "app_admin_atualizacoes-1440-com-sessao-primeira-tela.jpg"
+  }
+ ]
+}
