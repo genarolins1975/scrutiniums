@@ -22,7 +22,11 @@ function Busca({nome='Busca'}) { const [v,set] = useEstadoUrl(busca,{atraso:2000
 function Periodo() { const [v,set] = useEstadoUrl(periodo); return <label>Ano<select aria-label="Ano" value={v.ano} onChange={e=>set({ano:Number(e.target.value)})}><option>2025</option><option>2026</option></select></label>; }
 function Tanque() {const [n,set]=useLitrosTanque();return <label>Litros<input type="number" value={Number.isFinite(n)?n:''} onChange={e=>set(e.target.value===''?NaN:Number(e.target.value))}/></label>;}
 function Resultado() {const [n]=useLitrosTanque();return <output aria-label="Custo">{Number.isFinite(n)&&n>0&&n<=1000?(6*n).toFixed(2):'Sem cálculo'}</output>;}
-function App() {const [link,set]=useState('');return <><Busca/><Busca nome="Busca secundária"/><Periodo/><Tanque/><Resultado/><button onClick={()=>set(prepararEnderecoAnalise())}>Capturar</button><output aria-label="Recorte">{link}</output><CopiarLinkRecorte classe="" caminho={prepararEnderecoAnalise}/><section aria-label="Ideb nacional"><LaboratorioIdeb chaveUrl="ideb_br" n={6} p={.9} ideb={5.4} rede="Brasil" ano={2023}/></section><section aria-label="Ideb municipal"><LaboratorioIdeb chaveUrl="ideb_mun" n={5} p={.8} ideb={4} rede="município" ano={2023}/></section></>;}
+const sim = { kwh: campo(t.numero(),150,{param:'consumo',historico:'replace'}), dist: campo(t.texto(),'a'), lugar: campo(t.texto(),'cidade a') };
+const outra = { volume: campo(t.numero(),150,{param:'consumo',historico:'replace'}), empresa: campo(t.texto(),'a',{param:'dist'}), municipio: campo(t.texto(),'cidade a',{param:'lugar'}) };
+function Simulacao() {const [v,set]=useEstadoUrl(sim,{atraso:2000});return <><label>Consumo pendente<input type="number" value={v.kwh} onChange={e=>set({kwh:Number(e.target.value)})}/></label><output aria-label="Simulação">{JSON.stringify(v)}</output></>;}
+function OutraIlha() {const [v,set]=useEstadoUrl(outra,{atraso:100});return <><label>Consumo espelhado<input type="number" value={v.volume} onChange={e=>set({volume:Number(e.target.value)})}/></label><button onClick={()=>set({empresa:'b',municipio:'cidade b'})}>Trocar distribuidora</button><output aria-label="Outra ilha">{JSON.stringify(v)}</output></>;}
+function App() {const [link,set]=useState('');return <><Busca/><Busca nome="Busca secundária"/><Periodo/><Tanque/><Resultado/><Simulacao/><OutraIlha/><button onClick={()=>set(prepararEnderecoAnalise())}>Capturar</button><output aria-label="Recorte">{link}</output><CopiarLinkRecorte classe="" caminho={prepararEnderecoAnalise}/><section aria-label="Ideb nacional"><LaboratorioIdeb chaveUrl="ideb_br" n={6} p={.9} ideb={5.4} rede="Brasil" ano={2023}/></section><section aria-label="Ideb municipal"><LaboratorioIdeb chaveUrl="ideb_mun" n={5} p={.8} ideb={4} rede="município" ano={2023}/></section></>;}
 createRoot(document.getElementById('app')).render(<App/>);
 `;
 
@@ -110,6 +114,57 @@ describe("Recuperar análise: estado, histórico e cópia no navegador", () => {
     await litros.fill(""); await page.reload();
     await expect.poll(() => litros.inputValue()).toBe("");
     expect(await page.getByLabel("Custo", { exact: true }).textContent()).toBe("Sem cálculo");
+  }), 30_000);
+
+  it("consumo pendente absorve distribuidora e município de outra ilha sem desfazer a seleção", async () => comPagina(async (page) => {
+    // 27/10/2026, revisão do PR #398: campos compartilhados fora da edição também precisam sincronizar.
+    await page.getByLabel("Consumo pendente", { exact: true }).fill("600");
+    await page.getByRole("button", { name: "Trocar distribuidora", exact: true }).click();
+    await expect.poll(async () => JSON.parse((await page.getByLabel("Simulação", { exact: true }).textContent())!)).toEqual({ kwh: 600, dist: "b", lugar: "cidade b" });
+    await page.getByRole("button", { name: "Capturar", exact: true }).click();
+    const capturado = new URL((await page.getByLabel("Recorte", { exact: true }).textContent())!, origem);
+    expect(capturado.searchParams.get("consumo")).toBe("600");
+    expect(capturado.searchParams.get("dist")).toBe("b");
+    expect(capturado.searchParams.get("lugar")).toBe("cidade b");
+    await expect.poll(() => new URL(page.url()).searchParams.get("consumo"), { timeout: 4000 }).toBe("600");
+    expect(new URL(page.url()).searchParams.get("dist")).toBe("b");
+    await page.reload();
+    await expect.poll(async () => JSON.parse((await page.getByLabel("Simulação", { exact: true }).textContent())!)).toEqual({ kwh: 600, dist: "b", lugar: "cidade b" });
+  }), 30_000);
+
+  it("a edição mais recente do mesmo parâmetro vence mesmo quando seu timer termina primeiro", async () => comPagina(async (page) => {
+    await page.getByLabel("Consumo pendente", { exact: true }).fill("600");
+    await page.getByLabel("Consumo espelhado", { exact: true }).fill("750");
+    await expect.poll(() => page.getByLabel("Consumo pendente", { exact: true }).inputValue()).toBe("750");
+    // Ultrapassar o timer antigo é essencial: ele não pode restaurar 600 depois da atualização mais recente.
+    await page.waitForTimeout(2200);
+    expect(new URL(page.url()).searchParams.get("consumo")).toBe("750");
+    expect(await page.getByLabel("Consumo espelhado", { exact: true }).inputValue()).toBe("750");
+    await page.getByRole("button", { name: "Capturar", exact: true }).click();
+    expect(new URL((await page.getByLabel("Recorte", { exact: true }).textContent())!, origem).searchParams.get("consumo")).toBe("750");
+  }), 30_000);
+
+  it("voltar ao padrão em outra ilha cancela a edição antiga mesmo sem mudar a URL", async () => comPagina(async (page) => {
+    await page.getByLabel("Consumo pendente", { exact: true }).fill("600");
+    const espelhado = page.getByLabel("Consumo espelhado", { exact: true });
+    await espelhado.fill("700");
+    await espelhado.fill("150");
+    await expect.poll(() => page.getByLabel("Consumo pendente", { exact: true }).inputValue()).toBe("150");
+    await page.waitForTimeout(2200);
+    expect(new URL(page.url()).searchParams.has("consumo")).toBe(false);
+    await page.getByRole("button", { name: "Capturar", exact: true }).click();
+    expect(new URL((await page.getByLabel("Recorte", { exact: true }).textContent())!, origem).searchParams.get("consumo")).toBe("150");
+  }), 30_000);
+
+  it("voltar descarta o consumo pendente e restaura também os campos compartilhados", async () => comPagina(async (page) => {
+    await page.getByLabel("Consumo pendente", { exact: true }).fill("600");
+    await page.getByRole("button", { name: "Trocar distribuidora", exact: true }).click();
+    await page.goBack();
+    await expect.poll(async () => JSON.parse((await page.getByLabel("Simulação", { exact: true }).textContent())!)).toEqual({ kwh: 150, dist: "a", lugar: "cidade a" });
+    await page.waitForTimeout(2200);
+    expect(new URL(page.url()).searchParams.has("consumo")).toBe(false);
+    await page.goForward();
+    await expect.poll(async () => JSON.parse((await page.getByLabel("Simulação", { exact: true }).textContent())!)).toEqual({ kwh: 150, dist: "b", lugar: "cidade b" });
   }), 30_000);
 
   it("clipboard recusado oferece endereço atual selecionável e mantém o teclado", async () => comPagina(async (page) => {

@@ -1,0 +1,52 @@
+[MIXED_EXPORTS] Entry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums-analise-recuperavel
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/analise-recuperavel-browser.test.ts (6 tests | 2 failed) 6761ms
+     × consumo pendente absorve distribuidora e município de outra ilha sem desfazer a seleção 1529ms
+     × a edição mais recente do mesmo parâmetro vence mesmo quando seu timer termina primeiro 1511ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/analise-recuperavel-browser.test.ts > Recuperar análise: estado, histórico e cópia no navegador > consumo pendente absorve distribuidora e município de outra ilha sem desfazer a seleção
+Error: AssertionError: expected { kwh: 600, dist: 'a', …(1) } to deeply equal { kwh: 600, dist: 'b', …(1) }
+Erros do navegador:
+ ❯ comPagina src/tests/analise-recuperavel-browser.test.ts:77:28
+     75|       await verificar(page);
+     76|       expect(erros).toEqual([]);
+     77|     } catch (erro) { throw new Error(`${String(erro)}\nErros do navega…
+       |                            ^
+     78|     finally { await contexto.close(); }
+     79|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/tests/analise-recuperavel-browser.test.ts > Recuperar análise: estado, histórico e cópia no navegador > a edição mais recente do mesmo parâmetro vence mesmo quando seu timer termina primeiro
+Error: AssertionError: expected '600' to be '750' // Object.is equality
+Erros do navegador:
+ ❯ comPagina src/tests/analise-recuperavel-browser.test.ts:77:28
+     75|       await verificar(page);
+     76|       expect(erros).toEqual([]);
+     77|     } catch (erro) { throw new Error(`${String(erro)}\nErros do navega…
+       |                            ^
+     78|     finally { await contexto.close(); }
+     79|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  16:56:58
+   Duration  9.76s (transform 21ms, setup 0ms, import 500ms, tests 6.76s, environment 0ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

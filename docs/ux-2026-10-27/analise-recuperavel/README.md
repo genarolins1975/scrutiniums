@@ -53,7 +53,9 @@ O roteiro de integração usa `next start`, API e persistência reais em PGlite 
 
 ## Evidências e revisão
 
-Fonte final: [54e2bfd00](https://github.com/genarolins1975/scrutiniums/commit/54e2bfd00ff64c567529917b80fec1a9bf418568). A suíte completa passou em [32db0c3d2](https://github.com/genarolins1975/scrutiniums/commit/32db0c3d24e17e207ce913555dfabd9a57de31b9); os únicos ajustes posteriores do produto adicionam entrelinha proporcional a quatro textos de Meus recortes e trocam o token de hover das ações/links da lista por bronze escuro. Esse acabamento foi submetido novamente à verificação rápida, build e navegador, incluindo axe após clicar em Copiar link. Build final: `X--ElloZSDGMxGxEB4ivY`.
+Fonte das capturas de layout: [54e2bfd00](https://github.com/genarolins1975/scrutiniums/commit/54e2bfd00ff64c567529917b80fec1a9bf418568). A suíte completa passou em [32db0c3d2](https://github.com/genarolins1975/scrutiniums/commit/32db0c3d24e17e207ce913555dfabd9a57de31b9); até 54e2bfd00, os ajustes posteriores do produto adicionaram entrelinha proporcional a quatro textos de Meus recortes e trocaram o token de hover das ações/links da lista por bronze escuro. Esse acabamento foi submetido novamente à verificação rápida, build e navegador, incluindo axe após clicar em Copiar link. Build dessas capturas: `X--ElloZSDGMxGxEB4ivY`.
+
+A revisão do PR encontrou depois uma condição de corrida entre controles com parâmetros compartilhados. A correção e sua reprodução antes/depois estão em [Revisão de concorrência](REVISAO_CONCORRENCIA.md). Ela altera sincronização de estado, sem alterar layout; as capturas acima continuam identificadas pelo commit em que foram obtidas, não são apresentadas como capturas do código posterior.
 
 - `verificar:rapido`: aprovado em 32db0c3d2, 4.358 testes em 132 arquivos; 7 skips e 1 todo preexistentes. Lint, tipos e cobertura bilíngue aprovados. Repetição após entrelinha: aprovada, com os mesmos totais; ver log em `logs/verificar-rapido-bff6a318a.log`. Repetição após contraste em hover: aprovada, 4.358 testes em 132 arquivos, com os mesmos skips/todo preexistentes; lint, tipos e cobertura bilíngue aprovados.
 - `verificar:pr`: aprovado em 32db0c3d2: 9.704 testes da interface, 417 arquivos; 12 skips e 1 todo preexistentes. Todas as etapas passaram, incluindo 1.218 páginas geradas, 68 telas e 224 checks do Judiciário, e árvore versionada inalterada durante a execução. Tempo de parede: 25 min 19 s.
@@ -101,4 +103,4 @@ Recuperar os valores exatos de uma publicação antiga requer definir armazename
 
 ## Estado da entrega
 
-PR preparado para revisão; publicação desta frente depende de autorização. As duas frentes anteriores já foram publicadas e não fazem parte das alterações deste PR.
+O dono autorizou o merge em 27/10/2026. O [PR #398](https://github.com/genarolins1975/scrutiniums/pull/398) registra os checks do commit submetido e o resultado da publicação; este documento não substitui a confirmação do deploy de produção. As duas frentes anteriores já foram publicadas e não fazem parte das alterações deste PR.
