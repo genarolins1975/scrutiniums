@@ -429,12 +429,22 @@ jobs:
           # porque o executável do Chromium não existia. Mesma instalação do CI.
           npx --no-install playwright install --with-deps chromium || exit 1
           node scripts/minify-obs.mjs || exit 1
-          npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
-          V=$?
+          # 27/10/2026: HTML precisa corresponder à gold candidata. Falha de
+          # build retém a publicação e não impede o diagnóstico da suíte Python.
+          export NODE_OPTIONS=--max-old-space-size=4096
+          export EXIGIR_BUILD_HTML=1
+          npm run build > build-testes.log 2>&1
+          B=$?
+          cat build-testes.log
+          V=1
+          if [ "$B" = "0" ]; then
+            npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
+            V=$?
+          fi
           python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
           P=${PIPESTATUS[0]}
-          echo "vitest=$V pipeline=$P" | tee testes-codigos.txt
-          [ "$V$P" = "00" ]
+          echo "vitest=$V pipeline=$P build=$B" | tee testes-codigos.txt
+          [ "$B$V$P" = "000" ]
 
       # De 01/10 a 18/10/2026 a gold de energia ficou retida todos os dias sem que
       # ninguém soubesse: este passo só emitia ::error e a execução terminava verde,
@@ -451,7 +461,7 @@ jobs:
           # 23/10/2026 o diagnóstico das retenções de 20 a 22/10 precisou reconstruir a gold da cópia durável (3,3 GB).
           mkdir -p "$RUNNER_TEMP/energia-retida"
           tar -czf "$RUNNER_TEMP/energia-retida/gold-retida.tar.gz" public/energia || echo "::warning::gold retida não foi empacotada para o artefato"
-          cp vitest-resultado.json pipeline-testes.log testes-codigos.txt energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
+          cp vitest-resultado.json pipeline-testes.log testes-codigos.txt build-testes.log energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
           git checkout -- public/energia
           git clean -fdq public/energia
           echo "retida=1" >> "$GITHUB_OUTPUT"

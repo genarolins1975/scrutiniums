@@ -1,0 +1,129 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1299 KB → core 564 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1607 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 36 arquivo(s) alterado(s).
+  teste  src/tests/operacoes-adm.test.ts  (teste alterado)
+  teste  src/tests/operacoes-api.test.ts  (teste alterado)
+  teste  src/tests/operacoes-tarefas.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/tests/operacoes-adm.test.ts)
+  teste  src/tests/atualizacao-agendada.test.ts  (cita .github/workflows/atualizar-energia.yml)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita .github/workflows/atualizar-energia.yml)
+  teste  src/tests/conectividade.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/contas-publicas-areas.test.ts  (cita src/lib/uso/rotas-do-app.json)
+  teste  src/tests/design-tokens.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-aprenda-instituicoes.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-aprenda.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-avaliacao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-conta.test.ts  (cita pipeline/tests/test_operacoes_adm.py)
+  teste  src/tests/energia-dados-interface.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-empresas.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-expansao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-geracao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-inclusao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/admin/Graficos.tsx)
+  teste  src/tests/energia-mercado-pagina.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-percurso-visual.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-perdas.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/energia-transicao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-catalogo-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/db.ts)
+  teste  src/tests/i18n-rotas-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-terminologia-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/obee-judiciario.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/obee-mapa-servicos.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/p1-tecnico.test.ts  (cita pipeline/tests/test_operacoes_adm.py)
+  teste  src/tests/painel-molde.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/admin/Graficos.tsx)
+  teste  src/tests/uso-busca.test.ts  (cita src/app/app/(foco)/admin/page.tsx)
+  teste  src/tests/uso-paginas.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/operacoes-adm.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/app/api/admin/tarefas/route.ts)
+  fonte  config/operacoes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-27/atualizacoes-adm/estado-observado.json  (código alterado; testes que o importam)
+  fonte  next.config.mjs  (código alterado; testes que o importam)
+  fonte  scripts/evidencias-adm.mjs  (código alterado; testes que o importam)
+  fonte  scripts/evidencias.mjs  (código alterado; testes que o importam)
+  fonte  scripts/servidor-local.mjs  (código alterado; testes que o importam)
+  fonte  src/app/api/admin/tarefas/route.ts  (código alterado; testes que o importam)
+  fonte  src/app/app/(foco)/admin/atualizacoes/page.tsx  (código alterado; testes que o importam)
+  fonte  src/app/app/(foco)/admin/page.tsx  (código alterado; testes que o importam)
+  fonte  src/components/admin/Graficos.tsx  (código alterado; testes que o importam)
+  fonte  src/components/admin/QuadroAtualizacoes.tsx  (código alterado; testes que o importam)
+  fonte  src/components/admin/TarefasOperacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/admin/UsoBusca.tsx  (código alterado; testes que o importam)
+  fonte  src/components/admin/UsoPaginas.tsx  (código alterado; testes que o importam)
+  fonte  src/lib/db.ts  (código alterado; testes que o importam)
+  fonte  src/lib/operacoes/estado.ts  (código alterado; testes que o importam)
+  fonte  src/lib/operacoes/modelo.ts  (código alterado; testes que o importam)
+  fonte  src/lib/operacoes/quadro.ts  (código alterado; testes que o importam)
+  fonte  src/lib/operacoes/tarefas.ts  (código alterado; testes que o importam)
+  fonte  src/lib/schema.ts  (código alterado; testes que o importam)
+  fonte  src/lib/uso/rotas-do-app.json  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/app/api/admin/tarefas/route.ts; testes que o importam)
+[MIXED_EXPORTS] Entry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums-atualizacoes-adm
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+
+ Test Files  108 passed (108)
+      Tests  2621 passed | 6 skipped (2627)
+   Start at  09:46:12
+   Duration  594.18s (transform 2.31s, setup 0ms, import 51.37s, tests 1708.30s, environment 11ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-27)
+  ok            2 s  Lint
+  ok            8 s  Tipos
+  ok            6 s  Derivados (npm run preparar)
+  ok            3 s  Cobertura bilíngue confere com as fontes de código
+  ok     10 min 08 s  Testes afetados
+  tempo de parede: 10 min 19 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

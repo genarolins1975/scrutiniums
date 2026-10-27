@@ -1,0 +1,24 @@
+Criar tarefa por toque/mouse, persistir nota, responsável e prazo, atualizar página e recuperar os campos.
+Concluir, reencontrar no filtro de concluídas e reabrir; foco retorna ao filtro quando a linha sai do recorte.
+Erro de gravação anuncia falha, mantém texto e permite nova tentativa.
+Tab e Shift+Tab retornam ao detalhe com foco visível; Enter e Espaço abrem e fecham detalhes.
+Formulário e fila a 320, 390, 768 e 1440 px: sem rolagem horizontal e sem violações axe nas tags WCAG A/AA.
+Ampliação de texto de 200% a 720 px, equivalente ao espaço CSS de desktop 1440 com zoom 200%: sem rolagem horizontal. Não substitui teste de zoom nativo em todos os navegadores.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.reload: Timeout 30000ms exceeded.
+Call log:
+  - waiting for navigation until "networkidle"
+    - navigated to "http://localhost:46693/app/admin/atualizacoes?situacao=atencao"
+
+    at /workspace/scrutiniums-atualizacoes-adm/scripts/evidencias-adm.mjs:93:106 {
+  log: [
+    '  - waiting for navigation until "networkidle"',
+    '    - navigated to "http://localhost:46693/app/admin/atualizacoes?situacao=atencao"'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

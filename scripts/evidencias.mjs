@@ -2,10 +2,11 @@
  * Pacote de evidências de página para o PR, com um comando, sobre o build existente.
  *
  *   npm run evidencias -- --rotas /setor-eletrico/conta-de-luz /saneamento/municipio --saida docs/ux-AAAA-MM-DD/minha-mudanca
- *   opções: --larguras 390,768,1440 (padrão)   --modos sem,com (padrão: os dois)
- *           --conta nova|volta (padrão: nova). "volta" é a conta que já usou a plataforma: um recorte salvo, um aviso de
+ *   opções: --larguras 320,390,768,1440 (padrão: 390,768,1440)   --modos sem,com (padrão: os dois)
+ *           --conta nova|volta|adm (padrão: nova). "volta" é a conta que já usou a plataforma: um recorte salvo, um aviso de
  *           atualização e o último acesso no Setor Elétrico (cookie do middleware), para o mapa da conta com a fatia "retomar".
  *
+ * --conta adm usa só o administrador sintético; --estado-operacoes <json> injeta a consulta na auditoria local.
  * Para cada rota, sem sessão e com sessão, em cada largura: captura da página inteira, medida de
  * cromo (scripts/ux-cromo-medida.mjs, o mesmo contrato de src/tests/ux-orcamentos-cromo.test.ts),
  * auditoria axe WCAG 2.1 A e AA (axe-core de node_modules), erros de console e requisições que
@@ -28,9 +29,10 @@ import { subirServidorLocal } from "./servidor-local.mjs";
 
 const RAIZ = fileURLToPath(new URL("../", import.meta.url));
 const require = createRequire(import.meta.url);
-const ALTURAS = { 390: 844, 768: 1024, 1440: 900 };
+const ALTURAS = { 320: 800, 390: 844, 768: 1024, 1440: 900 };
 
 export function lerArgumentos(argv) {
+  /** @type {{ rotas: string[], saida: string | null, larguras: number[], modos: string[], conta?: string, estadoOperacoes?: string }} */
   const opcoes = { rotas: [], saida: null, larguras: [390, 768, 1440], modos: ["sem", "com"] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -39,13 +41,14 @@ export function lerArgumentos(argv) {
     else if (a === "--larguras") opcoes.larguras = argv[++i].split(",").map(Number);
     else if (a === "--modos") opcoes.modos = argv[++i].split(",");
     else if (a === "--conta") opcoes.conta = argv[++i];
+    else if (a === "--estado-operacoes") opcoes.estadoOperacoes = resolve(argv[++i]);
     else throw new Error(`Opção desconhecida: ${a}`);
   }
   if (!opcoes.rotas.length || !opcoes.saida) throw new Error("Uso: npm run evidencias -- --rotas /a /b --saida <pasta> [--larguras 390,768,1440] [--modos sem,com]");
   if (opcoes.rotas.some((r) => !r.startsWith("/"))) throw new Error("Cada rota começa com /.");
   if (opcoes.larguras.some((l) => !ALTURAS[l])) throw new Error(`Larguras aceitas: ${Object.keys(ALTURAS).join(", ")}.`);
   if (opcoes.modos.some((m) => !["sem", "com"].includes(m))) throw new Error("Modos aceitos: sem, com.");
-  if (opcoes.conta !== undefined && !["nova", "volta"].includes(opcoes.conta)) throw new Error("Contas aceitas: nova, volta.");
+  if (opcoes.conta !== undefined && !["nova", "volta", "adm"].includes(opcoes.conta)) throw new Error("Contas aceitas: nova, volta, adm.");
   return opcoes;
 }
 
@@ -94,7 +97,7 @@ export function tabelaMarkdown(resultados, meta) {
   const cabecalho = [
     `### Evidências de página (${meta.data})`,
     "",
-    `Build ${meta.build}, \`next start\` local com banco temporário e sessão de teste. Máquina: ${meta.maquina}. Comando: \`${meta.comando}\`. Tempo: ${meta.tempo}.`,
+    `Conta local ${meta.conta ?? "nova"}. Build ${meta.build}, \`next start\` local com banco temporário e sessão de teste. Máquina: ${meta.maquina}. Comando: \`${meta.comando}\`. Tempo: ${meta.tempo}.`,
     "",
     "Cromo: do topo da barra comum ao início do conteúdo, em px, com o orçamento da Iniciativa 2 a 390 e 1440 px. Axe: violações WCAG 2.1 A e AA (regra e número de nós). Login: requisições feitas pela página (arquivos, dados, APIs) que caíram em /entrar; o redirecionamento da própria página aparece na coluna Endereço final.",
     "",
@@ -177,7 +180,8 @@ export async function executar(argv) {
   const saida = resolve(opcoes.saida);
   mkdirSync(saida, { recursive: true });
   const inicio = Date.now();
-  const servidor = await subirServidorLocal(opcoes.conta === "volta" ? { preparar: contaQueVolta } : {});
+  const servidor = await subirServidorLocal({ preparar: opcoes.conta === "volta" ? contaQueVolta : null,
+    administrador: opcoes.conta === "adm", estadoOperacoes: opcoes.estadoOperacoes ?? null });
   const nomes = nomesDasRotas(opcoes.rotas);
   const resultados = [];
   let navegador;
@@ -205,6 +209,7 @@ export async function executar(argv) {
   const segundos = Math.round((Date.now() - inicio) / 1000);
   const meta = {
     data: new Date().toISOString().slice(0, 10),
+    conta: opcoes.conta ?? "nova",
     build: readFileSync(join(RAIZ, ".next/BUILD_ID"), "utf8").trim(),
     maquina: `${cpus().length} vCPU, ${Math.round(totalmem() / 2 ** 30)} GB`,
     comando: `npm run evidencias -- ${argv.join(" ")}`,

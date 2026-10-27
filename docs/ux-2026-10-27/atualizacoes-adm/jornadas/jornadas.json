@@ -1,0 +1,23 @@
+{
+  "build": "mXMizLsighsc8Sf0SmbFi",
+  "capturadoEm": "2026-10-27T10:13:12.670Z",
+  "verificacoes": [
+    "Criar tarefa por toque/mouse, persistir nota, responsável e prazo, atualizar página e recuperar os campos.",
+    "Concluir, reencontrar no filtro de concluídas e reabrir; foco retorna ao filtro quando a linha sai do recorte.",
+    "Erro de gravação anuncia falha, mantém texto e permite nova tentativa.",
+    "Tab e Shift+Tab retornam ao detalhe com foco visível; Enter e Espaço abrem e fecham detalhes.",
+    "Formulário e fila a 320, 390, 768 e 1440 px: sem rolagem horizontal e sem violações axe nas tags WCAG A/AA.",
+    "Ampliação de texto de 200% a 720 px, equivalente ao espaço CSS de desktop 1440 com zoom 200%: sem rolagem horizontal. Não substitui teste de zoom nativo em todos os navegadores.",
+    "Filtro de frescor preservado na URL, atualização, voltar e avançar.",
+    "Identificador longo em tarefa manual permanece legível sem alargar a página a 320 px.",
+    "Sem erros JavaScript na jornada. Preferência por movimento reduzido e dispositivo com toque ativos.",
+    "Sem sessão: página redireciona para entrar, preservando a restrição administrativa.",
+    "Conta comum: página administrativa retorna 404."
+  ],
+  "capturas": [
+    "tarefas-320.png",
+    "tarefas-390.png",
+    "tarefas-768.png",
+    "tarefas-1440.png"
+  ]
+}

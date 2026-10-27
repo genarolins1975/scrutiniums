@@ -1,0 +1,49 @@
+name: Atualizar quadro do ADM
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: quadro-adm
+  cancel-in-progress: false
+
+jobs:
+  acompanhar:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Consultar as rotinas e pendências públicas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/estado-operacoes.py --saida .operacoes/estado.json
+      - name: Publicar o estado sem criar deploy nem alterar a gold
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if ! gh release view operacoes-adm >/dev/null 2>&1; then
+            gh release create operacoes-adm --target main --title 'Estado operacional do ADM' --notes 'Metadados públicos das rotinas e encaminhamentos. Sem dados de contas ou notas privadas do ADM.' --latest=false
+          fi
+          gh release upload operacoes-adm .operacoes/estado.json --clobber
+      - name: Preservar evidência do monitor
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: estado-operacoes
+          path: .operacoes/estado.json
+          retention-days: 30

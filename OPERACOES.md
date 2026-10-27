@@ -447,3 +447,31 @@ outros testes com o workflow verde.
 não se reproduziu; `/resumo` responde com `cache-control: max-age=0,
 must-revalidate`, então a hipótese mais provável é aba antiga ou URL de deploy de
 prévia, não deploy defasado.
+
+## Quadro de atualização e tarefas do ADM (27/10/2026)
+
+`/app/admin` passa a apontar para `/app/admin/atualizacoes`, restrita à mesma lista `ADMIN_EMAILS`. O quadro separa:
+
+- **Publicação disponível:** datas dos arquivos deste deploy, pelos mesmos 13 domínios, cadências e limiares de `src/lib/frescor/limiares.json`. Uma execução aprovada não muda essas datas. A referência indicada é a principal de cada domínio, com seu universo; não é uma data única de todas as fontes.
+- **Rotina automática:** última execução na `main`, link e conclusão consultados pelo monitor. A aprovação da rotina não atesta deploy concluído. Vigílias de contratos/Contas estaduais e o preparo do Zenodo continuam identificados como tal.
+- **Tarefa manual:** consultas ao BCB, falhas de execução, issues abertas, dependência do PR #379 enquanto aberto e tarefas criadas pelo ADM. Uma issue é um encaminhamento, não um diagnóstico confirmado. Não enviar mensagens nem consultar fontes em nome do dono apenas porque a tarefa existe.
+
+### Acompanhamento independente da publicação
+
+O catálogo `config/operacoes.json` liga cada domínio às rotinas existentes e explica o que é automático e o que exige conferência. `scripts/estado-operacoes.py` consulta metadados públicos do GitHub. `monitorar-operacoes.yml` roda de hora em hora (minuto 17 UTC) e pode ser disparado pela interface do GitHub na `main`. Publica `estado.json` na release `operacoes-adm`, sem commit, deploy, dado de conta, corpo de issue ou log de execução. Usa apenas `github.token` do job. O site lê o ativo público com cinco minutos de cache e timeout de cinco segundos; nenhuma credencial nova na Vercel.
+
+O monitor declara falhas parciais. Sem resposta, com contrato inválido, data futura incoerente ou consulta mais antiga que três horas, o quadro não declara monitor em dia. Até a primeira execução na `main`, aparece a indisponibilidade explícita; as datas locais e a fila persistida continuam funcionando. O próprio workflow do monitor não depende de publicação de gold. Não alterar o nome da release ou do ativo só no workflow: ambos fazem parte do contrato em `config/operacoes.json`.
+
+Para incluir uma rotina, cadastrá-la e ligá-la ao domínio no catálogo; o teste confere a existência de cada workflow e rota. As fontes que exigem curadoria aparecem na expansão de cada área. Novos domínios precisam primeiro de regra de frescor própria; não atribuir a data de outro domínio. A automação não promove edições fiscais, contratos ou mudanças de metodologia sem a conferência exigida pelo respectivo procedimento.
+
+### Fila manual persistente
+
+A tabela privada `tarefas_operacao` guarda andamento, responsável informado pelo ADM, prazo combinado e nota. A migração idempotente altera automaticamente a versão por hash de `db.ts`. As mudanças registram id, estado, versão e autor em `audit_logs`; a nota não é duplicada no log. Duas sessões não sobrescrevem alterações silenciosamente: a versão antiga recebe conflito e deve recarregar a tarefa. Não há exclusão automática do histórico nesta etapa. Não inserir segredos nem dados pessoais de leitores nas notas.
+
+Concluir uma tarefa **não** altera frescor, fecha issue, integra PR ou publica dados. Se o sinal ainda consta da consulta, ele continua indicado mesmo na tarefa concluída. Cada nova execução ou tentativa de reexecução com falha tem uma chave própria e não herda a conclusão da execução anterior. Se o monitor falhar, os registros já salvos permanecem, com a ressalva de que a fila automática pode estar incompleta. O ADM pode criar uma tarefa, registrar o encaminhamento, concluir e reabrir pelo filtro de andamento.
+
+### Validação sobre a candidata que será publicada
+
+A investigação de 27/10 mostrou retenções com HTML ausente ou testes de navegador não executados. O Crédito agora faz `npm run build` antes de **cada** composição candidata da seleção por grupo, com heap de 4 GB e `EXIGIR_BUILD_HTML=1`. Build falho retém a publicação; a suíte Python continua para diagnóstico. A Energia também constrói a candidata antes do Vitest e preserva `build-testes.log` no artefato retido. Nenhum teste ou contrato de fonte foi removido. Isso resolve a lacuna do ambiente de validação, não as falhas de conteúdo: SIGA/retratos continuam dependendo da revisão e integração do PR #379 enquanto ele estiver aberto.
+
+Reprodução local: `bash scripts/preparar-sessao.sh`, `npm run verificar:rapido`, `npm run verificar:pr`. Para a tela administrativa: `npm run evidencias -- --rotas /app/admin /app/admin/atualizacoes --conta adm --larguras 320,390,768,1440 --saida docs/ux-AAAA-MM-DD/atualizacoes-adm/depois`. `--estado-operacoes <json>` aceita uma consulta preservada para auditoria local, sem acessar contas reais; a Vercel não aceita o caminho local de teste.
