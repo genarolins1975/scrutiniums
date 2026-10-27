@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { destinoAtual, useSessao } from "@/components/acesso/sessao";
+import { useSessao } from "@/components/acesso/sessao";
+import { prepararEnderecoAnalise } from "@/lib/painel/enderecoAnalise";
+import { useEnderecoAnalise } from "./useEnderecoAnalise";
+import { CopiarLinkRecorte } from "./CopiarLinkRecorte";
+import { DetalhesRecorte } from "./DetalhesRecorte";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { cadenciaDe, textosDominio, type DominioFrescorId } from "@/lib/frescor";
 import {
@@ -59,6 +63,11 @@ function Ferramentas({ menu = false, origem, observatorio, dominios }: Props) {
   const caixa = useRef<HTMLDivElement>(null);
   const gatilhos = useRef<Partial<Record<Ferramenta, HTMLButtonElement | null>>>({});
   const botaoMenu = useRef<HTMLButtonElement>(null);
+  const painelRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (aberta) painelRef.current?.querySelector<HTMLElement>(aberta === "salvar" ? "input" : "h2")?.focus();
+  }, [aberta]);
 
   useEffect(() => {
     if (!aberta && !lista) return;
@@ -95,9 +104,9 @@ function Ferramentas({ menu = false, origem, observatorio, dominios }: Props) {
   ];
 
   const painel = aberta && (
-    <section id={`${id}-${aberta}`} className="bp-painel" aria-label={itens.find((i) => i.chave === aberta)!.titulo}>
+    <section ref={painelRef} id={`${id}-${aberta}`} className="bp-painel" aria-label={itens.find((i) => i.chave === aberta)!.titulo}>
       <div className="flex items-start justify-between gap-4">
-        <h2 className="font-serif text-lg leading-snug text-carvao">{itens.find((i) => i.chave === aberta)!.titulo}</h2>
+        <h2 tabIndex={-1} className="font-serif text-lg leading-snug text-carvao">{itens.find((i) => i.chave === aberta)!.titulo}</h2>
         <button
           type="button"
           className="rotulo -mr-2 -mt-2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-carvao"
@@ -215,15 +224,13 @@ function Mensagem({ tipo, children }: { tipo: "ok" | "erro"; children: ReactNode
 function PainelSalvar({ origem }: { origem: string }) {
   const tx = useTx();
   const campo = useId();
-  const [caminho, setCaminho] = useState("");
+  const caminho = useEnderecoAnalise();
   const [titulo, setTitulo] = useState("");
   const [estado, setEstado] = useState<
     { tipo: "livre" } | { tipo: "salvando" } | { tipo: "salvo"; existente: boolean } | { tipo: "erro"; texto: string }
   >({ tipo: "livre" });
-  const [copiado, setCopiado] = useState(false);
 
   useEffect(() => {
-    setCaminho(destinoAtual());
     setTitulo(tituloDaPagina(document.title).slice(0, 120));
   }, []);
 
@@ -234,7 +241,7 @@ function PainelSalvar({ origem }: { origem: string }) {
       const r = await fetch("/api/conta/recortes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ titulo, caminho, observatorio: origem }),
+        body: JSON.stringify({ titulo, caminho: prepararEnderecoAnalise(), observatorio: origem }),
       });
       const j = (await r.json().catch(() => ({}))) as { existente?: boolean; error?: string };
       if (r.ok) setEstado({ tipo: "salvo", existente: !!j.existente });
@@ -242,16 +249,6 @@ function PainelSalvar({ origem }: { origem: string }) {
       else setEstado({ tipo: "erro", texto: j.error ?? tx("Não foi possível salvar. Tente de novo.", "Could not save. Please try again.") });
     } catch {
       setEstado({ tipo: "erro", texto: tx("Não foi possível salvar. Tente de novo.", "Could not save. Please try again.") });
-    }
-  }
-
-  async function copiarLink() {
-    try {
-      await navigator.clipboard.writeText(`${window.location.origin}${caminho}`);
-      setCopiado(true);
-      window.setTimeout(() => setCopiado(false), 1600);
-    } catch {
-      setCopiado(false);
     }
   }
 
@@ -263,6 +260,7 @@ function PainelSalvar({ origem }: { origem: string }) {
           "The saved view keeps this page with the filters in its address. Filters the page does not write to the address are not included.",
         )}
       </p>
+      <p className={nota}>{tx("Ao reabrir, os parâmetros serão aplicados aos dados disponíveis naquele momento. Os valores podem mudar após uma atualização da fonte.", "When reopened, the parameters are applied to the data available at that time. Values may change after a source update.")}</p>
       <div className="flex flex-col gap-1.5">
         <label htmlFor={campo} className="rotulo text-carvao-muted">
           {tx("Título do recorte", "Title of the view")}
@@ -276,14 +274,12 @@ function PainelSalvar({ origem }: { origem: string }) {
           className="min-h-[44px] border border-linha bg-papel px-3 py-2 text-base text-carvao focus:border-bronze"
         />
       </div>
-      <p className="break-all font-mono text-xs text-carvao-muted">{caminho}</p>
+      <DetalhesRecorte caminho={caminho} />
       <div className="flex flex-wrap gap-3">
         <button type="submit" className={botao} disabled={estado.tipo === "salvando" || !titulo.trim() || !caminho}>
           {estado.tipo === "salvando" ? tx("Salvando…", "Saving…") : tx("Salvar", "Save")}
         </button>
-        <button type="button" className={botaoLeve} onClick={copiarLink} disabled={!caminho}>
-          {copiado ? tx("Link copiado", "Link copied") : tx("Copiar link", "Copy link")}
-        </button>
+        <CopiarLinkRecorte caminho={prepararEnderecoAnalise} classe={botaoLeve} />
       </div>
       {estado.tipo === "salvo" && (
         <Mensagem tipo="ok">
@@ -320,7 +316,8 @@ function baixar(nome: string, tipo: string, conteudo: string) {
 function PainelCitar({ observatorio, dominios }: { observatorio: string; dominios: readonly DominioFrescorId[] }) {
   const tx = useTx();
   const idioma = useIdioma();
-  const [dados, setDados] = useState<DadosCitacaoPagina | null>(null);
+  const [base, setDados] = useState<DadosCitacaoPagina | null>(null);
+  const caminho = useEnderecoAnalise();
   const [erro, setErro] = useState(false);
   const [copiado, setCopiado] = useState(false);
   const [manual, setManual] = useState("");
@@ -342,21 +339,26 @@ function PainelCitar({ observatorio, dominios }: { observatorio: string; dominio
   }, [dominios.join(","), observatorio]);
 
   if (erro) return <Mensagem tipo="erro">{tx("Não foi possível montar a citação. Tente de novo.", "Could not build the citation. Please try again.")}</Mensagem>;
-  if (!dados) return <p className="mt-3 text-sm text-carvao-muted" role="status">{tx("Montando a citação…", "Building the citation…")}</p>;
+  if (!base) return <p className="mt-3 text-sm text-carvao-muted" role="status">{tx("Montando a citação…", "Building the citation…")}</p>;
 
-  const texto = pacoteTexto(dados, idioma);
+  const dados = { ...base, url: new URL(caminho, base.url).href };
+  const atuais = () => ({ ...dados, url: new URL(prepararEnderecoAnalise(), dados.url).href });
   const ids = dados.fontes.filter((f) => f.idPublicacao);
   async function copiar() {
     try {
-      await navigator.clipboard.writeText(texto);
+      await navigator.clipboard.writeText(pacoteTexto(atuais(), idioma));
       setCopiado(true);
       setManual("");
       window.setTimeout(() => setCopiado(false), 1600);
     } catch {
-      setManual(texto);
+      setManual(pacoteTexto(atuais(), idioma));
     }
   }
   const arquivo = `scrutiniums-${slugCitacao(dados.titulo)}`;
+  function baixarReferencia(formato: "bib" | "ris") {
+    const dados = atuais();
+    baixar(`${arquivo}.${formato}`, formato === "bib" ? "application/x-bibtex;charset=utf-8" : "application/x-research-info-systems;charset=utf-8", formato === "bib" ? bibtex(dados) : ris(dados));
+  }
 
   return (
     <div className="mt-3 space-y-4 text-sm">
@@ -396,13 +398,13 @@ function PainelCitar({ observatorio, dominios }: { observatorio: string; dominio
         <button type="button" className={botao} onClick={copiar}>
           {copiado ? tx("Citação copiada", "Citation copied") : tx("Copiar citação", "Copy citation")}
         </button>
-        <button type="button" className={botaoLeve} onClick={() => baixar(`${arquivo}.bib`, "application/x-bibtex;charset=utf-8", bibtex(dados))}>
+        <button type="button" className={botaoLeve} onClick={() => baixarReferencia("bib")}>
           {tx("Baixar .bib", "Download .bib")}
         </button>
         <button
           type="button"
           className={botaoLeve}
-          onClick={() => baixar(`${arquivo}.ris`, "application/x-research-info-systems;charset=utf-8", ris(dados))}
+          onClick={() => baixarReferencia("ris")}
         >
           {tx("Baixar .ris", "Download .ris")}
         </button>

@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useId, useMemo } from "react";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
 import { mesAno, mesExtenso, num, pct, pctSinal, pp, reais, reaisSinal } from "@/lib/inflacao/formato";
 import { BRASIL, type AreaNoArtefato, type Grupo, type Referencia, type TipoArea } from "@/lib/inflacao/tipos";
 import { BarraDivergente, COR_AREA, SeletorArea, dominio, useArea } from "./comum";
@@ -117,8 +119,8 @@ export function ComoPesa({ grupos, areas, nomes, referencia: ref }: { grupos: Gr
 function Simulador({ grupos, area, onde }: { grupos: Grupo[]; area: AreaNoArtefato; onde: string }) {
   const id = useId();
   const iniciais = useMemo(() => Object.fromEntries(grupos.map((g) => [g.id, Math.round(area.grupos[g.id].pesoInicio * 10) / 10])), [grupos, area]);
-  const [fatias, setFatias] = useState<Record<string, number>>(iniciais);
-  useEffect(() => setFatias(iniciais), [iniciais]);
+  const esquema = useMemo(() => Object.fromEntries(grupos.map((g) => [g.id, campo(tiposUrl.numero({ min: 0, max: 60 }), iniciais[g.id], { param: `peso_${g.id}`, historico: "replace" })])), [grupos, iniciais]);
+  const [fatias, setFatias] = useEstadoUrl(esquema);
   const soma = grupos.reduce((s, g) => s + (fatias[g.id] ?? 0), 0);
   const resultado = soma > 0 ? grupos.reduce((s, g) => s + (fatias[g.id] ?? 0) * area.grupos[g.id].doze, 0) / soma : null;
   const mudou = grupos.some((g) => fatias[g.id] !== iniciais[g.id]);

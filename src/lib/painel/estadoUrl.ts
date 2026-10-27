@@ -254,11 +254,11 @@ export function lerEstado<E extends Esquema>(esquema: E, busca: string): Valores
  * mesma ordem); parâmetro gerenciado já presente é trocado no lugar; valor
  * igual ao padrão é removido; repetições de um parâmetro gerenciado somem.
  */
-export function escreverEstado<E extends Esquema>(esquema: E, valores: Partial<ValoresDe<E>>, buscaAtual: string): string {
+export function escreverEstado<E extends Esquema>(esquema: E, valores: Partial<ValoresDe<E>>, buscaAtual: string, incluirPadroes = false): string {
   const gerenciados = new Map<string, string | null>();
   for (const [k, c] of Object.entries(esquema)) {
     const v = (valores as Record<string, unknown>)[k];
-    gerenciados.set(c.param ?? k, v === undefined || igualCampo(c, v, c.padrao) ? null : c.tipo.escrever(v));
+    gerenciados.set(c.param ?? k, v === undefined || (!incluirPadroes && igualCampo(c, v, c.padrao)) ? null : c.tipo.escrever(v));
   }
   const saida: string[] = [];
   const usados = new Set<string>();

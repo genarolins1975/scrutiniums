@@ -1,6 +1,8 @@
 "use client";
 
-import { useId, useState, type KeyboardEvent } from "react";
+import { useId, useMemo, type KeyboardEvent } from "react";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { campo, tiposUrl } from "@/lib/painel/estadoUrl";
 
 /**
  * Laboratório do Ideb (modelo didático): o leitor move a aprendizagem (N) e o fluxo (P) e vê o índice que resulta, a
@@ -10,10 +12,15 @@ import { useId, useState, type KeyboardEvent } from "react";
  */
 const fmt = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
-export function LaboratorioIdeb({ n, p, ideb, rede, ano }: { n: number; p: number; ideb: number; rede: string; ano: number }) {
+export function LaboratorioIdeb({ n, p, ideb, rede, ano, chaveUrl = "ideb" }: { n: number; p: number; ideb: number; rede: string; ano: number; chaveUrl?: string }) {
   const id = useId().replace(/:/g, "");
-  const [nota, setNota] = useState(n);
-  const [fluxo, setFluxo] = useState(p * 100);
+  const esquema = useMemo(() => ({
+    nota: campo(tiposUrl.numero({ min: 0, max: 10 }), n, { param: `${chaveUrl}_n`, historico: "replace" }),
+    fluxo: campo(tiposUrl.numero({ min: 0, max: 100 }), p * 100, { param: `${chaveUrl}_p`, historico: "replace" }),
+  }), [n, p, chaveUrl]);
+  const [{ nota, fluxo }, definir] = useEstadoUrl(esquema);
+  const setNota = (valor: number) => definir({ nota: valor });
+  const setFluxo = (valor: number) => definir({ fluxo: valor });
   const resultado = Math.round(nota * (fluxo / 100) * 10) / 10;
   // Precisão publicada no repouso e passo útil por teclado: um décimo em N, um centésimo em P.
   const tecla = (e: KeyboardEvent<HTMLInputElement>, valor: number, passo: number, max: number, definir: (v: number) => void) => {

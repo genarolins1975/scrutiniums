@@ -63,7 +63,7 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
               "O que acontece em cada escola: o índice é o da rede inteira",
             ]}
           >
-            <LaboratorioIdeb n={br.n[i] as number} p={br.p[i] as number} ideb={br.ideb[i] as number} rede="rede municipal do Brasil" ano={g.ideb.ano} />
+            <LaboratorioIdeb chaveUrl="ideb_br" n={br.n[i] as number} p={br.p[i] as number} ideb={br.ideb[i] as number} rede="rede municipal do Brasil" ano={g.ideb.ano} />
           </ModeloDidatico>
         ) : (
           <ModeloDidatico id="laboratorio-ideb" titulo="Como a aprendizagem e a aprovação formam o Ideb" deixaDeFora={["A média harmônica das taxas de aprovação de cada ano escolar, de onde sai o P", "A régua do Saeb, que junta as notas de português e de matemática no N"]}>
@@ -324,7 +324,7 @@ function Componentes({ g, m, anos }: { g: GoldEducacao; m: MunicipioGold; anos: 
         <ModeloDidatico id="laboratorio-municipio" titulo="E se a aprendizagem ou a aprovação mudasse?"
           descricao={`${NOME_REDE[escolha.r]} de ${m.nome}, ${NOME_ETAPA[escolha.e].toLowerCase()}, INEP, Ideb ${g.ideb.ano}.`}
           deixaDeFora={["N reúne português e matemática na escala do Saeb", "P é a média harmônica da aprovação de cada ano escolar", "O resultado da rede não descreve cada escola nem demonstra causa"]}>
-          <LaboratorioIdeb n={escolha.s.n[k]!} p={escolha.s.p[k]!} ideb={escolha.s.ideb[k]!} rede={`${NOME_REDE[escolha.r].toLowerCase()} de ${m.nome}`} ano={g.ideb.ano} />
+          <LaboratorioIdeb chaveUrl="ideb_mun" n={escolha.s.n[k]!} p={escolha.s.p[k]!} ideb={escolha.s.ideb[k]!} rede={`${NOME_REDE[escolha.r].toLowerCase()} de ${m.nome}`} ano={g.ideb.ano} />
         </ModeloDidatico>
       ) : <p className="edm-aviso">{m.nome} não tem componentes completos do Ideb {g.ideb.ano}. As séries preservam as edições anteriores disponíveis.</p>}
       {ETAPAS.map((e) => {

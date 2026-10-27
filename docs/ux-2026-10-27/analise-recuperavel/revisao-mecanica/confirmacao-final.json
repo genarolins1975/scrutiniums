@@ -1,0 +1,118 @@
+{
+  "commit": "32db0c3d24e17e207ce913555dfabd9a57de31b9",
+  "build": "zdkU37XJIzk4uJJiZ55kv",
+  "data": "2026-10-27T16:04:36.155Z",
+  "casos": [
+    {
+      "idioma": "pt",
+      "logado": false,
+      "antes": {
+        "url": "/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, ÂMBAR AMAZONAS (AM)\n\nR$ 536,74\npor mês, sem tributos\n\n600 kWh no mês, classe residencial, ligação monofásica: R$ 525,43 de energia e uso da rede (TE + TUSD) e R$ 11,31 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 26/05/2026 (REH 3.588/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      },
+      "voltar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "450",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE (PB, PE)\n\nR$ 367,97\npor mês, sem tributos\n\n450 kWh no mês, classe residencial, ligação monofásica: R$ 359,49 de energia e uso da rede (TE + TUSD) e R$ 8,48 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 29/04/2026 (REH 3.583/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      },
+      "avancar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, ÂMBAR AMAZONAS (AM)\n\nR$ 536,74\npor mês, sem tributos\n\n600 kWh no mês, classe residencial, ligação monofásica: R$ 525,43 de energia e uso da rede (TE + TUSD) e R$ 11,31 da bandeira amarela.\n\nBANDEIRA CONSIDERADA\nAmarela, set/2026, R$ 0,01885/kWh. A bandeira de out/2026 não está no arquivo da ANEEL lido pelo observatório; a última registrada é a de set/2026 (amarela). A estimativa usa a última registrada, que não é a do mês corrente.\nDATA DA TARIFA\nVigência iniciada em 26/05/2026 (REH 3.588/2026), em vigor no arquivo de 30/09/2026.\nFONTE\nANEEL, tarifas de aplicação das distribuidoras (tarifa B1 residencial convencional). Fonte: ANEEL, Bandeiras Tarifárias, recurso Acionamento."
+      }
+    },
+    {
+      "idioma": "pt",
+      "logado": true,
+      "antes": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 490,63\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B2, sem subclasse na fonte.\n\nNa fonte, a tarifa de Rural é igual à de Residencial em 81 de 81 distribuidoras do conjunto, inclusive na Neoenergia PE, e o valor é o mesmo da classe Residencial. O desconto rural não está incluído neste cálculo."
+      },
+      "voltar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "450",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 367,97\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B1, subclasse Residencial."
+      },
+      "avancar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 490,63\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B2, sem subclasse na fonte.\n\nNa fonte, a tarifa de Rural é igual à de Residencial em 81 de 81 distribuidoras do conjunto, inclusive na Neoenergia PE, e o valor é o mesmo da classe Residencial. O desconto rural não está incluído neste cálculo."
+      }
+    },
+    {
+      "idioma": "en",
+      "logado": false,
+      "antes": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, ÂMBAR AMAZONAS (AM)\n\nR$ 536.74\nper month, without taxes\n\n600 kWh in the month, residential class, single-phase connection: R$ 525.43 for energy and grid use (TE + TUSD) and R$ 11.31 for the yellow tariff flag.\n\nTARIFF FLAG CONSIDERED\nYellow, Sep 2026, R$ 0.01885/kWh. The tariff flag for Oct 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Sep 2026 (yellow). The estimate uses the latest recorded one, which is not the current month's.\nTARIFF DATE\nValidity period started on May 26, 2026 (REH 3.588/2026), in force in the file of Sep 30, 2026.\nSOURCE\nANEEL, applied tariffs of the distribution utilities (conventional residential B1 tariff). Source: ANEEL, tariff flags dataset, activation resource."
+      },
+      "voltar": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "450",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, NEOENERGIA PE (PB, PE)\n\nR$ 367.97\nper month, without taxes\n\n450 kWh in the month, residential class, single-phase connection: R$ 359.49 for energy and grid use (TE + TUSD) and R$ 8.48 for the yellow tariff flag.\n\nTARIFF FLAG CONSIDERED\nYellow, Sep 2026, R$ 0.01885/kWh. The tariff flag for Oct 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Sep 2026 (yellow). The estimate uses the latest recorded one, which is not the current month's.\nTARIFF DATE\nValidity period started on Apr 29, 2026 (REH 3.583/2026), in force in the file of Sep 30, 2026.\nSOURCE\nANEEL, applied tariffs of the distribution utilities (conventional residential B1 tariff). Source: ANEEL, tariff flags dataset, activation resource."
+      },
+      "avancar": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=02341467000120&skwh=600",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, ÂMBAR AMAZONAS (AM)\n\nR$ 536.74\nper month, without taxes\n\n600 kWh in the month, residential class, single-phase connection: R$ 525.43 for energy and grid use (TE + TUSD) and R$ 11.31 for the yellow tariff flag.\n\nTARIFF FLAG CONSIDERED\nYellow, Sep 2026, R$ 0.01885/kWh. The tariff flag for Oct 2026 is not in the ANEEL file read by the observatory; the latest recorded is the one for Sep 2026 (yellow). The estimate uses the latest recorded one, which is not the current month's.\nTARIFF DATE\nValidity period started on May 26, 2026 (REH 3.588/2026), in force in the file of Sep 30, 2026.\nSOURCE\nANEEL, applied tariffs of the distribution utilities (conventional residential B1 tariff). Source: ANEEL, tariff flags dataset, activation resource."
+      }
+    },
+    {
+      "idioma": "en",
+      "logado": true,
+      "antes": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, NEOENERGIA PE\n\nR$ 490.63\n\nEstimate without taxes (ICMS, PIS/Pasep and Cofins) and without the public lighting contribution. Tariffs of the validity period started on Apr 29, 2026 (REH 3.583/2026).\n\nTariff used: subgroup B2, no subclass in the source.\n\nIn the source, the Rural tariff equals the Residential tariff at 81 of 81 distribution utilities in the dataset, including Neoenergia PE, and the value is the same as that of the Residential class. The rural discount is not included in this calculation."
+      },
+      "voltar": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "450",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, NEOENERGIA PE\n\nR$ 367.97\n\nEstimate without taxes (ICMS, PIS/Pasep and Cofins) and without the public lighting contribution. Tariffs of the validity period started on Apr 29, 2026 (REH 3.583/2026).\n\nTariff used: subgroup B1, subclass Residential."
+      },
+      "avancar": {
+        "url": "/en/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "MONTHLY ESTIMATE, NEOENERGIA PE\n\nR$ 490.63\n\nEstimate without taxes (ICMS, PIS/Pasep and Cofins) and without the public lighting contribution. Tariffs of the validity period started on Apr 29, 2026 (REH 3.583/2026).\n\nTariff used: subgroup B2, no subclass in the source.\n\nIn the source, the Rural tariff equals the Residential tariff at 81 of 81 distribution utilities in the dataset, including Neoenergia PE, and the value is the same as that of the Residential class. The rural discount is not included in this calculation."
+      }
+    },
+    {
+      "pagina": "/app/conta",
+      "width": 390,
+      "axe": []
+    },
+    {
+      "pagina": "/app/conta",
+      "width": 1440,
+      "axe": []
+    }
+  ],
+  "falhas": []
+}

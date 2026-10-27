@@ -1,0 +1,189 @@
+{
+  "commit": "32db0c3d24e17e207ce913555dfabd9a57de31b9",
+  "buildId": "zdkU37XJIzk4uJJiZ55kv",
+  "data": "2026-10-27T16:06:14.268Z",
+  "casos": [
+    {
+      "superficie": "conta",
+      "width": 390,
+      "metricas": {
+        "texto": "Ver endereço e parâmetros",
+        "whiteSpace": "normal",
+        "fonte": "24px",
+        "largura": 276,
+        "scroll": 276,
+        "caixa": {
+          "x": 57,
+          "y": 460.5,
+          "width": 276,
+          "height": 78
+        },
+        "pai": {
+          "x": 57,
+          "y": 105.5,
+          "width": 276,
+          "height": 549,
+          "client": 276,
+          "scroll": 276
+        },
+        "viewport": 390,
+        "pagina": 490,
+        "foco": true
+      },
+      "abre": true,
+      "fecha": true
+    }
+  ],
+  "overflow": [
+    {
+      "tag": "LI",
+      "id": "",
+      "classes": "flex shrink-0 sm:hidden",
+      "caixa": {
+        "x": 361.1875,
+        "y": -2954,
+        "width": 75.015625,
+        "right": 436.203125
+      },
+      "texto": "Sair",
+      "fonte": "32px",
+      "entrelinha": "48px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "FORM",
+      "id": "",
+      "classes": "flex",
+      "caixa": {
+        "x": 361.1875,
+        "y": -2954,
+        "width": 75.015625,
+        "right": 436.203125
+      },
+      "texto": "Sair",
+      "fonte": "32px",
+      "entrelinha": "48px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "classes": "flex min-h-[44px] items-center px-3 text-sm text-carvao-muted hover:text-carvao",
+      "caixa": {
+        "x": 361.1875,
+        "y": -2954,
+        "width": 75.015625,
+        "right": 436.203125
+      },
+      "texto": "Sair",
+      "fonte": "28px",
+      "entrelinha": "20px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "classes": "flex flex-col gap-1.5",
+      "caixa": {
+        "x": 57,
+        "y": 2901,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "PaísBrasil (+55)",
+      "fonte": "32px",
+      "entrelinha": "48px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "classes": "rotulo text-carvao-muted",
+      "caixa": {
+        "x": 57,
+        "y": 2901,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "País",
+      "fonte": "24px",
+      "entrelinha": "36px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "SELECT",
+      "id": ":R15svf9ufcq:",
+      "classes": "min-h-[44px] border border-linha bg-papel px-3 py-2 text-base text-carvao focus:border-bronze",
+      "caixa": {
+        "x": 57,
+        "y": 2943,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "Brasil (+55)",
+      "fonte": "32px",
+      "entrelinha": "normal",
+      "whiteSpace": "pre"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "classes": "flex flex-col gap-1.5",
+      "caixa": {
+        "x": 57,
+        "y": 3022,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "Novo telefone",
+      "fonte": "32px",
+      "entrelinha": "48px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "classes": "rotulo text-carvao-muted",
+      "caixa": {
+        "x": 57,
+        "y": 3022,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "Novo telefone",
+      "fonte": "24px",
+      "entrelinha": "36px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "INPUT",
+      "id": ":R2b5svf9ufcq:",
+      "classes": "min-h-[44px] border bg-papel px-3 py-2 text-base text-carvao placeholder:text-mineral focus:border-bronze border-linha ",
+      "caixa": {
+        "x": 57,
+        "y": 3064,
+        "width": 433,
+        "right": 490
+      },
+      "texto": "",
+      "fonte": "32px",
+      "entrelinha": "24px",
+      "whiteSpace": "normal"
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "classes": "text-bronze-dark underline underline-offset-4 hover:text-carvao",
+      "caixa": {
+        "x": 57,
+        "y": 5721,
+        "width": 400.609375,
+        "right": 457.609375
+      },
+      "texto": "privacidade@scrutiniums.com",
+      "fonte": "28px",
+      "entrelinha": "20px",
+      "whiteSpace": "normal"
+    }
+  ]
+}

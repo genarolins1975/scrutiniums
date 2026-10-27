@@ -1,0 +1,43 @@
+
+> scrutiniums@0.1.0 evidencias
+> node scripts/evidencias.mjs --rotas /combustiveis?uf=PE&litros=60 /combustiveis/no-meu-estado?uf=PE&litros=60 /custo-de-vida /educacao-municipal /contas-publicas-estaduais?lab_gasto=45&lab_entrega=55 /setor-eletrico/conta-de-luz /en/setor-eletrico/conta-de-luz /app/conta --larguras 390,1440 --conta volta --saida /workspace/analise-final-evidencias
+
+sem sessão  390 /combustiveis?uf=PE&litros=60  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  390 /combustiveis/no-meu-estado?uf=PE&litros=60  HTTP 200 cromo=138 axe=0 console=0 login=0
+sem sessão  390 /custo-de-vida  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  390 /educacao-municipal  HTTP 200 cromo=93 axe=0 console=0 login=0
+sem sessão  390 /contas-publicas-estaduais?lab_gasto=45&lab_entrega=55  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão  390 /setor-eletrico/conta-de-luz  HTTP 200 cromo=138 axe=0 console=0 login=0
+sem sessão  390 /en/setor-eletrico/conta-de-luz  HTTP 200 cromo=138 axe=0 console=0 login=0
+sem sessão  390 /app/conta  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /combustiveis?uf=PE&litros=60  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /combustiveis/no-meu-estado?uf=PE&litros=60  HTTP 200 cromo=187 axe=0 console=0 login=0
+sem sessão 1440 /custo-de-vida  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /educacao-municipal  HTTP 200 cromo=142 axe=0 console=0 login=0
+sem sessão 1440 /contas-publicas-estaduais?lab_gasto=45&lab_entrega=55  HTTP 200 cromo=0 axe=0 console=0 login=0
+sem sessão 1440 /setor-eletrico/conta-de-luz  HTTP 200 cromo=187 axe=0 console=0 login=0
+sem sessão 1440 /en/setor-eletrico/conta-de-luz  HTTP 200 cromo=187 axe=0 console=0 login=0
+sem sessão 1440 /app/conta  HTTP 200 cromo=0 axe=0 console=0 login=0
+com sessão  390 /combustiveis?uf=PE&litros=60  HTTP 200 cromo=195 axe=0 console=0 login=0
+com sessão  390 /combustiveis/no-meu-estado?uf=PE&litros=60  HTTP 200 cromo=138 axe=0 console=0 login=0
+com sessão  390 /custo-de-vida  HTTP 200 cromo=195 axe=0 console=0 login=0
+com sessão  390 /educacao-municipal  HTTP 200 cromo=195 axe=0 console=0 login=0
+com sessão  390 /contas-publicas-estaduais?lab_gasto=45&lab_entrega=55  HTTP 200 cromo=195 axe=0 console=0 login=0
+com sessão  390 /setor-eletrico/conta-de-luz  HTTP 200 cromo=138 axe=0 console=0 login=0
+com sessão  390 /en/setor-eletrico/conta-de-luz  HTTP 200 cromo=138 axe=0 console=0 login=0
+com sessão  390 /app/conta  HTTP 200 cromo=102 axe=0 console=0 login=0
+com sessão 1440 /combustiveis?uf=PE&litros=60  HTTP 200 cromo=222 axe=0 console=0 login=0
+com sessão 1440 /combustiveis/no-meu-estado?uf=PE&litros=60  HTTP 200 cromo=187 axe=0 console=0 login=0
+com sessão 1440 /custo-de-vida  HTTP 200 cromo=222 axe=0 console=0 login=0
+com sessão 1440 /educacao-municipal  HTTP 200 cromo=222 axe=0 console=0 login=0
+com sessão 1440 /contas-publicas-estaduais?lab_gasto=45&lab_entrega=55  HTTP 200 cromo=222 axe=0 console=0 login=0
+com sessão 1440 /setor-eletrico/conta-de-luz  HTTP 200 cromo=187 axe=0 console=0 login=0
+com sessão 1440 /en/setor-eletrico/conta-de-luz  HTTP 200 cromo=187 axe=0 console=0 login=0
+com sessão 1440 /app/conta  HTTP 200 cromo=151 axe=0 console=0 login=0
+
+32 páginas em 2 min 23 s. Tabela em /workspace/analise-final-evidencias/evidencias.md
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

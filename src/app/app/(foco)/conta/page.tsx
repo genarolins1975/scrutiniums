@@ -154,7 +154,7 @@ export default async function ContaPage() {
               ferramentas de analytics. Os detalhes estão na{" "}
               <Link
                 href="/privacidade"
-                className="text-bronze underline underline-offset-4 hover:text-bronze-dark"
+                className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
               >
                 política de privacidade
               </Link>
@@ -164,7 +164,7 @@ export default async function ContaPage() {
               Para corrigir o CPF ou excluir sua conta e dados, solicite pelo e-mail{" "}
               <a
                 href="mailto:privacidade@scrutiniums.com"
-                className="text-bronze underline underline-offset-4 hover:text-bronze-dark"
+                className="text-bronze-dark underline underline-offset-4 hover:text-carvao"
               >
                 privacidade@scrutiniums.com
               </a>

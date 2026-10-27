@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useSyncExternalStore } from "react";
+import { useId } from "react";
+import { useLitrosTanque } from "./useLitrosTanque";
 import { useSelecaoGas } from "@/components/gas/useSelecaoGas";
 import { FaixaNumeros } from "@/components/painel/FaixaNumeros";
 import { NumeroIndicador } from "@/components/painel/NumeroIndicador";
@@ -10,33 +11,12 @@ import { BRASIL, opcoesUf, type DadosPrecoNoEstado } from "./PrecoNoEstado";
 /**
  * A consulta "Quanto custa encher o tanque no meu estado?" no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): o
  * seletor de estado e os litros vão na abertura (a primeira ação do leitor) e o resultado na faixa de números. São duas ilhas da
- * mesma página: o estado anda pela URL (`?uf=`, o mesmo useSelecaoGas do painel, que avisa as outras ilhas), e os litros por um
- * estado de módulo compartilhado entre as duas, como antes ficavam no estado local do PrecoNoEstado (não vão para a URL).
+ * mesma página: estado e litros andam pela URL (`?uf=` e `?litros=`), inclusive ao reabrir um recorte compartilhado.
  *
  * Os números são os mesmos do PrecoNoEstado, lidos dos mesmos campos: preço médio da ANP, postos pesquisados, distância para a
  * média do Brasil e a conta do tanque (preço médio vezes os litros). Combustível sem preço para a UF é ausência com o motivo,
  * nunca zero.
  */
-
-let litrosAtuais = 40;
-const ouvintes = new Set<() => void>();
-const litrosStore = {
-  assinar(f: () => void) {
-    ouvintes.add(f);
-    return () => ouvintes.delete(f);
-  },
-  ler: () => litrosAtuais,
-  // no servidor e na hidratação, o exemplo de 40 litros
-  lerServidor: () => 40,
-  gravar(v: number) {
-    litrosAtuais = v;
-    for (const f of ouvintes) f();
-  },
-};
-
-function useLitros(): [number, (v: number) => void] {
-  return [useSyncExternalStore(litrosStore.assinar, litrosStore.ler, litrosStore.lerServidor), litrosStore.gravar];
-}
 
 function useEstado(dados: DadosPrecoNoEstado) {
   const opcoes = opcoesUf(dados.ufs);
@@ -55,7 +35,7 @@ function distancia(dif: number, pct: number): string {
 export function SeletorTanque({ dados }: { dados: DadosPrecoNoEstado }) {
   const id = useId();
   const { opcoes, escolha } = useEstado(dados);
-  const [litros, setLitros] = useLitros();
+  const [litros, setLitros] = useLitrosTanque();
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
@@ -109,7 +89,7 @@ export function SeletorTanque({ dados }: { dados: DadosPrecoNoEstado }) {
 /** O resultado da consulta: o preço médio do litro de cada combustível na escolha, um NumeroIndicador por combustível. */
 export function FaixaTanque({ dados }: { dados: DadosPrecoNoEstado }) {
   const { linha } = useEstado(dados);
-  const [litros] = useLitros();
+  const [litros] = useLitrosTanque();
   const nome = linha ? linha.nome : "Brasil";
   const mes = mesExtenso(dados.ultimoMes);
   const litrosValidos = Number.isFinite(litros) && litros > 0 && litros <= 1000;

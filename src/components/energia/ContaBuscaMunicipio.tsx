@@ -1,9 +1,10 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Nome } from "@/components/i18n/Nome";
 import { buscarMunicipios, prepararBuscaMunicipios, type IndiceMunicipios, type MunicipioEncontrado } from "@/lib/energia/conta";
 import { useTx } from "@/lib/energia/useIdioma";
+import { carregarIndiceMunicipios } from "@/lib/energia/indiceMunicipiosCliente";
 
 /**
  * Busca da distribuidora pelo município: quem não sabe a sigla da sua distribuidora digita o município e escolhe na lista. O índice
@@ -13,27 +14,9 @@ import { useTx } from "@/lib/energia/useIdioma";
  * destaca a distribuidora e diz o que achou.
  */
 
-const URL_INDICE = "/setor-eletrico/conta-de-luz/municipios.json";
-let carga: Promise<IndiceMunicipios> | null = null;
-
-function carregar(): Promise<IndiceMunicipios> {
-  if (!carga) {
-    carga = fetch(URL_INDICE)
-      .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
-        return r.json() as Promise<IndiceMunicipios>;
-      })
-      .catch((e: unknown) => {
-        carga = null;
-        throw e;
-      });
-  }
-  return carga;
-}
-
 type Situacao = "ocioso" | "carregando" | "pronto" | "erro";
 
-export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioEncontrado) => void }) {
+export function ContaBuscaMunicipio({ aoEscolher, valorSelecionado }: { aoEscolher: (m: MunicipioEncontrado) => void; valorSelecionado?: string }) {
   const uid = useId();
   const tx = useTx();
   const [termo, setTermo] = useState("");
@@ -43,6 +26,11 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
   const [ativo, setAtivo] = useState(0);
   // texto do município escolhido na lista: enquanto o campo mostra esse texto ("Nome (UF)"), não há "nenhum município" a avisar
   const [escolhido, setEscolhido] = useState<string | null>(null);
+  useEffect(() => {
+    if (valorSelecionado === undefined) return;
+    setTermo(valorSelecionado);
+    setEscolhido(valorSelecionado || null);
+  }, [valorSelecionado]);
   const preparado = useMemo(() => (indice ? prepararBuscaMunicipios(indice) : []), [indice]);
   const resultados = useMemo(() => (indice ? buscarMunicipios(indice, preparado, termo) : []), [indice, preparado, termo]);
   const mostrando = aberto && resultados.length > 0;
@@ -50,7 +38,7 @@ export function ContaBuscaMunicipio({ aoEscolher }: { aoEscolher: (m: MunicipioE
   const iniciar = () => {
     if (situacao === "carregando" || situacao === "pronto") return;
     setSituacao("carregando");
-    carregar()
+    carregarIndiceMunicipios()
       .then((i) => {
         setIndice(i);
         setSituacao(i.m.length ? "pronto" : "erro");

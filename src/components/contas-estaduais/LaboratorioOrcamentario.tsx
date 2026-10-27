@@ -1,11 +1,17 @@
 "use client";
-import { useState } from 'react';
+import { useEstadoUrl } from '@/components/painel/useEstadoUrl';
+import { campo, tiposUrl } from '@/lib/painel/estadoUrl';
 const n = (valor: number) => valor.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+const ESQUEMA = {
+  gasto: campo(tiposUrl.numero({ min: 0, max: 100 }), 80, { param: 'lab_gasto', historico: 'replace' }),
+  entrega: campo(tiposUrl.numero({ min: 0, max: 100 }), 60, { param: 'lab_entrega', historico: 'replace' }),
+};
 
 /** `embutido`: dentro do ModeloDidatico da entrada, que já traz o título; fica a premissa do cenário e os controles. */
 export default function LaboratorioOrcamentario({ embutido = false }: { embutido?: boolean } = {}) {
-  const [gasto, setGasto] = useState(80);
-  const [entrega, setEntrega] = useState(60);
+  const [{ gasto, entrega }, definir] = useEstadoUrl(ESQUEMA);
+  const setGasto = (valor: number) => definir({ gasto: valor });
+  const setEntrega = (valor: number) => definir({ entrega: valor });
   return <section className="ce-lab" aria-labelledby={embutido ? undefined : "ce-lab-title"} aria-label={embutido ? "Laboratório: gastar e entregar" : undefined}>
     <div className="ce-lab-header"><div>{!embutido && <><p className="rotulo ce-kicker">Laboratório / cenário hipotético</p><h2 id="ce-lab-title">Gastar e entregar<br/>são medidas diferentes.</h2></>}<p>Um programa tem orçamento de R$ 100 milhões e meta de 100 unidades de serviço. Mova os controles e compare as duas medidas.</p></div><span className="ce-lab-tag">Exemplo didático<br/>Sem dados de governos</span></div>
     <div className="ce-lab-grid"><div className="ce-lab-controls"><label htmlFor="ce-lab-spend">Despesa liquidada <output htmlFor="ce-lab-spend">R$ {gasto} milhões</output></label><input id="ce-lab-spend" type="range" min="0" max="100" step="5" value={gasto} onChange={e => setGasto(Number(e.target.value))}/><label htmlFor="ce-lab-output">Unidades entregues <output htmlFor="ce-lab-output">{entrega} de 100</output></label><input id="ce-lab-output" type="range" min="0" max="100" step="5" value={entrega} onChange={e => setEntrega(Number(e.target.value))}/><div className="ce-lab-presets"><button type="button" onClick={() => { setGasto(100); setEntrega(60); }}>Todo o orçamento, 60 entregas</button><button type="button" onClick={() => { setGasto(80); setEntrega(60); }}>Restaurar exemplo</button></div></div>

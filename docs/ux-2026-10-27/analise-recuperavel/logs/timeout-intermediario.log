@@ -1,0 +1,147 @@
+
+> scrutiniums@0.1.0 verificar:rapido
+> node scripts/verificar.mjs rapido
+
+
+▶ Lint: npm run lint
+
+> scrutiniums@0.1.0 lint
+> next lint
+
+✔ No ESLint warnings or errors
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Derivados (npm run preparar): node scripts/preparar.mjs
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+obs: app.js 1299 KB → core 564 KB + municipal 177 KB + emergentes 352 KB
+obs: casca.min.js 9 KB (de src/lib/observatorios/cascaPura.ts)
+
+▶ Tipos: npx tsc --noEmit
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+▶ Cobertura bilíngue confere com as fontes de código: node scripts/cobertura-i18n.mjs --check
+Cobertura i18n gerada e validada a partir de 1616 fontes de código.
+
+▶ Testes afetados: node scripts/testes-afetados.mjs
+Base origin/main: 38 arquivo(s) alterado(s).
+  teste  src/tests/analise-recuperavel-browser.test.ts  (teste alterado)
+  teste  src/tests/analise-recuperavel.test.ts  (teste alterado)
+  teste  src/tests/acesso-invariantes.test.ts  (cita src/components/conta/FerramentasConta.tsx)
+  teste  src/tests/ci-classificar-mudancas.test.ts  (cita scripts/analise-recuperavel-energia.mjs)
+  teste  src/tests/design-tokens.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/educacao.test.ts  (cita src/components/educacao/PainelEducacao.tsx)
+  teste  src/tests/energia-agua.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-carga.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-celular-r10.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-comp-imagem-grafico.test.ts  (cita src/components/painel/useEstadoUrl.ts)
+  teste  src/tests/energia-comp-integracao.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-conta-aperitivo.test.ts  (cita src/components/energia/ContaLuzNaMinhaCidade.tsx)
+  teste  src/tests/energia-conta.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-conteudo-r8-P.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-conteudo-r8-R.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-estrutura-r7.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-interface-r2.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-mapa.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/energia-pld.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-previsoes.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-qualidade.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-regulacao.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/energia-transicao.test.ts  (cita src/components/energia/ContaBuscaMunicipio.tsx)
+  teste  src/tests/frescor-dominios.test.ts  (cita src/components/educacao/PainelEducacao.tsx)
+  teste  src/tests/i18n-fontes.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/i18n-glossario-cobertura.test.ts  (cita src/lib/conta/resumoRecorte.ts)
+  teste  src/tests/i18n-glossario-produtos.test.ts  (cita src/lib/conta/resumoRecorte.ts)
+  teste  src/tests/i18n-uso-cobertura.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/leva2.test.ts  (cita src/components/combustiveis/PrecoNoEstado.tsx)
+  teste  src/tests/navegacao-colecao.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/para-voce.test.ts  (cita src/components/combustiveis/PrecoNoEstado.tsx)
+  teste  src/tests/testes-afetados.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  teste  src/tests/vitest-sequenciador.test.ts  (cita src/tests/analise-recuperavel-browser.test.ts)
+  teste  src/tests/vocabulario.test.ts  (cita src/components/combustiveis/ConsultaTanque.tsx)
+  fonte  docs/ux-2026-10-27/analise-recuperavel/antes/mecanica-antes.json  (código alterado; testes que o importam)
+  fonte  docs/ux-2026-10-27/analise-recuperavel/antes/voltar-painel-antes.json  (código alterado; testes que o importam)
+  fonte  scripts/analise-recuperavel-energia.mjs  (código alterado; testes que o importam)
+  fonte  scripts/analise-recuperavel-verificacao.mjs  (código alterado; testes que o importam)
+  fonte  src/components/combustiveis/ConsultaTanque.tsx  (código alterado; testes que o importam)
+  fonte  src/components/combustiveis/PrecoNoEstado.tsx  (código alterado; testes que o importam)
+  fonte  src/components/combustiveis/useLitrosTanque.ts  (código alterado; testes que o importam)
+  fonte  src/components/conta/CopiarLinkRecorte.tsx  (código alterado; testes que o importam)
+  fonte  src/components/conta/DetalhesRecorte.tsx  (código alterado; testes que o importam)
+  fonte  src/components/conta/FerramentasConta.tsx  (código alterado; testes que o importam)
+  fonte  src/components/conta/MeusRecortes.tsx  (código alterado; testes que o importam)
+  fonte  src/components/conta/useEnderecoAnalise.ts  (código alterado; testes que o importam)
+  fonte  src/components/contas-estaduais/LaboratorioOrcamentario.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/LaboratorioIdeb.tsx  (código alterado; testes que o importam)
+  fonte  src/components/educacao/PainelEducacao.tsx  (código alterado; testes que o importam)
+  fonte  src/components/energia/ContaBuscaMunicipio.tsx  (código alterado; testes que o importam)
+  fonte  src/components/energia/ContaLuzNaMinhaCidade.tsx  (código alterado; testes que o importam)
+  fonte  src/components/energia/ContaSimulador.tsx  (código alterado; testes que o importam)
+  fonte  src/components/energia/ContaTarifas.tsx  (código alterado; testes que o importam)
+  fonte  src/components/energia/useMunicipioDaConta.ts  (código alterado; testes que o importam)
+  fonte  src/components/inflacao/ComoPesa.tsx  (código alterado; testes que o importam)
+  fonte  src/components/painel/useEstadoUrl.ts  (código alterado; testes que o importam)
+  fonte  src/lib/conta/resumoRecorte.ts  (código alterado; testes que o importam)
+  fonte  src/lib/energia/conta.ts  (código alterado; testes que o importam)
+  fonte  src/lib/energia/expansao.ts  (código alterado; testes que o importam)
+  fonte  src/lib/energia/indiceMunicipiosCliente.ts  (código alterado; testes que o importam)
+  fonte  src/lib/nomesUf.ts  (código alterado; testes que o importam)
+  fonte  src/lib/painel/enderecoAnalise.ts  (código alterado; testes que o importam)
+  fonte  src/lib/painel/estadoUrl.ts  (código alterado; testes que o importam)
+  fonte  src/tests/suporte/conta-cpf-browser.ts  (cita src/components/combustiveis/ConsultaTanque.tsx; testes que o importam)
+[MIXED_EXPORTS] Entry module "vitest.config.ts" is using named (including "PesadosPrimeiro", "default", "ehPesado") and default exports together. Consumers of your bundle will have to use `chunk.default` to access the default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+
+
+ RUN  v4.1.10 /workspace/scrutiniums-analise-recuperavel
+
+Assistência social: 14050 unidades e 103847 formulários RMA; arquivos íntegros.
+Segurança alimentar: 5570 municípios, 55700 respostas e 12 recortes PNADC materializados.
+Segurança alimentar, bases complementares: 5571 municípios em arquivos por UF e sete CSV materializados.
+Trabalho e Renda: snapshot materializado e verificado (6593631 bytes; SHA-256 1e20187e13c89939b3b79254eedae8d619dcdfd18dc0e7e9b8696cad28ac979a).
+ ❯ src/tests/painel-molde-obee-a.test.ts (18 tests | 1 failed) 8799ms
+     × /eficiencia-estatal/trabalho-renda/cadastro-unico 5323ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/tests/painel-molde-obee-a.test.ts > molde de painel, Eficiência Estatal (frente obee-a) > /eficiencia-estatal/trabalho-renda/cadastro-unico
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/tests/painel-molde-obee-a.test.ts:102:14
+    100|     ["/eficiencia-estatal/trabalho-renda/renda-das-familias", PaginaTr…
+    101|     ["/eficiencia-estatal/trabalho-renda/renda-do-trabalho", PaginaTra…
+    102|   ] as const)("%s", async (rota, P) => {
+       |              ^
+    103|     const el = (P as () => ReactElement<Record<string, unknown>>)();
+    104|     const corpo = await (el.type as (p: Record<string, unknown>) => Pr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 121 passed (122)
+      Tests  1 failed | 4153 passed | 7 skipped | 1 todo (4162)
+   Start at  15:46:30
+   Duration  93.30s (transform 4.55s, setup 0ms, import 87.58s, tests 162.46s, environment 13ms)
+
+
+verificar:rapido (5 vCPU, 33 GB, 2026-10-27)
+  ok            6 s  Lint
+  ok           27 s  Tipos
+  ok           16 s  Derivados (npm run preparar)
+  ok            6 s  Cobertura bilíngue confere com as fontes de código
+  FALHA  2 min 00 s  Testes afetados  (node scripts/testes-afetados.mjs)
+  tempo de parede: 2 min 33 s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

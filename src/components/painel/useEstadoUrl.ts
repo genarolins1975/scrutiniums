@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import {
   chavesAlteradas,
   estabilizar,
+  escreverEstado,
   gravarNaUrl,
   lerEstado,
   modoHistorico,
@@ -11,6 +12,7 @@ import {
   type ModoHistorico,
   type ValoresDe,
 } from "@/lib/painel/estadoUrl";
+import { ANALISE_ALTERADA, PREPARAR_ANALISE, proximaRevisaoAnalise, type PreparacaoAnalise } from "@/lib/painel/enderecoAnalise";
 
 /**
  * Estado de consulta sincronizado com a URL (ver src/lib/energia/estadoUrl.ts).
@@ -35,6 +37,7 @@ import {
  */
 
 const EVENTO = "scrutiniums:estado-url";
+type GravacaoEstado = { origem: string; revisoes: Record<string, number> };
 
 // efeito de layout no navegador (lê a URL antes de pintar); efeito comum no servidor, onde nada roda
 const useEfeitoAntesDePintar = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -61,6 +64,8 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
   const esquemaRef = useRef(esquema);
   esquemaRef.current = esquema;
   const pendente = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const camposPendentes = useRef(new Set<string>());
+  const revisoes = useRef<Record<string, number>>({});
 
   const aplicar = useCallback((novos: ValoresDe<E>) => {
     valoresRef.current = novos;
@@ -75,8 +80,13 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
 
   const gravar = useCallback(
     (v: ValoresDe<E>, modo: ModoHistorico) => {
-      if (gravarNaUrl(window, esquemaRef.current, v, modo)) {
-        window.dispatchEvent(new CustomEvent(EVENTO, { detail: { origem } }));
+      const esq = esquemaRef.current;
+      const gravado = gravarNaUrl(window, esq, v, modo);
+      // Voltar ao padrão também confirma a edição quando a URL já o representa.
+      // Se o navegador recusou uma mudança real, não anunciar valores que ele não gravou.
+      if (gravado || escreverEstado(esq, v, window.location.search) === window.location.search) {
+        const porParametro = Object.fromEntries(Object.entries(esq).map(([chave, campo]) => [campo.param ?? chave, revisoes.current[chave] ?? 0]));
+        window.dispatchEvent(new CustomEvent<GravacaoEstado>(EVENTO, { detail: { origem, revisoes: porParametro } }));
       }
     },
     [origem],
@@ -100,28 +110,65 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
   // voltar/avançar e gravações de outras instâncias
   useEffect(() => {
     if (!sincronizar) return;
+    const camposDaInstancia = camposPendentes.current;
     const aoVoltar = () => {
       if (pendente.current) {
         clearTimeout(pendente.current);
         pendente.current = null;
       }
+      camposPendentes.current.clear();
+      revisoes.current = {};
       reler();
     };
     const aoGravarOutro = (e: Event) => {
-      if ((e as CustomEvent<{ origem?: string }>).detail?.origem !== origem) reler();
+      const detalhe = (e as CustomEvent<GravacaoEstado>).detail;
+      if (detalhe?.origem === origem) return;
+      const esq = esquemaRef.current;
+      const lidos = lerEstado(esq, window.location.search);
+      for (const [chave, campo] of Object.entries(esq)) {
+        const revisao = detalhe?.revisoes?.[campo.param ?? chave] ?? 0;
+        // 27/10/2026, PR #398: preservar só a edição pendente. Ignorar a ilha inteira
+        // fazia o timer do consumo desfazer uma troca de distribuidora/município.
+        if (camposPendentes.current.has(chave) && revisao <= (revisoes.current[chave] ?? 0)) {
+          (lidos as Record<string, unknown>)[chave] = valoresRef.current[chave];
+        } else {
+          camposPendentes.current.delete(chave);
+          revisoes.current[chave] = revisao;
+        }
+      }
+      if (pendente.current && !camposPendentes.current.size) {
+        clearTimeout(pendente.current);
+        pendente.current = null;
+      }
+      const estaveis = estabilizar(esq, valoresRef.current, lidos);
+      if (estaveis !== valoresRef.current) aplicar(estaveis);
+    };
+    const aoPreparar = (e: Event) => {
+      const detalhe = (e as CustomEvent<PreparacaoAnalise>).detail;
+      const campos = Object.fromEntries(Object.entries(esquemaRef.current).filter(([chave, campo]) => {
+        const param = campo.param ?? chave;
+        const revisao = revisoes.current[chave] ?? 0;
+        if ((detalhe.prioridades.get(param) ?? -1) > revisao) return false;
+        detalhe.prioridades.set(param, revisao);
+        return true;
+      }));
+      detalhe.busca = escreverEstado<Esquema>(campos, valoresRef.current, detalhe.busca, true);
     };
     window.addEventListener("popstate", aoVoltar);
     window.addEventListener(EVENTO, aoGravarOutro);
+    window.addEventListener(PREPARAR_ANALISE, aoPreparar);
     return () => {
       window.removeEventListener("popstate", aoVoltar);
       window.removeEventListener(EVENTO, aoGravarOutro);
+      window.removeEventListener(PREPARAR_ANALISE, aoPreparar);
       // desmontagem (inclusive por navegação): a gravação pendente é descartada, nunca aplicada à página seguinte
       if (pendente.current) {
         clearTimeout(pendente.current);
         pendente.current = null;
       }
+      camposDaInstancia.clear();
     };
-  }, [sincronizar, origem, reler]);
+  }, [sincronizar, origem, reler, aplicar]);
 
   const definir = useCallback<DefinirEstadoUrl<ValoresDe<E>>>(
     (mudanca, op) => {
@@ -130,27 +177,35 @@ export function useEstadoUrl<E extends Esquema>(esquema: E, opcoes: OpcoesEstado
       const parcial = typeof mudanca === "function" ? mudanca(atual) : mudanca;
       const chaves = chavesAlteradas(esq, atual, parcial);
       if (!chaves.length) return;
+      const modo = modoHistorico(esq, chaves, op?.historico);
+      // Antes da entrada nova, gravar a digitação na entrada atual com suas
+      // revisões originais; o voltar retorna à busca digitada, não à anterior.
+      if (sincronizar && typeof window !== "undefined" && pendente.current && !(modo === "replace" && atraso > 0)) {
+        clearTimeout(pendente.current);
+        pendente.current = null;
+        camposPendentes.current.clear();
+        gravar(atual, "replace");
+      }
       const novos = { ...atual } as ValoresDe<E>;
-      for (const k of chaves) (novos as Record<string, unknown>)[k] = (parcial as Record<string, unknown>)[k];
+      const revisao = proximaRevisaoAnalise();
+      for (const k of chaves) {
+        (novos as Record<string, unknown>)[k] = (parcial as Record<string, unknown>)[k];
+        revisoes.current[k] = revisao;
+      }
       aplicar(novos);
       if (!sincronizar || typeof window === "undefined") return;
-      const modo = modoHistorico(esq, chaves, op?.historico);
-      if (modo === "replace") {
+      window.dispatchEvent(new Event(ANALISE_ALTERADA));
+      if (modo === "replace" && atraso > 0) {
+        for (const chave of chaves) camposPendentes.current.add(chave);
         if (pendente.current) clearTimeout(pendente.current);
         pendente.current = setTimeout(() => {
           pendente.current = null;
+          camposPendentes.current.clear();
           gravar(valoresRef.current, "replace");
         }, atraso);
         return;
       }
-      // antes da entrada nova, a digitação pendente vai para a entrada atual:
-      // o voltar retorna à busca digitada, não ao estado anterior a ela
-      if (pendente.current) {
-        clearTimeout(pendente.current);
-        pendente.current = null;
-        gravar(atual, "replace");
-      }
-      gravar(novos, "push");
+      gravar(novos, modo);
     },
     [aplicar, gravar, sincronizar, atraso],
   );

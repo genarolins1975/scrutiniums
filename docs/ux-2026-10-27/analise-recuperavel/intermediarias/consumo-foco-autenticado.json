@@ -1,0 +1,29 @@
+{
+  "build": "7WK2sis8IxzPaxjBcAPJ5",
+  "casos": [
+    {
+      "logado": true,
+      "antes": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 490,63\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B2, sem subclasse na fonte.\n\nNa fonte, a tarifa de Rural é igual à de Residencial em 81 de 81 distribuidoras do conjunto, inclusive na Neoenergia PE, e o valor é o mesmo da classe Residencial. O desconto rural não está incluído neste cálculo."
+      },
+      "voltar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=450&conta_municipio=PE%7CRecife",
+        "parametro": "450",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 367,97\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B1, subclasse Residencial."
+      },
+      "avancar": {
+        "url": "/setor-eletrico/conta-de-luz?dist=10835932000108&skwh=600&conta_municipio=PE%7CRecife&sclasse=rural",
+        "parametro": "600",
+        "input": "600",
+        "focado": true,
+        "resposta": "ESTIMATIVA MENSAL, NEOENERGIA PE\n\nR$ 490,63\n\nEstimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública. Tarifas da vigência iniciada em 29/04/2026 (REH 3.583/2026).\n\nTarifa usada: subgrupo B2, sem subclasse na fonte.\n\nNa fonte, a tarifa de Rural é igual à de Residencial em 81 de 81 distribuidoras do conjunto, inclusive na Neoenergia PE, e o valor é o mesmo da classe Residencial. O desconto rural não está incluído neste cálculo."
+      }
+    }
+  ]
+}

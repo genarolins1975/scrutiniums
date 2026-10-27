@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId } from "react";
+import { useLitrosTanque } from "./useLitrosTanque";
 import { useSelecaoGas } from "@/components/gas/useSelecaoGas";
 import { mesExtenso, num, reais } from "@/lib/gas/formato";
 import type { IdCombustivel, ProdutoCombustivel } from "@/lib/gas/gold";
@@ -50,7 +51,7 @@ export function PrecoNoEstado({ dados, titulo, destacarTanque = false }: { dados
   const id = useId();
   const opcoes = opcoesUf(dados.ufs);
   const escolha = useSelecaoGas("uf", opcoes.map((o) => o.valor), BRASIL);
-  const [litros, setLitros] = useState(40);
+  const [litros, setLitros] = useLitrosTanque();
   const linha = escolha.valor === BRASIL ? null : dados.ufs.find((u) => u.uf === escolha.valor) ?? null;
   const nome = linha ? linha.nome : "Brasil";
   const mes = mesExtenso(dados.ultimoMes);
