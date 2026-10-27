@@ -326,3 +326,24 @@ export function ligarNavegacao(nav: Element | null): void {
   nav.querySelectorAll<HTMLElement>(".nav-colecao-faixa").forEach(acompanhaFaixa);
   nav.querySelectorAll("details").forEach(fechavel);
 }
+
+export type MetaResumoCredito = {
+  carteira_conceitos?: { sgs?: { v?: number | null; ref?: string; def?: string } };
+  if_contagens?: { cadastro_sedes?: { n?: number | null; ref?: string; def?: string } };
+  inad_conceitos?: { scr?: { v?: number | null; ref?: string; def?: string } };
+};
+
+/** Resumo editorial da entrada: uma fonte de HTML para o servidor e o atlas, sem históricos ou cálculos novos. */
+export function htmlResumoCredito(meta: MetaResumoCredito = {}): string {
+  const formato = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 });
+  const definitions = [
+    { href: '/observatorio/credit', action: 'Ver evolução do saldo', summary: 'Crédito em aberto no sistema financeiro em uma data; não mede apenas os novos empréstimos do mês.', label: 'Saldo das operações', source: 'BCB · SGS 20539', value: meta.carteira_conceitos?.sgs?.v, ref: meta.carteira_conceitos?.sgs?.ref, def: meta.carteira_conceitos?.sgs?.def, format: (v: number) => `R$ ${formato.format(v)} bi` },
+    { href: '/observatorio/sfn-entries-exits', action: 'Explorar o cadastro do SFN', summary: 'Sedes de instituições em funcionamento no cadastro. Não é a contagem de agências nem de conglomerados do IF.data.', label: 'Sedes em funcionamento', source: 'BCB · Unicad', value: meta.if_contagens?.cadastro_sedes?.n, ref: meta.if_contagens?.cadastro_sedes?.ref, def: meta.if_contagens?.cadastro_sedes?.def, format: (v: number) => formato.format(v) },
+    { href: '/observatorio/credit-panorama?pmet=inad', action: 'Explorar a inadimplência no SCR', summary: 'Carteira com atraso superior a 90 dias, no conceito arrastado do SCR. Não equivale à probabilidade de default.', label: 'Inadimplência · conceito SCR', source: 'BCB · SCR.data', value: meta.inad_conceitos?.scr?.v, ref: meta.inad_conceitos?.scr?.ref, def: meta.inad_conceitos?.scr?.def, format: (v: number) => `${formato.format(v)}%` },
+  ];
+  return `<section class="atlas-metrics" aria-label="Indicadores do crédito com períodos próprios">${definitions.map(d => {
+    const valid = typeof d.value === "number" && Number.isFinite(d.value);
+    const valor = typeof d.value === "number" && valid ? d.format(d.value) : "—";
+    return `<div class="atlas-metric"><p class="atlas-metric-label">${esc(d.label)}</p><p class="atlas-metric-value">${esc(valor)}</p><p class="atlas-source">${esc(d.source)} · ${esc(d.ref || 'data não disponível')}</p>${valid ? '' : '<p class="atlas-source">Indicador não disponível nesta publicação da base.</p>'}<p class="atlas-metric-context">${esc(d.summary)}</p><a href="${esc(d.href)}">${esc(d.action)} →</a><details class="atlas-definition"><summary>Definição de ${esc(d.label.toLocaleLowerCase('pt-BR'))}</summary><p>${esc(d.def || 'Definição não disponível nesta publicação.')}</p><a href="/observatorio/methodology">Metodologia e fontes ↗</a></details></div>`;
+  }).join('')}</section>`;
+}

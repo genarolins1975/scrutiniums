@@ -62,3 +62,6 @@ __pycache__/
 # Trabalho da atualização agendada por grupo (scripts/atualizacao_por_grupo.py)
 /.atualizacao/
 /vitest-tempos.json
+
+# Resumos de entrada, regenerados por npm run preparar
+/src/lib/publicacao/entradas.json

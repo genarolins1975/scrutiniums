@@ -108,6 +108,7 @@ export function Hero({ vitrines, idioma = "pt" }: { vitrines: Record<DominioId, 
                         alt=""
                         width={480}
                         height={600}
+                        loading="lazy"
                         decoding="async"
                         style={v.focoImagem ? { objectPosition: v.focoImagem } : undefined}
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"

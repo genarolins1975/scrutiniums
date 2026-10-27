@@ -4,7 +4,6 @@
  */
 (() => {
   'use strict';
-  const FORMAT = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
   const fixed = (v, digits = 2) => v.toLocaleString('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits });
   const STAGES = [
     ['Origem dos recursos', 'Mecanismo de captação bancária', ['Depósitos', 'Títulos emitidos', 'Outras captações'], 'Funding bancário', 'Recursos para a intermediação'],
@@ -31,28 +30,28 @@
 
   function artifact(index) {
     const visual = node('span', 'atlas-artifact'); visual.setAttribute('aria-hidden', 'true');
-    visual.style.backgroundPosition = `${(index % 4) * 100 / 3}% ${index < 4 ? 0 : 100}%`;
+    const image = node('img');
+    image.alt = ''; image.width = 440; image.height = 440;
+    image.loading = 'lazy'; image.decoding = 'async';
+    image.sizes = '(max-width: 650px) 100vw, (max-width: 1100px) 40vw, 300px';
+    image.srcset = `/obs/arte/etapa-${index}-240-v1.webp 240w, /obs/arte/etapa-${index}-440-v1.webp 440w`;
+    image.src = `/obs/arte/etapa-${index}-440-v1.webp`;
+    visual.append(image);
     return visual;
   }
   function visualHero(mapa) {
-    const hero = mapa.querySelector('.obs-hero');
+    const hero = mapa.querySelector('.obs-hero:not([data-credito-abertura])');
     const orientation = node('details', 'atlas-orientation'); orientation.append(node('summary', '', 'Sobre o observatório, caminhos e fontes'));
     // o rótulo de contexto da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026) fica acima do título da gravura, no lugar do
     // nome antigo escrito à mão; sem ele (fora da aplicação), o nome da coleção
     const rotulo = hero.querySelector('[data-rotulo-contexto]'); const rotuloCasca = rotulo ? rotulo.closest('.casca') || rotulo : null; if (rotuloCasca) rotuloCasca.remove();
     const oldTitle = hero.querySelector('h1'); const oldLabel = node('p', 'atlas-eyebrow', oldTitle.textContent); oldTitle.replaceWith(oldLabel);
     orientation.append(...hero.childNodes); hero.after(orientation);
-    hero.classList.add('atlas-city'); hero.setAttribute('aria-labelledby', 'obs-credit-titulo');
-    const image = node('img', 'atlas-city-image'); image.src = '/obs/arte/economia-gravura-v1.webp'; image.width = 1600; image.height = 800; image.fetchPriority = 'high'; image.alt = 'Gravura conceitual de instituições, moradias, comércio e indústria; não representa uma localização real.';
-    const copy = node('div', 'atlas-city-copy'); const title = node('h1', '', 'O crédito que conecta pessoas e negócios.'); title.id = 'obs-credit-titulo';
-    const cta = link('Explorar o ciclo ↓', '#mp-ciclo'); cta.className = 'obs-primary';
-    copy.append(rotuloCasca || subtitle('Crédito e sistema financeiro'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
-    const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore os temas do crédito');
-    [['Instituições', '/institutions'], ['Habitação', '/housing-credit'], ['Empresas', '/credit-panorama?pcli=PJ'], ['Famílias', '/credit-panorama?pcli=PF']].forEach(([name, route], i) => {
-      const a = link(name, '/observatorio' + route); a.className = `atlas-city-point point-${i}`; points.append(a);
-    });
-    hero.append(image, copy, points, node('p', 'atlas-city-caption', 'Ilustração conceitual gerada por IA · sem proporções quantitativas'));
-    const metric = mapa.querySelector('.atlas-metrics'); hero.after(metric);
+    const existente = mapa.querySelector('[data-credito-abertura]');
+    const abertura = existente || document.getElementById('credito-abertura').content.firstElementChild.cloneNode(true);
+    if (!existente && rotulo) abertura.querySelector('[data-abertura-rotulo]').replaceChildren(rotulo);
+    hero.replaceWith(abertura);
+    const metric = mapa.querySelector('.atlas-metrics'); abertura.after(metric);
     metric.after(node('p', 'atlas-period-note', 'Cada medida tem seu próprio universo e período. Estoque não é concessão; inadimplência observada não é PD.'));
     const coverage = mapa.querySelector('.atlas-coverage'); if (coverage) orientation.append(coverage);
     const meta = mapa.querySelector('.obs-map-meta'); if (meta) orientation.append(meta);
@@ -76,21 +75,12 @@
   }
 
   function metrics(mapa, meta) {
-    const definitions = [
-      { href: '/observatorio/credit', action: 'Ver evolução do saldo', summary: 'Crédito em aberto no sistema financeiro em uma data; não mede apenas os novos empréstimos do mês.', label: 'Saldo das operações', source: 'BCB · SGS 20539', value: meta.carteira_conceitos?.sgs?.v, ref: meta.carteira_conceitos?.sgs?.ref, def: meta.carteira_conceitos?.sgs?.def, format: v => `R$ ${FORMAT.format(v)} bi` },
-      { href: '/observatorio/sfn-entries-exits', action: 'Explorar o cadastro do SFN', summary: 'Sedes de instituições em funcionamento no cadastro. Não é a contagem de agências nem de conglomerados do IF.data.', label: 'Sedes em funcionamento', source: 'BCB · Unicad', value: meta.if_contagens?.cadastro_sedes?.n, ref: meta.if_contagens?.cadastro_sedes?.ref, def: meta.if_contagens?.cadastro_sedes?.def, format: v => FORMAT.format(v) },
-      { href: '/observatorio/credit-panorama?pmet=inad', action: 'Explorar a inadimplência no SCR', summary: 'Carteira com atraso superior a 90 dias, no conceito arrastado do SCR. Não equivale à probabilidade de default.', label: 'Inadimplência · conceito SCR', source: 'BCB · SCR.data', value: meta.inad_conceitos?.scr?.v, ref: meta.inad_conceitos?.scr?.ref, def: meta.inad_conceitos?.scr?.def, format: v => `${FORMAT.format(v)}%` },
-    ];
-    const wrap = node('section', 'atlas-metrics'); wrap.setAttribute('aria-label', 'Indicadores do crédito com períodos próprios');
-    definitions.forEach(d => {
-      const item = node('div', 'atlas-metric'); const valid = Number.isFinite(d.value);
-      item.append(node('p', 'atlas-metric-label', d.label), node('p', 'atlas-metric-value', valid ? d.format(d.value) : '—'), node('p', 'atlas-source', `${d.source} · ${d.ref || 'data não disponível'}`));
-      if (!valid) item.append(node('p', 'atlas-source', 'Indicador não disponível nesta publicação da base.'));
-      item.append(node('p', 'atlas-metric-context', d.summary), link(d.action + ' →', d.href));
-      const detail = node('details', 'atlas-definition');
-      detail.append(node('summary', '', `Definição de ${d.label.toLocaleLowerCase('pt-BR')}`), node('p', '', d.def || 'Definição não disponível nesta publicação.'), link('Metodologia e fontes ↗', '/observatorio/methodology'));
-      item.append(detail); wrap.append(item);
-    });
+    let wrap = mapa.querySelector('.atlas-metrics');
+    if (!wrap) {
+      const template = document.createElement('template');
+      template.innerHTML = window.CascaCredito.htmlResumoCredito(meta);
+      wrap = template.content.firstElementChild;
+    }
     const coverage = mapa.querySelector('.obs-metrics');
     (coverage || mapa.querySelector('.obs-hero')).after(wrap);
     if (coverage) { coverage.classList.add('atlas-coverage'); wrap.after(coverage); }

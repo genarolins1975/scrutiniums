@@ -23,7 +23,7 @@ function pronto(ctx: TestContext): NavegadorI18n {
 beforeAll(async () => {
   if (!existsSync(APP) && !EXIGIR) return;
   expect(existsSync(APP), "EXIGIR_BUILD_HTML=1 requer o build de produção").toBe(true);
-  for (const caminho of ["/", "/en"]) expect(modoDaPagina(caminho), caminho).toBe("dinamico");
+  for (const caminho of ["/", "/en"]) expect(modoDaPagina(caminho), caminho).toBe("estatico");
   ambiente = await criarNavegadorI18n();
 }, 90_000);
 afterAll(async () => { await ambiente?.fechar(); });

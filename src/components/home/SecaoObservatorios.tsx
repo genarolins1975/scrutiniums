@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { ACENTO } from "@/components/home/acentos";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
-import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
+import { atualizacaoPublicada as atualizacaoObservatorio } from "@/lib/publicacao/entradas";
 import type { Vitrine } from "@/lib/vitrine";
 import { observatoriosDaOrigem } from "@/lib/observatorios/registro";
 import { rotaPorta } from "@/lib/perguntas/rotas";

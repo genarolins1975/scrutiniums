@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "../fonts/extended.css";
 import "../../public/observatorios.css";
 import "../../public/observatorios-gravuras.css";
 import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acesso";
@@ -10,31 +11,38 @@ import { ContinuidadeNavegacao } from "@/components/observatorios/ContinuidadeNa
 
 /**
  * Fontes auto-hospedadas (variáveis, subsets latin + latin-ext via
- * Fontsource, licença OFL): sem dependência de CDN externo.
+ * Fontsource, licença OFL): latin no caminho crítico; latin-ext sob demanda
+ * via extended.css. Os arquivos originais e seus glifos são preservados.
  */
 const serif = localFont({
-  src: [
-    { path: "../fonts/playfair-display.woff2", style: "normal" },
-    { path: "../fonts/playfair-display-ext.woff2", style: "normal" },
-  ],
+  src: "../fonts/playfair-display.woff2",
+  weight: "400 900",
+  style: "normal",
+  // O fallback estendido carrega só quando houver um glifo fora do subset latino.
+  adjustFontFallback: false,
+  fallback: ["Scrutiniums Playfair Extended", "Georgia"],
   variable: "--font-serif",
   display: "swap",
 });
 
 const sans = localFont({
-  src: [
-    { path: "../fonts/inter.woff2", style: "normal" },
-    { path: "../fonts/inter-ext.woff2", style: "normal" },
-  ],
+  src: "../fonts/inter.woff2",
+  weight: "100 900",
+  style: "normal",
+  // O fallback estendido carrega só quando houver um glifo fora do subset latino.
+  adjustFontFallback: false,
+  fallback: ["Scrutiniums Inter Extended", "Arial"],
   variable: "--font-sans",
   display: "swap",
 });
 
 const label = localFont({
-  src: [
-    { path: "../fonts/archivo-narrow.woff2", style: "normal" },
-    { path: "../fonts/archivo-narrow-ext.woff2", style: "normal" },
-  ],
+  src: "../fonts/archivo-narrow.woff2",
+  weight: "400 700",
+  style: "normal",
+  // O fallback estendido carrega só quando houver um glifo fora do subset latino.
+  adjustFontFallback: false,
+  fallback: ["Scrutiniums Archivo Extended", "Arial"],
   variable: "--font-label",
   display: "swap",
 });

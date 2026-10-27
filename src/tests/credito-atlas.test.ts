@@ -40,8 +40,8 @@ describe('Atlas: integração e separação das hipóteses', () => {
     expect(html).toContain('/obs/atlas.css');
     expect(readFileSync('public/obs/editorial.js', 'utf8')).toContain('window.CreditAtlas?.enhance');
     expect(source).not.toMatch(/fetch\(|localStorage\.(?:setItem|removeItem|clear)\s*\(|state\.data\s*=/);
-    expect(source).toContain('Number.isFinite(d.value)');
-    expect(source).toContain('Indicador não disponível nesta publicação da base.');
+    expect(readFileSync('src/lib/observatorios/cascaPura.ts', 'utf8')).toContain('Number.isFinite(d.value)');
+    expect(readFileSync('src/lib/observatorios/cascaPura.ts', 'utf8')).toContain('Indicador não disponível nesta publicação da base.');
   });
   it('o catálogo original é movido, não reescrito; o fluxo só muda com as sete etapas', () => {
     expect(source).toContain('cards.length !== STAGES.length');

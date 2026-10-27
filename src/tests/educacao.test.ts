@@ -84,12 +84,15 @@ describe("educação nos municípios: lugar no registro, navegação e acesso", 
     }
   });
 
-  it("as rotas dinâmicas levam a gold no pacote do servidor, e a home lê a gold nacional", async () => {
+  it("as rotas dinâmicas levam a gold no pacote do servidor, e a home publica o resumo no manifesto", async () => {
     const { default: config } = await import("../../next.config.mjs");
     const inc = (config as { experimental: { outputFileTracingIncludes: Record<string, string[]> } }).experimental.outputFileTracingIncludes;
     expect(inc["/educacao-municipal"]).toContain("./public/educacao/gold/**/*.json");
     expect(inc["/aperitivo/educacao-municipal"]).toContain("./public/educacao/gold/**/*.json");
-    expect(inc["/"]).toContain("./public/educacao/gold/educacao.json");
+    expect(inc["/"]).toBeUndefined();
+    const { portasPublicadas } = await import("@/lib/publicacao/entradas");
+    const { numeroEducacaoMunicipios } = await import("@/lib/perguntas/portas");
+    expect(portasPublicadas.flatMap(p => p.numeros).find(n => n.href === "/educacao-municipal")).toEqual(numeroEducacaoMunicipios());
     for (const s of ["AC", "SP", "DF"]) expect(existsSync(join(raiz, "public/educacao/gold/municipios", `${s}.json`)), s).toBe(true);
   });
 });

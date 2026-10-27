@@ -23,6 +23,30 @@ import { COOKIE_OBSERVATORIO, VALIDADE_ULTIMO_ACESSO, ultimoAcessoDoCaminho } fr
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  // O artefato público nunca lê sessão. O redirecionamento é decidido antes
+  // do streaming, com revogação/onboarding conferidos pelo endpoint existente.
+  if (pathname === "/" || pathname === "/en") {
+    const sessao = await verifySessionCookie(request.cookies.get("scrutiniums_session")?.value);
+    if (sessao) {
+      try {
+        const estado = await fetch(new URL("/api/auth/estado", request.url), {
+          headers: { cookie: request.headers.get("cookie") ?? "" }, cache: "no-store",
+        });
+        if (!estado.ok) throw new Error("Sessão indisponível");
+        const conta = await estado.json() as { completo?: boolean };
+        if (conta.completo === true) {
+          const resposta = NextResponse.redirect(new URL("/app/observatorios", request.url));
+          resposta.headers.set("Cache-Control", "private, no-store");
+          return resposta;
+        }
+      } catch {
+        return new NextResponse("Não foi possível verificar sua sessão. Tente novamente.", {
+          status: 503, headers: { "Cache-Control": "private, no-store", "Retry-After": "5" },
+        });
+      }
+    }
+    return NextResponse.next();
+  }
   const caminhoPolitica = parDeIdioma(pathname)?.pt ?? pathname;
   // A validação de um slug desconhecido precisa anteceder o streaming:
   // notFound() depois do início do corpo pode manter status HTTP 200.

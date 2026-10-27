@@ -1,22 +1,5 @@
 import { readFileSync } from "node:fs";
 
-/** Golds lidas por src/lib/perguntas/portas.ts em tempo de requisição. */
-const GOLDS_DAS_PORTAS = [
-  "./public/obs/data/gold/pulse.json",
-  "./public/gas/gold/gas-de-cozinha.json",
-  "./public/agro/gold/snapshot.json",
-  "./public/saneamento/gold/agregados.json",
-  "./public/eficiencia/judiciario/snapshot.json",
-  "./public/eficiencia/gold/educacao_capitais.json",
-  "./public/eficiencia/gold/saude_capitais.json",
-  "./public/eficiencia/saneamento/snapshot.json",
-  "./public/energia/gold/agua_detalhe.json",
-  "./public/energia/gold/conta.json",
-  "./public/inflacao/gold/ipca.json",
-  "./public/previdencia/gold/previdencia.json",
-  "./public/educacao/gold/educacao.json",
-];
-
 /**
  * Arquivos que o "Citar" e o disparo dos alertas leem em tempo de requisição (src/lib/conta/metadados.ts): as datas de
  * cada fonte em src/lib/frescor/limiares.json e os manifestos com id de publicação. O teste conta-ferramentas confere
@@ -43,9 +26,6 @@ const nextConfig = {
       "/eficiencia-estatal/laboratorio-cesta": [
         "./docs/obee/resultados/revisao-interativa-v3.html",
       ],
-      // a home é dinâmica (sessão) e lê as golds das portas a cada instância (src/lib/perguntas/portas.ts);
-      // as páginas abertas são estáticas e as leem no build. src/tests/perguntas-portas.test.ts confere esta lista
-      "/": GOLDS_DAS_PORTAS,
       "/saneamento/municipio/[id]": ["./public/saneamento/gold/**/*.json"],
       // versão aperitivo do Saneamento (servida em /saneamento/municipio a quem não tem sessão): dinâmica, lê a cada
       // instância só o que a consulta usa (tabela municipal, ficha da UF, catálogo de prestadores e proveniência)

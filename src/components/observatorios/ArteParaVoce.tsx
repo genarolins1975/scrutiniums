@@ -10,7 +10,7 @@ export function ArteFoto({ src }: { src: string }) {
 
 /** Uma cena da prancha 2 × 2 do Setor Elétrico, centrada na faixa do cartão. */
 export function ArtePrancha({ etapa }: { etapa: (typeof ETAPAS_ENERGIA)[number]["id"] }) {
-  return <GravuraEnergia etapa={etapa} className={styles.prancha} />;
+  return <GravuraEnergia etapa={etapa} className={styles.prancha} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 33vw, 400px" />;
 }
 
 /** Uma das três cenas do tríptico de um tema das contas públicas (/estado/arte/<tema>-gravura-v1.webp). */

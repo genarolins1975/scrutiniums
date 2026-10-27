@@ -1,17 +1,18 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { COOKIE_OBSERVATORIO, colecaoDoCaminho, lerUltimoAcesso } from "@/lib/observatorios/ultimoAcesso";
-import { diretorioDoMapa } from "@/lib/observatorios/mapaConta";
+import { diretorioPublicado as diretorioDoMapa } from "@/lib/publicacao/entradas";
 import { PARA_VOCE_POR_UF, paraVoceDoMapa, ufValida } from "@/lib/observatorios/paraVoce";
 import { listarRecortes } from "@/lib/conta/recortes";
 import { listarAlertas } from "@/lib/conta/alertas";
 import { IDS_DOMINIOS, textosDominio, type DominioFrescorId } from "@/lib/frescor/regras";
 import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { MapaDaConta, type Retomar } from "@/components/observatorios/MapaDaConta";
+import { MapaDaConta, FatiaRetomar, type Retomar } from "@/components/observatorios/MapaDaConta";
 
 export const metadata: Metadata = {
   title: "Encontre o painel",
@@ -32,7 +33,30 @@ export default async function EncontreOPainelPagina() {
 
   const { secoes, totais } = diretorioDoMapa();
   const ultimo = lerUltimoAcesso(cookies().get(COOKIE_OBSERVATORIO)?.value);
-  const [recortes, alertas] = await Promise.allSettled([listarRecortes(user.id), listarAlertas(user.id)]);
+  // decisão 1 da seção 8 do parecer, pendente do dono: sem ela, a UF da conta não escolhe os números
+  const uf = PARA_VOCE_POR_UF ? ufValida(user.uf) : null;
+  const paraVoce = { ...paraVoceDoMapa(uf), comNumeros: uf !== null };
+
+  return (
+    <>
+      <MarcaVisita secao="app:observatorios" />
+      <MapaDaConta
+        retomada={
+          <Suspense fallback={<p role="status" className="py-4 text-sm text-carvao-muted">Carregando seus recortes e avisos…</p>}>
+            <Retomada userId={user.id} ultimo={ultimo} />
+          </Suspense>
+        }
+        exemplo={EXEMPLO_DO_CAMPO}
+        paraVoce={paraVoce}
+        secoes={secoes}
+        totais={totais}
+      />
+    </>
+  );
+}
+
+async function Retomada({ userId, ultimo }: { userId: string; ultimo: ReturnType<typeof lerUltimoAcesso> }) {
+  const [recortes, alertas] = await Promise.allSettled([listarRecortes(userId), listarAlertas(userId)]);
   const listaRecortes = recortes.status === "fulfilled" ? recortes.value : [];
   const listaAlertas = alertas.status === "fulfilled" ? alertas.value : [];
 
@@ -47,14 +71,6 @@ export default async function EncontreOPainelPagina() {
     avisos: listaAlertas.map((a) => (ehDominioFrescor(a.dominio) ? textosDominio(a.dominio).nome : a.dominio)),
   };
 
-  // decisão 1 da seção 8 do parecer, pendente do dono: sem ela, a UF da conta não escolhe os números
-  const uf = PARA_VOCE_POR_UF ? ufValida(user.uf) : null;
-  const paraVoce = { ...paraVoceDoMapa(uf), comNumeros: uf !== null };
-
-  return (
-    <>
-      <MarcaVisita secao="app:observatorios" />
-      <MapaDaConta retomar={retomar} exemplo={EXEMPLO_DO_CAMPO} paraVoce={paraVoce} secoes={secoes} totais={totais} />
-    </>
-  );
+  if (!retomar.continuar && !retomar.recortes.length && !retomar.avisos.length) return null;
+  return <FatiaRetomar retomar={retomar} />;
 }

@@ -121,7 +121,7 @@
 #view-mapa .atlas-wheel { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:14px; aspect-ratio:auto; max-width:none; margin:24px 0; }
 #view-mapa .atlas-stage-button { position:relative; inset:auto; transform:none; width:100%; min-width:0; grid-column:span 2; flex-direction:row; flex-wrap:wrap; justify-content:center; gap:8px; padding:0 0 12px; border-radius:0; border-bottom:2px solid transparent; }
 #view-mapa .atlas-stage-button:nth-child(5) { grid-column:2 / span 2; }
-#view-mapa .atlas-artifact { display:block; width:100%; aspect-ratio:1; background-image:url('/obs/arte/etapas-gravura-v1.webp'); background-size:400% 200%; background-repeat:no-repeat; border-radius:3px; }
+#view-mapa .atlas-artifact { position:relative; display:block; width:100%; aspect-ratio:1; overflow:hidden; border-radius:3px; }
 #view-mapa .atlas-stage-name { font-size:var(--tipo-rotulo); max-width:calc(100% - 46px); text-align:left; }
 #view-mapa .atlas-stage-number { flex-shrink:0; width:28px; height:28px; font-size:var(--tipo-meta); }
 #view-mapa .atlas-stage-button[aria-pressed=true] { border-bottom-color:var(--atlas-mint); }
@@ -187,3 +187,8 @@
 #view-mapa .atlas-back { display:inline-flex;align-items:center;min-height:44px;margin-top:12px;color:var(--atlas-mint);font-size:var(--tipo-meta);text-underline-offset:4px; }
 #view-mapa #mp-ciclo, #view-mapa #atlas-etapas, #view-mapa #atlas-analise { scroll-margin-top:90px; }
 #view-mapa .atlas-city-point::before { content:'';display:inline-block;width:8px;height:8px;border:1px solid currentColor;border-radius:50%;margin-right:8px; }
+
+#view-mapa .atlas-artifact img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; mask-image:none; }
+
+/* Reserva a área do conteúdo progressivo, sem deslocar o rodapé para a primeira tela. */
+#view-mapa .credito-carregando { min-height:100vh; padding:24px 0; }

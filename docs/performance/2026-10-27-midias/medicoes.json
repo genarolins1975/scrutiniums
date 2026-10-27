@@ -1,0 +1,435 @@
+{
+  "date": "2026-10-27",
+  "baseline": "bd7a6fd0cda885308940553fe3b33b7abe149629",
+  "units": {
+    "lcp_ms": "ms",
+    "load_ms": "ms",
+    "bytes": "encoded body bytes",
+    "font_bytes": "encoded body bytes",
+    "image_bytes": "encoded body bytes"
+  },
+  "before": [
+    {
+      "route": "/",
+      "run": 0,
+      "lcp_ms": 2236,
+      "load_ms": 5290.5,
+      "bytes": 935975,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/",
+      "run": 1,
+      "lcp_ms": 1876,
+      "load_ms": 4951,
+      "bytes": 935975,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/",
+      "run": 2,
+      "lcp_ms": 1872,
+      "load_ms": 4978.600000000093,
+      "bytes": 935975,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 0,
+      "lcp_ms": 1144,
+      "load_ms": 2628.100000000093,
+      "bytes": 446331,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 1,
+      "lcp_ms": 1428,
+      "load_ms": 2562.3000000000466,
+      "bytes": 446331,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 2,
+      "lcp_ms": 1408,
+      "load_ms": 2565,
+      "bytes": 446331,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 0,
+      "lcp_ms": 1184,
+      "load_ms": 2588.8000000000466,
+      "bytes": 446475,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 1,
+      "lcp_ms": 1124,
+      "load_ms": 2583.600000000093,
+      "bytes": 446475,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 2,
+      "lcp_ms": 1184,
+      "load_ms": 2589.6999999999534,
+      "bytes": 446475,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 0,
+      "lcp_ms": 1560,
+      "load_ms": 2622,
+      "bytes": 471566,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 1,
+      "lcp_ms": 1128,
+      "load_ms": 2606.5,
+      "bytes": 471566,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 2,
+      "lcp_ms": 1176,
+      "load_ms": 2576.4000000001397,
+      "bytes": 471566,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 0,
+      "lcp_ms": 2376,
+      "load_ms": 3234.6999999999534,
+      "bytes": 660694,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 1,
+      "lcp_ms": 1692,
+      "load_ms": 2761.0999999998603,
+      "bytes": 659377,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 2,
+      "lcp_ms": 1692,
+      "load_ms": 2738.0999999998603,
+      "bytes": 659383,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 0
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 0,
+      "lcp_ms": 1900,
+      "load_ms": 6920.199999999953,
+      "bytes": 1255192,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 94510
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 1,
+      "lcp_ms": 1816,
+      "load_ms": 6898,
+      "bytes": 1255192,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 94510
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 2,
+      "lcp_ms": 1944,
+      "load_ms": 6933.699999999953,
+      "bytes": 1255192,
+      "layout_shift_sum": null,
+      "font_bytes": 228096,
+      "image_bytes": 94510
+    },
+    {
+      "route": "/observatorio",
+      "run": 0,
+      "lcp_ms": 7368,
+      "load_ms": 2451.1999999999534,
+      "bytes": 1280828,
+      "layout_shift_sum": null,
+      "font_bytes": 105352,
+      "image_bytes": 397598
+    },
+    {
+      "route": "/observatorio",
+      "run": 1,
+      "lcp_ms": 7384,
+      "load_ms": 2428.5999999998603,
+      "bytes": 1280828,
+      "layout_shift_sum": null,
+      "font_bytes": 105352,
+      "image_bytes": 397598
+    },
+    {
+      "route": "/observatorio",
+      "run": 2,
+      "lcp_ms": 7392,
+      "load_ms": 2458.600000000093,
+      "bytes": 1280828,
+      "layout_shift_sum": null,
+      "font_bytes": 105352,
+      "image_bytes": 397598
+    }
+  ],
+  "after": [
+    {
+      "route": "/",
+      "run": 0,
+      "lcp_ms": 1160,
+      "load_ms": 2067.399999999907,
+      "bytes": 364079,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/",
+      "run": 1,
+      "lcp_ms": 1212,
+      "load_ms": 2012.1999999997206,
+      "bytes": 364079,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/",
+      "run": 2,
+      "lcp_ms": 1120,
+      "load_ms": 2075.399999999907,
+      "bytes": 364079,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 0,
+      "lcp_ms": 1088,
+      "load_ms": 1934.8999999999069,
+      "bytes": 323649,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 1,
+      "lcp_ms": 1136,
+      "load_ms": 1953.3999999999069,
+      "bytes": 323649,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/familias",
+      "run": 2,
+      "lcp_ms": 1108,
+      "load_ms": 1951.6999999997206,
+      "bytes": 323649,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 0,
+      "lcp_ms": 1212,
+      "load_ms": 1967.5999999996275,
+      "bytes": 323764,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 1,
+      "lcp_ms": 1056,
+      "load_ms": 1939.5,
+      "bytes": 323764,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/perguntas/energia-e-infraestrutura",
+      "run": 2,
+      "lcp_ms": 1080,
+      "load_ms": 1931.2000000001863,
+      "bytes": 323764,
+      "layout_shift_sum": 0,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 0,
+      "lcp_ms": 1084,
+      "load_ms": 2001.5,
+      "bytes": 348814,
+      "layout_shift_sum": 0.18453824405250419,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 1,
+      "lcp_ms": 1096,
+      "load_ms": 2018.6000000000931,
+      "bytes": 348814,
+      "layout_shift_sum": 0.18453824405250419,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/observatorio-do-credito",
+      "run": 2,
+      "lcp_ms": 1092,
+      "load_ms": 1972.2000000001863,
+      "bytes": 348814,
+      "layout_shift_sum": 0.18453824405250419,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 0,
+      "lcp_ms": 1316,
+      "load_ms": 2330.7000000001863,
+      "bytes": 536608,
+      "layout_shift_sum": 0.00013159484230720276,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 1,
+      "lcp_ms": 1124,
+      "load_ms": 2138.2000000001863,
+      "bytes": 536608,
+      "layout_shift_sum": 0.00013159484230720276,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/app/observatorios",
+      "run": 2,
+      "lcp_ms": 1140,
+      "load_ms": 2150.899999999907,
+      "bytes": 536608,
+      "layout_shift_sum": 0.00013159484230720276,
+      "font_bytes": 105352,
+      "image_bytes": 0
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 0,
+      "lcp_ms": 1328,
+      "load_ms": 2980.1999999997206,
+      "bytes": 834740,
+      "layout_shift_sum": 0.18365837947350833,
+      "font_bytes": 105352,
+      "image_bytes": 105204
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 1,
+      "lcp_ms": 1228,
+      "load_ms": 3044.5,
+      "bytes": 824046,
+      "layout_shift_sum": 0.18611919454316864,
+      "font_bytes": 105352,
+      "image_bytes": 94510
+    },
+    {
+      "route": "/setor-eletrico",
+      "run": 2,
+      "lcp_ms": 1216,
+      "load_ms": 3038.2000000001863,
+      "bytes": 824046,
+      "layout_shift_sum": 0.18365837947350833,
+      "font_bytes": 105352,
+      "image_bytes": 94510
+    },
+    {
+      "route": "/observatorio",
+      "run": 0,
+      "lcp_ms": 3780,
+      "load_ms": 2475.6999999997206,
+      "bytes": 553929,
+      "layout_shift_sum": 0.6755901154184694,
+      "font_bytes": 105352,
+      "image_bytes": 34682
+    },
+    {
+      "route": "/observatorio",
+      "run": 1,
+      "lcp_ms": 3752,
+      "load_ms": 2456.2999999998137,
+      "bytes": 553929,
+      "layout_shift_sum": 0.6754076530422441,
+      "font_bytes": 105352,
+      "image_bytes": 34682
+    },
+    {
+      "route": "/observatorio",
+      "run": 2,
+      "lcp_ms": 3836,
+      "load_ms": 2459.3000000002794,
+      "bytes": 553929,
+      "layout_shift_sum": 0.6755901154184694,
+      "font_bytes": 105352,
+      "image_bytes": 34682
+    }
+  ]
+}

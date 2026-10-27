@@ -40,7 +40,7 @@ describe("molde de abertura do Crédito: contrato no código", () => {
     // 15 e 7: Iniciativa 2 do parecer de UX de 23/10/2026 (sem barra lateral; o rótulo de contexto da plataforma no Início do painel);
     // 17: PR 2 da mesma iniciativa (escala tipográfica da plataforma, sem tema escuro, algarismos alinhados na faixa de números)
     expect(html).toContain("/observatorios.css?v=17");
-    expect(html).toContain("/obs/editorial.js?v=7");
+    expect(html).toContain("/obs/editorial.js?v=8");
   });
 });
 

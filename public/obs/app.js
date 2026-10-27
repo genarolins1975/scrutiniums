@@ -70,6 +70,8 @@ const ROTAS_APOSENTADAS = { "/leading-indicators": { view: "leading", tab: "prot
 function currentView() {
   if (PATH_MODE) {
     const p = appPath();
+    // Na entrada, âncoras do conteúdo não são nomes de vistas legadas.
+    if (p === "/" && /^(?:#(?:mp-|atlas-)|$)/.test(location.hash)) return "mapa";
     if (ROTAS_APOSENTADAS[p]) return ROTAS_APOSENTADAS[p].view;
     if (p.startsWith("/institutions/") && p.length > 14) return "inst";
     if (p.startsWith("/products/") && p.length > 10) return "product";
@@ -281,7 +283,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.127.0";
+const APP_VERSION = "0.128.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -362,26 +364,38 @@ function metaDaPagina(view = currentView()) {
    o .json() estoura e, sem o teste de r.ok, o screener entrava em refetch
    infinito (auditoria de 06/09/2026, achado T1). */
 const GOLD_FALHAS = {};
+const GOLD_CARGAS = {};
 async function fetchGold(f, caminho = `${DATA_BASE}${f}.json`) {
-  try {
-    const r = await fetch(`${caminho}?v=${APP_VERSION}`);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    state.data[f] = await r.json();
-    delete GOLD_FALHAS[f];
-  } catch (e) { state.data[f] = null; GOLD_FALHAS[f] = String(e && e.message || e); }
+  if (GOLD_CARGAS[f]) return GOLD_CARGAS[f];
+  const carga = (async () => {
+    try {
+      const r = await fetch(`${caminho}?v=${APP_VERSION}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      state.data[f] = await r.json();
+      delete GOLD_FALHAS[f];
+    } catch (e) { state.data[f] = null; GOLD_FALHAS[f] = String(e && e.message || e); }
+  })();
+  GOLD_CARGAS[f] = carga;
+  try { await carga; } finally { delete GOLD_CARGAS[f]; }
 }
+
 function goldIndisponivel(oque, f) {
   return `<div class="card" style="margin-top:20px"><p class="src">${oque} indisponível nesta carga (${attr(GOLD_FALHAS[f] || "arquivo não veio")}). A última publicação íntegra continua nas demais abas; recarregue a página para tentar de novo.</p></div>`;
 }
 async function loadAll() {
   await Promise.all(CORE_FILES.map(f => fetchGold(f)));
 }
+// A entrada editorial só depende dos metadados. As demais vistas conservam o núcleo completo.
+function dadosDaVista(v) {
+  return v === "mapa" ? ["meta"] : [...new Set([...CORE_FILES, ...(VIEW_DATA[v] || [])])];
+}
 async function ensureData(v) {
-  const need = (VIEW_DATA[v] || []).filter(f => state.data[f] === undefined);
+  const need = dadosDaVista(v).filter(f => state.data[f] === undefined);
   const cargas = need.map(f => fetchGold(f));
   // Contornos são um recurso cartográfico estático, fora do ciclo de publicação dos indicadores gold.
   if (v === "consignado" && state.data.geometria_uf === undefined) cargas.push(fetchGold("geometria_uf", "/obs/geo/uf.json"));
   if (cargas.length) await Promise.all(cargas);
+  updateAlertBadge();
 }
 
 /* Marcos regulatórios transversais (gold regulacao.json) como marcadores
@@ -2795,7 +2809,13 @@ function renderMapa() {
   <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Família de fonte</th><th>Dados até</th><th>Onde aparece</th></tr></thead>
     <tbody>${linhas.map(([k, v]) => `<tr><td>${MAPA_FONTES[k] || k}</td><td>${v}</td><td class="src">${Object.entries(VIEW_VINTAGE).filter(([vw, f]) => f === k && noMenu.includes(vw)).map(([vw]) => mapaLink(vw)).join(" · ") || "–"}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">Todas as fontes são abertas e oficiais (BCB, CVM, CNJ, IBGE, MTE, BNDES, PGFN, Ipea), com atribuição. A lista completa de coletores, o estado de cada um e a linhagem de cada arquivo estão em ${mapaLink("method")}. Correções e sugestões: ${mapaLink("sugestoes")}.</p></div>`);
-  el.innerHTML = head + ciclo + perguntas + trilhas + ler + fontes;
+  // Preserva a imagem descoberta no HTML e sua identidade durante a montagem dos dados.
+  const abertura = el.querySelector('[data-credito-abertura]');
+  if (abertura) {
+    const resumo = el.querySelector(".atlas-metrics");
+    el.replaceChildren(...[abertura, resumo].filter(Boolean));
+    el.insertAdjacentHTML("beforeend", head + ciclo + perguntas + trilhas + ler + fontes);
+  } else el.innerHTML = head + ciclo + perguntas + trilhas + ler + fontes;
 }
 
 /* Verbetes únicos de carteira e de contagem de instituições (meta.carteira_conceitos,
@@ -13325,7 +13345,7 @@ function showViewSilent(v) {
   pingView(v);
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   guardarContinuidade();
-  const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
+  const pend = dadosDaVista(v).some(f => state.data[f] === undefined);
   if (pend) {
     const sec = document.getElementById("view-" + v);
     if (sec && !sec.innerHTML) sec.innerHTML = loadingCard("dados desta página");
@@ -14559,7 +14579,9 @@ function renderCompare() {
 }
 
 (async function init() {
-  await loadAll();
+  const inicial = window.__EMBED__?.view || parseHash();
+  if (inicial === "mapa") await ensureData("mapa");
+  else await loadAll();
   const m = state.data.meta;
   if (m) {
     // no rodapé da coleção (antes na barra lateral): a data da publicação mais antiga, no horário de Brasília, e o aviso da gold
@@ -14575,5 +14597,7 @@ function renderCompare() {
     v = RENDER[window.__EMBED__.view] ? window.__EMBED__.view : "overview";
     state._secAlvo = null; // no embed o recorte substitui o scroll
   }
+  // O leitor pode usar o CTA entregue no HTML antes de os metadados chegarem.
+  if (!window.__EMBED__ && v === "mapa" && /^#(?:mp-|atlas-)[a-z-]+$/.test(location.hash)) state._secAlvo = location.hash.slice(1);
   showView(RENDER[v] ? v : "overview", { replace: true });
 })();

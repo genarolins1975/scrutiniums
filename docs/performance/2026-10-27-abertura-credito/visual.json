@@ -1,0 +1,298 @@
+[
+  {
+    "route": "/observatorio",
+    "width": 320,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-480-v1.webp",
+        "w": 288,
+        "h": 144,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 256,
+        "h": 256,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 288,
+        "h": 537.78125,
+        "ok": false
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 288,
+        "h": 560.875,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 390,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-480-v1.webp",
+        "w": 358,
+        "h": 179,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 358,
+        "h": 589.78125,
+        "ok": false
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 358,
+        "h": 589.78125,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 768,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-800-v1.webp",
+        "w": 387.875,
+        "h": 417.125,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 706.5625,
+        "h": 314.078125,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 706.5625,
+        "h": 314.078125,
+        "ok": true
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 1440,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-1200-v1.webp",
+        "w": 648.609375,
+        "h": 438.34375,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 564,
+        "h": 253.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 564,
+        "h": 253.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-7-440-v1.webp",
+        "w": 290.359375,
+        "h": 290.359375,
+        "ok": true
+      }
+    ],
+    "overflow": false
+  }
+]

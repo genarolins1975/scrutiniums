@@ -8,8 +8,8 @@ import { montarHtml, resolverMeta } from "@/lib/observatorioHead";
  * que entregavam o mesmo <head> para todas as rotas — o que impedia
  * indexação e compartilhamento decentes de cada painel.
  *
- * O corpo da página é idêntico em todas as rotas (o roteamento fino é da
- * própria SPA, via History API); só o <head> muda. Rotas desconhecidas
+ * A entrada também recebe abertura e indicadores no HTML, antes da SPA.
+ * O roteamento fino continua via History API. Rotas desconhecidas
  * respondem 404 com noindex, servindo a SPA mesmo assim.
  */
 

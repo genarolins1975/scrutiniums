@@ -1,3 +1,4 @@
+import { SessaoValidada } from "@/components/acesso/SessaoValidada";
 import { redirect } from "next/navigation";
 import { nextStepPath } from "@/lib/onboarding";
 import { getSessionUser } from "@/lib/session";
@@ -16,5 +17,5 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const status = user.onboardingStatus as OnboardingStatus;
   if (status !== "COMPLETE") redirect(nextStepPath(status));
 
-  return <>{children}</>;
+  return <SessaoValidada>{children}</SessaoValidada>;
 }

@@ -119,7 +119,9 @@ describe("2. index.html e casca.css saem do gerador", () => {
       ),
     );
     const desescapar = (c: string) => c.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<");
-    const faltam = Array.from(classes).filter((c) => !DE_FORA.test(c) && !comRegra.has(desescapar(c)));
+    // A abertura agora também está no HTML; suas classes pertencem ao atlas, não ao Tailwind da casca.
+    const regrasAtlas = new Set(Array.from(ler("public/obs/atlas.css").matchAll(/\.([\w-]+)/g), m => m[1]));
+    const faltam = Array.from(classes).filter((c) => !DE_FORA.test(c) && !comRegra.has(desescapar(c)) && !regrasAtlas.has(c));
     expect(faltam, "rode node scripts/barra-spa.mjs").toEqual([]);
     expect(css).toMatch(/\.casca \.flex \{/);
   });

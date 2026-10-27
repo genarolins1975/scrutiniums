@@ -1,12 +1,13 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { BuscaPlataforma } from "@/components/busca/BuscaPlataforma";
-import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
+import { FaixaFrescorCliente } from "@/components/frescor/FaixaFrescorCliente";
+import { frescorPublicado, atualizacaoPublicada as atualizacaoObservatorio } from "@/lib/publicacao/entradas";
 import { ACENTO } from "@/components/home/acentos";
 import { ParceriaTecnica } from "@/components/layout/ParceriaTecnica";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { SeloProntidao } from "@/components/observatorios/SeloProntidao";
 import { LinkMedido } from "@/components/telemetria/LinkMedido";
-import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import type { TotaisInventario } from "@/lib/observatorios/inventario";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import type { LinhaColecao, SecaoObservatorio } from "@/lib/observatorios/mapaConta";
@@ -43,19 +44,21 @@ const minuscula = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
  */
 export function MapaDaConta({
   retomar,
+  retomada,
   exemplo,
   paraVoce,
   secoes,
   totais,
 }: Readonly<{
-  retomar: Retomar;
+  retomar?: Retomar;
+  retomada?: ReactNode;
   /** Texto de exemplo do campo de busca (EXEMPLO_DO_CAMPO). */
   exemplo: string;
   paraVoce: { estado: PerguntaParaVoce[]; cidade: PerguntaParaVoce[]; comNumeros: boolean };
   secoes: SecaoObservatorio[];
   totais: TotaisInventario;
 }>) {
-  const temRetomar = !!retomar.continuar || retomar.recortes.length > 0 || retomar.avisos.length > 0;
+  const temRetomar = retomar && (!!retomar.continuar || retomar.recortes.length > 0 || retomar.avisos.length > 0);
   return (
     <div id="conteudo" data-mapa-conta="" className="mx-auto w-full max-w-page px-6 pb-12">
       <EstadoMapa />
@@ -79,7 +82,7 @@ export function MapaDaConta({
         </nav>
       </section>
 
-      {temRetomar && <FatiaRetomar retomar={retomar} />}
+      {retomada ?? (temRetomar && <FatiaRetomar retomar={retomar} />)}
 
       <div data-fatia="para-voce">
         {paraVoce.comNumeros ? (
@@ -146,7 +149,7 @@ export function MapaDaConta({
 }
 
 /** "Continuar em …", até três recortes e os avisos configurados: cada parte só quando existe. */
-function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
+export function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
   const { continuar, recortes, totalRecortes, avisos } = retomar;
   return (
     <section data-fatia="retomar" aria-label="Retomar de onde parou" className={styles.retomar}>
@@ -340,7 +343,7 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
                 <div key={c.id} className={styles.fonte} data-fontes-colecao={c.id}>
                   <p className="t-corpo font-medium text-carvao">{c.nome}</p>
                   {c.fontes.length > 0 ? (
-                    <FaixaFrescor dominios={c.fontes} variante="metodo" />
+                    <FaixaFrescorCliente dados={frescorPublicado(c.fontes)} variante="metodo" />
                   ) : linhas.length > 0 ? (
                     <ul className="t-meta mt-1 space-y-1 text-carvao-muted">
                       {linhas.map((l) => (

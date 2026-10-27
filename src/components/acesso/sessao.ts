@@ -1,19 +1,23 @@
 import { usePathname } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { APERITIVOS, ehRotaPublica } from "@/lib/rotasPublicas";
 
 /* Sem "use client": módulo de hooks, importado por componentes de cliente. */
 
 // uma consulta por página, compartilhada pelos componentes dela; a navegação para outro endereço (por
 // exemplo, a volta do login com router.push) refaz a consulta, para quem entrou não seguir visto como visitante
-let consulta: { caminho: string; resposta: Promise<boolean> } | null = null;
-function consultar(caminho: string): Promise<boolean> {
-  if (!consulta || consulta.caminho !== caminho) {
+export const ContextoSessaoValidada = createContext<boolean | undefined>(undefined);
+
+type EstadoSessao = { logado: boolean; completo: boolean };
+let consumidores = 0;
+let consulta: { caminho: string; resposta: Promise<EstadoSessao>; instante: number } | null = null;
+function consultar(caminho: string, renovar = false): Promise<EstadoSessao> {
+  if (!consulta || consulta.caminho !== caminho || (renovar && Date.now() - consulta.instante > 1000)) {
     const resposta = fetch("/api/auth/estado", { cache: "no-store", credentials: "same-origin" })
-      .then((r) => (r.ok ? (r.json() as Promise<{ logado?: boolean }>) : { logado: false }))
-      .then((j) => j.logado === true)
-      .catch(() => false);
-    consulta = { caminho, resposta };
+      .then((r) => (r.ok ? (r.json() as Promise<{ logado?: boolean; completo?: boolean }>) : { logado: false, completo: false }))
+      .then((j) => ({ logado: j.logado === true, completo: j.completo === true }))
+      .catch(() => ({ logado: false, completo: false }));
+    consulta = { caminho, resposta, instante: Date.now() };
   }
   return consulta.resposta;
 }
@@ -23,18 +27,38 @@ function consultar(caminho: string): Promise<boolean> {
  * `null` enquanto a resposta não chega (e no HTML do servidor), depois `true` ou `false`.
  * GET /api/auth/estado responde sempre 200, sem dado pessoal.
  */
-export function useSessao(): boolean | null {
+function useEstadoSessao(inicial?: boolean): EstadoSessao | null {
+  const conhecida = useContext(ContextoSessaoValidada);
+  const estadoInicial = inicial ?? conhecida;
   const caminho = usePathname() ?? "/";
-  const [logado, setLogado] = useState<boolean | null>(null);
+  const primeiraMontagem = useRef(true);
+  const [logado, setLogado] = useState<EstadoSessao | null>(estadoInicial === undefined ? null : { logado: estadoInicial, completo: estadoInicial });
   useEffect(() => {
     let vivo = true;
-    consultar(caminho).then((v) => vivo && setLogado(v));
+    consumidores += 1;
+    if (primeiraMontagem.current && consumidores === 1 && estadoInicial !== undefined) consulta = { caminho, resposta: Promise.resolve({ logado: estadoInicial, completo: estadoInicial }), instante: Date.now() };
+    primeiraMontagem.current = false;
+    const atualizar = (renovar = false) => consultar(caminho, renovar).then((v) => vivo && setLogado(v));
+    void atualizar();
+    const aoVoltar = () => { if (document.visibilityState === "visible") void atualizar(true); };
+    window.addEventListener("pageshow", aoVoltar);
+    window.addEventListener("focus", aoVoltar);
+    document.addEventListener("visibilitychange", aoVoltar);
     return () => {
       vivo = false;
+      consumidores -= 1;
+      if (consumidores === 0) consulta = null;
+      window.removeEventListener("pageshow", aoVoltar);
+      window.removeEventListener("focus", aoVoltar);
+      document.removeEventListener("visibilitychange", aoVoltar);
     };
-  }, [caminho]);
+  }, [caminho, estadoInicial]);
   return logado;
 }
+
+/** Os selos dependem de sessão; o redirecionamento da home exige onboarding completo. */
+export function useSessao(): boolean | null { return useEstadoSessao()?.logado ?? null; }
+export function useSessaoCompleta(inicial?: boolean): boolean | null { return useEstadoSessao(inicial)?.completo ?? null; }
 
 /** Endereço atual com o recorte (query e âncora), lido na hora do clique: o estado da consulta vive na URL. */
 export function destinoAtual(): string {

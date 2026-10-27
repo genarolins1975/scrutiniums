@@ -1,0 +1,216 @@
+{
+  "data": "2026-10-27",
+  "unidades": "ms e bytes de corpos codificados; layout_shift_sum adimensional",
+  "visitas": [
+    {
+      "fase": "original",
+      "rota": "/observatorio",
+      "visita": 0,
+      "lcp_ms": 7368,
+      "fcp_ms": 1232,
+      "load_ms": 2451.1999999999534,
+      "bytes": 1280828,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": null,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "original",
+      "rota": "/observatorio",
+      "visita": 1,
+      "lcp_ms": 7384,
+      "fcp_ms": 956,
+      "load_ms": 2428.5999999998603,
+      "bytes": 1280828,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": null,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "original",
+      "rota": "/observatorio",
+      "visita": 2,
+      "lcp_ms": 7392,
+      "fcp_ms": 952,
+      "load_ms": 2458.600000000093,
+      "bytes": 1280828,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": null,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "iniciativa1",
+      "rota": "/observatorio",
+      "visita": 0,
+      "lcp_ms": 3780,
+      "fcp_ms": 1016,
+      "load_ms": 2475.6999999997206,
+      "bytes": 553929,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": 0.6755901154184694,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "iniciativa1",
+      "rota": "/observatorio",
+      "visita": 1,
+      "lcp_ms": 3752,
+      "fcp_ms": 1196,
+      "load_ms": 2456.2999999998137,
+      "bytes": 553929,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": 0.6754076530422441,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "iniciativa1",
+      "rota": "/observatorio",
+      "visita": 2,
+      "lcp_ms": 3836,
+      "fcp_ms": 964,
+      "load_ms": 2459.3000000002794,
+      "bytes": 553929,
+      "h1_dom_ms": null,
+      "controles_ms": null,
+      "layout_shift_sum": 0.6755901154184694,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.127.0",
+        "/obs/data/gold/pulse.json?v=0.127.0",
+        "/obs/data/gold/ibcc.json?v=0.127.0",
+        "/obs/data/gold/overview.json?v=0.127.0",
+        "/obs/data/gold/alerts.json?v=0.127.0",
+        "/obs/data/gold/alertas_central.json?v=0.127.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio",
+      "visita": 0,
+      "lcp_ms": 1720,
+      "fcp_ms": 1348,
+      "load_ms": 2606.5,
+      "bytes": 464199,
+      "h1_dom_ms": 349,
+      "controles_ms": 3144.0999999996275,
+      "layout_shift_sum": 0.0012370369285000335,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio",
+      "visita": 1,
+      "lcp_ms": 1708,
+      "fcp_ms": 1340,
+      "load_ms": 2627.2999999998137,
+      "bytes": 464199,
+      "h1_dom_ms": 347.8999999994412,
+      "controles_ms": 3136.7000000001863,
+      "layout_shift_sum": 0.0012370369285000335,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio",
+      "visita": 2,
+      "lcp_ms": 1600,
+      "fcp_ms": 1124,
+      "load_ms": 2630.600000000559,
+      "bytes": 464199,
+      "h1_dom_ms": 349.80000000074506,
+      "controles_ms": 3145.800000000745,
+      "layout_shift_sum": 0.0013097932163710986,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio/map",
+      "visita": 0,
+      "lcp_ms": 1624,
+      "fcp_ms": 1076,
+      "load_ms": 2600.0999999996275,
+      "bytes": 464907,
+      "h1_dom_ms": 348.09999999962747,
+      "controles_ms": 3103.7000000001863,
+      "layout_shift_sum": 0.0013864730344229658,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio/map",
+      "visita": 1,
+      "lcp_ms": 1720,
+      "fcp_ms": 1304,
+      "load_ms": 2630.7999999998137,
+      "bytes": 464907,
+      "h1_dom_ms": 349.8999999994412,
+      "controles_ms": 3219.7999999998137,
+      "layout_shift_sum": 0.0012370369285000335,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    },
+    {
+      "fase": "iniciativa2",
+      "rota": "/observatorio/map",
+      "visita": 2,
+      "lcp_ms": 1640,
+      "fcp_ms": 1188,
+      "load_ms": 2618.9000000003725,
+      "bytes": 464907,
+      "h1_dom_ms": 348.5,
+      "controles_ms": 3212.5,
+      "layout_shift_sum": 0.0013864730344229658,
+      "gold": [
+        "/obs/data/gold/meta.json?v=0.128.0"
+      ]
+    }
+  ]
+}

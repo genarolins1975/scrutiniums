@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { portas } from "@/lib/perguntas/portas";
@@ -104,15 +104,13 @@ describe("O Brasil em perguntas", () => {
     }
   });
 
-  it("toda gold lida pelas portas está no pacote do servidor da home", async () => {
-    const { readFileSync } = await import("node:fs");
-    const fonte = readFileSync(join(process.cwd(), "src", "lib", "perguntas", "portas.ts"), "utf-8");
-    const lidas = [...fonte.matchAll(/lerPublico\(((?:"[^"]+",?\s*)+)\)/g)]
-      .map((m) => "./public/" + [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).join("/"));
-    expect(lidas.length).toBeGreaterThan(5);
+  it("a home usa resumos publicados e não inclui golds grandes no servidor", async () => {
     const { default: config } = await import("../../next.config.mjs");
     const includes = (config as { experimental: { outputFileTracingIncludes: Record<string, string[]> } }).experimental.outputFileTracingIncludes;
-    for (const arquivo of new Set(lidas)) expect(includes["/"], arquivo).toContain(arquivo);
+    expect(includes["/"]).toBeUndefined();
+    const home = readFileSync(join(process.cwd(), "src/components/home/Home.tsx"), "utf8");
+    expect(home).toContain("portasPublicadas");
+    expect(home).not.toContain("getSessionUser");
   });
 
   it("as páginas abertas são estáticas e o cabeçalho reconhece a sessão no navegador", async () => {
@@ -122,8 +120,10 @@ describe("O Brasil em perguntas", () => {
     expect(pagina).toMatch(/dynamicParams\s*=\s*false/);
     const link = readFileSync(join(process.cwd(), "src", "components", "layout", "LinkConta.tsx"), "utf-8");
     expect(link).toMatch(/^"use client";/);
-    expect(link).toContain('fetch("/api/auth/estado"');
-    expect(link).toContain("r.logado === true");
+    expect(link).toContain("useSessaoCompleta(");
+    const sessao = readFileSync(join(process.cwd(), "src/components/acesso/sessao.ts"), "utf8");
+    expect(sessao).toContain('fetch("/api/auth/estado"');
+    expect(sessao).toContain("j.logado === true");
     const cabecalho = readFileSync(join(process.cwd(), "src", "components", "layout", "PublicHeader.tsx"), "utf-8");
     expect(cabecalho.match(/<LinkConta/g)).toHaveLength(3);
   });

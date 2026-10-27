@@ -1,3 +1,4 @@
+import { chromium } from "playwright";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createHash, randomBytes } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
@@ -7,7 +8,7 @@ import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { FRESCOR_NO_MAPA } from "@/lib/observatorios/mapaConta";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { DOMINIOS } from "@/lib/dominios";
-import { exigirBuild, htmlDe, raiz, subirServidor, temBuild, type ServidorProducao } from "./suporte/servidor-producao";
+import { exigirBuild, raiz, subirServidor, temBuild, type ServidorProducao } from "./suporte/servidor-producao";
 
 /**
  * Mapa da conta, "Encontre o painel" (/app/observatorios; Iniciativa M1 do parecer de UX de 23/10/2026). No HTML que o build
@@ -96,13 +97,23 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
       }
       await db.insert(schema.alertasAtualizacao).values({ id: `${id}-a1`, userId: id, dominio: "energia", referenciaAvisada: null, criadoEm: agora });
     });
-    casos.nova = (await htmlDe(servidor, "/app/observatorios", true)).html;
-    const r = await fetch(`${servidor.origem}/app/observatorios`, {
-      redirect: "manual",
-      headers: { cookie: `scrutiniums_session=${servidor.assinar(TOKEN_VOLTA)}; scrutiniums_observatorio=c:setor-eletrico` },
-    });
-    expect(r.status).toBe(200);
-    casos.volta = await r.text();
+    // A retomada chega por streaming. Conferir a ordem no DOM montado pelo
+    // navegador, não na ordem dos chunks de transporte do React.
+    const navegador = await chromium.launch({ executablePath: process.env.I18N_CHROMIUM_EXECUTABLE });
+    try {
+      for (const [nome, cookie] of [["nova", servidor.cookie], ["volta", servidor.assinar(TOKEN_VOLTA)]] as const) {
+        const contexto = await navegador.newContext();
+        await contexto.addCookies([{ name: "scrutiniums_session", value: cookie, url: servidor.origem },
+          ...(nome === "volta" ? [{ name: "scrutiniums_observatorio", value: "c:setor-eletrico", url: servidor.origem }] : [])]);
+        const pagina = await contexto.newPage();
+        const resposta = await pagina.goto(servidor.origem + "/app/observatorios");
+        expect(resposta?.status()).toBe(200);
+        if (nome === "volta") await pagina.locator('[data-fatia="retomar"]').waitFor();
+        else await pagina.getByRole("status").waitFor({ state: "hidden" });
+        casos[nome] = await pagina.content();
+        await contexto.close();
+      }
+    } finally { await navegador.close(); }
   }, 180_000);
 
   afterAll(async () => {

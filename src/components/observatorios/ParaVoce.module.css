@@ -12,14 +12,10 @@
   height: 100%;
   object-fit: cover;
 }
-/* Prancha 2 × 2 do Setor Elétrico (GravuraEnergia): cada cena é um quadrado com a largura do cartão; a faixa
-   mostra o centro dela. A posição vertical vem da linha da cena (--linha), por isso o !important vence o estilo
-   inline que posiciona a prancha quadrada. */
+/* A cena quadrada da Energia preenche a faixa 16:9 pelo centro, sem distorção. */
 .arte .prancha {
   aspect-ratio: auto;
   height: 100%;
-  background-size: 200% auto;
-  background-position-y: calc(15.217% + var(--linha, 0) * 69.565%) !important;
 }
 /* Tríptico (Contas Públicas): três cenas quadradas lado a lado; a faixa mostra o centro da cena do cartão. */
 .arte img.triptico {

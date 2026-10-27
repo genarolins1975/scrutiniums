@@ -189,7 +189,7 @@ describe("com e sem sessão: a barra não aponta para o login de quem entrou nem
     expect(ancoras(html(createElement(EstadoConta, { logado: null, hrefEntrar: "/entrar", rotulos })))).toEqual([]);
     // a barra comum usa este estado, lido do servidor no navegador (/api/auth/estado, sem cache)
     const acesso = ler("src/components/energia/AcessoConta.tsx");
-    expect(acesso).toContain('fetch("/api/auth/estado", { cache: "no-store" })');
+    expect(acesso).toContain("useSessao()");
     expect(ler("src/components/layout/CabecalhoPlataforma.tsx")).toContain("<AcessoConta destino={destinoConta} />");
   });
 

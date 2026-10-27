@@ -80,7 +80,10 @@ describe("previdência: lugar no registro, navegação e acesso", () => {
     const inc = (config as { experimental: { outputFileTracingIncludes: Record<string, string[]> } }).experimental.outputFileTracingIncludes;
     expect(inc["/contas-publicas/previdencia"]).toContain("./public/previdencia/gold/**/*.json");
     expect(inc["/aperitivo/previdencia"]).toContain("./public/previdencia/gold/**/*.json");
-    expect(inc["/"]).toContain("./public/previdencia/gold/previdencia.json");
+    expect(inc["/"]).toBeUndefined();
+    const { portasPublicadas } = await import("@/lib/publicacao/entradas");
+    const { numeroInss } = await import("@/lib/perguntas/portas");
+    expect(portasPublicadas.flatMap(p => p.numeros).find(n => n.href === "/contas-publicas/previdencia")).toEqual(numeroInss());
     for (const uf of ["AC", "SP", "DF"]) expect(existsSync(join(raiz, "public/previdencia/gold/municipios", `${uf}.json`)), uf).toBe(true);
   });
 });

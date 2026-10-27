@@ -13,3 +13,5 @@ await import("./materializar-assistencia.mjs");
 await import("./materializar-seguranca-alimentar.mjs");
 await import("./materializar-trabalho-renda.mjs");
 await import("./minify-obs.mjs");
+
+await import("./materializar-entradas.mjs");

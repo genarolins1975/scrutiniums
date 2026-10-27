@@ -1,0 +1,18 @@
+[
+  {
+    "run": 0,
+    "status": 200,
+    "titulo_ms": 780.0475180000001,
+    "diretorio_ms": 780.733016,
+    "corpo_completo_ms": 2225.758378,
+    "atraso_artificial_ms": 1500
+  },
+  {
+    "run": 1,
+    "status": 200,
+    "titulo_ms": 76.61720000000014,
+    "diretorio_ms": 76.71160000000009,
+    "corpo_completo_ms": 1547.810887,
+    "atraso_artificial_ms": 1500
+  }
+]

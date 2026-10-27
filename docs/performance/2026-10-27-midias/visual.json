@@ -1,0 +1,395 @@
+[
+  {
+    "route": "/",
+    "width": 390,
+    "errors": [],
+    "images": [],
+    "overflow": false
+  },
+  {
+    "route": "/setor-eletrico",
+    "width": 390,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-distribuicao-600-v1.webp",
+        "w": 340,
+        "h": 191.25,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-consumo-600-v1.webp",
+        "w": 340,
+        "h": 191.25,
+        "ok": true
+      },
+      {
+        "src": "",
+        "w": 148,
+        "h": 148,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 148,
+        "h": 148,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 148,
+        "h": 148,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 148,
+        "h": 148,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 390,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-480-v1.webp",
+        "w": 358,
+        "h": 179,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 326,
+        "h": 326,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 358,
+        "h": 589.78125,
+        "ok": false
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 358,
+        "h": 589.78125,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 768,
+    "errors": [],
+    "images": [],
+    "overflow": false
+  },
+  {
+    "route": "/setor-eletrico",
+    "width": 768,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-distribuicao-300-v1.webp",
+        "w": 238.671875,
+        "h": 134.25,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-consumo-300-v1.webp",
+        "w": 238.671875,
+        "h": 134.25,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-geracao-600-v1.webp",
+        "w": 320,
+        "h": 320,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-transmissao-600-v1.webp",
+        "w": 320,
+        "h": 320,
+        "ok": true
+      },
+      {
+        "src": "",
+        "w": 320,
+        "h": 320,
+        "ok": false
+      },
+      {
+        "src": "",
+        "w": 320,
+        "h": 320,
+        "ok": false
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-geracao-600-v1.webp",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 768,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-800-v1.webp",
+        "w": 387.875,
+        "h": 417.125,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 154.140625,
+        "h": 154.140625,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 706.5625,
+        "h": 314.078125,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 706.5625,
+        "h": 314.078125,
+        "ok": true
+      },
+      {
+        "src": "",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 1440,
+    "errors": [],
+    "images": [],
+    "overflow": false
+  },
+  {
+    "route": "/setor-eletrico",
+    "width": 1440,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-distribuicao-600-v1.webp",
+        "w": 388,
+        "h": 218.25,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-consumo-600-v1.webp",
+        "w": 388,
+        "h": 218.25,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-geracao-300-v1.webp",
+        "w": 261,
+        "h": 261,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-transmissao-300-v1.webp",
+        "w": 261,
+        "h": 261,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-distribuicao-300-v1.webp",
+        "w": 261,
+        "h": 261,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-consumo-300-v1.webp",
+        "w": 261,
+        "h": 261,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/energia/arte/etapa-geracao-300-v1.webp",
+        "w": 0,
+        "h": 0,
+        "ok": false
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/observatorio",
+    "width": 1440,
+    "errors": [],
+    "images": [
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/economia-gravura-1200-v1.webp",
+        "w": 648.609375,
+        "h": 438.34375,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-0-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-2-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-4-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-5-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-6-440-v1.webp",
+        "w": 263.5,
+        "h": 263.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-1-440-v1.webp",
+        "w": 564,
+        "h": 253.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-3-440-v1.webp",
+        "w": 564,
+        "h": 253.5,
+        "ok": true
+      },
+      {
+        "src": "http://127.0.0.1:3000/obs/arte/etapa-7-440-v1.webp",
+        "w": 290.359375,
+        "h": 290.359375,
+        "ok": true
+      }
+    ],
+    "overflow": false
+  }
+]

@@ -1,3 +1,4 @@
+import { htmlResumoCredito } from "@/lib/observatorios/cascaPura";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -12,6 +13,7 @@ import {
   htmlBarraSpa,
   htmlFimSpa,
   htmlNavegacaoSpa,
+  htmlRotuloSpa,
 } from "@/lib/observatorios/barraSpa";
 import {
   abaPorCaminho,
@@ -37,6 +39,17 @@ function shell(): string {
     shellCache = readFileSync(join(process.cwd(), "public", "obs", "index.html"), "utf-8");
   }
   return shellCache;
+}
+
+// Resumo pequeno da publicação corrente, compartilhável e sem qualquer dado de sessão.
+// A gold é imutável no deploy; uma leitura por processo, preservando fonte e período de cada medida.
+let resumoEntradaCache: string | undefined;
+function resumoDaEntrada(): string {
+  if (resumoEntradaCache !== undefined) return resumoEntradaCache;
+  try {
+    resumoEntradaCache = htmlResumoCredito(JSON.parse(readFileSync(join(process.cwd(), "public/obs/data/gold/meta.json"), "utf8")));
+  } catch { resumoEntradaCache = htmlResumoCredito(); }
+  return resumoEntradaCache;
 }
 
 type InstIndex = { instituicoes: { cod: string; nome: string }[] };
@@ -286,6 +299,15 @@ export function montarHtml(meta: MetaObservatorio, html = shell()): string {
   // registro; abaixo dela, a navegação da coleção dona, e no fim da página "Para ir além" e o rodapé da coleção (Iniciativa 2 do
   // parecer de UX de 23/10/2026, o Crédito na mesma casca)
   const caminho = meta.canonico.replace(BASE, "");
+  // Template inerte nas demais rotas: não dispara download da gravura fora da entrada.
+  out = out.replace("<!-- credito:rotulo -->", htmlRotuloSpa("/observatorio/map"));
+  if (meta.status === 200 && /^\/observatorio(?:\/map)?\/?$/.test(caminho)) {
+    const abertura = out.match(/<template id="credito-abertura">([\s\S]*?)<\/template>/)?.[1];
+    if (abertura) out = out.replace('<section class="view active" id="view-mapa"></section>',
+      `<section class="view active has-credit-atlas" id="view-mapa">${abertura}${resumoDaEntrada()}
+      <div id="mp-ciclo" class="credito-carregando"><p role="status">Carregando os indicadores e o ciclo do crédito…</p>
+      <noscript><p>Ative o JavaScript para explorar o ciclo e os indicadores. Os links dos temas continuam disponíveis acima.</p></noscript></div></section>`);
+  }
   const trocar = (ini: string, fim: string, novo: string) => {
     const a = out.indexOf(ini);
     const b = out.indexOf(fim);

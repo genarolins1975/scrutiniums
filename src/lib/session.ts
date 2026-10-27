@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { and, eq, gt, isNull, ne } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
@@ -30,7 +31,8 @@ export async function createSession(userId: string): Promise<void> {
   });
 }
 
-export async function getSessionUser(): Promise<User | null> {
+// React cache é limitado à renderização RSC; não compartilha usuários entre requisições.
+async function lerSessionUser(): Promise<User | null> {
   const verified = await verifySessionCookie(cookies().get(COOKIE_NAME)?.value);
   if (!verified) return null;
   const db = await getDb();
@@ -48,6 +50,9 @@ export async function getSessionUser(): Promise<User | null> {
     .limit(1);
   return rows[0]?.user ?? null;
 }
+// O React de servidor do Next fornece cache. Fora de RSC (React 18 padrão),
+// a função continua sem cache: nunca usar um cache global como substituto.
+export const getSessionUser = typeof cache === "function" ? cache(lerSessionUser) : lerSessionUser;
 
 export async function destroySession(): Promise<void> {
   const verified = await verifySessionCookie(cookies().get(COOKIE_NAME)?.value);

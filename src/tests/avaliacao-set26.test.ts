@@ -248,9 +248,9 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.122.0: Iniciativa 3 do parecer de UX (21/10/2026): busca da plataforma na barra; sai o filtro local da barra lateral
     // 0.123.0: Iniciativa 2 do parecer de UX (23/10/2026): navegação, rótulo e fim de página da plataforma; sai a barra lateral
     // 0.126.0: homologação UX 24/10: gráficos responsivos, acessibilidade Pix e tabelas; sucede Iniciativa 2, PR 2 (23/10/2026): escala tipográfica, número, selo de natureza e datas da plataforma; sai o tema escuro
-    expect(app).toContain('const APP_VERSION = "0.127.0";');
-    expect(html).toContain("app.min.js?v=0.127.0");
-    expect(html).toContain("casca.min.js?v=0.127.0");
+    expect(app).toContain('const APP_VERSION = "0.128.0";');
+    expect(html).toContain("app.min.js?v=0.128.0");
+    expect(html).toContain("casca.min.js?v=0.128.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

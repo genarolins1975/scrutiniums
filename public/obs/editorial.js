@@ -4,7 +4,7 @@
   if (!main) return;
   const normaliza = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
   function mapaEntrada(mapa) {
-    if (!mapa.querySelector('.pagehead') || mapa.querySelector('.obs-hero')) return;
+    if (!mapa.querySelector('.pagehead') || mapa.querySelector('.obs-hero:not([data-credito-abertura])') || mapa.querySelector('.credit-atlas')) return;
     const hero = document.createElement('section');
     hero.className = 'obs-hero obs-credit-hero';
     hero.setAttribute('aria-labelledby', 'obs-credit-titulo');

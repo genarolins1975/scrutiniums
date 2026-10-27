@@ -2,6 +2,7 @@
 
 import Link from "@/components/i18n/LinkIdioma";
 import { usePathname } from "next/navigation";
+import { useSessao } from "@/components/acesso/sessao";
 import { useEffect, useState } from "react";
 import { useIdioma, useTx } from "@/lib/energia/useIdioma";
 import { hrefNoIdioma } from "@/lib/i18n-href";
@@ -19,15 +20,12 @@ export function AcessoConta({ destino }: { destino: string }) {
   const tx = useTx();
   // em inglês, "Sign in" leva à irmã /en/entrar; o retorno (?de=) é o endereço da página, como em português
   const entrar = (de: string) => hrefNoIdioma(`/entrar?de=${encodeURIComponent(de)}`, idioma);
-  const [logado, setLogado] = useState<boolean | null>(null);
+  const logado = useSessao();
   const [volta, setVolta] = useState(destino);
   const caminho = usePathname() || destino;
   useEffect(() => {
     setVolta(`${caminho}${window.location.search}${window.location.hash}`);
-    fetch("/api/auth/estado", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : { logado: false }))
-      .then((j: { logado?: boolean }) => setLogado(j.logado === true))
-      .catch(() => setLogado(false));
+
   }, [caminho]);
   const aqui = () => `${window.location.pathname}${window.location.search}${window.location.hash}`;
   return (
