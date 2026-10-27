@@ -64,7 +64,7 @@ function Quadro({ titulo, termos, anonimo, dado }: { titulo: string; termos: Ter
       {termos.length === 0 ? (
         <p className="mt-3 text-sm text-mineral">Nenhum no período.</p>
       ) : (
-        <div className="tabela-scroll mt-4 overflow-x-auto">
+        <div className="tabela-scroll mt-4 overflow-x-auto" role="region" aria-label={titulo} tabIndex={0}>
           <table className="w-full min-w-[22rem] border-collapse text-sm" data-uso={dado}>
             <thead>
               <tr className="border-b border-linha">

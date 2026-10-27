@@ -92,6 +92,8 @@ const nextConfig = {
         "./public/obs/data/gold/pulse.json",
         "./public/obs/data/gold/meta.json",
       ],
+      "/app/admin": ARQUIVOS_DAS_FONTES,
+      "/app/admin/atualizacoes": ARQUIVOS_DAS_FONTES,
       "/api/conta/citacao": ARQUIVOS_DAS_FONTES,
       "/api/conta/alertas": ARQUIVOS_DAS_FONTES,
       "/api/alertas/enviar": ARQUIVOS_DAS_FONTES,

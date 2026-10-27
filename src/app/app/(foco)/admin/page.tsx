@@ -1,3 +1,5 @@
+import { ResumoAtualizacoes } from "@/components/admin/QuadroAtualizacoes";
+import { lerQuadro } from "@/lib/operacoes/quadro";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
@@ -54,6 +56,7 @@ const AUDIT_LABELS: Record<string, string> = {
   PASSWORD_CHANGED: "Senha alterada",
   PASSWORD_RESET: "Senha redefinida",
   ACCOUNT_DELETED: "Conta excluída",
+  TAREFA_OPERACIONAL_ALTERADA: "Tarefa operacional alterada",
 };
 
 function Th({ children }: { children: React.ReactNode }) {
@@ -76,7 +79,7 @@ export default async function AdminPage() {
   if (!user) redirect("/entrar");
   if (!isAdmin(user)) notFound();
 
-  const [stats, uso, busca] = await Promise.all([getAdminStats(), getUsoDoPeriodo(), getBuscasDoPeriodo()]);
+  const [stats, uso, busca, atualizacoes] = await Promise.all([getAdminStats(), getUsoDoPeriodo(), getBuscasDoPeriodo(), lerQuadro()]);
   const vg = stats.visaoGeral;
 
   return (
@@ -86,6 +89,8 @@ export default async function AdminPage() {
         title="Administração"
         description="Uso da plataforma, funil de cadastro, usuários, sugestões e auditoria — atualizado a cada acesso."
       />
+
+      <ResumoAtualizacoes linhas={atualizacoes} />
 
       <div className="mt-12 space-y-14">
         <section aria-label="Visão geral" className="border border-linha bg-papel p-8">
@@ -214,7 +219,7 @@ export default async function AdminPage() {
           {stats.usuariosRecentes.length === 0 ? (
             <EmptyState title="Nenhuma conta criada ainda" description="Os cadastros aparecem aqui." />
           ) : (
-            <div className="tabela-scroll overflow-x-auto">
+            <div className="tabela-scroll overflow-x-auto" role="region" aria-label="Cadastros recentes" tabIndex={0}>
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-linha">
@@ -232,7 +237,7 @@ export default async function AdminPage() {
                       <td className="px-3 py-3 text-carvao">{u.email}</td>
                       <td className="px-3 py-3">
                         <span
-                          className={`rotulo ${u.status === "COMPLETE" ? "text-sucesso" : u.status === "WAITLIST" ? "text-bronze" : "text-mineral"}`}
+                          className={`rotulo ${u.status === "COMPLETE" ? "text-sucesso" : u.status === "WAITLIST" ? "text-bronze-dark" : "text-mineral"}`}
                         >
                           {STATUS_LABELS[u.status] ?? u.status}
                         </span>
@@ -264,7 +269,7 @@ export default async function AdminPage() {
           {stats.acessosRecentes.length === 0 ? (
             <EmptyState title="Nenhum acesso registrado" description="As entradas na plataforma aparecem aqui." />
           ) : (
-            <div className="tabela-scroll mt-4 overflow-x-auto">
+            <div className="tabela-scroll mt-4 overflow-x-auto" role="region" aria-label="Últimos acessos" tabIndex={0}>
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-linha">
@@ -324,7 +329,7 @@ export default async function AdminPage() {
               description="Trocas de e-mail, telefone e senha, encerramento de sessões e exclusões de conta ficam registradas aqui."
             />
           ) : (
-            <div className="tabela-scroll overflow-x-auto">
+            <div className="tabela-scroll overflow-x-auto" role="region" aria-label="Auditoria de mudanças" tabIndex={0}>
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-linha">

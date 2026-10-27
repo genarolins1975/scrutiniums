@@ -1,0 +1,241 @@
+{
+  "versao": 1,
+  "repositorio": "genarolins1975/scrutiniums",
+  "release": "operacoes-adm",
+  "ativo": "estado.json",
+  "validadeHoras": 3,
+  "dominios": [
+    {
+      "id": "credito",
+      "nome": "Crédito",
+      "rota": "/observatorio/credit",
+      "workflows": [
+        "atualizar-dados.yml",
+        "atualizar-lucro-banco.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo. Respostas inválidas preservam a publicação anterior.",
+      "manual": "Consultar o BCB sobre 0,00% e o tipo 4 do Desenrola; integrar fontes que exigem arquivo autorizado."
+    },
+    {
+      "id": "energia",
+      "nome": "Setor Elétrico",
+      "rota": "/setor-eletrico",
+      "workflows": [
+        "atualizar-energia.yml",
+        "previsao-pld.yml"
+      ],
+      "automatico": "Coleta diária; previsão do PLD em rotina própria. Publicação depende dos contratos de dados.",
+      "manual": "Reconferir retratos e mudanças de contrato da ANEEL. A previsão recente não comprova atualização da operação."
+    },
+    {
+      "id": "gas",
+      "nome": "Gás Natural",
+      "rota": "/gas-natural",
+      "workflows": [
+        "atualizar-gas.yml"
+      ],
+      "automatico": "Coleta e validação por grupo de fontes.",
+      "manual": "Rever mudanças de contrato e novos documentos regulatórios."
+    },
+    {
+      "id": "saneamento",
+      "nome": "Saneamento",
+      "rota": "/saneamento",
+      "workflows": [
+        "atualizar-saneamento.yml",
+        "atualizar-saneamento-divida.yml",
+        "atualizar-saneamento-contratos.yml"
+      ],
+      "automatico": "Coleta por grupo; contratos têm vigília de documentos, sem integração automática.",
+      "manual": "Integrar edições do SINISA, competências do CadÚnico e documentos de contratos após conferência."
+    },
+    {
+      "id": "agro",
+      "nome": "Agronegócio",
+      "rota": "/agronegocio",
+      "workflows": [
+        "atualizar-agro.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo de fontes.",
+      "manual": "Conferir alterações de contrato e novas classificações da fonte."
+    },
+    {
+      "id": "territorio",
+      "nome": "Território e Clima",
+      "rota": "/territorio",
+      "workflows": [
+        "atualizar-territorio.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo; censos são capturas fechadas.",
+      "manual": "Integrar novas edições do IBGE e revisar mudanças de malha ou método."
+    },
+    {
+      "id": "inflacao",
+      "nome": "Inflação por cidade (IPCA)",
+      "rota": "/custo-de-vida",
+      "workflows": [
+        "atualizar-inflacao.yml"
+      ],
+      "automatico": "Coleta mensal do SIDRA com validação da composição publicada.",
+      "manual": "Rever mudanças de tabela e de classificação do IBGE."
+    },
+    {
+      "id": "previdencia",
+      "nome": "Previdência e INSS",
+      "rota": "/contas-publicas/previdencia",
+      "workflows": [
+        "atualizar-previdencia.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo de fontes.",
+      "manual": "Conferir alterações nos arquivos e novas edições que mudem o contrato."
+    },
+    {
+      "id": "educacao",
+      "nome": "Educação nos municípios",
+      "rota": "/educacao-municipal",
+      "workflows": [
+        "atualizar-educacao.yml"
+      ],
+      "automatico": "Descobre e valida edições municipais do INEP, FNDE e Siconfi por grupo.",
+      "manual": "Conferir alterações de esquema e cobertura antes de incorporar novos indicadores."
+    },
+    {
+      "id": "contas-federais",
+      "nome": "Contas federais",
+      "rota": "/contas-publicas",
+      "workflows": [
+        "atualizar-contas-publicas.yml"
+      ],
+      "automatico": "SIOP e dívida BCB automáticos; RTN tem detecção de edição nova.",
+      "manual": "Integrar RTN com conferência da base de preços; incorporar edições fiscais e novos anos do SIOP."
+    },
+    {
+      "id": "contas-estaduais",
+      "nome": "Contas estaduais",
+      "rota": "/contas-publicas-estaduais",
+      "workflows": [
+        "atualizar-contas-estaduais.yml"
+      ],
+      "automatico": "Vigília automática de fontes; promoção da captura depende de revisão.",
+      "manual": "Conferir e promover a captura por período; revisar contratos e a base histórica da dívida."
+    },
+    {
+      "id": "eficiencia",
+      "nome": "Eficiência Estatal",
+      "rota": "/eficiencia-estatal",
+      "workflows": [
+        "atualizar-eficiencia.yml",
+        "atualizar-seguranca.yml"
+      ],
+      "automatico": "Siconfi, SIOPS e Segurança com coleta agendada nos recortes configurados.",
+      "manual": "Integrar novos exercícios e pacotes dos capítulos com curadoria; conferir derivados e evidência de cálculo."
+    },
+    {
+      "id": "conectividade",
+      "nome": "Conectividade",
+      "rota": "/conectividade",
+      "workflows": [
+        "atualizar-conectividade.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo de fontes da Anatel.",
+      "manual": "Conferir mudanças de esquema e cobertura; ausência de acessos não vira zero."
+    }
+  ],
+  "workflows": {
+    "atualizar-dados.yml": {
+      "nome": "Atualizar dados do Observatório"
+    },
+    "atualizar-lucro-banco.yml": {
+      "nome": "Atualizar DRE prudencial"
+    },
+    "atualizar-energia.yml": {
+      "nome": "Atualizar dados do Setor Elétrico"
+    },
+    "previsao-pld.yml": {
+      "nome": "Rodada diária da previsão do PLD"
+    },
+    "atualizar-gas.yml": {
+      "nome": "Atualizar dados do Gás Natural"
+    },
+    "atualizar-saneamento.yml": {
+      "nome": "Atualizar dados do Saneamento"
+    },
+    "atualizar-saneamento-divida.yml": {
+      "nome": "Atualizar dívida dos prestadores de saneamento"
+    },
+    "atualizar-saneamento-contratos.yml": {
+      "nome": "Vigiar os contratos de saneamento desde o novo marco"
+    },
+    "atualizar-agro.yml": {
+      "nome": "Atualizar dados do Agronegócio"
+    },
+    "atualizar-territorio.yml": {
+      "nome": "Atualizar dados do Território e Clima"
+    },
+    "atualizar-inflacao.yml": {
+      "nome": "Atualizar dados da Inflação por cidade"
+    },
+    "atualizar-previdencia.yml": {
+      "nome": "Atualizar dados da Previdência e INSS"
+    },
+    "atualizar-educacao.yml": {
+      "nome": "Atualizar dados da Educação nos municípios"
+    },
+    "atualizar-contas-publicas.yml": {
+      "nome": "Atualizar dados das Contas Públicas Federais"
+    },
+    "atualizar-contas-estaduais.yml": {
+      "nome": "Conferir dados das Contas Públicas Estaduais"
+    },
+    "atualizar-eficiencia.yml": {
+      "nome": "Atualizar dados da Eficiência Estatal"
+    },
+    "atualizar-seguranca.yml": {
+      "nome": "Atualizar dados da Segurança pública"
+    },
+    "atualizar-conectividade.yml": {
+      "nome": "Atualizar dados da Conectividade"
+    },
+    "vigilancia.yml": {
+      "nome": "Vigília do Observatório"
+    },
+    "resumo-email.yml": {
+      "nome": "Resumo do crédito por e-mail"
+    },
+    "alertas-atualizacao.yml": {
+      "nome": "Alertas de atualização por e-mail"
+    },
+    "boletim-mensal.yml": {
+      "nome": "Boletim mensal"
+    },
+    "zenodo-mensal.yml": {
+      "nome": "Depósito mensal no Zenodo (preparo, sem publicar)"
+    }
+  },
+  "pendencias": [
+    {
+      "id": "bcb-juros-zero",
+      "titulo": "Consultar o BCB sobre a taxa de 0,00%",
+      "dominio": "credito",
+      "detalhe": "Confirmar o significado do 0,00% informado pelo BCO RNX. O valor continua visível, fora da comparação. Registrar a resposta e a decisão antes de mudar a regra.",
+      "origem": "OPERACOES.md",
+      "desde": "2026-10-25"
+    },
+    {
+      "id": "bcb-desenrola",
+      "titulo": "Consultar o BCB sobre o tipo 4 do Desenrola",
+      "dominio": "credito",
+      "detalhe": "Pedir definição e documentação do tipo 4. As linhas ficam preservadas, contadas e fora dos totais dos tipos 1 a 3.",
+      "origem": "OPERACOES.md",
+      "desde": "2026-10-25"
+    }
+  ],
+  "dependencias": [
+    {
+      "numero": 379,
+      "dominio": "energia",
+      "titulo": "Conferir a correção do SIGA e dos retratos",
+      "detalhe": "Revisar o PR e a evidência da gold candidata. A integração depende do dono; depois, acompanhar a próxima coleta e publicação."
+    }
+  ]
+}

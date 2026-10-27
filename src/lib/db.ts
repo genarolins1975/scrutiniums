@@ -59,6 +59,13 @@ async function createDb(): Promise<Db> {
 
 /** Comandos do esquema, todos idempotentes (IF NOT EXISTS), na ordem de aplicação. */
 const COMANDOS_ESQUEMA = [
+  // 27/10/2026: a versão do esquema muda pelo hash; notas do ADM nunca vão para a gold pública.
+  `CREATE TABLE IF NOT EXISTS tarefas_operacao (
+    id TEXT PRIMARY KEY, titulo TEXT NOT NULL, detalhe TEXT NOT NULL, origem TEXT,
+    desde TIMESTAMPTZ NOT NULL, tipo TEXT NOT NULL, estado TEXT NOT NULL,
+    nota TEXT NOT NULL DEFAULT '', responsavel TEXT NOT NULL DEFAULT '', prazo TEXT NOT NULL DEFAULT '',
+    versao INTEGER NOT NULL DEFAULT 1, atualizado_em TIMESTAMPTZ NOT NULL
+  )`,
   `CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,

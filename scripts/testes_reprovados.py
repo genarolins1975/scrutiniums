@@ -21,7 +21,7 @@ from pathlib import Path
 
 LIMITE = 30
 
-SUITES = ("vitest", "pipeline", "pesquisa")
+SUITES = ("vitest", "pipeline", "pesquisa", "build")
 
 # códigos de saída que costumam ter causa conhecida (128 + sinal)
 SIGNIFICADO = {
@@ -95,6 +95,8 @@ def main(caminho, arq_codigos=None, *logs):
     itens = reprovados(relatorio) if relatorio is not None else []
     # o processo do vitest pode falhar sem reprovar teste: falta de memória, erro no setup
     v = cods.get("vitest")
+    if cods.get("build"):
+        itens.append(f"- build da candidata falhou (código {cods['build']}); HTML não validado, publicação retida. Ver build-testes.log.")
     if not itens and v:
         motivo = SIGNIFICADO.get(v, "falha ao carregar ou configurar a suíte")
         itens.append(f"- o processo do vitest terminou com código {v} sem reprovar nenhum teste ({motivo}): "
@@ -177,6 +179,9 @@ def suite_legada(nome, pasta=".gold-publicacao"):
     rodadas = r.get('execucoes', [])
     if not rodadas:
         print('Infraestrutura: suíte não executada; ver preparo em resultado.json')
+        return 2
+    if nome not in rodadas[-1]:
+        print('Suíte não executada: build da candidata incompleto; ver resultado.json')
         return 2
     s = rodadas[-1][nome]
     rodada = pasta / f'rodada-{len(rodadas)-1}'
