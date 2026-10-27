@@ -95,6 +95,13 @@ try {
     await item.getByRole("link", { name: titulo, exact: true }).waitFor();
     assert.equal(await item.getByRole("link", { name: titulo, exact: true }).getAttribute("href"), corpo.caminho);
     await item.getByRole("button", { name: `Copiar link: ${titulo}`, exact: true }).click();
+    // A página em repouso não revela contraste insuficiente no estado após apontar/clicar.
+    await p.addScriptTag({ path: resolve('node_modules/axe-core/axe.min.js') });
+    const violacoes = await p.evaluate(async () => {
+      const r = await window.axe.run(document.querySelector('#recortes'), { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } });
+      return r.violations.map(v => ({ id: v.id, alvos: v.nodes.map(n => n.target) }));
+    });
+    assert.deepEqual(violacoes, []);
     if ([390, 1440].includes(largura)) await captura(p, `conta-${largura}-depois`);
     await item.getByRole("button", { name: "Renomear", exact: true }).click();
     await p.waitForFunction(() => document.activeElement?.tagName === "INPUT");
@@ -102,7 +109,7 @@ try {
     await p.waitForFunction(() => document.activeElement?.textContent?.includes("Renomear"));
     const rolagem = await p.evaluate(() => ({ viewport: innerWidth, largura: document.documentElement.scrollWidth }));
     assert.ok(rolagem.largura <= rolagem.viewport, JSON.stringify(rolagem));
-    resultados.push({ largura, caminho: corpo.caminho, mesmoResultado: true, recarga: true, historico: true, citacaoBibRis: true, copiaManual: true, salvoNoBanco: true, foco: true, rolagem });
+    resultados.push({ largura, caminho: corpo.caminho, mesmoResultado: true, recarga: true, historico: true, citacaoBibRis: true, copiaManual: true, salvoNoBanco: true, foco: true, axeDepoisDeCopiar: violacoes, rolagem });
     console.log(JSON.stringify(resultados.at(-1)));
     await ctx.close();
   }

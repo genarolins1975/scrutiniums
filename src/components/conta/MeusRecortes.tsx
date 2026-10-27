@@ -9,7 +9,7 @@ import { DetalhesRecorte } from "./DetalhesRecorte";
 export type RecorteVisivel = { id: string; titulo: string; caminho: string; observatorio: string; criadoEm: string };
 
 const dataBr = (iso: string) => new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(iso));
-const acao = "rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-bronze disabled:opacity-50";
+const acao = "rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-bronze-dark disabled:opacity-50";
 
 /**
  * "Meus recortes" na conta: título (link para o próprio recorte), observatório e data em que foi salvo, com renomear e
@@ -111,7 +111,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                     </button>
                   </form>
                 ) : (
-                  <Link href={r.caminho} className="font-serif text-lg leading-snug text-carvao underline-offset-4 hover:text-bronze hover:underline">
+                  <Link href={r.caminho} className="font-serif text-lg leading-snug text-carvao underline-offset-4 hover:text-bronze-dark hover:underline">
                     {r.titulo}
                   </Link>
                 )}
