@@ -69,15 +69,15 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
 
   return (
     <div ref={listaRef} tabIndex={-1} aria-label="Meus recortes salvos" className="space-y-5">
-      <p className="max-w-prose2 text-sm text-carvao-muted">
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
         Nos painéis, use <strong className="font-semibold text-carvao">Salvar recorte</strong>, na barra superior, para guardar a
         página com os filtros do endereço. O link de cada recorte pode ser compartilhado: quem não tem conta entra ou se cadastra
         e volta a ele. Até {limite} recortes por conta.
       </p>
-      <p className="max-w-prose2 text-sm text-carvao-muted">Ao reabrir, a consulta usa os dados disponíveis naquele momento. Salvar um recorte não arquiva os valores de uma publicação anterior.</p>
+      <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">Ao reabrir, a consulta usa os dados disponíveis naquele momento. Salvar um recorte não arquiva os valores de uma publicação anterior.</p>
       {erro && <Alert kind="erro">{erro}</Alert>}
       {lista.length === 0 ? (
-        <p className="text-sm text-carvao">Nenhum recorte salvo ainda. <Link href="/app" className="underline underline-offset-4">Explore as coleções no Mapa da Conta.</Link></p>
+        <p className="text-sm leading-relaxed text-carvao">Nenhum recorte salvo ainda. <Link href="/app" className="underline underline-offset-4">Explore as coleções no Mapa da Conta.</Link></p>
       ) : (
         <ul className="divide-y divide-linha border-y border-linha">
           {lista.map((r) => (
@@ -115,7 +115,7 @@ export function MeusRecortes({ iniciais, limite }: { iniciais: RecorteVisivel[];
                     {r.titulo}
                   </Link>
                 )}
-                <p className="mt-1 text-xs text-carvao-muted">
+                <p className="mt-1 text-xs leading-relaxed text-carvao-muted">
                   {r.observatorio} · salvo em {dataBr(r.criadoEm)}
                 </p>
                 <DetalhesRecorte caminho={r.caminho} />
