@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-27T16:59:10+00:00",
+ "gerado_em": "2026-10-28T17:26:04+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 194,
-  "total_editais": 714,
+  "total_editais": 717,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1006,6 +1006,33 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE APERIBE",
+    "municipio": "Aperibé",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-28",
+    "url": "https://pncp.gov.br/compras/36288900000123/2026/16"
+   },
+   {
+    "ente": "MUNICIPIO DE ANAPOLIS",
+    "municipio": "Anápolis",
+    "uf": "GO",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/01067479000146/2026/239"
+   },
+   {
+    "ente": "MUNICIPIO DE ALVARENGA",
+    "municipio": "Alvarenga",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/19770288000101/2026/73"
+   },
+   {
     "ente": "MUNICIPIO DE PATIS",
     "municipio": "Patis",
     "uf": "MG",
@@ -1085,33 +1112,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-23",
     "url": "https://pncp.gov.br/compras/76285345000109/2026/282"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTO ANTONIO DE PADUA",
-    "municipio": "Santo Antônio de Pádua",
-    "uf": "RJ",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-22",
-    "url": "https://pncp.gov.br/compras/29114139000148/2026/15"
-   },
-   {
-    "ente": "MUNICIPIO DE MAGE",
-    "municipio": "Magé",
-    "uf": "RJ",
-    "modalidade": "Pregão - Presencial",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-22",
-    "url": "https://pncp.gov.br/compras/29138351000145/2026/57"
-   },
-   {
-    "ente": "MUNICIPIO DE COTIA",
-    "municipio": "Cotia",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-22",
-    "url": "https://pncp.gov.br/compras/46523049000120/2026/183"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

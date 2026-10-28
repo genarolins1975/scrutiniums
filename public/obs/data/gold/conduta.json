@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-27T16:59:46+00:00",
+ "gerado_em": "2026-10-28T17:26:43+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11401
   },
   "janela_12m": {
-   "ini": "2025-10-27",
+   "ini": "2025-10-28",
    "decisoes": 1348,
    "processos": 1279,
    "multas_n": 1290,
@@ -96,13 +96,13 @@
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 135,
-    "share": 10.01
+    "n": 136,
+    "share": 10.09
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 116,
-    "share": 8.61
+    "n": 115,
+    "share": 8.53
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -158,8 +158,8 @@
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 892,
-    "share": 6.55
+    "n": 893,
+    "share": 6.56
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -173,8 +173,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 118,
-    "share": 0.87
+    "n": 117,
+    "share": 0.86
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3110
+   "n": 3109
   },
   "anual": [
    {
@@ -933,7 +933,7 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-10-21",
+  "ultima_movimentacao": "2026-10-27",
   "acervo": {
    "processos": 581,
    "acusados": 2070,
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-27",
+   "ini": "2025-10-28",
    "processos": 64,
    "acusados": 164
   },
@@ -953,13 +953,13 @@
    },
    {
     "fase": "Julgamento",
-    "n": 106,
-    "share": 18.24
+    "n": 109,
+    "share": 18.76
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 93,
-    "share": 16.01
+    "n": 90,
+    "share": 15.49
    },
    {
     "fase": "Recurso CRSFN",
@@ -1496,9 +1496,9 @@
     "nup": "19957006849202663",
     "abertura": "2026-04-16",
     "area": "GMA",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-08",
+    "fase": "Julgamento",
+    "local": "Relator do processo",
+    "ultima_mov": "2026-10-27",
     "acusados": 3,
     "objeto": "Apurar responsabilidades por infração ao art. 3°, da Resolução CVM n° 62/22, em razão da realização de prática não equitativa, nos termos descritos no inciso IV, art. 2° dessa Resolução."
    },
