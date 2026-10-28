@@ -1,6 +1,6 @@
 {
   "version": "irc-piloto-2022-v1",
-  "input_path": "src/lib/eficiencia/panorama-atlas.json",
+  "input_path": "pipeline/eficiencia_resultados/panorama-atlas-referencia-2022-v1.json",
   "input_sha256": "20a9c394a45e0c6ba5ad2fc1e382917be0b6e8254196d534bf0a91e1298cdc07",
   "territories": [
     "1100205",

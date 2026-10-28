@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { compactarApsMensal } from "@/lib/eficiencia/saude/mensal";
+import { ApsMensalSaude } from "./ApsMensalSaude";
 import { PaginaPainel } from "@/components/painel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
@@ -57,7 +59,7 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
         titulo: t.h1,
         lead: t.lead,
         recorte: {
-          periodo: `${anos[0]} a ${anos[anos.length - 1]}, o período de cada medida ao lado dela`,
+          periodo: `${anos[0]} a ${anos[anos.length - 1]} nas medidas anuais${tema === "rede" && g.aps_mensal ? `; APS mensal até ${g.aps_mensal.competencias.at(-1)!.slice(5)}/${g.aps_mensal.competencias.at(-1)!.slice(0, 4)}` : ""}`,
           universo: `${dados.capitais.length} capitais estaduais, sem o Distrito Federal`,
           unidade: UNIDADE[tema],
           fonte: fontes.join(", "),
@@ -77,8 +79,9 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
         ),
       }}
       faixaNumeros={<FaixaTemaSaude tema={tema} />}
-      navegacaoLocal={<CaminhoCompararSaude tema={tema} />}
+      navegacaoLocal={<><CaminhoCompararSaude tema={tema} />{tema === "rede" && g.aps_mensal && <a href="#aps-mensal" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Consultar todos os meses da atenção primária</a>}</>}
       figuras={<ExploradorSaude tema={tema} contextos={contextosSaude(g)} />}
+      tabelas={tema === "rede" && g.aps_mensal ? <ApsMensalSaude compacto={compactarApsMensal(g.aps_mensal)} /> : undefined}
       notas={{ id: `siglas-${tema}`, titulo: "Siglas desta página", itens: SIGLAS_POR_TEMA[tema].map(([s, d]) => ({ termo: s, definicao: d })) }}
       metodo={
         <>

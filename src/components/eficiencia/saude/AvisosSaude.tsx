@@ -73,7 +73,7 @@ export const SIGLAS_POR_TEMA: Record<string, [string, string][]> = {
     ["APS", "atenção primária à saúde"],
     ["eSF", "equipe de Saúde da Família"],
     ["eAP", "equipe de Atenção Primária"],
-    ["eCR, eSFR, eAPP", "equipes de Consultório na Rua, de Saúde da Família Ribeirinha e de Apoio à Atenção Primária"],
+    ["eCR, eSFR, eAPP", "equipes de Consultório na Rua, de Saúde da Família Ribeirinha e de Atenção Primária Prisional"],
     ["Siaps, Sisab", "sistemas de informação da atenção primária do Ministério da Saúde"],
   ],
   resultados: [

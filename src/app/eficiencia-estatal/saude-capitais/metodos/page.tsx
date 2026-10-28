@@ -1,3 +1,4 @@
+import { CoberturaIndicadoresSaude } from "@/components/eficiencia/saude/CoberturaIndicadoresSaude";
 import type { Metadata } from "next";
 import { statSync } from "node:fs";
 import { join } from "node:path";
@@ -154,6 +155,10 @@ export default function PaginaMetodos() {
           </dl>
         </Secao>
 
+        <Secao id="cobertura" titulo="O que está coberto em cada indicador?" intro="Inventário das 26 capitais: presença de valor, lacunas e limites de publicação, sem substituir a comparação metodológica.">
+          <CoberturaIndicadoresSaude gold={g} />
+        </Secao>
+
         <Secao id="indicadores" titulo={`Catálogo de indicadores (${publicados.length} publicados, ${fichas.length - publicados.length} avaliados e não publicados)`} intro="Cada indicador tem ficha com definição, fórmula, fonte, período, perímetro, ausências, comparação, ressalvas e validações. Abra a ficha para ver os 16 campos.">
           <CatalogoIndicadores fichas={fichas} contextos={ctx} />
         </Secao>
@@ -192,6 +197,7 @@ export default function PaginaMetodos() {
             {publicados.filter((f) => f.download).map((f) => (
               <li key={f.id}><a href={f.download!} download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">{f.nome_curto}<span className="sr-only"> (CSV)</span></a></li>
             ))}
+            <li><a href="/eficiencia/series/saude_aps_mensal.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Atenção primária: todas as competências mensais e equipes (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_referencias_capitais.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Referências do grupo de capitais (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_referencias_nacionais.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Referências do Brasil e normativas (CSV)</a></li>
             <li><a href="/eficiencia/series/saude_matriz_de_fontes.csv" download className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Decisões sobre as fontes (CSV)</a></li>

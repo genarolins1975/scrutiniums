@@ -1,5 +1,5 @@
 {
- "versao_catalogo": "2026-10-09.1",
+ "versao_catalogo": "2026-10-28.1",
  "painel": {
   "id": "saude-capitais",
   "titulo": "Saúde nas capitais",
@@ -663,7 +663,7 @@
    "nome_curto": "Equipes de atenção primária",
    "familia": "estrutura",
    "pergunta": "Quantas equipes de atenção primária, de cada tipo, o Ministério da Saúde registra no município em dezembro?",
-   "o_que_mede": "A contagem de equipes de Saúde da Família (eSF), de Atenção Primária de 20 e de 30 horas (eAP 20h e eAP 30h) e, como contexto, de saúde da família ribeirinha (eSFR), consultório na rua (eCR) e de apoio à atenção primária (eAPP 20h e 30h), segundo o serviço do Relatório APS: equipes financiadas, de natureza pública, ativas no CNES e com validações de CBO e carga horária.",
+   "o_que_mede": "A contagem de equipes de Saúde da Família (eSF), de Atenção Primária de 20 e de 30 horas (eAP 20h e eAP 30h) e, como contexto, de saúde da família ribeirinha (eSFR), consultório na rua (eCR) e de atenção primária prisional (eAPP 20h e 30h), segundo o serviço do Relatório APS: equipes financiadas, de natureza pública, ativas no CNES e com validações de CBO e carga horária.",
    "o_que_nao_mede": [
     "Não é cobertura efetiva, cadastro, vínculo nem pessoas atendidas.",
     "Não distingue equipe completa de incompleta nem a carga horária de cada profissional.",
@@ -799,7 +799,7 @@
    "ressalvas": [
     "O serviço do Relatório APS não tem contrato publicado nem versão: o OBEE guarda a resposta integral com sha256 e valida o esquema a cada coleta.",
     "Dezembro de 2021 segue regra anterior e não reproduz a fórmula da Nota Técnica nº 2/2025: fora das comparações e das variações.",
-    "A parcela de cadastro vinculado dos meses recentes do serviço é incompleta (2026) e por isso o painel só usa dezembros fechados.",
+    "A parcela de cadastro vinculado de 2026 é incompleta. As comparações anuais usam somente dezembros até 2025; a consulta mensal separada preserva 2026 como provisório, sem comparar sua variação com os anos anteriores.",
     "A população de referência do Ministério difere da população do exercício do OBEE; em Aracaju a série do Ministério ainda não acompanha a revisão do IBGE de 2025."
    ]
   },

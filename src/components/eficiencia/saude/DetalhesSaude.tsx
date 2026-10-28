@@ -265,7 +265,7 @@ const COMP_UBS_CONTEXTO: [string, string][] = [
   ["tp71", "Centros de apoio à saúde da família (tipo 71)"],
   ["tp74", "Polos academia da saúde (tipo 74)"],
 ];
-const TIPOS_EQUIPE: [string, string][] = [["esf", "Saúde da Família (eSF)"], ["eap20", "Atenção Primária, 20 h (eAP)"], ["eap30", "Atenção Primária, 30 h (eAP)"], ["esfr", "Saúde da Família ribeirinha (eSFR)"], ["ecr", "Consultório na Rua (eCR)"], ["eapp20", "Apoio à Atenção Primária, 20 h (eAPP)"], ["eapp30", "Apoio à Atenção Primária, 30 h (eAPP)"]];
+const TIPOS_EQUIPE: [string, string][] = [["esf", "Saúde da Família (eSF)"], ["eap20", "Atenção Primária, 20 h (eAP)"], ["eap30", "Atenção Primária, 30 h (eAP)"], ["esfr", "Saúde da Família ribeirinha (eSFR)"], ["ecr", "Consultório na Rua (eCR)"], ["eapp20", "Atenção Primária Prisional, 20 h (eAPP)"], ["eapp30", "Atenção Primária Prisional, 30 h (eAPP)"]];
 
 export function DetalheRede({ ix, cap, ano, contextos }: Base) {
   const fichaRet = ix.d.fichas.find((f) => f.id === "sau.rede.ubs_retrato");

@@ -1,6 +1,6 @@
 /**
  * Histórico de revisões da gold de Saúde. Cada linha é uma geração dos dados (hash_dados) com o que mudou em relação à anterior.
- * Horários em UTC. O módulo ainda não foi publicado em produção: as versões intermediárias existem só na branch de desenvolvimento.
+ * Horários em UTC. Esta lista registra mudanças no hash das observações anuais. A publicação mensal, desde outubro de 2026, possui versão e hash próprios em aps_mensal.
  * Um teste exige que a última linha seja a gold publicada; quem regenera a gold acrescenta a linha nova.
  */
 export type RevisaoSaude = { geradoEm: string; hash: string; observacoes: number; mudou: string; tipo: "dados" | "metodo" | "texto" };

@@ -1,5 +1,7 @@
 # Saúde nas capitais: continuidade
 
+> Atualização de 28/10/2026: ver [Cobertura das capitais](COBERTURA_CAPITAIS_2026-10-28.md). O relato abaixo registra a implantação original; a extensão mensal e os bloqueios atuais estão no documento novo.
+
 Para quem retoma o módulo. Ler antes: [ESCOPO_E_FONTES.md](./ESCOPO_E_FONTES.md), [ARQUITETURA.md](./ARQUITETURA.md) e a regra editorial do OBEE em [../README.md](../README.md).
 
 ## 1. Estado em 09/10/2026

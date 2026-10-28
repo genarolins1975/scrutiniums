@@ -67,6 +67,7 @@ export type ReferenciaExternaSaude = {
 export type LinhaMatrizFonte = { id: string; medida: string; fonte: string; acesso_testado: string; cobertura: string; periodo: string; decisao: string; fundamento: string };
 
 export type GoldSaude = {
+  aps_mensal?: import("./mensal").ApsMensal;
   meta: {
     dominio: string;
     painel: string;

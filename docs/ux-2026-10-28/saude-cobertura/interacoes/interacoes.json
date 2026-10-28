@@ -1,0 +1,31 @@
+{
+  "resumo": [
+    {
+      "width": 1440,
+      "viewport": 1440,
+      "body": 1440,
+      "linhas": 7
+    },
+    {
+      "width": 390,
+      "viewport": 390,
+      "body": 390,
+      "linhas": 7
+    },
+    {
+      "width": 320,
+      "viewport": 320,
+      "body": 320,
+      "linhas": 7
+    },
+    {
+      "width": 768,
+      "viewport": 768,
+      "body": 768,
+      "linhas": 7
+    }
+  ],
+  "medidas": 11,
+  "erros": [],
+  "teste": "expansão da seção, recortes, URL, reload, voltar, parâmetros inválidos, CSV, inventário, teclado e zoom CSS200%"
+}

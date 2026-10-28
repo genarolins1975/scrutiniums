@@ -414,7 +414,7 @@
       "sourceUrl": "https://relatorioaps.saude.gov.br/",
       "capturedAt": "2026-10-09T12:03:54Z",
       "sourcePath": "public/eficiencia/gold/saude_capitais.json",
-      "sourceHash": "dc955c0c757d2b593cccf0c034ba529090a4c7427e5a80086a10d84f015cf57a",
+      "sourceHash": "63a4ed5430564c78d868e4acae5932cb4305b5a82750ff8ff3b55c5c68dbfa67",
       "sourceQueries": [
         "https://relatorioaps-prd.saude.gov.br/cobertura/aps?unidadeGeografica=MUNICIPIO&coMunicipio=<6 dígitos>&nuCompInicio=AAAAMM&nuCompFim=AAAAMM"
       ],

@@ -89,6 +89,29 @@ saude_matriz_de_fontes.csv,cobertura,Cobertura das 26 capitais e dos períodos n
 saude_matriz_de_fontes.csv,periodo,Período disponível.
 saude_matriz_de_fontes.csv,decisao,"publicar com ressalva, apenas contexto ou não publicar."
 saude_matriz_de_fontes.csv,fundamento,"Por que a decisão foi tomada, com as ressalvas."
+saude_aps_mensal.csv,cobertura_pct,"Campo qtCobertura da resposta oficial do Relatório APS; unidade: % da população de referência. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,capacidade_pessoas,"Campo qtCapacidadeEquipe da resposta oficial do Relatório APS; unidade: pessoas. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,populacao_referencia,"Campo qtPopulacao da resposta oficial do Relatório APS; unidade: habitantes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,esf,"Campo qtEsf da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,eap20,"Campo qtEap20 da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,eap30,"Campo qtEap30 da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,esfr,"Campo qtEsfr da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,ecr,"Campo qtEcr da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,eapp20,"Campo qtEapp20 da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,eapp30,"Campo qtEapp30 da resposta oficial do Relatório APS; unidade: equipes. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,cadastros_equipes_especiais,"Campo qtCadastroEquipeEsfrEcrEapp da resposta oficial do Relatório APS; unidade: pessoas. Vazio é ausência, nunca zero."
+saude_aps_mensal.csv,codigo_ibge,"Município, código IBGE de 7 dígitos."
+saude_aps_mensal.csv,competencia,"Mês de referência, AAAA-MM; nunca somar estoques de meses distintos."
+saude_aps_mensal.csv,capital,Nome da capital.
+saude_aps_mensal.csv,uf,Unidade da Federação.
+saude_aps_mensal.csv,origem_populacao,Código da origem populacional informado pelo Ministério; não é o ano da população.
+saude_aps_mensal.csv,status,"OBSERVADO, INCOMPLETO (campo ausente) ou PROVISORIO (cadastro vinculado de 2026 ainda incompleto, mesmo com campos numéricos)."
+saude_aps_mensal.csv,metodo,regra_anterior_2021 ou formula_atual. Não comparar a mudança de método como evolução do serviço.
+saude_aps_mensal.csv,fonte_url,Endereço exato da captura.
+saude_aps_mensal.csv,data_captura,"Data UTC da coleta, distinta da competência."
+saude_aps_mensal.csv,sha256_seed,"SHA-256 do conteúdo descomprimido do seed JSON, conforme o manifesto."
+saude_aps_mensal.csv,versao,Versão da publicação mensal.
+saude_aps_mensal.csv,hash_dados,SHA-256 de todas as linhas mensais normalizadas; distinto do hash das observações anuais.
 ,(números),Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold.
 ,(leia antes de usar),"Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."
 ,(perímetros),"Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."

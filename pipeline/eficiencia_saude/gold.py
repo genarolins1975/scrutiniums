@@ -16,6 +16,7 @@ import os
 import re
 
 from pipeline.eficiencia import entes, referencias as R
+from pipeline.eficiencia_saude import mensal as M
 from pipeline.eficiencia_saude import base, conferencia as CF, matriz_fontes as MF, padroniza as P, referencias_externas as RE, validacoes as V
 
 ARQUIVO_GOLD = os.path.join(base.GOLD, "saude_capitais.json")
@@ -303,6 +304,19 @@ def _csv_dicionario(caminho):
         w.writerow(["saude_referencias_nacionais.csv", c, DESCRICAO_NACIONAIS[c]])
     for c in MF.CAMPOS:
         w.writerow(["saude_matriz_de_fontes.csv", c, DESCRICAO_MATRIZ[c]])
+    for c, origem in M.CAMPOS.items():
+        unidade = "% da população de referência" if c == "cobertura_pct" else "equipes" if c in ("esf", "eap20", "eap30", "esfr", "ecr", "eapp20", "eapp30") else "habitantes" if c == "populacao_referencia" else "pessoas"
+        w.writerow(["saude_aps_mensal.csv", c, f"Campo {origem} da resposta oficial do Relatório APS; unidade: {unidade}. Vazio é ausência, nunca zero."])
+    for c, descricao in {
+        "codigo_ibge": "Município, código IBGE de 7 dígitos.", "competencia": "Mês de referência, AAAA-MM; nunca somar estoques de meses distintos.",
+        "capital": "Nome da capital.", "uf": "Unidade da Federação.", "origem_populacao": "Código da origem populacional informado pelo Ministério; não é o ano da população.",
+        "status": "OBSERVADO, INCOMPLETO (campo ausente) ou PROVISORIO (cadastro vinculado de 2026 ainda incompleto, mesmo com campos numéricos).",
+        "metodo": "regra_anterior_2021 ou formula_atual. Não comparar a mudança de método como evolução do serviço.",
+        "fonte_url": "Endereço exato da captura.", "data_captura": "Data UTC da coleta, distinta da competência.",
+        "sha256_seed": "SHA-256 do conteúdo descomprimido do seed JSON, conforme o manifesto.", "versao": "Versão da publicação mensal.",
+        "hash_dados": "SHA-256 de todas as linhas mensais normalizadas; distinto do hash das observações anuais.",
+    }.items():
+        w.writerow(["saude_aps_mensal.csv", c, descricao])
     w.writerow(["", "(números)", "Valores decimais usam ponto e têm até 8 casas; a precisão original do cálculo é preservada na gold."])
     w.writerow(["", "(leia antes de usar)", "Os valores descrevem recursos, estrutura registrada e resultados observados; não classificam governos, não indicam meta e não demonstram causa. Célula vazia não é zero. Mediana e média descrevem o grupo de capitais e não são referência de desempenho."])
     w.writerow(["", "(perímetros)", "Recursos executados pelo município, serviços localizados no território e população residente são perímetros diferentes: um estabelecimento na capital pode não ser municipal, e resultados por residência não são produção da prefeitura."])
@@ -420,7 +434,10 @@ def _aplica_fator(refs):
 def constroi(gerado_em=None):
     catalogo = _catalogo()
     obs = P.todas()
+    mensal = M.constroi()  # qualquer identidade, hash ou fórmula inválida interrompe antes da promoção
     validacoes = V.todas(obs)
+    validacoes.append(V._v("S17", "APS mensal: integridade, identidade e fórmulas", "automatica", "aprovada",
+                          f"{len(mensal['linhas'])} registros capital/mês, {len(mensal['competencias'])} competências. Hashes do seed, municípios, duplicatas e fórmulas conferidos; 2021 tem método anterior e 2026 permanece provisório por cadastro incompleto."))
     fatores, medias = P.fatores_ipca()
     manif = base.le_manifesto()["capturas"]
     capturas = []
@@ -441,7 +458,7 @@ def constroi(gerado_em=None):
         "fontes_recurso": {c: r for c, r, _ in P.FONTES_RECURSO},
         "grupos_icsap": {f"g{k:02d}": v for k, v in P.GRUPOS_ICSAP.items()},
         "tipos_equipe": {"esf": "Saúde da Família (eSF)", "eap20": "Atenção Primária, 20 horas (eAP 20h)", "eap30": "Atenção Primária, 30 horas (eAP 30h)", "esfr": "Saúde da Família ribeirinha (eSFR)",
-                         "ecr": "Consultório na Rua (eCR)", "eapp20": "Apoio à Atenção Primária, 20 horas (eAPP 20h)", "eapp30": "Apoio à Atenção Primária, 30 horas (eAPP 30h)"},
+                         "ecr": "Consultório na Rua (eCR)", "eapp20": "Atenção Primária Prisional, 20 horas (eAPP 20h)", "eapp30": "Atenção Primária Prisional, 30 horas (eAPP 30h)"},
         "componentes_ubs": {"total_ativas": "UBS ativas (tipos 01 e 02)", "publicas": "Públicas", "nao_publicas": "Não públicas", "gestao_municipal": "Gestão municipal",
                             "gestao_municipal_nao_publica": "Gestão municipal e natureza jurídica não pública",
                             "gestao_estadual": "Gestão estadual", "gestao_dupla": "Gestão dupla", "publicas_sus": "Públicas com atendimento ambulatorial SUS", "tp01": "Postos de saúde (tipo 01)",
@@ -453,6 +470,7 @@ def constroi(gerado_em=None):
         "politica_conferencia": {"versao": CF.VERSAO_POLITICA, "tolerancia_arredondamento_reais": CF.TOL_ARREDONDAMENTO, "tolerancia_relativa": CF.TOL_RELATIVA,
                                  "elegiveis": sorted(CF.ELEGIVEIS), "rotulos": CF.ROTULO},
         "observacoes": obs,
+        "aps_mensal": mensal,
     }
 
 
@@ -468,6 +486,7 @@ def publica(gold, raiz_publica=None):
     raiz = raiz_publica or os.path.join(base.RAIZ, "public")
     arquivo = os.path.join(raiz, "eficiencia", "gold", "saude_capitais.json")
     base.grava_json(arquivo, gold)
+    M.publica(gold["aps_mensal"], os.path.join(raiz, "eficiencia", "series", "saude_aps_mensal.csv"))
     catalogo = {"indicadores": gold["indicadores"]}
     mapa_fontes = _mapa_fontes(gold["fontes"])
     perimetros = frozenset((o["ente"], o["ano"]) for o in gold["observacoes"] if o["indicador"] == "sau.despesa.funcao_saude" and (o.get("conferencia") or {}).get("quebra_serie"))

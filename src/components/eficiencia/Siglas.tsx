@@ -34,7 +34,7 @@ export const SIGLAS: Record<string, string> = {
   eAP: "equipe de Atenção Primária",
   eCR: "equipe de Consultório na Rua",
   eSFR: "equipe de Saúde da Família Ribeirinha",
-  eAPP: "equipe de Apoio à Atenção Primária",
+  eAPP: "equipe de Atenção Primária Prisional",
   Siaps: "Sistema de Informação em Saúde para a Atenção Primária",
   Sisab: "Sistema de Informação em Saúde para a Atenção Básica",
 };

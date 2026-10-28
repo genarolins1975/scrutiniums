@@ -4,6 +4,7 @@ Módulo do OBEE em `/eficiencia-estatal/saude-capitais`: despesa do município e
 
 | Documento | Conteúdo |
 | --- | --- |
+| [COBERTURA_CAPITAIS_2026-10-28.md](./COBERTURA_CAPITAIS_2026-10-28.md) | Prioridade atual: completar indicadores das capitais; extensão mensal da APS, inventário, limites e bloqueios reais. A cobertura máxima ainda não está concluída. |
 | [ESCOPO_E_FONTES.md](./ESCOPO_E_FONTES.md) | Pergunta, perímetros, decisões de escopo, resumo da matriz de fontes, lacunas declaradas |
 | [CATALOGO_COBERTURA_FORMULAS.md](./CATALOGO_COBERTURA_FORMULAS.md) | Gerado da gold: fórmulas, fontes, períodos, cobertura por ano, matriz de fontes completa (`python3 -m pipeline.eficiencia_saude.documenta`) |
 | [ARQUITETURA.md](./ARQUITETURA.md) | Cadeia de dados, interface, reutilização de Educação, isolamento, como acrescentar uma medida |
