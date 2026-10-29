@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-28T17:26:41+00:00",
+ "gerado_em": "2026-10-29T18:02:48+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -47,6 +47,18 @@
   "municipios_com_contratacao": 5490
  },
  "serie_mensal": [
+  {
+   "mes": "2023-01",
+   "custeio": 10285538644.68,
+   "investimento": 4995186460.11,
+   "comercializacao": 2420912282.52,
+   "industrializacao": 626107861.7,
+   "qtd": 133440,
+   "agricola": 11922045744.93,
+   "pecuaria": 6405699504.08,
+   "parcial": false,
+   "valor": 18327745249.01
+  },
   {
    "mes": "2023-02",
    "custeio": 9317378479.84,
@@ -579,13 +591,13 @@
  "safras": [
   {
    "safra": "2022/23",
-   "valor": 125590355181.89,
-   "qtd": 692499,
-   "custeio": 69980030858.07,
-   "investimento": 32660450309.26,
-   "comercializacao": 18405229181.38,
-   "industrializacao": 4544644833.18,
-   "meses": 5,
+   "valor": 143918100430.9,
+   "qtd": 825939,
+   "custeio": 80265569502.75,
+   "investimento": 37655636769.37,
+   "comercializacao": 20826141463.9,
+   "industrializacao": 5170752694.88,
+   "meses": 6,
    "incompleta": true
   },
   {
@@ -763,10 +775,10 @@
   "por_safra": [
    {
     "safra": "2022/23",
-    "PRONAF": 15118548875.48,
-    "PRONAMP": 12564160919.54,
-    "Demais programas": 6061214009.59,
-    "Sem programa": 91846431377.28,
+    "PRONAF": 17956881010.36,
+    "PRONAMP": 15176358901.45,
+    "Demais programas": 6968790386.07,
+    "Sem programa": 103816070133.02,
     "incompleta": true
    },
    {
@@ -1076,15 +1088,15 @@
   "por_safra": [
    {
     "safra": "2022/23",
-    "BNDES e Finame": 6633837616.99,
-    "Outras fontes": 1565763922.72,
-    "Funcafé": 773361121.86,
-    "Fundos constitucionais (FNE, FNO, FCO)": 14620626822.05,
-    "LCA": 42811357280.65,
-    "Exigibilidades (MCR 6.2)": 18626026877.98,
-    "Poupança rural": 20853149121.4,
-    "Recursos livres": 19698472648.66,
-    "Tesouro Nacional": 7759769.58,
+    "BNDES e Finame": 7225861979.42,
+    "Outras fontes": 2178260737.58,
+    "Funcafé": 1026744031.49,
+    "Fundos constitucionais (FNE, FNO, FCO)": 15929714652.59,
+    "LCA": 47704430639.51,
+    "Exigibilidades (MCR 6.2)": 23626596929.22,
+    "Poupança rural": 23721839950.72,
+    "Recursos livres": 22496828740.79,
+    "Tesouro Nacional": 7822769.58,
     "incompleta": true
    },
    {
@@ -1470,8 +1482,8 @@
    },
    {
     "safra": "2026/27",
-    "mulheres_share_valor": 20.59,
-    "mulheres_share_qtd": 33.25,
+    "mulheres_share_valor": 20.62,
+    "mulheres_share_qtd": 33.32,
     "incompleta": true
    }
   ]

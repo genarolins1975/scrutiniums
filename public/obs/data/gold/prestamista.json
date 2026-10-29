@@ -9,7 +9,7 @@
   "licenca": "dados abertos da SUSEP",
   "nivel": "A — estatística oficial do supervisor de seguros, mensal"
  },
- "gerado_em": "2026-10-28T17:26:49+00:00",
+ "gerado_em": "2026-10-29T18:02:56+00:00",
  "coleta": {
   "last_modified": "Mon, 26 Oct 2026 03:50:49 GMT",
   "coletado_em": "2026-10-26T16:14:49+00:00",
@@ -44,7 +44,7 @@
   "sinistralidade_12m_pct": 20.96,
   "comissao_12m_pct": 37.06,
   "n_empresas": 67,
-  "concessoes_pf_12m": 4594244000000.0,
+  "concessoes_pf_12m": 4598815000000.0,
   "premio_sobre_concessoes_pct": 0.67,
   "top5_grupos_share_pct": 47.42
  },
@@ -1073,7 +1073,7 @@
    "sinistralidade_pct": 24.12,
    "comissao_pct": 35.38,
    "n_empresas": 65,
-   "concessoes_pf": 385590000000.0,
+   "concessoes_pf": 385589000000.0,
    "premio_sobre_concessoes_pct": 0.71,
    "parcial": false
   },
@@ -1086,8 +1086,8 @@
    "sinistralidade_pct": 20.31,
    "comissao_pct": 39.55,
    "n_empresas": 66,
-   "concessoes_pf": 400840000000.0,
-   "premio_sobre_concessoes_pct": 0.63,
+   "concessoes_pf": 401258000000.0,
+   "premio_sobre_concessoes_pct": 0.62,
    "parcial": false
   },
   {
@@ -1099,8 +1099,8 @@
    "sinistralidade_pct": 22.31,
    "comissao_pct": 34.99,
    "n_empresas": 67,
-   "concessoes_pf": 394254000000.0,
-   "premio_sobre_concessoes_pct": 0.73,
+   "concessoes_pf": 398408000000.0,
+   "premio_sobre_concessoes_pct": 0.72,
    "parcial": false
   }
  ],

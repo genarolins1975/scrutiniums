@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-28T17:26:04+00:00",
+ "gerado_em": "2026-10-29T18:02:12+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 194,
-  "total_editais": 717,
+  "total_contratos_if": 197,
+  "total_editais": 719,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 62,
+    "contratos": 63,
     "ufs": 19,
     "como_receita": 10
    },
@@ -166,9 +166,9 @@
    {
     "cnpj8": "60701190",
     "banco": "ITAU UNIBANCO S.A.",
-    "contratos": 5,
+    "contratos": 6,
     "ufs": 4,
-    "como_receita": 1
+    "como_receita": 2
    },
    {
     "cnpj8": "92702067",
@@ -204,6 +204,13 @@
     "contratos": 2,
     "ufs": 1,
     "como_receita": 0
+   },
+   {
+    "cnpj8": "87733770",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 2
    },
    {
     "cnpj8": "22724710",
@@ -295,13 +302,6 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
-   },
-   {
-    "cnpj8": "87733770",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
    },
    {
     "cnpj8": "05231945",
@@ -404,6 +404,21 @@
   ],
   "recentes": [
    {
+    "controle": "29138377000193-2-000062/2026",
+    "ente": "MUNICIPIO DE TRES RIOS",
+    "esfera": "Municipal",
+    "municipio": "Três Rios",
+    "uf": "RJ",
+    "modalidade": "Pregão - Presencial",
+    "assinatura": "2026-10-23",
+    "vig_fim": "2031-10-22",
+    "valor": 9450000.0,
+    "receita": true,
+    "banco": "ITAU UNIBANCO S.A.",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/29138377000193/2026/62"
+   },
+   {
     "controle": "32001836000105-2-000348/2026",
     "ente": "MUNICIPIO DE SAO JOSE DO VALE DO RIO PRETO",
     "esfera": "Municipal",
@@ -417,6 +432,21 @@
     "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CE",
     "cnpj8": "78907607",
     "url": "https://pncp.gov.br/contratos/32001836000105/2026/348"
+   },
+   {
+    "controle": "18449140000107-2-000035/2026",
+    "ente": "MUNICIPIO DE FRONTEIRA",
+    "esfera": "Municipal",
+    "municipio": "Fronteira",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-10-22",
+    "vig_fim": "2031-10-22",
+    "valor": 510000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/18449140000107/2026/35"
    },
    {
     "controle": "46710422000151-2-000034/2026",
@@ -657,6 +687,21 @@
     "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD",
     "cnpj8": "81099491",
     "url": "https://pncp.gov.br/contratos/01612444000140/2026/105"
+   },
+   {
+    "controle": "18675975000185-2-000281/2026",
+    "ente": "MUNICIPIO DE CAMBUI",
+    "esfera": "Municipal",
+    "municipio": "Cambuí",
+    "uf": "MG",
+    "modalidade": "Inexigibilidade",
+    "assinatura": "2026-09-23",
+    "vig_fim": "2027-09-23",
+    "valor": 0.01,
+    "receita": true,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "cnpj8": "87733770",
+    "url": "https://pncp.gov.br/contratos/18675975000185/2026/281"
    },
    {
     "controle": "46634317000180-2-000067/2026",
@@ -957,54 +1002,18 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/35607532000176/2026/25"
-   },
-   {
-    "controle": "01612770000158-2-000113/2026",
-    "ente": "MUNICIPIO DE RIACHAO",
-    "esfera": "Municipal",
-    "municipio": "Riachão",
-    "uf": "PB",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-21",
-    "vig_fim": "2031-08-21",
-    "valor": 70200.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/01612770000158/2026/113"
-   },
-   {
-    "controle": "83102830000157-2-001215/2026",
-    "ente": "MUNICIPIO DE BARRA VELHA",
-    "esfera": "Municipal",
-    "municipio": "Barra Velha",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-20",
-    "vig_fim": "2031-08-20",
-    "valor": 2000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL-CEF",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/83102830000157/2026/1215"
-   },
-   {
-    "controle": "78200482000110-2-000100/2026",
-    "ente": "MUNICIPIO DE SARANDI",
-    "esfera": "Municipal",
-    "municipio": "Sarandi",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-19",
-    "vig_fim": "2031-08-18",
-    "valor": 6800000.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/78200482000110/2026/100"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE CAPITOLIO",
+    "municipio": "Capitólio",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-29",
+    "url": "https://pncp.gov.br/compras/16726028000140/2026/97"
+   },
    {
     "ente": "MUNICIPIO DE APERIBE",
     "municipio": "Aperibé",
@@ -1024,15 +1033,6 @@
     "url": "https://pncp.gov.br/compras/01067479000146/2026/239"
    },
    {
-    "ente": "MUNICIPIO DE ALVARENGA",
-    "municipio": "Alvarenga",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/19770288000101/2026/73"
-   },
-   {
     "ente": "MUNICIPIO DE PATIS",
     "municipio": "Patis",
     "uf": "MG",
@@ -1042,13 +1042,22 @@
     "url": "https://pncp.gov.br/compras/01612478000135/2026/58"
    },
    {
-    "ente": "MUNICIPIO DE MIRANDA",
-    "municipio": "Miranda",
-    "uf": "MS",
-    "modalidade": "Pregão - Eletrônico",
+    "ente": "MUNICIPIO DE ALVARENGA",
+    "municipio": "Alvarenga",
+    "uf": "MG",
+    "modalidade": "Dispensa",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/03452315000168/2026/12"
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/19770288000101/2026/73"
+   },
+   {
+    "ente": "MUNICIPIO DE TAPURAH",
+    "municipio": "Tapurah",
+    "uf": "MT",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/24772253000141/2026/155"
    },
    {
     "ente": "MUNICIPIO DE TIMBO",
@@ -1069,6 +1078,15 @@
     "url": "https://pncp.gov.br/compras/83102764000115/2026/402"
    },
    {
+    "ente": "MUNICIPIO DE MIRANDA",
+    "municipio": "Miranda",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-26",
+    "url": "https://pncp.gov.br/compras/03452315000168/2026/12"
+   },
+   {
     "ente": "MUNICIPIO DE NOVA OLINDA",
     "municipio": "Nova Olinda",
     "uf": "PB",
@@ -1078,15 +1096,6 @@
     "url": "https://pncp.gov.br/compras/08889297000108/2026/57"
    },
    {
-    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
-    "municipio": "Aparecida",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-23",
-    "url": "https://pncp.gov.br/compras/43672880000155/2026/118"
-   },
-   {
     "ente": "MUNICIPIO DE MUZAMBINHO",
     "municipio": "Muzambinho",
     "uf": "MG",
@@ -1094,15 +1103,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-23",
     "url": "https://pncp.gov.br/compras/18668624000147/2026/92"
-   },
-   {
-    "ente": "MUNICIPIO DE VARZEA PAULISTA",
-    "municipio": "Várzea Paulista",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-23",
-    "url": "https://pncp.gov.br/compras/45780087000103/2026/123"
    },
    {
     "ente": "MUNICIPIO DE MANDAGUARI",

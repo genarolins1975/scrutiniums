@@ -18135,7 +18135,7 @@
   {
    "cod": "C0051688",
    "nome": "FINAXIS",
-   "sr": "S4",
+   "sr": null,
    "nivel": "congl",
    "ativo": 65132121.08,
    "carteira": 0.0,

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-28T17:26:36+00:00",
+ "gerado_em": "2026-10-29T18:02:44+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -59,17 +59,17 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.111,
+  "beta": 1.112,
   "r2_nao_centrado": 0.825,
   "ep_beta": 0.0165,
-  "n_ifs": 957,
+  "n_ifs": 958,
   "m_produtos": {
    "capital-de-giro-pj": 1.02,
    "cartao-de-credito-pf": 0.77,
    "comercio-exterior-pj": 0.31,
    "consignado-pf": 1.47,
    "credito-pessoal-pf": 0.92,
-   "recebiveis-pj": 0.67,
+   "recebiveis-pj": 0.66,
    "veiculos-pf": 1.14
   },
   "phi_winsorizados": 39,
@@ -77,7 +77,7 @@
    0.25,
    4.0
   ],
-  "estimativas": 6012,
+  "estimativas": 6024,
   "estimativas_baixa_cobertura": 19,
   "estimativas_teto_sanidade": 64,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
@@ -94,9 +94,9 @@
   "nota_taxonomia": "",
   "modalidade_original": "financiamento_de_infraestrutura_desenvolvimento_",
   "data_base": "202606",
-  "mercado_total_brl": 689030529746.56,
-  "n_instituicoes": 204,
-  "share_segmento_pct": 21.05,
+  "mercado_total_brl": 689327220353.85,
+  "n_instituicoes": 205,
+  "share_segmento_pct": 20.99,
   "crescimento_4t_pct": 10.83,
   "crescimento_4t_n_pareado": 179,
   "crescimento_1t_pct": 2.18,
@@ -118,24 +118,24 @@
    },
    {
     "anomes": "202512",
-    "total_brl": 670493611218.0499,
-    "n_inst": 197
+    "total_brl": 670816660973.38,
+    "n_inst": 198
    },
    {
     "anomes": "202603",
-    "total_brl": 674148230845.9299,
-    "n_inst": 202
+    "total_brl": 674457201847.95,
+    "n_inst": 203
    },
    {
     "anomes": "202606",
-    "total_brl": 689030529746.56,
-    "n_inst": 204
+    "total_brl": 689327220353.85,
+    "n_inst": 205
    }
   ],
   "atraso15": {
    "agg_pct": 0.19,
-   "n": 204,
-   "mediana_pct": 0.73,
+   "n": 205,
+   "mediana_pct": 0.71,
    "p25_pct": 0.01,
    "p75_pct": 1.95,
    "serie": [
@@ -157,17 +157,17 @@
     {
      "anomes": "202512",
      "agg_pct": 0.16,
-     "n": 197
+     "n": 198
     },
     {
      "anomes": "202603",
      "agg_pct": 0.18,
-     "n": 202
+     "n": 203
     },
     {
      "anomes": "202606",
      "agg_pct": 0.19,
-     "n": 204
+     "n": 205
     }
    ],
    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -177,11 +177,11 @@
    "top1_pct": 51.5,
    "top5_pct": 83.6,
    "top10_pct": 90.6,
-   "hhi": 3031,
-   "n_inst": 204,
+   "hhi": 3029,
+   "n_inst": 205,
    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
   },
-  "sintese": "Infraestrutura e desenvolvimento: carteira cresceu 10.8% em 4 trimestres (amostra pareada, n=179); representa 21.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.2% da carteira (n=204); top-5 concentra 84% (HHI 3031).",
+  "sintese": "Infraestrutura e desenvolvimento: carteira cresceu 10.8% em 4 trimestres (amostra pareada, n=179); representa 21.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.2% da carteira (n=205); top-5 concentra 84% (HHI 3029).",
   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
   "matriz": [
    {
@@ -191,7 +191,7 @@
     "nivel": "individual",
     "carteira_brl": 354948643354.71,
     "atraso15_pct": 0.03,
-    "share_pct": 51.51,
+    "share_pct": 51.49,
     "d4t_pct": 7.4,
     "d1t_pct": 1.4,
     "pct_carteira_inst": 96.5,
@@ -252,7 +252,7 @@
     "npl_prod_est": {
      "pct": 0.58,
      "m_produto": null,
-     "phi_if": 1.41,
+     "phi_if": 1.4,
      "cobertura_if_pct": 91.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -352,7 +352,7 @@
     "npl_prod_est": {
      "pct": 1.4,
      "m_produto": null,
-     "phi_if": 2.53,
+     "phi_if": 2.52,
      "cobertura_if_pct": 98.4,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -502,7 +502,7 @@
     "npl_prod_est": {
      "pct": 0.08,
      "m_produto": null,
-     "phi_if": 2.47,
+     "phi_if": 2.46,
      "cobertura_if_pct": 82.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -527,7 +527,7 @@
     "npl_prod_est": {
      "pct": 1.03,
      "m_produto": null,
-     "phi_if": 1.13,
+     "phi_if": 1.12,
      "cobertura_if_pct": 76.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -602,7 +602,7 @@
     "npl_prod_est": {
      "pct": 2.29,
      "m_produto": null,
-     "phi_if": 2.04,
+     "phi_if": 2.03,
      "cobertura_if_pct": 98.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -750,7 +750,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.64,
+     "pct": 8.65,
      "m_produto": null,
      "phi_if": 1.42,
      "cobertura_if_pct": 90.9,
@@ -825,9 +825,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.84,
+     "pct": 4.85,
      "m_produto": null,
-     "phi_if": 2.13,
+     "phi_if": 2.12,
      "cobertura_if_pct": 93.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -927,7 +927,7 @@
     "npl_prod_est": {
      "pct": 5.07,
      "m_produto": null,
-     "phi_if": 2.69,
+     "phi_if": 2.68,
      "cobertura_if_pct": 88.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -993,7 +993,7 @@
     "npl_prod_est": {
      "pct": 5.82,
      "m_produto": null,
-     "phi_if": 2.85,
+     "phi_if": 2.84,
      "cobertura_if_pct": 98.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1018,7 +1018,7 @@
     "npl_prod_est": {
      "pct": 8.33,
      "m_produto": null,
-     "phi_if": 2.58,
+     "phi_if": 2.57,
      "cobertura_if_pct": 95.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1041,7 +1041,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 13.58,
+     "pct": 13.59,
      "m_produto": null,
      "phi_if": 2.68,
      "cobertura_if_pct": 98.4,
@@ -1066,9 +1066,34 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.12,
+     "pct": 1.13,
      "m_produto": null,
-     "phi_if": 1.78,
+     "phi_if": 1.77,
+     "cobertura_if_pct": 86.7,
+     "baixa_cobertura": false,
+     "perfil_neutro": true,
+     "teto_sanidade": false
+    }
+   },
+   {
+    "cod": "01984199",
+    "nome": "CARTAO BRB S/A",
+    "sr": null,
+    "nivel": "individual",
+    "carteira_brl": 296690607.29,
+    "atraso15_pct": 0.57,
+    "share_pct": 0.04,
+    "d4t_pct": null,
+    "d1t_pct": -4.0,
+    "pct_carteira_inst": 0.6,
+    "npl_inst_pct": 19.72,
+    "basileia_pct": null,
+    "taxas_novas": null,
+    "taxa_casamento": null,
+    "npl_prod_est": {
+     "pct": 1.13,
+     "m_produto": null,
+     "phi_if": 1.77,
      "cobertura_if_pct": 86.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1143,7 +1168,7 @@
     "npl_prod_est": {
      "pct": 9.54,
      "m_produto": null,
-     "phi_if": 2.72,
+     "phi_if": 2.71,
      "cobertura_if_pct": 86.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1393,7 +1418,7 @@
     "npl_prod_est": {
      "pct": 12.61,
      "m_produto": null,
-     "phi_if": 4.0,
+     "phi_if": 3.99,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1466,7 +1491,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 39.66,
+     "pct": 39.68,
      "m_produto": null,
      "phi_if": 1.66,
      "cobertura_if_pct": 54.0,
@@ -1566,7 +1591,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.31,
+     "pct": 8.32,
      "m_produto": null,
      "phi_if": 2.76,
      "cobertura_if_pct": 90.2,
@@ -1593,7 +1618,7 @@
     "npl_prod_est": {
      "pct": 0.78,
      "m_produto": null,
-     "phi_if": 1.86,
+     "phi_if": 1.85,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1843,7 +1868,7 @@
     "npl_prod_est": {
      "pct": 4.72,
      "m_produto": null,
-     "phi_if": 2.61,
+     "phi_if": 2.6,
      "cobertura_if_pct": 93.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1868,7 +1893,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 3.72,
+     "phi_if": 3.71,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1916,7 +1941,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 26.49,
+     "pct": 26.51,
      "m_produto": null,
      "phi_if": 1.15,
      "cobertura_if_pct": 95.8,
@@ -1968,7 +1993,7 @@
     "npl_prod_est": {
      "pct": 0.99,
      "m_produto": null,
-     "phi_if": 1.49,
+     "phi_if": 1.48,
      "cobertura_if_pct": 79.8,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2209,7 +2234,7 @@
     "npl_prod_est": {
      "pct": 29.13,
      "m_produto": null,
-     "phi_if": 2.72,
+     "phi_if": 2.71,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2432,7 +2457,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.67,
+     "pct": 6.68,
      "m_produto": null,
      "phi_if": 2.03,
      "cobertura_if_pct": 71.0,
@@ -2582,7 +2607,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.75,
+     "pct": 4.76,
      "m_produto": null,
      "phi_if": 2.22,
      "cobertura_if_pct": 81.4,
@@ -2659,7 +2684,7 @@
     "npl_prod_est": {
      "pct": 2.95,
      "m_produto": null,
-     "phi_if": 1.27,
+     "phi_if": 1.26,
      "cobertura_if_pct": 86.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2709,7 +2734,7 @@
     "npl_prod_est": {
      "pct": 2.47,
      "m_produto": null,
-     "phi_if": 1.81,
+     "phi_if": 1.8,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2784,7 +2809,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.14,
+     "phi_if": 1.13,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2859,7 +2884,7 @@
     "npl_prod_est": {
      "pct": 0.44,
      "m_produto": null,
-     "phi_if": 1.41,
+     "phi_if": 1.4,
      "cobertura_if_pct": 82.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -2932,7 +2957,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.96,
+     "pct": 10.97,
      "m_produto": null,
      "phi_if": 3.06,
      "cobertura_if_pct": 96.0,
@@ -3009,7 +3034,7 @@
     "npl_prod_est": {
      "pct": 0.21,
      "m_produto": null,
-     "phi_if": 1.87,
+     "phi_if": 1.86,
      "cobertura_if_pct": 94.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3082,7 +3107,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.69,
+     "pct": 18.7,
      "m_produto": null,
      "phi_if": 3.17,
      "cobertura_if_pct": 89.7,
@@ -3257,7 +3282,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.68,
+     "pct": 6.69,
      "m_produto": null,
      "phi_if": 1.22,
      "cobertura_if_pct": 84.1,
@@ -3309,7 +3334,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.77,
+     "phi_if": 1.76,
      "cobertura_if_pct": 92.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3757,7 +3782,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.47,
+     "pct": 2.48,
      "m_produto": null,
      "phi_if": 1.8,
      "cobertura_if_pct": 84.5,
@@ -3834,7 +3859,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.77,
+     "phi_if": 1.76,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3859,7 +3884,7 @@
     "npl_prod_est": {
      "pct": 0.4,
      "m_produto": null,
-     "phi_if": 1.56,
+     "phi_if": 1.55,
      "cobertura_if_pct": 76.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3884,7 +3909,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 0.96,
+     "phi_if": 0.95,
      "cobertura_if_pct": 87.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -3957,7 +3982,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.29,
+     "pct": 4.3,
      "m_produto": null,
      "phi_if": 2.26,
      "cobertura_if_pct": 88.5,
@@ -3982,7 +4007,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.19,
+     "pct": 6.2,
      "m_produto": null,
      "phi_if": 2.44,
      "cobertura_if_pct": 86.3,
@@ -4007,9 +4032,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.13,
+     "pct": 5.14,
      "m_produto": null,
-     "phi_if": 2.63,
+     "phi_if": 2.62,
      "cobertura_if_pct": 90.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4173,7 +4198,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.92,
+     "pct": 5.93,
      "m_produto": null,
      "phi_if": 1.53,
      "cobertura_if_pct": 88.0,
@@ -4250,7 +4275,7 @@
     "npl_prod_est": {
      "pct": 0.24,
      "m_produto": null,
-     "phi_if": 1.46,
+     "phi_if": 1.45,
      "cobertura_if_pct": 79.1,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4500,7 +4525,7 @@
     "npl_prod_est": {
      "pct": 6.74,
      "m_produto": null,
-     "phi_if": 0.84,
+     "phi_if": 0.83,
      "cobertura_if_pct": 48.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4525,7 +4550,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 2.48,
+     "phi_if": 2.47,
      "cobertura_if_pct": 76.7,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4548,7 +4573,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 11.81,
+     "pct": 11.82,
      "m_produto": null,
      "phi_if": 1.89,
      "cobertura_if_pct": 82.5,
@@ -4598,7 +4623,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 38.98,
+     "pct": 38.99,
      "m_produto": null,
      "phi_if": 2.44,
      "cobertura_if_pct": 67.0,
@@ -4673,9 +4698,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 21.6,
+     "pct": 21.61,
      "m_produto": null,
-     "phi_if": 1.64,
+     "phi_if": 1.63,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4873,7 +4898,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.62,
+     "pct": 10.63,
      "m_produto": null,
      "phi_if": 2.16,
      "cobertura_if_pct": 76.1,
@@ -4973,7 +4998,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 30.27,
+     "pct": 30.28,
      "m_produto": null,
      "phi_if": 1.13,
      "cobertura_if_pct": 36.1,
@@ -5023,7 +5048,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 24.43,
+     "pct": 24.45,
      "m_produto": null,
      "phi_if": 2.43,
      "cobertura_if_pct": 85.4,
@@ -5073,7 +5098,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 92.17,
+     "pct": 92.22,
      "m_produto": null,
      "phi_if": 1.62,
      "cobertura_if_pct": 97.7,
@@ -5098,7 +5123,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 79.27,
+     "pct": 79.3,
      "m_produto": null,
      "phi_if": 1.88,
      "cobertura_if_pct": 64.0,

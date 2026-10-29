@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-28T17:26:43+00:00",
+ "gerado_em": "2026-10-29T18:02:50+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1279 processos sancionadores em 1ª instância, com 1348 decisões por apenado: 1290 multas somando R$ 71.9 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 383 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1285 processos sancionadores em 1ª instância, com 1354 decisões por apenado: 1296 multas somando R$ 72.0 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 382 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-10-27",
+  "ultima_decisao": "2026-10-28",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16981,
-   "processos": 13070,
-   "apenados_distintos": 11401
+   "decisoes": 16987,
+   "processos": 13076,
+   "apenados_distintos": 11404
   },
   "janela_12m": {
-   "ini": "2025-10-28",
-   "decisoes": 1348,
-   "processos": 1279,
-   "multas_n": 1290,
-   "multas_valor": 71885500.0,
+   "ini": "2025-10-29",
+   "decisoes": 1354,
+   "processos": 1285,
+   "multas_n": 1296,
+   "multas_valor": 71985500.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 149,
-   "pj": 392,
-   "pf": 956
+   "pj": 394,
+   "pf": 960
   },
   "janela_12m_anterior": {
    "decisoes": 835,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1290,
-    "share": 95.7
+    "n": 1296,
+    "share": 95.72
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.78
+    "share": 3.77
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,33 +91,33 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 868,
-    "share": 64.39
+    "n": 869,
+    "share": 64.18
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 136,
-    "share": 10.09
+    "n": 135,
+    "share": 9.97
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 115,
-    "share": 8.53
+    "share": 8.49
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
-    "share": 8.46
+    "share": 8.42
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 46,
-    "share": 3.41
+    "share": 3.4
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 30,
-    "share": 2.23
+    "n": 36,
+    "share": 2.66
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11954,
-    "share": 87.83
+    "n": 11956,
+    "share": 87.8
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 893,
-    "share": 6.56
+    "n": 891,
+    "share": 6.54
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -183,13 +183,13 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 63,
-    "share": 0.46
+    "n": 64,
+    "share": 0.47
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 43,
-    "share": 0.32
+    "n": 48,
+    "share": 0.35
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3109
+   "n": 3115
   },
   "anual": [
    {
@@ -400,21 +400,81 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1198,
-    "processos": 1133,
-    "multas_n": 1146,
-    "multas_valor": 68673000.0,
+    "decisoes": 1204,
+    "processos": 1139,
+    "multas_n": 1152,
+    "multas_valor": 68773000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 856,
-    "pj": 342,
+    "pf": 860,
+    "pj": 344,
     "incompleto": true,
-    "recurso_share": 11.19,
-    "sem_penalidade_share": 3.76
+    "recurso_share": 11.13,
+    "sem_penalidade_share": 3.74
    }
   ],
   "recentes": [
+   {
+    "pas": "316350",
+    "nome": "AURORA CELESTE LOPES VENDITTO",
+    "pessoa": "PF",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316285",
+    "nome": "LEONIE DOUEK HAIFAZ",
+    "pessoa": "PF",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "299091",
+    "nome": "MARIO BERNARDO GARNERO",
+    "pessoa": "PF",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312881",
+    "nome": "NELSON KAUFMAN",
+    "pessoa": "PF",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "300282",
+    "nome": "TOWERS WATSON CONSULTORIA LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312873",
+    "nome": "WILKES PARTICIPACOES S.A.",
+    "pessoa": "PJ",
+    "decisao": "2026-10-28",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "315964",
     "nome": "WALTER DE SA CAVALCANTE JUNIOR",
@@ -754,70 +814,10 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312207",
-    "nome": "MANUEL GONZALEZ CUNA",
-    "pessoa": "PF",
-    "decisao": "2026-09-22",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312875",
-    "nome": "ALPHONSE GUILHERME VOIGT",
-    "pessoa": "PF",
-    "decisao": "2026-09-15",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312206",
-    "nome": "BERNARDO ALONSO MARTINEZ",
-    "pessoa": "PF",
-    "decisao": "2026-09-15",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312217",
-    "nome": "DANIELE CESANO",
-    "pessoa": "PF",
-    "decisao": "2026-09-15",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA VENCIDA E NÃO PAGA"
-   },
-   {
-    "pas": "312208",
-    "nome": "MINERACAO VALE VERDE DO BRASIL LTDA.",
-    "pessoa": "PJ",
-    "decisao": "2026-09-15",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA VENCIDA E NÃO PAGA"
-   },
-   {
-    "pas": "312203",
-    "nome": "SERGIO MARINHO ALVES",
-    "pessoa": "PF",
-    "decisao": "2026-09-15",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
-   "vigentes": 383,
+   "vigentes": 382,
    "por_prazo": [
     {
      "prazo_anos": 2.0,
@@ -871,8 +871,8 @@
     },
     {
      "prazo_anos": 11.0,
-     "n": 12,
-     "encerram_12m": 1
+     "n": 11,
+     "encerram_12m": 0
     },
     {
      "prazo_anos": 12.0,
@@ -925,7 +925,7 @@
      "encerram_12m": 0
     }
    ],
-   "encerram_12m": 12
+   "encerram_12m": 11
   },
   "proibidos_vigentes": 2,
   "nota": "Uma linha por apenado e decisão. A penalidade que vale é a de 2ª instância quando existe; multa aplicada não é multa paga (a situação da cobrança está à parte). Pessoa física é o CPF mascarado; pessoa jurídica é o CNPJ. Sem ranking por nome: a lista é cronológica."
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-28",
+   "ini": "2025-10-29",
    "processos": 64,
    "acusados": 164
   },
@@ -1468,7 +1468,7 @@
     "area": "GMA",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-28",
+    "ultima_mov": "2026-10-22",
     "acusados": 2,
     "objeto": "Apurar responsabilidades por infração ao disposto no art. 3º da Resolução CVM nº 62/2022, em razão da criação de condições artificiais de oferta demanda e preço de valores mobiliários, nos termos definidos no art. 2°, I."
    },

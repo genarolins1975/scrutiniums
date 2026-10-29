@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-28T17:26:46+00:00",
+ "gerado_em": "2026-10-29T18:02:53+00:00",
  "fontes": {
   "cadastro": {
    "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
@@ -24,11 +24,11 @@
    "nivel": "A — lista oficial vigente, diária"
   }
  },
- "sintese": "Em 2026-10-28, 1740 sedes estavam autorizadas e em funcionamento: 166 bancos, 751 cooperativas de crédito, 196 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (41 fora do cadastro do BCB hoje, 6 ainda autorizadas). 24 instituições estão sob regime de resolução, 22 decretados nos últimos 12 meses.",
+ "sintese": "Em 2026-10-29, 1741 sedes estavam autorizadas e em funcionamento: 166 bancos, 751 cooperativas de crédito, 196 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (41 fora do cadastro do BCB hoje, 6 ainda autorizadas). 25 instituições estão sob regime de resolução, 23 decretados nos últimos 12 meses.",
  "cadastro": {
   "disponivel": true,
-  "data": "2026-10-28",
-  "total": 1740,
+  "data": "2026-10-29",
+  "total": 1741,
   "grupos": [
    {
     "grupo": "Bancos",
@@ -68,7 +68,7 @@
       "n": 1
      }
     ],
-    "share": 9.54
+    "share": 9.53
    },
    {
     "grupo": "Cooperativas de crédito",
@@ -92,7 +92,7 @@
       "n": 3
      }
     ],
-    "share": 43.16
+    "share": 43.14
    },
    {
     "grupo": "Instituições de pagamento",
@@ -148,16 +148,16 @@
       "n": 1
      }
     ],
-    "share": 7.13
+    "share": 7.12
    },
    {
     "grupo": "Mercado de capitais e câmbio",
     "cor": "#8d5a2b",
-    "n": 204,
+    "n": 205,
     "segmentos": [
      {
       "segmento": "Sociedade Distribuidora de TVM",
-      "n": 99
+      "n": 100
      },
      {
       "segmento": "Sociedade Corretora de TVM",
@@ -168,7 +168,7 @@
       "n": 48
      }
     ],
-    "share": 11.72
+    "share": 11.77
    },
    {
     "grupo": "Fomento e desenvolvimento",
@@ -207,7 +207,7 @@
    {
     "uf": "SP",
     "regiao": "Sudeste",
-    "n": 747,
+    "n": 748,
     "bancos": 116,
     "cooperativas": 152,
     "ips": 139,
@@ -451,17 +451,17 @@
   "regioes": [
    {
     "regiao": "Sudeste",
-    "n": 1082,
+    "n": 1083,
     "cooperativas": 364,
     "bancos": 138,
-    "share": 62.18
+    "share": 62.21
    },
    {
     "regiao": "Sul",
     "n": 423,
     "cooperativas": 244,
     "bancos": 18,
-    "share": 24.31
+    "share": 24.3
    },
    {
     "regiao": "Centro-Oeste",
@@ -612,6 +612,14 @@
   "historico_proprio": {
    "desde": "2026-10-15",
    "entradas": [
+    {
+     "cnpj8": "64198812",
+     "nome": "STONE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+     "grupo": "Mercado de capitais e câmbio",
+     "segmento": "Sociedade Distribuidora de TVM",
+     "uf": "SP",
+     "data": "2026-10-29"
+    },
     {
      "cnpj8": "41586874",
      "nome": "TRKBIT SOCIEDADE PRESTADORA DE SERVICOS DE ATIVOS VIRTUAIS LTDA",
@@ -834,6 +842,17 @@
      "Fomento e desenvolvimento": 20,
      "Instituições de pagamento": 196,
      "Mercado de capitais e câmbio": 204
+    },
+    {
+     "data": "2026-10-29",
+     "Bancos": 166,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 751,
+     "Financeiras e crédito especializado": 124,
+     "Fintechs de crédito": 149,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 196,
+     "Mercado de capitais e câmbio": 205
     }
    ]
   },
@@ -877,12 +896,12 @@
     "retornos": null,
     "ausencias": null,
     "por_tcb": {
-     "B3S": 1091,
-     "N2": 170,
-     "B2": 35,
-     "B3C": 37,
-     "N1": 109,
      "B1": 105,
+     "B3S": 1091,
+     "N1": 109,
+     "B2": 35,
+     "N2": 170,
+     "B3C": 37,
      "B4": 4
     },
     "provisorio": false
@@ -897,12 +916,12 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 1070,
-     "N2": 170,
-     "B2": 35,
-     "B3C": 37,
-     "N1": 106,
      "B1": 105,
+     "B3S": 1070,
+     "N1": 106,
+     "B2": 35,
+     "N2": 170,
+     "B3C": 37,
      "B4": 4
     },
     "provisorio": false
@@ -917,12 +936,12 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 1064,
-     "N2": 160,
-     "B2": 34,
-     "B3C": 37,
-     "N1": 106,
      "B1": 105,
+     "B3S": 1064,
+     "N1": 106,
+     "B2": 34,
+     "N2": 160,
+     "B3C": 37,
      "B4": 4
     },
     "provisorio": false
@@ -937,11 +956,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1057,
-     "N2": 159,
-     "B2": 33,
-     "B3C": 37,
      "B1": 104,
+     "B3S": 1057,
+     "B2": 33,
+     "N2": 159,
+     "B3C": 37,
      "N1": 106,
      "B4": 4
     },
@@ -957,11 +976,11 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1050,
-     "N2": 156,
-     "B2": 33,
-     "B3C": 37,
      "B1": 104,
+     "B3S": 1050,
+     "B2": 33,
+     "N2": 156,
+     "B3C": 37,
      "N1": 105,
      "B4": 4
     },
@@ -977,11 +996,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1043,
-     "N2": 152,
-     "B2": 34,
-     "B3C": 37,
      "B1": 104,
+     "B3S": 1043,
+     "B2": 34,
+     "N2": 152,
+     "B3C": 37,
      "N1": 104,
      "B4": 4
     },
@@ -997,11 +1016,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1034,
-     "N2": 150,
-     "B2": 33,
-     "B3C": 37,
      "B1": 105,
+     "B3S": 1034,
+     "B2": 33,
+     "N2": 150,
+     "B3C": 37,
      "N1": 103,
      "B4": 4
     },
@@ -1017,11 +1036,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1014,
-     "N2": 149,
-     "B2": 33,
-     "B3C": 37,
      "B1": 105,
+     "B3S": 1014,
+     "B2": 33,
+     "N2": 149,
+     "B3C": 37,
      "N1": 103,
      "B4": 4
     },
@@ -1037,11 +1056,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1000,
-     "N2": 151,
-     "B2": 34,
-     "B3C": 37,
      "B1": 104,
+     "B3S": 1000,
+     "B2": 34,
+     "N2": 151,
+     "B3C": 37,
      "N1": 102,
      "B4": 4
     },
@@ -1057,11 +1076,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 984,
-     "N2": 148,
-     "B2": 34,
-     "B3C": 36,
      "B1": 104,
+     "B3S": 984,
+     "B2": 34,
+     "N2": 148,
+     "B3C": 36,
      "N1": 101,
      "B4": 4
     },
@@ -1077,11 +1096,11 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 971,
-     "N2": 144,
-     "B2": 34,
-     "B3C": 36,
      "B1": 104,
+     "B3S": 971,
+     "B2": 34,
+     "N2": 144,
+     "B3C": 36,
      "N1": 102,
      "B4": 4
     },
@@ -1097,14 +1116,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 967,
-     "N2": 144,
-     "B2": 34,
-     "B3C": 37,
      "B1": 104,
+     "B3S": 967,
      "N1": 103,
-     "B4": 4,
-     "N4": 6
+     "B2": 34,
+     "N2": 144,
+     "B3C": 37,
+     "N4": 6,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1118,14 +1137,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 964,
-     "N2": 143,
-     "B2": 34,
-     "B3C": 37,
      "B1": 105,
+     "B3S": 964,
      "N1": 103,
-     "B4": 4,
-     "N4": 6
+     "B2": 34,
+     "N2": 143,
+     "B3C": 37,
+     "N4": 6,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1139,14 +1158,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 952,
-     "N2": 143,
-     "B2": 34,
-     "B3C": 37,
      "B1": 103,
+     "B3S": 952,
      "N1": 102,
-     "B4": 4,
-     "N4": 7
+     "B2": 34,
+     "N2": 143,
+     "B3C": 37,
+     "N4": 7,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1160,14 +1179,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 933,
-     "N2": 143,
-     "B2": 34,
-     "B3C": 37,
      "B1": 103,
+     "B3S": 933,
      "N1": 101,
-     "B4": 4,
-     "N4": 8
+     "B2": 34,
+     "N2": 143,
+     "B3C": 37,
+     "N4": 8,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1181,14 +1200,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 921,
-     "N2": 141,
-     "B2": 34,
-     "B3C": 37,
      "B1": 103,
+     "B3S": 921,
      "N1": 102,
-     "B4": 4,
-     "N4": 10
+     "B2": 34,
+     "N2": 141,
+     "B3C": 37,
+     "N4": 10,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1202,14 +1221,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 908,
-     "N2": 137,
-     "B2": 34,
-     "B3C": 36,
      "B1": 105,
+     "B3S": 908,
      "N1": 104,
-     "B4": 4,
-     "N4": 11
+     "B2": 34,
+     "N2": 137,
+     "B3C": 36,
+     "N4": 11,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1223,12 +1242,12 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 893,
-     "N2": 135,
-     "B2": 35,
-     "B3C": 36,
      "B1": 105,
+     "B3S": 893,
      "N1": 106,
+     "B2": 35,
+     "N2": 135,
+     "B3C": 36,
      "N4": 13,
      "B4": 4
     },
@@ -1244,15 +1263,15 @@
     "retornos": 0,
     "ausencias": 3,
     "por_tcb": {
-     "B3S": 883,
-     "N2": 130,
-     "B2": 35,
-     "B3C": 36,
      "B1": 105,
+     "B3S": 883,
      "N1": 107,
+     "B2": 35,
+     "N2": 130,
+     "?": 1,
+     "B3C": 36,
      "N4": 18,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1266,15 +1285,15 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 872,
-     "N2": 127,
-     "B2": 34,
-     "B3C": 36,
      "B1": 104,
+     "B3S": 872,
      "N1": 108,
+     "B2": 34,
+     "N2": 127,
+     "?": 1,
+     "B3C": 36,
      "N4": 18,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1288,15 +1307,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 862,
-     "N2": 128,
-     "B2": 34,
-     "B3C": 36,
      "B1": 105,
+     "B3S": 862,
      "N1": 109,
+     "B2": 34,
+     "N2": 128,
+     "?": 1,
+     "B3C": 36,
      "N4": 20,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1310,15 +1329,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 857,
-     "N2": 127,
-     "B2": 34,
-     "B3C": 36,
      "B1": 105,
+     "B3S": 857,
      "N1": 113,
+     "B2": 34,
+     "N2": 127,
+     "?": 1,
+     "B3C": 36,
      "N4": 22,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1332,15 +1351,15 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 851,
-     "N2": 129,
-     "B2": 35,
-     "B3C": 36,
      "B1": 103,
+     "B3S": 851,
      "N1": 123,
+     "B2": 35,
+     "N2": 129,
+     "?": 1,
+     "B3C": 36,
      "N4": 24,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1354,15 +1373,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 103,
      "B3S": 841,
-     "N2": 128,
      "N1": 131,
      "B2": 34,
+     "N2": 128,
+     "?": 1,
      "B3C": 36,
-     "B1": 103,
      "N4": 26,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1376,15 +1395,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 103,
      "B3S": 834,
-     "N2": 126,
      "N1": 134,
      "B2": 35,
+     "N2": 126,
+     "?": 1,
      "B3C": 36,
-     "B1": 103,
      "N4": 28,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1398,15 +1417,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 101,
      "B3S": 828,
-     "N2": 127,
      "N1": 141,
      "B2": 35,
+     "N2": 127,
+     "?": 1,
      "B3C": 36,
-     "B1": 101,
      "N4": 31,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1420,15 +1439,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 103,
      "B3S": 821,
-     "N2": 126,
      "N1": 145,
      "B2": 35,
+     "N2": 126,
+     "?": 1,
      "B3C": 35,
-     "B1": 103,
      "N4": 33,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1442,15 +1461,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
+     "B1": 102,
      "B3S": 817,
-     "N2": 130,
      "N1": 158,
      "B2": 35,
+     "N2": 130,
+     "?": 1,
      "B3C": 35,
-     "B1": 102,
      "N4": 37,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1464,15 +1483,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
+     "B1": 104,
      "B3S": 815,
-     "N2": 128,
      "N1": 163,
      "B2": 35,
+     "N2": 128,
+     "?": 1,
      "B3C": 35,
-     "B1": 104,
      "N4": 44,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1486,15 +1505,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 103,
      "B3S": 812,
-     "N2": 127,
      "N1": 165,
      "B2": 34,
+     "N2": 127,
+     "?": 1,
      "B3C": 35,
-     "B1": 103,
      "N4": 47,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1508,15 +1527,15 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 102,
      "B3S": 803,
-     "N2": 128,
      "N1": 170,
      "B2": 33,
+     "N2": 128,
+     "?": 1,
      "B3C": 35,
-     "B1": 102,
      "N4": 55,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1530,15 +1549,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 103,
      "B3S": 796,
      "N1": 184,
-     "N2": 127,
      "B2": 33,
+     "N2": 127,
+     "?": 1,
      "B3C": 33,
-     "B1": 103,
      "N4": 72,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1552,15 +1571,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 102,
      "B3S": 788,
      "N1": 190,
-     "N2": 128,
      "B2": 33,
+     "N2": 128,
+     "?": 1,
      "B3C": 32,
-     "B1": 102,
      "N4": 83,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1574,15 +1593,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
+     "B1": 102,
      "B3S": 784,
      "N1": 195,
-     "N4": 87,
-     "N2": 129,
      "B2": 33,
+     "N2": 129,
+     "?": 1,
      "B3C": 32,
-     "B1": 102,
-     "B4": 4,
-     "?": 1
+     "N4": 87,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1596,15 +1615,15 @@
     "retornos": 0,
     "ausencias": 3,
     "por_tcb": {
+     "B1": 101,
      "B3S": 777,
      "N1": 202,
-     "N4": 96,
-     "N2": 133,
      "B2": 33,
+     "N2": 133,
+     "?": 1,
      "B3C": 32,
-     "B1": 101,
-     "B4": 4,
-     "?": 1
+     "N4": 96,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1618,15 +1637,15 @@
     "retornos": 0,
     "ausencias": 2,
     "por_tcb": {
+     "B1": 99,
      "B3S": 768,
      "N1": 212,
      "B2": 32,
      "N2": 131,
+     "?": 1,
      "B3C": 32,
-     "B1": 99,
      "N4": 103,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1640,15 +1659,15 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 100,
      "B3S": 767,
      "N1": 214,
      "B2": 32,
      "N2": 131,
+     "?": 1,
      "B3C": 32,
-     "B1": 100,
      "N4": 114,
-     "B4": 4,
-     "?": 1
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1662,15 +1681,15 @@
     "retornos": 1,
     "ausencias": 2,
     "por_tcb": {
+     "B1": 97,
      "B3S": 760,
      "N1": 218,
      "B2": 32,
-     "N4": 125,
      "N2": 128,
+     "?": 1,
      "B3C": 31,
-     "B1": 97,
-     "B4": 4,
-     "?": 1
+     "N4": 125,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1684,15 +1703,15 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
+     "B1": 97,
      "B3S": 757,
      "N1": 223,
      "B2": 31,
-     "N4": 139,
      "N2": 130,
+     "?": 1,
      "B3C": 30,
-     "B1": 97,
-     "B4": 4,
-     "?": 1
+     "N4": 139,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1706,13 +1725,13 @@
     "retornos": 6,
     "ausencias": 7,
     "por_tcb": {
+     "B1": 98,
      "B3S": 753,
      "N1": 224,
      "B2": 32,
-     "N4": 144,
      "N2": 133,
      "B3C": 27,
-     "B1": 98,
+     "N4": 144,
      "B4": 4
     },
     "provisorio": false
@@ -1727,13 +1746,13 @@
     "retornos": 4,
     "ausencias": 3,
     "por_tcb": {
+     "B1": 97,
      "B3S": 752,
      "N1": 222,
-     "N4": 152,
      "B2": 32,
      "N2": 128,
      "B3C": 29,
-     "B1": 97,
+     "N4": 152,
      "B4": 4
     },
     "provisorio": false
@@ -1748,13 +1767,13 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
+     "B1": 97,
      "B3S": 748,
      "N1": 224,
-     "N4": 157,
      "B2": 31,
      "N2": 128,
      "B3C": 29,
-     "B1": 97,
+     "N4": 157,
      "B4": 4
     },
     "provisorio": false
@@ -1769,13 +1788,13 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 96,
      "B3S": 747,
      "N1": 227,
-     "N4": 161,
      "B2": 33,
      "N2": 127,
      "B3C": 29,
-     "B1": 96,
+     "N4": 161,
      "B4": 4
     },
     "provisorio": false
@@ -1790,13 +1809,13 @@
     "retornos": 10,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 93,
      "B3S": 734,
      "N1": 233,
-     "N4": 181,
      "B2": 33,
      "N2": 123,
      "B3C": 29,
-     "B1": 93,
+     "N4": 181,
      "B4": 4
     },
     "provisorio": false
@@ -1811,13 +1830,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 94,
      "B3S": 719,
      "N1": 237,
-     "N4": 182,
      "B2": 33,
      "N2": 124,
      "B3C": 29,
-     "B1": 94,
+     "N4": 182,
      "B4": 4
     },
     "provisorio": false
@@ -1832,13 +1851,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
+     "B1": 94,
      "B3S": 710,
      "N1": 234,
-     "N2": 119,
-     "N4": 183,
      "B2": 33,
+     "N2": 119,
      "B3C": 29,
-     "B1": 94,
+     "N4": 183,
      "B4": 4
     },
     "provisorio": true
@@ -1895,13 +1914,13 @@
    }
   ],
   "var_4t_por_tcb": {
+   "B1": -3,
    "B3S": -29,
    "N1": 13,
-   "N4": 25,
    "B2": 2,
    "N2": -4,
    "B3C": 0,
-   "B1": -3,
+   "N4": 25,
    "B4": 0
   },
   "entradas": [
@@ -3042,20 +3061,20 @@
     "leitura": "instituição nova: início de atividade em 08/2025"
    },
    {
-    "cod": "C0085520",
-    "nome": "OXY CH - PRUDENCIAL",
+    "cod": "C0084820",
+    "nome": "MERCADO PAGO IP - PRUDENCIAL",
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
-    "uf": "RS",
-    "sr": "S4",
+    "uf": "SP",
+    "sr": "S3",
     "anomes": "202509",
     "ativo": null,
     "provisorio": false,
-    "inicio_atividade": "201309",
-    "cnpj8": "18282093",
+    "inicio_atividade": "201811",
+    "cnpj8": "10573521",
     "entregou": false,
-    "classe": "troca_codigo",
-    "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
+    "classe": "antiga",
+    "leitura": "já existia (atividade desde 11/2018): passou a reportar ou ganhou novo código"
    },
    {
     "cod": "C0052657",
@@ -3074,20 +3093,20 @@
     "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
    },
    {
-    "cod": "C0084820",
-    "nome": "MERCADO PAGO IP - PRUDENCIAL",
+    "cod": "C0085520",
+    "nome": "OXY CH - PRUDENCIAL",
     "tcb": "N1",
     "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
-    "uf": "SP",
-    "sr": "S3",
+    "uf": "RS",
+    "sr": "S4",
     "anomes": "202509",
     "ativo": null,
     "provisorio": false,
-    "inicio_atividade": "201811",
-    "cnpj8": "10573521",
+    "inicio_atividade": "201309",
+    "cnpj8": "18282093",
     "entregou": false,
-    "classe": "antiga",
-    "leitura": "já existia (atividade desde 11/2018): passou a reportar ou ganhou novo código"
+    "classe": "troca_codigo",
+    "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
    },
    {
     "cod": "32343119",
@@ -5690,14 +5709,14 @@
     "ativo": 559140.45
    },
    {
-    "cod": "23862762",
-    "nome": "WILL FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "tcb": "N1",
-    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "cod": "33884941",
+    "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
     "uf": "SP",
     "sr": "S3",
     "anomes": "202512",
-    "ausente_desde": "202409",
+    "ausente_desde": "201806",
     "ativo": null
    },
    {
@@ -5712,14 +5731,14 @@
     "ativo": null
    },
    {
-    "cod": "33884941",
-    "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
-    "tcb": "B1",
-    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "cod": "23862762",
+    "nome": "WILL FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
     "uf": "SP",
     "sr": "S3",
     "anomes": "202512",
-    "ausente_desde": "201806",
+    "ausente_desde": "202409",
     "ativo": null
    },
    {
@@ -5833,17 +5852,6 @@
     "ativo": 3882177.47
    },
    {
-    "cod": "23757411",
-    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "tcb": "N4",
-    "tcb_nome": "Instituição de pagamento",
-    "uf": "MG",
-    "sr": null,
-    "anomes": "202412",
-    "ausente_desde": "202306",
-    "ativo": null
-   },
-   {
     "cod": "46009412",
     "nome": "FOR YOU SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "tcb": "N1",
@@ -5852,6 +5860,17 @@
     "sr": "S5",
     "anomes": "202412",
     "ausente_desde": "202406",
+    "ativo": null
+   },
+   {
+    "cod": "23757411",
+    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": null,
+    "anomes": "202412",
+    "ausente_desde": "202306",
     "ativo": null
    },
    {
@@ -7794,15 +7813,26 @@
  },
  "regimes": {
   "disponivel": true,
-  "vigentes": 24,
+  "vigentes": 25,
   "por_tipo": [
    {
     "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
-    "n": 24
+    "n": 25
    }
   ],
-  "decretados_12m": 22,
+  "decretados_12m": 23,
   "recentes": [
+   {
+    "cnpj": "53822116000172",
+    "cnpj8": "53822116",
+    "nome": "MW INSTITUICAO DE PAGAMENTO LTDA",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "29/10/2026",
+    "inicio_iso": "2026-10-29",
+    "responsavel": "SUCESSO CONSULTORIA EMPRESARIAL LTDA",
+    "municipio": "Joinville",
+    "uf": "SC"
+   },
    {
     "cnpj": "20833992000145",
     "cnpj8": "20833992",
@@ -7923,20 +7953,9 @@
     "responsavel": "CASSIO HAIG VARTANIAN",
     "municipio": "São Paulo",
     "uf": "SP"
-   },
-   {
-    "cnpj": "33884941000194",
-    "cnpj8": "33884941",
-    "nome": "BANCO MASTER MÚLTIPLO S.A.",
-    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
-    "inicio": "17/03/2026",
-    "inicio_iso": "2026-03-17",
-    "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
-    "municipio": "São Paulo",
-    "uf": "SP"
    }
   ],
-  "gerado_em": "2026-10-28T17:26:04+00:00"
+  "gerado_em": "2026-10-29T18:02:12+00:00"
  },
  "catalogo": [
   {

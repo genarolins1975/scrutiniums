@@ -1365,12 +1365,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "antecedentes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "antecedentes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1403,12 +1403,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bets": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "bets.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1441,12 +1441,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bndes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "bndes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1595,12 +1595,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "conduta": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "conduta.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1672,12 +1672,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "consorcios": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "consorcios.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1710,12 +1710,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "custos-ti": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "custos_ti.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1786,14 +1786,14 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "emprego-setores-ufs": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "emprego.json",
         "sectors.json",
         "ufs.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1826,12 +1826,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "epae": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "epae.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1902,12 +1902,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fase2-observacoes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "fase2_observacoes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1940,12 +1940,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fidc": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "fidc.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -1978,14 +1978,14 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "folha": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "folha_bancos.json",
         "folha_balanco.json",
         "folha_leiloes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2018,12 +2018,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fraudes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "fraudes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2056,12 +2056,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "funding": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "funding.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2094,12 +2094,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "guidance": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "guidance.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2325,12 +2325,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lineage": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "lineage.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2401,12 +2401,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "meta": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "meta.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2477,13 +2477,13 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "moradia": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "moradia.json",
         "moradia_mun.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2708,14 +2708,14 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "penetracao": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "penetracao.json",
         "penetracao_mun.json",
         "penetracao_malha.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2786,12 +2786,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pilar3": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "pilar3.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2863,12 +2863,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prazo": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "prazo.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2901,12 +2901,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "presenca-mun": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "presenca_mun.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2939,12 +2939,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prestamista": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "prestamista.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -2977,13 +2977,13 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "produtos": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "products.json",
         "prod/*.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3092,12 +3092,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "recordes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "recordes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3130,12 +3130,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "regimes.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3168,12 +3168,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes-series": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "regimes_series.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3206,13 +3206,13 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regulacao": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "regulacao.json",
         "timeline_regulatoria.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3321,13 +3321,13 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "rural": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "rural.json",
         "rural_mun.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3398,12 +3398,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "screener": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "screener.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3436,12 +3436,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "sfn": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "sfn.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3474,12 +3474,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "subnacional": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "subnacional.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
@@ -3550,12 +3550,12 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lucro-banco": {
-      "gerado_em": "2026-10-28T17:26:46+00:00",
+      "gerado_em": "2026-10-29T18:02:53+00:00",
       "arquivos": [
         "lucro_banco.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",

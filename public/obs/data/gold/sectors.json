@@ -394,7 +394,7 @@
    "codigo": "129319",
    "nome": "3.12 Fabricação de produtos do fumo",
    "pesquisa": "industria",
-   "score": 69.2,
+   "score": 69.5,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -21.13,
@@ -404,7 +404,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 17.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -416,7 +416,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -829,7 +829,7 @@
    "codigo": "129330",
    "nome": "3.21 Fabricação de produtos farmoquímicos e farmacêuticos",
    "pesquisa": "industria",
-   "score": 69.0,
+   "score": 69.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -35.55,
@@ -839,7 +839,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 17.1,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -851,7 +851,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -1264,7 +1264,7 @@
    "codigo": "pms_31399",
    "nome": "3. Serviços profissionais, administrativos e complementares",
    "pesquisa": "servicos",
-   "score": 65.5,
+   "score": 65.8,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -0.97,
@@ -1274,7 +1274,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 14.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": -0.5
    },
@@ -1286,7 +1286,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -1699,7 +1699,7 @@
    "codigo": "pmc_2759",
    "nome": "Móveis e eletrodomésticos",
    "pesquisa": "comercio",
-   "score": 64.1,
+   "score": 64.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -10.35,
@@ -1709,7 +1709,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 10.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -1721,7 +1721,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -2134,7 +2134,7 @@
    "codigo": "129339",
    "nome": "3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores",
    "pesquisa": "industria",
-   "score": 63.7,
+   "score": 64.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.01,
@@ -2144,7 +2144,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 11.8,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -2156,7 +2156,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -2569,7 +2569,7 @@
    "codigo": "129325",
    "nome": "3.18 Impressão e reprodução de gravações",
    "pesquisa": "industria",
-   "score": 63.4,
+   "score": 63.6,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.57,
@@ -2579,7 +2579,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 11.5,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -2591,7 +2591,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -3004,7 +3004,7 @@
    "codigo": "129341",
    "nome": "3.32 Fabricação de produtos diversos",
    "pesquisa": "industria",
-   "score": 63.3,
+   "score": 63.5,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -8.76,
@@ -3014,7 +3014,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 11.4,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -3026,7 +3026,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -3439,7 +3439,7 @@
    "codigo": "pms_106876",
    "nome": "4. Transportes, serviços auxiliares aos transportes e correio",
    "pesquisa": "servicos",
-   "score": 61.0,
+   "score": 61.3,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.06,
@@ -3449,7 +3449,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 11.7,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": -2.4
    },
@@ -3461,7 +3461,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -3874,7 +3874,7 @@
    "codigo": "129337",
    "nome": "3.28 Fabricação de máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 60.7,
+   "score": 60.9,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.55,
@@ -3884,7 +3884,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 8.8,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -3896,7 +3896,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -4309,7 +4309,7 @@
    "codigo": "129321",
    "nome": "3.14 Confecção de artigos do vestuário e acessórios",
    "pesquisa": "industria",
-   "score": 60.1,
+   "score": 60.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.99,
@@ -4319,7 +4319,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 8.2,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -4331,7 +4331,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -4744,7 +4744,7 @@
    "codigo": "129331",
    "nome": "3.22 Fabricação de produtos de borracha e de material plástico",
    "pesquisa": "industria",
-   "score": 59.9,
+   "score": 60.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.5,
@@ -4754,7 +4754,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 8.0,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -4766,7 +4766,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -5179,7 +5179,7 @@
    "codigo": "pmc_90672",
    "nome": "Hipermercados, supermercados, produtos alimentícios, bebidas e fumo",
    "pesquisa": "comercio",
-   "score": 59.4,
+   "score": 59.6,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.83,
@@ -5189,7 +5189,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 6.2,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -5201,7 +5201,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -5614,7 +5614,7 @@
    "codigo": "56689",
    "nome": "3.20 Fabricação de produtos químicos",
    "pesquisa": "industria",
-   "score": 58.8,
+   "score": 59.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.68,
@@ -5624,7 +5624,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 6.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -5636,7 +5636,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6049,7 +6049,7 @@
    "codigo": "129324",
    "nome": "3.17 Fabricação de celulose, papel e produtos de papel",
    "pesquisa": "industria",
-   "score": 58.4,
+   "score": 58.7,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.38,
@@ -6059,7 +6059,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 6.5,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -6071,7 +6071,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6484,7 +6484,7 @@
    "codigo": "129316",
    "nome": "3 Indústrias de transformação",
    "pesquisa": "industria",
-   "score": 58.1,
+   "score": 58.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.42,
@@ -6494,7 +6494,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 6.2,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -6506,7 +6506,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6919,7 +6919,7 @@
    "codigo": "pms_106874",
    "nome": "2. Serviços de informação e comunicação",
    "pesquisa": "servicos",
-   "score": 57.9,
+   "score": 58.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.2,
@@ -6929,7 +6929,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 2.2
    },
@@ -6941,7 +6941,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -7354,7 +7354,7 @@
    "codigo": "129314",
    "nome": "1 Indústria geral",
    "pesquisa": "industria",
-   "score": 57.7,
+   "score": 57.9,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.32,
@@ -7364,7 +7364,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 6.2,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": -0.3
    },
@@ -7376,7 +7376,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -7789,7 +7789,7 @@
    "codigo": "129320",
    "nome": "3.13 Fabricação de produtos têxteis",
    "pesquisa": "industria",
-   "score": 57.2,
+   "score": 57.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -0.53,
@@ -7799,7 +7799,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 5.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -7811,7 +7811,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -8224,7 +8224,7 @@
    "codigo": "129326",
    "nome": "3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis",
    "pesquisa": "industria",
-   "score": 57.2,
+   "score": 57.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -6.96,
@@ -8234,7 +8234,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 5.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -8246,7 +8246,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -8659,7 +8659,7 @@
    "codigo": "pmc_90673",
    "nome": "Tecidos, vestuário e calçados",
    "pesquisa": "comercio",
-   "score": 57.1,
+   "score": 57.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -7.52,
@@ -8669,7 +8669,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -8681,7 +8681,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9094,7 +9094,7 @@
    "codigo": "pmc_90671",
    "nome": "Combustíveis e lubrificantes",
    "pesquisa": "comercio",
-   "score": 56.6,
+   "score": 56.8,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.18,
@@ -9104,7 +9104,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.4,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -9116,7 +9116,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9529,7 +9529,7 @@
    "codigo": "pmc_2762",
    "nome": "Material de construção",
    "pesquisa": "comercio",
-   "score": 56.5,
+   "score": 56.7,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.13,
@@ -9539,7 +9539,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -9551,7 +9551,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9964,7 +9964,7 @@
    "codigo": "pms_31426",
    "nome": "5. Outros serviços",
    "pesquisa": "servicos",
-   "score": 56.3,
+   "score": 56.5,
    "faixa": "elevado",
    "tendencia": "estável",
    "tendencia_valor_pp": -0.45,
@@ -9974,7 +9974,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 4.3,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.3
    },
@@ -9986,7 +9986,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -10399,7 +10399,7 @@
    "codigo": "pmc_103159",
    "nome": "Veículos, motocicletas, partes e peças",
    "pesquisa": "comercio",
-   "score": 56.1,
+   "score": 56.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -0.64,
@@ -10409,7 +10409,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 2.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -10421,7 +10421,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -10834,7 +10834,7 @@
    "codigo": "129322",
    "nome": "3.15 Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados",
    "pesquisa": "industria",
-   "score": 55.8,
+   "score": 56.1,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 3.03,
@@ -10844,7 +10844,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -10856,7 +10856,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -11269,7 +11269,7 @@
    "codigo": "129335",
    "nome": "3.26 Fabricação de equipamentos de informática, produtos eletrônicos e ópticos",
    "pesquisa": "industria",
-   "score": 55.6,
+   "score": 55.9,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.94,
@@ -11279,7 +11279,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.7,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -11291,7 +11291,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -11704,7 +11704,7 @@
    "codigo": "pmc_103155",
    "nome": "Artigos farmacêuticos, médicos, ortopédicos, de perfumaria e cosméticos",
    "pesquisa": "comercio",
-   "score": 55.6,
+   "score": 55.8,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.3,
@@ -11714,7 +11714,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 2.4,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -11726,7 +11726,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -12139,7 +12139,7 @@
    "codigo": "129317",
    "nome": "3.10 Fabricação de produtos alimentícios",
    "pesquisa": "industria",
-   "score": 55.4,
+   "score": 55.6,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.72,
@@ -12149,7 +12149,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 3.5,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -12161,7 +12161,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -12574,7 +12574,7 @@
    "codigo": "pms_106869",
    "nome": "1. Serviços prestados às famílias",
    "pesquisa": "servicos",
-   "score": 55.1,
+   "score": 55.4,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.97,
@@ -12584,7 +12584,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 4.5,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": -1.1
    },
@@ -12596,7 +12596,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -13009,7 +13009,7 @@
    "codigo": "pmc_103156",
    "nome": "Livros, jornais, revistas e papelaria",
    "pesquisa": "comercio",
-   "score": 52.5,
+   "score": 52.8,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -21.44,
@@ -13019,7 +13019,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -0.7,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -13031,7 +13031,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -13428,7 +13428,7 @@
    "codigo": "pmc_56741",
    "nome": "Atacado especializado em produtos alimentícios, bebidas e fumo",
    "pesquisa": "comercio",
-   "score": 52.3,
+   "score": 52.6,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 6.51,
@@ -13438,7 +13438,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -0.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -13450,7 +13450,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -13863,7 +13863,7 @@
    "codigo": "129315",
    "nome": "2 Indústrias extrativas",
    "pesquisa": "industria",
-   "score": 51.7,
+   "score": 51.9,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -0.77,
@@ -13873,7 +13873,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": 0.6,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": -0.6
    },
@@ -13885,7 +13885,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -14298,7 +14298,7 @@
    "codigo": "129334",
    "nome": "3.25 Fabricação de produtos de metal, exceto máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 51.3,
+   "score": 51.6,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.55,
@@ -14308,7 +14308,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -0.6,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -14320,7 +14320,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -14733,7 +14733,7 @@
    "codigo": "129340",
    "nome": "3.31 Fabricação de móveis",
    "pesquisa": "industria",
-   "score": 51.2,
+   "score": 51.5,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.94,
@@ -14743,7 +14743,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -0.7,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -14755,7 +14755,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -15168,7 +15168,7 @@
    "codigo": "129338",
    "nome": "3.29 Fabricação de veículos automotores, reboques e carrocerias",
    "pesquisa": "industria",
-   "score": 49.8,
+   "score": 50.0,
    "faixa": "atenção",
    "tendencia": "estável",
    "tendencia_valor_pp": -0.44,
@@ -15178,7 +15178,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -2.1,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -15190,7 +15190,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -15603,7 +15603,7 @@
    "codigo": "129332",
    "nome": "3.23 Fabricação de produtos de minerais não metálicos",
    "pesquisa": "industria",
-   "score": 48.5,
+   "score": 48.8,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.43,
@@ -15613,7 +15613,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -3.4,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -15625,7 +15625,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -16038,7 +16038,7 @@
    "codigo": "129333",
    "nome": "3.24 Metalurgia",
    "pesquisa": "industria",
-   "score": 48.2,
+   "score": 48.4,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.92,
@@ -16048,7 +16048,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -3.7,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -16060,7 +16060,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -16473,7 +16473,7 @@
    "codigo": "pmc_103158",
    "nome": "Outros artigos de uso pessoal e doméstico",
    "pesquisa": "comercio",
-   "score": 47.4,
+   "score": 47.6,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.13,
@@ -16483,7 +16483,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -5.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -16495,7 +16495,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -16908,7 +16908,7 @@
    "codigo": "129318",
    "nome": "3.11 Fabricação de bebidas",
    "pesquisa": "industria",
-   "score": 44.0,
+   "score": 44.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.48,
@@ -16918,7 +16918,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -7.9,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -16930,7 +16930,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -17343,7 +17343,7 @@
    "codigo": "129342",
    "nome": "3.33 Manutenção, reparação e instalação de máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 42.3,
+   "score": 42.6,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.85,
@@ -17353,7 +17353,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -9.6,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -17365,7 +17365,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -17778,7 +17778,7 @@
    "codigo": "pmc_103157",
    "nome": "Equipamentos e materiais para escritório, informática e comunicação",
    "pesquisa": "comercio",
-   "score": 42.1,
+   "score": 42.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 14.3,
@@ -17788,7 +17788,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -11.1,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 1.5
    },
@@ -17800,7 +17800,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -18213,7 +18213,7 @@
    "codigo": "129336",
    "nome": "3.27 Fabricação de máquinas, aparelhos e materiais elétricos",
    "pesquisa": "industria",
-   "score": 39.5,
+   "score": 39.8,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 11.32,
@@ -18223,7 +18223,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -12.4,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -18235,7 +18235,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -18648,7 +18648,7 @@
    "codigo": "129323",
    "nome": "3.16 Fabricação de produtos de madeira",
    "pesquisa": "industria",
-   "score": 38.3,
+   "score": 38.5,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 17.27,
@@ -18658,7 +18658,7 @@
    "ref": "2026-08-01",
    "contribuicoes": {
     "atividade": -13.6,
-    "condicoes_credito": 1.8,
+    "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
     "capacidade_financeira": 0.2
    },
@@ -18670,7 +18670,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.35,
+     "z": 0.4,
      "peso": 0.25,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
