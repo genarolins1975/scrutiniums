@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-29T18:02:12+00:00",
+ "gerado_em": "2026-10-30T17:16:17+00:00",
  "titulo": "Recordes nas séries",
  "recordes": [
   {
@@ -37,18 +37,6 @@
    "desde": "2012-01-01",
    "meses": 176,
    "anos": 14.7,
-   "rotulo": "máximo de toda a série (desde 2012-01)"
-  },
-  {
-   "serie": "inad_pf",
-   "nome": "Inadimplência (>90 dias) - Pessoas físicas",
-   "unidade": "%",
-   "tipo": "maximo_historico",
-   "valor": 6.03,
-   "ref": "2026-08-01",
-   "desde": "2012-01-01",
-   "meses": 175,
-   "anos": 14.6,
    "rotulo": "máximo de toda a série (desde 2012-01)"
   },
   {

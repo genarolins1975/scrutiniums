@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-29T18:02:49+00:00",
+ "gerado_em": "2026-10-30T17:16:54+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito com recursos direcionados (SGS)",
@@ -17,39 +17,39 @@
    "nivel": "A — registro administrativo do próprio banco"
   }
  },
- "sintese": "Em 2026-08, o crédito com recursos direcionados somava R$ 3250 bi, 44% da carteira do SFN; nas empresas, 42% do saldo é direcionado e os repasses do BNDES respondem por 18% de todo o crédito PJ. O Sistema BNDES desembolsou R$ 181 bi entre 2025-04 e 2026-03 (+33% sobre os 12 meses anteriores), 41% para micro, pequenas e médias empresas e 33% para infraestrutura; 58% passou por agentes financeiros em 2025. Nas operações não automáticas, 1454 contratos somaram R$ 86.3 bi entre 2025-08 e 2026-07, com juros médio ponderado de 3.0% a.a. sobre o custo financeiro e amortização média de 183 meses.",
+ "sintese": "Em 2026-09, o crédito com recursos direcionados somava R$ 3257 bi, 44% da carteira do SFN; nas empresas, 42% do saldo é direcionado e os repasses do BNDES respondem por 18% de todo o crédito PJ. O Sistema BNDES desembolsou R$ 181 bi entre 2025-04 e 2026-03 (+33% sobre os 12 meses anteriores), 41% para micro, pequenas e médias empresas e 33% para infraestrutura; 58% passou por agentes financeiros em 2025. Nas operações não automáticas, 1454 contratos somaram R$ 86.3 bi entre 2025-08 e 2026-07, com juros médio ponderado de 3.0% a.a. sobre o custo financeiro e amortização média de 183 meses.",
  "saldo": {
   "disponivel": true,
-  "mes": "2026-08",
+  "mes": "2026-09",
   "unidade": "R$ milhões (saldo de fim de mês, nominal)",
   "kpis": {
-   "mes": "2026-08",
-   "saldo_direcionado": 3250246.0,
-   "share_direcionado": 43.85,
-   "var_12m_pct": 12.9,
+   "mes": "2026-09",
+   "saldo_direcionado": 3256771.0,
+   "share_direcionado": 43.75,
+   "var_12m_pct": 11.5,
    "pj": {
-    "saldo": 1154216.0,
-    "share_no_pj": 42.25,
-    "bndes": 496554.0,
-    "bndes_share_direcionado": 43.02,
-    "bndes_share_total_pj": 18.18,
-    "bndes_var_12m_pct": 10.3,
-    "taxa_direcionado": 12.73,
-    "taxa_bndes": 11.73,
-    "taxa_total_pj": 19.65,
-    "inad_direcionado": 2.02,
-    "inad_bndes": 0.66,
-    "inad_total_pj": 3.36,
-    "prazo_direcionado": 81.27,
-    "prazo_bndes": 105.06,
-    "concessoes_12m_bndes": 107538.0
+    "saldo": 1154169.0,
+    "share_no_pj": 41.83,
+    "bndes": 496366.0,
+    "bndes_share_direcionado": 43.01,
+    "bndes_share_total_pj": 17.99,
+    "bndes_var_12m_pct": 9.2,
+    "taxa_direcionado": 11.49,
+    "taxa_bndes": 9.36,
+    "taxa_total_pj": 19.36,
+    "inad_direcionado": 2.06,
+    "inad_bndes": 0.6,
+    "inad_total_pj": 3.28,
+    "prazo_direcionado": 91.16,
+    "prazo_bndes": 117.95,
+    "concessoes_12m_bndes": 107226.0
    },
    "pf": {
-    "saldo": 2103468.0,
-    "share_no_pf": 44.94,
-    "bndes": 96531.0,
+    "saldo": 2102603.0,
+    "share_no_pf": 44.88,
+    "bndes": 98077.0,
     "taxa_direcionado": 11.3,
-    "inad_direcionado": 3.6
+    "inad_direcionado": 3.41
    }
   },
   "serie": [
@@ -3187,9 +3187,9 @@
    },
    {
     "mes": "2026-07",
-    "direcionado": 3224987.0,
-    "livre_total": 4137265.0,
-    "share_direcionado": 43.8,
+    "direcionado": 3225037.0,
+    "livre_total": 4137215.0,
+    "share_direcionado": 43.81,
     "share_pj_direcionado": 41.9,
     "share_pf_direcionado": 44.93,
     "bndes_pj": 494597.0,
@@ -3205,9 +3205,9 @@
    },
    {
     "mes": "2026-08",
-    "direcionado": 3250246.0,
-    "livre_total": 4162115.0,
-    "share_direcionado": 43.85,
+    "direcionado": 3257684.0,
+    "livre_total": 4154677.0,
+    "share_direcionado": 43.95,
     "share_pj_direcionado": 42.25,
     "share_pf_direcionado": 44.94,
     "bndes_pj": 496554.0,
@@ -3220,6 +3220,24 @@
     "inad_dir_pj": 2.02,
     "inad_pj": 3.36,
     "inad_bndes_pj": 0.66
+   },
+   {
+    "mes": "2026-09",
+    "direcionado": 3256771.0,
+    "livre_total": 4187437.0,
+    "share_direcionado": 43.75,
+    "share_pj_direcionado": 41.83,
+    "share_pf_direcionado": 44.88,
+    "bndes_pj": 496366.0,
+    "bndes_share_pj_dir": 43.01,
+    "bndes_share_pj_total": 17.99,
+    "taxa_dir_pj": 11.49,
+    "taxa_livre_pj": null,
+    "taxa_pj": 19.36,
+    "taxa_bndes_pj": 9.36,
+    "inad_dir_pj": 2.06,
+    "inad_pj": 3.28,
+    "inad_bndes_pj": 0.6
    }
   ],
   "nota": "Recursos direcionados: operações com taxa regulada ou funding público (BNDES, rural, imobiliário, microcrédito). O saldo com recursos do BNDES é o que está nos balanços das instituições financeiras como repasse ou operação direta do banco."

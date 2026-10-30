@@ -19073,7 +19073,7 @@
   {
    "cod": "C0052656",
    "nome": "BARU",
-   "sr": "S4",
+   "sr": null,
    "nivel": "congl",
    "ativo": 15684418.55,
    "carteira": 10375534.92,

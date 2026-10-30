@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-29T18:02:50+00:00",
+ "gerado_em": "2026-10-30T17:16:55+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,21 +24,21 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1285 processos sancionadores em 1ª instância, com 1354 decisões por apenado: 1296 multas somando R$ 72.0 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 382 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (164 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1286 processos sancionadores em 1ª instância, com 1355 decisões por apenado: 1297 multas somando R$ 72.0 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 382 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (162 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-10-28",
+  "ultima_decisao": "2026-10-29",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16987,
-   "processos": 13076,
-   "apenados_distintos": 11404
+   "decisoes": 16989,
+   "processos": 13078,
+   "apenados_distintos": 11405
   },
   "janela_12m": {
-   "ini": "2025-10-29",
-   "decisoes": 1354,
-   "processos": 1285,
-   "multas_n": 1296,
+   "ini": "2025-10-30",
+   "decisoes": 1355,
+   "processos": 1286,
+   "multas_n": 1297,
    "multas_valor": 71985500.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
@@ -46,31 +46,31 @@
    "sem_penalidade": 51,
    "recursos": 149,
    "pj": 394,
-   "pf": 960
+   "pf": 961
   },
   "janela_12m_anterior": {
-   "decisoes": 835,
-   "processos": 663,
-   "multas_n": 700,
-   "multas_valor": 25412883.9,
+   "decisoes": 836,
+   "processos": 664,
+   "multas_n": 701,
+   "multas_valor": 25437883.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
    "recursos": 136,
    "pj": 272,
-   "pf": 563
+   "pf": 564
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1296,
+    "n": 1297,
     "share": 95.72
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.77
+    "share": 3.76
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,13 +91,13 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 869,
-    "share": 64.18
+    "n": 873,
+    "share": 64.43
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 135,
-    "share": 9.97
+    "n": 131,
+    "share": 9.67
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -107,17 +107,17 @@
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
-    "share": 8.42
+    "share": 8.41
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 46,
-    "share": 3.4
+    "share": 3.39
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 36,
-    "share": 2.66
+    "n": 37,
+    "share": 2.73
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11956,
-    "share": 87.8
+    "n": 11962,
+    "share": 87.83
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 891,
-    "share": 6.54
+    "n": 886,
+    "share": 6.51
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -188,8 +188,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 48,
-    "share": 0.35
+    "n": 49,
+    "share": 0.36
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 30.5,
-   "n": 3115
+   "n": 3117
   },
   "anual": [
    {
@@ -400,21 +400,41 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1204,
-    "processos": 1139,
-    "multas_n": 1152,
-    "multas_valor": 68773000.0,
+    "decisoes": 1206,
+    "processos": 1141,
+    "multas_n": 1154,
+    "multas_valor": 68798000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 860,
+    "pf": 862,
     "pj": 344,
     "incompleto": true,
-    "recurso_share": 11.13,
-    "sem_penalidade_share": 3.74
+    "recurso_share": 11.11,
+    "sem_penalidade_share": 3.73
    }
   ],
   "recentes": [
+   {
+    "pas": "316213",
+    "nome": "ELOY MARCILIO DE SOUSA JUNIOR",
+    "pessoa": "PF",
+    "decisao": "2026-10-29",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316154",
+    "nome": "SERGIO AUGUSTO SEQUEIRA DA CRUZ",
+    "pessoa": "PF",
+    "decisao": "2026-10-29",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "316350",
     "nome": "AURORA CELESTE LOPES VENDITTO",
@@ -794,26 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312868",
-    "nome": "ZURICH MINAS BRASIL SEGUROS S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-09-25",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312204",
-    "nome": "BASHIR MUSSA GAZI",
-    "pessoa": "PF",
-    "decisao": "2026-09-22",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
@@ -933,7 +933,7 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-10-27",
+  "ultima_movimentacao": "2026-10-29",
   "acervo": {
    "processos": 581,
    "acusados": 2070,
@@ -941,9 +941,9 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-29",
-   "processos": 64,
-   "acusados": 164
+   "ini": "2025-10-30",
+   "processos": 63,
+   "acusados": 162
   },
   "fases": [
    {
@@ -1358,7 +1358,7 @@
     "area": "GNA",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-09-09",
+    "ultima_mov": "2026-10-29",
     "acusados": 2,
     "objeto": "Apurar a atuação da PricewaterhouseCoopers Auditores Independentes Ltda. na auditoria das  demonstrações financeiras do Santander Renda de Aluguéis Fundo de Investimento Imobiliário, referentes ao exercício social encerr"
    },
@@ -1418,7 +1418,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-31",
+    "ultima_mov": "2026-10-27",
     "acusados": 1,
     "objeto": "O presente Termo de Acusação originou-se do Processo CVM n.º 19957.002685/2025-14 (anexado ao PAS), instaurado pela SEP - Superintendência de Relações com Empresas, que teve como objetivo analisar a conduta dos administr"
    },
@@ -1428,7 +1428,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-09-11",
+    "ultima_mov": "2026-10-29",
     "acusados": 2,
     "objeto": "O presente Termo de Acusação originou-se do Processo Administrativo CVM no 19957.016625/2025-89, instaurado pela Superintendência de Normas Contábeis - SNC após o recebimento de comunicação enviada por Deloitte Touche To"
    },

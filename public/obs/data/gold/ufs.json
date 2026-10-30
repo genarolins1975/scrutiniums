@@ -1,13 +1,13 @@
 {
   "disponivel": true,
-  "gerado_em": "2026-10-29T18:02:53+00:00",
+  "gerado_em": "2026-10-30T17:16:58+00:00",
   "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
   "datas": {
     "scr": "2026-08",
     "penetracao": "2026-06",
     "presenca": {
-      "dependencias": "22/10/2026",
-      "correspondentes": "22/10/2026"
+      "dependencias": "29/10/2026",
+      "correspondentes": "29/10/2026"
     },
     "pix": "2026-09",
     "moradia": "2026-08",
@@ -183,7 +183,7 @@
         "agencias": 46,
         "postos": 48,
         "pae": 79,
-        "correspondentes": 627,
+        "correspondentes": 629,
         "agencias_100mil": 5.2
       },
       "pix": {
@@ -477,9 +477,9 @@
         "so_correspondente": 7,
         "nenhum": 0,
         "agencias": 137,
-        "postos": 155,
+        "postos": 154,
         "pae": 265,
-        "correspondentes": 3069,
+        "correspondentes": 3072,
         "agencias_100mil": 4.3
       },
       "pix": {
@@ -773,9 +773,9 @@
         "so_correspondente": 0,
         "nenhum": 0,
         "agencias": 176,
-        "postos": 229,
+        "postos": 228,
         "pae": 284,
-        "correspondentes": 2383,
+        "correspondentes": 2391,
         "agencias_100mil": 4.1
       },
       "pix": {
@@ -1069,9 +1069,9 @@
         "so_correspondente": 2,
         "nenhum": 0,
         "agencias": 36,
-        "postos": 32,
+        "postos": 31,
         "pae": 57,
-        "correspondentes": 519,
+        "correspondentes": 520,
         "agencias_100mil": 4.5
       },
       "pix": {
@@ -1364,10 +1364,10 @@
         "so_posto": 208,
         "so_correspondente": 5,
         "nenhum": 0,
-        "agencias": 736,
-        "postos": 896,
+        "agencias": 735,
+        "postos": 894,
         "pae": 1240,
-        "correspondentes": 14386,
+        "correspondentes": 14418,
         "agencias_100mil": 4.9
       },
       "pix": {
@@ -1657,13 +1657,13 @@
       "presenca": {
         "municipios": 184,
         "com_agencia": 85,
-        "so_posto": 99,
-        "so_correspondente": 0,
+        "so_posto": 98,
+        "so_correspondente": 1,
         "nenhum": 0,
         "agencias": 379,
-        "postos": 435,
+        "postos": 432,
         "pae": 548,
-        "correspondentes": 8602,
+        "correspondentes": 8607,
         "agencias_100mil": 4.1
       },
       "pix": {
@@ -1811,7 +1811,7 @@
         "cobranca.por_bi_carteira": 12,
         "pgfn.insc_pf_por_mil_hab": 27
       },
-      "sintese": "O crédito no Ceará somava R$ 179 bilhões em 2026-08, 2,3% do Brasil, R$ 19.292 por habitante (22º entre as 27 UFs), com inadimplência de 5,26% (19º) e crescimento de +14,4% em 12 meses. Penetração de 70% da renda anual (20º), com 41 de 184 municípios abaixo do esperado pelo modelo. 85 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+      "sintese": "O crédito no Ceará somava R$ 179 bilhões em 2026-08, 2,3% do Brasil, R$ 19.292 por habitante (22º entre as 27 UFs), com inadimplência de 5,26% (19º) e crescimento de +14,4% em 12 meses. Penetração de 70% da renda anual (20º), com 41 de 184 municípios abaixo do esperado pelo modelo. 85 municípios têm agência, 1 depende só de correspondente e nenhum fica sem ponto físico."
     },
     {
       "uf": "DF",
@@ -1959,7 +1959,7 @@
         "agencias": 213,
         "postos": 419,
         "pae": 459,
-        "correspondentes": 2725,
+        "correspondentes": 2732,
         "agencias_100mil": 7.1
       },
       "pix": {
@@ -2253,9 +2253,9 @@
         "so_correspondente": 0,
         "nenhum": 0,
         "agencias": 294,
-        "postos": 493,
+        "postos": 496,
         "pae": 729,
-        "correspondentes": 4772,
+        "correspondentes": 4776,
         "agencias_100mil": 7.1
       },
       "pix": {
@@ -2548,10 +2548,10 @@
         "so_posto": 106,
         "so_correspondente": 19,
         "nenhum": 0,
-        "agencias": 469,
-        "postos": 746,
+        "agencias": 465,
+        "postos": 748,
         "pae": 719,
-        "correspondentes": 7973,
+        "correspondentes": 8019,
         "agencias_100mil": 6.3
       },
       "pix": {
@@ -2845,9 +2845,9 @@
         "so_correspondente": 12,
         "nenhum": 0,
         "agencias": 260,
-        "postos": 292,
+        "postos": 290,
         "pae": 496,
-        "correspondentes": 5741,
+        "correspondentes": 5746,
         "agencias_100mil": 3.7
       },
       "pix": {
@@ -3140,10 +3140,10 @@
         "so_posto": 419,
         "so_correspondente": 35,
         "nenhum": 0,
-        "agencias": 1290,
-        "postos": 2799,
+        "agencias": 1285,
+        "postos": 2796,
         "pae": 3092,
-        "correspondentes": 22473,
+        "correspondentes": 22583,
         "agencias_100mil": 6.0
       },
       "pix": {
@@ -3436,10 +3436,10 @@
         "so_posto": 25,
         "so_correspondente": 0,
         "nenhum": 0,
-        "agencias": 185,
-        "postos": 404,
+        "agencias": 184,
+        "postos": 405,
         "pae": 300,
-        "correspondentes": 4148,
+        "correspondentes": 4147,
         "agencias_100mil": 6.3
       },
       "pix": {
@@ -3733,7 +3733,7 @@
         "so_correspondente": 2,
         "nenhum": 0,
         "agencias": 237,
-        "postos": 638,
+        "postos": 641,
         "pae": 355,
         "correspondentes": 4886,
         "agencias_100mil": 6.1
@@ -4030,8 +4030,8 @@
         "nenhum": 0,
         "agencias": 468,
         "postos": 421,
-        "pae": 647,
-        "correspondentes": 5085,
+        "pae": 646,
+        "correspondentes": 5093,
         "agencias_100mil": 5.4
       },
       "pix": {
@@ -4324,10 +4324,10 @@
         "so_posto": 110,
         "so_correspondente": 68,
         "nenhum": 0,
-        "agencias": 185,
-        "postos": 251,
+        "agencias": 184,
+        "postos": 248,
         "pae": 376,
-        "correspondentes": 4658,
+        "correspondentes": 4673,
         "agencias_100mil": 4.4
       },
       "pix": {
@@ -4620,10 +4620,10 @@
         "so_posto": 91,
         "so_correspondente": 2,
         "nenhum": 0,
-        "agencias": 411,
+        "agencias": 409,
         "postos": 491,
         "pae": 643,
-        "correspondentes": 7182,
+        "correspondentes": 7202,
         "agencias_100mil": 4.3
       },
       "pix": {
@@ -4917,9 +4917,9 @@
         "so_correspondente": 96,
         "nenhum": 0,
         "agencias": 144,
-        "postos": 134,
+        "postos": 132,
         "pae": 250,
-        "correspondentes": 4276,
+        "correspondentes": 4292,
         "agencias_100mil": 4.3
       },
       "pix": {
@@ -5212,10 +5212,10 @@
         "so_posto": 177,
         "so_correspondente": 5,
         "nenhum": 0,
-        "agencias": 845,
-        "postos": 2156,
+        "agencias": 843,
+        "postos": 2160,
         "pae": 1216,
-        "correspondentes": 17115,
+        "correspondentes": 17152,
         "agencias_100mil": 7.1
       },
       "pix": {
@@ -5509,9 +5509,9 @@
         "so_correspondente": 0,
         "nenhum": 0,
         "agencias": 1005,
-        "postos": 1311,
-        "pae": 1421,
-        "correspondentes": 9967,
+        "postos": 1312,
+        "pae": 1419,
+        "correspondentes": 9944,
         "agencias_100mil": 5.8
       },
       "pix": {
@@ -5807,7 +5807,7 @@
         "agencias": 163,
         "postos": 151,
         "pae": 273,
-        "correspondentes": 4284,
+        "correspondentes": 4286,
         "agencias_100mil": 4.7
       },
       "pix": {
@@ -6101,9 +6101,9 @@
         "so_correspondente": 0,
         "nenhum": 0,
         "agencias": 107,
-        "postos": 294,
+        "postos": 295,
         "pae": 156,
-        "correspondentes": 1750,
+        "correspondentes": 1749,
         "agencias_100mil": 6.1
       },
       "pix": {
@@ -6692,10 +6692,10 @@
         "so_posto": 148,
         "so_correspondente": 1,
         "nenhum": 0,
-        "agencias": 1294,
-        "postos": 2134,
-        "pae": 2332,
-        "correspondentes": 15575,
+        "agencias": 1291,
+        "postos": 2138,
+        "pae": 2334,
+        "correspondentes": 15609,
         "agencias_100mil": 11.5
       },
       "pix": {
@@ -6988,10 +6988,10 @@
         "so_posto": 130,
         "so_correspondente": 0,
         "nenhum": 0,
-        "agencias": 606,
+        "agencias": 604,
         "postos": 1915,
-        "pae": 997,
-        "correspondentes": 12312,
+        "pae": 998,
+        "correspondentes": 12318,
         "agencias_100mil": 7.4
       },
       "pix": {
@@ -7287,7 +7287,7 @@
         "agencias": 174,
         "postos": 94,
         "pae": 304,
-        "correspondentes": 2280,
+        "correspondentes": 2284,
         "agencias_100mil": 7.6
       },
       "pix": {
@@ -7581,9 +7581,9 @@
         "so_correspondente": 33,
         "nenhum": 0,
         "agencias": 3628,
-        "postos": 5910,
-        "pae": 4659,
-        "correspondentes": 47268,
+        "postos": 5920,
+        "pae": 4660,
+        "correspondentes": 47169,
         "agencias_100mil": 7.9
       },
       "pix": {
@@ -7876,10 +7876,10 @@
         "so_posto": 73,
         "so_correspondente": 39,
         "nenhum": 0,
-        "agencias": 99,
-        "postos": 137,
+        "agencias": 98,
+        "postos": 136,
         "pae": 191,
-        "correspondentes": 1874,
+        "correspondentes": 1876,
         "agencias_100mil": 6.2
       },
       "pix": {
