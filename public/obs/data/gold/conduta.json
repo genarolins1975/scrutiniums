@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-30T17:16:55+00:00",
+ "gerado_em": "2026-10-31T16:29:10+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1286 processos sancionadores em 1ª instância, com 1355 decisões por apenado: 1297 multas somando R$ 72.0 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 382 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (162 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1286 processos sancionadores em 1ª instância, com 1355 decisões por apenado: 1297 multas somando R$ 72.0 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 60 processos sancionadores em 12 meses (156 acusados); 253 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-10-29",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11405
   },
   "janela_12m": {
-   "ini": "2025-10-30",
+   "ini": "2025-10-31",
    "decisoes": 1355,
    "processos": 1286,
    "multas_n": 1297,
@@ -91,13 +91,13 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 873,
-    "share": 64.43
+    "n": 874,
+    "share": 64.5
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 131,
-    "share": 9.67
+    "n": 130,
+    "share": 9.59
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11962,
-    "share": 87.83
+    "n": 11963,
+    "share": 87.84
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 886,
-    "share": 6.51
+    "n": 885,
+    "share": 6.5
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -817,7 +817,7 @@
    }
   ],
   "inabilitados": {
-   "vigentes": 382,
+   "vigentes": 381,
    "por_prazo": [
     {
      "prazo_anos": 2.0,
@@ -856,8 +856,8 @@
     },
     {
      "prazo_anos": 8.0,
-     "n": 26,
-     "encerram_12m": 2
+     "n": 25,
+     "encerram_12m": 1
     },
     {
      "prazo_anos": 9.0,
@@ -925,7 +925,7 @@
      "encerram_12m": 0
     }
    ],
-   "encerram_12m": 11
+   "encerram_12m": 10
   },
   "proibidos_vigentes": 2,
   "nota": "Uma linha por apenado e decisão. A penalidade que vale é a de 2ª instância quando existe; multa aplicada não é multa paga (a situação da cobrança está à parte). Pessoa física é o CPF mascarado; pessoa jurídica é o CNPJ. Sem ranking por nome: a lista é cronológica."
@@ -941,9 +941,9 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-10-30",
-   "processos": 63,
-   "acusados": 162
+   "ini": "2025-10-31",
+   "processos": 60,
+   "acusados": 156
   },
   "fases": [
    {

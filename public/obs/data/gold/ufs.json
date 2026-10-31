@@ -1,6 +1,6 @@
 {
   "disponivel": true,
-  "gerado_em": "2026-10-30T17:16:58+00:00",
+  "gerado_em": "2026-10-31T16:29:13+00:00",
   "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
   "datas": {
     "scr": "2026-08",
@@ -5026,12 +5026,12 @@
       },
       "subnacional": {
         "mes": "2026-09",
-        "liberado_12m_valor": 5695287902.56,
-        "liberado_12m_n": 27,
+        "liberado_12m_valor": 5692287902.56,
+        "liberado_12m_n": 26,
         "entes": 17,
-        "valor_hab": 1682.73,
+        "valor_hab": 1681.85,
         "credor_principal": "Banco do Brasil S/A",
-        "share_valor_pct": 7.9,
+        "share_valor_pct": 7.89,
         "dcl": 13588384829.7,
         "dcl_rcl_pct": 63.4,
         "dcl_hab": 4014.83,
