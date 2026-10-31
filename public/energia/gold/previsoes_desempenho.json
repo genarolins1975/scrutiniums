@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes_desempenho.json",
- "gerado_em": "2026-10-30T15:24:59Z",
+ "gerado_em": "2026-10-31T14:51:59Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "9bb762deb792",
+ "versao_codigo": "babb5533cd36",
  "disponivel": true,
  "paineis": [
   "P013",
@@ -30,7 +30,7 @@
   },
   "publicado_pela_fonte_em": null,
   "capturado_em": "2026-10-24T01:57:23Z",
-  "validado_em": "2026-10-30T15:24:59Z",
+  "validado_em": "2026-10-31T14:51:59Z",
   "cobertura_historica": {
    "inicio": "2021-01-01",
    "fim": "2026-10-24"
@@ -47,9 +47,9 @@
    "sha256": "8a8cf5568d9d1a52ba7cfbbd9005706bf42ed63b402a7a7f86016a8bd9326084"
   },
   "versao_pipeline": "energia-0.1.0",
-  "versao_codigo": "9bb762deb792",
+  "versao_codigo": "babb5533cd36",
   "revisoes_conhecidas": {
-   "detectado_em": "2026-10-30T15:24:05Z",
+   "detectado_em": "2026-10-31T14:51:04Z",
    "total": 0,
    "vintages_comparadas": 23,
    "arquivos": 6,
@@ -87,7 +87,7 @@
   }
  },
  "dados": {
-  "instante_informacao": "2026-10-30T02:55:32Z",
+  "instante_informacao": "2026-10-31T02:43:19Z",
   "ultimo_dia_pld": "2026-10-24",
   "origens": {
    "inicio": "2022-01-01",
@@ -102,21 +102,21 @@
     "revisoes": 0
    },
    "ear_subsistema_di": {
-    "id": "ear_subsistema_di@2026-10-30T02:55:13Z",
-    "sha256": "91ebdbdbb8ce71e687581741bc6ea39cbfae1e5f4fa1eba43cf82629da48c0b8",
-    "ultima_captura": "2026-10-30T02:55:13Z",
-    "revisoes": 59435
+    "id": "ear_subsistema_di@2026-10-31T02:43:18Z",
+    "sha256": "c7c6a94cd7b86fcbcb3733dc0b1ea01ad049bf020589cd9170fef86fa858dde0",
+    "ultima_captura": "2026-10-31T02:43:18Z",
+    "revisoes": 59439
    },
    "ena_subsistema_di": {
-    "id": "ena_subsistema_di@2026-10-30T02:55:32Z",
-    "sha256": "ff07e8d73009c5c2cc2caffc7a08737aaf4e8f4c29c20a111cdf165847821d2a",
-    "ultima_captura": "2026-10-30T02:55:32Z",
-    "revisoes": 98984
+    "id": "ena_subsistema_di@2026-10-31T02:43:19Z",
+    "sha256": "6f566d4486e16f2c3f50afbfc9f40f0c40b87ac10b24992a34c3bf61e72f52f5",
+    "ultima_captura": "2026-10-31T02:43:19Z",
+    "revisoes": 99000
    }
   },
   "revisoes_hidrologia": {
    "ear_subsistema_di:ear_pct": {
-    "observacoes_revisadas": 36649,
+    "observacoes_revisadas": 36651,
     "maior_revisao": 0.7171,
     "exemplos": [
      {
@@ -152,8 +152,8 @@
     ]
    },
    "ena_subsistema_di:ena_bruta_pct_mlt": {
-    "observacoes_revisadas": 36674,
-    "maior_revisao": 44.7858,
+    "observacoes_revisadas": 36678,
+    "maior_revisao": 45.1669,
     "exemplos": [
      {
       "serie": "ena_bruta_pct_mlt.N",
@@ -217,8 +217,8 @@
    "semanal": 28128,
    "mensal": 21096
   },
-  "ultimo_dia_ear": "2026-10-28",
-  "ultimo_dia_ena": "2026-10-28",
+  "ultimo_dia_ear": "2026-10-29",
+  "ultimo_dia_ena": "2026-10-29",
   "configuracao_sha256": "cf421e3e43c1df68f553f375e7fde983a5eec702ec68f2df3293dc5cee93d8e0",
   "configuracao_registrada_sha256": "cf421e3e43c1df68f553f375e7fde983a5eec702ec68f2df3293dc5cee93d8e0"
  },
@@ -292,6 +292,36 @@
  "g23_r1": null,
  "prospectivo": {
   "rodadas": [
+   {
+    "run_id": "prosp_2026-10-31_20261031T145102Z",
+    "origem": "2026-10-31",
+    "cutoff": "2026-10-31T10:00:00Z",
+    "prazo": "2026-10-31T11:00:00Z",
+    "emitido_em": "2026-10-31T14:51:02Z",
+    "atraso_min": 231.0,
+    "atraso_origem": "registrado",
+    "no_prazo": false,
+    "modo": "agendada",
+    "executor": "GitHub Actions",
+    "run_url": "https://github.com/genarolins1975/scrutiniums/actions/runs/41211872421",
+    "gatilho": "cron do GitHub",
+    "tipos": [
+     "REFERENCIA_EXPERIMENTAL"
+    ],
+    "modelos": [
+     "B0"
+    ],
+    "versao_codigo": "babb5533cd36",
+    "celulas": 28,
+    "com_numero": 28,
+    "falha": false,
+    "motivos": [],
+    "alertas": [
+     "ATRASADO_APOS_08H",
+     "LIMITE_PROVISORIO"
+    ],
+    "registrado_no_portal_em": "2026-10-31"
+   },
    {
     "run_id": "prosp_2026-10-30_20261030T152403Z",
     "origem": "2026-10-30",
@@ -715,406 +745,14 @@
     "registrado_no_portal_em": "2026-09-28"
    }
   ],
-  "total_rodadas": 14,
-  "registros": 392,
+  "total_rodadas": 15,
+  "registros": 420,
   "registros_por_tipo": {
    "PUBLICACAO": 0,
    "RODADA_INTERNA": 28,
-   "REFERENCIA_EXPERIMENTAL": 364
+   "REFERENCIA_EXPERIMENTAL": 392
   },
   "apuracoes": [
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W1:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W1",
-    "submercado": "SE",
-    "entrega": "W2026-10-31",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W1:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W1",
-    "submercado": "S",
-    "entrega": "W2026-10-31",
-    "previsao": 70.6258,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W1:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W1",
-    "submercado": "NE",
-    "entrega": "W2026-10-31",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W1:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W1",
-    "submercado": "N",
-    "entrega": "W2026-10-31",
-    "previsao": 70.6261,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W2:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W2",
-    "submercado": "SE",
-    "entrega": "W2026-11-07",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W2:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W2",
-    "submercado": "S",
-    "entrega": "W2026-11-07",
-    "previsao": 70.6258,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W2:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W2",
-    "submercado": "NE",
-    "entrega": "W2026-11-07",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W2:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W2",
-    "submercado": "N",
-    "entrega": "W2026-11-07",
-    "previsao": 70.6261,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W3:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W3",
-    "submercado": "SE",
-    "entrega": "W2026-11-14",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W3:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W3",
-    "submercado": "S",
-    "entrega": "W2026-11-14",
-    "previsao": 70.6258,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W3:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W3",
-    "submercado": "NE",
-    "entrega": "W2026-11-14",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W3:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W3",
-    "submercado": "N",
-    "entrega": "W2026-11-14",
-    "previsao": 70.6261,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W4:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W4",
-    "submercado": "SE",
-    "entrega": "W2026-11-21",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W4:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W4",
-    "submercado": "S",
-    "entrega": "W2026-11-21",
-    "previsao": 70.6258,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W4:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W4",
-    "submercado": "NE",
-    "entrega": "W2026-11-21",
-    "previsao": 70.626,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:W4:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "W4",
-    "submercado": "N",
-    "entrega": "W2026-11-21",
-    "previsao": 70.6261,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M1:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M1",
-    "submercado": "SE",
-    "entrega": "M2026-11",
-    "previsao": 125.7798,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M1:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M1",
-    "submercado": "S",
-    "entrega": "M2026-11",
-    "previsao": 123.7443,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M1:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M1",
-    "submercado": "NE",
-    "entrega": "M2026-11",
-    "previsao": 125.1457,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M1:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M1",
-    "submercado": "N",
-    "entrega": "M2026-11",
-    "previsao": 125.6639,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M2:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M2",
-    "submercado": "SE",
-    "entrega": "M2026-12",
-    "previsao": 125.7798,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M2:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M2",
-    "submercado": "S",
-    "entrega": "M2026-12",
-    "previsao": 123.7443,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M2:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M2",
-    "submercado": "NE",
-    "entrega": "M2026-12",
-    "previsao": 125.1457,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M2:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M2",
-    "submercado": "N",
-    "entrega": "M2026-12",
-    "previsao": 125.6639,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M3:SE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M3",
-    "submercado": "SE",
-    "entrega": "M2027-01",
-    "previsao": 125.7798,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M3:S:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M3",
-    "submercado": "S",
-    "entrega": "M2027-01",
-    "previsao": 123.7443,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M3:NE:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M3",
-    "submercado": "NE",
-    "entrega": "M2027-01",
-    "previsao": 125.1457,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
-   {
-    "forecast_id": "prosp_2026-10-29_20261029T153855Z:M3:N:B0",
-    "modelo": "B0",
-    "tipo": "REFERENCIA_EXPERIMENTAL",
-    "origem": "2026-10-29",
-    "horizonte": "M3",
-    "submercado": "N",
-    "entrega": "M2027-01",
-    "previsao": 125.6639,
-    "realizado": null,
-    "erro": null,
-    "emitida_antes_da_entrega": true,
-    "no_prazo": false
-   },
    {
     "forecast_id": "prosp_2026-10-30_20261030T152403Z:W1:SE:B0",
     "modelo": "B0",
@@ -1506,9 +1144,401 @@
     "erro": null,
     "emitida_antes_da_entrega": true,
     "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W1",
+    "submercado": "SE",
+    "entrega": "W2026-11-07",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W1",
+    "submercado": "S",
+    "entrega": "W2026-11-07",
+    "previsao": 70.6258,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W1",
+    "submercado": "NE",
+    "entrega": "W2026-11-07",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W1",
+    "submercado": "N",
+    "entrega": "W2026-11-07",
+    "previsao": 70.6261,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W2",
+    "submercado": "SE",
+    "entrega": "W2026-11-14",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W2",
+    "submercado": "S",
+    "entrega": "W2026-11-14",
+    "previsao": 70.6258,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W2",
+    "submercado": "NE",
+    "entrega": "W2026-11-14",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W2",
+    "submercado": "N",
+    "entrega": "W2026-11-14",
+    "previsao": 70.6261,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W3",
+    "submercado": "SE",
+    "entrega": "W2026-11-21",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W3",
+    "submercado": "S",
+    "entrega": "W2026-11-21",
+    "previsao": 70.6258,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W3",
+    "submercado": "NE",
+    "entrega": "W2026-11-21",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W3",
+    "submercado": "N",
+    "entrega": "W2026-11-21",
+    "previsao": 70.6261,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W4",
+    "submercado": "SE",
+    "entrega": "W2026-11-28",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W4",
+    "submercado": "S",
+    "entrega": "W2026-11-28",
+    "previsao": 70.6258,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W4",
+    "submercado": "NE",
+    "entrega": "W2026-11-28",
+    "previsao": 70.626,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "W4",
+    "submercado": "N",
+    "entrega": "W2026-11-28",
+    "previsao": 70.6261,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M1",
+    "submercado": "SE",
+    "entrega": "M2026-11",
+    "previsao": 125.7798,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M1",
+    "submercado": "S",
+    "entrega": "M2026-11",
+    "previsao": 123.7443,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M1",
+    "submercado": "NE",
+    "entrega": "M2026-11",
+    "previsao": 125.1457,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M1",
+    "submercado": "N",
+    "entrega": "M2026-11",
+    "previsao": 125.6639,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M2",
+    "submercado": "SE",
+    "entrega": "M2026-12",
+    "previsao": 125.7798,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M2",
+    "submercado": "S",
+    "entrega": "M2026-12",
+    "previsao": 123.7443,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M2",
+    "submercado": "NE",
+    "entrega": "M2026-12",
+    "previsao": 125.1457,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M2",
+    "submercado": "N",
+    "entrega": "M2026-12",
+    "previsao": 125.6639,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:SE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M3",
+    "submercado": "SE",
+    "entrega": "M2027-01",
+    "previsao": 125.7798,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:S:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M3",
+    "submercado": "S",
+    "entrega": "M2027-01",
+    "previsao": 123.7443,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:NE:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M3",
+    "submercado": "NE",
+    "entrega": "M2027-01",
+    "previsao": 125.1457,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
+   },
+   {
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:N:B0",
+    "modelo": "B0",
+    "tipo": "REFERENCIA_EXPERIMENTAL",
+    "origem": "2026-10-31",
+    "horizonte": "M3",
+    "submercado": "N",
+    "entrega": "M2027-01",
+    "previsao": 125.6639,
+    "realizado": null,
+    "erro": null,
+    "emitida_antes_da_entrega": true,
+    "no_prazo": false
    }
   ],
-  "apuracoes_total": 364,
+  "apuracoes_total": 392,
   "metricas": null,
   "leitura": "12 células apuradas; amostra prospectiva curta, sem inferência de ganho.",
   "revisoes_entre_rodadas": [
@@ -1516,15 +1546,8 @@
     "modelo": "B0",
     "entrega": "M2026-11",
     "submercado": "N",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M1",
-      "previsao": 125.6639,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1584,6 +1607,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M1",
+      "previsao": 125.6639,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M1",
       "previsao": 125.6639,
       "mudanca": 0.0
@@ -1594,15 +1624,8 @@
     "modelo": "B0",
     "entrega": "M2026-11",
     "submercado": "NE",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M1",
-      "previsao": 125.1457,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1662,6 +1685,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M1",
+      "previsao": 125.1457,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M1",
       "previsao": 125.1457,
       "mudanca": 0.0
@@ -1672,15 +1702,8 @@
     "modelo": "B0",
     "entrega": "M2026-11",
     "submercado": "S",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M1",
-      "previsao": 123.7443,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1740,6 +1763,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M1",
+      "previsao": 123.7443,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M1",
       "previsao": 123.7443,
       "mudanca": 0.0
@@ -1750,15 +1780,8 @@
     "modelo": "B0",
     "entrega": "M2026-11",
     "submercado": "SE",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M1",
-      "previsao": 125.7798,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1818,6 +1841,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M1",
+      "previsao": 125.7798,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M1",
       "previsao": 125.7798,
       "mudanca": 0.0
@@ -1828,15 +1858,8 @@
     "modelo": "B0",
     "entrega": "M2026-12",
     "submercado": "N",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M2",
-      "previsao": 125.6639,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1896,6 +1919,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M2",
+      "previsao": 125.6639,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M2",
       "previsao": 125.6639,
       "mudanca": 0.0
@@ -1906,15 +1936,8 @@
     "modelo": "B0",
     "entrega": "M2026-12",
     "submercado": "NE",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M2",
-      "previsao": 125.1457,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -1974,6 +1997,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M2",
+      "previsao": 125.1457,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M2",
       "previsao": 125.1457,
       "mudanca": 0.0
@@ -1984,15 +2014,8 @@
     "modelo": "B0",
     "entrega": "M2026-12",
     "submercado": "S",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M2",
-      "previsao": 123.7443,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2052,6 +2075,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M2",
+      "previsao": 123.7443,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M2",
       "previsao": 123.7443,
       "mudanca": 0.0
@@ -2062,15 +2092,8 @@
     "modelo": "B0",
     "entrega": "M2026-12",
     "submercado": "SE",
-    "rodadas": 13,
+    "rodadas": 14,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M2",
-      "previsao": 125.7798,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2130,6 +2153,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M2",
+      "previsao": 125.7798,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M2",
       "previsao": 125.7798,
       "mudanca": 0.0
@@ -2140,15 +2170,8 @@
     "modelo": "B0",
     "entrega": "M2027-01",
     "submercado": "N",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M3",
-      "previsao": 125.6639,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2208,6 +2231,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M3",
+      "previsao": 125.6639,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M3",
       "previsao": 125.6639,
       "mudanca": 0.0
@@ -2218,15 +2248,8 @@
     "modelo": "B0",
     "entrega": "M2027-01",
     "submercado": "NE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M3",
-      "previsao": 125.1457,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2286,6 +2309,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M3",
+      "previsao": 125.1457,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M3",
       "previsao": 125.1457,
       "mudanca": 0.0
@@ -2296,15 +2326,8 @@
     "modelo": "B0",
     "entrega": "M2027-01",
     "submercado": "S",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M3",
-      "previsao": 123.7443,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2364,6 +2387,13 @@
      {
       "run_id": "prosp_2026-10-30_20261030T152403Z",
       "origem": "2026-10-30",
+      "horizonte": "M3",
+      "previsao": 123.7443,
+      "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
       "horizonte": "M3",
       "previsao": 123.7443,
       "mudanca": 0.0
@@ -2374,15 +2404,8 @@
     "modelo": "B0",
     "entrega": "M2027-01",
     "submercado": "SE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "M3",
-      "previsao": 125.7798,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2445,317 +2468,12 @@
       "horizonte": "M3",
       "previsao": 125.7798,
       "mudanca": 0.0
-     }
-    ]
-   },
-   {
-    "modelo": "B0",
-    "entrega": "W2026-10-31",
-    "submercado": "N",
-    "rodadas": 12,
-    "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W2",
-      "previsao": 120.4252,
-      "mudanca": 0.0
      },
      {
-      "run_id": "prosp_2026-10-22_20261022T140914Z",
-      "origem": "2026-10-22",
-      "horizonte": "W2",
-      "previsao": 120.4252,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-23_20261023T135236Z",
-      "origem": "2026-10-23",
-      "horizonte": "W2",
-      "previsao": 120.4252,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-24_20261024T125840Z",
-      "origem": "2026-10-24",
-      "horizonte": "W1",
-      "previsao": 120.4252,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-25_20261025T132455Z",
-      "origem": "2026-10-25",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": -49.7991
-     },
-     {
-      "run_id": "prosp_2026-10-26_20261026T153319Z",
-      "origem": "2026-10-26",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-27_20261027T145928Z",
-      "origem": "2026-10-27",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-28_20261028T153252Z",
-      "origem": "2026-10-28",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-29_20261029T153855Z",
-      "origem": "2026-10-29",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-30_20261030T152403Z",
-      "origem": "2026-10-30",
-      "horizonte": "W1",
-      "previsao": 70.6261,
-      "mudanca": 0.0
-     }
-    ]
-   },
-   {
-    "modelo": "B0",
-    "entrega": "W2026-10-31",
-    "submercado": "NE",
-    "rodadas": 12,
-    "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W2",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-22_20261022T140914Z",
-      "origem": "2026-10-22",
-      "horizonte": "W2",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-23_20261023T135236Z",
-      "origem": "2026-10-23",
-      "horizonte": "W2",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-24_20261024T125840Z",
-      "origem": "2026-10-24",
-      "horizonte": "W1",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-25_20261025T132455Z",
-      "origem": "2026-10-25",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": -49.7961
-     },
-     {
-      "run_id": "prosp_2026-10-26_20261026T153319Z",
-      "origem": "2026-10-26",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-27_20261027T145928Z",
-      "origem": "2026-10-27",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-28_20261028T153252Z",
-      "origem": "2026-10-28",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-29_20261029T153855Z",
-      "origem": "2026-10-29",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-30_20261030T152403Z",
-      "origem": "2026-10-30",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     }
-    ]
-   },
-   {
-    "modelo": "B0",
-    "entrega": "W2026-10-31",
-    "submercado": "S",
-    "rodadas": 12,
-    "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W2",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-22_20261022T140914Z",
-      "origem": "2026-10-22",
-      "horizonte": "W2",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-23_20261023T135236Z",
-      "origem": "2026-10-23",
-      "horizonte": "W2",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-24_20261024T125840Z",
-      "origem": "2026-10-24",
-      "horizonte": "W1",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-25_20261025T132455Z",
-      "origem": "2026-10-25",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": -49.7231
-     },
-     {
-      "run_id": "prosp_2026-10-26_20261026T153319Z",
-      "origem": "2026-10-26",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-27_20261027T145928Z",
-      "origem": "2026-10-27",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-28_20261028T153252Z",
-      "origem": "2026-10-28",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-29_20261029T153855Z",
-      "origem": "2026-10-29",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-30_20261030T152403Z",
-      "origem": "2026-10-30",
-      "horizonte": "W1",
-      "previsao": 70.6258,
-      "mudanca": 0.0
-     }
-    ]
-   },
-   {
-    "modelo": "B0",
-    "entrega": "W2026-10-31",
-    "submercado": "SE",
-    "rodadas": 12,
-    "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W2",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-22_20261022T140914Z",
-      "origem": "2026-10-22",
-      "horizonte": "W2",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-23_20261023T135236Z",
-      "origem": "2026-10-23",
-      "horizonte": "W2",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-24_20261024T125840Z",
-      "origem": "2026-10-24",
-      "horizonte": "W1",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-25_20261025T132455Z",
-      "origem": "2026-10-25",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": -49.7974
-     },
-     {
-      "run_id": "prosp_2026-10-26_20261026T153319Z",
-      "origem": "2026-10-26",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-27_20261027T145928Z",
-      "origem": "2026-10-27",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-28_20261028T153252Z",
-      "origem": "2026-10-28",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-29_20261029T153855Z",
-      "origem": "2026-10-29",
-      "horizonte": "W1",
-      "previsao": 70.626,
-      "mudanca": 0.0
-     },
-     {
-      "run_id": "prosp_2026-10-30_20261030T152403Z",
-      "origem": "2026-10-30",
-      "horizonte": "W1",
-      "previsao": 70.626,
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "M3",
+      "previsao": 125.7798,
       "mudanca": 0.0
      }
     ]
@@ -2764,15 +2482,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-07",
     "submercado": "N",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W3",
-      "previsao": 120.4252,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2835,6 +2546,13 @@
       "horizonte": "W2",
       "previsao": 70.6261,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W1",
+      "previsao": 70.6261,
+      "mudanca": 0.0
      }
     ]
    },
@@ -2842,15 +2560,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-07",
     "submercado": "NE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W3",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2913,6 +2624,13 @@
       "horizonte": "W2",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W1",
+      "previsao": 70.626,
+      "mudanca": 0.0
      }
     ]
    },
@@ -2920,15 +2638,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-07",
     "submercado": "S",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W3",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -2991,6 +2702,13 @@
       "horizonte": "W2",
       "previsao": 70.6258,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W1",
+      "previsao": 70.6258,
+      "mudanca": 0.0
      }
     ]
    },
@@ -2998,15 +2716,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-07",
     "submercado": "SE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W3",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -3069,6 +2780,13 @@
       "horizonte": "W2",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W1",
+      "previsao": 70.626,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3076,15 +2794,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-14",
     "submercado": "N",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W4",
-      "previsao": 120.4252,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -3147,6 +2858,13 @@
       "horizonte": "W3",
       "previsao": 70.6261,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W2",
+      "previsao": 70.6261,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3154,15 +2872,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-14",
     "submercado": "NE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W4",
-      "previsao": 120.4221,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -3225,6 +2936,13 @@
       "horizonte": "W3",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W2",
+      "previsao": 70.626,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3232,15 +2950,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-14",
     "submercado": "S",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W4",
-      "previsao": 120.3489,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -3303,6 +3014,13 @@
       "horizonte": "W3",
       "previsao": 70.6258,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W2",
+      "previsao": 70.6258,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3310,15 +3028,8 @@
     "modelo": "B0",
     "entrega": "W2026-11-14",
     "submercado": "SE",
-    "rodadas": 12,
+    "rodadas": 13,
     "sequencia": [
-     {
-      "run_id": "prosp_2026-10-21_20261021T141103Z",
-      "origem": "2026-10-21",
-      "horizonte": "W4",
-      "previsao": 120.4234,
-      "mudanca": 0.0
-     },
      {
       "run_id": "prosp_2026-10-22_20261022T140914Z",
       "origem": "2026-10-22",
@@ -3381,6 +3092,13 @@
       "horizonte": "W3",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W2",
+      "previsao": 70.626,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3388,7 +3106,7 @@
     "modelo": "B0",
     "entrega": "W2026-11-21",
     "submercado": "N",
-    "rodadas": 7,
+    "rodadas": 8,
     "sequencia": [
      {
       "run_id": "prosp_2026-10-24_20261024T125840Z",
@@ -3438,6 +3156,13 @@
       "horizonte": "W4",
       "previsao": 70.6261,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W3",
+      "previsao": 70.6261,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3445,7 +3170,7 @@
     "modelo": "B0",
     "entrega": "W2026-11-21",
     "submercado": "NE",
-    "rodadas": 7,
+    "rodadas": 8,
     "sequencia": [
      {
       "run_id": "prosp_2026-10-24_20261024T125840Z",
@@ -3495,6 +3220,13 @@
       "horizonte": "W4",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W3",
+      "previsao": 70.626,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3502,7 +3234,7 @@
     "modelo": "B0",
     "entrega": "W2026-11-21",
     "submercado": "S",
-    "rodadas": 7,
+    "rodadas": 8,
     "sequencia": [
      {
       "run_id": "prosp_2026-10-24_20261024T125840Z",
@@ -3552,6 +3284,13 @@
       "horizonte": "W4",
       "previsao": 70.6258,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W3",
+      "previsao": 70.6258,
+      "mudanca": 0.0
      }
     ]
    },
@@ -3559,7 +3298,7 @@
     "modelo": "B0",
     "entrega": "W2026-11-21",
     "submercado": "SE",
-    "rodadas": 7,
+    "rodadas": 8,
     "sequencia": [
      {
       "run_id": "prosp_2026-10-24_20261024T125840Z",
@@ -3609,12 +3348,79 @@
       "horizonte": "W4",
       "previsao": 70.626,
       "mudanca": 0.0
+     },
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W3",
+      "previsao": 70.626,
+      "mudanca": 0.0
+     }
+    ]
+   },
+   {
+    "modelo": "B0",
+    "entrega": "W2026-11-28",
+    "submercado": "N",
+    "rodadas": 1,
+    "sequencia": [
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W4",
+      "previsao": 70.6261,
+      "mudanca": null
+     }
+    ]
+   },
+   {
+    "modelo": "B0",
+    "entrega": "W2026-11-28",
+    "submercado": "NE",
+    "rodadas": 1,
+    "sequencia": [
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W4",
+      "previsao": 70.626,
+      "mudanca": null
+     }
+    ]
+   },
+   {
+    "modelo": "B0",
+    "entrega": "W2026-11-28",
+    "submercado": "S",
+    "rodadas": 1,
+    "sequencia": [
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W4",
+      "previsao": 70.6258,
+      "mudanca": null
+     }
+    ]
+   },
+   {
+    "modelo": "B0",
+    "entrega": "W2026-11-28",
+    "submercado": "SE",
+    "rodadas": 1,
+    "sequencia": [
+     {
+      "run_id": "prosp_2026-10-31_20261031T145102Z",
+      "origem": "2026-10-31",
+      "horizonte": "W4",
+      "previsao": 70.626,
+      "mudanca": null
      }
     ]
    }
   ],
   "reexecucao": {
-   "conferidas": 364,
+   "conferidas": 392,
    "divergentes": [],
    "tolerancia": "0.005 R$/MWh"
   },
@@ -3894,14 +3700,14 @@
   "horarios": "Gatilhos do cron do GitHub às 05h47, 06h17, 06h43, 07h13, 07h37 de Brasília, que o GitHub pode atrasar em horas, e, quando configurado, um agendador externo que dispara o mesmo workflow no horário (docs/observatorios/energia/previsao-disparo-externo.md). O primeiro que rodar confere o dado, tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna (atualizar-energia.yml). O gatilho de cada rodada fica no arquivo; a comprovação segue o critério publicado.",
   "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
   "inicio_operacao_agendada": "2026-10-02",
-  "verificado_em": "2026-10-30T15:24:55Z",
-  "dias_vencidos_ate": "2026-10-30",
-  "execucoes_agendadas": 12,
+  "verificado_em": "2026-10-31T14:51:55Z",
+  "dias_vencidos_ate": "2026-10-31",
+  "execucoes_agendadas": 13,
   "no_prazo": 0,
   "agendadas_por_gatilho": {
-   "cron do GitHub": 12
+   "cron do GitHub": 13
   },
-  "atrasadas": 12,
+  "atrasadas": 13,
   "falhas": 0,
   "dias_sem_rodada": [
    "2026-10-02",
@@ -3926,7 +3732,7 @@
   "janela_comprovacao": {
    "dias": 30,
    "inicio": "2026-10-02",
-   "fim": "2026-10-30",
+   "fim": "2026-10-31",
    "no_prazo": 0,
    "dias_sem_rodada": 17
   },
@@ -3941,32 +3747,32 @@
     "correcao": "https://github.com/genarolins1975/scrutiniums/pull/282"
    }
   ],
-  "leitura": "12 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.",
+  "leitura": "13 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.",
   "criterio_comprovacao": "Pelo menos sete rodadas agendadas no prazo e nenhum dia faltante nos últimos 30 dias vencidos (ou desde o início da operação agendada, se for mais recente). Dia faltante é dia de Brasília cujo prazo das 08h00 já passou sem rodada agendada registrada; os dias faltantes anteriores à janela continuam contados no total."
  },
  "previsao_atual": {
   "disponivel": true,
   "rotulo": "B0: referência experimental de persistência, não é previsão aprovada",
-  "run_id": "prosp_2026-10-30_20261030T152403Z",
-  "origem": "2026-10-30",
-  "cutoff": "2026-10-30T10:00:00Z",
-  "prazo": "2026-10-30T11:00:00Z",
-  "emitido_em": "2026-10-30T15:24:03Z",
-  "atraso_min": 264.1,
+  "run_id": "prosp_2026-10-31_20261031T145102Z",
+  "origem": "2026-10-31",
+  "cutoff": "2026-10-31T10:00:00Z",
+  "prazo": "2026-10-31T11:00:00Z",
+  "emitido_em": "2026-10-31T14:51:02Z",
+  "atraso_min": 231.0,
   "modo": "agendada",
   "alertas": [
    "ATRASADO_APOS_08H",
    "LIMITE_PROVISORIO"
   ],
-  "versao_codigo": "9bb762deb792",
+  "versao_codigo": "babb5533cd36",
   "celulas": [
    {
     "horizonte": "W1",
     "submercado": "SE",
     "entrega": {
-     "fim": "2026-11-07T03:00:00Z",
-     "id": "W2026-10-31",
-     "inicio": "2026-10-31T03:00:00Z"
+     "fim": "2026-11-14T03:00:00Z",
+     "id": "W2026-11-07",
+     "inicio": "2026-11-07T03:00:00Z"
     },
     "previsao": 70.626,
     "status": "DISPONIVEL",
@@ -3985,16 +3791,16 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W1:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:SE:B0",
     "evidencia": "b0_semanal_SE"
    },
    {
     "horizonte": "W1",
     "submercado": "S",
     "entrega": {
-     "fim": "2026-11-07T03:00:00Z",
-     "id": "W2026-10-31",
-     "inicio": "2026-10-31T03:00:00Z"
+     "fim": "2026-11-14T03:00:00Z",
+     "id": "W2026-11-07",
+     "inicio": "2026-11-07T03:00:00Z"
     },
     "previsao": 70.6258,
     "status": "DISPONIVEL",
@@ -4013,16 +3819,16 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W1:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:S:B0",
     "evidencia": "b0_semanal_S"
    },
    {
     "horizonte": "W1",
     "submercado": "NE",
     "entrega": {
-     "fim": "2026-11-07T03:00:00Z",
-     "id": "W2026-10-31",
-     "inicio": "2026-10-31T03:00:00Z"
+     "fim": "2026-11-14T03:00:00Z",
+     "id": "W2026-11-07",
+     "inicio": "2026-11-07T03:00:00Z"
     },
     "previsao": 70.626,
     "status": "DISPONIVEL",
@@ -4041,16 +3847,16 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W1:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:NE:B0",
     "evidencia": "b0_semanal_NE"
    },
    {
     "horizonte": "W1",
     "submercado": "N",
     "entrega": {
-     "fim": "2026-11-07T03:00:00Z",
-     "id": "W2026-10-31",
-     "inicio": "2026-10-31T03:00:00Z"
+     "fim": "2026-11-14T03:00:00Z",
+     "id": "W2026-11-07",
+     "inicio": "2026-11-07T03:00:00Z"
     },
     "previsao": 70.6261,
     "status": "DISPONIVEL",
@@ -4069,125 +3875,13 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W1:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W1:N:B0",
     "evidencia": "b0_semanal_N"
    },
    {
     "horizonte": "W2",
     "submercado": "SE",
     "entrega": {
-     "fim": "2026-11-14T03:00:00Z",
-     "id": "W2026-11-07",
-     "inicio": "2026-11-07T03:00:00Z"
-    },
-    "previsao": 70.626,
-    "status": "DISPONIVEL",
-    "motivo": null,
-    "quantis": null,
-    "calibracao": "AMOSTRA_INSUFICIENTE",
-    "limites": {
-     "piso_medio": 57.31,
-     "provisoria": false,
-     "teto_estrutural_medio": 785.27
-    },
-    "ajustada_ao_limite": false,
-    "fracao_conhecida": 0.0,
-    "periodo_usado": {
-     "inicio": "2026-10-17",
-     "fim": "2026-10-24",
-     "capturado_em": "2026-10-24T01:57:23Z"
-    },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W2:SE:B0",
-    "evidencia": "b0_semanal_SE"
-   },
-   {
-    "horizonte": "W2",
-    "submercado": "S",
-    "entrega": {
-     "fim": "2026-11-14T03:00:00Z",
-     "id": "W2026-11-07",
-     "inicio": "2026-11-07T03:00:00Z"
-    },
-    "previsao": 70.6258,
-    "status": "DISPONIVEL",
-    "motivo": null,
-    "quantis": null,
-    "calibracao": "AMOSTRA_INSUFICIENTE",
-    "limites": {
-     "piso_medio": 57.31,
-     "provisoria": false,
-     "teto_estrutural_medio": 785.27
-    },
-    "ajustada_ao_limite": false,
-    "fracao_conhecida": 0.0,
-    "periodo_usado": {
-     "inicio": "2026-10-17",
-     "fim": "2026-10-24",
-     "capturado_em": "2026-10-24T01:57:23Z"
-    },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W2:S:B0",
-    "evidencia": "b0_semanal_S"
-   },
-   {
-    "horizonte": "W2",
-    "submercado": "NE",
-    "entrega": {
-     "fim": "2026-11-14T03:00:00Z",
-     "id": "W2026-11-07",
-     "inicio": "2026-11-07T03:00:00Z"
-    },
-    "previsao": 70.626,
-    "status": "DISPONIVEL",
-    "motivo": null,
-    "quantis": null,
-    "calibracao": "AMOSTRA_INSUFICIENTE",
-    "limites": {
-     "piso_medio": 57.31,
-     "provisoria": false,
-     "teto_estrutural_medio": 785.27
-    },
-    "ajustada_ao_limite": false,
-    "fracao_conhecida": 0.0,
-    "periodo_usado": {
-     "inicio": "2026-10-17",
-     "fim": "2026-10-24",
-     "capturado_em": "2026-10-24T01:57:23Z"
-    },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W2:NE:B0",
-    "evidencia": "b0_semanal_NE"
-   },
-   {
-    "horizonte": "W2",
-    "submercado": "N",
-    "entrega": {
-     "fim": "2026-11-14T03:00:00Z",
-     "id": "W2026-11-07",
-     "inicio": "2026-11-07T03:00:00Z"
-    },
-    "previsao": 70.6261,
-    "status": "DISPONIVEL",
-    "motivo": null,
-    "quantis": null,
-    "calibracao": "AMOSTRA_INSUFICIENTE",
-    "limites": {
-     "piso_medio": 57.31,
-     "provisoria": false,
-     "teto_estrutural_medio": 785.27
-    },
-    "ajustada_ao_limite": false,
-    "fracao_conhecida": 0.0,
-    "periodo_usado": {
-     "inicio": "2026-10-17",
-     "fim": "2026-10-24",
-     "capturado_em": "2026-10-24T01:57:23Z"
-    },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W2:N:B0",
-    "evidencia": "b0_semanal_N"
-   },
-   {
-    "horizonte": "W3",
-    "submercado": "SE",
-    "entrega": {
      "fim": "2026-11-21T03:00:00Z",
      "id": "W2026-11-14",
      "inicio": "2026-11-14T03:00:00Z"
@@ -4209,11 +3903,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W3:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:SE:B0",
     "evidencia": "b0_semanal_SE"
    },
    {
-    "horizonte": "W3",
+    "horizonte": "W2",
     "submercado": "S",
     "entrega": {
      "fim": "2026-11-21T03:00:00Z",
@@ -4237,11 +3931,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W3:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:S:B0",
     "evidencia": "b0_semanal_S"
    },
    {
-    "horizonte": "W3",
+    "horizonte": "W2",
     "submercado": "NE",
     "entrega": {
      "fim": "2026-11-21T03:00:00Z",
@@ -4265,11 +3959,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W3:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:NE:B0",
     "evidencia": "b0_semanal_NE"
    },
    {
-    "horizonte": "W3",
+    "horizonte": "W2",
     "submercado": "N",
     "entrega": {
      "fim": "2026-11-21T03:00:00Z",
@@ -4293,11 +3987,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W3:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W2:N:B0",
     "evidencia": "b0_semanal_N"
    },
    {
-    "horizonte": "W4",
+    "horizonte": "W3",
     "submercado": "SE",
     "entrega": {
      "fim": "2026-11-28T03:00:00Z",
@@ -4321,11 +4015,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W4:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:SE:B0",
     "evidencia": "b0_semanal_SE"
    },
    {
-    "horizonte": "W4",
+    "horizonte": "W3",
     "submercado": "S",
     "entrega": {
      "fim": "2026-11-28T03:00:00Z",
@@ -4349,11 +4043,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W4:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:S:B0",
     "evidencia": "b0_semanal_S"
    },
    {
-    "horizonte": "W4",
+    "horizonte": "W3",
     "submercado": "NE",
     "entrega": {
      "fim": "2026-11-28T03:00:00Z",
@@ -4377,11 +4071,11 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W4:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:NE:B0",
     "evidencia": "b0_semanal_NE"
    },
    {
-    "horizonte": "W4",
+    "horizonte": "W3",
     "submercado": "N",
     "entrega": {
      "fim": "2026-11-28T03:00:00Z",
@@ -4405,7 +4099,119 @@
      "fim": "2026-10-24",
      "capturado_em": "2026-10-24T01:57:23Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:W4:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W3:N:B0",
+    "evidencia": "b0_semanal_N"
+   },
+   {
+    "horizonte": "W4",
+    "submercado": "SE",
+    "entrega": {
+     "fim": "2026-12-05T03:00:00Z",
+     "id": "W2026-11-28",
+     "inicio": "2026-11-28T03:00:00Z"
+    },
+    "previsao": 70.626,
+    "status": "DISPONIVEL",
+    "motivo": null,
+    "quantis": null,
+    "calibracao": "AMOSTRA_INSUFICIENTE",
+    "limites": {
+     "piso_medio": 57.31,
+     "provisoria": false,
+     "teto_estrutural_medio": 785.27
+    },
+    "ajustada_ao_limite": false,
+    "fracao_conhecida": 0.0,
+    "periodo_usado": {
+     "inicio": "2026-10-17",
+     "fim": "2026-10-24",
+     "capturado_em": "2026-10-24T01:57:23Z"
+    },
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:SE:B0",
+    "evidencia": "b0_semanal_SE"
+   },
+   {
+    "horizonte": "W4",
+    "submercado": "S",
+    "entrega": {
+     "fim": "2026-12-05T03:00:00Z",
+     "id": "W2026-11-28",
+     "inicio": "2026-11-28T03:00:00Z"
+    },
+    "previsao": 70.6258,
+    "status": "DISPONIVEL",
+    "motivo": null,
+    "quantis": null,
+    "calibracao": "AMOSTRA_INSUFICIENTE",
+    "limites": {
+     "piso_medio": 57.31,
+     "provisoria": false,
+     "teto_estrutural_medio": 785.27
+    },
+    "ajustada_ao_limite": false,
+    "fracao_conhecida": 0.0,
+    "periodo_usado": {
+     "inicio": "2026-10-17",
+     "fim": "2026-10-24",
+     "capturado_em": "2026-10-24T01:57:23Z"
+    },
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:S:B0",
+    "evidencia": "b0_semanal_S"
+   },
+   {
+    "horizonte": "W4",
+    "submercado": "NE",
+    "entrega": {
+     "fim": "2026-12-05T03:00:00Z",
+     "id": "W2026-11-28",
+     "inicio": "2026-11-28T03:00:00Z"
+    },
+    "previsao": 70.626,
+    "status": "DISPONIVEL",
+    "motivo": null,
+    "quantis": null,
+    "calibracao": "AMOSTRA_INSUFICIENTE",
+    "limites": {
+     "piso_medio": 57.31,
+     "provisoria": false,
+     "teto_estrutural_medio": 785.27
+    },
+    "ajustada_ao_limite": false,
+    "fracao_conhecida": 0.0,
+    "periodo_usado": {
+     "inicio": "2026-10-17",
+     "fim": "2026-10-24",
+     "capturado_em": "2026-10-24T01:57:23Z"
+    },
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:NE:B0",
+    "evidencia": "b0_semanal_NE"
+   },
+   {
+    "horizonte": "W4",
+    "submercado": "N",
+    "entrega": {
+     "fim": "2026-12-05T03:00:00Z",
+     "id": "W2026-11-28",
+     "inicio": "2026-11-28T03:00:00Z"
+    },
+    "previsao": 70.6261,
+    "status": "DISPONIVEL",
+    "motivo": null,
+    "quantis": null,
+    "calibracao": "AMOSTRA_INSUFICIENTE",
+    "limites": {
+     "piso_medio": 57.31,
+     "provisoria": false,
+     "teto_estrutural_medio": 785.27
+    },
+    "ajustada_ao_limite": false,
+    "fracao_conhecida": 0.0,
+    "periodo_usado": {
+     "inicio": "2026-10-17",
+     "fim": "2026-10-24",
+     "capturado_em": "2026-10-24T01:57:23Z"
+    },
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:W4:N:B0",
     "evidencia": "b0_semanal_N"
    },
    {
@@ -4433,7 +4239,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M1:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:SE:B0",
     "evidencia": "b0_mensal_SE"
    },
    {
@@ -4461,7 +4267,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M1:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:S:B0",
     "evidencia": "b0_mensal_S"
    },
    {
@@ -4489,7 +4295,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M1:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:NE:B0",
     "evidencia": "b0_mensal_NE"
    },
    {
@@ -4517,7 +4323,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M1:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M1:N:B0",
     "evidencia": "b0_mensal_N"
    },
    {
@@ -4545,7 +4351,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M2:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:SE:B0",
     "evidencia": "b0_mensal_SE"
    },
    {
@@ -4573,7 +4379,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M2:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:S:B0",
     "evidencia": "b0_mensal_S"
    },
    {
@@ -4601,7 +4407,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M2:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:NE:B0",
     "evidencia": "b0_mensal_NE"
    },
    {
@@ -4629,7 +4435,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M2:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M2:N:B0",
     "evidencia": "b0_mensal_N"
    },
    {
@@ -4657,7 +4463,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M3:SE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:SE:B0",
     "evidencia": "b0_mensal_SE"
    },
    {
@@ -4685,7 +4491,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M3:S:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:S:B0",
     "evidencia": "b0_mensal_S"
    },
    {
@@ -4713,7 +4519,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M3:NE:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:NE:B0",
     "evidencia": "b0_mensal_NE"
    },
    {
@@ -4741,7 +4547,7 @@
      "fim": "2026-10-01",
      "capturado_em": "2026-09-30T02:20:14Z"
     },
-    "forecast_id": "prosp_2026-10-30_20261030T152403Z:M3:N:B0",
+    "forecast_id": "prosp_2026-10-31_20261031T145102Z:M3:N:B0",
     "evidencia": "b0_mensal_N"
    }
   ],
@@ -4751,8 +4557,8 @@
    "motivo": "C2-P e C2-H não são emitidos: a governança retém número de rodada interna dos candidatos até a liberação formal registrada no registro de modelos. O período prospectivo deles ainda não começou."
   },
   "ja_publicado_no_corte": {
-   "cutoff": "2026-10-30T10:00:00Z",
-   "origem": "2026-10-30",
+   "cutoff": "2026-10-31T10:00:00Z",
+   "origem": "2026-10-31",
    "natureza": "OBSERVADO",
    "nota": "PLD publicado pela CCEE e capturado pelo observatório até o corte. É dado, não previsão, e não entra em nenhuma entrega prevista (todas começam depois do dia de origem).",
    "submercados": {
@@ -4815,15 +4621,15 @@
     "unidade": "R$/MWh nominais",
     "frequencia": "horária",
     "periodo_referencia": {
-     "inicio": "2026-10-30T07:00",
-     "fim": "2026-10-30T23:00"
+     "inicio": "2026-10-31T07:00",
+     "fim": "2026-10-31T23:00"
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-10-24T01:57:23Z",
-    "validado_em": "2026-10-30T15:24:55Z",
+    "validado_em": "2026-10-31T14:51:55Z",
     "cobertura_historica": {
-     "inicio": "2026-10-30",
-     "fim": "2026-10-30"
+     "inicio": "2026-10-31",
+     "fim": "2026-10-31"
     },
     "transformacoes": [
      "PLD horário como estava no corte (base.como_estava_em)",
@@ -4835,9 +4641,9 @@
      "sha256": "8a8cf5568d9d1a52ba7cfbbd9005706bf42ed63b402a7a7f86016a8bd9326084"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "9bb762deb792",
+    "versao_codigo": "babb5533cd36",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-30T15:24:05Z",
+     "detectado_em": "2026-10-31T14:51:04Z",
      "total": 0,
      "vintages_comparadas": 23,
      "arquivos": 6,
@@ -4872,7 +4678,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-24T01:57:23Z",
-   "validado_em": "2026-10-30T15:24:56Z",
+   "validado_em": "2026-10-31T14:51:56Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-10-24"
@@ -4885,13 +4691,13 @@
    ],
    "formula": "B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto)",
    "snapshot": {
-    "id": "corte@2026-10-30T10:00:00Z:426d8dd2d8e1",
-    "sha256": "426d8dd2d8e10961d5489c217dbc3f7e6320518437d6ad3c26754807d41a8bed"
+    "id": "corte@2026-10-31T10:00:00Z:d2af458cb8f2",
+    "sha256": "d2af458cb8f29af348983eaf34cb1956689bb3754ed4f829508df1b8ee6f5280"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "9bb762deb792",
+   "versao_codigo": "babb5533cd36",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-30T15:24:05Z",
+    "detectado_em": "2026-10-31T14:51:04Z",
     "total": 0,
     "vintages_comparadas": 23,
     "arquivos": 6,
@@ -4903,7 +4709,7 @@
     "Referência experimental identificada (seção 12.4): não é previsão aprovada nem a previsão principal.",
     "Persistência pura: não usa chuva, reservatórios nem vazões.",
     "Sem faixa de incerteza: nenhum segmento está calibrado.",
-    "Rodada agendada, emitida 264 minutos depois do prazo das 08h00."
+    "Rodada agendada, emitida 231 minutos depois do prazo das 08h00."
    ],
    "download": "/energia/series/previsoes_emissoes.csv",
    "notas_fonte": null
@@ -4998,7 +4804,7 @@
     "teste": "python3 -m unittest pipeline.tests.test_energia_previsoes",
     "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)",
     "reexecucao_do_arquivo": {
-     "conferidas": 364,
+     "conferidas": 392,
      "divergentes": [],
      "tolerancia": "0.005 R$/MWh"
     }
@@ -5863,9 +5669,9 @@
       "coeficientes": {
        "mm_menos_b0": 0.0028,
        "saz_menos_b0": 0.0191,
-       "d7_menos_b0": 0.5834,
-       "ear28": -0.1591,
-       "ena7_menos_100": -0.0393
+       "d7_menos_b0": 0.5835,
+       "ear28": -0.1595,
+       "ena7_menos_100": -0.0386
       }
      },
      {
@@ -5925,11 +5731,11 @@
       "lambda": 1.0,
       "entregas_treino": 248,
       "coeficientes": {
-       "mm_menos_b0": 0.0659,
+       "mm_menos_b0": 0.0658,
        "saz_menos_b0": 0.029,
        "d7_menos_b0": 0.6446,
-       "ear28": -0.2462,
-       "ena7_menos_100": -0.0576
+       "ear28": -0.2466,
+       "ena7_menos_100": -0.0568
       }
      },
      {
@@ -5989,11 +5795,11 @@
       "lambda": 0.3,
       "entregas_treino": 247,
       "coeficientes": {
-       "mm_menos_b0": 0.2737,
+       "mm_menos_b0": 0.2736,
        "saz_menos_b0": 0.055,
        "d7_menos_b0": 0.977,
-       "ear28": -0.4141,
-       "ena7_menos_100": -0.1106
+       "ear28": -0.4138,
+       "ena7_menos_100": -0.1104
       }
      },
      {
@@ -6055,7 +5861,7 @@
       "coeficientes": {
        "mm_menos_b0": 0.3829,
        "saz_menos_b0": 0.0663,
-       "d7_menos_b0": 0.7602,
+       "d7_menos_b0": 0.7603,
        "ear28": -0.5357,
        "ena7_menos_100": -0.1339
       }
@@ -6316,7 +6122,7 @@
    {
     "item": "Rotina diária comprovada",
     "estado": "não comprovada",
-    "evidencia": "12 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.",
+    "evidencia": "13 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.",
     "responsavel": "execuções agendadas registradas"
    }
   ],
@@ -6325,7 +6131,7 @@
     "estado": "em verificação pelas rodadas agendadas",
     "diagnostico": "A rodada interna de 27/09/2026 teve 28 células sem número porque, no corte das 07h, o sistema ainda não tinha nenhuma captura do PLD (a primeira é das 15h44 UTC daquele dia); e foi emitida às 19h10 UTC, depois do prazo. Reproduzido: como_estava_em no corte de 27/09 não devolve nenhuma hora.",
     "correcao": "Emissão a partir do dado como estava no corte, com verificação e retentativa de coleta antes das 07h, espera até o corte, registro do atraso e da falha, e workflow agendado (previsao-pld.yml).",
-    "confirmacao": "12 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada."
+    "confirmacao": "13 execuções agendadas registradas desde 02/10/2026, 0 no prazo, 17 dias sem rodada; ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada."
    },
    "A09": {
     "estado": "distinção mantida; hipótese LAT1D documentada e com sensibilidade",
@@ -6336,7 +6142,7 @@
  },
  "evidencias": {
   "b0_semanal_SE": {
-   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 31/10/2026",
    "valor_exibido": "R$ 70,63/MWh",
    "valor_calculo": 70.626,
    "unidade": "R$/MWh",
@@ -6345,7 +6151,7 @@
     "fim": "2026-10-23"
    },
    "entidade": "submercado SE",
-   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-10-31, W2026-11-07, W2026-11-14, W2026-11-21",
+   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-11-07, W2026-11-14, W2026-11-21, W2026-11-28",
    "filtros": [],
    "fonte": {
     "orgao": "CCEE",
@@ -6490,7 +6296,7 @@
     "pld.SE"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -6507,10 +6313,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:55Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -6520,7 +6326,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -6544,10 +6350,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/10/2026: R$ 70,63/MWh, submercado SE, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 31/10/2026: R$ 70,63/MWh, submercado SE, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_S": {
-   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 31/10/2026",
    "valor_exibido": "R$ 70,63/MWh",
    "valor_calculo": 70.6258,
    "unidade": "R$/MWh",
@@ -6556,7 +6362,7 @@
     "fim": "2026-10-23"
    },
    "entidade": "submercado S",
-   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-10-31, W2026-11-07, W2026-11-14, W2026-11-21",
+   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-11-07, W2026-11-14, W2026-11-21, W2026-11-28",
    "filtros": [],
    "fonte": {
     "orgao": "CCEE",
@@ -6701,7 +6507,7 @@
     "pld.S"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -6718,10 +6524,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:55Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -6731,7 +6537,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -6755,10 +6561,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/10/2026: R$ 70,63/MWh, submercado S, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 31/10/2026: R$ 70,63/MWh, submercado S, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_NE": {
-   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 31/10/2026",
    "valor_exibido": "R$ 70,63/MWh",
    "valor_calculo": 70.626,
    "unidade": "R$/MWh",
@@ -6767,7 +6573,7 @@
     "fim": "2026-10-23"
    },
    "entidade": "submercado NE",
-   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-10-31, W2026-11-07, W2026-11-14, W2026-11-21",
+   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-11-07, W2026-11-14, W2026-11-21, W2026-11-28",
    "filtros": [],
    "fonte": {
     "orgao": "CCEE",
@@ -6912,7 +6718,7 @@
     "pld.NE"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -6929,10 +6735,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -6942,7 +6748,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -6966,10 +6772,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/10/2026: R$ 70,63/MWh, submercado NE, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 31/10/2026: R$ 70,63/MWh, submercado NE, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_N": {
-   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 31/10/2026",
    "valor_exibido": "R$ 70,63/MWh",
    "valor_calculo": 70.6261,
    "unidade": "R$/MWh",
@@ -6978,7 +6784,7 @@
     "fim": "2026-10-23"
    },
    "entidade": "submercado N",
-   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-10-31, W2026-11-07, W2026-11-14, W2026-11-21",
+   "universo": "168 horas do PLD horário de 17/10/2026 a 23/10/2026; o mesmo número vale para as entregas W2026-11-07, W2026-11-14, W2026-11-21, W2026-11-28",
    "filtros": [],
    "fonte": {
     "orgao": "CCEE",
@@ -7123,7 +6929,7 @@
     "pld.N"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-10-17T00:00 a 2026-10-23T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -7140,10 +6946,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -7153,7 +6959,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-10-24T01:57:23Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -7177,10 +6983,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/10/2026: R$ 70,63/MWh, submercado N, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 31/10/2026: R$ 70,63/MWh, submercado N, 17/10/2026 a 23/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_SE": {
-   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 31/10/2026",
    "valor_exibido": "R$ 125,78/MWh",
    "valor_calculo": 125.7798,
    "unidade": "R$/MWh",
@@ -7334,7 +7140,7 @@
     "pld.SE"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -7351,10 +7157,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -7364,7 +7170,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -7388,10 +7194,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/10/2026: R$ 125,78/MWh, submercado SE, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 31/10/2026: R$ 125,78/MWh, submercado SE, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_S": {
-   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 31/10/2026",
    "valor_exibido": "R$ 123,74/MWh",
    "valor_calculo": 123.7443,
    "unidade": "R$/MWh",
@@ -7545,7 +7351,7 @@
     "pld.S"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -7562,10 +7368,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -7575,7 +7381,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -7599,10 +7405,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/10/2026: R$ 123,74/MWh, submercado S, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 31/10/2026: R$ 123,74/MWh, submercado S, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_NE": {
-   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 31/10/2026",
    "valor_exibido": "R$ 125,15/MWh",
    "valor_calculo": 125.1457,
    "unidade": "R$/MWh",
@@ -7756,7 +7562,7 @@
     "pld.NE"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -7773,10 +7579,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -7786,7 +7592,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -7810,10 +7616,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/10/2026: R$ 125,15/MWh, submercado NE, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 31/10/2026: R$ 125,15/MWh, submercado NE, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_N": {
-   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/10/2026",
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 31/10/2026",
    "valor_exibido": "R$ 125,66/MWh",
    "valor_calculo": 125.6639,
    "unidade": "R$/MWh",
@@ -7967,7 +7773,7 @@
     "pld.N"
    ],
    "chaves_total": null,
-   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-30T10:00:00Z (base.como_estava_em)",
+   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-09-01T00:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-10-31T10:00:00Z (base.como_estava_em)",
    "manifesto": null,
    "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
    "numerador": {
@@ -7984,10 +7790,10 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "9bb762deb792",
-    "publicacao": "2026-10-30T15:24:56Z"
+    "codigo": "babb5533cd36",
+    "publicacao": "2026-10-31T14:51:56Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-31.",
    "testes": [
     {
      "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
@@ -7997,7 +7803,7 @@
     {
      "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
      "resultado": "aprovado",
-     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-30T10:00:00Z"
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-10-31T10:00:00Z"
     },
     {
      "nome": "Reexecução das células arquivadas com este B0",
@@ -8021,7 +7827,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/10/2026: R$ 125,66/MWh, submercado N, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código 9bb762deb792, publicada em 30/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 31/10/2026: R$ 125,66/MWh, submercado N, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 23/10/2026). Versão energia-0.1.0, código babb5533cd36, publicada em 31/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "validacoes": [
@@ -8058,7 +7864,7 @@
   {
    "nome": "Reexecução das previsões B0 arquivadas",
    "resultado": "aprovado",
-   "detalhe": "364 previsões refeitas com o dado como estava no corte; tolerância 0.005 R$/MWh"
+   "detalhe": "392 previsões refeitas com o dado como estava no corte; tolerância 0.005 R$/MWh"
   }
  ],
  "downloads": [
