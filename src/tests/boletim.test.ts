@@ -137,7 +137,8 @@ describe("superfícies do boletim", () => {
 
   it("o workflow mensal existe e usa o segredo, nunca credenciais no clear", () => {
     const wf = readFileSync(join(raiz, ".github/workflows/boletim-mensal.yml"), "utf-8");
-    expect(wf).toContain('cron: "0 12 1 * *"');
+    // semanal desde 01/11/2026 (publicação semanal); a rota guarda um envio por mês-calendário
+    expect(wf).toContain('cron: "0 12 * * 1"');
     expect(wf).toContain("secrets.BOLETIM_SECRET");
     expect(wf).toContain("/api/boletim/enviar");
   });
