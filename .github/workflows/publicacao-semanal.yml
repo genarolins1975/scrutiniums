@@ -39,15 +39,24 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          COLETORES='atualizar-|previsao-pld|auditoria-notas'
+          # API REST de execuções (o `gh run list --json` não tem o campo do caminho do workflow). Consulta que falha
+          # não vale como "nenhum coletor": conta como espera e é repetida.
+          COLETORES='/(atualizar-[a-z-]+|previsao-pld|auditoria-notas)[.]yml$'
           for i in $(seq 1 12); do
-            EM_CURSO=$(gh run list --branch main --limit 100 --json path,status \
-              --jq "[.[] | select(.status != \"completed\") | .path | select(test(\"$COLETORES\"))] | unique | join(\", \")" || echo "")
-            if [ -z "$EM_CURSO" ]; then echo "Nenhum coletor em execução."; exit 0; fi
-            echo "Coletores em execução: $EM_CURSO (espera $i de 12)"
+            EM_CURSO=""
+            CONSULTA_OK=1
+            for estado in queued in_progress waiting requested pending; do
+              R=$(gh api "repos/$GH_REPO/actions/runs?branch=main&status=$estado&per_page=100" \
+                --jq "[.workflow_runs[].path | select(test(\"$COLETORES\"))] | join(\" \")") || { CONSULTA_OK=0; break; }
+              EM_CURSO="$EM_CURSO $R"
+            done
+            EM_CURSO=$(echo $EM_CURSO | tr ' ' '\n' | sort -u | tr '\n' ' ' | sed 's/ *$//')
+            if [ "$CONSULTA_OK" = 1 ] && [ -z "$EM_CURSO" ]; then echo "Nenhum coletor em execução."; exit 0; fi
+            if [ "$CONSULTA_OK" = 1 ]; then echo "Coletores em execução: $EM_CURSO (espera $i de 12)"
+            else echo "::warning::consulta às execuções falhou; nova tentativa em 5 min (espera $i de 12)"; fi
             sleep 300
           done
-          echo "::warning::coletores ainda em execução depois de 60 min; a publicação segue sem o que eles gravarem"
+          echo "::warning::coletores em execução, ou consulta sem resposta, depois de 60 min; a publicação segue sem o que eles gravarem"
 
       - name: Commit vazio e push no main
         run: |

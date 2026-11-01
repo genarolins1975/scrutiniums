@@ -1,8 +1,9 @@
 name: Vigília do Observatório
 
 # Olhos que o pipeline não tem sobre si mesmo. Desde 01/11/2026 (publicação semanal) todos os cheques rodam
-# juntos uma vez por semana, na segunda às 18:00 UTC, depois da publicação das 16:07; frescor e pane rodam também
-# quando a coleta do Crédito termina (workflow_run), que é semanal.
+# juntos uma vez por semana, na segunda às 18:00 UTC, depois da publicação das 16:07; o frescor roda de novo às
+# 23:00 UTC, depois da folga de 3 h do deploy, para acusar produção que não recebeu a publicação; frescor e pane
+# rodam também quando a coleta do Crédito termina (workflow_run), que é semanal.
 #
 # - **frescor**: o gold publicado no main tem 8 dias ou mais? Cobre o caso em que as
 #   execuções "concluem" sem publicar, que o alerta de falha não enxerga. Também
@@ -36,6 +37,9 @@ on:
     types: [completed]
   schedule:
     - cron: "0 18 * * 1" # segunda, todos os cheques, depois da publicação semanal das 16:07
+    # segunda rodada só do frescor, depois da folga de 3 h do deploy (16:07 + 3 h): a das 18:00 não enxerga deploy
+    # que falhou, e na segunda seguinte a coleta nova muda o gold do main e esconde a falha antiga
+    - cron: "0 23 * * 1" # segunda, só frescor (produção contra o main depois da publicação)
   workflow_dispatch:
 
 permissions:
@@ -79,9 +83,11 @@ jobs:
       - name: Selecionar cheques do horário
         id: horario
         run: |
-          # no agendamento semanal e no disparo manual, todos os cheques;
+          # no agendamento das 18:00 e no disparo manual, todos os cheques; no das 23:00, só o frescor;
           # após o pipeline (workflow_run), frescor e pane
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 23 * * 1" ]; then
+            [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
             # os cheques pulados saem logo: antes de 01/11/2026 os cinco jobs esperavam os 5 min,
             # cerca de 23 min de Actions por execução (702 min de 02/10 a 01/11/2026)
             case "${{ matrix.cheque }}" in fontes|saneamento|dominios) echo "pular=1" >> "$GITHUB_OUTPUT"; exit 0 ;; esac
