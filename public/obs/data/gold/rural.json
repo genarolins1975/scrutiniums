@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-31T16:29:07+00:00",
+ "gerado_em": "2026-11-01T17:09:09+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -11,42 +11,126 @@
  "universo": {
   "serie_nacional": "FonteRecursos (fecha com Faixa ao centavo)",
   "estadual_e_municipal": "CusteioInvestimentoComercialIndustrialSemFiltros (idem)",
-  "cobertura_regiao_uf_pct": 96.11
+  "cobertura_regiao_uf_pct": 96.22
  },
- "mes_recente": "2026-09",
- "mes_fechado": "2026-08",
+ "mes_recente": "2026-10",
+ "mes_fechado": "2026-09",
  "janela_recuada": null,
  "meses_parciais": [
-  "2026-09"
+  "2026-10"
  ],
  "janela": {
-  "ini": "2025-09",
-  "fim": "2026-08"
+  "ini": "2025-10",
+  "fim": "2026-09"
  },
  "janela_anterior": {
-  "ini": "2023-11",
-  "fim": "2024-10"
+  "ini": "2023-12",
+  "fim": "2024-11"
  },
- "sintese": "Entre 2025-09 e 2026-08, o crédito rural somou R$ 338,0 bilhões em 2.538.016 contratos (-12,2% sobre os 12 meses anteriores). Custeio responde por 52% do valor e o PRONAF por 21%; 61% vem de fontes com taxa controlada. PR concentra 14,4% do valor contratado.",
+ "sintese": "Entre 2025-10 e 2026-09, o crédito rural somou R$ 326,9 bilhões em 2.495.418 contratos (-14,0% sobre os 12 meses anteriores). Custeio responde por 52% do valor e o PRONAF por 22%; 62% vem de fontes com taxa controlada. PR concentra 14,5% do valor contratado.",
  "kpis": {
-  "valor_12m": 337986321782.48,
-  "contratos_12m": 2538016,
-  "ticket_medio": 133169.5,
-  "var_12m_pct": -12.17,
-  "custeio_share": 52.23,
-  "investimento_share": 26.79,
-  "agricola_share": 63.08,
-  "pronaf_share": 21.28,
-  "controlada_share": 61.08,
-  "equalizada_share": 24.85,
-  "mulheres_share_qtd": 37.35,
-  "mulheres_share_valor": 20.03,
-  "cooperativas_share": 28.99,
-  "acima_1mi_share_valor": 54.23,
-  "ate_20mil_share_qtd": 60.94,
-  "municipios_com_contratacao": 5490
+  "valor_12m": 326929163975.04,
+  "contratos_12m": 2495418,
+  "ticket_medio": 131011.78,
+  "var_12m_pct": -13.98,
+  "custeio_share": 52.37,
+  "investimento_share": 27.03,
+  "agricola_share": 63.18,
+  "pronaf_share": 21.83,
+  "controlada_share": 62.31,
+  "equalizada_share": 25.86,
+  "mulheres_share_qtd": 37.14,
+  "mulheres_share_valor": 20.23,
+  "cooperativas_share": 29.97,
+  "acima_1mi_share_valor": 53.75,
+  "ate_20mil_share_qtd": 60.84,
+  "municipios_com_contratacao": 5488
  },
  "serie_mensal": [
+  {
+   "mes": "2021-09",
+   "custeio": 16805782397.65,
+   "investimento": 10439830013.46,
+   "comercializacao": 4075855323.78,
+   "industrializacao": 1500269359.82,
+   "qtd": 198483,
+   "agricola": 22778724008.4,
+   "pecuaria": 10043013086.31,
+   "parcial": false,
+   "valor": 32821737094.71
+  },
+  {
+   "mes": "2021-10",
+   "custeio": 13673559071.21,
+   "investimento": 9464886033.18,
+   "comercializacao": 3312661978.6,
+   "industrializacao": 478051100.0,
+   "qtd": 174820,
+   "agricola": 17718890034.17,
+   "pecuaria": 9210268148.82,
+   "parcial": false,
+   "valor": 26929158182.99
+  },
+  {
+   "mes": "2021-11",
+   "custeio": 11726590482.92,
+   "investimento": 8573812566.65,
+   "comercializacao": 2801247819.14,
+   "industrializacao": 799978826.07,
+   "qtd": 146086,
+   "agricola": 15666093002.09,
+   "pecuaria": 8235536692.69,
+   "parcial": false,
+   "valor": 23901629694.78
+  },
+  {
+   "mes": "2021-12",
+   "custeio": 11785958217.86,
+   "investimento": 8724814393.88,
+   "comercializacao": 3856241338.61,
+   "industrializacao": 549824898.6,
+   "qtd": 154275,
+   "agricola": 15989688094.71,
+   "pecuaria": 8927150754.24,
+   "parcial": false,
+   "valor": 24916838848.95
+  },
+  {
+   "mes": "2022-01",
+   "custeio": 7755557276.96,
+   "investimento": 4255713015.97,
+   "comercializacao": 2116328966.69,
+   "industrializacao": 665613500.0,
+   "qtd": 121776,
+   "agricola": 8817687911.43,
+   "pecuaria": 5975524848.19,
+   "parcial": false,
+   "valor": 14793212759.62
+  },
+  {
+   "mes": "2022-02",
+   "custeio": 5897674436.01,
+   "investimento": 4011728968.18,
+   "comercializacao": 2529371634.39,
+   "industrializacao": 1316503993.97,
+   "qtd": 100531,
+   "agricola": 9128407767.82,
+   "pecuaria": 4626871264.73,
+   "parcial": false,
+   "valor": 13755279032.55
+  },
+  {
+   "mes": "2022-03",
+   "custeio": 11027243758.55,
+   "investimento": 5127537158.23,
+   "comercializacao": 3539152724.75,
+   "industrializacao": 2677525344.22,
+   "qtd": 139740,
+   "agricola": 15398655195.74,
+   "pecuaria": 6972803790.01,
+   "parcial": false,
+   "valor": 22371458985.75
+  },
   {
    "mes": "2022-04",
    "custeio": 12626324667.89,
@@ -692,20 +776,32 @@
    "qtd": 216897,
    "agricola": 20522589479.64,
    "pecuaria": 10544525160.1,
-   "parcial": true,
+   "parcial": false,
    "valor": 31067114639.74
+  },
+  {
+   "mes": "2026-10",
+   "custeio": 10064662506.8,
+   "investimento": 2818408928.21,
+   "comercializacao": 3281831122.64,
+   "industrializacao": 1102081355.42,
+   "qtd": 88324,
+   "agricola": 12371258021.91,
+   "pecuaria": 4895725891.16,
+   "parcial": true,
+   "valor": 17266983913.07
   }
  ],
  "safras": [
   {
    "safra": "2021/22",
-   "valor": 95330548630.6,
-   "qtd": 459999,
-   "custeio": 53579167821.23,
-   "investimento": 25153270662.77,
-   "comercializacao": 9908644878.31,
-   "industrializacao": 6689465268.29,
-   "meses": 3,
+   "valor": 254819863229.95,
+   "qtd": 1495710,
+   "custeio": 132251533462.39,
+   "investimento": 75751592812.32,
+   "comercializacao": 32139504664.27,
+   "industrializacao": 14677232290.97,
+   "meses": 10,
    "incompleta": true
   },
   {
@@ -754,150 +850,150 @@
   },
   {
    "safra": "2026/27",
-   "valor": 87255066018.87,
-   "qtd": 654581,
-   "custeio": 52659925381.83,
-   "investimento": 19976666717.6,
-   "comercializacao": 8519354023.78,
-   "industrializacao": 6099119895.66,
-   "meses": 3,
+   "valor": 104522049931.94,
+   "qtd": 742905,
+   "custeio": 62724587888.63,
+   "investimento": 22795075645.81,
+   "comercializacao": 11801185146.42,
+   "industrializacao": 7201201251.08,
+   "meses": 4,
    "incompleta": true
   }
  ],
  "programas": {
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08"
+   "ini": "2025-10",
+   "fim": "2026-09"
   },
   "itens": [
    {
     "cd": "0999",
     "nome": "Sem Programa",
-    "valor": 180304501940.4,
-    "qtd": 142121,
-    "share": 53.35,
-    "ticket": 1268668.96,
-    "agricola_share": 70.48,
-    "custeio_share": 48.99
+    "valor": 173096188948.46,
+    "qtd": 137075,
+    "share": 52.95,
+    "ticket": 1262784.53,
+    "agricola_share": 70.75,
+    "custeio_share": 49.4
    },
    {
     "cd": "0001",
     "nome": "PRONAF",
-    "valor": 71907878044.73,
-    "qtd": 2176071,
-    "share": 21.28,
-    "ticket": 33044.82,
-    "agricola_share": 45.41,
-    "custeio_share": 46.78
+    "valor": 71352700399.52,
+    "qtd": 2146125,
+    "share": 21.83,
+    "ticket": 33247.22,
+    "agricola_share": 45.17,
+    "custeio_share": 46.82
    },
    {
     "cd": "0050",
     "nome": "PRONAMP",
-    "valor": 57925283139.93,
-    "qtd": 191766,
-    "share": 17.14,
-    "ticket": 302062.32,
-    "agricola_share": 52.01,
-    "custeio_share": 91.14
+    "valor": 55556485183.15,
+    "qtd": 185866,
+    "share": 16.99,
+    "ticket": 298906.12,
+    "agricola_share": 52.37,
+    "custeio_share": 90.7
    },
    {
     "cd": "0070",
     "nome": "Funcafé (Programa De",
-    "valor": 7852613352.58,
-    "qtd": 2302,
-    "share": 2.32,
-    "ticket": 3411213.45,
+    "valor": 8034380840.94,
+    "qtd": 2464,
+    "share": 2.46,
+    "ticket": 3260706.51,
     "agricola_share": 100.0,
-    "custeio_share": 22.27
+    "custeio_share": 23.69
    },
    {
     "cd": "0222",
     "nome": "Renovagro",
-    "valor": 5311333168.47,
-    "qtd": 4116,
-    "share": 1.57,
-    "ticket": 1290411.36,
-    "agricola_share": 89.51,
+    "valor": 5216782477.45,
+    "qtd": 3939,
+    "share": 1.6,
+    "ticket": 1324392.61,
+    "agricola_share": 89.53,
     "custeio_share": 0.0
    },
    {
     "cd": "0154",
     "nome": "Moderfrota",
-    "valor": 4094596838.36,
-    "qtd": 11322,
-    "share": 1.21,
-    "ticket": 361649.61,
-    "agricola_share": 89.79,
+    "valor": 3816380736.07,
+    "qtd": 10569,
+    "share": 1.17,
+    "ticket": 361091.94,
+    "agricola_share": 89.75,
     "custeio_share": 0.0
    },
    {
     "cd": "0162",
     "nome": "Inovagro",
-    "valor": 3847389334.69,
-    "qtd": 5255,
-    "share": 1.14,
-    "ticket": 732138.79,
-    "agricola_share": 22.37,
+    "valor": 3544531898.99,
+    "qtd": 4680,
+    "share": 1.08,
+    "ticket": 757378.61,
+    "agricola_share": 23.75,
     "custeio_share": 0.0
    },
    {
     "cd": "0163",
     "nome": "Pca",
-    "valor": 3740262100.15,
-    "qtd": 1882,
-    "share": 1.11,
-    "ticket": 1987386.88,
-    "agricola_share": 94.84,
+    "valor": 3472789923.84,
+    "qtd": 1726,
+    "share": 1.06,
+    "ticket": 2012045.15,
+    "agricola_share": 95.3,
     "custeio_share": 0.0
    },
    {
     "cd": "0155",
     "nome": "Prodecoop",
-    "valor": 903978786.18,
+    "valor": 899432402.41,
     "qtd": 98,
-    "share": 0.27,
-    "ticket": 9224273.33,
-    "agricola_share": 79.34,
-    "custeio_share": 0.0
-   },
-   {
-    "cd": "0151",
-    "nome": "Procap-Agro (Program",
-    "valor": 801070740.48,
-    "qtd": 90,
-    "share": 0.24,
-    "ticket": 8900786.01,
-    "agricola_share": 91.88,
+    "share": 0.28,
+    "ticket": 9177881.66,
+    "agricola_share": 79.5,
     "custeio_share": 0.0
    },
    {
     "cd": "0152",
     "nome": "Proirriga",
-    "valor": 798378925.88,
-    "qtd": 1038,
-    "share": 0.24,
-    "ticket": 769151.18,
-    "agricola_share": 96.11,
+    "valor": 735132797.45,
+    "qtd": 909,
+    "share": 0.22,
+    "ticket": 808726.95,
+    "agricola_share": 95.94,
+    "custeio_share": 0.0
+   },
+   {
+    "cd": "0151",
+    "nome": "Procap-Agro (Program",
+    "valor": 723459327.16,
+    "qtd": 86,
+    "share": 0.22,
+    "ticket": 8412317.76,
+    "agricola_share": 91.0,
     "custeio_share": 0.0
    },
    {
     "cd": "0201",
     "nome": "Programa Nacional De",
-    "valor": 499035410.63,
-    "qtd": 1955,
+    "valor": 480899039.6,
+    "qtd": 1881,
     "share": 0.15,
-    "ticket": 255261.08,
-    "agricola_share": 86.96,
+    "ticket": 255661.37,
+    "agricola_share": 86.81,
     "custeio_share": 0.0
    }
   ],
   "por_safra": [
    {
     "safra": "2021/22",
-    "PRONAF": 8159408882.76,
-    "PRONAMP": 9645435148.71,
-    "Demais programas": 3477513788.96,
-    "Sem programa": 74048190810.17,
+    "PRONAF": 28578173413.46,
+    "PRONAMP": 26262774288.5,
+    "Demais programas": 19712308715.94,
+    "Sem programa": 180266606812.05,
     "incompleta": true
    },
    {
@@ -934,10 +1030,10 @@
    },
    {
     "safra": "2026/27",
-    "PRONAF": 24893812876.14,
-    "PRONAMP": 18830545828.54,
-    "Demais programas": 7088747657.47,
-    "Sem programa": 36441959656.72,
+    "PRONAF": 28273585085.04,
+    "PRONAMP": 21827064434.93,
+    "Demais programas": 8379607203.53,
+    "Sem programa": 46041793208.44,
     "incompleta": true
    }
   ],
@@ -945,16 +1041,16 @@
  },
  "fontes": {
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08"
+   "ini": "2025-10",
+   "fim": "2026-09"
   },
   "itens": [
    {
     "nome": "OBRIGATÓRIOS - MCR 6.2 - DIRECIONADA/CONTROLADA",
     "familia": "Exigibilidades (MCR 6.2)",
-    "valor": 72726211468.48,
-    "qtd": 452338,
-    "share": 21.52,
+    "valor": 70078975662.96,
+    "qtd": 449206,
+    "share": 21.44,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -962,9 +1058,9 @@
    {
     "nome": "POUPANÇA RURAL - DIRECIONADA/NÃO CONTROLADA",
     "familia": "Poupança rural",
-    "valor": 64494785802.27,
-    "qtd": 36703,
-    "share": 19.08,
+    "valor": 58609229573.07,
+    "qtd": 33881,
+    "share": 17.93,
     "controlada": false,
     "equalizada": false,
     "livre": false
@@ -972,9 +1068,9 @@
    {
     "nome": "LETRA DE CRÉDITO DO AGRONEGÓCIO (LCA) - DIRECIONADA/NÃO CONTROLADA",
     "familia": "LCA",
-    "valor": 59608055745.74,
-    "qtd": 40157,
-    "share": 17.64,
+    "valor": 57319509127.42,
+    "qtd": 37934,
+    "share": 17.53,
     "controlada": false,
     "equalizada": false,
     "livre": false
@@ -982,9 +1078,9 @@
    {
     "nome": "LETRA DE CRÉDITO DO AGRONEGÓCIO (LCA) - EQUALIZADA - DIRECIONADA/CONTROLADA",
     "familia": "LCA",
-    "valor": 43527811584.38,
-    "qtd": 190091,
-    "share": 12.88,
+    "valor": 44043141957.77,
+    "qtd": 187202,
+    "share": 13.47,
     "controlada": true,
     "equalizada": true,
     "livre": false
@@ -992,9 +1088,9 @@
    {
     "nome": "FUNDO CONSTITUCIONAL DE FINANCIAMENTO DO NORDESTE (FNE) - DIRECIONADA/CONTROLADA",
     "familia": "Fundos constitucionais (FNE, FNO, FCO)",
-    "valor": 22497097141.53,
-    "qtd": 1430583,
-    "share": 6.66,
+    "valor": 22406423083.12,
+    "qtd": 1403031,
+    "share": 6.85,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -1002,9 +1098,9 @@
    {
     "nome": "BNDES/FINAME - EQUALIZADA - DIRECIONADA/CONTROLADA",
     "familia": "BNDES e Finame",
-    "valor": 19493072485.16,
-    "qtd": 101877,
-    "share": 5.77,
+    "valor": 19358458373.01,
+    "qtd": 101886,
+    "share": 5.92,
     "controlada": true,
     "equalizada": true,
     "livre": false
@@ -1012,9 +1108,9 @@
    {
     "nome": "POUPANÇA RURAL - EQUALIZADA - DIRECIONADA/CONTROLADA",
     "familia": "Poupança rural",
-    "valor": 16449578751.35,
-    "qtd": 104737,
-    "share": 4.87,
+    "valor": 16350378088.23,
+    "qtd": 97796,
+    "share": 5.0,
     "controlada": true,
     "equalizada": true,
     "livre": false
@@ -1022,9 +1118,9 @@
    {
     "nome": "FUNDO CONSTITUCIONAL DE FINANCIAMENTO DO NORTE (FNO) - DIRECIONADA/CONTROLADA",
     "familia": "Fundos constitucionais (FNE, FNO, FCO)",
-    "valor": 9694850556.85,
-    "qtd": 86128,
-    "share": 2.87,
+    "valor": 8802342345.58,
+    "qtd": 82261,
+    "share": 2.69,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -1032,9 +1128,9 @@
    {
     "nome": "FUNDO CONSTITUCIONAL DE FINANCIAMENTO DO CENTRO-OESTE (FCO) - DIRECIONADA/CONTROLADA",
     "familia": "Fundos constitucionais (FNE, FNO, FCO)",
-    "valor": 8338075305.88,
-    "qtd": 42358,
-    "share": 2.47,
+    "valor": 8156401661.95,
+    "qtd": 42511,
+    "share": 2.49,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -1042,9 +1138,9 @@
    {
     "nome": "FUNCAFE - FUNDO DE DEFESA DA ECONOMIA CAFEEIRA - DIRECIONADA/CONTROLADA",
     "familia": "Funcafé",
-    "valor": 7852613352.58,
-    "qtd": 2302,
-    "share": 2.32,
+    "valor": 8031380840.94,
+    "qtd": 2463,
+    "share": 2.46,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -1052,9 +1148,9 @@
    {
     "nome": "BNDES - LIVRE/NÃO CONTROLADA",
     "familia": "BNDES e Finame",
-    "valor": 6181436235.36,
-    "qtd": 4062,
-    "share": 1.83,
+    "valor": 5934438457.32,
+    "qtd": 3806,
+    "share": 1.82,
     "controlada": false,
     "equalizada": false,
     "livre": true
@@ -1062,38 +1158,38 @@
    {
     "nome": "RECURSOS LIVRES - EQUALIZADA - LIVRE/CONTROLADA",
     "familia": "Recursos livres",
-    "valor": 4524506582.25,
-    "qtd": 13094,
-    "share": 1.34,
+    "valor": 4799414106.44,
+    "qtd": 13339,
+    "share": 1.47,
     "controlada": true,
     "equalizada": true,
     "livre": true
    },
    {
-    "nome": "RECURSOS LIVRES - LIVRE/NÃO CONTROLADA",
-    "familia": "Recursos livres",
-    "valor": 870381386.63,
-    "qtd": 2813,
-    "share": 0.26,
-    "controlada": false,
-    "equalizada": false,
-    "livre": true
-   },
-   {
     "nome": "TESOURO NACIONAL - DIRECIONADA/CONTROLADA",
     "familia": "Tesouro Nacional",
-    "valor": 772811636.49,
-    "qtd": 28533,
-    "share": 0.23,
+    "valor": 983106891.12,
+    "qtd": 34972,
+    "share": 0.3,
     "controlada": true,
     "equalizada": false,
     "livre": false
    },
    {
+    "nome": "RECURSOS LIVRES - LIVRE/NÃO CONTROLADA",
+    "familia": "Recursos livres",
+    "valor": 976948731.58,
+    "qtd": 2860,
+    "share": 0.3,
+    "controlada": false,
+    "equalizada": false,
+    "livre": true
+   },
+   {
     "nome": "FUNDO DE TERRAS E DA REFORMA AGRÁRIA - DIRECIONADA/CONTROLADA",
     "familia": "Outras fontes",
-    "valor": 499035410.63,
-    "qtd": 1955,
+    "valor": 480899039.6,
+    "qtd": 1881,
     "share": 0.15,
     "controlada": true,
     "equalizada": false,
@@ -1102,9 +1198,9 @@
    {
     "nome": "CAPTAÇÃO EXTERNA - LIVRE/NÃO CONTROLADA",
     "familia": "Outras fontes",
-    "valor": 379393687.28,
-    "qtd": 218,
-    "share": 0.11,
+    "valor": 379622097.61,
+    "qtd": 210,
+    "share": 0.12,
     "controlada": false,
     "equalizada": false,
     "livre": true
@@ -1112,9 +1208,9 @@
    {
     "nome": "FUNDO DE DESENVOLVIMENTO CIENTÍFICO E TECNOLÓGICO (FNDCT) - MP 1374  DIRECIONADA/CONTROLADA",
     "familia": "Outras fontes",
-    "valor": 76604649.62,
-    "qtd": 67,
-    "share": 0.02,
+    "valor": 218493937.32,
+    "qtd": 179,
+    "share": 0.07,
     "controlada": true,
     "equalizada": false,
     "livre": false
@@ -1123,91 +1219,91 @@
   "familias": [
    {
     "familia": "LCA",
-    "valor": 103135867330.12,
-    "qtd": 230248,
-    "controlada": 43527811584.38,
-    "equalizada": 43527811584.38,
-    "share": 30.51,
-    "controlada_share": 42.2,
-    "equalizada_share": 42.2
+    "valor": 101362651085.19,
+    "qtd": 225136,
+    "controlada": 44043141957.770004,
+    "equalizada": 44043141957.770004,
+    "share": 31.0,
+    "controlada_share": 43.45,
+    "equalizada_share": 43.45
    },
    {
     "familia": "Poupança rural",
-    "valor": 80944364553.62,
-    "qtd": 141440,
-    "controlada": 16449578751.35,
-    "equalizada": 16449578751.35,
-    "share": 23.95,
-    "controlada_share": 20.32,
-    "equalizada_share": 20.32
+    "valor": 74959607661.3,
+    "qtd": 131677,
+    "controlada": 16350378088.23,
+    "equalizada": 16350378088.23,
+    "share": 22.93,
+    "controlada_share": 21.81,
+    "equalizada_share": 21.81
    },
    {
     "familia": "Exigibilidades (MCR 6.2)",
-    "valor": 72726211468.48,
-    "qtd": 452338,
-    "controlada": 72726211468.48,
+    "valor": 70078975662.96,
+    "qtd": 449206,
+    "controlada": 70078975662.96,
     "equalizada": 0.0,
-    "share": 21.52,
+    "share": 21.44,
     "controlada_share": 100.0,
     "equalizada_share": 0.0
    },
    {
     "familia": "Fundos constitucionais (FNE, FNO, FCO)",
-    "valor": 40530023004.26,
-    "qtd": 1559069,
-    "controlada": 40530023004.259995,
+    "valor": 39365167090.65,
+    "qtd": 1527803,
+    "controlada": 39365167090.649994,
     "equalizada": 0.0,
-    "share": 11.99,
+    "share": 12.04,
     "controlada_share": 100.0,
     "equalizada_share": 0.0
    },
    {
     "familia": "BNDES e Finame",
-    "valor": 25674508720.52,
-    "qtd": 105939,
-    "controlada": 19493072485.16,
-    "equalizada": 19493072485.16,
-    "share": 7.6,
-    "controlada_share": 75.92,
-    "equalizada_share": 75.92
+    "valor": 25292896830.33,
+    "qtd": 105692,
+    "controlada": 19358458373.01,
+    "equalizada": 19358458373.01,
+    "share": 7.74,
+    "controlada_share": 76.54,
+    "equalizada_share": 76.54
    },
    {
     "familia": "Funcafé",
-    "valor": 7852613352.58,
-    "qtd": 2302,
-    "controlada": 7852613352.58,
+    "valor": 8031380840.94,
+    "qtd": 2463,
+    "controlada": 8031380840.94,
     "equalizada": 0.0,
-    "share": 2.32,
+    "share": 2.46,
     "controlada_share": 100.0,
     "equalizada_share": 0.0
    },
    {
     "familia": "Recursos livres",
-    "valor": 5394887968.88,
-    "qtd": 15907,
-    "controlada": 4524506582.25,
-    "equalizada": 4524506582.25,
-    "share": 1.6,
-    "controlada_share": 83.87,
-    "equalizada_share": 83.87
+    "valor": 5776362838.02,
+    "qtd": 16199,
+    "controlada": 4799414106.440001,
+    "equalizada": 4799414106.440001,
+    "share": 1.77,
+    "controlada_share": 83.09,
+    "equalizada_share": 83.09
    },
    {
     "familia": "Outras fontes",
-    "valor": 955033747.53,
-    "qtd": 2240,
-    "controlada": 575640060.25,
+    "valor": 1079015074.53,
+    "qtd": 2270,
+    "controlada": 699392976.9200001,
     "equalizada": 0.0,
-    "share": 0.28,
-    "controlada_share": 60.27,
+    "share": 0.33,
+    "controlada_share": 64.82,
     "equalizada_share": 0.0
    },
    {
     "familia": "Tesouro Nacional",
-    "valor": 772811636.49,
-    "qtd": 28533,
-    "controlada": 772811636.49,
+    "valor": 983106891.12,
+    "qtd": 34972,
+    "controlada": 983106891.12,
     "equalizada": 0.0,
-    "share": 0.23,
+    "share": 0.3,
     "controlada_share": 100.0,
     "equalizada_share": 0.0
    }
@@ -1215,15 +1311,15 @@
   "por_safra": [
    {
     "safra": "2021/22",
-    "BNDES e Finame": 3601784660.96,
-    "Outras fontes": 602439422.09,
-    "Funcafé": 621154044.17,
-    "Fundos constitucionais (FNE, FNO, FCO)": 14774659986.47,
-    "LCA": 22468366907.84,
-    "Exigibilidades (MCR 6.2)": 14991092014.08,
-    "Poupança rural": 12026871624.77,
-    "Recursos livres": 26236476745.32,
-    "Tesouro Nacional": 7703224.9,
+    "BNDES e Finame": 11203875893.2,
+    "Outras fontes": 1542099653.68,
+    "Funcafé": 5022063115.61,
+    "Fundos constitucionais (FNE, FNO, FCO)": 29246668423.96,
+    "LCA": 52272591631.66,
+    "Exigibilidades (MCR 6.2)": 42650001491.04,
+    "Poupança rural": 68501237126.1,
+    "Recursos livres": 44358247976.58,
+    "Tesouro Nacional": 23077918.12,
     "incompleta": true
    },
    {
@@ -1280,15 +1376,15 @@
    },
    {
     "safra": "2026/27",
-    "BNDES e Finame": 6431020656.07,
-    "Outras fontes": 435167600.51,
-    "Funcafé": 3738900759.34,
-    "Fundos constitucionais (FNE, FNO, FCO)": 8730290346.1,
-    "LCA": 31540280897.17,
-    "Exigibilidades (MCR 6.2)": 25200313559.97,
-    "Poupança rural": 8953774749.87,
-    "Recursos livres": 1922187570.57,
-    "Tesouro Nacional": 303129879.27,
+    "BNDES e Finame": 6979002515.11,
+    "Outras fontes": 461946762.01,
+    "Funcafé": 4543278948.93,
+    "Fundos constitucionais (FNE, FNO, FCO)": 10316091545.75,
+    "LCA": 39534015394.03,
+    "Exigibilidades (MCR 6.2)": 28590953623.54,
+    "Poupança rural": 11047363639.57,
+    "Recursos livres": 2722473363.83,
+    "Tesouro Nacional": 326924139.17,
     "incompleta": true
    }
   ],
@@ -1296,310 +1392,310 @@
  },
  "faixas": {
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08"
+   "ini": "2025-10",
+   "fim": "2026-09"
   },
   "itens": [
    {
     "idx": 1,
     "faixa": "ATÉ 10.000,00",
-    "qtd": 992686,
-    "valor": 4322907201.09,
-    "share_qtd": 39.13,
-    "share_valor": 1.28,
-    "ticket": 4354.76
+    "qtd": 972429,
+    "valor": 4403739021.36,
+    "share_qtd": 38.98,
+    "share_valor": 1.35,
+    "ticket": 4528.6
    },
    {
     "idx": 2,
     "faixa": "10.000,01 A 20.000,00",
-    "qtd": 553494,
-    "valor": 8516998524.13,
-    "share_qtd": 21.82,
-    "share_valor": 2.52,
-    "ticket": 15387.7
+    "qtd": 545359,
+    "valor": 8452739847.1,
+    "share_qtd": 21.86,
+    "share_valor": 2.59,
+    "ticket": 15499.4
    },
    {
     "idx": 3,
     "faixa": "20.000,01 A 30.000,00",
-    "qtd": 97067,
-    "valor": 2468898764.37,
-    "share_qtd": 3.83,
-    "share_valor": 0.73,
-    "ticket": 25435.0
+    "qtd": 96157,
+    "valor": 2442985577.61,
+    "share_qtd": 3.85,
+    "share_valor": 0.75,
+    "ticket": 25406.22
    },
    {
     "idx": 4,
     "faixa": "30.000,01 A 50.000,00",
-    "qtd": 170805,
-    "valor": 7034290195.94,
-    "share_qtd": 6.73,
-    "share_valor": 2.08,
-    "ticket": 41183.16
+    "qtd": 169229,
+    "valor": 6976034102.36,
+    "share_qtd": 6.78,
+    "share_valor": 2.13,
+    "ticket": 41222.45
    },
    {
     "idx": 5,
     "faixa": "50.000,01 A 100.000,00",
-    "qtd": 276858,
-    "valor": 20744005739.84,
-    "share_qtd": 10.91,
-    "share_valor": 6.14,
-    "ticket": 74926.52
+    "qtd": 275858,
+    "valor": 20619470128.04,
+    "share_qtd": 11.06,
+    "share_valor": 6.31,
+    "ticket": 74746.68
    },
    {
     "idx": 6,
     "faixa": "100.000,01 A 200.000,00",
-    "qtd": 195233,
-    "valor": 28882965463.5,
-    "share_qtd": 7.7,
-    "share_valor": 8.55,
-    "ticket": 147941.0
+    "qtd": 192262,
+    "valor": 28428644012.67,
+    "share_qtd": 7.71,
+    "share_valor": 8.7,
+    "ticket": 147864.08
    },
    {
     "idx": 7,
     "faixa": "200.000,01 A 300.000,00",
-    "qtd": 96769,
-    "valor": 23745604843.93,
+    "qtd": 94952,
+    "valor": 23295399112.96,
     "share_qtd": 3.81,
-    "share_valor": 7.03,
-    "ticket": 245384.42
+    "share_valor": 7.13,
+    "ticket": 245338.69
    },
    {
     "idx": 8,
     "faixa": "300.000,01 A 500.000,00",
-    "qtd": 56820,
-    "valor": 22691053692.1,
-    "share_qtd": 2.24,
-    "share_valor": 6.72,
-    "ticket": 399349.77
+    "qtd": 54594,
+    "valor": 21810137840.27,
+    "share_qtd": 2.19,
+    "share_valor": 6.67,
+    "ticket": 399496.97
    },
    {
     "idx": 9,
     "faixa": "500.000,01 A 1.000.000,00",
-    "qtd": 50842,
-    "valor": 36261730154.71,
-    "share_qtd": 2.0,
-    "share_valor": 10.73,
-    "ticket": 713223.91
+    "qtd": 48690,
+    "valor": 34727462966.9,
+    "share_qtd": 1.95,
+    "share_valor": 10.62,
+    "ticket": 713236.04
    },
    {
     "idx": 10,
     "faixa": "1.000.000,01 A 2.000.000,00",
-    "qtd": 28278,
-    "valor": 40049619062.12,
-    "share_qtd": 1.11,
-    "share_valor": 11.85,
-    "ticket": 1416281.88
+    "qtd": 27234,
+    "valor": 38564910113.17,
+    "share_qtd": 1.09,
+    "share_valor": 11.8,
+    "ticket": 1416057.51
    },
    {
     "idx": 11,
     "faixa": "2.000.000,01 A 3.000.000,00",
-    "qtd": 8735,
-    "valor": 22801245437.17,
-    "share_qtd": 0.34,
-    "share_valor": 6.75,
-    "ticket": 2610331.48
+    "qtd": 8650,
+    "valor": 22617723247.21,
+    "share_qtd": 0.35,
+    "share_valor": 6.92,
+    "ticket": 2614765.69
    },
    {
     "idx": 12,
     "faixa": "3.000.000,01 A 5.000.000,00",
-    "qtd": 4947,
-    "valor": 19996176082.61,
+    "qtd": 4709,
+    "valor": 19049358731.16,
     "share_qtd": 0.19,
-    "share_valor": 5.92,
-    "ticket": 4042081.28
+    "share_valor": 5.83,
+    "ticket": 4045308.71
    },
    {
     "idx": 13,
     "faixa": "ACIMA DE 5.000.000,00",
-    "qtd": 4584,
-    "valor": 100399560071.32,
+    "qtd": 4397,
+    "valor": 95469292724.58,
     "share_qtd": 0.18,
-    "share_valor": 29.71,
-    "ticket": 21902172.79
+    "share_valor": 29.21,
+    "ticket": 21712370.42
    }
   ],
   "nota": "faixa pelo valor da cédula; quantidade de cédulas, não de produtores"
  },
  "genero": {
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08"
+   "ini": "2025-10",
+   "fim": "2026-09"
   },
   "universo": "pessoas físicas com sexo informado no Sicor (a MDCR não abre pessoas jurídicas por gênero)",
-  "cobertura_valor_pct": 72.23,
-  "mulheres_share_valor": 20.03,
-  "mulheres_share_qtd": 37.35,
-  "ticket_mulheres": 51822.48,
-  "ticket_homens": 123345.36,
+  "cobertura_valor_pct": 72.38,
+  "mulheres_share_valor": 20.23,
+  "mulheres_share_qtd": 37.14,
+  "ticket_mulheres": 51895.04,
+  "ticket_homens": 120889.5,
   "por_uf": [
    {
     "uf": "PI",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 27.8,
-    "mulheres_share_qtd": 50.56
+    "mulheres_share_valor": 28.21,
+    "mulheres_share_qtd": 49.94
    },
    {
     "uf": "PB",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 40.97,
-    "mulheres_share_qtd": 49.84
+    "mulheres_share_valor": 41.17,
+    "mulheres_share_qtd": 49.63
    },
    {
     "uf": "PE",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 32.19,
-    "mulheres_share_qtd": 49.81
+    "mulheres_share_valor": 32.6,
+    "mulheres_share_qtd": 49.58
    },
    {
     "uf": "RN",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 41.77,
-    "mulheres_share_qtd": 48.81
+    "mulheres_share_valor": 42.24,
+    "mulheres_share_qtd": 48.5
    },
    {
     "uf": "BA",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 23.94,
-    "mulheres_share_qtd": 48.77
+    "mulheres_share_valor": 24.53,
+    "mulheres_share_qtd": 48.36
    },
    {
     "uf": "AL",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 32.92,
-    "mulheres_share_qtd": 48.57
+    "mulheres_share_valor": 33.18,
+    "mulheres_share_qtd": 48.34
    },
    {
     "uf": "CE",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 36.57,
-    "mulheres_share_qtd": 48.41
+    "mulheres_share_valor": 37.07,
+    "mulheres_share_qtd": 47.88
    },
    {
     "uf": "MA",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 25.16,
-    "mulheres_share_qtd": 48.18
+    "mulheres_share_valor": 25.58,
+    "mulheres_share_qtd": 47.51
    },
    {
     "uf": "AP",
     "regiao": "Norte",
-    "mulheres_share_valor": 49.88,
-    "mulheres_share_qtd": 47.66
+    "mulheres_share_valor": 50.51,
+    "mulheres_share_qtd": 47.46
    },
    {
     "uf": "SE",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 27.4,
-    "mulheres_share_qtd": 46.27
+    "mulheres_share_valor": 27.92,
+    "mulheres_share_qtd": 46.29
    },
    {
     "uf": "AM",
     "regiao": "Norte",
-    "mulheres_share_valor": 29.0,
-    "mulheres_share_qtd": 41.85
+    "mulheres_share_valor": 29.18,
+    "mulheres_share_qtd": 41.53
    },
    {
     "uf": "AC",
     "regiao": "Norte",
-    "mulheres_share_valor": 28.29,
-    "mulheres_share_qtd": 40.74
-   },
-   {
-    "uf": "RR",
-    "regiao": "Norte",
-    "mulheres_share_valor": 19.93,
-    "mulheres_share_qtd": 38.14
+    "mulheres_share_valor": 28.39,
+    "mulheres_share_qtd": 40.79
    },
    {
     "uf": "PA",
     "regiao": "Norte",
-    "mulheres_share_valor": 17.99,
-    "mulheres_share_qtd": 38.02
+    "mulheres_share_valor": 19.0,
+    "mulheres_share_qtd": 38.42
+   },
+   {
+    "uf": "RR",
+    "regiao": "Norte",
+    "mulheres_share_valor": 20.25,
+    "mulheres_share_qtd": 38.04
    },
    {
     "uf": "DF",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 20.93,
-    "mulheres_share_qtd": 36.73
+    "mulheres_share_valor": 16.75,
+    "mulheres_share_qtd": 37.47
    },
    {
     "uf": "TO",
     "regiao": "Norte",
-    "mulheres_share_valor": 15.01,
-    "mulheres_share_qtd": 30.55
+    "mulheres_share_valor": 15.1,
+    "mulheres_share_qtd": 31.25
    },
    {
     "uf": "MS",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 21.53,
-    "mulheres_share_qtd": 30.27
+    "mulheres_share_valor": 21.72,
+    "mulheres_share_qtd": 30.04
    },
    {
     "uf": "MG",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 16.58,
-    "mulheres_share_qtd": 29.04
+    "mulheres_share_valor": 16.57,
+    "mulheres_share_qtd": 28.6
    },
    {
     "uf": "GO",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 20.25,
-    "mulheres_share_qtd": 24.5
+    "mulheres_share_valor": 20.65,
+    "mulheres_share_qtd": 24.92
    },
    {
     "uf": "RO",
     "regiao": "Norte",
-    "mulheres_share_valor": 15.91,
-    "mulheres_share_qtd": 24.12
+    "mulheres_share_valor": 16.14,
+    "mulheres_share_qtd": 24.26
    },
    {
     "uf": "MT",
     "regiao": "Centro-Oeste",
     "mulheres_share_valor": 16.95,
-    "mulheres_share_qtd": 22.42
-   },
-   {
-    "uf": "PR",
-    "regiao": "Sul",
-    "mulheres_share_valor": 21.65,
-    "mulheres_share_qtd": 19.16
+    "mulheres_share_qtd": 22.38
    },
    {
     "uf": "SP",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 18.8,
-    "mulheres_share_qtd": 18.77
+    "mulheres_share_valor": 18.74,
+    "mulheres_share_qtd": 19.36
+   },
+   {
+    "uf": "PR",
+    "regiao": "Sul",
+    "mulheres_share_valor": 21.71,
+    "mulheres_share_qtd": 19.24
    },
    {
     "uf": "RS",
     "regiao": "Sul",
-    "mulheres_share_valor": 19.97,
-    "mulheres_share_qtd": 18.46
+    "mulheres_share_valor": 20.02,
+    "mulheres_share_qtd": 18.64
    },
    {
     "uf": "ES",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 15.38,
-    "mulheres_share_qtd": 18.02
+    "mulheres_share_valor": 15.53,
+    "mulheres_share_qtd": 18.18
    },
    {
     "uf": "SC",
     "regiao": "Sul",
-    "mulheres_share_valor": 18.89,
-    "mulheres_share_qtd": 17.41
+    "mulheres_share_valor": 19.08,
+    "mulheres_share_qtd": 17.65
    },
    {
     "uf": "RJ",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 12.11,
-    "mulheres_share_qtd": 12.01
+    "mulheres_share_valor": 12.87,
+    "mulheres_share_qtd": 12.69
    }
   ],
   "serie_safra": [
    {
     "safra": "2021/22",
-    "mulheres_share_valor": 16.66,
-    "mulheres_share_qtd": 30.28,
+    "mulheres_share_valor": 16.3,
+    "mulheres_share_qtd": 30.47,
     "incompleta": true
    },
    {
@@ -1628,8 +1724,8 @@
    },
    {
     "safra": "2026/27",
-    "mulheres_share_valor": 20.64,
-    "mulheres_share_qtd": 33.45,
+    "mulheres_share_valor": 20.74,
+    "mulheres_share_qtd": 33.22,
     "incompleta": true
    }
   ]
@@ -1637,24 +1733,24 @@
  "instituicoes": {
   "disponivel": true,
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08",
+   "ini": "2025-10",
+   "fim": "2026-09",
    "meses": 12
   },
   "n_ifs": 442,
-  "hhi": 1231.0,
-  "top5_share": 54.88,
+  "hhi": 1195.0,
+  "top5_share": 53.9,
   "top": [
    {
     "cnpj": "00000000",
     "nome": "BCO DO BRASIL S.A.",
     "segmento": "101",
     "categoria": "1",
-    "valor": 110186292070.06,
-    "qtd": 440322,
-    "share": 32.61,
-    "ticket": 250240.26,
-    "pronaf_share": 21.57,
+    "valor": 105009419707.8,
+    "qtd": 434522,
+    "share": 32.13,
+    "ticket": 241666.52,
+    "pronaf_share": 22.38,
     "segmento_nome": "Banco comercial"
    },
    {
@@ -1662,11 +1758,11 @@
     "nome": "BCO DO NORDESTE DO BRASIL S.A.",
     "segmento": "108",
     "categoria": "1",
-    "valor": 23896158559.07,
-    "qtd": 1431036,
-    "share": 7.07,
-    "ticket": 16698.5,
-    "pronaf_share": 52.12,
+    "valor": 23809903924.58,
+    "qtd": 1403486,
+    "share": 7.28,
+    "ticket": 16964.83,
+    "pronaf_share": 52.34,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1674,11 +1770,11 @@
     "nome": "BCO BRADESCO S.A.",
     "segmento": "108",
     "categoria": "5",
-    "valor": 21437484188.78,
-    "qtd": 20438,
-    "share": 6.34,
-    "ticket": 1048903.23,
-    "pronaf_share": 5.04,
+    "valor": 18683329662.07,
+    "qtd": 17645,
+    "share": 5.72,
+    "ticket": 1058845.55,
+    "pronaf_share": 5.53,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1686,11 +1782,11 @@
     "nome": "ITAÚ UNIBANCO S.A.",
     "segmento": "108",
     "categoria": "3",
-    "valor": 15894156380.15,
-    "qtd": 4171,
-    "share": 4.7,
-    "ticket": 3810634.47,
-    "pronaf_share": 1.64,
+    "valor": 16297285939.94,
+    "qtd": 4413,
+    "share": 4.99,
+    "ticket": 3693017.43,
+    "pronaf_share": 1.53,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1698,47 +1794,47 @@
     "nome": "CAIXA ECONOMICA FEDERAL",
     "segmento": "106",
     "categoria": "1",
-    "valor": 14039211967.15,
-    "qtd": 43645,
-    "share": 4.15,
-    "ticket": 321668.28,
-    "pronaf_share": 9.62,
+    "valor": 12355376386.0,
+    "qtd": 38777,
+    "share": 3.78,
+    "ticket": 318626.41,
+    "pronaf_share": 9.3,
     "segmento_nome": "segmento 106"
-   },
-   {
-    "cnpj": "04902979",
-    "nome": "BCO DA AMAZONIA S.A.",
-    "segmento": "102",
-    "categoria": "1",
-    "valor": 10219789578.13,
-    "qtd": 56374,
-    "share": 3.02,
-    "ticket": 181285.51,
-    "pronaf_share": 20.28,
-    "segmento_nome": "segmento 102"
    },
    {
     "cnpj": "01181521",
     "nome": "BANCO COOPERATIVO SICREDI",
     "segmento": "111",
     "categoria": "5",
-    "valor": 9406025089.05,
-    "qtd": 41044,
-    "share": 2.78,
-    "ticket": 229169.31,
-    "pronaf_share": 37.96,
+    "valor": 9852769545.41,
+    "qtd": 44885,
+    "share": 3.01,
+    "ticket": 219511.41,
+    "pronaf_share": 40.68,
     "segmento_nome": "Banco cooperativo"
+   },
+   {
+    "cnpj": "04902979",
+    "nome": "BCO DA AMAZONIA S.A.",
+    "segmento": "102",
+    "categoria": "1",
+    "valor": 9147204132.59,
+    "qtd": 55387,
+    "share": 2.8,
+    "ticket": 165150.74,
+    "pronaf_share": 21.38,
+    "segmento_nome": "segmento 102"
    },
    {
     "cnpj": "90400888",
     "nome": "BCO SANTANDER (BRASIL) S.A.",
     "segmento": "108",
     "categoria": "4",
-    "valor": 8210898024.28,
-    "qtd": 2458,
-    "share": 2.43,
-    "ticket": 3340479.26,
-    "pronaf_share": 6.96,
+    "valor": 7903660574.47,
+    "qtd": 2228,
+    "share": 2.42,
+    "ticket": 3547423.96,
+    "pronaf_share": 5.06,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1746,11 +1842,11 @@
     "nome": "BCO SAFRA S.A.",
     "segmento": "108",
     "categoria": "3",
-    "valor": 4854629880.3,
-    "qtd": 175,
-    "share": 1.44,
-    "ticket": 27740742.17,
-    "pronaf_share": 5.62,
+    "valor": 4395727714.14,
+    "qtd": 156,
+    "share": 1.34,
+    "ticket": 28177741.76,
+    "pronaf_share": 6.87,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1758,11 +1854,11 @@
     "nome": "BANCO SICOOB S.A.",
     "segmento": "111",
     "categoria": "3",
-    "valor": 4499452173.4,
-    "qtd": 20572,
-    "share": 1.33,
-    "ticket": 218717.29,
-    "pronaf_share": 36.44,
+    "valor": 4107437703.86,
+    "qtd": 19111,
+    "share": 1.26,
+    "ticket": 214925.32,
+    "pronaf_share": 37.65,
     "segmento_nome": "Banco cooperativo"
    },
    {
@@ -1770,23 +1866,23 @@
     "nome": "BANCO BTG PACTUAL S.A.",
     "segmento": "108",
     "categoria": "4",
-    "valor": 3596492512.49,
-    "qtd": 51,
-    "share": 1.06,
-    "ticket": 70519461.03,
+    "valor": 3643017913.77,
+    "qtd": 47,
+    "share": 1.11,
+    "ticket": 77511019.44,
     "pronaf_share": 0.0,
     "segmento_nome": "Banco múltiplo"
    },
    {
-    "cnpj": "91884981",
-    "nome": "BANCO JOHN DEERE S.A.",
+    "cnpj": "15114366",
+    "nome": "BCO BOCOM BBM S.A.",
     "segmento": "108",
-    "categoria": "4",
-    "valor": 2950675767.98,
-    "qtd": 3949,
-    "share": 0.87,
-    "ticket": 747195.69,
-    "pronaf_share": 5.27,
+    "categoria": "3",
+    "valor": 2974771972.08,
+    "qtd": 75,
+    "share": 0.91,
+    "ticket": 39663626.29,
+    "pronaf_share": 0.0,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1794,11 +1890,23 @@
     "nome": "BCO DO ESTADO DO RS S.A.",
     "segmento": "108",
     "categoria": "2",
-    "valor": 2832287591.63,
-    "qtd": 12739,
-    "share": 0.84,
-    "ticket": 222332.02,
-    "pronaf_share": 18.94,
+    "valor": 2899160042.25,
+    "qtd": 12528,
+    "share": 0.89,
+    "ticket": 231414.44,
+    "pronaf_share": 17.61,
+    "segmento_nome": "Banco múltiplo"
+   },
+   {
+    "cnpj": "91884981",
+    "nome": "BANCO JOHN DEERE S.A.",
+    "segmento": "108",
+    "categoria": "4",
+    "valor": 2831669949.27,
+    "qtd": 3749,
+    "share": 0.87,
+    "ticket": 755313.4,
+    "pronaf_share": 5.2,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1806,59 +1914,35 @@
     "nome": "BD REGIONAL DO EXTREMO SUL",
     "segmento": "105",
     "categoria": "2",
-    "valor": 2816852974.98,
-    "qtd": 8670,
-    "share": 0.83,
-    "ticket": 324896.54,
-    "pronaf_share": 41.93,
-    "segmento_nome": "Banco de investimento"
-   },
-   {
-    "cnpj": "15114366",
-    "nome": "BCO BOCOM BBM S.A.",
-    "segmento": "108",
-    "categoria": "3",
-    "valor": 2768471661.35,
-    "qtd": 72,
+    "valor": 2664362478.98,
+    "qtd": 9415,
     "share": 0.82,
-    "ticket": 38450995.3,
-    "pronaf_share": 0.0,
-    "segmento_nome": "Banco múltiplo"
-   },
-   {
-    "cnpj": "28195667",
-    "nome": "BCO ABC BRASIL S.A.",
-    "segmento": "108",
-    "categoria": "4",
-    "valor": 2389823180.37,
-    "qtd": 171,
-    "share": 0.71,
-    "ticket": 13975574.15,
-    "pronaf_share": 0.94,
-    "segmento_nome": "Banco múltiplo"
+    "ticket": 282991.24,
+    "pronaf_share": 41.32,
+    "segmento_nome": "Banco de investimento"
    },
    {
     "cnpj": "79342069",
     "nome": "COOP SICREDI DEXIS",
     "segmento": "109",
     "categoria": "3",
-    "valor": 2364985671.97,
-    "qtd": 6449,
-    "share": 0.7,
-    "ticket": 366721.3,
-    "pronaf_share": 7.75,
+    "valor": 2352340429.37,
+    "qtd": 6385,
+    "share": 0.72,
+    "ticket": 368416.67,
+    "pronaf_share": 7.31,
     "segmento_nome": "Cooperativa de crédito"
    },
    {
-    "cnpj": "92894922",
-    "nome": "BANCO ORIGINAL",
+    "cnpj": "28195667",
+    "nome": "BCO ABC BRASIL S.A.",
     "segmento": "108",
-    "categoria": "3",
-    "valor": 2022228971.06,
-    "qtd": 53,
-    "share": 0.6,
-    "ticket": 38155263.6,
-    "pronaf_share": 0.0,
+    "categoria": "4",
+    "valor": 2315681505.4,
+    "qtd": 181,
+    "share": 0.71,
+    "ticket": 12793820.47,
+    "pronaf_share": 0.86,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1866,11 +1950,11 @@
     "nome": "CC CREDICITRUS",
     "segmento": "109",
     "categoria": "3",
-    "valor": 1934128920.51,
-    "qtd": 3252,
+    "valor": 1856721714.76,
+    "qtd": 3144,
     "share": 0.57,
-    "ticket": 594750.59,
-    "pronaf_share": 0.47,
+    "ticket": 590560.34,
+    "pronaf_share": 0.49,
     "segmento_nome": "Cooperativa de crédito"
    },
    {
@@ -1878,11 +1962,47 @@
     "nome": "CREDICOAMO",
     "segmento": "109",
     "categoria": "3",
-    "valor": 1710379734.46,
-    "qtd": 7499,
-    "share": 0.51,
-    "ticket": 228081.04,
-    "pronaf_share": 10.1,
+    "valor": 1758695946.97,
+    "qtd": 7597,
+    "share": 0.54,
+    "ticket": 231498.74,
+    "pronaf_share": 9.83,
+    "segmento_nome": "Cooperativa de crédito"
+   },
+   {
+    "cnpj": "92894922",
+    "nome": "BANCO ORIGINAL",
+    "segmento": "108",
+    "categoria": "3",
+    "valor": 1738038613.06,
+    "qtd": 44,
+    "share": 0.53,
+    "ticket": 39500877.57,
+    "pronaf_share": 0.0,
+    "segmento_nome": "Banco múltiplo"
+   },
+   {
+    "cnpj": "59588111",
+    "nome": "BCO VOTORANTIM S.A.",
+    "segmento": "108",
+    "categoria": "3",
+    "valor": 1713877056.94,
+    "qtd": 109,
+    "share": 0.52,
+    "ticket": 15723642.72,
+    "pronaf_share": 0.44,
+    "segmento_nome": "Banco múltiplo"
+   },
+   {
+    "cnpj": "32430233",
+    "nome": "SICOOB CONEXÃO",
+    "segmento": "109",
+    "categoria": "3",
+    "valor": 1612296696.71,
+    "qtd": 4283,
+    "share": 0.49,
+    "ticket": 376440.98,
+    "pronaf_share": 18.51,
     "segmento_nome": "Cooperativa de crédito"
    },
    {
@@ -1890,11 +2010,11 @@
     "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
     "segmento": "108",
     "categoria": "4",
-    "valor": 1566505791.1,
-    "qtd": 3140,
+    "valor": 1487949690.3,
+    "qtd": 2882,
     "share": 0.46,
-    "ticket": 498887.19,
-    "pronaf_share": 17.94,
+    "ticket": 516290.66,
+    "pronaf_share": 16.63,
     "segmento_nome": "Banco múltiplo"
    },
    {
@@ -1902,95 +2022,11 @@
     "nome": "CCLAA SAO MIGUEL DO OESTE",
     "segmento": "109",
     "categoria": "3",
-    "valor": 1528631662.88,
-    "qtd": 8770,
+    "valor": 1484031380.8,
+    "qtd": 8645,
     "share": 0.45,
-    "ticket": 174302.36,
-    "pronaf_share": 49.29,
-    "segmento_nome": "Cooperativa de crédito"
-   },
-   {
-    "cnpj": "32430233",
-    "nome": "SICOOB CONEXÃO",
-    "segmento": "109",
-    "categoria": "3",
-    "valor": 1486945270.66,
-    "qtd": 4234,
-    "share": 0.44,
-    "ticket": 351191.61,
-    "pronaf_share": 19.8,
-    "segmento_nome": "Cooperativa de crédito"
-   },
-   {
-    "cnpj": "00971300",
-    "nome": "COOP CRESOL PIONEIRA",
-    "segmento": "109",
-    "categoria": "3",
-    "valor": 1375655577.03,
-    "qtd": 5835,
-    "share": 0.41,
-    "ticket": 235759.31,
-    "pronaf_share": 24.78,
-    "segmento_nome": "Cooperativa de crédito"
-   },
-   {
-    "cnpj": "59588111",
-    "nome": "BCO VOTORANTIM S.A.",
-    "segmento": "108",
-    "categoria": "3",
-    "valor": 1374486734.14,
-    "qtd": 97,
-    "share": 0.41,
-    "ticket": 14169966.33,
-    "pronaf_share": 0.55,
-    "segmento_nome": "Banco múltiplo"
-   },
-   {
-    "cnpj": "81466286",
-    "nome": "COOP SICREDI CAMPOS GERAIS E GRANDE CURITIBA PR/SP",
-    "segmento": "109",
-    "categoria": "3",
-    "valor": 1349996929.91,
-    "qtd": 2394,
-    "share": 0.4,
-    "ticket": 563908.49,
-    "pronaf_share": 4.17,
-    "segmento_nome": "Cooperativa de crédito"
-   },
-   {
-    "cnpj": "05040481",
-    "nome": "BCO DE LAGE LANDEN BRASIL S.A.",
-    "segmento": "108",
-    "categoria": "4",
-    "valor": 1291722961.51,
-    "qtd": 3532,
-    "share": 0.38,
-    "ticket": 365719.98,
-    "pronaf_share": 17.97,
-    "segmento_nome": "Banco múltiplo"
-   },
-   {
-    "cnpj": "88894548",
-    "nome": "COOP SICREDI UNIÃO RS",
-    "segmento": "109",
-    "categoria": "3",
-    "valor": 1277142557.87,
-    "qtd": 12403,
-    "share": 0.38,
-    "ticket": 102970.46,
-    "pronaf_share": 43.09,
-    "segmento_nome": "Cooperativa de crédito"
-   },
-   {
-    "cnpj": "81099491",
-    "nome": "COOP SICREDI VALE DO PIQUIRI",
-    "segmento": "109",
-    "categoria": "3",
-    "valor": 1248088314.0,
-    "qtd": 6379,
-    "share": 0.37,
-    "ticket": 195655.79,
-    "pronaf_share": 15.13,
+    "ticket": 171663.55,
+    "pronaf_share": 48.47,
     "segmento_nome": "Cooperativa de crédito"
    },
    {
@@ -1998,531 +2034,591 @@
     "nome": "BCO RABOBANK INTL BRASIL S.A.",
     "segmento": "108",
     "categoria": "4",
-    "valor": 1238399417.34,
-    "qtd": 261,
-    "share": 0.37,
-    "ticket": 4744825.35,
+    "valor": 1437447446.83,
+    "qtd": 267,
+    "share": 0.44,
+    "ticket": 5383698.3,
     "pronaf_share": 0.0,
+    "segmento_nome": "Banco múltiplo"
+   },
+   {
+    "cnpj": "00971300",
+    "nome": "COOP CRESOL PIONEIRA",
+    "segmento": "109",
+    "categoria": "3",
+    "valor": 1433188651.41,
+    "qtd": 6058,
+    "share": 0.44,
+    "ticket": 236577.86,
+    "pronaf_share": 25.15,
+    "segmento_nome": "Cooperativa de crédito"
+   },
+   {
+    "cnpj": "81466286",
+    "nome": "COOP SICREDI CAMPOS GERAIS E GRANDE CURITIBA PR/SP",
+    "segmento": "109",
+    "categoria": "3",
+    "valor": 1409477437.81,
+    "qtd": 2334,
+    "share": 0.43,
+    "ticket": 603889.22,
+    "pronaf_share": 3.64,
+    "segmento_nome": "Cooperativa de crédito"
+   },
+   {
+    "cnpj": "81099491",
+    "nome": "COOP SICREDI VALE DO PIQUIRI",
+    "segmento": "109",
+    "categoria": "3",
+    "valor": 1272761998.53,
+    "qtd": 6232,
+    "share": 0.39,
+    "ticket": 204230.1,
+    "pronaf_share": 14.58,
+    "segmento_nome": "Cooperativa de crédito"
+   },
+   {
+    "cnpj": "88894548",
+    "nome": "COOP SICREDI UNIÃO RS",
+    "segmento": "109",
+    "categoria": "3",
+    "valor": 1237855670.44,
+    "qtd": 11989,
+    "share": 0.38,
+    "ticket": 103249.28,
+    "pronaf_share": 44.36,
+    "segmento_nome": "Cooperativa de crédito"
+   },
+   {
+    "cnpj": "05040481",
+    "nome": "BCO DE LAGE LANDEN BRASIL S.A.",
+    "segmento": "108",
+    "categoria": "4",
+    "valor": 1229544399.74,
+    "qtd": 3277,
+    "share": 0.38,
+    "ticket": 375204.27,
+    "pronaf_share": 17.51,
     "segmento_nome": "Banco múltiplo"
    }
   ],
   "por_segmento": [
    {
     "segmento": "101",
-    "valor": 110186292070.06,
-    "qtd": 440322,
+    "valor": 105009419707.8,
+    "qtd": 434522,
     "n": 1,
-    "share": 32.61,
+    "share": 32.13,
     "nome": "Banco comercial"
    },
    {
     "segmento": "108",
-    "valor": 100013876887.61,
-    "qtd": 1485529,
+    "valor": 97119754826.18,
+    "qtd": 1454189,
     "n": 33,
-    "share": 29.6,
+    "share": 29.71,
     "nome": "Banco múltiplo"
    },
    {
     "segmento": "109",
-    "valor": 84043021081.68,
-    "qtd": 440017,
+    "valor": 84004461436.19,
+    "qtd": 437342,
     "n": 395,
-    "share": 24.87,
+    "share": 25.7,
     "nome": "Cooperativa de crédito"
    },
    {
-    "segmento": "106",
-    "valor": 14039211967.15,
-    "qtd": 43645,
-    "n": 1,
-    "share": 4.15,
-    "nome": "segmento 106"
-   },
-   {
     "segmento": "111",
-    "valor": 13905477262.45,
-    "qtd": 61616,
+    "valor": 13960207249.27,
+    "qtd": 63996,
     "n": 2,
-    "share": 4.12,
+    "share": 4.27,
     "nome": "Banco cooperativo"
    },
    {
-    "segmento": "102",
-    "valor": 10219789578.13,
-    "qtd": 56374,
+    "segmento": "106",
+    "valor": 12355376386.0,
+    "qtd": 38777,
     "n": 1,
-    "share": 3.02,
+    "share": 3.78,
+    "nome": "segmento 106"
+   },
+   {
+    "segmento": "102",
+    "valor": 9147204132.59,
+    "qtd": 55387,
+    "n": 1,
+    "share": 2.8,
     "nome": "segmento 102"
    },
    {
     "segmento": "105",
-    "valor": 3718815139.59,
-    "qtd": 8819,
+    "valor": 3455875266.98,
+    "qtd": 9555,
     "n": 2,
-    "share": 1.1,
+    "share": 1.06,
     "nome": "Banco de investimento"
    },
    {
     "segmento": "104",
-    "valor": 968912241.97,
-    "qtd": 42,
+    "valor": 1023627056.28,
+    "qtd": 47,
     "n": 1,
-    "share": 0.29,
+    "share": 0.31,
     "nome": "Banco de desenvolvimento"
    },
    {
     "segmento": "114",
-    "valor": 513063279.36,
-    "qtd": 523,
+    "valor": 473370295.35,
+    "qtd": 491,
     "n": 2,
-    "share": 0.15,
+    "share": 0.14,
     "nome": "segmento 114"
    },
    {
     "segmento": "130",
-    "valor": 287819991.92,
-    "qtd": 234,
+    "valor": 289825335.84,
+    "qtd": 217,
     "n": 4,
     "share": 0.09,
     "nome": "segmento 130"
    }
   ],
   "nota": "valor por instituição contratante (CNPJ da IF no Sicor), não por conglomerado; cooperativas singulares aparecem uma a uma. HHI sobre o valor contratado no período — concentração de originação, não de carteira.",
-  "cooperativas_share": 28.99
+  "cooperativas_share": 29.97
  },
  "ufs": [
   {
    "uf": "PR",
    "regiao": "Sul",
-   "valor": 48681704633.14,
-   "qtd": 161505,
-   "share": 14.4,
-   "custeio": 22464179891.82,
-   "investimento": 11190173565.15,
-   "comercializacao": 4171197779.25,
-   "industrializacao": 10856153396.92,
-   "agricola_share": 68.22,
-   "pronaf_share": 18.37,
-   "ticket": 301425.37,
+   "valor": 47503726235.31,
+   "qtd": 160134,
+   "share": 14.53,
+   "custeio": 22503217959.17,
+   "investimento": 11055643285.61,
+   "comercializacao": 4254404442.37,
+   "industrializacao": 9690460548.16,
+   "agricola_share": 68.98,
+   "pronaf_share": 18.66,
+   "ticket": 296649.84,
    "pop": 11890517,
-   "valor_hab": 4094.16
+   "valor_hab": 3995.09
   },
   {
    "uf": "MG",
    "regiao": "Sudeste",
-   "valor": 46353112476.64,
-   "qtd": 273242,
-   "share": 13.71,
-   "custeio": 24837853854.75,
-   "investimento": 11128691602.51,
-   "comercializacao": 7566091015.16,
-   "industrializacao": 2820476004.22,
-   "agricola_share": 65.98,
-   "pronaf_share": 16.67,
-   "ticket": 169641.24,
+   "valor": 44202725248.03,
+   "qtd": 264900,
+   "share": 13.52,
+   "custeio": 23705476246.46,
+   "investimento": 10821258734.18,
+   "comercializacao": 7253750391.17,
+   "industrializacao": 2422239876.22,
+   "agricola_share": 65.51,
+   "pronaf_share": 17.4,
+   "ticket": 166865.7,
    "pop": 21393441,
-   "valor_hab": 2166.7
+   "valor_hab": 2066.18
   },
   {
    "uf": "RS",
    "regiao": "Sul",
-   "valor": 40608978594.35,
-   "qtd": 244647,
-   "share": 12.01,
-   "custeio": 22754123486.76,
-   "investimento": 9684898668.34,
-   "comercializacao": 4979257954.71,
-   "industrializacao": 3190698484.54,
-   "agricola_share": 70.65,
-   "pronaf_share": 36.87,
-   "ticket": 165990.09,
+   "valor": 40454859949.15,
+   "qtd": 244397,
+   "share": 12.37,
+   "custeio": 22714861401.02,
+   "investimento": 9601477906.08,
+   "comercializacao": 5057893703.19,
+   "industrializacao": 3080626938.86,
+   "agricola_share": 70.42,
+   "pronaf_share": 37.1,
+   "ticket": 165529.28,
    "pop": 11233263,
-   "valor_hab": 3615.07
+   "valor_hab": 3601.35
   },
   {
    "uf": "MT",
    "regiao": "Centro-Oeste",
-   "valor": 37537005573.44,
-   "qtd": 37147,
-   "share": 11.11,
-   "custeio": 16847599321.13,
-   "investimento": 9185111507.14,
-   "comercializacao": 8044402199.68,
-   "industrializacao": 3459892545.49,
-   "agricola_share": 68.93,
-   "pronaf_share": 4.3,
-   "ticket": 1010498.98,
+   "valor": 35076010316.14,
+   "qtd": 36817,
+   "share": 10.73,
+   "custeio": 16173721675.42,
+   "investimento": 9002307339.45,
+   "comercializacao": 6534991580.78,
+   "industrializacao": 3364989720.49,
+   "agricola_share": 71.77,
+   "pronaf_share": 4.58,
+   "ticket": 952712.34,
    "pop": 3893659,
-   "valor_hab": 9640.55
+   "valor_hab": 9008.5
   },
   {
    "uf": "SP",
    "regiao": "Sudeste",
-   "valor": 30446782412.07,
-   "qtd": 43636,
-   "share": 9.01,
-   "custeio": 16881666309.23,
-   "investimento": 4021581504.76,
-   "comercializacao": 5066330998.91,
-   "industrializacao": 4477203599.17,
-   "agricola_share": 81.07,
-   "pronaf_share": 4.28,
-   "ticket": 697744.58,
+   "valor": 29659901092.02,
+   "qtd": 42943,
+   "share": 9.07,
+   "custeio": 16050099095.02,
+   "investimento": 3942165876.02,
+   "comercializacao": 5381732521.81,
+   "industrializacao": 4285903599.17,
+   "agricola_share": 80.51,
+   "pronaf_share": 4.42,
+   "ticket": 690680.7,
    "pop": 46081801,
-   "valor_hab": 660.71
+   "valor_hab": 643.64
   },
   {
    "uf": "GO",
    "regiao": "Centro-Oeste",
-   "valor": 23997037231.83,
-   "qtd": 47847,
-   "share": 7.1,
-   "custeio": 14814509357.46,
-   "investimento": 5007360368.53,
-   "comercializacao": 2213612439.39,
-   "industrializacao": 1961555066.45,
-   "agricola_share": 54.8,
-   "pronaf_share": 5.84,
-   "ticket": 501536.92,
+   "valor": 23236933803.45,
+   "qtd": 46064,
+   "share": 7.11,
+   "custeio": 14081508369.93,
+   "investimento": 4863823433.12,
+   "comercializacao": 2522246933.95,
+   "industrializacao": 1769355066.45,
+   "agricola_share": 53.59,
+   "pronaf_share": 5.81,
+   "ticket": 504448.89,
    "pop": 7423629,
-   "valor_hab": 3232.52
+   "valor_hab": 3130.13
   },
   {
    "uf": "SC",
    "regiao": "Sul",
-   "valor": 22797776896.58,
-   "qtd": 133613,
-   "share": 6.75,
-   "custeio": 11839898245.0,
-   "investimento": 6635462967.42,
-   "comercializacao": 1318771884.16,
-   "industrializacao": 3003643800.0,
-   "agricola_share": 42.43,
-   "pronaf_share": 43.82,
-   "ticket": 170625.44,
+   "valor": 22218435912.56,
+   "qtd": 131035,
+   "share": 6.8,
+   "custeio": 11637392663.72,
+   "investimento": 6302587272.5,
+   "comercializacao": 1384343970.34,
+   "industrializacao": 2894112006.0,
+   "agricola_share": 41.59,
+   "pronaf_share": 43.57,
+   "ticket": 169561.08,
    "pop": 8187029,
-   "valor_hab": 2784.62
+   "valor_hab": 2713.86
   },
   {
    "uf": "BA",
    "regiao": "Nordeste",
-   "valor": 15032628981.75,
-   "qtd": 355891,
-   "share": 4.45,
-   "custeio": 7462831884.49,
-   "investimento": 5905932415.93,
-   "comercializacao": 775655361.6,
-   "industrializacao": 888209319.73,
-   "agricola_share": 67.21,
-   "pronaf_share": 29.57,
-   "ticket": 42239.42,
+   "valor": 14428344665.03,
+   "qtd": 351441,
+   "share": 4.41,
+   "custeio": 7121774850.95,
+   "investimento": 5861534095.22,
+   "comercializacao": 677528399.13,
+   "industrializacao": 767507319.73,
+   "agricola_share": 66.37,
+   "pronaf_share": 31.06,
+   "ticket": 41054.81,
    "pop": 14870907,
-   "valor_hab": 1010.88
+   "valor_hab": 970.24
   },
   {
    "uf": "MS",
    "regiao": "Centro-Oeste",
-   "valor": 14372227995.09,
-   "qtd": 29422,
-   "share": 4.25,
-   "custeio": 9038396239.02,
-   "investimento": 3630754518.76,
-   "comercializacao": 991344237.31,
-   "industrializacao": 711733000.0,
-   "agricola_share": 61.96,
-   "pronaf_share": 4.42,
-   "ticket": 488485.76,
+   "valor": 13793689284.41,
+   "qtd": 28572,
+   "share": 4.22,
+   "custeio": 8732099993.19,
+   "investimento": 3514037201.0,
+   "comercializacao": 874303090.22,
+   "industrializacao": 673249000.0,
+   "agricola_share": 60.94,
+   "pronaf_share": 4.55,
+   "ticket": 482769.47,
    "pop": 2924631,
-   "valor_hab": 4914.2
+   "valor_hab": 4716.39
   },
   {
    "uf": "ES",
    "regiao": "Sudeste",
-   "valor": 9609014961.02,
-   "qtd": 47572,
-   "share": 2.84,
-   "custeio": 4039206815.69,
-   "investimento": 3408356488.76,
-   "comercializacao": 2061560379.57,
-   "industrializacao": 99891277.0,
-   "agricola_share": 89.91,
-   "pronaf_share": 34.41,
-   "ticket": 201988.88,
+   "valor": 9637613325.98,
+   "qtd": 47078,
+   "share": 2.95,
+   "custeio": 4025004134.61,
+   "investimento": 3350054086.87,
+   "comercializacao": 2175163827.5,
+   "industrializacao": 87391277.0,
+   "agricola_share": 90.27,
+   "pronaf_share": 34.55,
+   "ticket": 204715.86,
    "pop": 4126854,
-   "valor_hab": 2328.41
+   "valor_hab": 2335.34
   },
   {
    "uf": "PA",
    "regiao": "Norte",
-   "valor": 8163601209.7,
-   "qtd": 52101,
-   "share": 2.42,
-   "custeio": 4615893377.79,
-   "investimento": 3317425069.69,
-   "comercializacao": 130982762.22,
-   "industrializacao": 99300000.0,
-   "agricola_share": 40.06,
-   "pronaf_share": 29.72,
-   "ticket": 156687.99,
+   "valor": 7330795125.2,
+   "qtd": 50719,
+   "share": 2.24,
+   "custeio": 4166022013.83,
+   "investimento": 2979240349.15,
+   "comercializacao": 90732762.22,
+   "industrializacao": 94800000.0,
+   "agricola_share": 38.15,
+   "pronaf_share": 32.82,
+   "ticket": 144537.45,
    "pop": 8711196,
-   "valor_hab": 937.14
+   "valor_hab": 841.54
   },
   {
    "uf": "TO",
    "regiao": "Norte",
-   "valor": 7162386421.59,
-   "qtd": 18274,
-   "share": 2.12,
-   "custeio": 5063235086.21,
-   "investimento": 1916175716.22,
-   "comercializacao": 140960794.16,
-   "industrializacao": 42014825.0,
-   "agricola_share": 44.41,
-   "pronaf_share": 8.02,
-   "ticket": 391944.1,
+   "valor": 6788971723.16,
+   "qtd": 17662,
+   "share": 2.08,
+   "custeio": 4844339605.07,
+   "investimento": 1789171958.73,
+   "comercializacao": 126745334.36,
+   "industrializacao": 28714825.0,
+   "agricola_share": 44.56,
+   "pronaf_share": 8.15,
+   "ticket": 384382.95,
    "pop": 1586859,
-   "valor_hab": 4513.56
-  },
-  {
-   "uf": "RO",
-   "regiao": "Norte",
-   "valor": 6302178155.92,
-   "qtd": 36158,
-   "share": 1.86,
-   "custeio": 3872165595.87,
-   "investimento": 2282300787.48,
-   "comercializacao": 93011678.86,
-   "industrializacao": 54700093.71,
-   "agricola_share": 23.16,
-   "pronaf_share": 34.72,
-   "ticket": 174295.54,
-   "pop": 1751950,
-   "valor_hab": 3597.24
+   "valor_hab": 4278.25
   },
   {
    "uf": "MA",
    "regiao": "Nordeste",
-   "valor": 6280265311.36,
-   "qtd": 156803,
-   "share": 1.86,
-   "custeio": 3656685523.01,
-   "investimento": 2423914203.58,
-   "comercializacao": 99665584.77,
+   "valor": 6165551948.69,
+   "qtd": 151064,
+   "share": 1.89,
+   "custeio": 3630433590.14,
+   "investimento": 2354163279.09,
+   "comercializacao": 80955079.46,
    "industrializacao": 100000000.0,
-   "agricola_share": 48.16,
-   "pronaf_share": 30.42,
-   "ticket": 40051.95,
+   "agricola_share": 49.33,
+   "pronaf_share": 30.44,
+   "ticket": 40814.17,
    "pop": 7018211,
-   "valor_hab": 894.85
+   "valor_hab": 878.51
+  },
+  {
+   "uf": "RO",
+   "regiao": "Norte",
+   "valor": 6120677990.71,
+   "qtd": 35436,
+   "share": 1.87,
+   "custeio": 3694849873.07,
+   "investimento": 2260953373.47,
+   "comercializacao": 102174650.46,
+   "industrializacao": 62700093.71,
+   "agricola_share": 24.13,
+   "pronaf_share": 34.95,
+   "ticket": 172724.86,
+   "pop": 1751950,
+   "valor_hab": 3493.64
   },
   {
    "uf": "PI",
    "regiao": "Nordeste",
-   "valor": 4190692658.7,
-   "qtd": 189621,
-   "share": 1.24,
-   "custeio": 1980787604.42,
-   "investimento": 1963647396.06,
-   "comercializacao": 146957658.22,
+   "valor": 4165845609.94,
+   "qtd": 188411,
+   "share": 1.27,
+   "custeio": 1979754840.24,
+   "investimento": 1943431208.28,
+   "comercializacao": 143359561.42,
    "industrializacao": 99300000.0,
-   "agricola_share": 62.68,
-   "pronaf_share": 35.42,
-   "ticket": 22100.36,
+   "agricola_share": 62.71,
+   "pronaf_share": 36.14,
+   "ticket": 22110.42,
    "pop": 3384547,
-   "valor_hab": 1238.18
+   "valor_hab": 1230.84
   },
   {
    "uf": "PE",
    "regiao": "Nordeste",
-   "valor": 3588278947.76,
-   "qtd": 163675,
-   "share": 1.06,
-   "custeio": 1502323692.47,
-   "investimento": 1925996282.69,
-   "comercializacao": 12539602.6,
-   "industrializacao": 147419370.0,
-   "agricola_share": 36.08,
-   "pronaf_share": 53.55,
-   "ticket": 21923.2,
+   "valor": 3571601943.45,
+   "qtd": 160378,
+   "share": 1.09,
+   "custeio": 1476779030.09,
+   "investimento": 1855223410.76,
+   "comercializacao": 7239602.6,
+   "industrializacao": 232359900.0,
+   "agricola_share": 34.79,
+   "pronaf_share": 53.49,
+   "ticket": 22269.9,
    "pop": 9562007,
-   "valor_hab": 375.26
+   "valor_hab": 373.52
   },
   {
    "uf": "CE",
    "regiao": "Nordeste",
-   "valor": 3240452822.48,
-   "qtd": 195182,
-   "share": 0.96,
-   "custeio": 903464238.26,
-   "investimento": 1995328981.0,
-   "comercializacao": 125811602.42,
-   "industrializacao": 215848000.8,
-   "agricola_share": 28.24,
-   "pronaf_share": 61.23,
-   "ticket": 16602.21,
+   "valor": 3236434889.53,
+   "qtd": 193010,
+   "share": 0.99,
+   "custeio": 869945017.6,
+   "investimento": 1988823676.71,
+   "comercializacao": 158817134.42,
+   "industrializacao": 218849060.8,
+   "agricola_share": 28.97,
+   "pronaf_share": 61.41,
+   "ticket": 16768.22,
    "pop": 9268836,
-   "valor_hab": 349.61
+   "valor_hab": 349.17
   },
   {
    "uf": "SE",
    "regiao": "Nordeste",
-   "valor": 1799089520.06,
-   "qtd": 53579,
-   "share": 0.53,
-   "custeio": 995486653.67,
-   "investimento": 730306475.69,
-   "comercializacao": 69296390.7,
+   "valor": 1772026989.98,
+   "qtd": 53544,
+   "share": 0.54,
+   "custeio": 972325659.54,
+   "investimento": 726354939.74,
+   "comercializacao": 69346390.7,
    "industrializacao": 4000000.0,
-   "agricola_share": 54.11,
-   "pronaf_share": 58.42,
-   "ticket": 33578.26,
+   "agricola_share": 54.44,
+   "pronaf_share": 59.37,
+   "ticket": 33094.78,
    "pop": 2299425,
-   "valor_hab": 782.41
+   "valor_hab": 770.64
   },
   {
    "uf": "PB",
    "regiao": "Nordeste",
-   "valor": 1710884927.02,
-   "qtd": 120475,
-   "share": 0.51,
-   "custeio": 439068005.31,
-   "investimento": 1220966921.71,
-   "comercializacao": 13000000.0,
-   "industrializacao": 37850000.0,
-   "agricola_share": 30.21,
-   "pronaf_share": 66.28,
-   "ticket": 14201.16,
+   "valor": 1710102130.1,
+   "qtd": 119068,
+   "share": 0.52,
+   "custeio": 442818303.69,
+   "investimento": 1219433826.41,
+   "comercializacao": 23000000.0,
+   "industrializacao": 24850000.0,
+   "agricola_share": 30.85,
+   "pronaf_share": 66.56,
+   "ticket": 14362.4,
    "pop": 4164468,
-   "valor_hab": 410.83
+   "valor_hab": 410.64
   },
   {
    "uf": "AL",
    "regiao": "Nordeste",
-   "valor": 1527622424.8,
-   "qtd": 64376,
-   "share": 0.45,
-   "custeio": 676847384.93,
-   "investimento": 767902173.85,
+   "valor": 1512092887.93,
+   "qtd": 63769,
+   "share": 0.46,
+   "custeio": 663314413.33,
+   "investimento": 765905608.58,
    "comercializacao": 13372866.02,
    "industrializacao": 69500000.0,
-   "agricola_share": 37.88,
-   "pronaf_share": 58.98,
-   "ticket": 23729.69,
+   "agricola_share": 37.51,
+   "pronaf_share": 59.15,
+   "ticket": 23712.04,
    "pop": 3220848,
-   "valor_hab": 474.29
+   "valor_hab": 469.47
   },
   {
    "uf": "RJ",
    "regiao": "Sudeste",
-   "valor": 1052352358.12,
-   "qtd": 5643,
-   "share": 0.31,
-   "custeio": 411957838.17,
-   "investimento": 516829818.12,
-   "comercializacao": 117264701.83,
+   "valor": 1037580702.7,
+   "qtd": 5699,
+   "share": 0.32,
+   "custeio": 392333691.52,
+   "investimento": 523617309.35,
+   "comercializacao": 115329701.83,
    "industrializacao": 6300000.0,
-   "agricola_share": 51.58,
-   "pronaf_share": 29.41,
-   "ticket": 186488.1,
+   "agricola_share": 52.54,
+   "pronaf_share": 30.66,
+   "ticket": 182063.64,
    "pop": 17223547,
-   "valor_hab": 61.1
-  },
-  {
-   "uf": "AC",
-   "regiao": "Norte",
-   "valor": 1000105038.43,
-   "qtd": 12261,
-   "share": 0.3,
-   "custeio": 511630634.7,
-   "investimento": 401174403.73,
-   "comercializacao": 0.0,
-   "industrializacao": 87300000.0,
-   "agricola_share": 15.45,
-   "pronaf_share": 57.48,
-   "ticket": 81567.98,
-   "pop": 884372,
-   "valor_hab": 1130.86
+   "valor_hab": 60.24
   },
   {
    "uf": "RN",
    "regiao": "Nordeste",
-   "valor": 989920752.45,
-   "qtd": 78809,
+   "valor": 958627624.76,
+   "qtd": 76158,
    "share": 0.29,
-   "custeio": 233507559.96,
-   "investimento": 738560196.49,
-   "comercializacao": 17500000.0,
+   "custeio": 220886177.77,
+   "investimento": 723188450.99,
+   "comercializacao": 14200000.0,
    "industrializacao": 352996.0,
-   "agricola_share": 28.16,
-   "pronaf_share": 74.1,
-   "ticket": 12561.01,
+   "agricola_share": 27.61,
+   "pronaf_share": 75.14,
+   "ticket": 12587.35,
    "pop": 3455236,
-   "valor_hab": 286.5
+   "valor_hab": 277.44
+  },
+  {
+   "uf": "AC",
+   "regiao": "Norte",
+   "valor": 931529348.09,
+   "qtd": 11482,
+   "share": 0.28,
+   "custeio": 483796582.29,
+   "investimento": 385432765.8,
+   "comercializacao": 0.0,
+   "industrializacao": 62300000.0,
+   "agricola_share": 14.06,
+   "pronaf_share": 57.42,
+   "ticket": 81129.54,
+   "pop": 884372,
+   "valor_hab": 1053.32
   },
   {
    "uf": "RR",
    "regiao": "Norte",
-   "valor": 675442041.71,
-   "qtd": 3063,
+   "valor": 663105373.44,
+   "qtd": 2997,
    "share": 0.2,
-   "custeio": 391910653.95,
-   "investimento": 283531387.76,
+   "custeio": 375583168.37,
+   "investimento": 287522205.07,
    "comercializacao": 0.0,
    "industrializacao": 0.0,
-   "agricola_share": 47.15,
-   "pronaf_share": 23.66,
-   "ticket": 220516.5,
+   "agricola_share": 46.99,
+   "pronaf_share": 24.15,
+   "ticket": 221256.38,
    "pop": 738772,
-   "valor_hab": 914.28
+   "valor_hab": 897.58
   },
   {
    "uf": "DF",
    "regiao": "Centro-Oeste",
-   "valor": 449393448.67,
-   "qtd": 441,
-   "share": 0.13,
-   "custeio": 98133958.74,
-   "investimento": 57595450.25,
-   "comercializacao": 165264039.68,
-   "industrializacao": 128400000.0,
-   "agricola_share": 92.82,
-   "pronaf_share": 1.44,
-   "ticket": 1019032.76,
+   "valor": 371959555.42,
+   "qtd": 412,
+   "share": 0.11,
+   "custeio": 78312854.33,
+   "investimento": 48182661.41,
+   "comercializacao": 130264039.68,
+   "industrializacao": 115200000.0,
+   "agricola_share": 91.52,
+   "pronaf_share": 1.69,
+   "ticket": 902814.45,
    "pop": 2996899,
-   "valor_hab": 149.95
+   "valor_hab": 124.11
   },
   {
    "uf": "AM",
    "regiao": "Norte",
-   "valor": 305906646.75,
-   "qtd": 7900,
+   "valor": 281618737.64,
+   "qtd": 7500,
    "share": 0.09,
-   "custeio": 156070008.81,
-   "investimento": 123153443.93,
-   "comercializacao": 15683194.01,
-   "industrializacao": 11000000.0,
-   "agricola_share": 24.32,
-   "pronaf_share": 41.93,
-   "ticket": 38722.36,
+   "custeio": 158530721.24,
+   "investimento": 110988016.4,
+   "comercializacao": 6100000.0,
+   "industrializacao": 6000000.0,
+   "agricola_share": 23.78,
+   "pronaf_share": 42.85,
+   "ticket": 37549.17,
    "pop": 4321616,
-   "valor_hab": 70.79
+   "valor_hab": 65.17
   },
   {
    "uf": "AP",
    "regiao": "Norte",
-   "valor": 111479341.05,
-   "qtd": 5133,
+   "valor": 98401562.22,
+   "qtd": 4728,
    "share": 0.03,
-   "custeio": 25474696.11,
-   "investimento": 86004644.94,
+   "custeio": 18574696.11,
+   "investimento": 79826866.11,
    "comercializacao": 0.0,
    "industrializacao": 0.0,
-   "agricola_share": 65.62,
-   "pronaf_share": 76.73,
-   "ticket": 21718.17,
+   "agricola_share": 66.85,
+   "pronaf_share": 80.47,
+   "ticket": 20812.51,
    "pop": 806517,
-   "valor_hab": 138.22
+   "valor_hab": 122.01
   }
  ],
  "populacao_fonte": {
@@ -2532,251 +2628,251 @@
  "produtos": {
   "disponivel": true,
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08",
+   "ini": "2025-10",
+   "fim": "2026-09",
    "meses": 12
   },
   "custeio": [
    {
     "produto": "\"Bovinos\"",
-    "valor": 63259005334.2,
-    "qtd": 358524,
+    "valor": 61126165299.83,
+    "qtd": 350729,
     "area_ha": 0.0,
-    "share": 35.84,
+    "share": 35.7,
     "valor_ha": null
    },
    {
     "produto": "\"Soja\"",
-    "valor": 41151795284.97,
-    "qtd": 113511,
+    "valor": 40014912531.95,
+    "qtd": 110025,
     "area_ha": 0.0,
-    "share": 23.31,
+    "share": 23.37,
     "valor_ha": null
    },
    {
     "produto": "\"Milho\"",
-    "valor": 17121018925.63,
-    "qtd": 95592,
+    "valor": 16405527296.25,
+    "qtd": 94045,
     "area_ha": 0.0,
-    "share": 9.7,
+    "share": 9.58,
     "valor_ha": null
    },
    {
     "produto": "\"Café\"",
-    "valor": 12327954647.96,
-    "qtd": 60837,
+    "valor": 11953297570.63,
+    "qtd": 59992,
     "area_ha": 0.0,
     "share": 6.98,
     "valor_ha": null
    },
    {
     "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-    "valor": 11503379431.25,
-    "qtd": 932,
+    "valor": 11368803331.85,
+    "qtd": 952,
     "area_ha": 0.0,
-    "share": 6.52,
+    "share": 6.64,
     "valor_ha": null
    },
    {
     "produto": "\"Cana-De-Açucar\"",
-    "valor": 3902909241.69,
-    "qtd": 5796,
+    "valor": 3800511315.69,
+    "qtd": 5602,
     "area_ha": 0.0,
-    "share": 2.21,
+    "share": 2.22,
     "valor_ha": null
    },
    {
     "produto": "\"Algodão\"",
-    "valor": 3041429025.98,
-    "qtd": 342,
+    "valor": 2982625753.87,
+    "qtd": 308,
     "area_ha": 0.0,
-    "share": 1.72,
+    "share": 1.74,
     "valor_ha": null
    },
    {
     "produto": "\"Suínos\"",
-    "valor": 2626312189.85,
-    "qtd": 8690,
+    "valor": 2597248836.59,
+    "qtd": 8732,
     "area_ha": 0.0,
-    "share": 1.49,
+    "share": 1.52,
     "valor_ha": null
    },
    {
     "produto": "\"Galináceos\"",
-    "valor": 2445430088.88,
-    "qtd": 4418,
+    "valor": 2335549166.21,
+    "qtd": 4373,
     "area_ha": 0.0,
-    "share": 1.39,
+    "share": 1.36,
     "valor_ha": null
    },
    {
     "produto": "\"Arroz\"",
-    "valor": 2196941177.67,
-    "qtd": 6337,
+    "valor": 2230682703.34,
+    "qtd": 6393,
     "area_ha": 0.0,
-    "share": 1.24,
+    "share": 1.3,
     "valor_ha": null
    },
    {
     "produto": "\"Trigo\"",
-    "valor": 1646601125.09,
-    "qtd": 17207,
+    "valor": 1639006806.39,
+    "qtd": 17199,
     "area_ha": 0.0,
-    "share": 0.93,
+    "share": 0.96,
     "valor_ha": null
    },
    {
     "produto": "\"Laranja\"",
-    "valor": 1592848652.52,
-    "qtd": 3097,
+    "valor": 1544081088.14,
+    "qtd": 3085,
     "area_ha": 0.0,
     "share": 0.9,
     "valor_ha": null
    },
    {
     "produto": "\"Peixe\"",
-    "valor": 1109739396.34,
-    "qtd": 5164,
+    "valor": 1095392189.44,
+    "qtd": 5262,
     "area_ha": 0.0,
-    "share": 0.63,
+    "share": 0.64,
     "valor_ha": null
    },
    {
     "produto": "\"Uva\"",
-    "valor": 876719018.77,
-    "qtd": 6274,
+    "valor": 886097219.67,
+    "qtd": 6325,
     "area_ha": 0.0,
-    "share": 0.5,
+    "share": 0.52,
     "valor_ha": null
    },
    {
     "produto": "\"Alho\"",
-    "valor": 663332030.51,
-    "qtd": 669,
+    "valor": 640845201.27,
+    "qtd": 644,
     "area_ha": 0.0,
-    "share": 0.38,
+    "share": 0.37,
     "valor_ha": null
    }
   ],
   "investimento": [
    {
     "produto": "\"Bovinos\"",
-    "valor": 16124676458.7,
-    "qtd": 303330,
+    "valor": 15979078951.78,
+    "qtd": 298327,
     "area_ha": null,
-    "share": 17.82,
+    "share": 18.1,
     "valor_ha": null
    },
    {
     "produto": "\"Trator\"",
-    "valor": 7670745189.38,
-    "qtd": 33775,
+    "valor": 7415783646.09,
+    "qtd": 32437,
     "area_ha": null,
-    "share": 8.48,
-    "valor_ha": null
-   },
-   {
-    "produto": "\"Máquinas E Implementos\"",
-    "valor": 7301559400.02,
-    "qtd": 61916,
-    "area_ha": null,
-    "share": 8.07,
-    "valor_ha": null
-   },
-   {
-    "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-    "valor": 7217593764.37,
-    "qtd": 28488,
-    "area_ha": null,
-    "share": 7.98,
+    "share": 8.4,
     "valor_ha": null
    },
    {
     "produto": "\"Correção Intensiva Do Solo\"",
-    "valor": 7214374973.02,
-    "qtd": 17794,
+    "valor": 7060024602.19,
+    "qtd": 18575,
     "area_ha": null,
-    "share": 7.97,
+    "share": 8.0,
+    "valor_ha": null
+   },
+   {
+    "produto": "\"Máquinas E Implementos\"",
+    "valor": 6917461317.66,
+    "qtd": 59271,
+    "area_ha": null,
+    "share": 7.83,
+    "valor_ha": null
+   },
+   {
+    "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
+    "valor": 6850110455.12,
+    "qtd": 28479,
+    "area_ha": null,
+    "share": 7.76,
     "valor_ha": null
    },
    {
     "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-    "valor": 4811944503.89,
-    "qtd": 211562,
+    "valor": 4704310541.45,
+    "qtd": 204801,
     "area_ha": null,
-    "share": 5.32,
+    "share": 5.33,
     "valor_ha": null
    },
    {
     "produto": "\"Colheitadeiras, Colhedeiras E Arrancadeiras\"",
-    "valor": 4457091844.21,
-    "qtd": 10227,
+    "valor": 4326356927.55,
+    "qtd": 9939,
     "area_ha": null,
-    "share": 4.93,
+    "share": 4.9,
     "valor_ha": null
    },
    {
     "produto": "\"Instalações Para Aves, Suínos E Coelhos\"",
-    "valor": 3418039719.67,
-    "qtd": 34082,
+    "valor": 3244407608.23,
+    "qtd": 32215,
     "area_ha": null,
-    "share": 3.78,
+    "share": 3.67,
     "valor_ha": null
    },
    {
     "produto": "\"Pastagem\"",
-    "valor": 3033565252.76,
-    "qtd": 64383,
+    "valor": 3040799215.69,
+    "qtd": 63111,
     "area_ha": null,
-    "share": 3.35,
+    "share": 3.44,
     "valor_ha": null
    },
    {
     "produto": "\"Café\"",
-    "valor": 1874298674.9,
-    "qtd": 15725,
+    "valor": 1873040895.28,
+    "qtd": 15787,
     "area_ha": null,
-    "share": 2.07,
-    "valor_ha": null
-   },
-   {
-    "produto": "\"Irrigação\"",
-    "valor": 1699448011.33,
-    "qtd": 28047,
-    "area_ha": null,
-    "share": 1.88,
-    "valor_ha": null
-   },
-   {
-    "produto": "\"Adubação Intensiva Do Solo\"",
-    "valor": 1458449495.13,
-    "qtd": 2980,
-    "area_ha": null,
-    "share": 1.61,
+    "share": 2.12,
     "valor_ha": null
    },
    {
     "produto": "\"Residências Rurais\"",
-    "valor": 1394092742.62,
-    "qtd": 195813,
+    "valor": 1625006863.9,
+    "qtd": 209249,
     "area_ha": null,
-    "share": 1.54,
+    "share": 1.84,
+    "valor_ha": null
+   },
+   {
+    "produto": "\"Irrigação\"",
+    "valor": 1618098344.36,
+    "qtd": 27055,
+    "area_ha": null,
+    "share": 1.83,
+    "valor_ha": null
+   },
+   {
+    "produto": "\"Adubação Intensiva Do Solo\"",
+    "valor": 1440374107.81,
+    "qtd": 2962,
+    "area_ha": null,
+    "share": 1.63,
+    "valor_ha": null
+   },
+   {
+    "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
+    "valor": 1192818092.82,
+    "qtd": 63503,
+    "area_ha": null,
+    "share": 1.35,
     "valor_ha": null
    },
    {
     "produto": "\"Cana-De-Açucar\"",
-    "valor": 1275591448.36,
-    "qtd": 6836,
+    "valor": 1192815637.26,
+    "qtd": 6462,
     "area_ha": null,
-    "share": 1.41,
-    "valor_ha": null
-   },
-   {
-    "produto": "\"Granjas Avícolas\"",
-    "valor": 1106046831.12,
-    "qtd": 5583,
-    "area_ha": null,
-    "share": 1.22,
+    "share": 1.35,
     "valor_ha": null
    }
   ],
@@ -2785,45 +2881,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 9091372754.44
+      "valor": 8626158690.65
      },
      {
       "produto": "\"Café\"",
-      "valor": 7734770873.62
+      "valor": 7416887651.28
      },
      {
       "produto": "\"Soja\"",
-      "valor": 2537439709.38
-     },
-     {
-      "produto": "\"Milho\"",
-      "valor": 943954230.37
+      "valor": 2394230074.51
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 892861908.02
+      "valor": 969297843.13
+     },
+     {
+      "produto": "\"Milho\"",
+      "valor": 863041887.56
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 1780286635.06
+      "valor": 1775575633.85
      },
      {
       "produto": "\"Trator\"",
-      "valor": 1303589848.36
+      "valor": 1267746694.61
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 1053138679.6
+      "valor": 1014583107.01
      },
      {
       "produto": "\"Café\"",
-      "valor": 731756826.25
+      "valor": 728620499.45
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 677265309.11
+      "valor": 647249793.64
      }
     ]
    },
@@ -2831,45 +2927,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 7442595110.38
+      "valor": 7564122088.29
      },
      {
       "produto": "\"Soja\"",
-      "valor": 6481322263.43
+      "valor": 6307552858.25
      },
      {
       "produto": "\"Milho\"",
-      "valor": 2337720720.37
+      "valor": 2386775441.6
      },
      {
       "produto": "\"Arroz\"",
-      "valor": 1706307967.34
+      "valor": 1716825571.3
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 1065962425.8
+      "valor": 971102420.84
      }
     ],
     "investimento": [
      {
-      "produto": "\"Trator\"",
-      "valor": 1337656193.67
+      "produto": "\"Correção Intensiva Do Solo\"",
+      "valor": 1329660582.64
      },
      {
-      "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 1264843341.74
+      "produto": "\"Trator\"",
+      "valor": 1282197275.27
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 1079791191.79
+      "valor": 1037065780.58
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 1030360350.49
+      "valor": 978541976.16
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 699557979.88
+      "valor": 720490959.11
      }
     ]
    },
@@ -2877,45 +2973,45 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 7189574587.21
+      "valor": 7165540289.34
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 4613342227.85
+      "valor": 4532539325.51
      },
      {
       "produto": "\"Milho\"",
-      "valor": 4271884702.72
+      "valor": 4235899077.62
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 2749354011.74
+      "valor": 3011902914.52
      },
      {
       "produto": "\"Suínos\"",
-      "valor": 632046132.5
+      "valor": 621644969.0
      }
     ],
     "investimento": [
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 1636863229.73
+      "valor": 1668630519.72
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 1153885256.2
+      "valor": 1127234961.45
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 1141851699.29
+      "valor": 1103919239.31
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 1076427217.51
+      "valor": 1080156152.83
      },
      {
       "produto": "\"Trator\"",
-      "valor": 1008998952.85
+      "valor": 979565255.04
      }
     ]
    },
@@ -2923,45 +3019,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 6944598920.94
+      "valor": 6649233766.54
      },
      {
       "produto": "\"Soja\"",
-      "valor": 5137305374.89
+      "valor": 4891085528.76
      },
      {
       "produto": "\"Milho\"",
-      "valor": 1653555830.55
+      "valor": 1452001195.66
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 258945131.47
+      "valor": 274822403.15
      },
      {
       "produto": "\"Suínos\"",
-      "valor": 224885555.87
+      "valor": 220534208.3
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 1868358869.37
-     },
-     {
-      "produto": "\"Máquinas E Implementos\"",
-      "valor": 513142967.7
+      "valor": 1852474576.3
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 490737339.4
+      "valor": 491493591.91
+     },
+     {
+      "produto": "\"Máquinas E Implementos\"",
+      "valor": 482895806.81
      },
      {
       "produto": "\"Colheitadeiras, Colhedeiras E Arrancadeiras\"",
-      "valor": 292692710.93
+      "valor": 281985871.67
      },
      {
-      "produto": "\"Trator\"",
-      "valor": 280290593.3
+      "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
+      "valor": 257965048.34
      }
     ]
    },
@@ -2969,45 +3065,45 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 5968534005.99
+      "valor": 5868230342.78
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 5579492739.88
+      "valor": 5331515347.46
      },
      {
       "produto": "\"Milho\"",
-      "valor": 2616217229.27
+      "valor": 2491624111.55
      },
      {
       "produto": "\"Algodão\"",
-      "valor": 2233519362.66
+      "valor": 2065355460.89
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 112000000.0
+      "valor": 102000000.0
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 2063558443.72
+      "valor": 2083083704.81
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 1597562329.79
+      "valor": 1530959732.83
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 1100346369.61
+      "valor": 1077482098.87
      },
      {
       "produto": "\"Colheitadeiras, Colhedeiras E Arrancadeiras\"",
-      "valor": 876811890.1
+      "valor": 849131204.01
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 682334663.66
+      "valor": 590841206.34
      }
     ]
    },
@@ -3015,45 +3111,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 5828030375.79
+      "valor": 5803371172.61
      },
      {
       "produto": "\"Soja\"",
-      "valor": 947900390.98
+      "valor": 905771437.46
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 816847016.92
+      "valor": 813829881.82
      },
      {
       "produto": "\"Milho\"",
-      "valor": 707542151.93
+      "valor": 704972478.11
      },
      {
       "produto": "\"Suínos\"",
-      "valor": 557756608.42
+      "valor": 555808036.41
      }
     ],
     "investimento": [
      {
       "produto": "\"Instalações Para Aves, Suínos E Coelhos\"",
-      "valor": 1090362532.34
+      "valor": 1010171319.48
      },
      {
       "produto": "\"Trator\"",
-      "valor": 849398773.59
+      "valor": 794473703.02
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 727570976.74
+      "valor": 698739825.18
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 519157189.04
+      "valor": 508328128.85
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 473581174.04
+      "valor": 450308293.49
      }
     ]
    },
@@ -3061,45 +3157,45 @@
     "custeio": [
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 5393800049.27
+      "valor": 5084581027.65
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 3174551907.02
+      "valor": 3088522895.69
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 2112835246.21
+      "valor": 2004964000.91
      },
      {
       "produto": "\"Laranja\"",
-      "valor": 1169463761.96
+      "valor": 1127519256.61
      },
      {
-      "produto": "\"Café\"",
-      "valor": 1159799537.78
+      "produto": "\"Soja\"",
+      "valor": 1089501721.64
      }
     ],
     "investimento": [
      {
       "produto": "\"Trator\"",
-      "valor": 734388915.61
+      "valor": 717689694.74
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 519787008.12
-     },
-     {
-      "produto": "\"Máquinas E Implementos\"",
-      "valor": 422532797.39
+      "valor": 490987916.59
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 397258227.02
+      "valor": 419662242.04
+     },
+     {
+      "produto": "\"Máquinas E Implementos\"",
+      "valor": 397566716.13
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 285558560.53
+      "valor": 269610268.49
      }
     ]
    },
@@ -3107,45 +3203,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 3740193125.46
+      "valor": 3660985348.85
      },
      {
       "produto": "\"Soja\"",
-      "valor": 3094976569.57
+      "valor": 3039195601.65
      },
      {
       "produto": "\"Milho\"",
-      "valor": 1399312133.63
+      "valor": 1337334582.21
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 254493000.6
+      "valor": 160493000.6
      },
      {
-      "produto": "\"Suínos\"",
-      "valor": 140955808.79
+      "produto": "\"Cana-De-Açucar\"",
+      "valor": 131249799.4
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 817265126.32
+      "valor": 817542481.93
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 539570364.58
+      "valor": 521617403.56
      },
      {
       "produto": "\"Pastagem\"",
-      "valor": 354761657.34
+      "valor": 362482734.75
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 308904491.33
+      "valor": 307208075.93
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 281799068.23
+      "valor": 253650865.98
      }
     ]
    },
@@ -3153,91 +3249,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 3085006692.7
+      "valor": 2916719852.44
      },
      {
       "produto": "\"Soja\"",
-      "valor": 407491980.81
+      "valor": 405478886.87
      },
      {
       "produto": "\"Milho\"",
-      "valor": 176723491.09
+      "valor": 143381373.73
      },
      {
       "produto": "\"Café\"",
-      "valor": 91160174.69
+      "valor": 90710189.51
      },
      {
-      "produto": "\"Peixe\"",
-      "valor": 54270509.03
+      "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
+      "valor": 52700000.0
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 972311971.77
+      "valor": 973246986.7
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 428382500.56
+      "valor": 406095994.89
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 116614677.11
-     },
-     {
-      "produto": "\"Máquinas E Implementos\"",
-      "valor": 104429817.64
+      "valor": 111437506.0
      },
      {
       "produto": "\"Pastagem\"",
-      "valor": 100019021.26
-     }
-    ]
-   },
-   "PA": {
-    "custeio": [
-     {
-      "produto": "\"Bovinos\"",
-      "valor": 3028342463.97
-     },
-     {
-      "produto": "\"Soja\"",
-      "valor": 1064693319.41
-     },
-     {
-      "produto": "\"Milho\"",
-      "valor": 350736205.15
-     },
-     {
-      "produto": "\"Cana-De-Açucar\"",
-      "valor": 25000000.0
-     },
-     {
-      "produto": "\"Dendê\"",
-      "valor": 22918590.97
-     }
-    ],
-    "investimento": [
-     {
-      "produto": "\"Bovinos\"",
-      "valor": 944993429.04
-     },
-     {
-      "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 446464878.89
-     },
-     {
-      "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 367565966.7
+      "valor": 105834357.6
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 275189551.48
-     },
-     {
-      "produto": "\"Açaí\"",
-      "valor": 256732015.63
+      "valor": 105353052.85
      }
     ]
    },
@@ -3245,19 +3295,19 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 2978538029.68
+      "valor": 2813158932.56
      },
      {
       "produto": "\"Soja\"",
-      "valor": 1633920528.38
+      "valor": 1598324090.53
      },
      {
       "produto": "\"Milho\"",
-      "valor": 337937866.86
+      "valor": 299412146.86
      },
      {
       "produto": "\"Arroz\"",
-      "valor": 66930370.26
+      "valor": 89461978.87
      },
      {
       "produto": "\"Algodão\"",
@@ -3267,23 +3317,23 @@
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 512222644.16
+      "valor": 486500030.74
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 242634961.83
+      "valor": 238046680.43
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 241211645.67
+      "valor": 207371127.93
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 194989708.11
+      "valor": 184258189.29
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 158584614.04
+      "valor": 138089245.13
      }
     ]
    },
@@ -3291,45 +3341,91 @@
     "custeio": [
      {
       "produto": "\"Café\"",
-      "valor": 2780679317.83
+      "valor": 2808910471.33
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 480217157.11
+      "valor": 456187869.07
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
-      "valor": 297680001.0
+      "valor": 279680001.0
      },
      {
       "produto": "\"Mamão\"",
-      "valor": 126170420.35
+      "valor": 122934282.1
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 74608732.32
+      "valor": 73646904.43
      }
     ],
     "investimento": [
      {
       "produto": "\"Café\"",
-      "valor": 801363024.23
+      "valor": 800715818.42
      },
      {
       "produto": "\"Irrigação\"",
-      "valor": 402599610.16
+      "valor": 410387080.38
      },
      {
       "produto": "\"Trator\"",
-      "valor": 328558462.75
+      "valor": 299804720.02
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 294503876.05
+      "valor": 288944291.85
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 194007488.61
+      "valor": 179544892.92
+     }
+    ]
+   },
+   "PA": {
+    "custeio": [
+     {
+      "produto": "\"Bovinos\"",
+      "valor": 2758706581.28
+     },
+     {
+      "produto": "\"Soja\"",
+      "valor": 991818231.21
+     },
+     {
+      "produto": "\"Milho\"",
+      "valor": 252661006.65
+     },
+     {
+      "produto": "\"Cana-De-Açucar\"",
+      "valor": 25000000.0
+     },
+     {
+      "produto": "\"Dendê\"",
+      "valor": 22300773.67
+     }
+    ],
+    "investimento": [
+     {
+      "produto": "\"Bovinos\"",
+      "valor": 912628854.34
+     },
+     {
+      "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
+      "valor": 431440357.49
+     },
+     {
+      "produto": "\"Açaí\"",
+      "valor": 273564998.0
+     },
+     {
+      "produto": "\"Correção Intensiva Do Solo\"",
+      "valor": 237905285.9
+     },
+     {
+      "produto": "\"Máquinas E Implementos\"",
+      "valor": 188829145.9
      }
     ]
    },
@@ -3337,45 +3433,45 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 2630017429.15
+      "valor": 2475283199.63
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 2159140497.77
+      "valor": 2042458565.75
      },
      {
       "produto": "\"Milho\"",
-      "valor": 680518500.01
+      "valor": 676322371.4
      },
      {
       "produto": "\"Algodão\"",
-      "valor": 581023858.74
+      "valor": 531733514.12
      },
      {
       "produto": "\"Café\"",
-      "valor": 406861047.74
+      "valor": 414577314.27
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 1054991936.99
+      "valor": 1059010079.62
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 534687797.79
+      "valor": 527940902.34
      },
      {
       "produto": "\"Trator\"",
-      "valor": 323228087.4
+      "valor": 348328950.29
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 308711073.02
+      "valor": 293917616.77
      },
      {
-      "produto": "\"Colheitadeiras, Colhedeiras E Arrancadeiras\"",
-      "valor": 266502607.24
+      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
+      "valor": 258493674.96
      }
     ]
    },
@@ -3383,45 +3479,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 1835974937.11
+      "valor": 1718620047.41
      },
      {
       "produto": "\"Soja\"",
-      "valor": 1296221327.41
+      "valor": 1224735640.78
      },
      {
       "produto": "\"Milho\"",
-      "valor": 271334840.01
+      "valor": 266148831.2
+     },
+     {
+      "produto": "\"Algodão\"",
+      "valor": 173056041.73
      },
      {
       "produto": "\"Cana-De-Açucar\"",
       "valor": 83010837.28
-     },
-     {
-      "produto": "\"Vacinas, Sais Minerais E Medicamentos\"",
-      "valor": 71980906.99
      }
     ],
     "investimento": [
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 467500087.33
+      "valor": 454506612.62
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 433636642.83
-     },
-     {
-      "produto": "\"Máquinas E Implementos\"",
-      "valor": 209221039.4
+      "valor": 419730528.63
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 198558856.3
+      "valor": 206676776.28
+     },
+     {
+      "produto": "\"Máquinas E Implementos\"",
+      "valor": 195653444.67
      },
      {
       "produto": "\"Pastagem\"",
-      "valor": 181146685.68
+      "valor": 179004395.33
      }
     ]
    },
@@ -3429,45 +3525,45 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 1370193620.7
+      "valor": 1415417197.47
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 244987743.53
+      "valor": 237008196.12
      },
      {
       "produto": "\"Milho\"",
-      "valor": 187282151.65
+      "valor": 163347196.63
      },
      {
       "produto": "\"Algodão\"",
-      "valor": 57222302.57
+      "valor": 59059696.91
      },
      {
       "produto": "\"Vacinas, Sais Minerais E Medicamentos\"",
-      "valor": 33085614.43
+      "valor": 18036511.94
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 222874890.67
-     },
-     {
-      "produto": "\"Ovinos\"",
-      "valor": 185028641.59
+      "valor": 217785100.39
      },
      {
       "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
-      "valor": 176197115.05
+      "valor": 192947745.05
+     },
+     {
+      "produto": "\"Ovinos\"",
+      "valor": 180530967.69
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 169015860.47
+      "valor": 166633381.0
      },
      {
-      "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 119393247.19
+      "produto": "\"Residências Rurais\"",
+      "valor": 121213885.35
      }
     ]
    },
@@ -3475,45 +3571,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 661617892.16
+      "valor": 643040863.13
      },
      {
       "produto": "\"Uva\"",
-      "valor": 290402613.33
+      "valor": 296957890.86
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 144189524.74
+      "valor": 144823744.64
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 141192663.28
+      "valor": 131565537.51
      },
      {
       "produto": "\"Ovinos\"",
-      "valor": 98191625.23
+      "valor": 97415539.42
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 578770574.02
+      "valor": 569773428.65
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 147948928.92
-     },
-     {
-      "produto": "\"Fundiários\"",
-      "valor": 95959861.41
-     },
-     {
-      "produto": "\"Ovinos\"",
-      "valor": 87413231.96
+      "valor": 146477935.42
      },
      {
       "produto": "\"Residências Rurais\"",
-      "valor": 84282447.14
+      "valor": 106295343.09
+     },
+     {
+      "produto": "\"Fundiários\"",
+      "valor": 90714263.81
+     },
+     {
+      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
+      "valor": 89089925.47
      }
     ]
    },
@@ -3521,45 +3617,45 @@
     "custeio": [
      {
       "produto": "\"Milho\"",
-      "valor": 588537881.92
+      "valor": 586002523.13
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 338549270.61
+      "valor": 320407643.57
      },
      {
       "produto": "\"Laranja\"",
-      "valor": 20852853.03
-     },
-     {
-      "produto": "\"Cana-De-Açucar\"",
-      "valor": 12922873.16
+      "valor": 20169207.9
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 9366624.82
+      "valor": 9271430.48
+     },
+     {
+      "produto": "\"Cana-De-Açucar\"",
+      "valor": 8675057.32
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 254534532.22
+      "valor": 247168172.73
      },
      {
       "produto": "\"Trator\"",
-      "valor": 74292535.02
+      "valor": 68567240.32
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 56472999.15
+      "valor": 52460766.83
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 52216782.31
+      "valor": 52232876.62
      },
      {
-      "produto": "\"Laranja\"",
-      "valor": 36514486.6
+      "produto": "\"Residências Rurais\"",
+      "valor": 37949239.84
      }
     ]
    },
@@ -3567,45 +3663,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 390955542.68
+      "valor": 378798286.82
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 238776538.63
-     },
-     {
-      "produto": "\"Aves\"",
-      "valor": 43199874.29
+      "valor": 230292348.01
      },
      {
       "produto": "\"Agroartesanato\"",
-      "valor": 36782893.84
+      "valor": 36171865.84
+     },
+     {
+      "produto": "\"Aves\"",
+      "valor": 35087574.29
      },
      {
       "produto": "\"Vacinas, Sais Minerais E Medicamentos\"",
-      "valor": 34079375.1
+      "valor": 34057545.82
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 555482475.2
+      "valor": 550146780.51
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 245730337.85
+      "valor": 241848955.28
      },
      {
       "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
-      "valor": 134267454.69
+      "valor": 149762395.39
      },
      {
       "produto": "\"Residências Rurais\"",
-      "valor": 120013188.16
+      "valor": 146242548.09
      },
      {
-      "produto": "\"Máquinas E Implementos\"",
-      "valor": 85425351.83
+      "produto": "\"Instalações Para Aves, Suínos E Coelhos\"",
+      "valor": 80997861.18
      }
     ]
    },
@@ -3613,45 +3709,45 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 453763559.56
+      "valor": 427809100.21
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 22517072.14
-     },
-     {
-      "produto": "\"Soja\"",
-      "valor": 10215160.44
+      "valor": 16260416.14
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
       "valor": 10000000.0
      },
      {
-      "produto": "\"Milho\"",
-      "valor": 6737769.19
+      "produto": "\"Soja\"",
+      "valor": 9084364.65
+     },
+     {
+      "produto": "\"Suínos\"",
+      "valor": 7054010.6
      }
     ],
     "investimento": [
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 135139449.73
+      "valor": 135373955.21
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 109903863.99
+      "valor": 104303840.27
      },
      {
       "produto": "\"Aquisição De Sistemas Para Rastreabilidade De Bovinos E Bubalinos\"",
-      "valor": 26036000.0
-     },
-     {
-      "produto": "\"Pescado\"",
-      "valor": 20900497.2
+      "valor": 24304460.0
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 20512347.69
+      "valor": 20508587.7
+     },
+     {
+      "produto": "\"Pescado\"",
+      "valor": 16126749.39
      }
     ]
    },
@@ -3659,11 +3755,11 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 359361224.53
+      "valor": 353497505.61
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 210186033.71
+      "valor": 203079520.59
      },
      {
       "produto": "\"Milho\"",
@@ -3671,7 +3767,7 @@
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 16417061.11
+      "valor": 16409367.29
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
@@ -3681,23 +3777,23 @@
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 376626398.86
+      "valor": 367303174.18
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 60414459.89
-     },
-     {
-      "produto": "\"Cana-De-Açucar\"",
-      "valor": 43195154.1
-     },
-     {
-      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
-      "valor": 38333293.8
+      "valor": 58802709.82
      },
      {
       "produto": "\"Residências Rurais\"",
-      "valor": 35191061.21
+      "valor": 48561534.21
+     },
+     {
+      "produto": "\"Cana-De-Açucar\"",
+      "valor": 41033018.36
+     },
+     {
+      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
+      "valor": 40186578.8
      }
     ]
    },
@@ -3705,19 +3801,19 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 252148605.61
+      "valor": 248797089.64
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 70899117.0
-     },
-     {
-      "produto": "\"Agroartesanato\"",
-      "valor": 27521100.3
+      "valor": 72610458.89
      },
      {
       "produto": "\"Galináceos\"",
-      "valor": 26999410.12
+      "valor": 33393152.72
+     },
+     {
+      "produto": "\"Agroartesanato\"",
+      "valor": 26422912.3
      },
      {
       "produto": "\"Aquisição De Insumos Para Fornecimento Aos Cooperados\"",
@@ -3727,23 +3823,23 @@
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 277222454.64
+      "valor": 268067955.72
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 202084870.6
-     },
-     {
-      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
-      "valor": 84722573.8
+      "valor": 198410968.65
      },
      {
       "produto": "\"Residências Rurais\"",
-      "valor": 75549179.61
+      "valor": 97566709.03
+     },
+     {
+      "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
+      "valor": 91566036.81
      },
      {
       "produto": "\"Pastagem\"",
-      "valor": 66351312.77
+      "valor": 65199490.53
      }
     ]
    },
@@ -3751,7 +3847,7 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 127985628.62
+      "valor": 121686057.36
      },
      {
       "produto": "\"Manga\"",
@@ -3759,7 +3855,7 @@
      },
      {
       "produto": "\"Cana-De-Açucar\"",
-      "valor": 14202446.88
+      "valor": 13368511.92
      },
      {
       "produto": "\"Galináceos\"",
@@ -3767,29 +3863,29 @@
      },
      {
       "produto": "\"Carcinicultura (Cultivo De Camarão E Lagosta)\"",
-      "valor": 11535376.41
+      "valor": 9735376.78
      }
     ],
     "investimento": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 273892317.77
+      "valor": 263927500.59
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 74866226.46
+      "valor": 71109403.96
      },
      {
       "produto": "\"Quintais Produtivos Para Mulheres Rurais\"",
-      "valor": 51428600.91
+      "valor": 55082066.91
      },
      {
       "produto": "\"Residências Rurais\"",
-      "valor": 40855363.24
+      "valor": 51157282.59
      },
      {
       "produto": "\"Trator\"",
-      "valor": 29575018.07
+      "valor": 27247942.07
      }
     ]
    },
@@ -3797,23 +3893,23 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 249131430.0
+      "valor": 236371379.28
      },
      {
       "produto": "\"Tomate\"",
-      "valor": 43472132.8
+      "valor": 43373247.83
      },
      {
       "produto": "\"Café\"",
-      "valor": 23038990.59
+      "valor": 23671553.92
      },
      {
       "produto": "\"Abacaxi\"",
-      "valor": 22473805.19
+      "valor": 19981989.53
      },
      {
-      "produto": "\"Galináceos\"",
-      "valor": 10051413.69
+      "produto": "\"Pimentão\"",
+      "valor": 8985028.38
      }
     ],
     "investimento": [
@@ -3823,19 +3919,19 @@
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 79534141.78
+      "valor": 74971387.9
      },
      {
       "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 39712142.91
-     },
-     {
-      "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 27902166.13
+      "valor": 41382715.9
      },
      {
       "produto": "\"Pastagem\"",
-      "valor": 27377034.33
+      "valor": 27449425.75
+     },
+     {
+      "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
+      "valor": 27319723.33
      }
     ]
    },
@@ -3843,15 +3939,15 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 165917055.99
+      "valor": 165381146.18
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 107100521.65
+      "valor": 101155811.52
      },
      {
       "produto": "\"Peixe\"",
-      "valor": 74232572.26
+      "valor": 70065242.61
      },
      {
       "produto": "\"Arroz\"",
@@ -3859,25 +3955,25 @@
      },
      {
       "produto": "\"Milho\"",
-      "valor": 14658910.47
+      "valor": 11808447.09
      }
     ],
     "investimento": [
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 66785832.61
+      "valor": 70792344.36
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 45556446.08
+      "valor": 49641090.62
      },
      {
       "produto": "\"Correção Intensiva Do Solo\"",
-      "valor": 41134316.45
+      "valor": 40603589.35
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 25229841.91
+      "valor": 23411069.56
      },
      {
       "produto": "\"Adubação Intensiva Do Solo\"",
@@ -3889,7 +3985,7 @@
     "custeio": [
      {
       "produto": "\"Bovinos\"",
-      "valor": 90229649.69
+      "valor": 93515557.0
      },
      {
       "produto": "\"Galináceos\"",
@@ -3901,33 +3997,33 @@
      },
      {
       "produto": "\"Milho\"",
-      "valor": 3383630.87
+      "valor": 3783630.87
      },
      {
       "produto": "\"Peixe\"",
-      "valor": 3317237.51
+      "valor": 3228170.33
      }
     ],
     "investimento": [
      {
       "produto": "\"Pescado\"",
-      "valor": 28897701.32
+      "valor": 26118078.53
      },
      {
       "produto": "\"Aquisição De Utensílios Domésticos Para Uso Em Meio Rural\"",
-      "valor": 12399809.27
+      "valor": 11543654.77
      },
      {
       "produto": "\"Terraços, Porteiras, Mata-Burros, Currais, Cochos, Cercas\"",
-      "valor": 10446486.88
+      "valor": 10264263.73
      },
      {
       "produto": "\"Bovinos\"",
-      "valor": 9738500.34
+      "valor": 9629983.1
      },
      {
       "produto": "\"Embarcação Pequena (Até 20 A/B)\"",
-      "valor": 9026530.82
+      "valor": 8764103.44
      }
     ]
    },
@@ -3935,23 +4031,23 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 45419360.22
+      "valor": 44218776.28
      },
      {
       "produto": "\"Milho\"",
-      "valor": 27263288.6
-     },
-     {
-      "produto": "\"Suínos\"",
-      "valor": 8761545.39
+      "valor": 12741319.99
      },
      {
       "produto": "\"Feijão\"",
-      "valor": 5924292.02
+      "valor": 7551569.01
+     },
+     {
+      "produto": "\"Suínos\"",
+      "valor": 5682083.88
      },
      {
       "produto": "\"Tomate\"",
-      "valor": 2533860.38
+      "valor": 2027936.43
      }
     ],
     "investimento": [
@@ -3965,15 +4061,15 @@
      },
      {
       "produto": "\"Máquinas E Implementos\"",
-      "valor": 8557483.0
+      "valor": 8620983.0
      },
      {
-      "produto": "\"Armazém, Depósito, Silo, Galpão, Paiol, Estufa E Instalações Congêneres\"",
-      "valor": 7031931.04
+      "produto": "\"Irrigação\"",
+      "valor": 6300603.8
      },
      {
       "produto": "\"Colheitadeiras, Colhedeiras E Arrancadeiras\"",
-      "valor": 6243200.0
+      "valor": 3858200.0
      }
     ]
    },
@@ -3981,15 +4077,7 @@
     "custeio": [
      {
       "produto": "\"Soja\"",
-      "valor": 21749696.11
-     },
-     {
-      "produto": "\"Búfalos (Bubalinos)\"",
-      "valor": 2000000.0
-     },
-     {
-      "produto": "\"Arroz\"",
-      "valor": 1200000.0
+      "valor": 18049696.11
      },
      {
       "produto": "\"Milho\"",
@@ -4003,23 +4091,23 @@
     "investimento": [
      {
       "produto": "\"Açaí\"",
-      "valor": 33208479.95
+      "valor": 31594950.08
      },
      {
       "produto": "\"Pescado\"",
-      "valor": 22706975.0
+      "valor": 19759785.0
      },
      {
       "produto": "\"Equipamentos E Utensílios Para Extrativismo De Espécies Nativas\"",
-      "valor": 5650255.0
+      "valor": 5595855.0
      },
      {
       "produto": "\"Aquisição De Utensílios Domésticos Para Uso Em Meio Rural\"",
-      "valor": 5035300.0
+      "valor": 4391500.0
      },
      {
       "produto": "\"Aquisição De Aquecedores, Geradores, Incineradores, Compressores, Ventiladores E Apar. De Ar Condic.\"",
-      "valor": 3723763.0
+      "valor": 3579763.0
      }
     ]
    }
@@ -4029,16 +4117,16 @@
  "municipios_meta": {
   "disponivel": true,
   "janela": {
-   "ini": "2025-09",
-   "fim": "2026-08",
+   "ini": "2025-10",
+   "fim": "2026-09",
    "meses": 12
   },
   "n_municipios": 5571,
-  "com_contratacao": 5490,
-  "sem_contratacao": 81,
+  "com_contratacao": 5488,
+  "sem_contratacao": 83,
   "sem_nome": 1,
   "reconciliacao_universo_pct": 100.0,
-  "top50_share": 17.36
+  "top50_share": 17.0
  },
  "rankings": {
   "maior_valor": [
@@ -4046,211 +4134,211 @@
     "cod": "5107909",
     "nome": "Sinop",
     "uf": "MT",
-    "valor": 3146019574.99,
-    "qtd": 351
-   },
-   {
-    "cod": "5108402",
-    "nome": "Várzea Grande",
-    "uf": "MT",
-    "valor": 3002137350.0,
-    "qtd": 16
+    "valor": 3191109324.71,
+    "qtd": 339
    },
    {
     "cod": "3506102",
     "nome": "Bebedouro",
     "uf": "SP",
-    "valor": 2624623618.95,
-    "qtd": 228
-   },
-   {
-    "cod": "3128709",
-    "nome": "Guaxupé",
-    "uf": "MG",
-    "valor": 1907402615.31,
-    "qtd": 257
+    "valor": 2171977035.6,
+    "qtd": 208
    },
    {
     "cod": "5218805",
     "nome": "Rio Verde",
     "uf": "GO",
-    "valor": 1839252230.82,
-    "qtd": 1253
-   },
-   {
-    "cod": "2928901",
-    "nome": "São Desidério",
-    "uf": "BA",
-    "valor": 1712813742.71,
-    "qtd": 529
-   },
-   {
-    "cod": "4106902",
-    "nome": "Curitiba",
-    "uf": "PR",
-    "valor": 1626198669.12,
-    "qtd": 30
+    "valor": 1763638668.85,
+    "qtd": 1199
    },
    {
     "cod": "4104808",
     "nome": "Cascavel",
     "uf": "PR",
-    "valor": 1621506702.62,
-    "qtd": 2099
+    "valor": 1678722934.86,
+    "qtd": 2116
    },
    {
-    "cod": "5107875",
-    "nome": "Sapezal",
-    "uf": "MT",
-    "valor": 1499872333.81,
-    "qtd": 140
+    "cod": "2928901",
+    "nome": "São Desidério",
+    "uf": "BA",
+    "valor": 1665934493.34,
+    "qtd": 506
    },
    {
     "cod": "4204202",
     "nome": "Chapecó",
     "uf": "SC",
-    "valor": 1471033045.04,
-    "qtd": 919
+    "valor": 1635780380.31,
+    "qtd": 912
    },
    {
-    "cod": "4115200",
-    "nome": "Maringá",
+    "cod": "4106902",
+    "nome": "Curitiba",
     "uf": "PR",
-    "valor": 1468949612.12,
-    "qtd": 228
+    "valor": 1571560669.12,
+    "qtd": 29
    },
    {
-    "cod": "5103502",
-    "nome": "Diamantino",
+    "cod": "3128709",
+    "nome": "Guaxupé",
+    "uf": "MG",
+    "valor": 1569419718.11,
+    "qtd": 265
+   },
+   {
+    "cod": "5108402",
+    "nome": "Várzea Grande",
     "uf": "MT",
-    "valor": 1441635764.69,
-    "qtd": 347
+    "valor": 1502137350.0,
+    "qtd": 14
    },
    {
-    "cod": "4104907",
-    "nome": "Castro",
-    "uf": "PR",
-    "valor": 1419096690.81,
-    "qtd": 958
-   },
-   {
-    "cod": "4103453",
-    "nome": "Cafelândia",
-    "uf": "PR",
-    "valor": 1365113214.87,
-    "qtd": 504
-   },
-   {
-    "cod": "4124806",
-    "nome": "São João",
-    "uf": "PR",
-    "valor": 1332168047.86,
-    "qtd": 719
+    "cod": "5107875",
+    "nome": "Sapezal",
+    "uf": "MT",
+    "valor": 1481390112.56,
+    "qtd": 132
    },
    {
     "cod": "3543402",
     "nome": "Ribeirão Preto",
     "uf": "SP",
-    "valor": 1325930191.48,
-    "qtd": 70
+    "valor": 1441277128.61,
+    "qtd": 68
    },
    {
-    "cod": "5107925",
-    "nome": "Sorriso",
+    "cod": "4104907",
+    "nome": "Castro",
+    "uf": "PR",
+    "valor": 1404148379.23,
+    "qtd": 917
+   },
+   {
+    "cod": "4124806",
+    "nome": "São João",
+    "uf": "PR",
+    "valor": 1403063478.28,
+    "qtd": 708
+   },
+   {
+    "cod": "5103502",
+    "nome": "Diamantino",
     "uf": "MT",
-    "valor": 1321011957.03,
-    "qtd": 651
+    "valor": 1387248180.68,
+    "qtd": 333
+   },
+   {
+    "cod": "4103453",
+    "nome": "Cafelândia",
+    "uf": "PR",
+    "valor": 1344699678.17,
+    "qtd": 520
+   },
+   {
+    "cod": "4115200",
+    "nome": "Maringá",
+    "uf": "PR",
+    "valor": 1270463474.41,
+    "qtd": 222
    },
    {
     "cod": "5103403",
     "nome": "Cuiabá",
     "uf": "MT",
-    "valor": 1266720642.19,
-    "qtd": 81
+    "valor": 1269475393.44,
+    "qtd": 83
    },
    {
-    "cod": "4115804",
-    "nome": "Medianeira",
-    "uf": "PR",
-    "valor": 1183041432.76,
-    "qtd": 933
+    "cod": "5107925",
+    "nome": "Sorriso",
+    "uf": "MT",
+    "valor": 1213344897.26,
+    "qtd": 618
    },
    {
-    "cod": "4104303",
-    "nome": "Campo Mourão",
-    "uf": "PR",
-    "valor": 1174513129.29,
-    "qtd": 1363
-   },
-   {
-    "cod": "3148103",
-    "nome": "Patrocínio",
-    "uf": "MG",
-    "valor": 1150201824.28,
-    "qtd": 1905
+    "cod": "5208707",
+    "nome": "Goiânia",
+    "uf": "GO",
+    "valor": 1211967876.42,
+    "qtd": 31
    },
    {
     "cod": "4109401",
     "nome": "Guarapuava",
     "uf": "PR",
-    "valor": 1135334049.23,
-    "qtd": 1151
+    "valor": 1117239418.35,
+    "qtd": 1116
+   },
+   {
+    "cod": "3148103",
+    "nome": "Patrocínio",
+    "uf": "MG",
+    "valor": 1103553858.89,
+    "qtd": 1842
+   },
+   {
+    "cod": "4104303",
+    "nome": "Campo Mourão",
+    "uf": "PR",
+    "valor": 1080011987.7,
+    "qtd": 1396
    },
    {
     "cod": "2911105",
     "nome": "Formosa do Rio Preto",
     "uf": "BA",
-    "valor": 1017753484.25,
-    "qtd": 573
-   },
-   {
-    "cod": "3539509",
-    "nome": "Pitangueiras",
-    "uf": "SP",
-    "valor": 958440462.98,
-    "qtd": 74
-   },
-   {
-    "cod": "5211909",
-    "nome": "Jataí",
-    "uf": "GO",
-    "valor": 956971980.95,
-    "qtd": 857
-   },
-   {
-    "cod": "3127107",
-    "nome": "Frutal",
-    "uf": "MG",
-    "valor": 912143871.73,
-    "qtd": 701
-   },
-   {
-    "cod": "2917359",
-    "nome": "Jaborandi",
-    "uf": "BA",
-    "valor": 906593535.3,
-    "qtd": 1425
+    "valor": 980710003.46,
+    "qtd": 534
    },
    {
     "cod": "4127700",
     "nome": "Toledo",
     "uf": "PR",
-    "valor": 880169673.16,
-    "qtd": 2462
+    "valor": 951000661.18,
+    "qtd": 2454
+   },
+   {
+    "cod": "3550308",
+    "nome": "São Paulo",
+    "uf": "SP",
+    "valor": 920947310.84,
+    "qtd": 29
+   },
+   {
+    "cod": "5211909",
+    "nome": "Jataí",
+    "uf": "GO",
+    "valor": 910529425.72,
+    "qtd": 812
+   },
+   {
+    "cod": "3127107",
+    "nome": "Frutal",
+    "uf": "MG",
+    "valor": 890987904.6,
+    "qtd": 677
    },
    {
     "cod": "5107040",
     "nome": "Primavera do Leste",
     "uf": "MT",
-    "valor": 859518119.94,
-    "qtd": 341
+    "valor": 888955712.71,
+    "qtd": 322
    },
    {
-    "cod": "4203600",
-    "nome": "Campos Novos",
-    "uf": "SC",
-    "valor": 851980947.12,
-    "qtd": 1135
+    "cod": "4117909",
+    "nome": "Palotina",
+    "uf": "PR",
+    "valor": 873816691.1,
+    "qtd": 1111
+   },
+   {
+    "cod": "4314902",
+    "nome": "Porto Alegre",
+    "uf": "RS",
+    "valor": 842911075.29,
+    "qtd": 17
    }
   ],
   "maior_por_habitante": [
@@ -4258,211 +4346,211 @@
     "cod": "4124806",
     "nome": "São João",
     "uf": "PR",
-    "valor_hab": 112078.75,
+    "valor_hab": 118043.37,
     "pop": 11886.0
    },
    {
     "cod": "2917359",
     "nome": "Jaborandi",
     "uf": "BA",
-    "valor_hab": 97745.93,
+    "valor_hab": 85988.14,
     "pop": 9275.0
    },
    {
     "cod": "5102686",
     "nome": "Campos de Júlio",
     "uf": "MT",
-    "valor_hab": 82034.61,
+    "valor_hab": 75536.72,
     "pop": 8822.0
    },
    {
     "cod": "4103453",
     "nome": "Cafelândia",
     "uf": "PR",
-    "valor_hab": 71859.41,
+    "valor_hab": 70784.84,
     "pop": 18997.0
    },
    {
     "cod": "4113734",
     "nome": "Luiziana",
     "uf": "PR",
-    "valor_hab": 66300.29,
+    "valor_hab": 65649.65,
     "pop": 6690.0
-   },
-   {
-    "cod": "5103502",
-    "nome": "Diamantino",
-    "uf": "MT",
-    "valor_hab": 65705.11,
-    "pop": 21941.0
    },
    {
     "cod": "5204250",
     "nome": "Cachoeira Dourada",
     "uf": "GO",
-    "valor_hab": 64352.18,
+    "valor_hab": 64553.13,
     "pop": 7782.0
+   },
+   {
+    "cod": "5103502",
+    "nome": "Diamantino",
+    "uf": "MT",
+    "valor_hab": 63226.3,
+    "pop": 21941.0
    },
    {
     "cod": "5107941",
     "nome": "Tabaporã",
     "uf": "MT",
-    "valor_hab": 63928.75,
+    "valor_hab": 62808.6,
     "pop": 9818.0
    },
    {
     "cod": "5104526",
     "nome": "Ipiranga do Norte",
     "uf": "MT",
-    "valor_hab": 60716.43,
+    "valor_hab": 56967.91,
     "pop": 7815.0
-   },
-   {
-    "cod": "5108907",
-    "nome": "Nova Maringá",
-    "uf": "MT",
-    "valor_hab": 57279.72,
-    "pop": 5846.0
    },
    {
     "cod": "5213707",
     "nome": "Montes Claros de Goiás",
     "uf": "GO",
-    "valor_hab": 53164.76,
+    "valor_hab": 53384.83,
     "pop": 8756.0
    },
    {
-    "cod": "2928901",
-    "nome": "São Desidério",
-    "uf": "BA",
-    "valor_hab": 52175.39,
-    "pop": 32828.0
+    "cod": "5108907",
+    "nome": "Nova Maringá",
+    "uf": "MT",
+    "valor_hab": 52642.64,
+    "pop": 5846.0
    },
    {
     "cod": "5107875",
     "nome": "Sapezal",
     "uf": "MT",
-    "valor_hab": 51819.8,
+    "valor_hab": 51181.25,
     "pop": 28944.0
+   },
+   {
+    "cod": "2928901",
+    "nome": "São Desidério",
+    "uf": "BA",
+    "valor_hab": 50747.36,
+    "pop": 32828.0
    },
    {
     "cod": "5207253",
     "nome": "Doverlândia",
     "uf": "GO",
-    "valor_hab": 49276.75,
+    "valor_hab": 48401.24,
     "pop": 6956.0
    },
    {
     "cod": "5006275",
     "nome": "Paraíso das Águas",
     "uf": "MS",
-    "valor_hab": 45926.45,
+    "valor_hab": 45104.35,
     "pop": 5510.0
-   },
-   {
-    "cod": "1100072",
-    "nome": "Corumbiara",
-    "uf": "RO",
-    "valor_hab": 45539.15,
-    "pop": 7519.0
    },
    {
     "cod": "5106802",
     "nome": "Porto dos Gaúchos",
     "uf": "MT",
-    "valor_hab": 44971.41,
+    "valor_hab": 43193.27,
     "pop": 5593.0
-   },
-   {
-    "cod": "5108006",
-    "nome": "Tapurah",
-    "uf": "MT",
-    "valor_hab": 44142.63,
-    "pop": 14370.0
-   },
-   {
-    "cod": "5107354",
-    "nome": "São José do Xingu",
-    "uf": "MT",
-    "valor_hab": 43757.56,
-    "pop": 5964.0
-   },
-   {
-    "cod": "3155504",
-    "nome": "Rio Paranaíba",
-    "uf": "MG",
-    "valor_hab": 41551.43,
-    "pop": 14532.0
    },
    {
     "cod": "2201150",
     "nome": "Baixa Grande do Ribeiro",
     "uf": "PI",
-    "valor_hab": 40897.08,
+    "valor_hab": 42861.78,
     "pop": 13272.0
    },
    {
-    "cod": "3130705",
-    "nome": "Indianópolis",
-    "uf": "MG",
-    "valor_hab": 40034.99,
-    "pop": 6171.0
+    "cod": "5107354",
+    "nome": "São José do Xingu",
+    "uf": "MT",
+    "valor_hab": 42268.13,
+    "pop": 5964.0
+   },
+   {
+    "cod": "1100072",
+    "nome": "Corumbiara",
+    "uf": "RO",
+    "valor_hab": 40861.42,
+    "pop": 7519.0
    },
    {
     "cod": "5107305",
     "nome": "São José do Rio Claro",
     "uf": "MT",
-    "valor_hab": 39855.13,
+    "valor_hab": 40156.64,
     "pop": 14911.0
    },
    {
-    "cod": "3535804",
-    "nome": "Paranapanema",
-    "uf": "SP",
-    "valor_hab": 39408.46,
-    "pop": 19395.0
+    "cod": "3130705",
+    "nome": "Indianópolis",
+    "uf": "MG",
+    "valor_hab": 39717.12,
+    "pop": 6171.0
    },
    {
     "cod": "2911105",
     "nome": "Formosa do Rio Preto",
     "uf": "BA",
-    "valor_hab": 39297.02,
+    "valor_hab": 37866.71,
     "pop": 25899.0
+   },
+   {
+    "cod": "2209203",
+    "nome": "Santa Filomena",
+    "uf": "PI",
+    "valor_hab": 37412.17,
+    "pop": 6087.0
    },
    {
     "cod": "5204805",
     "nome": "Campo Alegre de Goiás",
     "uf": "GO",
-    "valor_hab": 37828.67,
+    "valor_hab": 36780.38,
     "pop": 7422.0
    },
    {
-    "cod": "3128709",
-    "nome": "Guaxupé",
+    "cod": "3535804",
+    "nome": "Paranapanema",
+    "uf": "SP",
+    "valor_hab": 36149.92,
+    "pop": 19395.0
+   },
+   {
+    "cod": "3155504",
+    "nome": "Rio Paranaíba",
     "uf": "MG",
-    "valor_hab": 37465.43,
-    "pop": 50911.0
+    "valor_hab": 36047.57,
+    "pop": 14532.0
    },
    {
     "cod": "4319158",
     "nome": "São Miguel das Missões",
     "uf": "RS",
-    "valor_hab": 37431.88,
+    "valor_hab": 35873.2,
     "pop": 7056.0
-   },
-   {
-    "cod": "4206405",
-    "nome": "Guaraciaba",
-    "uf": "SC",
-    "valor_hab": 36388.88,
-    "pop": 10796.0
    },
    {
     "cod": "1702000",
     "nome": "Araguaçu",
     "uf": "TO",
-    "valor_hab": 36251.71,
+    "valor_hab": 35473.98,
     "pop": 8133.0
+   },
+   {
+    "cod": "5108006",
+    "nome": "Tapurah",
+    "uf": "MT",
+    "valor_hab": 34918.18,
+    "pop": 14370.0
+   },
+   {
+    "cod": "2915304",
+    "nome": "Itagimirim",
+    "uf": "BA",
+    "valor_hab": 34637.04,
+    "pop": 6347.0
    }
   ],
   "maior_pronaf": [
@@ -4471,210 +4559,210 @@
     "nome": "Cametá",
     "uf": "PA",
     "pronaf_share": 100.0,
-    "valor": 60176386.12
+    "valor": 66497272.99
+   },
+   {
+    "cod": "4318457",
+    "nome": "São José das Missões",
+    "uf": "RS",
+    "pronaf_share": 97.07,
+    "valor": 58191461.22
    },
    {
     "cod": "4312351",
     "nome": "Montauri",
     "uf": "RS",
-    "pronaf_share": 94.97,
-    "valor": 66696681.01
+    "pronaf_share": 94.68,
+    "valor": 67239174.91
    },
    {
     "cod": "4319307",
     "nome": "São Paulo das Missões",
     "uf": "RS",
-    "pronaf_share": 94.24,
-    "valor": 50635334.13
+    "pronaf_share": 94.29,
+    "valor": 52362428.39
    },
    {
     "cod": "2910750",
     "nome": "Fátima",
     "uf": "BA",
-    "pronaf_share": 93.06,
-    "valor": 61936279.81
-   },
-   {
-    "cod": "4200705",
-    "nome": "Alfredo Wagner",
-    "uf": "SC",
-    "pronaf_share": 92.65,
-    "valor": 160773041.87
-   },
-   {
-    "cod": "4310504",
-    "nome": "Iraí",
-    "uf": "RS",
-    "pronaf_share": 92.34,
-    "valor": 96133755.61
+    "pronaf_share": 93.72,
+    "valor": 60714743.42
    },
    {
     "cod": "4305959",
     "nome": "Cotiporã",
     "uf": "RS",
-    "pronaf_share": 92.22,
-    "valor": 73422898.14
+    "pronaf_share": 93.37,
+    "valor": 68484575.32
    },
    {
-    "cod": "2923803",
-    "nome": "Paripiranga",
-    "uf": "BA",
-    "pronaf_share": 92.04,
-    "valor": 67088350.08
+    "cod": "4200705",
+    "nome": "Alfredo Wagner",
+    "uf": "SC",
+    "pronaf_share": 92.31,
+    "valor": 158757164.58
    },
    {
     "cod": "2805406",
     "nome": "Poço Redondo",
     "uf": "SE",
-    "pronaf_share": 91.54,
-    "valor": 76401371.36
+    "pronaf_share": 92.09,
+    "valor": 74186381.43
    },
    {
-    "cod": "4214805",
-    "nome": "Rio do Sul",
-    "uf": "SC",
-    "pronaf_share": 91.54,
-    "valor": 92990447.29
+    "cod": "4310504",
+    "nome": "Iraí",
+    "uf": "RS",
+    "pronaf_share": 92.09,
+    "valor": 93112715.53
    },
    {
-    "cod": "4201901",
-    "nome": "Aurora",
-    "uf": "SC",
-    "pronaf_share": 91.36,
-    "valor": 63786235.55
+    "cod": "2923803",
+    "nome": "Paripiranga",
+    "uf": "BA",
+    "pronaf_share": 92.02,
+    "valor": 66875789.5
    },
    {
     "cod": "4304309",
     "nome": "Cândido Godói",
     "uf": "RS",
-    "pronaf_share": 91.25,
-    "valor": 100702234.38
+    "pronaf_share": 91.27,
+    "valor": 97057482.66
    },
    {
-    "cod": "4313086",
-    "nome": "Nova Pádua",
-    "uf": "RS",
-    "pronaf_share": 90.93,
-    "valor": 52088064.78
-   },
-   {
-    "cod": "4209201",
-    "nome": "Lacerdópolis",
+    "cod": "4201901",
+    "nome": "Aurora",
     "uf": "SC",
-    "pronaf_share": 90.84,
-    "valor": 81463654.99
-   },
-   {
-    "cod": "2900355",
-    "nome": "Adustina",
-    "uf": "BA",
-    "pronaf_share": 90.43,
-    "valor": 78476269.44
+    "pronaf_share": 91.1,
+    "valor": 63432547.81
    },
    {
     "cod": "4313359",
     "nome": "Nova Roma do Sul",
     "uf": "RS",
-    "pronaf_share": 89.98,
-    "valor": 73922217.36
+    "pronaf_share": 90.91,
+    "valor": 77047019.04
    },
    {
-    "cod": "4311601",
-    "nome": "Liberato Salzano",
+    "cod": "4313086",
+    "nome": "Nova Pádua",
     "uf": "RS",
-    "pronaf_share": 89.72,
-    "valor": 91681592.27
+    "pronaf_share": 90.74,
+    "valor": 52407017.22
    },
    {
-    "cod": "4300505",
-    "nome": "Alpestre",
-    "uf": "RS",
-    "pronaf_share": 89.6,
-    "valor": 75206617.13
-   },
-   {
-    "cod": "2902104",
-    "nome": "Araci",
+    "cod": "2900355",
+    "nome": "Adustina",
     "uf": "BA",
-    "pronaf_share": 89.54,
-    "valor": 50900085.71
+    "pronaf_share": 90.56,
+    "valor": 78492080.35
    },
    {
-    "cod": "4306304",
-    "nome": "David Canabarro",
-    "uf": "RS",
-    "pronaf_share": 88.93,
-    "valor": 64184484.46
-   },
-   {
-    "cod": "4305801",
-    "nome": "Constantina",
-    "uf": "RS",
-    "pronaf_share": 88.83,
-    "valor": 151875780.32
-   },
-   {
-    "cod": "4306130",
-    "nome": "Cruzaltense",
-    "uf": "RS",
-    "pronaf_share": 88.83,
-    "valor": 72606964.18
-   },
-   {
-    "cod": "2805604",
-    "nome": "Porto da Folha",
-    "uf": "SE",
-    "pronaf_share": 88.75,
-    "valor": 71045380.06
-   },
-   {
-    "cod": "2300309",
-    "nome": "Acopiara",
-    "uf": "CE",
-    "pronaf_share": 88.7,
-    "valor": 57885580.97
+    "cod": "4209201",
+    "nome": "Lacerdópolis",
+    "uf": "SC",
+    "pronaf_share": 90.37,
+    "valor": 92614067.65
    },
    {
     "cod": "4207403",
     "nome": "Imbuia",
     "uf": "SC",
-    "pronaf_share": 88.59,
-    "valor": 115314357.02
+    "pronaf_share": 90.35,
+    "valor": 111563016.39
    },
    {
-    "cod": "4215075",
-    "nome": "Riqueza",
-    "uf": "SC",
-    "pronaf_share": 88.59,
-    "valor": 83864875.31
-   },
-   {
-    "cod": "2805505",
-    "nome": "Poço Verde",
-    "uf": "SE",
-    "pronaf_share": 87.45,
-    "valor": 73747429.2
+    "cod": "2902104",
+    "nome": "Araci",
+    "uf": "BA",
+    "pronaf_share": 90.21,
+    "valor": 51333567.91
    },
    {
     "cod": "2804201",
     "nome": "Monte Alegre de Sergipe",
     "uf": "SE",
-    "pronaf_share": 87.3,
-    "valor": 66371925.25
+    "pronaf_share": 89.45,
+    "valor": 66388736.56
+   },
+   {
+    "cod": "4215075",
+    "nome": "Riqueza",
+    "uf": "SC",
+    "pronaf_share": 89.31,
+    "valor": 82521821.67
+   },
+   {
+    "cod": "4311601",
+    "nome": "Liberato Salzano",
+    "uf": "RS",
+    "pronaf_share": 89.28,
+    "valor": 89731537.38
+   },
+   {
+    "cod": "2805604",
+    "nome": "Porto da Folha",
+    "uf": "SE",
+    "pronaf_share": 89.08,
+    "valor": 70816998.86
+   },
+   {
+    "cod": "4306130",
+    "nome": "Cruzaltense",
+    "uf": "RS",
+    "pronaf_share": 89.06,
+    "valor": 71796175.28
+   },
+   {
+    "cod": "4305801",
+    "nome": "Constantina",
+    "uf": "RS",
+    "pronaf_share": 88.91,
+    "valor": 155048976.96
+   },
+   {
+    "cod": "4306304",
+    "nome": "David Canabarro",
+    "uf": "RS",
+    "pronaf_share": 88.61,
+    "valor": 66891107.73
+   },
+   {
+    "cod": "4300505",
+    "nome": "Alpestre",
+    "uf": "RS",
+    "pronaf_share": 88.6,
+    "valor": 78106201.13
+   },
+   {
+    "cod": "2300309",
+    "nome": "Acopiara",
+    "uf": "CE",
+    "pronaf_share": 88.13,
+    "valor": 57998068.09
+   },
+   {
+    "cod": "2805505",
+    "nome": "Poço Verde",
+    "uf": "SE",
+    "pronaf_share": 87.92,
+    "valor": 73427105.19
    },
    {
     "cod": "2924207",
     "nome": "Pedro Alexandre",
     "uf": "BA",
-    "pronaf_share": 87.08,
-    "valor": 63699342.48
+    "pronaf_share": 87.53,
+    "valor": 63959549.1
    },
    {
-    "cod": "4301206",
-    "nome": "Arroio do Tigre",
+    "cod": "4313607",
+    "nome": "Paim Filho",
     "uf": "RS",
-    "pronaf_share": 86.35,
-    "valor": 60129634.19
+    "pronaf_share": 87.43,
+    "valor": 82167387.3
    }
   ],
   "regra_por_habitante": "só municípios com 5 mil habitantes ou mais (Censo 2022); denominador pequeno fabricaria intensidade",
@@ -4756,8 +4844,8 @@
  ],
  "cautelas": [
   "Contratação é fluxo: um mês forte de custeio (plantio) não significa carteira maior; o saldo rural do sistema está no IF.data e no SGS, em outra régua.",
-  "O recurso RegiaoUF da MDCR cobre 96.11% do universo na janela (fica abaixo em todos os meses medidos); por isso o recorte estadual desta aba é o municipal agregado pelo código IBGE, que fecha com o universo ao centavo.",
-  "Os meses 2026-09 são parciais (cédulas entram no Sicor com atraso). Ficam fora da janela de 12 meses e de todo ranking.",
+  "O recurso RegiaoUF da MDCR cobre 96.22% do universo na janela (fica abaixo em todos os meses medidos); por isso o recorte estadual desta aba é o municipal agregado pelo código IBGE, que fecha com o universo ao centavo.",
+  "Os meses 2026-10 são parciais (cédulas entram no Sicor com atraso). Ficam fora da janela de 12 meses e de todo ranking.",
   "Programa, fonte e finalidade são os declarados na cédula; reclassificações posteriores não voltam à MDCR.",
   "O recorte por instituição é do CNPJ contratante; cooperativas singulares e bancos do mesmo grupo não são consolidados.",
   "Valor por habitante e valor por hectare são intensidades, não medidas de acesso: não dizem quantos produtores foram atendidos."

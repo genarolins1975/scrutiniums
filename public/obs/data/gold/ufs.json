@@ -1,6 +1,6 @@
 {
   "disponivel": true,
-  "gerado_em": "2026-10-31T16:29:13+00:00",
+  "gerado_em": "2026-11-01T17:09:14+00:00",
   "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
   "datas": {
     "scr": "2026-08",
@@ -13,8 +13,8 @@
     "moradia": "2026-08",
     "consignado": "2026-08",
     "rural": {
-      "ini": "2025-09",
-      "fim": "2026-08"
+      "ini": "2025-10",
+      "fim": "2026-09"
     },
     "bndes": {
       "ini": "2025-04",
@@ -220,16 +220,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 1000105038.43,
-        "qtd": 12261,
-        "share": 0.3,
-        "valor_hab": 1130.86,
-        "agricola_share": 15.45,
-        "pronaf_share": 57.48,
-        "ticket": 81567.98
+        "valor": 931529348.09,
+        "qtd": 11482,
+        "share": 0.28,
+        "valor_hab": 1053.32,
+        "agricola_share": 14.06,
+        "pronaf_share": 57.42,
+        "ticket": 81129.54
       },
       "bndes": {
         "janela": {
@@ -516,16 +516,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 1527622424.8,
-        "qtd": 64376,
-        "share": 0.45,
-        "valor_hab": 474.29,
-        "agricola_share": 37.88,
-        "pronaf_share": 58.98,
-        "ticket": 23729.69
+        "valor": 1512092887.93,
+        "qtd": 63769,
+        "share": 0.46,
+        "valor_hab": 469.47,
+        "agricola_share": 37.51,
+        "pronaf_share": 59.15,
+        "ticket": 23712.04
       },
       "bndes": {
         "janela": {
@@ -812,16 +812,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 305906646.75,
-        "qtd": 7900,
+        "valor": 281618737.64,
+        "qtd": 7500,
         "share": 0.09,
-        "valor_hab": 70.79,
-        "agricola_share": 24.32,
-        "pronaf_share": 41.93,
-        "ticket": 38722.36
+        "valor_hab": 65.17,
+        "agricola_share": 23.78,
+        "pronaf_share": 42.85,
+        "ticket": 37549.17
       },
       "bndes": {
         "janela": {
@@ -1108,16 +1108,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 111479341.05,
-        "qtd": 5133,
+        "valor": 98401562.22,
+        "qtd": 4728,
         "share": 0.03,
-        "valor_hab": 138.22,
-        "agricola_share": 65.62,
-        "pronaf_share": 76.73,
-        "ticket": 21718.17
+        "valor_hab": 122.01,
+        "agricola_share": 66.85,
+        "pronaf_share": 80.47,
+        "ticket": 20812.51
       },
       "bndes": {
         "janela": {
@@ -1404,16 +1404,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 15032628981.75,
-        "qtd": 355891,
-        "share": 4.45,
-        "valor_hab": 1010.88,
-        "agricola_share": 67.21,
-        "pronaf_share": 29.57,
-        "ticket": 42239.42
+        "valor": 14428344665.03,
+        "qtd": 351441,
+        "share": 4.41,
+        "valor_hab": 970.24,
+        "agricola_share": 66.37,
+        "pronaf_share": 31.06,
+        "ticket": 41054.81
       },
       "bndes": {
         "janela": {
@@ -1700,16 +1700,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 3240452822.48,
-        "qtd": 195182,
-        "share": 0.96,
-        "valor_hab": 349.61,
-        "agricola_share": 28.24,
-        "pronaf_share": 61.23,
-        "ticket": 16602.21
+        "valor": 3236434889.53,
+        "qtd": 193010,
+        "share": 0.99,
+        "valor_hab": 349.17,
+        "agricola_share": 28.97,
+        "pronaf_share": 61.41,
+        "ticket": 16768.22
       },
       "bndes": {
         "janela": {
@@ -1996,16 +1996,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 449393448.67,
-        "qtd": 441,
-        "share": 0.13,
-        "valor_hab": 149.95,
-        "agricola_share": 92.82,
-        "pronaf_share": 1.44,
-        "ticket": 1019032.76
+        "valor": 371959555.42,
+        "qtd": 412,
+        "share": 0.11,
+        "valor_hab": 124.11,
+        "agricola_share": 91.52,
+        "pronaf_share": 1.69,
+        "ticket": 902814.45
       },
       "bndes": {
         "janela": {
@@ -2292,16 +2292,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 9609014961.02,
-        "qtd": 47572,
-        "share": 2.84,
-        "valor_hab": 2328.41,
-        "agricola_share": 89.91,
-        "pronaf_share": 34.41,
-        "ticket": 201988.88
+        "valor": 9637613325.98,
+        "qtd": 47078,
+        "share": 2.95,
+        "valor_hab": 2335.34,
+        "agricola_share": 90.27,
+        "pronaf_share": 34.55,
+        "ticket": 204715.86
       },
       "bndes": {
         "janela": {
@@ -2588,16 +2588,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 23997037231.83,
-        "qtd": 47847,
-        "share": 7.1,
-        "valor_hab": 3232.52,
-        "agricola_share": 54.8,
-        "pronaf_share": 5.84,
-        "ticket": 501536.92
+        "valor": 23236933803.45,
+        "qtd": 46064,
+        "share": 7.11,
+        "valor_hab": 3130.13,
+        "agricola_share": 53.59,
+        "pronaf_share": 5.81,
+        "ticket": 504448.89
       },
       "bndes": {
         "janela": {
@@ -2884,16 +2884,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 6280265311.36,
-        "qtd": 156803,
-        "share": 1.86,
-        "valor_hab": 894.85,
-        "agricola_share": 48.16,
-        "pronaf_share": 30.42,
-        "ticket": 40051.95
+        "valor": 6165551948.69,
+        "qtd": 151064,
+        "share": 1.89,
+        "valor_hab": 878.51,
+        "agricola_share": 49.33,
+        "pronaf_share": 30.44,
+        "ticket": 40814.17
       },
       "bndes": {
         "janela": {
@@ -2981,7 +2981,7 @@
         "pix.q_hab": 10,
         "moradia.pgp": 20,
         "consignado.cons_por_elegivel": 27,
-        "rural.valor_hab": 16,
+        "rural.valor_hab": 15,
         "bndes.valor_hab": 22,
         "prazo.curto_12m_pct": 10,
         "prazo.prazo_medio_anos": 23,
@@ -3180,16 +3180,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 46353112476.64,
-        "qtd": 273242,
-        "share": 13.71,
-        "valor_hab": 2166.7,
-        "agricola_share": 65.98,
-        "pronaf_share": 16.67,
-        "ticket": 169641.24
+        "valor": 44202725248.03,
+        "qtd": 264900,
+        "share": 13.52,
+        "valor_hab": 2066.18,
+        "agricola_share": 65.51,
+        "pronaf_share": 17.4,
+        "ticket": 166865.7
       },
       "bndes": {
         "janela": {
@@ -3476,16 +3476,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 14372227995.09,
-        "qtd": 29422,
-        "share": 4.25,
-        "valor_hab": 4914.2,
-        "agricola_share": 61.96,
-        "pronaf_share": 4.42,
-        "ticket": 488485.76
+        "valor": 13793689284.41,
+        "qtd": 28572,
+        "share": 4.22,
+        "valor_hab": 4716.39,
+        "agricola_share": 60.94,
+        "pronaf_share": 4.55,
+        "ticket": 482769.47
       },
       "bndes": {
         "janela": {
@@ -3772,16 +3772,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 37537005573.44,
-        "qtd": 37147,
-        "share": 11.11,
-        "valor_hab": 9640.55,
-        "agricola_share": 68.93,
-        "pronaf_share": 4.3,
-        "ticket": 1010498.98
+        "valor": 35076010316.14,
+        "qtd": 36817,
+        "share": 10.73,
+        "valor_hab": 9008.5,
+        "agricola_share": 71.77,
+        "pronaf_share": 4.58,
+        "ticket": 952712.34
       },
       "bndes": {
         "janela": {
@@ -4068,16 +4068,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 8163601209.7,
-        "qtd": 52101,
-        "share": 2.42,
-        "valor_hab": 937.14,
-        "agricola_share": 40.06,
-        "pronaf_share": 29.72,
-        "ticket": 156687.99
+        "valor": 7330795125.2,
+        "qtd": 50719,
+        "share": 2.24,
+        "valor_hab": 841.54,
+        "agricola_share": 38.15,
+        "pronaf_share": 32.82,
+        "ticket": 144537.45
       },
       "bndes": {
         "janela": {
@@ -4165,7 +4165,7 @@
         "pix.q_hab": 6,
         "moradia.pgp": 21,
         "consignado.cons_por_elegivel": 11,
-        "rural.valor_hab": 14,
+        "rural.valor_hab": 16,
         "bndes.valor_hab": 16,
         "prazo.curto_12m_pct": 6,
         "prazo.prazo_medio_anos": 26,
@@ -4364,16 +4364,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 1710884927.02,
-        "qtd": 120475,
-        "share": 0.51,
-        "valor_hab": 410.83,
-        "agricola_share": 30.21,
-        "pronaf_share": 66.28,
-        "ticket": 14201.16
+        "valor": 1710102130.1,
+        "qtd": 119068,
+        "share": 0.52,
+        "valor_hab": 410.64,
+        "agricola_share": 30.85,
+        "pronaf_share": 66.56,
+        "ticket": 14362.4
       },
       "bndes": {
         "janela": {
@@ -4660,16 +4660,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 3588278947.76,
-        "qtd": 163675,
-        "share": 1.06,
-        "valor_hab": 375.26,
-        "agricola_share": 36.08,
-        "pronaf_share": 53.55,
-        "ticket": 21923.2
+        "valor": 3571601943.45,
+        "qtd": 160378,
+        "share": 1.09,
+        "valor_hab": 373.52,
+        "agricola_share": 34.79,
+        "pronaf_share": 53.49,
+        "ticket": 22269.9
       },
       "bndes": {
         "janela": {
@@ -4956,16 +4956,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 4190692658.7,
-        "qtd": 189621,
-        "share": 1.24,
-        "valor_hab": 1238.18,
-        "agricola_share": 62.68,
-        "pronaf_share": 35.42,
-        "ticket": 22100.36
+        "valor": 4165845609.94,
+        "qtd": 188411,
+        "share": 1.27,
+        "valor_hab": 1230.84,
+        "agricola_share": 62.71,
+        "pronaf_share": 36.14,
+        "ticket": 22110.42
       },
       "bndes": {
         "janela": {
@@ -5252,16 +5252,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 48681704633.14,
-        "qtd": 161505,
-        "share": 14.4,
-        "valor_hab": 4094.16,
-        "agricola_share": 68.22,
-        "pronaf_share": 18.37,
-        "ticket": 301425.37
+        "valor": 47503726235.31,
+        "qtd": 160134,
+        "share": 14.53,
+        "valor_hab": 3995.09,
+        "agricola_share": 68.98,
+        "pronaf_share": 18.66,
+        "ticket": 296649.84
       },
       "bndes": {
         "janela": {
@@ -5548,16 +5548,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 1052352358.12,
-        "qtd": 5643,
-        "share": 0.31,
-        "valor_hab": 61.1,
-        "agricola_share": 51.58,
-        "pronaf_share": 29.41,
-        "ticket": 186488.1
+        "valor": 1037580702.7,
+        "qtd": 5699,
+        "share": 0.32,
+        "valor_hab": 60.24,
+        "agricola_share": 52.54,
+        "pronaf_share": 30.66,
+        "ticket": 182063.64
       },
       "bndes": {
         "janela": {
@@ -5844,16 +5844,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 989920752.45,
-        "qtd": 78809,
+        "valor": 958627624.76,
+        "qtd": 76158,
         "share": 0.29,
-        "valor_hab": 286.5,
-        "agricola_share": 28.16,
-        "pronaf_share": 74.1,
-        "ticket": 12561.01
+        "valor_hab": 277.44,
+        "agricola_share": 27.61,
+        "pronaf_share": 75.14,
+        "ticket": 12587.35
       },
       "bndes": {
         "janela": {
@@ -6140,16 +6140,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 6302178155.92,
-        "qtd": 36158,
-        "share": 1.86,
-        "valor_hab": 3597.24,
-        "agricola_share": 23.16,
-        "pronaf_share": 34.72,
-        "ticket": 174295.54
+        "valor": 6120677990.71,
+        "qtd": 35436,
+        "share": 1.87,
+        "valor_hab": 3493.64,
+        "agricola_share": 24.13,
+        "pronaf_share": 34.95,
+        "ticket": 172724.86
       },
       "bndes": {
         "janela": {
@@ -6436,16 +6436,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 675442041.71,
-        "qtd": 3063,
+        "valor": 663105373.44,
+        "qtd": 2997,
         "share": 0.2,
-        "valor_hab": 914.28,
-        "agricola_share": 47.15,
-        "pronaf_share": 23.66,
-        "ticket": 220516.5
+        "valor_hab": 897.58,
+        "agricola_share": 46.99,
+        "pronaf_share": 24.15,
+        "ticket": 221256.38
       },
       "bndes": {
         "janela": {
@@ -6533,7 +6533,7 @@
         "pix.q_hab": 1,
         "moradia.pgp": 18,
         "consignado.cons_por_elegivel": 3,
-        "rural.valor_hab": 15,
+        "rural.valor_hab": 14,
         "bndes.valor_hab": 24,
         "prazo.curto_12m_pct": 22,
         "prazo.prazo_medio_anos": 13,
@@ -6732,16 +6732,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 40608978594.35,
-        "qtd": 244647,
-        "share": 12.01,
-        "valor_hab": 3615.07,
-        "agricola_share": 70.65,
-        "pronaf_share": 36.87,
-        "ticket": 165990.09
+        "valor": 40454859949.15,
+        "qtd": 244397,
+        "share": 12.37,
+        "valor_hab": 3601.35,
+        "agricola_share": 70.42,
+        "pronaf_share": 37.1,
+        "ticket": 165529.28
       },
       "bndes": {
         "janela": {
@@ -7028,16 +7028,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 22797776896.58,
-        "qtd": 133613,
-        "share": 6.75,
-        "valor_hab": 2784.62,
-        "agricola_share": 42.43,
-        "pronaf_share": 43.82,
-        "ticket": 170625.44
+        "valor": 22218435912.56,
+        "qtd": 131035,
+        "share": 6.8,
+        "valor_hab": 2713.86,
+        "agricola_share": 41.59,
+        "pronaf_share": 43.57,
+        "ticket": 169561.08
       },
       "bndes": {
         "janela": {
@@ -7324,16 +7324,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 1799089520.06,
-        "qtd": 53579,
-        "share": 0.53,
-        "valor_hab": 782.41,
-        "agricola_share": 54.11,
-        "pronaf_share": 58.42,
-        "ticket": 33578.26
+        "valor": 1772026989.98,
+        "qtd": 53544,
+        "share": 0.54,
+        "valor_hab": 770.64,
+        "agricola_share": 54.44,
+        "pronaf_share": 59.37,
+        "ticket": 33094.78
       },
       "bndes": {
         "janela": {
@@ -7620,16 +7620,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 30446782412.07,
-        "qtd": 43636,
-        "share": 9.01,
-        "valor_hab": 660.71,
-        "agricola_share": 81.07,
-        "pronaf_share": 4.28,
-        "ticket": 697744.58
+        "valor": 29659901092.02,
+        "qtd": 42943,
+        "share": 9.07,
+        "valor_hab": 643.64,
+        "agricola_share": 80.51,
+        "pronaf_share": 4.42,
+        "ticket": 690680.7
       },
       "bndes": {
         "janela": {
@@ -7916,16 +7916,16 @@
       },
       "rural": {
         "janela": {
-          "ini": "2025-09",
-          "fim": "2026-08"
+          "ini": "2025-10",
+          "fim": "2026-09"
         },
-        "valor": 7162386421.59,
-        "qtd": 18274,
-        "share": 2.12,
-        "valor_hab": 4513.56,
-        "agricola_share": 44.41,
-        "pronaf_share": 8.02,
-        "ticket": 391944.1
+        "valor": 6788971723.16,
+        "qtd": 17662,
+        "share": 2.08,
+        "valor_hab": 4278.25,
+        "agricola_share": 44.56,
+        "pronaf_share": 8.15,
+        "ticket": 384382.95
       },
       "bndes": {
         "janela": {
