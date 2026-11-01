@@ -10,11 +10,11 @@ name: Atualizar dados da Segurança pública
 #
 # Cadência pela fonte: o MJSP atualiza as planilhas do Sinesp VDE ao longo do ano (o ano corrente é parcial e só
 # entra na gold quando fecha); o SIM troca o ano preliminar pelo final uma vez por ano; as DCAs dos estados chegam
-# até 30 de abril e são retificáveis; a Projeção do IBGE muda a cada revisão. Uma coleta mensal cobre as quatro;
+# até 30 de abril e são retificáveis; a Projeção do IBGE muda a cada revisão. Uma coleta semanal, às segundas, cobre as quatro;
 # dado igual não gera commit (o sinal é o hash_dados da gold).
 on:
   schedule:
-    - cron: "37 12 21 * *" # dia 21, 09:37 em São Paulo
+    - cron: "37 12 * * 1" # segunda, 09:37 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

@@ -21,7 +21,7 @@ Decisões e evidências: docs/AUDITORIA_PGFN.md. As quatro que mais importam aqu
 4. **Nada de materializar 9 GB.** HTTP → inflate em fluxo → agrega → esquece. O ZIP
    nunca vai para o disco e o CSV nunca existe inteiro em lugar algum.
 
-O conjunto é trimestral e o pipeline roda todo dia: o coletor compara o índice remoto
+O conjunto é trimestral e o pipeline roda toda segunda: o coletor compara o índice remoto
 com o que já absorveu e sai na hora se não houver trimestre novo.
 """
 import re

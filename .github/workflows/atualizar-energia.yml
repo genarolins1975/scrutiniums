@@ -9,7 +9,7 @@ name: Atualizar dados do Setor Elétrico
 # não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
 on:
   schedule:
-    - cron: "40 23 * * *" # 20:40 em São Paulo, depois da atualização das 19h do ONS
+    - cron: "40 23 * * 0" # domingo, 20:40 em São Paulo: pré-carga do PLD para a publicação de segunda
   workflow_dispatch:
     inputs:
       sem_coleta:

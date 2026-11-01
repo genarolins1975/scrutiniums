@@ -6,12 +6,12 @@ name: Atualizar dados do Território e Clima
 # emissões do MCTI (SIRENE, edição bienal), grava o seed com o
 # sha256 de cada original, reconstrói a gold em public/territorio e
 # publica só se os testes do pipeline passarem. O arquivo mensal do INPE fecha o mês
-# nos primeiros dias do mês seguinte e o do mês em curso muda todo dia; duas
-# execuções por mês bastam para os meses completos. Separado dos outros domínios:
+# nos primeiros dias do mês seguinte e o do mês em curso muda todo dia; a
+# execução semanal, às segundas, basta para os meses completos. Separado dos outros domínios:
 # falha de um não atrasa o outro.
 on:
   schedule:
-    - cron: "41 11 2,16 * *" # dias 2 e 16, 08:41 em São Paulo
+    - cron: "41 11 * * 1" # segunda, 08:41 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

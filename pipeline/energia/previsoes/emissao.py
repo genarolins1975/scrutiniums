@@ -1,7 +1,8 @@
-"""Rodada diária da previsão do PLD: verificação antes do corte, emissão e registro.
+"""Rodada semanal da previsão do PLD: verificação antes do corte, emissão e registro.
 
-Compromisso operacional (seção 12.1): corte às 07h00 e publicação até 08h00 de Brasília,
-todos os dias. A coleta noturna das 20h40 (workflow atualizar-energia.yml) é a pré-carga;
+Rotina (seção 12.1; decisão do dono de 01/11/2026): uma rodada por semana, na segunda, com corte
+às 07h00 e emissão até 08h00 de Brasília; o compromisso diário de publicação até 08h00 deixou de
+existir. A coleta de domingo às 20h40 (workflow atualizar-energia.yml) é a pré-carga;
 este módulo confere de manhã se o que a rodada precisa já foi capturado, tenta coletar o
 que falta antes do corte e emite com o dado como estava no corte. Rodar às 20h40 como se
 fosse a rodada das 07h mudaria o conjunto de informação e é recusado aqui: a emissão usa

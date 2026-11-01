@@ -1,8 +1,8 @@
-# Previsão do PLD: disparo externo da rodada diária
+# Previsão do PLD: disparo externo da rodada semanal
 
 ## Por que existe
 
-A rodada diária da previsão precisa ser emitida entre o corte das 07h00 e o prazo das 08h00 de Brasília. O cron do GitHub Actions não garante horário. Em 18/10/2026, as cinco execuções agendadas de `previsao-pld.yml` começaram entre 12h48 e 14h08 UTC, ou seja, entre 09h48 e 11h08 de Brasília, todas depois do prazo (API do Actions, consultada em 19/10/2026). Uma rodada atrasada é registrada com o alerta `ATRASADO_APOS_08H` e não conta como rodada no prazo, de modo que a rotina não pode ser comprovada enquanto o disparo depender só do cron.
+Desde 02/11/2026 a rodada é semanal, na segunda-feira (decisão do dono de 01/11/2026); o compromisso diário de publicação até 08h00 deixou de existir. A rodada de segunda continua emitida entre o corte das 07h00 e as 08h00 de Brasília, para que a comprovação da rotina tenha critério fixo, e vai ao ar com a publicação semanal do Observatório (segunda, 13h07). O cron do GitHub Actions não garante horário. Em 18/10/2026, as cinco execuções agendadas de `previsao-pld.yml` começaram entre 12h48 e 14h08 UTC, ou seja, entre 09h48 e 11h08 de Brasília, todas depois do prazo (API do Actions, consultada em 19/10/2026). Uma rodada atrasada é registrada com o alerta `ATRASADO_APOS_08H` e não conta como rodada no prazo, de modo que a rotina não pode ser comprovada enquanto o disparo depender só do cron.
 
 ## Como funciona
 
@@ -20,6 +20,7 @@ Regras que continuam valendo, qualquer que seja o gatilho:
 - a rodada só é emitida depois do corte das 07h00; se o disparo chegar antes, o workflow espera o corte;
 - a emissão depois das 08h00 é marcada como atrasada;
 - se a rodada do dia já estiver registrada, a execução termina sem emitir;
+- fora da segunda, uma rodada disparada pelo agendador externo é registrada, mas a rotina só cobra a segunda (`dia_de_rodada` em `pipeline/energia/modulos/previsoes.py`);
 - os crons do GitHub continuam ativos como reserva.
 
 O gatilho de cada rodada fica no arquivo de emissões (`execucao.gatilho`), junto com a conta do GitHub que acionou a execução (`execucao.acionado_por`) e o endereço da execução (`execucao.run_url`). A gold leva o gatilho de cada rodada (`rodadas[].gatilho`) e a contagem das rodadas agendadas por gatilho (`rotina.agendadas_por_gatilho`). Assim, quem audita vê quais rodadas vieram do agendador externo e quais do cron.
@@ -29,7 +30,7 @@ O gatilho de cada rodada fica no arquivo de emissões (`execucao.gatilho`), junt
 ## Configuração (feita pelo dono do repositório)
 
 1. **Token.** Criar um token *fine-grained* do GitHub com acesso só ao repositório `genarolins1975/scrutiniums` e permissão **Actions: Read and write**. Nenhuma outra permissão é necessária. Guardar o token só no agendador; ele não entra no repositório.
-2. **Agendador.** Em qualquer serviço que faça uma requisição HTTP em horário fixo, criar uma tarefa diária no fuso America/Sao_Paulo às **06h50** e, de reserva, uma segunda às **07h20**:
+2. **Agendador.** Em qualquer serviço que faça uma requisição HTTP em horário fixo, criar uma tarefa **semanal, às segundas**, no fuso America/Sao_Paulo às **06h50** e, de reserva, outra às **07h20** (se já houver tarefa diária configurada, trocar para semanal: a diária gasta minutos de Actions sem rodada cobrada):
    - método: `POST`;
    - endereço: `https://api.github.com/repos/genarolins1975/scrutiniums/actions/workflows/previsao-pld.yml/dispatches`;
    - cabeçalhos: `Accept: application/vnd.github+json`, `Authorization: Bearer <token>`, `X-GitHub-Api-Version: 2022-11-28`;

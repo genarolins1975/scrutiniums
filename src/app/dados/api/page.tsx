@@ -56,7 +56,7 @@ export default function ApiPage() {
           <section aria-labelledby="api-cadencia">
             <h2 id="api-cadencia" className="font-serif text-2xl text-carvao">Cadência</h2>
             <p className="mt-3">
-              O pipeline coleta as fontes todos os dias e republica o conjunto inteiro só quando a nova versão passa nos testes
+              O pipeline coleta as fontes toda segunda e republica o conjunto inteiro só quando a nova versão passa nos testes
               de conteúdo; reprovada, a versão anterior segue no ar. O instante da última publicação está em{" "}
               <code className={code}>meta.json</code> → <code className={code}>gerado_em</code>, e a data-base de cada fonte em{" "}
               <code className={code}>meta.json</code> → <code className={code}>vintages</code>. Cada fonte tem calendário

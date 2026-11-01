@@ -11,7 +11,7 @@ name: Atualizar dados do Observatório
 # timeout de 90. Nada disso vai para o disco: o ZIP é descomprimido em fluxo.
 on:
   schedule:
-    - cron: "0 9 * * *" # 06:00 em São Paulo, diariamente
+    - cron: "0 9 * * 1" # segunda, 06:00 em São Paulo
   workflow_dispatch:
     inputs:
       somente_gold:

@@ -491,6 +491,17 @@ INCIDENTES_ROTINA = [{
 }]
 # janela da comprovação: dias faltantes antigos continuam contados no total, mas não impedem para sempre a comprovação
 JANELA_COMPROVACAO_DIAS = 30
+# Cadência semanal (decisão do dono de 01/11/2026): a partir desta segunda, só a segunda-feira é dia de rodada esperado,
+# e o compromisso diário de publicação até 08h00 deixou de existir. Os dias anteriores seguem com a regra diária, para que
+# as faltas de outubro continuem contadas. Na cadência semanal, a janela de 30 dias tem quatro ou cinco segundas: a
+# comprovação pede quatro rodadas no prazo (antes, sete), e uma rodada de sete dias atrás nunca conta como atraso.
+INICIO_CADENCIA_SEMANAL = "2026-11-02"
+MINIMO_NO_PRAZO = {"diaria": 7, "semanal": 4}
+
+
+def dia_de_rodada(d):
+    """O dia `d` (data de Brasília) tem rodada esperada? Todo dia até a virada; depois, só a segunda-feira."""
+    return d.isoformat() < INICIO_CADENCIA_SEMANAL or d.weekday() == 0
 
 
 def _rotina(rodadas, agora):
@@ -503,14 +514,16 @@ def _rotina(rodadas, agora):
         d = date.fromisoformat(inicio)
         feitas = {r["origem"] for r in agendadas if not r["falha"]}
         while d <= ate:
-            if d.isoformat() not in feitas:
+            if dia_de_rodada(d) and d.isoformat() not in feitas:
                 faltantes.append(d.isoformat())
             d += timedelta(days=1)
     no_prazo = [r for r in agendadas if r["no_prazo"] and not r["falha"]]
     janela_inicio = max(inicio, (ate - timedelta(days=JANELA_COMPROVACAO_DIAS - 1)).isoformat()) if inicio else None
     faltantes_janela = [d for d in faltantes if janela_inicio and d >= janela_inicio]
     no_prazo_janela = [r for r in no_prazo if janela_inicio and janela_inicio <= r["origem"] <= ate.isoformat()]
-    comprovada = bool(agendadas) and len(no_prazo_janela) >= 7 and not faltantes_janela
+    cadencia = "semanal" if ate.isoformat() >= INICIO_CADENCIA_SEMANAL else "diaria"
+    minimo = MINIMO_NO_PRAZO[cadencia]
+    comprovada = bool(agendadas) and len(no_prazo_janela) >= minimo and not faltantes_janela
     crons = _crons_do_workflow()
     return {
         "workflow": WORKFLOW, "cron_utc": crons,
@@ -519,9 +532,11 @@ def _rotina(rodadas, agora):
                      "(docs/observatorios/energia/previsao-disparo-externo.md). O primeiro que rodar confere o dado, "
                      "tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os "
                      "seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o "
-                     "gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo "
-                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna (atualizar-energia.yml). "
-                     "O gatilho de cada rodada fica no arquivo; a comprovação segue o critério publicado."),
+                     "gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. Desde "
+                     f"{c.data_br(INICIO_CADENCIA_SEMANAL)} a rodada é semanal, às segundas; o arquivo de emissões é "
+                     "commitado em seguida e vai ao ar com a publicação semanal do Observatório, na segunda à tarde. "
+                     "Pré-carga: coleta de domingo à noite (atualizar-energia.yml). O gatilho de cada rodada fica no "
+                     "arquivo; a comprovação segue o critério publicado."),
         "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de "
                 "verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
         "inicio_operacao_agendada": inicio,
@@ -534,6 +549,7 @@ def _rotina(rodadas, agora):
         "dias_sem_rodada_total": len(faltantes),
         "janela_comprovacao": {"dias": JANELA_COMPROVACAO_DIAS, "inicio": janela_inicio, "fim": ate.isoformat(),
                                "no_prazo": len(no_prazo_janela), "dias_sem_rodada": len(faltantes_janela)} if inicio else None,
+        "cadencia": cadencia, "inicio_cadencia_semanal": INICIO_CADENCIA_SEMANAL,
         "comprovada": comprovada,
         "incidentes": [x for x in INCIDENTES_ROTINA if x["de"] <= ate.isoformat()],
         "leitura": ("Nenhuma execução agendada registrada até a data da coleta: a rotina está escrita no código, mas ainda não foi comprovada "
@@ -543,10 +559,14 @@ def _rotina(rodadas, agora):
                     f"{len(agendadas)} execuções agendadas registradas desde {c.data_br(inicio)}, {len(no_prazo)} no prazo, "
                     f"{len(faltantes)} {'dia' if len(faltantes) == 1 else 'dias'} sem rodada; "
                     + ("rotina comprovada nos últimos 30 dias." if comprovada else
-                       "ainda não há sete rodadas no prazo sem dia faltante nos últimos 30 dias; a rotina não é declarada comprovada.")),
-        "criterio_comprovacao": ("Pelo menos sete rodadas agendadas no prazo e nenhum dia faltante nos últimos 30 dias vencidos (ou desde o "
-                                 "início da operação agendada, se for mais recente). Dia faltante é dia de Brasília cujo prazo das 08h00 já "
-                                 "passou sem rodada agendada registrada; os dias faltantes anteriores à janela continuam contados no total."),
+                       f"ainda não há {'sete' if minimo == 7 else 'quatro'} rodadas no prazo sem dia faltante nos últimos 30 dias; "
+                       "a rotina não é declarada comprovada.")),
+        "criterio_comprovacao": ("Até 01/11/2026, rodada diária: pelo menos sete rodadas agendadas no prazo e nenhum dia faltante nos "
+                                 "últimos 30 dias vencidos (ou desde o início da operação agendada, se for mais recente). Desde "
+                                 f"{c.data_br(INICIO_CADENCIA_SEMANAL)}, rodada semanal: só a segunda-feira é dia de rodada, e bastam "
+                                 "quatro rodadas no prazo e nenhuma segunda faltante na mesma janela. Dia faltante é dia de rodada cujo "
+                                 "corte das 07h00 e prazo das 08h00 de Brasília já passaram sem rodada agendada registrada; os dias "
+                                 "faltantes anteriores à janela continuam contados no total."),
     }
 
 
@@ -1606,7 +1626,7 @@ def _governanca(registro, g23, rotina, atual, conf, situacao):
         {"item": "Gate P (validação → produção)", "estado": "não aplicável ainda",
          "evidencia": "Exige período prospectivo com rodadas registradas antes do realizado (proposta: 12 origens semanais) e aprovação do dono.",
          "responsavel": "responsável pela plataforma"},
-        {"item": "Rotina diária comprovada", "estado": "comprovada" if rotina["comprovada"] else "não comprovada",
+        {"item": "Rotina semanal comprovada", "estado": "comprovada" if rotina["comprovada"] else "não comprovada",
          "evidencia": rotina["leitura"], "responsavel": "execuções agendadas registradas"},
     ]
     return {
