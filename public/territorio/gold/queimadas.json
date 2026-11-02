@@ -3,8 +3,8 @@
  "gold": "queimadas",
  "versaoPipeline": "territorio-1.0.0",
  "id": "queimadas_focos_referencia",
- "capturadoEm": "2026-10-18T15:24:56+00:00",
- "dataReferencia": "2026-10-18",
+ "capturadoEm": "2026-11-02T20:53:31+00:00",
+ "dataReferencia": "2026-11-02",
  "fonte": {
   "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/",
@@ -251,10 +251,10 @@
   },
   {
    "ano": 2026,
-   "focos": 89163,
+   "focos": 104058,
    "parcial": true,
    "primeiroDia": "2026-01-01",
-   "ultimoDia": "2026-10-17",
+   "ultimoDia": "2026-11-01",
    "origem": "mensal_todos_sats_filtrado",
    "nota": "Ano em curso: soma dos meses disponíveis, inclusive o mês corrente incompleto. Não comparar com anos fechados."
   }
@@ -409,11 +409,19 @@
    },
    {
     "mes": "2026-10",
-    "focos": 18813,
-    "parcial": true,
-    "ultimoDiaComFoco": "2026-10-17",
+    "focos": 32454,
+    "parcial": false,
+    "ultimoDiaComFoco": "2026-10-31",
     "origem": "mensal_todos_sats_filtrado",
     "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202610.csv"
+   },
+   {
+    "mes": "2026-11",
+    "focos": 1254,
+    "parcial": true,
+    "ultimoDiaComFoco": "2026-11-01",
+    "origem": "mensal_todos_sats_filtrado",
+    "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202611.csv"
    }
   ]
  },
@@ -567,144 +575,144 @@
    "rotulo": "acumuladoAnoCorrente",
    "periodo": {
     "inicio": "2026-01-01",
-    "fim": "2026-09-30"
+    "fim": "2026-10-31"
    },
-   "focos": 70350,
+   "focos": 102804,
    "origem": "mensal_todos_sats_filtrado",
    "porUF": [
     {
      "id": "PA",
-     "focos": 11718
-    },
-    {
-     "id": "MT",
-     "focos": 9399
-    },
-    {
-     "id": "TO",
-     "focos": 7633
+     "focos": 24175
     },
     {
      "id": "MA",
-     "focos": 7126
+     "focos": 11351
     },
     {
      "id": "BA",
-     "focos": 7054
+     "focos": 10362
+    },
+    {
+     "id": "MT",
+     "focos": 10160
+    },
+    {
+     "id": "TO",
+     "focos": 9390
     },
     {
      "id": "AM",
-     "focos": 6257
+     "focos": 8528
     },
     {
      "id": "PI",
-     "focos": 3876
+     "focos": 5693
     },
     {
      "id": "MG",
-     "focos": 3454
+     "focos": 4403
     },
     {
      "id": "RR",
-     "focos": 1975
-    },
-    {
-     "id": "GO",
-     "focos": 1872
-    },
-    {
-     "id": "AC",
-     "focos": 1461
+     "focos": 2428
     },
     {
      "id": "CE",
-     "focos": 1369
+     "focos": 2411
+    },
+    {
+     "id": "GO",
+     "focos": 2276
+    },
+    {
+     "id": "AC",
+     "focos": 2163
     },
     {
      "id": "RO",
-     "focos": 1040
-    },
-    {
-     "id": "MS",
-     "focos": 920
-    },
-    {
-     "id": "SC",
-     "focos": 695
-    },
-    {
-     "id": "PE",
-     "focos": 651
-    },
-    {
-     "id": "RS",
-     "focos": 629
-    },
-    {
-     "id": "PR",
-     "focos": 608
-    },
-    {
-     "id": "SP",
-     "focos": 575
-    },
-    {
-     "id": "ES",
-     "focos": 402
+     "focos": 1343
     },
     {
      "id": "AP",
-     "focos": 360
+     "focos": 1297
     },
     {
-     "id": "RJ",
-     "focos": 256
+     "id": "PE",
+     "focos": 1087
     },
     {
-     "id": "RN",
-     "focos": 255
+     "id": "MS",
+     "focos": 949
     },
     {
-     "id": "AL",
-     "focos": 254
+     "id": "SC",
+     "focos": 743
+    },
+    {
+     "id": "RS",
+     "focos": 684
+    },
+    {
+     "id": "PR",
+     "focos": 648
+    },
+    {
+     "id": "SP",
+     "focos": 601
     },
     {
      "id": "PB",
-     "focos": 252
+     "focos": 461
+    },
+    {
+     "id": "ES",
+     "focos": 432
+    },
+    {
+     "id": "RN",
+     "focos": 355
+    },
+    {
+     "id": "AL",
+     "focos": 297
+    },
+    {
+     "id": "RJ",
+     "focos": 261
     },
     {
      "id": "SE",
-     "focos": 149
+     "focos": 185
     },
     {
      "id": "DF",
-     "focos": 110
+     "focos": 121
     }
    ],
    "porBioma": [
     {
      "id": "Amazônia",
-     "focos": 29580
+     "focos": 48487
     },
     {
      "id": "Cerrado",
-     "focos": 27407
+     "focos": 35517
     },
     {
      "id": "Caatinga",
-     "focos": 6760
+     "focos": 10972
     },
     {
      "id": "Mata Atlântica",
-     "focos": 5856
+     "focos": 7032
     },
     {
      "id": "Pantanal",
-     "focos": 486
+     "focos": 510
     },
     {
      "id": "Pampa",
-     "focos": 261
+     "focos": 286
     }
    ]
   },
@@ -712,144 +720,144 @@
    "rotulo": "mesmoPeriodoAnoAnterior",
    "periodo": {
     "inicio": "2025-01-01",
-    "fim": "2025-09-30"
+    "fim": "2025-10-31"
    },
-   "focos": 75745,
+   "focos": 104423,
    "origem": "anual_sat_ref",
    "porUF": [
     {
      "id": "MA",
-     "focos": 10582
-    },
-    {
-     "id": "MT",
-     "focos": 9171
-    },
-    {
-     "id": "TO",
-     "focos": 8190
+     "focos": 15601
     },
     {
      "id": "BA",
-     "focos": 7445
+     "focos": 10749
+    },
+    {
+     "id": "TO",
+     "focos": 10618
+    },
+    {
+     "id": "MT",
+     "focos": 10581
     },
     {
      "id": "PA",
-     "focos": 6321
-    },
-    {
-     "id": "MG",
-     "focos": 6102
+     "focos": 10003
     },
     {
      "id": "PI",
-     "focos": 5453
+     "focos": 9162
+    },
+    {
+     "id": "MG",
+     "focos": 8120
     },
     {
      "id": "GO",
-     "focos": 3547
+     "focos": 4648
     },
     {
      "id": "AM",
-     "focos": 3282
-    },
-    {
-     "id": "SP",
-     "focos": 2045
-    },
-    {
-     "id": "AC",
-     "focos": 1592
-    },
-    {
-     "id": "PR",
-     "focos": 1528
-    },
-    {
-     "id": "RS",
-     "focos": 1454
-    },
-    {
-     "id": "MS",
-     "focos": 1423
-    },
-    {
-     "id": "RO",
-     "focos": 1387
+     "focos": 4156
     },
     {
      "id": "CE",
-     "focos": 1349
+     "focos": 2881
     },
     {
-     "id": "SC",
-     "focos": 1250
+     "id": "SP",
+     "focos": 2273
     },
     {
-     "id": "RR",
-     "focos": 1060
+     "id": "AC",
+     "focos": 2150
+    },
+    {
+     "id": "RO",
+     "focos": 1747
+    },
+    {
+     "id": "MS",
+     "focos": 1677
+    },
+    {
+     "id": "PR",
+     "focos": 1659
     },
     {
      "id": "PE",
-     "focos": 731
+     "focos": 1577
     },
     {
-     "id": "RJ",
-     "focos": 395
+     "id": "RS",
+     "focos": 1530
+    },
+    {
+     "id": "SC",
+     "focos": 1378
+    },
+    {
+     "id": "RR",
+     "focos": 1188
     },
     {
      "id": "PB",
-     "focos": 334
+     "focos": 569
     },
     {
-     "id": "ES",
-     "focos": 315
-    },
-    {
-     "id": "RN",
-     "focos": 230
-    },
-    {
-     "id": "DF",
-     "focos": 200
-    },
-    {
-     "id": "SE",
-     "focos": 136
-    },
-    {
-     "id": "AL",
-     "focos": 126
+     "id": "RJ",
+     "focos": 480
     },
     {
      "id": "AP",
-     "focos": 97
+     "focos": 430
+    },
+    {
+     "id": "RN",
+     "focos": 379
+    },
+    {
+     "id": "ES",
+     "focos": 350
+    },
+    {
+     "id": "DF",
+     "focos": 233
+    },
+    {
+     "id": "AL",
+     "focos": 147
+    },
+    {
+     "id": "SE",
+     "focos": 137
     }
    ],
    "porBioma": [
     {
      "id": "Cerrado",
-     "focos": 37315
+     "focos": 49171
     },
     {
      "id": "Amazônia",
-     "focos": 20657
-    },
-    {
-     "id": "Mata Atlântica",
-     "focos": 9352
+     "focos": 28525
     },
     {
      "id": "Caatinga",
-     "focos": 7427
+     "focos": 14292
+    },
+    {
+     "id": "Mata Atlântica",
+     "focos": 11172
     },
     {
      "id": "Pampa",
-     "focos": 632
+     "focos": 660
     },
     {
      "id": "Pantanal",
-     "focos": 362
+     "focos": 603
     }
    ]
   }
@@ -978,18 +986,32 @@
    "METOP-B": 8676
   },
   "2026-10": {
-   "GOES-19": 125173,
-   "TERRA_M-M": 7318,
-   "MSG-03": 2716,
-   "METOP-B": 10654,
-   "NOAA-21": 138502,
-   "NPP-375D": 46487,
-   "NOAA-20": 147475,
-   "AQUA_M-M": 2297,
-   "TERRA_M-T": 8392,
-   "NPP-375": 94942,
-   "AQUA_M-T": 18813,
-   "METOP-C": 9797
+   "GOES-19": 205674,
+   "TERRA_M-M": 11362,
+   "MSG-03": 3603,
+   "METOP-B": 16212,
+   "NOAA-21": 207742,
+   "NPP-375D": 70730,
+   "NOAA-20": 211977,
+   "AQUA_M-M": 3644,
+   "TERRA_M-T": 13888,
+   "NPP-375": 139383,
+   "AQUA_M-T": 32454,
+   "METOP-C": 15126
+  },
+  "2026-11": {
+   "GOES-19": 6359,
+   "MSG-03": 71,
+   "METOP-B": 689,
+   "TERRA_M-M": 80,
+   "METOP-C": 913,
+   "NOAA-20": 5878,
+   "NOAA-21": 4215,
+   "NPP-375D": 1744,
+   "AQUA_M-M": 83,
+   "TERRA_M-T": 760,
+   "NPP-375": 4168,
+   "AQUA_M-T": 1254
   }
  },
  "originais": {
@@ -1154,9 +1176,14 @@
    "lastModified": "Thu, 01 Oct 2026 23:56:29 GMT"
   },
   "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202610.csv": {
-   "sha256": "da4a545a16c24de86ababddd56868ae96da1260690ae808d845ed2398e691213",
-   "bytes": 94737590,
-   "lastModified": "Sun, 18 Oct 2026 11:56:21 GMT"
+   "sha256": "e8e09447152280c85935c83d65d818900593246070c96fbac61260a6ba94b64f",
+   "bytes": 144148591,
+   "lastModified": "Sun, 01 Nov 2026 23:56:43 GMT"
+  },
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202611.csv": {
+   "sha256": "4fe513730a99e3a73660d95d2ae6178824a48c38b8e9c46269899cca01e92474",
+   "bytes": 3799558,
+   "lastModified": "Mon, 02 Nov 2026 17:56:03 GMT"
   }
  },
  "ressalvas": [
@@ -5009,15 +5036,15 @@
  "comparacao": {
   "periodoAtual": {
    "inicio": "2026-01-01",
-   "fim": "2026-09-30"
+   "fim": "2026-10-31"
   },
   "periodoAnterior": {
    "inicio": "2025-01-01",
-   "fim": "2025-09-30"
+   "fim": "2025-10-31"
   },
-  "focosAtual": 70350,
-  "focosAnterior": 75745,
-  "variacaoPct": -7.1,
+  "focosAtual": 102804,
+  "focosAnterior": 104423,
+  "variacaoPct": -1.6,
   "nota": "Mesmos meses completos nos dois anos, satélite de referência. O ano corrente é preliminar: o INPE pode regerar os arquivos mensais."
  }
 }
