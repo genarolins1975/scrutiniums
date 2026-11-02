@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-01T17:08:33+00:00",
+ "gerado_em": "2026-11-02T20:47:24+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 308,
-  "total_editais": 722,
+  "total_editais": 1149,
   "backfill_completo": false,
   "ranking": [
    {

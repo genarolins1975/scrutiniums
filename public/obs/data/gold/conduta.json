@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-01T17:09:11+00:00",
+ "gerado_em": "2026-11-02T20:48:03+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11405
   },
   "janela_12m": {
-   "ini": "2025-11-01",
+   "ini": "2025-11-02",
    "decisoes": 1352,
    "processos": 1283,
    "multas_n": 1294,
@@ -49,17 +49,17 @@
    "pf": 958
   },
   "janela_12m_anterior": {
-   "decisoes": 839,
-   "processos": 667,
-   "multas_n": 704,
-   "multas_valor": 25512883.9,
+   "decisoes": 836,
+   "processos": 664,
+   "multas_n": 701,
+   "multas_valor": 25462883.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
    "recursos": 136,
-   "pj": 272,
-   "pf": 567
+   "pj": 271,
+   "pf": 565
   },
   "penas_12m": [
    {
@@ -941,7 +941,7 @@
    "finalizados": 328
   },
   "abertos_12m": {
-   "ini": "2025-11-01",
+   "ini": "2025-11-02",
    "processos": 60,
    "acusados": 156
   },

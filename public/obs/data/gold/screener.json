@@ -20199,7 +20199,7 @@
    "nome": "ONNIX CORRETORA DE CÂMBIO LTDA.",
    "tcb": "N2",
    "uf": "RS",
-   "sr": "S4",
+   "sr": null,
    "situacao": "A",
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 991905.23,

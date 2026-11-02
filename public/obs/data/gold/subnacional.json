@@ -14,13 +14,13 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-11-01T17:09:13+00:00",
+ "gerado_em": "2026-11-02T20:48:05+00:00",
  "coleta": {
   "linhas": 26725,
   "paginas": 6,
   "mb": 13.8,
   "data_status_max": "2026-10-30",
-  "coletado_em": "2026-11-01T16:02:19+00:00"
+  "coletado_em": "2026-11-02T19:30:21+00:00"
  },
  "kpis": {
   "mes": "2026-09",
