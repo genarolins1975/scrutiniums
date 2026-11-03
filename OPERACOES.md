@@ -2,20 +2,40 @@
 
 Runbook único: o que roda sozinho, em que ordem, quem vigia o quê, e o que
 permanece manual **por decisão** (não por falta de automação). Revisado em
-06/08/2026, após a pane de 03–06/08 (detalhada ao fim).
+06/08/2026, após a pane de 03–06/08 (detalhada ao fim), e em 01/11/2026, na
+passagem para a publicação semanal.
 
-## O ciclo diário
+## O ciclo semanal (desde 01/11/2026)
+
+Decisão do dono de 01/11/2026: a publicação de dados passa a ser semanal, na
+segunda de manhã, para reduzir o custo de build da Vercel (US$ 811 de Build CPU
+Minutes em outubro de 2026, 98,6% deste projeto, fatura da Vercel lida pelo dono)
+e de GitHub Actions. A previsão do PLD passa a ser semanal e o compromisso diário
+de publicação até 08h00 deixou de existir.
 
 ```
-06:00 BRT  atualizar-dados.yml      coleta ~30 fontes → gold → push no main
-   └─ push no main dispara o deploy da Vercel (site + /obs/data/gold servidos)
-   └─ job `alertar`: falha/cancelamento vira issue no repositório
-12:00 BRT  vigilancia.yml (frescor) gold publicado com >2 dias → issue
-contínuo   ci.yml                   todo PR e todo push no main: lint, tipos,
-                                    compileall do pipeline, vitest completo
+dom 20:40 BRT  atualizar-energia.yml     pré-carga do Setor Elétrico e do PLD → commit no main
+seg 05:25-10:47 BRT  coletores           Crédito (06:00), PLD (05:47 a 07:37), Contas federais,
+                                         Gás, Agro, Saneamento e os demais → commit no main
+   └─ commit do coletor (autor pipeline@scrutiniums.com) NÃO dispara build na Vercel
+      (scripts/vercel-ignorar-build.sh, "ignoreCommand" do vercel.json)
+seg 13:07 BRT  publicacao-semanal.yml    espera até 60 min pelos coletores em execução e grava um
+                                         commit vazio de outro autor → build e deploy da Vercel
+                                         com tudo o que a semana gravou; o ci.yml roda sobre o
+                                         main publicado (workflow_run)
+seg 15:00 BRT  vigilancia.yml            todos os cheques (frescor, pane, fontes, saneamento,
+               alertas-atualizacao.yml   domínios); alertas por e-mail; quadro do ADM
+               monitorar-operacoes.yml
+contínuo       ci.yml                    todo PR e todo push humano no main: lint, tipos,
+                                         compileall do pipeline, vitest completo
 ```
 
-Cadências internas do pipeline: fontes com API são coletadas todo dia com
+Commit humano no main continua disparando build e deploy (e leva junto o que os
+coletores já gravaram). As prévias de branch na Vercel estão desligadas: o
+`ignoreCommand` encerra todo build fora de produção. Disparo manual da
+publicação: aba Actions, "Publicação semanal do Observatório", Run workflow.
+
+Cadências internas do pipeline: fontes com API são coletadas toda semana com
 idempotência por hash/período; os cadastros pesados do BCB (EPAE, dependências,
 correspondentes — ~45 MB somados) respeitam periodicidade semanal via
 `coletado_recentemente`, porque a fonte é posição corrente que muda devagar.
@@ -25,14 +45,14 @@ A data da posição é publicada no gold: pular dias não esconde nada do leitor
 
 | Vigia | Quando | O que cobre | Onde acusa |
 |---|---|---|---|
-| job `alertar` (no diário) | a cada execução | término anormal do pipeline | issue "Pipeline diário interrompido" |
-| sentinela de gold (no diário) | a cada execução | build que regride para stub de erro ou some — o workflow termina verde nesses casos | issue "Gold regrediu para stub de erro"; a última publicação íntegra fica no ar |
-| portão de testes (no diário) | a cada execução | gold do dia reprovada pelas suítes vitest, pipeline e pesquisa | issue "Testes de conteúdo reprovaram a gold do dia", com a lista dos testes reprovados; execução **vermelha** |
-| `vigilancia.yml frescor` | após cada execução do diário | gold do main com 2 dias ou mais; produção servindo gold mais antigo que o main | issue "gold publicado está defasado", atribuída ao mantenedor |
-| selo de frescor (no site) | a cada leitura | publicação com 2 dias ou mais, calculada no navegador | aviso "Atualização atrasada" em /resumo, /dados, /dados/[slug] e /observatorio-do-credito |
-| `vigilancia.yml dominios` | diário, 20:00 UTC | cada observatório (Crédito, Setor Elétrico, Gás, Saneamento, Agro, Território, Contas federais e estaduais, Eficiência) além do limiar da sua cadência em `src/lib/frescor/limiares.json` (diária 2 dias, quinzenal 20, mensal 45, anual 400), publicação retida em parte ou sem data | uma issue por domínio, "Vigília de frescor: <nome>", atribuída ao mantenedor; comenta a aberta e a fecha quando o domínio volta a ficar em dia |
+| job `alertar` (no Crédito) | a cada execução | término anormal do pipeline | issue "Pipeline diário interrompido" (título mantido para não quebrar a deduplicação) |
+| sentinela de gold (no Crédito) | a cada execução | build que regride para stub de erro ou some — o workflow termina verde nesses casos | issue "Gold regrediu para stub de erro"; a última publicação íntegra fica no ar |
+| portão de testes (no Crédito) | a cada execução | gold do dia reprovada pelas suítes vitest, pipeline e pesquisa | issue "Testes de conteúdo reprovaram a gold do dia", com a lista dos testes reprovados; execução **vermelha** |
+| `vigilancia.yml frescor` | após cada execução do Crédito e na segunda, 18:00 e 23:00 UTC (a segunda rodada vem depois da folga de 3 h do deploy) | gold do main com 8 dias ou mais; produção servindo gold mais antigo que o main mais de 3 h depois da publicação semanal | issue "gold publicado está defasado", atribuída ao mantenedor |
+| selo de frescor (no site) | a cada leitura | publicação com 8 dias ou mais, calculada no navegador | aviso "Atualização atrasada" em /resumo, /dados, /dados/[slug] e /observatorio-do-credito |
+| `vigilancia.yml dominios` | segunda, 18:00 UTC | cada observatório (Crédito, Setor Elétrico, Gás, Saneamento, Agro, Território, Contas federais e estaduais, Eficiência) além do limiar da sua cadência em `src/lib/frescor/limiares.json` (semanal 8 dias, quinzenal 20, mensal 45, anual 400), publicação retida em parte ou sem data | uma issue por domínio, "Vigília de frescor: <nome>", atribuída ao mantenedor; comenta a aberta e a fecha quando o domínio volta a ficar em dia |
 | faixa de frescor (no site) | a cada leitura | os mesmos limiares, calculados no navegador | linha "Atualização dos dados" no topo e lista por fonte no método das entradas com conta (/setor-eletrico, /gas-natural, /saneamento, /eficiencia-estatal, /contas-publicas, /agronegocio e /observatorios/*) |
-| `vigilancia.yml fontes` | segunda 9:30 UTC | documento novo nas fontes manuais (SPA/MF) | issue "documento novo em fonte manual" |
+| `vigilancia.yml fontes` | segunda, 18:00 UTC | documento novo nas fontes manuais (SPA/MF) | issue "documento novo em fonte manual" |
 | CI (`ci.yml`) | todo PR/push | regressão de código, dado ou invariante editorial | check vermelho no PR |
 
 As três primeiras deduplicam: enquanto a issue estiver aberta, ocorrências
@@ -57,27 +77,29 @@ revisada de `TIPOS`, do universo analítico e dos testes. O bronze permite repro
 captura; não basta remover a ressalva. Os tipos desconhecidos não recebem significado
 inventado nem entram nos totais de pessoas físicas ou de Pequenos Negócios.
 
-## Mensal
+## Rotinas de segunda que antes eram mensais
 
-- `auditoria-notas.yml` (dia 5, 12:00 UTC): roda `pesquisa.auditor` sobre as
+- `auditoria-notas.yml` (segunda, 12:00 UTC; era dia 5): roda `pesquisa.auditor` sobre as
   notas aprovadas (integridade, reprodução na gold de origem, validador
   atual, fonte primária no SGS). Erro factual vira errata no ciclo, entrada no
   registro público de erros e issue "Auditoria achou erro factual em nota
   aprovada"; o tipo de nota volta ao degrau 1.
-- `boletim-mensal.yml` (dia 1º): envia o boletim da central de alertas.
-- `resumo-email.yml` (depois de cada execução do diário, com reserva às 21:47
-  UTC): envia o resumo do crédito às assinaturas confirmadas em /resumo, sem
+- `boletim-mensal.yml` (segunda, 12:00 UTC; era dia 1º): envia o boletim da central de alertas. A rota
+  guarda um envio por mês-calendário, então o boletim sai na primeira segunda do mês e as demais
+  execuções do mês não enviam.
+- `resumo-email.yml` (depois de cada execução do Crédito, com reserva diária às 21:47
+  UTC, cadência não alterada em 01/11/2026 por decisão pendente do dono): envia o resumo do crédito às assinaturas confirmadas em /resumo, sem
   conta. Idempotente: a diária só recebe edição nova; a semanal, às segundas.
-- `zenodo-mensal.yml` (dia 6): prepara o pacote mensal das séries para o Zenodo
+- `zenodo-mensal.yml` (segunda, 13:17 UTC; era dia 6): prepara o pacote mensal das séries para o Zenodo
   (`scripts/zenodo_deposito.py`) e o guarda como artefato. Rascunho no Zenodo só
   com `ZENODO_RASCUNHO=1` e o segredo `ZENODO_TOKEN`; a publicação é sempre
   manual. Pendências: conta no Zenodo, criadores e licença dos dados derivados em
   `config/institucional.json`, e a primeira publicação.
-- `alertas-atualizacao.yml` (todo dia, 11:37 UTC): verifica os alertas que as
+- `alertas-atualizacao.yml` (segunda, 18:00 UTC, depois da publicação semanal): verifica os alertas que as
   contas assinam em "Avisar quando atualizar" e envia e-mail só a quem assinou
   uma fonte cuja data de referência avançou (`src/lib/conta/alertas.ts`).
   Idempotente. Cada execução autorizada grava o evento `alertas_verificacao`;
-  sem ele nos últimos três dias (ou sem `RESEND_API_KEY`), a conta e a barra
+  sem ele nos últimos oito dias (ou sem `RESEND_API_KEY`), a conta e a barra
   dos painéis dizem que o envio por e-mail ainda não está ligado.
 - **Pendência de configuração dos três envios** (não resolvível no código; em
   19/10/2026 o segredo do item 1 faltava e o `resumo-email.yml` falhava):
@@ -93,28 +115,30 @@ inventado nem entram nos totais de pessoas físicas ou de Pequenos Negócios.
 ## Atualização agendada por domínio
 
 Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários em UTC
-(São Paulo = UTC−3).
+(São Paulo = UTC−3). Desde 01/11/2026 todas as coletas rodam na segunda (a do Setor
+Elétrico, no domingo à noite), com a hora e o minuto de antes; os commits delas só vão ao
+ar na publicação semanal das 16:07 UTC.
 
 | Workflow | Domínio | Agenda (UTC) | O que coleta | O que bloqueia a publicação |
 |---|---|---|---|---|
-| `atualizar-lucro-banco.yml` | DRE prudencial | dia 5, 08:25 | catálogo e DRE IF.data, carteiras e cadastro prudencial | reconciliação, conservação dos rateios e reprodução do snapshot |
-| `atualizar-dados.yml` | Crédito | todo dia, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
-| `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | testes da energia |
-| `previsao-pld.yml` | Setor Elétrico, previsão do PLD | todo dia, cinco horários entre 08:47 e 10:37 | rodada da previsão | testes da rodada |
-| `atualizar-gas.yml` | Gás Natural | dias 3 e 18, 12:17 | ANP, IBGE, BCB, Comex Stat, Banco Mundial | `pipeline.tests.test_gas` (tudo ou nada) |
-| `atualizar-territorio.yml` | Território e Clima | dias 2 e 16, 11:41 | INPE, Atlas de Desastres, SIRENE | `pipeline.tests.test_territorio` (tudo ou nada) |
-| `atualizar-agro.yml` | Agronegócio | dias 9 e 24, 11:41 | IBGE, Comex Stat, BCB, Tesouro, INPE, SEEG, MapBiomas | `pipeline.tests.test_agro` (tudo ou nada) |
-| `atualizar-saneamento.yml` | Saneamento | dia 6, 11:23 | SINISA, CadÚnico, SISAGUA, DATASUS, CVM, JMP, ODS | por grupo de fonte: testes Python do saneamento e contratos vitest da gold |
-| `atualizar-saneamento-divida.yml` | Saneamento, capítulo 7.1 (dívida e alavancagem dos prestadores) | 7 e 28 de abril; dia 22 de maio, agosto e novembro; dia 12 de junho, setembro e dezembro, 11:23 | CVM, dados abertos: cadastro de companhias abertas, DFP (anual, desde 2010) e ITR (trimestral, desde 2015), filtrados para as prestadoras declaradas no SINISA 2024 e as holdings que as controlam | por grupo: `pipeline.tests.test_saneamento_divida` (balanço que fecha, dívida que soma as subcontas, escala plausível, depreciação com o sinal certo, companhias esperadas na DFP mais recente, nenhum indicador ausente sem motivo; inconsistências já conferidas saem da série com o motivo) e contratos vitest da página, da entrada e do aperitivo |
-| `atualizar-saneamento-contratos.yml` | Saneamento, capítulo 15 (o que está contratado desde o novo marco) | dia 15, 11:17 | vigília: baixa de novo os contratos e anexos de metas transcritos e compara o SHA-256; nada de coleta automática (as fontes não têm API; leilão novo, aditivo ou repactuação entra por PR) | documento trocado ou fora do ar é falha de coleta (issue e execução vermelha, seed intacto); por grupo: `pipeline.tests.test_saneamento_contratos` (totais só com contrato de serviço adjudicado e conferido, naturezas de valor nunca somadas entre si, metas com documento, hash e série monotônica, abrangência sem sobreposição) e contratos vitest da página, da entrada e do aperitivo |
-| `atualizar-contas-publicas.yml` | Contas Públicas Federais | terças, 10:19 | SIOP (execução orçamentária por esfera e grupo de despesa; por função e subfunção do ano corrente e do anterior, `importar-funcoes.py --recentes`), Banco Central (dívida bruta do governo geral, SGS 13761 e 13762, `importar-divida.py`) e vigia de edição do RTN | por grupo: testes dos importadores e contratos vitest do painel |
-| `atualizar-contas-estaduais.yml` | Contas Públicas Estaduais | dia 5, 11:29 | conferência das 81 respostas do Siconfi e sondagem de período novo | não publica (promoção revisada); contratos e `consolidar --check` deixam a execução vermelha |
-| `atualizar-eficiencia.yml` | Eficiência Estatal (Educação e Saúde nas capitais) | dia 12, 10:53 | Siconfi (DCA, RREO, MSC), IPCA e SIOPS | por grupo: testes Python do OBEE, conferências derivadas do `ci.yml` e contratos vitest |
-| `atualizar-inflacao.yml` | Famílias, Inflação por cidade (IPCA) | dias 10 e 14, 13:47 | IBGE, SIDRA tabela 7060 (índice geral, grupos e subitens nas 16 áreas e no Brasil) e calendário de divulgação | por grupo: `pipeline.tests.test_inflacao` (pesos somam 100 por área e mês, mês faltando, faixa plausível, encadeamento e contribuições) e contratos vitest do painel |
-| `atualizar-seguranca.yml` | Eficiência Estatal, Segurança pública por UF | dia 21, 12:37 | MJSP (Sinesp VDE, planilhas anuais desde 2015), DATASUS (SIM pelo TabNet: agressões, intenção indeterminada e causas externas por UF), Siconfi (DCA Anexo I-E dos 27 governos estaduais, função 06) e IBGE (Projeções da População, Revisão 2024) | por grupo: `pipeline.tests.test_seguranca` (27 UFs e anos completos, eventos com o nome esperado, faixas plausíveis, revisão de ano fechado até 10%, total do TabNet igual à soma das UFs, população que soma o Brasil, regra de ausência) e contratos vitest do painel |
-| `atualizar-previdencia.yml` | Contas Públicas, Previdência e INSS | dias 2 e 18, 12:41 | Ministério da Previdência Social (BEPS mensal, tabelas 14, 15 e 19; benefícios emitidos por município, anual, desde 2019) e Tesouro Nacional (Resultado do Tesouro Nacional, série histórica, tabelas 2.2 e 2.1-A) | por grupo: `pipeline.tests.test_previdencia` (série mensal contínua e fechando com os grupos, tipos de benefício com as linhas esperadas, 27 UFs que somam o Brasil, municípios que fecham por grupo, soma dos municípios igual ao BEPS em cada dezembro, divisão urbana e rural e % do PIB do RTN conferidos, revisão de ano fechado até 1% e 2%) e contratos vitest do painel e do aperitivo |
-| `atualizar-educacao.yml` | Serviços Públicos, Educação nos municípios | dia 9, 11:23 | INEP (Ideb por município, UF e Brasil, bienal; Sinopse Estatística do Censo Escolar, anual: matrículas por rede e etapa e escolas por rede) e IBGE (estimativas de população, SIDRA 6579, só para o porte) | por grupo: `pipeline.tests.test_educacao` (MD5 do INEP conferido, Ideb igual a N × P, contagem de municípios com Ideb igual à nota informativa, 27 UFs e Brasil, Censo somando municípios, UFs e Brasil com as redes fechando, população somando o Brasil, rede com Ideb e sem matrícula, Ideb publicado revisto ou sumido, Ideb das capitais igual ao do painel das capitais) e contratos vitest do painel e do aperitivo |
-| `atualizar-conectividade.yml` | Energia e Infraestrutura, Conectividade | dias 12 e 26, 12:23 | Anatel, dados abertos lidos por faixa de bytes dos zips (acessos de banda larga fixa por município, mensal; acessos de telefonia móvel por município, mensal; cobertura das redes móveis por município, trimestral) | por grupo: `pipeline.tests.test_conectividade` (cada fonte com todos os municípios, partes que somam o total em cada município, municípios que somam as UFs e o Brasil, Brasil do mês igual ao arquivo de totais da Anatel, densidades na faixa plausível e conferidas contra a população do Censo 2022, cobertura entre 0 e 100% e nenhuma geração acima da união que a contém (4G e 5G nunca acima de "todas", 5G nunca acima de "4G ou 5G"; 5G acima do 4G é contado e declarado, não retido), moradores fechando com o Brasil, revisão do mesmo mês até 2%) e contratos vitest do painel e do aperitivo |
+| `atualizar-lucro-banco.yml` | DRE prudencial | segunda, 08:25 | catálogo e DRE IF.data, carteiras e cadastro prudencial | reconciliação, conservação dos rateios e reprodução do snapshot |
+| `atualizar-dados.yml` | Crédito | segunda, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
+| `atualizar-energia.yml` | Setor Elétrico | domingo, 23:40 | ONS, CCEE, ANEEL | testes da energia |
+| `previsao-pld.yml` | Setor Elétrico, previsão do PLD | segunda, cinco horários entre 08:47 e 10:37 | rodada semanal da previsão | testes da rodada |
+| `atualizar-gas.yml` | Gás Natural | segunda, 12:17 | ANP, IBGE, BCB, Comex Stat, Banco Mundial | `pipeline.tests.test_gas` (tudo ou nada) |
+| `atualizar-territorio.yml` | Território e Clima | segunda, 11:41 | INPE, Atlas de Desastres, SIRENE | `pipeline.tests.test_territorio` (tudo ou nada) |
+| `atualizar-agro.yml` | Agronegócio | segunda, 11:41 | IBGE, Comex Stat, BCB, Tesouro, INPE, SEEG, MapBiomas | `pipeline.tests.test_agro` (tudo ou nada) |
+| `atualizar-saneamento.yml` | Saneamento | segunda, 11:23 | SINISA, CadÚnico, SISAGUA, DATASUS, CVM, JMP, ODS | por grupo de fonte: testes Python do saneamento e contratos vitest da gold |
+| `atualizar-saneamento-divida.yml` | Saneamento, capítulo 7.1 (dívida e alavancagem dos prestadores) | segunda, 11:23 (antes: 7 e 28 de abril; dia 22 de maio, agosto e novembro; dia 12 de junho, setembro e dezembro) | CVM, dados abertos: cadastro de companhias abertas, DFP (anual, desde 2010) e ITR (trimestral, desde 2015), filtrados para as prestadoras declaradas no SINISA 2024 e as holdings que as controlam | por grupo: `pipeline.tests.test_saneamento_divida` (balanço que fecha, dívida que soma as subcontas, escala plausível, depreciação com o sinal certo, companhias esperadas na DFP mais recente, nenhum indicador ausente sem motivo; inconsistências já conferidas saem da série com o motivo) e contratos vitest da página, da entrada e do aperitivo |
+| `atualizar-saneamento-contratos.yml` | Saneamento, capítulo 15 (o que está contratado desde o novo marco) | segunda, 11:17 | vigília: baixa de novo os contratos e anexos de metas transcritos e compara o SHA-256; nada de coleta automática (as fontes não têm API; leilão novo, aditivo ou repactuação entra por PR) | documento trocado ou fora do ar é falha de coleta (issue e execução vermelha, seed intacto); por grupo: `pipeline.tests.test_saneamento_contratos` (totais só com contrato de serviço adjudicado e conferido, naturezas de valor nunca somadas entre si, metas com documento, hash e série monotônica, abrangência sem sobreposição) e contratos vitest da página, da entrada e do aperitivo |
+| `atualizar-contas-publicas.yml` | Contas Públicas Federais | segunda, 10:19 | SIOP (execução orçamentária por esfera e grupo de despesa; por função e subfunção do ano corrente e do anterior, `importar-funcoes.py --recentes`), Banco Central (dívida bruta do governo geral, SGS 13761 e 13762, `importar-divida.py`) e vigia de edição do RTN | por grupo: testes dos importadores e contratos vitest do painel |
+| `atualizar-contas-estaduais.yml` | Contas Públicas Estaduais | segunda, 11:29 | conferência das 81 respostas do Siconfi e sondagem de período novo | não publica (promoção revisada); contratos e `consolidar --check` deixam a execução vermelha |
+| `atualizar-eficiencia.yml` | Eficiência Estatal (Educação e Saúde nas capitais) | segunda, 10:53 | Siconfi (DCA, RREO, MSC), IPCA e SIOPS | por grupo: testes Python do OBEE, conferências derivadas do `ci.yml` e contratos vitest |
+| `atualizar-inflacao.yml` | Famílias, Inflação por cidade (IPCA) | segunda, 13:47 | IBGE, SIDRA tabela 7060 (índice geral, grupos e subitens nas 16 áreas e no Brasil) e calendário de divulgação | por grupo: `pipeline.tests.test_inflacao` (pesos somam 100 por área e mês, mês faltando, faixa plausível, encadeamento e contribuições) e contratos vitest do painel |
+| `atualizar-seguranca.yml` | Eficiência Estatal, Segurança pública por UF | segunda, 12:37 | MJSP (Sinesp VDE, planilhas anuais desde 2015), DATASUS (SIM pelo TabNet: agressões, intenção indeterminada e causas externas por UF), Siconfi (DCA Anexo I-E dos 27 governos estaduais, função 06) e IBGE (Projeções da População, Revisão 2024) | por grupo: `pipeline.tests.test_seguranca` (27 UFs e anos completos, eventos com o nome esperado, faixas plausíveis, revisão de ano fechado até 10%, total do TabNet igual à soma das UFs, população que soma o Brasil, regra de ausência) e contratos vitest do painel |
+| `atualizar-previdencia.yml` | Contas Públicas, Previdência e INSS | segunda, 12:41 | Ministério da Previdência Social (BEPS mensal, tabelas 14, 15 e 19; benefícios emitidos por município, anual, desde 2019) e Tesouro Nacional (Resultado do Tesouro Nacional, série histórica, tabelas 2.2 e 2.1-A) | por grupo: `pipeline.tests.test_previdencia` (série mensal contínua e fechando com os grupos, tipos de benefício com as linhas esperadas, 27 UFs que somam o Brasil, municípios que fecham por grupo, soma dos municípios igual ao BEPS em cada dezembro, divisão urbana e rural e % do PIB do RTN conferidos, revisão de ano fechado até 1% e 2%) e contratos vitest do painel e do aperitivo |
+| `atualizar-educacao.yml` | Serviços Públicos, Educação nos municípios | segunda, 11:23 | INEP (Ideb por município, UF e Brasil, bienal; Sinopse Estatística do Censo Escolar, anual: matrículas por rede e etapa e escolas por rede) e IBGE (estimativas de população, SIDRA 6579, só para o porte) | por grupo: `pipeline.tests.test_educacao` (MD5 do INEP conferido, Ideb igual a N × P, contagem de municípios com Ideb igual à nota informativa, 27 UFs e Brasil, Censo somando municípios, UFs e Brasil com as redes fechando, população somando o Brasil, rede com Ideb e sem matrícula, Ideb publicado revisto ou sumido, Ideb das capitais igual ao do painel das capitais) e contratos vitest do painel e do aperitivo |
+| `atualizar-conectividade.yml` | Energia e Infraestrutura, Conectividade | segunda, 12:23 | Anatel, dados abertos lidos por faixa de bytes dos zips (acessos de banda larga fixa por município, mensal; acessos de telefonia móvel por município, mensal; cobertura das redes móveis por município, trimestral) | por grupo: `pipeline.tests.test_conectividade` (cada fonte com todos os municípios, partes que somam o total em cada município, municípios que somam as UFs e o Brasil, Brasil do mês igual ao arquivo de totais da Anatel, densidades na faixa plausível e conferidas contra a população do Censo 2022, cobertura entre 0 e 100% e nenhuma geração acima da união que a contém (4G e 5G nunca acima de "todas", 5G nunca acima de "4G ou 5G"; 5G acima do 4G é contado e declarado, não retido), moradores fechando com o Brasil, revisão do mesmo mês até 2%) e contratos vitest do painel e do aperitivo |
 
 **Motor comum dos novos que publicam (Saneamento, Contas Federais, Eficiência Estatal e, desde 20/10/2026, Inflação por cidade, Segurança pública por UF, Previdência e INSS, Educação nos municípios e Conectividade)** (`scripts/atualizacao_por_grupo.py`,
 configuração em `config/atualizacao/<domínio>.json`). Cada grupo de fontes é coletado à
@@ -205,9 +229,13 @@ em 19/10/2026, sem publicar (o commit ficou fora do `main`):
   (`pipeline/seed/silver-seed.db.gz`) e re-coleta o incremental — lenta, mas
   auto-suficiente. O seed não é atualizado automaticamente; se a reconstrução
   começar a estourar o tempo, gerar seed novo é a manutenção indicada.
-- **Vercel** faz o deploy por push. Desde 13/10/2026 o cheque de frescor compara
-  o `gerado_em` da produção com o do main e acusa diferença que dure mais de 3 h
-  depois do push; a saúde do site além disso não é vigiada.
+- **Vercel** faz o deploy por push humano no main e pela publicação semanal; os
+  commits do coletor são ignorados (`scripts/vercel-ignorar-build.sh`). Desde
+  01/11/2026 o cheque de frescor só acusa a produção atrás do main quando o gold
+  do main é anterior à última publicação semanal e a diferença dura mais de 3 h
+  depois dela; a saúde do site além disso não é vigiada. Se a publicação semanal
+  falhar, os dados da semana ficam no main sem ir ao ar: a execução vermelha de
+  `publicacao-semanal.yml` é o sinal, e o disparo manual resolve.
 - **Portão de testes do diário** é tudo ou nada: um único teste reprovado em
   qualquer domínio retém a gold inteira, inclusive os domínios íntegros. É a
   escolha conservadora (nada errado vai ao ar), e o custo dela apareceu em
@@ -458,9 +486,9 @@ prévia, não deploy defasado.
 
 ### Acompanhamento independente da publicação
 
-O catálogo `config/operacoes.json` liga cada domínio às rotinas existentes e explica o que é automático e o que exige conferência. `scripts/estado-operacoes.py` consulta metadados públicos do GitHub. `monitorar-operacoes.yml` roda de hora em hora (minuto 17 UTC) e pode ser disparado pela interface do GitHub na `main`. Publica `estado.json` na release `operacoes-adm`, sem commit, deploy, dado de conta, corpo de issue ou log de execução. Usa apenas `github.token` do job. O site lê o ativo público com cinco minutos de cache e timeout de cinco segundos; nenhuma credencial nova na Vercel.
+O catálogo `config/operacoes.json` liga cada domínio às rotinas existentes e explica o que é automático e o que exige conferência. `scripts/estado-operacoes.py` consulta metadados públicos do GitHub. `monitorar-operacoes.yml` roda uma vez por semana (segunda, 18:00 UTC, depois da publicação; era de hora em hora até 01/11/2026) e pode ser disparado pela interface do GitHub na `main`. Publica `estado.json` na release `operacoes-adm`, sem commit, deploy, dado de conta, corpo de issue ou log de execução. Usa apenas `github.token` do job. O site lê o ativo público com cinco minutos de cache e timeout de cinco segundos; nenhuma credencial nova na Vercel.
 
-O monitor declara falhas parciais. Sem resposta, com contrato inválido, data futura incoerente ou consulta mais antiga que três horas, o quadro não declara monitor em dia. Até a primeira execução na `main`, aparece a indisponibilidade explícita; as datas locais e a fila persistida continuam funcionando. O próprio workflow do monitor não depende de publicação de gold. Não alterar o nome da release ou do ativo só no workflow: ambos fazem parte do contrato em `config/operacoes.json`.
+O monitor declara falhas parciais. Sem resposta, com contrato inválido, data futura incoerente ou consulta mais antiga que oito dias (`validadeHoras` 192 em `config/operacoes.json`; eram três horas até 01/11/2026), o quadro não declara monitor em dia. Até a primeira execução na `main`, aparece a indisponibilidade explícita; as datas locais e a fila persistida continuam funcionando. O próprio workflow do monitor não depende de publicação de gold. Não alterar o nome da release ou do ativo só no workflow: ambos fazem parte do contrato em `config/operacoes.json`.
 
 Para incluir uma rotina, cadastrá-la e ligá-la ao domínio no catálogo; o teste confere a existência de cada workflow e rota. As fontes que exigem curadoria aparecem na expansão de cada área. Novos domínios precisam primeiro de regra de frescor própria; não atribuir a data de outro domínio. A automação não promove edições fiscais, contratos ou mudanças de metodologia sem a conferência exigida pelo respectivo procedimento.
 

@@ -824,9 +824,28 @@ class Rotina(unittest.TestCase):
         self.assertTrue(r["comprovada"])
         self.assertEqual(r["dias_sem_rodada_total"], 17)
         self.assertIn("17 dias sem rodada", r["leitura"])
-        # um dia faltante dentro da janela volta a impedir
-        sem_um = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-10"]
+        # um dia de rodada faltante dentro da janela volta a impedir; desde 02/11/2026 o dia de rodada é a segunda
+        # (cadência semanal, decisão do dono de 01/11/2026), então a falta que conta é a de 09/11, não a de 10/11
+        sem_um = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-09"]
         self.assertFalse(mod._rotina(sem_um, _utc(2026, 11, 20, 12))["comprovada"])
+        sem_terca = [x for x in rodadas(date(2026, 10, 19), date(2026, 11, 20)) if x["origem"] != "2026-11-10"]
+        self.assertTrue(mod._rotina(sem_terca, _utc(2026, 11, 20, 12))["comprovada"])
+
+    def test_cadencia_semanal_espera_so_a_segunda_e_tolera_rodada_de_sete_dias(self):
+        """Desde 02/11/2026 a rodada é semanal (segunda). Com rodadas diárias até 01/11 e só às segundas depois, não há dia
+        faltante; numa segunda antes do prazo das 08h00, a última rodada tem sete dias e ainda não é falta."""
+        diarias = [date(2026, 10, 19) + timedelta(days=i) for i in range(14)]          # 19/10 a 01/11
+        segundas = [date(2026, 11, 2) + timedelta(days=7 * i) for i in range(5)]     # 02/11 a 30/11
+        ag = [{"origem": d.isoformat(), "modo": "agendada", "no_prazo": True, "falha": False} for d in diarias + segundas]
+        r = mod._rotina(ag, _utc(2026, 12, 7, 10, 30))                                 # segunda, 07h30 de Brasília
+        self.assertEqual((r["cadencia"], r["dias_vencidos_ate"]), ("semanal", "2026-12-06"))
+        self.assertEqual(r["janela_comprovacao"]["dias_sem_rodada"], 0)
+        self.assertTrue(r["comprovada"])
+        self.assertTrue(mod.dia_de_rodada(date(2026, 11, 1)))                         # domingo antes da virada: diária
+        self.assertFalse(mod.dia_de_rodada(date(2026, 11, 3)))                        # terça depois da virada
+        # passado o prazo da segunda sem rodada, a falta aparece
+        r = mod._rotina(ag, _utc(2026, 12, 7, 11, 5))
+        self.assertEqual((r["dias_sem_rodada"][-1], r["comprovada"]), ("2026-12-07", False))
 
     def test_rotina_conta_agendadas_por_gatilho_e_nao_afirma_comprovacao_fixa(self):
         ag = [{"origem": "2026-10-19", "modo": "agendada", "no_prazo": True, "falha": False, "gatilho": "agendador externo"},

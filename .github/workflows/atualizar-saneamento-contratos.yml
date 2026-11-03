@@ -7,10 +7,10 @@ name: Vigiar os contratos de saneamento desde o novo marco
 # aberta, execução vermelha) e nada muda no seed. Leilão novo, aditivo ou repactuação entra por PR, com a fonte e o
 # novo hash. A gold (public/saneamento/contratos) é reconstruída do seed e só é publicada com os testes verdes.
 #
-# Cadência mensal: dia 15, 11:17 UTC (08:17 em São Paulo), uma semana depois da atualização do SINISA (dia 6).
+# Cadência semanal: segunda, 11:17 UTC (08:17 em São Paulo), depois da atualização do saneamento (11:23 UTC não conflita: grupos e seeds distintos).
 on:
   schedule:
-    - cron: "17 11 15 * *" # dia 15, 08:17 em São Paulo
+    - cron: "17 11 * * 1" # segunda, 08:17 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

@@ -2,7 +2,7 @@ name: Atualizar DRE prudencial
 on:
   workflow_dispatch:
   schedule:
-    - cron: "25 8 5 * *"
+    - cron: "25 8 * * 1" # segunda, 05:25 em São Paulo
 permissions:
   contents: write
 concurrency:

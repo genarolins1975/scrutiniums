@@ -162,12 +162,12 @@ export default function EmpresasPage() {
 
   const oQueMudou = tx(
     <>
-      O SIGA e o SIGET são lidos todo dia; o cadastro de agentes e o conjunto Agentes de Geração, todo mês; as declarações de composição societária, a cada trimestre. Revisões detectadas nos
+      O SIGA e o SIGET são lidos toda semana; o cadastro de agentes e o conjunto Agentes de Geração, todo mês; as declarações de composição societária, a cada trimestre. Revisões detectadas nos
       dados do SIGA nesta publicação: {inteiro(prov.ativos.revisoes_conhecidas?.total)}. Na CVM, {inteiro(f.revisoes.valores_reapresentados)} valores foram reapresentados no comparativo do ano
       seguinte.
     </>,
     <>
-      SIGA and SIGET are read every day; the agent registry and the <Nome>Agentes de Geração</Nome> dataset, every month; the shareholding structure declarations, every quarter. Revisions detected
+      SIGA and SIGET are read every week; the agent registry and the <Nome>Agentes de Geração</Nome> dataset, every month; the shareholding structure declarations, every quarter. Revisions detected
       in the SIGA data in this release: {inteiro(prov.ativos.revisoes_conhecidas?.total)}. At CVM, {inteiro(f.revisoes.valores_reapresentados)} values were restated in the following year&apos;s
       comparative figures.
     </>,

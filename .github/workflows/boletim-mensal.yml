@@ -6,7 +6,7 @@ name: Boletim mensal
 # (reexecutar o workflow no mesmo mês não duplica e-mails).
 on:
   schedule:
-    - cron: "0 12 1 * *" # dia 1 de cada mês, 09:00 em São Paulo
+    - cron: "0 12 * * 1" # segunda, 09:00 em São Paulo
   workflow_dispatch:
 
 permissions: {}

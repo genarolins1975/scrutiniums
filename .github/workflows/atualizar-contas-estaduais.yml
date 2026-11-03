@@ -10,12 +10,12 @@ name: Conferir dados das Contas Públicas Estaduais
 #
 # Cadência pela fonte: o RGF sai 30 dias depois de cada quadrimestre (30/05, 30/09 e 30/01) e o RREO,
 # 30 dias depois de cada bimestre; a homologação no Siconfi leva mais alguns dias. Uma execução por
-# mês, no dia 5, alcança cada prazo. O snapshot herdado da dívida (snapshot.json, CE-11) é fixado por
+# semana, às segundas, alcança cada prazo. O snapshot herdado da dívida (snapshot.json, CE-11) é fixado por
 # blob Git e fica fora, por decisão (FASE_1.md). O workflow contas-estaduais.yml continua cuidando
 # dos contratos e da captura de evidência em PR.
 on:
   schedule:
-    - cron: "29 11 5 * *" # dia 5, 08:29 em São Paulo
+    - cron: "29 11 * * 1" # segunda, 08:29 em São Paulo
   workflow_dispatch:
 
 permissions:
