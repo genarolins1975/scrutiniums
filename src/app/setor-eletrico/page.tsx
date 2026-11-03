@@ -753,7 +753,9 @@ export default function MapaDoObservatorio() {
   const pub = lerGold<PublicacaoAtualidade & { disponivel?: boolean; resumo?: { com_revisao?: number; observacoes_revisadas?: number; referencias_revisadas?: number } }>("publicacao.json");
 
   const distribuidoras = empresas && integra(empresas) ? empresas.distribuidoras.indice : [];
-  const escolhas = escolhasDeDistribuidora(distribuidoras, integra(perdas) ? perdas.referencia.ano : null);
+  const conta = lerGold<{ disponivel?: boolean; tarifas?: { vigentes?: { cnpj: string }[] } }>("conta.json");
+  const tarifaVigente = conta?.disponivel === true && conta.tarifas?.vigentes ? new Set(conta.tarifas.vigentes.map((v) => v.cnpj)) : null;
+  const escolhas = escolhasDeDistribuidora(distribuidoras, integra(perdas) ? perdas.referencia.ano : null, tarifaVigente);
   const busca = indiceBusca(
     DESTINOS_NAVEGACAO,
     conceitos(),

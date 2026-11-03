@@ -771,7 +771,7 @@ export default function ContaDeLuzPage() {
                       {comp.distribuidoras.length} distribuidoras com componentes; sem componentes para o ato vigente: {comp.reconciliacao.sem_componentes.join(", ") || "nenhuma"}
                     </>,
                     <>
-                      {comp.distribuidoras.length} distribution utilities with components; without components for the act in force: {comp.reconciliacao.sem_componentes.join(", ") || "none"}
+                      {comp.distribuidoras.length} distribution utilities with components; without components for the act in force: {comp.reconciliacao.sem_componentes.length ? <Nome>{comp.reconciliacao.sem_componentes.join(", ")}</Nome> : "none"}
                     </>,
                   )}
                   unidade={tx("R$/MWh de TE + TUSD (ou % da tarifa)", "R$/MWh of TE + TUSD (or % of the tariff)")}
@@ -830,7 +830,7 @@ export default function ContaDeLuzPage() {
                       </>,
                       <>
                         Check of the items: {comp.reconciliacao.conferidas} distribution utilities with equal TE and TUSD in ANEEL&apos;s two datasets, {comp.reconciliacao.divergentes.length}{" "}
-                        divergent, without components: {comp.reconciliacao.sem_componentes.join(", ") || "none"}. Repetitions in the file: {comp.reconciliacao.duplicatas_fonte.iguais} equal and{" "}
+                        divergent, without components: {comp.reconciliacao.sem_componentes.length ? <Nome>{comp.reconciliacao.sem_componentes.join(", ")}</Nome> : "none"}. Repetitions in the file: {comp.reconciliacao.duplicatas_fonte.iguais} equal and{" "}
                         {comp.reconciliacao.duplicatas_fonte.conflitantes} with a different value ({dadoNo(comp.reconciliacao.duplicatas_fonte.regra, "conta-duplicatas-regra", idioma)}).
                       </>,
                     )}

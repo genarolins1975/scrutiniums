@@ -364,9 +364,11 @@ export type DistribuidoraDoIndice = {
  *  - Perdas: dado no ano de referência da gold de Perdas.
  * O ano de Perdas é o da gold de Perdas; o de Qualidade é o mais recente entre as distribuidoras do índice.
  */
-export function escolhasDeDistribuidora(distribuidoras: readonly DistribuidoraDoIndice[], anoPerdas: number | null) {
+export function escolhasDeDistribuidora(distribuidoras: readonly DistribuidoraDoIndice[], anoPerdas: number | null, tarifaVigente?: ReadonlySet<string> | null) {
   const anoQualidade = distribuidoras.reduce<number | null>((m, d) => (d.qualidade?.ano != null && (m === null || d.qualidade.ano > m) ? d.qualidade.ano : m), null);
-  const temConta = (d: DistribuidoraDoIndice) => d.tarifa?.vigente === true;
+  // quem tem tarifa vigente vem da própria Conta de luz quando ela é lida (CNPJs de conta.json): com Empresas retida (publicação por
+  // módulo, 03/11/2026), a marca do índice de Empresas é a da publicação anterior (02/11/2026: 81 contra 103 da Conta de luz)
+  const temConta = (d: DistribuidoraDoIndice) => (tarifaVigente ? tarifaVigente.has(d.cnpj) : d.tarifa?.vigente === true);
   const temPerdas = (d: DistribuidoraDoIndice) => d.perdas?.ano != null && d.perdas.ano === anoPerdas;
   const temQualidade = (d: DistribuidoraDoIndice) => d.qualidade?.ano != null && d.qualidade.ano === anoQualidade;
   const temDecAnual = (d: DistribuidoraDoIndice) => temQualidade(d) && d.qualidade?.dec != null;

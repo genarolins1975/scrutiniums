@@ -119,8 +119,15 @@ describe("índice da busca", () => {
     const existentes = new Set([...brutas.banco, ...brutas.distribuidora].map(normalizar));
     expect(brutas.distribuidora.length).toBeGreaterThan(50);
     expect(brutas.banco.length).toBeGreaterThan(50);
-    const soltos = Object.keys(arquivo()._nomes).filter((nome) => !existentes.has(normalizar(nome)));
+    // nome que a fonte trocou (_renomeados, 03/11/2026: "ÂMBAR ENERGIA RR" virou "Âmbar Roraima") vale pelo atual ou por um anterior
+    const renomeados = (arquivo() as unknown as { _renomeados: Record<string, string[] | string> })._renomeados;
+    const nomesDe = (nome: string) => [nome, ...(Array.isArray(renomeados[nome]) ? (renomeados[nome] as string[]) : [])];
+    const soltos = Object.keys(arquivo()._nomes).filter((nome) => !nomesDe(nome).some((n) => existentes.has(normalizar(n))));
     expect(soltos).toEqual([]);
+    for (const [atual, anteriores] of Object.entries(renomeados).filter(([k]) => !k.startsWith("_"))) {
+      expect(Object.keys(arquivo()._nomes), atual).toContain(atual);
+      expect(Array.isArray(anteriores) && anteriores.length > 0, atual).toBe(true);
+    }
   });
 
   it("os três exemplos do campo continuam entre os termos fortes: resultado completo no título ou nos termos e mais de dois destinos", () => {

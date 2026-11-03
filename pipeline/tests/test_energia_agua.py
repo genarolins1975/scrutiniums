@@ -115,6 +115,31 @@ class TestLeitores(unittest.TestCase):
         self.assertEqual(sorted(r), [2020, 2021])
 
 
+class TestValidaReconciliacao(unittest.TestCase):
+    """Partes que deixam de somar o todo não são publicadas (sentinela da Água, 03/11/2026, issue #297)."""
+
+    @staticmethod
+    def _d(fora, comparados):
+        sub = {"sm": "SIN", "ear_mwmes": 1.0, "ear_max_mwmes": 2.0, "ear_pct": 50.0}
+        return {"armazenamento": {"subsistemas": [sub], "bacias": [], "ree": []}, "dia_ear": "2026-01-01", "dia_ena": "2026-01-01",
+                "reconciliacao_ear": {"pct_publicado_vs_recalculado_max_pp": 0.0, "reservatorios_por_subsistema": [],
+                                      "sin_mesma_captura_mwmes": None, "sin_mwmes": 1.0, "soma_bacias_mwmes": None,
+                                      "reservatorios_por_ano": [], "dias_reservatorios_comparados": comparados,
+                                      "dias_reservatorios_fora_tolerancia": fora},
+                "afluencia": {"subsistemas": []}, "clima": {}}
+
+    def test_reconciliacao_quebrada_e_critica(self):
+        # 02/11/2026: 37.888 de 39.200 dias fora da tolerância
+        criticos = [p for p in m._valida(self._d(37888, 39200)) if p.startswith("CRÍTICO")]
+        self.assertEqual(len(criticos), 1)
+        self.assertIn("96,7% dos dias comparados (37888 de 39200)", criticos[0])
+
+    def test_reconciliacao_da_publicacao_de_setembro_passa(self):
+        # 29/09/2026: 1.470 de 39.072 (3,8%), anos com precisão inteira da fonte
+        self.assertEqual([p for p in m._valida(self._d(1470, 39072)) if p.startswith("CRÍTICO")], [])
+        self.assertEqual([p for p in m._valida(self._d(0, 0)) if p.startswith("CRÍTICO")], [])
+
+
 class TestArmazenamento(unittest.TestCase):
     """P017: o agregado do SIN e a reconciliação por outros produtos do ONS."""
 

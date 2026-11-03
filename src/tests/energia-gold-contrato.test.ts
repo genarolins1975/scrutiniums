@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DATASETS_INTEGRADOS, commitDoBuild, urlVersaoGithub } from "@/lib/energia/datasets";
 import type { CatalogoDados, ManifestoGold, PublicacaoGold } from "@/lib/energia/tipos-dados";
+import { PAGINAS_DA_GOLD, retencoesDaMeta, retencoesDaPagina } from "@/lib/energia/retencao";
 
 /**
  * Contrato da gold do domínio Energia (docs/observatorios/MODELO_AUDITABILIDADE.md):
@@ -77,10 +78,21 @@ describe("gold de energia: presença e integridade", () => {
     }
   });
 
-  it("meta.json não registra builder falho nem regressão retida", () => {
+  it("meta.json não registra builder falho; regressão retida só com a publicação anterior íntegra, datada e com páginas que a declaram", () => {
+    // Até 03/11/2026 este teste exigia regressoes vazia, e uma única gold retida pela sentinela (Empresas, desde 01/11/2026,
+    // quando a ANEEL tirou o CNPJ do SIGA) reprovava a publicação inteira do Setor Elétrico. Decisão do dono de 03/11/2026:
+    // publicar por módulo. A gold retida continua sendo a anterior, íntegra, e as páginas que a mostram dizem de quando ela é
+    // (AvisoRetencao, src/lib/energia/retencao.ts); o resto segue publicado.
     const m = ler("meta.json");
     expect(m.builders_falhos).toEqual([]);
-    expect(m.regressoes).toEqual([]);
+    for (const r of m.regressoes as { gold: string; motivo: string | null }[]) {
+      expect(TODAS, r.gold).toContain(r.gold);
+      expect(typeof r.motivo === "string" && r.motivo.trim().length > 0, `${r.gold}: motivo`).toBe(true);
+      const g = ler(r.gold);
+      expect(g.disponivel, `${r.gold}: publicação mantida íntegra`).toBe(true);
+      expect(m.golds[r.gold]?.gerado_em, `${r.gold}: data da publicação mantida em meta.golds`).toBe(g.gerado_em);
+      expect(retencoesDaPagina(`/setor-eletrico${PAGINAS_DA_GOLD[r.gold]?.[0] ?? "/sem-pagina"}`, retencoesDaMeta(m)).map((x) => x.gold), r.gold).toContain(r.gold);
+    }
   });
 });
 

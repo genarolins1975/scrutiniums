@@ -116,7 +116,8 @@ export default function PaginaP036() {
   const fonteCadastro = tx("ANEEL, SIGA e Agentes do Setor Elétrico", "ANEEL, SIGA and power sector agents");
   const dataSiga = dataTexto(a.data);
   // a carteira do RALIE vem da gold de Expansão: a conciliação com as fases do SIGA usa os números dela, sem refazer conta
-  const ralie = lerGold<{ estagios?: { ralie?: RalieResumo } }>("expansao.json")?.estagios?.ralie ?? null;
+  const expansao = lerGold<{ estagios?: { ralie?: RalieResumo }; referencias?: { siga?: string | null } }>("expansao.json");
+  const ralie = expansao?.estagios?.ralie ? { ...expansao.estagios.ralie, data_siga: expansao.referencias?.siga ?? null } : null;
   const csvDe = (url: string) => {
     const x = g.downloads.find((y) => y.url === url);
     return x ? { ...x, rotulo: traduzir(DOWNLOAD_EMPRESAS_EN, x.rotulo) } : null;

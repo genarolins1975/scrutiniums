@@ -48,6 +48,7 @@ import {
   estadoRenovaveisBalanco,
   estadoTermicasBalanco,
   extremosMediaDiaria,
+  diaDasHorasPorSentido,
   horasPorSentidoNoDia,
   intervaloSemanaOperativa,
   ligacoesFormacao,
@@ -283,7 +284,8 @@ export default function PldPage() {
   const recHorario = integra(detalhe) ? horarioRecentePld(detalhe.horario_recente.url) : null;
   const diaDoFluxo = integra(rede) ? rede.dia_referencia : null;
   const diarioDoFluxo = integra(pld) && diaDoFluxo ? pld.diario.find((x) => x.d === diaDoFluxo) : undefined;
-  const sentidosNoDia = recHorario && diaDoFluxo ? horasPorSentidoNoDia(recHorario, diaDoFluxo) : [];
+  const diaDasHoras = recHorario && diaDoFluxo ? diaDasHorasPorSentido(recHorario, diaDoFluxo) : null;
+  const sentidosNoDia = recHorario && diaDasHoras ? horasPorSentidoNoDia(recHorario, diaDasHoras) : [];
 
   // abertura: a média diária do menor e do maior submercado (com os empates) e a distância entre eles, todos da mesma lista do gráfico
   const fontePld = tx("CCEE, PLD horário", "CCEE, hourly PLD");
@@ -724,18 +726,23 @@ export default function PldPage() {
                             diaPreco={diarioDoFluxo ? dataBR(rede.dia_referencia) : dataBR(pld.dia_referencia)}
                           />
                     </div>
-                          {diarioDoFluxo && rede.dia_referencia !== pld.dia_referencia && (
+                          {rede.dia_referencia !== pld.dia_referencia && (
                             <p className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="mapa-mesmo-dia">
-                              {tx(
-                                `O último dia com PLD é ${dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até ${dataBR(rede.dia_referencia)}. O mapa usa o dia ${dataBR(rede.dia_referencia)} para o preço e para o fluxo, e as setas mostram o sentido da média do dia.`,
-                                `The latest day with a PLD is ${dataBR(pld.dia_referencia)}; the ONS flow is published through ${dataBR(rede.dia_referencia)}. The map uses ${dataBR(rede.dia_referencia)} for both price and flow, and the arrows show the direction of the day's average.`,
-                              )}
+                              {diarioDoFluxo
+                                ? tx(
+                                    `O último dia com PLD é ${dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até ${dataBR(rede.dia_referencia)}. O mapa usa o dia ${dataBR(rede.dia_referencia)} para o preço e para o fluxo, e as setas mostram o sentido da média do dia.`,
+                                    `The latest day with a PLD is ${dataBR(pld.dia_referencia)}; the ONS flow is published through ${dataBR(rede.dia_referencia)}. The map uses ${dataBR(rede.dia_referencia)} for both price and flow, and the arrows show the direction of the day's average.`,
+                                  )
+                                : tx(
+                                    `O último dia com PLD é ${dataBR(pld.dia_referencia)}; o fluxo do ONS está publicado até ${dataBR(rede.dia_referencia)}. Sem PLD em ${dataBR(rede.dia_referencia)}, o mapa mostra o preço de ${dataBR(pld.dia_referencia)} e o fluxo de ${dataBR(rede.dia_referencia)}: são dias diferentes.`,
+                                    `The latest day with a PLD is ${dataBR(pld.dia_referencia)}; the ONS flow is published through ${dataBR(rede.dia_referencia)}. With no PLD on ${dataBR(rede.dia_referencia)}, the map shows the price of ${dataBR(pld.dia_referencia)} and the flow of ${dataBR(rede.dia_referencia)}: these are different days.`,
+                                  )}
                             </p>
                           )}
                           {sentidosNoDia.some((x) => x.horas > 0) && (
                             <div className="mt-2 text-xs leading-relaxed text-carvao-muted" data-texto="horas-por-sentido">
                               <p className="font-medium text-carvao">
-                                {tx(`Horas em cada sentido em ${dataBR(rede.dia_referencia)}, no arquivo horário do ONS:`, `Hours in each direction on ${dataBR(rede.dia_referencia)}, in the ONS hourly file:`)}
+                                {tx(`Horas em cada sentido em ${dataBR(diaDasHoras!)}, no arquivo horário do ONS:`, `Hours in each direction on ${dataBR(diaDasHoras!)}, in the ONS hourly file:`)}
                               </p>
                               <ul className="mt-1 list-disc space-y-0.5 pl-5">
                                 {sentidosNoDia.map((x) => {

@@ -686,9 +686,19 @@ export function vereditoLivreRegulado(g: Pick<MercadoGold, "livre_regulado">): s
 export function notaDoisUniversos(g: Pick<MercadoGold, "livre_regulado">): string {
   const k = g.livre_regulado.kpis;
   if (!k.participacao_livre_12m || !k.participacao_acl_ccee_12m) return "";
+  const e = k.participacao_livre_12m.periodo;
+  const c = k.participacao_acl_ccee_12m.periodo;
+  // a CCEE pode fechar um mês depois da EPE (02/11/2026: EPE até set/2026, CCEE até ago/2026); a nota diz as duas janelas
+  const janelas =
+    e && c && (e.inicio !== c.inicio || e.fim !== c.fim)
+      ? tx(
+          ` As janelas também diferem: a da EPE vai de ${mesAno(e.inicio)} a ${mesAno(e.fim)}; a da CCEE, de ${mesAno(c.inicio)} a ${mesAno(c.fim)}.`,
+          ` The windows also differ: EPE's runs from ${mesAno(e.inicio, "en")} to ${mesAno(e.fim, "en")}; CCEE's, from ${mesAno(c.inicio, "en")} to ${mesAno(c.fim, "en")}.`,
+        )
+      : "";
   return tx(
-    `Os dois percentuais do mercado livre (${pct(k.participacao_livre_12m.valor_pct, 1)} e ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) vêm de universos diferentes: a EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado, com as perdas da rede básica rateadas, o que o torna maior que o medido no ponto de conexão. A diferença entre as duas não foi decomposta.`,
-    `The two free-market percentages (${pct(k.participacao_livre_12m.valor_pct, 1)} and ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) come from different universes: EPE adds up the grid consumption reported by agents; CCEE accounts consumption referred to the submarket's center of gravity, with basic network losses allocated, which makes it larger than what is measured at the connection point. The difference between the two has not been broken down.`,
+    `Os dois percentuais do mercado livre (${pct(k.participacao_livre_12m.valor_pct, 1)} e ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) vêm de universos diferentes: a EPE soma o consumo na rede informado pelos agentes; a CCEE contabiliza o consumo referido ao centro de gravidade do submercado, com as perdas da rede básica rateadas, o que o torna maior que o medido no ponto de conexão. A diferença entre as duas não foi decomposta.${janelas}`,
+    `The two free-market percentages (${pct(k.participacao_livre_12m.valor_pct, 1)} and ${pct(k.participacao_acl_ccee_12m.valor_pct, 1)}) come from different universes: EPE adds up the grid consumption reported by agents; CCEE accounts consumption referred to the submarket's center of gravity, with basic network losses allocated, which makes it larger than what is measured at the connection point. The difference between the two has not been broken down.${janelas}`,
   );
 }
 

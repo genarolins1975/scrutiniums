@@ -1293,8 +1293,15 @@ def construir(con, ctx):
     data_agger = oc_agger.get("data_geracao") if oc_agger else None
 
     # ---------------------------------------------------------------- validação de esquema e domínio
-    if oc_siga["proprietarios_nao_lidos"]:
-        criticas.append(f"{len(oc_siga['proprietarios_nao_lidos'])} usinas com o campo de proprietários fora do formato do SIGA")
+    sem_doc, nao_lidos = len(oc_siga["proprietarios_sem_documento"]), len(oc_siga["proprietarios_nao_lidos"])
+    if sem_doc and sem_doc >= 0.5 * nao_lidos:
+        # decisão do dono de 03/11/2026: sem o CNPJ na fonte, o vínculo usina → empresa fica na última publicação com CNPJ
+        # (a sentinela mantém a gold anterior e as páginas de Empresas dizem de quando ela é); nada é ligado por nome
+        criticas.append(f"a ANEEL deixou de publicar o CNPJ dos proprietários no SIGA ({sem_doc} de {oc_siga['linhas']} usinas no "
+                        f"formato sem CNPJ, arquivo gerado em {c.data_br(data_siga) if data_siga else "data não informada"}); o vínculo usina → empresa segue na última "
+                        "publicação com CNPJ")
+    elif nao_lidos:
+        criticas.append(f"{nao_lidos} usinas com o campo de proprietários fora do formato do SIGA")
     if oc_siga["duplicadas_divergentes"]:
         ressalvas.append(f"{len(oc_siga['duplicadas_divergentes'])} núcleos de CEG repetidos com conteúdo diferente no SIGA; vale a primeira linha")
     negativos = [k for k, u in usinas.items() if (u["kw_fiscalizado"] or 0) < 0 or (u["kw_outorgado"] or 0) < 0]

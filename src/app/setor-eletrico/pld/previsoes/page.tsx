@@ -62,6 +62,7 @@ import {
   resumoB0,
   resumoRodadas,
   respostaP013,
+  MAX_RODADAS_PAGINA,
   rodadasRecentes,
   semCodigoDeEstado,
   temRodada,
@@ -90,7 +91,6 @@ export async function generateMetadata(_props: unknown, anterior: ResolvingMetad
 
 const CSV_EMISSOES = "/energia/series/previsoes_emissoes.csv";
 /** Rodadas levadas ao HTML (o CSV completo é o download): cerca de 28 linhas por rodada. */
-const MAX_RODADAS_PAGINA = 14;
 
 /** Frase fixa da gold de previsões: a forma inglesa pela tabela exata; sem entrada, o texto sai em português marcado. */
 function Gold({ texto, regiao = "previsoes-gold" }: { texto: string | null | undefined; regiao?: string }) {

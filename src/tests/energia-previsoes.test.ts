@@ -70,8 +70,7 @@ import {
   textoCoeficientes,
   textoEmissao,
   textoPublicadoNoCorte,
-  textoTolerancia,
-} from "@/lib/energia/previsoes";
+  textoTolerancia, MAX_RODADAS_PAGINA } from "@/lib/energia/previsoes";
 import { interpretarCsv, lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 
 /**
@@ -847,7 +846,11 @@ describe.skipIf(!gold.disponivel)("páginas renderizadas no servidor", () => {
   it("P013: respostas, três números com prova, grade 4 × 7 e tabela com os números da gold", () => {
     expect(prev).toContain(escTexto(respostaP013(G)));
     if (!temCelulas) return;
-    expect((prev.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
+    // um "Comprove" por B0 da faixa que tem número (semanal e mensal do Sudeste/Centro-Oeste) e o da grade. 02/11/2026: com o PLD
+    // horário parado em 24/10, as células semanais ficaram sem número e a faixa mostra o motivo no lugar da prova
+    const temNumero = (h: string) => celulasGold.some((c) => c.submercado === "SE" && c.horizonte.startsWith(h) && c.previsao !== null);
+    const esperado = (temNumero("W") ? 1 : 0) + (temNumero("M") ? 1 : 0) + 1;
+    expect((prev.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(esperado);
     expect(prev).toContain('data-grade="4x7"');
     expect((prev.match(/data-grade-sm="/g) ?? []).length).toBe(4);
     for (const c of celulasGold) if (c.previsao !== null) expect(prev, c.forecast_id).toContain(br2(c.previsao));
@@ -857,7 +860,8 @@ describe.skipIf(!gold.disponivel)("páginas renderizadas no servidor", () => {
 
   it("P015: resposta do recorte, gráfico de rodadas e tabela do arquivo", () => {
     const linhas = linhasArquivo(interpretarCsv(csvTexto).linhas, Object.fromEntries(G.modelos.map((m) => [m.codigo, m.estado])));
-    expect(prev).toContain(escTexto(respostaP015(linhas, "", linhas.length)));
+    // a página mostra as rodadas mais recentes (MAX_RODADAS_PAGINA) e diz o total do arquivo ao lado (03/11/2026: 14 de 16 rodadas)
+    expect(prev).toContain(escTexto(respostaP015(rodadasRecentes(linhas, MAX_RODADAS_PAGINA).linhas, "", linhas.length)));
     expect(prev).toContain("Registros do arquivo de emissões");
     expect(prev).toContain("Células por rodada, com e sem número");
     expect(prev).toContain('type="date"');

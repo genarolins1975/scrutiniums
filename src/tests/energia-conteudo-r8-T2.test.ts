@@ -519,7 +519,21 @@ describe("conciliação (ii): RALIE e SIGA em construção (classificação 2: f
   const exp = json<{ estagios: { ralie: R2 } }>("public/energia/gold/expansao.json").estagios.ralie;
   type R2 = Parameters<typeof E.textoFasesSigaERalie>[1] & object;
 
-  it("os números do texto batem com o cruzamento feito linha a linha nos dois CSV", () => {
+  const dataSigaExpansao = json<{ referencias: { siga: string } }>("public/energia/gold/expansao.json").referencias.siga;
+  const mesmoSiga = dataSigaExpansao === GE.cadastro.ativos.data;
+
+  it("com Empresas e Expansão em capturas diferentes do SIGA, o texto diz as duas datas e não cruza usina a usina", () => {
+    const t = E.textoFasesSigaERalie(GE.cadastro.ativos, { ...exp, data_siga: dataSigaExpansao });
+    if (mesmoSiga) {
+      expect(t).not.toContain("outra captura que não a desta página");
+      return;
+    }
+    expect(t).toContain(`A página Expansão cruza o RALIE com o SIGA de ${E.dataTexto(dataSigaExpansao)}, outra captura que não a desta página`);
+    expect(t).not.toContain("estão nessas duas fases do SIGA");
+    expect(texto(htmlEmp.p036)).toContain("outra captura que não a desta página");
+  });
+
+  it.runIf(mesmoSiga)("os números do texto batem com o cruzamento feito linha a linha nos dois CSV", () => {
     const emConstrucao = ralie.filter((x) => x.fase_siga === "Construção" || x.fase_siga === "Construção não iniciada").length;
     const emOperacao = ralie.filter((x) => x.fase_siga === "Operação").length;
     const ausentes = ralie.filter((x) => !x.fase_siga).length;

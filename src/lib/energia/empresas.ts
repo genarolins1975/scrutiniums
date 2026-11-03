@@ -3031,6 +3031,8 @@ export type RalieResumo = {
   mw_outorgado: number | null;
   mw_ugs_em_implantacao: number | null;
   fase_no_siga: { fase: string; usinas: number }[];
+  /** Data do SIGA que a Expansão cruzou com o RALIE (expansao.json, referencias.siga). */
+  data_siga?: string | null;
 };
 
 /**
@@ -3051,6 +3053,17 @@ export function textoFasesSigaERalie(a: Ativos, ralie: RalieResumo | null, idiom
     idioma,
   );
   if (!ralie) return siga;
+  // Publicação por módulo (03/11/2026): com Empresas retida, as fases acima são de um SIGA e o cruzamento da Expansão, de outro.
+  // Subtrair um do outro misturaria duas capturas; o texto diz as duas datas e não cruza.
+  if (ralie.data_siga && a.data && ralie.data_siga.slice(0, 10) !== a.data.slice(0, 10)) {
+    return tx(
+      `${siga} O RALIE, outra fonte da ANEEL, acompanhava em ${dataTexto(ralie.data_ralie, idioma)} ${I(ralie.usinas)} usinas em implantação: ${W(ralie.mw_outorgado)} de potência outorgada e ${W(ralie.mw_ugs_em_implantacao)} de potência das unidades geradoras em implantação, o número que a página Expansão destaca. ` +
+        `A página Expansão cruza o RALIE com o SIGA de ${dataTexto(ralie.data_siga, idioma)}, outra captura que não a desta página; o cruzamento usina a usina não é feito aqui. Por isso os dois totais não coincidem: mudam a fonte, a data e a medida.`,
+      `${siga} RALIE, another ANEEL source, was tracking ${I(ralie.usinas)} plants under implementation as of ${dataTexto(ralie.data_ralie, idioma)}: ${W(ralie.mw_outorgado)} of granted capacity and ${W(ralie.mw_ugs_em_implantacao)} of capacity of generating units under implementation, the figure the Expansion page highlights. ` +
+        `The Expansion page matches RALIE against SIGA as of ${dataTexto(ralie.data_siga, idioma)}, a different capture from the one on this page, the plant-by-plant match is not made here. That is why the two totals do not match: the source, the date and the measure differ.`,
+      idioma,
+    );
+  }
   const na = (f: string) => ralie.fase_no_siga.find((x) => x.fase === f)?.usinas ?? 0;
   // i18n: dado
   const emConstrucao = na("Construção") + na("Construção não iniciada");
