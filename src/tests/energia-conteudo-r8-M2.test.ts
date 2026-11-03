@@ -29,6 +29,7 @@ import {
   notaCmoNorte,
   notaRede,
   notaTarifaSocial,
+  determinantesDaPagina,
   respostaDeterminantes,
   respostaObservar,
   respostaSistema,
@@ -129,7 +130,9 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
   };
   const completas: Record<string, string> = {
     sistema: respostaSistema(G),
-    determinantes: respostaDeterminantes(G.multiplos!).join(" "),
+    // a página lê cada valor da série publicada e arredonda uma vez (determinantesDaPagina): 03/11/2026, 11,95% vira 12,0% na página
+    // e 11,9% no valor já arredondado da gold
+    determinantes: respostaDeterminantes(determinantesDaPagina(G.multiplos!, CTX.earSin, CTX.bandasAgua, CTX.medianaAgua.base).m).join(" "),
     sociedade: respostaSociedade(G.sociedade, CTX.sociedade),
     observar: respostaObservar(G.observar),
   };
@@ -225,7 +228,7 @@ describe("Visão geral: veredito à vista e resposta completa por trás", () => 
     expect(texto(html)).toContain(respostaSistema(G));
     expect(texto(html)).toContain(respostaObservar(G.observar));
     expect(texto(html)).toContain(respostaSociedade(G.sociedade, CTX.sociedade));
-    for (const t of respostaDeterminantes(G.multiplos!)) expect(texto(html)).toContain(t);
+    for (const t of respostaDeterminantes(determinantesDaPagina(G.multiplos!, CTX.earSin, CTX.bandasAgua, CTX.medianaAgua.base).m)) expect(texto(html)).toContain(t);
   });
 
   it("Entender não mostra P004 a P007, código de regra, NumCon, identificador de conjunto nem a versão do código", () => {
@@ -492,7 +495,9 @@ describe("Página inicial: contagens de distribuidoras (123, 102, 51 e 49), clas
     const decAnual = comQ.filter((d) => d.qualidade?.dec != null).length;
     expect(t).toContain(`Perdas: ${idx.filter((d) => d.perdas?.ano === perdas.referencia.ano).length} com dado de ${perdas.referencia.ano}.`);
     expect(t).toContain(`Qualidade: ${decAnual} com DEC anual de ${anoQ}${comQ.length > decAnual ? `, mais ${comQ.length - decAnual} com dado de parte do ano e sem DEC anual` : ""}.`);
-    expect(t).toContain(`Conta de luz: ${idx.filter((d) => d.tarifa?.vigente === true).length} com tarifa em vigor.`);
+    // tarifa vigente lida da própria Conta de luz (publicação por módulo, 03/11/2026: com Empresas retida, a marca do índice é antiga)
+    const vigentes = new Set(json<{ tarifas: { vigentes: { cnpj: string }[] } }>("public/energia/gold/conta.json").tarifas.vigentes.map((v) => v.cnpj));
+    expect(t).toContain(`Conta de luz: ${(idx as unknown as { cnpj: string }[]).filter((d) => vigentes.has(d.cnpj)).length} com tarifa em vigor.`);
     expect(t).not.toContain("com dados)");
     expect(h.match(/<select/g)).toHaveLength(1);
     // CELESC, RGE e CPFL Santa Cruz aparecem no máximo uma vez no seletor

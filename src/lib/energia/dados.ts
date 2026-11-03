@@ -2,7 +2,7 @@ import { carimbo, dataBR, num, plural } from "./formato";
 import { NAO_SE_APLICA } from "./escalas";
 import { idiomaEnergia, tx } from "./idioma";
 import type { Idioma } from "@/lib/idioma";
-import { FREQUENCIA_EN, fraseDeAtualidade, rotuloDado } from "./i18n/regulacao-dados-metodo";
+import { FREQUENCIA_EN, causaParaLeitor, fraseDeAtualidade, rotuloDado } from "./i18n/regulacao-dados-metodo";
 import { textoData, type ColunaTabela, type LinhaTabela } from "./tabela";
 import type {
   Afirmacao,
@@ -527,7 +527,18 @@ const textoAtualidade = (): Record<SituacaoAtualidade, string> =>
   );
 
 /** Referência temporal do pipeline ("2026-09-01T11:00", "2025-06", "2026") na forma da página. */
+/**
+ * Chave de série com data dentro ("cmp|ind|caixa_investimento|38199406000118|2022-09-30", revisão da CVM na gold de 02/11/2026):
+ * as partes separadas por " · " e a data por extenso. A chave exata segue no arquivo baixável da saúde dos dados.
+ */
+export function serieLegivel(serie: string): string {
+  return serie.includes("|") ? refLegivel(serie) : serie;
+}
+
 export function refLegivel(ref: string): string {
+  // referência composta (chave da série com "|", como a vigência e o ato de uma tarifa: "2025-09-30|2025-12-31|REH 3.537/2025",
+  // revisada na gold de 02/11/2026): cada data por extenso, as partes separadas por " · ", nunca a chave crua
+  if (ref.includes("|")) return ref.split("|").map((p) => (/^\d{4}-\d{2}(-\d{2})?(T[\d:]+Z?)?$/.test(p) ? textoData(p) : p)).join(" · ");
   return textoData(ref);
 }
 
@@ -1381,7 +1392,7 @@ export function situacaoDoConjunto(c: Pick<ConjuntoIntegrado, "atualidade">): { 
         `Dado atrasado${a.dias_atraso ? `: ${plural(a.dias_atraso, "dia", "dias")} além do prazo${a.prazo_proximo ? ` de ${dataBR(a.prazo_proximo)}` : ""}` : ""}`,
         `Data late${a.dias_atraso ? `: ${plural(a.dias_atraso, "day", "days")} past the deadline${a.prazo_proximo ? ` of ${dataBR(a.prazo_proximo)}` : ""}` : ""}`,
       ),
-      texto: `${periodo} ${instantesLegiveis(a.causa != null ? fraseDeAtualidade(a.causa) : tx("A fonte não publicou período mais recente.", "The source has not published a more recent period."))}`.trim(),
+      texto: `${periodo} ${instantesLegiveis(a.causa != null ? causaParaLeitor(a.causa) : tx("A fonte não publicou período mais recente.", "The source has not published a more recent period."))}`.trim(),
     };
   }
   if (a.situacao === "EM DIA") return { alerta: false, titulo: tx("Dado em dia", "Data up to date"), texto: periodo };

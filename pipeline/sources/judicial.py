@@ -104,21 +104,42 @@ def _es(base, key, tribunal, payload, timeout=60, retries=2):
     raise last
 
 
+def _ordem_por_idade(con, tribunais):
+    """Tribunais na ordem de coleta: os nunca coletados primeiro, depois do mais antigo ao mais recente.
+
+    Até 03/11/2026 a ordem era fixa (TJSP primeiro) e o orçamento por execução acabava sempre nos mesmos tribunais: os do fim da
+    lista nunca eram coletados, e a camada nacional ficou retida desde 24/09/2026 com 28 pares tribunal/categoria sem dado
+    (issue #27). Empate mantém a ordem da lista."""
+    idade = {t: c for t, c in con.execute("SELECT tribunal, coletado_em FROM jud_tribunal").fetchall()}
+    return sorted(tribunais, key=lambda t: (idade.get(t) is not None, idade.get(t) or "", tribunais.index(t)))
+
+
+def ordem_dos_ramos(con, ramos):
+    """Ramos na ordem do tribunal mais atrasado de cada um (nunca coletado conta como o mais atrasado)."""
+    idade = {t: c for t, c in con.execute("SELECT tribunal, coletado_em FROM jud_tribunal").fetchall()}
+    def chave(r):
+        primeiro = _ordem_por_idade(con, list(r[1]))[0] if r[1] else None
+        return (idade.get(primeiro) is not None, idade.get(primeiro) or "", ramos.index(r))
+    return sorted(ramos, key=chave)
+
+
 def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa, estourou=lambda: False):
     agora = common.now_utc()
     linhas, tribs, pulados = [], [], []
-    for trib in tribunais:
+    for trib in _ordem_por_idade(con, list(tribunais)):
         if estourou():
             pulados.append(trib)  # orçamento esgotado: volta na próxima execução
             continue
         try:
             tot = _es(base, key, trib, {"size": 0})
-            tribs.append((trib, ramo, UF_DO_TRIBUNAL.get(trib), tot["hits"]["total"]["value"], agora))
+            registro = (trib, ramo, UF_DO_TRIBUNAL.get(trib), tot["hits"]["total"]["value"], agora)
         except Exception:
             continue  # tribunal indisponível: não entra (ausência ≠ zero)
+        completo = True
         for categoria, bloco in taxonomia.items():
             for cod, nome in bloco["codigos"].items():
                 if estourou():
+                    completo = False
                     break
                 try:
                     d = _es(base, key, trib, {
@@ -138,8 +159,14 @@ def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa, estourou=lam
                 except Exception:
                     pass
                 time.sleep(pausa)
+        # tribunal interrompido pelo orçamento: as linhas coletadas ficam, mas a data do tribunal não muda, para ele voltar
+        # à frente da fila na próxima execução
+        if completo:
+            tribs.append(registro)
+        else:
+            pulados.append(trib)
         # grava ao fim de cada tribunal: coleta longa fica resumível e auditável
-        con.executemany("INSERT OR REPLACE INTO jud_tribunal VALUES(?,?,?,?,?)", tribs[-1:])
+        con.executemany("INSERT OR REPLACE INTO jud_tribunal VALUES(?,?,?,?,?)", [registro] if completo else [])
         con.executemany("INSERT OR REPLACE INTO jud_assunto VALUES(?,?,?,?,?,?,?,?)",
                         [l for l in linhas if l[0] == trib])
         con.commit()
@@ -222,16 +249,13 @@ def collect(con, cfg):
     t0 = time.monotonic()
     estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S
     out = []
-    try:
-        out.append({"key": "jud_civel", "ok": True,
-                    **_coleta_ramo(con, base, key, TRIBUNAIS_CIVEL, TAXONOMIA_CIVEL, "civel", pausa, estourou)})
-    except Exception as e:
-        out.append({"key": "jud_civel", "ok": False, "error": str(e)[:180]})
-    try:
-        out.append({"key": "jud_trabalhista", "ok": True,
-                    **_coleta_ramo(con, base, key, TRIBUNAIS_TRABALHO, TAXONOMIA_TRABALHISTA, "trabalhista", pausa, estourou)})
-    except Exception as e:
-        out.append({"key": "jud_trabalhista", "ok": False, "error": str(e)[:180]})
+    # os dois ramos dividem o orçamento: começa o que tem o tribunal mais antigo (ou nunca coletado)
+    ramos = [("jud_civel", TRIBUNAIS_CIVEL, TAXONOMIA_CIVEL, "civel"), ("jud_trabalhista", TRIBUNAIS_TRABALHO, TAXONOMIA_TRABALHISTA, "trabalhista")]
+    for chave, tribunais, taxonomia, ramo in ordem_dos_ramos(con, ramos):
+        try:
+            out.append({"key": chave, "ok": True, **_coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa, estourou)})
+        except Exception as e:
+            out.append({"key": chave, "ok": False, "error": str(e)[:180]})
     try:
         out.append(_tst_ranking(con))
     except Exception as e:

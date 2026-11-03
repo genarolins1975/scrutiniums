@@ -397,8 +397,9 @@ export function GeracaoTermica({
         {usinasComparadas.length > 0 && (
           <>
             <GraficoBarras
-              // em inglês, o título não repete os nomes (texto do gráfico não leva marca); eles estão no comparador logo acima e na legenda
-              titulo={tx(`Parcela de cada motivo na geração da usina, 12 meses: ${nomesComparadas}`, "Share of each reason in the generation of each compared plant, 12 months")}
+              // o título não repete os nomes nas duas línguas (texto do gráfico não leva marca de idioma): eles estão no comparador logo acima
+              // e na legenda. Com "Mauá 3" na seleção (02/11/2026), o título português tinha números que o inglês não tinha
+              titulo={tx("Parcela de cada motivo na geração de cada usina comparada, 12 meses", "Share of each reason in the generation of each compared plant, 12 months")}
               dados={paraTabela(motivosUsinas, idioma)}
               chaveCategoria="id"
               chaveRotulo="motivo"

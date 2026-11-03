@@ -18,7 +18,7 @@ import { NotasDoPainel, PainelEvidencia } from "@/components/evidencia/PainelEvi
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num, pct, plural } from "@/lib/energia/formato";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
-import { CSV_DADOS, ROTULO_SITUACAO, conjuntosComRevisao, inicioRegistroCapturas, janelaCalendario, linhasSaude, refLegivel, respostaSaude, resumoSaude, situacaoPorCadencia, uni } from "@/lib/energia/dados";
+import { CSV_DADOS, ROTULO_SITUACAO, conjuntosComRevisao, inicioRegistroCapturas, janelaCalendario, linhasSaude, refLegivel, respostaSaude, serieLegivel, resumoSaude, situacaoPorCadencia, uni } from "@/lib/energia/dados";
 import {
   conciliarCatalogoEIntegracoes,
   limitacaoInicioDoRegistro,
@@ -342,8 +342,8 @@ export default function DadosSaudePage() {
                             </p>
                             <p className="mt-1 text-sm leading-relaxed text-carvao-muted">
                               {tx(
-                                `${num(rv.observacoes ?? 0, 0)} valores revisados (pares de série e período), em ${num(rv.referencias ?? 0, 0)} períodos e ${plural(rv.series ?? 0, "série", "séries")}`,
-                                `${num(rv.observacoes ?? 0, 0)} revised values (pairs of series and period), in ${num(rv.referencias ?? 0, 0)} periods and ${plural(rv.series ?? 0, "series", "series")}`,
+                                `${num(rv.observacoes ?? 0, 0)} valores revisados (pares de série e período), em ${plural(rv.referencias ?? 0, "período", "períodos")} e ${plural(rv.series ?? 0, "série", "séries")}`,
+                                `${num(rv.observacoes ?? 0, 0)} revised values (pairs of series and period), in ${plural(rv.referencias ?? 0, "period", "periods")} and ${plural(rv.series ?? 0, "series", "series")}`,
                               )}
                               {rv.ref_min && rv.ref_max ? tx(`, de ${refLegivel(rv.ref_min)} a ${refLegivel(rv.ref_max)}`, `, from ${refLegivel(rv.ref_min)} to ${refLegivel(rv.ref_max)}`) : ""}.
                             </p>
@@ -367,7 +367,7 @@ export default function DadosSaudePage() {
                             <div className="mt-1 space-y-1 text-xs leading-relaxed text-mineral" data-nivel="analisar">
                               {rv.maior_abs && (
                                 <p>
-                                  {tx("Maior mudança absoluta: série", "Largest absolute change: series")} <strong className="font-medium text-carvao">{codigo(rv.maior_abs.serie)}</strong>{" "}
+                                  {tx("Maior mudança absoluta: série", "Largest absolute change: series")} <strong className="font-medium text-carvao">{codigo(serieLegivel(rv.maior_abs.serie))}</strong>{" "}
                                   {tx(
                                     `em ${refLegivel(rv.maior_abs.ref)}, de ${num(rv.maior_abs.de, 2)} para ${num(rv.maior_abs.para, 2)} (diferença de ${num(rv.maior_abs.diferenca, 2)}, na unidade da série).`,
                                     `in ${refLegivel(rv.maior_abs.ref)}, from ${num(rv.maior_abs.de, 2)} to ${num(rv.maior_abs.para, 2)} (difference of ${num(rv.maior_abs.diferenca, 2)}, in the unit of the series).`,
@@ -376,7 +376,7 @@ export default function DadosSaudePage() {
                               )}
                               {ev && (
                                 <p>
-                                  {tx("Maior mudança relativa: série", "Largest relative change: series")} <strong className="font-medium text-carvao">{codigo(ev.serie)}</strong>
+                                  {tx("Maior mudança relativa: série", "Largest relative change: series")} <strong className="font-medium text-carvao">{codigo(serieLegivel(ev.serie))}</strong>
                                   {tx<ReactNode>(
                                     `, arquivo ${ev.recurso}. Cada captura guarda o original com sha256.`,
                                     <>, file {codigo(ev.recurso)}. Each capture stores the original with sha256.</>,

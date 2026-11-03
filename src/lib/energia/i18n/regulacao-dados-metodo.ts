@@ -1,6 +1,6 @@
 import { createElement, Fragment, type ReactNode } from "react";
 import type { Idioma } from "@/lib/idioma";
-import { idiomaEnergia } from "@/lib/energia/idioma";
+import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { dataBR } from "@/lib/energia/formato";
 import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
@@ -171,6 +171,9 @@ export const PAINEIS_EN: Record<string, string> = {
   "Água e clima: armazenamento": "Water and climate: storage",
   "Água e clima: chuva e temperatura": "Water and climate: rainfall and temperature",
   "Água e clima: reservatórios e balanço": "Water and climate: reservoirs and balance",
+  // painéis de Leilões citados pelas fichas de conjunto desde a gold de 02/11/2026
+  "Leilões do ACR": "Regulated market (ACR) auctions",
+  "Leilões de transmissão": "Transmission auctions",
 };
 
 /** Tipo de ato da linha do tempo (campo tipo_ato). */
@@ -320,6 +323,9 @@ export const LICENCA_EN: Record<string, string> = {
 const FRASES_ATUALIDADE_EN: readonly (readonly [RegExp, string])[] = [
   [/^A fonte não publicou período mais recente até a última coleta bem-sucedida \((.+)\)\.$/, "The source has not published a more recent period up to the latest successful collection ($1)."],
   [/^A fonte não publicou período mais recente\.$/, "The source has not published a more recent period."],
+  // causa de atraso sem falha registrada (pipeline/energia/modulos/dados.py), vista pela primeira vez na gold de 02/11/2026
+  [/^Sem coleta bem-sucedida recente \(última em nunca\)\.$/, "No successful collection on record."],
+  [/^Sem coleta bem-sucedida recente \(última em (.+)\)\.$/, "No recent successful collection (latest on $1)."],
   [/^Conjunto descontinuado pela fonte: não há atualização a esperar\.$/, "Dataset discontinued by the source: there is no update to expect."],
   [/^A fonte não declara frequência de atualização em metadado legível\.$/, "The source does not declare an update frequency in readable metadata."],
   [
@@ -327,6 +333,30 @@ const FRASES_ATUALIDADE_EN: readonly (readonly [RegExp, string])[] = [
     "No regular reference series and no publication date reported by the source: the delay cannot be measured without using the capture date.",
   ],
 ];
+
+/**
+ * A causa de atraso que o pipeline escreve para falha de coleta traz a mensagem técnica da tentativa (endereço, código HTTP,
+ * "causa=acesso_negado"; 02/11/2026, PLD horário da CCEE). No nível Entender o leitor lê o que aconteceu em palavras de leigo; a
+ * mensagem técnica continua na ficha, em Auditar ("Última tentativa de coleta direta"). Tipos de falha de pipeline/common.py.
+ */
+const FALHA_DE_COLETA = /^Falha de coleta: a última tentativa \((.+?)\) falhou: ([\s\S]*)$/;
+
+export function causaParaLeitor(causa: string, idioma: Idioma = idiomaEnergia()): string {
+  const m = FALHA_DE_COLETA.exec(causa.trim());
+  if (!m) return fraseDeAtualidade(causa, idioma);
+  const tipo = /causa=([a-z_]+)/.exec(m[2])?.[1];
+  const motivo =
+    tipo === "acesso_negado"
+      ? tx("a fonte recusou o acesso", "the source refused access", idioma)
+      : tipo === "rede"
+        ? tx("a fonte não respondeu", "the source did not respond", idioma)
+        : tx("a fonte não entregou os dados", "the source did not deliver the data", idioma);
+  return tx(
+    `Falha de coleta: a última tentativa, em ${m[1]}, não conseguiu baixar os dados porque ${motivo}.`,
+    `Collection failure: the latest attempt, on ${m[1]}, could not download the data because ${motivo}.`,
+    idioma,
+  );
+}
 
 export function fraseDeAtualidade(texto: string, idioma: Idioma = idiomaEnergia()): string {
   if (idioma !== "en") return texto;

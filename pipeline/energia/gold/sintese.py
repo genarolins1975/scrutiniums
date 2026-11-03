@@ -323,11 +323,11 @@ def qualidade_frase(fid, vals, gold, prov, conjunto, revisoes_ds, hoje):
         txt_rev = "Revisões entre capturas não verificadas nesta execução (silver de origem indisponível)."
     elif n_rev == 0:
         txt_rev = (f"Nenhuma referência das séries usadas nesta frase foi revisada entre as capturas integradas; o conjunto tem "
-                   f"{rk.get('total', 0)} observações revisadas no total, em todas as séries.")
+                   f"{nbr(rk.get('total', 0), 0)} observações revisadas no total, em todas as séries.")
     else:
         tipo = "horária" if "T" in refs[0] else "diária"
-        txt_rev = (f"{n_rev} {'referência ' + tipo + ' das séries usadas nesta frase foi revisada' if n_rev == 1 else 'referências ' + tipo.replace('ária', 'árias') + ' das séries usadas nesta frase foram revisadas'} "
-                   f"pela fonte entre capturas ({len(pares)} {'par' if len(pares) == 1 else 'pares'} de série e referência)"
+        txt_rev = (f"{nbr(n_rev, 0)} {'referência ' + tipo + ' das séries usadas nesta frase foi revisada' if n_rev == 1 else 'referências ' + tipo.replace('ária', 'árias') + ' das séries usadas nesta frase foram revisadas'} "
+                   f"pela fonte entre capturas ({nbr(len(pares), 0)} {'par' if len(pares) == 1 else 'pares'} de série e referência)"
                    + (f"; maior variação de {nbr(maior['relativa_pct'], 2)}% sobre o valor anterior, em {maior['serie']} de "
                       f"{c.data_br(maior['ref'][:10])}{(' às ' + maior['ref'][11:16]) if 'T' in maior['ref'] else ''}"
                       if maior else "") + "; o valor exibido é o da captura mais recente.")

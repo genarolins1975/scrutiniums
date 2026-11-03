@@ -108,7 +108,12 @@ const GRUPOS = Object.entries(sinonimos as Record<string, unknown>)
   .map(([chave, lista]) => [chave, ...(lista as string[])]);
 
 /** Apelidos de nomes próprios das listas de bancos e distribuidoras: o nome como está na lista e os apelidos ("Neoenergia PE" é a Celpe). */
-const NOMES = Object.entries((sinonimos as { _nomes: Record<string, string[]> })._nomes);
+const RENOMEADOS = Object.entries((sinonimos as unknown as { _renomeados: Record<string, string[] | string> })._renomeados)
+  .filter(([chave]) => !chave.startsWith("_")) as [string, string[]][];
+const NOMES = Object.entries((sinonimos as { _nomes: Record<string, string[]> })._nomes).flatMap(([nome, apelidos]) => [
+  [nome, apelidos] as [string, string[]],
+  ...(RENOMEADOS.find(([atual]) => atual === nome)?.[1] ?? []).map((anterior) => [anterior, apelidos] as [string, string[]]),
+]);
 
 /** Contém a expressão inteira (palavras completas), já normalizada. */
 const contem = (texto: string, expressao: string) => ` ${texto} `.includes(` ${expressao} `);
@@ -156,21 +161,55 @@ const nomesUf = (): string[] => Object.values(NOME_UF);
 export function encurtarRazaoSocial(nome: string): string {
   return nome
     .replace(/\bCOOPERATIVA( REGIONAL)? DE (ELETRIFICACAO|ELETRIFICAO|ELETRIF|DISTRIBUICAO|ELETRICIDADE|ENERGIA|ELETR\.)( E GERACAO)?( RURAL)?( E (DESENVOLVIMENTO|DESENV\.)( RURAL)?)?( DE ENERGIA)?( ELETRICA)?( DA REGIAO)?( D[AEO]S?)?\b/gi, "COOPERATIVA ")
+    // enchimento das razões sociais das cooperativas que entraram com tarifa vigente em 02/11/2026 ("DE PRESTACAO DE SERVICOS
+    // PUBLICOS DE", "DE ENERGIZACAO E DE DESENVOLVIMENTO DO", "DE ELTRIF RURAL DE", "E DA REGIAO DE"): ninguém digita
+    .replace(/\b(?:DE )?(?:PRESTACAO DE SERVICOS PUBLICOS|ENERGIZACAO|ELETRIFICACAO|ELTRIF|ELET)(?: E (?:DE )?DESENVOLVIMENTO)?(?: RURAL)?(?: D[AEO]S?)?(?= |$)/gi, " ")
+    .replace(/\b(?:E )?DA REGIAO D[AEO]S?\b/gi, " ")
+    .replace(/\bCOOP\b/gi, "COOPERATIVA")
     .replace(/\b(S\.?\/?A\.?|S A|LTDA\.?|LTD)(?=\s|$|-)/gi, " ")
     .replace(/-?\s*\b(DISTRIBUIDORA|DISTRIBUICAO)( E GERACAO)?( DE (ENERGIA|ELETRICIDADE)( ELETRICA)?)?\b/gi, " ")
     .replace(/\s+/g, " ")
+    .replace(/\bCOOPERATIVA E (?=\S)/gi, "COOPERATIVA ")
     .replace(/^[\s.\-]+|[\s.\-]+$/g, "")
     .trim();
 }
 
+/** Nome que sozinho não distingue uma distribuidora: a sigla já entra na lista e o nome genérico só pesaria no índice. */
+const GENERICOS = new Set(["cooperativa", "companhia", "energia"]);
+
+/**
+ * A sigla já entra na lista ao lado do nome: repetida dentro da razão social ("CEJAMA - COOPERATIVA JACINTO MACHADO",
+ * "COOPERATIVA MISSOES - CERMISSOES") só pesa no índice. Com 103 distribuidoras com tarifa vigente (02/11/2026, eram 81), o
+ * índice passava do peso alvo de 150 KB; a regra de 23/10/2026 manda encurtar os nomes antes de subir o teto.
+ */
+export function semSigla(nome: string, sigla: string): string {
+  const s = normalizar(sigla).replace(/[^a-z0-9 ]/g, "");
+  if (!s) return nome;
+  const partes = nome.split(/\s+-\s+|\s+-(?=\S)|(?<=\S)-\s+/);
+  const restantes = partes.filter((p) => normalizar(p).replace(/[^a-z0-9 ]/g, "") !== s);
+  return restantes.join(" - ").replace(/\s+/g, " ").trim();
+}
+
+/**
+ * A busca casa palavra a palavra na lista inteira do destino (src/lib/busca/buscar.ts): "COOPERATIVA" repetida em 60 razões
+ * sociais pesava 700 bytes e não distinguia nenhuma. Entra uma vez, no fim, e "cooperativa gravatal" continua achando a Conta de
+ * luz pela palavra solta e por "GRAVATAL".
+ */
+const PREFIXO_COOPERATIVA = /^COOPERATIVA\s+(?=\S)/i;
+
 const distribuidoras = (): string[] =>
   lerPublico(
     "energia/gold/conta.json",
-    (j) =>
-      ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => {
-        const nome = encurtarRazaoSocial(d.nome);
-        return normalizar(nome) === normalizar(d.sigla) ? [d.sigla] : [d.sigla, nome];
-      }),
+    (j) => {
+      let cooperativas = 0;
+      const nomes = ((j as { tarifas: { vigentes: { sigla: string; nome: string }[] } }).tarifas.vigentes ?? []).flatMap((d) => {
+        const inteiro = semSigla(encurtarRazaoSocial(d.nome), d.sigla);
+        const nome = inteiro.replace(PREFIXO_COOPERATIVA, "");
+        if (nome !== inteiro) cooperativas++;
+        return !nome || normalizar(nome) === normalizar(d.sigla) || GENERICOS.has(normalizar(nome)) ? [d.sigla] : [d.sigla, nome];
+      });
+      return cooperativas ? [...nomes, "COOPERATIVA"] : nomes;
+    },
     [] as string[],
   );
 

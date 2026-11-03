@@ -2570,6 +2570,17 @@ export function horasPorSentidoNoDia(rec: Pick<PldHorarioRecenteArquivo, "t" | "
   });
 }
 
+/**
+ * Dia das horas por sentido do mapa: o dia do fluxo do ONS quando o arquivo horário o cobre; senão, o último dia anterior com fluxo
+ * no arquivo horário, que acompanha a janela do PLD (02/11/2026: fluxo do ONS até 31/10 e PLD horário até 24/10). Null sem horas.
+ */
+export function diaDasHorasPorSentido(rec: Pick<PldHorarioRecenteArquivo, "t" | "fluxo">, diaDoFluxo: string): string | null {
+  const comFluxo = rec.t
+    .map((t, i) => (FRONTEIRAS.some((f) => typeof rec.fluxo[f][i] === "number" && Number.isFinite(rec.fluxo[f][i])) ? t.slice(0, 10) : null))
+    .filter((d): d is string => d !== null && d <= diaDoFluxo);
+  return comFluxo.length ? comFluxo.reduce((a, b) => (b > a ? b : a)) : null;
+}
+
 export function textoSentidoNoDia(s: SentidoDoFluxoNoDia, idioma: Idioma = idiomaEnergia()): string | null {
   if (s.horas === 0) return null;
   const dePara = tx(`${CURTO_SM[s.de]} para ${CURTO_SM[s.para]}`, `${curtoSm(s.de, idioma)} to ${curtoSm(s.para, idioma)}`, idioma);

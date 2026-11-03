@@ -6,6 +6,9 @@ import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { RetornoContexto } from "@/components/energia/RetornoContexto";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
+import { AvisoRetencao } from "@/components/energia/AvisoRetencao";
+import { gold } from "@/lib/energia/gold";
+import { retencoesDaMeta } from "@/lib/energia/retencao";
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +34,8 @@ export default function SetorEletricoLayoutIngles({ children }: { children: Reac
         Skip to content
       </a>
       <MarcaRolagem />
+      {/* publicação por módulo (03/11/2026): a página de um módulo retido diz de quando são os números, antes deles */}
+      <AvisoRetencao retencoes={retencoesDaMeta(gold.meta())} />
       <div className="flex-1">{children}</div>
       {/* quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto */}
       <RetornoContexto rotulos={rotulosRetorno()} />

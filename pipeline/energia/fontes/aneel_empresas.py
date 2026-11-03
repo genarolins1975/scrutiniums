@@ -146,6 +146,25 @@ _PROPRIETARIO = re.compile(
     r"\((?P<regime>[A-Z]+)\)(?:,\s*|$)")
 
 
+# Formato do SIGA desde a captura de 01/11/2026 (conferido no arquivo de 02/11/2026): a ANEEL deixou de publicar o CNPJ e o
+# separador " - " de cada proprietário: "<pct>% para <nome> (<REGIME>)". Sem o documento não há âncora para o vínculo com o
+# cadastro de agentes; o campo é reconhecido (não é texto ilegível), mas não vira vínculo.
+_PROPRIETARIO_SEM_DOC = re.compile(r"(?P<pct>\d+(?:[.,]\d+)?)%\s+para\s+(?P<nome>.+?)\s*\((?P<regime>[A-Z]+)\)(?:,\s*|$)")
+
+
+def formato_sem_documento(valor):
+    """True quando o texto inteiro é a lista de proprietários no formato sem CNPJ do SIGA."""
+    s = texto(valor)
+    if not s:
+        return False
+    pos = 0
+    for m in _PROPRIETARIO_SEM_DOC.finditer(s):
+        if m.start() != pos:
+            return False
+        pos = m.end()
+    return pos == len(s) and pos > 0
+
+
 def proprietarios_siga(valor):
     """Texto DscPropriRegimePariticipacao → lista de {pct, nome, cnpj (14 dígitos ou None),
     regime (sigla)} ou None quando o campo é vazio, "Não Informado" ou não é lido por inteiro."""
@@ -174,7 +193,8 @@ def le_siga(linhas):
     para a lista de divergentes (a potência nunca é somada duas vezes)."""
     out = {}
     ocorr = {"linhas": 0, "sem_nucleo": 0, "duplicadas_identicas": 0, "duplicadas_divergentes": [],
-             "proprietarios_nao_informados": 0, "proprietarios_nao_lidos": [], "data_geracao": None, "fases": {}}
+             "proprietarios_nao_informados": 0, "proprietarios_nao_lidos": [], "proprietarios_sem_documento": [],
+             "data_geracao": None, "fases": {}}
     for r in linhas:
         ocorr["linhas"] += 1
         k = nucleo(r.get("IdeNucleoCEG"))
@@ -216,6 +236,8 @@ def le_siga(linhas):
                 ocorr["proprietarios_nao_informados"] += 1
             else:
                 ocorr["proprietarios_nao_lidos"].append(k)
+                if formato_sem_documento(bruto):
+                    ocorr["proprietarios_sem_documento"].append(k)
         out[k] = reg
     return out, ocorr
 

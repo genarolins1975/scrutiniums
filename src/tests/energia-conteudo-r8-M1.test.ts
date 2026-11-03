@@ -420,7 +420,9 @@ describe("conciliação: mercado livre, 45,3% (EPE) e 42,4% (CCEE) lado a lado (
     expect(epe).toHaveLength(12);
     const pctEpe = (100 * epe.reduce((s, r) => s + Number(r.livre_mwh), 0)) / epe.reduce((s, r) => s + Number(r.total_mwh), 0);
 
-    const c = csv("public/energia/series/mercado_ccee_mensal.csv").filter((r) => r.conjunto === "consumo_classe_agente" && r.serie.endsWith("|CONSUMO") && r.mes >= ini && r.mes <= fim && r.valor !== "");
+    // cada percentual na sua janela: a da CCEE pode fechar um mês antes da da EPE (02/11/2026)
+    const jc = k.participacao_acl_ccee_12m!.periodo;
+    const c = csv("public/energia/series/mercado_ccee_mensal.csv").filter((r) => r.conjunto === "consumo_classe_agente" && r.serie.endsWith("|CONSUMO") && r.mes >= jc.inicio && r.mes <= jc.fim && r.valor !== "");
     const horas = (mes: string) => new Date(Date.UTC(Number(mes.slice(0, 4)), Number(mes.slice(5, 7)), 0)).getUTCDate() * 24;
     let acl = 0;
     let acr = 0;
@@ -433,8 +435,12 @@ describe("conciliação: mercado livre, 45,3% (EPE) e 42,4% (CCEE) lado a lado (
     const pctCcee = (100 * acl) / (acl + acr);
 
     const f1 = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    expect(f1(pctEpe)).toBe("45,3");
-    expect(f1(pctCcee)).toBe("42,4");
+    // 45,3% e 42,4% são da janela de set/2025 a ago/2026 (restritos a ela, decisão do dono de 03/11/2026); para qualquer janela,
+    // os dois são relidos dos CSV acima, diferem e a página escreve os dois
+    if (fim === "2026-08") {
+      expect(f1(pctEpe)).toBe("45,3");
+      expect(f1(pctCcee)).toBe("42,4");
+    }
     expect(f1(pctEpe)).not.toBe(f1(pctCcee));
     const h = entender(HTML.mercado);
     expect(h).toContain(`Os dois percentuais do mercado livre (${f1(pctEpe)}% e ${f1(pctCcee)}%) vêm de universos diferentes`);

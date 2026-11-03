@@ -426,6 +426,11 @@ const MODELOS_EN: readonly [RegExp, (m: RegExpExecArray) => string | null][] = [
     new RegExp(`^Referência (${D}), (\\d+) dias? antes da data de processamento \\((${D})\\)\\.$`),
     (m) => `Reference date ${dataEn(m[1])}, ${dias(m[2])} before the processing date (${dataEn(m[3])}).`,
   ],
+  // defasagem zero (pipeline/energia/gold/sintese.py): a tarifa vigente de 01/11/2026 tem a própria data de processamento como referência
+  [
+    new RegExp(`^Referência (${D}), a própria data de processamento \\((${D})\\)\\.$`),
+    (m) => `Reference date ${dataEn(m[1])}, the processing date itself (${dataEn(m[2])}).`,
+  ],
   [
     /^Ano encerrado em (\d{2}\/\d{4}); o último mês completo publicado é ([a-z]{3}\/\d{4})\.$/,
     (m) => `Year ended in ${dataEn(m[1])}; the latest complete month published is ${mesEn(m[2])}.`,

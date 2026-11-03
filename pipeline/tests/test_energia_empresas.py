@@ -223,6 +223,21 @@ class ReconciliacaoProprietariosSiga(unittest.TestCase):
         self.assertIsNone(ae.proprietarios_siga(""))
         self.assertEqual(ae.estado_vinculo("nao_lido"), "nao_lido")
 
+    def test_formato_sem_cnpj_e_reconhecido_e_nao_vira_vinculo(self):
+        # SIGA de 02/11/2026: a ANEEL tirou o CNPJ e o " - " de cada proprietário
+        novo = "50% para CRERAL- COOPERATIVA DE GERACAO (REG), 50% para HIPPO SUPERMERCADOS LTDA (REG)"
+        self.assertIsNone(ae.proprietarios_siga(novo))
+        self.assertTrue(ae.formato_sem_documento(novo))
+        self.assertTrue(ae.formato_sem_documento("100% para CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS (PIE)"))
+        self.assertFalse(ae.formato_sem_documento("100% para CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS - 04.237.975/0001-99 (PIE)") and
+                         ae.proprietarios_siga("100% para CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS - 04.237.975/0001-99 (PIE)") is None)
+        self.assertFalse(ae.formato_sem_documento("10% para TEXTILFIO MALHAS LTDA (REG), 10% para HIGH TECH EQUIPAMENTOS INDUST"))  # truncado
+        self.assertFalse(ae.formato_sem_documento(""))
+        linhas = [{"IdeNucleoCEG": "8", "CodCEG": "X", "DscPropriRegimePariticipacao": novo, "DatGeracaoConjuntoDados": "2026-11-02"}]
+        _, oc = ae.le_siga(linhas)
+        self.assertEqual(oc["proprietarios_sem_documento"], ["8"])
+        self.assertEqual(oc["proprietarios_nao_lidos"], ["8"])
+
     def test_tolerancia_de_arredondamento_por_parcela(self):
         def props(*pcts):
             return [{"pct": p, "cnpj": f"{i:014d}", "nome": "x", "regime": "PIE"} for i, p in enumerate(pcts, 1)]

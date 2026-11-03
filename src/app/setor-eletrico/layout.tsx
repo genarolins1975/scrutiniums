@@ -7,6 +7,9 @@ import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
 import { RetornoContexto } from "@/components/energia/RetornoContexto";
 import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { tx } from "@/lib/energia/idioma";
+import { AvisoRetencao } from "@/components/energia/AvisoRetencao";
+import { gold } from "@/lib/energia/gold";
+import { retencoesDaMeta } from "@/lib/energia/retencao";
 
 /* Casca só da versão portuguesa: a inglesa tem a sua (src/app/en/setor-eletrico/layout.tsx), e estes textos nunca chegam a /en. */
 export const metadata: Metadata = {
@@ -33,6 +36,8 @@ export default function SetorEletricoLayout({ children }: { children: React.Reac
         {tx("Pular para o conteúdo", "Skip to content")}
       </a>
       <MarcaRolagem />
+      {/* publicação por módulo (03/11/2026): a página de um módulo retido diz de quando são os números, antes deles */}
+      <AvisoRetencao retencoes={retencoesDaMeta(gold.meta())} />
       <div className="flex-1">{children}</div>
       {/* quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de volta ao contexto */}
       <RetornoContexto rotulos={rotulosRetorno()} />

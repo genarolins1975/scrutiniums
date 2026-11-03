@@ -53,8 +53,7 @@ import {
   vereditoP013,
   vereditoP014,
   vereditoP015,
-  vereditoP016,
-} from "@/lib/energia/previsoes";
+  vereditoP016, MAX_RODADAS_PAGINA, rodadasRecentes } from "@/lib/energia/previsoes";
 import { lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivos";
 import type { ModelosGold, PrevisoesGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold } from "@/lib/energia/tipos-pld";
@@ -221,7 +220,7 @@ describe("vereditos: curtos, com poucos números, sem travessão e sem data ISO"
       p013: respostaP013(P),
       p014: respostaP014(P),
       p016: respostaP016(P),
-      p015: respostaP015(linhas, "", linhas.length),
+      p015: respostaP015(rodadasRecentes(linhas, MAX_RODADAS_PAGINA).linhas, "", linhas.length),
     };
     if (lim) completas["p010 2026 SE"] = respostaP010(lim, 2026, "SE", D.referencia.dia);
     for (const [k, c] of Object.entries(completas)) expect(palavras(vereditos[k]), k).toBeLessThan(palavras(c));
@@ -282,7 +281,7 @@ describe("resposta em duas camadas nas páginas: veredito à vista, resposta com
     const linhas = linhasArquivo(emissoes.linhas, Object.fromEntries(P.modelos.map((m) => [m.codigo, m.estado])));
     const casos: [string, string, string, string][] = [
       ["previsoes", "p013", vereditoP013(P), respostaP013(P)],
-      ["previsoes", "p015", vereditoP015(linhas, "", linhas.length), respostaP015(linhas, "", linhas.length)],
+      ["previsoes", "p015", vereditoP015(rodadasRecentes(linhas, MAX_RODADAS_PAGINA).linhas, "", linhas.length), respostaP015(rodadasRecentes(linhas, MAX_RODADAS_PAGINA).linhas, "", linhas.length)],
       ["modelos", "p014", vereditoP014(P), respostaP014(P)],
       ["modelos", "p016", vereditoP016(P), respostaP016(P)],
     ];
@@ -328,7 +327,9 @@ describe("identificadores técnicos fora do texto de Entender", () => {
     expect(html.modelos).toContain("validacao_observatorio.decisao_publicacao");
     expect(html.modelos).toContain("implementador");
     expect(html.historico).toContain("media_temporal de pld_mensal.csv");
-    expect(html.previsoes).toContain("751");
+    // 751 minutos de atraso da rodada de 27/09/2026: a página mostra as rodadas mais recentes (MAX_RODADAS_PAGINA), e a de 27/09
+    // saiu da página quando o arquivo passou de 14 rodadas (01/11/2026); o identificador continua no arquivo para baixar
+    if (rodadasRecentes(linhasArquivo(lerCsvPrevisoes("/energia/series/previsoes_emissoes.csv")!.linhas, Object.fromEntries(P.modelos.map((m) => [m.codigo, m.estado]))), MAX_RODADAS_PAGINA).linhas.some((l) => l.origem === "2026-09-27")) expect(html.previsoes).toContain("751");
     expect(html["ficha-b0"]).toContain("SEM_PLD_CAPTURADO_ATE_O_CORTE");
     expect(html["ficha-b0"]).toContain("LAT1D");
     expect(html["ficha-c2-p"]).toContain("escala_rms_j");
@@ -362,7 +363,9 @@ describe("identificadores técnicos fora do texto de Entender", () => {
     }
     expect(COLUNAS_ARQUIVO_TABELA.filter((x) => x.nivel !== "auditar").map((x) => x.id)).not.toContain("sha256");
     expect(COLUNAS_GRADE.map((c) => c.id)).not.toContain("forecast_id");
-    expect(textoEntender(html.previsoes)).toMatch(/B0 W1 SE\/CO, rodada de 27\/09\/2026/);
+    // o nome do registro abre a tabela: o da primeira linha mostrada (03/11/2026: a rodada de 27/09 saiu da página com 16 rodadas)
+    const primeira = rodadasRecentes(linhasArquivo(lerCsvPrevisoes("/energia/series/previsoes_emissoes.csv")!.linhas, Object.fromEntries(P.modelos.map((m) => [m.codigo, m.estado]))), MAX_RODADAS_PAGINA).linhas.find((l) => l.horizonte === "W1" && l.submercado === "SE");
+    if (primeira) expect(textoEntender(html.previsoes)).toContain(`B0 W1 SE/CO, rodada de ${dataBR(primeira.origem)}`);
   });
 
   it("o texto do registro limpo para o leitor mantém o fato e perde só o código", () => {
@@ -656,7 +659,8 @@ describe("conciliações: contagens que pareciam divergir, explicadas no ponto d
     // o último mês do CSV pode ser outro (parcial ou com carga incompleta), e então a página diz por que o mês muda
     const mesAbrev = (m: string) => `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m.slice(5, 7)) - 1]}/${m.slice(0, 4)}`;
     const se = csv("public/energia/series/pld_mensal.csv").filter((r) => r.sm === "SE").sort((a, b) => a.mes.localeCompare(b.mes));
-    const fichas = se.filter((r) => r.mesmas_horas === "1" && r.mesmas_horas_sem_mmgd === "1").at(-1)!;
+    // mês fechado (parcial = 0): 02/11/2026, outubro ia até o dia 24 com as mesmas horas e não é mês das três médias
+    const fichas = se.filter((r) => r.mesmas_horas === "1" && r.mesmas_horas_sem_mmgd === "1" && r.parcial !== "1").at(-1)!;
     const ultimo = se.at(-1)!;
     expect(fichas.mes).toBe(D.historico.ponderacao.sensibilidade_peso!.mes);
     const t = textoEntender(html.historico);
@@ -701,7 +705,8 @@ describe("ajustes finais de entendimento: exemplo concreto nas fichas, entradas 
   const atual = P.previsao_atual as unknown as { origem: string; celulas: { horizonte: string; submercado: string; previsao: number | null }[] };
   const celulaW1SE = atual.celulas.find((c) => c.horizonte === "W1" && c.submercado === "SE");
 
-  it("a ficha do B0 traz um exemplo com o período repetido e o número da primeira semana do Sudeste/Centro-Oeste, lidos da gold", () => {
+  // com o PLD horário parado (02/11/2026: até 24/10), a rodada de 01/11 não tem número semanal e a ficha não tem o exemplo da semana
+  it.runIf(celulaW1SE?.previsao != null)("a ficha do B0 traz um exemplo com o período repetido e o número da primeira semana do Sudeste/Centro-Oeste, lidos da gold", () => {
     const t = textoEntender(html["ficha-b0"]);
     expect(celulaW1SE?.previsao).not.toBeNull();
     expect(t).toContain("o B0 repete a média de");
