@@ -99,7 +99,7 @@ Cada domínio tem workflow próprio: falha de um não atrasa o outro. Horários 
 |---|---|---|---|---|
 | `atualizar-lucro-banco.yml` | DRE prudencial | dia 5, 08:25 | catálogo e DRE IF.data, carteiras e cadastro prudencial | reconciliação, conservação dos rateios e reprodução do snapshot |
 | `atualizar-dados.yml` | Crédito | todo dia, 09:00 | ~30 fontes (BCB, IBGE, Ipeadata, CNJ...) | três suítes, por grupo da gold (`docs/PUBLICACAO_GOLD_POR_GRUPO.md`) |
-| `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | testes da energia |
+| `atualizar-energia.yml` | Setor Elétrico | todo dia, 23:40 | ONS, CCEE, ANEEL | por gold (decisão do dono de 03/11/2026): a sentinela do pipeline retém o módulo que reprova a própria validação; depois dos testes, `scripts/energia_reter_por_gold.py` lê `pipeline/energia/testes_golds.json` e retém só as golds lidas pelos testes de dado reprovados (mais dependentes e a síntese); teste de interface reprovado publica e vai para a issue; envelope, build ou suíte Python quebrados retêm tudo. A publicação recomposta passa pelos testes de novo antes do commit |
 | `previsao-pld.yml` | Setor Elétrico, previsão do PLD | todo dia, cinco horários entre 08:47 e 10:37 | rodada da previsão | testes da rodada |
 | `atualizar-gas.yml` | Gás Natural | dias 3 e 18, 12:17 | ANP, IBGE, BCB, Comex Stat, Banco Mundial | `pipeline.tests.test_gas` (tudo ou nada) |
 | `atualizar-territorio.yml` | Território e Clima | dias 2 e 16, 11:41 | INPE, Atlas de Desastres, SIRENE | `pipeline.tests.test_territorio` (tudo ou nada) |

@@ -1,0 +1,804 @@
+{
+ "_nota": "Classe de cada arquivo de teste para a publicação por gold do Setor Elétrico (decisão do dono de 03/11/2026): \"dado\" reprovado retém só as golds listadas (mais as dependentes); \"interface\" reprovado publica mesmo assim e vai para a issue; \"tudo\" retém a publicação inteira. Arquivo de teste que leia a gold de energia e não esteja aqui retém tudo (pipeline/tests/test_energia_reter_por_gold.py exige a classificação). Uma asserção cuja descrição cite uma rota (/mercado, /expansao/carteira) ou uma gold restringe a retenção a elas.",
+ "arquivos": {
+  "acesso-invariantes.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "analise-recuperavel.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "aperitivo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "busca-barra-browser.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "busca-controle.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "busca-indice.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "busca.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "cabecalho-movel.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "cadastro-perfil-browser.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "cadastro-perfil-uso.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "ci-classificar-mudancas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "consultas-abertas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "conta-ferramentas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "dois-observatorios.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-agua.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "agua_detalhe.json",
+    "hidrologia.json"
+   ]
+  },
+  "energia-ancoras.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-aprenda-instituicoes.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-aprenda-r7.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-aprenda-redesenho.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-aprenda.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-avaliacao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-bandeira-tarifa-social.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "conta.json",
+    "inclusao.json"
+   ]
+  },
+  "energia-bastidor.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-capturas.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "publicacao.json"
+   ]
+  },
+  "energia-carga.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "carga.json",
+    "carga_detalhe.json"
+   ]
+  },
+  "energia-celular-r10.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-comparador.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-cronograma.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-dispersao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-distribuicao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-escalas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-estado-url.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-evidencia.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-grafico-barras.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-grafico-linhas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-grafico-pontos.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-histograma.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-imagem-grafico.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-integracao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-linha-do-tempo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-mapa-calor.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-mapa-coropletico.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-navegacao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-pequenos-multiplos.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-comp-tabela.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-conta-aperitivo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-conta-reais.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-conta.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-conteudo-conferido.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-conteudo-r8-D.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "agua_detalhe.json",
+    "carga.json",
+    "carga_detalhe.json",
+    "cmo.json",
+    "conta.json",
+    "empresas.json",
+    "expansao.json",
+    "geracao.json",
+    "geracao_detalhe.json",
+    "hidrologia.json",
+    "inclusao.json",
+    "leiloes.json",
+    "listadas.json",
+    "mercado.json",
+    "modelos.json",
+    "perdas.json",
+    "pld.json",
+    "pld_detalhe.json",
+    "previsoes.json",
+    "previsoes_desempenho.json",
+    "publicacao.json",
+    "qualidade.json",
+    "rede.json",
+    "rede_detalhe.json",
+    "regulacao.json",
+    "sintese.json",
+    "territorio.json",
+    "transicao.json"
+   ]
+  },
+  "energia-conteudo-r8-M1.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "expansao.json",
+    "geracao.json",
+    "geracao_detalhe.json",
+    "mercado.json",
+    "transicao.json"
+   ]
+  },
+  "energia-conteudo-r8-M2.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "agua_detalhe.json",
+    "carga.json",
+    "carga_detalhe.json",
+    "cmo.json",
+    "conta.json",
+    "empresas.json",
+    "expansao.json",
+    "geracao.json",
+    "geracao_detalhe.json",
+    "hidrologia.json",
+    "inclusao.json",
+    "mercado.json",
+    "perdas.json",
+    "pld.json",
+    "pld_detalhe.json",
+    "publicacao.json",
+    "qualidade.json",
+    "rede.json",
+    "rede_detalhe.json",
+    "regulacao.json",
+    "sintese.json",
+    "transicao.json"
+   ]
+  },
+  "energia-conteudo-r8-P.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "cmo.json",
+    "modelos.json",
+    "pld.json",
+    "pld_detalhe.json",
+    "previsoes.json",
+    "previsoes_desempenho.json",
+    "regulacao.json"
+   ]
+  },
+  "energia-conteudo-r8-R.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "agua_detalhe.json",
+    "carga.json",
+    "carga_detalhe.json",
+    "hidrologia.json",
+    "rede.json",
+    "rede_detalhe.json"
+   ]
+  },
+  "energia-conteudo-r8-T1.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "conta.json",
+    "inclusao.json",
+    "perdas.json",
+    "qualidade.json",
+    "territorio.json"
+   ]
+  },
+  "energia-conteudo-r8-T2.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "conta.json",
+    "empresas.json",
+    "expansao.json",
+    "perdas.json",
+    "pld.json",
+    "qualidade.json",
+    "regulacao.json"
+   ]
+  },
+  "energia-conteudo-r8.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "empresas.json",
+    "inclusao.json",
+    "publicacao.json",
+    "rede.json",
+    "rede_detalhe.json",
+    "regulacao.json"
+   ]
+  },
+  "energia-curtailment.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "geracao.json",
+    "geracao_detalhe.json"
+   ]
+  },
+  "energia-dados-interface.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "publicacao.json"
+   ]
+  },
+  "energia-dados-r9.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "publicacao.json"
+   ]
+  },
+  "energia-empresas.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "empresas.json",
+    "listadas.json"
+   ]
+  },
+  "energia-estrutura-r7.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-estrutura-r9.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-expansao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "expansao.json",
+    "publicacao.json"
+   ]
+  },
+  "energia-exploracao-inicial.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-ficha-leitor.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-geracao-sob-demanda.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "geracao.json",
+    "geracao_detalhe.json"
+   ]
+  },
+  "energia-geracao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "geracao.json",
+    "geracao_detalhe.json"
+   ]
+  },
+  "energia-gold-contrato.test.ts": {
+   "classe": "tudo",
+   "golds": []
+  },
+  "energia-governanca.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "modelos.json",
+    "previsoes.json",
+    "previsoes_desempenho.json"
+   ]
+  },
+  "energia-i18n-html.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-i18n-prova.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-idioma.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-inclusao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "inclusao.json"
+   ]
+  },
+  "energia-inicial.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "carga.json",
+    "conta.json",
+    "geracao.json",
+    "hidrologia.json",
+    "pld.json",
+    "rede.json",
+    "sintese.json"
+   ]
+  },
+  "energia-interface-r2.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-leiloes.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "leiloes.json"
+   ]
+  },
+  "energia-leituras-integradas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-listadas.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "empresas.json",
+    "listadas.json"
+   ]
+  },
+  "energia-mapa.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "carga.json",
+    "conta.json",
+    "geracao.json",
+    "hidrologia.json",
+    "pld.json",
+    "rede.json",
+    "sintese.json"
+   ]
+  },
+  "energia-mercado-pagina.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "mercado.json"
+   ]
+  },
+  "energia-mercado-uf.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "mercado.json"
+   ]
+  },
+  "energia-mercado.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "mercado.json"
+   ]
+  },
+  "energia-percurso-visual.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-perdas-coerencia.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "perdas.json"
+   ]
+  },
+  "energia-perdas.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "perdas.json"
+   ]
+  },
+  "energia-pld.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "cmo.json",
+    "pld.json",
+    "pld_detalhe.json"
+   ]
+  },
+  "energia-previsoes.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "modelos.json",
+    "previsoes.json",
+    "previsoes_desempenho.json"
+   ]
+  },
+  "energia-qualidade.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "qualidade.json"
+   ]
+  },
+  "energia-reauditoria.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "agua_detalhe.json",
+    "carga.json",
+    "carga_detalhe.json",
+    "geracao.json",
+    "geracao_detalhe.json",
+    "hidrologia.json",
+    "mercado.json",
+    "modelos.json",
+    "pld.json",
+    "pld_detalhe.json",
+    "publicacao.json",
+    "rede.json",
+    "rede_detalhe.json",
+    "sintese.json"
+   ]
+  },
+  "energia-rede.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "rede.json",
+    "rede_detalhe.json"
+   ]
+  },
+  "energia-regulacao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "regulacao.json"
+   ]
+  },
+  "energia-retencao.test.ts": {
+   "classe": "tudo",
+   "golds": []
+  },
+  "energia-riscos-modelos.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-rodadas-rotulo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-siglas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "energia-territorio.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "perdas.json",
+    "territorio.json"
+   ]
+  },
+  "energia-transicao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "transicao.json"
+   ]
+  },
+  "energia-visao.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "carga.json",
+    "cmo.json",
+    "geracao.json",
+    "hidrologia.json",
+    "pld.json",
+    "rede.json",
+    "sintese.json"
+   ]
+  },
+  "evidencias.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "frescor-dominios.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "html-contrato.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "html-gerado.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-auth-browser.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-auth-fluxo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-home-indice.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-rotas-cobertura.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-sms-browser.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-sobre-html.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-url.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "i18n-uso-cobertura.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "institucional.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "mapa-conta.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "mapa-continuidade-api.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "mapa-ultimo-acesso.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "navegacao-colecao.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "obee-energia-conectividade.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "observatorios-entradas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "observatorios-registro.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "onboarding.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "painel-molde-gas-saneamento-credito.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "painel-molde.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "para-voce.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "parceria-ceri.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "perguntas-portas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "rotas-publicas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "testes-afetados.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "uso-paginas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "ux-orcamentos-comprimento.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "ux-orcamentos-cromo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "ux-texto-minimo.test.ts": {
+   "classe": "interface",
+   "golds": []
+  }
+ },
+ "python": {
+  "_nota": "Suíte Python: reprovação numa classe cujo nome contém \"Gold\" (lê a gold publicada) retém as golds do módulo; qualquer outra reprovação retém tudo (código do pipeline quebrado).",
+  "test_energia_agua": [
+   "agua_detalhe.json"
+  ],
+  "test_energia_carga": [
+   "carga.json",
+   "carga_detalhe.json"
+  ],
+  "test_energia_conta": [
+   "conta.json"
+  ],
+  "test_energia_dados": [
+   "publicacao.json"
+  ],
+  "test_energia_empresas": [
+   "empresas.json"
+  ],
+  "test_energia_expansao": [
+   "expansao.json"
+  ],
+  "test_energia_geracao": [
+   "geracao.json",
+   "geracao_detalhe.json"
+  ],
+  "test_energia_inclusao": [
+   "inclusao.json"
+  ],
+  "test_energia_leiloes": [
+   "leiloes.json"
+  ],
+  "test_energia_listadas": [
+   "listadas.json"
+  ],
+  "test_energia_mercado": [
+   "mercado.json"
+  ],
+  "test_energia_perdas": [
+   "perdas.json"
+  ],
+  "test_energia_pld": [
+   "pld.json",
+   "pld_detalhe.json"
+  ],
+  "test_energia_previsoes": [
+   "previsoes.json",
+   "modelos.json",
+   "previsoes_desempenho.json"
+  ],
+  "test_energia_qualidade": [
+   "qualidade.json"
+  ],
+  "test_energia_rede": [
+   "rede.json",
+   "rede_detalhe.json"
+  ],
+  "test_energia_regulacao": [
+   "regulacao.json"
+  ],
+  "test_energia_territorio": [
+   "territorio.json"
+  ],
+  "test_energia_transicao": [
+   "transicao.json"
+  ],
+  "test_energia_visao": [
+   "sintese.json"
+  ],
+  "test_energia_avaliacao": "tudo",
+  "test_energia_bronze_orfao": "tudo"
+ }
+}
