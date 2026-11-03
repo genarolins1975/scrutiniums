@@ -130,7 +130,10 @@ describe("quality.json: saúde das séries", () => {
   it("toda série tem nome, fonte, score entre 0 e 100 e última referência no passado", () => {
     const chaves = Object.keys(Q);
     expect(chaves.length).toBeGreaterThan(100);
-    const gerado = (gold("meta").gerado_em || "").slice(0, 10);
+    // a referência é a geração do próprio grupo quality (meta.grupos), não a geração geral: na publicação por
+    // grupo elas diferem, e em 02/11/2026 a comparação com a geral reteve sete grupos em cascata (issue #291)
+    const meta = gold("meta");
+    const gerado = (meta.grupos?.quality?.gerado_em || meta.gerado_em || "").slice(0, 10);
     for (const k of chaves) {
       const q = Q[k];
       expect(q.nome, k).toBeTruthy();

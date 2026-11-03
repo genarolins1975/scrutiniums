@@ -184,7 +184,7 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
     for nome, motivo in restaurados.items():
         if nome in donos:
             retidos.setdefault(donos[nome], []).append('Sentinela de regressão: ' + str(motivo))
-    historico, decisao = [], None
+    historico, decisao, rodada0, avisos = [], None, None, []
     try:
         testada = candidata
         pg.instalar(testada, publica)
@@ -193,7 +193,13 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
             historico.append(execucoes)
             resultados = {**resultados_das_suites(execucoes), **rcontrato}
             infra = any(s['inconclusivo'] for s in execucoes.values())
-            nova = pg.selecionar(manifesto, mapa, resultados, retidos, infra)
+            # a rodada 0 testa o conjunto candidato completo; é a referência dos testes de coerência
+            nova = pg.selecionar(manifesto, mapa, resultados, retidos, infra, rodada0)
+            if rodada0 is None and not infra:
+                rodada0 = resultados
+            for aviso in nova['avisos']:
+                if aviso not in avisos:
+                    avisos.append({**aviso, 'rodada': rodada})
             pg.instalar(base, publica)
             if infra:
                 decisao = nova
@@ -217,7 +223,7 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
     except BaseException:
         pg.instalar(base, publica)
         raise
-    return {**pg.relatorio(decisao, base, publica, manifesto), 'execucoes': historico,
+    return {**pg.relatorio(decisao, base, publica, manifesto), 'execucoes': historico, 'avisos': avisos,
             'mapa': mapa, 'resultados': resultados,
             'falhas_sem_gold': {n: r for n, r in resultados.items()
                                if not mapa[n]['grupos'] and r['estado'] == 'failed'}}

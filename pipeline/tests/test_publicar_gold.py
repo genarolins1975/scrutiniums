@@ -270,6 +270,47 @@ class PublicacaoPorGrupo(unittest.TestCase):
         self.assertEqual(contador, [1, 2, 3])
 
 
+    def test_coerencia_que_passa_no_candidato_completo_e_reprova_na_composicao_mista_nao_retem(self):
+        # Caso de 02/11/2026 (issue #291): juros retido na rodada 0 arrastou consignado; na rodada 1 o teste que
+        # compara consignado com quality reprovou só porque os dois saíram de edições diferentes, e reteve quality,
+        # pix e consignado; na rodada 2 golds-contrato e resumo-canal reprovaram pelo mesmo motivo, e assim por diante.
+        self.mapa['src/tests/coerencia.test.ts'] = {'grupos': ['outro', 'panorama']}
+        falhas = ['src/tests/consignado-data.test.ts']
+        def observar(rodada):
+            if rodada == 2:
+                falhas.append('src/tests/coerencia.test.ts')  # passou na rodada 0, reprova na composição mista
+        r, chamadas = self.rodar(falhas, observar)
+        self.assertEqual(set(r['retidos']), {'consignado'})
+        self.assertIn('outro', r['publicados'])
+        self.assertIn('panorama', r['publicados'])
+        self.assertEqual(len(chamadas), 2)
+        self.assertEqual([a['teste'] for a in r['avisos']], ['src/tests/coerencia.test.ts'])
+        self.assertEqual(r['avisos'][0]['rodada'], 1)
+        self.assertEqual(r['avisos'][0]['grupos'], ['outro', 'panorama'])
+        self.assertEqual(pg.ler_json(self.base / 'outro.json')['valor'], 999)
+
+    def test_coerencia_que_reprova_no_candidato_completo_retem_os_grupos_lidos(self):
+        self.mapa['src/tests/coerencia.test.ts'] = {'grupos': ['outro', 'panorama']}
+        r, _ = self.rodar(['src/tests/coerencia.test.ts'])
+        self.assertEqual(set(r['retidos']), {'outro', 'panorama'})
+        self.assertEqual(r['avisos'], [])
+
+    def test_contrato_reprovado_na_composicao_mista_continua_retendo(self):
+        falhas = ['src/tests/consignado-data.test.ts']
+        def observar(rodada):
+            if rodada == 2:
+                falhas.append('src/tests/outro.test.ts')  # um só grupo: é contrato, retém
+        r, _ = self.rodar(falhas, observar)
+        self.assertEqual(set(r['retidos']), {'consignado', 'outro'})
+        self.assertEqual(r['avisos'], [])
+
+    def test_classe_e_teste_sem_classificacao(self):
+        self.assertEqual(pg.classe({'grupos': ['consignado']}), 'contrato')
+        self.assertEqual(pg.classe({'grupos': ['consignado', 'meta']}), 'contrato')
+        self.assertEqual(pg.classe({'grupos': ['consignado', 'panorama']}), 'coerencia')
+        with self.assertRaises(ValueError):
+            pg.selecionar(self.man, self.mapa, {'src/tests/novo.test.ts': {'estado': 'failed'}})
+
     def test_bytes_finais_foram_testados_sem_segunda_recomposicao(self):
         from pipeline import ufs
         verificados = {}
