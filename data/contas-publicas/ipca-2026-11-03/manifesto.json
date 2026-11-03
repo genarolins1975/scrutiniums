@@ -1,0 +1,12 @@
+{
+  "arquivo": "ipca.json",
+  "formato": "sidra-values",
+  "url": "https://apisidra.ibge.gov.br/values/t/1737/n1/all/v/2266/p/202301-202609",
+  "fonte": "IBGE · SIDRA 1737 · variável 2266 · Brasil",
+  "publicacao": null,
+  "captura": "2026-11-03T13:12:02+00:00",
+  "sha256": "f57d604ccfed206991fa494692d06ccb227b19982974ffe58ab65e3acb760d02",
+  "referenciaInicial": "2023-01",
+  "referenciaFinal": "2026-09",
+  "basePrecos": "2026-09"
+}
