@@ -9,10 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def transformar(raw, manifesto):
-    if hashlib.sha256(raw).hexdigest() != manifesto['sha256']:
-        raise ValueError('Hash diverge do manifesto')
-    dados = json.loads(raw)
+def serie_v3(dados):
+    """Resposta da API de agregados v3 (servicodados.ibge.gov.br)."""
     if len(dados) != 1 or dados[0]['id'] != '2266' or dados[0]['unidade'] != 'Número-índice':
         raise ValueError('Variável ou unidade incompatível')
     resultados = dados[0]['resultados']
@@ -21,6 +19,35 @@ def transformar(raw, manifesto):
     s = resultados[0]['series'][0]
     if s['localidade']['id'] != '1' or s['localidade']['nivel']['id'] != 'N1':
         raise ValueError('Território deve ser Brasil')
+    return s
+
+
+def serie_sidra(dados):
+    """Resposta da API de valores do SIDRA (apisidra.ibge.gov.br/values), a mesma tabela 1737 em linhas.
+
+    Usada desde 03/11/2026, quando a API v3 recusou conexão do ambiente de captura; os 43 meses comuns
+    às duas respostas conferiram iguais. Mesmas exigências: variável 2266, número-índice, só Brasil.
+    """
+    if not isinstance(dados, list) or len(dados) < 2 or dados[0].get('D3C') != 'Mês (Código)':
+        raise ValueError('Cabeçalho do SIDRA incompatível')
+    linhas = dados[1:]
+    if any(r['D2C'] != '2266' or r['MN'] != 'Número-índice' for r in linhas):
+        raise ValueError('Variável ou unidade incompatível')
+    if any(r['NC'] != '1' or r['D1C'] != '1' for r in linhas):
+        raise ValueError('Território deve ser Brasil')
+    serie = {}
+    for r in linhas:
+        if r['D3C'] in serie:
+            raise ValueError('Recortes não exclusivos')
+        serie[r['D3C']] = r['V']
+    return {'serie': serie}
+
+
+def transformar(raw, manifesto):
+    if hashlib.sha256(raw).hexdigest() != manifesto['sha256']:
+        raise ValueError('Hash diverge do manifesto')
+    dados = json.loads(raw)
+    s = serie_sidra(dados) if manifesto.get('formato') == 'sidra-values' else serie_v3(dados)
     base = manifesto.get('basePrecos', '')
     if not re.fullmatch(r'20\d{2}-(0[1-9]|1[0-2])', base) or base < '2023-01':
         raise ValueError('Base de preços inválida no manifesto da edição')
@@ -43,7 +70,7 @@ def transformar(raw, manifesto):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--verificar', action='store_true')
-    ap.add_argument('--origem', type=Path, default=ROOT/'data/contas-publicas/ipca-2026-10-12')
+    ap.add_argument('--origem', type=Path, default=ROOT/'data/contas-publicas/ipca-2026-11-03')
     ap.add_argument('--destino', type=Path, default=ROOT/'src/lib/contas-publicas/snapshots/ipca.json')
     args = ap.parse_args()
     origem = args.origem

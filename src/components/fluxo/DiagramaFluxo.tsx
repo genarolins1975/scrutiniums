@@ -40,6 +40,8 @@ export function DiagramaFluxo(p: DiagramaFluxoProps) {
   const [foco, setFoco] = useState<string | null>(null);
   const [fixo, setFixo] = useState<string | null>(null);
   const Titulo = p.nivel ?? 'h2';
+  // As etapas ficam um nível abaixo do título do diagrama, sem pular nível (axe heading-order).
+  const TituloEtapa = Titulo === 'h2' ? 'h3' : 'h4';
 
   useEffect(() => {
     const el = raiz.current;
@@ -96,8 +98,11 @@ export function DiagramaFluxo(p: DiagramaFluxoProps) {
             viewBox={`0 0 ${layout.largura} ${layout.altura}`}
             width={layout.largura}
             height={layout.altura}
-            role="img"
-            aria-labelledby={`${p.id}-titulo ${p.id}-resumo`}
+            // "group", não "img": os blocos são botões focáveis, e uma imagem não pode conter controles (axe
+            // nested-interactive, auditoria de 03/11/2026). O resumo continua anunciado como descrição.
+            role="group"
+            aria-labelledby={`${p.id}-titulo`}
+            aria-describedby={`${p.id}-resumo`}
           >
             <desc id={`${p.id}-resumo`}>{p.resumo}</desc>
             <g aria-hidden="true">
@@ -183,7 +188,7 @@ export function DiagramaFluxo(p: DiagramaFluxoProps) {
             const total = nos.reduce((acc, n) => acc + n.valor, 0);
             return (
               <li key={c} className={s.etapa}>
-                <h4 className={s.etapaTitulo}>{c}</h4>
+                <TituloEtapa className={s.etapaTitulo}>{c}</TituloEtapa>
                 {nos.length > 1 && (
                   <div className={s.regua} aria-hidden="true">
                     {nos.map(n => <span key={n.id} className={s['t-' + n.tipo]} style={{ width: `${(100 * n.valor) / total}%` }} />)}

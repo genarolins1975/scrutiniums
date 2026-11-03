@@ -28,6 +28,11 @@ RAIZ = Path(__file__).resolve().parents[2]
 DADOS = RAIZ / "src/lib/contas-publicas/snapshots/dados.json"
 BOLETIM = "https://www.tesourotransparente.gov.br/publicacoes/boletim-resultado-do-tesouro-nacional-rtn/{ano}/{mes}"
 CKAN = "https://www.tesourotransparente.gov.br/ckan/api/3/action/package_show?id={pacote}"
+# Série histórica do RTN no CKAN do Tesouro Transparente (pacote e recurso), usados quando a edição integrada
+# veio de outro endereço.
+CKAN_PACOTE = "ab56485b-9c40-4efb-8563-9ce3e1973c4b"
+CKAN_RECURSO = "527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6"
+SIGLAS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 UA = "Scrutiniums/1.0 (contas publicas; vigia de edicao do RTN)"
 MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
          "novembro", "dezembro"]
@@ -85,20 +90,32 @@ def verificar(dados, buscar=http, hoje=None):
             nao_verificado.append(f"boletim de {MESES[mes - 1]} de {ano}: HTTP {codigo}")
     planilha = None
     m = re.search(r"/dataset/([0-9a-f-]+)/resource/([0-9a-f-]+)/", dados["fonteRTN"])
-    if m:
-        try:
-            codigo, corpo = buscar(CKAN.format(pacote=m.group(1)))
-            if codigo != 200:
-                raise ValueError(f"HTTP {codigo}")
-            recursos = json.loads(corpo)["result"]["resources"]
-            atual = next((r["url"] for r in recursos if r["id"] == m.group(2)), None)
-            if atual is None:
-                nao_verificado.append("CKAN: o recurso da série histórica sumiu do pacote")
-            elif atual != dados["fonteRTN"]:
+    pacote, recurso = m.groups() if m else (CKAN_PACOTE, CKAN_RECURSO)
+    try:
+        codigo, corpo = buscar(CKAN.format(pacote=pacote))
+        if codigo != 200:
+            raise ValueError(f"HTTP {codigo}")
+        recursos = json.loads(corpo)["result"]["resources"]
+        atual = next((r["url"] for r in recursos if r["id"] == recurso), None)
+        if atual is None:
+            nao_verificado.append("CKAN: o recurso da série histórica sumiu do pacote")
+        elif atual != dados["fonteRTN"]:
+            # A edição integrada pode vir do anexo do boletim (setembro de 2026, integrada em 03/11/2026, quando o
+            # CKAN ainda servia julho). O CKAN só sinaliza se o arquivo dele for de mês posterior ao integrado.
+            mes_arquivo = mes_da_planilha(atual)
+            if mes_arquivo is None or mes_arquivo > dados["referenciaRTN"]:
                 planilha = atual
-        except Exception as e:  # noqa: BLE001
-            nao_verificado.append(f"CKAN do Tesouro Transparente: {str(e)[:120]}")
+    except Exception as e:  # noqa: BLE001
+        nao_verificado.append(f"CKAN do Tesouro Transparente: {str(e)[:120]}")
     return publicados, planilha, nao_verificado
+
+
+def mes_da_planilha(url):
+    """"2026-07" para ".../seriehistoricajul26.xlsx" ou ".../serie_historica_set26.xlsx"; None se o nome não disser."""
+    m = re.search(r"(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)(\d{2})\.xlsx?$", url.lower())
+    if not m:
+        return None
+    return f"20{m.group(2)}-{SIGLAS.index(m.group(1)) + 1:02d}"
 
 
 def corpo(dados, publicados, planilha, nao_verificado):

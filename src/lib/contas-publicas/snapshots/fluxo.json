@@ -3,10 +3,10 @@
  "ano": 2025,
  "unidade": "R$ milhões correntes",
  "tabela": "RTN, tabela 2.2 (anual)",
- "referenciaRTN": "2026-07",
- "fonte": "https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx",
- "sha256": "35899d771fc487db1ca17a6a1fb3fc0cc293230b8c5ad98287b69db2a7d0843c",
- "captura": "2026-10-22",
+ "referenciaRTN": "2026-09",
+ "fonte": "https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/56116_1789206/anexos/29566_977289/serie_historica_set26.xlsx",
+ "sha256": "8eb4abf01278d083b17d3bd4d381173416bd11965394d22afdd63294207aaab4",
+ "captura": "2026-11-03",
  "criterio": "Receita pelo ingresso efetivo na Conta Única (caixa); despesa pelo pagamento efetivo; resultado primário acima da linha, sem juros.",
  "fontes": [
   {

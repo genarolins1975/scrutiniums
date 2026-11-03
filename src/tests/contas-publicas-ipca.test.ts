@@ -6,12 +6,18 @@ import {IPCA,fiscalRealAcumulado} from '@/lib/contas-publicas/inflacao';
 import {DADOS,CAMPOS_FISCAIS} from '@/lib/contas-publicas/dados';
 import {compararDespesas,converterEscala,exportarComparacaoFiscal} from '@/lib/contas-publicas/escala';
 
+const [ANO_REF,MES_REF]=DADOS.referenciaRTN.split('-').map(Number);
+
 describe('Correção mensal de fluxos pelo IPCA',()=>{
  it('preserva a origem oficial e reproduz o snapshot com o importador',()=>{
-  expect(createHash('sha256').update(readFileSync('data/contas-publicas/ipca-2026-10-12/ipca.json')).digest('hex')).toBe(IPCA.fonte.sha256);
-  expect(IPCA.registros).toHaveLength(43);
-  expect(IPCA.registros.at(-1)).toEqual({periodo:'2026-07',indice:7657.73});
-  expect(execFileSync('python3',['scripts/contas-publicas/importar-ipca.py','--verificar'],{encoding:'utf8'})).toContain('43 meses');
+  expect(createHash('sha256').update(readFileSync('data/contas-publicas/ipca-2026-11-03/ipca.json')).digest('hex')).toBe(IPCA.fonte.sha256);
+  // Edição de setembro de 2026 (integrada em 03/11/2026): IPCA de janeiro de 2023 até a base de preços.
+  expect(IPCA.registros).toHaveLength(45);
+  expect(IPCA.registros.at(-1)).toEqual({periodo:'2026-09',indice:7695.82});
+  // Invariantes de qualquer edição: a base de preços é o último mês do índice e o último mês do RTN integrado.
+  expect(IPCA.basePrecos).toBe(IPCA.registros.at(-1)!.periodo);
+  expect(IPCA.basePrecos).toBe(DADOS.referenciaRTN);
+  expect(execFileSync('python3',['scripts/contas-publicas/importar-ipca.py','--verificar'],{encoding:'utf8'})).toContain('45 meses');
   execFileSync('python3',['-m','unittest','discover','-s','scripts/contas-publicas','-p','test_importar_ipca.py'],{stdio:'pipe'});
  });
  it('corrige cada mês antes de somar, com sinal e zero preservados',()=>{
@@ -25,7 +31,7 @@ describe('Correção mensal de fluxos pelo IPCA',()=>{
   expect(converterEscala(200,2025,12,'real')).toBeNull();
  });
  it('recusa mês ausente, duplicado, índice inválido e fluxo não finito',()=>{
-  expect(fiscalRealAcumulado(2026,8)).toBeNull();
+  expect(fiscalRealAcumulado(ANO_REF,MES_REF+1)).toBeNull(); // mês depois da edição integrada
   expect(fiscalRealAcumulado(2025,0)).toBeNull();
   expect(fiscalRealAcumulado(2025,1,[],IPCA.registros)).toBeNull();
   const f=DADOS.rtnMensal.find(m=>m.periodo==='2025-01')!;
@@ -39,7 +45,7 @@ describe('Correção mensal de fluxos pelo IPCA',()=>{
   expect(fiscalRealAcumulado(2025,1,[f],[...IPCA.registros,...IPCA.registros])).toBeNull();
  });
  it('concilia categorias e identidades em anos completos e na janela parcial',()=>{
-  for(const [ano,mes] of [[2024,12],[2025,12],[2026,7]]) {
+  for(const [ano,mes] of [[2024,12],[2025,12],[ANO_REF,MES_REF]]) {
    const linhas=compararDespesas(ano,mes,'real')!;
    const total=fiscalRealAcumulado(ano,mes)!;
    expect(linhas.reduce((s,l)=>s+l.atual,0)).toBeCloseTo(total.despesa,6);
@@ -57,10 +63,10 @@ describe('Correção mensal de fluxos pelo IPCA',()=>{
   expect(a/b).toBeCloseTo(a2/b2,12);
  });
  it('exporta quatro grupos, base de preços, valores e taxas nominais e reais',()=>{
-  const csv=exportarComparacaoFiscal(compararDespesas(2026,7,'real')!,2026,7,'real');
+  const csv=exportarComparacaoFiscal(compararDespesas(2026,9,'real')!,2026,9,'real');
   expect(csv.split('\r\n')).toHaveLength(5);
-  expect(csv).toContain('R$ milhões a preços de julho de 2026 (IPCA)');
-  expect(csv).toContain('"1-7";"2026-07"');
+  expect(csv).toContain('R$ milhões a preços de setembro de 2026 (IPCA)');
+  expect(csv).toContain('"1-9";"2026-09"');
   expect(csv).toContain('variacao_nominal_percentual');
   expect(csv).not.toMatch(/NaN|undefined|Infinity/);
  });
