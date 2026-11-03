@@ -1,3 +1,4 @@
+import { Recolhido } from "@/components/observatorios/Recolhido";
 import { Fonte, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { AtlasMunicipal } from "@/components/saneamento/AtlasMunicipal";
 import { TabelaDados } from "@/components/saneamento/TabelaDados";
@@ -368,6 +369,14 @@ export function Qualidade() {
         />
       </Secao>
 
+      {/* Orçamento de comprimento (auditoria de 03/11/2026: 35,8 mil px a 390, a página mais longa do Saneamento): as oito seções
+          técnicas da qualidade ficam recolhidas, inteiras no HTML; o índice da página abre o bloco (AbrirDestinoDaAncora) */}
+      <Recolhido
+        id="qualidade-detalhe"
+        titulo="Qualidade da água em detalhe"
+        resumo="E. coli na vigilância, atlas municipal, análises exigidas, população com controle, substâncias químicas, série desde 2014, retrato por UF e conferência dos registros."
+        className="mt-10"
+      >
       <Secao
         id="qualidade-procedencia"
         titulo="Onde a vigilância encontra E. coli?"
@@ -782,6 +791,7 @@ export function Qualidade() {
           {auditoria.proveniencia.erros_catalogo.length > 0 && <> Erro no catálogo do Ministério: {auditoria.proveniencia.erros_catalogo.join(" ")}</>}
         </Fonte>
       </Secao>
+      </Recolhido>
     </>
   );
 }
