@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { NumeroPorta } from '@/lib/perguntas/tipos';
 import type { EconomiaAgro, PaisesAgro, SnapshotAgro } from '@/lib/agro/tipos';
-import { numeroAgro, mesAgro, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
+import { numeroAgro, mesAgro, PERGUNTAS_AGRO, dataAgro } from '@/lib/agro/modelo';
 import { concentracaoAgro, mesCurtoAgro, mesesAgro, safraComparada, trimestreAgro, variacaoPctAgro } from '@/lib/agro/economia';
 import { BarrasAgro, LinhasAgro, TabelaAgro } from './Graficos';
 import { FonteAgro, LimiteAgro, SecaoAgro } from './Editorial';
@@ -148,7 +148,7 @@ export function ConjunturaAgro({ dados, e }: { dados: SnapshotAgro; e: EconomiaA
             <FonteAgro dados={dados} id="comex" periodo={`jan/${a.ano - 1} a ${mesCurtoAgro(e.comercio.ultimoMes)}`} nota={capturado(dados, 'comex')}/>
         </SecaoAgro>
         <SecaoAgro titulo={c.anteriorAdjacente.variacaoPct == null ? 'O crédito rural contratado.' : c.anteriorAdjacente.variacaoPct < 0 ? 'O crédito rural contratado caiu.' : 'O crédito rural contratado subiu.'} texto={`Foram R$ ${bi(c.nacional.valor)} bilhões contratados de ${mesAgro(c.janela.ini)} a ${mesAgro(c.janela.fim)}, ${sinalAgro(c.anteriorAdjacente.variacaoPct)} sobre os 12 meses anteriores, em valores nominais.`}>
-            <LimiteAgro titulo="Calendário próprio">Este número vem de um snapshot preservado do Observatório de Crédito, processado em {c.capturaOriginal.slice(0, 10)}, e não da coleta desta edição. Contratação não é desembolso, saldo devedor nem custo fiscal.</LimiteAgro>
+            <LimiteAgro titulo="Calendário próprio">Este número vem de um snapshot preservado do Observatório de Crédito, processado em {dataAgro(c.capturaOriginal)}, e não da coleta desta edição. Contratação não é desembolso, saldo devedor nem custo fiscal.</LimiteAgro>
             <div className={s.actions}><Link className={s.button} href="/agronegocio/credito-protecao" prefetch={false}>Série mensal, finalidades e programas</Link><Link className={s.button} href="/agronegocio/atlas" prefetch={false}>Crédito rural por UF</Link></div>
         </SecaoAgro>
     </>;

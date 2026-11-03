@@ -1,4 +1,4 @@
-import { numeroAgro } from '@/lib/agro/modelo';
+import { numeroAgro, periodoAgro } from '@/lib/agro/modelo';
 import s from './Agro.module.css';
 export type LinhaBarraAgro = {
     nome: string;
@@ -23,7 +23,7 @@ export function SerieAgro({ titulo, unidade, linhas, nota }: {
     nota: string;
 }) {
     const valores = linhas.filter(l => l.valor !== null).map(l => l.valor!), min = Math.min(0, ...valores), max = Math.max(0, ...valores), range = max - min || 1;
-    return <figure className={s.figure}><figcaption><strong>{titulo}</strong><span>{unidade} · {linhas[0]?.periodo} a {linhas.at(-1)?.periodo} · lacunas interrompem a linha</span></figcaption>{[true, false].map(mobile => { const width = mobile ? 360 : 900, left = mobile ? 80 : 100, right = width - 20, top = 28, bottom = mobile ? 230 : 290, x = (i: number) => left + i * (right - left) / Math.max(1, linhas.length - 1), y = (v: number) => bottom - (v - min) * (bottom - top) / range; const segmentos: {
+    return <figure className={s.figure}><figcaption><strong>{titulo}</strong><span>{unidade} · {periodoAgro(linhas[0]?.periodo ?? '')} a {periodoAgro(linhas.at(-1)?.periodo ?? '')} · lacunas interrompem a linha</span></figcaption>{[true, false].map(mobile => { const width = mobile ? 360 : 900, left = mobile ? 80 : 100, right = width - 20, top = 28, bottom = mobile ? 230 : 290, x = (i: number) => left + i * (right - left) / Math.max(1, linhas.length - 1), y = (v: number) => bottom - (v - min) * (bottom - top) / range; const segmentos: {
         i: number;
         v: number;
     }[][] = []; let atual: typeof segmentos[number] = []; linhas.forEach((l, i) => { if (l.valor === null) {
@@ -33,7 +33,7 @@ export function SerieAgro({ titulo, unidade, linhas, nota }: {
     }
     else
         atual.push({ i, v: l.valor }); }); if (atual.length)
-        segmentos.push(atual); const ticks = [...new Set([0, Math.floor((linhas.length - 1) / 2), linhas.length - 1])]; return <svg key={String(mobile)} className={mobile ? s.figureMobile : s.figureDesktop} viewBox={`0 0 ${width} ${bottom + 50}`} role="img" aria-label={`${titulo}; tabela e exportação apresentam todos os períodos e valores.`}>{[min, min + range / 2, max].map((v, i) => <g key={i}><line x1={left} x2={right} y1={y(v)} y2={y(v)} stroke="var(--cor-linha)"/><text x={left - 10} y={y(v) + 5} textAnchor="end" fill="currentColor" fontSize={mobile ? 20 : 18}>{new Intl.NumberFormat('pt-BR',{notation:'compact',maximumFractionDigits:1}).format(v)}</text></g>)}{min < 0 && <line x1={left} x2={right} y1={y(0)} y2={y(0)} stroke="var(--cor-mineral)"/>}{segmentos.map((r, i) => <g key={i}><polyline fill="none" stroke="var(--cor-energia)" strokeWidth="2.5" points={r.map(l => `${x(l.i)},${y(l.v)}`).join(' ')}/>{r.map(l => <circle key={l.i} cx={x(l.i)} cy={y(l.v)} r="2.5" fill="var(--cor-energia)"><title>{`${linhas[l.i].periodo}: ${numeroAgro(l.v, 2)} ${unidade}`}</title></circle>)}</g>)}{ticks.map(i => <text key={i} x={x(i)} y={bottom + 28} textAnchor={i === 0 ? 'start' : i === linhas.length - 1 ? 'end' : 'middle'} fontSize={mobile ? 20 : 18} fill="currentColor">{linhas[i]?.periodo}</text>)}</svg>; })}<p className={s.note}>{nota}</p></figure>;
+        segmentos.push(atual); const ticks = [...new Set([0, Math.floor((linhas.length - 1) / 2), linhas.length - 1])]; return <svg key={String(mobile)} className={mobile ? s.figureMobile : s.figureDesktop} viewBox={`0 0 ${width} ${bottom + 50}`} role="img" aria-label={`${titulo}; tabela e exportação apresentam todos os períodos e valores.`}>{[min, min + range / 2, max].map((v, i) => <g key={i}><line x1={left} x2={right} y1={y(v)} y2={y(v)} stroke="var(--cor-linha)"/><text x={left - 10} y={y(v) + 5} textAnchor="end" fill="currentColor" fontSize={mobile ? 20 : 18}>{new Intl.NumberFormat('pt-BR',{notation:'compact',maximumFractionDigits:1}).format(v)}</text></g>)}{min < 0 && <line x1={left} x2={right} y1={y(0)} y2={y(0)} stroke="var(--cor-mineral)"/>}{segmentos.map((r, i) => <g key={i}><polyline fill="none" stroke="var(--cor-energia)" strokeWidth="2.5" points={r.map(l => `${x(l.i)},${y(l.v)}`).join(' ')}/>{r.map(l => <circle key={l.i} cx={x(l.i)} cy={y(l.v)} r="2.5" fill="var(--cor-energia)"><title>{`${linhas[l.i].periodo}: ${numeroAgro(l.v, 2)} ${unidade}`}</title></circle>)}</g>)}{ticks.map(i => <text key={i} x={x(i)} y={bottom + 28} textAnchor={i === 0 ? 'start' : i === linhas.length - 1 ? 'end' : 'middle'} fontSize={mobile ? 20 : 18} fill="currentColor">{periodoAgro(linhas[i]?.periodo ?? '')}</text>)}</svg>; })}<p className={s.note}>{nota}</p></figure>;
 }
 export function TabelaAgro({ titulo, colunas, linhas }: {
     titulo: string;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { dadosAgro } from '@/lib/agro/dados';
-import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
+import { CAPITULOS_AGRO, PERGUNTAS_AGRO, dataAgro, mesAgro } from '@/lib/agro/modelo';
 import { PainelCadeiasAgro } from '@/components/agro/Cadeias';
 import { SetaAgro } from '@/components/agro/Figuras';
 import { escalaAgro, respostasAgro } from '@/components/agro/Economia';
@@ -74,7 +74,7 @@ export default function InicioAgro() {
             metodo={
                 <div className="space-y-4 text-sm leading-relaxed text-carvao">
                     <p className="text-carvao-muted">Crédito rural, trabalho e alimentação vêm de recortes preservados, cada um com seu período. A data da coleta mais recente e a situação da atualização estão na faixa do alto da página.</p>
-                    <p>Coletados na fonte e atualizados por rotina automática: IBGE (Contas Nacionais, LSPA, Produção Agrícola e Pecuária Municipal, Abate, Silvicultura, Censo Agro, PNAD Contínua e IPCA), MDIC (Comex Stat), BCB (Sicor), Tesouro Nacional, INPE (PRODES), SEEG e MapBiomas. Crédito rural: snapshot BCB/Sicor preservado, processado em {c.capturaOriginal.slice(0, 10)}. Emprego formal: seção A nacional até {f.periodo}, preliminar. Grupo ocupacional por UF: Censo Demográfico 2022. Segurança alimentar: PNADC 2023/2024. Os arquivos de origem têm hashes registrados.</p>
+                    <p>Coletados na fonte e atualizados por rotina automática: IBGE (Contas Nacionais, LSPA, Produção Agrícola e Pecuária Municipal, Abate, Silvicultura, Censo Agro, PNAD Contínua e IPCA), MDIC (Comex Stat), BCB (Sicor), Tesouro Nacional, INPE (PRODES), SEEG e MapBiomas. Crédito rural: snapshot BCB/Sicor preservado, processado em {dataAgro(c.capturaOriginal)}. Emprego formal: seção A nacional até {mesAgro(f.periodo)}, preliminar. Grupo ocupacional por UF: Censo Demográfico 2022. Segurança alimentar: PNADC 2023/2024. Os arquivos de origem têm hashes registrados.</p>
                     <LimiteAgro titulo="Limitações materiais">Ainda faltam o calendário regional de plantio e colheita, custos de produção de referência da Conab, preço ao produtor por alimento, seguro rural (PSR), PIB do agronegócio ampliado e camadas ambientais territoriais. Explicações e cenários preservam as perguntas, sem substituir essas medições.</LimiteAgro>
                     <div className={s.actions}><Link className={s.button} href="/agronegocio/metodologia" prefetch={false}>Conferir método, cobertura e downloads</Link><Link className={s.button} href="/agronegocio/glossario" prefetch={false}>Glossário visual e pesquisável</Link></div>
                 </div>
