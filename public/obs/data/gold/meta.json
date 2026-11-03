@@ -1327,7 +1327,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "ampliado": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "ampliado.json"
       ],
@@ -1341,7 +1341,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1350,7 +1350,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1365,7 +1365,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "antecedentes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "antecedentes.json"
       ],
@@ -1379,7 +1379,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1388,7 +1388,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1403,7 +1403,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bets": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "bets.json"
       ],
@@ -1417,7 +1417,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1426,7 +1426,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1441,7 +1441,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bndes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "bndes.json"
       ],
@@ -1455,7 +1455,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1464,7 +1464,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1595,7 +1595,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "conduta": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "conduta.json"
       ],
@@ -1609,7 +1609,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1618,7 +1618,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1672,7 +1672,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "consorcios": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "consorcios.json"
       ],
@@ -1686,7 +1686,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1695,7 +1695,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1710,7 +1710,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "custos-ti": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "custos_ti.json"
       ],
@@ -1724,7 +1724,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1733,7 +1733,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1786,7 +1786,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "emprego-setores-ufs": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "emprego.json",
         "sectors.json",
@@ -1802,7 +1802,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1811,7 +1811,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1826,7 +1826,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "epae": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "epae.json"
       ],
@@ -1840,7 +1840,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1849,7 +1849,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1902,7 +1902,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fase2-observacoes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "fase2_observacoes.json"
       ],
@@ -1916,7 +1916,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1925,7 +1925,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1940,7 +1940,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fidc": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "fidc.json"
       ],
@@ -1954,7 +1954,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -1963,7 +1963,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -1978,7 +1978,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "folha": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "folha_bancos.json",
         "folha_balanco.json",
@@ -1994,7 +1994,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2003,7 +2003,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2018,7 +2018,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fraudes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "fraudes.json"
       ],
@@ -2032,7 +2032,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2041,7 +2041,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2056,7 +2056,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "funding": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "funding.json"
       ],
@@ -2070,7 +2070,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2079,7 +2079,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2094,7 +2094,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "guidance": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "guidance.json"
       ],
@@ -2108,7 +2108,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2117,7 +2117,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2249,30 +2249,30 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "juros": {
-      "gerado_em": "2026-10-22T15:48:29+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "juros.json"
       ],
       "vintages": {
-        "sgs": "2026-08",
+        "sgs": "2026-09",
         "ifdata": "2026-06",
         "scr": "2026-08",
         "b3": "2026-10",
         "fidc": "2026-09",
-        "datajud": "2026-08",
+        "datajud": "2026-09",
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
-        "sicor": "2026-09",
+        "sicor": "2026-10",
         "cvm_ofertas": "2026-10",
         "securit": "2026-09",
         "bndes": "2026-03",
         "focus": "2026-10",
-        "sfn_cadastro": "2026-10",
-        "bcb_pas": "2026-10",
+        "sfn_cadastro": "2026-11",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2280,9 +2280,9 @@
         "cobranca": "2026-10",
         "pix": "2026-09",
         "estban": "2026-06",
-        "openfinance": "2026-10",
+        "openfinance": "2026-11",
         "pgfn": "2026-09",
-        "desenrola": null
+        "desenrola": "2026-08"
       },
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
@@ -2325,7 +2325,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lineage": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "lineage.json"
       ],
@@ -2339,7 +2339,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2348,7 +2348,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2401,7 +2401,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "meta": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "meta.json"
       ],
@@ -2415,7 +2415,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2424,7 +2424,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2477,7 +2477,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "moradia": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "moradia.json",
         "moradia_mun.json"
@@ -2492,7 +2492,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2501,7 +2501,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2708,7 +2708,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "penetracao": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "penetracao.json",
         "penetracao_mun.json",
@@ -2724,7 +2724,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2733,7 +2733,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2786,7 +2786,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pilar3": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "pilar3.json"
       ],
@@ -2800,7 +2800,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2809,7 +2809,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2863,7 +2863,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prazo": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "prazo.json"
       ],
@@ -2877,7 +2877,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2886,7 +2886,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2901,7 +2901,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "presenca-mun": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "presenca_mun.json"
       ],
@@ -2915,7 +2915,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2924,7 +2924,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2939,7 +2939,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prestamista": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "prestamista.json"
       ],
@@ -2953,7 +2953,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -2962,7 +2962,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -2977,7 +2977,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "produtos": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "products.json",
         "prod/*.json"
@@ -2992,7 +2992,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3001,7 +3001,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3092,7 +3092,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "recordes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "recordes.json"
       ],
@@ -3106,7 +3106,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3115,7 +3115,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3130,7 +3130,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "regimes.json"
       ],
@@ -3144,7 +3144,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3153,7 +3153,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3168,7 +3168,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes-series": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "regimes_series.json"
       ],
@@ -3182,7 +3182,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3191,7 +3191,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3206,7 +3206,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regulacao": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "regulacao.json",
         "timeline_regulatoria.json"
@@ -3221,7 +3221,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3230,7 +3230,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3321,7 +3321,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "rural": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "rural.json",
         "rural_mun.json"
@@ -3336,7 +3336,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3345,7 +3345,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3398,7 +3398,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "screener": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "screener.json"
       ],
@@ -3412,7 +3412,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3421,7 +3421,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3436,7 +3436,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "sfn": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "sfn.json"
       ],
@@ -3450,7 +3450,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3459,7 +3459,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3474,7 +3474,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "subnacional": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "subnacional.json"
       ],
@@ -3488,7 +3488,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3497,7 +3497,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",
@@ -3550,7 +3550,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lucro-banco": {
-      "gerado_em": "2026-11-02T20:48:06+00:00",
+      "gerado_em": "2026-11-03T18:45:02+00:00",
       "arquivos": [
         "lucro_banco.json"
       ],
@@ -3564,7 +3564,7 @@
         "trends": "2026-06",
         "txjuros": "2026-10",
         "susep": "2026-08",
-        "sadipem": "2026-10",
+        "sadipem": "2026-11",
         "siconfi": "2026-08",
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
@@ -3573,7 +3573,7 @@
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
-        "bcb_pas": "2026-10",
+        "bcb_pas": "2026-11",
         "cvm_pas": "2026-10",
         "caged": "2026-08",
         "cda": "2026-09",

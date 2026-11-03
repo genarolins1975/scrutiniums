@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-02T20:48:01+00:00",
+ "gerado_em": "2026-11-03T18:44:58+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -866,14 +866,14 @@
   {
    "mes": "2026-10",
    "custeio": 10064662506.8,
-   "investimento": 2818408928.21,
+   "investimento": 2821183696.0,
    "comercializacao": 3281831122.64,
    "industrializacao": 1102081355.42,
-   "qtd": 88324,
-   "agricola": 12371258021.91,
-   "pecuaria": 4895725891.16,
+   "qtd": 88354,
+   "agricola": 12373201012.2,
+   "pecuaria": 4896557668.66,
    "parcial": true,
-   "valor": 17266983913.07
+   "valor": 17269758680.86
   }
  ],
  "safras": [
@@ -945,10 +945,10 @@
   },
   {
    "safra": "2026/27",
-   "valor": 104522049931.94,
-   "qtd": 742905,
+   "valor": 104524824699.73,
+   "qtd": 742935,
    "custeio": 62724587888.63,
-   "investimento": 22795075645.81,
+   "investimento": 22797850413.6,
    "comercializacao": 11801185146.42,
    "industrializacao": 7201201251.08,
    "meses": 4,
@@ -1133,7 +1133,7 @@
    },
    {
     "safra": "2026/27",
-    "PRONAF": 28273585085.04,
+    "PRONAF": 28276359852.83,
     "PRONAMP": 21827064434.93,
     "Demais programas": 8379607203.53,
     "Sem programa": 46041793208.44,
@@ -1492,7 +1492,7 @@
    },
    {
     "safra": "2026/27",
-    "BNDES e Finame": 6979002515.11,
+    "BNDES e Finame": 6981777282.9,
     "Outras fontes": 461946762.01,
     "Funcafé": 4543278948.93,
     "Fundos constitucionais (FNE, FNO, FCO)": 10316091545.75,
