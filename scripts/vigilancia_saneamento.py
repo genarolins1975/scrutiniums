@@ -69,6 +69,10 @@ SINISA_SECAO = "/saneamento/sinisa/"
 MISOCIAL = "https://aplicacoes.mds.gov.br/sagi/servicos/misocial"
 
 
+class FonteForaDoAr(ValueError):
+    """A fonte respondeu, mas não com a API: página de aviso, redirecionamento ou HTML no lugar do JSON."""
+
+
 class Rede:
     """Acesso à rede. Os testes trocam esta classe; o cheque nunca chama urllib direto."""
 
@@ -92,7 +96,18 @@ class Rede:
             return e.code, ""
 
     def json(self, url, params):
-        return json.loads(self.texto(url + "?" + urllib.parse.urlencode(params))[1])
+        pedido = url + "?" + urllib.parse.urlencode(params)
+        req = urllib.request.Request(pedido, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=TIMEOUT_REQUISICAO) as r:
+            final, corpo = r.geturl(), r.read().decode("utf-8", errors="replace")
+        # 02/11/2026: a API MI Social passou a redirecionar toda consulta para a página de avisos do MDS; o JSONDecodeError
+        # da issue #393 não dizia isso
+        if urllib.parse.urlsplit(final).netloc != urllib.parse.urlsplit(url).netloc:
+            raise FonteForaDoAr(f"o endereço redireciona para {final}")
+        try:
+            return json.loads(corpo)
+        except json.JSONDecodeError:
+            raise FonteForaDoAr("a resposta não é JSON") from None
 
 
 _PRAZO = None
@@ -219,8 +234,12 @@ def sisagua(meta, rede, hoje):
 
 def cadunico(meta, rede, hoje):
     c = meta["cadunico"]
-    j = _tenta(lambda: rede.json(MISOCIAL, {"q": f"anomes_s:[* TO {hoje.year:04d}{hoje.month:02d}]", "fl": "anomes_s",
-                                            "rows": 1, "sort": "anomes_s desc", "wt": "json"}))
+    try:
+        j = _tenta(lambda: rede.json(MISOCIAL, {"q": f"anomes_s:[* TO {hoje.year:04d}{hoje.month:02d}]", "fl": "anomes_s",
+                                                "rows": 1, "sort": "anomes_s desc", "wt": "json"}))
+    except FonteForaDoAr as e:
+        return [f"- CadÚnico: a API MI Social do MDS está fora do ar ({e}); **não verificado**. A gold segue com o mês "
+                f"{c['mes_mais_recente'][4:]}/{c['mes_mais_recente'][:4]}."]
     docs = (j.get("response") or {}).get("docs") or []
     if not docs:
         return ["- CadÚnico: a API MI Social não devolveu nenhum mês até o mês corrente; **não verificado**."]

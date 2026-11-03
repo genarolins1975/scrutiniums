@@ -12,6 +12,7 @@ import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { razaoPct } from "@/lib/saneamento/municipios";
 import { inteiro, numero } from "@/lib/saneamento/formato";
 import { Qualidade } from "./Qualidade";
+import { AbrirDestinoDaAncora } from "@/components/home/AbrirDestinoDaAncora";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -239,6 +240,7 @@ export default function Pagina() {
         </Secao>
 
         <Qualidade />
+        <AbrirDestinoDaAncora />
       </main>
     </>
   );

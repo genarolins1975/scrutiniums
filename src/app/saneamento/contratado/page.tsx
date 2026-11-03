@@ -8,6 +8,8 @@ import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Abertura, Fonte, Indisponivel, NestaPagina, Nota, Numeros, Ressalva, Secao } from "@/components/saneamento/Editorial";
 import { CurvaMetas, LabContratado, type AreaLab, type TrajetoriaBr } from "@/components/saneamento/Contratado";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { Recolhido } from "@/components/observatorios/Recolhido";
+import { AbrirDestinoDaAncora } from "@/components/home/AbrirDestinoDaAncora";
 import { capituloPorSlug, ROTA } from "@/lib/saneamento/capitulos";
 import { agregado } from "@/lib/saneamento/gold";
 import { data, inteiro, numero } from "@/lib/saneamento/formato";
@@ -79,7 +81,10 @@ export default function Pagina() {
       <MarcaVisita secao="saneamento:contratado" />
       <main id="conteudo" className="ed-pagina pb-20 pt-8">
         {g ? (
-          <Conteudo g={g} pergunta={cap.pergunta} pendencia={cap.pendencia} />
+          <>
+            <Conteudo g={g} pergunta={cap.pergunta} pendencia={cap.pendencia} />
+            <AbrirDestinoDaAncora />
+          </>
         ) : (
           <>
             <Abertura capitulo={15} titulo={cap.pergunta} texto={<p>Dados indisponíveis nesta publicação.</p>} recorte="sem dado" />
@@ -345,15 +350,21 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         }
       >
         {transcritos.length ? (
-          <div className="space-y-10">
+          <div>
             {transcritos.map((c) => {
               const indicadores = Array.from(new Set(c.metas.map((m) => m.indicador))) as Indicador[];
               const chave = chaveTempo(c);
               const anos = Array.from(new Set(c.metas.map((m) => m[chave]).filter((a): a is number => a != null))).sort((a, b) => a - b);
               const doc = c.documento!;
               return (
-                <article key={c.id} aria-label={c.nome} data-contrato={c.id} className="border-t border-linha pt-6">
-                  <h3 className="font-serif text-xl text-carvao">{c.nome}</h3>
+                <Recolhido
+                  key={c.id}
+                  id={`metas-${c.id}`}
+                  nivelTitulo={3}
+                  titulo={c.nome}
+                  resumo={`${c.clausula}; ${indicadores.length} ${indicadores.length === 1 ? "indicador" : "indicadores"}${anos.length ? `, de ${rotuloTempo(c, anos[0])} a ${rotuloTempo(c, anos[anos.length - 1])}` : ""}.`}
+                >
+                <article aria-label={c.nome} data-contrato={c.id}>
                   <p className="mt-1 text-sm text-carvao-muted">
                     {c.clausula} ·{" "}
                     <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-obee-dark underline underline-offset-2">
@@ -418,6 +429,7 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
                       : `Diferença para a meta legal: a lei pede ${numero(g.marco.meta_legal.agua, 0)}% de água e ${numero(g.marco.meta_legal.esgoto, 0)}% de esgoto até ${anoLegal}; este contrato prevê ${metaNoAno(c, "ICA", anoLegal) == null ? "sem meta de água transcrita" : `${numero(metaNoAno(c, "ICA", anoLegal), 0)}% de ICA`} e ${metaNoAno(c, "ICE", anoLegal) == null ? "sem meta de esgoto transcrita" : `${numero(metaNoAno(c, "ICE", anoLegal), 0)}% de ICE`} em ${anoLegal}.`}
                   </p>
                 </article>
+                </Recolhido>
               );
             })}
           </div>
@@ -610,17 +622,20 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
         <Fonte>Documentos de cada estimativa, acessados nas datas indicadas.</Fonte>
       </Secao>
 
-      <Secao
+      {/* método recolhido no fim, inteiro no HTML (skill de layout, seção 4; auditoria de 03/11/2026: 29,6 mil px a 390) */}
+      <Recolhido
         id="metodo"
+        nivelTitulo={2}
+        className="mt-10 md:mt-12"
         titulo="Método: o que foi lido, o que não foi e como a publicação é vigiada"
-        texto={
-          <p>
+        resumo="Fontes sem API, curadoria por linha, PDFs com sha256 e vigília mensal; o que não foi lido e por quê."
+      >
+          <p className="max-w-prose2 text-[0.95rem] leading-relaxed text-carvao-muted">
             As fontes não têm API. A tabela de leilões é curadoria manual com fonte, data e grau por linha; as metas vêm dos PDFs lidos, com sha256; a composição dos
             blocos vem de documento público por bloco. Uma vez por mês, cada PDF é baixado de novo e comparado pelo sha256: documento trocado na mesma URL ou fora do
             ar vira pendência registrada, nunca atualização silenciosa. Leilão novo, aditivo ou repactuação entra por revisão, com a fonte e o novo hash.
           </p>
-        }
-      >
+          <div className="mt-6">
         <div className="grid gap-8 md:grid-cols-2">
           <div className="min-w-0">
             <h3 className="rotulo text-mineral">Contratos lidos</h3>
@@ -722,7 +737,8 @@ function Conteudo({ g, pergunta, pendencia }: { g: GoldContratado; pergunta: str
           . Plano e decisões: <Link href={`${ROTA}/metodologia`} className="text-obee-dark underline underline-offset-2">método do observatório</Link>.
         </p>
         <Fonte metodo={false}>Pipeline pipeline/saneamento_contratos (seed versionado, validações que retêm a publicação, vigília mensal por sha256).</Fonte>
-      </Secao>
+      </div>
+      </Recolhido>
     </>
   );
 }

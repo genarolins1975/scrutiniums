@@ -20,7 +20,14 @@ export function AbrirDestinoDaAncora() {
           abriu = true;
         }
       }
-      if (abriu) alvo.scrollIntoView();
+      if (!abriu) return;
+      alvo.scrollIntoView();
+      // conteúdo que monta ao abrir (o atlas do Saneamento, 03/11/2026) muda a altura acima do destino: reposiciona quando assenta,
+      // a menos que o leitor já tenha rolado
+      const y = window.scrollY;
+      window.setTimeout(() => {
+        if (Math.abs(window.scrollY - y) < 4) alvo.scrollIntoView();
+      }, 600);
     };
     abrir();
     window.addEventListener("hashchange", abrir);
