@@ -53,6 +53,8 @@ export const numeroAgro = (valor: number | null | undefined, casas = 0) => valor
 export const dataAgro = (iso: string) => new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(iso));
 /** "17/10/2026, 18h03 UTC" para datas de captura com hora. */
 export const dataHoraAgro = (iso: string) => dataAgro(iso) + ', ' + new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }).format(new Date(iso)).replace(':', 'h') + ' UTC';
+/** "ago/23" a partir de "2023-08", para eixos estreitos; qualquer outro texto volta como está. */
+export const mesCurtoAgro = (p: string) => /^20\d\d-\d\d$/.test(p) ? mesAgro(p).replace(/\.? de 20/, '/') : p;
 /** "ago. de 2025 a jul. de 2026" a partir de "2025-08 a 2026-07"; outros textos voltam como estão. */
 export const periodoAgro = (p: string) => p.replace(/\b(20\d\d-\d\d)\b/g, m => mesAgro(m));
 export const mesAgro = (mes: string) => new Intl.DateTimeFormat('pt-BR', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(mes + '-01T00:00:00Z'));
