@@ -45,7 +45,9 @@ describe('dados oficiais e limites de comparação',()=>{
   for(const r of DADOS.rtnAnual){const soma=fiscalAcumulado(Number(r.periodo),12);expect(soma).not.toBeNull();for(const k of CAMPOS_FISCAIS)expect(soma![k]).toBeCloseTo(r[k],5)}
  });
  it('não transforma ano parcial em ano completo nem meses ausentes em zero',()=>{
-  expect(fiscalAcumulado(2026,12)).toBeNull();expect(fiscalAcumulado(2026,8)).toBeNull();
+  // O mês seguinte à edição integrada não existe; o próprio mês da edição existe (valem para qualquer edição).
+  const [ano,mes]=DADOS.referenciaRTN.split('-').map(Number);
+  expect(fiscalAcumulado(2026,12)).toBeNull();expect(fiscalAcumulado(ano,mes+1)).toBeNull();expect(fiscalAcumulado(ano,mes)).not.toBeNull();
   expect(fiscalAcumulado(2019,7)).toBeNull();expect(fiscalAcumulado(2026,0)).toBeNull();expect(fiscalAcumulado(2026,1.5)).toBeNull();
   expect(fiscalAcumulado(2026,7)).not.toBeNull();expect(fiscalAcumulado(2025,7)).not.toBeNull();
   expect(fiscalAcumulado(2025,7)!.despesa).not.toEqual(fiscalAcumulado(2025,12)!.despesa);

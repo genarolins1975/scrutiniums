@@ -18,8 +18,13 @@ class EdicaoIPCA(unittest.TestCase):
         self.man = json.loads((pasta/'manifesto.json').read_text())
 
     def test_edicao_publicada_reproduz_exatamente(self):
+        # A edição publicada vem de setembro de 2026 (resposta do SIDRA, integrada em 03/11/2026); a de julho, acima,
+        # continua sendo a base das mutações do formato v3.
+        pasta = ROOT/'data/contas-publicas/ipca-2026-11-03'
         publicado = json.loads((ROOT/'src/lib/contas-publicas/snapshots/ipca.json').read_text())
-        self.assertEqual(IPCA.transformar(self.raw, self.man), publicado)
+        man = json.loads((pasta/'manifesto.json').read_text())
+        self.assertEqual(IPCA.transformar((pasta/'ipca.json').read_bytes(), man), publicado)
+        self.assertEqual(publicado['registros'][:43], IPCA.transformar(self.raw, self.man)['registros'])
 
     def test_edicao_sintetica_posterior_preserva_historico_e_formula(self):
         dados = json.loads(self.raw)

@@ -12,7 +12,17 @@ _spec = importlib.util.spec_from_file_location("vigiar_rtn", RAIZ / "scripts/con
 V = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(V)
 
-DADOS = json.loads((RAIZ / "src/lib/contas-publicas/snapshots/dados.json").read_text())
+import tempfile
+
+SNAPSHOT = json.loads((RAIZ / "src/lib/contas-publicas/snapshots/dados.json").read_text())
+JUL26 = ("https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/"
+         "527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx")
+# Os casos abaixo fixam a edição de julho de 2026 integrada pelo CKAN, para não depender da edição publicada.
+DADOS = {**SNAPSHOT, "referenciaRTN": "2026-07", "fonteRTN": JUL26}
+_ARQ = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
+json.dump(DADOS, _ARQ)
+_ARQ.close()
+CAMINHO = _ARQ.name
 
 
 def tesouro(publicados=(), planilha=None, falhar=False):
@@ -36,12 +46,12 @@ class VigiaRTN(unittest.TestCase):
 
     def test_nada_novo_e_silencio(self):
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(V.main(buscar=tesouro(), hoje=dt.date(2026, 8, 20)), 0)
+            self.assertEqual(V.main(buscar=tesouro(), hoje=dt.date(2026, 8, 20), caminho=CAMINHO), 0)
 
     def test_boletim_publicado_vira_issue_com_assinatura(self):
         saida = io.StringIO()
         with contextlib.redirect_stdout(saida):
-            codigo = V.main(buscar=tesouro(publicados={(2026, 8)}), hoje=dt.date(2026, 10, 19))
+            codigo = V.main(buscar=tesouro(publicados={(2026, 8)}), hoje=dt.date(2026, 10, 19), caminho=CAMINHO)
         self.assertEqual(codigo, 3)
         texto = saida.getvalue()
         self.assertIn("agosto de 2026", texto)
@@ -95,7 +105,42 @@ class VigiaRTN(unittest.TestCase):
 
     def test_indisponibilidade_tem_codigo_diferente_de_edicao_nova(self):
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(V.main(buscar=tesouro(falhar=True), hoje=dt.date(2026, 10, 24)), 4)
+            self.assertEqual(V.main(buscar=tesouro(falhar=True), hoje=dt.date(2026, 10, 24), caminho=CAMINHO), 4)
+
+
+class EdicaoDoAnexoDoBoletim(unittest.TestCase):
+    """Setembro de 2026 veio do anexo do boletim (integrada em 03/11/2026), com o CKAN ainda em julho."""
+    SET = {**SNAPSHOT, "referenciaRTN": "2026-09",
+           "fonteRTN": "https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/"
+                       "56116_1789206/anexos/29566_977289/serie_historica_set26.xlsx"}
+
+    def ckan(self, url):
+        def buscar(u):
+            if "/ckan/api/" in u:
+                self.assertIn("ab56485b-9c40-4efb-8563-9ce3e1973c4b", u)
+                return 200, json.dumps({"result": {"resources": [{"id": V.CKAN_RECURSO, "url": url}]}}).encode()
+            return 404, b""
+        return buscar
+
+    def test_ckan_atrasado_nao_e_edicao_nova(self):
+        self.assertEqual(V.verificar(self.SET, self.ckan(JUL26), dt.date(2026, 11, 3)), ([], None, []))
+
+    def test_ckan_com_mes_posterior_sinaliza(self):
+        out26 = JUL26.replace("jul26", "out26")
+        self.assertEqual(V.verificar(self.SET, self.ckan(out26), dt.date(2026, 11, 20))[1], out26)
+
+    def test_ckan_com_nome_sem_mes_sinaliza(self):
+        outro = JUL26.replace("seriehistoricajul26", "serie-historica-rtn")
+        self.assertEqual(V.verificar(self.SET, self.ckan(outro), dt.date(2026, 11, 3))[1], outro)
+
+    def test_mes_da_planilha(self):
+        self.assertEqual(V.mes_da_planilha(JUL26), "2026-07")
+        self.assertEqual(V.mes_da_planilha(self.SET["fonteRTN"]), "2026-09")
+        self.assertIsNone(V.mes_da_planilha("https://x/serie.xlsx"))
+
+    def test_snapshot_publicado_e_de_setembro(self):
+        self.assertEqual(SNAPSHOT["referenciaRTN"], "2026-09")
+        self.assertEqual(V.mes_da_planilha(SNAPSHOT["fonteRTN"]), SNAPSHOT["referenciaRTN"])
 
 
 if __name__ == "__main__":

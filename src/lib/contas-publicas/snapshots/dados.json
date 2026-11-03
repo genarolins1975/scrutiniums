@@ -1,13 +1,13 @@
 {
   "versao": 1,
-  "captura": "2026-10-12T08:10:31.130658+00:00",
+  "captura": "2026-11-03T13:09:37.774218+00:00",
   "capturaSIOP": "2026-10-27T15:56:38.518840+00:00",
   "publicacaoRTN": null,
   "unidadeRTN": "R$ milhões correntes",
   "unidadeSIOP": "R$ correntes",
-  "fonteRTN": "https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx",
+  "fonteRTN": "https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/56116_1789206/anexos/29566_977289/serie_historica_set26.xlsx",
   "fonteSIOP": "https://www1.siop.planejamento.gov.br/sparql/",
-  "referenciaRTN": "2026-07",
+  "referenciaRTN": "2026-09",
   "linhasRTN": {
     "receitaTotal": 6,
     "transferencias": 29,
@@ -20,7 +20,7 @@
     "resultado": 66
   },
   "sha256": {
-    "rtn.xlsx": "35899d771fc487db1ca17a6a1fb3fc0cc293230b8c5ad98287b69db2a7d0843c",
+    "rtn.xlsx": "8eb4abf01278d083b17d3bd4d381173416bd11965394d22afdd63294207aaab4",
     "siop2025.json": "388064b68e10c5045a330877cd7c42cfa216a6191df4dd7cdccbd1ef1649afbf",
     "siop2026.json": "e8478eb8188345abdc05b838d8c919ddb1423f1ef398e1428150ae269818e013",
     "gnd2025.json": "7bc0c2edd022fa00f8ef13957d5902cf73e747be231db1660eb8c86a09bcb0ba",
@@ -982,12 +982,12 @@
       "receitaTotal": 219030.44659960002,
       "transferencias": 61363.065919046785,
       "receitaLiquida": 157667.38068055324,
-      "despesa": 187613.60890814557,
+      "despesa": 187621.10890814557,
       "previdencia": 81663.49708428,
       "pessoal": 32779.12268988,
-      "outrasObrigatorias": 26138.511644105558,
+      "outrasObrigatorias": 26146.011644105558,
       "programacaoFinanceira": 47032.47748988,
-      "resultado": -29946.228227592335
+      "resultado": -29953.728227592335
     },
     {
       "periodo": "2026-03",
@@ -995,12 +995,12 @@
       "receitaTotal": 235025.65300392997,
       "transferencias": 38707.13491498604,
       "receitaLiquida": 196318.51808894394,
-      "despesa": 269717.3743475155,
+      "despesa": 269727.8492645655,
       "previdencia": 109365.55198051,
       "pessoal": 41568.85942799,
-      "outrasObrigatorias": 65370.254245755554,
+      "outrasObrigatorias": 65380.729162805554,
       "programacaoFinanceira": 53412.70869326,
-      "resultado": -73398.85625857158
+      "resultado": -73409.33117562157
     },
     {
       "periodo": "2026-04",
@@ -1008,12 +1008,12 @@
       "receitaTotal": 279491.45288923,
       "transferencias": 43947.28022980911,
       "receitaLiquida": 235544.17265942087,
-      "despesa": 210122.20483656556,
+      "despesa": 210222.43630236556,
       "previdencia": 94177.23760604,
       "pessoal": 34147.66562049,
-      "outrasObrigatorias": 32861.67610556556,
-      "programacaoFinanceira": 48935.62550446999,
-      "resultado": 25421.96782285531
+      "outrasObrigatorias": 32961.90755172556,
+      "programacaoFinanceira": 48935.62552410999,
+      "resultado": 25321.736357055313
     },
     {
       "periodo": "2026-05",
@@ -1021,12 +1021,12 @@
       "receitaTotal": 256223.38362423,
       "transferencias": 58256.80543224065,
       "receitaLiquida": 197966.57819198933,
-      "despesa": 251216.62462838556,
+      "despesa": 251288.09407523557,
       "previdencia": 122264.92201848,
-      "pessoal": 33478.41880959,
-      "outrasObrigatorias": 34848.02597462556,
-      "programacaoFinanceira": 60625.257825689994,
-      "resultado": -53250.046436396224
+      "pessoal": 33478.40176256,
+      "outrasObrigatorias": 34919.54245677556,
+      "programacaoFinanceira": 60625.22783742,
+      "resultado": -53321.51588324623
     },
     {
       "periodo": "2026-06",
@@ -1034,25 +1034,51 @@
       "receitaTotal": 251923.53976024996,
       "transferencias": 56535.086602783515,
       "receitaLiquida": 195388.45315746643,
-      "despesa": 243300.03856759556,
+      "despesa": 243375.97729592558,
       "previdencia": 112336.6709352,
       "pessoal": 34126.8586125,
-      "outrasObrigatorias": 38705.63050983555,
-      "programacaoFinanceira": 58130.87851006,
-      "resultado": -47911.58541012913
+      "outrasObrigatorias": 38781.67192691556,
+      "programacaoFinanceira": 58130.77582131,
+      "resultado": -47987.52413845915
     },
     {
       "periodo": "2026-07",
       "coluna": "MR",
-      "receitaTotal": 275883.95996691,
-      "transferencias": 49578.50541121805,
-      "receitaLiquida": 226305.45455569198,
-      "despesa": 215522.02237159555,
+      "receitaTotal": 275883.9599669101,
+      "transferencias": 49398.554648076926,
+      "receitaLiquida": 226485.40531883313,
+      "despesa": 215568.06402099555,
       "previdencia": 84142.98047647,
-      "pessoal": 43232.85975561,
-      "outrasObrigatorias": 38807.57838684555,
-      "programacaoFinanceira": 49338.60375267,
-      "resultado": 10783.432184096426
+      "pessoal": 43212.75397146,
+      "outrasObrigatorias": 38873.73836282555,
+      "programacaoFinanceira": 49338.59121024,
+      "resultado": 10917.341297837585
+    },
+    {
+      "periodo": "2026-08",
+      "coluna": "MS",
+      "receitaTotal": 241960.60680256,
+      "transferencias": 54000.70922328749,
+      "receitaLiquida": 187959.8975792725,
+      "despesa": 201517.56589567557,
+      "previdencia": 84526.92385571,
+      "pessoal": 31974.48372576,
+      "outrasObrigatorias": 39814.82271998556,
+      "programacaoFinanceira": 45201.33559422,
+      "resultado": -13557.668316403055
+    },
+    {
+      "periodo": "2026-09",
+      "coluna": "MT",
+      "receitaTotal": 255661.00351847007,
+      "transferencias": 50713.513591205294,
+      "receitaLiquida": 204947.48992726477,
+      "despesa": 200108.40577967555,
+      "previdencia": 84583.39611656,
+      "pessoal": 32083.61078269,
+      "outrasObrigatorias": 38712.45869828555,
+      "programacaoFinanceira": 44728.94018214,
+      "resultado": 4839.084147589223
     }
   ],
   "rtnAnual": [
