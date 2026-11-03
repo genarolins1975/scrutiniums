@@ -163,6 +163,11 @@ def publicacao(caminho):
         for tentativa in preparo['tentativas']:
             if tentativa.get('inconclusivo'):
                 print(f"\nInfraestrutura no preparo: {tentativa['motivo']}\n\n```text\n{tentativa['trecho_log']}\n```\n")
+    if r.get("avisos"):
+        print("\n### Coerência entre edições (não retém; os grupos lidos saíram de edições diferentes)\n")
+        for aviso in r["avisos"]:
+            datas = ", ".join(f"{g}: {(r.get('datas_publicadas') or {}).get(g) or (r.get('datas_anteriores') or {}).get(g) or '?'}" for g in aviso["grupos"])
+            print(f"- `{aviso['teste']}` (rodada {aviso.get('rodada', '?')}): {aviso['motivo']}. Grupos e datas publicadas: {datas}")
     print("\n### Falhas de testes sem leitura de gold (não decidem aprovação de grupo)\n")
     for nome, resultado in r.get("falhas_sem_gold", {}).items():
         print(f"- `{nome}`: {resultado.get('detalhe', '')[:1000]}")

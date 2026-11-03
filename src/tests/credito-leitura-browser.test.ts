@@ -11,6 +11,10 @@ const consignado=JSON.parse(readFileSync('public/obs/data/gold/consignado.json',
   circularidade:{especificacoes:Especificacao[];correlacao_mecanica:number;mecanismo:{testados:Mecanismo[]}};
 };
 const qualidade=JSON.parse(readFileSync('public/obs/data/gold/quality.json','utf8')) as Record<string,{ultima_ref:string}>;
+const metaGold=JSON.parse(readFileSync('public/obs/data/gold/meta.json','utf8')) as {grupos?:Record<string,{gerado_em?:string|null}>};
+// consignado e quality são grupos publicados em separado; só na mesma edição a data-base de um tem de bater com a
+// referência do outro (em 02/11/2026 a comparação entre edições diferentes reteve quality, pix e consignado; issue #291)
+const mesmaEdicao=(a:string,b:string)=>!metaGold.grupos||!metaGold.grupos[a]?.gerado_em||!metaGold.grupos[b]?.gerado_em||metaGold.grupos[a].gerado_em===metaGold.grupos[b].gerado_em;
 const config=JSON.parse(readFileSync('config/config.json','utf8')) as {sgs_series:Array<{key:string;code:number;url:string}>};
 const pix=JSON.parse(readFileSync('public/obs/data/gold/pix.json','utf8')) as {mes_tx:string;natureza:{atual:Array<{k:string;q:number;part_q:number;t:number}>}};
 const n=(v:number,casas:number)=>new Intl.NumberFormat('pt-BR',{minimumFractionDigits:casas,maximumFractionDigits:casas}).format(v);
@@ -29,9 +33,9 @@ describe.skipIf(!temBuild&&!exigirBuild)('Crédito: conclusões e tabelas legív
       await page.goto(servidor.origem+'/observatorio/payroll-lending-aging');
       const card=page.locator('#cg-expo .card').filter({has:page.locator('table.cgseg')});
       await card.waitFor();
-      const periodo=qualidade.consig_inss_taxa.ultima_ref;
-      // Referências por série, não gerado_em nem apenas a data geral do painel.
-      expect(qualidade.consig_inss_icc.ultima_ref).toBe(periodo);expect(consignado.sgs.data_base).toBe(periodo);
+      const periodo=consignado.sgs.data_base;
+      // Referências por série, não gerado_em nem apenas a data geral do painel; quality só é confrontada na mesma edição.
+      if(mesmaEdicao('consignado','quality')){expect(qualidade.consig_inss_taxa.ultima_ref).toBe(periodo);expect(qualidade.consig_inss_icc.ultima_ref).toBe(periodo);}
       const linha=card.locator('tbody tr').filter({has:page.getByText('Beneficiários do INSS',{exact:true})});
       const colunas=await linha.locator('td').allTextContents();expect(colunas).toHaveLength(5);
       expect(texto(colunas[3])).toBe(n(consignado.sgs.atual.inss.taxa,2)+'%');
