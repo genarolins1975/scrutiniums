@@ -995,7 +995,8 @@ tr.selrow { background: var(--accent-soft); }
 .morverb { padding: 4px 2px; }
 .morverb .desprosa { max-width: 74ch; }
 tr.morfora td, td.morfora { color: var(--text-3); }
-tr.morfora code { opacity: .75; }
+/* sem opacidade: com .75 o código da conta ficava em 3,36:1 sobre o papel (axe, 03/11/2026); a linha já se distingue pela cor */
+tr.morfora code { color: var(--text-3); }
 
 .morrec td:last-child, .morinst td, .morseg td { vertical-align: top; }
 .mor2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }

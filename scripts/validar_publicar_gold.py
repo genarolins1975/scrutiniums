@@ -83,9 +83,13 @@ def classificar(codigo, texto, relatorio, suite):
             nome = Path(arquivo['name']).resolve().relative_to(RAIZ).as_posix()
             assertions = arquivo.get('assertionResults', [])
             falhas = [a for a in assertions if a['status'] == 'failed']
-            # Skip não é aprovação de conteúdo. Não alteramos skips existentes.
+            # Skip não é aprovação de conteúdo. Não alteramos skips existentes. Um `it.todo` não é verificação pulada: é uma
+            # checagem que ainda não existe, e não contamina as asserções executadas do arquivo. Até 03/11/2026 contaminava:
+            # o todo de busca-controle.test.ts (23/10/2026) reteve juros e, por dependência, consignado e a cascata de
+            # composições do Crédito (issue #291). Arquivo só com todo continua sem aprovar.
+            executadas = [a for a in assertions if a['status'] != 'todo']
             estado = 'failed' if falhas or arquivo.get('status') == 'failed' else (
-                'skipped' if not assertions or any(a['status'] in ('pending', 'skipped', 'todo') for a in assertions) else 'passed')
+                'skipped' if not executadas or any(a['status'] in ('pending', 'skipped') for a in executadas) else 'passed')
             detalhe = '\n'.join(str(m) for a in falhas for m in a.get('failureMessages', [])) or arquivo.get('message', '')
             if INFRA.search(detalhe):
                 motivo = INFRA.search(detalhe).group(0)

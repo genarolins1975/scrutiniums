@@ -274,6 +274,11 @@ const fmt = {
   // mês e ano por extenso abreviado ("ago/2026"), a forma da plataforma (Iniciativa 2 do parecer de UX de 23/10/2026; antes "08/2026")
   my: iso => iso && /^\d{4}-\d{2}/.test(iso) ? `${["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][+iso.slice(5, 7) - 1]}/${iso.slice(0, 4)}` : (iso || "–"),
   pp: v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2),
+  // texto vindo da gold com data ISO ("2025-12-31", "2026-11-02 20:47:16") ou percentual com ponto ("55.6%"): data por extenso
+  // curto e vírgula decimal, nunca a forma crua na prosa (auditoria de 03/11/2026: 36 datas cruas em Indicadores operacionais)
+  prosa: s => s == null ? "–" : String(s)
+    .replace(/\b(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?Z?)?\b/g, (_, a, m, d, h, mi) => `${d}/${m}/${a}${h ? ` ${h}h${mi}` : ""}`)
+    .replace(/(-?\d+)\.(\d+)%/g, "$1,$2%"),
 };
 
 /* escape único para valores interpolados em ATRIBUTOS HTML (aria-label, title, alt, data-*):
@@ -2481,7 +2486,7 @@ function renderPanorama() {
       <div class="tt-row"><span class="tt-lbl">per capita</span><span class="tt-val">R$ ${fmt.n0(m.per_capita)}</span></div>
       <div class="tt-meta">produto dominante: ${m.prod_dominante || "–"} · renda dominante: ${m.renda_dominante || "–"}<br>Δ inad 12m: ${fmt.pp(m.d_inad_12m)} p.p. · ${M.l}: ${m[met] != null ? M.f(m[met]) : "n.d."} (${rankOf(m.uf) ? rankOf(m.uf) + "º de " + ranked.length : "sem rank"})<br>clique para abrir o painel estadual</div>`);
     const cls = (pan.uf === m.uf ? "sel" : (pan.uf && pan.uf !== m.uf && !pan.cmp.includes(m.uf) ? "dim2" : ""));
-    return `<path d="${d}" class="${cls}" fill="${scale(m[met])}" data-tip="${tip}" onclick="panSelUF('${m.uf}')" aria-label="${attr(m.nome)}"></path>`;
+    return `<path role="img" d="${d}" class="${cls}" fill="${scale(m[met])}" data-tip="${tip}" onclick="panSelUF('${m.uf}')" aria-label="${attr(m.nome)}"></path>`;
   }).join("");
   const legend = M.kind === "seq"
     ? `<div class="maplegend"><span>${M.f(Math.min(...vals.filter(v => v != null)))}</span><span class="grad" style="background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, var(--surface)), color-mix(in srgb, var(--accent) 88%, var(--surface)))"></span><span>${M.f(Math.max(...vals.filter(v => v != null)))}</span><span>· ${M.desc}</span></div>`
@@ -6075,7 +6080,7 @@ function renderPenetracao() {
       <div class="tt-row"><span class="tt-lbl">sobre renda anual</span><span class="tt-val">${m.penetracao != null ? fmt.n(m.penetracao, 1) + "%" : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">gap estimado</span><span class="tt-val">${m[campoGap] != null ? fmt.money(m[campoGap]) : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">confiabilidade</span><span class="tt-val">${m.confianca}</span></div>`);
-    return `<path d="${d}" fill="${cor}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="penSel('${cod}')" aria-label="${attr(m.nome + " " + m.uf + ": " + M.fmt(m))}"></path>`;
+    return `<path role="img" d="${d}" fill="${cor}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="penSel('${cod}')" aria-label="${attr(m.nome + " " + m.uf + ": " + M.fmt(m))}"></path>`;
   }).join("") : "";
 
   const mapa = `<section id="pen-mapa">${sechead("Onde o crédito está, e onde ele é raro", `${M.l} · ${P.data_base_credito}`)}
@@ -11221,7 +11226,7 @@ function morMapa(base, malha, met, M, F, D) {
       <div class="tt-row"><span class="tt-lbl">ainda pagando</span><span class="tt-val">${m.pgp != null ? fmt.n(m.pgp, 1) + "%" : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">alugados</span><span class="tt-val">${m.alp != null ? fmt.n(m.alp, 1) + "%" : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">saldo do verbete 169</span><span class="tt-val">${m.s != null ? fmt.money(m.s) : "sem dependência"}</span></div>`);
-    return `<path d="${d}" fill="${escala(m[met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
+    return `<path role="img" d="${d}" fill="${escala(m[met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
       onclick="morSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + M.fmt(m))}"></path>`;
   }).join("") : "";
 
@@ -11563,7 +11568,7 @@ function renderConsignado() {
       <div class="tt-row"><span class="tt-lbl">benefícios</span><span class="tt-val">${m.ben != null ? fmt.n0(m.ben) : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">peso na renda</span><span class="tt-val">${m.peso != null ? fmt.n(m.peso, 1) + "%" : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">confiabilidade</span><span class="tt-val">${m.sel.replace("_", " ")}</span></div>`);
-    return `<path d="${d}" fill="${escala(m[cam])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
+    return `<path role="img" d="${d}" fill="${escala(m[cam])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
       tabindex="-1" onclick="cgSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + C.fmt(m))}"></path>`;
   }).join("") : "";
 
@@ -12280,7 +12285,7 @@ function renderRural() {
       <div class="tt-row"><span class="tt-lbl">contratos</span><span class="tt-val">${fmt.n0(m.qtd)}</span></div>
       <div class="tt-row"><span class="tt-lbl">por habitante</span><span class="tt-val">${m.valor_hab != null ? "R$ " + fmt.n0(m.valor_hab) : "–"}</span></div>
       <div class="tt-row"><span class="tt-lbl">PRONAF</span><span class="tt-val">${pct(m.pronaf_share)}</span></div>`);
-    return `<path d="${d}" fill="${escala(m[F.met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="ruSel('${cod}')" aria-label="${attr((m.nome || cod) + " " + (m.uf || "") + ": " + M.fmt(m))}"></path>`;
+    return `<path role="img" d="${d}" fill="${escala(m[F.met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="ruSel('${cod}')" aria-label="${attr((m.nome || cod) + " " + (m.uf || "") + ": " + M.fmt(m))}"></path>`;
   }).join("") : "";
   const rankKey = F.met;
   const ranking = base.filter(m => m[rankKey] != null && (rankKey !== "valor_hab" || (m.pop && m.pop >= 5000)))
@@ -12460,7 +12465,7 @@ function renderOperacional() {
   const idx12 = atual.mes ? sfn.find(p => p.mes === `${parseInt(atual.mes.slice(0, 4), 10) - 1}-${atual.mes.slice(5, 7)}`) : null;
   const dSfn12 = idx12 ? atual.agencias - idx12.agencias : null;
   const flagDe = (nome, ind) => (D.flags || []).some(f => f.instituicao === nome && f.indicador === ind)
-    ? ` <span class="warn" title="${attr(((D.flags.find(f => f.instituicao === nome && f.indicador === ind) || {}).detalhe))}" tabindex="0" role="img" aria-label="verificação automática pendente">⚑</span>` : "";
+    ? ` <span class="warn" title="${attr(fmt.prosa((D.flags.find(f => f.instituicao === nome && f.indicador === ind) || {}).detalhe))}" tabindex="0" role="img" aria-label="verificação automática pendente">⚑</span>` : "";
 
   const kpis = `<div class="pan-kpi">
     <div class="card kpi"><h4>Agências no SFN</h4><div class="big">${fmt.n0(atual.agencias)}</div>
@@ -12558,7 +12563,7 @@ function renderOperacional() {
         <div class="tt-row"><span class="tt-lbl">postos eletrônicos</span><span class="tt-val">${fmt.n0(m.pae)}</span></div>
         <div class="tt-row"><span class="tt-lbl">correspondentes</span><span class="tt-val">${fmt.n0(m.corresp)}</span></div>
         <div class="tt-row"><span class="tt-lbl">instituições com dependência</span><span class="tt-val">${fmt.n0(m.ifs_dep)}</span></div>`);
-      return `<path d="${d}" fill="${PR_COR[m.classe]}" class="penmun" style="cursor:pointer" data-tip="${tip}" onclick="presNav('${m.cod}')" aria-label="${attr(`${m.nome} ${m.uf}: ${m.classe} — abrir página do município`)}"></path>`;
+      return `<path role="img" d="${d}" fill="${PR_COR[m.classe]}" class="penmun" style="cursor:pointer" data-tip="${tip}" onclick="presNav('${m.cod}')" aria-label="${attr(`${m.nome} ${m.uf}: ${m.classe} — abrir página do município`)}"></path>`;
     }).join("");
     const tot = PR.totais;
     const pct = v => fmt.n(100 * v / tot.municipios, 1) + "%";
@@ -12641,10 +12646,10 @@ function renderOperacional() {
         <thead><tr><th>Ente</th><th>Resultado</th><th>Vencedor</th><th class="num">Valor ao ente</th><th>Vigência</th><th>Fonte</th></tr></thead>
         <tbody>${FB.leiloes.map(l => `<tr>
           <td>${l.ente}<span class="src"> · ${l.uf}</span></td>
-          <td>${l.data_resultado || "–"}</td>
+          <td>${fmt.prosa(l.data_resultado)}</td>
           <td><b>${l.vencedor}</b></td>
           <td class="num" title="${attr(l.valor_nota || "")}">${l.valor != null ? fmt.money(l.valor) : "não homologado em valor único ⓘ"}</td>
-          <td>${l.vigencia || "–"}</td>
+          <td>${fmt.prosa(l.vigencia)}</td>
           <td class="src">${(l.fontes || []).map(nivelChip).join(" · ")}</td></tr>`).join("")}
         </tbody></table></div>
       <p class="src">Cada leilão tem escopo, prazo e desenho próprios: os valores <b>nunca são somados nem
@@ -12675,7 +12680,7 @@ function renderOperacional() {
           <thead><tr><th>Ente</th><th>Banco</th><th>Assinatura</th><th class="num">Valor</th></tr></thead>
           <tbody>${(P.recentes || []).slice(0, 8).map(c => `<tr>
             <td>${c.url ? `<a href="${attr(c.url)}" target="_blank" rel="noopener">${c.municipio || c.ente}</a>` : (c.municipio || c.ente)}<span class="src"> · ${c.uf || "–"}</span></td>
-            <td>${c.banco}</td><td>${c.assinatura || "–"}</td>
+            <td>${c.banco}</td><td>${fmt.prosa(c.assinatura)}</td>
             <td class="num" title="${c.receita ? "cessão onerosa: o banco paga ao ente (receita)" : "valor do contrato como registrado pelo ente"}">${c.valor != null ? fmt.money(c.valor) : "–"}${c.receita ? " ↩" : ""}</td></tr>`).join("")}</tbody></table></div>
         <p class="src">↩ = registrado como receita do ente (cessão onerosa). Valores com semântica mista — nunca somados.</p></div>
       </div>
@@ -12697,7 +12702,7 @@ function renderOperacional() {
             <td>${o.banco}${o.exclusivo_folha ? "" : ` <span class="seal aprox" title="a categoria contábil é mais ampla que folha — declarado na métrica">não exclusivo</span>`}</td>
             <td><span title="${attr(o.trecho)}">${o.metrica}</span></td>
             <td class="num"><b>${o.valor != null ? fmt.n0(o.valor) : "–"}</b> <span class="src">${o.unidade || ""}</span></td>
-            <td>${o.data_ref || "–"}</td>
+            <td>${fmt.prosa(o.data_ref)}</td>
             <td class="src"><a href="${attr(o.documento.url)}" target="_blank" rel="noopener" title="${attr(o.documento.titulo)}">${o.pagina}</a></td></tr>`).join("")}
           </tbody></table></div>
         ${(B.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
@@ -12857,7 +12862,7 @@ function renderOperacional() {
   const tFlags = `${sechead("Verificações automáticas", "publicadas junto do dado — nunca correção silenciosa")}
   <div class="card">${(D.flags || []).length === 0 ? `<p class="src">Nenhuma verificação pendente nesta execução.</p>` : `<div class="tblwrap"><table>
     <thead><tr><th>Instituição</th><th>Indicador</th><th>O que verificar</th></tr></thead>
-    <tbody>${D.flags.map(f => `<tr><td>${f.instituicao}</td><td>${f.indicador}</td><td>${f.detalhe}</td></tr>`).join("")}</tbody></table></div>`}
+    <tbody>${D.flags.map(f => `<tr><td>${f.instituicao}</td><td>${f.indicador}</td><td>${fmt.prosa(f.detalhe)}</td></tr>`).join("")}</tbody></table></div>`}
     <p class="src">Regras: variação de empregados &gt;30% a/a · queda de rede &gt;15% em 12 meses · troca de auditor nos
     últimos dois anos. A flag acompanha o dado publicado; nada é ajustado por trás.</p></div>`;
 

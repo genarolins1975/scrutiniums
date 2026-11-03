@@ -319,6 +319,19 @@ class Infraestrutura(unittest.TestCase):
         rel['testResults'][0]['assertionResults'] = [{'status': 'passed'}]
         self.assertFalse(fluxo.classificar(0, 'teste da proteção contra ENOBUFS passou', rel, 'vitest')['inconclusivo'])
 
+    def test_todo_nao_contamina_asserções_executadas_mas_skip_sim(self):
+        def rel(*estados):
+            return {'numTotalTests': len(estados), 'numPassedTests': estados.count('passed'), 'numFailedTests': 0,
+                    'numPendingTests': estados.count('skipped') + estados.count('pending'), 'numTodoTests': estados.count('todo'),
+                    'success': True, 'testResults': [{'name': str(pg.RAIZ / 'src/tests/busca-controle.test.ts'), 'status': 'passed',
+                                                       'assertionResults': [{'status': e} for e in estados]}]}
+        arquivo = 'src/tests/busca-controle.test.ts'
+        # 02/11/2026: 59 aprovados e 1 todo retinham juros
+        self.assertEqual(fluxo.classificar(0, '', rel(*(['passed'] * 59 + ['todo'])), 'vitest')['resultados'][arquivo]['estado'], 'passed')
+        self.assertEqual(fluxo.classificar(0, '', rel('passed', 'skipped'), 'vitest')['resultados'][arquivo]['estado'], 'skipped')
+        self.assertEqual(fluxo.classificar(0, '', rel('passed', 'pending'), 'vitest')['resultados'][arquivo]['estado'], 'skipped')
+        self.assertEqual(fluxo.classificar(0, '', rel('todo'), 'vitest')['resultados'][arquivo]['estado'], 'skipped')
+
     def test_erro_de_setup_de_classe_atribuido_ao_arquivo_de_dado(self):
         from io import StringIO
         from scripts.unittest_gold import Resultado
