@@ -9,7 +9,7 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0085070",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:23+00:00",
+  "atualizado_em": "2026-11-04T18:31:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 34.991.938"
  },
@@ -69,7 +69,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -133,7 +133,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -248,8 +248,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
-   "percentil": 73.2
+   "mediana_grupo": 3.66,
+   "percentil": 73.3
   },
   {
    "indicador": "ROE do período",
@@ -257,7 +257,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
+   "mediana_grupo": 3.96,
    "percentil": 83.4
   }
  ],
@@ -688,6 +688,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -924,7 +925,7 @@
     55.04
    ],
    "meu": 14.25,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "alav": {
    "valores": [
@@ -1080,6 +1081,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -1316,7 +1318,7 @@
     9.56
    ],
    "meu": 8.14,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {
@@ -1336,7 +1338,7 @@
     "atraso15_pct": 3.17,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 85.9,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -1366,9 +1368,9 @@
     "seg": "PF",
     "carteira_brl": 110425838.8,
     "atraso15_pct": 8.38,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 96.4,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -1400,7 +1402,7 @@
     "atraso15_pct": 79.33,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 99.3,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -1432,7 +1434,7 @@
     "atraso15_pct": 12.37,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 82.6,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",

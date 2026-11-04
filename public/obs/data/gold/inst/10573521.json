@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:23+00:00",
+  "atualizado_em": "2026-11-04T18:31:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 10.573.521"
  },
@@ -932,15 +932,15 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
-    -0.29,
+    -0.3,
     -0.13
    ],
    "basileia_atual_pct": 13.85,
    "basileia_pos_choque_pct": [
-    13.56,
+    13.55,
     13.72
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
@@ -960,8 +960,8 @@
     "carteira_brl": 31326283095.46,
     "atraso15_pct": 15.14,
     "mediana_produto_pct": 7.4,
-    "percentil_no_produto": 79.7,
-    "n_universo": 228,
+    "percentil_no_produto": 79.4,
+    "n_universo": 229,
     "serie": [
      {
       "p": "2025-T2",
@@ -992,8 +992,8 @@
     "carteira_brl": 14554402488.82,
     "atraso15_pct": 21.61,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 89.5,
-    "n_universo": 881,
+    "percentil_no_produto": 89.6,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -1025,7 +1025,7 @@
     "atraso15_pct": 31.85,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 97.6,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -1057,7 +1057,7 @@
     "atraso15_pct": 60.13,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 99.4,
-    "n_universo": 620,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -1089,7 +1089,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 0.0,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2026-T2",

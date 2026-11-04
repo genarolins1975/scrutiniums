@@ -9,7 +9,7 @@
   "sede": "Vitória/ES",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 282,
+  "n_pares": 281,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:18+00:00",
+  "atualizado_em": "2026-11-04T18:31:30+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 32.428.294"
  },
@@ -41,7 +41,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 16.7% (abaixo da mediana do grupo S4: 21.2%).",
+    "texto": "Basileia de 16.7% (abaixo da mediana do grupo S4: 21.1%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 282,
+  "quantidade": 281,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -136,7 +136,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.1,
-   "mediana": 21.2,
+   "mediana": 21.1,
    "q3": 32.1
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -235,7 +235,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 16.7% (abaixo da mediana do grupo S4: 21.2%).",
+   "texto": "Basileia de 16.7% (abaixo da mediana do grupo S4: 21.1%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -256,8 +256,8 @@
    "unit": "%",
    "d_tri": 1.01,
    "vs_pares": "abaixo",
-   "mediana_grupo": 21.15,
-   "percentil": 28.6
+   "mediana_grupo": 21.13,
+   "percentil": 28.7
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -275,7 +275,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 3.91,
-   "percentil": 41.6
+   "percentil": 41.4
   }
  ],
  "carteira": {
@@ -1035,7 +1035,6 @@
     13.13,
     -3.93,
     1.29,
-    -18.12,
     1.95,
     -59.23,
     -3.72,
@@ -1319,7 +1318,6 @@
     13.28,
     23.82,
     12.88,
-    25.46,
     39.69,
     36.83,
     21.52,
@@ -1383,7 +1381,7 @@
     20.99
    ],
    "meu": 16.68,
-   "mediana": 21.15
+   "mediana": 21.13
   },
   "alav": {
    "valores": [
@@ -1585,7 +1583,6 @@
     8.58,
     13.51,
     2.73,
-    3.46,
     1.25,
     3.05,
     6.35,
@@ -1718,7 +1715,7 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
     -0.02,
@@ -1747,7 +1744,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 0.0,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",

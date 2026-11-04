@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-27T16:59:26+00:00",
+ "gerado_em": "2026-11-04T18:31:38+00:00",
  "paginas": 1457,
  "anomes": "202606",
  "instituicoes": [
@@ -9277,7 +9277,7 @@
    "cod": "C0051688",
    "nome": "Finaxis",
    "razao": "FINAXIS",
-   "sr": "S4",
+   "sr": "S?",
    "ativo_brl": 65132121.08,
    "piloto": false,
    "sem_balanco": false,
@@ -14367,7 +14367,7 @@
    "cod": "07333726",
    "nome": "Onnix Corretora De Câmbio Ltda.",
    "razao": "ONNIX CORRETORA DE CÂMBIO LTDA.",
-   "sr": "S4",
+   "sr": "S?",
    "ativo_brl": 991905.23,
    "piloto": false,
    "sem_balanco": true,

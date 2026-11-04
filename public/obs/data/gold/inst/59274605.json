@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:20+00:00",
+  "atualizado_em": "2026-11-04T18:31:31+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 59.274.605"
  },
@@ -1071,10 +1071,10 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
-    -0.61,
+    -0.62,
     -0.26
    ],
    "basileia_atual_pct": 19.43,
@@ -1098,9 +1098,9 @@
     "seg": "PF",
     "carteira_brl": 11413867651.31,
     "atraso15_pct": 1.01,
-    "mediana_produto_pct": 1.23,
-    "percentil_no_produto": 43.2,
-    "n_universo": 591,
+    "mediana_produto_pct": 1.24,
+    "percentil_no_produto": 43.1,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -1131,8 +1131,8 @@
     "carteira_brl": 2265865371.99,
     "atraso15_pct": 0.59,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 28.4,
-    "n_universo": 620,
+    "percentil_no_produto": 28.5,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -1164,7 +1164,7 @@
     "atraso15_pct": 0.07,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 17.0,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -1196,7 +1196,7 @@
     "atraso15_pct": 3.44,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 74.1,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",

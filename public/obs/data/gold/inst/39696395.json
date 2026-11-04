@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:26+00:00",
+  "atualizado_em": "2026-11-04T18:31:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 39.696.395"
  },
@@ -42,6 +42,10 @@
    {
     "texto": "Patrimônio líquido: +54.2% no trimestre.",
     "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: -61.62p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
    }
   ],
   "limitacoes_informacionais": [
@@ -56,7 +60,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -120,7 +124,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -184,6 +188,19 @@
    "fonte": "BCB IF.data (Olinda)"
   },
   {
+   "label": "Índice de Basileia",
+   "v": 35.1028881566988,
+   "unit": "%",
+   "d_tri": -61.62,
+   "periodo": "2026-T1",
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    96.7195,
+    35.1029
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
    "label": "ROE do período (padronizado)",
    "v": 24.5,
    "unit": "%",
@@ -207,7 +224,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
+   "mediana_grupo": 3.66,
    "percentil": 76.4
   },
   {
@@ -216,7 +233,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
+   "mediana_grupo": 3.96,
    "percentil": 91.2
   }
  ],
@@ -412,6 +429,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -648,7 +666,7 @@
     55.04
    ],
    "meu": 24.5,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "alav": {
    "valores": [
@@ -804,6 +822,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -1040,7 +1059,7 @@
     9.56
    ],
    "meu": 9.04,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {

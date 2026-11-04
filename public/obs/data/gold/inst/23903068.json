@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0084576",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:22+00:00",
+  "atualizado_em": "2026-11-04T18:31:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 23.903.068"
  },
@@ -70,7 +70,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -134,7 +134,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -256,7 +256,7 @@
    "d_tri": 15.18,
    "vs_pares": "acima",
    "mediana_grupo": 28.49,
-   "percentil": 53.4
+   "percentil": 53.5
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -264,8 +264,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.68,
-   "percentil": 47.8
+   "mediana_grupo": 3.66,
+   "percentil": 47.7
   },
   {
    "indicador": "ROE do período",
@@ -273,8 +273,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 50.9
+   "mediana_grupo": 3.96,
+   "percentil": 51.0
   }
  ],
  "carteira": {
@@ -994,6 +994,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -1230,7 +1231,7 @@
     55.04
    ],
    "meu": 4.26,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1385,6 +1386,7 @@
     21.42,
     13.89,
     29.79,
+    25.46,
     20.29,
     20.98,
     12.21,
@@ -1747,6 +1749,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -1983,7 +1986,7 @@
     9.56
    ],
    "meu": 3.27,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {
@@ -2002,8 +2005,8 @@
     "carteira_brl": 978792315.97,
     "atraso15_pct": 0.82,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 37.8,
-    "n_universo": 620,
+    "percentil_no_produto": 37.9,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -2033,9 +2036,9 @@
     "seg": "PJ",
     "carteira_brl": 169663528.97,
     "atraso15_pct": 0.43,
-    "mediana_produto_pct": 0.73,
-    "percentil_no_produto": 42.9,
-    "n_universo": 204,
+    "mediana_produto_pct": 0.71,
+    "percentil_no_produto": 42.6,
+    "n_universo": 205,
     "serie": [
      {
       "p": "2025-T2",
@@ -2067,7 +2070,7 @@
     "atraso15_pct": 1.65,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 22.6,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",

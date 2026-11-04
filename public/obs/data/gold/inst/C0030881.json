@@ -9,7 +9,7 @@
   "sede": "Curitiba/PR",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0080233",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:22+00:00",
+  "atualizado_em": "2026-11-04T18:31:34+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
@@ -76,7 +76,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -140,7 +140,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -267,7 +267,7 @@
    "d_tri": -1.52,
    "vs_pares": "abaixo",
    "mediana_grupo": 28.49,
-   "percentil": 23.2
+   "percentil": 23.1
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -275,7 +275,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
+   "mediana_grupo": 3.66,
    "percentil": 82.1
   },
   {
@@ -284,8 +284,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 55.3
+   "mediana_grupo": 3.96,
+   "percentil": 55.4
   }
  ],
  "carteira": {
@@ -1025,6 +1025,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -1261,7 +1262,7 @@
     55.04
    ],
    "meu": 4.82,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1416,6 +1417,7 @@
     21.42,
     13.89,
     29.79,
+    25.46,
     20.29,
     20.98,
     12.21,
@@ -1778,6 +1780,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -2014,7 +2017,7 @@
     9.56
    ],
    "meu": 10.83,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {
@@ -2061,15 +2064,15 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
-    -0.93,
+    -0.94,
     -0.4
    ],
    "basileia_atual_pct": 15.69,
    "basileia_pos_choque_pct": [
-    14.75,
+    14.74,
     15.28
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
@@ -2090,7 +2093,7 @@
     "atraso15_pct": 0.38,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 31.7,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -2121,8 +2124,8 @@
     "carteira_brl": 2637430110.24,
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 5.5,
-    "n_universo": 881,
+    "percentil_no_produto": 5.4,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -2153,8 +2156,8 @@
     "carteira_brl": 169407910.55,
     "atraso15_pct": 0.32,
     "mediana_produto_pct": 7.4,
-    "percentil_no_produto": 9.3,
-    "n_universo": 228,
+    "percentil_no_produto": 9.2,
+    "n_universo": 229,
     "serie": [
      {
       "p": "2025-T2",
@@ -2186,7 +2189,7 @@
     "atraso15_pct": 18.47,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 94.5,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",

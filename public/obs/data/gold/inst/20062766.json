@@ -9,7 +9,7 @@
   "sede": "Visconde do Rio Branco/MG",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:18+00:00",
+  "atualizado_em": "2026-11-04T18:31:29+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 20.062.766"
  },
@@ -66,7 +66,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -130,7 +130,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -252,7 +252,7 @@
    "d_tri": 3.12,
    "vs_pares": "acima",
    "mediana_grupo": 28.49,
-   "percentil": 89.5
+   "percentil": 89.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -260,7 +260,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.68,
+   "mediana_grupo": 3.66,
    "percentil": 20.5
   },
   {
@@ -269,8 +269,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 53.0
+   "mediana_grupo": 3.96,
+   "percentil": 53.1
   }
  ],
  "carteira": {
@@ -1010,6 +1010,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -1246,7 +1247,7 @@
     55.04
    ],
    "meu": 4.51,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1401,6 +1402,7 @@
     21.42,
     13.89,
     29.79,
+    25.46,
     20.29,
     20.98,
     12.21,
@@ -1763,6 +1765,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -1999,7 +2002,7 @@
     9.56
    ],
    "meu": 1.22,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {
@@ -2019,7 +2022,7 @@
     "atraso15_pct": 4.9,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 91.1,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -2051,7 +2054,7 @@
     "atraso15_pct": 1.01,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 15.0,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -2083,7 +2086,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 0.0,
-    "n_universo": 620,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -2115,7 +2118,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.12,
     "percentil_no_produto": 0.0,
-    "n_universo": 125,
+    "n_universo": 126,
     "serie": [
      {
       "p": "2025-T2",
@@ -2145,9 +2148,9 @@
     "seg": "PF",
     "carteira_brl": 81069.45,
     "atraso15_pct": 0.0,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 0.0,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2026-T2",
@@ -2163,7 +2166,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 0.0,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",

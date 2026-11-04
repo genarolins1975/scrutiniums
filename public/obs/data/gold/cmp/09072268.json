@@ -1,8 +1,8 @@
 {
  "cod": "09072268",
- "nome": "09072268",
- "sr": null,
- "tcb": null,
+ "nome": "I",
+ "sr": "S3",
+ "tcb": "N4",
  "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
@@ -61,5 +61,5 @@
    "202606": 773507.4
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-04T18:31:43+00:00"
 }

@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:17+00:00",
+  "atualizado_em": "2026-11-04T18:31:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 09.004.796"
  },
@@ -2129,7 +2129,7 @@
     "atraso15_pct": 2.33,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 61.7,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -2161,7 +2161,7 @@
     "atraso15_pct": 0.43,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 33.9,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -2192,8 +2192,8 @@
     "carteira_brl": 3507205.16,
     "atraso15_pct": 2.85,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 39.8,
-    "n_universo": 881,
+    "percentil_no_produto": 39.7,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -2224,8 +2224,8 @@
     "carteira_brl": 1482733.26,
     "atraso15_pct": 0.91,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 41.2,
-    "n_universo": 620,
+    "percentil_no_produto": 41.3,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -2257,7 +2257,7 @@
     "atraso15_pct": 0.78,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 21.8,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -2288,8 +2288,8 @@
     "carteira_brl": 1186839.36,
     "atraso15_pct": 13.02,
     "mediana_produto_pct": 10.34,
-    "percentil_no_produto": 57.1,
-    "n_universo": 577,
+    "percentil_no_produto": 57.2,
+    "n_universo": 578,
     "serie": [
      {
       "p": "2025-T2",
@@ -2319,9 +2319,9 @@
     "seg": "PF",
     "carteira_brl": 514986.87,
     "atraso15_pct": 4.29,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 88.0,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",

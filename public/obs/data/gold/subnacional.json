@@ -14,13 +14,13 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-11-03T18:45:01+00:00",
+ "gerado_em": "2026-11-04T18:32:02+00:00",
  "coleta": {
-  "linhas": 26725,
+  "linhas": 26727,
   "paginas": 6,
   "mb": 13.8,
-  "data_status_max": "2026-11-02",
-  "coletado_em": "2026-11-03T17:19:20+00:00"
+  "data_status_max": "2026-11-03",
+  "coletado_em": "2026-11-04T17:06:47+00:00"
  },
  "kpis": {
   "mes": "2026-10",
@@ -38,10 +38,10 @@
   "garantia_uniao_12m_valor": 57798715393.51,
   "externas_12m_n": 44,
   "moeda_estrangeira_12m_n": 43,
-  "taxa_deferimento_12m_pct": 94.24,
-  "concluidos_12m_n": 1301,
-  "em_tramitacao_n": 265,
-  "em_tramitacao_valor": 22338810969.37,
+  "taxa_deferimento_12m_pct": 94.31,
+  "concluidos_12m_n": 1300,
+  "em_tramitacao_n": 268,
+  "em_tramitacao_valor": 23048205969.37,
   "em_tramitacao_desde": "2023-11",
   "renegociacao_uniao_12m_n": 0,
   "renegociacao_uniao_12m_valor": 0,
@@ -292,7 +292,7 @@
    "externas_n": 38,
    "pgfn_valor": 48106616462.11,
    "renegociacao_uniao_valor": 0,
-   "arquivados_n": 65,
+   "arquivados_n": 64,
    "parcial": true
   }
  ],
@@ -922,21 +922,21 @@
    "nome": "Deferido: limites verificados, operação liberada",
    "n": 977,
    "valor": 14165700657.12,
-   "share_n_pct": 64.45
+   "share_n_pct": 66.19
   },
   {
    "id": "pgfn",
    "nome": "Manifestação técnica favorável, encaminhado à PGFN (garantia da União)",
    "n": 249,
    "valor": 57798715393.51,
-   "share_n_pct": 16.42
+   "share_n_pct": 16.87
   },
   {
    "id": "arquivado",
    "nome": "Arquivado, indeferido ou cancelado",
-   "n": 75,
-   "valor": 5176509702.82,
-   "share_n_pct": 4.95
+   "n": 74,
+   "valor": 4491114702.82,
+   "share_n_pct": 5.01
   },
   {
    "id": "regularizado",
@@ -948,9 +948,9 @@
   {
    "id": "tramitacao",
    "nome": "Em análise ou em retificação",
-   "n": 212,
-   "valor": 17422332778.39,
-   "share_n_pct": 13.98
+   "n": 173,
+   "valor": 14124691967.289999,
+   "share_n_pct": 11.72
   }
  ],
  "moedas_12m": [

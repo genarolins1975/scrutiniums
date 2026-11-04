@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-03T18:44:54+00:00",
+ "gerado_em": "2026-11-04T18:31:53+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -59,27 +59,27 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.112,
-  "r2_nao_centrado": 0.825,
-  "ep_beta": 0.0165,
+  "beta": 1.121,
+  "r2_nao_centrado": 0.81,
+  "ep_beta": 0.0176,
   "n_ifs": 958,
   "m_produtos": {
-   "capital-de-giro-pj": 1.02,
-   "cartao-de-credito-pf": 0.77,
-   "comercio-exterior-pj": 0.31,
+   "capital-de-giro-pj": 1.03,
+   "cartao-de-credito-pf": 0.76,
+   "comercio-exterior-pj": 0.4,
    "consignado-pf": 1.47,
    "credito-pessoal-pf": 0.92,
-   "recebiveis-pj": 0.66,
-   "veiculos-pf": 1.14
+   "recebiveis-pj": 0.46,
+   "veiculos-pf": 1.18
   },
-  "phi_winsorizados": 39,
+  "phi_winsorizados": 38,
   "phi_limites": [
    0.25,
    4.0
   ],
   "estimativas": 6024,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 64,
+  "estimativas_teto_sanidade": 63,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",

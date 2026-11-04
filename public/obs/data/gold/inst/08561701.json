@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:23+00:00",
+  "atualizado_em": "2026-11-04T18:31:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 08.561.701"
  },
@@ -789,7 +789,7 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
     -0.06,
@@ -817,8 +817,8 @@
     "carteira_brl": 44263782664.97,
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 12.0,
-    "n_universo": 745,
+    "percentil_no_produto": 11.9,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -850,7 +850,7 @@
     "atraso15_pct": 0.01,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 5.6,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -881,8 +881,8 @@
     "carteira_brl": 1569732866.01,
     "atraso15_pct": 0.64,
     "mediana_produto_pct": 0.71,
-    "percentil_no_produto": 46.6,
-    "n_universo": 774,
+    "percentil_no_produto": 46.5,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -914,7 +914,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 7.4,
     "percentil_no_produto": 0.0,
-    "n_universo": 228,
+    "n_universo": 229,
     "serie": [
      {
       "p": "2025-T2",

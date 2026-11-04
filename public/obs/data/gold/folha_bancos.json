@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-03T18:44:30+00:00",
+ "gerado_em": "2026-11-04T18:31:21+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 308,
-  "total_editais": 1150,
+  "total_editais": 1151,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1139,6 +1139,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE ITUACU",
+    "municipio": "Ituaçu",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-03",
+    "url": "https://pncp.gov.br/compras/14106280000121/2026/65"
+   },
+   {
     "ente": "MUNICIPIO DE SAO JOSE DO CEDRO",
     "municipio": "São José do Cedro",
     "uf": "SC",
@@ -1193,6 +1202,15 @@
     "url": "https://pncp.gov.br/compras/36288900000123/2026/16"
    },
    {
+    "ente": "MUNICIPIO DE TAPURAH",
+    "municipio": "Tapurah",
+    "uf": "MT",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-10-27",
+    "url": "https://pncp.gov.br/compras/24772253000141/2026/155"
+   },
+   {
     "ente": "MUNICIPIO DE ANAPOLIS",
     "municipio": "Anápolis",
     "uf": "GO",
@@ -1200,15 +1218,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-27",
     "url": "https://pncp.gov.br/compras/01067479000146/2026/239"
-   },
-   {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/58"
    },
    {
     "ente": "MUNICIPIO DE ALVARENGA",
@@ -1220,31 +1229,22 @@
     "url": "https://pncp.gov.br/compras/19770288000101/2026/73"
    },
    {
-    "ente": "MUNICIPIO DE TAPURAH",
-    "municipio": "Tapurah",
-    "uf": "MT",
-    "modalidade": "Dispensa",
+    "ente": "MUNICIPIO DE PATIS",
+    "municipio": "Patis",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/24772253000141/2026/155"
+    "url": "https://pncp.gov.br/compras/01612478000135/2026/58"
    },
    {
-    "ente": "MUNICIPIO DE TIMBO",
-    "municipio": "Timbó",
-    "uf": "SC",
+    "ente": "MUNICIPIO DE MIRANDA",
+    "municipio": "Miranda",
+    "uf": "MS",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/83102764000115/2026/403"
-   },
-   {
-    "ente": "MUNICIPIO DE TIMBO",
-    "municipio": "Timbó",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/83102764000115/2026/402"
+    "url": "https://pncp.gov.br/compras/03452315000168/2026/12"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

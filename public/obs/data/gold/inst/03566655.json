@@ -9,7 +9,7 @@
   "sede": "São Gabriel do Oeste/MS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 282,
+  "n_pares": 281,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:14+00:00",
+  "atualizado_em": "2026-11-04T18:31:26+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 03.566.655"
  },
@@ -41,7 +41,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 20.7% (abaixo da mediana do grupo S4: 21.2%).",
+    "texto": "Basileia de 20.7% (abaixo da mediana do grupo S4: 21.1%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -58,7 +58,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 282,
+  "quantidade": 281,
   "maiores_membros": [
    {
     "cod": "18189547",
@@ -123,7 +123,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.1,
-   "mediana": 21.2,
+   "mediana": 21.1,
    "q3": 32.1
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -222,7 +222,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 20.7% (abaixo da mediana do grupo S4: 21.2%).",
+   "texto": "Basileia de 20.7% (abaixo da mediana do grupo S4: 21.1%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -243,8 +243,8 @@
    "unit": "%",
    "d_tri": 0.17,
    "vs_pares": "abaixo",
-   "mediana_grupo": 21.15,
-   "percentil": 48.2
+   "mediana_grupo": 21.13,
+   "percentil": 48.4
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -253,7 +253,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 6.6,
-   "percentil": 48.4
+   "percentil": 48.2
   },
   {
    "indicador": "ROE do período",
@@ -262,7 +262,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 3.91,
-   "percentil": 41.3
+   "percentil": 41.1
   }
  ],
  "carteira": {
@@ -1080,7 +1080,6 @@
     13.13,
     -3.93,
     1.29,
-    -18.12,
     1.95,
     -59.23,
     -3.72,
@@ -1364,7 +1363,6 @@
     13.28,
     23.82,
     12.88,
-    25.46,
     39.69,
     36.83,
     21.52,
@@ -1428,7 +1426,7 @@
     20.99
    ],
    "meu": 20.67,
-   "mediana": 21.15
+   "mediana": 21.13
   },
   "alav": {
    "valores": [
@@ -1630,7 +1628,6 @@
     8.58,
     13.51,
     2.73,
-    3.46,
     1.25,
     3.05,
     6.35,
@@ -1735,8 +1732,8 @@
     "carteira_brl": 457031690.55,
     "atraso15_pct": 8.48,
     "mediana_produto_pct": 1.3,
-    "percentil_no_produto": 93.6,
-    "n_universo": 424,
+    "percentil_no_produto": 93.4,
+    "n_universo": 425,
     "serie": [
      {
       "p": "2025-T2",
@@ -1767,8 +1764,8 @@
     "carteira_brl": 290670873.93,
     "atraso15_pct": 15.59,
     "mediana_produto_pct": 7.4,
-    "percentil_no_produto": 81.5,
-    "n_universo": 228,
+    "percentil_no_produto": 81.1,
+    "n_universo": 229,
     "serie": [
      {
       "p": "2025-T2",
@@ -1800,7 +1797,7 @@
     "atraso15_pct": 14.23,
     "mediana_produto_pct": 10.34,
     "percentil_no_produto": 61.5,
-    "n_universo": 577,
+    "n_universo": 578,
     "serie": [
      {
       "p": "2025-T2",
@@ -1831,8 +1828,8 @@
     "carteira_brl": 94885190.96,
     "atraso15_pct": 5.59,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 66.1,
-    "n_universo": 881,
+    "percentil_no_produto": 66.2,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -1863,8 +1860,8 @@
     "carteira_brl": 69220697.88,
     "atraso15_pct": 3.7,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 75.9,
-    "n_universo": 745,
+    "percentil_no_produto": 76.0,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -1896,7 +1893,7 @@
     "atraso15_pct": 0.63,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 46.3,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -1928,7 +1925,7 @@
     "atraso15_pct": 24.67,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 94.9,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -1960,7 +1957,7 @@
     "atraso15_pct": 5.16,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 92.4,
-    "n_universo": 620,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -1990,9 +1987,9 @@
     "seg": "PF",
     "carteira_brl": 14024420.04,
     "atraso15_pct": 5.24,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 91.5,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -2023,8 +2020,8 @@
     "carteira_brl": 5749232.94,
     "atraso15_pct": 0.32,
     "mediana_produto_pct": 0.12,
-    "percentil_no_produto": 69.4,
-    "n_universo": 125,
+    "percentil_no_produto": 69.6,
+    "n_universo": 126,
     "serie": [
      {
       "p": "2025-T2",
@@ -2056,7 +2053,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.0,
     "percentil_no_produto": 0.0,
-    "n_universo": 304,
+    "n_universo": 305,
     "serie": [
      {
       "p": "2025-T4",
@@ -2078,9 +2075,9 @@
     "seg": "PJ",
     "carteira_brl": 1443319.23,
     "atraso15_pct": 7.26,
-    "mediana_produto_pct": 0.73,
+    "mediana_produto_pct": 0.71,
     "percentil_no_produto": 92.6,
-    "n_universo": 204,
+    "n_universo": 205,
     "serie": [
      {
       "p": "2025-T2",

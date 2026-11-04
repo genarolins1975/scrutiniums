@@ -9,7 +9,7 @@
   "sede": "Rio de Janeiro/RJ",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0081847",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:19+00:00",
+  "atualizado_em": "2026-11-04T18:31:30+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 33.657.248"
  },
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -135,7 +135,7 @@
    }
   ],
   "quartis_basileia": {
-   "q1": 16.2,
+   "q1": 16.3,
    "mediana": 28.5,
    "q3": 81.0
   },
@@ -257,7 +257,7 @@
    "d_tri": 1.35,
    "vs_pares": "abaixo",
    "mediana_grupo": 28.49,
-   "percentil": 45.8
+   "percentil": 45.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -265,8 +265,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 3.68,
-   "percentil": 62.3
+   "mediana_grupo": 3.66,
+   "percentil": 62.4
   },
   {
    "indicador": "ROE do período",
@@ -274,8 +274,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.1,
-   "percentil": 61.8
+   "mediana_grupo": 3.96,
+   "percentil": 61.9
   }
  ],
  "carteira": {
@@ -1027,6 +1027,7 @@
     7.72,
     -2.78,
     11.7,
+    -18.12,
     6.57,
     13.59,
     -5.19,
@@ -1263,7 +1264,7 @@
     55.04
    ],
    "meu": 6.17,
-   "mediana": 4.1
+   "mediana": 3.96
   },
   "basileia": {
    "valores": [
@@ -1418,6 +1419,7 @@
     21.42,
     13.89,
     29.79,
+    25.46,
     20.29,
     20.98,
     12.21,
@@ -1780,6 +1782,7 @@
     5.09,
     19.08,
     5.73,
+    3.46,
     31.95,
     11.73,
     15.8,
@@ -2016,7 +2019,7 @@
     9.56
    ],
    "meu": 5.94,
-   "mediana": 3.68
+   "mediana": 3.66
   }
  },
  "comparacao_pares": {
@@ -2070,10 +2073,10 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
-    -0.3,
+    -0.31,
     -0.13
    ],
    "basileia_atual_pct": 25.43,
@@ -2097,9 +2100,9 @@
     "seg": "PJ",
     "carteira_brl": 354948643354.71,
     "atraso15_pct": 0.03,
-    "mediana_produto_pct": 0.73,
-    "percentil_no_produto": 27.6,
-    "n_universo": 204,
+    "mediana_produto_pct": 0.71,
+    "percentil_no_produto": 27.5,
+    "n_universo": 205,
     "serie": [
      {
       "p": "2025-T2",
@@ -2131,7 +2134,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.0,
     "percentil_no_produto": 0.0,
-    "n_universo": 304,
+    "n_universo": 305,
     "serie": [
      {
       "p": "2025-T2",

@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:16+00:00",
+  "atualizado_em": "2026-11-04T18:31:27+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 05.856.736"
  },
@@ -2127,8 +2127,8 @@
     "carteira_brl": 118605675.06,
     "atraso15_pct": 1.48,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 42.9,
-    "n_universo": 745,
+    "percentil_no_produto": 42.8,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -2160,7 +2160,7 @@
     "atraso15_pct": 5.64,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 66.4,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -2192,7 +2192,7 @@
     "atraso15_pct": 5.79,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 93.2,
-    "n_universo": 620,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -2223,8 +2223,8 @@
     "carteira_brl": 3948476.25,
     "atraso15_pct": 31.02,
     "mediana_produto_pct": 10.34,
-    "percentil_no_produto": 91.8,
-    "n_universo": 577,
+    "percentil_no_produto": 91.9,
+    "n_universo": 578,
     "serie": [
      {
       "p": "2025-T2",
@@ -2256,7 +2256,7 @@
     "atraso15_pct": 18.37,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 91.7,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -2286,9 +2286,9 @@
     "seg": "PF",
     "carteira_brl": 945734.46,
     "atraso15_pct": 1.84,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 65.1,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -2320,7 +2320,7 @@
     "atraso15_pct": 56.25,
     "mediana_produto_pct": 1.3,
     "percentil_no_produto": 99.8,
-    "n_universo": 424,
+    "n_universo": 425,
     "serie": [
      {
       "p": "2025-T2",
@@ -2352,7 +2352,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 0.0,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",

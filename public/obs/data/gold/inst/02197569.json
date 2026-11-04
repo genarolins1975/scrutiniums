@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:14+00:00",
+  "atualizado_em": "2026-11-04T18:31:25+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 02.197.569"
  },
@@ -2133,7 +2133,7 @@
     "atraso15_pct": 1.47,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 42.7,
-    "n_universo": 745,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -2164,8 +2164,8 @@
     "carteira_brl": 49106908.33,
     "atraso15_pct": 1.16,
     "mediana_produto_pct": 0.71,
-    "percentil_no_produto": 66.9,
-    "n_universo": 774,
+    "percentil_no_produto": 66.8,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -2196,8 +2196,8 @@
     "carteira_brl": 41363570.08,
     "atraso15_pct": 2.79,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 38.9,
-    "n_universo": 881,
+    "percentil_no_produto": 38.8,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -2228,8 +2228,8 @@
     "carteira_brl": 31905036.06,
     "atraso15_pct": 0.94,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 42.5,
-    "n_universo": 620,
+    "percentil_no_produto": 42.6,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -2259,9 +2259,9 @@
     "seg": "PF",
     "carteira_brl": 12654220.42,
     "atraso15_pct": 0.81,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 35.4,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -2293,7 +2293,7 @@
     "atraso15_pct": 13.18,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 85.6,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -2325,7 +2325,7 @@
     "atraso15_pct": 31.48,
     "mediana_produto_pct": 10.34,
     "percentil_no_produto": 92.2,
-    "n_universo": 577,
+    "n_universo": 578,
     "serie": [
      {
       "p": "2025-T2",

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-03T18:44:54+00:00",
+ "gerado_em": "2026-11-04T18:31:53+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -59,27 +59,27 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.112,
-  "r2_nao_centrado": 0.825,
-  "ep_beta": 0.0165,
+  "beta": 1.121,
+  "r2_nao_centrado": 0.81,
+  "ep_beta": 0.0176,
   "n_ifs": 958,
   "m_produtos": {
-   "capital-de-giro-pj": 1.02,
-   "cartao-de-credito-pf": 0.77,
-   "comercio-exterior-pj": 0.31,
+   "capital-de-giro-pj": 1.03,
+   "cartao-de-credito-pf": 0.76,
+   "comercio-exterior-pj": 0.4,
    "consignado-pf": 1.47,
    "credito-pessoal-pf": 0.92,
-   "recebiveis-pj": 0.66,
-   "veiculos-pf": 1.14
+   "recebiveis-pj": 0.46,
+   "veiculos-pf": 1.18
   },
-  "phi_winsorizados": 39,
+  "phi_winsorizados": 38,
   "phi_limites": [
    0.25,
    4.0
   ],
   "estimativas": 6024,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 64,
+  "estimativas_teto_sanidade": 63,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -200,8 +200,8 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.61,
-     "m_produto": 0.31,
+     "pct": 0.79,
+     "m_produto": 0.4,
      "phi_if": 1.4,
      "cobertura_if_pct": 91.0,
      "baixa_cobertura": false,
@@ -223,12 +223,12 @@
     "npl_inst_pct": 2.33,
     "basileia_pct": 15.35,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.46
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.5
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.01,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.01,
      "cobertura_if_pct": 61.1,
      "baixa_cobertura": false,
@@ -250,13 +250,13 @@
     "npl_inst_pct": 4.01,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.79
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.81
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 0.13,
-     "m_produto": 0.31,
-     "phi_if": 1.43,
+     "pct": 0.17,
+     "m_produto": 0.4,
+     "phi_if": 1.42,
      "cobertura_if_pct": 80.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -281,8 +281,8 @@
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 0.32,
-     "m_produto": 0.31,
+     "pct": 0.41,
+     "m_produto": 0.4,
      "phi_if": 1.12,
      "cobertura_if_pct": 76.2,
      "baixa_cobertura": false,
@@ -308,8 +308,8 @@
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 1.6,
-     "m_produto": 0.31,
+     "pct": 2.07,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 97.2,
      "baixa_cobertura": false,
@@ -333,9 +333,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.87,
-     "m_produto": 0.31,
-     "phi_if": 1.67,
+     "pct": 1.11,
+     "m_produto": 0.4,
+     "phi_if": 1.66,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -359,8 +359,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.05,
+     "m_produto": 0.4,
+     "phi_if": 1.03,
      "cobertura_if_pct": 65.1,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -386,7 +386,7 @@
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 100.1,
      "baixa_cobertura": false,
@@ -408,12 +408,12 @@
     "npl_inst_pct": 3.2,
     "basileia_pct": 14.21,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.08
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.1
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 0.08,
-     "m_produto": 0.31,
+     "pct": 0.11,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 29.0,
      "baixa_cobertura": false,
@@ -434,14 +434,12 @@
     "pct_carteira_inst": 5.6,
     "npl_inst_pct": 1.76,
     "basileia_pct": 18.14,
-    "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.98
-    },
-    "taxa_casamento": "nome",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.1,
-     "m_produto": 0.31,
-     "phi_if": 1.49,
+     "pct": 0.12,
+     "m_produto": 0.4,
+     "phi_if": 1.47,
      "cobertura_if_pct": 80.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -464,9 +462,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.04,
-     "m_produto": 0.31,
-     "phi_if": 2.27,
+     "pct": 0.05,
+     "m_produto": 0.4,
+     "phi_if": 2.2,
      "cobertura_if_pct": 64.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -490,7 +488,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 99.4,
      "baixa_cobertura": false,
@@ -512,13 +510,13 @@
     "npl_inst_pct": 1.03,
     "basileia_pct": 16.18,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.65
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.32
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 0.03,
-     "m_produto": 0.31,
-     "phi_if": 1.21,
+     "pct": 0.04,
+     "m_produto": 0.4,
+     "phi_if": 1.19,
      "cobertura_if_pct": 75.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -562,7 +560,7 @@
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 98.2,
      "baixa_cobertura": false,
@@ -586,9 +584,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.13,
-     "m_produto": 0.31,
-     "phi_if": 1.71,
+     "pct": 0.17,
+     "m_produto": 0.4,
+     "phi_if": 1.7,
      "cobertura_if_pct": 89.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -609,13 +607,13 @@
     "npl_inst_pct": 2.52,
     "basileia_pct": 12.84,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 10.68
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 10.25
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 1.32,
-     "m_produto": 0.31,
-     "phi_if": 1.43,
+     "pct": 1.68,
+     "m_produto": 0.4,
+     "phi_if": 1.4,
      "cobertura_if_pct": 86.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -655,7 +653,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 72.5,
      "baixa_cobertura": false,
@@ -677,12 +675,12 @@
     "npl_inst_pct": 0.01,
     "basileia_pct": 20.16,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.57
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.16
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 97.3,
      "baixa_cobertura": false,
@@ -725,8 +723,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.5,
+     "m_produto": 0.4,
+     "phi_if": 1.47,
      "cobertura_if_pct": 96.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -750,7 +748,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 0.69,
      "cobertura_if_pct": 88.1,
      "baixa_cobertura": false,
@@ -774,9 +772,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.77,
-     "m_produto": 0.31,
-     "phi_if": 1.0,
+     "pct": 0.98,
+     "m_produto": 0.4,
+     "phi_if": 0.99,
      "cobertura_if_pct": 96.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -831,12 +829,12 @@
     "npl_inst_pct": 0.38,
     "basileia_pct": 20.29,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.61
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.38
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.01,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 0.77,
      "cobertura_if_pct": 85.9,
      "baixa_cobertura": false,
@@ -858,13 +856,13 @@
     "npl_inst_pct": 2.94,
     "basileia_pct": 17.11,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.64
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.65
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 6.33,
-     "m_produto": 0.31,
-     "phi_if": 2.23,
+     "pct": 7.49,
+     "m_produto": 0.4,
+     "phi_if": 2.04,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -889,9 +887,9 @@
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 1.14,
-     "m_produto": 0.31,
-     "phi_if": 1.44,
+     "pct": 1.4,
+     "m_produto": 0.4,
+     "phi_if": 1.37,
      "cobertura_if_pct": 67.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -912,13 +910,13 @@
     "npl_inst_pct": 5.64,
     "basileia_pct": 16.5,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.7
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.85
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 2.45,
-     "m_produto": 0.31,
-     "phi_if": 1.42,
+     "pct": 3.14,
+     "m_produto": 0.4,
+     "phi_if": 1.4,
      "cobertura_if_pct": 90.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -973,9 +971,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.06,
-     "m_produto": 0.31,
-     "phi_if": 0.4,
+     "pct": 0.08,
+     "m_produto": 0.4,
+     "phi_if": 0.39,
      "cobertura_if_pct": 34.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -998,9 +996,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.25,
-     "m_produto": 0.31,
-     "phi_if": 1.1,
+     "pct": 0.32,
+     "m_produto": 0.4,
+     "phi_if": 1.09,
      "cobertura_if_pct": 94.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1023,9 +1021,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.18,
-     "m_produto": 0.31,
-     "phi_if": 1.86,
+     "pct": 0.23,
+     "m_produto": 0.4,
+     "phi_if": 1.84,
      "cobertura_if_pct": 99.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1051,7 +1049,7 @@
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 44.7,
      "baixa_cobertura": false,
@@ -1091,13 +1089,13 @@
     "npl_inst_pct": 8.04,
     "basileia_pct": 15.14,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.48
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.49
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 1.43,
-     "m_produto": 0.31,
-     "phi_if": 2.46,
+     "pct": 1.81,
+     "m_produto": 0.4,
+     "phi_if": 2.41,
      "cobertura_if_pct": 82.1,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1120,8 +1118,8 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.32,
-     "m_produto": 0.31,
+     "pct": 0.41,
+     "m_produto": 0.4,
      "phi_if": 1.13,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
@@ -1146,7 +1144,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.24,
      "cobertura_if_pct": 50.4,
      "baixa_cobertura": false,
@@ -1168,13 +1166,13 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 17.56,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.5
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.13
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 3.22,
-     "m_produto": 0.31,
-     "phi_if": 1.14,
+     "pct": 3.78,
+     "m_produto": 0.4,
+     "phi_if": 1.03,
      "cobertura_if_pct": 97.3,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1195,12 +1193,12 @@
     "npl_inst_pct": 15.39,
     "basileia_pct": 21.52,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.33
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.5
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 4.73,
-     "m_produto": 0.31,
+     "pct": 6.11,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 72.8,
      "baixa_cobertura": false,
@@ -1222,12 +1220,12 @@
     "npl_inst_pct": 29.41,
     "basileia_pct": 77.12,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.64
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.65
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
@@ -1251,9 +1249,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.28,
-     "m_produto": 0.31,
-     "phi_if": 1.14,
+     "pct": 1.64,
+     "m_produto": 0.4,
+     "phi_if": 1.13,
      "cobertura_if_pct": 98.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1274,13 +1272,13 @@
     "npl_inst_pct": 5.07,
     "basileia_pct": 14.4,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.38
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.48
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.09,
+     "m_produto": 0.4,
+     "phi_if": 1.1,
      "cobertura_if_pct": 89.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1303,9 +1301,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.26,
-     "m_produto": 0.31,
-     "phi_if": 1.62,
+     "pct": 0.33,
+     "m_produto": 0.4,
+     "phi_if": 1.59,
      "cobertura_if_pct": 99.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1328,9 +1326,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.63,
-     "m_produto": 0.31,
-     "phi_if": 1.15,
+     "pct": 4.63,
+     "m_produto": 0.4,
+     "phi_if": 1.13,
      "cobertura_if_pct": 95.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1353,9 +1351,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.13,
-     "m_produto": 0.31,
-     "phi_if": 2.29,
+     "pct": 0.21,
+     "m_produto": 0.4,
+     "phi_if": 2.87,
      "cobertura_if_pct": 55.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1378,8 +1376,8 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.16,
-     "m_produto": 0.31,
+     "pct": 0.21,
+     "m_produto": 0.4,
      "phi_if": 2.14,
      "cobertura_if_pct": 96.4,
      "baixa_cobertura": false,
@@ -1404,7 +1402,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.22,
      "cobertura_if_pct": 66.1,
      "baixa_cobertura": false,
@@ -1429,8 +1427,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.09,
+     "m_produto": 0.4,
+     "phi_if": 2.07,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1454,8 +1452,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.97,
+     "m_produto": 0.4,
+     "phi_if": 1.96,
      "cobertura_if_pct": 87.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1497,7 +1495,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.23,
      "cobertura_if_pct": 65.6,
      "baixa_cobertura": false,
@@ -1522,7 +1520,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 2.38,
      "cobertura_if_pct": 88.7,
      "baixa_cobertura": false,
@@ -1547,7 +1545,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.76,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
@@ -1569,13 +1567,13 @@
     "npl_inst_pct": 1.92,
     "basileia_pct": 13.28,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 10.97
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 10.9
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 4.63,
-     "m_produto": 0.31,
-     "phi_if": 0.72,
+     "pct": 5.29,
+     "m_produto": 0.4,
+     "phi_if": 0.64,
      "cobertura_if_pct": 96.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1596,13 +1594,13 @@
     "npl_inst_pct": 1.1,
     "basileia_pct": 32.62,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.64
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.65
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.27,
+     "m_produto": 0.4,
+     "phi_if": 1.26,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1623,7 +1621,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 62.21,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.64
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.65
     },
     "taxa_casamento": "nome"
    },
@@ -1641,13 +1639,13 @@
     "npl_inst_pct": 1.62,
     "basileia_pct": 22.15,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.61
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.38
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.55,
+     "m_produto": 0.4,
+     "phi_if": 2.54,
      "cobertura_if_pct": 99.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1670,9 +1668,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.75,
-     "m_produto": 0.31,
-     "phi_if": 1.23,
+     "pct": 11.19,
+     "m_produto": 0.4,
+     "phi_if": 1.21,
      "cobertura_if_pct": 85.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1696,8 +1694,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.47,
+     "m_produto": 0.4,
+     "phi_if": 1.46,
      "cobertura_if_pct": 67.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1720,9 +1718,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.08,
-     "m_produto": 0.31,
-     "phi_if": 1.7,
+     "pct": 0.1,
+     "m_produto": 0.4,
+     "phi_if": 1.74,
      "cobertura_if_pct": 92.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1762,8 +1760,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.68,
+     "m_produto": 0.4,
+     "phi_if": 2.69,
      "cobertura_if_pct": 83.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1803,8 +1801,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.04,
+     "m_produto": 0.4,
+     "phi_if": 1.05,
      "cobertura_if_pct": 94.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1828,7 +1826,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 4.0,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
@@ -1853,8 +1851,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 12.44,
-     "m_produto": 0.31,
-     "phi_if": 3.79,
+     "m_produto": 0.4,
+     "phi_if": 2.93,
      "cobertura_if_pct": 87.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1878,7 +1876,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 2.07,
      "cobertura_if_pct": 88.5,
      "baixa_cobertura": false,
@@ -1903,8 +1901,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.13,
+     "m_produto": 0.4,
+     "phi_if": 1.12,
      "cobertura_if_pct": 36.1,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1928,8 +1926,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.73,
+     "m_produto": 0.4,
+     "phi_if": 1.74,
      "cobertura_if_pct": 79.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1950,13 +1948,13 @@
     "npl_inst_pct": 4.27,
     "basileia_pct": 18.37,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.61
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.38
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.84,
+     "m_produto": 0.4,
+     "phi_if": 1.85,
      "cobertura_if_pct": 97.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1980,8 +1978,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.8,
+     "m_produto": 0.4,
+     "phi_if": 1.79,
      "cobertura_if_pct": 84.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2002,13 +2000,13 @@
     "npl_inst_pct": 3.46,
     "basileia_pct": 16.73,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.61
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.38
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.07,
+     "m_produto": 0.4,
+     "phi_if": 1.06,
      "cobertura_if_pct": 98.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2032,7 +2030,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.79,
      "cobertura_if_pct": 91.8,
      "baixa_cobertura": false,
@@ -2057,8 +2055,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.07,
+     "m_produto": 0.4,
+     "phi_if": 2.06,
      "cobertura_if_pct": 87.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2082,8 +2080,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.55,
+     "m_produto": 0.4,
+     "phi_if": 1.56,
      "cobertura_if_pct": 76.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2106,9 +2104,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 33.07,
-     "m_produto": 0.31,
-     "phi_if": 2.1,
+     "pct": 42.17,
+     "m_produto": 0.4,
+     "phi_if": 2.07,
      "cobertura_if_pct": 98.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2132,7 +2130,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.77,
      "cobertura_if_pct": 80.5,
      "baixa_cobertura": false,
@@ -2154,13 +2152,13 @@
     "npl_inst_pct": 5.0,
     "basileia_pct": 15.55,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.61
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.38
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.24,
+     "m_produto": 0.4,
+     "phi_if": 2.32,
      "cobertura_if_pct": 98.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2184,8 +2182,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.72,
+     "m_produto": 0.4,
+     "phi_if": 1.71,
      "cobertura_if_pct": 88.3,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2209,7 +2207,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 2.44,
      "cobertura_if_pct": 67.0,
      "baixa_cobertura": false,
@@ -2234,8 +2232,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 0.96,
+     "m_produto": 0.4,
+     "phi_if": 0.97,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2259,8 +2257,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 2.13,
+     "m_produto": 0.4,
+     "phi_if": 2.16,
      "cobertura_if_pct": 88.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2284,8 +2282,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 1.76,
+     "m_produto": 0.4,
+     "phi_if": 1.75,
      "cobertura_if_pct": 84.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2309,7 +2307,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 1.4,
      "cobertura_if_pct": 52.0,
      "baixa_cobertura": false,
@@ -2334,7 +2332,7 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 0.67,
      "cobertura_if_pct": 90.9,
      "baixa_cobertura": false,
@@ -2356,12 +2354,12 @@
     "npl_inst_pct": 5.04,
     "basileia_pct": 21.82,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.38
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.48
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
+     "m_produto": 0.4,
      "phi_if": 0.95,
      "cobertura_if_pct": 87.3,
      "baixa_cobertura": false,
@@ -2386,8 +2384,8 @@
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
-     "m_produto": 0.31,
-     "phi_if": 0.83,
+     "m_produto": 0.4,
+     "phi_if": 0.86,
      "cobertura_if_pct": 48.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2547,12 +2545,12 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
-     "inicio": "2026-10-13",
-     "fim": "2026-10-19",
-     "n_inst": 32,
-     "mediana_aa": 6.79,
+     "inicio": "2026-10-14",
+     "fim": "2026-10-20",
+     "n_inst": 31,
+     "mediana_aa": 6.81,
      "p25_aa": 5.34,
-     "p75_aa": 7.93,
+     "p75_aa": 7.85,
      "min_aa": 2.55,
      "max_aa": 14.5,
      "moeda_estrangeira": true,
@@ -3613,14 +3611,21 @@
        "p25_aa": 5.34,
        "p75_aa": 7.93,
        "n": 32
+      },
+      {
+       "inicio": "2026-10-14",
+       "mediana_aa": 6.81,
+       "p25_aa": 5.34,
+       "p75_aa": 7.85,
+       "n": 31
       }
      ],
      "por_segmento": {
       "S3": {
        "n": 7,
-       "mediana_aa": 6.38,
+       "mediana_aa": 6.48,
        "p25_aa": 4.93,
-       "p75_aa": 6.65,
+       "p75_aa": 7.32,
        "serie": [
         {
          "inicio": "2023-12-14",
@@ -4608,14 +4613,21 @@
          "p25_aa": 4.93,
          "p75_aa": 6.65,
          "n": 7
+        },
+        {
+         "inicio": "2026-10-14",
+         "mediana_aa": 6.48,
+         "p25_aa": 4.93,
+         "p75_aa": 7.32,
+         "n": 7
         }
        ]
       },
       "S4": {
        "n": 6,
-       "mediana_aa": 7.5,
+       "mediana_aa": 7.13,
        "p25_aa": 6.34,
-       "p75_aa": 10.97,
+       "p75_aa": 10.9,
        "serie": [
         {
          "inicio": "2024-01-11",
@@ -5288,6 +5300,13 @@
          "p25_aa": 6.34,
          "p75_aa": 10.97,
          "n": 6
+        },
+        {
+         "inicio": "2026-10-14",
+         "mediana_aa": 7.13,
+         "p25_aa": 6.34,
+         "p75_aa": 10.9,
+         "n": 6
         }
        ]
       }
@@ -5350,8 +5369,8 @@
       {
        "cnpj8": "01023570",
        "nome": "BCO RABOBANK INTL BRASIL S.A.",
-       "taxa_am": 0.41,
-       "taxa_aa": 5.08,
+       "taxa_am": 0.42,
+       "taxa_aa": 5.1,
        "posicao": 7,
        "cod_congl": "C0081555",
        "sr": null
@@ -5368,7 +5387,7 @@
       {
        "cnpj8": "61533584",
        "nome": "BCO SOCIETE GENERALE BRASIL",
-       "taxa_am": 0.44,
+       "taxa_am": 0.43,
        "taxa_aa": 5.34,
        "posicao": 9,
        "cod_congl": "C0080264",
@@ -5377,8 +5396,8 @@
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 0.44,
-       "taxa_aa": 5.46,
+       "taxa_am": 0.45,
+       "taxa_aa": 5.5,
        "posicao": 10,
        "cod_congl": "C0080099",
        "sr": null
@@ -5386,8 +5405,8 @@
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 0.45,
-       "taxa_aa": 5.56,
+       "taxa_am": 0.46,
+       "taxa_aa": 5.63,
        "posicao": 11,
        "cod_congl": "C0080154",
        "sr": null
@@ -5396,7 +5415,7 @@
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
        "taxa_am": 0.46,
-       "taxa_aa": 5.64,
+       "taxa_aa": 5.65,
        "posicao": 12,
        "cod_congl": "C0080329",
        "sr": null
@@ -5422,56 +5441,56 @@
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 0.52,
-       "taxa_aa": 6.38,
+       "taxa_am": 0.53,
+       "taxa_aa": 6.48,
        "posicao": 15,
        "cod_congl": "C0080996",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 0.54,
-       "taxa_aa": 6.65,
-       "posicao": 16,
-       "cod_congl": "C0080312",
        "sr": "S3"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
        "taxa_am": 0.55,
-       "taxa_aa": 6.79,
-       "posicao": 17,
+       "taxa_aa": 6.81,
+       "posicao": 16,
        "cod_congl": "C0080075",
-       "sr": null
-      },
-      {
-       "cnpj8": "58160789",
-       "nome": "BCO SAFRA S.A.",
-       "taxa_am": 0.56,
-       "taxa_aa": 6.98,
-       "posicao": 18,
-       "cod_congl": "C0080109",
-       "sr": null
-      },
-      {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 0.6,
-       "taxa_aa": 7.48,
-       "posicao": 19,
-       "cod_congl": "C0081593",
        "sr": null
       },
       {
        "cnpj8": "78632767",
        "nome": "OURIBANK S.A.",
-       "taxa_am": 0.61,
-       "taxa_aa": 7.5,
-       "posicao": 20,
+       "taxa_am": 0.58,
+       "taxa_aa": 7.13,
+       "posicao": 17,
        "cod_congl": "C0081012",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "01181521",
+       "nome": "BANCO COOPERATIVO SICREDI",
+       "taxa_am": 0.58,
+       "taxa_aa": 7.16,
+       "posicao": 18,
+       "cod_congl": "C0080745",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
+       "taxa_am": 0.59,
+       "taxa_aa": 7.32,
+       "posicao": 19,
+       "cod_congl": "C0080312",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 0.6,
+       "taxa_aa": 7.49,
+       "posicao": 20,
+       "cod_congl": "C0081593",
+       "sr": null
       },
       {
        "cnpj8": "07450604",
@@ -5483,56 +5502,47 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "01181521",
-       "nome": "BANCO COOPERATIVO SICREDI",
-       "taxa_am": 0.61,
-       "taxa_aa": 7.57,
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
+       "taxa_am": 0.63,
+       "taxa_aa": 7.78,
        "posicao": 22,
-       "cod_congl": "C0080745",
-       "sr": "S2"
+       "cod_congl": "C0080738",
+       "sr": null
       },
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
-       "taxa_am": 0.62,
-       "taxa_aa": 7.7,
+       "taxa_am": 0.63,
+       "taxa_aa": 7.85,
        "posicao": 23,
        "cod_congl": "C0080271",
        "sr": null
       },
       {
-       "cnpj8": "00360305",
-       "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 0.64,
-       "taxa_aa": 7.93,
+       "cnpj8": "02038232",
+       "nome": "BANCO SICOOB S.A.",
+       "taxa_am": 0.67,
+       "taxa_aa": 8.38,
        "posicao": 24,
-       "cod_congl": "C0080738",
+       "cod_congl": "C0080879",
        "sr": null
       },
       {
        "cnpj8": "33466988",
        "nome": "BCO CAIXA GERAL BRASIL S.A.",
-       "taxa_am": 0.67,
-       "taxa_aa": 8.33,
+       "taxa_am": 0.68,
+       "taxa_aa": 8.5,
        "posicao": 25,
        "cod_congl": "C0080927",
        "sr": "S4"
       },
       {
-       "cnpj8": "02038232",
-       "nome": "BANCO SICOOB S.A.",
-       "taxa_am": 0.69,
-       "taxa_aa": 8.61,
-       "posicao": 26,
-       "cod_congl": "C0080879",
-       "sr": null
-      },
-      {
        "cnpj8": "61186680",
        "nome": "BCO BMG S.A.",
-       "taxa_am": 0.7,
-       "taxa_aa": 8.67,
-       "posicao": 27,
+       "taxa_am": 0.72,
+       "taxa_aa": 9.05,
+       "posicao": 26,
        "cod_congl": "C0080178",
        "sr": null
       },
@@ -5540,8 +5550,8 @@
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
        "taxa_am": 0.75,
-       "taxa_aa": 9.38,
-       "posicao": 28,
+       "taxa_aa": 9.35,
+       "posicao": 27,
        "cod_congl": "C0084844",
        "sr": null
       },
@@ -5550,16 +5560,16 @@
        "nome": "BCO FIBRA S.A.",
        "taxa_am": 0.75,
        "taxa_aa": 9.43,
-       "posicao": 29,
+       "posicao": 28,
        "cod_congl": "C0081483",
        "sr": "S3"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 0.85,
-       "taxa_aa": 10.68,
-       "posicao": 30,
+       "taxa_am": 0.82,
+       "taxa_aa": 10.25,
+       "posicao": 29,
        "cod_congl": "C0081744",
        "sr": null
       },
@@ -5567,8 +5577,8 @@
        "cnpj8": "68900810",
        "nome": "BCO RENDIMENTO S.A.",
        "taxa_am": 0.87,
-       "taxa_aa": 10.97,
-       "posicao": 31,
+       "taxa_aa": 10.9,
+       "posicao": 30,
        "cod_congl": "C0080659",
        "sr": "S4"
       },
@@ -5577,7 +5587,7 @@
        "nome": "BANCO TRAVELEX S.A.",
        "taxa_am": 1.13,
        "taxa_aa": 14.5,
-       "posicao": 32,
+       "posicao": 31,
        "cod_congl": "C0080783",
        "sr": "S4"
       }

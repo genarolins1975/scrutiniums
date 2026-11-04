@@ -1,132 +1,128 @@
 {
- "gerado_em": "2026-10-27T16:59:11+00:00",
+ "gerado_em": "2026-11-04T18:31:22+00:00",
  "alertas": [
   {
-   "id": "inad_pf_level",
-   "nivel": "relevante",
-   "titulo": "Inadimplência PF acima de 6%",
-   "explicacao": "Inadimplência (>90 dias) - Pessoas físicas: level = 6.03 acima do limiar 6.0 (referência 2026-08-01, fonte BCB/SGS, série 21084).",
-   "serie": "inad_pf",
-   "valor": 6.03,
-   "limiar": 6.0,
+   "id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "explicacao": "Inadimplência da carteira de crédito (>90 dias) - Total: delta_3m = 0.39 acima do limiar 0.3 (referência 2026-09-01, fonte BCB/SGS, série 21082).",
+   "serie": "inad_total",
+   "valor": 0.39,
+   "limiar": 0.3,
    "fonte": "BCB/SGS",
-   "ref": "2026-08-01",
+   "ref": "2026-09-01",
    "serie_recente": [
     {
-     "p": "2024-09-01",
-     "v": 3.83
-    },
-    {
      "p": "2024-10-01",
-     "v": 3.79
+     "v": 3.3
     },
     {
      "p": "2024-11-01",
-     "v": 3.75
+     "v": 3.27
     },
     {
      "p": "2024-12-01",
-     "v": 3.63
+     "v": 3.08
     },
     {
      "p": "2025-01-01",
-     "v": 3.89
+     "v": 3.34
     },
     {
      "p": "2025-02-01",
-     "v": 3.96
+     "v": 3.41
     },
     {
      "p": "2025-03-01",
-     "v": 4.03
+     "v": 3.44
     },
     {
      "p": "2025-04-01",
-     "v": 4.25
+     "v": 3.67
     },
     {
      "p": "2025-05-01",
-     "v": 4.36
+     "v": 3.72
     },
     {
      "p": "2025-06-01",
-     "v": 4.41
+     "v": 3.75
     },
     {
      "p": "2025-07-01",
-     "v": 4.66
+     "v": 3.96
     },
     {
      "p": "2025-08-01",
-     "v": 4.92
+     "v": 4.14
     },
     {
      "p": "2025-09-01",
-     "v": 4.89
+     "v": 4.09
     },
     {
      "p": "2025-10-01",
-     "v": 4.99
+     "v": 4.18
     },
     {
      "p": "2025-11-01",
-     "v": 5.12
+     "v": 4.24
     },
     {
      "p": "2025-12-01",
-     "v": 5.12
+     "v": 4.2
     },
     {
      "p": "2026-01-01",
-     "v": 5.38
+     "v": 4.44
     },
     {
      "p": "2026-02-01",
-     "v": 5.56
+     "v": 4.64
     },
     {
      "p": "2026-03-01",
-     "v": 5.39
+     "v": 4.52
     },
     {
      "p": "2026-04-01",
-     "v": 5.51
+     "v": 4.64
     },
     {
      "p": "2026-05-01",
-     "v": 5.63
+     "v": 4.75
     },
     {
      "p": "2026-06-01",
-     "v": 5.42
+     "v": 4.59
     },
     {
      "p": "2026-07-01",
-     "v": 5.8
+     "v": 4.88
     },
     {
      "p": "2026-08-01",
-     "v": 6.03
+     "v": 5.05
+    },
+    {
+     "p": "2026-09-01",
+     "v": 4.98
     }
    ],
-   "disparos_anteriores": 12,
+   "disparos_anteriores": 6,
    "recorrente": true
   },
   {
    "id": "comprometimento_high",
    "nivel": "atencao",
    "titulo": "Comprometimento de renda acima de 28%",
-   "explicacao": "Comprometimento de renda das famílias com o serviço da dívida do SFN: level = 28.72 acima do limiar 28.0 (referência 2026-07-01, fonte BCB/SGS, série 29034).",
+   "explicacao": "Comprometimento de renda das famílias com o serviço da dívida do SFN: level = 28.99 acima do limiar 28.0 (referência 2026-08-01, fonte BCB/SGS, série 29034).",
    "serie": "comprometimento",
-   "valor": 28.72,
+   "valor": 28.99,
    "limiar": 28.0,
    "fonte": "BCB/SGS",
-   "ref": "2026-07-01",
+   "ref": "2026-08-01",
    "serie_recente": [
-    {
-     "p": "2024-08-01",
-     "v": 26.73
-    },
     {
      "p": "2024-09-01",
      "v": 26.49
@@ -213,30 +209,270 @@
     },
     {
      "p": "2026-06-01",
-     "v": 28.66
+     "v": 28.68
     },
     {
      "p": "2026-07-01",
-     "v": 28.72
+     "v": 28.83
+    },
+    {
+     "p": "2026-08-01",
+     "v": 28.99
     }
    ],
-   "disparos_anteriores": 50,
+   "disparos_anteriores": 58,
    "recorrente": true
   },
   {
-   "id": "stale_data",
+   "id": "stale_data:convolacao_falencia_agregado",
    "nivel": "informativo",
-   "titulo": "4 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "explicacao": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (179 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (179 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (118 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "serie": "*",
-   "valor": 4,
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 187 dias",
+   "explicacao": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
+   "serie": "convolacao_falencia_agregado",
+   "valor": 187,
    "limiar": 100,
-   "fonte": "múltiplas",
-   "disparos_anteriores": 12,
+   "fonte": "CNJ/DataJud",
+   "disparos_anteriores": 6,
+   "recorrente": true
+  },
+  {
+   "id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 187 dias",
+   "explicacao": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
+   "serie": "extincao_rj_agregado",
+   "valor": 187,
+   "limiar": 100,
+   "fonte": "CNJ/DataJud",
+   "disparos_anteriores": 6,
    "recorrente": true
   }
  ],
  "historico": [
+  {
+   "run_at": "2026-11-04T18:31:22+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-11-04T18:31:22+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-11-04T18:31:22+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 187 dias",
+   "valor": 187.0
+  },
+  {
+   "run_at": "2026-11-04T18:31:22+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 187 dias",
+   "valor": 187.0
+  },
+  {
+   "run_at": "2026-11-03T18:44:30+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-11-03T18:44:30+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-11-03T18:44:30+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 186 dias",
+   "valor": 186.0
+  },
+  {
+   "run_at": "2026-11-03T18:44:30+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 186 dias",
+   "valor": 186.0
+  },
+  {
+   "run_at": "2026-11-02T20:47:24+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-11-02T20:47:24+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-11-02T20:47:24+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 185 dias",
+   "valor": 185.0
+  },
+  {
+   "run_at": "2026-11-02T20:47:24+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 185 dias",
+   "valor": 185.0
+  },
+  {
+   "run_at": "2026-11-01T17:08:34+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-11-01T17:08:34+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-11-01T17:08:34+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 184 dias",
+   "valor": 184.0
+  },
+  {
+   "run_at": "2026-11-01T17:08:34+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 184 dias",
+   "valor": 184.0
+  },
+  {
+   "run_at": "2026-10-31T16:28:32+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-10-31T16:28:32+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-10-31T16:28:32+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 183 dias",
+   "valor": 183.0
+  },
+  {
+   "run_at": "2026-10-31T16:28:32+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 183 dias",
+   "valor": 183.0
+  },
+  {
+   "run_at": "2026-10-30T17:16:17+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-10-30T17:16:17+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-10-30T17:16:17+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 182 dias",
+   "valor": 182.0
+  },
+  {
+   "run_at": "2026-10-30T17:16:17+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 182 dias",
+   "valor": 182.0
+  },
+  {
+   "run_at": "2026-10-29T18:02:13+00:00",
+   "alert_id": "inad_pf_level",
+   "nivel": "relevante",
+   "titulo": "Inadimplência PF acima de 6%",
+   "valor": 6.03
+  },
+  {
+   "run_at": "2026-10-29T18:02:13+00:00",
+   "alert_id": "inad_total_mom",
+   "nivel": "atencao",
+   "titulo": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses",
+   "valor": 0.39
+  },
+  {
+   "run_at": "2026-10-29T18:02:13+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.99
+  },
+  {
+   "run_at": "2026-10-29T18:02:13+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 181 dias",
+   "valor": 181.0
+  },
+  {
+   "run_at": "2026-10-29T18:02:13+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 181 dias",
+   "valor": 181.0
+  },
+  {
+   "run_at": "2026-10-28T17:26:05+00:00",
+   "alert_id": "inad_pf_level",
+   "nivel": "relevante",
+   "titulo": "Inadimplência PF acima de 6%",
+   "valor": 6.03
+  },
+  {
+   "run_at": "2026-10-28T17:26:05+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.72
+  },
+  {
+   "run_at": "2026-10-28T17:26:05+00:00",
+   "alert_id": "stale_data",
+   "nivel": "informativo",
+   "titulo": "4 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "valor": 4.0
+  },
   {
    "run_at": "2026-10-27T16:59:11+00:00",
    "alert_id": "inad_pf_level",
@@ -571,230 +807,6 @@
    "alert_id": "stale_data:endividamento",
    "nivel": "informativo",
    "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T19:40:14+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T19:40:14+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T19:40:14+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T15:10:39+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T15:10:39+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T15:10:39+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T15:09:47+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T15:09:47+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T15:09:47+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:36:57+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:36:57+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:36:57+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:35:31+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:35:31+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:35:31+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:32:06+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:32:06+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:32:06+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:27:26+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:27:26+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:27:26+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:02:09+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:02:09+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:02:09+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:00:43+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:00:43+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:00:43+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T13:57:05+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T13:57:05+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T13:57:05+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T13:41:28+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T13:41:28+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
    "valor": 118.0
   }
  ],

@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:18+00:00",
+  "atualizado_em": "2026-11-04T18:31:29+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 24.235.459"
  },
@@ -2065,8 +2065,8 @@
     "carteira_brl": 1952716.27,
     "atraso15_pct": 9.77,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 78.6,
-    "n_universo": 881,
+    "percentil_no_produto": 78.7,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
