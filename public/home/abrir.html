@@ -31,7 +31,7 @@
     var caminho = (cofre + "/" + arquivo).split("/").map(encodeURIComponent).join("/");
     var destino = celular
       ? "shareddocuments:///private/var/mobile/Library/Mobile%20Documents/iCloud~md~obsidian/Documents/" + caminho
-      : "acervo://abrir?f=" + encodeURIComponent(arquivo);
+      : "http://127.0.0.1:47613/abrir?f=" + encodeURIComponent(arquivo);
     document.getElementById("aviso").textContent = "Abrindo o arquivo.";
     document.getElementById("nome").textContent = arquivo.split("/").pop();
     var botao = document.getElementById("abrir");
