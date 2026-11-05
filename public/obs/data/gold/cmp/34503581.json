@@ -1,7 +1,7 @@
 {
  "cod": "34503581",
  "nome": "COOPERATIVA DE CRÉDITO DE CAPITAL E EMPRÉSTIMO DOS FUNCIONÁRIOS DA SAÚDE DO SETOR PRIVADO DE MANAUS LTDA - COOPCRESP MANAUS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -252,5 +252,5 @@
    "202106": 32.34443833174077
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

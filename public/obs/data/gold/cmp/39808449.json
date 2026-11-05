@@ -1,7 +1,7 @@
 {
  "cod": "39808449",
  "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS MÉDICOS E DEMAIS PROFISSIONAIS DA SAÚDE E LIVRE ADMISSÃO DO ESTADO DO ESPÍRITO SANTO LTDA. UNICRED DO ESPÍRITO SANTO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -210,5 +210,5 @@
    "201912": 45.55035299385807
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

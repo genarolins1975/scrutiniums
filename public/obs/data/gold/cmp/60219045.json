@@ -1,7 +1,7 @@
 {
  "cod": "60219045",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA GERDAU S.A. - UNIDADE PINDAMONHANGABA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -210,5 +210,5 @@
    "201912": 30.33691092413252
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

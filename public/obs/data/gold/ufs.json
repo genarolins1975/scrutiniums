@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-04T18:32:03+00:00",
+ "gerado_em": "2026-11-05T19:14:05+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-09",
@@ -174,11 +174,11 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 7924151539,
-    "q_pag": 32280315,
-    "t_pag": 245.48,
+    "v_pag": 7923156963,
+    "q_pag": 32270934,
+    "t_pag": 245.52,
     "q_hab": 36.5,
-    "v_hab": 8960,
+    "v_hab": 8959,
     "yoy_v": 37.2,
     "pf_share": 59.38
    },
@@ -188,9 +188,9 @@
     "alp": 13.91,
     "scr_imob_pf": 1644104046.0,
     "scr_inad_pct": 0.79,
-    "taxa_sfh": 13.63,
-    "ltv_sfh": 64.41,
-    "valor_compra": 350000.0,
+    "taxa_sfh": 13.79,
+    "ltv_sfh": 71.55,
+    "valor_compra": 304000.0,
     "renda_pc": 1068.16
    },
    "consignado": {
@@ -459,11 +459,11 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 25012566739,
-    "q_pag": 101931664,
-    "t_pag": 245.39,
+    "v_pag": 25009925499,
+    "q_pag": 101911949,
+    "t_pag": 245.41,
     "q_hab": 31.6,
-    "v_hab": 7766,
+    "v_hab": 7765,
     "yoy_v": 24.4,
     "pf_share": 59.3
    },
@@ -473,9 +473,9 @@
     "alp": 20.09,
     "scr_imob_pf": 12367460277.0,
     "scr_inad_pct": 1.81,
-    "taxa_sfh": 13.66,
-    "ltv_sfh": 63.09,
-    "valor_compra": 216590.0,
+    "taxa_sfh": 13.8,
+    "ltv_sfh": 69.12,
+    "valor_compra": 210000.0,
     "renda_pc": 1035.41
    },
    "consignado": {
@@ -744,9 +744,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 46229319990,
-    "q_pag": 183019711,
-    "t_pag": 252.59,
+    "v_pag": 46227223993,
+    "q_pag": 183002098,
+    "t_pag": 252.6,
     "q_hab": 42.3,
     "v_hab": 10697,
     "yoy_v": 40.9,
@@ -758,9 +758,9 @@
     "alp": 18.48,
     "scr_imob_pf": 11414950200.0,
     "scr_inad_pct": 2.1,
-    "taxa_sfh": 13.71,
-    "ltv_sfh": 68.93,
-    "valor_compra": 270245.0,
+    "taxa_sfh": 13.87,
+    "ltv_sfh": 69.09,
+    "valor_compra": 262000.0,
     "renda_pc": 979.46
    },
    "consignado": {
@@ -851,7 +851,7 @@
     "entes": 4,
     "valor_hab": 498.66,
     "credor_principal": "Banco do Brasil S/A",
-    "share_valor_pct": 2.99,
+    "share_valor_pct": 3.0,
     "dcl": 6055597872.55,
     "dcl_rcl_pct": 20.7,
     "dcl_hab": 1401.23,
@@ -1029,13 +1029,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 7285341043,
-    "q_pag": 37810998,
-    "t_pag": 192.68,
+    "v_pag": 7284425101,
+    "q_pag": 37810379,
+    "t_pag": 192.66,
     "q_hab": 46.9,
-    "v_hab": 9033,
+    "v_hab": 9032,
     "yoy_v": 30.1,
-    "pf_share": 63.75
+    "pf_share": 63.74
    },
    "moradia": {
     "dom_total": 200901,
@@ -1043,9 +1043,9 @@
     "alp": 15.19,
     "scr_imob_pf": 1382658900.0,
     "scr_inad_pct": 0.85,
-    "taxa_sfh": 13.64,
-    "ltv_sfh": 64.91,
-    "valor_compra": 430410.0,
+    "taxa_sfh": 13.78,
+    "ltv_sfh": 67.18,
+    "valor_compra": 364720.0,
     "renda_pc": 1142.29
    },
    "consignado": {
@@ -1314,9 +1314,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 120443826341,
-    "q_pag": 488226713,
-    "t_pag": 246.7,
+    "v_pag": 120436107126,
+    "q_pag": 488159204,
+    "t_pag": 246.71,
     "q_hab": 32.8,
     "v_hab": 8099,
     "yoy_v": 16.0,
@@ -1328,9 +1328,9 @@
     "alp": 15.87,
     "scr_imob_pf": 46419910660.0,
     "scr_inad_pct": 2.31,
-    "taxa_sfh": 13.69,
-    "ltv_sfh": 67.29,
-    "valor_compra": 240750.0,
+    "taxa_sfh": 13.8,
+    "ltv_sfh": 66.89,
+    "valor_compra": 235780.0,
     "renda_pc": 1079.58
    },
    "consignado": {
@@ -1599,13 +1599,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 81401828279,
-    "q_pag": 313688152,
+    "v_pag": 81399371197,
+    "q_pag": 313677600,
     "t_pag": 259.5,
     "q_hab": 33.8,
     "v_hab": 8782,
     "yoy_v": 24.4,
-    "pf_share": 52.29
+    "pf_share": 52.28
    },
    "moradia": {
     "dom_total": 3020256,
@@ -1613,9 +1613,9 @@
     "alp": 21.93,
     "scr_imob_pf": 35226317557.0,
     "scr_inad_pct": 1.68,
-    "taxa_sfh": 13.67,
-    "ltv_sfh": 68.61,
-    "valor_compra": 215000.0,
+    "taxa_sfh": 13.87,
+    "ltv_sfh": 69.33,
+    "valor_compra": 220000.0,
     "renda_pc": 1056.24
    },
    "consignado": {
@@ -1884,9 +1884,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 60462216553,
-    "q_pag": 122576007,
-    "t_pag": 493.26,
+    "v_pag": 60461665053,
+    "q_pag": 122578709,
+    "t_pag": 493.25,
     "q_hab": 40.9,
     "v_hab": 20175,
     "yoy_v": 32.2,
@@ -1898,9 +1898,9 @@
     "alp": 33.25,
     "scr_imob_pf": 37316435139.0,
     "scr_inad_pct": 1.41,
-    "taxa_sfh": 13.65,
-    "ltv_sfh": 63.97,
-    "valor_compra": 395000.0,
+    "taxa_sfh": 13.69,
+    "ltv_sfh": 63.44,
+    "valor_compra": 373255.0,
     "renda_pc": 2999.18
    },
    "consignado": {
@@ -2169,9 +2169,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 58488431237,
-    "q_pag": 129673963,
-    "t_pag": 451.04,
+    "v_pag": 58489882221,
+    "q_pag": 129693380,
+    "t_pag": 450.99,
     "q_hab": 31.4,
     "v_hab": 14173,
     "yoy_v": 19.4,
@@ -2183,9 +2183,9 @@
     "alp": 23.5,
     "scr_imob_pf": 17778936583.0,
     "scr_inad_pct": 0.97,
-    "taxa_sfh": 13.59,
-    "ltv_sfh": 63.87,
-    "valor_compra": 365000.0,
+    "taxa_sfh": 13.76,
+    "ltv_sfh": 64.6,
+    "valor_compra": 377310.0,
     "renda_pc": 1651.38
    },
    "consignado": {
@@ -2454,13 +2454,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 102706564078,
-    "q_pag": 254133976,
-    "t_pag": 404.14,
+    "v_pag": 102714453242,
+    "q_pag": 254198113,
+    "t_pag": 404.07,
     "q_hab": 34.2,
-    "v_hab": 13835,
+    "v_hab": 13836,
     "yoy_v": 15.3,
-    "pf_share": 49.48
+    "pf_share": 49.49
    },
    "moradia": {
     "dom_total": 2573364,
@@ -2468,8 +2468,8 @@
     "alp": 27.67,
     "scr_imob_pf": 77915511975.0,
     "scr_inad_pct": 2.13,
-    "taxa_sfh": 13.54,
-    "ltv_sfh": 68.21,
+    "taxa_sfh": 13.72,
+    "ltv_sfh": 68.16,
     "valor_compra": 240000.0,
     "renda_pc": 1696.52
    },
@@ -2739,11 +2739,11 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 52732636570,
-    "q_pag": 249438330,
-    "t_pag": 211.41,
+    "v_pag": 52726869128,
+    "q_pag": 249370113,
+    "t_pag": 211.44,
     "q_hab": 35.5,
-    "v_hab": 7514,
+    "v_hab": 7513,
     "yoy_v": 13.0,
     "pf_share": 60.38
    },
@@ -2753,9 +2753,9 @@
     "alp": 11.96,
     "scr_imob_pf": 16848221928.0,
     "scr_inad_pct": 2.59,
-    "taxa_sfh": 13.73,
-    "ltv_sfh": 69.2,
-    "valor_compra": 220000.0,
+    "taxa_sfh": 13.76,
+    "ltv_sfh": 70.31,
+    "valor_compra": 223700.0,
     "renda_pc": 900.46
    },
    "consignado": {
@@ -3024,13 +3024,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 261347466682,
-    "q_pag": 607910860,
-    "t_pag": 429.91,
+    "v_pag": 261227832932,
+    "q_pag": 607939269,
+    "t_pag": 429.69,
     "q_hab": 28.4,
-    "v_hab": 12216,
-    "yoy_v": 19.6,
-    "pf_share": 43.47
+    "v_hab": 12211,
+    "yoy_v": 19.5,
+    "pf_share": 43.5
    },
    "moradia": {
     "dom_total": 7534791,
@@ -3038,9 +3038,9 @@
     "alp": 22.47,
     "scr_imob_pf": 132009169974.0,
     "scr_inad_pct": 1.23,
-    "taxa_sfh": 13.7,
-    "ltv_sfh": 66.67,
-    "valor_compra": 280000.0,
+    "taxa_sfh": 13.86,
+    "ltv_sfh": 66.06,
+    "valor_compra": 300000.0,
     "renda_pc": 1611.77
    },
    "consignado": {
@@ -3309,11 +3309,11 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 37846191396,
-    "q_pag": 97822913,
-    "t_pag": 386.88,
-    "q_hab": 33.4,
-    "v_hab": 12941,
+    "v_pag": 37845174831,
+    "q_pag": 97831111,
+    "t_pag": 386.84,
+    "q_hab": 33.5,
+    "v_hab": 12940,
     "yoy_v": 6.8,
     "pf_share": 48.94
    },
@@ -3323,9 +3323,9 @@
     "alp": 24.52,
     "scr_imob_pf": 22310999596.0,
     "scr_inad_pct": 2.24,
-    "taxa_sfh": 13.64,
-    "ltv_sfh": 66.6,
-    "valor_compra": 224500.0,
+    "taxa_sfh": 13.81,
+    "ltv_sfh": 66.43,
+    "valor_compra": 225000.0,
     "renda_pc": 1710.48
    },
    "consignado": {
@@ -3594,9 +3594,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 76036469961,
-    "q_pag": 132788346,
-    "t_pag": 572.61,
+    "v_pag": 76035021210,
+    "q_pag": 132783524,
+    "t_pag": 572.62,
     "q_hab": 34.1,
     "v_hab": 19528,
     "yoy_v": 23.2,
@@ -3608,9 +3608,9 @@
     "alp": 27.78,
     "scr_imob_pf": 30302780803.0,
     "scr_inad_pct": 2.01,
-    "taxa_sfh": 13.7,
-    "ltv_sfh": 67.01,
-    "valor_compra": 245000.0,
+    "taxa_sfh": 13.87,
+    "ltv_sfh": 67.22,
+    "valor_compra": 251000.0,
     "renda_pc": 1825.48
    },
    "consignado": {
@@ -3879,13 +3879,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 68730260494,
-    "q_pag": 326314020,
+    "v_pag": 68718083572,
+    "q_pag": 326244505,
     "t_pag": 210.63,
     "q_hab": 37.5,
-    "v_hab": 7890,
+    "v_hab": 7888,
     "yoy_v": 18.8,
-    "pf_share": 62.75
+    "pf_share": 62.74
    },
    "moradia": {
     "dom_total": 2444126,
@@ -3893,9 +3893,9 @@
     "alp": 15.36,
     "scr_imob_pf": 15968280061.0,
     "scr_inad_pct": 1.4,
-    "taxa_sfh": 13.28,
-    "ltv_sfh": 68.88,
-    "valor_compra": 210000.0,
+    "taxa_sfh": 13.56,
+    "ltv_sfh": 68.93,
+    "valor_compra": 200000.0,
     "renda_pc": 993.75
    },
    "consignado": {
@@ -4164,13 +4164,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 28941924234,
-    "q_pag": 128958394,
+    "v_pag": 28943288907,
+    "q_pag": 128960698,
     "t_pag": 224.43,
     "q_hab": 31.0,
     "v_hab": 6950,
-    "yoy_v": 1.9,
-    "pf_share": 66.02
+    "yoy_v": 2.0,
+    "pf_share": 66.03
    },
    "moradia": {
     "dom_total": 1372095,
@@ -4178,9 +4178,9 @@
     "alp": 20.25,
     "scr_imob_pf": 24738603071.0,
     "scr_inad_pct": 1.16,
-    "taxa_sfh": 13.56,
-    "ltv_sfh": 67.73,
-    "valor_compra": 197000.0,
+    "taxa_sfh": 13.79,
+    "ltv_sfh": 67.54,
+    "valor_compra": 190000.0,
     "renda_pc": 1098.88
    },
    "consignado": {
@@ -4449,13 +4449,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 78854162046,
-    "q_pag": 327761955,
-    "t_pag": 240.58,
+    "v_pag": 78850889065,
+    "q_pag": 327737421,
+    "t_pag": 240.59,
     "q_hab": 34.3,
-    "v_hab": 8247,
+    "v_hab": 8246,
     "yoy_v": 22.0,
-    "pf_share": 56.55
+    "pf_share": 56.54
    },
    "moradia": {
     "dom_total": 3184558,
@@ -4463,8 +4463,8 @@
     "alp": 21.32,
     "scr_imob_pf": 36395694119.0,
     "scr_inad_pct": 0.95,
-    "taxa_sfh": 13.64,
-    "ltv_sfh": 69.09,
+    "taxa_sfh": 13.84,
+    "ltv_sfh": 66.12,
     "valor_compra": 220000.0,
     "renda_pc": 1141.74
    },
@@ -4556,7 +4556,7 @@
     "entes": 17,
     "valor_hab": 427.07,
     "credor_principal": "Banco do Brasil S/A",
-    "share_valor_pct": 5.67,
+    "share_valor_pct": 5.68,
     "dcl": 12888474855.21,
     "dcl_rcl_pct": 25.4,
     "dcl_hab": 1347.88,
@@ -4734,13 +4734,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 22514261276,
-    "q_pag": 112880097,
-    "t_pag": 199.45,
+    "v_pag": 22512368874,
+    "q_pag": 112875219,
+    "t_pag": 199.44,
     "q_hab": 33.4,
     "v_hab": 6652,
     "yoy_v": 0.7,
-    "pf_share": 62.01
+    "pf_share": 62.0
    },
    "moradia": {
     "dom_total": 1071335,
@@ -4748,9 +4748,9 @@
     "alp": 10.97,
     "scr_imob_pf": 10264909893.0,
     "scr_inad_pct": 2.38,
-    "taxa_sfh": 13.66,
-    "ltv_sfh": 67.91,
-    "valor_compra": 160000.0,
+    "taxa_sfh": 13.74,
+    "ltv_sfh": 67.69,
+    "valor_compra": 170000.0,
     "renda_pc": 1009.94
    },
    "consignado": {
@@ -5019,9 +5019,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 207138899348,
-    "q_pag": 418735292,
-    "t_pag": 494.68,
+    "v_pag": 207144030077,
+    "q_pag": 418776875,
+    "t_pag": 494.64,
     "q_hab": 35.2,
     "v_hab": 17421,
     "yoy_v": 13.0,
@@ -5033,8 +5033,8 @@
     "alp": 22.69,
     "scr_imob_pf": 111611741848.0,
     "scr_inad_pct": 0.66,
-    "taxa_sfh": 13.66,
-    "ltv_sfh": 65.14,
+    "taxa_sfh": 13.84,
+    "ltv_sfh": 65.81,
     "valor_compra": 280000.0,
     "renda_pc": 1965.31
    },
@@ -5304,8 +5304,8 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 285732156236,
-    "q_pag": 638944190,
+    "v_pag": 285730061659,
+    "q_pag": 638950707,
     "t_pag": 447.19,
     "q_hab": 37.1,
     "v_hab": 16590,
@@ -5318,9 +5318,9 @@
     "alp": 23.55,
     "scr_imob_pf": 89350803109.0,
     "scr_inad_pct": 2.13,
-    "taxa_sfh": 13.75,
-    "ltv_sfh": 64.49,
-    "valor_compra": 300000.0,
+    "taxa_sfh": 13.9,
+    "ltv_sfh": 65.01,
+    "valor_compra": 320000.0,
     "renda_pc": 1847.44
    },
    "consignado": {
@@ -5589,9 +5589,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 26218227618,
-    "q_pag": 116058979,
-    "t_pag": 225.9,
+    "v_pag": 26217963397,
+    "q_pag": 116054564,
+    "t_pag": 225.91,
     "q_hab": 33.6,
     "v_hab": 7588,
     "yoy_v": 7.9,
@@ -5603,8 +5603,8 @@
     "alp": 21.7,
     "scr_imob_pf": 18019591135.0,
     "scr_inad_pct": 1.39,
-    "taxa_sfh": 13.65,
-    "ltv_sfh": 66.93,
+    "taxa_sfh": 13.86,
+    "ltv_sfh": 66.81,
     "valor_compra": 175000.0,
     "renda_pc": 1247.15
    },
@@ -5874,13 +5874,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 18684991226,
-    "q_pag": 56841941,
-    "t_pag": 328.72,
+    "v_pag": 18682166617,
+    "q_pag": 56837463,
+    "t_pag": 328.69,
     "q_hab": 32.4,
-    "v_hab": 10665,
+    "v_hab": 10664,
     "yoy_v": 15.2,
-    "pf_share": 60.58
+    "pf_share": 60.57
    },
    "moradia": {
     "dom_total": 555565,
@@ -5888,9 +5888,9 @@
     "alp": 20.09,
     "scr_imob_pf": 7367304643.0,
     "scr_inad_pct": 0.74,
-    "taxa_sfh": 13.61,
-    "ltv_sfh": 69.51,
-    "valor_compra": 225000.0,
+    "taxa_sfh": 13.69,
+    "ltv_sfh": 69.49,
+    "valor_compra": 235000.0,
     "renda_pc": 1374.26
    },
    "consignado": {
@@ -6159,11 +6159,11 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 7551908186,
-    "q_pag": 38071390,
-    "t_pag": 198.36,
+    "v_pag": 7551230996,
+    "q_pag": 38066330,
+    "t_pag": 198.37,
     "q_hab": 51.5,
-    "v_hab": 10222,
+    "v_hab": 10221,
     "yoy_v": 29.0,
     "pf_share": 69.26
    },
@@ -6173,9 +6173,9 @@
     "alp": 24.92,
     "scr_imob_pf": 2035971628.0,
     "scr_inad_pct": 1.19,
-    "taxa_sfh": 13.58,
-    "ltv_sfh": 70.64,
-    "valor_compra": 230000.0,
+    "taxa_sfh": 13.76,
+    "ltv_sfh": 70.34,
+    "valor_compra": 224531.0,
     "renda_pc": 1143.94
    },
    "consignado": {
@@ -6326,7 +6326,7 @@
     "saldo_medio_op": 9005,
     "prod_dominante": "Rural",
     "renda_dominante": "Acima de 20 salários mínimos",
-    "z_inad": 1.74
+    "z_inad": 1.73
    },
    "produtos": [
     {
@@ -6444,13 +6444,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 149302525333,
-    "q_pag": 314701758,
-    "t_pag": 474.43,
+    "v_pag": 149423739746,
+    "q_pag": 314681789,
+    "t_pag": 474.84,
     "q_hab": 28.0,
-    "v_hab": 13291,
-    "yoy_v": 26.5,
-    "pf_share": 36.3
+    "v_hab": 13302,
+    "yoy_v": 26.6,
+    "pf_share": 36.27
    },
    "moradia": {
     "dom_total": 4257006,
@@ -6458,9 +6458,9 @@
     "alp": 17.93,
     "scr_imob_pf": 92996685059.0,
     "scr_inad_pct": 1.9,
-    "taxa_sfh": 13.65,
-    "ltv_sfh": 64.3,
-    "valor_compra": 267645.0,
+    "taxa_sfh": 13.77,
+    "ltv_sfh": 64.83,
+    "valor_compra": 268000.0,
     "renda_pc": 2042.57
    },
    "consignado": {
@@ -6546,12 +6546,12 @@
    },
    "subnacional": {
     "mes": "2026-10",
-    "liberado_12m_valor": 2732853228.13,
-    "liberado_12m_n": 189,
-    "entes": 151,
-    "valor_hab": 243.28,
+    "liberado_12m_valor": 2719853228.13,
+    "liberado_12m_n": 187,
+    "entes": 150,
+    "valor_hab": 242.12,
     "credor_principal": "Caixa Econômica Federal",
-    "share_valor_pct": 3.8,
+    "share_valor_pct": 3.78,
     "dcl": 115015930564.27,
     "dcl_rcl_pct": 168.4,
     "dcl_hab": 10238.87,
@@ -6729,13 +6729,13 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 161062337629,
-    "q_pag": 231580307,
-    "t_pag": 695.49,
+    "v_pag": 161079643239,
+    "q_pag": 231683327,
+    "t_pag": 695.26,
     "q_hab": 28.3,
-    "v_hab": 19673,
+    "v_hab": 19675,
     "yoy_v": 41.2,
-    "pf_share": 26.3
+    "pf_share": 26.31
    },
    "moradia": {
     "dom_total": 2808490,
@@ -6743,9 +6743,9 @@
     "alp": 26.32,
     "scr_imob_pf": 70523954820.0,
     "scr_inad_pct": 0.72,
-    "taxa_sfh": 13.69,
-    "ltv_sfh": 65.02,
-    "valor_compra": 370000.0,
+    "taxa_sfh": 13.83,
+    "ltv_sfh": 65.56,
+    "valor_compra": 365000.0,
     "renda_pc": 2221.02
    },
    "consignado": {
@@ -7014,9 +7014,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 18492793538,
-    "q_pag": 75708066,
-    "t_pag": 244.26,
+    "v_pag": 18491478658,
+    "q_pag": 75701365,
+    "t_pag": 244.27,
     "q_hab": 32.9,
     "v_hab": 8042,
     "yoy_v": 20.0,
@@ -7028,8 +7028,8 @@
     "alp": 20.95,
     "scr_imob_pf": 12604624483.0,
     "scr_inad_pct": 1.83,
-    "taxa_sfh": 13.69,
-    "ltv_sfh": 66.08,
+    "taxa_sfh": 13.43,
+    "ltv_sfh": 65.28,
     "valor_compra": 210000.0,
     "renda_pc": 1181.91
    },
@@ -7299,9 +7299,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 1239908875855,
-    "q_pag": 1768786898,
-    "t_pag": 700.99,
+    "v_pag": 1239928534508,
+    "q_pag": 1768874708,
+    "t_pag": 700.97,
     "q_hab": 38.4,
     "v_hab": 26907,
     "yoy_v": 28.1,
@@ -7313,9 +7313,9 @@
     "alp": 26.0,
     "scr_imob_pf": 509294428867.0,
     "scr_inad_pct": 1.34,
-    "taxa_sfh": 13.75,
-    "ltv_sfh": 64.77,
-    "valor_compra": 320000.0,
+    "taxa_sfh": 13.92,
+    "ltv_sfh": 65.01,
+    "valor_compra": 316000.0,
     "renda_pc": 2092.42
    },
    "consignado": {
@@ -7406,7 +7406,7 @@
     "entes": 121,
     "valor_hab": 451.19,
     "credor_principal": "Banco do Brasil S/A",
-    "share_valor_pct": 28.89,
+    "share_valor_pct": 28.9,
     "dcl": 315908470847.25,
     "dcl_rcl_pct": 113.0,
     "dcl_hab": 6855.38,
@@ -7584,9 +7584,9 @@
    "presenca": null,
    "pix": {
     "mes": "2026-09",
-    "v_pag": 18924813821,
-    "q_pag": 55171281,
-    "t_pag": 343.02,
+    "v_pag": 18925358415,
+    "q_pag": 55171483,
+    "t_pag": 343.03,
     "q_hab": 34.8,
     "v_hab": 11926,
     "yoy_v": 16.4,
@@ -7598,8 +7598,8 @@
     "alp": 21.03,
     "scr_imob_pf": 6582200395.0,
     "scr_inad_pct": 1.49,
-    "taxa_sfh": 13.7,
-    "ltv_sfh": 68.24,
+    "taxa_sfh": 13.78,
+    "ltv_sfh": 67.37,
     "valor_compra": 250000.0,
     "renda_pc": 1392.66
    },

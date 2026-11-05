@@ -1,7 +1,7 @@
 {
  "cod": "C0082011",
  "nome": "ONNIX CC LTDA. - PRUDENCIAL",
- "sr": null,
+ "sr": "S4",
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -71,5 +71,5 @@
    "202606": 403817.16
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

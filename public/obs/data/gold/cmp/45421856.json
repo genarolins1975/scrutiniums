@@ -1,7 +1,7 @@
 {
  "cod": "45421856",
  "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA FÁBRICA DE CIMENTO VOTORAN",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -294,5 +294,5 @@
    "202212": 92.14237265463564
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

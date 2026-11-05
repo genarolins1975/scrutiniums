@@ -1,7 +1,7 @@
 {
  "cod": "54603022",
  "nome": "COOPERATIVA DE CREDITO CECRES - SICOOB CECRES",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -329,5 +329,5 @@
    "202403": 49.50935302720152
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

@@ -1,7 +1,7 @@
 {
  "cod": "05442759",
  "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDARIA DE PORTO XAVIER - CRESOL PORTO XAVIER",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -280,5 +280,5 @@
    "202206": 81.73123905120539
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

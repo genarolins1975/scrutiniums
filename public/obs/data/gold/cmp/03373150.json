@@ -1,7 +1,7 @@
 {
  "cod": "03373150",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPRESÁRIOS DA REGIÃO METROPOLITANA DE JOÃO PESSOA, LITORAL  PARAIBANO E  DOS SERVIDORES PÚBLICOS ESTADUAIS DA PARAÍBA - SICOOB UNIÃO PARAIBANA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201906": 77.46016938304156
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

@@ -9,7 +9,7 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S2",
   "grupo_pares": "S2 — porte entre 1% e 10% do PIB",
-  "n_pares": 7,
+  "n_pares": 14,
   "conglomerado_prudencial": "C0080745",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-04T18:31:24+00:00",
+  "atualizado_em": "2026-11-05T19:13:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.181.521"
  },
@@ -66,8 +66,20 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 7,
+  "quantidade": 14,
   "maiores_membros": [
+   {
+    "cod": "33657248",
+    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOM"
+   },
+   {
+    "cod": "C0052120",
+    "nome": "XP"
+   },
+   {
+    "cod": "C0010083",
+    "nome": "SAFRA"
+   },
    {
     "cod": "C0052058",
     "nome": "NUBANK"
@@ -77,12 +89,28 @@
     "nome": "BANCO COOPERATIVO SICREDI S.A."
    },
    {
+    "cod": "C0051750",
+    "nome": "BANCO SICOOB"
+   },
+   {
+    "cod": "C0030403",
+    "nome": "CITIBANK"
+   },
+   {
+    "cod": "C0030173",
+    "nome": "BANRISUL"
+   },
+   {
     "cod": "C0051011",
     "nome": "VOTORANTIM"
    },
    {
     "cod": "18236120",
     "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
+   },
+   {
+    "cod": "07237373",
+    "nome": "BANCO DO NORDESTE DO BRASIL S.A."
    },
    {
     "cod": "92934215",
@@ -97,7 +125,11 @@
     "nome": "NUPAY FOR BUSINESS INSTITUICAO DE PAGAME"
    }
   ],
-  "quartis_basileia": null,
+  "quartis_basileia": {
+   "q1": 15.4,
+   "mediana": 15.9,
+   "q3": 20.2
+  },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "kpis": [
@@ -215,8 +247,8 @@
    "unit": "%",
    "d_tri": 0.77,
    "vs_pares": "acima",
-   "mediana_grupo": 15.88,
-   "percentil": 100.0
+   "mediana_grupo": 15.91,
+   "percentil": 77.8
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -224,8 +256,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 11.85,
-   "percentil": 83.3
+   "mediana_grupo": 14.95,
+   "percentil": 92.3
   },
   {
    "indicador": "ROE do período",
@@ -233,8 +265,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 7.41,
-   "percentil": 16.7
+   "mediana_grupo": 6.57,
+   "percentil": 15.4
   }
  ],
  "carteira": {
@@ -855,82 +887,103 @@
   "roe": {
    "valores": [
     2.97,
+    6.29,
+    6.17,
+    10.24,
+    4.73,
+    11.39,
     7.41,
+    6.57,
     17.61,
     -150.52,
+    2.95,
     27.93,
     5.22,
     7.84
    ],
    "meu": 2.97,
-   "mediana": 7.41
+   "mediana": 6.57
   },
   "basileia": {
    "valores": [
     20.16,
+    15.14,
+    25.43,
+    18.14,
+    15.91,
+    15.37,
     15.88,
+    20.29,
+    13.28,
     15.51
    ],
    "meu": 20.16,
-   "mediana": 15.88
+   "mediana": 15.91
   },
   "alav": {
    "valores": [
     42.77,
+    4.82,
+    5.94,
+    14.8,
+    14.95,
+    15.5,
     11.85,
+    31.95,
     5.26,
     58.06,
+    27.91,
     17.84,
     1.03,
     1.95
    ],
    "meu": 42.77,
-   "mediana": 11.85
+   "mediana": 14.95
   }
  },
  "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 20.16,
-    "percentil_pares": 69.2,
-    "mediana_pares": 16.14,
-    "q1_pares": 14.66,
-    "q3_pares": 21.62
+    "percentil_pares": 77.8,
+    "mediana_pares": 15.89,
+    "q1_pares": 15.4,
+    "q3_pares": 19.66
    },
    "rentabilidade": {
     "valor": 2.97,
-    "percentil_pares": 22.2,
-    "mediana_pares": 6.2,
-    "q1_pares": 3.28,
-    "q3_pares": 9.14
+    "percentil_pares": 10.0,
+    "mediana_pares": 6.57,
+    "q1_pares": 5.45,
+    "q3_pares": 10.81
    },
    "alavancagem": {
     "valor": 42.77,
     "percentil_pares": 100.0,
-    "mediana_pares": 10.92,
-    "q1_pares": 6.89,
-    "q3_pares": 15.73
+    "mediana_pares": 14.95,
+    "q1_pares": 8.9,
+    "q3_pares": 22.88
    },
    "concentracao_credito": {
     "valor": 21.44,
-    "percentil_pares": 31.3,
-    "mediana_pares": 45.43,
-    "q1_pares": 14.94,
-    "q3_pares": 58.82
+    "percentil_pares": 30.0,
+    "mediana_pares": 28.39,
+    "q1_pares": 20.78,
+    "q3_pares": 42.69
    },
    "dependencia_captacoes": {
     "valor": 86.21,
-    "percentil_pares": 85.9,
-    "mediana_pares": 73.68,
-    "q1_pares": 51.47,
-    "q3_pares": 82.12
+    "percentil_pares": 90.0,
+    "mediana_pares": 78.85,
+    "q1_pares": 67.69,
+    "q3_pares": 84.31
    },
    "concentracao_setorial": {
     "valor": 2154,
-    "percentil_pares": 42.6,
-    "mediana_pares": 2283.0,
-    "q1_pares": 1790.5,
-    "q3_pares": 3180.0
+    "percentil_pares": 33.3,
+    "mediana_pares": 2289.0,
+    "q1_pares": 1978.0,
+    "q3_pares": 2558.5
    }
   },
   "dimensoes_disponiveis": "6/6",

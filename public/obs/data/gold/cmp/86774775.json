@@ -1,7 +1,7 @@
 {
  "cod": "86774775",
  "nome": "COOPERATIVA CENTRAL DE CRÉDITO UNICRED CENTRAL COALIZÃO LTDA - UNICRED CENTRAL COALIZÃO",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3C",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -336,5 +336,5 @@
    "202406": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

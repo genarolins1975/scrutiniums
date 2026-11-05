@@ -14,38 +14,38 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-11-04T18:32:02+00:00",
+ "gerado_em": "2026-11-05T19:14:04+00:00",
  "coleta": {
-  "linhas": 26727,
+  "linhas": 26731,
   "paginas": 6,
   "mb": 13.8,
-  "data_status_max": "2026-11-03",
-  "coletado_em": "2026-11-04T17:06:47+00:00"
+  "data_status_max": "2026-11-04",
+  "coletado_em": "2026-11-05T17:35:47+00:00"
  },
  "kpis": {
   "mes": "2026-10",
-  "deferidos_12m_n": 1226,
-  "deferidos_12m_valor": 71964416050.63,
+  "deferidos_12m_n": 1224,
+  "deferidos_12m_valor": 71951416050.63,
   "pgfn_12m_n": 249,
   "pgfn_12m_valor": 57798715393.51,
-  "var_12m_valor_pct": 48.9,
-  "var_12m_n_pct": 61.32,
-  "municipios_12m_valor": 31081771696.24,
+  "var_12m_valor_pct": 48.87,
+  "var_12m_n_pct": 61.05,
+  "municipios_12m_valor": 31068771696.24,
   "estados_12m_valor": 40882644354.39,
-  "municipios_12m_n": 1166,
+  "municipios_12m_n": 1164,
   "estados_12m_n": 60,
   "garantia_uniao_12m_n": 249,
   "garantia_uniao_12m_valor": 57798715393.51,
   "externas_12m_n": 44,
   "moeda_estrangeira_12m_n": 43,
-  "taxa_deferimento_12m_pct": 94.31,
-  "concluidos_12m_n": 1300,
+  "taxa_deferimento_12m_pct": 94.3,
+  "concluidos_12m_n": 1298,
   "em_tramitacao_n": 268,
-  "em_tramitacao_valor": 23048205969.37,
+  "em_tramitacao_valor": 23102915604.03,
   "em_tramitacao_desde": "2023-11",
   "renegociacao_uniao_12m_n": 0,
   "renegociacao_uniao_12m_valor": 0,
-  "entes_12m": 874
+  "entes_12m": 873
  },
  "serie_anual": [
   {
@@ -284,9 +284,9 @@
   },
   {
    "ano": "2026",
-   "deferidos_n": 1058,
-   "deferidos_valor": 61078305719.89,
-   "municipios_valor": 27888212644.920002,
+   "deferidos_n": 1062,
+   "deferidos_valor": 61120436921.27,
+   "municipios_valor": 27930343846.3,
    "estados_valor": 33190093074.97,
    "garantia_uniao_valor": 48106616462.11,
    "externas_n": 38,
@@ -509,9 +509,9 @@
   },
   {
    "mes": "2026-05",
-   "n": 181,
-   "valor": 11122538744.68,
-   "municipios_valor": 3904166999.94,
+   "n": 179,
+   "valor": 11109538744.68,
+   "municipios_valor": 3891166999.94,
    "parcial": false
   },
   {
@@ -551,9 +551,9 @@
   },
   {
    "mes": "2026-11",
-   "n": 0,
-   "valor": 0,
-   "municipios_valor": 0,
+   "n": 6,
+   "valor": 55131201.379999995,
+   "municipios_valor": 55131201.379999995,
    "parcial": true
   }
  ],
@@ -564,8 +564,8 @@
    "valor": 37749648070.8,
    "estados_n": 18,
    "municipios_n": 212,
-   "share_valor_pct": 52.46,
-   "share_n_pct": 18.76
+   "share_valor_pct": 52.47,
+   "share_n_pct": 18.79
   },
   {
    "nome": "Caixa Econômica Federal",
@@ -574,7 +574,7 @@
    "estados_n": 7,
    "municipios_n": 417,
    "share_valor_pct": 24.36,
-   "share_n_pct": 34.58
+   "share_n_pct": 34.64
   },
   {
    "nome": "Banco Nacional de Desenvolvimento Econômico e Social",
@@ -592,7 +592,7 @@
    "estados_n": 2,
    "municipios_n": 1,
    "share_valor_pct": 5.35,
-   "share_n_pct": 0.24
+   "share_n_pct": 0.25
   },
   {
    "nome": "Banco Bradesco S/A",
@@ -601,7 +601,7 @@
    "estados_n": 3,
    "municipios_n": 0,
    "share_valor_pct": 3.12,
-   "share_n_pct": 0.24
+   "share_n_pct": 0.25
   },
   {
    "nome": "Agência de Fomento do Estado de São Paulo",
@@ -610,7 +610,7 @@
    "estados_n": 0,
    "municipios_n": 122,
    "share_valor_pct": 2.54,
-   "share_n_pct": 9.95
+   "share_n_pct": 9.97
   },
   {
    "nome": "Banco Interamericano de Desenvolvimento",
@@ -619,7 +619,7 @@
    "estados_n": 9,
    "municipios_n": 6,
    "share_valor_pct": 1.04,
-   "share_n_pct": 1.22
+   "share_n_pct": 1.23
   },
   {
    "nome": "Banco de Desenvolvimento de Minas Gerais S/A",
@@ -628,7 +628,7 @@
    "estados_n": 0,
    "municipios_n": 78,
    "share_valor_pct": 0.91,
-   "share_n_pct": 6.36
+   "share_n_pct": 6.37
   },
   {
    "nome": "Banco Regional de Desenvolvimento do Extremo Sul",
@@ -637,7 +637,7 @@
    "estados_n": 0,
    "municipios_n": 109,
    "share_valor_pct": 0.86,
-   "share_n_pct": 8.89
+   "share_n_pct": 8.91
   },
   {
    "nome": "Bank of China (Brasil) Banco Múltiplo S/A",
@@ -664,7 +664,7 @@
    "estados_n": 0,
    "municipios_n": 91,
    "share_valor_pct": 0.4,
-   "share_n_pct": 7.42
+   "share_n_pct": 7.43
   }
  ],
  "credores_60m": [
@@ -675,7 +675,7 @@
    "estados_n": 55,
    "municipios_n": 1369,
    "share_valor_pct": 43.04,
-   "share_n_pct": 24.49
+   "share_n_pct": 24.5
   },
   {
    "nome": "Caixa Econômica Federal",
@@ -684,7 +684,7 @@
    "estados_n": 38,
    "municipios_n": 2026,
    "share_valor_pct": 27.48,
-   "share_n_pct": 35.5
+   "share_n_pct": 35.51
   },
   {
    "nome": "Banco Nacional de Desenvolvimento Econômico e Social",
@@ -711,7 +711,7 @@
    "estados_n": 0,
    "municipios_n": 434,
    "share_valor_pct": 2.1,
-   "share_n_pct": 7.46
+   "share_n_pct": 7.47
   },
   {
    "nome": "Banco Santander (Brasil) S.A.",
@@ -765,7 +765,7 @@
    "estados_n": 0,
    "municipios_n": 438,
    "share_valor_pct": 0.82,
-   "share_n_pct": 7.53
+   "share_n_pct": 7.54
   },
   {
    "nome": "Pessoa Jurídica",
@@ -780,12 +780,12 @@
  "finalidades_12m": [
   {
    "nome": "Infraestrutura",
-   "n": 897,
-   "valor": 58460120354.80001,
+   "n": 896,
+   "valor": 58455120354.80001,
    "estados_n": 37,
-   "municipios_n": 860,
-   "share_valor_pct": 81.23,
-   "share_n_pct": 73.16
+   "municipios_n": 859,
+   "share_valor_pct": 81.24,
+   "share_n_pct": 73.2
   },
   {
    "nome": "Novo PAC",
@@ -821,7 +821,7 @@
    "estados_n": 0,
    "municipios_n": 88,
    "share_valor_pct": 1.28,
-   "share_n_pct": 7.18
+   "share_n_pct": 7.19
   },
   {
    "nome": "Profisco",
@@ -834,12 +834,12 @@
   },
   {
    "nome": "Desenvolvimento sustentável",
-   "n": 20,
-   "valor": 617310846.54,
+   "n": 19,
+   "valor": 609310846.54,
    "estados_n": 2,
-   "municipios_n": 18,
-   "share_valor_pct": 0.86,
-   "share_n_pct": 1.63
+   "municipios_n": 17,
+   "share_valor_pct": 0.85,
+   "share_n_pct": 1.55
   },
   {
    "nome": "Reestruturação e recomposição do principal de dívidas",
@@ -890,12 +890,12 @@
  "tipos_credor_12m": [
   {
    "nome": "Instituição Financeira Nacional",
-   "n": 1180,
-   "valor": 71159416050.63005,
+   "n": 1178,
+   "valor": 71146416050.63005,
    "estados_n": 38,
-   "municipios_n": 1142,
+   "municipios_n": 1140,
    "share_valor_pct": 98.88,
-   "share_n_pct": 96.25
+   "share_n_pct": 96.24
   },
   {
    "nome": "Instituição Financeira Internacional",
@@ -920,37 +920,37 @@
   {
    "id": "deferido",
    "nome": "Deferido: limites verificados, operação liberada",
-   "n": 977,
-   "valor": 14165700657.12,
-   "share_n_pct": 66.19
+   "n": 975,
+   "valor": 14152700657.12,
+   "share_n_pct": 67.01
   },
   {
    "id": "pgfn",
    "nome": "Manifestação técnica favorável, encaminhado à PGFN (garantia da União)",
    "n": 249,
    "valor": 57798715393.51,
-   "share_n_pct": 16.87
+   "share_n_pct": 17.11
   },
   {
    "id": "arquivado",
    "nome": "Arquivado, indeferido ou cancelado",
    "n": 74,
    "valor": 4491114702.82,
-   "share_n_pct": 5.01
+   "share_n_pct": 5.09
   },
   {
    "id": "regularizado",
    "nome": "Regularizado (operação contratada sem PVL prévio, depois regularizada)",
    "n": 3,
    "valor": 1221673.64,
-   "share_n_pct": 0.2
+   "share_n_pct": 0.21
   },
   {
    "id": "tramitacao",
    "nome": "Em análise ou em retificação",
-   "n": 173,
-   "valor": 14124691967.289999,
-   "share_n_pct": 11.72
+   "n": 154,
+   "valor": 11067041462.1,
+   "share_n_pct": 10.58
   }
  ],
  "moedas_12m": [
@@ -1015,7 +1015,7 @@
    "regiao": "Norte",
    "n": 5,
    "valor": 2155000000.0,
-   "share_valor_pct": 2.99,
+   "share_valor_pct": 3.0,
    "municipios_n": 3,
    "estado_n": 2,
    "estado_valor": 1462000000.0,
@@ -1262,7 +1262,7 @@
    "regiao": "Nordeste",
    "n": 22,
    "valor": 4083631575.42,
-   "share_valor_pct": 5.67,
+   "share_valor_pct": 5.68,
    "municipios_n": 20,
    "estado_n": 2,
    "estado_valor": 3262532763.42,
@@ -1393,14 +1393,14 @@
    "uf": "RS",
    "nome": "Rio Grande do Sul",
    "regiao": "Sul",
-   "n": 189,
-   "valor": 2732853228.13,
-   "share_valor_pct": 3.8,
-   "municipios_n": 189,
+   "n": 187,
+   "valor": 2719853228.13,
+   "share_valor_pct": 3.78,
+   "municipios_n": 187,
    "estado_n": 0,
    "estado_valor": 0,
-   "valor_hab": 243.28,
-   "entes": 151,
+   "valor_hab": 242.12,
+   "entes": 150,
    "credor_principal": "Caixa Econômica Federal",
    "posicoes": {
     "valor": 8,
@@ -1452,7 +1452,7 @@
    "regiao": "Sudeste",
    "n": 218,
    "valor": 20791519952.16,
-   "share_valor_pct": 28.89,
+   "share_valor_pct": 28.9,
    "municipios_n": 211,
    "estado_n": 7,
    "estado_valor": 11937536009.35,
@@ -4648,7 +4648,7 @@
   ],
   "nota": "Credores e maiores contratos consideram só estados, DF e municípios; estatais e bancos públicos garantidos pela União (Correios, BNDES, Caixa, Sabesp) entram nos totais como 'outros'. Só a concessão é publicada em dado aberto: o Tesouro não publica em formato estruturado as garantias honradas (o que a União pagou por inadimplência do ente) nem o saldo devedor por contrato. Valores externos ficam na moeda de origem; a soma em dólar cobre só os contratos em dólar."
  },
- "sintese": "Em 12 meses até 2026-10, a verificação de limites liberou 1.226 operações de crédito de mercado para 874 estados e municípios, R$ 72,0 bilhões (+49% sobre os 12 meses anteriores). Municípios são 43% do valor e 95% das operações. O maior credor é Banco do Brasil S/A (52% do valor) e a maior finalidade, infraestrutura (81%). São Paulo concentra 29% do valor liberado. A taxa de deferimento entre os pleitos concluídos foi de 94%. Operações com garantia da União, de estados na maior parte, respondem por R$ 57,8 bilhões (80% do valor). A dívida consolidada líquida dos estados somava R$ 944 bilhões (71% da receita corrente líquida) em 2026 · 2º quadrimestre; 62% da dívida bruta é a renegociada com a União e 1 UF está acima do limite do Senado. A União garante 1.074 contratos de estados e municípios desde 2010, R$ 197 bilhões nos internos; honras de garantia não são publicadas em dado aberto.",
+ "sintese": "Em 12 meses até 2026-10, a verificação de limites liberou 1.224 operações de crédito de mercado para 873 estados e municípios, R$ 72,0 bilhões (+49% sobre os 12 meses anteriores). Municípios são 43% do valor e 95% das operações. O maior credor é Banco do Brasil S/A (52% do valor) e a maior finalidade, infraestrutura (81%). São Paulo concentra 29% do valor liberado. A taxa de deferimento entre os pleitos concluídos foi de 94%. Operações com garantia da União, de estados na maior parte, respondem por R$ 57,8 bilhões (80% do valor). A dívida consolidada líquida dos estados somava R$ 944 bilhões (71% da receita corrente líquida) em 2026 · 2º quadrimestre; 62% da dívida bruta é a renegociada com a União e 1 UF está acima do limite do Senado. A União garante 1.074 contratos de estados e municípios desde 2010, R$ 197 bilhões nos internos; honras de garantia não são publicadas em dado aberto.",
  "metodo": "Base inteira de PVLs do Sadipem lida pela API do Tesouro Transparente e substituída a cada coleta. Data de referência é a data do status. Mês de referência é o último mês fechado; o mês corrente aparece como parcial. Operação liberada = status Deferido, Deferido (PVL-IF), Deferido (decisão judicial) ou Encaminhado à PGFN com manifestação técnica favorável (rito das operações com garantia da União: a STN conclui a verificação e a PGFN formaliza a garantia). Arquivado, indeferido e cancelado formam 'arquivado'; regularizado à parte; o restante é tramitação, contada só nos últimos 36 meses. Crédito de mercado exclui credor União e finalidade de renegociação de dívidas, que ficam numa linha própria. Valores em reais somados; moeda estrangeira contada e listada, nunca convertida. Taxa de deferimento = deferidos ÷ (deferidos + arquivados) concluídos na janela. Por UF, valor por habitante com a população do IBGE (SIDRA 6579); posições entre as 27 UFs. Dívida: RGF Anexo 02 do poder Executivo de cada estado e do DF, último período publicado por UF (API Siconfi); a série anual usa o 3º quadrimestre de cada exercício e, no corrente, o último quadrimestre comum a pelo menos 20 UFs. Garantias: contratos internos e externos com garantia da União desde 2010 (Tesouro Transparente); mutuário classificado em estado, DF, município e outros; UF pelo nome do estado, pelo sufixo do município ou pelo cadastro do IBGE quando o nome é único.",
  "limitacoes": "Deferimento não é contratação nem desembolso: o Sadipem registra a verificação de limites, não o contrato. Um pleito pode ser protocolado, deferido e arquivado em datas diferentes; só a data do status atual é publicada. Operações em moeda estrangeira não entram nas somas. Antes de 2017 a base é menos completa (o rito PVL-IF começou depois). Dívida e garantias não se somam ao fluxo de PVLs: são estoque declarado pelo ente (RGF) e contratos assinados com garantia da União (CODIV), cada um com a própria data. Garantias honradas e saldo devedor por contrato não existem em dado aberto estruturado; municípios homônimos ficam sem UF nos contratos garantidos.",
  "cautelas": [

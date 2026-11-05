@@ -1,7 +1,7 @@
 {
  "cod": "08805562",
  "nome": "COOPERATIVA DE CRÉDITO RURAL COM INTERAÇÃO SOLIDÁRIA DE TIRADENTES DO SUL - CRESOL TIRADENTES DO SUL",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -245,5 +245,5 @@
    "202103": 75.57777514289108
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

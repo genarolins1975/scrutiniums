@@ -1,7 +1,7 @@
 {
  "cod": "03329154",
  "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO LEGISLATIVO LTDA.– SICOOB LEGISLATIVO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -280,5 +280,5 @@
    "202206": 65.02106703262356
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

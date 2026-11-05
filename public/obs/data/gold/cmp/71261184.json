@@ -1,7 +1,7 @@
 {
  "cod": "71261184",
  "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DO CAPARAÓ LTDA. - SICOOB SAÚDE",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -329,5 +329,5 @@
    "202403": 47.91343604809452
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

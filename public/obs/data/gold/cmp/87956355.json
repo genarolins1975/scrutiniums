@@ -1,7 +1,7 @@
 {
  "cod": "87956355",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DOS CORREIOS NOS ESTADOS DO RIO GRANDE DO SUL, SANTA CATARINA E PARANÁ - CREDCORREIOS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -252,5 +252,5 @@
    "202106": 41.03477652268002
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

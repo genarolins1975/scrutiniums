@@ -1,7 +1,7 @@
 {
  "cod": "C0087803",
  "nome": "PERSONAL SCD - PRUDENCIAL",
- "sr": null,
+ "sr": "S5",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -77,5 +77,5 @@
    "202506": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

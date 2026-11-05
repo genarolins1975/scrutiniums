@@ -1,7 +1,7 @@
 {
  "cod": "17887874",
  "nome": "ENTREPAY INSTITUICAO DE PAGAMENTO S.A",
- "sr": "S5",
+ "sr": "S4",
  "tcb": "N4",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -142,5 +142,5 @@
    "202512": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:45+00:00"
 }

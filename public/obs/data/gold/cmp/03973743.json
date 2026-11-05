@@ -1,7 +1,7 @@
 {
  "cod": "03973743",
  "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS IND.ALIMENTACAO REG.GRDE.VITORIA EST.ES-CREDI-ALIMENTO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -273,5 +273,5 @@
    "202203": 25.92713716331448
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

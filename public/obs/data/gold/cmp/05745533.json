@@ -1,7 +1,7 @@
 {
  "cod": "05745533",
  "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE ITATIBA DO SUL - CRESOL ITATIBA DO SUL",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -308,5 +308,5 @@
    "202306": 66.44104521696651
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

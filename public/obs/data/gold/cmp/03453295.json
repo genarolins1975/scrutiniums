@@ -1,7 +1,7 @@
 {
  "cod": "03453295",
  "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES DO PODER JUDICIÁRIO NO RIO GRANDE DO SUL E DE LIVRE ADMISSÃO EM PORTO ALEGRE - SICOOB PORTO ALEGRE",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 72.47609931351775
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

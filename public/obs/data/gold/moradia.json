@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-11-04T18:31:54+00:00",
+ "gerado_em": "2026-11-05T19:13:57+00:00",
  "modelos": {
   "penetracao": {
    "selo": "estimado",
@@ -1518,7 +1518,7 @@
    "status": "parcial",
    "selo": "observado",
    "fonte": "Informações do Mercado Imobiliário, seção Imóveis",
-   "obs": "Por UF, com defasagem maior que a seção de crédito (data-base 2026-06-30 contra 2026-07-31)."
+   "obs": "Por UF, com defasagem maior que a seção de crédito (data-base 2026-07-31 contra 2026-08-31)."
   },
   {
    "pergunta": "Número de clientes por instituição",
@@ -1561,21 +1561,21 @@
    "t": "Carteira imobiliária de pessoa física por segmento",
    "selo": "observado",
    "d": "Saldo da carteira de crédito imobiliário de pessoas físicas, separado por origem dos recursos: SFH, FGTS, taxas de mercado, home equity e imóvel comercial.",
-   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-07-31.",
+   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-08-31.",
    "l": "Granularidade máxima é a unidade da federação. Não existe versão municipal."
   },
   {
    "t": "Prestação média",
    "selo": "observado",
    "d": "Valor médio da prestação mensal dos contratos em estoque no segmento e na unidade da federação.",
-   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-07-31.",
+   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-08-31.",
    "l": "É média do estoque de contratos ativos, com prazos e datas de contratação distintos. Não é a prestação de um contrato novo, nem se aplica aos domicílios que o Censo registra como ainda sendo pagos."
   },
   {
    "t": "LTV de contratação",
    "selo": "observado",
    "d": "Razão média entre o valor financiado e o valor de avaliação do imóvel, nas operações contratadas no mês.",
-   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-07-31.",
+   "f": "BCB, Informações do Mercado Imobiliário, data-base 2026-08-31.",
    "l": "Refere-se a novas contratações, não ao estoque."
   },
   {
@@ -1639,12 +1639,12 @@
   },
   {
    "t": "O crédito imobiliário financia compra, quase nunca construção ou reforma",
-   "d": "Dos recursos direcionados da poupança aplicados em habitação, R$ 1.140 bilhões estão em aquisição, R$ 122 bilhões em construção e R$ 0,5 bilhão em reforma e ampliação.",
+   "d": "Dos recursos direcionados da poupança aplicados em habitação, R$ 1.148 bilhões estão em aquisição, R$ 123 bilhões em construção e R$ 0,5 bilhão em reforma e ampliação.",
    "selo": "observado"
   },
   {
    "t": "É o crédito com menor inadimplência do país",
-   "d": "A inadimplência do SFH é de 0,91% e a das taxas de mercado, 0,92%. A alienação fiduciária responde pela maior parte das garantias.",
+   "d": "A inadimplência do SFH é de 0,90% e a das taxas de mercado, 0,93%. A alienação fiduciária responde pela maior parte das garantias.",
    "selo": "observado"
   },
   {
@@ -1656,8 +1656,8 @@
  "datas": {
   "censo": 2022,
   "estban": "2026-06",
-  "mi_credito": "2026-07-31",
-  "mi_imoveis": "2026-06-30",
+  "mi_credito": "2026-08-31",
+  "mi_imoveis": "2026-07-31",
   "scr": "2026-09",
   "estban_series": [
    "2025-06",
@@ -1766,61 +1766,61 @@
  "brasil": {
   "selo": "observado",
   "carteira_pf": {
-   "sfh": 591014856060.0,
-   "fgts": 657186680478.0,
-   "livre": 149933981555.0,
-   "home_equity": 26642350420.0,
-   "comercial": 4191162926.0
+   "sfh": 602332334721.0,
+   "fgts": 666619877656.0,
+   "livre": 156527601867.0,
+   "home_equity": 26965391686.0,
+   "comercial": 4477261164.0
   },
-  "carteira_pf_total": 1428969031439.0,
-  "carteira_pf_habitacional": 1398135518093.0,
+  "carteira_pf_total": 1456922467095.0,
+  "carteira_pf_habitacional": 1425479814244.0,
   "carteira_pj": {
-   "sfh": 10400577445.0,
-   "fgts": 10636036349.0,
-   "livre": 36109035303.0,
-   "comercial": 11606899705.0
+   "sfh": 13820486554.0,
+   "fgts": 10823190850.0,
+   "livre": 37003601822.0,
+   "comercial": 11781076765.0
   },
   "taxa": {
-   "sfh": 13.7,
-   "fgts": 8.7,
-   "livre": 14.3,
-   "home_equity": 22.17,
-   "comercial": 15.38
+   "sfh": 13.85,
+   "fgts": 9.05,
+   "livre": 14.49,
+   "home_equity": 22.06,
+   "comercial": 15.58
   },
   "ltv": {
-   "sfh": 65.61,
-   "fgts": 73.43,
-   "livre": 65.0,
-   "home_equity": 42.51,
-   "comercial": 64.47
+   "sfh": 65.74,
+   "fgts": 73.58,
+   "livre": 64.0,
+   "home_equity": 42.58,
+   "comercial": 65.04
   },
   "parcela": {
-   "sfh": 1874.64,
-   "fgts": 676.91,
-   "livre": 3455.4,
-   "home_equity": 2261.58,
-   "comercial": 2322.49
+   "sfh": 1884.27,
+   "fgts": 680.45,
+   "livre": 3490.65,
+   "home_equity": 2272.37,
+   "comercial": 2342.06
   },
   "inad": {
-   "sfh": 0.91,
-   "fgts": 1.79,
-   "livre": 0.92,
-   "home_equity": 2.16,
-   "comercial": 0.78
+   "sfh": 0.9,
+   "fgts": 1.72,
+   "livre": 0.93,
+   "home_equity": 2.27,
+   "comercial": 1.1
   },
   "ativo_problematico": {
-   "sfh": 13050063147.06,
-   "fgts": 32057267840.43,
-   "livre": 2340420476.03,
-   "home_equity": 929344747.45,
-   "comercial": 46094338.62
+   "sfh": 13289590092.34,
+   "fgts": 32463482672.84,
+   "livre": 2414659457.31,
+   "home_equity": 954840769.82,
+   "comercial": 62313076.27
   },
   "contratado_mes": {
-   "sfh": 12216302108.0,
-   "fgts": 15283085135.0,
-   "livre": 3333591609.0,
-   "home_equity": 969527915.0,
-   "comercial": 144978498.0
+   "sfh": 11075434216.0,
+   "fgts": 11915084477.0,
+   "livre": 4705652908.0,
+   "home_equity": 940433534.0,
+   "comercial": 141944293.0
   },
   "indexador": {
    "tr": null,
@@ -1829,28 +1829,28 @@
    "outros": null
   },
   "imoveis": {
-   "data_base": "2026-06-30",
-   "valor_avaliacao": 290545.0,
-   "valor_compra": 274000.0,
-   "area_privativa": 58.06,
-   "casa": 31201.0,
-   "apartamento": 16711.0,
+   "data_base": "2026-07-31",
+   "valor_avaliacao": 287000.0,
+   "valor_compra": 270000.0,
+   "area_privativa": 58.95,
+   "casa": 29966.0,
+   "apartamento": 20536.0,
    "dormitorios": {
-    "1": 4355.0,
-    "2": 32421.0,
-    "3": 9462.0,
-    "4_mais": 1674.0
+    "1": 4754.0,
+    "2": 34312.0,
+    "3": 9789.0,
+    "4_mais": 1647.0
    },
    "garantia": {
-    "alienacao_fiduciaria": 45413.0,
-    "hipoteca": 2499.0
+    "alienacao_fiduciaria": 47983.0,
+    "hipoteca": 2519.0
    }
   },
   "direcionamento": {
-   "aquisicao": 1140463012690.0,
-   "construcao": 121872958270.0,
-   "reforma_ampliacao": 472250055.0,
-   "aplicacao": 497254930357.0
+   "aquisicao": 1148179195977.0,
+   "construcao": 122764860281.0,
+   "reforma_ampliacao": 469473870.0,
+   "aplicacao": 498163536321.0
   },
   "series": {
    "carteira": [
@@ -3037,6 +3037,14 @@
      "livre": 149.93,
      "home_equity": 26.64,
      "comercial": 4.19
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 602.33,
+     "fgts": 666.62,
+     "livre": 156.53,
+     "home_equity": 26.97,
+     "comercial": 4.48
     }
    ],
    "taxa": [
@@ -3927,6 +3935,12 @@
      "sfh": 13.7,
      "fgts": 8.7,
      "livre": 14.3
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 13.85,
+     "fgts": 9.05,
+     "livre": 14.49
     }
    ],
    "parcela": [
@@ -4679,6 +4693,12 @@
      "sfh": 1875.0,
      "fgts": 677.0,
      "livre": 3455.0
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 1884.0,
+     "fgts": 680.0,
+     "livre": 3491.0
     }
    ],
    "inad": [
@@ -5569,6 +5589,12 @@
      "sfh": 0.91,
      "fgts": 1.79,
      "livre": 0.92
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 0.9,
+     "fgts": 1.72,
+     "livre": 0.93
     }
    ],
    "ltv": [
@@ -6459,12 +6485,18 @@
      "sfh": 65.61,
      "fgts": 73.43,
      "livre": 65.0
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 65.74,
+     "fgts": 73.58,
+     "livre": 64.0
     }
    ],
    "imovel": [
     {
      "d": "2018-01-31",
-     "compra": 164.4
+     "compra": 164.7
     },
     {
      "d": "2018-02-28",
@@ -6496,7 +6528,7 @@
     },
     {
      "d": "2018-09-30",
-     "compra": 168.0
+     "compra": 168.5
     },
     {
      "d": "2018-10-31",
@@ -6524,7 +6556,7 @@
     },
     {
      "d": "2019-04-30",
-     "compra": 170.0
+     "compra": 170.2
     },
     {
      "d": "2019-05-31",
@@ -6540,7 +6572,7 @@
     },
     {
      "d": "2019-08-31",
-     "compra": 254.0
+     "compra": 254.1
     },
     {
      "d": "2019-09-30",
@@ -6584,7 +6616,7 @@
     },
     {
      "d": "2020-07-31",
-     "compra": 189.4
+     "compra": 189.5
     },
     {
      "d": "2020-08-31",
@@ -6592,11 +6624,11 @@
     },
     {
      "d": "2020-09-30",
-     "compra": 200.0
+     "compra": 200.7
     },
     {
      "d": "2020-10-31",
-     "compra": 201.0
+     "compra": 201.7
     },
     {
      "d": "2020-11-30",
@@ -6612,7 +6644,7 @@
     },
     {
      "d": "2021-02-28",
-     "compra": 226.0
+     "compra": 226.5
     },
     {
      "d": "2021-03-31",
@@ -6632,7 +6664,7 @@
     },
     {
      "d": "2021-07-31",
-     "compra": 231.0
+     "compra": 232.8
     },
     {
      "d": "2021-08-31",
@@ -6648,11 +6680,11 @@
     },
     {
      "d": "2021-11-30",
-     "compra": 239.5
+     "compra": 240.0
     },
     {
      "d": "2021-12-31",
-     "compra": 201.1
+     "compra": 202.0
     },
     {
      "d": "2022-01-31",
@@ -6664,7 +6696,7 @@
     },
     {
      "d": "2022-03-31",
-     "compra": 213.8
+     "compra": 215.0
     },
     {
      "d": "2022-04-30",
@@ -6696,7 +6728,7 @@
     },
     {
      "d": "2022-11-30",
-     "compra": 224.5
+     "compra": 225.0
     },
     {
      "d": "2022-12-31",
@@ -6704,15 +6736,15 @@
     },
     {
      "d": "2023-01-31",
-     "compra": 235.6
+     "compra": 236.9
     },
     {
      "d": "2023-02-28",
-     "compra": 237.0
+     "compra": 238.0
     },
     {
      "d": "2023-03-31",
-     "compra": 248.0
+     "compra": 248.4
     },
     {
      "d": "2023-04-30",
@@ -6728,7 +6760,7 @@
     },
     {
      "d": "2023-07-31",
-     "compra": 287.0
+     "compra": 285.0
     },
     {
      "d": "2023-08-31",
@@ -6748,7 +6780,7 @@
     },
     {
      "d": "2023-12-31",
-     "compra": 248.0
+     "compra": 248.7
     },
     {
      "d": "2024-01-31",
@@ -6756,15 +6788,15 @@
     },
     {
      "d": "2024-02-29",
-     "compra": 244.0
+     "compra": 245.0
     },
     {
      "d": "2024-03-31",
-     "compra": 235.6
+     "compra": 236.4
     },
     {
      "d": "2024-04-30",
-     "compra": 252.0
+     "compra": 252.8
     },
     {
      "d": "2024-05-31",
@@ -6772,11 +6804,11 @@
     },
     {
      "d": "2024-06-30",
-     "compra": 259.2
+     "compra": 260.0
     },
     {
      "d": "2024-07-31",
-     "compra": 264.0
+     "compra": 265.0
     },
     {
      "d": "2024-08-31",
@@ -6788,15 +6820,15 @@
     },
     {
      "d": "2024-10-31",
-     "compra": 265.0
+     "compra": 265.8
     },
     {
      "d": "2024-11-30",
-     "compra": 261.7
+     "compra": 263.0
     },
     {
      "d": "2024-12-31",
-     "compra": 250.0
+     "compra": 251.0
     },
     {
      "d": "2025-01-31",
@@ -6804,11 +6836,11 @@
     },
     {
      "d": "2025-02-28",
-     "compra": 265.0
+     "compra": 268.5
     },
     {
      "d": "2025-03-31",
-     "compra": 260.4
+     "compra": 263.5
     },
     {
      "d": "2025-04-30",
@@ -6816,7 +6848,7 @@
     },
     {
      "d": "2025-05-31",
-     "compra": 250.0
+     "compra": 250.5
     },
     {
      "d": "2025-06-30",
@@ -6832,7 +6864,7 @@
     },
     {
      "d": "2025-09-30",
-     "compra": 249.0
+     "compra": 249.5
     },
     {
      "d": "2025-10-31",
@@ -6840,11 +6872,11 @@
     },
     {
      "d": "2025-11-30",
-     "compra": 256.1
+     "compra": 257.0
     },
     {
      "d": "2025-12-31",
-     "compra": 261.7
+     "compra": 262.2
     },
     {
      "d": "2026-01-31",
@@ -6852,23 +6884,27 @@
     },
     {
      "d": "2026-02-28",
-     "compra": 270.0
+     "compra": 273.0
     },
     {
      "d": "2026-03-31",
-     "compra": 275.0
+     "compra": 280.0
     },
     {
      "d": "2026-04-30",
-     "compra": 289.0
+     "compra": 294.8
     },
     {
      "d": "2026-05-31",
-     "compra": 275.0
+     "compra": 280.0
     },
     {
      "d": "2026-06-30",
-     "compra": 274.0
+     "compra": 275.0
+    },
+    {
+     "d": "2026-07-31",
+     "compra": 270.0
     }
    ],
    "contratado": [
@@ -7759,6 +7795,12 @@
      "sfh": 12.22,
      "fgts": 15.28,
      "livre": 3.33
+    },
+    {
+     "d": "2026-08-31",
+     "sfh": 11.08,
+     "fgts": 11.92,
+     "livre": 4.71
     }
    ]
   }
@@ -7776,18 +7818,18 @@
    "renda_pc": 1068.16,
    "estban169": 1544359925.0,
    "poupanca": 2053700858.0,
-   "mi_carteira_pf": 1641490908.0,
+   "mi_carteira_pf": 1662646777.0,
    "scr_imob_pf": 1644104046.0,
    "scr_operacoes": 9123,
    "scr_inad_pct": 0.79,
-   "taxa_sfh": 13.63,
-   "ltv_sfh": 64.41,
-   "parcela_sfh": 1828.0,
-   "inad_sfh": 0.67,
-   "valor_compra": 350000.0,
-   "area_privativa": 106.36,
-   "razao_estban_mi": 0.94,
-   "razao_mi_scr": 1.0
+   "taxa_sfh": 13.79,
+   "ltv_sfh": 71.55,
+   "parcela_sfh": 1835.0,
+   "inad_sfh": 0.56,
+   "valor_compra": 304000.0,
+   "area_privativa": 108.47,
+   "razao_estban_mi": 0.93,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "AL",
@@ -7801,18 +7843,18 @@
    "renda_pc": 1035.41,
    "estban169": 11425607758.0,
    "poupanca": 9549926882.0,
-   "mi_carteira_pf": 12136562950.0,
+   "mi_carteira_pf": 12314630633.0,
    "scr_imob_pf": 12367460277.0,
    "scr_operacoes": 117135,
    "scr_inad_pct": 1.81,
-   "taxa_sfh": 13.66,
-   "ltv_sfh": 63.09,
-   "parcela_sfh": 1641.0,
-   "inad_sfh": 1.09,
-   "valor_compra": 216590.0,
-   "area_privativa": 58.93,
-   "razao_estban_mi": 0.94,
-   "razao_mi_scr": 0.98
+   "taxa_sfh": 13.8,
+   "ltv_sfh": 69.12,
+   "parcela_sfh": 1643.0,
+   "inad_sfh": 1.19,
+   "valor_compra": 210000.0,
+   "area_privativa": 65.91,
+   "razao_estban_mi": 0.93,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "AM",
@@ -7826,18 +7868,18 @@
    "renda_pc": 979.46,
    "estban169": 8413427175.0,
    "poupanca": 6963652538.0,
-   "mi_carteira_pf": 11156495698.0,
+   "mi_carteira_pf": 11326605684.0,
    "scr_imob_pf": 11414950200.0,
    "scr_operacoes": 69792,
    "scr_inad_pct": 2.1,
-   "taxa_sfh": 13.71,
-   "ltv_sfh": 68.93,
-   "parcela_sfh": 1958.0,
-   "inad_sfh": 1.74,
-   "valor_compra": 270245.0,
-   "area_privativa": 55.41,
-   "razao_estban_mi": 0.75,
-   "razao_mi_scr": 0.98
+   "taxa_sfh": 13.87,
+   "ltv_sfh": 69.09,
+   "parcela_sfh": 1967.0,
+   "inad_sfh": 1.63,
+   "valor_compra": 262000.0,
+   "area_privativa": 45.05,
+   "razao_estban_mi": 0.74,
+   "razao_mi_scr": 0.99
   },
   {
    "uf": "AP",
@@ -7851,18 +7893,18 @@
    "renda_pc": 1142.29,
    "estban169": 1755022075.0,
    "poupanca": 1669569924.0,
-   "mi_carteira_pf": 1366753257.0,
+   "mi_carteira_pf": 1385515263.0,
    "scr_imob_pf": 1382658900.0,
    "scr_operacoes": 7762,
    "scr_inad_pct": 0.85,
-   "taxa_sfh": 13.64,
-   "ltv_sfh": 64.91,
-   "parcela_sfh": 2060.0,
-   "inad_sfh": 0.89,
-   "valor_compra": 430410.0,
-   "area_privativa": 117.23,
-   "razao_estban_mi": 1.28,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.78,
+   "ltv_sfh": 67.18,
+   "parcela_sfh": 2066.0,
+   "inad_sfh": 0.91,
+   "valor_compra": 364720.0,
+   "area_privativa": 78.0,
+   "razao_estban_mi": 1.27,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "BA",
@@ -7876,18 +7918,18 @@
    "renda_pc": 1079.58,
    "estban169": 41668715409.0,
    "poupanca": 54764939818.0,
-   "mi_carteira_pf": 45589392346.0,
+   "mi_carteira_pf": 46538528533.0,
    "scr_imob_pf": 46419910660.0,
    "scr_operacoes": 354047,
    "scr_inad_pct": 2.31,
-   "taxa_sfh": 13.69,
-   "ltv_sfh": 67.29,
-   "parcela_sfh": 1686.0,
-   "inad_sfh": 1.34,
-   "valor_compra": 240750.0,
-   "area_privativa": 55.86,
-   "razao_estban_mi": 0.91,
-   "razao_mi_scr": 0.98
+   "taxa_sfh": 13.8,
+   "ltv_sfh": 66.89,
+   "parcela_sfh": 1696.0,
+   "inad_sfh": 1.31,
+   "valor_compra": 235780.0,
+   "area_privativa": 53.92,
+   "razao_estban_mi": 0.9,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "CE",
@@ -7901,18 +7943,18 @@
    "renda_pc": 1056.24,
    "estban169": 29804862525.0,
    "poupanca": 24452724840.0,
-   "mi_carteira_pf": 34505950750.0,
+   "mi_carteira_pf": 35035676204.0,
    "scr_imob_pf": 35226317557.0,
    "scr_operacoes": 255478,
    "scr_inad_pct": 1.68,
-   "taxa_sfh": 13.67,
-   "ltv_sfh": 68.61,
-   "parcela_sfh": 1787.0,
+   "taxa_sfh": 13.87,
+   "ltv_sfh": 69.33,
+   "parcela_sfh": 1791.0,
    "inad_sfh": 0.96,
-   "valor_compra": 215000.0,
+   "valor_compra": 220000.0,
    "area_privativa": 70.0,
-   "razao_estban_mi": 0.86,
-   "razao_mi_scr": 0.98
+   "razao_estban_mi": 0.85,
+   "razao_mi_scr": 0.99
   },
   {
    "uf": "DF",
@@ -7926,18 +7968,18 @@
    "renda_pc": 2999.18,
    "estban169": 1579387597770.0,
    "poupanca": 1042531250342.0,
-   "mi_carteira_pf": 29691202153.0,
+   "mi_carteira_pf": 37196007560.0,
    "scr_imob_pf": 37316435139.0,
    "scr_operacoes": 223756,
    "scr_inad_pct": 1.41,
-   "taxa_sfh": 13.65,
-   "ltv_sfh": 63.97,
-   "parcela_sfh": 1918.0,
-   "inad_sfh": 0.84,
-   "valor_compra": 395000.0,
-   "area_privativa": 67.99,
-   "razao_estban_mi": 53.19,
-   "razao_mi_scr": 0.8
+   "taxa_sfh": 13.69,
+   "ltv_sfh": 63.44,
+   "parcela_sfh": 2029.0,
+   "inad_sfh": 0.67,
+   "valor_compra": 373255.0,
+   "area_privativa": 66.29,
+   "razao_estban_mi": 42.46,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "ES",
@@ -7951,18 +7993,18 @@
    "renda_pc": 1651.38,
    "estban169": 16022282303.0,
    "poupanca": 19365730382.0,
-   "mi_carteira_pf": 17593254381.0,
+   "mi_carteira_pf": 17798129219.0,
    "scr_imob_pf": 17778936583.0,
    "scr_operacoes": 108837,
    "scr_inad_pct": 0.97,
-   "taxa_sfh": 13.59,
-   "ltv_sfh": 63.87,
-   "parcela_sfh": 1791.0,
-   "inad_sfh": 0.51,
-   "valor_compra": 365000.0,
-   "area_privativa": 57.71,
-   "razao_estban_mi": 0.91,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.76,
+   "ltv_sfh": 64.6,
+   "parcela_sfh": 1802.0,
+   "inad_sfh": 0.48,
+   "valor_compra": 377310.0,
+   "area_privativa": 60.58,
+   "razao_estban_mi": 0.9,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "GO",
@@ -7976,18 +8018,18 @@
    "renda_pc": 1696.52,
    "estban169": 58905819830.0,
    "poupanca": 26345583474.0,
-   "mi_carteira_pf": 76171152158.0,
+   "mi_carteira_pf": 78144808794.0,
    "scr_imob_pf": 77915511975.0,
    "scr_operacoes": 540814,
    "scr_inad_pct": 2.13,
-   "taxa_sfh": 13.54,
-   "ltv_sfh": 68.21,
-   "parcela_sfh": 1801.0,
-   "inad_sfh": 1.53,
+   "taxa_sfh": 13.72,
+   "ltv_sfh": 68.16,
+   "parcela_sfh": 1814.0,
+   "inad_sfh": 1.54,
    "valor_compra": 240000.0,
    "area_privativa": 70.0,
-   "razao_estban_mi": 0.77,
-   "razao_mi_scr": 0.98
+   "razao_estban_mi": 0.75,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "MA",
@@ -8001,18 +8043,18 @@
    "renda_pc": 900.46,
    "estban169": 13135182009.0,
    "poupanca": 16243138617.0,
-   "mi_carteira_pf": 16622480549.0,
+   "mi_carteira_pf": 16827922688.0,
    "scr_imob_pf": 16848221928.0,
    "scr_operacoes": 145153,
    "scr_inad_pct": 2.59,
-   "taxa_sfh": 13.73,
-   "ltv_sfh": 69.2,
-   "parcela_sfh": 1504.0,
-   "inad_sfh": 1.62,
-   "valor_compra": 220000.0,
-   "area_privativa": 63.49,
-   "razao_estban_mi": 0.79,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.76,
+   "ltv_sfh": 70.31,
+   "parcela_sfh": 1497.0,
+   "inad_sfh": 1.54,
+   "valor_compra": 223700.0,
+   "area_privativa": 64.8,
+   "razao_estban_mi": 0.78,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "MG",
@@ -8026,18 +8068,18 @@
    "renda_pc": 1611.77,
    "estban169": 120983847648.0,
    "poupanca": 105876157087.0,
-   "mi_carteira_pf": 130934996238.0,
+   "mi_carteira_pf": 132500276792.0,
    "scr_imob_pf": 132009169974.0,
    "scr_operacoes": 977967,
    "scr_inad_pct": 1.23,
-   "taxa_sfh": 13.7,
-   "ltv_sfh": 66.67,
-   "parcela_sfh": 1779.0,
+   "taxa_sfh": 13.86,
+   "ltv_sfh": 66.06,
+   "parcela_sfh": 1789.0,
    "inad_sfh": 0.7,
-   "valor_compra": 280000.0,
-   "area_privativa": 64.13,
-   "razao_estban_mi": 0.92,
-   "razao_mi_scr": 0.99
+   "valor_compra": 300000.0,
+   "area_privativa": 65.97,
+   "razao_estban_mi": 0.91,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "MS",
@@ -8051,18 +8093,18 @@
    "renda_pc": 1710.48,
    "estban169": 17389339617.0,
    "poupanca": 6765596701.0,
-   "mi_carteira_pf": 22229452805.0,
+   "mi_carteira_pf": 22533642589.0,
    "scr_imob_pf": 22310999596.0,
    "scr_operacoes": 162916,
    "scr_inad_pct": 2.24,
-   "taxa_sfh": 13.64,
-   "ltv_sfh": 66.6,
-   "parcela_sfh": 1679.0,
-   "inad_sfh": 1.49,
-   "valor_compra": 224500.0,
-   "area_privativa": 61.86,
-   "razao_estban_mi": 0.78,
-   "razao_mi_scr": 1.0
+   "taxa_sfh": 13.81,
+   "ltv_sfh": 66.43,
+   "parcela_sfh": 1684.0,
+   "inad_sfh": 1.56,
+   "valor_compra": 225000.0,
+   "area_privativa": 60.3,
+   "razao_estban_mi": 0.77,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "MT",
@@ -8076,18 +8118,18 @@
    "renda_pc": 1825.48,
    "estban169": 21589040487.0,
    "poupanca": 8106231166.0,
-   "mi_carteira_pf": 29870517228.0,
+   "mi_carteira_pf": 30344768332.0,
    "scr_imob_pf": 30302780803.0,
    "scr_operacoes": 186381,
    "scr_inad_pct": 2.01,
-   "taxa_sfh": 13.7,
-   "ltv_sfh": 67.01,
-   "parcela_sfh": 1864.0,
-   "inad_sfh": 1.6,
-   "valor_compra": 245000.0,
-   "area_privativa": 59.77,
-   "razao_estban_mi": 0.72,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.87,
+   "ltv_sfh": 67.22,
+   "parcela_sfh": 1874.0,
+   "inad_sfh": 1.54,
+   "valor_compra": 251000.0,
+   "area_privativa": 59.48,
+   "razao_estban_mi": 0.71,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "PA",
@@ -8101,18 +8143,18 @@
    "renda_pc": 993.75,
    "estban169": 16047444020.0,
    "poupanca": 16064842967.0,
-   "mi_carteira_pf": 15764717529.0,
+   "mi_carteira_pf": 15966075840.0,
    "scr_imob_pf": 15968280061.0,
    "scr_operacoes": 118177,
    "scr_inad_pct": 1.4,
-   "taxa_sfh": 13.28,
-   "ltv_sfh": 68.88,
-   "parcela_sfh": 1795.0,
-   "inad_sfh": 0.92,
-   "valor_compra": 210000.0,
-   "area_privativa": 65.88,
-   "razao_estban_mi": 1.02,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.56,
+   "ltv_sfh": 68.93,
+   "parcela_sfh": 1796.0,
+   "inad_sfh": 0.9,
+   "valor_compra": 200000.0,
+   "area_privativa": 65.1,
+   "razao_estban_mi": 1.01,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "PB",
@@ -8126,18 +8168,18 @@
    "renda_pc": 1098.88,
    "estban169": 22059475619.0,
    "poupanca": 13561280081.0,
-   "mi_carteira_pf": 24236412470.0,
+   "mi_carteira_pf": 24627726674.0,
    "scr_imob_pf": 24738603071.0,
    "scr_operacoes": 219099,
    "scr_inad_pct": 1.16,
-   "taxa_sfh": 13.56,
-   "ltv_sfh": 67.73,
-   "parcela_sfh": 1729.0,
+   "taxa_sfh": 13.79,
+   "ltv_sfh": 67.54,
+   "parcela_sfh": 1735.0,
    "inad_sfh": 0.55,
-   "valor_compra": 197000.0,
-   "area_privativa": 49.03,
-   "razao_estban_mi": 0.91,
-   "razao_mi_scr": 0.98
+   "valor_compra": 190000.0,
+   "area_privativa": 50.15,
+   "razao_estban_mi": 0.9,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "PE",
@@ -8151,18 +8193,18 @@
    "renda_pc": 1141.74,
    "estban169": 36877745107.0,
    "poupanca": 30884508404.0,
-   "mi_carteira_pf": 35797728597.0,
+   "mi_carteira_pf": 36325130641.0,
    "scr_imob_pf": 36395694119.0,
    "scr_operacoes": 290433,
    "scr_inad_pct": 0.95,
-   "taxa_sfh": 13.64,
-   "ltv_sfh": 69.09,
-   "parcela_sfh": 1806.0,
-   "inad_sfh": 0.67,
+   "taxa_sfh": 13.84,
+   "ltv_sfh": 66.12,
+   "parcela_sfh": 1813.0,
+   "inad_sfh": 0.62,
    "valor_compra": 220000.0,
-   "area_privativa": 54.16,
-   "razao_estban_mi": 1.03,
-   "razao_mi_scr": 0.98
+   "area_privativa": 57.09,
+   "razao_estban_mi": 1.02,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "PI",
@@ -8176,18 +8218,18 @@
    "renda_pc": 1009.94,
    "estban169": 9276706052.0,
    "poupanca": 11732718030.0,
-   "mi_carteira_pf": 10116242998.0,
+   "mi_carteira_pf": 10244877116.0,
    "scr_imob_pf": 10264909893.0,
    "scr_operacoes": 94818,
    "scr_inad_pct": 2.38,
-   "taxa_sfh": 13.66,
-   "ltv_sfh": 67.91,
-   "parcela_sfh": 1668.0,
-   "inad_sfh": 1.37,
-   "valor_compra": 160000.0,
-   "area_privativa": 58.47,
-   "razao_estban_mi": 0.92,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.74,
+   "ltv_sfh": 67.69,
+   "parcela_sfh": 1669.0,
+   "inad_sfh": 1.31,
+   "valor_compra": 170000.0,
+   "area_privativa": 59.73,
+   "razao_estban_mi": 0.91,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "PR",
@@ -8201,18 +8243,18 @@
    "renda_pc": 1965.31,
    "estban169": 92012844899.0,
    "poupanca": 49603098415.0,
-   "mi_carteira_pf": 111320780022.0,
+   "mi_carteira_pf": 112644111048.0,
    "scr_imob_pf": 111611741848.0,
    "scr_operacoes": 780300,
    "scr_inad_pct": 0.66,
-   "taxa_sfh": 13.66,
-   "ltv_sfh": 65.14,
-   "parcela_sfh": 1845.0,
-   "inad_sfh": 0.51,
+   "taxa_sfh": 13.84,
+   "ltv_sfh": 65.81,
+   "parcela_sfh": 1853.0,
+   "inad_sfh": 0.48,
    "valor_compra": 280000.0,
-   "area_privativa": 59.96,
-   "razao_estban_mi": 0.83,
-   "razao_mi_scr": 1.0
+   "area_privativa": 58.76,
+   "razao_estban_mi": 0.82,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "RJ",
@@ -8226,18 +8268,18 @@
    "renda_pc": 1847.44,
    "estban169": 68654264102.0,
    "poupanca": 112973418279.0,
-   "mi_carteira_pf": 88413094115.0,
+   "mi_carteira_pf": 89565943597.0,
    "scr_imob_pf": 89350803109.0,
    "scr_operacoes": 518838,
    "scr_inad_pct": 2.13,
-   "taxa_sfh": 13.75,
-   "ltv_sfh": 64.49,
-   "parcela_sfh": 1974.0,
-   "inad_sfh": 1.17,
-   "valor_compra": 300000.0,
-   "area_privativa": 56.49,
-   "razao_estban_mi": 0.78,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.9,
+   "ltv_sfh": 65.01,
+   "parcela_sfh": 1984.0,
+   "inad_sfh": 1.1,
+   "valor_compra": 320000.0,
+   "area_privativa": 57.39,
+   "razao_estban_mi": 0.77,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "RN",
@@ -8251,18 +8293,18 @@
    "renda_pc": 1247.15,
    "estban169": 17873843797.0,
    "poupanca": 10040072928.0,
-   "mi_carteira_pf": 17737424850.0,
+   "mi_carteira_pf": 17982910868.0,
    "scr_imob_pf": 18019591135.0,
    "scr_operacoes": 173643,
    "scr_inad_pct": 1.39,
-   "taxa_sfh": 13.65,
-   "ltv_sfh": 66.93,
-   "parcela_sfh": 1617.0,
-   "inad_sfh": 0.69,
+   "taxa_sfh": 13.86,
+   "ltv_sfh": 66.81,
+   "parcela_sfh": 1612.0,
+   "inad_sfh": 0.63,
    "valor_compra": 175000.0,
-   "area_privativa": 64.38,
-   "razao_estban_mi": 1.01,
-   "razao_mi_scr": 0.98
+   "area_privativa": 63.06,
+   "razao_estban_mi": 0.99,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "RO",
@@ -8276,18 +8318,18 @@
    "renda_pc": 1374.26,
    "estban169": 6477006730.0,
    "poupanca": 4174695087.0,
-   "mi_carteira_pf": 7303279177.0,
+   "mi_carteira_pf": 7398528951.0,
    "scr_imob_pf": 7367304643.0,
    "scr_operacoes": 51293,
    "scr_inad_pct": 0.74,
-   "taxa_sfh": 13.61,
-   "ltv_sfh": 69.51,
-   "parcela_sfh": 1680.0,
-   "inad_sfh": 0.61,
-   "valor_compra": 225000.0,
-   "area_privativa": 68.4,
-   "razao_estban_mi": 0.89,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.69,
+   "ltv_sfh": 69.49,
+   "parcela_sfh": 1679.0,
+   "inad_sfh": 0.65,
+   "valor_compra": 235000.0,
+   "area_privativa": 69.67,
+   "razao_estban_mi": 0.88,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "RR",
@@ -8301,18 +8343,18 @@
    "renda_pc": 1143.94,
    "estban169": 1728320220.0,
    "poupanca": 1278710848.0,
-   "mi_carteira_pf": 1998164388.0,
+   "mi_carteira_pf": 2037371872.0,
    "scr_imob_pf": 2035971628.0,
    "scr_operacoes": 13249,
    "scr_inad_pct": 1.19,
-   "taxa_sfh": 13.58,
-   "ltv_sfh": 70.64,
-   "parcela_sfh": 1867.0,
-   "inad_sfh": 0.98,
-   "valor_compra": 230000.0,
-   "area_privativa": 53.07,
-   "razao_estban_mi": 0.86,
-   "razao_mi_scr": 0.98
+   "taxa_sfh": 13.76,
+   "ltv_sfh": 70.34,
+   "parcela_sfh": 1865.0,
+   "inad_sfh": 0.94,
+   "valor_compra": 224531.0,
+   "area_privativa": 50.06,
+   "razao_estban_mi": 0.85,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "RS",
@@ -8326,18 +8368,18 @@
    "renda_pc": 2042.57,
    "estban169": 83596877370.0,
    "poupanca": 91520009192.0,
-   "mi_carteira_pf": 92725092469.0,
+   "mi_carteira_pf": 93591507693.0,
    "scr_imob_pf": 92996685059.0,
    "scr_operacoes": 652077,
    "scr_inad_pct": 1.9,
-   "taxa_sfh": 13.65,
-   "ltv_sfh": 64.3,
-   "parcela_sfh": 1810.0,
-   "inad_sfh": 1.06,
-   "valor_compra": 267645.0,
-   "area_privativa": 55.44,
-   "razao_estban_mi": 0.9,
-   "razao_mi_scr": 1.0
+   "taxa_sfh": 13.77,
+   "ltv_sfh": 64.83,
+   "parcela_sfh": 1813.0,
+   "inad_sfh": 1.19,
+   "valor_compra": 268000.0,
+   "area_privativa": 53.66,
+   "razao_estban_mi": 0.89,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "SC",
@@ -8351,18 +8393,18 @@
    "renda_pc": 2221.02,
    "estban169": 56205157187.0,
    "poupanca": 34422351912.0,
-   "mi_carteira_pf": 70057121298.0,
+   "mi_carteira_pf": 70928344464.0,
    "scr_imob_pf": 70523954820.0,
    "scr_operacoes": 438629,
    "scr_inad_pct": 0.72,
-   "taxa_sfh": 13.69,
-   "ltv_sfh": 65.02,
-   "parcela_sfh": 1858.0,
-   "inad_sfh": 0.52,
-   "valor_compra": 370000.0,
-   "area_privativa": 65.6,
-   "razao_estban_mi": 0.8,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.83,
+   "ltv_sfh": 65.56,
+   "parcela_sfh": 1868.0,
+   "inad_sfh": 0.51,
+   "valor_compra": 365000.0,
+   "area_privativa": 65.7,
+   "razao_estban_mi": 0.79,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "SE",
@@ -8376,18 +8418,18 @@
    "renda_pc": 1181.91,
    "estban169": 12735531323.0,
    "poupanca": 10240693784.0,
-   "mi_carteira_pf": 11849183894.0,
+   "mi_carteira_pf": 12596584201.0,
    "scr_imob_pf": 12604624483.0,
    "scr_operacoes": 112309,
    "scr_inad_pct": 1.83,
-   "taxa_sfh": 13.69,
-   "ltv_sfh": 66.08,
-   "parcela_sfh": 1570.0,
-   "inad_sfh": 1.24,
+   "taxa_sfh": 13.43,
+   "ltv_sfh": 65.28,
+   "parcela_sfh": 1431.0,
+   "inad_sfh": 1.17,
    "valor_compra": 210000.0,
-   "area_privativa": 65.0,
-   "razao_estban_mi": 1.07,
-   "razao_mi_scr": 0.94
+   "area_privativa": 66.1,
+   "razao_estban_mi": 1.01,
+   "razao_mi_scr": 1.0
   },
   {
    "uf": "SP",
@@ -8401,18 +8443,18 @@
    "renda_pc": 2092.42,
    "estban169": 742907254242.0,
    "poupanca": 311901037598.0,
-   "mi_carteira_pf": 505667489364.0,
+   "mi_carteira_pf": 512801299104.0,
    "scr_imob_pf": 509294428867.0,
    "scr_operacoes": 2925739,
    "scr_inad_pct": 1.34,
-   "taxa_sfh": 13.75,
-   "ltv_sfh": 64.77,
-   "parcela_sfh": 1995.0,
-   "inad_sfh": 0.83,
-   "valor_compra": 320000.0,
-   "area_privativa": 48.03,
-   "razao_estban_mi": 1.47,
-   "razao_mi_scr": 0.99
+   "taxa_sfh": 13.92,
+   "ltv_sfh": 65.01,
+   "parcela_sfh": 2006.0,
+   "inad_sfh": 0.81,
+   "valor_compra": 316000.0,
+   "area_privativa": 48.8,
+   "razao_estban_mi": 1.45,
+   "razao_mi_scr": 1.01
   },
   {
    "uf": "TO",
@@ -8426,18 +8468,18 @@
    "renda_pc": 1392.66,
    "estban169": 5473913063.0,
    "poupanca": 4176388220.0,
-   "mi_carteira_pf": 6469989761.0,
+   "mi_carteira_pf": 6600312262.0,
    "scr_imob_pf": 6582200395.0,
    "scr_operacoes": 43581,
    "scr_inad_pct": 1.49,
-   "taxa_sfh": 13.7,
-   "ltv_sfh": 68.24,
-   "parcela_sfh": 1739.0,
+   "taxa_sfh": 13.78,
+   "ltv_sfh": 67.37,
+   "parcela_sfh": 1745.0,
    "inad_sfh": 1.01,
    "valor_compra": 250000.0,
-   "area_privativa": 70.0,
-   "razao_estban_mi": 0.85,
-   "razao_mi_scr": 0.98
+   "area_privativa": 69.37,
+   "razao_estban_mi": 0.83,
+   "razao_mi_scr": 1.0
   }
  ],
  "instituicoes": [
@@ -8809,9 +8851,9 @@
  "simulador": {
   "selo": "cenario",
   "partida": {
-   "valor_imovel": 274000.0,
-   "ltv_pct": 65.61,
-   "taxa_aa_pct": 13.7,
+   "valor_imovel": 270000.0,
+   "ltv_pct": 65.74,
+   "taxa_aa_pct": 13.85,
    "prazo_meses": 360
   },
   "formulas": {

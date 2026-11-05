@@ -1,7 +1,7 @@
 {
  "cod": "04544165",
  "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE MADEIRA-MAMORÉ - SICOOB PORTOCREDI",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -210,5 +210,5 @@
    "201912": 74.33058661801414
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

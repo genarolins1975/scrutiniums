@@ -1,7 +1,7 @@
 {
  "cod": "01530136",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA COMPANHIA PAULISTA DE TRENS METROPOLITANOS - COOPERTREM",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -315,5 +315,5 @@
    "202309": 12.932208700554536
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

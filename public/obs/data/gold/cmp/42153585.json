@@ -1,7 +1,7 @@
 {
  "cod": "42153585",
  "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DO IRB-BRASIL RE LTDA.",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -259,5 +259,5 @@
    "202109": 12.465630192464545
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

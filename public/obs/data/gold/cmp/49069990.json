@@ -1,7 +1,7 @@
 {
  "cod": "49069990",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO DE LIVRE ADMISSÃO DA SERRA DA CANTAREIRA - SICOOB CANTAREIRA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 48.41391351587634
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

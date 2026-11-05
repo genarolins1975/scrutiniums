@@ -1,7 +1,7 @@
 {
  "cod": "00184068",
  "nome": "COOPERATIVA DE CRÉDITO UNICRED CENTRAL MULTIRREGIONAL LTDA. - UCM",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3C",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -343,5 +343,5 @@
    "202409": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

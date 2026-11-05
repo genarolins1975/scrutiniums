@@ -1,7 +1,7 @@
 {
  "cod": "05460750",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA ADMINISTRAÇÃO PÚBLICA MUNICIPAL DE PORTO ALEGRE - MUNICRED",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -294,5 +294,5 @@
    "202212": 88.25611928603004
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

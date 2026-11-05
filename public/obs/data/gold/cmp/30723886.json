@@ -1,7 +1,7 @@
 {
  "cod": "30723886",
  "nome": "BANCO MODAL S.A.",
- "sr": "S2",
+ "sr": null,
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -95,5 +95,5 @@
    "201509": 26.91791768336303
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

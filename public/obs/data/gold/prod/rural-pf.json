@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-04T18:31:53+00:00",
+ "gerado_em": "2026-11-05T19:13:55+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -187,7 +187,7 @@
    {
     "cod": "C0049906",
     "nome": "BB",
-    "sr": null,
+    "sr": "S1",
     "nivel": "conglomerado",
     "carteira_brl": 366830024719.39,
     "atraso15_pct": 6.18,
@@ -212,7 +212,7 @@
    {
     "cod": "C0051626",
     "nome": "CAIXA ECONÔMICA FEDERAL",
-    "sr": null,
+    "sr": "S1",
     "nivel": "conglomerado",
     "carteira_brl": 46734838958.58,
     "atraso15_pct": 14.39,
@@ -237,7 +237,7 @@
    {
     "cod": "C0010045",
     "nome": "BRADESCO",
-    "sr": null,
+    "sr": "S1",
     "nivel": "conglomerado",
     "carteira_brl": 34829211120.2,
     "atraso15_pct": 6.29,
@@ -312,7 +312,7 @@
    {
     "cod": "C0030173",
     "nome": "BANRISUL",
-    "sr": null,
+    "sr": "S2",
     "nivel": "conglomerado",
     "carteira_brl": 12212497321.27,
     "atraso15_pct": 1.99,
@@ -337,7 +337,7 @@
    {
     "cod": "C0051750",
     "nome": "BANCO SICOOB",
-    "sr": null,
+    "sr": "S2",
     "nivel": "conglomerado",
     "carteira_brl": 11898489272.35,
     "atraso15_pct": 0.0,
@@ -412,7 +412,7 @@
    {
     "cod": "05040481",
     "nome": "BANCO DE LAGE LANDEN BRASIL S.A.",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 8697678853.08,
     "atraso15_pct": 4.82,
@@ -437,7 +437,7 @@
    {
     "cod": "C0010069",
     "nome": "ITAU",
-    "sr": null,
+    "sr": "S1",
     "nivel": "conglomerado",
     "carteira_brl": 6029637501.27,
     "atraso15_pct": 0.77,
@@ -462,7 +462,7 @@
    {
     "cod": "92816560",
     "nome": "BANCO REGIONAL DE DESENVOLVIMENTO DO EXTREMO SUL",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 5388267454.78,
     "atraso15_pct": 0.61,
@@ -562,7 +562,7 @@
    {
     "cod": "01023570",
     "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 2298836372.29,
     "atraso15_pct": 2.2,
@@ -737,7 +737,7 @@
    {
     "cod": "92894922",
     "nome": "BANCO ORIGINAL S.A.",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 1474106910.48,
     "atraso15_pct": 0.0,
@@ -862,7 +862,7 @@
    {
     "cod": "24654881",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO DOS ESTADOS DE MATO GROSSO DO SUL, TOCANTINS E OESTE DA BAHIA - SICREDI UNIÃO MS/TO",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 1202310123.15,
     "atraso15_pct": 3.1,
@@ -912,7 +912,7 @@
    {
     "cod": "02885855",
     "nome": "BADESUL DESENVOLVIMENTO S.A - AGÊNCIA DE FOMENTO/RS",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 1031005585.45,
     "atraso15_pct": 2.5,
@@ -1012,7 +1012,7 @@
    {
     "cod": "02015588",
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO CENTRO SUL RONDONIENSE - SICOOB CREDIP.",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 1005341384.57,
     "atraso15_pct": 3.91,
@@ -1037,7 +1037,7 @@
    {
     "cod": "17359351",
     "nome": "STARA FINANCEIRA S.A. - CRÉDITO FINANCIAMENTO E INVESTIMENTO",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 997937788.41,
     "atraso15_pct": 3.24,
@@ -1062,7 +1062,7 @@
    {
     "cod": "C0052003",
     "nome": "BOCOM",
-    "sr": null,
+    "sr": "S3",
     "nivel": "conglomerado",
     "carteira_brl": 967537778.66,
     "atraso15_pct": 0.96,
@@ -1112,7 +1112,7 @@
    {
     "cod": "87510475",
     "nome": "COOPERATIVA DE CRÉDITO ROTA DAS TERRAS - SICREDI ROTA DAS TERRAS RS/MG",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 960706346.45,
     "atraso15_pct": 4.13,
@@ -1137,7 +1137,7 @@
    {
     "cod": "C0031976",
     "nome": "BRB",
-    "sr": null,
+    "sr": "S3",
     "nivel": "conglomerado",
     "carteira_brl": 956019049.29,
     "atraso15_pct": 14.27,
@@ -1287,7 +1287,7 @@
    {
     "cod": "87795639",
     "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES - SICREDI ALIANÇA RS/SC/ES",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 880216666.07,
     "atraso15_pct": 0.59,
@@ -1437,7 +1437,7 @@
    {
     "cod": "81466286",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CAMPOS GERAIS E GRANDE CURITIBA - SICREDI CAMPOS GERAIS E GRANDE CURITIBA PR/SP",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 793519284.9,
     "atraso15_pct": 1.26,
@@ -1537,7 +1537,7 @@
    {
     "cod": "32983165",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 740731270.6,
     "atraso15_pct": 2.5,
@@ -1787,7 +1787,7 @@
    {
     "cod": "90497256",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTERESTADOS - SICREDI INTERESTADOS RS/ES",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 669352454.22,
     "atraso15_pct": 8.94,
@@ -1862,7 +1862,7 @@
    {
     "cod": "07237373",
     "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
-    "sr": null,
+    "sr": "S2",
     "nivel": "individual",
     "carteira_brl": 623323887.76,
     "atraso15_pct": 5.33,
@@ -2187,7 +2187,7 @@
    {
     "cod": "26529420",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO VERDE DO MATO GROSSO - SICREDI OURO VERDE MT",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 524037918.22,
     "atraso15_pct": 2.76,
@@ -2887,7 +2887,7 @@
    {
     "cod": "13009717",
     "nome": "BANCO DO ESTADO DE SERGIPE S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 408858984.8,
     "atraso15_pct": 7.66,
@@ -2962,7 +2962,7 @@
    {
     "cod": "26555235",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SORRISO - SICREDI CELEIRO MT/RR",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 398488446.86,
     "atraso15_pct": 1.04,
@@ -3112,7 +3112,7 @@
    {
     "cod": "03042597",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE CAMPO GRANDE E REGIÃO - SICREDI CAMPO GRANDE MS",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 387149118.41,
     "atraso15_pct": 4.91,
@@ -3137,7 +3137,7 @@
    {
     "cod": "08044854",
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO SICOOB CENTRO - SICOOB CENTRO",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 380738033.47,
     "atraso15_pct": 6.89,
@@ -3237,7 +3237,7 @@
    {
     "cod": "C0049944",
     "nome": "BTG PACTUAL",
-    "sr": null,
+    "sr": "S1",
     "nivel": "conglomerado",
     "carteira_brl": 371054393.12,
     "atraso15_pct": 0.04,
@@ -3312,7 +3312,7 @@
    {
     "cod": "38486817",
     "nome": "BANCO DE DESENVOLVIMENTO DE MINAS GERAIS S.A.-BDMG",
-    "sr": null,
+    "sr": "S3",
     "nivel": "individual",
     "carteira_brl": 361196740.73,
     "atraso15_pct": 0.05,
@@ -4637,7 +4637,7 @@
    {
     "cod": "05392810",
     "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO MERIDIONAL DO BRASIL - SICOOB UNICOOB MERIDIONAL",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 207234926.7,
     "atraso15_pct": 0.3,
@@ -4662,7 +4662,7 @@
    {
     "cod": "04529074",
     "nome": "COOPERATIVA DE CRÉDITO SICOOB CREDICAPITAL",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 205627304.98,
     "atraso15_pct": 6.74,
@@ -4862,7 +4862,7 @@
    {
     "cod": "02766672",
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA PLANALTO SUL - CRESOL PLANALTO SUL",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 191963686.46,
     "atraso15_pct": 3.86,
@@ -4937,7 +4937,7 @@
    {
     "cod": "15163587",
     "nome": "DESENBAHIA - AGENCIA DE FOMENTO DO ESTADO DA BAHIA S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 175547415.85,
     "atraso15_pct": 4.33,
@@ -5462,7 +5462,7 @@
    {
     "cod": "C0010083",
     "nome": "SAFRA",
-    "sr": null,
+    "sr": "S2",
     "nivel": "conglomerado",
     "carteira_brl": 145313815.27,
     "atraso15_pct": 1.17,
@@ -5787,7 +5787,7 @@
    {
     "cod": "69346856",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS PROFISSIONAIS DA SAÚDE DA REGIÃO DA ALTA MOGIANA - SICOOB CREDIMOGIANA",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 124105008.05,
     "atraso15_pct": 0.78,
@@ -6037,7 +6037,7 @@
    {
     "cod": "00968602",
     "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO VALE DO SÃO PATRICIO LTDA.",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 112007360.63,
     "atraso15_pct": 5.62,
@@ -7037,7 +7037,7 @@
    {
     "cod": "01667766",
     "nome": "SICOOB CREDINOVA - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE NOVA SERRANA E REGIÃO CENTRO-OESTE LTDA.",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 78453888.77,
     "atraso15_pct": 0.44,
@@ -7503,7 +7503,7 @@
    {
     "cod": "07502031",
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO CENTRO OESTE LTDA.",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 64723433.42,
     "atraso15_pct": 2.54,
@@ -7703,7 +7703,7 @@
    {
     "cod": "71154876",
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO NOROESTE DE MINAS GERAIS LTDA.   SICOOB CREDIPINHO",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 56830525.22,
     "atraso15_pct": 4.51,
@@ -7878,7 +7878,7 @@
    {
     "cod": "00517645",
     "nome": "BANCO RIBEIRAO PRETO S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 48727640.4,
     "atraso15_pct": 0.0,
@@ -7953,7 +7953,7 @@
    {
     "cod": "28145829",
     "nome": "BANCO DE DESENVOLVIMENTO DO ESPIRITO SANTO S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 48468521.85,
     "atraso15_pct": 10.19,
@@ -8278,7 +8278,7 @@
    {
     "cod": "66788142",
     "nome": "COOPERATIVA DE CREDITO CREDIMOTA   SICOOB CREDIMOTA",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 37791318.2,
     "atraso15_pct": 7.17,
@@ -8753,7 +8753,7 @@
    {
     "cod": "04237413",
     "nome": "COOPERATIVA DE CRÉDITO DO VALE DO SÃO FRANCISCO - SICREDI VALE DO SÃO FRANCISCO",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 27212220.39,
     "atraso15_pct": 0.0,
@@ -9003,7 +9003,7 @@
    {
     "cod": "41498340",
     "nome": "TENTOS S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 25153475.6,
     "atraso15_pct": 0.0,
@@ -9203,7 +9203,7 @@
    {
     "cod": "70241658",
     "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI RECIFE",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 19966945.28,
     "atraso15_pct": 0.24,
@@ -9603,7 +9603,7 @@
    {
     "cod": "72257793",
     "nome": "SICREDI CEARÁ - COOPERATIVA DE CRÉDITO DO ESTADO DO CEARÁ",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 12266290.54,
     "atraso15_pct": 0.0,
@@ -9703,7 +9703,7 @@
    {
     "cod": "62673470",
     "nome": "COOPERATIVA DE CRÉDITO SICOOB COOPMIL",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 10842875.61,
     "atraso15_pct": 0.0,
@@ -9753,7 +9753,7 @@
    {
     "cod": "42887133",
     "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DA REGIÃO SUDESTE DE MINAS GERAIS LTDA. - SICOOB CREDISUCESSO",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 9546721.41,
     "atraso15_pct": 0.0,
@@ -10028,7 +10028,7 @@
    {
     "cod": "11476673",
     "nome": "BANCO RANDON S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 4888326.45,
     "atraso15_pct": 6.26,
@@ -10194,7 +10194,7 @@
    {
     "cod": "C0051987",
     "nome": "DAYCOVAL",
-    "sr": null,
+    "sr": "S3",
     "nivel": "conglomerado",
     "carteira_brl": 2788970.75,
     "atraso15_pct": 0.0,
@@ -10269,7 +10269,7 @@
    {
     "cod": "06284531",
     "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE MATO GROSSO S/A - DESENVOLVE MT",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 2510833.38,
     "atraso15_pct": 0.0,
@@ -10294,7 +10294,7 @@
    {
     "cod": "03848103",
     "nome": "AGENCIA DE FOMENTO DO RIO GRANDE DO NORTE S.A.",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 2382314.06,
     "atraso15_pct": 18.07,
@@ -10444,7 +10444,7 @@
    {
     "cod": "54190525",
     "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 1066171.12,
     "atraso15_pct": 11.06,
@@ -10594,7 +10594,7 @@
    {
     "cod": "82937293",
     "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE SANTA CATARINA S.A.-BADESC",
-    "sr": null,
+    "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 442408.24,
     "atraso15_pct": 100.0,
@@ -10669,7 +10669,7 @@
    {
     "cod": "97259253",
     "nome": "COOPERATIVA E ECONOMIA E CRÉDITO MÚTUO DOS MÉDICOS DO PLANALTO MÉDIO DO RIO GRANDE DO SUL LTDA. - CREDISIS/CREDIPLAN",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 331341.0,
     "atraso15_pct": 0.0,
@@ -10719,7 +10719,7 @@
    {
     "cod": "03269540",
     "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES MILITARES, POLÍCIA CIVIL E DA SECRETARIA DE EDUCAÇÃO DO ESTADO DE MINAS GERAIS LTDA - SICOOB COOPEMG",
-    "sr": null,
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 55883.59,
     "atraso15_pct": 0.0,
@@ -10793,69 +10793,201 @@
    }
   ],
   "por_segmento": {
-   "S3": {
+   "S1": {
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 37955677249.06,
-      "n_inst": 9
+      "total_brl": 457965910250.48,
+      "n_inst": 6
      },
      {
       "anomes": "202506",
-      "total_brl": 36694271929.62,
-      "n_inst": 9
+      "total_brl": 450885922476.96,
+      "n_inst": 6
      },
      {
       "anomes": "202509",
-      "total_brl": 38142487238.83,
-      "n_inst": 9
+      "total_brl": 449623484789.37,
+      "n_inst": 6
      },
      {
       "anomes": "202512",
-      "total_brl": 40238874013.83,
-      "n_inst": 9
+      "total_brl": 458516264308.31,
+      "n_inst": 6
      },
      {
       "anomes": "202603",
-      "total_brl": 42049060935.93,
-      "n_inst": 9
+      "total_brl": 468880469852.5,
+      "n_inst": 6
      },
      {
       "anomes": "202606",
-      "total_brl": 39300553791.41,
-      "n_inst": 9
+      "total_brl": 463505497334.51,
+      "n_inst": 6
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
-      "agg_pct": 1.76,
-      "n": 9
+      "agg_pct": 3.04,
+      "n": 6
      },
      {
       "anomes": "202506",
-      "agg_pct": 4.46,
-      "n": 9
+      "agg_pct": 4.28,
+      "n": 6
      },
      {
       "anomes": "202509",
-      "agg_pct": 4.66,
-      "n": 9
+      "agg_pct": 5.94,
+      "n": 6
      },
      {
       "anomes": "202512",
-      "agg_pct": 4.35,
-      "n": 9
+      "agg_pct": 6.22,
+      "n": 6
      },
      {
       "anomes": "202603",
-      "agg_pct": 4.39,
-      "n": 9
+      "agg_pct": 5.89,
+      "n": 6
      },
      {
       "anomes": "202606",
-      "agg_pct": 7.47,
-      "n": 9
+      "agg_pct": 6.97,
+      "n": 6
+     }
+    ]
+   },
+   "S2": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 47821034076.19,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 49632934624.4,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 50377322021.03,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 54556875515.47,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 56827199121.2,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202606",
+      "total_brl": 58149694722.5,
+      "n_inst": 5
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.54,
+      "n": 5
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.84,
+      "n": 5
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.52,
+      "n": 5
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.45,
+      "n": 5
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.47,
+      "n": 5
+     },
+     {
+      "anomes": "202606",
+      "agg_pct": 0.48,
+      "n": 5
+     }
+    ]
+   },
+   "S3": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 59458427859.94,
+      "n_inst": 18
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 58280660343.22,
+      "n_inst": 18
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 59152957471.58,
+      "n_inst": 18
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 60661551965.97,
+      "n_inst": 18
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 62628489659.87,
+      "n_inst": 18
+     },
+     {
+      "anomes": "202606",
+      "total_brl": 59971023839.69,
+      "n_inst": 18
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.61,
+      "n": 18
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 3.61,
+      "n": 18
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 4.41,
+      "n": 18
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 3.86,
+      "n": 18
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 3.88,
+      "n": 18
+     },
+     {
+      "anomes": "202606",
+      "agg_pct": 6.0,
+      "n": 18
      }
     ]
    },
@@ -10863,65 +10995,65 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 40949656149.59,
-      "n_inst": 85
+      "total_brl": 49203444289.18,
+      "n_inst": 109
      },
      {
       "anomes": "202506",
-      "total_brl": 38962152995.63,
-      "n_inst": 85
+      "total_brl": 46833747242.44,
+      "n_inst": 110
      },
      {
       "anomes": "202509",
-      "total_brl": 42934181104.84,
-      "n_inst": 86
+      "total_brl": 51673694770.02,
+      "n_inst": 111
      },
      {
       "anomes": "202512",
-      "total_brl": 45920666177.2,
-      "n_inst": 85
+      "total_brl": 55421201157.85,
+      "n_inst": 108
      },
      {
       "anomes": "202603",
-      "total_brl": 46563528546.37,
-      "n_inst": 84
+      "total_brl": 56386216741.2,
+      "n_inst": 107
      },
      {
       "anomes": "202606",
-      "total_brl": 42344494963.93,
-      "n_inst": 84
+      "total_brl": 51182337425.29,
+      "n_inst": 106
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
-      "agg_pct": 0.77,
-      "n": 85
+      "agg_pct": 0.86,
+      "n": 109
      },
      {
       "anomes": "202506",
-      "agg_pct": 1.25,
-      "n": 85
+      "agg_pct": 1.34,
+      "n": 110
      },
      {
       "anomes": "202509",
-      "agg_pct": 1.17,
-      "n": 86
+      "agg_pct": 1.31,
+      "n": 111
      },
      {
       "anomes": "202512",
-      "agg_pct": 1.12,
-      "n": 85
+      "agg_pct": 1.27,
+      "n": 108
      },
      {
       "anomes": "202603",
-      "agg_pct": 1.06,
-      "n": 84
+      "agg_pct": 1.23,
+      "n": 107
      },
      {
       "anomes": "202606",
-      "agg_pct": 1.71,
-      "n": 84
+      "agg_pct": 2.0,
+      "n": 106
      }
     ]
    },
@@ -10929,65 +11061,65 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 43859615388.29,
-      "n_inst": 276
+      "total_brl": 47018385362.27,
+      "n_inst": 293
      },
      {
       "anomes": "202506",
-      "total_brl": 42858496640.58,
-      "n_inst": 272
+      "total_brl": 46236805224.07,
+      "n_inst": 292
      },
      {
       "anomes": "202509",
-      "total_brl": 46829430760.19,
-      "n_inst": 274
+      "total_brl": 50270452713.86,
+      "n_inst": 294
      },
      {
       "anomes": "202512",
-      "total_brl": 51103703001.17,
-      "n_inst": 274
+      "total_brl": 54078258838.53,
+      "n_inst": 293
      },
      {
       "anomes": "202603",
-      "total_brl": 52935920198.96,
-      "n_inst": 274
+      "total_brl": 55871533372.42,
+      "n_inst": 291
      },
      {
       "anomes": "202606",
-      "total_brl": 50888699679.78,
-      "n_inst": 273
+      "total_brl": 53375359542.98,
+      "n_inst": 289
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
-      "agg_pct": 1.41,
-      "n": 276
+      "agg_pct": 1.36,
+      "n": 293
      },
      {
       "anomes": "202506",
-      "agg_pct": 2.34,
-      "n": 272
+      "agg_pct": 2.43,
+      "n": 292
      },
      {
       "anomes": "202509",
-      "agg_pct": 1.98,
-      "n": 274
+      "agg_pct": 2.13,
+      "n": 294
      },
      {
       "anomes": "202512",
-      "agg_pct": 1.8,
-      "n": 274
+      "agg_pct": 1.9,
+      "n": 293
      },
      {
       "anomes": "202603",
-      "agg_pct": 1.68,
-      "n": 274
+      "agg_pct": 1.78,
+      "n": 291
      },
      {
       "anomes": "202606",
-      "agg_pct": 2.4,
-      "n": 273
+      "agg_pct": 2.48,
+      "n": 289
      }
     ]
    }

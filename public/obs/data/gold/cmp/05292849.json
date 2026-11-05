@@ -1,7 +1,7 @@
 {
  "cod": "05292849",
  "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS EM EMPRESAS ADMINISTRADORAS DE AEROPORTOS - AEROCRED",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -329,5 +329,5 @@
    "202403": 55.00720888709459
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

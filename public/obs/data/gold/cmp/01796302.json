@@ -1,7 +1,7 @@
 {
  "cod": "01796302",
  "nome": "COOPERATIVA DE CRÉDITO UNICRED REGIÃO DOS VALES LTDA. - UNICRED REGIÃO DOS VALES",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -329,5 +329,5 @@
    "202403": 62.16816630192938
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

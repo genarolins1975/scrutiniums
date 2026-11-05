@@ -1,7 +1,7 @@
 {
  "cod": "07208637",
  "nome": "COOPERATIVA DE CREDITO RURAL COM INTERAÇÃO SOLIDARIA DA ZONA DA MATA - CRESOL ZONA DA MATA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -224,5 +224,5 @@
    "202006": 80.32231267944458
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

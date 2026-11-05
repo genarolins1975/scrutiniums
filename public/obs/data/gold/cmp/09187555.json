@@ -1,7 +1,7 @@
 {
  "cod": "09187555",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS ENGENHEIROS, ARQUITETOS, AGRÔNOMOS E AFINS DO ESTADO DO RIO GRANDE DO SUL - PROJETA UNICRED",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -238,5 +238,5 @@
    "202012": 34.4898355973154
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

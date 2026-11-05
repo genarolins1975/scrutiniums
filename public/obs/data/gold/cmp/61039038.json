@@ -1,7 +1,7 @@
 {
  "cod": "61039038",
  "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS COLABORADORES DA SG INDUSTRIA E COMERCIO DE MATERIAIS DE CONSTRUCAO, VIDROS E AFINS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -301,5 +301,5 @@
    "202303": 76.73905399251375
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

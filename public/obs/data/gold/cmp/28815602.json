@@ -1,7 +1,7 @@
 {
  "cod": "28815602",
  "nome": "COOPERATIVA DE CRÉDITO DOS MÉDICOS, DEMAIS PROFISSIONAIS DE SAÚDE E DOS EMPRESÁRIOS DA REGIÃO  SUL E SUDESTE DO PARÁ - SICREDI SUL DO PARÁ",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -112,5 +112,5 @@
    "201903": 73.95515739691416
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

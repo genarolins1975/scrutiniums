@@ -1,7 +1,7 @@
 {
  "cod": "71437123",
  "nome": "COOPERATIVA DE CRÉDITO RURAL DE ALTEROSA LTDA - SICOOB COOPEROSA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -259,5 +259,5 @@
    "202109": 57.18930243974801
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

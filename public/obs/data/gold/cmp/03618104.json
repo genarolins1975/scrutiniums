@@ -1,7 +1,7 @@
 {
  "cod": "03618104",
  "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO MÚTUO DO RIO GRANDE DO SUL, SANTA CATARINA E PARANÁ - CECRESUL",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3C",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -252,5 +252,5 @@
    "202106": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

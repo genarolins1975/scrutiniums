@@ -1,7 +1,7 @@
 {
  "cod": "00068389",
  "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO DE CRATEÚS - SICREDI CRATEÚS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -203,5 +203,5 @@
    "201909": 47.8864505570326
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

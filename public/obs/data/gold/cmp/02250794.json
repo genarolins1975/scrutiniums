@@ -1,7 +1,7 @@
 {
  "cod": "02250794",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MÉDICOS, DEMAIS PROFISSIONAIS DE NÍVEL SUPERIOR DA ÁREA DE SAÚDE E EMPRESÁRIOS DE GUARULHOS E REGIÃO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -217,5 +217,5 @@
    "202003": 40.1954119071844
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

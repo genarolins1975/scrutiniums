@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-04T18:31:21+00:00",
+ "gerado_em": "2026-11-05T19:13:25+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -4890,6 +4890,10 @@
      {
       "p": "2026-2",
       "v": 2.5
+     },
+     {
+      "p": "2026-3",
+      "v": 2.5
      }
     ],
     "alavancagem_pct": [
@@ -4912,6 +4916,10 @@
      {
       "p": "2026-2",
       "v": 2.27
+     },
+     {
+      "p": "2026-3",
+      "v": 2.52
      }
     ],
     "basileia_pct": [
@@ -4934,6 +4942,10 @@
      {
       "p": "2026-2",
       "v": 20.25
+     },
+     {
+      "p": "2026-3",
+      "v": 20.36
      }
     ],
     "icp_pct": [
@@ -4956,6 +4968,10 @@
      {
       "p": "2026-2",
       "v": 20.25
+     },
+     {
+      "p": "2026-3",
+      "v": 20.36
      }
     ],
     "margem_capital_principal_pct": [
@@ -4978,6 +4994,10 @@
      {
       "p": "2026-2",
       "v": 15.75
+     },
+     {
+      "p": "2026-3",
+      "v": 15.86
      }
     ],
     "nivel1_pct": [
@@ -5000,18 +5020,22 @@
      {
       "p": "2026-2",
       "v": 20.25
+     },
+     {
+      "p": "2026-3",
+      "v": 20.36
      }
     ]
    },
    "ultimo": {
     "acp_total_pct": 2.5,
-    "alavancagem_pct": 2.27,
-    "basileia_pct": 20.25,
-    "icp_pct": 20.25,
-    "margem_capital_principal_pct": 15.75,
-    "nivel1_pct": 20.25
+    "alavancagem_pct": 2.52,
+    "basileia_pct": 20.36,
+    "icp_pct": 20.36,
+    "margem_capital_principal_pct": 15.86,
+    "nivel1_pct": 20.36
    },
-   "periodo_ultimo": "2026-2"
+   "periodo_ultimo": "2026-3"
   },
   {
    "cnpj8": "60701190",

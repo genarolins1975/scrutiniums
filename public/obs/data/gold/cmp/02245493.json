@@ -1,7 +1,7 @@
 {
  "cod": "02245493",
  "nome": "COOPERATIVA DE CREDITO DE SALVADOR - SICREDI SALVADOR",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -224,5 +224,5 @@
    "202006": 73.70974631187427
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

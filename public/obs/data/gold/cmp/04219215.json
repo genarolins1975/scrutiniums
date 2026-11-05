@@ -1,7 +1,7 @@
 {
  "cod": "04219215",
  "nome": "COOPERATIVA DE CREDITO MUTUO DOS SERVIDORES PÚBLICOS ESTADUAIS CIVIS,MILITARES E PENSIONISTAS EM ARARAQUARA E REGIÃO, SERVIDORES E MAGISTRADOS  JUDICIÁRIO FEDERAL NO ESTADO DE SÃO PAULO-SICOOB COOPARA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 69.3865120998825
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

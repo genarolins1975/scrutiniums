@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-04T18:31:49+00:00",
+ "gerado_em": "2026-11-05T19:13:51+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-09",
  "data_base_anterior": "2026-08",
@@ -366,12 +366,12 @@
   },
   {
    "p": "2026-08",
-   "saldo": 7720116626624,
-   "inad": 5.01,
+   "saldo": 7720897424370,
+   "inad": 5.02,
    "atraso15_90": 0.99,
-   "ap": 8.58,
-   "pf": 4775933100756,
-   "pj": 2944183525868
+   "ap": 8.59,
+   "pf": 4776626219700,
+   "pj": 2944271204670
   },
   {
    "p": "2026-09",
@@ -932,7 +932,7 @@
    "cresc12": 7.41,
    "d_inad_3m": 0.4,
    "d_inad_12m": 1.44,
-   "z_inad": 1.74,
+   "z_inad": 1.73,
    "prod_dominante": "Rural",
    "renda_dominante": "Acima de 20 salários mínimos"
   },
@@ -3506,21 +3506,6 @@
   },
   {
    "tipo": "uf_deterioracao",
-   "grupo": "Rio Grande do Sul (RS)",
-   "indicador": "inadimplência (arrastada)",
-   "atual": 5.12,
-   "anterior": 4.72,
-   "delta_pp": 0.4,
-   "periodo": "2026-06 → 2026-09",
-   "vs_brasil": 0.12,
-   "regra": "alta em 2 datas-base consecutivas e Δ3m ≥ 0,30 p.p.",
-   "link": {
-    "view": "panorama",
-    "uf": "RS"
-   }
-  },
-  {
-   "tipo": "uf_deterioracao",
    "grupo": "Amapá (AP)",
    "indicador": "inadimplência (arrastada)",
    "atual": 6.4,
@@ -3590,6 +3575,22 @@
    "delta_12m_pp": 0.71,
    "periodo": "2026-06 → 2026-09",
    "saldo_grupo": 1072565082885,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
+   "link": {
+    "view": "panorama"
+   }
+  },
+  {
+   "tipo": "renda_deterioracao",
+   "grupo": "Mais de 2 a 3 salários mínimos · PF",
+   "indicador": "inadimplência (arrastada)",
+   "atual": 6.13,
+   "anterior": 5.79,
+   "delta_pp": 0.34,
+   "delta_12m_pp": 0.48,
+   "periodo": "2026-06 → 2026-09",
+   "saldo_grupo": 493342731269,
    "nota": null,
    "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {

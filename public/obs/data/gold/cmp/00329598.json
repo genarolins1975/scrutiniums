@@ -1,7 +1,7 @@
 {
  "cod": "00329598",
  "nome": "SEFER INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA - EM LIQUIDAÇÃO EXTRAJUDICIAL",
- "sr": null,
+ "sr": "S4",
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -420,5 +420,5 @@
    "202603": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:42+00:00"
+ "gerado_em": "2026-11-05T19:13:45+00:00"
 }

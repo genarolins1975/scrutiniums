@@ -1,7 +1,7 @@
 {
  "cod": "66616632",
  "nome": "TATICA S.A. - DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -182,5 +182,5 @@
    "201812": 0.0
   }
  },
- "gerado_em": "2026-11-04T18:31:44+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }

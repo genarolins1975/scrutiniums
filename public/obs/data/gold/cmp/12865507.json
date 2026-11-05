@@ -1,7 +1,7 @@
 {
  "cod": "12865507",
  "nome": "BRK S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
- "sr": "S4",
+ "sr": null,
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -294,5 +294,5 @@
    "202212": 42.70376790989733
   }
  },
- "gerado_em": "2026-11-04T18:31:43+00:00"
+ "gerado_em": "2026-11-05T19:13:46+00:00"
 }
