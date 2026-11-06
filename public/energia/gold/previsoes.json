@@ -1,28 +1,26 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-11-01T15:31:08Z",
+ "gerado_em": "2026-11-06T16:23:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d4aef2cd1cbc",
+ "versao_codigo": "c969f8edf2a2",
  "disponivel": true,
  "atual": {
   "disponivel": false,
   "motivo_codigo": "NENHUM_MODELO_EM_PRODUCAO",
   "motivo": "Nenhum modelo de previsão do PLD está em produção: todos estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
   "ultima_execucao": {
-   "run_id": "prosp_2026-11-01_20261101T153107Z",
+   "run_id": "prosp_2026-11-06_20261106T162259Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
-   "origem": "2026-11-01",
-   "cutoff": "2026-11-01T10:00:00Z",
-   "emitido_em": "2026-11-01T15:31:07Z",
+   "origem": "2026-11-06",
+   "cutoff": "2026-11-06T10:00:00Z",
+   "emitido_em": "2026-11-06T16:22:59Z",
    "modelo": "B0",
    "versao_modelo": "B0-v1",
    "estado_modelo": "PESQUISA",
    "celulas": 28,
-   "com_numero": 12,
-   "motivos": [
-    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
-   ],
+   "com_numero": 28,
+   "motivos": [],
    "alertas": [
     "ATRASADO_APOS_08H",
     "LIMITE_PROVISORIO"
@@ -39,19 +37,17 @@
  "referencia_experimental": {
   "modelo": "B0",
   "ultima_rodada": {
-   "run_id": "prosp_2026-11-01_20261101T153107Z",
+   "run_id": "prosp_2026-11-06_20261106T162259Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
-   "origem": "2026-11-01",
-   "cutoff": "2026-11-01T10:00:00Z",
-   "emitido_em": "2026-11-01T15:31:07Z",
+   "origem": "2026-11-06",
+   "cutoff": "2026-11-06T10:00:00Z",
+   "emitido_em": "2026-11-06T16:22:59Z",
    "modelo": "B0",
    "versao_modelo": "B0-v1",
    "estado_modelo": "PESQUISA",
    "celulas": 28,
-   "com_numero": 12,
-   "motivos": [
-    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
-   ],
+   "com_numero": 28,
+   "motivos": [],
    "alertas": [
     "ATRASADO_APOS_08H",
     "LIMITE_PROVISORIO"
@@ -63,6 +59,104 @@
  },
  "publicacoes": 0,
  "rodadas": [
+  {
+   "run_id": "prosp_2026-11-06_20261106T162259Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-06",
+   "cutoff": "2026-11-06T10:00:00Z",
+   "emitido_em": "2026-11-06T16:22:59Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 28,
+   "motivos": [],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
+  {
+   "run_id": "prosp_2026-11-05_20261105T165533Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-05",
+   "cutoff": "2026-11-05T10:00:00Z",
+   "emitido_em": "2026-11-05T16:55:33Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
+  {
+   "run_id": "prosp_2026-11-04_20261104T164049Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-04",
+   "cutoff": "2026-11-04T10:00:00Z",
+   "emitido_em": "2026-11-04T16:40:49Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
+  {
+   "run_id": "prosp_2026-11-03_20261103T164420Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-03",
+   "cutoff": "2026-11-03T10:00:00Z",
+   "emitido_em": "2026-11-03T16:44:20Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
+  {
+   "run_id": "prosp_2026-11-02_20261102T185504Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-02",
+   "cutoff": "2026-11-02T10:00:00Z",
+   "emitido_em": "2026-11-02T18:55:04Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "PERIODO_ELEGIVEL_INCOMPLETO_NO_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
   {
    "run_id": "prosp_2026-11-01_20261101T153107Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
@@ -356,7 +450,7 @@
    "modo": "manual"
   }
  ],
- "rodadas_total": 16,
+ "rodadas_total": 21,
  "arquivo": [
   {
    "alertas": [
@@ -1596,19 +1690,19 @@
    {
     "mes": "2026-11",
     "url": "/energia/series/previsoes_emissoes_2026-11.json",
-    "registros": 28,
+    "registros": 168,
     "registros_com_campos_omitidos": 0,
     "primeiro": "prosp_2026-11-01_20261101T153107Z:W1:SE:B0",
-    "ultimo_sha256": "cc07d161ebbb9ed9a6f5d8e0b258f3787a755073dc33a4bc4c3e2efa883b0669",
-    "sha256_particao": "47fcd1aafef10038b5ba647c7ad1694ac009292e98cc7155288642bc7fa0264e",
+    "ultimo_sha256": "3142cf8635b8cb3ab0ef712ff70d0f422ce7cb2b36e2257cd44f8eed3249dcb5",
+    "sha256_particao": "2de594003c498c55138db5937c7b7247fe3b222396a4a23c79fafe2b9335d99c",
     "por_tipo": {
      "PUBLICACAO": 0,
      "RODADA_INTERNA": 0,
-     "REFERENCIA_EXPERIMENTAL": 28
+     "REFERENCIA_EXPERIMENTAL": 168
     }
    }
   ],
-  "registros": 420,
+  "registros": 560,
   "cadeia": "íntegra",
   "nota": "Registros a partir do particionamento: um arquivo por mês de inclusão, carregado sob demanda. `arquivo` guarda só os registros anteriores ao particionamento."
  },
