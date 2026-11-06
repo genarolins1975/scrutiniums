@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-05T19:13:25+00:00",
+ "gerado_em": "2026-11-06T18:17:59+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -1835,6 +1835,154 @@
     "nsfr_pct": 102.38
    },
    "periodo_ultimo": "2026-2"
+  },
+  {
+   "cnpj8": "02992446",
+   "nome": "BCO CNH IND. CAPITAL S.A",
+   "cod_inst": "C0081407",
+   "series": {
+    "acp_total_pct": [
+     {
+      "p": "2025-1",
+      "v": 2.5
+     },
+     {
+      "p": "2025-2",
+      "v": 2.5
+     },
+     {
+      "p": "2025-3",
+      "v": 2.5
+     },
+     {
+      "p": "2025-4",
+      "v": 2.5
+     },
+     {
+      "p": "2026-1",
+      "v": 2.5
+     }
+    ],
+    "alavancagem_pct": [
+     {
+      "p": "2025-1",
+      "v": 10.41
+     },
+     {
+      "p": "2025-2",
+      "v": 10.84
+     },
+     {
+      "p": "2025-3",
+      "v": 9.94
+     },
+     {
+      "p": "2025-4",
+      "v": 9.85
+     },
+     {
+      "p": "2026-1",
+      "v": 10.07
+     }
+    ],
+    "basileia_pct": [
+     {
+      "p": "2025-1",
+      "v": 15.97
+     },
+     {
+      "p": "2025-2",
+      "v": 16.93
+     },
+     {
+      "p": "2025-3",
+      "v": 16.66
+     },
+     {
+      "p": "2025-4",
+      "v": 15.31
+     },
+     {
+      "p": "2026-1",
+      "v": 15.41
+     }
+    ],
+    "icp_pct": [
+     {
+      "p": "2025-1",
+      "v": 12.54
+     },
+     {
+      "p": "2025-2",
+      "v": 13.08
+     },
+     {
+      "p": "2025-3",
+      "v": 12.54
+     },
+     {
+      "p": "2025-4",
+      "v": 11.38
+     },
+     {
+      "p": "2026-1",
+      "v": 11.25
+     }
+    ],
+    "margem_capital_principal_pct": [
+     {
+      "p": "2025-1",
+      "v": 4.04
+     },
+     {
+      "p": "2025-2",
+      "v": 4.58
+     },
+     {
+      "p": "2025-3",
+      "v": 4.04
+     },
+     {
+      "p": "2025-4",
+      "v": 2.88
+     },
+     {
+      "p": "2026-1",
+      "v": 2.75
+     }
+    ],
+    "nivel1_pct": [
+     {
+      "p": "2025-1",
+      "v": 12.54
+     },
+     {
+      "p": "2025-2",
+      "v": 13.08
+     },
+     {
+      "p": "2025-3",
+      "v": 12.54
+     },
+     {
+      "p": "2025-4",
+      "v": 11.38
+     },
+     {
+      "p": "2026-1",
+      "v": 11.25
+     }
+    ]
+   },
+   "ultimo": {
+    "acp_total_pct": 2.5,
+    "alavancagem_pct": 10.07,
+    "basileia_pct": 15.41,
+    "icp_pct": 11.25,
+    "margem_capital_principal_pct": 2.75,
+    "nivel1_pct": 11.25
+   },
+   "periodo_ultimo": "2026-1"
   },
   {
    "cnpj8": "75647891",
@@ -4446,6 +4594,10 @@
      {
       "p": "2026-2",
       "v": 2.5
+     },
+     {
+      "p": "2026-3",
+      "v": 2.5
      }
     ],
     "alavancagem_pct": [
@@ -4468,6 +4620,10 @@
      {
       "p": "2026-2",
       "v": 4.45
+     },
+     {
+      "p": "2026-3",
+      "v": 4.26
      }
     ],
     "basileia_pct": [
@@ -4490,6 +4646,10 @@
      {
       "p": "2026-2",
       "v": 15.86
+     },
+     {
+      "p": "2026-3",
+      "v": 15.51
      }
     ],
     "icp_pct": [
@@ -4512,6 +4672,10 @@
      {
       "p": "2026-2",
       "v": 15.86
+     },
+     {
+      "p": "2026-3",
+      "v": 15.51
      }
     ],
     "margem_capital_principal_pct": [
@@ -4534,6 +4698,10 @@
      {
       "p": "2026-2",
       "v": 11.36
+     },
+     {
+      "p": "2026-3",
+      "v": 11.01
      }
     ],
     "nivel1_pct": [
@@ -4556,18 +4724,22 @@
      {
       "p": "2026-2",
       "v": 15.86
+     },
+     {
+      "p": "2026-3",
+      "v": 15.51
      }
     ]
    },
    "ultimo": {
     "acp_total_pct": 2.5,
-    "alavancagem_pct": 4.45,
-    "basileia_pct": 15.86,
-    "icp_pct": 15.86,
-    "margem_capital_principal_pct": 11.36,
-    "nivel1_pct": 15.86
+    "alavancagem_pct": 4.26,
+    "basileia_pct": 15.51,
+    "icp_pct": 15.51,
+    "margem_capital_principal_pct": 11.01,
+    "nivel1_pct": 15.51
    },
-   "periodo_ultimo": "2026-2"
+   "periodo_ultimo": "2026-3"
   },
   {
    "cnpj8": "25683434",
@@ -6321,7 +6493,7 @@
   }
  ],
  "cobertura": {
-  "com_dados": 43,
+  "com_dados": 44,
   "ausencias_notaveis": [
    "Bradesco não registra o Pilar 3 no arranjo DASFN do BCB (verificado em 08/2026) — os relatórios existem em PDF no RI; extração fica para rodada futura.",
    "Caixa registra endpoints mas parou de atualizá-los em 2022 — ausência declarada."

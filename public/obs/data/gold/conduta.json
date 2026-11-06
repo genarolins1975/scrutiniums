@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-05T19:14:01+00:00",
+ "gerado_em": "2026-11-06T18:18:34+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1296 processos sancionadores em 1ª instância, com 1365 decisões por apenado: 1307 multas somando R$ 72.2 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (167 acusados); 255 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1300 processos sancionadores em 1ª instância, com 1369 decisões por apenado: 1311 multas somando R$ 72.2 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (167 acusados); 255 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-05",
+  "ultima_decisao": "2026-11-06",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17004,
-   "processos": 13093,
-   "apenados_distintos": 11415
+   "decisoes": 17008,
+   "processos": 13097,
+   "apenados_distintos": 11418
   },
   "janela_12m": {
-   "ini": "2025-11-05",
-   "decisoes": 1365,
-   "processos": 1296,
-   "multas_n": 1307,
-   "multas_valor": 72198000.0,
+   "ini": "2025-11-06",
+   "decisoes": 1369,
+   "processos": 1300,
+   "multas_n": 1311,
+   "multas_valor": 72248000.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 149,
    "pj": 398,
-   "pf": 967
+   "pf": 971
   },
   "janela_12m_anterior": {
    "decisoes": 838,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1307,
-    "share": 95.75
+    "n": 1311,
+    "share": 95.76
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.74
+    "share": 3.73
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,33 +91,33 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 874,
-    "share": 64.03
+    "n": 877,
+    "share": 64.06
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 130,
-    "share": 9.52
+    "n": 129,
+    "share": 9.42
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 115,
-    "share": 8.42
+    "share": 8.4
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
-    "share": 8.35
+    "share": 8.33
+   },
+   {
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
+    "n": 49,
+    "share": 3.58
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 46,
-    "share": 3.37
-   },
-   {
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 45,
-    "share": 3.3
+    "share": 3.36
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -140,11 +140,6 @@
     "share": 0.15
    },
    {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 2,
-    "share": 0.15
-   },
-   {
     "situacao": "PENALIDADE ESTÁ EM CUMPRIMENTO",
     "n": 1,
     "share": 0.07
@@ -158,17 +153,17 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11971,
-    "share": 87.8
+    "n": 11975,
+    "share": 87.81
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 884,
-    "share": 6.48
+    "n": 881,
+    "share": 6.46
    },
    {
     "situacao": "PENALIDADE EXTINTA",
-    "n": 316,
+    "n": 317,
     "share": 2.32
    },
    {
@@ -188,29 +183,24 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 63,
-    "share": 0.46
+    "n": 66,
+    "share": 0.48
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 56,
-    "share": 0.41
+    "n": 57,
+    "share": 0.42
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 2,
-    "share": 0.01
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
-   "p90": 30.4,
-   "n": 3128
+   "p90": 30.2,
+   "n": 3132
   },
   "anual": [
    {
@@ -410,21 +400,61 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1221,
-    "processos": 1156,
-    "multas_n": 1169,
-    "multas_valor": 69135500.0,
+    "decisoes": 1225,
+    "processos": 1160,
+    "multas_n": 1173,
+    "multas_valor": 69185500.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 872,
+    "pf": 876,
     "pj": 349,
     "incompleto": true,
-    "recurso_share": 10.97,
-    "sem_penalidade_share": 3.69
+    "recurso_share": 10.94,
+    "sem_penalidade_share": 3.67
    }
   ],
   "recentes": [
+   {
+    "pas": "315945",
+    "nome": "BRUNO MUTZENBECHER GENTIL",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316129",
+    "nome": "MANUEL MENDES MIGUEL",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "315961",
+    "nome": "MARCIA FREITAS DE CASTRO",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "301016",
+    "nome": "PEDRO FELIPE BORGES NETO",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "316104",
     "nome": "BFMAR PARTICIPACOES S/A",
@@ -453,7 +483,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "312197",
@@ -463,7 +493,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "316212",
@@ -583,7 +613,7 @@
     "pena": "MULTA",
     "multa": 12500.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "316154",
@@ -784,46 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "311436",
-    "nome": "MARCELO OLIVEIRA LACERDA",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312209",
-    "nome": "MARCELO OLIVEIRA LACERDA",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312213",
-    "nome": "MARCUS VINICIUS VIEIRA MOREIRA LUZ",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "300481",
-    "nome": "OLIVER BENJAMIN VAHRENHOLT",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
@@ -951,7 +941,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-05",
+   "ini": "2025-11-06",
    "processos": 63,
    "acusados": 167
   },
@@ -1308,7 +1298,7 @@
     "area": "GEA-3",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-09-22",
+    "ultima_mov": "2026-10-28",
     "acusados": 5,
     "objeto": "Termo de Acusação em face dos Srs. Silvano Gersztel, Leonardo Soares Grapeia, Fernando Antônio Albino de Oliveira, João Carlos Falbo Mansur e Lucas Dias Trevisan, na qualidade de administradores da B100 S.A., atual denom"
    },
