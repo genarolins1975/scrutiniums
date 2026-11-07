@@ -5,7 +5,8 @@
  "anomes": "202608",
  "mes_12m": "2025-08",
  "meses_parciais": [
-  "2026-09"
+  "2026-09",
+  "2026-10"
  ],
  "fonte": {
   "nome": "CVM — informes mensais de FIDC (dados abertos)",
@@ -14,7 +15,7 @@
   "licenca": "dados abertos da CVM",
   "nivel": "A — informe regulatório mensal dos administradores à CVM"
  },
- "gerado_em": "2026-11-06T18:18:36+00:00",
+ "gerado_em": "2026-11-07T17:16:42+00:00",
  "sistema": {
   "n_fundos": 4220,
   "carteira": 989274138607.0507,
@@ -678,6 +679,19 @@
    "senior_pct": 64.58,
    "financeiro_pct": 48.36,
    "comercial_pct": 15.1
+  },
+  {
+   "mes": "2026-10",
+   "n_fundos": 1104,
+   "carteira": 158714092107.50003,
+   "inad_pct": 2.17,
+   "parcelas_inad_pct": 1.59,
+   "a_vencer_pct": 46.53,
+   "parcial": true,
+   "subordinacao_pct": 33.18,
+   "senior_pct": 66.82,
+   "financeiro_pct": 32.32,
+   "comercial_pct": 26.3
   }
  ],
  "sintese": "Em 2026-08, 4.220 FIDCs somavam R$ 989 bilhões em carteira, com 5,76% em créditos inadimplentes. Entre os 3.260 fundos que abrem o lastro (83% da carteira), o maior segmento é financeiro (43%), puxado por outros financeiros e crédito corporativo. Entre os fundos com duas ou mais classes, a subordinação é de 37% do PL (mezanino e subordinada), abaixo de um ano antes em 0,9 p.p.; 47% do PL está em fundos de classe única, sem subordinação. Nos fundos que informam prazos, 56% dos direitos creditórios vencem em até 180 dias e 43% das parcelas inadimplentes têm mais de 90 dias de atraso.",

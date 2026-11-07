@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-06T18:18:34+00:00",
+ "gerado_em": "2026-11-07T17:16:41+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1300 processos sancionadores em 1ª instância, com 1369 decisões por apenado: 1311 multas somando R$ 72.2 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (167 acusados); 255 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1302 processos sancionadores em 1ª instância, com 1371 decisões por apenado: 1313 multas somando R$ 72.3 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (170 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-06",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17008,
-   "processos": 13097,
-   "apenados_distintos": 11418
+   "decisoes": 17010,
+   "processos": 13099,
+   "apenados_distintos": 11419
   },
   "janela_12m": {
-   "ini": "2025-11-06",
-   "decisoes": 1369,
-   "processos": 1300,
-   "multas_n": 1311,
-   "multas_valor": 72248000.0,
+   "ini": "2025-11-07",
+   "decisoes": 1371,
+   "processos": 1302,
+   "multas_n": 1313,
+   "multas_valor": 72298000.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 149,
    "pj": 398,
-   "pf": 971
+   "pf": 973
   },
   "janela_12m_anterior": {
    "decisoes": 838,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1311,
-    "share": 95.76
+    "n": 1313,
+    "share": 95.77
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.73
+    "share": 3.72
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,28 +91,28 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 877,
-    "share": 64.06
+    "n": 878,
+    "share": 64.04
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 129,
-    "share": 9.42
+    "n": 128,
+    "share": 9.34
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 115,
-    "share": 8.4
+    "share": 8.39
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 114,
-    "share": 8.33
+    "share": 8.32
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 49,
-    "share": 3.58
+    "n": 51,
+    "share": 3.72
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
@@ -122,7 +122,7 @@
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 25,
-    "share": 1.83
+    "share": 1.82
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11975,
-    "share": 87.81
+    "n": 11976,
+    "share": 87.8
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 881,
-    "share": 6.46
+    "n": 880,
+    "share": 6.45
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -188,8 +188,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 57,
-    "share": 0.42
+    "n": 59,
+    "share": 0.43
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -199,8 +199,8 @@
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
-   "p90": 30.2,
-   "n": 3132
+   "p90": 30.4,
+   "n": 3130
   },
   "anual": [
    {
@@ -400,17 +400,17 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1225,
-    "processos": 1160,
-    "multas_n": 1173,
-    "multas_valor": 69185500.0,
+    "decisoes": 1227,
+    "processos": 1162,
+    "multas_n": 1175,
+    "multas_valor": 69235500.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 134,
-    "pf": 876,
+    "pf": 878,
     "pj": 349,
     "incompleto": true,
-    "recurso_share": 10.94,
+    "recurso_share": 10.92,
     "sem_penalidade_share": 3.67
    }
   ],
@@ -422,6 +422,16 @@
     "decisao": "2026-11-06",
     "pena": "MULTA",
     "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316576",
+    "nome": "FRANCISCO CARLOS LOMBARDI",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
@@ -442,6 +452,16 @@
     "decisao": "2026-11-06",
     "pena": "MULTA",
     "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316278",
+    "nome": "MARCIA TEIXEIRA NETTO",
+    "pessoa": "PF",
+    "decisao": "2026-11-06",
+    "pena": "MULTA",
+    "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
@@ -794,26 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "312200",
-    "nome": "JOSE ALFREDO TAVARES DE MATOS",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312202",
-    "nome": "LEKO WATANABE",
-    "pessoa": "PF",
-    "decisao": "2026-10-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -933,130 +933,130 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-11-04",
+  "ultima_movimentacao": "2026-11-06",
   "acervo": {
-   "processos": 584,
-   "acusados": 2081,
-   "em_curso": 255,
+   "processos": 587,
+   "acusados": 2088,
+   "em_curso": 258,
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-06",
-   "processos": 63,
-   "acusados": 167
+   "ini": "2025-11-07",
+   "processos": 64,
+   "acusados": 170
   },
   "fases": [
    {
     "fase": "Finalizado",
     "n": 329,
-    "share": 56.34
+    "share": 56.05
    },
    {
     "fase": "Julgamento",
     "n": 109,
-    "share": 18.66
+    "share": 18.57
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 93,
-    "share": 15.92
+    "n": 96,
+    "share": 16.35
    },
    {
     "fase": "Recurso CRSFN",
     "n": 40,
-    "share": 6.85
+    "share": 6.81
    },
    {
     "fase": "Intimação após julgamento",
     "n": 13,
-    "share": 2.23
+    "share": 2.21
    }
   ],
   "areas": [
    {
     "area": "GEA-3",
     "n": 91,
-    "share": 15.58
+    "share": 15.5
    },
    {
     "area": "GEA-4",
-    "n": 88,
-    "share": 15.07
+    "n": 89,
+    "share": 15.16
    },
    {
     "area": "GNA",
-    "n": 79,
-    "share": 13.53
+    "n": 80,
+    "share": 13.63
    },
    {
     "area": "GMA",
-    "n": 56,
-    "share": 9.59
+    "n": 57,
+    "share": 9.71
    },
    {
     "area": "GER-3",
     "n": 51,
-    "share": 8.73
+    "share": 8.69
    },
    {
     "area": "GSUI-2",
     "n": 36,
-    "share": 6.16
+    "share": 6.13
    },
    {
     "area": "GSAF",
     "n": 33,
-    "share": 5.65
+    "share": 5.62
    },
    {
     "area": "GAIN",
     "n": 26,
-    "share": 4.45
+    "share": 4.43
    },
    {
     "area": "GPS-2",
     "n": 26,
-    "share": 4.45
+    "share": 4.43
    },
    {
     "area": "GPS-3",
     "n": 26,
-    "share": 4.45
+    "share": 4.43
    },
    {
     "area": "GPS-1",
     "n": 15,
-    "share": 2.57
+    "share": 2.56
    },
    {
     "area": "GSEC-2",
     "n": 8,
-    "share": 1.37
+    "share": 1.36
    },
    {
     "area": "SEFIS",
     "n": 7,
-    "share": 1.2
+    "share": 1.19
    },
    {
     "area": "GSR-1",
     "n": 7,
-    "share": 1.2
+    "share": 1.19
    },
    {
     "area": "GIMOR",
     "n": 7,
-    "share": 1.2
+    "share": 1.19
    },
    {
     "area": "GEA-5",
     "n": 7,
-    "share": 1.2
+    "share": 1.19
    },
    {
     "area": "GSUI-1",
     "n": 6,
-    "share": 1.03
+    "share": 1.02
    },
    {
     "area": "GSR-2",
@@ -1100,9 +1100,9 @@
    "n": 329
   },
   "idade_em_curso_meses": {
-   "mediana": 22,
+   "mediana": 22.0,
    "acima_36": 89,
-   "n": 255
+   "n": 258
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1196,17 +1196,17 @@
    },
    {
     "ano": "2025",
-    "processos": 85,
+    "processos": 86,
     "finalizados": 7,
-    "acusados": 259,
+    "acusados": 261,
     "incompleto": false,
-    "finalizados_share": 8.24
+    "finalizados_share": 8.14
    },
    {
     "ano": "2026",
-    "processos": 53,
+    "processos": 55,
     "finalizados": 0,
-    "acusados": 137,
+    "acusados": 142,
     "incompleto": true,
     "finalizados_share": 0.0
    }
@@ -1233,6 +1233,16 @@
     "objeto": "Termo de Acusação em face de ERIC ROGÉRIO PRADO e REMORA GESTÃO DE NEGÓCIOS LTDA., sobre atuação sem que detivessem o devido registro junto à CVM para prestar este serviço, em infração ao disposto no art. 23 da Lei nº 6."
    },
    {
+    "nup": "19957015320202631",
+    "abertura": "2026-09-17",
+    "area": "GEA-4",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-11-04",
+    "acusados": 1,
+    "objeto": "O presente Termo de Acusação originou-se do Processo CVM n.º 19957.012723/2025-47 (anexado ao PAS), instaurado pela SEP - Superintendência de Relações com Empresas, que teve como objetivo analisar a conformidade de divul"
+   },
+   {
     "nup": "19957015326202616",
     "abertura": "2026-09-17",
     "area": "GEA-4",
@@ -1251,6 +1261,16 @@
     "ultima_mov": "2026-10-28",
     "acusados": 1,
     "objeto": "Apuraração de responsabilidade de BENONI SPONCHIADO pela prática de manipulação de preços, nos termos descritos no artigo 2°, \"II\", da Resolução CVM n° 62/22, mediante operações realizadas entre AGROBELLA e BENONI, sob o"
+   },
+   {
+    "nup": "19957014565202641",
+    "abertura": "2026-09-15",
+    "area": "GMA",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-11-04",
+    "acusados": 4,
+    "objeto": "Apurar responsabilidades por infração ao art. 3°, da Resolução CVM n° 62/22, em decorrência da realização de operações fraudulentas no mercado de valores mobiliários, nos termos descritos no inciso III, art. 2° dessa Res"
    },
    {
     "nup": "19957014658202675",
@@ -1491,26 +1511,6 @@
     "ultima_mov": "2026-10-22",
     "acusados": 2,
     "objeto": "Apurar responsabilidades por infração ao disposto no art. 3º da Resolução CVM nº 62/2022, em razão da criação de condições artificiais de oferta demanda e preço de valores mobiliários, nos termos definidos no art. 2°, I."
-   },
-   {
-    "nup": "19957008521202681",
-    "abertura": "2026-05-08",
-    "area": "GEA-3",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-08-27",
-    "acusados": 2,
-    "objeto": "Trata-se de Processo Administrativo Sancionador - Termo de Acusação CVM nº 19957.008521/2026-81, instaurado em 08.05.2026, em face de administradores da EZ TEC EMPREENDIMENTO E PARTICIPAÇÕES S.A. (\"Ez Tec\" ou \"Companhia\""
-   },
-   {
-    "nup": "19957006870202669",
-    "abertura": "2026-04-17",
-    "area": "GEA-3",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-16",
-    "acusados": 1,
-    "objeto": "Termo de Acusação em face do Sr. José Maurício Golçalves, na qualidade de acionista da Azevedo e Travassos S.A., por infração ao art. 12 da Resolução CVM nº 44/2021, ao não divulgar tempestivamente suas alterações de par"
    }
   ],
   "nota": "Processo a processo, com a fase atual e os acusados. A base não traz o resultado (absolvição, multa, termo de compromisso): 'finalizado' é o fim do rito. Objeto reproduzido como publicado pela CVM, truncado. Sem ranking por nome."

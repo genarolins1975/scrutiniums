@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-06T18:18:25+00:00",
+ "gerado_em": "2026-11-07T17:16:31+00:00",
  "mes": "2026-09",
  "cobertura_tx_pct": 90.8,
  "mes_tx": "2026-09",
@@ -14989,7 +14989,7 @@
    "dev_integral_v": 10758903.55,
    "dev_parcial_v": 4878295.45,
    "pct_devolucao": 6.69,
-   "usuarios_marcados": 38952.0,
+   "usuarios_marcados": 38951.0,
    "chaves_marcadas": 41604.0
   },
   {
@@ -15171,8 +15171,8 @@
    "dev_integral_v": 25891679.47,
    "dev_parcial_v": 15502650.07,
    "pct_devolucao": 9.08,
-   "usuarios_marcados": 64591.0,
-   "chaves_marcadas": 68534.0
+   "usuarios_marcados": 64590.0,
+   "chaves_marcadas": 68533.0
   },
   {
    "p": "2023-11",
@@ -15184,8 +15184,8 @@
    "dev_integral_v": 35898697.93,
    "dev_parcial_v": 11692922.99,
    "pct_devolucao": 10.76,
-   "usuarios_marcados": 65547.0,
-   "chaves_marcadas": 68933.0
+   "usuarios_marcados": 65546.0,
+   "chaves_marcadas": 68932.0
   },
   {
    "p": "2023-12",
@@ -15197,8 +15197,8 @@
    "dev_integral_v": 28032339.98,
    "dev_parcial_v": 8456063.78,
    "pct_devolucao": 8.99,
-   "usuarios_marcados": 77940.0,
-   "chaves_marcadas": 84973.0
+   "usuarios_marcados": 77939.0,
+   "chaves_marcadas": 84972.0
   },
   {
    "p": "2024-01",
@@ -15210,8 +15210,8 @@
    "dev_integral_v": 27264748.79,
    "dev_parcial_v": 12637688.75,
    "pct_devolucao": 8.42,
-   "usuarios_marcados": 79242.0,
-   "chaves_marcadas": 86289.0
+   "usuarios_marcados": 79241.0,
+   "chaves_marcadas": 86288.0
   },
   {
    "p": "2024-02",
@@ -15262,8 +15262,8 @@
    "dev_integral_v": 29102491.12,
    "dev_parcial_v": 18368850.46,
    "pct_devolucao": 8.83,
-   "usuarios_marcados": 112381.0,
-   "chaves_marcadas": 117576.0
+   "usuarios_marcados": 112380.0,
+   "chaves_marcadas": 117575.0
   },
   {
    "p": "2024-06",
@@ -15288,8 +15288,8 @@
    "dev_integral_v": 29139817.57,
    "dev_parcial_v": 14460767.37,
    "pct_devolucao": 7.65,
-   "usuarios_marcados": 126912.0,
-   "chaves_marcadas": 134831.0
+   "usuarios_marcados": 126911.0,
+   "chaves_marcadas": 134830.0
   },
   {
    "p": "2024-08",
@@ -15301,8 +15301,8 @@
    "dev_integral_v": 51285171.91,
    "dev_parcial_v": 31845147.72,
    "pct_devolucao": 9.87,
-   "usuarios_marcados": 114968.0,
-   "chaves_marcadas": 123307.0
+   "usuarios_marcados": 114967.0,
+   "chaves_marcadas": 123306.0
   },
   {
    "p": "2024-09",
@@ -15327,8 +15327,8 @@
    "dev_integral_v": 39914254.85,
    "dev_parcial_v": 15032820.27,
    "pct_devolucao": 8.74,
-   "usuarios_marcados": 113085.0,
-   "chaves_marcadas": 122215.0
+   "usuarios_marcados": 113084.0,
+   "chaves_marcadas": 122214.0
   },
   {
    "p": "2024-11",
@@ -15353,7 +15353,7 @@
    "dev_integral_v": 27761889.91,
    "dev_parcial_v": 15069448.36,
    "pct_devolucao": 7.91,
-   "usuarios_marcados": 125641.0,
+   "usuarios_marcados": 125640.0,
    "chaves_marcadas": 138389.0
   },
   {
@@ -15483,8 +15483,8 @@
    "dev_integral_v": 45095766.71,
    "dev_parcial_v": 25518934.0,
    "pct_devolucao": 9.18,
-   "usuarios_marcados": 164539.0,
-   "chaves_marcadas": 138597.0
+   "usuarios_marcados": 164537.0,
+   "chaves_marcadas": 138596.0
   },
   {
    "p": "2025-11",
@@ -15497,7 +15497,7 @@
    "dev_parcial_v": 19768323.93,
    "pct_devolucao": 6.84,
    "usuarios_marcados": 116238.0,
-   "chaves_marcadas": 115420.0
+   "chaves_marcadas": 115419.0
   },
   {
    "p": "2025-12",
@@ -15509,8 +15509,8 @@
    "dev_integral_v": 36931578.49,
    "dev_parcial_v": 18132030.94,
    "pct_devolucao": 9.59,
-   "usuarios_marcados": 120226.0,
-   "chaves_marcadas": 118552.0
+   "usuarios_marcados": 120224.0,
+   "chaves_marcadas": 118550.0
   },
   {
    "p": "2026-01",
@@ -15522,8 +15522,8 @@
    "dev_integral_v": 66089212.74,
    "dev_parcial_v": 45284082.52,
    "pct_devolucao": 15.4,
-   "usuarios_marcados": 100966.0,
-   "chaves_marcadas": 99832.0
+   "usuarios_marcados": 100965.0,
+   "chaves_marcadas": 99831.0
   },
   {
    "p": "2026-02",
@@ -15535,7 +15535,7 @@
    "dev_integral_v": 58309497.87,
    "dev_parcial_v": 28963264.61,
    "pct_devolucao": 13.31,
-   "usuarios_marcados": 95719.0,
+   "usuarios_marcados": 95718.0,
    "chaves_marcadas": 92722.0
   },
   {
@@ -15553,20 +15553,20 @@
   },
   {
    "p": "2026-04",
-   "contestados_q": 2960152.0,
-   "aceitas_q": 282966.0,
+   "contestados_q": 2960151.0,
+   "aceitas_q": 282965.0,
    "aceitas_100mil": 4.235,
-   "valor_contestado": 598128998.42,
+   "valor_contestado": 598128398.42,
    "dev_integral_q": 39216.0,
    "dev_integral_v": 74690289.26,
    "dev_parcial_v": 22522084.45,
    "pct_devolucao": 16.25,
-   "usuarios_marcados": 98610.0,
-   "chaves_marcadas": 96299.0
+   "usuarios_marcados": 98608.0,
+   "chaves_marcadas": 96297.0
   },
   {
    "p": "2026-05",
-   "contestados_q": 2870908.0,
+   "contestados_q": 2870907.0,
    "aceitas_q": 271641.0,
    "aceitas_100mil": 3.814,
    "valor_contestado": 630608466.8,
@@ -15575,7 +15575,7 @@
    "dev_parcial_v": 22338536.27,
    "pct_devolucao": 12.64,
    "usuarios_marcados": 106663.0,
-   "chaves_marcadas": 99419.0
+   "chaves_marcadas": 99418.0
   },
   {
    "p": "2026-06",
@@ -15587,12 +15587,12 @@
    "dev_integral_v": 45018361.26,
    "dev_parcial_v": 21963099.17,
    "pct_devolucao": 12.0,
-   "usuarios_marcados": 88786.0,
-   "chaves_marcadas": 90516.0
+   "usuarios_marcados": 88785.0,
+   "chaves_marcadas": 90515.0
   },
   {
    "p": "2026-07",
-   "contestados_q": 3128921.0,
+   "contestados_q": 3128920.0,
    "aceitas_q": 293646.0,
    "aceitas_100mil": 4.057,
    "valor_contestado": 521996849.56,
@@ -15600,12 +15600,12 @@
    "dev_integral_v": 41276721.21,
    "dev_parcial_v": 19650859.14,
    "pct_devolucao": 11.67,
-   "usuarios_marcados": 89857.0,
-   "chaves_marcadas": 91385.0
+   "usuarios_marcados": 89855.0,
+   "chaves_marcadas": 91383.0
   },
   {
    "p": "2026-08",
-   "contestados_q": 3177478.0,
+   "contestados_q": 3177466.0,
    "aceitas_q": 262741.0,
    "aceitas_100mil": 3.566,
    "valor_contestado": 610108612.21,
@@ -15613,21 +15613,21 @@
    "dev_integral_v": 39130666.02,
    "dev_parcial_v": 24899193.9,
    "pct_devolucao": 10.49,
-   "usuarios_marcados": 90365.0,
-   "chaves_marcadas": 91052.0
+   "usuarios_marcados": 90353.0,
+   "chaves_marcadas": 91040.0
   },
   {
    "p": "2026-09",
-   "contestados_q": 3747065.0,
-   "aceitas_q": 274900.0,
+   "contestados_q": 3747049.0,
+   "aceitas_q": 274892.0,
    "aceitas_100mil": 3.834,
-   "valor_contestado": 733275693.64,
-   "dev_integral_q": 35486.0,
-   "dev_integral_v": 67033799.13,
-   "dev_parcial_v": 39283066.92,
+   "valor_contestado": 733243416.73,
+   "dev_integral_q": 35485.0,
+   "dev_integral_v": 67023799.13,
+   "dev_parcial_v": 39280002.15,
    "pct_devolucao": 14.5,
-   "usuarios_marcados": 91395.0,
-   "chaves_marcadas": 93354.0
+   "usuarios_marcados": 91363.0,
+   "chaves_marcadas": 93319.0
   }
  ],
  "spi": {
