@@ -462,6 +462,15 @@ def _testar(cfg, raiz, log) -> list[dict]:
 
 
 def ciclo(cfg: dict, raiz: Path, sem_coleta=False, so_grupos=None, trabalho: Path | None = None) -> int:
+    # Validar antes de apagar o relatório anterior ou executar qualquer comando.
+    # Uma seleção digitada errado não pode virar uma coleta vazia com sucesso.
+    if so_grupos is not None:
+        so_grupos = {g.strip() for g in so_grupos}
+        if not so_grupos or "" in so_grupos:
+            raise ErroConfiguracao("seleção de grupos contém um id vazio")
+        desconhecidos = so_grupos - {g["id"] for g in cfg["grupos"]}
+        if desconhecidos:
+            raise ErroConfiguracao("grupos desconhecidos: " + ", ".join(sorted(desconhecidos)))
     repo = Repo(raiz)
     trabalho = trabalho or raiz / ".atualizacao" / cfg["dominio"]
     if trabalho.exists():

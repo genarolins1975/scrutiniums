@@ -132,6 +132,50 @@ class CicloPorGrupo(unittest.TestCase):
         self.assertFalse(r["publicavel"])
         self.assertEqual(git(self.amb.repo, "status", "--porcelain"), "")
 
+    def _cli_grupos(self, selecao):
+        config = self.amb.tmp / "config.json"
+        config.write_text(json.dumps(self.amb.cfg))
+        return subprocess.run(
+            [sys.executable, A.__file__, "ciclo", str(config), "--grupos", selecao],
+            env=dict(self.amb.env(), ATUALIZACAO_RAIZ=str(self.amb.repo)),
+            text=True, capture_output=True,
+        )
+
+    def test_selecao_com_espacos_coleta_exatamente_os_grupos_pedidos(self):
+        self.amb.fonte("a", "2")
+        self.amb.fonte("b", "3")
+        r = self._cli_grupos(" b ")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(self.amb.gold(), {"a": "1", "b": "3"})
+
+    def test_lista_com_espacos_e_default_vazio_coletam_todos(self):
+        for selecao in ("a, b", ""):
+            with self.subTest(selecao=selecao):
+                git(self.amb.repo, "reset", "--hard", "HEAD")
+                self.amb.fonte("a", "2")
+                self.amb.fonte("b", "3")
+                r = self._cli_grupos(selecao)
+                self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+                self.assertEqual(self.amb.gold(), {"a": "2", "b": "3"})
+
+    def test_selecao_invalida_falha_antes_de_apagar_relatorio_ou_coletar(self):
+        trabalho = self.amb.repo / ".atualizacao/brinquedo"
+        trabalho.mkdir(parents=True)
+        relatorio = trabalho / "relatorio.md"
+        relatorio.write_text("relatório anterior")
+        self.amb.fonte("a", "2")
+        for selecao in ("inexistente", "a,inexistente", "a,", ",b", "a,,b", " "):
+            with self.subTest(selecao=selecao):
+                r = self._cli_grupos(selecao)
+                self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
+                self.assertEqual(relatorio.read_text(), "relatório anterior")
+                self.assertEqual(git(self.amb.repo, "status", "--porcelain"), "")
+                self.assertEqual(self.amb.gold(), {"a": "1", "b": "1"})
+        # O contrato também vale para quem chama o motor diretamente.
+        with self.assertRaises(A.ErroConfiguracao):
+            self.amb.ciclo(so_grupos=set())
+        self.assertEqual(relatorio.read_text(), "relatório anterior")
+
     def test_grupo_reprovado_e_retido_e_o_aprovado_publica(self):
         self.amb.fonte("a", "2")
         self.amb.fonte("b", "ruim")
