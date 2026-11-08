@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-07T17:16:39+00:00",
+ "gerado_em": "2026-11-08T17:29:00+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -47,6 +47,114 @@
   "municipios_com_contratacao": 5488
  },
  "serie_mensal": [
+  {
+   "mes": "2020-01",
+   "custeio": 4039345270.14,
+   "investimento": 3565618370.22,
+   "comercializacao": 1039999210.33,
+   "industrializacao": 287580708.19,
+   "qtd": 121859,
+   "agricola": 4950204961.59,
+   "pecuaria": 3982338597.29,
+   "parcial": false,
+   "valor": 8932543558.88
+  },
+  {
+   "mes": "2020-02",
+   "custeio": 4577531904.53,
+   "investimento": 3017984537.78,
+   "comercializacao": 1003099472.11,
+   "industrializacao": 863849744.0,
+   "qtd": 114423,
+   "agricola": 5690545427.95,
+   "pecuaria": 3771920230.47,
+   "parcial": false,
+   "valor": 9462465658.42
+  },
+  {
+   "mes": "2020-03",
+   "custeio": 7859178609.38,
+   "investimento": 3613326646.62,
+   "comercializacao": 2241040909.33,
+   "industrializacao": 1002272608.49,
+   "qtd": 127403,
+   "agricola": 9478576341.31,
+   "pecuaria": 5237242432.51,
+   "parcial": false,
+   "valor": 14715818773.82
+  },
+  {
+   "mes": "2020-04",
+   "custeio": 9347586664.84,
+   "investimento": 3592476873.78,
+   "comercializacao": 2318438618.58,
+   "industrializacao": 692641801.0,
+   "qtd": 114221,
+   "agricola": 11040534086.42,
+   "pecuaria": 4910609871.78,
+   "parcial": false,
+   "valor": 15951143958.2
+  },
+  {
+   "mes": "2020-05",
+   "custeio": 10528430158.74,
+   "investimento": 3825817856.88,
+   "comercializacao": 2536581292.67,
+   "industrializacao": 397816232.91,
+   "qtd": 140223,
+   "agricola": 12084695861.45,
+   "pecuaria": 5203949679.75,
+   "parcial": false,
+   "valor": 17288645541.2
+  },
+  {
+   "mes": "2020-06",
+   "custeio": 10166915108.34,
+   "investimento": 4243921270.08,
+   "comercializacao": 2155391341.05,
+   "industrializacao": 708227773.89,
+   "qtd": 161198,
+   "agricola": 11128671234.07,
+   "pecuaria": 6145784259.29,
+   "parcial": false,
+   "valor": 17274455493.36
+  },
+  {
+   "mes": "2020-07",
+   "custeio": 14667048798.26,
+   "investimento": 4944524094.08,
+   "comercializacao": 1760499583.14,
+   "industrializacao": 1983571620.86,
+   "qtd": 212519,
+   "agricola": 16277646323.36,
+   "pecuaria": 7077997772.98,
+   "parcial": false,
+   "valor": 23355644096.34
+  },
+  {
+   "mes": "2020-08",
+   "custeio": 14210471011.35,
+   "investimento": 6509556173.18,
+   "comercializacao": 1512768654.26,
+   "industrializacao": 1622879810.0,
+   "qtd": 230015,
+   "agricola": 16627410375.93,
+   "pecuaria": 7228265272.86,
+   "parcial": false,
+   "valor": 23855675648.79
+  },
+  {
+   "mes": "2020-09",
+   "custeio": 12475384117.95,
+   "investimento": 7526449399.57,
+   "comercializacao": 2920198306.38,
+   "industrializacao": 1510271572.61,
+   "qtd": 202768,
+   "agricola": 17208421378.43,
+   "pecuaria": 7223882018.08,
+   "parcial": false,
+   "valor": 24432303396.51
+  },
   {
    "mes": "2020-10",
    "custeio": 9884400108.92,
@@ -926,15 +1034,26 @@
  ],
  "safras": [
   {
-   "safra": "2020/21",
-   "valor": 176092277745.63,
-   "qtd": 1363398,
-   "custeio": 93416287661.0,
-   "investimento": 56157700835.39,
-   "comercializacao": 18958690220.86,
-   "industrializacao": 7559599028.38,
-   "meses": 9,
+   "safra": "2019/20",
+   "valor": 83625072983.88,
+   "qtd": 779327,
+   "custeio": 46518987715.97,
+   "investimento": 21859145555.36,
+   "comercializacao": 11294550844.07,
+   "industrializacao": 3952388868.48,
+   "meses": 6,
    "incompleta": true
+  },
+  {
+   "safra": "2020/21",
+   "valor": 247735900887.27,
+   "qtd": 2008700,
+   "custeio": 134769191588.56,
+   "investimento": 75138230502.22,
+   "comercializacao": 25152156764.64,
+   "industrializacao": 12676322031.85,
+   "meses": 12,
+   "incompleta": false
   },
   {
    "safra": "2021/22",
@@ -1132,12 +1251,20 @@
   ],
   "por_safra": [
    {
-    "safra": "2020/21",
-    "PRONAF": 20563088028.44,
-    "PRONAMP": 19479535884.98,
-    "Demais programas": 10666507512.03,
-    "Sem programa": 125383146320.18,
+    "safra": "2019/20",
+    "PRONAF": 11075207567.43,
+    "PRONAMP": 12265002440.11,
+    "Demais programas": 4968014589.31,
+    "Sem programa": 55316848387.03,
     "incompleta": true
+   },
+   {
+    "safra": "2020/21",
+    "PRONAF": 33118239845.32,
+    "PRONAMP": 29841091723.8,
+    "Demais programas": 19179612107.61,
+    "Sem programa": 165596957210.54,
+    "incompleta": false
    },
    {
     "safra": "2021/22",
@@ -1461,17 +1588,30 @@
   ],
   "por_safra": [
    {
-    "safra": "2020/21",
-    "BNDES e Finame": 10637640583.17,
-    "Outras fontes": 1361351125.57,
-    "Funcafé": 2001972557.74,
-    "Fundos constitucionais (FNE, FNO, FCO)": 17168108241.83,
-    "LCA": 32814462541.65,
-    "Exigibilidades (MCR 6.2)": 40710501414.56,
-    "Poupança rural": 58411416591.25,
-    "Recursos livres": 12979605167.23,
-    "Tesouro Nacional": 7219522.63,
+    "safra": "2019/20",
+    "BNDES e Finame": 5104077258.79,
+    "Outras fontes": 430901640.87,
+    "Funcafé": 499251772.35,
+    "Fundos constitucionais (FNE, FNO, FCO)": 7932870460.68,
+    "LCA": 12698641107.1,
+    "Exigibilidades (MCR 6.2)": 25480945956.37,
+    "Poupança rural": 25902810178.0,
+    "Recursos livres": 5570199133.47,
+    "Tesouro Nacional": 5375476.25,
     "incompleta": true
+   },
+   {
+    "safra": "2020/21",
+    "BNDES e Finame": 19037842773.87,
+    "Outras fontes": 1618305759.19,
+    "Funcafé": 3511730155.63,
+    "Fundos constitucionais (FNE, FNO, FCO)": 21728870810.83,
+    "LCA": 40727758093.12,
+    "Exigibilidades (MCR 6.2)": 57800057273.96,
+    "Poupança rural": 86594424201.9,
+    "Recursos livres": 16704698840.03,
+    "Tesouro Nacional": 12212978.74,
+    "incompleta": false
    },
    {
     "safra": "2021/22",
@@ -1857,10 +1997,16 @@
   ],
   "serie_safra": [
    {
-    "safra": "2020/21",
-    "mulheres_share_valor": 15.55,
-    "mulheres_share_qtd": 30.19,
+    "safra": "2019/20",
+    "mulheres_share_valor": 15.98,
+    "mulheres_share_qtd": 29.32,
     "incompleta": true
+   },
+   {
+    "safra": "2020/21",
+    "mulheres_share_valor": 15.49,
+    "mulheres_share_qtd": 28.67,
+    "incompleta": false
    },
    {
     "safra": "2021/22",

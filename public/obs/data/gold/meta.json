@@ -1289,7 +1289,7 @@
   },
   "grupos": {
     "alerts": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "alerts.json"
       ],
@@ -1308,7 +1308,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1327,7 +1327,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "ampliado": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "ampliado.json"
       ],
@@ -1346,7 +1346,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1365,7 +1365,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "antecedentes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "antecedentes.json"
       ],
@@ -1384,7 +1384,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1403,7 +1403,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bets": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "bets.json"
       ],
@@ -1422,7 +1422,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1441,7 +1441,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "bndes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "bndes.json"
       ],
@@ -1460,7 +1460,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1479,7 +1479,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "central-alertas": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "alertas_central.json",
         "alerts.xml"
@@ -1499,7 +1499,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1556,7 +1556,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "comparador": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "compare.json",
         "cmp/*.json"
@@ -1576,7 +1576,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1595,7 +1595,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "conduta": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "conduta.json"
       ],
@@ -1614,7 +1614,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1633,7 +1633,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "consignado": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "consignado.json",
         "consignado_mun.json"
@@ -1653,7 +1653,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1710,7 +1710,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "custos-ti": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "custos_ti.json"
       ],
@@ -1729,7 +1729,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1748,7 +1748,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "desenrola": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "desenrola.json"
       ],
@@ -1767,7 +1767,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1826,7 +1826,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "epae": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "epae.json"
       ],
@@ -1845,7 +1845,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1864,7 +1864,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "exposures": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "exposures.json"
       ],
@@ -1883,7 +1883,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1902,7 +1902,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fase2-observacoes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "fase2_observacoes.json"
       ],
@@ -1921,7 +1921,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1940,7 +1940,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fidc": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "fidc.json"
       ],
@@ -1959,7 +1959,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -1978,7 +1978,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "folha": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "folha_bancos.json",
         "folha_balanco.json",
@@ -1999,7 +1999,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2018,7 +2018,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "fraudes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "fraudes.json"
       ],
@@ -2037,7 +2037,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2056,7 +2056,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "funding": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "funding.json"
       ],
@@ -2075,7 +2075,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2094,7 +2094,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "guidance": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "guidance.json"
       ],
@@ -2113,7 +2113,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2132,7 +2132,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "ibcc": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "ibcc.json"
       ],
@@ -2151,7 +2151,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2170,7 +2170,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "instituicoes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "institutions.json",
         "inst_pages.json",
@@ -2192,7 +2192,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2249,7 +2249,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "juros": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "juros.json"
       ],
@@ -2268,7 +2268,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2287,7 +2287,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "leading": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "leading.json"
       ],
@@ -2306,7 +2306,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2325,7 +2325,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lineage": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "lineage.json"
       ],
@@ -2344,7 +2344,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2363,7 +2363,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "market": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "market.json"
       ],
@@ -2382,7 +2382,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2401,7 +2401,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "meta": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "meta.json"
       ],
@@ -2420,7 +2420,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2477,7 +2477,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "moradia": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "moradia.json",
         "moradia_mun.json"
@@ -2497,7 +2497,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2516,7 +2516,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "npl": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "npl.json"
       ],
@@ -2535,7 +2535,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2554,7 +2554,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "openfinance": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "openfinance.json"
       ],
@@ -2573,7 +2573,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2592,7 +2592,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "operacional": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "operacional.json"
       ],
@@ -2611,7 +2611,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2668,7 +2668,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "panorama": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "panorama.json",
         "explorer.json",
@@ -2689,7 +2689,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2708,7 +2708,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "penetracao": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "penetracao.json",
         "penetracao_mun.json",
@@ -2729,7 +2729,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2748,7 +2748,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pgfn": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "pgfn.json"
       ],
@@ -2767,7 +2767,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2786,7 +2786,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pilar3": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "pilar3.json"
       ],
@@ -2805,7 +2805,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2863,7 +2863,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prazo": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "prazo.json"
       ],
@@ -2882,7 +2882,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2901,7 +2901,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "presenca-mun": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "presenca_mun.json"
       ],
@@ -2920,7 +2920,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2939,7 +2939,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "prestamista": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "prestamista.json"
       ],
@@ -2958,7 +2958,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -2977,7 +2977,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "produtos": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "products.json",
         "prod/*.json"
@@ -2997,7 +2997,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3016,7 +3016,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "pulse": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "pulse.json"
       ],
@@ -3035,7 +3035,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3054,7 +3054,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "quality": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "quality.json"
       ],
@@ -3073,7 +3073,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3092,7 +3092,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "recordes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "recordes.json"
       ],
@@ -3111,7 +3111,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3130,7 +3130,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "regimes.json"
       ],
@@ -3149,7 +3149,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3168,7 +3168,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regimes-series": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "regimes_series.json"
       ],
@@ -3187,7 +3187,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3206,7 +3206,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "regulacao": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "regulacao.json",
         "timeline_regulatoria.json"
@@ -3226,7 +3226,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3283,7 +3283,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "rj": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "rj.json"
       ],
@@ -3302,7 +3302,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3321,7 +3321,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "rural": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "rural.json",
         "rural_mun.json"
@@ -3341,7 +3341,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3360,7 +3360,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "scenario": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "scenario.json"
       ],
@@ -3379,7 +3379,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3398,7 +3398,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "screener": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "screener.json"
       ],
@@ -3417,7 +3417,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3436,7 +3436,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "sfn": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "sfn.json"
       ],
@@ -3455,7 +3455,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3474,7 +3474,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "subnacional": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "subnacional.json"
       ],
@@ -3493,7 +3493,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3512,7 +3512,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "trends": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "trends.json"
       ],
@@ -3531,7 +3531,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
@@ -3550,7 +3550,7 @@
       "snapshot": "1a64fc523a840ad845ea1c0ea31184d64961e03b1939cf2ad4b2769c87632a75"
     },
     "lucro-banco": {
-      "gerado_em": "2026-11-07T17:16:43+00:00",
+      "gerado_em": "2026-11-08T17:29:05+00:00",
       "arquivos": [
         "lucro_banco.json"
       ],
@@ -3569,7 +3569,7 @@
         "tesouro_garantias": "2026-08",
         "sicor": "2026-10",
         "cvm_ofertas": "2026-11",
-        "securit": "2026-09",
+        "securit": "2026-10",
         "bndes": "2026-03",
         "focus": "2026-10",
         "sfn_cadastro": "2026-11",
