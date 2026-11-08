@@ -92,7 +92,10 @@ def coleta_direta(con, baixar=http_get):
     """Tenta a fonte primária. Nunca lança; devolve status com o erro quando há."""
     try:
         corpo, _ = baixar(PACOTE_URL, timeout=60)
-        pacote = json.loads(corpo.decode("utf-8"))["result"]
+        resposta = json.loads(corpo.decode("utf-8"))
+        if not resposta.get("success") or not isinstance(resposta.get("result"), dict):
+            raise ValueError("package_show sem resultado válido")
+        pacote = resposta["result"]
     except Exception as e:
         base.registra_coleta(con, DATASET, "*", False, f"package_show: {e}")
         return {"ok": False, "erro": f"package_show: {e}"[:300]}
@@ -110,15 +113,32 @@ def coleta_direta(con, baixar=http_get):
             continue
         capturado = base.agora_utc()
         caminho, sha = base.salva_bronze("ccee", DATASET, nome, arq, "csv", capturado)
-        vid, nova = base.registra_vintage(con, DATASET, nome, r["url"], capturado, r.get("last_modified"),
-                                          sha, len(arq), "coleta_direta", caminho)
-        if nova:
-            n, rv = base.grava_observacoes(con, DATASET, vid, parse_pld(arq.decode("utf-8-sig")))
-            status["novas"] += n
-            status["revisoes"] += rv
+        con.execute("SAVEPOINT recurso_ccee")
+        try:
+            linhas = list(parse_pld(arq.decode("utf-8-sig")))
+            if not linhas:
+                raise ValueError("CSV sem observações de PLD")
+            vid, _ = base.registra_vintage(con, DATASET, nome, r["url"], capturado, r.get("last_modified"),
+                                              sha, len(arq), "coleta_direta", caminho)
+            n, rv = base.grava_observacoes(con, DATASET, vid, linhas)
+        except Exception as e:
+            con.execute("ROLLBACK TO SAVEPOINT recurso_ccee")
+            con.execute("RELEASE SAVEPOINT recurso_ccee")
+            base.registra_coleta(con, DATASET, nome, False, f"importação: {e}")
+            con.commit()
+            status["falhas"].append(f"{nome}: importação: {e}"[:300])
+            continue
+        con.execute("RELEASE SAVEPOINT recurso_ccee")
+        status["novas"] += n
+        status["revisoes"] += rv
         base.registra_coleta(con, DATASET, nome, True, f"{len(arq)} bytes")
         status["arquivos"] += 1
         con.commit()
+    if not status["arquivos"] and not status["falhas"]:
+        motivo = "package_show sem CSV anual de PLD compatível"
+        base.registra_coleta(con, DATASET, "*", False, motivo)
+        con.commit()
+        status["falhas"].append(motivo)
     status["ok"] = not status["falhas"]
     return status
 

@@ -219,6 +219,8 @@ jobs:
           # autorizada pelo responsável em 06/10/2026 (pipeline/energia/fontes/ccee_mercado.py, DECISAO_ACESSO).
           ENERGIA_CCEE_COLETA: "1"
         run: |
+          # O tee preserva o log, mas não pode esconder uma falha do coletor.
+          set -euo pipefail
           if [ "$SEM_COLETA" = "true" ]; then
             python3 -u pipeline/energia/run.py --sem-coleta | tee energia.log
           else
