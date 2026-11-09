@@ -1,24 +1,24 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-08T17:28:56+00:00",
+ "gerado_em": "2026-11-09T21:38:41+00:00",
  "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
  "url_dataset": "https://dadosabertos.bcb.gov.br/dataset/desenrola-brasil",
  "licenca": "Open Data Commons Open Database License (ODbL)",
- "coletado_em": "2026-10-30T15:46:21+00:00",
- "bronze_sha": "14b4deec1cc239fd4e293a2b12e96190d4660ea8fa83cb31872d3b91e9a414f7",
- "data_base": "2026-08",
+ "coletado_em": "2026-11-09T19:41:59+00:00",
+ "bronze_sha": "01caa8efc98528ed4291a13df5ab6368a69bc7e6c0ee054b789dca35d7f1c293",
+ "data_base": "2026-09",
  "data_base_min": "2023-09",
- "meses": 36,
- "linhas_base": 11242,
+ "meses": 37,
+ "linhas_base": 11348,
  "aviso_cobertura": "Esta base cobre somente operações informadas ao SCR como renegociações do Desenrola que resultaram em nova operação de crédito. A própria fonte declara excluir: dívidas quitadas com recursos próprios no momento da renegociação, renegociações não elegíveis ao programa e clientes com dívida total inferior a R$ 200. Credores não financeiros — varejo, serviços públicos, telecomunicações — não reportam ao SCR e não aparecem aqui, embora tenham participado do programa.",
  "fora_do_recorte": {
-  "linhas": 2396,
+  "linhas": 2774,
   "tipos": [
    "4"
   ],
   "periodo_inicio": "2026-05",
-  "periodo_fim": "2026-08",
-  "ressalva": "2.396 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-08) ficaram de fora"
+  "periodo_fim": "2026-09",
+  "ressalva": "2.774 linhas de um tipo não descrito na documentação do BCB (2026-05 a 2026-09) ficaram de fora"
  },
  "aviso_tipo3": "O Desenrola Pequenos Negócios (MP 1.213/2024) é um programa distinto, de pessoas jurídicas. Aparece na mesma base do BCB como tipo 3, mas não se soma às faixas 1 e 2: público, porte e valor por operação são de outra ordem. Fica neste painel apenas como quadro de contexto.",
  "aviso_setembro": "Na data-base de setembro de 2023 a fonte informa operações renegociadas no mês OU em meses anteriores. É o único mês acumulado da série: lido como fluxo mensal, cria um pico que não existiu.",
@@ -45,11 +45,11 @@
   ]
  ],
  "totais_scr": {
-  "operacoes": 2681845,
-  "volume": 4510798995.19,
+  "operacoes": 2682020,
+  "volume": 4510742425.09,
   "ticket_medio": 1682,
   "conglomerados": 59,
-  "periodo": "2023-09 a 2026-08"
+  "periodo": "2023-09 a 2026-09"
  },
  "pequenos_negocios": {
   "id": "pequenos_negocios",
@@ -63,10 +63,10 @@
   "fonte": "MP 1.213/2024",
   "alerta": "O Desenrola Pequenos Negócios (MP 1.213/2024) é um programa distinto, de pessoas jurídicas. Aparece na mesma base do BCB como tipo 3, mas não se soma às faixas 1 e 2: público, porte e valor por operação são de outra ordem. Fica neste painel apenas como quadro de contexto.",
   "contexto": true,
-  "operacoes": 72010,
-  "volume": 3149231061.32,
-  "ticket_medio": 43733,
-  "periodo_scr": "2024-05 a 2026-08",
+  "operacoes": 72049,
+  "volume": 3150143294.6,
+  "ticket_medio": 43722,
+  "periodo_scr": "2024-05 a 2026-09",
   "conglomerados": 12,
   "no_scr": true
  },
@@ -127,7 +127,7 @@
   }
  ],
  "reconciliacao": {
-  "scr_volume": 4510798995.19,
+  "scr_volume": 4510742425.09,
   "oficial_regularizado": 53000000000,
   "razao": 11.7,
   "explicacao": "Os dois números medem coisas diferentes e nenhum está errado. O valor oficial de dívidas regularizadas contempla todo o programa, inclusive o que foi quitado à vista com recursos próprios depois de descontos que chegaram a 90%, e as dívidas com credores não financeiros. O valor do SCR contempla apenas o que virou nova operação de crédito registrada no sistema, já líquido de desconto. Depois de um leilão com desconto médio de 83%, a maior parte da Faixa 1 foi liquidada à vista — e liquidação à vista, por definição da própria fonte, não entra nesta base."
@@ -229,10 +229,10 @@
    "garantia": "Sim — Fundo Garantidor de Operações (FGO)",
    "dados": "Base do BCB (tipo 1), apenas quando a renegociação virou nova operação de crédito no SCR",
    "fonte": "Relatório de Avaliação MPO/BID/BCB",
-   "operacoes": 2104204,
-   "volume": 2177436080.97,
+   "operacoes": 2104352,
+   "volume": 2177503951.41,
    "ticket_medio": 1035,
-   "periodo_scr": "2023-10 a 2026-08",
+   "periodo_scr": "2023-10 a 2026-09",
    "conglomerados": 69,
    "no_scr": true
   },
@@ -246,10 +246,10 @@
    "garantia": "Não",
    "dados": "Base do BCB (tipo 2)",
    "fonte": "Relatório de Avaliação MPO/BID/BCB",
-   "operacoes": 577641,
-   "volume": 2333362914.22,
+   "operacoes": 577668,
+   "volume": 2333238473.68,
    "ticket_medio": 4039,
-   "periodo_scr": "2023-09 a 2026-08",
+   "periodo_scr": "2023-09 a 2026-09",
    "conglomerados": 24,
    "no_scr": true
   },
@@ -278,10 +278,10 @@
    "fonte": "MP 1.213/2024",
    "alerta": "O Desenrola Pequenos Negócios (MP 1.213/2024) é um programa distinto, de pessoas jurídicas. Aparece na mesma base do BCB como tipo 3, mas não se soma às faixas 1 e 2: público, porte e valor por operação são de outra ordem. Fica neste painel apenas como quadro de contexto.",
    "contexto": true,
-   "operacoes": 72010,
-   "volume": 3149231061.32,
-   "ticket_medio": 43733,
-   "periodo_scr": "2024-05 a 2026-08",
+   "operacoes": 72049,
+   "volume": 3150143294.6,
+   "ticket_medio": 43722,
+   "periodo_scr": "2024-05 a 2026-09",
    "conglomerados": 12,
    "no_scr": true
   }
@@ -447,12 +447,12 @@
    "mes": "2024-09",
    "acumulado": false,
    "faixa1": {
-    "operacoes": 3426,
-    "volume": 1175339.23
+    "operacoes": 3425,
+    "volume": 1175324.67
    },
    "faixa2": {
-    "operacoes": 389,
-    "volume": 2332946.08
+    "operacoes": 388,
+    "volume": 2332449.15
    },
    "pequenos_negocios": {
     "operacoes": 1919,
@@ -463,8 +463,8 @@
    "mes": "2024-10",
    "acumulado": false,
    "faixa1": {
-    "operacoes": 2948,
-    "volume": 373864.93
+    "operacoes": 2949,
+    "volume": 373879.49
    },
    "faixa2": {
     "operacoes": 387,
@@ -723,8 +723,8 @@
     "volume": 206500.47
    },
    "faixa2": {
-    "operacoes": 95,
-    "volume": 353233.79
+    "operacoes": 96,
+    "volume": 362059.24
    },
    "pequenos_negocios": {
     "operacoes": 757,
@@ -739,8 +739,8 @@
     "volume": 667054.4
    },
    "faixa2": {
-    "operacoes": 192,
-    "volume": 3849564.41
+    "operacoes": 127,
+    "volume": 3196111.95
    },
    "pequenos_negocios": {
     "operacoes": 625,
@@ -819,12 +819,28 @@
     "volume": 99825.57
    },
    "faixa2": {
-    "operacoes": 399,
-    "volume": 4144522.58
+    "operacoes": 400,
+    "volume": 4160623.37
    },
    "pequenos_negocios": {
     "operacoes": 63,
     "volume": 1826939.73
+   }
+  },
+  {
+   "mes": "2026-09",
+   "acumulado": false,
+   "faixa1": {
+    "operacoes": 148,
+    "volume": 67870.44
+   },
+   "faixa2": {
+    "operacoes": 91,
+    "volume": 504582.61
+   },
+   "pequenos_negocios": {
+    "operacoes": 39,
+    "volume": 912233.28
    }
   }
  ],
@@ -834,10 +850,10 @@
    "nome": "São Paulo",
    "regiao": "Sudeste",
    "cod": "35",
-   "operacoes": 708875,
-   "volume": 1275236891.9,
-   "part_br": 28.271,
-   "part_op": 26.432,
+   "operacoes": 708832,
+   "volume": 1275028815.94,
+   "part_br": 28.266,
+   "part_op": 26.429,
    "ticket_medio": 1799,
    "op_por_mil_hab": 15.38,
    "populacao": 46081801
@@ -847,12 +863,12 @@
    "nome": "Rio de Janeiro",
    "regiao": "Sudeste",
    "cod": "33",
-   "operacoes": 301354,
-   "volume": 498157751.35,
-   "part_br": 11.044,
-   "part_op": 11.237,
+   "operacoes": 301262,
+   "volume": 497969598.92,
+   "part_br": 11.04,
+   "part_op": 11.233,
    "ticket_medio": 1653,
-   "op_por_mil_hab": 17.5,
+   "op_por_mil_hab": 17.49,
    "populacao": 17223547
   },
   {
@@ -860,9 +876,9 @@
    "nome": "Minas Gerais",
    "regiao": "Sudeste",
    "cod": "31",
-   "operacoes": 244031,
-   "volume": 405581644.3,
-   "part_br": 8.991,
+   "operacoes": 244034,
+   "volume": 405698253.8,
+   "part_br": 8.994,
    "part_op": 9.099,
    "ticket_medio": 1662,
    "op_por_mil_hab": 11.41,
@@ -873,10 +889,10 @@
    "nome": "Bahia",
    "regiao": "Nordeste",
    "cod": "29",
-   "operacoes": 153312,
-   "volume": 240011237.11,
-   "part_br": 5.321,
-   "part_op": 5.717,
+   "operacoes": 153269,
+   "volume": 239984308.88,
+   "part_br": 5.32,
+   "part_op": 5.715,
    "ticket_medio": 1566,
    "op_por_mil_hab": 10.31,
    "populacao": 14870907
@@ -886,10 +902,10 @@
    "nome": "Rio Grande do Sul",
    "regiao": "Sul",
    "cod": "43",
-   "operacoes": 132907,
-   "volume": 219122183.37,
-   "part_br": 4.858,
-   "part_op": 4.956,
+   "operacoes": 132862,
+   "volume": 219029759.64,
+   "part_br": 4.856,
+   "part_op": 4.954,
    "ticket_medio": 1649,
    "op_por_mil_hab": 11.83,
    "populacao": 11233263
@@ -899,11 +915,11 @@
    "nome": "Paraná",
    "regiao": "Sul",
    "cod": "41",
-   "operacoes": 127419,
-   "volume": 235031201.42,
-   "part_br": 5.21,
-   "part_op": 4.751,
-   "ticket_medio": 1845,
+   "operacoes": 127468,
+   "volume": 235058630.23,
+   "part_br": 5.211,
+   "part_op": 4.753,
+   "ticket_medio": 1844,
    "op_por_mil_hab": 10.72,
    "populacao": 11890517
   },
@@ -912,12 +928,12 @@
    "nome": "Ceará",
    "regiao": "Nordeste",
    "cod": "23",
-   "operacoes": 121425,
-   "volume": 174454614.99,
-   "part_br": 3.867,
-   "part_op": 4.528,
-   "ticket_medio": 1437,
-   "op_por_mil_hab": 13.1,
+   "operacoes": 121519,
+   "volume": 174535604.42,
+   "part_br": 3.869,
+   "part_op": 4.531,
+   "ticket_medio": 1436,
+   "op_por_mil_hab": 13.11,
    "populacao": 9268836
   },
   {
@@ -925,10 +941,10 @@
    "nome": "Pernambuco",
    "regiao": "Nordeste",
    "cod": "26",
-   "operacoes": 109565,
-   "volume": 173250530.12,
-   "part_br": 3.841,
-   "part_op": 4.085,
+   "operacoes": 109588,
+   "volume": 173294520.55,
+   "part_br": 3.842,
+   "part_op": 4.086,
    "ticket_medio": 1581,
    "op_por_mil_hab": 11.46,
    "populacao": 9562007
@@ -938,12 +954,12 @@
    "nome": "Goiás",
    "regiao": "Centro-Oeste",
    "cod": "52",
-   "operacoes": 76440,
-   "volume": 131520303.18,
-   "part_br": 2.916,
-   "part_op": 2.85,
-   "ticket_medio": 1721,
-   "op_por_mil_hab": 10.3,
+   "operacoes": 76503,
+   "volume": 131585914.23,
+   "part_br": 2.917,
+   "part_op": 2.852,
+   "ticket_medio": 1720,
+   "op_por_mil_hab": 10.31,
    "populacao": 7423629
   },
   {
@@ -951,12 +967,12 @@
    "nome": "Pará",
    "regiao": "Norte",
    "cod": "15",
-   "operacoes": 74925,
-   "volume": 109008270.21,
-   "part_br": 2.417,
-   "part_op": 2.794,
+   "operacoes": 74872,
+   "volume": 108963817.07,
+   "part_br": 2.416,
+   "part_op": 2.792,
    "ticket_medio": 1455,
-   "op_por_mil_hab": 8.6,
+   "op_por_mil_hab": 8.59,
    "populacao": 8711196
   },
   {
@@ -964,12 +980,12 @@
    "nome": "Santa Catarina",
    "regiao": "Sul",
    "cod": "42",
-   "operacoes": 74471,
-   "volume": 146078315.77,
+   "operacoes": 74615,
+   "volume": 146078539.92,
    "part_br": 3.238,
-   "part_op": 2.777,
-   "ticket_medio": 1962,
-   "op_por_mil_hab": 9.1,
+   "part_op": 2.782,
+   "ticket_medio": 1958,
+   "op_por_mil_hab": 9.11,
    "populacao": 8187029
   },
   {
@@ -977,8 +993,8 @@
    "nome": "Amazonas",
    "regiao": "Norte",
    "cod": "13",
-   "operacoes": 67390,
-   "volume": 104069916.48,
+   "operacoes": 67395,
+   "volume": 104066994.78,
    "part_br": 2.307,
    "part_op": 2.513,
    "ticket_medio": 1544,
@@ -990,8 +1006,8 @@
    "nome": "Distrito Federal",
    "regiao": "Centro-Oeste",
    "cod": "53",
-   "operacoes": 55727,
-   "volume": 100099834.25,
+   "operacoes": 55720,
+   "volume": 100080170.66,
    "part_br": 2.219,
    "part_op": 2.078,
    "ticket_medio": 1796,
@@ -1003,10 +1019,10 @@
    "nome": "Maranhão",
    "regiao": "Nordeste",
    "cod": "21",
-   "operacoes": 50678,
-   "volume": 80026855.56,
-   "part_br": 1.774,
-   "part_op": 1.89,
+   "operacoes": 50639,
+   "volume": 79975744.81,
+   "part_br": 1.773,
+   "part_op": 1.888,
    "ticket_medio": 1579,
    "op_por_mil_hab": 7.22,
    "populacao": 7018211
@@ -1016,10 +1032,10 @@
    "nome": "Paraíba",
    "regiao": "Nordeste",
    "cod": "25",
-   "operacoes": 49916,
-   "volume": 77994528.0,
-   "part_br": 1.729,
-   "part_op": 1.861,
+   "operacoes": 49932,
+   "volume": 78023862.41,
+   "part_br": 1.73,
+   "part_op": 1.862,
    "ticket_medio": 1563,
    "op_por_mil_hab": 11.99,
    "populacao": 4164468
@@ -1029,9 +1045,9 @@
    "nome": "Mato Grosso do Sul",
    "regiao": "Centro-Oeste",
    "cod": "50",
-   "operacoes": 47763,
-   "volume": 82377156.49,
-   "part_br": 1.826,
+   "operacoes": 47765,
+   "volume": 82390290.53,
+   "part_br": 1.827,
    "part_op": 1.781,
    "ticket_medio": 1725,
    "op_por_mil_hab": 16.33,
@@ -1042,12 +1058,12 @@
    "nome": "Rio Grande do Norte",
    "regiao": "Nordeste",
    "cod": "24",
-   "operacoes": 41978,
-   "volume": 66237816.11,
-   "part_br": 1.468,
-   "part_op": 1.565,
+   "operacoes": 42002,
+   "volume": 66278197.17,
+   "part_br": 1.469,
+   "part_op": 1.566,
    "ticket_medio": 1578,
-   "op_por_mil_hab": 12.15,
+   "op_por_mil_hab": 12.16,
    "populacao": 3455236
   },
   {
@@ -1055,12 +1071,12 @@
    "nome": "Mato Grosso",
    "regiao": "Centro-Oeste",
    "cod": "51",
-   "operacoes": 41252,
-   "volume": 80735284.56,
+   "operacoes": 41262,
+   "volume": 80733032.04,
    "part_br": 1.79,
    "part_op": 1.538,
    "ticket_medio": 1957,
-   "op_por_mil_hab": 10.59,
+   "op_por_mil_hab": 10.6,
    "populacao": 3893659
   },
   {
@@ -1068,10 +1084,10 @@
    "nome": "Espírito Santo",
    "regiao": "Sudeste",
    "cod": "32",
-   "operacoes": 41125,
-   "volume": 65893385.5,
-   "part_br": 1.461,
-   "part_op": 1.533,
+   "operacoes": 41160,
+   "volume": 65933646.42,
+   "part_br": 1.462,
+   "part_op": 1.535,
    "ticket_medio": 1602,
    "op_por_mil_hab": 9.97,
    "populacao": 4126854
@@ -1082,10 +1098,10 @@
    "regiao": "Nordeste",
    "cod": "22",
    "operacoes": 37030,
-   "volume": 54920078.05,
-   "part_br": 1.218,
+   "volume": 55019722.85,
+   "part_br": 1.22,
    "part_op": 1.381,
-   "ticket_medio": 1483,
+   "ticket_medio": 1486,
    "op_por_mil_hab": 10.94,
    "populacao": 3384547
   },
@@ -1094,12 +1110,12 @@
    "nome": "Alagoas",
    "regiao": "Nordeste",
    "cod": "27",
-   "operacoes": 34617,
-   "volume": 48402571.8,
+   "operacoes": 34606,
+   "volume": 48389624.43,
    "part_br": 1.073,
-   "part_op": 1.291,
+   "part_op": 1.29,
    "ticket_medio": 1398,
-   "op_por_mil_hab": 10.75,
+   "op_por_mil_hab": 10.74,
    "populacao": 3220848
   },
   {
@@ -1107,8 +1123,8 @@
    "nome": "Rondônia",
    "regiao": "Norte",
    "cod": "11",
-   "operacoes": 26556,
-   "volume": 42495335.86,
+   "operacoes": 26565,
+   "volume": 42501718.56,
    "part_br": 0.942,
    "part_op": 0.99,
    "ticket_medio": 1600,
@@ -1120,11 +1136,11 @@
    "nome": "Sergipe",
    "regiao": "Nordeste",
    "cod": "28",
-   "operacoes": 24785,
-   "volume": 35349397.87,
-   "part_br": 0.784,
+   "operacoes": 24788,
+   "volume": 35331821.44,
+   "part_br": 0.783,
    "part_op": 0.924,
-   "ticket_medio": 1426,
+   "ticket_medio": 1425,
    "op_por_mil_hab": 10.78,
    "populacao": 2299425
   },
@@ -1133,8 +1149,8 @@
    "nome": "Tocantins",
    "regiao": "Norte",
    "cod": "17",
-   "operacoes": 11971,
-   "volume": 20195667.28,
+   "operacoes": 11972,
+   "volume": 20197985.82,
    "part_br": 0.448,
    "part_op": 0.446,
    "ticket_medio": 1687,
@@ -1146,8 +1162,8 @@
    "nome": "Acre",
    "regiao": "Norte",
    "cod": "12",
-   "operacoes": 10693,
-   "volume": 17316452.18,
+   "operacoes": 10694,
+   "volume": 17315879.07,
    "part_br": 0.384,
    "part_op": 0.399,
    "ticket_medio": 1619,
@@ -1159,12 +1175,12 @@
    "nome": "Amapá",
    "regiao": "Norte",
    "cod": "16",
-   "operacoes": 8171,
-   "volume": 14140658.81,
-   "part_br": 0.313,
+   "operacoes": 8185,
+   "volume": 14166514.73,
+   "part_br": 0.314,
    "part_op": 0.305,
    "ticket_medio": 1731,
-   "op_por_mil_hab": 10.13,
+   "op_por_mil_hab": 10.15,
    "populacao": 806517
   },
   {
@@ -1172,12 +1188,12 @@
    "nome": "Roraima",
    "regiao": "Norte",
    "cod": "14",
-   "operacoes": 7469,
-   "volume": 13091112.67,
-   "part_br": 0.29,
+   "operacoes": 7481,
+   "volume": 13109455.77,
+   "part_br": 0.291,
    "part_op": 0.279,
-   "ticket_medio": 1753,
-   "op_por_mil_hab": 10.11,
+   "ticket_medio": 1752,
+   "op_por_mil_hab": 10.13,
    "populacao": 738772
   }
  ],
@@ -1185,21 +1201,21 @@
   {
    "cod": "51626",
    "nome": "CAIXA ECONÔMICA FEDERAL",
-   "operacoes": 588544,
-   "volume": 654508851.87,
-   "part_op": 21.945,
+   "operacoes": 588555,
+   "volume": 654516888.11,
+   "part_op": 21.944,
    "part_vol": 14.51,
    "ticket_medio": 1112,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 543188,
-     "volume": 569664485.53
+     "operacoes": 543198,
+     "volume": 569665795.24
     },
     "faixa2": {
-     "operacoes": 45356,
-     "volume": 84844366.34
+     "operacoes": 45357,
+     "volume": 84851092.87
     }
    },
    "consolidado": {
@@ -1214,8 +1230,8 @@
      {
       "cod": "80738",
       "nome": "CAIXA ECONÔMICA FEDERAL - PRUDENCIAL",
-      "operacoes": 187419,
-      "volume": 188288864.72
+      "operacoes": 187430,
+      "volume": 188296900.96
      }
     ]
    }
@@ -1223,17 +1239,17 @@
   {
    "cod": "52058",
    "nome": "NUBANK",
-   "operacoes": 551516,
-   "volume": 475373693.05,
+   "operacoes": 551549,
+   "volume": 475377271.89,
    "part_op": 20.565,
    "part_vol": 10.539,
    "ticket_medio": 862,
    "ufs": 27,
-   "periodo": "2023-10 a 2026-08",
+   "periodo": "2023-10 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 551516,
-     "volume": 475373693.05
+     "operacoes": 551549,
+     "volume": 475377271.89
     }
    },
    "consolidado": {
@@ -1248,8 +1264,8 @@
      {
       "cod": "84693",
       "nome": "NU PAGAMENTOS - PRUDENCIAL",
-      "operacoes": 4093,
-      "volume": 753802.49
+      "operacoes": 4126,
+      "volume": 757381.33
      }
     ]
    }
@@ -1257,21 +1273,21 @@
   {
    "cod": "10069",
    "nome": "ITAU",
-   "operacoes": 346297,
-   "volume": 682166050.19,
-   "part_op": 12.913,
+   "operacoes": 346309,
+   "volume": 682166966.79,
+   "part_op": 12.912,
    "part_vol": 15.123,
    "ticket_medio": 1970,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 123257,
-     "volume": 128004538.85
+     "operacoes": 123262,
+     "volume": 128005074.32
     },
     "faixa2": {
-     "operacoes": 223040,
-     "volume": 554161511.34
+     "operacoes": 223047,
+     "volume": 554161892.47
     }
    },
    "consolidado": {
@@ -1286,8 +1302,8 @@
      {
       "cod": "80099",
       "nome": "ITAU - PRUDENCIAL",
-      "operacoes": 43321,
-      "volume": 102598466.0
+      "operacoes": 43333,
+      "volume": 102599382.6
      }
     ]
    }
@@ -1295,17 +1311,17 @@
   {
    "cod": "49944",
    "nome": "BTG PACTUAL",
-   "operacoes": 332717,
-   "volume": 440460715.54,
+   "operacoes": 332723,
+   "volume": 440461564.95,
    "part_op": 12.406,
    "part_vol": 9.765,
    "ticket_medio": 1324,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 329805,
-     "volume": 425562737.93
+     "operacoes": 329811,
+     "volume": 425563587.34
     },
     "faixa2": {
      "operacoes": 2912,
@@ -1324,8 +1340,8 @@
      {
       "cod": "80336",
       "nome": "BTG PACTUAL - PRUDENCIAL",
-      "operacoes": 581,
-      "volume": 128095.71
+      "operacoes": 587,
+      "volume": 128945.12
      }
     ]
    }
@@ -1333,17 +1349,17 @@
   {
    "cod": "30379",
    "nome": "SANTANDER",
-   "operacoes": 282847,
-   "volume": 951168128.79,
-   "part_op": 10.547,
-   "part_vol": 21.086,
-   "ticket_medio": 3363,
+   "operacoes": 282923,
+   "volume": 951226287.84,
+   "part_op": 10.549,
+   "part_vol": 21.088,
+   "ticket_medio": 3362,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 100781,
-     "volume": 87518763.66
+     "operacoes": 100857,
+     "volume": 87576922.71
     },
     "faixa2": {
      "operacoes": 182066,
@@ -1362,8 +1378,8 @@
      {
       "cod": "80185",
       "nome": "SANTANDER - PRUDENCIAL",
-      "operacoes": 6697,
-      "volume": 7261089.06
+      "operacoes": 6773,
+      "volume": 7319248.11
      }
     ]
    }
@@ -1371,17 +1387,17 @@
   {
    "cod": "51884",
    "nome": "INTER",
-   "operacoes": 213133,
-   "volume": 245051940.96,
+   "operacoes": 213135,
+   "volume": 245052229.68,
    "part_op": 7.947,
    "part_vol": 5.433,
    "ticket_medio": 1150,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 207691,
-     "volume": 219711605.89
+     "operacoes": 207693,
+     "volume": 219711894.61
     },
     "faixa2": {
      "operacoes": 5442,
@@ -1400,8 +1416,8 @@
      {
       "cod": "80996",
       "nome": "INTER - PRUDENCIAL",
-      "operacoes": 265,
-      "volume": 39162.71
+      "operacoes": 267,
+      "volume": 39451.43
      }
     ]
    }
@@ -1409,21 +1425,21 @@
   {
    "cod": "49906",
    "nome": "BB",
-   "operacoes": 115255,
-   "volume": 367124902.77,
+   "operacoes": 115264,
+   "volume": 367159611.09,
    "part_op": 4.298,
-   "part_vol": 8.139,
+   "part_vol": 8.14,
    "ticket_medio": 3185,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 81565,
-     "volume": 90670279.85
+     "operacoes": 81572,
+     "volume": 90671917.79
     },
     "faixa2": {
-     "operacoes": 33690,
-     "volume": 276454622.92
+     "operacoes": 33692,
+     "volume": 276487693.3
     }
    },
    "consolidado": {
@@ -1438,8 +1454,8 @@
      {
       "cod": "80329",
       "nome": "BB - PRUDENCIAL",
-      "operacoes": 375,
-      "volume": 197761.87
+      "operacoes": 384,
+      "volume": 232470.19
      }
     ]
    }
@@ -1447,21 +1463,21 @@
   {
    "cod": "10045",
    "nome": "BRADESCO",
-   "operacoes": 111184,
-   "volume": 391285375.01,
-   "part_op": 4.146,
-   "part_vol": 8.674,
-   "ticket_medio": 3519,
+   "operacoes": 111149,
+   "volume": 390752334.59,
+   "part_op": 4.144,
+   "part_vol": 8.663,
+   "ticket_medio": 3516,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 74975,
-     "volume": 74558772.9
+     "operacoes": 74984,
+     "volume": 74560284.2
     },
     "faixa2": {
-     "operacoes": 36209,
-     "volume": 316726602.11
+     "operacoes": 36165,
+     "volume": 316192050.39
     }
    },
    "consolidado": {
@@ -1476,8 +1492,8 @@
      {
       "cod": "80075",
       "nome": "BRADESCO - PRUDENCIAL",
-      "operacoes": 1326,
-      "volume": 8205465.11
+      "operacoes": 1291,
+      "volume": 7672424.69
      }
     ]
    }
@@ -1519,8 +1535,8 @@
   {
    "cod": "52072",
    "nome": "C6 BANK",
-   "operacoes": 30224,
-   "volume": 53823797.67,
+   "operacoes": 30223,
+   "volume": 53823300.74,
    "part_op": 1.127,
    "part_vol": 1.193,
    "ticket_medio": 1781,
@@ -1532,8 +1548,8 @@
      "volume": 19262178.05
     },
     "faixa2": {
-     "operacoes": 12359,
-     "volume": 34561619.62
+     "operacoes": 12358,
+     "volume": 34561122.69
     }
    },
    "consolidado": {
@@ -1542,8 +1558,8 @@
      {
       "cod": "52072",
       "nome": "C6 BANK",
-      "operacoes": 29573,
-      "volume": 50505653.88
+      "operacoes": 29572,
+      "volume": 50505156.95
      },
      {
       "cod": "84844",
@@ -1557,21 +1573,21 @@
   {
    "cod": "51011",
    "nome": "VOTORANTIM",
-   "operacoes": 28129,
-   "volume": 135009485.35,
-   "part_op": 1.049,
-   "part_vol": 2.993,
-   "ticket_medio": 4800,
+   "operacoes": 28153,
+   "volume": 135073485.39,
+   "part_op": 1.05,
+   "part_vol": 2.994,
+   "ticket_medio": 4798,
    "ufs": 27,
-   "periodo": "2023-09 a 2026-08",
+   "periodo": "2023-09 a 2026-09",
    "por_faixa": {
     "faixa1": {
      "operacoes": 3884,
      "volume": 4706669.89
     },
     "faixa2": {
-     "operacoes": 24245,
-     "volume": 130302815.46
+     "operacoes": 24269,
+     "volume": 130366815.5
     }
    },
    "consolidado": {
@@ -1586,8 +1602,8 @@
      {
       "cod": "80484",
       "nome": "VOTORANTIM - PRUDENCIAL",
-      "operacoes": 1009,
-      "volume": 2755721.59
+      "operacoes": 1033,
+      "volume": 2819721.63
      }
     ]
    }
@@ -1733,36 +1749,19 @@
    }
   },
   {
-   "cod": "78825270",
-   "nome": "CCLAA SICOOB MAXICRÉDITO",
-   "operacoes": 140,
-   "volume": 239771.31,
-   "part_op": 0.005,
-   "part_vol": 0.005,
-   "ticket_medio": 1713,
-   "ufs": 5,
-   "periodo": "2023-10 a 2025-09",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 140,
-     "volume": 239771.31
-    }
-   }
-  },
-  {
    "cod": "7237373",
    "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-   "operacoes": 136,
-   "volume": 1999823.59,
-   "part_op": 0.005,
-   "part_vol": 0.044,
-   "ticket_medio": 14705,
-   "ufs": 8,
-   "periodo": "2023-12 a 2026-08",
+   "operacoes": 174,
+   "volume": 2306253.62,
+   "part_op": 0.006,
+   "part_vol": 0.051,
+   "ticket_medio": 13254,
+   "ufs": 9,
+   "periodo": "2023-12 a 2026-09",
    "por_faixa": {
     "faixa2": {
-     "operacoes": 136,
-     "volume": 1999823.59
+     "operacoes": 174,
+     "volume": 2306253.62
     }
    },
    "consolidado": {
@@ -1777,10 +1776,27 @@
      {
       "cod": "81593",
       "nome": "BCO DO NORDESTE DO BRASIL S.A. - PRUDENCIAL",
-      "operacoes": 133,
-      "volume": 1984459.83
+      "operacoes": 171,
+      "volume": 2290889.86
      }
     ]
+   }
+  },
+  {
+   "cod": "78825270",
+   "nome": "CCLAA SICOOB MAXICRÉDITO",
+   "operacoes": 140,
+   "volume": 239771.31,
+   "part_op": 0.005,
+   "part_vol": 0.005,
+   "ticket_medio": 1713,
+   "ufs": 5,
+   "periodo": "2023-10 a 2025-09",
+   "por_faixa": {
+    "faixa1": {
+     "operacoes": 140,
+     "volume": 239771.31
+    }
    }
   },
   {
@@ -1863,7 +1879,7 @@
    "part_op": 0.002,
    "part_vol": 0.001,
    "ticket_medio": 1315,
-   "ufs": 5,
+   "ufs": 4,
    "periodo": "2023-10 a 2024-11",
    "por_faixa": {
     "faixa1": {
@@ -2469,7 +2485,7 @@
   }
  ],
  "concentracao": {
-  "hhi_operacoes": 1442.5,
+  "hhi_operacoes": 1442.4,
   "top5_operacoes": 78.4,
   "n_conglomerados": 59,
   "nota_consolidacao": "Grupos que reportam ao SCR sob dois escopos de consolidação (financeiro e prudencial) aparecem em UMA linha consolidada, com os componentes declarados — HHI e top-5 calculados após a consolidação."
@@ -2722,7 +2738,7 @@
    "unidade_analise": "operação de crédito",
    "periodicidade": "mensal",
    "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
-   "cobertura": "set/2023 a 2026-08",
+   "cobertura": "set/2023 a 2026-09",
    "limitacoes": "Operação não é pessoa: a base não permite contar beneficiários distintos.",
    "versao": "v1.0"
   },
@@ -2736,7 +2752,7 @@
    "unidade_analise": "operação de crédito",
    "periodicidade": "mensal",
    "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
-   "cobertura": "set/2023 a 2026-08",
+   "cobertura": "set/2023 a 2026-09",
    "limitacoes": "É o valor DEPOIS do desconto. Não é a dívida original, não é o valor pago e não permite calcular desconto. Valores nominais, sem deflação.",
    "versao": "v1.0"
   },
@@ -2750,7 +2766,7 @@
    "unidade_analise": "operação de crédito",
    "periodicidade": "mensal",
    "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
-   "cobertura": "set/2023 a 2026-08",
+   "cobertura": "set/2023 a 2026-09",
    "limitacoes": "Média de agregados, não de microdados: não há mediana nem distribuição.",
    "versao": "v1.0"
   },

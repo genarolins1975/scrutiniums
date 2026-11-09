@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-08T17:28:23+00:00",
+ "gerado_em": "2026-11-09T21:38:06+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 310,
-  "total_editais": 1156,
+  "total_editais": 1165,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1139,6 +1139,69 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE ARARUNA",
+    "municipio": "Araruna",
+    "uf": "PR",
+    "modalidade": "Pregão – Presencial Internacional ",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/75359760000199/2026/123"
+   },
+   {
+    "ente": "MUNICIPIO DE ESMERALDA",
+    "municipio": "Esmeralda",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/88225149000110/2026/83"
+   },
+   {
+    "ente": "MUNICIPIO DE ANAPOLIS",
+    "municipio": "Anápolis",
+    "uf": "GO",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/01067479000146/2026/243"
+   },
+   {
+    "ente": "MUNICIPIO DE IBIRACATU",
+    "municipio": "Ibiracatu",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/01612477000190/2026/20"
+   },
+   {
+    "ente": "MUNICIPIO DE BOA ESPERANCA DO NORTE",
+    "municipio": "Boa Esperança",
+    "uf": "ES",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/58673892000171/2026/35"
+   },
+   {
+    "ente": "MUNICIPIO DE JOAQUIM NABUCO",
+    "municipio": "Joaquim Nabuco",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/10192441000196/2026/29"
+   },
+   {
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTO",
+    "municipio": "São Carlos",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/45359973000150/2026/236"
+   },
+   {
     "ente": "MUNICIPIO DE CASTRO",
     "municipio": "Castro",
     "uf": "PR",
@@ -1157,6 +1220,24 @@
     "url": "https://pncp.gov.br/compras/77001311000108/2026/650"
    },
    {
+    "ente": "MUNICIPIO DE COLORADO",
+    "municipio": "Colorado",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-05",
+    "url": "https://pncp.gov.br/compras/76970326000103/2026/224"
+   },
+   {
+    "ente": "MUNICIPIO DE IVAI",
+    "municipio": "Ivaí",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-05",
+    "url": "https://pncp.gov.br/compras/76175918000133/2026/47"
+   },
+   {
     "ente": "MUNICIPIO DE CIDADE GAUCHA",
     "municipio": "Cidade Gaúcha",
     "uf": "PR",
@@ -1164,87 +1245,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-05",
     "url": "https://pncp.gov.br/compras/75377200000167/2026/67"
-   },
-   {
-    "ente": "MUNICIPIO DE VERDEJANTE",
-    "municipio": "Verdejante",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-05",
-    "url": "https://pncp.gov.br/compras/11348570000193/2026/77"
-   },
-   {
-    "ente": "MUNICIPIO DE ITAPACI",
-    "municipio": "Itapaci",
-    "uf": "GO",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-04",
-    "url": "https://pncp.gov.br/compras/01134808000124/2026/88"
-   },
-   {
-    "ente": "MUNICIPIO DE ITUACU",
-    "municipio": "Ituaçu",
-    "uf": "BA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-03",
-    "url": "https://pncp.gov.br/compras/14106280000121/2026/65"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO JOSE DO CEDRO",
-    "municipio": "São José do Cedro",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-03",
-    "url": "https://pncp.gov.br/compras/83026781000110/2026/307"
-   },
-   {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/63"
-   },
-   {
-    "ente": "MUNICIPIO DE CAMBUI",
-    "municipio": "Cambuí",
-    "uf": "MG",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/18675975000185/2026/148"
-   },
-   {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/62"
-   },
-   {
-    "ente": "MUNICIPIO DE CAPITOLIO",
-    "municipio": "Capitólio",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/16726028000140/2026/97"
-   },
-   {
-    "ente": "MUNICIPIO DE APERIBE",
-    "municipio": "Aperibé",
-    "uf": "RJ",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-28",
-    "url": "https://pncp.gov.br/compras/36288900000123/2026/16"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

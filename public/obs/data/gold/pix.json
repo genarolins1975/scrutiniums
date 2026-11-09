@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-07T17:16:31+00:00",
+ "gerado_em": "2026-11-09T21:38:35+00:00",
  "mes": "2026-09",
  "cobertura_tx_pct": 90.8,
  "mes_tx": "2026-09",
@@ -8414,8 +8414,8 @@
      "v": 145103540000.0
     },
     "Convenios": {
-     "q": 675640480.0,
-     "v": 1100135930000.0
+     "q": 675640550.0,
+     "v": 1100136040000.0
     },
     "DOC": {
      "q": 0.0,
@@ -13722,8 +13722,8 @@
   "setores": [
    {
     "setor": "Pessoa fisica",
-    "q": 3502296953.0,
-    "v": 1129147487835.41,
+    "q": 3502285525.0,
+    "v": 1129143131533.93,
     "t": 322.4,
     "part": 35.01,
     "compra_pct": 0.0,
@@ -13732,59 +13732,59 @@
    },
    {
     "setor": "G - Comercio, reparacao de veiculos automotores e motocicletas",
-    "q": 1095403180.0,
-    "v": 537677550102.3999,
-    "t": 490.85,
-    "part": 16.67,
+    "q": 1095196179.0,
+    "v": 537433524586.50995,
+    "t": 490.72,
+    "part": 16.66,
     "compra_pct": 0.0,
     "mei_pct": 2.1,
     "yoy": 19.1
    },
    {
     "setor": "K - Atividades financeiras, de seguros e servicos relacionados",
-    "q": 135604518.0,
-    "v": 497951177241.82007,
-    "t": 3672.08,
-    "part": 15.44,
+    "q": 133605536.0,
+    "v": 499895952087.7999,
+    "t": 3741.58,
+    "part": 15.5,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
-    "yoy": 56.5
+    "yoy": 57.1
    },
    {
     "setor": "C - Industrias de transformacao",
-    "q": 69718310.0,
-    "v": 237882637081.84,
-    "t": 3412.05,
+    "q": 69756538.0,
+    "v": 238165767591.97003,
+    "t": 3414.24,
     "part": 7.38,
     "compra_pct": 0.0,
     "mei_pct": 1.3,
-    "yoy": 14.6
+    "yoy": 14.7
    },
    {
     "setor": "N - Atividades administrativas e servicos complementares",
-    "q": 298276343.0,
-    "v": 158987569644.65997,
-    "t": 533.02,
+    "q": 298619825.0,
+    "v": 159112250650.82,
+    "t": 532.83,
     "part": 4.93,
     "compra_pct": 0.0,
     "mei_pct": 1.9,
-    "yoy": 26.9
+    "yoy": 27.0
    },
    {
     "setor": "M - Atividades profissionais, cientificas e tecnicas",
-    "q": 925792645.0,
-    "v": 158716967828.38998,
-    "t": 171.44,
-    "part": 4.92,
+    "q": 925770674.0,
+    "v": 155531015790.25995,
+    "t": 168.0,
+    "part": 4.82,
     "compra_pct": 0.0,
     "mei_pct": 1.3,
-    "yoy": 64.3
+    "yoy": 61.0
    },
    {
     "setor": "H - Transporte, armazenagem e correio",
-    "q": 36068914.0,
-    "v": 82016061666.76999,
-    "t": 2273.87,
+    "q": 36095270.0,
+    "v": 82010354821.87999,
+    "t": 2272.05,
     "part": 2.54,
     "compra_pct": 0.0,
     "mei_pct": 5.5,
@@ -13792,19 +13792,19 @@
    },
    {
     "setor": "J - Informação e comunicação",
-    "q": 304031986.0,
-    "v": 66473606364.509995,
-    "t": 218.64,
-    "part": 2.06,
+    "q": 306226493.0,
+    "v": 67612753202.19999,
+    "t": 220.79,
+    "part": 2.1,
     "compra_pct": 0.0,
     "mei_pct": 1.0,
-    "yoy": 13.3
+    "yoy": 15.3
    },
    {
     "setor": "B - Industrias extrativas",
-    "q": 317287.0,
-    "v": 60864424488.86998,
-    "t": 191827.67,
+    "q": 316526.0,
+    "v": 60848278227.31999,
+    "t": 192237.85,
     "part": 1.89,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
@@ -13812,49 +13812,49 @@
    },
    {
     "setor": "F - Construcao",
-    "q": 10758611.0,
-    "v": 53110191077.70999,
-    "t": 4936.53,
+    "q": 10751031.0,
+    "v": 53128913022.49,
+    "t": 4941.75,
     "part": 1.65,
     "compra_pct": 0.0,
     "mei_pct": 5.0,
-    "yoy": 23.3
+    "yoy": 23.4
    },
    {
     "setor": "R - Artes, cultura, esporte e recreacao",
-    "q": 359440094.0,
-    "v": 35616553074.270004,
-    "t": 99.09,
+    "q": 359145043.0,
+    "v": 35589913397.29,
+    "t": 99.1,
     "part": 1.1,
     "compra_pct": 0.0,
     "mei_pct": 0.9,
-    "yoy": -30.2
+    "yoy": -30.3
    },
    {
     "setor": "Q - Saude humana e servicos sociais",
-    "q": 18274285.0,
-    "v": 32704989636.109997,
-    "t": 1789.67,
+    "q": 18252207.0,
+    "v": 32716759276.989998,
+    "t": 1792.48,
     "part": 1.01,
     "compra_pct": 0.0,
     "mei_pct": 0.3,
-    "yoy": 24.3
+    "yoy": 24.4
    },
    {
     "setor": "O - Administracao publica, defesa e seguridade social",
-    "q": 27061463.0,
-    "v": 31835749055.78,
-    "t": 1176.42,
+    "q": 27031625.0,
+    "v": 31856237883.16,
+    "t": 1178.48,
     "part": 0.99,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
-    "yoy": 34.7
+    "yoy": 34.8
    },
    {
     "setor": "I - Alojamento e alimentacao",
-    "q": 196491680.0,
-    "v": 30596409585.279995,
-    "t": 155.71,
+    "q": 196522424.0,
+    "v": 30591369348.079998,
+    "t": 155.66,
     "part": 0.95,
     "compra_pct": 0.0,
     "mei_pct": 12.8,
@@ -13862,9 +13862,9 @@
    },
    {
     "setor": "D - Eletricidade e gas",
-    "q": 32790458.0,
-    "v": 24302965777.940002,
-    "t": 741.16,
+    "q": 32790446.0,
+    "v": 24305270669.86,
+    "t": 741.23,
     "part": 0.75,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
@@ -13872,73 +13872,73 @@
    },
    {
     "setor": "S - Outras atividades de servicos",
-    "q": 79265810.0,
-    "v": 21240635883.079998,
-    "t": 267.97,
+    "q": 79253051.0,
+    "v": 21191230832.29,
+    "t": 267.39,
     "part": 0.66,
     "compra_pct": 0.0,
     "mei_pct": 16.2,
-    "yoy": 30.0
+    "yoy": 29.7
    },
    {
     "setor": "L - Atividades imobiliarias",
-    "q": 3689181.0,
-    "v": 19152039925.769997,
-    "t": 5191.41,
+    "q": 3694888.0,
+    "v": 19166774621.11,
+    "t": 5187.38,
     "part": 0.59,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
-    "yoy": 33.3
+    "yoy": 33.4
    },
    {
     "setor": "A - Agricultura, pecuaria, producao florestal, pesca e aquicultura",
-    "q": 1281470.0,
-    "v": 18457273339.65,
-    "t": 14403.2,
+    "q": 1276090.0,
+    "v": 18448089623.370003,
+    "t": 14456.73,
     "part": 0.57,
     "compra_pct": 0.0,
     "mei_pct": 0.7,
-    "yoy": 9.2
+    "yoy": 9.1
    },
    {
     "setor": "P - Educacao",
-    "q": 53298159.0,
-    "v": 17283905347.620003,
-    "t": 324.29,
-    "part": 0.54,
+    "q": 53247797.0,
+    "v": 17246051399.62,
+    "t": 323.88,
+    "part": 0.53,
     "compra_pct": 0.0,
     "mei_pct": 7.1,
-    "yoy": 31.4
+    "yoy": 31.2
    },
    {
     "setor": "E - Agua, esgoto, atividades de gestao de residuos e descontaminacao",
-    "q": 17120576.0,
-    "v": 10352838207.449999,
-    "t": 604.7,
+    "q": 17147780.0,
+    "v": 10378558396.84,
+    "t": 605.24,
     "part": 0.32,
     "compra_pct": 0.0,
     "mei_pct": 1.2,
-    "yoy": 6.9
+    "yoy": 7.1
    },
    {
     "setor": "Outros",
-    "q": 2307810.0,
-    "v": 639061215.48,
-    "t": 276.91,
+    "q": 2307778.0,
+    "v": 638414340.66,
+    "t": 276.64,
     "part": 0.02,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
-    "yoy": 503.0
+    "yoy": 502.4
    },
    {
     "setor": "T - Servicos domesticos",
-    "q": 407924.0,
-    "v": 120579549.31,
-    "t": 295.59,
+    "q": 404931.0,
+    "v": 120062625.67000002,
+    "t": 296.5,
     "part": 0.0,
     "compra_pct": 0.0,
     "mei_pct": 87.9,
-    "yoy": 52.5
+    "yoy": 51.8
    },
    {
     "setor": "U - Organismos internacionais e outras instituicoes extraterritoriais",
@@ -13953,121 +13953,121 @@
   ],
   "matriz_naturezarel": {
    "A - Agricultura, pecuaria, producao florestal, pesca e aquicultura": {
-    "B2B": 15967921002,
-    "G2B": 51863674,
-    "P2B": 2437488663
+    "B2B": 15961902423,
+    "G2B": 51573443,
+    "P2B": 2434613758
    },
    "B - Industrias extrativas": {
-    "B2B": 54051631363,
+    "B2B": 54039811471,
     "G2B": 6428752701,
-    "P2B": 384040425
+    "P2B": 379714056
    },
    "C - Industrias de transformacao": {
-    "B2B": 221240567671,
-    "G2B": 948567853,
-    "P2B": 15693501558
+    "B2B": 221525596723,
+    "G2B": 948121273,
+    "P2B": 15692049595
    },
    "D - Eletricidade e gas": {
-    "B2B": 18251539091,
-    "G2B": 75604501,
-    "P2B": 5975822186
+    "B2B": 18253387037,
+    "G2B": 75754811,
+    "P2B": 5976128822
    },
    "E - Agua, esgoto, atividades de gestao de residuos e descontaminacao": {
-    "B2B": 8047230589,
-    "G2B": 78066380,
-    "P2B": 2227541238
+    "B2B": 8071881147,
+    "G2B": 78152149,
+    "P2B": 2228525101
    },
    "F - Construcao": {
-    "B2B": 43228703720,
-    "G2B": 458331209,
-    "P2B": 9423156148
+    "B2B": 43247803008,
+    "G2B": 458349022,
+    "P2B": 9422760992
    },
    "G - Comercio, reparacao de veiculos automotores e motocicletas": {
-    "B2B": 416726854346,
-    "G2B": 1716028011,
-    "P2B": 119234667746
+    "B2B": 416434384287,
+    "G2B": 1715716405,
+    "P2B": 119283423895
    },
    "H - Transporte, armazenagem e correio": {
-    "B2B": 74973824613,
-    "G2B": 261622163,
-    "P2B": 6780614891
+    "B2B": 74966848019,
+    "G2B": 261684989,
+    "P2B": 6781821814
    },
    "I - Alojamento e alimentacao": {
-    "B2B": 20106471278,
-    "G2B": 46819227,
-    "P2B": 10443119080
+    "B2B": 20102263346,
+    "G2B": 46769313,
+    "P2B": 10442336689
    },
    "J - Informação e comunicação": {
-    "B2B": 49250584231,
-    "G2B": 157938940,
-    "P2B": 17065083194
+    "B2B": 50203002107,
+    "G2B": 157872535,
+    "P2B": 17251878560
    },
    "K - Atividades financeiras, de seguros e servicos relacionados": {
-    "B2B": 448751409948,
-    "G2B": 2467482192,
-    "P2B": 46732285102
+    "B2B": 450771606081,
+    "G2B": 2468007375,
+    "P2B": 46656338632
    },
    "L - Atividades imobiliarias": {
-    "B2B": 14208129213,
-    "G2B": 31494713,
-    "P2B": 4912416000
+    "B2B": 14219181007,
+    "G2B": 31489428,
+    "P2B": 4916104186
    },
    "M - Atividades profissionais, cientificas e tecnicas": {
-    "B2B": 117293559427,
-    "G2B": 420931370,
-    "P2B": 41002477032
+    "B2B": 114238706135,
+    "G2B": 421373054,
+    "P2B": 40870936602
    },
    "N - Atividades administrativas e servicos complementares": {
-    "B2B": 118774661567,
-    "G2B": 455913640,
-    "P2B": 39756994438
+    "B2B": 118884475006,
+    "G2B": 456320247,
+    "P2B": 39771455398
    },
    "O - Administracao publica, defesa e seguridade social": {
-    "B2G": 18963303234,
-    "G2G": 6550959086,
-    "P2G": 6321486736
+    "B2G": 18962449098,
+    "G2G": 6574904461,
+    "P2G": 6318884324
    },
    "Outros": {
-    "Outros": 639061215
+    "Outros": 638414341
    },
    "P - Educacao": {
-    "B2B": 11012768247,
-    "G2B": 84209857,
-    "P2B": 6186927244
+    "B2B": 10982843007,
+    "G2B": 84237014,
+    "P2B": 6178971378
    },
    "Pessoa fisica": {
-    "B2B": 2220917,
-    "B2P": 366068195670,
-    "G2P": 2256223545,
-    "P2B": 2789199,
+    "B2B": 468097,
+    "B2P": 366068314445,
+    "G2P": 2256104770,
+    "P2B": 185717,
     "P2P": 760818058505
    },
    "Q - Saude humana e servicos sociais": {
-    "B2B": 24433958102,
-    "G2B": 770381457,
-    "P2B": 7500650077
+    "B2B": 24444710648,
+    "G2B": 770395125,
+    "P2B": 7501653503
    },
    "R - Artes, cultura, esporte e recreacao": {
-    "B2B": 10393108014,
-    "G2B": 111931865,
-    "P2B": 25111513195
+    "B2B": 10387969816,
+    "G2B": 111333181,
+    "P2B": 25090610401
    },
    "S - Outras atividades de servicos": {
-    "B2B": 11730108189,
-    "G2B": 618144892,
-    "P2B": 8892382802
+    "B2B": 11711102213,
+    "G2B": 593696145,
+    "P2B": 8886432474
    },
    "T - Servicos domesticos": {
-    "B2B": 49734712,
+    "B2B": 49565658,
     "G2B": 573998,
-    "P2B": 70270839
+    "P2B": 69922970
    },
    "U - Organismos internacionais e outras instituicoes extraterritoriais": {
     "B2B": 5300050,
     "P2B": 8328057
    }
   },
-  "concentracao_top5_pct": 79.4,
+  "concentracao_top5_pct": 79.5,
   "serie": [
    {
     "p": "2025-01",
@@ -14898,8 +14898,8 @@
    "dev_integral_v": 4261762.1,
    "dev_parcial_v": 2227049.21,
    "pct_devolucao": 5.29,
-   "usuarios_marcados": 22924.0,
-   "chaves_marcadas": 25242.0
+   "usuarios_marcados": 22923.0,
+   "chaves_marcadas": 25241.0
   },
   {
    "p": "2022-02",
@@ -14916,16 +14916,16 @@
   },
   {
    "p": "2022-03",
-   "contestados_q": 134963.0,
-   "aceitas_q": 105015.0,
+   "contestados_q": 134962.0,
+   "aceitas_q": 105014.0,
    "aceitas_100mil": 7.708,
-   "valor_contestado": 216939856.12,
+   "valor_contestado": 216939616.12,
    "dev_integral_q": 11074.0,
    "dev_integral_v": 10998092.06,
    "dev_parcial_v": 6013211.68,
    "pct_devolucao": 7.84,
-   "usuarios_marcados": 34384.0,
-   "chaves_marcadas": 37689.0
+   "usuarios_marcados": 34382.0,
+   "chaves_marcadas": 37687.0
   },
   {
    "p": "2022-04",
@@ -15158,8 +15158,8 @@
    "dev_integral_v": 21169202.08,
    "dev_parcial_v": 10444199.74,
    "pct_devolucao": 8.16,
-   "usuarios_marcados": 64494.0,
-   "chaves_marcadas": 69265.0
+   "usuarios_marcados": 64493.0,
+   "chaves_marcadas": 69264.0
   },
   {
    "p": "2023-10",
@@ -15215,7 +15215,7 @@
   },
   {
    "p": "2024-02",
-   "contestados_q": 684122.0,
+   "contestados_q": 684120.0,
    "aceitas_q": 286688.0,
    "aceitas_100mil": 7.452,
    "valor_contestado": 420839938.16,
@@ -15223,8 +15223,8 @@
    "dev_integral_v": 20329558.97,
    "dev_parcial_v": 10869164.56,
    "pct_devolucao": 7.41,
-   "usuarios_marcados": 74307.0,
-   "chaves_marcadas": 80048.0
+   "usuarios_marcados": 74306.0,
+   "chaves_marcadas": 80047.0
   },
   {
    "p": "2024-03",
@@ -15236,8 +15236,8 @@
    "dev_integral_v": 29350097.63,
    "dev_parcial_v": 15658177.55,
    "pct_devolucao": 8.15,
-   "usuarios_marcados": 82783.0,
-   "chaves_marcadas": 90889.0
+   "usuarios_marcados": 82782.0,
+   "chaves_marcadas": 90888.0
   },
   {
    "p": "2024-04",
@@ -15249,12 +15249,12 @@
    "dev_integral_v": 23131456.96,
    "dev_parcial_v": 10640496.28,
    "pct_devolucao": 7.48,
-   "usuarios_marcados": 82806.0,
-   "chaves_marcadas": 90394.0
+   "usuarios_marcados": 82805.0,
+   "chaves_marcadas": 90393.0
   },
   {
    "p": "2024-05",
-   "contestados_q": 841710.0,
+   "contestados_q": 841698.0,
    "aceitas_q": 346370.0,
    "aceitas_100mil": 7.496,
    "valor_contestado": 537340697.53,
@@ -15262,8 +15262,8 @@
    "dev_integral_v": 29102491.12,
    "dev_parcial_v": 18368850.46,
    "pct_devolucao": 8.83,
-   "usuarios_marcados": 112380.0,
-   "chaves_marcadas": 117575.0
+   "usuarios_marcados": 112379.0,
+   "chaves_marcadas": 117574.0
   },
   {
    "p": "2024-06",
@@ -15275,8 +15275,8 @@
    "dev_integral_v": 26670045.76,
    "dev_parcial_v": 12659754.68,
    "pct_devolucao": 8.58,
-   "usuarios_marcados": 99805.0,
-   "chaves_marcadas": 103597.0
+   "usuarios_marcados": 99804.0,
+   "chaves_marcadas": 103596.0
   },
   {
    "p": "2024-07",
@@ -15293,16 +15293,16 @@
   },
   {
    "p": "2024-08",
-   "contestados_q": 1146695.0,
-   "aceitas_q": 517930.0,
+   "contestados_q": 1146694.0,
+   "aceitas_q": 517929.0,
    "aceitas_100mil": 10.339,
-   "valor_contestado": 841884565.49,
+   "valor_contestado": 841883565.49,
    "dev_integral_q": 100372.0,
    "dev_integral_v": 51285171.91,
    "dev_parcial_v": 31845147.72,
    "pct_devolucao": 9.87,
    "usuarios_marcados": 114967.0,
-   "chaves_marcadas": 123306.0
+   "chaves_marcadas": 123305.0
   },
   {
    "p": "2024-09",
@@ -15327,8 +15327,8 @@
    "dev_integral_v": 39914254.85,
    "dev_parcial_v": 15032820.27,
    "pct_devolucao": 8.74,
-   "usuarios_marcados": 113084.0,
-   "chaves_marcadas": 122214.0
+   "usuarios_marcados": 113082.0,
+   "chaves_marcadas": 122212.0
   },
   {
    "p": "2024-11",
@@ -15340,8 +15340,8 @@
    "dev_integral_v": 24548545.83,
    "dev_parcial_v": 15490359.03,
    "pct_devolucao": 6.37,
-   "usuarios_marcados": 128269.0,
-   "chaves_marcadas": 142102.0
+   "usuarios_marcados": 128268.0,
+   "chaves_marcadas": 142101.0
   },
   {
    "p": "2024-12",
@@ -15354,7 +15354,7 @@
    "dev_parcial_v": 15069448.36,
    "pct_devolucao": 7.91,
    "usuarios_marcados": 125640.0,
-   "chaves_marcadas": 138389.0
+   "chaves_marcadas": 138388.0
   },
   {
    "p": "2025-01",
@@ -15392,34 +15392,34 @@
    "dev_integral_v": 18537850.49,
    "dev_parcial_v": 10213257.41,
    "pct_devolucao": 5.1,
-   "usuarios_marcados": 110528.0,
+   "usuarios_marcados": 110527.0,
    "chaves_marcadas": 113939.0
   },
   {
    "p": "2025-04",
-   "contestados_q": 1393656.0,
-   "aceitas_q": 372500.0,
+   "contestados_q": 1393655.0,
+   "aceitas_q": 372499.0,
    "aceitas_100mil": 6.654,
-   "valor_contestado": 603531844.79,
+   "valor_contestado": 603531824.79,
    "dev_integral_q": 80425.0,
    "dev_integral_v": 46416988.07,
    "dev_parcial_v": 21070310.23,
    "pct_devolucao": 11.18,
-   "usuarios_marcados": 118453.0,
-   "chaves_marcadas": 121533.0
+   "usuarios_marcados": 118449.0,
+   "chaves_marcadas": 121530.0
   },
   {
    "p": "2025-05",
-   "contestados_q": 1361162.0,
-   "aceitas_q": 308963.0,
+   "contestados_q": 1361161.0,
+   "aceitas_q": 308962.0,
    "aceitas_100mil": 5.21,
-   "valor_contestado": 485907914.81,
+   "valor_contestado": 485907714.81,
    "dev_integral_q": 48643.0,
    "dev_integral_v": 38849444.74,
-   "dev_parcial_v": 15702064.9,
+   "dev_parcial_v": 15702064.43,
    "pct_devolucao": 11.23,
-   "usuarios_marcados": 110194.0,
-   "chaves_marcadas": 112854.0
+   "usuarios_marcados": 110192.0,
+   "chaves_marcadas": 112853.0
   },
   {
    "p": "2025-06",
@@ -15444,8 +15444,8 @@
    "dev_integral_v": 40389001.35,
    "dev_parcial_v": 28921454.82,
    "pct_devolucao": 9.92,
-   "usuarios_marcados": 119923.0,
-   "chaves_marcadas": 124336.0
+   "usuarios_marcados": 119922.0,
+   "chaves_marcadas": 124335.0
   },
   {
    "p": "2025-08",
@@ -15457,8 +15457,8 @@
    "dev_integral_v": 61592739.4,
    "dev_parcial_v": 26467964.13,
    "pct_devolucao": 12.1,
-   "usuarios_marcados": 110941.0,
-   "chaves_marcadas": 114900.0
+   "usuarios_marcados": 110940.0,
+   "chaves_marcadas": 114899.0
   },
   {
    "p": "2025-09",
@@ -15496,8 +15496,8 @@
    "dev_integral_v": 39053514.89,
    "dev_parcial_v": 19768323.93,
    "pct_devolucao": 6.84,
-   "usuarios_marcados": 116238.0,
-   "chaves_marcadas": 115419.0
+   "usuarios_marcados": 116237.0,
+   "chaves_marcadas": 115418.0
   },
   {
    "p": "2025-12",
@@ -15509,47 +15509,47 @@
    "dev_integral_v": 36931578.49,
    "dev_parcial_v": 18132030.94,
    "pct_devolucao": 9.59,
-   "usuarios_marcados": 120224.0,
+   "usuarios_marcados": 120223.0,
    "chaves_marcadas": 118550.0
   },
   {
    "p": "2026-01",
-   "contestados_q": 3181528.0,
-   "aceitas_q": 279022.0,
+   "contestados_q": 3181519.0,
+   "aceitas_q": 279021.0,
    "aceitas_100mil": 4.384,
-   "valor_contestado": 723000026.94,
+   "valor_contestado": 722999026.94,
    "dev_integral_q": 43618.0,
    "dev_integral_v": 66089212.74,
    "dev_parcial_v": 45284082.52,
    "pct_devolucao": 15.4,
-   "usuarios_marcados": 100965.0,
-   "chaves_marcadas": 99831.0
+   "usuarios_marcados": 100963.0,
+   "chaves_marcadas": 99829.0
   },
   {
    "p": "2026-02",
-   "contestados_q": 2813637.0,
-   "aceitas_q": 281562.0,
+   "contestados_q": 2813636.0,
+   "aceitas_q": 281561.0,
    "aceitas_100mil": 4.703,
-   "valor_contestado": 655788480.41,
+   "valor_contestado": 655787380.41,
    "dev_integral_q": 42996.0,
    "dev_integral_v": 58309497.87,
-   "dev_parcial_v": 28963264.61,
+   "dev_parcial_v": 28963183.13,
    "pct_devolucao": 13.31,
-   "usuarios_marcados": 95718.0,
-   "chaves_marcadas": 92722.0
+   "usuarios_marcados": 95716.0,
+   "chaves_marcadas": 92720.0
   },
   {
    "p": "2026-03",
-   "contestados_q": 2925086.0,
-   "aceitas_q": 308769.0,
+   "contestados_q": 2925083.0,
+   "aceitas_q": 308766.0,
    "aceitas_100mil": 4.58,
-   "valor_contestado": 705339111.55,
+   "valor_contestado": 705338907.05,
    "dev_integral_q": 43929.0,
    "dev_integral_v": 65668016.41,
    "dev_parcial_v": 27386580.06,
    "pct_devolucao": 13.19,
-   "usuarios_marcados": 106060.0,
-   "chaves_marcadas": 106091.0
+   "usuarios_marcados": 106055.0,
+   "chaves_marcadas": 106085.0
   },
   {
    "p": "2026-04",
@@ -15561,92 +15561,77 @@
    "dev_integral_v": 74690289.26,
    "dev_parcial_v": 22522084.45,
    "pct_devolucao": 16.25,
-   "usuarios_marcados": 98608.0,
+   "usuarios_marcados": 98606.0,
    "chaves_marcadas": 96297.0
   },
   {
    "p": "2026-05",
-   "contestados_q": 2870907.0,
-   "aceitas_q": 271641.0,
+   "contestados_q": 2870904.0,
+   "aceitas_q": 271640.0,
    "aceitas_100mil": 3.814,
-   "valor_contestado": 630608466.8,
-   "dev_integral_q": 37747.0,
-   "dev_integral_v": 57363386.65,
+   "valor_contestado": 630608417.94,
+   "dev_integral_q": 37746.0,
+   "dev_integral_v": 57363337.79,
    "dev_parcial_v": 22338536.27,
    "pct_devolucao": 12.64,
-   "usuarios_marcados": 106663.0,
-   "chaves_marcadas": 99418.0
+   "usuarios_marcados": 106660.0,
+   "chaves_marcadas": 99416.0
   },
   {
    "p": "2026-06",
-   "contestados_q": 2788474.0,
-   "aceitas_q": 271222.0,
+   "contestados_q": 2788470.0,
+   "aceitas_q": 271221.0,
    "aceitas_100mil": 3.884,
-   "valor_contestado": 558322375.72,
+   "valor_contestado": 558321575.72,
    "dev_integral_q": 34134.0,
    "dev_integral_v": 45018361.26,
-   "dev_parcial_v": 21963099.17,
+   "dev_parcial_v": 21962978.7,
    "pct_devolucao": 12.0,
-   "usuarios_marcados": 88785.0,
-   "chaves_marcadas": 90515.0
+   "usuarios_marcados": 88779.0,
+   "chaves_marcadas": 90511.0
   },
   {
    "p": "2026-07",
-   "contestados_q": 3128920.0,
-   "aceitas_q": 293646.0,
+   "contestados_q": 3128912.0,
+   "aceitas_q": 293645.0,
    "aceitas_100mil": 4.057,
-   "valor_contestado": 521996849.56,
+   "valor_contestado": 521996589.56,
    "dev_integral_q": 39646.0,
    "dev_integral_v": 41276721.21,
    "dev_parcial_v": 19650859.14,
    "pct_devolucao": 11.67,
-   "usuarios_marcados": 89855.0,
-   "chaves_marcadas": 91383.0
+   "usuarios_marcados": 89851.0,
+   "chaves_marcadas": 91378.0
   },
   {
    "p": "2026-08",
-   "contestados_q": 3177466.0,
-   "aceitas_q": 262741.0,
+   "contestados_q": 3177456.0,
+   "aceitas_q": 262736.0,
    "aceitas_100mil": 3.566,
-   "valor_contestado": 610108612.21,
+   "valor_contestado": 610098983.91,
    "dev_integral_q": 33319.0,
    "dev_integral_v": 39130666.02,
-   "dev_parcial_v": 24899193.9,
+   "dev_parcial_v": 24898491.98,
    "pct_devolucao": 10.49,
-   "usuarios_marcados": 90353.0,
-   "chaves_marcadas": 91040.0
+   "usuarios_marcados": 90330.0,
+   "chaves_marcadas": 91016.0
   },
   {
    "p": "2026-09",
-   "contestados_q": 3747049.0,
-   "aceitas_q": 274892.0,
+   "contestados_q": 3747026.0,
+   "aceitas_q": 274887.0,
    "aceitas_100mil": 3.834,
-   "valor_contestado": 733243416.73,
+   "valor_contestado": 733219336.64,
    "dev_integral_q": 35485.0,
    "dev_integral_v": 67023799.13,
-   "dev_parcial_v": 39280002.15,
+   "dev_parcial_v": 39279999.46,
    "pct_devolucao": 14.5,
-   "usuarios_marcados": 91363.0,
-   "chaves_marcadas": 93319.0
+   "usuarios_marcados": 91332.0,
+   "chaves_marcadas": 93288.0
   }
  ],
  "spi": {
   "diario_ult90": [
-   {
-    "p": "2026-08-08",
-    "q": 273064691.0,
-    "v": 44670418.93
-   },
-   {
-    "p": "2026-08-09",
-    "q": 192760302.0,
-    "v": 25971059.83
-   },
-   {
-    "p": "2026-08-10",
-    "q": 269564051.0,
-    "v": 184787038.59
-   },
    {
     "p": "2026-08-11",
     "q": 236339506.0,
@@ -16079,255 +16064,270 @@
    },
    {
     "p": "2026-11-05",
-    "q": 268839629.0,
-    "v": 158531707.67
+    "q": 268878376.0,
+    "v": 158540018.96
+   },
+   {
+    "p": "2026-11-06",
+    "q": 319678792.0,
+    "v": 180531480.36
+   },
+   {
+    "p": "2026-11-07",
+    "q": 282362480.0,
+    "v": 52507213.94
+   },
+   {
+    "p": "2026-11-08",
+    "q": 199091216.0,
+    "v": 28747923.2
    }
   ],
   "pico": {
-   "p": "2026-09-04",
-   "q": 318116744.0,
-   "v": 186904891.08
+   "p": "2026-11-06",
+   "q": 319678792.0,
+   "v": 180531480.36
   },
   "intradia": [
    {
     "h": "00:00",
-    "q": 2514818.0,
-    "v": 362441393.88
+    "q": 2548263.0,
+    "v": 361370182.44
    },
    {
     "h": "00:30",
-    "q": 2172981.0,
-    "v": 212475707.13
+    "q": 2219091.0,
+    "v": 215902068.81
    },
    {
     "h": "01:00",
-    "q": 1797687.0,
-    "v": 270951902.93
+    "q": 1828155.0,
+    "v": 266331423.48
    },
    {
     "h": "01:30",
-    "q": 1448360.0,
-    "v": 173337084.66
+    "q": 1485421.0,
+    "v": 172749293.42
    },
    {
     "h": "02:00",
-    "q": 1187816.0,
-    "v": 136298400.91
+    "q": 1219714.0,
+    "v": 142305230.72
    },
    {
     "h": "02:30",
-    "q": 988120.0,
-    "v": 92194572.21
+    "q": 1024921.0,
+    "v": 96025512.9
    },
    {
     "h": "03:00",
-    "q": 864372.0,
-    "v": 416345994.58
+    "q": 891811.0,
+    "v": 392220866.96
    },
    {
     "h": "03:30",
-    "q": 749287.0,
-    "v": 168062842.49
+    "q": 774682.0,
+    "v": 163881320.39
    },
    {
     "h": "04:00",
-    "q": 793240.0,
-    "v": 595052376.11
+    "q": 810423.0,
+    "v": 523057124.64
    },
    {
     "h": "04:30",
-    "q": 736686.0,
-    "v": 216120785.38
+    "q": 752600.0,
+    "v": 219966672.56
    },
    {
     "h": "05:00",
-    "q": 967018.0,
-    "v": 156752755.88
+    "q": 983418.0,
+    "v": 160309970.96
    },
    {
     "h": "05:30",
-    "q": 1306731.0,
-    "v": 320641040.89
+    "q": 1305608.0,
+    "v": 317623485.04
    },
    {
     "h": "06:00",
-    "q": 2047895.0,
-    "v": 756017037.39
+    "q": 2025403.0,
+    "v": 765689648.4
    },
    {
     "h": "06:30",
-    "q": 2700476.0,
-    "v": 884618687.11
+    "q": 2655511.0,
+    "v": 871641521.39
    },
    {
     "h": "07:00",
-    "q": 3508856.0,
-    "v": 1369123195.17
+    "q": 3441622.0,
+    "v": 1293463124.09
    },
    {
     "h": "07:30",
-    "q": 4046082.0,
-    "v": 1439309372.25
+    "q": 3990550.0,
+    "v": 1372341761.8
    },
    {
     "h": "08:00",
-    "q": 4653074.0,
-    "v": 2025131303.88
+    "q": 4612612.0,
+    "v": 1972117684.85
    },
    {
     "h": "08:30",
-    "q": 5226208.0,
-    "v": 2250950385.75
+    "q": 5202732.0,
+    "v": 2171445342.57
    },
    {
     "h": "09:00",
-    "q": 5768811.0,
-    "v": 3608694553.27
+    "q": 5762700.0,
+    "v": 3386288352.01
    },
    {
     "h": "09:30",
-    "q": 6206071.0,
-    "v": 4081906314.94
+    "q": 6211957.0,
+    "v": 3835398590.05
    },
    {
     "h": "10:00",
-    "q": 6494692.0,
-    "v": 3608686538.46
+    "q": 6518084.0,
+    "v": 3440906390.08
    },
    {
     "h": "10:30",
-    "q": 6823302.0,
-    "v": 4014055028.4
+    "q": 6872000.0,
+    "v": 3847422365.03
    },
    {
     "h": "11:00",
-    "q": 7144528.0,
-    "v": 4161394719.03
+    "q": 7196243.0,
+    "v": 3936761438.42
    },
    {
     "h": "11:30",
-    "q": 7450942.0,
-    "v": 4135983535.62
+    "q": 7491457.0,
+    "v": 3846067973.47
    },
    {
     "h": "12:00",
-    "q": 7612228.0,
-    "v": 3819431094.05
+    "q": 7626675.0,
+    "v": 3744801864.42
    },
    {
     "h": "12:30",
-    "q": 7498776.0,
-    "v": 3252806389.3
+    "q": 7494284.0,
+    "v": 3132854467.46
    },
    {
     "h": "13:00",
-    "q": 7118164.0,
-    "v": 3130812390.64
+    "q": 7121443.0,
+    "v": 3006890419.54
    },
    {
     "h": "13:30",
-    "q": 6771548.0,
-    "v": 3401156301.59
+    "q": 6780120.0,
+    "v": 3236185915.37
    },
    {
     "h": "14:00",
-    "q": 6626435.0,
-    "v": 4066594915.77
+    "q": 6623099.0,
+    "v": 3877132533.34
    },
    {
     "h": "14:30",
-    "q": 6600619.0,
-    "v": 4286530016.41
+    "q": 6587603.0,
+    "v": 4111400635.02
    },
    {
     "h": "15:00",
-    "q": 6720545.0,
-    "v": 4630077994.87
+    "q": 6682408.0,
+    "v": 4415406690.05
    },
    {
     "h": "15:30",
-    "q": 6843865.0,
-    "v": 5256741328.33
+    "q": 6783151.0,
+    "v": 4904162361.6
    },
    {
     "h": "16:00",
-    "q": 7055110.0,
-    "v": 5375346397.69
+    "q": 6983535.0,
+    "v": 4976044494.25
    },
    {
     "h": "16:30",
-    "q": 7240529.0,
-    "v": 5040765708.23
+    "q": 7172377.0,
+    "v": 4618403480.39
    },
    {
     "h": "17:00",
-    "q": 7517433.0,
-    "v": 5168821821.33
+    "q": 7419829.0,
+    "v": 4926327275.94
    },
    {
     "h": "17:30",
-    "q": 7685987.0,
-    "v": 4252779905.95
+    "q": 7582755.0,
+    "v": 3897558841.01
    },
    {
     "h": "18:00",
-    "q": 7848523.0,
-    "v": 2790958715.81
+    "q": 7746465.0,
+    "v": 2656614476.95
    },
    {
     "h": "18:30",
-    "q": 7773967.0,
-    "v": 3228617903.22
+    "q": 7656727.0,
+    "v": 3049864883.85
    },
    {
     "h": "19:00",
-    "q": 7544802.0,
-    "v": 2196060027.51
+    "q": 7266916.0,
+    "v": 1983796727.73
    },
    {
     "h": "19:30",
-    "q": 7211112.0,
-    "v": 2512442507.32
+    "q": 7146761.0,
+    "v": 2382608582.74
    },
    {
     "h": "20:00",
-    "q": 6707661.0,
-    "v": 1107642292.64
+    "q": 6720272.0,
+    "v": 1093938360.47
    },
    {
     "h": "20:30",
-    "q": 6335276.0,
-    "v": 1012170883.74
+    "q": 6358508.0,
+    "v": 1000079627.64
    },
    {
     "h": "21:00",
-    "q": 5870054.0,
-    "v": 852289331.69
+    "q": 5868886.0,
+    "v": 841732020.55
    },
    {
     "h": "21:30",
-    "q": 5358785.0,
-    "v": 714313868.85
+    "q": 5379592.0,
+    "v": 706929990.17
    },
    {
     "h": "22:00",
-    "q": 4738438.0,
-    "v": 617539606.15
+    "q": 4750684.0,
+    "v": 606970996.69
    },
    {
     "h": "22:30",
-    "q": 4103931.0,
-    "v": 488795148.58
+    "q": 4118344.0,
+    "v": 484408537.86
    },
    {
     "h": "23:00",
-    "q": 3446857.0,
-    "v": 402390220.03
+    "q": 3467447.0,
+    "v": 400522411.78
    },
    {
     "h": "23:30",
-    "q": 2830071.0,
-    "v": 324088973.67
+    "q": 2842354.0,
+    "v": 320013047.99
    }
   ],
   "disponibilidade": [

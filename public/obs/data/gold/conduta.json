@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-08T17:29:02+00:00",
+ "gerado_em": "2026-11-09T21:38:46+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,53 +24,53 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1300 processos sancionadores em 1ª instância, com 1369 decisões por apenado: 1311 multas somando R$ 72.2 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 149 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (169 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1301 processos sancionadores em 1ª instância, com 1370 decisões por apenado: 1312 multas somando R$ 72.3 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 151 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (169 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-06",
+  "ultima_decisao": "2026-11-09",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17010,
-   "processos": 13099,
+   "decisoes": 17011,
+   "processos": 13100,
    "apenados_distintos": 11419
   },
   "janela_12m": {
-   "ini": "2025-11-08",
-   "decisoes": 1369,
-   "processos": 1300,
-   "multas_n": 1311,
-   "multas_valor": 72248000.0,
+   "ini": "2025-11-09",
+   "decisoes": 1370,
+   "processos": 1301,
+   "multas_n": 1312,
+   "multas_valor": 72273000.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
-   "recursos": 149,
+   "recursos": 151,
    "pj": 398,
-   "pf": 971
+   "pf": 972
   },
   "janela_12m_anterior": {
-   "decisoes": 840,
-   "processos": 668,
-   "multas_n": 705,
-   "multas_valor": 25562883.9,
+   "decisoes": 819,
+   "processos": 647,
+   "multas_n": 684,
+   "multas_valor": 25075383.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
-   "recursos": 136,
-   "pj": 272,
-   "pf": 568
+   "recursos": 133,
+   "pj": 254,
+   "pf": 565
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1311,
-    "share": 95.76
+    "n": 1312,
+    "share": 95.77
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.73
+    "share": 3.72
    },
    {
     "pena": "INABILITAÇÃO",
@@ -92,27 +92,27 @@
    {
     "situacao": "MULTA PAGA",
     "n": 877,
-    "share": 64.06
+    "share": 64.01
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 128,
-    "share": 9.35
+    "share": 9.34
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 115,
-    "share": 8.4
+    "n": 117,
+    "share": 8.54
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 114,
-    "share": 8.33
+    "n": 115,
+    "share": 8.39
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 51,
-    "share": 3.73
+    "n": 49,
+    "share": 3.58
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
@@ -154,7 +154,7 @@
    {
     "situacao": "MULTA PAGA",
     "n": 11976,
-    "share": 87.8
+    "share": 87.79
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -168,13 +168,13 @@
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 123,
-    "share": 0.9
+    "n": 124,
+    "share": 0.91
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 117,
-    "share": 0.86
+    "n": 119,
+    "share": 0.87
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -188,8 +188,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 59,
-    "share": 0.43
+    "n": 57,
+    "share": 0.42
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -199,8 +199,8 @@
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
-   "p90": 30.4,
-   "n": 3130
+   "p90": 30.2,
+   "n": 3131
   },
   "anual": [
    {
@@ -400,21 +400,31 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1227,
-    "processos": 1162,
-    "multas_n": 1175,
-    "multas_valor": 69235500.0,
+    "decisoes": 1228,
+    "processos": 1163,
+    "multas_n": 1176,
+    "multas_valor": 69260500.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
-    "recursos": 134,
-    "pf": 878,
+    "recursos": 136,
+    "pf": 879,
     "pj": 349,
     "incompleto": true,
-    "recurso_share": 10.92,
-    "sem_penalidade_share": 3.67
+    "recurso_share": 11.07,
+    "sem_penalidade_share": 3.66
    }
   ],
   "recentes": [
+   {
+    "pas": "300935",
+    "nome": "GILBERTO FELIPE DE SOUZA JUNIOR",
+    "pessoa": "PF",
+    "decisao": "2026-11-09",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "315945",
     "nome": "BRUNO MUTZENBECHER GENTIL",
@@ -804,16 +814,6 @@
     "multa": 12500.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315935",
-    "nome": "MASSIMO DI LEO",
-    "pessoa": "PF",
-    "decisao": "2026-10-20",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
    }
   ],
   "inabilitados": {
@@ -941,7 +941,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-08",
+   "ini": "2025-11-09",
    "processos": 63,
    "acusados": 169
   },
@@ -1330,7 +1330,7 @@
     "local": "Gerência de Controle de Processos Sancionadores",
     "ultima_mov": "2026-10-14",
     "acusados": 2,
-    "objeto": "Coordenação de ofertas e manipulação de preços em novembro e dezembro de 2025 por GUILHERME LOPES RAMOS SOBRINHO e RENATO PORTALUPPI."
+    "objeto": "Operações fraudulentas por meio de coordenação de ofertas."
    },
    {
     "nup": "19957013739202658",
