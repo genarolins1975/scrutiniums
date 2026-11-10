@@ -43,7 +43,7 @@ export default function Necessidades() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.alimentacao.nome,
+        grupo: TEMAS_EFICIENCIA.alimentacao.contexto,
         acento: "obee",
         titulo: "Quais famílias enfrentam restrição alimentar?",
         lead: "A Escala Brasileira de Insegurança Alimentar (EBIA) organiza as experiências dos domicílios em segurança alimentar ou insegurança leve, moderada e grave.",

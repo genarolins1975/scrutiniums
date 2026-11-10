@@ -4,6 +4,7 @@ import { Nome } from "@/components/i18n/Nome";
 import { TrechoPortugues } from "@/components/i18n/TrechoPortugues";
 import { AprendaCabecalho, AprendaNavegacao, ROTA_APRENDA } from "@/components/energia/AprendaPagina";
 import { AprendaProva } from "@/components/energia/AprendaProva";
+import { VerbeteNoSistema } from "@/components/energia/VerbeteNoSistema";
 import { destinoNoPainel } from "@/lib/energia/conteudo/aprenda-indice";
 import { EXEMPLO_SINTETICO_IDIOMAS, UNIDADE_IDIOMAS, contrastesDe } from "@/lib/energia/conteudo/complementos";
 import { conceito, type Conceito, type FonteOficial } from "@/lib/energia/conteudo/conceitos";
@@ -245,8 +246,8 @@ export function AprendaVerbete({ c }: { c: Conceito }) {
         </div>
       ) : null}
 
-      <div className="mt-6 grid grid-cols-1 gap-x-12 lg:grid-cols-2">
-        {conferido && (
+      {conferido && (
+        <div className="mt-6 grid grid-cols-1 gap-x-12 lg:grid-cols-2">
           <>
             <Campo rotulo={tx("Em uma frase", "In one sentence")} lugar="lg:col-start-1 lg:row-start-1">
               {c.emPalavrasSimples ? (
@@ -312,7 +313,11 @@ export function AprendaVerbete({ c }: { c: Conceito }) {
               </Campo>
             )}
           </>
-        )}
+        </div>
+      )}
+      {/* a figura do verbete: o elo do sistema em que o conceito aparece, depois da definição e do exemplo e antes das relações */}
+      <VerbeteNoSistema c={c} />
+      <div className="grid grid-cols-1 gap-x-12 lg:grid-cols-2">
         {campoContrastes}
         {campoLimitacoes}
         {campoRelacoes}

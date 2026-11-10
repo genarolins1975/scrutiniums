@@ -1,0 +1,78 @@
+{
+ "data": "2026-11-10",
+ "conta": "nova",
+ "build": "7_Pj0gb55lR4bKJ5luVHK",
+ "maquina": "4 vCPU, 16 GB",
+ "comando": "npm run evidencias -- --larguras 390,1440 --modos sem --rotas / /perguntas/familias --saida docs/ux-2026-11-10/abertas",
+ "tempo": "0 min 15 s",
+ "resultados": [
+  {
+   "rota": "/",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/",
+   "barra": true,
+   "cromo": 145,
+   "topoH1": 231,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "inicio-390-sem-sessao.jpg",
+   "primeiraTela": "inicio-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 242,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [],
+   "login": [],
+   "captura": "inicio-1440-sem-sessao.jpg",
+   "primeiraTela": "inicio-1440-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/familias",
+   "modo": "sem",
+   "largura": 390,
+   "status": 200,
+   "final": "/perguntas/familias",
+   "barra": true,
+   "cromo": 101,
+   "topoH1": 243,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [],
+   "captura": "perguntas_familias-390-sem-sessao.jpg",
+   "primeiraTela": "perguntas_familias-390-sem-sessao-primeira-tela.jpg"
+  },
+  {
+   "rota": "/perguntas/familias",
+   "modo": "sem",
+   "largura": 1440,
+   "status": 200,
+   "final": "/perguntas/familias",
+   "barra": true,
+   "cromo": 106,
+   "topoH1": 264,
+   "rolagemHorizontal": false,
+   "axe": [],
+   "console": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+   ],
+   "login": [],
+   "captura": "perguntas_familias-1440-sem-sessao.jpg",
+   "primeiraTela": "perguntas_familias-1440-sem-sessao-primeira-tela.jpg"
+  }
+ ]
+}

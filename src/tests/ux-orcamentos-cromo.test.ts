@@ -15,13 +15,17 @@ import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarHidratacao, aguardarSessaoResolvida,
  * scripts/obee/judiciario-verificacao.mjs) e sem sessão nas páginas aperitivo. A medida é a mesma de scripts/ux-cromo.mjs.
  *
  * As coleções passam a ser cobradas à medida que recebem a NavegacaoColecao (um PR por bloco da iniciativa): `ENTRADAS` cresce a
- * cada bloco até as 28 entradas. Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
+ * cada bloco até as 28 entradas (24 coleções desde a fusão de 10/11/2026; as quatro antigas portas seguem medidas). Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
  */
 const raiz = process.cwd();
 const temBuild = existsSync(join(raiz, ".next/BUILD_ID"));
 const exigir = process.env.EXIGIR_BUILD_HTML === "1";
 
-/** Entradas de coleção já na navegação única, com sessão. */
+/**
+ * Entradas de coleção já na navegação única, com sessão. As chaves são só rótulos: `desastres`, `combustiveis`, `cultura` e
+ * `mobilidade` deixaram de ser coleções na fusão decidida pelo dono em 10/11/2026 (24 coleções), mas as páginas continuam
+ * medidas aqui, agora com a navegação da coleção que as recebeu (o grupo delas abre a segunda linha).
+ */
 const ENTRADAS: Record<string, string> = {
   conectividade: "/conectividade",
   federais: "/contas-publicas",
@@ -31,6 +35,7 @@ const ENTRADAS: Record<string, string> = {
   gas: "/gas-natural",
   combustiveis: "/combustiveis",
   "custo-de-vida": "/custo-de-vida",
+  divida: "/divida-das-familias",
   educacao: "/educacao-municipal",
   // a apresentação do Crédito (/observatorio-do-credito) tem casca própria até a Iniciativa 4; a navegação mora nas páginas Next
   credito: "/observatorio-do-credito/quanto-meu-banco-cobra",
@@ -53,9 +58,9 @@ const ENTRADAS: Record<string, string> = {
   "cidades-clima": "/eficiencia-estatal/meio-ambiente-clima",
   // bloco 6: o Desmatamento e emissões entra pela página ambiental do Agro
   desmatamento: "/agronegocio/ambiente",
-  // as quatro coleções servidas pela aplicação do Crédito, desde que ela ganhou a navegação da plataforma no lugar da barra lateral
-  // (Iniciativa 2 do parecer de UX de 23/10/2026; antes, 727 px de cromo a 390 px)
-  divida: "/observatorio/payroll-lending-aging",
+  // as três coleções servidas pela aplicação do Crédito, desde que ela ganhou a navegação da plataforma no lugar da barra lateral
+  // (Iniciativa 2 do parecer de UX de 23/10/2026; antes, 727 px de cromo a 390 px). A Dívida das famílias tem porta própria
+  // desde 10/11/2026 (/divida-das-familias, acima)
   "divida-governos": "/observatorio/subnational-credit",
   pagamentos: "/observatorio/pix",
   empresas: "/observatorio/sectors",

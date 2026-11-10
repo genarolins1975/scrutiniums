@@ -15,6 +15,8 @@ export const NO_MOLDE: string[] = [
   "/conectividade",
   "/educacao-municipal",
   "/custo-de-vida",
+  // porta própria da coleção Dívida e crédito das famílias (10/11/2026)
+  "/divida-das-familias",
   "/contas-publicas/previdencia",
   "/agronegocio",
   // Grupo B (22/10/2026)

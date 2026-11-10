@@ -27,7 +27,7 @@ function FonteExtenso(){return <p>Fonte: <a className="underline" href={FJP}>Fun
 // molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): abertura com recorte e limite, os três números no NumeroIndicador,
 // a comparação numa FiguraAnalitica, os três conceitos no ParaLer e a fonte por extenso no método; nenhum texto ou número mudou
 export default function Pagina(){return <PaginaPainel rota={ROTA+'/deficit'} principal={false}
- abertura={{grupo:TEMAS_EFICIENCIA.habitacao.nome,acento:'obee',titulo:'Onde se concentram as necessidades de moradia?',
+ abertura={{grupo:TEMAS_EFICIENCIA.habitacao.contexto,acento:'obee',titulo:'Onde se concentram as necessidades de moradia?',
   lead:'O número estimado dimensiona o problema. O percentual usa os domicílios particulares ocupados como referência. Compare as duas leituras antes de interpretar diferenças entre estados.',
   recorte:{periodo:'referência '+dados.ano,universo:'Brasil, regiões e 27 UFs',unidade:'domicílios estimados e %',fonte:'FJP, edição 2026'},
   limite:'quantas pessoas estão sem moradia nem quem está numa fila de atendimento: o déficit é uma estimativa de necessidades habitacionais, calculada pela FJP, e não equivale a pessoas nem a famílias cadastradas em programas.',

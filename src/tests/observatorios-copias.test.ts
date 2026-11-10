@@ -101,7 +101,8 @@ describe("painel principal de cada tema repetido", () => {
     }
     // Emissões: a série principal é o inventário oficial.
     expect(principal("/agronegocio/ambiente")).toBe("/territorio/emissoes");
-    expect(principal("/eficiencia-estatal/trabalho-renda/emprego-formal")).toBe("/observatorio/formal-employment");
+    // desde 10/11/2026 o painel principal é a página das Famílias, reescrita da vista do Crédito (reescritos.ts)
+    expect(principal("/eficiencia-estatal/trabalho-renda/emprego-formal")).toBe("/emprego-formal");
     expect(principal("/eficiencia-estatal/judiciario/acesso")).toBe("/eficiencia-estatal/acesso-justica/cobertura");
   });
 

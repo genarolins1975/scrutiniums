@@ -37,7 +37,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:'obee',
       titulo:'Quem precisa de apoio e quem consegue recebê-lo?',
       lead:'Baixa renda, violações de direitos e necessidade de cuidado são situações diferentes. O número de inscritos no Cadastro Único não é um denominador universal para todos os serviços.',
@@ -60,7 +60,7 @@ export default function Page(){
       colunas={['Necessidade','Denominador necessário','Limite dos registros atuais']}
       linhas={demanda}
       nota={<>
-        <span className="font-medium text-carvao">Contexto de renda já publicado no OBEE.</span> Consulte o Cadastro Único e a proteção da renda no capítulo de Trabalho e renda. Esses dados permanecem com suas fontes e universos originais; não são somados novamente ao escore de assistência.{' '}
+        <span className="font-medium text-carvao">Contexto de renda já publicado na coleção Renda e trabalho.</span> Consulte o Cadastro Único e a proteção da renda no capítulo de Trabalho e renda. Esses dados permanecem com suas fontes e universos originais; não são somados novamente ao escore de assistência.{' '}
         <Link href="/eficiencia-estatal/trabalho-renda/cadastro-unico" className="inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Cadastro Único →</Link>{' '}
         <Link href="/eficiencia-estatal/trabalho-renda/protecao-da-renda" className="ml-4 inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4">Proteção da renda →</Link>
       </>}

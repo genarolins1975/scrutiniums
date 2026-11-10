@@ -69,7 +69,7 @@ export default function MetodologiaPage() {
       <main id="conteudo" className="ed-pagina pb-12">
         <AberturaGas pagina={pagina}>
           <p>
-            A coleção Gás Natural apresenta indicadores com fonte, período, natureza e fórmula. Não atribui nota, não classifica estados ou
+            A coleção Gás e combustíveis apresenta indicadores com fonte, período, natureza e fórmula. Não atribui nota, não classifica estados ou
             empresas e não interpreta política. Esta página é aberta; os painéis pedem uma conta gratuita.
           </p>
         </AberturaGas>

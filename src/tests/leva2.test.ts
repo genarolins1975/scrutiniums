@@ -303,6 +303,7 @@ describe("leva 2: o artefato dos R$ 100 na página aberta das Contas Públicas",
   it("a página da porta mostra o artefato só quando ele está aprovado", async () => {
     caminho.atual = "/perguntas/contas-publicas";
     const { PaginaPorta } = await import("@/components/perguntas/PaginaPorta");
+    const { colecoesDaPorta } = await import("@/lib/perguntas/colecoesDaPorta");
     const { CemReaisAberto } = await import("@/components/perguntas/CemReaisAberto");
     const { portas } = await import("@/lib/perguntas/portas");
     const todas = portas();
@@ -313,7 +314,8 @@ describe("leva 2: o artefato dos R$ 100 na página aberta das Contas Públicas",
         createElement(PaginaPorta, {
           porta,
           outras: todas.filter((p) => p.id !== porta.id),
-          colecoes: [],
+          // as coleções e o retrato de tamanho e prontidão passaram a ser obrigatórios (portfólio honesto): a mesma função da rota
+          ...colecoesDaPorta("contas-publicas"),
           artefato: artefatosLeva2("contas-publicas", leva).map((id) => (id === "cem-reais-dos-impostos" ? createElement(CemReaisAberto, { key: id }) : null)),
         }),
       );
@@ -366,6 +368,7 @@ describe("leva 2: a consulta por área na página aberta das Contas Públicas", 
   it("a página da porta mostra a consulta só quando ela está aprovada, entre os números e os caminhos", async () => {
     caminho.atual = "/perguntas/contas-publicas";
     const { PaginaPorta } = await import("@/components/perguntas/PaginaPorta");
+    const { colecoesDaPorta } = await import("@/lib/perguntas/colecoesDaPorta");
     const { CemReaisPorAreaAberto } = await import("@/components/perguntas/CemReaisPorAreaAberto");
     const { portas } = await import("@/lib/perguntas/portas");
     const todas = portas();
@@ -375,7 +378,8 @@ describe("leva 2: a consulta por área na página aberta das Contas Públicas", 
         createElement(PaginaPorta, {
           porta,
           outras: todas.filter((p) => p.id !== porta.id),
-          colecoes: [],
+          // as coleções e o retrato de tamanho e prontidão passaram a ser obrigatórios (portfólio honesto): a mesma função da rota
+          ...colecoesDaPorta("contas-publicas"),
           artefato: artefatosLeva2("contas-publicas", leva).map((id) => (id === "cem-reais-por-area" ? createElement(CemReaisPorAreaAberto, { key: id }) : null)),
         }),
       );

@@ -35,7 +35,7 @@ function CapituloTic({slug}:{slug:Exclude<Slug,'recursos'|'metodos'>}){
  const ficha=fichaTic(fichas.filter(f=>f.familia===slug));
  const fonte=<FonteTic/>;
  return <PaginaPainel rota={ROTA+'/'+slug} principal={false}
-  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · '+capitulos[slug][0],acento:'obee',titulo:capitulos[slug][1],lead:capitulos[slug][2],
+  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · '+capitulos[slug][0]+' · '+TEMAS_EFICIENCIA.cultura.recorte.rotulo,acento:'obee',titulo:capitulos[slug][1],lead:capitulos[slug][2],
    recorte:{periodo:'2024',universo:'Brasil, sete tipos de equipamento cultural',unidade:'% dos equipamentos de cada tipo',fonte:'Cetic.br/NIC.br, TIC Cultura 2024'},
    limite:'qual proporção de pessoas é atendida, porque o percentual é de equipamentos nos cadastros oficiais, públicos e privados, e não cobre todos os espaços culturais.',
    fontesDatasSiglas:<><p>{fonte}</p><p>TIC Cultura: pesquisa sobre o uso das tecnologias de informação e comunicação nos equipamentos culturais brasileiros, do Cetic.br, centro do NIC.br.</p></>}}
@@ -67,7 +67,7 @@ export default function Pagina({params}:{params:{painel?:string[]}}){
  */
 function CapituloRecursos(){
  return <PaginaPainel rota={ROTA+'/recursos'} principal={false}
-  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · '+capitulos.recursos[0],acento:'obee',titulo:capitulos.recursos[1],lead:capitulos.recursos[2],
+  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · '+capitulos.recursos[0]+' · '+TEMAS_EFICIENCIA.cultura.recorte.rotulo,acento:'obee',titulo:capitulos.recursos[1],lead:capitulos.recursos[2],
    recorte:{periodo:'2013–2023',universo:'Brasil, três esferas de governo e 27 governos estaduais e distrital',unidade:'R$ nominais',fonte:'IBGE/STN, SIIC 2013–2024'},
    limite:'a quantidade ou a qualidade dos serviços prestados: a despesa publicada, em reais correntes de cada ano, não mede atendimento nem eficiência, e o crescimento nominal não mede o aumento do poder de compra.',
    acao:<ControlesRecursos/>,
@@ -92,7 +92,7 @@ function Panorama(){
  const gasto=base.gastos.find(r=>r.ano===2023&&r.entidade==='Total')!;
  const wifiTipos=base.tic.filter(r=>r.aba==='B10'&&r.categoria==='Sim').sort((a,b)=>b.valor-a.valor);
  return <PaginaPainel rota={ROTA} principal={false}
-  abertura={{grupo:TEMAS_EFICIENCIA.cultura.nome+' · Cidadania e convivência',acento:'obee',titulo:'O que os espaços culturais oferecem ao público?',
+  abertura={{grupo:TEMAS_EFICIENCIA.cultura.contexto+' · Cidadania e convivência',acento:'obee',titulo:'O que os espaços culturais oferecem ao público?',
    lead:'Bibliotecas, museus, teatros, cinemas, arquivos, bens tombados e pontos de cultura: como se organizam, o que oferecem e quanto o poder público registra de despesa com cultura.',
    recorte:{periodo:'2024 (equipamentos) e 2023 (despesa)',universo:'Brasil, sete tipos de equipamento cultural e três esferas de governo',unidade:'% dos equipamentos e R$ nominais',fonte:'Cetic.br/NIC.br, TIC Cultura 2024; IBGE/STN, SIIC'},
    limite:'a participação da população: os dados mostram capacidades e atividades declaradas, e frequência individual, demanda não atendida e satisfação dos cidadãos ainda não estão integradas. A existência de um equipamento não comprova acesso efetivo.',

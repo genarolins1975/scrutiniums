@@ -353,6 +353,12 @@
     "publicacao.json"
    ]
   },
+  "energia-elemento-visual.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "publicacao.json"
+   ]
+  },
   "energia-empresas.test.ts": {
    "classe": "dado",
    "golds": [
@@ -702,6 +708,10 @@
    "golds": []
   },
   "perguntas-portas.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
+  "recorte-geografico.test.ts": {
    "classe": "interface",
    "golds": []
   },

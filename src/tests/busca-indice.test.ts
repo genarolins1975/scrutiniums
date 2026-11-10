@@ -25,13 +25,14 @@ const CAMPOS_INDICE = new Set(["versao", "observatorios", "colecoes", "exemplos"
 const PESO_MAXIMO = 150 * 1024;
 
 describe("índice da busca", () => {
-  it("cobre os seis observatórios, as 28 coleções, páginas, perguntas, consultas, verbetes e métodos", () => {
+  it("cobre os seis observatórios, as 24 coleções, páginas, perguntas, consultas, verbetes e métodos", () => {
     const i = indice();
     const tipos = new Set(i.entradas.map((e) => e.tipo));
     for (const t of ["observatorio", "colecao", "pagina", "pergunta", "consulta", "verbete", "metodo"]) expect(tipos, t).toContain(t);
     expect(i.observatorios.map((o) => o.id)).toEqual(OBSERVATORIOS.map((o) => o.id));
-    expect(i.colecoes).toHaveLength(28);
-    expect(i.entradas.filter((e) => e.tipo === "colecao")).toHaveLength(28);
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(i.colecoes).toHaveLength(24);
+    expect(i.entradas.filter((e) => e.tipo === "colecao")).toHaveLength(24);
     expect(i.exemplos).toHaveLength(3);
   });
 

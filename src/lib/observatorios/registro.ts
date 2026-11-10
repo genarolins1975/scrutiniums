@@ -29,9 +29,12 @@ import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from
 import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
 import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
+import { TEMAS_EFICIENCIA, tituloComRecorte, type TemaEficiencia } from "@/lib/eficiencia/temas";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
+import { RESUMO_DIVIDA, ROTA_DIVIDA, TERMOS_DIVIDA, TITULO_PAINEL as TITULO_PAINEL_DIVIDA } from "@/lib/divida/paginas";
+import { PAINEIS_REESCRITOS } from "./reescritos";
 import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
@@ -63,12 +66,19 @@ export const DESTINO_ABAS_CREDITO: Record<string, Destino> = {
   "/subnational-credit": ["contas-publicas", "divida-governos"], "/federal-tax-debt": ["contas-publicas", "divida-governos"],
 };
 export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
+/**
+ * Abas da aplicação do Crédito substituídas por página Next (reescritos.ts): saem do registro, da navegação e da busca, que
+ * passam a apontar para a página nova. Seis endereços antigos redirecionam para a página nova desde a decisão do dono de
+ * 10/11/2026 (`redirecionar` em paineis-reescritos.json, lido pelo next.config.mjs); os três com perda declarada (Consignado,
+ * Crédito imobiliário e Emprego formal) continuam servindo a vista antiga até os mapas serem migrados.
+ */
+export const ABAS_SUBSTITUIDAS = new Map(PAINEIS_REESCRITOS.map((r) => [r.abaAntiga, r.rota]));
 
 function paineisCredito(): Painel[] {
   const raiz: Painel = { rota: "/observatorio", titulo: "Crédito", observatorio: "economia", colecao: "credito", origem: "credito" };
   // páginas Next do Crédito (consultas de juros e método), logo depois da raiz: são as mais procuradas pelo leitor
   const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito", resumo: p.resumo, termos: p.termos }));
-  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
+  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !ABAS_SUBSTITUIDAS.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
     const destino = DESTINO_ABAS_CREDITO[a.caminho];
     if (!destino) throw new Error(`aba do Crédito sem observatório: ${a.caminho}`);
     const [observatorio, colecao] = destino;
@@ -86,13 +96,15 @@ export const DESTINO_TEMAS_EFICIENCIA: Record<string, Destino> = {
   saude: ["servicos-publicos", "saude"],
   seguranca: ["servicos-publicos", "seguranca"],
   justica: ["servicos-publicos", "justica"],
-  cultura: ["servicos-publicos", "cultura"],
+  // fusão de 10/11/2026 (decisão do dono, COLECOES_FUNDIDAS em lista.ts): a Cultura entra em Educação e cultura
+  cultura: ["servicos-publicos", "educacao"],
   trabalho: ["familias", "renda"],
   alimentacao: ["familias", "protecao"],
   assistencia: ["familias", "protecao"],
   habitacao: ["familias", "moradia"],
   saneamento: ["energia-e-infraestrutura", "saneamento"],
-  mobilidade: ["energia-e-infraestrutura", "mobilidade"],
+  // fusão de 10/11/2026: a Mobilidade entra em Mobilidade e conectividade
+  mobilidade: ["energia-e-infraestrutura", "conectividade"],
   energia: ["energia-e-infraestrutura", "conectividade"],
   ambiente: ["territorio-e-clima", "cidades-clima"],
   // o tema aponta para o painel Previdência e INSS (21/10/2026), registrado pelo dono nas Contas Federais
@@ -107,16 +119,20 @@ function paineisEficiencia(): Painel[] {
     const destino = DESTINO_TEMAS_EFICIENCIA[d.id];
     if (!destino) throw new Error(`tema da Eficiência Estatal sem observatório: ${d.id}`);
     const [observatorio, colecao] = destino;
+    // o título do painel leva o recorte do tema (src/lib/eficiencia/temas.ts): o que só cobre as capitais diz "nas capitais"
+    const tema = (TEMAS_EFICIENCIA as Record<string, TemaEficiencia>)[d.id];
+    if (!tema) throw new Error(`tema da Eficiência Estatal sem recorte geográfico: ${d.id}`);
     return {
-      rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const, resumo: d.pergunta ?? d.descricao, termos: d.termos,
+      rota: d.href as string, titulo: tituloComRecorte(d.titulo, tema.recorte), observatorio, colecao, origem: "eficiencia" as const, resumo: d.pergunta ?? d.descricao, termos: d.termos,
     };
   });
   return [
+    // os três painéis da Síntese cobrem só as 26 capitais e o dizem no título (src/tests/recorte-geografico.test.ts)
     { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como está a minha capital nos serviços públicos?", termos: ["capitais", "comparação", "serviços públicos", "minha capital"] },
     { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como as capitais se saem num índice dos resultados dos serviços públicos?", termos: ["índice de resultados", "capitais", "serviços públicos", "ranking"] },
-    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
+    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice das capitais (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como o índice das capitais muda com outras escolhas de indicadores e pesos?", termos: ["laboratório", "pesos", "revisão do índice", "sensibilidade"] },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia",
       resumo: "Quanto tempo a Justiça leva e onde estão as filas?", termos: ["CNJ", "tempo do processo", "fila", "tribunais"] },
@@ -187,10 +203,11 @@ function paineisColecoesInteiras(): Painel[] {
       { rota: "/gas-natural", titulo: "Gás Natural" },
       ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo, resumo: p.pergunta, termos: p.termos })),
     ]),
-    // coleção própria com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
+    // painel com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
     // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
-    ...inteira("gas", "energia-e-infraestrutura", "combustiveis",
-      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
+    // fusão de 10/11/2026: os Combustíveis entram em Gás e combustíveis (o id "combustiveis" segue como apelido em lista.ts)
+    ...inteira("gas", "energia-e-infraestrutura", "gas",
+      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos", resumo: p.pergunta, termos: p.termos }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
       ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo, resumo: c.pergunta, termos: c.termos })),
@@ -217,7 +234,6 @@ function paineisColecoesInteiras(): Painel[] {
 
 /** Temas que aparecem também em outro observatório, sempre apontando para o painel do dono. */
 export const ATALHOS: Atalho[] = [
-  { rota: "/observatorio/credit", observatorio: "familias", colecao: "divida" },
   { rota: "/observatorio-do-credito/quanto-meu-banco-cobra", observatorio: "familias", colecao: "divida" },
   { rota: "/observatorio-do-credito/simulador-da-parcela", observatorio: "familias", colecao: "divida" },
   { rota: "/setor-eletrico/inclusao-energetica", observatorio: "familias", colecao: "protecao" },
@@ -241,7 +257,7 @@ function paineisTerritorio(): Painel[] {
   return [
     { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null,
       resumo: "Onde e quanto o fogo aparece?", termos: ["INPE", "focos de calor", "queimadas", "biomas", "Pantanal"] },
-    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "desastres", origem: null,
+    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "fogo", origem: null, // fusão de 10/11/2026: Fogo e desastres
       resumo: "Onde os desastres atingem os municípios?", termos: ["defesa civil", "enchente", "seca", "reconhecimento federal"] },
     { rota: "/territorio/emissoes", titulo: "Emissões pelo inventário oficial", observatorio: "territorio-e-clima", colecao: "desmatamento", origem: null,
       resumo: "Quanto o Brasil emite de gases de efeito estufa?", termos: ["emissões", "gases de efeito estufa", "inventário oficial", "carbono"] },
@@ -251,9 +267,17 @@ function paineisTerritorio(): Painel[] {
 /**
  * Painéis mantidos pelo próprio Observatório das Famílias, com pipeline e gold próprios (pipeline/inflacao, public/inflacao).
  * A consulta por cidade (/custo-de-vida/na-minha-cidade) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2.
+ * O painel Dívida das famílias não tem pipeline próprio: lê a gold do Crédito (src/lib/divida/dados.ts).
  */
 function paineisFamilias(): Painel[] {
-  return [{ rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null }];
+  return [
+    { rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null },
+    // porta da coleção Dívida e crédito das famílias (10/11/2026): página própria das Famílias sobre a gold do Crédito, só no
+    // recorte de pessoa física. O painel do sistema inteiro (/observatorio/credit) fica na Economia e deixou de ser atalho aqui
+    { rota: ROTA_DIVIDA, titulo: TITULO_PAINEL_DIVIDA, observatorio: "familias", colecao: "divida", origem: null, resumo: RESUMO_DIVIDA, termos: TERMOS_DIVIDA },
+    // painéis reescritos em Next a partir das vistas da aplicação do Crédito (decisão do dono de 10/11/2026, reescritos.ts)
+    ...PAINEIS_REESCRITOS.map((r): Painel => ({ rota: r.rota, titulo: r.titulo, observatorio: "familias", colecao: r.colecao, origem: null, resumo: r.resumo, termos: r.termos })),
+  ];
 }
 
 /**

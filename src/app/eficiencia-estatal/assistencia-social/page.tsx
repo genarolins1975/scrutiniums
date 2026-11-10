@@ -32,7 +32,7 @@ export default function Panorama(){
       principal={false}
       idioma="pt"
       abertura={{
-        grupo:TEMAS_EFICIENCIA.assistencia.nome,
+        grupo:TEMAS_EFICIENCIA.assistencia.contexto,
         acento:'obee',
         titulo:'Quando a pessoa precisa, o apoio público chega?',
         lead:'Proteção às famílias, acompanhamento especializado e cuidado a pessoas com deficiência e idosas.',

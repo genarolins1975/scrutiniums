@@ -286,7 +286,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.127.0";
+const APP_VERSION = "0.128.0";
 /* nome da coleção no registro dos seis observatórios (src/lib/observatorios/lista.ts): os títulos da aba seguem "Página · Coleção · Scrutiniums" (Iniciativa 1 do parecer de UX, 21/10/2026),
    com a coleção dona da aba, que refazTrilha() acerta a cada navegação (Consignado é de "Dívida e crédito das famílias") */
 let TITULO_COLECAO = "Crédito e sistema financeiro · Scrutiniums";
@@ -2755,8 +2755,8 @@ const MAPA_FONTES = { sgs: "BCB/SGS (séries de crédito, juros e moeda)", ifdat
   bndes: "BNDES (desembolsos)", focus: "BCB/Focus (expectativas)", sfn_cadastro: "BCB/Unicad (cadastro do SFN)", bcb_pas: "BCB/Gepad (processos sancionadores)", cvm_pas: "CVM (processos sancionadores)",
   caged: "MTE/Novo Caged (emprego)", cda: "CVM/CDA (carteiras de fundos)", consorcios: "BCB (Panorama de Consórcios)", cobranca: "CNJ/DataJud (cobrança judicial)" };
 function mapaLink(v, extra) {
-  const t = VIEW_TITLES[v] || v;
-  return `<a href="/observatorio${ROUTES[v] || "/"}" onclick="nav('${v}');return false">${t}</a>${extra || ""}`;
+  // vista substituída por página das Famílias (10/11/2026): link comum para a página nova, com o título dela
+  return linkDaVista(v) + (extra || "");
 }
 function renderMapa() {
   const el = document.getElementById("view-mapa");
@@ -2766,7 +2766,8 @@ function renderMapa() {
   // servidor embute): todas as da aplicação, inclusive as que a navegação mostra na coleção dona (Famílias, Empresas...)
   const grupos = gruposDoMenu();
   const noMenu = grupos.flatMap(g => g.vistas);
-  const abas = noMenu.filter(v => v !== "mapa");
+  // a contagem é das páginas que a aplicação do Crédito mantém: as substituídas por página das Famílias são listadas, não contadas
+  const abas = noMenu.filter(v => v !== "mapa" && !substituta(v));
   el.dataset.paginas = String(abas.length);
   const head = pageHead({
     title: "Início do painel",
@@ -2778,9 +2779,9 @@ function renderMapa() {
   <p class="src">O dinheiro entra pelo funding (1), passa pelas instituições (2), vira produto com preço (3), chega a famílias, empresas e territórios (4), o ciclo mede o que cresce, o que atrasa e o que vem (5), o atraso vira renegociação, cobrança ou recuperação (6), e tudo acontece sob regras, trilhos de pagamento e vigilância (7). As páginas de Referência explicam de onde vem cada número.</p>`);
   const porGrupo = grupos.map(g => ({ rot: g.rotulo, vistas: g.vistas.filter(v => v !== "mapa" && GUIA[v]) })).filter(g => g.vistas.length);
   const perguntas = secWrap("mp-perguntas", `${sechead("Por pergunta", "a pergunta que cada página responde, na ordem do menu")}
-  <div class="grid g2">${porGrupo.map(g => `<div class="card"><h4>${g.rot}</h4><dl class="mapa-perg">${g.vistas.map(v => `<div><dt>${GUIA[v].q}</dt><dd>${mapaLink(v)}</dd></div>`).join("")}</dl></div>`).join("")}</div>`);
+  <div class="grid g2">${porGrupo.map(g => `<div class="card"><h4>${g.rot}</h4><dl class="mapa-perg">${g.vistas.map(v => `<div><dt>${perguntaDaVista(v)}</dt><dd>${mapaLink(v)}</dd></div>`).join("")}</dl></div>`).join("")}</div>`);
   const trilhas = secWrap("mp-trilhas", `${sechead("Trilhas de entrada", "três perfis, cinco páginas cada")}
-  <div class="grid g3">${MAPA_TRILHAS.map(t => `<div class="card"><h4>${t.perfil}</h4><p class="src">${t.quem}.</p><ol class="mapa-trilha">${t.passos.map(v => `<li>${mapaLink(v)}<span class="src"> · ${GUIA[v] ? GUIA[v].q : ""}</span></li>`).join("")}</ol></div>`).join("")}</div>`);
+  <div class="grid g3">${MAPA_TRILHAS.map(t => `<div class="card"><h4>${t.perfil}</h4><p class="src">${t.quem}.</p><ol class="mapa-trilha">${t.passos.map(v => `<li>${mapaLink(v)}<span class="src"> · ${perguntaDaVista(v)}</span></li>`).join("")}</ol></div>`).join("")}</div>`);
   const ler = secWrap("mp-ler", `${sechead("Como ler o Observatório", "quatro regras que valem em todas as páginas")}
   <div class="grid g2">
     <div class="card"><h4>Os selos dizem de onde vem o número</h4>
@@ -6438,7 +6439,7 @@ function alertaCard(a) {
     </div>
     <div class="expl">${a.detalhe || ""}</div>
     <div class="src" style="margin-top:5px">${linha}
-      ${a.link && a.link.view ? ` · <a href="/observatorio${ROUTES[a.link.view] || "/overview"}" onclick="nav('${a.link.view}');return false">ver em ${VIEW_TITLES[a.link.view] || a.link.view} →</a>` : ""}</div>
+      ${a.link && a.link.view ? ` · ${linkDaVista(a.link.view, t => `ver em ${t} →`, "/overview")}` : ""}</div>
   </div>`;
 }
 
@@ -13325,6 +13326,9 @@ function refazTrilha() {
   }).join("");
 }
 function showViewSilent(v) {
+  // histórico ou link da casca que caia numa vista substituída (10/11/2026): troca a entrada pela página nova
+  const sub = substituta(v);
+  if (sub) { location.replace(sub.rota); return; }
   refazTrilha();
   refazCasca();
   pingView(v);
@@ -13435,6 +13439,9 @@ function updateAlertBadge() {
 // Inicializar um documento canoniza a entrada atual; só uma navegação cria outra.
 // pushState no boot apagava a entrada futura ao voltar de uma página da conta.
 window.showView = (v, { replace = false } = {}) => {
+  // vista substituída (10/11/2026): a navegação interna sai da aplicação para a página nova das Famílias
+  const sub = substituta(v);
+  if (sub) { location[replace ? "replace" : "assign"](sub.rota); return; }
   const writeHistory = replace ? "replaceState" : "pushState";
   if (PATH_MODE) {
     let path = ROUTES[v] || "/overview";
@@ -13462,11 +13469,40 @@ function indiceCasca() {
   try { _indiceCasca = el ? JSON.parse(el.textContent) : null; } catch (e) { _indiceCasca = null; }
   return _indiceCasca;
 }
-/* grupos do Crédito com as vistas de cada um (para o "Início do painel"), na ordem da jornada */
+/* Vistas substituídas por página Next do Observatório das Famílias (decisão do dono de 10/11/2026: Desenrola, Apostas, Golpes e
+   fraudes, Clientes contra bancos, Bancos cobrando na Justiça, Sanções e reclamações). O servidor redireciona o endereço antigo
+   (redirects() em next.config.mjs) e manda no índice, em `substituidas`, a página nova de cada vista (uma lista só:
+   src/lib/observatorios/paineis-reescritos.json). Aqui, todo caminho interno que levava à vista (o "Início do painel", as pontes, os
+   alertas, o histórico do navegador) sai da aplicação para a página nova. O código de render dessas seis vistas continua no
+   arquivo, sem caminho que o alcance com o índice presente; a remoção fica para quando os testes que o leem forem aposentados. */
+function substituta(v) {
+  const ind = indiceCasca();
+  const s = ind && ind.substituidas;
+  return (s && ROUTES[v] && s[ROUTES[v]]) || null;
+}
+/* endereço e título de uma vista para um link: a página nova, quando a vista foi substituída */
+function destinoDaVista(v, padrao) {
+  const sub = substituta(v);
+  if (sub) return { href: sub.rota, titulo: sub.titulo, externo: true };
+  return { href: BASE + (ROUTES[v] || padrao || "/"), titulo: VIEW_TITLES[v] || v, externo: false };
+}
+/* a pergunta que a página responde: a da página nova, quando a vista foi substituída */
+function perguntaDaVista(v) {
+  const sub = substituta(v);
+  return (sub && sub.pergunta) || (GUIA[v] ? GUIA[v].q : "");
+}
+function linkDaVista(v, texto, padrao) {
+  const d = destinoDaVista(v, padrao);
+  const t = texto ? texto(d.titulo) : d.titulo;
+  return d.externo ? `<a href="${d.href}">${t}</a>` : `<a href="${d.href}" onclick="nav('${v}');return false">${t}</a>`;
+}
+/* grupos do Crédito com as vistas de cada um (para o "Início do painel"), na ordem da jornada. Uma vista substituída está no
+   grupo pelo endereço da página nova: a pergunta dela continua no índice e o link sai da aplicação (mapaLink). */
 function gruposDoMenu() {
   const ind = indiceCasca();
   if (!ind || !ind.grupos) return [];
   const porRota = Object.fromEntries(Object.entries(ROUTES).map(([v, r]) => [BASE + r, v]));
+  for (const v of Object.keys(ROUTES)) { const sub = substituta(v); if (sub) porRota[sub.rota] = v; }
   return ind.grupos.map(g => ({ rotulo: g.rotulo, vistas: g.paginas.map(h => porRota[h]).filter(Boolean) }));
 }
 /* endereço canônico da vista aberta: a raiz da aplicação é o "Início do painel" */

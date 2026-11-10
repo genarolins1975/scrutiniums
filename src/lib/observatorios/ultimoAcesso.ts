@@ -10,10 +10,12 @@
  *    `/observatorio/pix` é Pagamentos, não Crédito; `/observatorio-do-credito` não é `/observatorio`);
  *  - `o:<observatorioId>`: o caminho é exatamente a `entrada` de um observatório.
  * O formato antigo (id de domínio, "judiciario", id de observatório sem prefixo) é ignorado na leitura, sem erro.
+ * O id de uma coleção fundida em 10/11/2026 (`c:combustiveis`, gravado antes da fusão) vale pela coleção que a absorveu, e a
+ * antiga porta dela (/combustiveis) continua contando como último acesso da coleção nova (COLECOES_FUNDIDAS, em lista.ts).
  *
  * Só importa lista.ts, que não lê disco: o arquivo roda no Edge, dentro do middleware.
  */
-import { OBSERVATORIOS, type ObservatorioId } from "./lista";
+import { COLECOES_FUNDIDAS, OBSERVATORIOS, idDaColecao, type ObservatorioId } from "./lista";
 
 export const COOKIE_OBSERVATORIO = "scrutiniums_observatorio";
 
@@ -24,9 +26,14 @@ export type UltimoAcesso =
   | { tipo: "colecao"; valor: string; observatorio: ObservatorioId; colecao: string; nome: string; href: string }
   | { tipo: "observatorio"; valor: string; observatorio: ObservatorioId; colecao: null; nome: string; href: string };
 
-const COLECOES = OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => ({ observatorio: o.id, colecao: c.id, nome: c.nome, href: c.href })))
+const DAS_COLECOES = OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => ({ observatorio: o.id, colecao: c.id, nome: c.nome, href: c.href, prefixo: c.href })));
+const COLECOES = [
+  ...DAS_COLECOES,
+  // a antiga porta de uma coleção fundida é página da coleção que a absorveu: o endereço casa por `prefixo`, o destino é a porta nova
+  ...Object.values(COLECOES_FUNDIDAS).flatMap((f) => DAS_COLECOES.filter((c) => c.colecao === f.para).map((c) => ({ ...c, prefixo: f.porta }))),
+]
   // casamento mais longo primeiro
-  .sort((a, b) => b.href.length - a.href.length);
+  .sort((a, b) => b.prefixo.length - a.prefixo.length);
 
 /** Caminho sem consulta, âncora nem barra final. */
 function limpar(caminho: string): string {
@@ -37,7 +44,7 @@ function limpar(caminho: string): string {
 /** A coleção dona do caminho pelo endereço (href igual ou caminho abaixo dele), ou undefined. */
 export function colecaoDoCaminho(caminho: string): (typeof COLECOES)[number] | undefined {
   const c = limpar(caminho);
-  return COLECOES.find((x) => c === x.href || c.startsWith(`${x.href}/`));
+  return COLECOES.find((x) => c === x.prefixo || c.startsWith(`${x.prefixo}/`));
 }
 
 /** O valor do cookie para um caminho de página, ou null quando o caminho não é coleção nem entrada de observatório. */
@@ -53,10 +60,10 @@ export function ultimoAcessoDoCaminho(caminho: string): string | null {
 export function lerUltimoAcesso(valor: string | null | undefined): UltimoAcesso | null {
   if (typeof valor !== "string") return null;
   if (valor.startsWith("c:")) {
-    const id = valor.slice(2);
+    const id = idDaColecao(valor.slice(2));
     for (const o of OBSERVATORIOS) {
       const c = o.colecoes.find((x) => x.id === id);
-      if (c) return { tipo: "colecao", valor, observatorio: o.id, colecao: c.id, nome: c.nome, href: c.href };
+      if (c) return { tipo: "colecao", valor: `c:${c.id}`, observatorio: o.id, colecao: c.id, nome: c.nome, href: c.href };
     }
     return null;
   }

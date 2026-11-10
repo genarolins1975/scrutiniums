@@ -1,6 +1,6 @@
 /**
  * Barra comum da plataforma na SPA do Crédito (public/obs/index.html), que é HTML estático e não renderiza React.
- * Fonte única dos rótulos: o registro dos seis observatórios e das suas 28 coleções (lista.ts), o mesmo que a
+ * Fonte única dos rótulos: o registro dos seis observatórios e das suas 24 coleções (lista.ts), o mesmo que a
  * barra dos outros observatórios lê (src/components/layout/BarraPlataforma.tsx e CabecalhoPlataforma.tsx). O trecho do
  * index.html entre os marcadores é gerado por scripts/barra-spa.mjs a partir desta função, e o teste cabecalho-movel
  * confere que o arquivo publicado é igual ao gerado: mudou o registro, muda a SPA.
@@ -21,6 +21,7 @@ import { abaPorCaminho } from "@/lib/data/observatorioAbas";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { htmlNavegacao, htmlParaIrAlem, htmlRodapeColecao, htmlRotulo, type IndiceCasca, type NavCasca } from "@/lib/observatorios/cascaPura";
 import { FIM_DA_PAGINA_CREDITO, GRUPOS_CREDITO } from "@/lib/credito/navegacao";
+import { PAINEIS_REDIRECIONADOS } from "./reescritos";
 import { ACENTO } from "@/components/home/acentos";
 import { resolverContexto, type IndiceContexto } from "@/lib/observatorios/contextoPuro";
 import { EXEMPLO_DO_CAMPO } from "@/lib/busca/exemplos";
@@ -202,6 +203,15 @@ export function colecaoDaCasca(caminho: string): string {
   return ctx.colecao?.id ?? DOMINIO_DA_SPA;
 }
 
+/**
+ * Vistas da aplicação já redirecionadas para a página Next das Famílias (decisão do dono de 10/11/2026; `redirecionar` em
+ * paineis-reescritos.json): caminho da vista na aplicação → página nova, o título e a pergunta dela. O app.js lê esta tabela do índice para que
+ * nenhum caminho interno (o "Início do painel", as pontes, os alertas, o histórico) volte a abrir a vista antiga.
+ */
+export function vistasSubstituidas(): Record<string, { rota: string; titulo: string; pergunta: string }> {
+  return Object.fromEntries(PAINEIS_REDIRECIONADOS.map((r) => [r.abaAntiga, { rota: r.rota, titulo: r.titulo, pergunta: r.resumo }]));
+}
+
 /** Navegação da coleção dona do endereço, com o atual marcado, e o índice que o app.js usa para refazê-la. */
 export function htmlNavegacaoSpa(caminho = "/observatorio"): string {
   const indice = indiceCasca();
@@ -210,7 +220,8 @@ export function htmlNavegacaoSpa(caminho = "/observatorio"): string {
     MARCADOR_NAV_INICIO,
     `<div class="casca" id="cascaNav">${htmlNavegacao(nav, enderecoDaCasca(caminho))}</div>`,
     // o índice da casca, os grupos do Crédito (o "Início do painel" os lista) e as páginas institucionais do fim da página
-    `<script type="application/json" id="navColecaoIndice">${JSON.stringify({ ...indice, grupos: GRUPOS_CREDITO, extrasRodape: FIM_DA_PAGINA_CREDITO }).replace(/</g, "\\u003c")}</script>`,
+    // e as vistas redirecionadas para página Next (reescritos.ts): com `substituidas` a aplicação sai para a página nova
+    `<script type="application/json" id="navColecaoIndice">${JSON.stringify({ ...indice, grupos: GRUPOS_CREDITO, extrasRodape: FIM_DA_PAGINA_CREDITO, substituidas: vistasSubstituidas() }).replace(/</g, "\\u003c")}</script>`,
     MARCADOR_NAV_FIM,
   ].join("\n");
 }

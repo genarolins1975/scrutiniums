@@ -2,9 +2,10 @@ import "../../gas-natural/gas.css";
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { RodapeColecao } from "@/components/layout/RodapeColecao";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
 
 export const metadata: Metadata = {
-  title: { default: "Gás de cozinha", template: "%s · Gás Natural · Scrutiniums" },
+  title: { default: "Gás de cozinha", template: modeloDeTitulo("/gas-natural").template },
 };
 
 /**

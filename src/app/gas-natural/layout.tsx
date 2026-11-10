@@ -4,11 +4,13 @@ import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { RodapeGas } from "@/components/gas/RodapeGas";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
 
 export const metadata: Metadata = {
   title: {
     default: "Gás Natural",
-    template: "%s · Gás Natural · Scrutiniums",
+    // "Página · Coleção · Scrutiniums", com o nome da coleção lido do registro (Gás e combustíveis desde 10/11/2026)
+    template: modeloDeTitulo("/gas-natural").template,
   },
   description:
     "Produção, aproveitamento, importação, preços na cadeia, botijão, GNV e transporte de gás no Brasil, a partir de dados abertos da ANP, do IBGE, do Banco Central, do Comex Stat e do Banco Mundial, com fonte, período e natureza em cada número.",

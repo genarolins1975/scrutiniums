@@ -274,7 +274,7 @@ export function vitrines(idioma: Idioma = "pt"): Record<DominioId, Vitrine> {
     gas: vitrineGas(fmt),
     agro: {
       id: "agro",
-      imagem: "/home/agro.svg",
+      imagem: "/home/agro.webp",
       contagem: { valor: fmt(CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length), unidade: "páginas por pergunta" },
       contagemIndice: { tipo: "simples", quantidade: CAPITULOS_AGRO.length + PERGUNTAS_AGRO.length, unidade: "paginas_por_pergunta" },
       paineis: [

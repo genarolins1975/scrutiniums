@@ -116,6 +116,8 @@ export const PARA_VOCE = {
   "/conectividade": ["capital", "luz", "municipio"],
   "/educacao-municipal": ["educacao-capital", "capital"],
   "/custo-de-vida": ["comida", "botijao", "luz"],
+  // Dívida das famílias (10/11/2026): as duas consultas pessoais do Crédito, a taxa do seu banco e a parcela do seu empréstimo
+  "/divida-das-familias": ["banco-cobra", "parcela"],
   "/contas-publicas/previdencia": ["estado-contas", "custo-de-vida"],
   // Contas Estaduais (Iniciativa 4): as bandeiras do estado vêm embutidas no bloco; os cartões levam ao gasto federal por área e à capital
   "/contas-publicas-estaduais": ["previdencia", "capital"],
@@ -443,7 +445,8 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         pergunta: "As famílias estão atrasando as dívidas?",
         resposta: "Concessões, saldo, juros e atrasos do crédito às famílias por modalidade, com a série histórica.",
         href: "/observatorio/credit",
-        numero: daPorta(numeroAtrasoFamilias()),
+        // o cartão é do Crédito e leva ao painel do sistema; a página das Famílias (/divida-das-familias) mostra o mesmo número
+        numero: { ...daPorta(numeroAtrasoFamilias()), origem: "/observatorio/credit" },
       };
   }
 }

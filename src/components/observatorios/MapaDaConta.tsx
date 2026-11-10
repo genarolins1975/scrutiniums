@@ -35,7 +35,7 @@ const minuscula = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
  *  1. `abertura`: H1, busca da plataforma e índice dos seis observatórios;
  *  2. `retomar`: só quando há último acesso, recorte salvo ou aviso; nunca estado vazio;
  *  3. `para-voce`: as perguntas do estado e da cidade do leitor, no mesmo componente das entradas;
- *  4. `destinos`: as 28 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
+ *  4. `destinos`: as 24 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
  *  5. `metodo`: um só `<details>`, com o inventário, a legenda dos selos e as fontes de cada coleção.
  *
  * Todo destino é `<a href>`; os cliques do diretório são contados por LinkMedido, sem formulário. O `<main>` é o do layout da
@@ -202,7 +202,14 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
 function MinhaCidade({ perguntas }: Readonly<{ perguntas: PerguntaParaVoce[] }>) {
   return (
     <div data-minha-cidade="">
-      <h3 className="t-h3 text-carvao">Na sua cidade</h3>
+      {/* a ficha do lugar (10/11/2026) reúne estas consultas num município só: o link fica na linha do título, sem altura a mais
+          (o mapa tem orçamento de 3.500 px a 1440) */}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6">
+        <h3 className="t-h3 text-carvao">Na sua cidade</h3>
+        <Link href="/app/minha-cidade" prefetch={false} data-minha-cidade-ficha="" className="text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
+          Ver tudo sobre a minha cidade numa página
+        </Link>
+      </div>
       <ul className="mt-2 grid gap-x-8 md:grid-cols-2 lg:grid-cols-4">
         {perguntas.map((p) => (
           <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.semNumero ?? ""} className="min-w-0 border-t border-linha">
@@ -224,8 +231,11 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
   const estado = (
     <>
       {plural(c.contagem, "página", "páginas")}
-      {c.dadosAte ? <> · dados até {c.dadosAte}</> : <> · referência por página</>}
+      {/* coleção com duas bases (fusão de 10/11/2026): a data leva o nome da parte que ela cobre, e a outra parte o diz */}
+      {c.dadosAte && c.alcance ? <> · {c.alcance.de}: dados até {c.dadosAte}</> : c.dadosAte ? <> · dados até {c.dadosAte}</> : <> · referência por página</>}
+      {/* o atraso é da fonte datada: vem antes da parte que tem a referência na página */}
       {c.atraso && <> · {minuscula(c.atraso)}</>}
+      {c.dadosAte && c.alcance && <> · {c.alcance.semData}: referência por página</>}
     </>
   );
   return (
@@ -340,7 +350,14 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
                 <div key={c.id} className={styles.fonte} data-fontes-colecao={c.id}>
                   <p className="t-corpo font-medium text-carvao">{c.nome}</p>
                   {c.fontes.length > 0 ? (
-                    <FaixaFrescor dominios={c.fontes} variante="metodo" />
+                    <>
+                      <FaixaFrescor dominios={c.fontes} variante="metodo" />
+                      {c.alcance && (
+                        <p className="t-meta mt-1 text-carvao-muted" data-alcance-da-data="">
+                          A data acima vale para {c.alcance.de}. {c.alcance.semData}: fontes e períodos em cada página.
+                        </p>
+                      )}
+                    </>
                   ) : linhas.length > 0 ? (
                     <ul className="t-meta mt-1 space-y-1 text-carvao-muted">
                       {linhas.map((l) => (

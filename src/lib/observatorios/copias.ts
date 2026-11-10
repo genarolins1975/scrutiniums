@@ -90,14 +90,14 @@ export const COPIAS: Copia[] = [
     onde: CIDADES_CLIMA,
     texto: "Os mesmos três indicadores de resíduos do SINISA. O tema fica na coleção Cidades e clima, ao lado de drenagem, desastres, queimadas e emissões.",
   },
-  // Emprego formal: o painel principal é o do Crédito, com série mais longa.
+  // Emprego formal: o painel principal é a página das Famílias (reescrita em 10/11/2026 da vista do Crédito), com série mais longa.
   {
     rota: "/eficiencia-estatal/trabalho-renda/emprego-formal",
-    principal: "/observatorio/formal-employment",
-    titulo: "Emprego formal",
-    onde: "na coleção Crédito e sistema financeiro",
+    principal: "/emprego-formal",
+    titulo: "Emprego formal por setor e estado",
+    onde: "na coleção Renda e trabalho",
     texto:
-      "Mesma fonte (Novo Caged, Banco Central), com série mais longa, ajuste sazonal, admissões e desligamentos, as 21 seções de atividade e as 27 UFs. As capturas podem diferir em um mês.",
+      "Mesma fonte (Novo Caged, Banco Central), com série mais longa, ajuste sazonal, admissões e desligamentos, as 18 seções de atividade e os dois agregados, e as 27 UFs. As capturas podem diferir em um mês.",
   },
   // Energia: o Setor Elétrico aprofunda acesso, Tarifa Social e qualidade.
   {

@@ -42,6 +42,8 @@ const PREFIXOS = [
   "/sobre",
   "/boletim/sair",
   "/home",
+  // gravuras dos observatórios (10/11/2026): ilustrações conceituais, sem dado; as portas abertas e o fim das páginas as exibem
+  "/arte",
   "/setor-eletrico/metodologia",
   "/setor-eletrico/aprenda",
   "/contas-publicas/metodologia",

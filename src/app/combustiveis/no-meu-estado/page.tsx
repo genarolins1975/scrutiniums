@@ -57,7 +57,7 @@ export default function ConsultaTanquePagina() {
       <header>
         {/* a gold é do pipeline do Gás: as fontes do "Citar" e do "Avisar" são as dele */}
         <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
-        <NavegacaoColecao colecao="combustiveis" />
+        <NavegacaoColecao colecao="gas" />
       </header>
       {aberta && (
         <AvisoConsultaAberta

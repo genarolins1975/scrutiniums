@@ -46,7 +46,7 @@ export default function Acesso() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.alimentacao.nome,
+        grupo: TEMAS_EFICIENCIA.alimentacao.contexto,
         acento: "obee",
         titulo: "A ação existe. Quem consegue recebê-la?",
         lead: "Dois caminhos de acesso aos alimentos têm dado nesta página: a alimentação escolar, pelos alunos registrados no PNAE, e o preço da comida, pela inflação dos alimentos no IPCA.",

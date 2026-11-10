@@ -8,6 +8,7 @@ import { idsDasColecoes, navegacaoDaColecao, navegacaoDaConta, navegacaoDoObserv
 import { MAX_A_VISTA, destinoAtual, dividirItens, type NavegacaoDaColecao } from "@/lib/observatorios/navegacaoPura";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
+import { TEMAS_EFICIENCIA } from "@/lib/eficiencia/temas";
 
 const navegador = vi.hoisted(() => ({ caminho: "/" }));
 vi.mock("next/navigation", async () => ({
@@ -18,7 +19,7 @@ vi.mock("next/navigation", async () => ({
 /**
  * Uma só navegação de módulo em toda coleção (Iniciativa 2 do parecer de UX de 21/10/2026, docs/PARECER_UX_2026-10-21.md):
  * o catálogo único (src/lib/observatorios/navegacaoColecao.ts) e o componente que o desenha (NavegacaoColecao). As regras
- * valem para as 28 coleções do registro, e cada uma tem um caso que a reprova.
+ * valem para as 24 coleções do registro, e cada uma tem um caso que a reprova.
  */
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -86,11 +87,12 @@ function existe(href: string): boolean {
   return procura(join(raiz, "src/app"), 0);
 }
 
-describe("catálogo único das 28 coleções", () => {
+describe("catálogo único das 24 coleções", () => {
   const ids = idsDasColecoes();
 
-  it("cobre as 28 coleções do registro, na ordem dos observatórios", () => {
-    expect(ids).toHaveLength(28);
+  it("cobre as 24 coleções do registro, na ordem dos observatórios", () => {
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(ids).toHaveLength(24);
     expect(ids).toEqual(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id)));
   });
 
@@ -174,7 +176,7 @@ describe("componente NavegacaoColecao", () => {
 
   it("aria-label padrão, atual com aria-current e filete do acento, alvos de 44 px", () => {
     const h = render(navegacaoDaColecao("gas"), "/gas-natural/gas-de-cozinha");
-    expect(h).toContain('aria-label="Navegação da coleção Gás Natural"');
+    expect(h).toContain('aria-label="Navegação da coleção Gás e combustíveis"'); // nome da coleção "gas" desde a fusão (decisão do dono de 10/11/2026)
     expect(marcado(h, "/gas-natural/gas-de-cozinha")).toBe(true);
     expect((h.match(/aria-current="page"/g) ?? []).length).toBe(1);
     expect(h).toContain("bg-gas");
@@ -215,8 +217,10 @@ describe("componente NavegacaoColecao", () => {
     const subs = (id: string, rotulo: string) => navegacaoDaColecao(id).itens.find((i) => i.rotulo === rotulo)?.subpaginas?.map((s) => s.href) ?? [];
     expect(subs("protecao", "Segurança alimentar")).toEqual(expect.arrayContaining(["/eficiencia-estatal/seguranca-alimentar/dados", "/eficiencia-estatal/seguranca-alimentar/metodos"]));
     expect(subs("justica", "Acesso à Justiça")).toContain("/eficiencia-estatal/acesso-justica/dados");
-    expect(subs("saneamento", "Nas capitais")).toContain("/eficiencia-estatal/saneamento/dados");
-    expect(subs("conectividade", "Energia e conectividade nas capitais")).toContain("/eficiencia-estatal/energia-conectividade/metodos");
+    // recomendação 3 do parecer estrutural de 10/11/2026: o rótulo do grupo vem do catálogo dos temas (nome e recorte geográfico).
+    // Os dois diziam "nas capitais", e nenhum dos dois temas publica valor por capital (src/tests/recorte-geografico.test.ts)
+    expect(subs("saneamento", TEMAS_EFICIENCIA.saneamento.recorte.rotulo)).toContain("/eficiencia-estatal/saneamento/dados");
+    expect(subs("conectividade", TEMAS_EFICIENCIA.energia.nome)).toContain("/eficiencia-estatal/energia-conectividade/metodos");
     expect(destinoAtual(navegacaoDaColecao("protecao"), "/eficiencia-estatal/seguranca-alimentar/dados")).toMatchObject({ sub: expect.any(Number), atalho: null });
   });
 
@@ -269,10 +273,11 @@ describe("uma só navegação de módulo e um só cabeçalho em toda superfície
     expect(foco).toMatch(/<form action="\/api\/auth\/sair" method="post"[^>]*>[\s\S]*?Sair[\s\S]*?<\/form>/);
   });
 
-  it("navegação da conta: Encontre o painel e Conta; Admin só para quem administra", () => {
+  // "Minha cidade" entrou em 10/11/2026 (ficha do lugar, pedido do dono: eixo do lugar)
+  it("navegação da conta: Encontre o painel, Minha cidade e Conta; Admin só para quem administra", () => {
     const comum = navegacaoDaConta(false);
-    expect(comum.itens.map((i) => [i.rotulo, i.href])).toEqual([["Encontre o painel", "/app/observatorios"], ["Conta", "/app/conta"]]);
-    expect(navegacaoDaConta(true).itens.map((i) => i.rotulo)).toEqual(["Encontre o painel", "Conta", "Admin"]);
+    expect(comum.itens.map((i) => [i.rotulo, i.href])).toEqual([["Encontre o painel", "/app/observatorios"], ["Minha cidade", "/app/minha-cidade"], ["Conta", "/app/conta"]]);
+    expect(navegacaoDaConta(true).itens.map((i) => i.rotulo)).toEqual(["Encontre o painel", "Minha cidade", "Conta", "Admin"]);
     for (const i of navegacaoDaConta(true).itens) expect(existsSync(join(raiz, "src/app/app/(foco)", i.href.replace("/app/", ""), "page.tsx")), i.href).toBe(true);
     navegador.caminho = "/app/conta";
     const h = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: comum, caminho: "/app/conta", idioma: "pt" }));

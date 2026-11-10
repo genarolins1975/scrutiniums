@@ -29,7 +29,7 @@ function DuasPerguntas(){return <nav aria-labelledby="duas-perguntas" className=
  * Nenhum número ou texto mudou; a frase de escala das barras passou a descrever a escala do kit (linear a partir de zero).
  */
 export default function Pagina(){return <PaginaPainel rota={ROTA} principal={false}
- abertura={{grupo:TEMAS_EFICIENCIA.habitacao.nome,acento:'obee',titulo:'O que falta para morar com dignidade?',
+ abertura={{grupo:TEMAS_EFICIENCIA.habitacao.contexto,acento:'obee',titulo:'O que falta para morar com dignidade?',
   lead:'Parte das necessidades habitacionais envolve uma nova solução de moradia. Outra parte exige melhorar a casa, a infraestrutura ou a segurança da ocupação. São problemas distintos, que pedem respostas diferentes.',
   recorte:RECORTE,
   limite:'a eficiência de um governo nem o efeito de uma política: as estimativas descrevem necessidades habitacionais, e gastos públicos, unidades contratadas ou entregues e tempos de atendimento não fazem parte desta base.',

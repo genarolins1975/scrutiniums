@@ -25,7 +25,7 @@ try {
   const erros=[];page.on('pageerror',e=>erros.push(e.message));page.on('console',e=>{if(e.type()==='error')erros.push(e.text());});
   await page.goto(servidor.origem+'/app/observatorios',{waitUntil:'networkidle'});
   const input=page.locator('[data-mapa-conta] input[name=q]');
-  assert.equal(await page.locator('[data-colecao]').count(),28);
+  assert.equal(await page.locator('[data-colecao]').count(),24);
   assert.equal(await page.locator('nav[aria-label="Ir para um observatório"] a').count(),6);
   const primeiro=await page.locator('nav[aria-label="Ir para um observatório"]').boundingBox();
   assert.ok(primeiro.y+primeiro.height<(width===390?844:900),'seis destinos na primeira tela');

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GravuraObservatorio } from "@/components/observatorios/GravuraObservatorio";
 import { notFound } from "next/navigation";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
@@ -50,7 +51,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 /** Conteúdo próprio de cada entrada: descrição, escala, modelo didático e método. */
 const CONTEUDO: Partial<Record<ObservatorioId, () => { descricao: string; escala: ReturnType<typeof escalaFamilias>; artefato: React.ReactNode; metodo: React.ReactNode }>> = {
   familias: () => ({
-    descricao: "Renda, custo de vida, gastos essenciais, dívidas e proteção social das famílias brasileiras, reunidos a partir das coleções de Crédito, Eficiência Estatal, Agronegócio, Gás Natural, Setor Elétrico e Saneamento e do painel próprio de inflação por cidade. Cada número vem da fonte oficial do seu tema, com o próprio período.",
+    descricao: "Renda, custo de vida, gastos essenciais, dívidas e proteção social das famílias brasileiras, reunidos a partir dos dados de Crédito, Eficiência Estatal, Agronegócio, Gás Natural, Setor Elétrico e Saneamento e do painel próprio de inflação por cidade. Cada número vem da fonte oficial do seu tema, com o próprio período.",
     escala: escalaFamilias(),
     artefato: <OrcamentoFamilia orcamento={orcamentoFamilia()} />,
     metodo: <MetodoFamilias />,
@@ -100,6 +101,7 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         pergunta={o.pergunta}
         descricao={c.descricao}
         escala={c.escala}
+        gravura={<GravuraObservatorio id={id} faixa className="mt-8" />}
         paraVoce={o.entrada && ehEntradaParaVoce(o.entrada) ? <ParaVoce entrada={o.entrada} /> : null}
         colecoes={colecoesDe(id)}
         artefato={c.artefato}

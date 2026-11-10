@@ -18,6 +18,7 @@ export const FRESCOR_DAS_COLECOES = {
   "/conectividade": ["conectividade"],
   "/educacao-municipal": ["educacao"],
   "/custo-de-vida": ["inflacao"],
+  "/divida-das-familias": ["credito"],
   "/contas-publicas/previdencia": ["previdencia"],
   "/contas-publicas-estaduais": ["contas-estaduais"],
   "/observatorio-do-credito": ["credito"],

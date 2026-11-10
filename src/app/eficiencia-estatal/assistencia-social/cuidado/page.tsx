@@ -23,7 +23,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:"obee",
       titulo:"Apoio quando a família não consegue cuidar sozinha.",
       lead:"A proteção básica no domicílio é um serviço específico, diferente de visitas do PAIF. Os volumes referem-se a agosto de 2025.",

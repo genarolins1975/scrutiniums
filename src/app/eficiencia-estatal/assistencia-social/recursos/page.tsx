@@ -20,7 +20,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:"obee",
       titulo:"Que condições sustentam o atendimento?",
       lead:"Os registros de recursos humanos contam vínculos declarados em cada unidade, sem identificar trabalhadores.",

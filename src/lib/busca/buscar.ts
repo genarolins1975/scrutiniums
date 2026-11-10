@@ -18,6 +18,7 @@
  */
 import { formasDe, normalizar, nucleoDaBusca, palavrasUteis } from "./normalizar";
 import type { EntradaBusca, IndiceBusca, VersaoAberta } from "./tipos";
+import { ehDeColecaoFundida } from "@/lib/observatorios/lista";
 
 export const LIMITE_RESULTADOS = 30;
 /** O resultado parcial é uma aproximação: poucos itens, para não parecer resposta. */
@@ -35,6 +36,16 @@ export type Resultado = EntradaBusca & {
 };
 
 export type GrupoColecao = { colecao: { id: string; nome: string; href: string; aberta?: VersaoAberta } | null; resultados: Resultado[] };
+/**
+ * A "versão aberta do tema" que acompanha um resultado fechado: a página aberta da coleção dele. Página que veio de uma coleção
+ * fundida em 10/11/2026 (Cultura em Educação e cultura, Mobilidade em Mobilidade e conectividade, Combustíveis, Desastres) é de
+ * outro tema que a página aberta da coleção que a recebeu: fica sem a linha, para um tema não passar pelo outro.
+ */
+export function versaoAbertaDoResultado(href: string | null | undefined, colecao: GrupoColecao["colecao"] | undefined): VersaoAberta | undefined {
+  if (!href || !colecao?.aberta || ehDeColecaoFundida(href)) return undefined;
+  return colecao.aberta;
+}
+
 export type GrupoObservatorio = { observatorio: { id: string; nome: string }; colecoes: GrupoColecao[] };
 
 export type RespostaBusca = {

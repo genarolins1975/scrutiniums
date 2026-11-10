@@ -144,7 +144,8 @@ export const DOMINIOS: Dominio[] = [
   },
   {
     id: "gas",
-    nome: "Gás Natural",
+    // nome da coleção no registro (lista.ts): Gás e combustíveis desde a fusão de 10/11/2026; o domínio continua sendo o pipeline do gás
+    nome: "Gás e combustíveis",
     nomeLegado: "Observatório Brasileiro de Gás Natural",
     nomeCurto: "Gás Natural",
     pergunta: "Quanto gás o Brasil produz, quanto chega ao mercado, de onde vem o que é importado e quanto custa em cada elo até o consumidor?",

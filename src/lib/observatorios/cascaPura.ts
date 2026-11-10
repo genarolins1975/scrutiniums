@@ -140,7 +140,7 @@ export function htmlNavegacao(nav: NavCasca, caminho: string): string {
   for (const { item, i } of aVista) h += `<li class="shrink-0">${destino(item, { ativo: atual.item === i && atual.sub === null, grupoAtivo: atual.item === i && atual.sub !== null, filete })}</li>`;
   // no celular nada se esconde em "Mais": a faixa rola, e os atalhos vêm no fim dela
   for (const { item, i } of mais) h += `<li class="shrink-0 sm:hidden">${destino(item, { ativo: atual.item === i, filete })}</li>`;
-  for (const k of atalhos) h += `<li class="shrink-0 sm:hidden">${atalho(k)}</li>`;
+  for (const k of atalhos) h += `<li class="shrink-0 lg:hidden">${atalho(k)}</li>`;
   h += "</ul>";
   if (mais.length) {
     h += '<details class="group relative hidden shrink-0 sm:block">';
@@ -151,7 +151,7 @@ export function htmlNavegacao(nav: NavCasca, caminho: string): string {
     for (const { item, i } of mais) h += `<li>${destino(item, { ativo: atual.item === i, filete, noMenu: true })}</li>`;
     h += "</ul></details>";
   }
-  if (atalhos.length) h += `<div class="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 sm:flex">${atalhos.map(atalho).join("")}</div>`;
+  if (atalhos.length) h += `<div class="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 lg:flex">${atalhos.map(atalho).join("")}</div>`;
   h += "</div>";
   if (subpaginas && corrente) {
     h += '<div class="border-t border-linha bg-papel"><div class="nav-colecao-caixa">';
@@ -231,7 +231,8 @@ export function htmlParaIrAlem(indice: IndiceCasca, endereco: string): string {
       return ox && cx ? [{ observatorio: ox, colecao: cx }] : [];
     });
   const link = "inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4";
-  let h = '<aside aria-labelledby="para-ir-alem" class="border-t border-linha bg-papel"><div class="mx-auto max-w-page px-6 py-8">';
+  // a faixa da gravura do observatório dono, como em ParaIrAlem.tsx (10/11/2026)
+  let h = `<aside aria-labelledby="para-ir-alem" class="border-t border-linha bg-papel"><img src="/arte/observatorios/${esc(o.id)}.webp" alt="" aria-hidden="true" width="1440" height="720" loading="lazy" decoding="async" data-gravura-faixa="${esc(o.id)}" class="block h-16 w-full bg-carvao object-cover md:h-24"/><div class="mx-auto max-w-page px-6 py-8">`;
   h += '<h2 id="para-ir-alem" class="rotulo text-mineral">Para ir além</h2>';
   h += `<p class="mt-3 text-sm leading-relaxed text-carvao">Este painel está no <a class="underline decoration-linha underline-offset-4 hover:decoration-carvao" href="${esc(o.destino)}">${esc(o.nome)}</a>`;
   if (colecao) h += `, coleção ${esc(colecao.nome)}`;

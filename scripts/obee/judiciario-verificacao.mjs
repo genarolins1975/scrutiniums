@@ -97,7 +97,7 @@ try{
   // direto; não há mais cartão por domínio, formulário nem botão "Explorar". As fontes do CNJ ficam no método recolhido.
   const card=page.locator('[data-fatia="destinos"] [data-colecao="justica"]');
   check('Coleção Justiça no mapa, com link direto '+width+'px',await card.isVisible()&&await card.locator('a[href="'+PREFIX+'"]').first().isVisible());
-  check('As 28 coleções no mapa, nenhum formulário '+width+'px',await page.locator('[data-fatia="destinos"] [data-colecao]').count()===28&&await page.locator('[data-fatia="destinos"] form').count()===0);
+  check('As 24 coleções no mapa, nenhum formulário '+width+'px',await page.locator('[data-fatia="destinos"] [data-colecao]').count()===24&&await page.locator('[data-fatia="destinos"] form').count()===0);
   await page.locator('[data-fatia="metodo"] > summary').click();
   const fontes=page.locator('[data-fontes-colecao="justica"]');
   check('Fonte e cobertura reais da Justiça no método '+width+'px',(await fontes.innerText()).includes('57 tribunais')&&(await fontes.innerText()).includes('2009–2025'));

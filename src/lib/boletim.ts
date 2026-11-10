@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { and, eq, gte } from "drizzle-orm";
 import { getDb, schema } from "./db";
 import { assinarToken, verificarToken } from "./tokenAssinado";
-import { ABAS_OBSERVATORIO } from "./data/observatorioAbas";
+import { ABAS_OBSERVATORIO, enderecoDaAba } from "./data/observatorioAbas";
 
 /**
  * Boletim mensal por e-mail — o mecanismo de retorno do usuário cadastrado.
@@ -57,7 +57,8 @@ function rotuloMes(data: Date): string {
 
 function urlDaView(view?: string): string {
   const aba = view ? ABAS_OBSERVATORIO.find((a) => a.view === view) : null;
-  return `${BASE}/observatorio${aba ? aba.caminho : "/alerts"}`;
+  // aba redirecionada para página das Famílias (10/11/2026): o e-mail leva direto à página nova
+  return `${BASE}${enderecoDaAba(aba ? aba.caminho : "/alerts")}`;
 }
 
 const NIVEL_ROTULO: Record<string, string> = {
@@ -131,8 +132,8 @@ export function montarBoletim(agora: Date): Boletim | null {
     ...(linhasVintages.length > 0 ? ["DATA-BASE DAS FONTES", ...linhasVintages, ""] : []),
     "Os painéis completos estão na sua conta:",
     `- Visão geral: ${BASE}/observatorio`,
-    `- Apostas e crédito das famílias: ${BASE}/observatorio/bets-financial-risk`,
-    `- Fraudes financeiras: ${BASE}/observatorio/financial-fraud`,
+    `- Apostas e crédito das famílias: ${BASE}/divida-das-familias/apostas`,
+    `- Golpes e fraudes: ${BASE}/divida-das-familias/golpes-e-fraudes`,
     `- Números citáveis para a imprensa: ${BASE}/imprensa`,
     "",
     "Alertas são sinais determinísticos sobre séries oficiais — nunca recomendação",

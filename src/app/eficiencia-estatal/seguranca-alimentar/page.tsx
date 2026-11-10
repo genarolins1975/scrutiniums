@@ -53,7 +53,7 @@ export default function PanoramaAlimentar() {
         principal={false}
         idioma="pt"
         abertura={{
-          grupo: TEMAS_EFICIENCIA.alimentacao.nome,
+          grupo: TEMAS_EFICIENCIA.alimentacao.contexto,
           acento: "obee",
           titulo: "Alimentação adequada, com acesso e continuidade.",
           lead: "A pesquisa domiciliar mostra a situação das famílias; o Cadastro Único estima o risco em cada município. Alimentação escolar, compras públicas e preços mostram por onde a comida chega.",
