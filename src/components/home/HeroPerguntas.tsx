@@ -5,14 +5,20 @@ import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/compo
 import { DOMINIOS } from "@/lib/dominios";
 import type { Porta } from "@/lib/perguntas/tipos";
 import { rotaPorta } from "@/lib/perguntas/rotas";
+import { retratoDoPortfolio } from "@/lib/observatorios/mapaConta";
+import { TamanhoObservatorio } from "@/components/observatorios/RetratoPortfolio";
 
 /**
  * Primeira tela: o Brasil em seis perguntas. Cada porta mostra um número com
  * fonte e período lidos das golds e leva à página aberta da pergunta. Abaixo,
  * a matriz que liga cada pergunta aos observatórios que a alimentam, lida dos
- * destinos de cada porta: nada nela é marcado à mão.
+ * destinos de cada porta: nada nela é marcado à mão. Sob o nome de cada
+ * observatório, o tamanho dele (coleções e páginas no ar), lido do inventário
+ * pelo mesmo cálculo do mapa da conta: as seis portas não têm a mesma
+ * profundidade, e o leitor vê isso antes de entrar.
  */
 export function HeroPerguntas({ portas, rodape = null }: Readonly<{ portas: Porta[]; rodape?: ReactNode }>) {
+  const retratos = retratoDoPortfolio();
   return (
     <section id="perguntas" aria-labelledby="perguntas-titulo" className="scroll-mt-4 border-b border-linha bg-marfim">
       <div className="mx-auto max-w-page px-6 pb-14 pt-12 md:pb-20 md:pt-16">
@@ -37,11 +43,13 @@ export function HeroPerguntas({ portas, rodape = null }: Readonly<{ portas: Port
           {portas.map((p) => {
             const n = p.numeros[0];
             const a = ACENTO[p.acento];
+            const retrato = retratos.find((r) => r.id === p.id);
             return (
               <li key={p.id} className="bg-papel">
                 <Link href={rotaPorta(p.id)} className="group relative flex h-full min-h-[44px] flex-col p-5 md:p-6">
                   <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${a.filete}`} />
                   <span className="rotulo text-mineral">{p.nome}</span>
+                  {retrato && <TamanhoObservatorio retrato={retrato} className="mt-1 text-xs text-mineral" />}
                   <span className={`mt-3 font-serif text-xl leading-snug text-carvao transition-colors ${a.hover} [text-wrap:balance]`}>
                     {p.pergunta}
                   </span>

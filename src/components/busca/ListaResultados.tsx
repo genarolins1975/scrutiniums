@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
-import type { GrupoObservatorio, Resultado } from "@/lib/busca/buscar";
+import { versaoAbertaDoResultado, type GrupoObservatorio, type Resultado } from "@/lib/busca/buscar";
 import type { TipoEntrada } from "@/lib/busca/tipos";
 import { VersaoAberta } from "./VersaoAberta";
 
@@ -105,7 +105,7 @@ export function ListaResultados({
                         </span>
                       )}
                       {/* na listbox do campo a linha fica fora da lista (BuscaPlataforma), onde o Tab a alcança */}
-                      {atual === 0 && !opcao && r.href && c.colecao?.aberta && !comSessao && <VersaoAberta destino={r.href} versao={c.colecao.aberta} />}
+                      {atual === 0 && !opcao && r.href && !comSessao && versaoAbertaDoResultado(r.href, c.colecao) && <VersaoAberta destino={r.href} versao={versaoAbertaDoResultado(r.href, c.colecao)!} />}
                     </li>
                   );
                 })}

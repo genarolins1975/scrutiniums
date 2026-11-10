@@ -82,7 +82,7 @@ export default function PaginaPanorama() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.educacao.nome,
+        grupo: TEMAS_EFICIENCIA.educacao.contexto,
         acento: "obee",
         titulo: "Quanto se gasta, quem é atendido e com que resultados?",
         // painel canônico da eficiência nas capitais; o Ideb e as matrículas de todos os municípios ficam no painel da coleção (20/10/2026)

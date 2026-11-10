@@ -41,7 +41,9 @@ export function destinosDaColecao(
   const entrada = proprio ?? nav.itens[0]?.href;
   const doParaVoce = entrada && entrada in PARA_VOCE ? paraVoce(entrada as EntradaParaVoce).map((p) => p.href) : [];
   const fora = new Set([...excluir, ...doParaVoce, entrada].filter(Boolean).map((h) => semAncora(h as string)));
-  const itens: DestinoEntrada[] = nav.itens
+  // a página que é porta de um grupo da coleção (os Combustíveis em Gás e combustíveis) mostra primeiro as outras páginas do grupo
+  const grupoProprio = proprio ? nav.itens.find((i) => i.subpaginas && semAncora(i.href) === semAncora(proprio)) : undefined;
+  const itens: DestinoEntrada[] = [...(grupoProprio?.subpaginas ?? []), ...nav.itens]
     // a própria página e as âncoras dela ficam de fora: as seções da página estão nos caminhos e nos blocos recolhidos
     .filter((i) => !fora.has(semAncora(i.href)))
     .map((i) => ({

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Painel "Combustíveis nos postos" (coleção Combustíveis, Observatório de Energia e Infraestrutura), com conta. Arquétipo
+ * Painel "Combustíveis nos postos" (coleção Gás e combustíveis desde 10/11/2026, Observatório de Energia e Infraestrutura), com conta. Arquétipo
  * panorama com consulta: a pergunta e o preço no estado do leitor na primeira tela; como a ANP mede; a série desde 2013
  * (nominal e corrigida pelo IPCA, lacuna de 2020 como lacuna); as UFs comparadas no último mês; o etanol em porcentagem da
  * gasolina; método, notas da planilha e downloads recolhidos no fim. Todos os números saem de public/gas/gold/combustiveis.json.
@@ -61,14 +61,14 @@ export default function CombustiveisPage() {
       <header>
         {/* a gold é do pipeline do Gás: as fontes do "Citar" e do "Avisar" são as dele */}
         <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
-        <NavegacaoColecao colecao="combustiveis" />
+        <NavegacaoColecao colecao="gas" />
       </header>
       <EntradaColecao
         tipo="colecao"
         rota={pagina.href}
         acento="gas"
         titulo={pagina.pergunta}
-        frase="Escolha o estado e os litros para calcular o custo do tanque pela média da ANP. O preço de cada posto pode ser diferente."
+        frase="O custo do tanque no seu estado, pela média da ANP. Cada posto tem o seu preço."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/combustiveis"]} conteiner="mx-auto max-w-page px-6" />}
         escala={g.produtos.map((p) => numeroDoIndicador(i[`${p.id}_medio_mes`], `Preço médio do litro: ${p.nome.toLowerCase()}`, "#historico"))}
         notaEscala="Médias nacionais de uma amostra de postos no mês: não são o preço de um posto."
@@ -80,7 +80,8 @@ export default function CombustiveisPage() {
         }
         contextoEscala="Preços médios no Brasil"
         paraVoce={<ParaVoce entrada="/combustiveis" />}
-        destinos={destinosDaColecao("combustiveis")}
+        // coleção Gás e combustíveis desde a fusão de 10/11/2026: a consulta por estado, do mesmo grupo, e depois o resto da coleção
+        destinos={destinosDaColecao("gas", { proprio: pagina.href })}
         artefato={
           <ModeloDidatico
             id="como-mede"

@@ -40,6 +40,20 @@ const ARQUIVOS_DAS_FONTES = [
  */
 const BUILD_SO_SITE = process.env.VERCEL === "1";
 
+/**
+ * Vistas da aplicação do Crédito substituídas por página Next das Famílias e já redirecionadas (decisão do dono de
+ * 10/11/2026). A lista é a de src/lib/observatorios/paineis-reescritos.json, a mesma que reescritos.ts tipa para o registro, a
+ * navegação e a busca: só entra aqui o painel com `redirecionar: true`. Redirecionamento permanente; o Next preserva a consulta.
+ * No Next 14 os redirects() rodam antes do middleware: quem não tem sessão recebe primeiro o endereço novo e é o middleware,
+ * já no endereço novo, que leva ao login com o destino novo em `de` (src/tests/redirecionamento-reescritos.test.ts).
+ */
+const PAINEIS_REESCRITOS = JSON.parse(readFileSync(new URL("./src/lib/observatorios/paineis-reescritos.json", import.meta.url), "utf-8"));
+export const REDIRECIONAMENTOS_REESCRITOS = PAINEIS_REESCRITOS.filter((p) => p.redirecionar === true).map((p) => ({
+  source: `/observatorio${p.abaAntiga}`,
+  destination: p.rota,
+  permanent: true,
+}));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: { ignoreDuringBuilds: BUILD_SO_SITE },
@@ -78,6 +92,24 @@ const nextConfig = {
       "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
+      // ficha do lugar (/app/minha-cidade, 10/11/2026): dinâmica (município na URL), lê a cada instância os mesmos arquivos
+      // das consultas por município de cada tema e os números do estado. src/tests/lugar.test.ts confere esta lista
+      "/app/minha-cidade": [
+        "./public/saneamento/gold/municipios.json",
+        "./public/saneamento/gold/meta.json",
+        "./public/saneamento/gold/indice.json",
+        "./public/educacao/gold/educacao.json",
+        "./public/educacao/gold/municipios/*.json",
+        "./public/conectividade/gold/conectividade.json",
+        "./public/conectividade/gold/municipios/*.json",
+        "./public/previdencia/gold/municipios/*.json",
+        "./public/territorio/gold/queimadas_municipios.json",
+        "./public/gas/gold/*.json",
+        "./public/eficiencia/seguranca-publica/gold/seguranca.json",
+      ],
+      // painéis das Famílias dinâmicos (recorte na URL): leem a gold a cada instância
+      "/divida-das-familias/clientes-contra-bancos": ["./public/obs/data/gold/judicial.json"],
+      "/divida-das-familias/bancos-cobrando-na-justica": ["./public/obs/data/gold/cobranca.json"],
       "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       "/educacao-municipal/mapa": ["./public/educacao/gold/educacao.json", "./public/educacao/gold/mapa.json"],
       "/educacao-municipal/municipio/*": ["./public/educacao/gold/**/*.json"],
@@ -163,6 +195,8 @@ const nextConfig = {
       {source: "/fontes", destination: "/observatorio/methodology", permanent: true},
       // a entrada do Território e Clima fica junto dos painéis que ele mantém (src/app/territorio)
       {source: "/observatorios/territorio-e-clima", destination: "/territorio", permanent: false},
+      // vistas antigas das Famílias redirecionadas para a página nova (lista única em paineis-reescritos.json)
+      ...REDIRECIONAMENTOS_REESCRITOS,
     ];
   },
 };

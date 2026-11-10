@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GravuraObservatorio } from "@/components/observatorios/GravuraObservatorio";
 import Link from "next/link";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
@@ -60,6 +61,7 @@ export default function EntradaTerritorio() {
       frase="O fogo e o desmatamento vistos por satélite, os desastres que a União reconheceu em cada município e as emissões do inventário oficial, cada número com a fonte e o período dele."
       frescor={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS["territorio-e-clima"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escala}
+      figuraEscala={<GravuraObservatorio id="territorio-e-clima" faixa className="mt-8" />}
       paraVoce={
         <>
           {/* "Para você" (Onda 2): o fogo e os desastres no município do leitor, a um clique, com a consulta dos focos por município embutida (antes "Teve fogo perto de você?") */}

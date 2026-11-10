@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { contextoDaRota } from "@/lib/observatorios/contexto";
 
 /**
  * Como o sistema funciona, em duas camadas que não se misturam:
@@ -284,7 +285,11 @@ function Fluxo({ titulo, etapas, inicio }: { titulo: string; etapas: Etapa[]; in
   );
 }
 
+/** Resíduos e drenagem moram em outra coleção; o link diz o nome da página e da coleção do registro, não o do domínio de origem. */
+const ROTA_RESIDUOS = "/eficiencia-estatal/saneamento/residuos";
+
 export function DiagramaSistema() {
+  const residuos = contextoDaRota(ROTA_RESIDUOS);
   return (
     <div>
       <IlustracaoCiclo />
@@ -313,11 +318,11 @@ export function DiagramaSistema() {
       </div>
       <p className="mt-6 text-sm text-carvao-muted">
         Saneamento básico também inclui manejo de resíduos sólidos e drenagem urbana. Este observatório trata água e esgoto; os dois outros
-        componentes têm indicadores regionais do SINISA no{" "}
-        <Link href="/eficiencia-estatal/saneamento/residuos" className="text-obee-dark underline underline-offset-2">
-          Observatório de Eficiência Estatal
+        componentes têm indicadores regionais do SINISA em{" "}
+        <Link href={ROTA_RESIDUOS} className="text-obee-dark underline underline-offset-2">
+          {residuos?.pagina?.titulo ?? "Resíduos sólidos"}
         </Link>
-        .
+        {residuos?.colecao ? `, na coleção ${residuos.colecao.nome}` : ""}.
       </p>
     </div>
   );

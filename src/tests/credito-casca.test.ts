@@ -36,7 +36,7 @@ import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
-import { ABAS_INSTITUCIONAIS_CREDITO } from "@/lib/observatorios/registro";
+import { ABAS_INSTITUCIONAIS_CREDITO, ABAS_SUBSTITUIDAS, donoDaRota, paineis } from "@/lib/observatorios/registro";
 import { FIM_DA_PAGINA_CREDITO } from "@/lib/credito/navegacao";
 import { htmlNavegacao, htmlParaIrAlem, htmlRodapeColecao, htmlRotulo } from "@/lib/observatorios/cascaPura";
 import {
@@ -136,7 +136,8 @@ describe("2. index.html e casca.css saem do gerador", () => {
 /** Uma página de cada coleção servida pela aplicação, a coleção dona e o destino que a navegação marca. */
 const POR_COLECAO = [
   { rota: "/observatorio/credit", colecao: "Crédito e sistema financeiro", observatorio: "Observatório da Economia", atual: "/observatorio/credit", grupo: "Ciclo do crédito" },
-  { rota: "/observatorio/payroll-lending-aging", colecao: "Dívida e crédito das famílias", observatorio: "Observatório das Famílias", atual: "/observatorio/payroll-lending-aging" },
+  // a coleção Dívida e crédito das famílias deixou de ser servida pela aplicação em 10/11/2026: os painéis dela foram
+  // reescritos em Next (src/lib/observatorios/reescritos.ts)
   { rota: "/observatorio/pix", colecao: "Pagamentos", observatorio: "Observatório da Economia", atual: "/observatorio/pix" },
   { rota: "/observatorio/sectors", colecao: "Empresas e risco", observatorio: "Observatório da Economia", atual: "/observatorio/sectors" },
   { rota: "/observatorio/subnational-credit", colecao: "Dívida e crédito dos governos", observatorio: "Observatório das Contas Públicas", atual: "/observatorio/subnational-credit" },
@@ -184,12 +185,18 @@ describe("3. o HTML que o servidor entrega para cada coleção servida pela apli
     expect(htmlRotulo(indiceCasca(), c.rota, CLASSE_ROTULO_SPA)).toContain(`<span>${c.observatorio} · ${c.colecao}`);
   });
 
-  it("o leitor que vem das Famílias vê Famílias na trilha, no seletor, no rótulo e na navegação", () => {
-    const h = servido("/observatorio/payroll-lending-aging");
-    expect(h).toMatch(/<nav aria-label="Você está em"[^>]*><ol><li><a href="\/perguntas\/familias">Observatórios<\/a><\/li><li><span aria-hidden="true">\/<\/span><a href="\/perguntas\/familias">Famílias<\/a>/);
-    expect(h).toContain('aria-label="Navegação da coleção Dívida e crédito das famílias"');
-    expect(h).not.toContain('aria-label="Navegação da coleção Crédito e sistema financeiro"');
-    expect(htmlRotulo(indiceCasca(), "/observatorio/payroll-lending-aging")).toContain("Observatório das Famílias · Dívida e crédito das famílias");
+  // Decisão do dono de 10/11/2026: os painéis das Famílias saem da aplicação do Crédito. Seis endereços antigos redirecionam
+  // para a página nova (src/tests/redirecionamento-reescritos.test.ts); os três com perda declarada continuam servindo a vista
+  // antiga, que já não pertence às Famílias no registro nem aparece na navegação. A casca conferida aqui é a que o route
+  // handler montaria: para os seis redirecionados o pedido não chega a ele, e a asserção vale como defesa.
+  it("as vistas substituídas por página Next saem do registro; a página nova é a dona, nas Famílias", () => {
+    expect(ABAS_SUBSTITUIDAS.get("/payroll-lending-aging")).toBe("/divida-das-familias/consignado");
+    const rotas = new Set(paineis().map((p) => p.rota));
+    for (const [aba, nova] of ABAS_SUBSTITUIDAS) {
+      expect(rotas.has(`/observatorio${aba}`), aba).toBe(false);
+      expect(donoDaRota(nova)?.observatorio, nova).toBe("familias");
+      expect(servido(`/observatorio${aba}`), aba).not.toContain('aria-label="Navegação da coleção Dívida e crédito das famílias"');
+    }
   });
 
   it("as páginas institucionais têm trilha e rótulo com o nome delas", () => {
@@ -241,7 +248,9 @@ describe("4. o app.js usa a casca da plataforma", () => {
   });
 
   it("a cada página, a casca é refeita pelo índice que o servidor embute", () => {
-    expect(app).toMatch(/function showViewSilent\(v\) \{\n  refazTrilha\(\);\n  refazCasca\(\);/);
+    // desde 10/11/2026 (decisão do dono) a função começa pela saída para a página nova das vistas redirecionadas; a casca é
+    // refeita logo depois, antes de qualquer desenho, como antes
+    expect(app).toMatch(/function showViewSilent\(v\) \{\n[^\n]*\n  const sub = substituta\(v\);\n  if \(sub\) \{ location\.replace\(sub\.rota\); return; \}\n  refazTrilha\(\);\n  refazCasca\(\);/);
     expect(app).toContain('document.getElementById("navColecaoIndice")');
     expect(app).toContain("C.htmlNavegacao(nav, caminho)");
     expect(app).toContain("C.htmlParaIrAlem(ind, caminho)");

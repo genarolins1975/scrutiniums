@@ -39,7 +39,8 @@ describe("queimadas do Território e Clima", () => {
     expect(g.areaQueimada?.maturidade).toMatch(/Provisório/);
   });
 
-  it("o painel é fechado, pertence à coleção Fogo e queimadas e diz junto ao número que foco não é incêndio", () => {
+  // a coleção "fogo" chama-se Fogo e desastres desde a fusão decidida pelo dono em 10/11/2026
+  it("o painel é fechado, pertence à coleção Fogo e desastres e diz junto ao número que foco não é incêndio", () => {
     expect(ehRotaPublica("/territorio/queimadas")).toBe(false);
     expect(donoDaRota("/territorio/queimadas")).toMatchObject({ observatorio: "territorio-e-clima", colecao: "fogo", origem: null });
     const fonte = readFileSync(join(process.cwd(), "src", "app", "territorio", "queimadas", "page.tsx"), "utf-8");

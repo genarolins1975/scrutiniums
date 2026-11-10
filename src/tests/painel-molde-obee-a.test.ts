@@ -5,6 +5,13 @@ import { conferirPainel } from "./suporte/molde-painel";
 
 // as leituras de base do OBEE marcam "server-only"; fora do Next o pacote não resolve, e o teste roda o componente da página direto
 vi.mock("server-only", () => ({}));
+// Desde a fusão das coleções decidida pelo dono em 10/11/2026, a navegação que a página Energia e conectividade monta é a da
+// coleção Mobilidade e conectividade, que leva o recorte da Mobilidade de uma aba a outra (`levar`): o link com recorte usa o
+// roteador do Next, que não existe no renderToStaticMarkup. O roteador de teste só existe; nenhuma asserção depende dele.
+vi.mock("next/navigation", async () => ({
+  ...await vi.importActual<typeof import("next/navigation")>("next/navigation"),
+  useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {}, back: () => {}, forward: () => {}, refresh: () => {} }),
+}));
 
 import PaginaNecessidades from "@/app/eficiencia-estatal/assistencia-social/necessidades/page";
 import PaginaIndice from "@/app/eficiencia-estatal/indice-de-resultados/page";

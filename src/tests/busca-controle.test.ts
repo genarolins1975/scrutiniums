@@ -292,7 +292,7 @@ describe("bloco 2: sinônimos com alcance certo", () => {
   const primeiros = (termo: string, n = 3) => b(termo).resultados.slice(0, n);
   const BANCOS = "/observatorio-do-credito/quanto-meu-banco-cobra";
 
-  it("'Amazônia': Desmatamento e emissões ou Fogo e queimadas primeiro; banco fora dos três primeiros", () => {
+  it("'Amazônia': Desmatamento e emissões ou Fogo e desastres primeiro; banco fora dos três primeiros", () => {
     const r = primeiros("Amazônia");
     expect(["desmatamento", "fogo"]).toContain(r[0].colecao);
     expect(r.map((x) => x.href)).not.toContain(BANCOS);
@@ -360,7 +360,7 @@ describe("bloco 2: sinônimos com alcance certo", () => {
     expect(b("feminicídio").resultados[0].colecao).toBe("seguranca");
   });
 
-  it("'Pantanal': Fogo e queimadas (focos por bioma)", () => {
+  it("'Pantanal': Fogo e desastres (focos por bioma)", () => {
     expect(b("Pantanal").resultados[0].href).toBe("/territorio/queimadas");
   });
 

@@ -19,7 +19,7 @@ const TITULOS: Record<string, string> = {'': 'Segurança pública', estados: 'Se
 export function generateStaticParams() { return rotas.map((r) => ({painel: r ? [r] : []})); }
 export function generateMetadata({params}: {params: {painel?: string[]}}): Metadata {
   const slug = params.painel?.[0] ?? '';
-  return {title: `${GRUPOS[slug as Grupo]?.titulo ?? TITULOS[slug] ?? 'Segurança pública'} · OBEE`, description: 'Violência registrada pela polícia e pela saúde em cada estado, em taxa por 100 mil habitantes, e a despesa estadual com segurança pública, com fontes, períodos e ausências explícitas.'};
+  return {title: `${GRUPOS[slug as Grupo]?.titulo ?? TITULOS[slug] ?? 'Segurança pública'}`, description: 'Violência registrada pela polícia e pela saúde em cada estado, em taxa por 100 mil habitantes, e a despesa estadual com segurança pública, com fontes, períodos e ausências explícitas.'};
 }
 
 function Fonte({children, dd = false}: {children: React.ReactNode; dd?: boolean}) { const T = dd ? 'dd' : 'p'; return <T className="mt-3 text-xs leading-relaxed text-carvao-muted">{children}</T>; }
@@ -147,7 +147,7 @@ function Estados({g}: {g: GoldSeguranca}) {
   const sim = fichaDaFigura({...base, indicador: 'Óbitos por agressão, por UF de residência, e taxa por 100 mil habitantes', natureza: 'CALCULADO', orgao: 'Ministério da Saúde', conjunto: 'SIM, pelo TabNet do DATASUS', recurso: 'Óbitos por causas externas, por UF de residência', url: g.fontes.sim.pagina, unidade: 'óbitos; taxa por 100 mil habitantes', frequencia: 'Anual', capturadoEm: g.fontes.sim.capturado_em, limitacoes: ['O dado mais recente do SIM é preliminar e costuma subir quando se torna final.']});
   const ibge = fichaDaFigura({...base, indicador: 'População residente por UF, total e mulheres', natureza: 'ESTIMADO', orgao: 'IBGE', conjunto: g.fontes.ibge.rotulo, recurso: g.fontes.ibge.nome, url: g.fontes.ibge.url, unidade: 'pessoas', frequencia: 'Anual (população em 1º de julho)', capturadoEm: g.fontes.ibge.capturado_em, limitacoes: [`A população é a do IBGE, ${g.fontes.ibge.rotulo}, ${g.fontes.ibge.base}. Taxas publicadas antes, com as estimativas da época, diferem destas.`]});
   return <PaginaPainel rota={`${ROTA}/estados`} principal={false}
-    abertura={{grupo: TEMAS_EFICIENCIA.seguranca.nome, acento: 'obee', titulo: 'A violência registrada é comparável entre os estados?',
+    abertura={{grupo: TEMAS_EFICIENCIA.seguranca.contexto, acento: 'obee', titulo: 'A violência registrada é comparável entre os estados?',
       lead: 'Em taxa por 100 mil habitantes, sim, dentro de cada registro: a polícia de cada estado classifica e envia os seus números, e a saúde codifica a causa de cada óbito.',
       recorte: {periodo: `${g.anos[0]} a ${g.anos.at(-1)}`, universo: '27 UFs', unidade: 'taxa por 100 mil habitantes', fonte: 'Sinesp (polícias), SIM (saúde) e IBGE (população)'},
       limite: 'se a situação de uma UF é boa ou ruim: a posição e a distância para o Brasil descrevem onde ela está entre as que têm dado, e diferenças pequenas podem vir de classificação e de registro.',

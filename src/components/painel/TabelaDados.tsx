@@ -108,16 +108,29 @@ export function TabelaDados({
       no
     );
   };
-  const fixa = fixarPrimeiraColuna ? "sticky left-0 z-10 bg-papel" : "";
+  // no celular a coluna fixa não passa de 9,5 rem: com nome longo ela tomava a tela e os números ficavam fora de vista
+  const fixa = fixarPrimeiraColuna ? "sticky left-0 z-10 bg-papel max-w-[9.5rem] sm:max-w-none" : "";
+  // Número nunca é partido em duas linhas nem cabeçalho em sílabas ("Aut oriz ado", "103, 4": reprovação R2 da auditoria de layout de
+  // 10/11/2026). Valor curto com algarismo e cabeçalho de uma palavra não quebram; a tabela cresce e rola dentro do próprio bloco.
+  const valorCurto = (v: CelulaTabela) => typeof v === "number" || (typeof v === "string" && v.length <= 14 && /\d/.test(v));
+  const semQuebra = (c: string) => !c.trim().includes(" ") || c.length <= 12;
+  // a classe é curta de propósito ("sq", sem quebra, em globals.css): ela se repete em cada célula e o HTML das páginas tem teto de peso
+  const muitasColunas = colunas.length >= 5;
   const tabela = (
+    <>
+    {muitasColunas && (
+      <p className="t-meta mt-2 text-carvao-muted sm:hidden" data-dica-rolagem="">
+        {tx("Role a tabela para o lado para ver todas as colunas.", "Scroll the table sideways to see all columns.", idioma)}
+      </p>
+    )}
     <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={tx(`${titulo} (tabela rolável)`, `${titulo} (scrollable table)`, idioma)}>
       {/* nota miúda numa célula (<small>, como "nesta área de 2004 a 2026") fica em 12 px, o piso da plataforma; sem isso o navegador a reduz */}
-      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums [&_small]:text-xs" data-tabela-dados="">
+      <table className="t-tabela w-full min-w-[28rem] border-collapse tabular-nums [overflow-wrap:normal] [word-break:normal] [hyphens:manual] [&_small]:text-xs" data-tabela-dados="">
         <caption className="sr-only">{titulo}</caption>
         <thead>
           <tr>
             {colunas.map((c, j) => (
-              <th key={c} scope="col" className={`border-b border-linha px-2 py-1.5 font-medium text-mineral ${numerica[j] ? "text-right" : "text-left"} ${j === 0 ? fixa : ""}`}>
+              <th key={c} scope="col" className={`border-b border-linha px-2 py-1.5 font-medium text-mineral ${numerica[j] ? "text-right" : "text-left"} ${semQuebra(c) ? "sq" : ""} ${j === 0 ? fixa : ""}`}>
                 {c}
               </th>
             ))}
@@ -135,7 +148,7 @@ export function TabelaDados({
                     {comLink(celula(v, j), v, j, linhas.length - visiveis.length + i)}
                   </th>
                 ) : (
-                  <td key={j} className={`px-2 py-1 text-carvao ${numerica[j] ? "text-right" : ""}`}>
+                  <td key={j} className={`px-2 py-1 text-carvao${numerica[j] ? " text-right" : ""}${valorCurto(v) ? " sq" : ""}`}>
                     {comLink(celula(v, j), v, j, linhas.length - visiveis.length + i)}
                   </td>
                 ),
@@ -145,6 +158,7 @@ export function TabelaDados({
         </tbody>
       </table>
     </div>
+    </>
   );
   const arquivo = csv && (
     <a href={csv} download className="rotulo mt-3 inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">

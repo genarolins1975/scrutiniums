@@ -15,7 +15,7 @@ import { exigirBuild, htmlDe, raiz, subirServidor, temBuild, type ServidorProduc
  * `c:setor-eletrico`, um recorte salvo e um aviso). Invariantes, sem texto literal além do que o dono decidiu (o H1 "Encontre o
  * painel", decisão registrada em navegacao-colecao.test.ts) e das frases de estado vazio que não podem voltar:
  *  - um elemento do mapa, fatias conhecidas e na ordem; `retomar` só quando há o que retomar;
- *  - cada uma das 28 coleções exatamente uma vez como link no diretório, os seis observatórios na ordem com link para a entrada;
+ *  - cada uma das 24 coleções exatamente uma vez como link no diretório, os seis observatórios na ordem com link para a entrada;
  *  - nenhum formulário nem `data-view` no diretório; nenhum nome de domínio antigo; nenhum "Explorar";
  *  - a contagem de páginas de cada coleção igual à do inventário; todo cartão do "Para você" com prova ou motivo;
  *  - selo só pela forma única; página prevista nunca é link; um só `<details>` de método, no fim, com os totais;
@@ -144,7 +144,7 @@ describe.skipIf(!temBuild)("mapa da conta no HTML do build", () => {
     }
   });
 
-  it("as 28 coleções uma vez cada como link no diretório; os seis observatórios na ordem, com link para a entrada", () => {
+  it("as 24 coleções uma vez cada como link no diretório; os seis observatórios na ordem, com link para a entrada", () => {
     const d = elemento(casos.nova, 'data-fatia="destinos"');
     for (const o of OBSERVATORIOS) {
       for (const c of o.colecoes) expect(d.match(new RegExp(`<a [^>]*href="${c.href}"`, "g")), c.href).toHaveLength(1);

@@ -52,6 +52,10 @@ export function ParaIrAlem({ mapa }: Readonly<{ mapa: MapaParaIrAlem }>) {
   const link = "inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4";
   return (
     <aside aria-labelledby="para-ir-alem" className="border-t border-linha bg-papel">
+      {/* faixa da gravura do observatório dono (decisão do dono de 10/11/2026: um elemento visual em toda página): decorativa
+          aqui, porque o texto ao lado já nomeia o observatório; a descrição da cena está na entrada dele */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`/arte/observatorios/${o.id}.webp`} alt="" aria-hidden="true" width={1440} height={720} loading="lazy" decoding="async" data-gravura-faixa={o.id} className="block h-16 w-full bg-carvao object-cover md:h-24" />
       <div className="mx-auto max-w-page px-6 py-8">
         <h2 id="para-ir-alem" className="rotulo text-mineral">{t("Para ir além", "Further reading")}</h2>
         <p className="mt-3 text-sm leading-relaxed text-carvao">

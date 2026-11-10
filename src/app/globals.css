@@ -295,6 +295,10 @@ body {
     radial-gradient(farthest-side at 0 50%, rgba(26, 29, 33, 0.18), transparent) left / 0.75rem 100% no-repeat scroll,
     radial-gradient(farthest-side at 100% 50%, rgba(26, 29, 33, 0.18), transparent) right / 0.75rem 100% no-repeat scroll;
 }
+/* TabelaDados: valor curto com algarismo e cabeçalho de uma palavra não quebram ("103,4" nunca vira "103," e "4"); a tabela rola no bloco. */
+[data-tabela-dados] .sq {
+  white-space: nowrap;
+}
 .tabela-scroll:focus-visible {
   outline: 2px solid var(--cor-energia);
   outline-offset: 2px;

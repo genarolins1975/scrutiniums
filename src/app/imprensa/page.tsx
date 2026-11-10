@@ -76,8 +76,8 @@ type Painel = {
 function carregarPaineis(): Painel[] {
   const out: Painel[] = [];
   for (const [slug, rota] of [
-    ["bets", "/observatorio/bets-financial-risk"],
-    ["fraudes", "/observatorio/financial-fraud"],
+    ["bets", "/divida-das-familias/apostas"],
+    ["fraudes", "/divida-das-familias/golpes-e-fraudes"],
     ["operacional", "/observatorio/operational-indicators"],
   ] as const) {
     const g = lerGold(slug);

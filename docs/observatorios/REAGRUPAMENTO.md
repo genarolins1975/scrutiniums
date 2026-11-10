@@ -193,6 +193,105 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 | Território e Clima, adensamento | Queimadas com pipeline e gold próprios (`/territorio/queimadas`, `docs/territorio/README.md`); desastres (Atlas Digital) e emissões oficiais (MCTI) nos próximos PRs |
 | Um só vocabulário (Iniciativa 1 do parecer de UX de 21/10/2026) | Em PR (branch `claude/iniciativa-1-vocabulario`). Os oito domínios de `src/lib/dominios.ts` passam a se chamar como a coleção do registro (o nome antigo fica em `nomeLegado`, só para testes e `/sobre`); `lista.ts` é a única fonte de coleções (`dominio`, `metodo` e `glossario` por coleção). O seletor da barra e a barra da aplicação do Crédito listam as 28 coleções; o rodapé tem uma coluna por observatório; `RotuloContexto` escreve "Observatório X · Coleção Y · Página Z" acima do H1; a trilha "Você está em" (`Trilha`) vem logo abaixo da barra comum em toda página de coleção, inclusive em cada aba da aplicação do Crédito; seletor, abas e trilha resolvem a coleção pelo endereço também no navegador (`contextoPuro.ts`), porque o cabeçalho mora em layouts. Navegações de módulo com aria-label "Navegação da coleção X" e títulos "Página · Coleção · Scrutiniums". Teste `src/tests/vocabulario.test.ts`. Fica para a Iniciativa 4 o H1 de `/observatorio-do-credito` |
 
+## Dado compartilhado, página de uma pergunta só (10/11/2026)
+
+Pedido do dono em 10/11/2026: o mesmo painel de crédito aparecia nas Famílias e na Economia. A coleção Dívida e crédito das
+famílias tinha como porta o painel de consignado e levava ao panorama do crédito (`/observatorio/credit`, da Economia) por
+atalho; a entrada do Observatório das Famílias mandava os números de dívida para o mesmo painel.
+
+Regra nova, conferida por `src/tests/observatorios-registro.test.ts`:
+
+1. **O dado é compartilhado, a página pertence a uma pergunta.** Duas páginas podem ler a mesma gold; um painel não responde
+   a duas perguntas de observatórios diferentes.
+2. **A porta de uma coleção é um painel da própria coleção, nunca um atalho.** Atalho só complementa.
+
+Aplicação: `/divida-das-familias` (painel Dívida das famílias, com conta) é a porta da coleção. É página do próprio
+Observatório das Famílias (origem `null` no registro), sem pipeline: lê `public/obs/data/gold/pulse.json` só no recorte de
+pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O atalho de `/observatorio/credit` saiu das
+Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
+regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
+
+## Vistas antigas das Famílias: seis redirecionadas, três pendentes (10/11/2026)
+
+Nove painéis das Famílias foram reescritos como páginas Next (`src/lib/observatorios/reescritos.ts`). A auditoria de
+10/11/2026 (`docs/AUDITORIA_QUALIDADE_2026-11-10.md`, achado 4) mostrou que as nove vistas antigas da aplicação do Crédito
+seguiam no ar, rotuladas como Economia. Decisão do dono em 10/11/2026: **redirecionar já, de forma permanente, as seis cujo
+painel novo não tem perda declarada**, e manter as três com perda até os mapas serem migrados.
+
+| Endereço antigo | Página nova | Estado |
+|---|---|---|
+| `/observatorio/desenrola` | `/divida-das-familias/desenrola` | Redirecionado |
+| `/observatorio/bets-financial-risk` | `/divida-das-familias/apostas` | Redirecionado |
+| `/observatorio/financial-fraud` | `/divida-das-familias/golpes-e-fraudes` | Redirecionado |
+| `/observatorio/lawsuits` | `/divida-das-familias/clientes-contra-bancos` | Redirecionado |
+| `/observatorio/debt-collection-lawsuits` | `/divida-das-familias/bancos-cobrando-na-justica` | Redirecionado |
+| `/observatorio/conduct-enforcement` | `/divida-das-familias/sancoes-e-reclamacoes` | Redirecionado |
+| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Pendente: perda declarada (mapa municipal sem estado na URL, dispersão sem bolha) |
+| `/observatorio/housing-credit` | `/credito-imobiliario` | Pendente: o mapa municipal não foi migrado |
+| `/observatorio/formal-employment` | `/emprego-formal` | Pendente: os pesos do score setorial não foram migrados (`docs/familias/PARIDADE.md`) |
+
+Esta é a primeira exceção à regra 2 ("endereços não mudam"), e ela continua valendo no sentido que importa: nenhum endereço
+deixa de responder. O antigo responde com redirecionamento permanente, com a consulta preservada, e quem não tem sessão chega
+ao login com o destino novo.
+
+- A lista é uma só, `src/lib/observatorios/paineis-reescritos.json` (campo `redirecionar`), lida por `next.config.mjs`, pelo
+  registro e pelo índice que a aplicação do Crédito recebe. Não há lista paralela.
+- `GRUPOS_CREDITO` guarda o endereço novo dos seis. O "Início do painel" continua listando os oito grupos por pergunta; os
+  seis itens são link comum para a página das Famílias, com o título e a pergunta dela. A navegação da coleção do Crédito já
+  não os mostrava.
+- Dentro da aplicação, `nav()`, as pontes, os alertas e o histórico saem para a página nova; o boletim por e-mail e o sitemap
+  usam `enderecoDaAba` (`src/lib/data/observatorioAbas.ts`).
+- As três vistas pendentes continuam alcançáveis pelo "Início do painel" da aplicação (grupo "Território e pessoas" e passo 4
+  do ciclo) e pelo endereço direto. Na navegação das coleções, na busca e no registro, quem aparece é a página nova.
+- O código de render das seis vistas ficou em `public/obs/app.js`, morto; a remoção é um PR próprio (detalhe e motivo em
+  `docs/familias/PARIDADE.md`).
+- Testes: `src/tests/redirecionamento-reescritos.test.ts`, `src/tests/mapa-menu.test.ts` e, no navegador,
+  `src/tests/split-bundle-browser.test.ts`.
+
+## Fusão das coleções de uma página só (10/11/2026)
+
+Decisão do dono em 10/11/2026: das 28 coleções de `src/lib/observatorios/lista.ts`, sete tinham uma única página. Quatro foram
+fundidas com a vizinha do mesmo observatório; ficaram 24. Coleção é agrupamento de navegação: nenhum endereço mudou, nenhuma
+página saiu, nenhum dado e nenhuma regra de acesso mudou.
+
+| Fusão | Observatório | id que fica | Nome | Porta |
+|---|---|---|---|---|
+| Fogo e queimadas + Desastres | Território e Clima | `fogo` | Fogo e desastres | `/territorio/queimadas` |
+| Combustíveis entra em Gás Natural | Energia e Infraestrutura | `gas` | Gás e combustíveis | `/gas-natural` |
+| Mobilidade + Conectividade | Energia e Infraestrutura | `conectividade` | Mobilidade e conectividade | `/conectividade` |
+| Cultura entra em Educação | Serviços Públicos | `educacao` | Educação e cultura | `/educacao-municipal` |
+
+Contas Estaduais não se funde (piloto com pipeline próprio). Como ficou:
+
+- **Apelidos num só lugar.** `COLECOES_FUNDIDAS` e `idDaColecao` (`lista.ts`): `desastres` → `fogo`, `combustiveis` → `gas`,
+  `mobilidade` → `conectividade`, `cultura` → `educacao`. Usados onde um id gravado é lido: o cookie de último acesso
+  (`lerUltimoAcesso`), a escolha pós login (`escolhaObservatorio`) e `navegacaoDaColecao`. O último acesso por endereço
+  reconhece a antiga porta (`/combustiveis`, por exemplo) como página da coleção nova.
+- **Navegação.** As páginas da coleção absorvida entram como um grupo da coleção nova, com as páginas dele na segunda linha
+  (Combustíveis, Mobilidade e transporte, Cultura); nos Desastres, como página.
+- **Datas.** Onde a fusão juntou bases diferentes, a linha do mapa da conta diz a que parte a data se refere
+  (`ALCANCE_DA_DATA`, `mapaConta.ts`): "Queimadas: dados até … · Desastres: referência por página". Gás e combustíveis segue
+  com uma data só, porque a referência do domínio do gás já cobre os combustíveis.
+- **Nomes lidos do registro.** O domínio `gas` passa a se chamar como a coleção; títulos de aba e rótulos da ficha "Minha
+  cidade" leem o nome do registro.
+
+Teste `src/tests/colecoes-fundidas.test.ts`.
+
+## Eixo do lugar: a ficha "Minha cidade" (10/11/2026)
+
+Pedido do dono em 10/11/2026 (recomendação 2 do parecer estrutural): as consultas por município viviam separadas, uma por
+coleção, cada uma com a sua busca. `/app/minha-cidade?ibge=` reúne numa página, para o município escolhido, o que cinco
+coleções publicam por município (Saneamento, Educação, Conectividade, Contas Federais e Fogo e queimadas) e os quatro números
+do estado (combustíveis, botijão, violência e contas), cada cartão com fonte, período e o endereço da ficha do tema no mesmo
+município. Conta de luz e custo de vida entram como consulta, com o motivo de não terem número por município.
+
+- Nada é calculado na ficha: `src/lib/lugar/ficha.ts` chama os leitores de cada tema. Dado ausente sai "indisponível".
+- O lugar vive só no endereço. Nada é gravado na conta e não há geolocalização: a preferência "Meu lugar" (I3 do parecer de UX
+  de 23/10/2026) continua dependendo da decisão do dono sobre a política de privacidade.
+- A página exige conta, está na navegação da conta e no bloco "Na sua cidade" do mapa da conta.
+- Os arquivos lidos em produção estão em `outputFileTracingIncludes` (`next.config.mjs`); `src/tests/lugar.test.ts` confere.
+- Fica para depois: seletor único de lugar nas coleções (I3, passos 1 e 2), lugares na busca da plataforma e versão aberta.
+
 ## Duplicatas: decisões de 18/10/2026
 
 Comparação de conteúdo feita sobre as páginas, os componentes e as golds de cada par. Nenhuma página foi removida: a que vira atalho continua publicada e mostra o aviso "Painel mais completo" (`src/components/observatorios/PainelMaisCompleto.tsx`).

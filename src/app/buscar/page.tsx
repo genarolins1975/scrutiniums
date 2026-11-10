@@ -19,7 +19,7 @@ import { getSessionUser } from "@/lib/session";
  * Busca da plataforma sem JavaScript e página de resultados (Iniciativa 3 do parecer de UX de 21/10/2026). Aberta, fora do
  * sitemap e não indexada: o formulário da barra envia para cá (GET /buscar?q=) e a página renderiza no servidor os mesmos
  * resultados do campo, com o selo "com conta" nos destinos fechados para quem não tem sessão. Sem termo, é o diretório das
- * 28 coleções. Mostra títulos, resumos e endereços, nunca dado de painel.
+ * 24 coleções. Mostra títulos, resumos e endereços, nunca dado de painel.
  */
 export const metadata: Metadata = {
   title: "Buscar",
@@ -120,7 +120,7 @@ export default async function BuscarPage({ searchParams }: { searchParams: { q?:
   );
 }
 
-/** Sem termo: as 28 coleções, por observatório, cada uma com as suas páginas (o diretório da área logada, sem o filtro). */
+/** Sem termo: as 24 coleções, por observatório, cada uma com as suas páginas (o diretório da área logada, sem o filtro). */
 function Diretorio({ comSessao }: { comSessao: boolean }) {
   const obs = inventario();
   const link = "underline decoration-linha underline-offset-4 hover:decoration-carvao";

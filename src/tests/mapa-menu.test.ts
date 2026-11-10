@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { GRUPOS_CREDITO } from "@/lib/credito/navegacao";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
-import { DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
+import { DESTINO_ABAS_CREDITO, ABAS_SUBSTITUIDAS } from "@/lib/observatorios/registro";
+import { PAINEIS_REDIRECIONADOS } from "@/lib/observatorios/reescritos";
 
 /**
  * Início do painel (antes "Mapa do Observatório"; o dono renomeou em 23/10/2026) e os grupos do Crédito. O que se trava:
@@ -13,7 +14,9 @@ import { DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
  *   estática do ROUTES está em exatamente um grupo (exceto as dinâmicas e as três do fim da página: research, sugestoes, sobre);
  * - cada aba aparece na navegação da coleção dona: as do Crédito nos grupos dele, as das outras coleções na navegação delas;
  * - o ciclo do Início do painel cobre todas as abas temáticas (cada aba aparece em um nó do ciclo ou é de Referência/Começar);
- * - as trilhas só apontam para abas existentes com GUIA.
+ * - as trilhas só apontam para abas existentes com GUIA;
+ * - desde 10/11/2026 (decisão do dono), seis vistas das Famílias redirecionam para a página Next: o grupo guarda o endereço novo,
+ *   a correspondência entre grupo e vista é feita pela página nova (PAINEIS_REDIRECIONADOS) e o ciclo e as trilhas ligam à página nova.
  */
 const raiz = process.cwd();
 const read = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -26,6 +29,9 @@ const mapa = (nome: string) => {
 };
 const rotas = mapa("ROUTES");
 const vistaDe = Object.fromEntries(Object.entries(rotas).map(([v, r]) => [`/observatorio${r}`, v]));
+// vista redirecionada para página Next das Famílias (decisão do dono de 10/11/2026): o grupo guarda o endereço da página nova
+// e o "Início do painel" continua listando a pergunta dela, com link para fora da aplicação (gruposDoMenu e mapaLink no app.js)
+for (const p of PAINEIS_REDIRECIONADOS) vistaDe[p.rota] = vistaDe[`/observatorio${p.abaAntiga}`];
 // as páginas Next do Crédito nos grupos (o Simulador da parcela) não são abas da aplicação
 const grupos = GRUPOS_CREDITO.map((g) => ({ rotulo: g.rotulo, vistas: g.paginas.map((h) => vistaDe[h]).filter(Boolean) as string[] }));
 const noMenu = grupos.flatMap((g) => g.vistas);
@@ -70,6 +76,8 @@ describe("Grupos do Crédito", () => {
     const estaticas = Object.keys(rotas).filter((v) => !DINAMICAS.includes(v) && !RODAPE.includes(v));
     for (const v of estaticas) expect(noMenu.filter((x) => x === v).length, v).toBe(1);
     expect(noMenu.length).toBe(estaticas.length);
+    // nenhum grupo aponta para um endereço que o servidor redireciona (decisão do dono de 10/11/2026)
+    for (const p of PAINEIS_REDIRECIONADOS) expect(GRUPOS_CREDITO.flatMap((g) => g.paginas), p.abaAntiga).not.toContain(`/observatorio${p.abaAntiga}`);
     // a aplicação não desenha mais menu: nenhum botão de navegação no index.html
     expect(html).not.toMatch(/data-view=/);
   });
@@ -80,7 +88,16 @@ describe("Grupos do Crédito", () => {
     const doCredito = hrefs("credito");
     for (const g of GRUPOS_CREDITO) {
       for (const h of g.paginas) {
+        // página nova de uma vista redirecionada (10/11/2026): fora da navegação do Crédito, dentro da navegação da coleção dona
+        const redirecionada = PAINEIS_REDIRECIONADOS.find((p) => p.rota === h);
+        if (redirecionada) {
+          expect(doCredito, h).not.toContain(h);
+          expect(hrefs(redirecionada.colecao), `${h} na navegação de ${redirecionada.colecao}`).toContain(h);
+          continue;
+        }
         if (!h.startsWith("/observatorio/")) continue;
+        // vista substituída por página Next das Famílias (10/11/2026): fora da navegação; a página nova é que entra nela
+        if (ABAS_SUBSTITUIDAS.has(h.slice("/observatorio".length))) continue;
         const [, colecao] = DESTINO_ABAS_CREDITO[h.slice("/observatorio".length)];
         if (colecao === "credito") expect(doCredito.filter((x) => x === h).length, h).toBe(1);
         else {

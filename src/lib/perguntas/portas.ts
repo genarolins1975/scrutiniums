@@ -150,7 +150,7 @@ export const numeroAtrasoFamilias = (): NumeroPorta =>
       rotulo: "Crédito das famílias com atraso acima de 90 dias",
       unidade: "% da carteira",
       fonte: "Banco Central, SGS série 21084",
-      href: "/observatorio/credit",
+      href: "/divida-das-familias",
       nota: "Só dívidas com bancos e financeiras; não inclui crediário informal nem contas de consumo.",
     },
     () => {
@@ -330,9 +330,9 @@ function porta_familias(): Porta {
     caminhos: [
       caminho("familias", "Quanto subiu o custo de vida na minha cidade?", "A inflação do IPCA em cada uma das 16 áreas pesquisadas e no Brasil, por grupo de despesa, mês a mês desde 2020.", "/custo-de-vida"),
       caminho("eficiencia", "Quanto as famílias ganham com o trabalho?", "Rendimento, ocupação, emprego formal e Cadastro Único nos recortes de cada fonte.", "/eficiencia-estatal/trabalho-renda"),
-      caminho("credito", "Os aposentados estão mais endividados?", "Crédito consignado por idade, benefício e instituição.", "/observatorio/payroll-lending-aging"),
-      caminho("credito", "As apostas online pesam no crédito das famílias?", "Apostas, endividamento e inadimplência, com o grau de evidência de cada número.", "/observatorio/bets-financial-risk"),
-      caminho("credito", "Quantos golpes financeiros acontecem?", "Golpes e fraudes registrados, por tipo e canal, com fonte primária.", "/observatorio/financial-fraud"),
+      caminho("credito", "Os aposentados estão mais endividados?", "Crédito consignado por idade, benefício e instituição.", "/divida-das-familias/consignado"),
+      caminho("credito", "As apostas online pesam no crédito das famílias?", "Apostas, endividamento e inadimplência, com o grau de evidência de cada número.", "/divida-das-familias/apostas"),
+      caminho("credito", "Quantos golpes financeiros acontecem?", "Golpes e fraudes registrados, por tipo e canal, com fonte primária.", "/divida-das-familias/golpes-e-fraudes"),
       caminho("eficiencia", "Falta moradia ou falta moradia adequada?", "Déficit habitacional, peso do aluguel na renda e inadequação dos domicílios.", "/eficiencia-estatal/habitacao"),
       caminho("agro", "Por que a comida subiu?", "Inflação de alimentos, itens da cesta e segurança alimentar dos domicílios.", "/agronegocio/prato"),
     ],

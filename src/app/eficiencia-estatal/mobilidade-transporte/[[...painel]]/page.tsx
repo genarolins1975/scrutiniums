@@ -20,6 +20,6 @@ export default function Pagina({params,searchParams}:Props){
  // URL precisa remontá-los para que defaultValue reflita o recorte servido.
  const chaveOportunidades=JSON.stringify(['indicador','modo','cidade','pico'].map(k=>primeiro(searchParams[k])));
  // capítulos de medida no molde de painel: o PaginaPainel abre o próprio <main> (Iniciativa 1 do parecer de UX de 23/10/2026)
- if(noMoldeDePainel(p.slug))return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="mobilidade" /></header><PainelMobilidade slug={p.slug} p={searchParams}/></>;
- return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="mobilidade" /></header><main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}>{p.slug==='oportunidades'?<PainelOportunidades key={chaveOportunidades} p={searchParams}/>:<PainelMobilidade slug={p.slug} p={searchParams}/>}</main></>;
+ if(noMoldeDePainel(p.slug))return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="conectividade" /></header><PainelMobilidade slug={p.slug} p={searchParams}/></>;
+ return <><header><CabecalhoPlataforma colecao="eficiencia" destinoConta="/eficiencia-estatal/mobilidade-transporte" navegacao="conectividade" /></header><main id="conteudo" aria-labelledby="titulo-mobilidade" className={'mx-auto max-w-page px-4 pb-20 pt-7 sm:px-6 '+s.painel}>{p.slug==='oportunidades'?<PainelOportunidades key={chaveOportunidades} p={searchParams}/>:<PainelMobilidade slug={p.slug} p={searchParams}/>}</main></>;
 }

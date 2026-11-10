@@ -1,10 +1,13 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { ACENTO } from "@/components/home/acentos";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { atualizacaoObservatorio } from "@/lib/atualizacaoObservatorios";
 import type { Vitrine } from "@/lib/vitrine";
-import { observatoriosDaOrigem } from "@/lib/observatorios/registro";
+import { observatorio, observatoriosDaOrigem } from "@/lib/observatorios/registro";
+import { retratoDoPortfolio } from "@/lib/observatorios/mapaConta";
+import { RessalvasColecao, TamanhoObservatorio } from "@/components/observatorios/RetratoPortfolio";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import { AbrirDestinoDaAncora } from "@/components/home/AbrirDestinoDaAncora";
 import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/components/observatorios/Recolhido";
@@ -20,8 +23,16 @@ import { DETALHE_RECOLHIDO, IndicadorRecolhido, RESUMO_RECOLHIDO } from "@/compo
  * completo continua no HTML, a um clique. As lâminas do índice (Hero) levam a
  * #obs-<coleção>, e AbrirDestinoDaAncora abre o bloco quando a âncora aponta
  * para dentro dele.
+ *
+ * Ao lado do texto de abertura, o tamanho de cada observatório (coleções e
+ * páginas no ar) e as coleções que não são "publicado" em tudo, com o selo de
+ * prontidão. Vem de retratoDoPortfolio, a mesma conta do mapa da área logada:
+ * os capítulos abaixo detalham só as coleções com domínio próprio, e o leitor
+ * vê quantas são as demais antes de entrar.
  */
 export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, Vitrine> }) {
+  const retratos = retratoDoPortfolio();
+  const totalColecoes = retratos.reduce((n, r) => n + r.colecoes.length, 0);
   return (
     <section id="observatorios" aria-labelledby="observatorios-titulo" className="scroll-mt-4 bg-papel">
       <AbrirDestinoDaAncora />
@@ -37,7 +48,7 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
                 O que cada coleção já publica
               </h2>
               <span className="mt-2 block max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                {DOMINIOS.length} coleções: os painéis de cada uma, as fontes e a data do dado mais recente.
+                {DOMINIOS.length} das {totalColecoes} coleções: os painéis de cada uma, as fontes e a data do dado mais recente.
               </span>
             </span>
             <IndicadorRecolhido />
@@ -49,6 +60,38 @@ export function SecaoObservatorios({ vitrines }: { vitrines: Record<DominioId, V
               método proposto aparece identificado como tal. Os painéis abrem com a conta gratuita; depois de entrar,
               você segue direto para o painel escolhido.
             </p>
+            <div data-retrato-portfolio="" className="lg:col-span-5">
+              <p className="rotulo text-mineral">Tamanho de cada observatório</p>
+              <ul className="mt-2 border-t border-linha text-sm">
+                {retratos.map((r) => {
+                  const comRessalva = r.colecoes.filter((c) => c.ressalvas.length > 0);
+                  return (
+                    <li key={r.id} className="border-b border-linha">
+                      <span className="flex flex-wrap items-baseline justify-between gap-x-4">
+                        <Link href={rotaPorta(r.id)} className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4 hover:text-bronze-dark">
+                          {observatorio(r.id).nomeCurto}
+                        </Link>
+                        <TamanhoObservatorio retrato={r} className="text-carvao-muted" />
+                      </span>
+                      {comRessalva.length > 0 && (
+                        <span className="block pb-2 text-xs leading-relaxed text-mineral">
+                          {comRessalva.map((c, i) => (
+                            <Fragment key={c.id}>
+                              {i > 0 && "; "}
+                              {c.nome}: <RessalvasColecao colecao={c} />
+                            </Fragment>
+                          ))}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="mt-2 text-xs leading-relaxed text-mineral">
+                Páginas no ar de cada observatório, pelo registro da plataforma. Os capítulos abaixo detalham {DOMINIOS.length} das{" "}
+                {totalColecoes} coleções.
+              </p>
+            </div>
           </div>
 
           <div className="mt-8 md:mt-10">

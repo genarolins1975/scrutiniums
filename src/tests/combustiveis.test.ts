@@ -29,16 +29,21 @@ const gold = JSON.parse(readFileSync(join(raiz, "public", "gas", "gold", "combus
 const reais = (v: number) => `R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 describe("combustíveis: lugar no registro e acesso", () => {
-  it("coleção própria no Observatório de Energia e Infraestrutura, com origem no pipeline do Gás", async () => {
+  // fusão das coleções de uma página só (decisão do dono de 10/11/2026): os Combustíveis deixaram de ser coleção própria e são
+  // páginas da coleção Gás e combustíveis ("gas"); endereço, origem e título do painel não mudaram, e o id antigo é apelido
+  it("página da coleção Gás e combustíveis no Observatório de Energia e Infraestrutura, com origem no pipeline do Gás", async () => {
     const { donoDaRota, observatorio } = await import("@/lib/observatorios/registro");
     const { colecoesDe } = await import("@/lib/observatorios/colecoes");
     const dono = donoDaRota("/combustiveis")!;
-    expect(dono).toMatchObject({ observatorio: "energia-e-infraestrutura", colecao: "combustiveis", origem: "gas", titulo: "Combustíveis nos postos" });
+    expect(dono).toMatchObject({ observatorio: "energia-e-infraestrutura", colecao: "gas", origem: "gas", titulo: "Combustíveis nos postos" });
     expect(donoDaRota("/combustiveis/no-meu-estado")?.rota).toBe("/combustiveis");
-    expect(observatorio("energia-e-infraestrutura").colecoes.find((c) => c.id === "combustiveis")?.href).toBe("/combustiveis");
-    // o mapa do observatório mostra o painel; a consulta só entra nas listas com a aprovação
-    const colecao = colecoesDe("energia-e-infraestrutura").find((c) => c.id === "combustiveis")!;
-    expect(colecao.paineis.map((p) => p.href)).toEqual(["/combustiveis"]);
+    const { idDaColecao } = await import("@/lib/observatorios/lista");
+    expect(observatorio("energia-e-infraestrutura").colecoes.some((c) => c.id === "combustiveis")).toBe(false);
+    expect(idDaColecao("combustiveis")).toBe("gas");
+    // o mapa do observatório mostra o painel na coleção que o recebeu; a consulta só entra nas listas com a aprovação
+    const colecao = colecoesDe("energia-e-infraestrutura").find((c) => c.id === "gas")!;
+    expect(colecao.paineis.map((p) => p.href)).toContain("/combustiveis");
+    expect(colecao.paineis.map((p) => p.href)).not.toContain("/combustiveis/no-meu-estado");
   });
 
   it("o painel, a gold e as séries ficam com conta; só a consulta por estado abre (aprovada em 20/10/2026)", async () => {
@@ -55,7 +60,8 @@ describe("combustíveis: lugar no registro e acesso", () => {
     for (const f of ["page.tsx", "no-meu-estado/page.tsx"]) {
       const cab = readFileSync(join(raiz, "src", "app", "combustiveis", f), "utf-8");
       expect(cab, f).toContain('<CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />');
-      expect(cab, f).toContain('<NavegacaoColecao colecao="combustiveis" />');
+      // a navegação é a da coleção Gás e combustíveis (decisão do dono de 10/11/2026)
+      expect(cab, f).toContain('<NavegacaoColecao colecao="gas" />');
     }
     const layout = readFileSync(join(raiz, "src", "app", "combustiveis", "layout.tsx"), "utf-8");
     expect(layout).toContain("<ParaIrAlem mapa={mapaParaIrAlem()} />");
@@ -149,7 +155,7 @@ describe("combustíveis: quem cita o painel", () => {
     const { portas } = await import("@/lib/perguntas/portas");
     const energia = portas().find((p) => p.id === "energia-e-infraestrutura")!;
     expect(energia.caminhos.map((c) => c.href)).toContain("/combustiveis");
-    expect(energia.caminhos.find((c) => c.href === "/combustiveis")?.colecao).toBe("Combustíveis");
+    expect(energia.caminhos.find((c) => c.href === "/combustiveis")?.colecao).toBe("Gás e combustíveis"); // nome da coleção desde a fusão (decisão do dono de 10/11/2026)
     expect(energia.lacunas.join(" ")).not.toMatch(/gasolina/i);
     const { vitrines } = await import("@/lib/vitrine");
     expect(vitrines().gas.paineis.map((p) => p.href)).toContain("/combustiveis");

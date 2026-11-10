@@ -308,6 +308,18 @@ Props: `evidencia` (`Evidencia`, gerada por `pipeline/energia/evidencia.py`), `v
 
 `SobreEsteDado` descreve a série (fonte, frequência, cobertura, transformações); `ComproveNumero` prova um número. Um KPI que vem de uma série tem os dois.
 
+## Figuras de molde (servidor)
+
+Duas figuras de servidor, sem biblioteca de gráfico e sem JavaScript, uma por molde de página (pedido do dono de 10/11/2026; teste `energia-elemento-visual`).
+
+### FormaDoConjunto
+
+Ficha de conjunto de dados (`/setor-eletrico/dados/<conjunto>`). Três partes: a régua do período (primeira e última referência, referências posteriores à publicação hachuradas, mudanças metodológicas do catálogo), o fim da régua ampliado (fim do último período, publicação pela fonte, captura, data da publicação e prazo, uma data por linha) e a escada do catálogo com as contagens da integração. As posições vêm de `formaDoConjunto` (`src/lib/energia/forma-conjunto.ts`), que só converte datas de `publicacao.json` em posições: prazo, atraso e completude são os publicados. Conjunto sem primeira e última referência não ganha régua; a figura diz isso em texto. O SVG usa porcentagem na horizontal e pixel na vertical (o texto não encolhe no celular) e é `aria-hidden`: toda data desenhada está escrita ao lado.
+
+### VerbeteNoSistema
+
+Verbete do Aprenda (`/setor-eletrico/aprenda/<conceito>`). O mapa dos sete elos da página inicial (`NOS_MAPA`, `LIGACOES`) em miniatura, com o elo do verbete marcado, as ligações dele em destaque e os elos dos verbetes relacionados assinalados, no envelope `ModeloDidatico`. A posição vem de `posicaoNoSistema` (`src/lib/energia/conteudo/posicao-no-sistema.ts`): o elo em que o mapa lista o verbete ou, sem isso, o elo das páginas de "Veja no painel"; verbete sem elo mostra só os relacionados. Abaixo de 768 px o desenho dá lugar ao mapa vertical.
+
 ## Navegação
 
 ### CabecalhoEnergia

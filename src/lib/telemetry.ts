@@ -1,5 +1,5 @@
 import { getDb, newId, schema } from "./db";
-import { OBSERVATORIOS } from "./observatorios/lista";
+import { COLECOES_FUNDIDAS, OBSERVATORIOS } from "./observatorios/lista";
 
 /**
  * Telemetria de navegação da área logada — SEM PII.
@@ -150,6 +150,11 @@ export const VIEW_SECTIONS = [
   // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
   "familias:custo-de-vida",
   "familias:custo-de-vida-na-minha-cidade",
+  // Dívida das famílias (Observatório das Famílias, coleção Dívida e crédito das famílias; lê a gold do Crédito)
+  "familias:divida",
+  // painéis reescritos das Famílias (src/lib/observatorios/reescritos.ts)
+  "familias:consignado", "familias:desenrola", "familias:apostas", "familias:golpes-e-fraudes", "familias:clientes-contra-bancos",
+  "familias:bancos-cobrando-na-justica", "familias:sancoes-e-reclamacoes", "familias:credito-imobiliario", "familias:emprego-formal",
   // Crédito (páginas Next fora da aplicação de página única)
   "credito:quanto-meu-banco-cobra",
   "credito:simulador-da-parcela",
@@ -159,6 +164,7 @@ export const VIEW_SECTIONS = [
   "agro:paginas",
   "app:conta",
   "app:observatorios",
+  "app:minha-cidade",
 ] as const;
 
 /**
@@ -171,6 +177,15 @@ export const SECOES_DO_MAPA: Record<string, string> = Object.fromEntries(
     [`mapa:o:${o.id}`, `Mapa da conta · ${o.nomeCurto}`],
     ...o.colecoes.map((c) => [`mapa:${c.id}`, `Mapa da conta · ${c.nome}`]),
   ]),
+);
+
+/**
+ * Chaves `mapa:<coleção>` das coleções fundidas em 10/11/2026 (COLECOES_FUNDIDAS): não são mais gravadas (o mapa não tem mais
+ * essas linhas), mas continuam no histórico de uso. O rótulo guarda o nome que a coleção tinha, para o painel de administração
+ * não mostrar a chave crua nem somar o clique antigo à coleção nova.
+ */
+export const SECOES_DO_MAPA_ANTIGAS: Record<string, string> = Object.fromEntries(
+  Object.entries(COLECOES_FUNDIDAS).map(([id, f]) => [`mapa:${id}`, `Mapa da conta · ${f.nome} (coleção até 10/11/2026)`]),
 );
 
 export type ViewSection = (typeof VIEW_SECTIONS)[number] | `mapa:${string}`;
@@ -306,12 +321,23 @@ export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
   "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
+  "familias:divida": "Dívida e crédito das famílias · Dívida das famílias",
+  "familias:consignado": "Dívida e crédito das famílias · Consignado e aposentados",
+  "familias:desenrola": "Dívida e crédito das famílias · Desenrola Brasil",
+  "familias:apostas": "Dívida e crédito das famílias · Apostas e crédito das famílias",
+  "familias:golpes-e-fraudes": "Dívida e crédito das famílias · Golpes e fraudes",
+  "familias:clientes-contra-bancos": "Dívida e crédito das famílias · Clientes contra bancos na Justiça",
+  "familias:bancos-cobrando-na-justica": "Dívida e crédito das famílias · Bancos cobrando na Justiça",
+  "familias:sancoes-e-reclamacoes": "Dívida e crédito das famílias · Sanções e reclamações",
+  "familias:credito-imobiliario": "Moradia · Crédito imobiliário e moradia",
+  "familias:emprego-formal": "Renda e trabalho · Emprego formal",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
   "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
   "credito:metodologia": "Crédito · Metodologia e fontes",
   "app:conta": "Plataforma · Conta",
   "agro:paginas": "Agronegócio · Páginas",
   "app:observatorios": "Plataforma · Escolha do observatório",
+  "app:minha-cidade": "Plataforma · Minha cidade",
 };
 
 export function isViewSection(value: string): value is ViewSection {
@@ -319,7 +345,8 @@ export function isViewSection(value: string): value is ViewSection {
 }
 
 export function sectionLabel(section: string): string {
-  if (!isViewSection(section)) return section;
+  // chave do histórico que deixou de ser aceita na gravação (coleção fundida): continua com rótulo
+  if (!isViewSection(section)) return SECOES_DO_MAPA_ANTIGAS[section] ?? section;
   return SECOES_DO_MAPA[section] ?? SECTION_LABELS[section as (typeof VIEW_SECTIONS)[number]];
 }
 

@@ -32,7 +32,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:'obee',
       titulo:'Atender, acompanhar e dar continuidade.',
       lead:'O PAIF é o Serviço de Proteção e Atendimento Integral à Família, realizado nos CRAS. O PAEFI é o Serviço de Proteção e Atendimento Especializado a Famílias e Indivíduos, realizado nos CREAS.',

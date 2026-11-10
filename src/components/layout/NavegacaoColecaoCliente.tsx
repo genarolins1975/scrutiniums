@@ -92,13 +92,15 @@ export function NavegacaoColecaoCliente({
               <Destino p={item} href={h(item.href)} ativo={atual.item === i} filete={filete} idioma={idioma} />
             </li>
           ))}
+          {/* até 1023 px os atalhos seguem no fim da faixa que rola: lado a lado com ela, a 768 px e texto a 200%, o bloco fixo
+              de dois atalhos transbordava a página (medido em /combustiveis em 10/11/2026, 786 px de largura) */}
           {atalhos.map((k) => (
-            <li key={`a-${k}`} className="shrink-0 sm:hidden">
+            <li key={`a-${k}`} className="shrink-0 lg:hidden">
               {atalho(k)}
             </li>
           ))}
           {/* as ações (o "Sair" da conta) também vêm no fim da faixa no celular, sem uma linha só para elas */}
-          {acoes && <li className="flex shrink-0 sm:hidden">{acoes}</li>}
+          {acoes && <li className="flex shrink-0 lg:hidden">{acoes}</li>}
           {nav.estado && (
             <li className="flex shrink-0 items-center sm:hidden">
               <span className="px-3"><SeloProntidao valor={nav.estado} idioma={idioma === "en" ? "en" : "pt"} /></span>
@@ -124,7 +126,7 @@ export function NavegacaoColecaoCliente({
         )}
         {nav.estado && <span className="hidden shrink-0 self-center px-2 sm:inline"><SeloProntidao valor={nav.estado} idioma={idioma === "en" ? "en" : "pt"} /></span>}
         {(atalhos.length > 0 || acoes) && (
-          <div className="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 sm:flex">
+          <div className="-mr-3 hidden shrink-0 items-stretch gap-x-1 border-l border-linha pl-2 lg:flex">
             {atalhos.map((k) => atalho(k))}
             {acoes}
           </div>

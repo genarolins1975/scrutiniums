@@ -10,8 +10,8 @@ import { artefatosLeva2 } from "@/lib/perguntas/leva2";
 import type { IdLeva2 } from "@/lib/rotasPublicas";
 import { IDS_PORTAS, rotaPorta } from "@/lib/perguntas/rotas";
 import { portas } from "@/lib/perguntas/portas";
-import { dominio } from "@/lib/dominios";
-import { observatorio, paineis } from "@/lib/observatorios/registro";
+import { observatorio } from "@/lib/observatorios/registro";
+import { colecoesDaPorta } from "@/lib/perguntas/colecoesDaPorta";
 
 /**
  * Página aberta de cada observatório (camada aberta, decisão de 17/10/2026):
@@ -47,13 +47,8 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
   const todas = portas();
   const porta = todas.find((x) => x.id === params.porta);
   if (!porta) notFound();
-  const todos = paineis();
-  const colecoes = observatorio(porta.id).colecoes.map((c) => {
-    const proprios = todos.filter((p) => p.observatorio === porta.id && p.colecao === c.id);
-    const origens = Array.from(new Set(proprios.map((p) => (p.origem ? dominio(p.origem).nomeCurto : observatorio(porta.id).nomeCurto))));
-    const destaques = proprios.filter((p) => p.rota !== c.href).map((p) => p.titulo);
-    return { id: c.id, nome: c.nome, href: c.href, destaques: destaques.slice(0, 4), mais: destaques.length > 4, origens: `vem de ${origens.join(" e ")}` };
-  });
+  // as coleções com exemplos, origem, tamanho e prontidão, pela mesma conta do mapa da área logada
+  const { colecoes, retrato } = colecoesDaPorta(porta.id);
   return (
     <>
       <PublicHeader />
@@ -61,6 +56,7 @@ export default function PortaPage({ params }: { params: { porta: string } }) {
         porta={porta}
         outras={todas.filter((x) => x.id !== porta.id)}
         colecoes={colecoes}
+        retrato={retrato}
         entrada={observatorio(porta.id).entrada}
         artefato={artefatosLeva2(porta.id).map((id) => {
           const Artefato = ARTEFATOS[id];

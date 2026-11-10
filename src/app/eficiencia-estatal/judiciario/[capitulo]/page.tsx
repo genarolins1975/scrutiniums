@@ -42,7 +42,7 @@ function Panorama(){
   limitacoes:[d.ramos[0].nota,'Três ramos não são o total do Judiciário: a referência nacional oficial e a soma dos três ramos têm perímetros diferentes.'],notas:d.fonte.referencia+'. Localizadores: '+d.fonte.localizadores});
  const fonte=<>Fonte: <a className="underline" href={`${d.fonte.url}#page=22`}>CNJ, Justiça em Números {d.edicao}, p. 22–23</a> · ano-base {d.ano}.</>;
  return <PaginaPainel rota={BASE_JUDICIARIO+'/panorama'} principal={false}
-  abertura={{grupo:TEMAS_EFICIENCIA.judiciario.nome,acento:'obee',titulo:CAPITULOS.find(c=>c[0]==='panorama')![2],lead:textos.panorama,
+  abertura={{grupo:TEMAS_EFICIENCIA.judiciario.contexto,acento:'obee',titulo:CAPITULOS.find(c=>c[0]==='panorama')![2],lead:textos.panorama,
    recorte:{periodo:'ano-base '+d.ano,universo:'Justiça Estadual, Federal e do Trabalho',unidade:'processos',fonte:'CNJ, Justiça em Números '+d.edicao},
    limite:'uma classificação entre os ramos nem o total do Judiciário: são volumes de três ramos, arredondados a 0,1 milhão, e a referência nacional tem outro perímetro.',
    fontesDatasSiglas:<><p>{fonte} Original identificado pelo SHA-256 <span className="break-all">{d.fonte.sha256}</span>; captura em {dataBR(d.capturadoEm,'pt')}.</p><p>CNJ: Conselho Nacional de Justiça.</p></>}}

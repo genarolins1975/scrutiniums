@@ -32,7 +32,7 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
  * ("Para você"), as coleções a um clique, um modelo didático do mecanismo, caminhos por pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  rota, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null,
+  rota, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null, gravura = null,
 }: Readonly<{
   /** Endereço da entrada (/observatorios/<id>): o rótulo de contexto lê o observatório por ele. */
   rota: string;
@@ -53,6 +53,8 @@ export function EntradaObservatorio({
   frescorMetodo?: ReactNode;
   /** Crédito de parceria técnica (ParceriaTecnica compacta), à direita do rótulo. */
   parceria?: ReactNode;
+  /** Gravura do observatório (GravuraObservatorio), depois dos números. */
+  gravura?: ReactNode;
 }>) {
   return (
     <EntradaColecao
@@ -64,6 +66,7 @@ export function EntradaObservatorio({
       aoLadoDoRotulo={parceria}
       frescor={frescor}
       escala={escala}
+      figuraEscala={gravura}
       paraVoce={paraVoce}
       destinos={<ColecoesDoObservatorio colecoes={colecoes} />}
       artefato={artefato}

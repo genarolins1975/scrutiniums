@@ -76,6 +76,13 @@ export const METODO_SPA = "/observatorio/methodology";
  * para o fim da página. `curto`: o rótulo do grupo na navegação, quando o nome inteiro não deixa os oito itens e os atalhos
  * caberem numa linha a 1440 px (medido em 23/10/2026: faltavam 90 px e "Marcos regulatórios" saía cortado), como o Setor
  * Elétrico faz com os grupos longos; o nome inteiro continua no "Início do painel".
+ *
+ * Desde 10/11/2026 (decisão do dono), seis páginas dos grupos "Risco, cobrança e recuperação" e "Pagamentos, conduta e
+ * fronteiras" são páginas Next do Observatório das Famílias (/divida-das-familias/*, `redirecionar: true` em
+ * src/lib/observatorios/paineis-reescritos.json): o grupo guarda o endereço novo, o "Início do painel" as lista como link para fora
+ * da aplicação e a navegação do Crédito não as mostra (são de outra coleção). O teste src/tests/mapa-menu.test.ts confere que
+ * nenhum grupo aponta para um endereço redirecionado. As três vistas ainda não redirecionadas (Consignado, Crédito
+ * imobiliário e Emprego formal) continuam com o endereço da aplicação.
  */
 export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas: readonly string[] }[] = [
   { rotulo: "Começar", paginas: ["/observatorio/map", "/observatorio/overview", "/observatorio/alerts", METODO_SPA] },
@@ -94,10 +101,10 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
     curto: "Território",
     paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/observatorio/housing-credit", "/observatorio/payroll-lending-aging", "/observatorio/formal-employment", "/observatorio/subnational-credit"],
   },
-  { rotulo: "Risco, cobrança e recuperação", paginas: ["/observatorio/sectors", "/observatorio/desenrola", "/observatorio/debt-collection-lawsuits", "/observatorio/recoveries", "/observatorio/federal-tax-debt"] },
+  { rotulo: "Risco, cobrança e recuperação", paginas: ["/observatorio/sectors", "/divida-das-familias/desenrola", "/divida-das-familias/bancos-cobrando-na-justica", "/observatorio/recoveries", "/observatorio/federal-tax-debt"] },
   {
     rotulo: "Pagamentos, conduta e fronteiras",
-    paginas: ["/observatorio/pix", "/observatorio/open-finance", "/observatorio/conduct-enforcement", "/observatorio/lawsuits", "/observatorio/bets-financial-risk", "/observatorio/financial-fraud"],
+    paginas: ["/observatorio/pix", "/observatorio/open-finance", "/divida-das-familias/sancoes-e-reclamacoes", "/divida-das-familias/clientes-contra-bancos", "/divida-das-familias/apostas", "/divida-das-familias/golpes-e-fraudes"],
   },
   { rotulo: "Referência", paginas: ["/observatorio/regulacao"] },
 ];

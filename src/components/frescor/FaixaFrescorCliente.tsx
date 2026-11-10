@@ -183,16 +183,20 @@ export function ConteudoFaixaFrescor({ dados, variante, idioma = "pt", conteiner
     const d = dados[0];
     const ref = rotuloReferencia(d.referencia, idioma);
     const x = textosDominio(d.id, idioma);
+    // com aviso, os quatro campos mais a frase do aviso não cabem numa linha a 1440 px (medido em 10/11/2026 em
+    // /divida-das-familias, com o Crédito retido: 244 px de cromo, orçamento de 230). Nesse estado a faixa usa em toda largura a
+    // forma do celular: a frase do aviso à vista e os campos em "Fontes e referência", como a faixa de várias fontes já faz
+    const comAviso = Boolean(situacoes[0] && situacoes[0].estado !== "em-dia");
     return (
       <div className={`${conteiner} ${className}`} data-frescor-faixa="linha" data-frescor-geral={estadoGeral}>
-        {/* de 640 px em diante: os quatro campos numa linha */}
-        <p className={`hidden border-b border-linha sm:flex ${linhaBase}`}>
+        {/* de 640 px em diante, em dia: os quatro campos numa linha */}
+        <p className={`hidden border-b border-linha ${comAviso ? "" : "sm:flex"} ${linhaBase}`}>
           <span className="rotulo text-mineral">{t.rotulo}</span>
           <span className="text-carvao">{x.rotulo}</span>
           <Campos d={d} s={situacoes[0]} idioma={idioma} />
         </p>
         {/* no celular: a data e a situação; a fonte, a referência e a cadência ficam em "Fontes e referência" */}
-        <details className="group/frescor border-b border-linha sm:hidden">
+        <details className={`group/frescor border-b border-linha ${comAviso ? "" : "sm:hidden"}`}>
           <summary className={`${linhaBase} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>
             {/* com atraso, só a frase do atraso; a data fica em "Fontes e referência" */}
             <span className={situacoes[0] && situacoes[0].estado !== "em-dia" ? "hidden" : undefined}>
