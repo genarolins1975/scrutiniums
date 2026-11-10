@@ -73,7 +73,10 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
    // A moldura responsiva nasce após o HTML inicial; uma amostra vazia não é linha de base.
    await expect.poll(()=>page.locator("#view-pulse svg.chart[data-chart]").evaluateAll(svgs=>svgs.length>0&&svgs.every(svg=>svg.closest(".line-chart")))).toBe(true);
    const grafico=page.locator("#view-pulse svg.chart[data-ix]").first();await grafico.focus();await page.keyboard.press("ArrowRight");
-   const antes=await dadosSeries(page);expect(antes.length).toBeGreaterThan(0);await page.setViewportSize({width:390,height:900});
+   const antes=await dadosSeries(page);
+   // amostra vazia já ocorreu no CI (10/11/2026) sem reproduzir localmente: a mensagem leva o estado da página para achar a causa
+   const estado=antes.length?"":JSON.stringify(await page.evaluate(()=>({url:location.href,pronto:document.readyState,ativa:[...document.querySelectorAll("section.view.active")].map(s=>s.id),blocos:[...document.querySelectorAll("#view-pulse .line-chart")].map(b=>({w:Math.round(b.getBoundingClientRect().width),chart:!!b.querySelector("svg[data-chart]")})),foco:document.activeElement?.tagName})));
+   expect(antes.length,estado).toBeGreaterThan(0);await page.setViewportSize({width:390,height:900});
    await expect.poll(()=>page.evaluate(()=>document.activeElement?.matches("svg.chart[data-ix]")||false)).toBe(true);
    await expect.poll(()=>page.locator("#view-pulse .line-chart").evaluateAll(bs=>bs.every(b=>!b.getBoundingClientRect().width||Math.abs(b.getBoundingClientRect().width-Number((b as HTMLElement).dataset.lineWidth))<2))).toBe(true);
    const depois=await dadosSeries(page);expect(depois.map(d=>d.values)).toEqual(antes.map(d=>d.values));
