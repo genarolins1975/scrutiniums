@@ -11,7 +11,8 @@ import { FiguraExplorador } from "@/components/familias/apostas/FiguraExplorador
 import { dataBr, mesAno, num } from "@/lib/perguntas/leitura";
 import {
   DESCRICAO_APOSTAS,
-  NATUREZA_DA_SITUACAO,
+  naturezaDoItem,
+  unidadeSemRepetir,
   PERGUNTA_APOSTAS,
   ROTA_APOSTAS,
   dadosApostas,
@@ -57,10 +58,10 @@ export default function PaginaApostas() {
       rotulo: k.rotulo,
       formato: "texto" as const,
       valorTexto: k.exibir,
-      unidade: k.unidade,
+      unidade: unidadeSemRepetir(k.exibir, k.unidade),
       periodo: k.periodo,
       fonte: k.fonte,
-      natureza: NATUREZA_DA_SITUACAO[k.situacao as "oficial" | "calculado" | "estimativa"],
+      natureza: naturezaDoItem(k),
       tamanho: "m" as const,
       nota: (
         <>
@@ -171,7 +172,7 @@ export default function PaginaApostas() {
       <PaginaPainel
         rota={ROTA_APOSTAS}
         abertura={{
-          acento: "bronze",
+          grupo: "Dívida e crédito das famílias", acento: "bronze",
           titulo: PERGUNTA_APOSTAS,
           lead: "O tamanho do mercado regulado de apostas, quem aposta e o que se sabe da ligação com dívida e atraso. Cada número traz o grau de evidência, de A (registro oficial) a E (sinal ainda não validado).",
           recorte: {

@@ -75,7 +75,7 @@ describe("Desenrola Brasil no molde de painel", () => {
       expect(periodo, attr(n, "aria-label")).toMatch(/\d{4}/);
       expect(attr(n, "data-ausente"), attr(n, "aria-label")).toBeUndefined();
     }
-    // os quatro números de abertura são os oficiais do programa, com o rótulo e a natureza que a gold registra (reportado = observado)
+    // os quatro números de abertura são os oficiais do programa, com o rótulo que a gold registra
     const abertura = [...nos(doc)].find((n) => attr(n, "data-fatia") === "numeros")!;
     const rotulos = [...nos(abertura)].filter((n) => attr(n, "data-numero-indicador") !== undefined).map((n) => attr(n, "aria-label"));
     const oficial = (id: string) => gold.oficiais.find((o: { id: string }) => o.id === id);
@@ -84,6 +84,15 @@ describe("Desenrola Brasil no molde de painel", () => {
     // a ressalva de grandeza da gold ("menos de", "mais de") acompanha o número, nunca some
     expect(textoDe(abertura)).toContain("(menos de)");
     expect(textoDe(abertura)).toContain("(mais de)");
+    // Auditoria de 10/11/2026, achado 3: a natureza é por item, não um mapa único do selo "reportado". Número cuja nota (da gold, à vista
+    // junto dele) diz que é estimativa nunca leva o selo Observado; e a nota da gold de cada um continua no bloco do número.
+    const daAbertura = [...nos(abertura)].filter((n) => attr(n, "data-numero-indicador") !== undefined);
+    for (const n of daAbertura) {
+      const o = gold.oficiais.find((x: { rotulo: string }) => x.rotulo === attr(n, "aria-label"));
+      expect(textoDe(n), o.id).toContain(String(o.nota).replace(/\.$/, "").slice(0, 30));
+      if (/estimativa|estimad/i.test(textoDe(n))) expect(attr(n, "data-natureza"), o.id).not.toBe("OBSERVADO");
+    }
+    expect(attr(daAbertura.find((n) => attr(n, "aria-label") === oficial("elegiveis").rotulo)!, "data-natureza")).toBe("ESTIMADO");
   });
 
   it("mostra os valores da gold, sem recalcular", () => {

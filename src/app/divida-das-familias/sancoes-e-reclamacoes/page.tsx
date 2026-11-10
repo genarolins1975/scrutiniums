@@ -68,7 +68,7 @@ export default function PaginaSancoes() {
         {cabecalho}
         <PaginaPainel
           rota={ROTA_SANCOES}
-          abertura={{ acento: "bronze", titulo: PERGUNTA_SANCOES, lead, recorte: { periodo: "indisponível nesta publicação", universo: "Brasil", fonte: fonteCurta }, limite }}
+          abertura={{ grupo: "Dívida e crédito das famílias", acento: "bronze", titulo: PERGUNTA_SANCOES, lead, recorte: { periodo: "indisponível nesta publicação", universo: "Brasil", fonte: fonteCurta }, limite }}
           numeros={[{ rotulo: "Processos decididos pelo Banco Central", valor: null, motivoAusencia: motivo, unidade: "processos", periodo: "12 meses", fonte: "Banco Central, Gepad", natureza: "CALCULADO" }]}
           metodo={<p>{motivo}</p>}
         />
@@ -101,7 +101,8 @@ export default function PaginaSancoes() {
       rotulo: "Multas aplicadas pelo Banco Central",
       formato: "texto",
       valorTexto: milhoes(j.multas_valor) ?? "",
-      unidade: "aplicados, não pagos",
+      // valor aplicado na decisão; a base não diz aqui se foi pago (auditoria de 10/11/2026, achado 11)
+      unidade: "aplicados",
       periodo: doze,
       fonte: "Banco Central, Gepad",
       natureza: "CALCULADO",
@@ -135,7 +136,7 @@ export default function PaginaSancoes() {
 
   const csvBcb: CelulaCsv[][] = [
     ["ano", "processos", "decisoes", "multas_n", "multas_valor", "inabilitacoes", "sem_penalidade", "recursos", "pj", "pf", "incompleto", "fonte"],
-    ...anual.map((a) => [a.ano, a.processos, a.decisoes, a.multas_n, a.multas_valor, a.inabilitacoes, a.sem_penalidade, a.recursos, a.pj, a.pf, a.incompleto ? "sim" : "nao", "BCB/Gepad (API Olinda); penalidade final = 2ª instância quando existe; multa aplicada, não paga"]),
+    ...anual.map((a) => [a.ano, a.processos, a.decisoes, a.multas_n, a.multas_valor, a.inabilitacoes, a.sem_penalidade, a.recursos, a.pj, a.pf, a.incompleto ? "sim" : "nao", "BCB/Gepad (API Olinda); penalidade final = 2ª instância quando existe; valor da multa aplicada, não o valor pago"]),
   ];
   const rotuloAno = (a: any) => `${a.ano}${a.incompleto ? " (parcial)" : ""}`;
   const recentesBcb: any[] = B.recentes ?? [];
@@ -147,7 +148,7 @@ export default function PaginaSancoes() {
       <PaginaPainel
         rota={ROTA_SANCOES}
         abertura={{
-          acento: "bronze",
+          grupo: "Dívida e crédito das famílias", acento: "bronze",
           titulo: PERGUNTA_SANCOES,
           lead,
           recorte: {

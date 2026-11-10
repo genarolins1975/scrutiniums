@@ -34,5 +34,5 @@ export const PAINEIS_REESCRITOS: readonly PainelReescrito[] = [
   d("/divida-das-familias/bancos-cobrando-na-justica", "Bancos cobrando na Justiça", "/debt-collection-lawsuits", "familias:bancos-cobrando-na-justica", "Quantas ações de cobrança de crédito chegam à Justiça?", ["cobrança judicial", "busca e apreensão", "execução", "DataJud"]),
   d("/divida-das-familias/sancoes-e-reclamacoes", "Sanções e reclamações", "/conduct-enforcement", "familias:sancoes-e-reclamacoes", "Quais punições e reclamações recaem sobre o sistema financeiro?", ["sanções", "multa", "inabilitação", "reclamações"]),
   d("/credito-imobiliario", "Crédito imobiliário e moradia", "/housing-credit", "familias:credito-imobiliario", "Como o Brasil mora e onde o crédito imobiliário chega?", ["financiamento imobiliário", "casa própria", "prestação", "aluguel"], "moradia"),
-  d("/emprego-formal", "Emprego formal", "/formal-employment", "familias:emprego-formal", "Como anda o emprego formal por setor e por estado?", ["Novo Caged", "admissões", "desligamentos", "carteira assinada"], "renda"),
+  d("/emprego-formal", "Emprego formal por setor e estado", "/formal-employment", "familias:emprego-formal", "Como anda o emprego formal por setor e por estado?", ["Novo Caged", "admissões", "desligamentos", "carteira assinada"], "renda"),
 ];

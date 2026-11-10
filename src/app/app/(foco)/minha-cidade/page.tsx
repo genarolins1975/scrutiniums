@@ -41,7 +41,7 @@ export default function MinhaCidadePage({ searchParams }: Busca) {
                 {f.nome}, {f.nomeUf}
               </h1>
               <p className="mt-5 max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg">
-                O que cinco coleções da plataforma publicam sobre o município, cada número com a sua fonte e o seu período. Os números vêm de bases diferentes e não se
+                O que {new Set(f.cidade.map((c) => c.colecao)).size} coleções da plataforma publicam sobre o município, cada número com a sua fonte e o seu período. Os números vêm de bases diferentes e não se
                 somam nem se comparam entre si.
               </p>
               <div className="mt-8 max-w-2xl">

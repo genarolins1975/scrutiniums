@@ -10,7 +10,7 @@ import { BaixarCsv, CLASSE_BAIXAR, type CelulaCsv } from "@/components/familias/
 import { BibliotecaEstudos, CadeiaElos, Corpo, Grau, LINK, LegendaGraus, LinhaDoTempo, LinkFonte, Nota, Subtitulo, Texto, grauTexto } from "@/components/familias/apostas/Evidencia";
 import { FiguraExplorador } from "@/components/familias/apostas/FiguraExplorador";
 import { dataBr, num } from "@/lib/perguntas/leitura";
-import { NATUREZA_DA_SITUACAO, dataDaBase, limpar, provCurada, situacaoTexto, type ItemSintese } from "@/lib/familias/apostas";
+import { NIVEIS, dataDaBase, naturezaDoItem, unidadeSemRepetir, limpar, provCurada, situacaoTexto, type ItemSintese } from "@/lib/familias/apostas";
 import { DESCRICAO_GOLPES, PAINEL_PIX, PERGUNTA_GOLPES, ROTA_GOLPES, dadosGolpes } from "@/lib/familias/golpes-e-fraudes";
 
 export const dynamic = "force-static";
@@ -23,10 +23,11 @@ export const metadata: Metadata = {
 
 const GOLD = "/obs/data/gold/fraudes.json";
 /**
- * Os quatro números de abertura, um por conceito: perda reportada (estimativa privada), ocorrência registrada, devolução no Pix e
- * vitimização declarada. Não se somam; os outros quatro indicadores ficam na síntese.
+ * Os quatro números de abertura, um por conceito: ocorrência registrada, devolução no Pix, vitimização declarada e perda reportada
+ * (estimativa privada). Não se somam; os outros quatro indicadores ficam na síntese. A faixa é ordenada pelo grau de evidência da
+ * base, do A ao E (auditoria de 10/11/2026, achado 10): a página nunca abre por estimativa privada de grau D.
  */
-const ABERTURA = ["perdas_bancarias_2024", "estelionato_2025", "med_recuperacao", "vitimas_declaradas"] as const;
+const ABERTURA = ["estelionato_2025", "med_recuperacao", "vitimas_declaradas", "perdas_bancarias_2024"] as const;
 
 /** Referência de série da base ("2025-S1", "2025-01a09", "2022-01a2026-04", "2025-01") em palavras, sem data crua. */
 function periodoDaBase(ref: unknown): string {
@@ -55,14 +56,16 @@ export default function PaginaGolpes() {
 
   const numeros: NumeroProps[] = ABERTURA.map((id) => porId(id))
     .filter((k): k is ItemSintese => Boolean(k) && k!.situacao !== "imprensa")
+    // ordenação estável pelo grau: se a curadoria rebaixar um número, ele desce na faixa sem ninguém editar a lista
+    .sort((x, y) => NIVEIS.indexOf(x.nivel) - NIVEIS.indexOf(y.nivel))
     .map((k) => ({
       rotulo: k.rotulo,
       formato: "texto" as const,
       valorTexto: k.exibir,
-      unidade: k.unidade,
+      unidade: unidadeSemRepetir(k.exibir, k.unidade),
       periodo: k.periodo,
       fonte: k.fonte,
-      natureza: NATUREZA_DA_SITUACAO[k.situacao as "oficial" | "calculado" | "estimativa"],
+      natureza: naturezaDoItem(k),
       tamanho: "m" as const,
       nota: (
         <>
@@ -107,7 +110,7 @@ export default function PaginaGolpes() {
       <PaginaPainel
         rota={ROTA_GOLPES}
         abertura={{
-          acento: "bronze",
+          grupo: "Dívida e crédito das famílias", acento: "bronze",
           titulo: PERGUNTA_GOLPES,
           lead: "Perda confirmada, tentativa bloqueada, ocorrência registrada e estimativa são números diferentes. A página separa cada um, com o grau de evidência de A (registro oficial) a E (sinal ainda não validado).",
           recorte: {

@@ -47,7 +47,8 @@ describe("conteúdo do boletim", () => {
     expect(b!.subject).toMatch(/^Boletim Scrutiniums · agosto de 2026 — \d+ alertas ativos/);
     expect(b!.corpo).toContain("ALERTAS ATIVOS:");
     expect(b!.corpo).toContain("https://scrutiniums.com/observatorio/alerts");
-    expect(b!.corpo).toContain("https://scrutiniums.com/observatorio/bets-financial-risk");
+    // desde 10/11/2026 o painel de apostas é a página Next das Famílias (src/lib/observatorios/reescritos.ts)
+    expect(b!.corpo).toContain("https://scrutiniums.com/divida-das-familias/apostas");
     expect(b!.corpo).toContain("https://scrutiniums.com/imprensa");
     // o corpo é único e nunca carrega dado pessoal
     expect(b!.corpo).not.toContain("@");

@@ -10,7 +10,7 @@
 import { inventario, totais, type ColecaoInventario, type PaginaInventario, type TotaisInventario } from "./inventario";
 import { OBSERVATORIOS, type Observatorio, type ObservatorioId } from "./lista";
 import { navegacaoDaColecao } from "./navegacaoColecao";
-import { paineis } from "./registro";
+import { donoDaRota } from "./registro";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { dadosFrescor } from "@/lib/frescor/dominios";
 import { rotuloReferencia, situacaoDominio, textoSituacao, type DominioFrescorId } from "@/lib/frescor/regras";
@@ -180,11 +180,30 @@ export type RetratoObservatorio = {
  * mesma regra por coleção do mapa da conta; não lê as bases de frescor, que as páginas abertas não mostram por coleção.
  * `proprias + deOutros` é a soma das contagens das coleções quando nenhuma página se repete entre elas.
  */
+/**
+ * Páginas de uma coleção para o retrato: os endereços distintos que a navegação da coleção oferece (linha 1, linha 2 e os
+ * atalhos de dados, método e glossário), sem âncoras e sem destino em preparação. É a mesma unidade em toda coleção: o
+ * inventário conta painéis registrados, e um tema da Eficiência Estatal é um painel com várias páginas, o que fazia Renda e
+ * trabalho aparecer com 2 ao lado das 23 do Setor Elétrico (achado 7 da auditoria de qualidade de 10/11/2026).
+ */
+export function paginasNaNavegacao(colecao: string): string[] {
+  const nav = navegacaoDaColecao(colecao);
+  const semAncora = (h: string) => h.split(/[?#]/)[0];
+  const rotas = new Set<string>();
+  for (const i of nav.itens) {
+    for (const p of i.subpaginas ?? [i]) if (p.publicado && p.href) rotas.add(semAncora(p.href));
+    if (i.subpaginas && i.publicado && i.href) rotas.add(semAncora(i.href));
+  }
+  for (const h of Object.values(nav.atalhos ?? {})) if (typeof h === "string" && h) rotas.add(semAncora(h));
+  return [...rotas];
+}
+
 export function retratoDoPortfolio(): RetratoObservatorio[] {
-  const dono = new Map(paineis().map((p) => [p.rota, p.observatorio]));
   return inventario().map((o): RetratoObservatorio => {
+    const porColecao = new Map(o.colecoes.map((c) => [c.id, paginasNaNavegacao(c.id)]));
     const colecoes = o.colecoes.map((c): RetratoColecao => {
-      const { contagem, prontidao } = estadoDaColecao(c);
+      const { prontidao } = estadoDaColecao(c);
+      const contagem = porColecao.get(c.id)!.length;
       const parciais = c.paginas.filter((p) => p.situacao === "parcial").length;
       const previstas = c.paginas.filter((p) => p.situacao === "previsto").length;
       const ressalvas: RessalvaColecao[] = [];
@@ -193,8 +212,8 @@ export function retratoDoPortfolio(): RetratoObservatorio[] {
       if (previstas > 0) ressalvas.push({ valor: "preparacao", paginas: previstas });
       return { id: c.id, nome: c.nome, href: c.href, paginas: contagem, ressalvas };
     });
-    const rotas = new Set(o.colecoes.flatMap((c) => [c.href, ...c.paginas.flatMap((p) => (p.rota ? [p.rota] : []))]));
-    const proprias = [...rotas].filter((r) => dono.get(r) === o.id).length;
+    const rotas = new Set([...porColecao.values()].flat());
+    const proprias = [...rotas].filter((r) => donoDaRota(r)?.observatorio === o.id).length;
     const t = totais([o]);
     return { id: o.id, colecoes, proprias, deOutros: rotas.size - proprias, parciais: t.parciais, previstas: t.previstas };
   });

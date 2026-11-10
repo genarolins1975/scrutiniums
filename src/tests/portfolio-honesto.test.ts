@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ATALHOS, OBSERVATORIOS, donoDaRota, paineis } from "@/lib/observatorios/registro";
 import { diretorioDoMapa, retratoDoPortfolio } from "@/lib/observatorios/mapaConta";
 import { inventario } from "@/lib/observatorios/inventario";
+import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { portas } from "@/lib/perguntas/portas";
 import { colecoesDaPorta } from "@/lib/perguntas/colecoesDaPorta";
 import { vitrines } from "@/lib/vitrine";
@@ -33,8 +34,23 @@ vi.mock("next/navigation", async () => ({
 
 const retratos = retratoDoPortfolio();
 const registro = paineis();
-const proprias = (id: string) => registro.filter((p) => p.observatorio === id && !p.duplicataDe).length;
-const atalhosDe = (id: string) => new Set(ATALHOS.filter((a) => a.observatorio === id).map((a) => donoDaRota(a.rota)?.rota ?? a.rota)).size;
+// Oráculo refeito aqui, sem chamar a função do retrato: a unidade é a página que a navegação da coleção oferece (linhas 1 e 2 e
+// os atalhos), sem âncora. Até 10/11/2026 a contagem era a de painéis do registro, e um tema com várias páginas contava 1
+// (achado 7 da auditoria de qualidade: Renda e trabalho com 2 ao lado das 23 do Setor Elétrico).
+const semAncora = (h: string) => h.split(/[?#]/)[0];
+function rotasDaColecao(id: string): Set<string> {
+  const nav = navegacaoDaColecao(id);
+  const rotas = new Set<string>();
+  for (const i of nav.itens) {
+    if (i.publicado && i.href) rotas.add(semAncora(i.href));
+    for (const sp of i.subpaginas ?? []) if (sp.publicado && sp.href) rotas.add(semAncora(sp.href));
+  }
+  for (const h of Object.values(nav.atalhos ?? {})) if (typeof h === "string" && h) rotas.add(semAncora(h));
+  return rotas;
+}
+const rotasDoObservatorio = (id: string) => new Set(OBSERVATORIOS.find((o) => o.id === id)!.colecoes.flatMap((c) => [...rotasDaColecao(c.id)]));
+const proprias = (id: string) => [...rotasDoObservatorio(id)].filter((r) => donoDaRota(r)?.observatorio === id).length;
+const atalhosDe = (id: string) => [...rotasDoObservatorio(id)].filter((r) => donoDaRota(r)?.observatorio !== id).length;
 
 /** Elementos com o atributo dado: a etiqueta de abertura e o conteúdo até o fechamento do mesmo nome, sem aninhamento do mesmo tipo. */
 function marcados(html: string, atributo: string): { id: string; abertura: string; corpo: string }[] {
@@ -68,7 +84,7 @@ describe("o retrato sai do registro e do inventário", () => {
     }
   });
 
-  it("as páginas próprias são os painéis do registro sem cópia integral; as de outros, os atalhos registrados", () => {
+  it("as páginas próprias são as da navegação que o registro atribui ao observatório; as de outros, as demais", () => {
     for (const r of retratos) {
       expect(r.proprias, r.id).toBe(proprias(r.id));
       expect(r.proprias, r.id).toBeGreaterThan(0);
@@ -76,11 +92,14 @@ describe("o retrato sai do registro e do inventário", () => {
       // nenhuma página some nem conta duas vezes: próprias e de outros fecham com as contagens das coleções
       expect(r.colecoes.reduce((n, c) => n + c.paginas, 0), r.id).toBeGreaterThanOrEqual(r.proprias + r.deOutros);
     }
-    // o total do registro, sem as cópias, está distribuído entre os seis
-    expect(retratos.reduce((n, r) => n + r.proprias, 0)).toBe(registro.filter((p) => !p.duplicataDe).length);
+    // todo painel registrado sem cópia que é porta de coleção está numa navegação: nenhuma coleção fica com zero páginas
+    for (const r of retratos) for (const c of r.colecoes) expect(c.paginas, `${r.id}/${c.id}`).toBeGreaterThan(0);
+    expect(registro.filter((p) => !p.duplicataDe).length).toBeGreaterThan(0);
+    // os atalhos registrados continuam contados como páginas de outros observatórios
+    for (const a of ATALHOS) expect(rotasDoObservatorio(a.observatorio).has(donoDaRota(a.rota)?.rota ?? a.rota), `${a.observatorio}: ${a.rota}`).toBe(true);
   });
 
-  it("a contagem e o selo de cada coleção são os do mapa da área logada", () => {
+  it("a contagem de cada coleção é a da navegação dela, e o selo é o do mapa da área logada", () => {
     const mapa = diretorioDoMapa(new Date("2026-11-10T12:00:00Z")).secoes;
     const inv = inventario();
     for (const r of retratos) {
@@ -89,7 +108,7 @@ describe("o retrato sai do registro e do inventário", () => {
       for (const c of r.colecoes) {
         const linha = secao.colecoes.find((l) => l.id === c.id)!;
         const paginas = io.colecoes.find((x) => x.id === c.id)!.paginas;
-        expect(c.paginas, `${r.id}/${c.id}`).toBe(linha.contagem);
+        expect(c.paginas, `${r.id}/${c.id}`).toBe(rotasDaColecao(c.id).size);
         expect(c.ressalvas.find((x) => x.paginas === null)?.valor ?? null, `${r.id}/${c.id}`).toBe(linha.prontidao);
         // plena: todas as páginas "publicado", nada previsto e sem selo no mapa; só então a coleção fica sem ressalva
         const plena = linha.prontidao === null && paginas.every((p) => p.situacao === "publicado");

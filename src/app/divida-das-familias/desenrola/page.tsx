@@ -30,6 +30,13 @@ const dataHoraBrasilia = (iso: string) => new Date(iso).toLocaleString("pt-BR", 
 
 /** O vocabulário da gold na taxonomia da plataforma: "reportado" é o que a fonte oficial divulga diretamente, a definição de observado. */
 const NATUREZA_DO_SELO: Record<string, Natureza> = { reportado: "OBSERVADO", calculado: "CALCULADO", estimado: "ESTIMADO" };
+/**
+ * Natureza de um número oficial do programa, item a item (auditoria de 10/11/2026, achado 3). A gold marca todos como "reportado", mas
+ * a nota de um deles diz que o número é estimativa da própria fonte: esse sai como Estimado, nunca como Observado. Os demais são valores
+ * que a fonte declara no documento citado; o kit não tem natureza "declarado", então ficam como Observado (valor publicado pela fonte
+ * oficial) e a nota junto do número diz que são declaração do documento.
+ */
+const naturezaDoOficial = (o: { selo: string; nota: string }): Natureza => (/estimativa|estimad/i.test(o.nota) ? "ESTIMADO" : (NATUREZA_DO_SELO[o.selo] ?? "OBSERVADO"));
 const NOME_DO_SELO: Record<string, string> = { reportado: "Reportado", calculado: "Calculado", estimado: "Estimado", causal: "Resultado causal", associacao: "Associação" };
 const NOME_DA_SITUACAO: Record<string, string> = { viavel: "Viável", parcial: "Parcial", indisponivel: "Indisponível" };
 
@@ -105,8 +112,8 @@ export default function DesenrolaPage() {
       periodo: periodoPrograma,
       recorte: "programa inteiro",
       fonte: fonteCurta(o.fonte),
-      natureza: NATUREZA_DO_SELO[o.selo] ?? "OBSERVADO",
-      nota: t(o.nota),
+      natureza: naturezaDoOficial(o),
+      nota: naturezaDoOficial(o) === "ESTIMADO" ? t(o.nota) : `Valor declarado pela fonte no documento citado. ${t(o.nota)}`,
     };
   };
   const elegiveis = oficial("elegiveis"), renegociaram = oficial("renegociaram"), leilaoAntes = oficial("leilao_antes"), leilaoDepois = oficial("leilao_depois");
@@ -824,7 +831,7 @@ export default function DesenrolaPage() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-2">Nos números e figuras desta página, o que a base chama de reportado aparece com o selo Observado da plataforma, que tem a mesma definição: valor divulgado diretamente pela fonte oficial.</p>
+              <p className="mt-2">Nos números e figuras desta página, o que a base chama de reportado aparece com o selo Observado da plataforma, que tem a mesma definição: valor divulgado diretamente pela fonte oficial. A exceção é o número oficial que a própria fonte apresenta como estimativa, que aparece com o selo Estimado. Os números oficiais de abertura são declarações dos documentos citados, não contagens da base do Banco Central.</p>
             </div>
             <div data-dicionario="">
               <p className="font-medium text-carvao">Dicionário dos indicadores</p>

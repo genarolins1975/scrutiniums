@@ -36,6 +36,51 @@ export const SITUACAO_TEXTO: Record<Situacao, string> = {
 /** Natureza do kit para cada situação da base. Número de imprensa não tem natureza no kit e por isso nunca vai à faixa de números. */
 export const NATUREZA_DA_SITUACAO: Record<Exclude<Situacao, "imprensa">, Natureza> = { oficial: "OBSERVADO", calculado: "CALCULADO", estimativa: "ESTIMADO" };
 
+/**
+ * Natureza do kit para um número da síntese (auditoria de 10/11/2026, achado 10). A situação "oficial" da base diz quem publicou, não
+ * como o número foi obtido: pesquisa amostral de órgão público (grau B, com margem de erro) é estimativa estatística, nunca Observado.
+ */
+export function naturezaDoItem(k: { situacao: Situacao; nivel: Nivel }): Natureza {
+  if (k.situacao === "calculado") return "CALCULADO";
+  if (k.situacao === "estimativa" || k.nivel === "B") return "ESTIMADO";
+  return "OBSERVADO";
+}
+
+/**
+ * Unidade de um número de destaque sem o que o valor já diz ao lado: "R$ 37,0 bi" com "R$ bilhões" fica sem unidade, "9,3%" com
+ * "% do valor contestado" fica "do valor contestado", "≈ R$ 164/mês" com "R$ por apostador ao mês" fica "por apostador". O valor e a
+ * unidade da base não mudam; só a repetição sai da exibição.
+ */
+export function unidadeSemRepetir(exibir: string, unidade: string): string {
+  let u = unidade.trim();
+  if (/R\$/.test(exibir)) u = u.replace(/^R\$\s*/, "");
+  if (/\bbi\b|bilh(ão|ões)/.test(exibir)) u = u.replace(/^bilh(ão|ões)\b\s*/, "");
+  if (/\bmi\b|milh(ão|ões)/.test(exibir)) u = u.replace(/^milh(ão|ões)\b\s*/, "");
+  if (/%/.test(exibir)) u = u.replace(/^%\s*/, "");
+  if (/\/mês/.test(exibir)) u = u.replace(/\s*ao mês$/, "");
+  // "79 empresas" com "empresas (SPA)": a palavra com que o valor termina não se repete no começo da unidade
+  const ultima = exibir.trim().split(/\s+/).at(-1) ?? "";
+  if (ultima && /^\p{L}+$/u.test(ultima) && u.toLowerCase().startsWith(`${ultima.toLowerCase()} `)) u = u.slice(ultima.length).trim();
+  return u;
+}
+
+/**
+ * Palavras que as bases curadas (bets.json, fraudes.json, epae.json) escrevem em caixa alta para dar ênfase. Na página viram texto
+ * comum; siglas (GGR, SIGAP, FBSP) não estão na lista e ficam como estão. A correção de origem é na curadoria das golds.
+ */
+const ENFASE =
+  "NÃO|SEM|NUNCA|APENAS|TODOS|TOTAL|PISO|ADIAM|BRUTAS|CONCEITOS|CONTESTADAS?|CONTESTADO|CONSUMADA|ESTIMATIVA|INSTITUCIONAL|INTEIRA|LÍQUIDA|PLAUSÍVEL|POPULAÇÃO|POPULAÇÕES|POUPANÇA|RELEVANTES|SEÇÃO|SUBESTIMADO|TENTATIVAS|TRANSITÓRIA";
+const RE_ENFASE = new RegExp(`(^|[^\\p{L}\\d])(${ENFASE})(?![\\p{L}\\d])`, "gu");
+/** Tira a caixa alta de ênfase: minúsculas no meio da frase, só a inicial maiúscula no começo do texto ou depois de ponto. */
+export function semEnfase(texto: string): string {
+  return texto.replace(RE_ENFASE, (tudo: string, antes: string, palavra: string, pos: number) => {
+    const antesDaPalavra = texto.slice(0, pos + antes.length).trimEnd();
+    const inicioDeFrase = antesDaPalavra === "" || /[.!?]$/.test(antesDaPalavra);
+    const minuscula = palavra.toLowerCase();
+    return antes + (inicioDeFrase ? minuscula[0].toUpperCase() + minuscula.slice(1) : minuscula);
+  });
+}
+
 export function situacaoTexto(s: string | undefined | null): string {
   return s && s in SITUACAO_TEXTO ? SITUACAO_TEXTO[s as Situacao] : "Não informada";
 }
@@ -43,7 +88,7 @@ export function situacaoTexto(s: string | undefined | null): string {
 /** Texto da base como a página o mostra: sem travessão, meia-risca nem hífen solto como pontuação, espaços normalizados. O conteúdo não muda. */
 export function limpar(texto: unknown): string {
   if (texto === null || texto === undefined) return "";
-  return String(texto)
+  const limpo = String(texto)
     .replace(/\s+[—–]\s+/g, ", ")
     .replace(/(\d)\s*[–—]\s*(\d)/g, "$1 a $2")
     .replace(/[—–]/g, ", ")
@@ -55,6 +100,7 @@ export function limpar(texto: unknown): string {
     })
     .replace(/\s+/g, " ")
     .trim();
+  return semEnfase(limpo);
 }
 
 /** Data da base ("2026-05-29", "2024-04", "2025") na forma da página; o que não é data volta como veio. */
@@ -89,7 +135,9 @@ export type ItemSintese = {
 export function sinteseDaBase(g: any): ItemSintese[] {
   return (g.sintese as any[]).map((k) => ({
     id: String(k.id),
-    rotulo: limpar(k.rotulo),
+    // rótulo fiel à unidade da contagem: a base chama de "Pessoas em autoexclusão" um número cuja unidade é "solicitações acumuladas"
+    // (auditoria de 10/11/2026, achado 10). Enquanto a curadoria não corrige o rótulo, a página diz o que a base conta.
+    rotulo: /^pessoas\b/i.test(String(k.rotulo)) && /^solicitaç/i.test(String(k.unidade)) ? limpar(String(k.rotulo).replace(/^pessoas em\b/i, "Solicitações de")) : limpar(k.rotulo),
     exibir: limpar(k.exibir),
     unidade: limpar(k.unidade),
     conceito: limpar(k.conceito),

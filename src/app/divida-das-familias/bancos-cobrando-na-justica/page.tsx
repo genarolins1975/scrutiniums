@@ -192,7 +192,7 @@ export default function BancosCobrandoNaJusticaPage({ searchParams = {} }: { sea
         rota={ROTA_BANCOS_COBRANDO}
         idioma="pt"
         abertura={{
-          acento: "bronze",
+          grupo: "Dívida e crédito das famílias", acento: "bronze",
           titulo: PERGUNTA_BANCOS_COBRANDO,
           lead: "Execuções de título, buscas e apreensões de bens financiados, monitórias e execuções hipotecárias ajuizadas mês a mês nos tribunais estaduais, no recorte bancário e com qualquer credor.",
           recorte: { periodo: serieToda, universo: cobertura, unidade: "casos únicos", fonte: FONTE },

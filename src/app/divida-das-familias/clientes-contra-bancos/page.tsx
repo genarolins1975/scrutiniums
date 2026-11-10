@@ -89,13 +89,19 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
   const escala = dataEscala(B.data_escala);
   const nRamo = (x: Ramo) => N.tribunais.filter((t) => t.ramo === x).length;
   const civel = ramo === "civel";
-  const temas = civel ? "temas bancários cíveis" : "temas trabalhistas";
+  // Auditoria de 10/11/2026, achado 5: a base conta processos por assunto e não identifica as partes. O recorte dos números diz o que
+  // ela conta (assuntos), não o que o painel gostaria de medir (ações de clientes contra bancos).
+  const temas = civel ? "assuntos cíveis em que bancos costumam ser parte" : "assuntos trabalhistas, contra qualquer empregador";
   const universoRamo = `${NOME_RAMO[ramo]}, ${r.tribunais.length} tribunais`;
   const FONTE_DATAJUD = "CNJ, DataJud";
 
+  const ressalvaPartes = civel
+    ? "A base não identifica as partes. Uma indenização por dano moral entra na contagem mesmo quando o réu não é um banco, e as ações de garantia e cobrança costumam ser movidas pela instituição, não contra ela."
+    : "A base não identifica as partes. Os assuntos trabalhistas contam processos contra qualquer empregador, não só contra bancos.";
+
   const numeros: NumeroProps[] = [
     {
-      rotulo: "Casos únicos",
+      rotulo: "Casos únicos nos assuntos selecionados",
       valor: r.casos,
       formato: "inteiro",
       unidade: "processos",
@@ -104,7 +110,7 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
       fonte: FONTE_DATAJUD,
       natureza: "CALCULADO",
       tamanho: "m",
-      nota: "Processos distintos pelo número único do CNJ. A contagem é aproximada, com erro típico abaixo de 1%.",
+      nota: `${ressalvaPartes} Processos distintos pelo número único do CNJ. A contagem é aproximada, com erro típico abaixo de 1%.`,
     },
     {
       rotulo: "Registros (tramitações)",
@@ -151,9 +157,6 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
   const top = r.assuntos.slice(0, 12);
   const serieCats = r.ordemCategorias.map((id, i) => ({ id, rotulo: rotuloCategoria(g, id), cor: CORES[i % CORES.length] }));
   const maior = cats[0];
-  const ressalvaPartes = civel
-    ? "A base não identifica as partes. Uma indenização por dano moral entra na contagem mesmo quando o réu não é um banco, e as ações de garantia e cobrança costumam ser movidas pela instituição, não contra ela."
-    : "A base não identifica as partes. Os assuntos trabalhistas contam processos contra qualquer empregador, não só contra bancos.";
 
   // ---------- camada nominal: os dez maiores litigantes do TST ----------
   const linhas = B.linhas ?? [];
@@ -170,9 +173,9 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
         rota={ROTA_CLIENTES_CONTRA_BANCOS}
         idioma="pt"
         abertura={{
-          acento: "bronze",
+          grupo: "Dívida e crédito das famílias", acento: "bronze",
           titulo: PERGUNTA_CLIENTES_CONTRA_BANCOS,
-          lead: `Processos sobre contratos bancários, indenizações e garantias em ${N.n_tribunais} tribunais, e os bancos entre os dez maiores litigantes do TST. São duas bases que não se cruzam: a primeira não identifica nenhuma instituição.`,
+          lead: `Processos por assunto em ${N.n_tribunais} tribunais, sem identificação das partes, e os bancos entre os dez maiores litigantes do TST. A base por assunto inclui ações contra outros réus e ações movidas por bancos.`,
           recorte: {
             periodo: `${acervo}; TST, ${quando}`,
             universo: `${nRamo("civel")} tribunais de Justiça, ${nRamo("trabalhista")} tribunais do Trabalho e o TST`,
@@ -212,7 +215,7 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
             <p className="mt-3">{prosa(g.limitacao_central)}</p>
             <ul className="mt-2 space-y-1 text-carvao-muted">
               <li>
-                <span className="font-medium text-carvao">Base nacional:</span> {N.n_tribunais} tribunais, {n0(N.total_civel_casos + N.total_trabalhista_casos)} casos únicos. Não identifica instituição.
+                <span className="font-medium text-carvao">Base nacional:</span> {N.n_tribunais} tribunais; {n0(N.total_civel_casos)} casos únicos em assuntos cíveis e {n0(N.total_trabalhista_casos)} em assuntos trabalhistas. Os dois ramos têm universos diferentes e não se somam. Não identifica instituição nem as partes.
               </li>
               <li>
                 <span className="font-medium text-carvao">Base nominal:</span> {quando}, {B.n_ifs} instituições financeiras entre os dez maiores litigantes. Somente o TST.
