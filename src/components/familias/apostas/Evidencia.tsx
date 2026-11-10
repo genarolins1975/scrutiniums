@@ -43,7 +43,7 @@ export function LegendaGraus({ niveis }: Readonly<{ niveis: readonly DefNivel[] 
         {niveis.map((n) => (
           <div key={n.nivel} className="flex min-w-0 gap-2">
             <dt className="shrink-0">
-              <Grau nivel={n.nivel} niveis={niveis} curto />
+              <span className="inline-flex h-5 min-w-5 items-center justify-center border border-carvao px-1 text-xs font-medium leading-none text-carvao">{n.nivel}</span>
             </dt>
             <dd className="t-meta min-w-0 text-carvao-muted">
               <span className="font-medium text-carvao">{n.rotulo}.</span> {n.descricao}
