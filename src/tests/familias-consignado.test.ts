@@ -216,8 +216,18 @@ describe("Consignado e aposentados no molde de painel", () => {
     expect(Math.max(...raio.values())).toBe(raio.get(maior.uf));
     expect(Math.min(...raio.values())).toBe(raio.get(menor.uf));
     expect(raio.get(menor.uf)!).toBeGreaterThanOrEqual(3);
-    // a área, não o raio, acompanha a população: (r − mínimo)² proporcional ao valor
-    for (const e of estados) expect(((raio.get(e.uf)! - 3) / (raio.get(maior.uf)! - 3)) ** 2, e.uf).toBeCloseTo(e.a60 / maior.a60, 5);
+    // a área, não o raio, é proporcional à população: r² proporcional ao valor. O raio mínimo é só piso de legibilidade (somado a todos
+    // os raios, como era até 10/11/2026, inflava os estados pequenos); quem fica no piso é contado na legenda.
+    const rMax = raio.get(maior.uf)!;
+    let noPiso = 0;
+    for (const e of estados) {
+      const proporcional = rMax * Math.sqrt(e.a60 / maior.a60);
+      if (proporcional < 3) { noPiso++; expect(raio.get(e.uf), e.uf).toBe(3); }
+      else expect((raio.get(e.uf)! / rMax) ** 2, e.uf).toBeCloseTo(e.a60 / maior.a60, 5);
+    }
+    const piso = [...nos(figura)].find((n) => attr(n, "data-legenda-piso") !== undefined);
+    if (noPiso > 0) expect(textoDe(piso!)).toContain(`${noPiso} `);
+    else expect(piso).toBeUndefined();
     expect([...nos(figura)].some((n) => attr(n, "data-legenda-tamanho") !== undefined)).toBe(true);
     for (const e of estados) expect(textoDe(figura), e.uf).toContain(br(e.a60));
   });

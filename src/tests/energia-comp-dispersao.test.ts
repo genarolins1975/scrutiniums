@@ -155,3 +155,20 @@ describe("renderização no servidor", () => {
     expect(html).toMatch(/<summary[^>]*min-h-\[44px\]/);
   });
 });
+
+describe("terceira medida: a área do círculo é proporcional ao valor", () => {
+  it("valor quatro vezes menor ocupa um quarto da área; o piso só vale para quem não caberia, e é declarado", async () => {
+    const { raioPorArea, noPisoDoRaio } = await import("@/lib/painel/dispersao");
+    const area = (r: number) => Math.PI * r * r;
+    const cheio = raioPorArea(100, 100, 3, 14)!;
+    expect(cheio).toBe(14);
+    expect(area(raioPorArea(25, 100, 3, 14)!) / area(cheio)).toBeCloseTo(0.25, 10);
+    expect(area(raioPorArea(10, 100, 3, 14)!) / area(cheio)).toBeCloseTo(0.1, 10);
+    // 1% do máximo pediria raio 1,4: fica no piso de 3 e é contado como exceção
+    expect(raioPorArea(1, 100, 3, 14)).toBe(3);
+    expect(noPisoDoRaio(1, 100, 3, 14)).toBe(true);
+    expect(noPisoDoRaio(10, 100, 3, 14)).toBe(false);
+    expect(raioPorArea(null, 100)).toBeNull();
+    expect(raioPorArea(5, 0)).toBeNull();
+  });
+});

@@ -10,6 +10,7 @@ import {
   larguraTexto,
   limitaDestaques,
   maisProximo,
+  noPisoDoRaio,
   raioPorArea,
   ordenaParaTabela,
   segmentoReta,
@@ -156,6 +157,8 @@ function GraficoDispersaoPares({
   const maxTamanho = tamanho ? Math.max(0, ...validos.map((p) => (typeof p.tamanho === "number" && Number.isFinite(p.tamanho) ? p.tamanho : 0))) : 0;
   const rMaximo = estreito ? 10 : 14;
   const raios = validos.map((p) => (tamanho ? raioPorArea(p.tamanho, maxTamanho, 3, rMaximo) : null));
+  // quem cai no piso de legibilidade aparece maior que a proporção: a legenda conta quantos são
+  const noPiso = tamanho ? validos.filter((p) => noPisoDoRaio(p.tamanho, maxTamanho, 3, rMaximo)).length : 0;
   const ordemDesenho = validos.map((_, i) => i).sort((a, b) => (raios[b] ?? 0) - (raios[a] ?? 0));
   const refsTamanho = tamanho && maxTamanho > 0 ? [maxTamanho / 10, maxTamanho].map((v) => ({ v, r: raioPorArea(v, maxTamanho, 3, rMaximo) ?? 3 })) : [];
 
@@ -242,6 +245,14 @@ function GraficoDispersaoPares({
                 <span className="tabular-nums">{textoValor(t.v, casasT, tamanho.unidade)}</span>
               </span>
             ))}
+            {noPiso > 0 && (
+              <span data-legenda-piso="">
+                {tx(
+                  `${noPiso} ${noPiso === 1 ? entidade.singular : entidade.plural} no tamanho mínimo, maior que a proporção`,
+                  `${noPiso} ${noPiso === 1 ? entidade.singular : entidade.plural} at the minimum size, larger than proportional`,
+                )}
+              </span>
+            )}
           </li>
         )}
         {destaqueIdx.length > 0 && (

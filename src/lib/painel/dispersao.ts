@@ -159,10 +159,17 @@ export function larguraTexto(texto: string, tamanho = 11): number {
 }
 
 /**
- * Raio do círculo para uma terceira medida: a área (não o raio) cresce com o valor, entre um raio mínimo legível e o máximo. Valor
- * ausente, negativo ou máximo nulo devolve null: o chamador desenha o círculo padrão, sem tamanho.
+ * Raio do círculo para uma terceira medida: a área (não o raio) é proporcional ao valor, com o maior valor no raio máximo. O raio
+ * mínimo é só um piso de legibilidade: somá-lo a todos os raios (como era até 10/11/2026) fazia um valor de 1% do máximo ocupar perto
+ * de 9% da área máxima. Quem cai no piso aparece maior que a proporção, e o chamador diz isso (`noPisoDoRaio`). Valor ausente, negativo
+ * ou máximo nulo devolve null: o chamador desenha o círculo padrão, sem tamanho.
  */
 export function raioPorArea(valor: number | null | undefined, maximo: number, rMin = 3, rMax = 14): number | null {
   if (!finito(valor) || valor < 0 || !finito(maximo) || maximo <= 0) return null;
-  return rMin + (rMax - rMin) * Math.sqrt(Math.min(1, valor / maximo));
+  return Math.max(rMin, rMax * Math.sqrt(Math.min(1, valor / maximo)));
+}
+
+/** O valor é pequeno demais para o raio proporcional e fica no piso de legibilidade: o círculo aparece maior que a proporção. */
+export function noPisoDoRaio(valor: number | null | undefined, maximo: number, rMin = 3, rMax = 14): boolean {
+  return finito(valor) && valor >= 0 && finito(maximo) && maximo > 0 && rMax * Math.sqrt(Math.min(1, valor / maximo)) < rMin;
 }
