@@ -315,7 +315,7 @@ export default function CreditoImobiliarioPage() {
               />
             </FiguraAnalitica>
 
-            <Recolhido id="municipios" aberto nivelTitulo={2} titulo="Moradia e saldo contabilizado, município a município" resumo="Os 25 maiores municípios em cada medida, por região, e o perfil completo de um município.">
+            <Recolhido id="municipios" aberto nivelTitulo={2} titulo="Moradia e saldo contabilizado, município a município" resumo="O mapa municipal em quatro medidas, por região, os 25 maiores municípios em cada uma e o perfil completo de um município.">
               <div className="space-y-4 pb-8">
                 <p className={prosa}>
                   Quatro medidas existem para os 5.570 municípios: a parte dos domicílios ainda sendo pagos e a dos alugados (Censo {C.ano}, observadas), o saldo do verbete 169 por domicílio

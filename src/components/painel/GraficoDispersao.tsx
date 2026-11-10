@@ -10,6 +10,7 @@ import {
   larguraTexto,
   limitaDestaques,
   maisProximo,
+  raioPorArea,
   ordenaParaTabela,
   segmentoReta,
   separaPontos,
@@ -69,6 +70,11 @@ export type GraficoDispersaoProps = {
   /** Cor dos pontos comuns e dos destacados, por variável CSS. */
   corPontos?: string;
   corDestaque?: string;
+  /**
+   * Terceira medida, lida de `ponto.tamanho` e desenhada como área do círculo (ex.: população). Entra na legenda, na dica, na leitura
+   * para leitor de tela e numa coluna da tabela. Sem a prop, todos os círculos têm o mesmo tamanho e nada muda.
+   */
+  tamanho?: { rotulo: string; unidade: string; casas?: number };
 };
 
 const RAIO_ALVO = 22;
@@ -95,6 +101,7 @@ function GraficoDispersaoPares({
   corPontos = "var(--cor-mineral)",
   corDestaque = "var(--cor-energia)", // i18n: dado
   rotulosSaoNomes = false,
+  tamanho,
 }: GraficoDispersaoProps) {
   const idioma = useIdioma();
   const marcaNome = rotulosSaoNomes && idioma === "en";
@@ -144,6 +151,14 @@ function GraficoDispersaoPares({
   const destaqueSemDado = ids.filter((id) => !validos.some((p) => p.id === id)).map((id) => pontos.find((p) => p.id === id)?.rotulo ?? id);
   const ehDestaque = new Set(destaqueIdx);
 
+  // terceira medida: área do círculo proporcional ao valor; os maiores são desenhados primeiro, para não cobrir os menores
+  const casasT = tamanho?.casas ?? 0;
+  const maxTamanho = tamanho ? Math.max(0, ...validos.map((p) => (typeof p.tamanho === "number" && Number.isFinite(p.tamanho) ? p.tamanho : 0))) : 0;
+  const rMaximo = estreito ? 10 : 14;
+  const raios = validos.map((p) => (tamanho ? raioPorArea(p.tamanho, maxTamanho, 3, rMaximo) : null));
+  const ordemDesenho = validos.map((_, i) => i).sort((a, b) => (raios[b] ?? 0) - (raios[a] ?? 0));
+  const refsTamanho = tamanho && maxTamanho > 0 ? [maxTamanho / 10, maxTamanho].map((v) => ({ v, r: raioPorArea(v, maxTamanho, 3, rMaximo) ?? 3 })) : [];
+
   // rótulos diretos: lado com mais espaço, afastados na vertical sem sair da área
   const ysRotulo = afastaRotulos(
     destaqueIdx.map((i) => tela[i].y + 4),
@@ -153,11 +168,12 @@ function GraficoDispersaoPares({
   );
   const rotulos = destaqueIdx.map((i, k) => {
     const p = tela[i];
-    const direita = w - R - (p.x + 9);
-    const esquerda = p.x - 9 - 2;
+    const folga = Math.max(9, (raios[i] ?? 0) + 5);
+    const direita = w - R - (p.x + folga);
+    const esquerda = p.x - folga - 2;
     const lado = direita >= larguraTexto(validos[i].rotulo) || direita >= esquerda ? "direita" : "esquerda";
     const texto = cabe(validos[i].rotulo, lado === "direita" ? direita : esquerda);
-    return { i, lado, texto, y: ysRotulo[k], deslocado: Math.abs(ysRotulo[k] - (p.y + 4)) > 5 };
+    return { i, lado, texto, folga, y: ysRotulo[k], deslocado: Math.abs(ysRotulo[k] - (p.y + 4)) > 5 };
   });
 
   const seg = reta && n >= 2 ? segmentoReta(reta, [validos[0].x, validos[n - 1].x], [dy.min, dy.max]) : null;
@@ -194,7 +210,7 @@ function GraficoDispersaoPares({
   const pa = ativo !== null && ativo < n ? validos[ativo] : null;
   const ta = ativo !== null && ativo < n ? tela[ativo] : null;
   const leitura = pa
-    ? `${pa.rotulo}: ${eixoX.rotulo} ${textoValor(pa.x, casasX, eixoX.unidade)}; ${eixoY.rotulo} ${textoValor(pa.y, casasY, eixoY.unidade)}. ` +
+    ? `${pa.rotulo}: ${eixoX.rotulo} ${textoValor(pa.x, casasX, eixoX.unidade)}; ${eixoY.rotulo} ${textoValor(pa.y, casasY, eixoY.unidade)}${tamanho ? `; ${tamanho.rotulo} ${textoValor(pa.tamanho, casasT, tamanho.unidade)}` : ""}. ` +
       tx(`Ponto ${ativo! + 1} de ${n} em ordem de ${eixoX.rotulo}.`, `Point ${ativo! + 1} of ${n} in order of ${eixoX.rotulo}.`) +
       (ehDestaque.has(ativo!) ? tx(" Destacado.", " Highlighted.") : "")
     : "";
@@ -214,6 +230,20 @@ function GraficoDispersaoPares({
           </svg>
           {capitaliza(entidade.plural)}
         </li>
+        {tamanho && refsTamanho.length > 0 && (
+          <li className="flex flex-wrap items-center gap-x-1.5 gap-y-1" data-legenda-tamanho="">
+            {tx("Área do círculo: ", "Circle area: ")}
+            {tamanho.rotulo}
+            {refsTamanho.map((t) => (
+              <span key={t.v} className="inline-flex items-center gap-1">
+                <svg width={2 * t.r + 2} height={2 * t.r + 2} aria-hidden="true">
+                  <circle cx={t.r + 1} cy={t.r + 1} r={t.r} fill="none" stroke="var(--cor-carvao-muted)" strokeWidth="1" />
+                </svg>
+                <span className="tabular-nums">{textoValor(t.v, casasT, tamanho.unidade)}</span>
+              </span>
+            ))}
+          </li>
+        )}
         {destaqueIdx.length > 0 && (
           <li className="flex items-center gap-1.5">
             <svg width="14" height="14" aria-hidden="true">
@@ -310,9 +340,20 @@ function GraficoDispersaoPares({
           )}
 
           {/* pontos comuns primeiro; destaques por cima, com anel da superfície */}
-          {tela.map((p, i) =>
+          {ordemDesenho.map((i) =>
             ehDestaque.has(i) ? null : (
-              <circle key={validos[i].id} data-ponto={validos[i].id} cx={p.x} cy={p.y} r="4" fill={corPontos} fillOpacity="0.45" stroke={corPontos} strokeWidth="1" />
+              <circle
+                key={validos[i].id}
+                data-ponto={validos[i].id}
+                cx={tela[i].x}
+                cy={tela[i].y}
+                r={raios[i] ?? 4}
+                fill={corPontos}
+                fillOpacity={tamanho && raios[i] === null ? 0 : tamanho ? 0.3 : 0.45}
+                stroke={corPontos}
+                strokeWidth="1"
+                strokeDasharray={tamanho && raios[i] === null ? "2 2" : undefined}
+              />
             ),
           )}
           {destaqueIdx.map((i) => (
@@ -322,15 +363,16 @@ function GraficoDispersaoPares({
               data-destaque="true"
               cx={tela[i].x}
               cy={tela[i].y}
-              r="5.5"
+              r={raios[i] ?? 5.5}
               fill={corDestaque}
+              fillOpacity={tamanho ? 0.7 : 1}
               stroke="var(--cor-superficie)"
               strokeWidth="2"
             />
           ))}
           {rotulos.map((r) => {
             const p = tela[r.i];
-            const tx = r.lado === "direita" ? p.x + 9 : p.x - 9;
+            const tx = r.lado === "direita" ? p.x + r.folga : p.x - r.folga;
             return (
               <g key={`r${r.i}`}>
                 {r.deslocado && <line x1={p.x} y1={p.y} x2={tx} y2={r.y - 4} stroke="var(--cor-mineral)" strokeWidth="1" />}
@@ -355,7 +397,7 @@ function GraficoDispersaoPares({
             <g pointerEvents="none">
               <line x1={ta.x} x2={ta.x} y1={ta.y} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
               <line x1={L} x2={ta.x} y1={ta.y} y2={ta.y} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-              <circle cx={ta.x} cy={ta.y} r="9" fill="none" stroke="var(--cor-carvao)" strokeWidth="2" />
+              <circle cx={ta.x} cy={ta.y} r={Math.max(9, (raios[ativo!] ?? 0) + 3)} fill="none" stroke="var(--cor-carvao)" strokeWidth="2" />
             </g>
           )}
           <rect
@@ -392,6 +434,12 @@ function GraficoDispersaoPares({
                 <dt className="text-mineral">{eixoY.rotulo}</dt>
                 <dd className="tabular-nums text-carvao">{textoValor(pa.y, casasY, eixoY.unidade)}</dd>
               </div>
+              {tamanho && (
+                <div className="flex justify-between gap-3">
+                  <dt className="text-mineral">{tamanho.rotulo}</dt>
+                  <dd className="tabular-nums text-carvao">{textoValor(pa.tamanho, casasT, tamanho.unidade)}</dd>
+                </div>
+              )}
             </dl>
           </div>
         )}
@@ -459,6 +507,7 @@ function GraficoDispersaoPares({
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{capitaliza(entidade.singular)}</th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeX}</th>
                 <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{nomeY}</th>
+                {tamanho && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{`${tamanho.rotulo} (${tamanho.unidade})`}</th>}
                 {ids.length > 0 && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{tx("Destaque", "Highlighted")}</th>}
               </tr>
             </thead>
@@ -468,6 +517,7 @@ function GraficoDispersaoPares({
                   <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{nomeHtml(p.rotulo)}</th>
                   <td className={`px-2 py-1 ${typeof p.x === "number" && Number.isFinite(p.x) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.x, casasX, "")}</td>
                   <td className={`px-2 py-1 ${typeof p.y === "number" && Number.isFinite(p.y) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.y, casasY, "")}</td>
+                  {tamanho && <td className={`px-2 py-1 ${typeof p.tamanho === "number" && Number.isFinite(p.tamanho) ? "text-carvao" : "text-mineral"}`}>{textoValor(p.tamanho, casasT, "")}</td>}
                   {ids.length > 0 && <td className="px-2 py-1 text-carvao">{ids.includes(p.id) ? tx("sim", "yes") : ""}</td>}
                 </tr>
               ))}

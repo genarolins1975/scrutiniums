@@ -15,7 +15,7 @@ import { PAINEIS_REDIRECIONADOS } from "@/lib/observatorios/reescritos";
  * - cada aba aparece na navegação da coleção dona: as do Crédito nos grupos dele, as das outras coleções na navegação delas;
  * - o ciclo do Início do painel cobre todas as abas temáticas (cada aba aparece em um nó do ciclo ou é de Referência/Começar);
  * - as trilhas só apontam para abas existentes com GUIA;
- * - desde 10/11/2026 (decisão do dono), seis vistas das Famílias redirecionam para a página Next: o grupo guarda o endereço novo,
+ * - desde 10/11/2026 (decisão do dono), nove vistas das Famílias redirecionam para a página Next (as três últimas depois de fechada a paridade, docs/familias/PARIDADE.md): o grupo guarda o endereço novo,
  *   a correspondência entre grupo e vista é feita pela página nova (PAINEIS_REDIRECIONADOS) e o ciclo e as trilhas ligam à página nova.
  */
 const raiz = process.cwd();

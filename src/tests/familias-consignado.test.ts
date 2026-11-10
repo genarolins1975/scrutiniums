@@ -165,6 +165,63 @@ describe("Consignado e aposentados no molde de painel", () => {
     for (const e of gold.linha_do_tempo) expect(texto, e.d).toContain(e.d.split("-").reverse().join("/"));
   });
 
+  // Paridade fechada em 10/11/2026 (docs/familias/PARIDADE.md). As conferências abaixo assumem as que os testes de navegador faziam
+  // na vista antiga (credito-leitura-browser e graficos-identificacao-browser), aposentadas quando o endereço antigo passou a redirecionar.
+  it("a tabela por vínculo distingue os juros das novas operações do custo da carteira, com os valores da gold", () => {
+    const a = gold.sgs.atual;
+    const tabela = [...nos(doc)].find((n) => attr(n, "id") === "vinculo")!;
+    expect(tabela, "tabela #vinculo").toBeDefined();
+    const t = textoDe(tabela);
+    for (const v of [br(a.inss.taxa, 2), br(a.inss.inad, 2), br(a.inss.prazo_conc, 1), br(a.total.taxa, 2)]) expect(t, v).toContain(v);
+    // as duas medidas de preço aparecem com o número de cada uma e a série oficial de cada uma
+    expect(t).toContain(`${br(a.inss.taxa, 2)}% ao ano`);
+    expect(t).toContain(`${br(a.inss.icc, 2)}% ao ano`);
+    const hrefs = [...nos(tabela)].map((n) => attr(n, "href")).filter(Boolean).join(" ");
+    for (const serie of ["20746", "27677"]) expect(hrefs, `série ${serie} do SGS`).toContain(serie);
+    // vínculo sem a medida na base sai como texto, nunca zero
+    expect(t.match(/não está nesta base/g)?.length ?? 0).toBeGreaterThanOrEqual(5);
+  });
+
+  it("os candidatos a mecanismo trazem as duas correlações da gold", () => {
+    const C = gold.circularidade;
+    const tabela = [...nos(doc)].find((n) => attr(n, "id") === "mecanismo")!;
+    const t = textoDe(tabela);
+    for (const m of C.mecanismo.testados as { variavel: string; com_consignado_por_60: number | null; com_peso: number | null }[]) {
+      expect(t, m.variavel).toContain(m.variavel);
+      for (const v of [m.com_consignado_por_60, m.com_peso]) if (typeof v === "number") expect(t.replace(/−/g, "-"), `${m.variavel}: ${v}`).toContain(br(v, 3));
+    }
+  });
+
+  it("a pirâmide separa os grupos de 60 anos ou mais numa série própria, sem perder nenhum grupo", () => {
+    const figura = [...nos(doc)].find((n) => attr(n, "data-figura-analitica") === "idade")!;
+    const t = textoDe(figura);
+    expect(t).toContain("60 anos ou mais");
+    expect(t).toContain("Até 59 anos");
+    // todo grupo quinquenal da gold continua na tabela equivalente, com a população publicada
+    for (const g of gold.brasil.piramide as { g: string; pop: number }[]) expect(t, g.g).toContain(br(g.pop));
+  });
+
+  it("a dispersão por UF leva a população de 60 anos ou mais como tamanho do círculo e o seletor de estado", () => {
+    const figura = [...nos(doc)].find((n) => attr(n, "data-figura-analitica") === "relacao")!;
+    const seletor = [...nos(figura)].find((n) => n.tagName === "select")!;
+    const estados = (gold.estados as { uf: string; outras_censo: number | null; cons_por_60: number | null; a60: number }[]).filter((e) => e.outras_censo != null && e.cons_por_60 != null);
+    const opcoes = [...nos(seletor)].filter((n) => n.tagName === "option").map((n) => attr(n, "value"));
+    expect(opcoes.filter(Boolean).sort()).toEqual(estados.map((e) => e.uf).sort());
+    // um círculo por estado; o maior raio é o do estado com mais pessoas de 60 anos ou mais e nenhum raio é nulo
+    const circulos = [...nos(figura)].filter((n) => n.tagName === "circle" && attr(n, "data-ponto"));
+    expect(circulos.length).toBe(estados.length);
+    const raio = new Map(circulos.map((c) => [attr(c, "data-ponto")!, Number(attr(c, "r"))]));
+    const maior = estados.reduce((x, y) => (y.a60 > x.a60 ? y : x));
+    const menor = estados.reduce((x, y) => (y.a60 < x.a60 ? y : x));
+    expect(Math.max(...raio.values())).toBe(raio.get(maior.uf));
+    expect(Math.min(...raio.values())).toBe(raio.get(menor.uf));
+    expect(raio.get(menor.uf)!).toBeGreaterThanOrEqual(3);
+    // a área, não o raio, acompanha a população: (r − mínimo)² proporcional ao valor
+    for (const e of estados) expect(((raio.get(e.uf)! - 3) / (raio.get(maior.uf)! - 3)) ** 2, e.uf).toBeCloseTo(e.a60 / maior.a60, 5);
+    expect([...nos(figura)].some((n) => attr(n, "data-legenda-tamanho") !== undefined)).toBe(true);
+    for (const e of estados) expect(textoDe(figura), e.uf).toContain(br(e.a60));
+  });
+
   it("o resumo municipal do servidor é o recorte padrão da gold municipal, com as regras da vista antiga", () => {
     const base = mun.filter((m) => m.sel !== "baixa");
     const maior = base.filter((m) => m.p60 != null).sort((x, y) => (y.p60 as number) - (x.p60 as number))[0];

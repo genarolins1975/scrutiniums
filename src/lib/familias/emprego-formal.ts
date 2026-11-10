@@ -124,6 +124,40 @@ export function dadosEmprego(): DadosEmprego | { indisponivel: string } {
     catalogo: g.catalogo ?? [],
   };
 }
+
+export type PesoRisco = { id: string; nome: string; peso: number; observado: boolean; mede: string };
+export type PesosRisco = { atividades: number; empregoAte: string | null; componentes: PesoRisco[]; frase: string | null };
+
+/** Nome e medida de cada componente, como o método da gold setorial os descreve (a fonte por atividade varia e fica no painel Risco setorial). */
+const COMPONENTE: Record<string, { nome: string; mede: string }> = {
+  atividade: { nome: "Atividade", mede: "Queda do volume em 12 meses contra a própria história: produção industrial, serviços ou comércio, conforme a atividade (IBGE)" },
+  condicoes_credito: { nome: "Condições de crédito", mede: "Inadimplência e spread do crédito a empresas contra a própria história (Banco Central)" },
+  capacidade_financeira: { nome: "Capacidade financeira", mede: "Variação em 12 meses do estoque de vínculos formais da seção de atividade contra a própria história, com o sinal invertido (Novo Caged, via Banco Central): é a medida desta página" },
+  estresse_empresarial: { nome: "Estresse empresarial", mede: "Recuperações judiciais; em construção, fora do cálculo" },
+};
+
+/**
+ * Pesos dos componentes do Risco setorial, lidos da gold do próprio painel (public/obs/data/gold/sectors.json, campo
+ * `componentes.<id>.peso` de cada atividade), e a frase do método dessa gold que os explica. A vista antiga do emprego os escrevia
+ * à mão (0,15 original; 0,19 ao lado de 0,56 e 0,25); a gold do emprego não os traz. Nada é recalculado: se a gold setorial faltar,
+ * ou se as atividades não tiverem todas o mesmo peso em cada componente, devolve null e a página não mostra peso algum.
+ */
+export function pesosRiscoSetorial(): PesosRisco | null {
+  const g = lerPublico("obs", "data", "gold", "sectors.json");
+  const setores: any[] = Array.isArray(g?.setores) ? g.setores : [];
+  if (!g?.ok || !setores.length) return null;
+  const ids = Object.keys(setores[0]?.componentes ?? {});
+  const componentes: PesoRisco[] = [];
+  for (const id of ids) {
+    const c = setores[0].componentes[id];
+    if (typeof c?.peso !== "number" || !COMPONENTE[id]) return null;
+    if (setores.some((s) => s.componentes?.[id]?.peso !== c.peso || s.componentes?.[id]?.status !== c.status)) return null;
+    componentes.push({ id, nome: COMPONENTE[id].nome, peso: c.peso, observado: c.status === "observado", mede: COMPONENTE[id].mede });
+  }
+  if (!componentes.some((c) => c.id === "capacidade_financeira")) return null;
+  const frase = /Pesos:[^)]*\)\./.exec(String(g.metodo ?? ""))?.[0] ?? null;
+  return { atividades: setores.length, empregoAte: typeof g.emprego_ref === "string" ? g.emprego_ref : null, componentes: componentes.sort((a, b) => b.peso - a.peso), frase };
+}
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 const LIMITES = [

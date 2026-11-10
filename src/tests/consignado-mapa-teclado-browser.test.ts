@@ -1,47 +1,84 @@
-import {afterAll,beforeAll,describe,expect,it} from "vitest";
-import {chromium} from "playwright";
-import {readFileSync} from "node:fs";
-import {exigirBuild,subirServidor,temBuild,type ServidorProducao} from "./suporte/servidor-producao";
-let servidor:ServidorProducao;
-beforeAll(async()=>{if(!temBuild){if(exigirBuild)throw Error("Build obrigatório ausente");return;}servidor=await subirServidor("cg-mapa-teclado");},90_000);
-afterAll(async()=>{await servidor?.parar();});
-describe.skipIf(!temBuild&&!exigirBuild)("Mapa municipal: alternativa completa por teclado",()=>{
- it("busca abre perfis fora do ranking, compara e retorna sem milhares de paradas",async()=>{
-  const browser=await chromium.launch({channel:"chromium",executablePath:process.env.I18N_CHROMIUM_EXECUTABLE});const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:"reduce"});await context.addCookies([{name:"scrutiniums_session",value:servidor.cookie,url:servidor.origem}]);const page=await context.newPage();const errors:string[]=[];page.on("pageerror",e=>errors.push(e.message));
-  try{
-   const geometria = page.waitForResponse(r=>new URL(r.url()).pathname==="/obs/geo/uf.json");
-   await page.goto(servidor.origem+"/observatorio/payroll-lending-aging");await page.locator("#cg-mapa .penmapa path[onclick]").first().waitFor();
-   expect((await geometria).status()).toBe(200);
-   expect(await page.locator("#cg-mapa .penmapa .geo-limites > path").count()).toBe(27);
-   const base=JSON.parse(readFileSync("public/obs/data/gold/consignado_mun.json","utf8")).municipios as Array<{c:string;n:string;uf:string;sel:string;p60:number|null}>;
-   const ranking=await page.locator("#cg-mapa .penrank button").evaluateAll(bs=>bs.map(b=>b.getAttribute("onclick")));
-   const alvos=base.filter(m=>m.sel!=="baixa"&&!ranking.includes(`cgSel('${m.c}')`)).slice(0,2);expect(alvos).toHaveLength(2);
-   const focados=()=>page.evaluate(()=>document.activeElement?.id||document.activeElement?.getAttribute("aria-label")||document.activeElement?.tagName);
-   const conferirSemMilhares=async()=>expect(await page.locator("#cg-mapa .penmapa [tabindex='0']").count()).toBe(0);
-   await conferirSemMilhares();
-   await page.locator("#cg-mapa button[onclick=\"cgFiltra('conf','todas')\"]").click();await conferirSemMilhares();
-   await page.locator("#cg-mapa button[onclick=\"cgFiltra('conf','todas')\"]").focus();await page.keyboard.press("Tab");expect(await page.evaluate(()=>document.activeElement?.matches("#cg-tabela-mapa summary"))).toBe(true);
-   await page.keyboard.press("Enter");await page.keyboard.press("Tab");expect(await focados()).toBe("cg-tabela-busca");
-   for(let i=0;i<alvos.length;i++){
-    const m=alvos[i];await page.locator("#cg-tabela-busca").fill(m.n+" "+m.uf);
-    const button=page.getByRole("button",{name:`Abrir perfil de ${m.n} (${m.uf})`,exact:true});await button.waitFor();
-    expect(await page.locator("#cg-tabela-linhas tr").count()).toBe(1);
-    expect(await page.locator("#cg-tabela-linhas").innerText()).toContain(m.p60==null?"n.d.":m.p60.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%");
-    // CSV e eventual região rolável antecedem a ação; não atravessa polígonos.
-    let tabs=0;while(!await button.evaluate(e=>e===document.activeElement)&&tabs++<4)await page.keyboard.press("Tab");expect(await button.evaluate(e=>e===document.activeElement)).toBe(true);
-    await page.keyboard.press(i?"Space":"Enter");await expect.poll(()=>page.locator("#cg-perfil .cgchip").count()).toBe(i+1);
-    expect(await page.evaluate(()=>document.activeElement?.matches("#cg-perfil h3"))).toBe(true);
-    expect(await page.locator("#cg-perfil").innerText()).toContain(m.n);await conferirSemMilhares();
-    await page.keyboard.press("Tab");expect(await page.evaluate(()=>document.activeElement?.textContent)).toBe("Voltar à busca de municípios");
-    await page.keyboard.press("Space");expect(await focados()).toBe("cg-tabela-busca");await expect.poll(()=>page.locator("#cg-tabela-busca").evaluate(e=>{const r=e.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===e;})).toBe(true);expect(await page.locator("#cg-tabela-busca").inputValue()).toBe(m.n+" "+m.uf);
-    await page.keyboard.press("Shift+Tab");expect(await page.evaluate(()=>document.activeElement?.matches("#cg-tabela-mapa summary"))).toBe(true);await page.keyboard.press("Tab");
-   }
-   await page.locator("#cg-tabela-busca").fill("alto");await expect.poll(()=>page.locator("#cg-tabela-linhas button").count()).toBe(50);
-   await page.keyboard.press("Tab");expect(await focados()).toBe("cg-tabela-proxima");await page.keyboard.press("Enter");expect(await focados()).toBe("cg-tabela-anterior");await page.keyboard.press("Space");expect(await focados()).toBe("cg-tabela-proxima");
-   const [download]=await Promise.all([page.waitForEvent("download"),(async()=>{await page.keyboard.press("Tab");await page.keyboard.press("Enter");})()]);const csv=readFileSync((await download.path())!,"utf8");
-   const norm=(s:string)=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();const filtrados=base.filter(m=>norm(m.n+" "+m.uf).includes("alto"));
-   const linhas=csv.replace(/^\uFEFF/,"").trimEnd().split("\n").filter(l=>!l.startsWith("#")).slice(1);expect(linhas).toHaveLength(filtrados.length);filtrados.forEach((m,i)=>{expect(linhas[i]).toContain(m.n);expect(linhas[i]).toContain(m.p60==null?"":m.p60.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%");});
-   expect(errors).toEqual([]);
-  }finally{await context.close();await browser.close();}
- },120_000);
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { chromium } from "playwright";
+import { readFileSync } from "node:fs";
+import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./suporte/servidor-producao";
+
+/**
+ * Alternativa por teclado ao mapa municipal do consignado. Reescrito em 10/11/2026 para a página nova: por decisão do dono dessa data,
+ * fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para
+ * /divida-das-familias/consignado e a vista antiga (#cg-mapa .penmapa, #cg-tabela-mapa) não é mais desenhada. As asserções presas aos
+ * ids e classes da vista antiga foram aposentadas por esse motivo; a garantia é a mesma e é conferida na página nova: o mapa não cria
+ * milhares de paradas de teclado, a tabela com busca abre o perfil de município fora da lista dos 25 maiores, o foco vai ao perfil, a
+ * comparação cresce e "Voltar à busca" devolve o foco ao campo, com o texto digitado.
+ */
+let servidor: ServidorProducao;
+beforeAll(async () => {
+  if (!temBuild) {
+    if (exigirBuild) throw Error("Build obrigatório ausente");
+    return;
+  }
+  servidor = await subirServidor("cg-mapa-teclado");
+}, 90_000);
+afterAll(async () => {
+  await servidor?.parar();
+});
+
+describe.skipIf(!temBuild && !exigirBuild)("Mapa municipal do consignado: alternativa completa por teclado", () => {
+  it("busca abre perfis fora do ranking, compara e retorna sem milhares de paradas", async () => {
+    const browser = await chromium.launch({ channel: "chromium", executablePath: process.env.I18N_CHROMIUM_EXECUTABLE });
+    const context = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: "reduce" });
+    await context.addCookies([{ name: "scrutiniums_session", value: servidor.cookie, url: servidor.origem }]);
+    const page = await context.newPage();
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    try {
+      await page.goto(servidor.origem + "/observatorio/payroll-lending-aging");
+      expect(new URL(page.url()).pathname).toBe("/divida-das-familias/consignado");
+      const abrir = page.getByRole("button", { name: "Abrir o mapa e a busca de municípios" });
+      await abrir.focus();
+      await page.keyboard.press("Enter");
+      const raiz = page.locator('[data-explorador-municipios="pronto"]');
+      await raiz.waitFor({ timeout: 60_000 });
+      await raiz.locator('[data-mapa-municipios="pronto"]').waitFor({ timeout: 60_000 });
+      const semMilhares = async () => expect(await raiz.locator("[data-mapa-municipios] svg [tabindex]:not(svg)").count()).toBe(0);
+      await semMilhares();
+      const base = JSON.parse(readFileSync("public/obs/data/gold/consignado_mun.json", "utf8")).municipios as Array<{ c: string; n: string; uf: string; sel: string; p60: number | null }>;
+      const ranking = await raiz.getByRole("list", { name: /Os 25 maiores valores/ }).locator("button").allInnerTexts();
+      const alvos = base.filter((m) => m.sel !== "baixa" && m.p60 != null && !ranking.some((t) => t.includes(m.n))).slice(0, 2);
+      expect(alvos).toHaveLength(2);
+      const resumo = page.locator("[data-tabela-municipios] summary");
+      await resumo.focus();
+      await page.keyboard.press("Enter");
+      const busca = page.getByRole("searchbox", { name: "Buscar município ou UF" });
+      for (let i = 0; i < alvos.length; i++) {
+        const m = alvos[i];
+        await busca.focus();
+        await busca.fill(`${m.n} ${m.uf}`);
+        const botao = page.locator("[data-tabela-municipios]").getByRole("button", { name: `Abrir perfil de ${m.n} (${m.uf})`, exact: true });
+        await botao.waitFor();
+        expect(await page.locator("[data-tabela-municipios] tbody tr").count()).toBe(1);
+        expect(await page.locator("[data-tabela-municipios] tbody").innerText()).toContain(`${(m.p60 as number).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`);
+        // do campo de busca ao nome do município só pelo Tab, sem atravessar polígonos do mapa
+        let tabs = 0;
+        while (!(await botao.evaluate((e) => e === document.activeElement)) && tabs++ < 8) await page.keyboard.press("Tab");
+        expect(await botao.evaluate((e) => e === document.activeElement)).toBe(true);
+        await page.keyboard.press(i ? "Space" : "Enter");
+        // o foco vai ao título do perfil, que passa a nomear a comparação
+        await expect.poll(() => page.evaluate(() => document.activeElement?.id)).toBe("perfil-municipal-titulo");
+        await expect.poll(() => page.getByRole("button", { name: /^Remover .* da comparação$/ }).count()).toBe(i + 1);
+        expect(await page.locator("section[aria-labelledby=perfil-municipal-titulo]").innerText()).toContain(m.n);
+        await semMilhares();
+        const voltar = page.getByRole("button", { name: "Voltar à busca de municípios" });
+        await voltar.focus();
+        await page.keyboard.press("Space");
+        await expect.poll(() => busca.evaluate((e) => e === document.activeElement)).toBe(true);
+        expect(await busca.inputValue()).toBe(`${m.n} ${m.uf}`);
+      }
+      expect(new URL(page.url()).searchParams.get("cgmun")?.split(",").sort()).toEqual(alvos.map((m) => m.c).sort());
+      expect(errors).toEqual([]);
+    } finally {
+      await context.close();
+      await browser.close();
+    }
+  }, 180_000);
 });

@@ -13,8 +13,11 @@ import { exigirBuild, subirServidor, temBuild, type ServidorProducao } from "./s
 
 /**
  * Redirecionamento das vistas antigas das Famílias (decisão do dono de 10/11/2026). Nove painéis foram reescritos como páginas
- * Next; o dono mandou redirecionar já, de forma permanente, os seis cujo painel novo não tem perda declarada e manter no
- * endereço antigo os três com perda (Consignado, Crédito imobiliário, Emprego formal) até os mapas serem migrados.
+ * Next; o dono mandou redirecionar já, de forma permanente, os seis cujo painel novo não tinha perda declarada e manter no
+ * endereço antigo os três com perda (Consignado, Crédito imobiliário, Emprego formal) até os mapas serem migrados. No mesmo
+ * dia a paridade dos três foi fechada (docs/familias/PARIDADE.md: mapa municipal do crédito imobiliário, estado do recorte no
+ * endereço, tamanho do círculo, seletor de estado e realce de 60 anos ou mais no consignado, pesos do Risco setorial no
+ * emprego) e os três entraram na lista: os nove endereços antigos redirecionam e nenhum fica mantido.
  *
  * O que se trava:
  * - a lista é uma só (src/lib/observatorios/paineis-reescritos.json): o redirects() do next.config.mjs, o registro, o índice
@@ -30,7 +33,10 @@ const ORIGEM = "http://localhost:3000";
 type Regra = { source: string; destination: string; permanent: boolean; missing?: unknown; has?: unknown };
 const regras = async (): Promise<Regra[]> => ((await import("../../next.config.mjs")).default as { redirects: () => Promise<Regra[]> }).redirects();
 
-/** Decisão do dono de 10/11/2026, escrita aqui de propósito: mudar a lista exige nova decisão. */
+/**
+ * Decisão do dono de 10/11/2026, escrita aqui de propósito: mudar a lista exige nova decisão. As três últimas linhas entraram
+ * quando a perda declarada de cada painel foi fechada, condição que a própria decisão punha para liberá-las.
+ */
 const REDIRECIONADOS: Record<string, string> = {
   "/observatorio/desenrola": "/divida-das-familias/desenrola",
   "/observatorio/bets-financial-risk": "/divida-das-familias/apostas",
@@ -38,11 +44,15 @@ const REDIRECIONADOS: Record<string, string> = {
   "/observatorio/lawsuits": "/divida-das-familias/clientes-contra-bancos",
   "/observatorio/debt-collection-lawsuits": "/divida-das-familias/bancos-cobrando-na-justica",
   "/observatorio/conduct-enforcement": "/divida-das-familias/sancoes-e-reclamacoes",
+  "/observatorio/payroll-lending-aging": "/divida-das-familias/consignado",
+  "/observatorio/housing-credit": "/credito-imobiliario",
+  "/observatorio/formal-employment": "/emprego-formal",
 };
-const MANTIDOS = ["/observatorio/payroll-lending-aging", "/observatorio/housing-credit", "/observatorio/formal-employment"];
+/** Vistas com perda declarada, mantidas no endereço antigo: nenhuma desde o fechamento da paridade das três últimas (10/11/2026). */
+const MANTIDOS: string[] = [];
 
 describe("vistas antigas das Famílias: uma lista só", () => {
-  it("os seis painéis sem perda declarada redirecionam e os três com perda ficam no endereço antigo", () => {
+  it("os nove painéis reescritos redirecionam e nenhum fica no endereço antigo", () => {
     expect(Object.fromEntries(DESTINO_DO_ENDERECO_ANTIGO)).toEqual(REDIRECIONADOS);
     expect(PAINEIS_REESCRITOS.filter((p) => !p.redirecionar).map((p) => PREFIXO_APLICACAO + p.abaAntiga).sort()).toEqual([...MANTIDOS].sort());
   });
@@ -113,7 +123,8 @@ describe("sem sessão, o destino novo é o que chega ao login", () => {
     }
   });
 
-  it("as três vistas mantidas continuam no endereço antigo, com login para quem não tem sessão", async () => {
+  it("vista mantida, quando houver, continua no endereço antigo, com login para quem não tem sessão (hoje a lista é vazia)", async () => {
+    expect(MANTIDOS).toEqual([]);
     for (const m of MANTIDOS) {
       expect(await aposRedirects(m), m).toBeNull();
       const r = await middleware(requisicao(m));
@@ -131,7 +142,7 @@ describe("nenhum caminho da plataforma volta ao endereço redirecionado", () => 
       expect(paginas, antigo).not.toContain(antigo);
       expect(paginas.filter((p) => p === novo).length, novo).toBe(1);
     }
-    // as três mantidas continuam nos grupos pelo endereço da aplicação
+    // vista mantida, quando houver, continua nos grupos pelo endereço da aplicação
     for (const m of MANTIDOS) expect(paginas, m).toContain(m);
     const sub = vistasSubstituidas();
     expect(Object.keys(sub).map((c) => PREFIXO_APLICACAO + c).sort()).toEqual([...antigos].sort());
@@ -205,7 +216,7 @@ describe.skipIf(!temBuild && !exigirBuild)("no servidor de produção, a cadeia 
     }
   }, 120_000);
 
-  it("as três vistas mantidas continuam servindo a aplicação a quem tem sessão", async () => {
+  it("vista mantida, quando houver, continua servindo a aplicação a quem tem sessão (hoje a lista é vazia)", async () => {
     for (const m of MANTIDOS) expect((await pedir(m, true)).status, m).toBe(200);
   }, 60_000);
 });

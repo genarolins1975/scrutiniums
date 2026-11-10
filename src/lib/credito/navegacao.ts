@@ -77,12 +77,13 @@ export const METODO_SPA = "/observatorio/methodology";
  * caberem numa linha a 1440 px (medido em 23/10/2026: faltavam 90 px e "Marcos regulatórios" saía cortado), como o Setor
  * Elétrico faz com os grupos longos; o nome inteiro continua no "Início do painel".
  *
- * Desde 10/11/2026 (decisão do dono), seis páginas dos grupos "Risco, cobrança e recuperação" e "Pagamentos, conduta e
- * fronteiras" são páginas Next do Observatório das Famílias (/divida-das-familias/*, `redirecionar: true` em
- * src/lib/observatorios/paineis-reescritos.json): o grupo guarda o endereço novo, o "Início do painel" as lista como link para fora
- * da aplicação e a navegação do Crédito não as mostra (são de outra coleção). O teste src/tests/mapa-menu.test.ts confere que
- * nenhum grupo aponta para um endereço redirecionado. As três vistas ainda não redirecionadas (Consignado, Crédito
- * imobiliário e Emprego formal) continuam com o endereço da aplicação.
+ * Desde 10/11/2026 (decisão do dono), nove páginas dos grupos "Território e pessoas", "Risco, cobrança e recuperação" e
+ * "Pagamentos, conduta e fronteiras" são páginas Next do Observatório das Famílias (/divida-das-familias/*, /credito-imobiliario e
+ * /emprego-formal, `redirecionar: true` em src/lib/observatorios/paineis-reescritos.json): o grupo guarda o endereço novo, o
+ * "Início do painel" as lista como link para fora da aplicação e a navegação do Crédito não as mostra (são de outra coleção). O
+ * teste src/tests/mapa-menu.test.ts confere que nenhum grupo aponta para um endereço redirecionado. As três últimas (Consignado,
+ * Crédito imobiliário e Emprego formal) entraram na lista no mesmo dia, depois de fechada a paridade declarada em
+ * docs/familias/PARIDADE.md (mapa municipal, estado no endereço, dispersão e pesos do Risco setorial).
  */
 export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas: readonly string[] }[] = [
   { rotulo: "Começar", paginas: ["/observatorio/map", "/observatorio/overview", "/observatorio/alerts", METODO_SPA] },
@@ -99,7 +100,7 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
   {
     rotulo: "Território e pessoas",
     curto: "Território",
-    paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/observatorio/housing-credit", "/observatorio/payroll-lending-aging", "/observatorio/formal-employment", "/observatorio/subnational-credit"],
+    paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/credito-imobiliario", "/divida-das-familias/consignado", "/emprego-formal", "/observatorio/subnational-credit"],
   },
   { rotulo: "Risco, cobrança e recuperação", paginas: ["/observatorio/sectors", "/divida-das-familias/desenrola", "/divida-das-familias/bancos-cobrando-na-justica", "/observatorio/recoveries", "/observatorio/federal-tax-debt"] },
   {

@@ -10,7 +10,7 @@ import { SerieEscolhida } from "@/components/familias/emprego-formal/SerieEscolh
 import { TabelaOrdenada } from "@/components/familias/emprego-formal/TabelaOrdenada";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 import { mesAno, num } from "@/lib/perguntas/leitura";
-import { DESCRICAO_EMPREGO, PERGUNTA_EMPREGO, ROTA_EMPREGO, dadosEmprego, provEmprego, textoDaGold, type Setor, type Uf } from "@/lib/familias/emprego-formal";
+import { DESCRICAO_EMPREGO, PERGUNTA_EMPREGO, ROTA_EMPREGO, dadosEmprego, pesosRiscoSetorial, provEmprego, textoDaGold, type Setor, type Uf } from "@/lib/familias/emprego-formal";
 
 export const dynamic = "force-static";
 
@@ -90,6 +90,7 @@ export default function EmpregoFormalPage() {
   // seções na ordem do painel antigo: crescente pela distância da própria média; sem valor por último
   const ordem = [...d.secoes].sort((a, b) => (a.z ?? 9) - (b.z ?? 9));
   const semAgregado = ordem.filter((s) => !s.agregado);
+  const pesos = pesosRiscoSetorial();
   const ufs = [...d.ufs].sort((a, b) => (b.saldo_12m ?? -1e15) - (a.saldo_12m ?? -1e15));
   const ufsMes = mesAno(d.ufsMes);
   const maiorUf = ufs[0];
@@ -430,8 +431,28 @@ export default function EmpregoFormalPage() {
                 fim: d.mes,
                 formula: "distância da média = (variação em 12 meses − média da seção) ÷ desvio-padrão da seção",
               })}
-              comoInterpretar="No painel Risco setorial, do Observatório de Crédito, cada atividade herda a distância da média da sua seção, com o sinal invertido: folha encolhendo fora do padrão puxa a medida de estresse para cima. É o componente chamado lá de capacidade financeira. Divisões da indústria herdam a seção C; grupos de serviços que cruzam seções recebem a média das seções listadas; o comércio herda a seção G. Os pesos de cada componente estão no próprio painel."
-              naoConcluir="que uma atividade com a folha abaixo da média vai deixar de pagar dívidas: o emprego é um dos insumos do Risco setorial, com peso declarado lá, e não mede inadimplência."
+              comoInterpretar="No painel Risco setorial, do Observatório de Crédito, cada atividade herda a distância da média da sua seção, com o sinal invertido: folha encolhendo fora do padrão puxa a medida de estresse para cima. É o componente chamado lá de capacidade financeira. Divisões da indústria herdam a seção C; grupos de serviços que cruzam seções recebem a média das seções listadas; o comércio herda a seção G."
+              naoConcluir="que uma atividade com a folha abaixo da média vai deixar de pagar dívidas: o emprego é um dos insumos do Risco setorial, com o peso declarado abaixo, e não mede inadimplência."
+              complemento={
+                pesos ? (
+                  <div id="pesos-do-risco-setorial" data-pesos-risco>
+                    <TabelaDados
+                      titulo="Quanto cada componente pesa no Risco setorial"
+                      colunas={["Componente", "O que mede", "Peso no cálculo", "Entra no cálculo?"]}
+                      linhas={pesos.componentes.map((c) => [c.nome, c.mede, c.peso, c.observado && c.peso > 0 ? "sim" : "não, peso zero"])}
+                      casas={[null, null, 2, null]}
+                      limite={pesos.componentes.length}
+                      recolhida={false}
+                      nota={`Peso é a fração da medida de estresse que vem de cada componente; os pesos dos que entram no cálculo somam 1 e são os mesmos nas ${n0(pesos.atividades)} atividades acompanhadas. Fonte: publicação do Risco setorial do Observatório de Crédito${pesos.empregoAte ? `, com o emprego até ${mesAno(pesos.empregoAte)}` : ""}. Os pesos são escolha de método dessa publicação, não um dado medido, e não constam da publicação do emprego formal usada no restante desta página.`}
+                    />
+                    {pesos.frase && <p className="mt-3 text-sm text-carvao-muted">Nas palavras do método do Risco setorial: “{textoDaGold(pesos.frase)}” Renormalizar, aqui, é dividir cada peso original pela soma dos três que já entram no cálculo.</p>}
+                  </div>
+                ) : (
+                  <p className="text-sm text-carvao-muted" data-pesos-risco="ausente">
+                    Os pesos de cada componente não puderam ser lidos da publicação do Risco setorial nesta versão; nenhum valor é mostrado no lugar. Eles estão no próprio painel.
+                  </p>
+                )
+              }
               tabela={{
                 titulo: `Distância da média histórica por seção de atividade, ${mes}`,
                 colunas: ["Seção", "CNAE", "Variação em 12 meses, %", "Média da seção, %", "Distância da média, desvios-padrão", "Faixa"],

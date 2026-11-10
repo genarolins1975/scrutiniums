@@ -16,6 +16,8 @@ export type PontoDispersao = {
   rotulo: string;
   x: number | null | undefined;
   y: number | null | undefined;
+  /** Terceira medida, desenhada como área do círculo quando o gráfico recebe `tamanho`; ausência não vira zero (círculo padrão, vazado). */
+  tamanho?: number | null;
 };
 
 export type PontoValido = PontoDispersao & { x: number; y: number };
@@ -154,4 +156,13 @@ export function afastaRotulos(ys: readonly number[], distancia: number, topo: nu
 /** Largura aproximada de um texto em px (fonte de 11 px), para decidir o lado do rótulo. */
 export function larguraTexto(texto: string, tamanho = 11): number {
   return texto.length * tamanho * 0.56;
+}
+
+/**
+ * Raio do círculo para uma terceira medida: a área (não o raio) cresce com o valor, entre um raio mínimo legível e o máximo. Valor
+ * ausente, negativo ou máximo nulo devolve null: o chamador desenha o círculo padrão, sem tamanho.
+ */
+export function raioPorArea(valor: number | null | undefined, maximo: number, rMin = 3, rMax = 14): number | null {
+  if (!finito(valor) || valor < 0 || !finito(maximo) || maximo <= 0) return null;
+  return rMin + (rMax - rMin) * Math.sqrt(Math.min(1, valor / maximo));
 }

@@ -109,7 +109,7 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
       }
     } finally { await page.close(); }
   }, 60_000);
-  it("filtros do Crédito e do Consignado preservam foco e referência após atualização", async () => {
+  it("filtros do Crédito preservam foco e referência após atualização", async () => {
     const page = await contexto.newPage();
     try {
       await page.goto(servidor.origem + "/observatorio/credit");
@@ -117,19 +117,9 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
       await pf.focus(); await page.keyboard.press("Enter");
       await page.waitForURL(/seg=pf/);
       expect(await pf.evaluate(e => e === document.activeElement)).toBe(true);
-      await page.goto(servidor.origem + "/observatorio/payroll-lending-aging");
-      const regiao = page.locator('#cg-mapa select');
-      await regiao.focus(); await regiao.selectOption("Norte");
-      await page.waitForURL(/cgregiao=Norte/);
-      expect(await regiao.evaluate(e => e === document.activeElement)).toBe(true);
-      await page.reload();
-      expect(await regiao.inputValue()).toBe("Norte");
-      const cabecalhos = await page.locator('#cg-expo .charttable thead').allTextContents();
-      expect(cabecalhos.join(" ")).toContain("Servidores públicos");
-      expect(cabecalhos.join(" ")).not.toContain("Série 1");
-      await page.goto(servidor.origem + "/observatorio/payroll-lending-aging?cgcam=invalida&cgregiao=invalida&cgconf=invalida");
-      expect(await regiao.inputValue()).toBe("todas");
-      expect(await page.locator('#cg-mapa button[onclick="cgFiltra(\'cam\',\'p60\')"]').getAttribute('class')).not.toContain('ghost');
+      // Asserções aposentadas em 10/11/2026: a metade do Consignado (região no endereço, foco preservado, recarga e parâmetros inválidos).
+      // Motivo: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada. As mesmas garantias,
+      // com os mesmos parâmetros ?cgcam=, ?cgregiao= e ?cgconf=, são conferidas na página nova em src/tests/familias-paridade-browser.test.ts.
     } finally { await page.close(); }
   }, 60_000);
 
@@ -189,10 +179,11 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
     } finally { await page.close(); }
   }, 60_000);
 
-  it("todos os textos SVG de Setores e Consignado respeitam o piso nas quatro larguras", async () => {
+  it("todos os textos SVG de Setores respeitam o piso nas quatro larguras", async () => {
     const page = await contexto.newPage();
     try {
-      for (const width of [320, 390, 768, 1440]) for (const rota of ['sectors', 'payroll-lending-aging']) {
+      // 'payroll-lending-aging' saiu da lista em 10/11/2026: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada; os gráficos da página nova são os do kit de painel.
+      for (const width of [320, 390, 768, 1440]) for (const rota of ['sectors']) {
         await page.setViewportSize({width, height: 900});
         await page.goto(servidor.origem + '/observatorio/' + rota);
         await page.locator(rota === 'sectors' ? '#view-sectors svg text' : '#cg-expo .line-chart svg text').first().waitFor();
@@ -288,37 +279,10 @@ describe.skipIf(!temBuild && !exigirBuild)("Pix: leitura equivalente e recorte p
     } finally { await page.close(); }
   }, 60_000);
 
-  it("cinco municípios preservam comparação tabular e rolagem por teclado no celular", async () => {
-    const page = await contexto.newPage();
-    try {
-      for (const width of [320, 390]) {
-        await page.setViewportSize({width, height: 900});
-        await page.goto(servidor.origem + '/observatorio/payroll-lending-aging');
-        for (let i = 0; i < 5; i++) await page.locator('#cg-mapa .penlista button').nth(i).click();
-        const regiao = page.getByRole('region', {name: 'Comparação de indicadores dos municípios selecionados'});
-        const tabela = regiao.locator('table');
-        expect(await tabela.locator('thead th').count()).toBe(7);
-        expect(await tabela.locator('thead th').last().textContent()).toBe('Natureza do dado');
-        expect(await tabela.getAttribute('class')).not.toContain('t-stack');
-        const celulaInicial = await tabela.locator('tbody tr').first().locator('td').first().evaluate(e => {
-          const cont = e.closest('.tblwrap')!, tabela = e.closest('table')!;
-          const r = e.getBoundingClientRect(), area = cont.getBoundingClientRect();
-          const medir = (n: Element) => { const b = n.getBoundingClientRect(), c = getComputedStyle(n); return { texto: n.textContent?.trim().slice(0, 80), x: b.x, right: b.right, width: b.width, font: c.font, whiteSpace: c.whiteSpace, borderLeft: c.borderLeftWidth, borderRight: c.borderRightWidth }; };
-          return { cabe: r.right <= area.right + 1, celula: medir(e), area: medir(cont), primeiraColuna: medir(e.previousElementSibling!), cabecalho: medir(tabela.querySelectorAll('thead th')[1]), clientWidth: cont.clientWidth, offsetWidth: (cont as HTMLElement).offsetWidth, scrollLeft: cont.scrollLeft, scrollWidth: cont.scrollWidth, viewport: innerWidth, userAgent: navigator.userAgent, fontes: { status: document.fonts.status, faces: [...document.fonts].map(f => ({family: f.family, weight: f.weight, status: f.status})) } };
-        });
-        expect(celulaInicial.cabe, JSON.stringify({ width, chromium: navegador.version(), ...celulaInicial })).toBe(true);
-        const antes = await tabela.locator('tbody tr').allTextContents();
-        expect(antes.length).toBeGreaterThan(10);
-        await regiao.focus();
-        await page.keyboard.press('End');
-        await page.keyboard.press('ArrowRight');
-        await expect.poll(() => regiao.evaluate(e => e.scrollLeft)).toBeGreaterThan(0);
-        expect(await regiao.evaluate(e => e === document.activeElement)).toBe(true);
-        expect(await tabela.locator('tbody tr').allTextContents()).toEqual(antes);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
-      }
-    } finally { await page.close(); }
-  }, 60_000);
+  // Teste aposentado em 10/11/2026: "cinco municípios preservam comparação tabular e rolagem por teclado no celular" (#cg-mapa .penlista da
+  // vista antiga). Motivo: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada.
+  // A comparação de até cinco municípios da página nova (sete colunas, rolagem só na tabela, sem rolagem da página) está em
+  // src/tests/familias-paridade-browser.test.ts.
 
   it("âncoras de Pix e Subnacional chegam descobertas nas quatro larguras", async () => {
     const page = await contexto.newPage();

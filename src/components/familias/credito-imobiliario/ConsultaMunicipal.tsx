@@ -3,6 +3,10 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { TabelaDados } from "@/components/painel/TabelaDados";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { MapaMunicipios } from "@/components/familias/MapaMunicipios";
+import { campo as campoUrl, tiposUrl } from "@/lib/painel/estadoUrl";
+import { NAO_SE_APLICA, type ValorClassificavel } from "@/lib/painel/escalas";
 import { CONFIABILIDADE, dinheiro, n0, pc, reais0 } from "./formato";
 
 /** Uma linha de moradia_mun.json (chaves curtas da gold). */
@@ -37,13 +41,38 @@ type Municipio = {
 
 type Metrica = "pgp" | "alp" | "sdom" | "gd";
 
-const METRICAS: Record<Metrica, { rotulo: string; natureza: string; fmt: (m: Municipio) => string }> = {
-  pgp: { rotulo: "Domicílios ainda sendo pagos", natureza: "observado", fmt: (m) => pc(m.pgp) },
-  alp: { rotulo: "Domicílios alugados", natureza: "observado", fmt: (m) => pc(m.alp) },
-  sdom: { rotulo: "Saldo do verbete 169 por domicílio", natureza: "calculado", fmt: (m) => reais0(m.sdom) },
-  gd: { rotulo: "Lacuna de penetração", natureza: "estimado", fmt: (m) => n0(m.gd) },
+const METRICAS: Record<Metrica, { rotulo: string; natureza: string; unidade: string; casas: number; fmt: (m: Municipio) => string }> = {
+  pgp: { rotulo: "Domicílios ainda sendo pagos", natureza: "observado", unidade: "% dos domicílios", casas: 1, fmt: (m) => pc(m.pgp) },
+  alp: { rotulo: "Domicílios alugados", natureza: "observado", unidade: "% dos domicílios", casas: 1, fmt: (m) => pc(m.alp) },
+  sdom: { rotulo: "Saldo do verbete 169 por domicílio", natureza: "calculado", unidade: "R$ por domicílio", casas: 0, fmt: (m) => reais0(m.sdom) },
+  gd: { rotulo: "Lacuna de penetração", natureza: "estimado", unidade: "domicílios", casas: 0, fmt: (m) => n0(m.gd) },
 };
-const REGIOES = ["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"];
+const IDS_METRICAS = Object.keys(METRICAS) as Metrica[];
+const REGIOES = ["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"] as const;
+/** Medida e região do mapa no endereço: o link copiado reabre o mesmo recorte e o voltar do navegador desfaz a escolha. */
+const ESQUEMA = { medida: campoUrl(tiposUrl.opcao(IDS_METRICAS), "pgp"), regiao: campoUrl(tiposUrl.opcao(REGIOES), "todas") };
+
+/** Valor do município no mapa: número, ausência (hachura) ou "não se aplica" (sem lacuna estimada). Ausência nunca vira zero. */
+function valorNoMapa(m: Municipio, k: Metrica): ValorClassificavel {
+  const v = m[k];
+  if (typeof v === "number") return v;
+  return k === "gd" && typeof m.pesp === "number" ? NAO_SE_APLICA : null;
+}
+
+/** O que o estado do município quer dizer na medida escolhida, para a dica e a leitura do mapa. */
+function detalheNoMapa(m: Municipio, k: Metrica): string | null {
+  if (typeof m[k] === "number") return k === "sdom" ? `confiabilidade do saldo: ${CONFIABILIDADE[m.sel] ?? m.sel}` : null;
+  if (k === "sdom") return "nenhuma dependência bancária reporta saldo imobiliário aqui; ausência, não zero";
+  if (k === "gd") return typeof m.pesp === "number" ? "na mediana dos municípios comparáveis ou acima dela: sem lacuna estimada" : "grupo de comparação pequeno demais para estimar";
+  return "o Censo não publica esta parte dos domicílios para o município";
+}
+
+const NOTA_DO_MAPA: Record<Metrica, string> = {
+  pgp: "Observado. Parte dos domicílios próprios ainda sendo pagos, de qualquer forma de pagamento, não só financiamento bancário.",
+  alp: "Observado. Parte dos domicílios alugados no total de domicílios particulares permanentes ocupados.",
+  sdom: "Calculado. O saldo mostra onde a agência escritura o crédito, não onde mora quem o tomou. Hachura: município sem dependência bancária que reporte saldo; ausência, não zero.",
+  gd: "Estimado. Diferença para a mediana de municípios comparáveis; não é demanda comprovada. Em cinza liso, rotulados “não se aplica”: municípios na mediana do grupo ou acima dela. Hachura: grupo pequeno demais para estimar.",
+};
 
 const EXPLICA_CONFIABILIDADE: Record<string, string> = {
   sem_dependencia: "Nenhuma dependência bancária reporta saldo imobiliário neste município. Ausência de saldo não é ausência de crédito: é ausência de agência que o contabilize.",
@@ -81,10 +110,11 @@ function linhasDoPerfil(m: Municipio): [string, string, string][] {
 }
 
 /**
- * Consulta por município do painel Crédito imobiliário e moradia: os 25 maiores municípios numa medida, por região, e o perfil de um
- * município (o que a vista antiga mostrava no mapa, na lista ao lado e no perfil). O arquivo dos 5.570 municípios (2,5 MB) não entra no
- * HTML: é pedido quando o bloco se aproxima da tela, ou de imediato quando o endereço já traz `?municipio=`. Nada é calculado além da
- * ordenação e das partes do total de domicílios que a vista antiga já mostrava.
+ * Consulta por município do painel Crédito imobiliário e moradia: o mapa municipal em quatro medidas, com filtro de região, os 25
+ * maiores municípios na medida e o perfil de um município (o mapa, a lista ao lado e o perfil da vista antiga, morMapa e morPerfil em
+ * public/obs/app.js). O arquivo dos 5.570 municípios (2,5 MB) e a malha do IBGE (1,3 MB) não entram no HTML: são pedidos quando o bloco
+ * se aproxima da tela, ou de imediato quando o endereço já traz `?municipio=`. Medida, região e município ficam no endereço. Nada é
+ * calculado além da ordenação, das classes do mapa e das partes do total de domicílios que a vista antiga já mostrava.
  */
 export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEstban }: { arquivo: string; nomesInstituicoes: string[]; censoAno: number; baseEstban: string }) {
   const id = useId();
@@ -94,8 +124,9 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
   const pedido = parametros?.get("municipio") ?? null;
   const [estado, setEstado] = useState<"espera" | "carregando" | "pronto" | "erro">("espera");
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
-  const [metrica, setMetrica] = useState<Metrica>("pgp");
-  const [regiao, setRegiao] = useState("todas");
+  const [url, setUrl] = useEstadoUrl(ESQUEMA);
+  const metrica: Metrica = url.medida;
+  const regiao = url.regiao;
   const [busca, setBusca] = useState("");
   const [sel, setSel] = useState<string | null>(pedido);
 
@@ -141,7 +172,11 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
     setSel(c);
     setBusca("");
     try {
-      window.history.replaceState(null, "", `?municipio=${c}#municipios`);
+      // os demais parâmetros (medida, região) ficam como estão
+      const u = new URL(window.location.href);
+      u.searchParams.set("municipio", c);
+      u.hash = "municipios";
+      window.history.replaceState(window.history.state, "", u);
     } catch {
       // o endereço é conveniência; a escolha vale mesmo sem ele
     }
@@ -150,6 +185,10 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
 
   const recorte = useMemo(() => municipios.filter((m) => regiao === "todas" || m.reg === regiao), [municipios, regiao]);
   const M = METRICAS[metrica];
+  const idsDoMapa = useMemo(() => recorte.map((x) => x.c), [recorte]);
+  const porCodigo = useMemo(() => new Map(recorte.map((x) => [x.c, x])), [recorte]);
+  const valoresDoMapa = useMemo(() => Object.fromEntries(recorte.map((x) => [x.c, valorNoMapa(x, metrica)])), [recorte, metrica]);
+  const fonteDaMedida = metrica === "pgp" || metrica === "alp" ? `IBGE, Censo ${censoAno}` : metrica === "sdom" ? `Banco Central, ESTBAN, ${baseEstban}, e IBGE, Censo ${censoAno}` : `estimativa sobre o Censo ${censoAno}`;
   const maiores = useMemo(() => recorte.filter((m) => typeof m[metrica] === "number").sort((a, b) => (b[metrica] as number) - (a[metrica] as number)).slice(0, 25), [recorte, metrica]);
   const achados = useMemo(() => {
     const q = semAcento(busca.trim());
@@ -175,17 +214,17 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
               </button>
             </>
           ) : (
-            <p className="t-corpo max-w-prose2 text-carvao-muted">Carregando os dados dos 5.570 municípios (arquivo de 2,5 MB, pedido só quando esta parte da página é aberta).</p>
+            <p className="t-corpo flex min-h-[400px] max-w-prose2 items-center text-carvao-muted">Carregando os dados dos 5.570 municípios e o mapa (arquivos de 2,5 MB e 1,3 MB, pedidos só quando esta parte da página é aberta).</p>
           )}
         </div>
       ) : (
         <>
-          <div role="group" aria-label="Recorte da lista de municípios" className="flex flex-wrap items-end gap-x-6 gap-y-3 border-y border-linha py-3">
+          <div role="group" aria-label="Recorte do mapa e da lista de municípios" className="flex flex-wrap items-end gap-x-6 gap-y-3 border-y border-linha py-3">
             <div>
               <p className="text-sm text-carvao-muted">Medida</p>
               <div className="mt-1 flex flex-wrap gap-2">
-                {(Object.keys(METRICAS) as Metrica[]).map((k) => (
-                  <button key={k} type="button" aria-pressed={k === metrica} onClick={() => setMetrica(k)} className={botao(k === metrica)}>
+                {IDS_METRICAS.map((k) => (
+                  <button key={k} type="button" aria-pressed={k === metrica} onClick={() => setUrl({ medida: k })} className={botao(k === metrica)}>
                     {METRICAS[k].rotulo}
                   </button>
                 ))}
@@ -193,7 +232,7 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
             </div>
             <label htmlFor={`${id}-regiao`} className="block text-sm text-carvao-muted">
               Região
-              <select id={`${id}-regiao`} value={regiao} onChange={(e) => setRegiao(e.target.value)} className={campo}>
+              <select id={`${id}-regiao`} value={regiao} onChange={(e) => setUrl({ regiao: e.target.value as typeof regiao })} className={campo}>
                 {REGIOES.map((r) => (
                   <option key={r} value={r}>
                     {r === "todas" ? "Todas" : r}
@@ -205,12 +244,32 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
               {n0(recorte.length)} municípios no recorte
             </p>
           </div>
-          <div className="mt-6 grid gap-x-10 gap-y-8 lg:grid-cols-2">
-            <div>
+          <div className="mt-6 grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+            <div className="min-w-0" data-mapa-moradia={metrica}>
+              <h3 className="t-h3 text-carvao">{M.rotulo}, por município</h3>
+              <p className="t-meta mb-3 mt-1 max-w-prose2 text-carvao-muted">
+                {regiao === "todas" ? "Brasil" : `Região ${regiao}`}, {n0(recorte.length)} municípios. Toque ou clique num município para abrir o perfil dele, logo abaixo; pelo teclado, use a busca do mapa ou a lista ao lado.
+              </p>
+              <MapaMunicipios
+                chave={regiao}
+                paisInteiro={regiao === "todas"}
+                titulo={`${M.rotulo}, por município`}
+                ids={idsDoMapa}
+                valores={valoresDoMapa}
+                unidade={M.unidade}
+                casas={M.casas}
+                periodo={fonteDaMedida}
+                nota={NOTA_DO_MAPA[metrica]}
+                selecionado={sel && porCodigo.has(sel) ? sel : null}
+                onSelecionar={(c) => { if (c) escolher(c); }}
+                detalheRegiao={(c) => { const x = porCodigo.get(c); return x ? detalheNoMapa(x, metrica) : null; }}
+              />
+            </div>
+            <div className="min-w-0">
               <h3 className="t-h3 text-carvao">Os 25 maiores em {M.rotulo.toLowerCase()}</h3>
               <TabelaDados
                 titulo={`Os 25 municípios com maior valor em ${M.rotulo.toLowerCase()}${regiao === "todas" ? "" : `, região ${regiao}`}`}
-                colunas={["Município", "UF", M.rotulo]}
+                colunas={["Município", "UF", M.unidade.charAt(0).toUpperCase() + M.unidade.slice(1)]}
                 linhas={maiores.map((x) => [
                   <button key={x.c} type="button" onClick={() => escolher(x.c)} className={nomeBotao} aria-current={x.c === sel ? "true" : undefined}>
                     {x.n}
@@ -224,7 +283,9 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
                 nota={`Natureza: ${M.natureza}. ${metrica === "pgp" || metrica === "alp" ? `Fonte: IBGE, Censo ${censoAno}.` : metrica === "sdom" ? `Fonte: Banco Central, ESTBAN, ${baseEstban}, e IBGE, Censo ${censoAno}.` : `Estimativa sobre o Censo ${censoAno}: diferença para municípios comparáveis, não demanda comprovada.`} O nome abre o perfil do município.`}
               />
             </div>
-            <div>
+          </div>
+          <div className="mt-8 border-t border-linha pt-6">
+            <div className="max-w-3xl">
               <h3 className="t-h3 text-carvao">Perfil de um município</h3>
               <label htmlFor={`${id}-busca`} className="mt-2 block text-sm text-carvao-muted">
                 Buscar município pelo nome
@@ -274,7 +335,7 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
                     O endereço pede um município que não consta da publicação atual. Busque pelo nome.
                   </p>
                 ) : (
-                  <p className="t-meta max-w-prose2 text-carvao-muted">Escolha um município na lista ao lado, na busca ou nas tabelas de lacuna estimada, mais abaixo.</p>
+                  <p className="t-meta max-w-prose2 text-carvao-muted">Escolha um município no mapa, na lista dos 25 maiores, na busca ou nas tabelas de lacuna estimada, mais abaixo.</p>
                 )}
               </div>
             </div>

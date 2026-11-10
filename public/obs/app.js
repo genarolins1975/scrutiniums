@@ -4625,7 +4625,7 @@ function renderSectorPage() {
       <div class="src">${Object.entries(s.componentes).map(([k, c]) => `${k.replace(/_/g, " ")}: ${c.fonte}`).join(" · ")}</div></div>
     <div class="card"><h4>Antecedentes e previsão</h4>
       <p class="src">Antecedentes promovidos (agregado): spread (6m) e Selic (8m) — aba Protocolo e regimes; triagem setorial específica ainda em preparação.</p>
-      <p class="src"><b>Previsão setorial:</b> informação não disponível — modelos por setor entram após RJ setorial real; o emprego da seção já está no score (<a href="/observatorio/formal-employment" onclick="nav('emprego');return false">Emprego formal</a>).</p></div>
+      <p class="src"><b>Previsão setorial:</b> informação não disponível — modelos por setor entram após RJ setorial real; o emprego da seção já está no score (${linkDaVista("emprego", () => "Emprego formal")}).</p></div>
   </div>
   <div class="grid g2" style="margin-top:12px">
     <div class="card"><h4>${PPESQ.medida} (nível) ${badge("observado")}</h4>
