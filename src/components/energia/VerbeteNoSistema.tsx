@@ -160,7 +160,7 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
           {tx("elo deste verbete", "node of this entry")}
         </li>
       )}
-      {vizinhos.length > 0 && (
+      {NOS_MAPA.some((n) => estadoDe(n.id) === "vizinho") && (
         <li className="inline-flex items-center gap-2">
           <MarcaDoElo estado="vizinho" />
           {tx("elo de verbete relacionado", "node of a related entry")}

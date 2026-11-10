@@ -50,7 +50,7 @@ function rotuloDaMarca(m: MarcaDoEixo): string {
 
 const ROTULO_EVENTO = (): Record<IdEvento, string> => ({
   fim_periodo: tx("Fim do último período disponível", "End of the latest period available"),
-  publicacao_fonte: tx("Última publicação informada pela fonte", "Latest publication reported by the source"),
+  publicacao_fonte: tx("Última publicação pela fonte", "Latest publication by the source"),
   captura: tx("Última captura pelo observatório", "Latest capture by the observatory"),
   publicacao: tx("Data de referência desta publicação", "Reference date of this publication"),
   prazo: tx("Prazo da próxima atualização", "Deadline for the next update"),
@@ -134,13 +134,17 @@ export function FormaDoConjunto({
 }) {
   const { periodo, eixo, quebras, eventos, atraso } = forma;
   const rotulos = ROTULO_EVENTO();
+  // vigência ("início|fim|ato"): a régua vai do início da primeira ao fim da última; o ato de cada uma está na página do painel
+  const ponta = (ref: string, parte: 0 | 1) => (ref.includes("|") ? dataBR(ref.split("|")[parte] || ref.split("|")[0]) : refLegivel(ref));
   const dePara = periodo
-    ? periodo.unico
+    ? periodo.unico && !periodo.refMin.includes("|")
       ? refLegivel(periodo.refMin)
-      : tx(`de ${refLegivel(periodo.refMin)} a ${refLegivel(periodo.refMax)}`, `from ${refLegivel(periodo.refMin)} to ${refLegivel(periodo.refMax)}`)
+      : tx(`de ${ponta(periodo.refMin, 0)} a ${ponta(periodo.refMax, 1)}`, `from ${ponta(periodo.refMin, 0)} to ${ponta(periodo.refMax, 1)}`)
     : null;
+  // "referência diária", "referência mensal"; o que não é adjetivo de período ("vigências", "cadência irregular") fica como o pipeline escreve
+  const ehPeriodo = /^(diária|mensal|anual|horária|semanal|trimestral|semi-horária)$/.test(dado?.granularidade ?? "");
   const medida = [
-    dado?.granularidade ? tx(`referência ${granularidadeNoIdioma(dado.granularidade)}`, `${granularidadeNoIdioma(dado.granularidade)} reference`) : null,
+    dado?.granularidade ? (ehPeriodo ? tx(`referência ${granularidadeNoIdioma(dado.granularidade)}`, `${granularidadeNoIdioma(dado.granularidade)} reference`) : granularidadeNoIdioma(dado.granularidade)) : null,
     dado?.series ? tx(plural(dado.series, "série", "séries"), `${plural(dado.series, "series", "series")}`) : null,
   ].filter(Boolean);
   const lacunas =
@@ -184,6 +188,8 @@ export function FormaDoConjunto({
                   <line x1={pc(0)} x2={pc(1)} y1="25" y2="25" stroke="var(--cor-linha)" strokeWidth="1" />
                   {/* a barra: da primeira referência à última já alcançada pela data da publicação; contorno de 2 px para um único dia continuar visível */}
                   <rect x={pc(periodo.x0)} y="18" width={larg(periodo.x0, periodo.x1)} height="14" fill="var(--cor-energia)" stroke="var(--cor-energia)" strokeWidth="2" />
+                  {/* retângulo de largura zero não é desenhado: o traço de 3 px marca a primeira referência mesmo quando o período é um único dia */}
+                  <line x1={pc(periodo.x0)} x2={pc(periodo.x0)} y1="17" y2="33" stroke="var(--cor-energia)" strokeWidth="3" />
                   {periodo.xFuturo !== null && (
                     <rect x={pc(periodo.x1)} y="18" width={larg(periodo.x1, periodo.xFuturo)} height="14" fill="url(#forma-hachura)" stroke="var(--cor-energia)" strokeWidth="1" data-futuro="" />
                   )}

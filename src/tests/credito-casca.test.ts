@@ -248,7 +248,9 @@ describe("4. o app.js usa a casca da plataforma", () => {
   });
 
   it("a cada página, a casca é refeita pelo índice que o servidor embute", () => {
-    expect(app).toMatch(/function showViewSilent\(v\) \{\n  refazTrilha\(\);\n  refazCasca\(\);/);
+    // desde 10/11/2026 (decisão do dono) a função começa pela saída para a página nova das vistas redirecionadas; a casca é
+    // refeita logo depois, antes de qualquer desenho, como antes
+    expect(app).toMatch(/function showViewSilent\(v\) \{\n[^\n]*\n  const sub = substituta\(v\);\n  if \(sub\) \{ location\.replace\(sub\.rota\); return; \}\n  refazTrilha\(\);\n  refazCasca\(\);/);
     expect(app).toContain('document.getElementById("navColecaoIndice")');
     expect(app).toContain("C.htmlNavegacao(nav, caminho)");
     expect(app).toContain("C.htmlParaIrAlem(ind, caminho)");
