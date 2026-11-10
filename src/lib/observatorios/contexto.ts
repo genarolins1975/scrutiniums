@@ -31,7 +31,7 @@ function resumoDosObservatorios(): IndiceContexto["observatorios"] {
   }));
 }
 
-/** Índice inteiro: os seis observatórios, as 28 coleções e todos os painéis do registro. */
+/** Índice inteiro: os seis observatórios, as 24 coleções e todos os painéis do registro. */
 export function indiceCompleto(): IndiceContexto {
   return { observatorios: resumoDosObservatorios(), paineis: paineis().map((p) => [p.rota, p.titulo, p.observatorio, p.colecao] as const) };
 }

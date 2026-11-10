@@ -1,6 +1,6 @@
 /**
  * Barra comum da plataforma na SPA do Crédito (public/obs/index.html), que é HTML estático e não renderiza React.
- * Fonte única dos rótulos: o registro dos seis observatórios e das suas 28 coleções (lista.ts), o mesmo que a
+ * Fonte única dos rótulos: o registro dos seis observatórios e das suas 24 coleções (lista.ts), o mesmo que a
  * barra dos outros observatórios lê (src/components/layout/BarraPlataforma.tsx e CabecalhoPlataforma.tsx). O trecho do
  * index.html entre os marcadores é gerado por scripts/barra-spa.mjs a partir desta função, e o teste cabecalho-movel
  * confere que o arquivo publicado é igual ao gerado: mudou o registro, muda a SPA.

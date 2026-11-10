@@ -6,7 +6,7 @@ import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { caminhoAtual, colecaoDoDominio, indiceDoCaminho } from "@/lib/observatorios/contexto";
 
 /**
- * Seletor discreto da coleção corrente ("Setor Elétrico ▾"), com as 28 coleções do registro agrupadas pelos seis
+ * Seletor discreto da coleção corrente ("Setor Elétrico ▾"), com as 24 coleções do registro agrupadas pelos seis
  * observatórios (src/lib/observatorios/lista.ts). A coleção atual é a dona do endereço no registro (contextoPuro.ts),
  * a mesma que o rótulo acima do H1 (RotuloContexto) e a trilha (Trilha) mostram, resolvida também no navegador a cada
  * navegação (SeletorColecoes); `atual` só vale quando o endereço não está no registro. <details> nativo: funciona sem
