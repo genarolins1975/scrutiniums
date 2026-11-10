@@ -428,7 +428,7 @@ export default function PaginaSancoes() {
               resumo={`${n0(recentesBcb.length)} decisões do Banco Central e ${n0(recentesCvm.length)} processos da CVM, em ordem cronológica, nunca por valor ou por nome.`}
             >
               <Corpo>
-                <Nota>Dados públicos do próprio supervisor, reproduzidos como publicados. A ordem é a da data, da mais recente para a mais antiga; nenhuma coluna é ordenável nesta página.</Nota>
+                <Nota>Dados públicos do próprio supervisor. O nome aparece só quando o apenado é pessoa jurídica; o de pessoa física não é exibido nesta página. A ordem é a da data, da mais recente para a mais antiga; nenhuma coluna é ordenável.</Nota>
                 <TabelaDados
                   recolhida={false}
                   id="recentes-bcb"
@@ -437,7 +437,8 @@ export default function PaginaSancoes() {
                   colunas={["Decisão", "Apenado", "Pessoa", "Penalidade", "Multa, R$", "Recurso", "Situação"]}
                   linhas={recentesBcb.map((x) => [
                     dataOuVazio(x.decisao),
-                    String(x.nome),
+                    // decisão do dono de 10/11/2026: nome de pessoa física não é exibido; só o de pessoa jurídica
+                    String(x.pessoa) === "PJ" ? String(x.nome) : null,
                     PESSOA[String(x.pessoa)] ?? null,
                     x.pena ? frase(x.pena) : null,
                     typeof x.multa === "number" && x.multa > 0 ? x.multa : null,
@@ -445,7 +446,7 @@ export default function PaginaSancoes() {
                     x.situacao ? frase(x.situacao) : null,
                   ])}
                   casas={[null, null, null, null, 2, null, null]}
-                  ausencia={{ "Multa, R$": "sem multa nesta decisão", Recurso: "não informado", Situação: "não informada", Pessoa: "não informada", Penalidade: "não informada" }}
+                  ausencia={{ Apenado: "pessoa física, nome não exibido", "Multa, R$": "sem multa nesta decisão", Recurso: "não informado", Situação: "não informada", Pessoa: "não informada", Penalidade: "não informada" }}
                   idiomaTexto={[null, "nome", null, null, null, null, null]}
                   limite={recentesBcb.length}
                 />

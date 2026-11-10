@@ -125,7 +125,12 @@ describe("Sanções e reclamações no molde de painel", () => {
     const B = D.bcb, C = D.cvm;
     const bcb = linhasDe(porId("recentes-bcb")).slice(1);
     expect(bcb.map((l) => l[0])).toEqual(B.recentes.map((x: { decisao: string }) => dataBr(x.decisao)));
-    expect(bcb.map((l) => l[1])).toEqual(B.recentes.map((x: { nome: string }) => x.nome));
+    // decisão do dono de 10/11/2026: nome de pessoa física não é exibido; o de pessoa jurídica segue como publicado
+    const pj = B.recentes.filter((x: { pessoa: string }) => x.pessoa === "PJ");
+    const pf = B.recentes.filter((x: { pessoa: string }) => x.pessoa !== "PJ");
+    expect(bcb.filter((_, i) => B.recentes[i].pessoa === "PJ").map((l) => l[1])).toEqual(pj.map((x: { nome: string }) => x.nome));
+    expect(pf.length).toBeGreaterThan(0);
+    for (const x of pf as { nome: string }[]) expect(html.toUpperCase(), "nome de pessoa física no HTML").not.toContain(x.nome.toUpperCase());
     const datas = B.recentes.map((x: { decisao: string }) => x.decisao);
     expect([...datas].sort().reverse()).toEqual(datas);
     const cvm = linhasDe(porId("recentes-cvm")).slice(1);
