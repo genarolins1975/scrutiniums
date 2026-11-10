@@ -5,7 +5,7 @@ import { refLegivel } from "@/lib/energia/dados";
 import type { FormaDoConjunto as Forma, IdEvento, MarcaDoEixo } from "@/lib/energia/forma-conjunto";
 import { dataBR, fracPct, mesAno, num, plural } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
-import type { DadoConjunto } from "@/lib/energia/tipos-dados";
+import type { DadoConjunto, Etapas } from "@/lib/energia/tipos-dados";
 
 /**
  * Figura da ficha de um conjunto de dados (/setor-eletrico/dados/<conjunto>): a forma real do dado daquele conjunto, em três partes.
@@ -59,7 +59,7 @@ const ROTULO_EVENTO = (): Record<IdEvento, string> => ({
 /** A marca de cada data: a forma muda de uma para a outra, e a cor nunca é o único sinal. Desenhada em torno de (0, 0). */
 function Marca({ id }: { id: IdEvento }) {
   if (id === "fim_periodo") return <rect x="-5" y="-5" width="10" height="10" fill="var(--cor-energia)" />;
-  if (id === "publicacao_fonte") return <path d="M0 -6.5 L6.5 0 L0 6.5 L-6.5 0 Z" fill="var(--cor-papel)" stroke="var(--cor-carvao)" strokeWidth="1.5" />;
+  if (id === "publicacao_fonte") return <circle r="5" fill="var(--cor-papel)" stroke="var(--cor-carvao)" strokeWidth="1.75" />;
   if (id === "captura") return <circle r="5.5" fill="var(--cor-carvao)" />;
   if (id === "prazo") return <path d="M0 -6 L6.5 5 L-6.5 5 Z" fill="var(--cor-papel)" stroke="var(--cor-carvao)" strokeWidth="1.5" strokeLinejoin="round" />;
   return <rect x="-1.5" y="-8" width="3" height="16" fill="var(--cor-carvao)" />;
@@ -71,6 +71,36 @@ function Glifo({ id }: { id: IdEvento }) {
       <Marca id={id} />
     </svg>
   );
+}
+
+/** O que a publicação registra em cada etapa alcançada, em poucas palavras; nulo quando ela não traz contagem para a etapa. */
+function fatoDaEtapa(id: EvidenciaEtapa["id"], et: Etapas | null | undefined, paginas: number): string | null {
+  if (id === "catalogado") {
+    const origem = et?.catalogado?.origem;
+    if (origem === "registro") return tx("no registro do observatório.", "in the observatory register.");
+    if (origem === "listagem") return tx("na listagem oficial do portal da fonte.", "in the official listing of the source portal.");
+    return null;
+  }
+  if (id === "recurso_verificado") {
+    const v = et?.recurso_verificado;
+    if (!v?.arquivos && !v?.capturas) return null;
+    const partes = [v.arquivos ? tx(plural(v.arquivos, "arquivo", "arquivos"), plural(v.arquivos, "file", "files")) : null, v.capturas ? tx(plural(v.capturas, "captura com sha256", "capturas com sha256"), plural(v.capturas, "capture with sha256", "captures with sha256")) : null];
+    return `${partes.filter(Boolean).join(tx(" em ", " in "))}.`;
+  }
+  if (id === "integrado") {
+    const i = et?.integrado;
+    const partes = [i?.observacoes ? tx(`${num(i.observacoes, 0)} observações`, `${num(i.observacoes, 0)} observations`) : null, i?.registros ? tx(`${num(i.registros, 0)} registros`, `${num(i.registros, 0)} records`) : null];
+    return partes.some(Boolean) ? `${partes.filter(Boolean).join(tx(" e ", " and "))}.` : null;
+  }
+  if (id === "validado") {
+    const v = et?.validado;
+    if (v?.aprovadas === undefined) return null;
+    const partes = [tx(plural(v.aprovadas, "checagem aprovada", "checagens aprovadas"), plural(v.aprovadas, "check passed", "checks passed"))];
+    if (v.ressalvas) partes.push(tx(plural(v.ressalvas, "ressalva", "ressalvas"), plural(v.ressalvas, "caveat", "caveats")));
+    if (v.reprovadas) partes.push(tx(plural(v.reprovadas, "reprovada", "reprovadas"), `${v.reprovadas} failed`));
+    return `${partes.join("; ")}.`;
+  }
+  return paginas > 0 ? tx(`alimenta ${plural(paginas, "página do observatório, listada", "páginas do observatório, listadas")} mais abaixo.`, `feeds ${plural(paginas, "observatory page, listed", "observatory pages, listed")} further down.`) : null;
 }
 
 function Parte({ rotulo, children, id }: { rotulo: string; children: ReactNode; id: string }) {
@@ -88,6 +118,7 @@ export function FormaDoConjunto({
   semPeriodo,
   etapas,
   paginas,
+  contagens,
 }: {
   forma: Forma;
   /** Bloco `dado` da integração (granularidade, séries, completude); ausente quando o conjunto não tem integração publicada. */
@@ -98,6 +129,8 @@ export function FormaDoConjunto({
   etapas: readonly EvidenciaEtapa[];
   /** Quantas páginas do observatório usam o conjunto: a última etapa diz isso no lugar dos nomes de arquivo das bases. */
   paginas: number;
+  /** Etapas da integração publicada (publicacao.json), com as contagens de arquivos, capturas, observações e checagens. */
+  contagens?: Etapas | null;
 }) {
   const { periodo, eixo, quebras, eventos, atraso } = forma;
   const rotulos = ROTULO_EVENTO();
@@ -274,11 +307,9 @@ export function FormaDoConjunto({
               const ok = e.situacao === "sim";
               const proximaOk = etapas[i + 1]?.situacao === "sim";
               const ultima = i === etapas.length - 1;
-              // na última etapa, o leitor comum quer saber onde o dado aparece; os nomes de arquivo das bases ficam em Analisar, mais abaixo
-              const detalhe =
-                e.id === "publicado" && ok && paginas > 0
-                  ? tx(`alimenta ${plural(paginas, "página do observatório, listada", "páginas do observatório, listadas")} mais abaixo.`, `feeds ${plural(paginas, "observatory page, listed", "observatory pages, listed")} further down.`)
-                  : e.detalhe;
+              // as contagens são as da integração publicada; na última etapa, o leitor comum quer saber onde o dado aparece (os nomes de
+              // arquivo das bases ficam em Analisar, mais abaixo). Sem contagem publicada, vale a evidência do catálogo.
+              const detalhe = (ok ? fatoDaEtapa(e.id, contagens, paginas) : null) ?? e.detalhe;
               return (
                 <li key={e.id} className="relative min-w-0 pb-5 pl-9 sm:pb-0 sm:pl-0 sm:pt-9" data-etapa={e.id} data-situacao={e.situacao}>
                   {/* o fio que liga uma etapa à seguinte: vertical no celular, horizontal a partir de 640 px; tracejado quando a seguinte não foi alcançada */}

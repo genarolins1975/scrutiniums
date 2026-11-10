@@ -136,6 +136,22 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
     ...O_QUE_O_MAPA_NAO_DIZ,
   ];
 
+  // verbetes relacionados agrupados pelo elo (ou pelos elos) em que aparecem, na ordem do mapa
+  const grupos = NOS_MAPA.map((n) => ({ no: n, nomes: vizinhosDe(n.id) })).filter((g) => g.nomes.length > 0);
+  const blocoVizinhos = grupos.length > 0 && (
+    <div data-vizinhos="">
+      <h3 className="rotulo text-mineral">{tx("Verbetes relacionados, por elo", "Related entries, by node")}</h3>
+      <ul className="mt-2 space-y-1 text-sm leading-relaxed text-carvao">
+        {grupos.map((g) => (
+          <li key={g.no.id}>
+            <span className="text-carvao-muted">{g.no.titulo}: </span>
+            <span className="font-medium">{g.nomes.join(", ")}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
   const legendaDeMarcas = (
     <ul className="t-meta flex flex-wrap gap-x-5 gap-y-1 text-carvao-muted" data-legenda-marcas="">
       {elos.length > 0 && (
@@ -239,6 +255,7 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
                   ))}
                 </ul>
               </div>
+              {blocoVizinhos && <div className="mt-8">{blocoVizinhos}</div>}
             </div>
 
             {/* o mapa vertical: é o mapa no celular e a versão lida por leitor de tela em qualquer largura */}
@@ -296,27 +313,17 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
                 <ul className="mt-2">
                   {ligacoes.map((l) => (
                     <li key={`${l.de}-${l.para}`} className="border-t border-linha py-2.5 text-sm leading-relaxed text-carvao" data-tipo={l.tipo}>
-                      <span className="flex flex-wrap items-center gap-x-2 text-carvao-muted">
-                        <Amostra tipo={l.tipo} />
-                        <span className="rotulo">{TIPOS_LIGACAO[l.tipo].rotulo}</span>
+                      <span className="flex items-start gap-x-3">
+                        <span className="mt-1">
+                          <Amostra tipo={l.tipo} />
+                        </span>
+                        <span className="min-w-0 font-medium">
+                          {porId.get(l.de)!.titulo} {l.tipo === "associacao" ? "↔" : "→"} {porId.get(l.para)!.titulo}
+                        </span>
                       </span>
-                      <span className="mt-1 block font-medium">
-                        {porId.get(l.de)!.titulo} {l.tipo === "associacao" ? "↔" : "→"} {porId.get(l.para)!.titulo}
+                      <span className="mt-0.5 block text-carvao-muted">
+                        {TIPOS_LIGACAO[l.tipo].rotulo}. {l.texto}
                       </span>
-                      <span className="block text-carvao-muted">{l.texto}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {vizinhos.length > 0 && (
-              <div data-vizinhos="">
-                <h3 className="rotulo text-mineral">{tx("Verbetes relacionados, por elo", "Related entries, by node")}</h3>
-                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-carvao">
-                  {vizinhos.map((v) => (
-                    <li key={v.slug}>
-                      <span className="font-medium">{nomeCurto(v.slug)}</span>
-                      <span className="text-carvao-muted">: {lista(v.elos.map((n) => porId.get(n)!.titulo))}</span>
                     </li>
                   ))}
                 </ul>

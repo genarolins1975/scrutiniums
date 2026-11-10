@@ -216,6 +216,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   semPeriodo={fraseReferencia(integr[0], integr.length > 0)}
                   etapas={evidenciaEtapas(e)}
                   paginas={d.paginas.length}
+                  contagens={integr[0]?.etapas ?? null}
                 />
               )}
 
