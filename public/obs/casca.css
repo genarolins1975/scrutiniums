@@ -42,13 +42,16 @@
 .casca .mt-3 { margin-top: 0.75rem; }
 .casca .mt-4 { margin-top: 1rem; }
 .casca .mt-6 { margin-top: 1.5rem; }
+.casca .block { display: block; }
 .casca .flex { display: flex; }
 .casca .inline-flex { display: inline-flex; }
 .casca .grid { display: grid; }
 .casca .hidden { display: none; }
 .casca .h-0\.5 { height: 0.125rem; }
+.casca .h-16 { height: 4rem; }
 .casca .min-h-\[32px\] { min-height: 32px; }
 .casca .min-h-\[44px\] { min-height: 44px; }
+.casca .w-full { width: 100%; }
 .casca .min-w-0 { min-width: 0px; }
 .casca .max-w-page { max-width: 76rem; }
 .casca .max-w-prose2 { max-width: 44rem; }
@@ -84,6 +87,7 @@
 .casca .bg-gas { background-color: var(--cor-gas); }
 .casca .bg-papel { background-color: var(--cor-papel); }
 .casca .bg-superficie { --tw-bg-opacity: 1; background-color: rgb(var(--cor-superficie-rgb) / var(--tw-bg-opacity, 1)); }
+.casca .object-cover { object-fit: cover; }
 .casca .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
 .casca .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
 .casca .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
@@ -119,14 +123,15 @@
  .casca .motion-safe\:transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
  .casca .motion-safe\:duration-150 { transition-duration: 150ms; } }
 @media (min-width: 640px) {
- .casca .sm\:flex { display: flex; }
- .casca .sm\:hidden { display: none; }
  .casca .sm\:min-h-\[40px\] { min-height: 40px; }
  .casca .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 768px) {
+ .casca .md\:h-24 { height: 6rem; }
  .casca .md\:grid-cols-\[minmax\(0\2c 1fr\)_auto\] { grid-template-columns: minmax(0,1fr) auto; }
  .casca .md\:items-start { align-items: flex-start; } }
 @media (min-width: 1024px) {
+ .casca .lg\:flex { display: flex; }
+ .casca .lg\:hidden { display: none; }
  .casca .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .casca .\[\&\:\:-webkit-scrollbar\]\:hidden::-webkit-scrollbar { display: none; }
 .casca :is(.\[\&\>span\>span\]\:min-w-0>span>span) { min-width: 0px; }

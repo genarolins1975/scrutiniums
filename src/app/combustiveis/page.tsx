@@ -68,7 +68,7 @@ export default function CombustiveisPage() {
         rota={pagina.href}
         acento="gas"
         titulo={pagina.pergunta}
-        frase="Escolha o estado e os litros para calcular o custo do tanque pela média da ANP. O preço de cada posto pode ser diferente."
+        frase="O custo do tanque no seu estado, pela média da ANP. Cada posto tem o seu preço."
         frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/combustiveis"]} conteiner="mx-auto max-w-page px-6" />}
         escala={g.produtos.map((p) => numeroDoIndicador(i[`${p.id}_medio_mes`], `Preço médio do litro: ${p.nome.toLowerCase()}`, "#historico"))}
         notaEscala="Médias nacionais de uma amostra de postos no mês: não são o preço de um posto."

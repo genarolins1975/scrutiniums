@@ -102,7 +102,11 @@ function gas(): Montagem {
 function combustiveis(): ItemNav {
   const painel = PAGINAS_COMBUSTIVEIS.find((p) => p.href === ROTA_COMBUSTIVEIS);
   const consulta = leva2Aprovada("quanto-custa-encher-o-tanque") ? PAGINAS_COMBUSTIVEIS.find((p) => p.href === ROTA_CONSULTA_TANQUE) : undefined;
-  return grupo("Combustíveis", [pagina(painel?.rotulo ?? "Preços nos postos", ROTA_COMBUSTIVEIS), ...(consulta ? [pagina(consulta.rotulo, consulta.href)] : [])]);
+  // Item simples, sem segunda linha: como grupo, /combustiveis media 263 px de cromo a 1440 (teto 230) e 240 a 390 (teto 200) e
+  // empurrava a resposta do estado para fora da primeira tela (verificar:pr de 10/11/2026). A consulta por estado fica a um
+  // clique na própria página, que a lista primeiro nos destinos.
+  void painel; void consulta;
+  return pagina("Combustíveis", ROTA_COMBUSTIVEIS);
 }
 
 // --------------------------------------------------------------- Saneamento
