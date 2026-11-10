@@ -58,7 +58,7 @@ export default function PaginaApostas() {
       rotulo: k.rotulo,
       formato: "texto" as const,
       valorTexto: k.exibir,
-      unidade: unidadeSemRepetir(k.exibir, k.unidade),
+      unidade: unidadeSemRepetir(k.exibir, k.unidade, k.periodo),
       periodo: k.periodo,
       fonte: k.fonte,
       natureza: naturezaDoItem(k),
@@ -123,6 +123,12 @@ export default function PaginaApostas() {
   const MI = B.mercado_ilegal;
   const o: any[] = E.serie.obs;
   const ult = o[o.length - 1];
+  // Auditoria de 10/11/2026, melhoria 17: a frase "o que mudou" lia percentuais escritos à mão e omitia a queda de 2026; agora sai da gold
+  const anoDaEpae = (ano: number) => (E.anuais as any[]).find((x) => x.ano === ano && x.completo);
+  const a24 = anoDaEpae(2024);
+  const a25 = anoDaEpae(2025);
+  const aParcial = (E.anuais as any[]).find((x) => !x.completo && x.ano > 2025);
+  const positivosAntes = o.filter((x) => String(x.ref).startsWith("2024") && x.liquido > 0);
   const comp = E.comparacao;
   const T = E.taxonomia;
   const provEpae = (natureza: "OBSERVADO" | "CALCULADO", indicador: string, formula: string | null = null) =>
@@ -628,9 +634,18 @@ export default function PaginaApostas() {
               }
               oQueMudou={
                 <>
-                  Duas mudanças de patamar acontecem em 2025. O sinal do líquido se inverte: até 2024 a seção devolvia às pessoas mais do que recebia; a partir de janeiro de 2025 passa a
-                  absorver saldo. E o peso da seção salta de cerca de 2% para cerca de 12% de tudo o que pessoas físicas pagam a empresas por Pix (calculado); as outras divisões da seção
-                  não crescem nesse ritmo.
+                  {a24 && a25 && a24.liquido < 0 && a25.liquido > 0 ? (
+                    <>
+                      O líquido anual muda de sinal em 2025: em 2024 a seção devolveu às pessoas R$ {num(Math.abs(a24.liquido), 1)} bi a mais do que recebeu, e em 2025 recebeu R${" "}
+                      {num(a25.liquido, 1)} bi a mais do que devolveu{positivosAntes.length ? <>; mês a mês, o líquido já tinha sido positivo em {positivosAntes.map((x) => mesAno(x.ref)).join(" e ")}</> : null}.{" "}
+                    </>
+                  ) : null}
+                  {a24 && a25 ? (
+                    <>
+                      O peso da seção em tudo o que pessoas físicas pagam a empresas por Pix passa de {num(a24.participacao, 1)}% em 2024 para {num(a25.participacao, 1)}% em 2025 (calculado)
+                      {aParcial ? <>; em {aParcial.ano}, com {aParcial.meses} meses publicados, é de {num(aParcial.participacao, 1)}%, e em {mesAno(ult.ref)}, de {num(ult.participacao, 1)}%</> : null}.
+                    </>
+                  ) : null}
                 </>
               }
               comoInterpretar={

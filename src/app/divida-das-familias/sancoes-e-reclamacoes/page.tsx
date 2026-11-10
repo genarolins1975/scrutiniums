@@ -46,6 +46,12 @@ const PESSOA: Record<string, string> = { PF: "Pessoa física", PJ: "Pessoa jurí
  * ranking de reclamações. Regra editorial mantida: nenhuma lista ordenada por instituição, multa ou nome; o que é nominal aparece em
  * ordem cronológica e não é ordenável.
  */
+/**
+ * "aplicada, não paga", como a gold escreve nas limitações da multa, lê-se como afirmação de que a multa não foi paga; o dado é o valor
+ * aplicado na decisão e a situação de pagamento está na cobrança (auditoria de 10/11/2026, achado 11). A correção de origem é na gold.
+ */
+const multaAplicada = (t: string) => t.replace(/\baplicad([ao]s?), não pag[ao]s?\b/gi, "valor aplicado, não valor pago");
+
 export default function PaginaSancoes() {
   const { D, B, C, R } = dadosSancoes();
   const cabecalho = (
@@ -247,7 +253,7 @@ export default function PaginaSancoes() {
                 frequencia: "contínua, agregada por ano",
                 inicio: String(B.primeira_decisao),
                 fim: String(B.ultima_decisao),
-                limitacoes: ["Multa aplicada, não paga; a cobrança tem situação própria.", "Valores nominais, sem correção pela inflação."],
+                limitacoes: ["Valor de multa aplicada, não de multa paga; a cobrança tem situação própria.", "Valores nominais, sem correção pela inflação."],
               })}
               leitura={
                 <LeituraGuiada>
@@ -544,7 +550,7 @@ export default function PaginaSancoes() {
               recolhida={false}
               titulo="Catálogo dos indicadores: definição, unidade, fonte e limitações"
               colunas={["Indicador", "Definição", "Unidade", "Fonte", "Limitações"]}
-              linhas={(D.catalogo as any[]).map((c) => [limpar(c.nome), limpar(c.definicao), limpar(c.unidade), limpar(c.fonte), limpar(c.limitacoes).replace(/'finalizado'/, "finalizado")])}
+              linhas={(D.catalogo as any[]).map((c) => [limpar(c.nome), limpar(c.definicao), limpar(c.unidade), limpar(c.fonte), multaAplicada(limpar(c.limitacoes)).replace(/'finalizado'/, "finalizado")])}
               limite={D.catalogo.length}
             />
             <div>

@@ -86,6 +86,15 @@ describe("Sanções e reclamações no molde de painel", () => {
       expect(t, e).toContain(e);
   });
 
+  it("a multa é valor aplicado: nenhum número afirma que não foi paga (a base não mede pagamento nesta janela)", () => {
+    // Auditoria de 10/11/2026, achado 11: a unidade dizia "aplicados, não pagos"
+    const faixa = [...nos(painel)].find((n) => attr(n, "data-fatia") === "numeros")!;
+    const multas = [...nos(faixa)].find((n) => attr(n, "data-numero-indicador") !== undefined && /multas/i.test(attr(n, "aria-label") ?? ""))!;
+    expect(textoDe(multas)).toMatch(/aplicad/);
+    // "multa vencida e não paga" é situação de cobrança, medida pela base; o que não pode é o valor aplicado ser chamado de não pago
+    expect(textoDe(painel)).not.toMatch(/aplicad[oa]s?, não pag[oa]s?\b/i);
+  });
+
   it("mostra os valores da gold, sem recalcular", () => {
     const B = D.bcb, C = D.cvm, R = D.reclamacoes;
     const anual = linhasDe(porId("bcb"));

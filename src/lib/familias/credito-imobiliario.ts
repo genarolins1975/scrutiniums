@@ -128,6 +128,54 @@ export function textoDaGold(t: string): string {
     .replace(/^[—–]$/, "");
 }
 
+/** Fração escrita por extenso ("um terço", "metade"): a página só a mostra se vier do número; a gold já publicou uma que não confere. */
+export const FRACAO_POR_EXTENSO = /\b(?:um|uma|dois|duas|três)\s+(?:terços?|quartos?|quintos?|sextos?|décimos?)\b|\b(?:a\s+)?metade\b/i;
+const frases = (t: string) => t.split(/(?<=[.!?])\s+/).filter(Boolean);
+const pct = (v: number, casas: number) => `${v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })}%`;
+
+/**
+ * A frase da concentração contábil, montada do número. A gold publica `concentracao_contabil.part_dessas` (26,23 na publicação de
+ * 10/11/2026) e, no texto `leitura` e no achado correspondente, escreve "Um terço do saldo": a frase da gold está errada e deve ser
+ * corrigida no pipeline (auditoria de 10/11/2026, achado 2). Até lá, a página monta o título do percentual publicado e aproveita da
+ * gold só as frases que não trazem fração por extenso.
+ */
+export function leituraDaConcentracao(d: DadosMoradia): { titulo: string; complemento: string } {
+  return {
+    titulo: `${pct(d.concentracao.part_dessas, 1)} do saldo está escriturado em um ou dois municípios`,
+    complemento: frases(d.concentracao.leitura).filter((f) => !FRACAO_POR_EXTENSO.test(f)).join(" "),
+  };
+}
+
+/**
+ * Os achados como a página os mostra (auditoria de 10/11/2026, achados 2 e 9). O texto vem da gold; três correções ficam na exibição
+ * até o pipeline corrigir a origem, todas com a medida que a própria gold publica e nenhum número novo:
+ * - fração por extenso que o número desmente vira o percentual publicado (ver `leituraDaConcentracao`);
+ * - título com superlativo que a página não demonstra ("menor inadimplência do país": a página não compara com outras modalidades de
+ *   crédito, e a própria gold traz FGTS e home equity com inadimplência maior) vira a medida, com os dois segmentos que o texto cita;
+ * - advérbio de juízo ("apenas", "quase nunca") sai, e o título passa a dizer o que os valores do texto mostram.
+ */
+export function achadosExibidos(d: DadosMoradia): DadosMoradia["achados"] {
+  const inad = d.brasil.inad;
+  const dir = d.brasil.direcionamento;
+  return d.achados.map((a) => {
+    let t = a.t;
+    let texto = a.d;
+    if (FRACAO_POR_EXTENSO.test(t) || FRACAO_POR_EXTENSO.test(texto) || texto === d.concentracao.leitura) {
+      const c = leituraDaConcentracao(d);
+      t = c.titulo;
+      texto = `${d.concentracao.instituicoes_ate_2_municipios} das ${d.concentracao.instituicoes_total} instituições com saldo no verbete 169 contabilizam em no máximo dois municípios. ${c.complemento}`.trim();
+    }
+    if (/\b(?:menor|maior|melhor|pior)\b.*\bdo país\b/i.test(t) && typeof inad.sfh === "number" && typeof inad.livre === "number")
+      t = `Inadimplência de ${pct(inad.sfh, 2)} no SFH e de ${pct(inad.livre, 2)} nas taxas de mercado`;
+    if (/\bquase nunca\b/i.test(t)) {
+      const [aq, co, re] = [dir.aquisicao, dir.construcao, dir.reforma_ampliacao];
+      t = typeof aq === "number" && typeof co === "number" && typeof re === "number" && aq > co && aq > re ? "A aquisição recebe mais recursos da poupança que a construção e a reforma" : "Como se dividem os recursos da poupança aplicados em habitação";
+    }
+    const semJuizo = (x: string) => x.replace(/\b(?:apenas|somente|só)\s+(?=\d)/gi, "");
+    return { ...a, t: semJuizo(t), d: semJuizo(texto) };
+  });
+}
+
 type Base = "censo" | "estban" | "mi" | "scr";
 
 const ORIGEM: Record<Base, { orgao: string; dataset: string; url: string; frequencia: string }> = {

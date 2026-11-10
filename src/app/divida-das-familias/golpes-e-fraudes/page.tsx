@@ -62,7 +62,7 @@ export default function PaginaGolpes() {
       rotulo: k.rotulo,
       formato: "texto" as const,
       valorTexto: k.exibir,
-      unidade: unidadeSemRepetir(k.exibir, k.unidade),
+      unidade: unidadeSemRepetir(k.exibir, k.unidade, k.periodo),
       periodo: k.periodo,
       fonte: k.fonte,
       natureza: naturezaDoItem(k),

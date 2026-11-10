@@ -30,6 +30,7 @@ const ler = (nome: string) => JSON.parse(readFileSync(join(raiz, "public/obs/dat
 const F = ler("fraudes.json");
 const pulse = ler("pulse.json");
 const abas = readFileSync(join(raiz, "src/lib/data/observatorioAbas.ts"), "utf-8");
+const GOLDS_DA_PAGINA = [F];
 const br = (v: number, casas = 0) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 const SITUACAO: Record<string, string> = { oficial: "Fonte primária", calculado: "Calculado", estimativa: "Estimativa", imprensa: "Imprensa, aguarda fonte primária" };
 const NATUREZA: Record<string, string> = { oficial: "OBSERVADO", calculado: "CALCULADO", estimativa: "ESTIMADO" };
@@ -74,10 +75,22 @@ describe("Golpes e fraudes no molde de painel", () => {
     expect(numeros.length).toBeGreaterThanOrEqual(1);
     expect(numeros.length).toBeLessThanOrEqual(4);
     for (const n of numeros) {
-      const k = (F.sintese as Record<string, string>[]).find((x) => x.rotulo === attr(n, "aria-label"));
+      // o número é achado pela prova (fonte e período) e pelo valor, não pelo rótulo: a página corrige rótulo infiel à unidade
+      const k = (F.sintese as Record<string, string>[]).find((x) => `${x.fonte} · ${x.data_ref}` === attr(n, "data-prova-numero") && textoDe(n).includes(x.exibir));
       expect(k, attr(n, "aria-label")).toBeDefined();
       expect(k!.status).not.toBe("imprensa");
-      expect(attr(n, "data-natureza")).toBe(NATUREZA[k!.status]);
+      // Auditoria de 10/11/2026, achado 10. Natureza: a da situação, salvo pesquisa amostral (grau B), que é estimativa e nunca Observado
+      expect(attr(n, "data-natureza")).toBe(k!.nivel === "B" && k!.status === "oficial" ? "ESTIMADO" : NATUREZA[k!.status]);
+      // rótulo fiel à unidade: o que a base conta em solicitações não é chamado de pessoas
+      if (/^solicitaç/i.test(k!.unidade)) expect(attr(n, "aria-label")).not.toMatch(/^pessoas/i);
+      else expect(attr(n, "aria-label")).toBe(k!.rotulo);
+      // a unidade não repete o que o valor já diz: nem "R$ 37,0 bi R$ bilhões", nem "9,3% % do valor"
+      const valorEUnidade = textoDe([...nos(n)].find((x) => x.tagName === "p" && (attr(x, "class") ?? "").includes("leading-none"))!);
+      expect(valorEUnidade).toContain(k!.exibir);
+      expect(valorEUnidade.match(/R\$/g)?.length ?? 0, valorEUnidade).toBeLessThanOrEqual(1);
+      expect(valorEUnidade.match(/%/g)?.length ?? 0, valorEUnidade).toBeLessThanOrEqual(k!.exibir.split("%").length - 1);
+      expect(valorEUnidade.split(k!.exibir).join(""), "a unidade não repete o período da linha de baixo").not.toContain(k!.data_ref);
+      expect(valorEUnidade, valorEUnidade).not.toMatch(/\b(bi|mi)\b.*\b(bilhões|milhões)\b|\/mês.*ao mês/);
       expect(attr(n, "data-prova-numero")).toBe(`${k!.fonte} · ${k!.data_ref}`);
       expect(attr(n, "data-ausente")).toBeUndefined();
       expect(textoDe(n)).toContain(k!.exibir);
@@ -86,12 +99,19 @@ describe("Golpes e fraudes no molde de painel", () => {
     }
   });
 
+  it("a faixa de abertura começa por registro oficial (grau A) e segue a ordem dos graus; estimativa privada nunca abre a página", () => {
+    const faixa = [...nos(painel)].find((n) => attr(n, "data-fatia") === "numeros")!;
+    const graus = [...nos(faixa)].filter((n) => attr(n, "data-grau-evidencia") !== undefined).map((n) => attr(n, "data-grau-evidencia")!);
+    expect(graus[0]).toBe("A");
+    expect(graus).toEqual([...graus].sort());
+  });
+
   it("a síntese traz os oito indicadores com valor, período, grau de evidência e situação da gold", () => {
     expect(F.sintese.length).toBe(8);
     const sintese = [...nos(doc)].find((n) => attr(n, "id") === "sintese")!;
     const linhas = [...nos(sintese)].filter((n) => n.tagName === "tr").map(textoDe);
     for (const k of F.sintese) {
-      const linha = linhas.find((l) => l.startsWith(k.rotulo));
+      const linha = linhas.find((l) => l.startsWith(k.rotulo) || (/^solicitaç/i.test(k.unidade) && /^Solicitações/.test(l) && l.includes(k.exibir)));
       expect(linha, k.rotulo).toBeDefined();
       expect(linha).toContain(k.exibir);
       expect(linha).toContain(k.data_ref);
@@ -140,6 +160,17 @@ describe("Golpes e fraudes no molde de painel", () => {
     expect(texto.match(/\s-\s/g) ?? []).toEqual([]);
     expect(texto.match(/\b\d{4}-\d{2}(-\d{2})?\b/g) ?? []).toEqual([]);
     expect(texto).not.toMatch(/\bundefined\b|\bNaN\b|\bnull\b/);
+  });
+
+  it("nenhuma palavra em caixa alta de ênfase vinda da gold (siglas ficam)", () => {
+    // Auditoria de 10/11/2026, achado 10. Lista das palavras comuns que as golds curadas escrevem em caixa alta; sigla não entra nela.
+    const enfase = new RegExp(
+      "(?<![\\p{L}\\d])(NÃO|SEM|NUNCA|APENAS|TODOS|TOTAL|PISO|ADIAM|BRUTAS|CONCEITOS|CONTESTAD[AO]S?|CONSUMADA|ESTIMATIVA|INSTITUCIONAL|INTEIRA|LÍQUIDA|PLAUSÍVEL|POPULAÇÃO|POPULAÇÕES|POUPANÇA|RELEVANTES|SEÇÃO|SUBESTIMADO|TENTATIVAS|TRANSITÓRIA)(?![\\p{L}\\d])",
+      "gu",
+    );
+    // a base tem essas palavras (se a curadoria as tirar, o teste avisa que a lista pode encolher) e a página não as mostra
+    expect(GOLDS_DA_PAGINA.map((g) => JSON.stringify(g)).join(" ").match(enfase)?.length ?? 0).toBeGreaterThan(3);
+    expect(texto.match(enfase) ?? []).toEqual([]);
   });
 
   it("os destinos internos existem (rota do app, vista da aplicação do Crédito ou arquivo publicado) e os externos são http", () => {

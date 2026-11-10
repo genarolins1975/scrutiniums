@@ -128,7 +128,20 @@ describe("Crédito imobiliário e moradia das Famílias", () => {
     }
     for (const m of gold.matriz_viabilidade) expect(texto, m.pergunta).toContain(m.pergunta);
     for (const d of gold.dicionario) expect(texto, d.t).toContain(d.t);
-    for (const a of gold.achados) expect(texto, a.t).toContain(a.t);
+    // Auditoria de 10/11/2026, achados 2 e 9: os achados continuam na página (um por achado da gold), mas fração por extenso só aparece
+    // se conferir com o número, e superlativo e advérbio de juízo não saem da gold para a tela. O título de quem não tem defeito é o da gold.
+    const itens = html.match(/data-achados[\s\S]*?<\/ul>/)?.[0] ?? "";
+    expect((itens.match(/<li/g) ?? []).length).toBe(gold.achados.length);
+    const fracao = /\b(um|uma|dois|duas|três)\s+(terços?|quartos?|quintos?|sextos?|décimos?)\b|\bmetade\b/i;
+    const juizo = /\bapenas\s+\d|\bquase nunca\b|\b(menor|maior|melhor|pior)\b[^.]*\bdo país\b/i;
+    for (const a of gold.achados) if (!fracao.test(a.t) && !juizo.test(a.t)) expect(texto, a.t).toContain(a.t);
+    expect(texto.match(new RegExp(fracao.source, "gi")) ?? [], "fração por extenso na página").toEqual([]);
+    expect(texto.match(new RegExp(juizo.source, "gi")) ?? [], "juízo de valor vindo da gold").toEqual([]);
+    // a frase da concentração cita o percentual que a gold publica, nos dois lugares em que aparece (achado e seção do verbete 169)
+    const frase = `${n(gold.concentracao_contabil.part_dessas, 1)}% do saldo está escriturado em um ou dois municípios`;
+    expect(texto.split(frase).length - 1, frase).toBe(2);
+    // a inadimplência do achado é a dos dois segmentos que a gold publica
+    expect(texto).toContain(`Inadimplência de ${n(gold.brasil.inad.sfh, 2)}% no SFH e de ${n(gold.brasil.inad.livre, 2)}% nas taxas de mercado`);
     expect((html.match(/data-limitacoes[\s\S]*?<\/ul>/)?.[0].match(/<li/g) ?? []).length).toBe(gold.limitacoes.length);
     // por segmento: a taxa e a prestação publicadas
     for (const k of ["sfh", "fgts", "livre", "home_equity", "comercial"]) {

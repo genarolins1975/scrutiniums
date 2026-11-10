@@ -48,11 +48,14 @@ export function naturezaDoItem(k: { situacao: Situacao; nivel: Nivel }): Naturez
 
 /**
  * Unidade de um número de destaque sem o que o valor já diz ao lado: "R$ 37,0 bi" com "R$ bilhões" fica sem unidade, "9,3%" com
- * "% do valor contestado" fica "do valor contestado", "≈ R$ 164/mês" com "R$ por apostador ao mês" fica "por apostador". O valor e a
- * unidade da base não mudam; só a repetição sai da exibição.
+ * "% do valor contestado" fica "do valor contestado", "≈ R$ 164/mês" com "R$ por apostador ao mês" fica "por apostador"; e o período
+ * que a linha de baixo do número já mostra não se repete na unidade. O valor e a unidade da base não mudam; só a repetição sai da exibição.
  */
-export function unidadeSemRepetir(exibir: string, unidade: string): string {
+export function unidadeSemRepetir(exibir: string, unidade: string, periodo?: string): string {
   let u = unidade.trim();
+  // o período já vai na linha de baixo do número: "boletins de ocorrência em 2025" com período "2025" fica "boletins de ocorrência"
+  if (periodo && u.endsWith(periodo)) u = u.slice(0, -periodo.length).replace(/\s*\bem\s*$/, "").trim();
+  else if (periodo && u.endsWith(`(${periodo})`)) u = u.slice(0, -periodo.length - 2).trim();
   if (/R\$/.test(exibir)) u = u.replace(/^R\$\s*/, "");
   if (/\bbi\b|bilh(ão|ões)/.test(exibir)) u = u.replace(/^bilh(ão|ões)\b\s*/, "");
   if (/\bmi\b|milh(ão|ões)/.test(exibir)) u = u.replace(/^milh(ão|ões)\b\s*/, "");
@@ -60,7 +63,7 @@ export function unidadeSemRepetir(exibir: string, unidade: string): string {
   if (/\/mês/.test(exibir)) u = u.replace(/\s*ao mês$/, "");
   // "79 empresas" com "empresas (SPA)": a palavra com que o valor termina não se repete no começo da unidade
   const ultima = exibir.trim().split(/\s+/).at(-1) ?? "";
-  if (ultima && /^\p{L}+$/u.test(ultima) && u.toLowerCase().startsWith(`${ultima.toLowerCase()} `)) u = u.slice(ultima.length).trim();
+  if (ultima && /^[A-Za-zÀ-ÿ]+$/.test(ultima) && u.toLowerCase().startsWith(`${ultima.toLowerCase()} `)) u = u.slice(ultima.length).trim();
   return u;
 }
 

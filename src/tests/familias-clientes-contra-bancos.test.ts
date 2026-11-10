@@ -126,6 +126,19 @@ describe("Clientes contra bancos na Justiça: molde e invariantes", { timeout: 1
     expect(faixa).not.toContain(`>${n0(outro)}<`);
   });
 
+  it.each(["civel", "trabalhista"] as const)("no ramo %s, a ressalva das partes vem junto do número de abertura e os dois ramos nunca são somados", async (ramo) => {
+    // Auditoria de 10/11/2026, achado 5: a base conta processos por assunto, sem identificar as partes; a soma dos ramos junta universos
+    const h = await html(ramo);
+    const N = gold.camada_nacional;
+    const faixa = h.slice(h.indexOf('data-fatia="numeros"'), h.indexOf('data-fatia="figuras"'));
+    const primeiro = faixa.split('data-numero-indicador=""')[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    expect(primeiro).toContain("não identifica as partes");
+    expect(primeiro).not.toMatch(/temas bancários/);
+    const t = texto(h);
+    expect(t).not.toContain(n0(N.total_civel_casos + N.total_trabalhista_casos));
+    expect(t).toMatch(/não se somam/);
+  });
+
   it("a base nominal traz os dez litigantes do TST, a marca de instituição financeira e a razão por tamanho da gold", async () => {
     const t = texto(await html());
     for (const l of gold.camada_nominal.linhas) {

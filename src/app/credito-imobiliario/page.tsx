@@ -20,8 +20,10 @@ import {
   PERGUNTA_MORADIA,
   ROTA_MORADIA,
   SEGMENTOS,
+  achadosExibidos,
   base,
   dadosMoradia,
+  leituraDaConcentracao,
   provMoradia,
   somasPorUf,
   textoDaGold,
@@ -114,6 +116,9 @@ export default function CreditoImobiliarioPage() {
 
   const C = d.censo;
   const B = d.brasil;
+  // achados e frase da concentração na forma de exibição: percentual publicado no lugar da fração errada da gold, sem juízo de valor
+  const achados = achadosExibidos(d);
+  const concentracao = leituraDaConcentracao(d);
   const cat = (k: string) => C.categorias.find((c) => c.k === k);
   const pagando = cat("proprio_pagando");
   const alugado = cat("alugado");
@@ -205,7 +210,7 @@ export default function CreditoImobiliarioPage() {
                 O que os dados mostram
               </h2>
               <ul className="mt-3 grid gap-x-8 gap-y-4 md:grid-cols-2">
-                {d.achados.map((a) => (
+                {achados.map((a) => (
                   <li key={a.t} className="border-l border-linha pl-4">
                     <p className="t-corpo font-medium text-carvao">{textoDaGold(a.t)}</p>
                     <p className="t-meta mt-1 text-carvao-muted">
@@ -364,9 +369,9 @@ export default function CreditoImobiliarioPage() {
                     {textoDaGold(d.verbete169.fonte)} {textoDaGold(d.verbete169.invercao_cosif)}
                   </p>
                 </div>
-                <Alerta titulo={`${pc(d.concentracao.part_dessas, 1)} do saldo está escriturado em um ou dois municípios.`}>
+                <Alerta titulo={`${concentracao.titulo}.`}>
                   {n0(d.concentracao.instituicoes_ate_2_municipios)} das {n0(d.concentracao.instituicoes_total)} instituições com saldo no verbete 169 contabilizam em no máximo dois
-                  municípios, somando {dinheiro(d.concentracao.saldo_dessas)} (calculado, ESTBAN de {bEstban}). {textoDaGold(d.concentracao.leitura)}
+                  municípios, somando {dinheiro(d.concentracao.saldo_dessas)} (calculado, ESTBAN de {bEstban}). {textoDaGold(concentracao.complemento)}
                 </Alerta>
               </div>
             </Recolhido>
@@ -625,7 +630,7 @@ export default function CreditoImobiliarioPage() {
             { termo: "Home equity", definicao: "Empréstimo que usa um imóvel como garantia, mas não financia a compra dele." },
             { termo: "Lacuna estimada", definicao: "Diferença entre o município e municípios parecidos, calculada por modelo. É estimativa, não dado observado, e não prova que existe demanda." },
           ],
-          nota: "Para ler: trate as três bases como medidas distintas. O Censo conta domicílios, o ESTBAN registra saldo contabilizado por município e o Mercado Imobiliário detalha o crédito residencial por estado. Nenhuma se converte na outra. Moradia é o maior ativo das famílias e o crédito imobiliário é a maior carteira de pessoa física do país; ver as duas coisas juntas mostra a distância entre morar e financiar.",
+          nota: "Para ler: trate as três bases como medidas distintas. O Censo conta domicílios, o ESTBAN registra saldo contabilizado por município e o Mercado Imobiliário detalha o crédito residencial por estado. Nenhuma se converte na outra. A página põe moradia e crédito lado a lado para mostrar a distância entre morar e financiar.",
         }}
         metodo={
           <>
