@@ -155,7 +155,7 @@ describe("ficha de conjunto de dados: a figura da forma do conjunto", () => {
       const et = c?.etapas;
       const numeros = new Set([et?.recurso_verificado?.arquivos, et?.recurso_verificado?.capturas, et?.integrado?.observacoes, et?.integrado?.registros, et?.validado?.aprovadas, et?.validado?.ressalvas, et?.validado?.reprovadas, d.paginas.length, c?.dado?.series, c?.dado?.series_com_lacuna, c?.atualidade.dias_atraso].filter((n): n is number => typeof n === "number").map((n) => n.toLocaleString("pt-BR")));
       const escada = t.slice(t.indexOf("as etapas deste conjunto"));
-      for (const m of escada.replace(/sha256/g, "").replace(/\d{2}\/\d{2}\/\d{4}/g, "").match(/\d[\d.]*/g) ?? []) expect(numeros.has(m.replace(/\.$/, "")), `${s}: ${m}`).toBe(true);
+      for (const m of escada.replace(/\d{2}\/\d{2}\/\d{4}/g, "").match(/\d[\d.]*/g) ?? []) expect(numeros.has(m.replace(/\.$/, "")), `${s}: ${m}`).toBe(true);
       for (const m of t.match(/([\d.]+) séries?\b/g) ?? []) expect(numeros.has(m.split(" ")[0]), `${s}: ${m}`).toBe(true);
     }
   });
@@ -166,6 +166,8 @@ describe("ficha de conjunto de dados: a figura da forma do conjunto", () => {
       expect(f, s).not.toMatch(SEM_VALOR);
       expect(texto(f), s).not.toMatch(DATA_CRUA);
       expect(f, s).not.toMatch(/#[0-9a-fA-F]{6}\b/);
+      // a figura fica em Entender: nenhum identificador técnico no texto (o mesmo critério de energia-conteudo-r8-D)
+      expect(texto(f), s).not.toMatch(/sha256|pipeline|\bsilver|\bbronze\b|\bgolds?\b|snapshot|\bSLA\b|\bhoje\b|\b[a-z]+_[a-z0-9_]+\b|\.(csv|json|parquet)\b|[\u2013\u2014…]|CKAN/);
       expect(Buffer.byteLength(f, "utf-8"), s).toBeLessThan(16 * 1024);
       expect(Buffer.byteLength(paginas[s], "utf-8"), s).toBeLessThan(600 * 1024);
     }

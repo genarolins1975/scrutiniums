@@ -84,7 +84,7 @@ function fatoDaEtapa(id: EvidenciaEtapa["id"], et: Etapas | null | undefined, pa
   if (id === "recurso_verificado") {
     const v = et?.recurso_verificado;
     if (!v?.arquivos && !v?.capturas) return null;
-    const partes = [v.arquivos ? tx(plural(v.arquivos, "arquivo", "arquivos"), plural(v.arquivos, "file", "files")) : null, v.capturas ? tx(plural(v.capturas, "captura com sha256", "capturas com sha256"), plural(v.capturas, "capture with sha256", "captures with sha256")) : null];
+    const partes = [v.arquivos ? tx(plural(v.arquivos, "arquivo", "arquivos"), plural(v.arquivos, "file", "files")) : null, v.capturas ? tx(plural(v.capturas, "captura com impressão digital", "capturas com impressão digital"), plural(v.capturas, "capture with a fingerprint", "captures with a fingerprint")) : null];
     return `${partes.filter(Boolean).join(tx(" em ", " in "))}.`;
   }
   if (id === "integrado") {
@@ -102,6 +102,15 @@ function fatoDaEtapa(id: EvidenciaEtapa["id"], et: Etapas | null | undefined, pa
   }
   return paginas > 0 ? tx(`alimenta ${plural(paginas, "página do observatório, listada", "páginas do observatório, listadas")} mais abaixo.`, `feeds ${plural(paginas, "observatory page, listed", "observatory pages, listed")} further down.`) : null;
 }
+
+/** Etapa alcançada sem contagem publicada: o que ela quer dizer, em palavras comuns. */
+const semContagem = (): Record<EvidenciaEtapa["id"], string> => ({
+  catalogado: tx("no catálogo do observatório.", "in the observatory catalog."),
+  recurso_verificado: tx("um arquivo do conjunto foi acessado.", "a file of the dataset was accessed."),
+  integrado: tx("original guardado e conteúdo no histórico de capturas.", "original stored and content in the capture history."),
+  validado: tx("nenhuma checagem reprovada.", "no failed check."),
+  publicado: tx("alimenta as bases do observatório.", "feeds the observatory's bases."),
+});
 
 function Parte({ rotulo, children, id }: { rotulo: string; children: ReactNode; id: string }) {
   return (
@@ -314,8 +323,9 @@ export function FormaDoConjunto({
               const proximaOk = etapas[i + 1]?.situacao === "sim";
               const ultima = i === etapas.length - 1;
               // as contagens são as da integração publicada; na última etapa, o leitor comum quer saber onde o dado aparece (os nomes de
-              // arquivo das bases ficam em Analisar, mais abaixo). Sem contagem publicada, vale a evidência do catálogo.
-              const detalhe = (ok ? fatoDaEtapa(e.id, contagens, paginas) : null) ?? e.detalhe;
+              // arquivo das bases ficam em Analisar, mais abaixo). Sem contagem publicada, uma frase comum: a evidência técnica do
+              // catálogo (impressão digital, nome de base) fica em Analisar e Auditar, nunca no texto de Entender.
+              const detalhe = ok ? (fatoDaEtapa(e.id, contagens, paginas) ?? semContagem()[e.id]) : e.situacao === "falhou" ? tx("a verificação do arquivo falhou.", "the file verification failed.") : tx("etapa não alcançada.", "stage not reached.");
               return (
                 <li key={e.id} className="relative min-w-0 pb-5 pl-9 sm:pb-0 sm:pl-0 sm:pt-9" data-etapa={e.id} data-situacao={e.situacao}>
                   {/* o fio que liga uma etapa à seguinte: vertical no celular, horizontal a partir de 640 px; tracejado quando a seguinte não foi alcançada */}
