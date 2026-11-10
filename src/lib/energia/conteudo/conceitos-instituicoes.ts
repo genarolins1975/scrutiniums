@@ -91,6 +91,11 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         { rotulo: tx("Regulação", "Regulation"), href: "/setor-eletrico/regulacao" },
         { rotulo: tx("Conta de luz", "Electricity bill"), href: "/setor-eletrico/conta-de-luz" },
       ],
+      atuaEm: [
+        { no: "geracao", oQueFaz: tx("Regula e fiscaliza a produção de energia elétrica.", "Regulates and oversees the production of electricity."), base: tx("Lei nº 9.427, de 1996, arts. 2º e 3º", "Law No. 9.427 of 1996, arts. 2 and 3") },
+        { no: "rede", oQueFaz: tx("Regula e fiscaliza a transmissão e a distribuição e define as tarifas de uso desses sistemas.", "Regulates and oversees transmission and distribution and sets the use tariffs of those systems."), base: tx("Lei nº 9.427, de 1996, arts. 2º e 3º", "Law No. 9.427 of 1996, arts. 2 and 3") },
+        { no: "contratos", oQueFaz: tx("Regula e fiscaliza a comercialização e aprova as regras e os procedimentos de comercialização.", "Regulates and oversees trading and approves the trading rules and procedures."), base: tx("Lei nº 9.427, de 1996, arts. 2º e 3º", "Law No. 9.427 of 1996, arts. 2 and 3") },
+      ],
     },
     {
       slug: "ons",
@@ -146,6 +151,11 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         { rotulo: tx("Carga: perfil horário", "Load: hourly profile"), href: "/setor-eletrico/carga/perfil-horario" },
         { rotulo: tx("Água e clima: reservatórios", "Water and climate: reservoirs"), href: "/setor-eletrico/agua-e-clima" },
       ],
+      atuaEm: [
+        { no: "geracao", oQueFaz: tx("Coordena e controla a operação da geração do Sistema Interligado Nacional.", "Coordinates and controls the operation of generation in the National Interconnected System."), base: tx("Lei nº 9.648, de 1998, art. 13", "Law No. 9.648 of 1998, art. 13") },
+        { no: "rede", oQueFaz: tx("Coordena e controla a operação da transmissão do Sistema Interligado Nacional e propõe as regras de operação da transmissão, que a ANEEL aprova.", "Coordinates and controls the operation of transmission in the National Interconnected System and proposes the transmission operating rules, which ANEEL approves."), base: tx("Lei nº 9.648, de 1998, art. 13", "Law No. 9.648 of 1998, art. 13") },
+        { no: "operacao", oQueFaz: tx("Planeja e programa a operação e despacha a geração de forma centralizada.", "Plans and schedules operation and dispatches generation centrally."), base: tx("Lei nº 9.648, de 1998, art. 13", "Law No. 9.648 of 1998, art. 13") },
+      ],
     },
     {
       slug: "ccee",
@@ -197,6 +207,10 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
         { rotulo: tx("Preço de curto prazo (PLD)", "Spot price (PLD)"), href: "/setor-eletrico/pld" },
         { rotulo: tx("Mercado", "Market"), href: "/setor-eletrico/mercado" },
       ],
+      atuaEm: [
+        { no: "operacao", oQueFaz: tx("Calcula o PLD e contabiliza as operações do Mercado de Curto Prazo.", "Calculates the PLD and accounts for Short-Term Market operations."), base: tx("fontes dos verbetes PLD e MCP", "sources of the PLD and MCP entries") },
+        { no: "contratos", oQueFaz: tx("Foi criada com a finalidade de viabilizar a comercialização de energia elétrica.", "Was created for the purpose of enabling the trading of electricity."), base: tx("Lei nº 10.848, de 2004, art. 4º", "Law No. 10.848 of 2004, art. 4") },
+      ],
     },
     {
       slug: "epe",
@@ -232,6 +246,10 @@ function montarConceitos(tx: TxIdioma): Conceito[] {
       ],
       detalheDaConferencia: [tx("Lei lida no Planalto em 09/10/2026, no texto que o Planalto publica com as alterações posteriores.", "Law read on Planalto on Oct 9, 2026, in the text Planalto publishes with later amendments."), NOTA_CAPTURA],
       vejaNoPortal: [{ rotulo: tx("Expansão: cenários", "Expansion: scenarios"), href: "/setor-eletrico/expansao/cenarios" }],
+      atuaEm: [
+        { no: "geracao", oQueFaz: tx("Elabora os estudos dos planos de expansão da geração de energia elétrica.", "Prepares the studies for the expansion plans of electricity generation."), base: tx("Lei nº 10.847, de 2004, art. 4º", "Law No. 10.847 of 2004, art. 4") },
+        { no: "rede", oQueFaz: tx("Elabora os estudos dos planos de expansão da transmissão de energia elétrica.", "Prepares the studies for the expansion plans of electricity transmission."), base: tx("Lei nº 10.847, de 2004, art. 4º", "Law No. 10.847 of 2004, art. 4") },
+      ],
     },
     {
       slug: "ibge",

@@ -14,6 +14,7 @@ import type { Idioma } from "@/lib/idioma";
 import { idiomaEnergia } from "@/lib/energia/idioma";
 import { montarNosDoisIdiomas, type TxIdioma } from "@/lib/energia/i18n/aprenda";
 import { CONCEITOS_MODULOS_IDIOMAS } from "./conceitos-modulos";
+import type { IdNo } from "@/lib/energia/mapa";
 
 export type EstadoConferencia = "CONFERIDO" | "PENDENTE";
 
@@ -66,6 +67,13 @@ export type Conceito = {
    */
   detalheDaConferencia?: string[];
   vejaNoPortal: { rotulo: string; href: string }[];
+  /**
+   * Só para verbete de instituição: os elos do mapa do sistema em que as fontes citadas no próprio verbete lhe atribuem papel,
+   * cada um com o que ela faz ali e o dispositivo que sustenta a frase. Quando existe, a figura do verbete (`VerbeteNoSistema`)
+   * marca esses elos, e não os das páginas de "Veja no painel": onde o observatório publica os dados de uma instituição não é
+   * onde ela atua (decisão do dono de 10/11/2026). Nada aqui pode ir além do que `fontes` e `porQueImporta` já dizem.
+   */
+  atuaEm?: { no: IdNo; oQueFaz: string; base: string }[];
   /** Fonte planejada para verbetes pendentes. */
   fontePlanejada?: string;
   /**

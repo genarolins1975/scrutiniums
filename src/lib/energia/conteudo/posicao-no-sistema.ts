@@ -2,6 +2,8 @@
  * Onde um verbete do Aprenda aparece no mapa do sistema elétrico (os sete elos de `NOS_MAPA`, da página inicial), para a figura do
  * verbete (`VerbeteNoSistema`). Nada é escrito por verbete: a posição sai de dois campos que o acervo já declara.
  *
+ *  0. O verbete é de instituição e declara `atuaEm` (os elos em que as fontes do verbete lhe atribuem papel): valem esses elos,
+ *     com o que ela faz em cada um. Onde o observatório publica os dados de uma instituição não é onde ela atua.
  *  1. O próprio mapa lista o verbete num elo (`NOS_MAPA[].conceitos`): vale esse elo.
  *  2. Senão, valem os elos das páginas que o verbete aponta em "Veja no painel" (`vejaNoPortal`), pelo módulo do endereço
  *     (`NOS_MAPA[].destinos`). Página que não pertence a nenhum elo (Visão geral, Regulação, Expansão) não marca elo.
@@ -12,10 +14,10 @@
 import { LIGACOES, NOS_MAPA, type IdNo, type Ligacao } from "../mapa";
 import type { Conceito } from "./conceitos";
 
-/** "mapa": o mapa da página inicial lista o verbete no elo. "painel": uma página de "Veja no painel" do verbete pertence ao elo. */
-export type MotivoDoElo = "mapa" | "painel";
+/** "atuacao": as fontes do verbete atribuem à instituição papel no elo. "mapa": o mapa da página inicial lista o verbete no elo. "painel": uma página de "Veja no painel" do verbete pertence ao elo. */
+export type MotivoDoElo = "atuacao" | "mapa" | "painel";
 
-export type EloDoVerbete = { no: IdNo; motivo: MotivoDoElo; paineis: { rotulo: string; href: string }[] };
+export type EloDoVerbete = { no: IdNo; motivo: MotivoDoElo; paineis: { rotulo: string; href: string }[]; oQueFaz?: string; base?: string };
 
 /** Módulo de um endereço do portal: "/setor-eletrico/pld#cmo" → "pld"; "/setor-eletrico/pld/modelos" → "pld-modelos" quando o mapa o lista. */
 export function moduloDoEndereco(href: string): string {
@@ -24,7 +26,9 @@ export function moduloDoEndereco(href: string): string {
   return segundo && NOS_MAPA.some((n) => n.destinos.includes(composto)) ? composto : primeiro;
 }
 
-export function elosDoVerbete(c: Pick<Conceito, "slug" | "vejaNoPortal">): EloDoVerbete[] {
+export function elosDoVerbete(c: Pick<Conceito, "slug" | "vejaNoPortal" | "atuaEm">): EloDoVerbete[] {
+  // na ordem do mapa, para a figura e o texto ao lado lerem na mesma sequência
+  if (c.atuaEm?.length) return NOS_MAPA.flatMap((n) => c.atuaEm!.filter((a) => a.no === n.id).map((a) => ({ no: n.id, motivo: "atuacao" as const, paineis: [], oQueFaz: a.oQueFaz, base: a.base })));
   const doMapa = NOS_MAPA.filter((n) => n.conceitos.some((x) => x.slug === c.slug));
   if (doMapa.length) return doMapa.map((n) => ({ no: n.id, motivo: "mapa", paineis: [] }));
   const out: EloDoVerbete[] = [];
@@ -46,13 +50,13 @@ export type PosicaoNoSistema = {
 };
 
 /** `acha` devolve o verbete de um endereço (o acervo no idioma da página); relação para verbete que não existe é ignorada. */
-export function posicaoNoSistema(c: Pick<Conceito, "slug" | "vejaNoPortal" | "relacoes">, acha: (slug: string) => Pick<Conceito, "slug" | "vejaNoPortal"> | undefined): PosicaoNoSistema {
+export function posicaoNoSistema(c: Pick<Conceito, "slug" | "vejaNoPortal" | "relacoes" | "atuaEm">, acha: (slug: string) => Pick<Conceito, "slug" | "vejaNoPortal" | "atuaEm"> | undefined): PosicaoNoSistema {
   const elos = elosDoVerbete(c);
   const marcados = new Set(elos.map((e) => e.no));
   const vizinhos = c.relacoes
     .filter((r, i, todas) => r !== c.slug && todas.indexOf(r) === i)
     .map((r) => acha(r))
-    .filter((r): r is Pick<Conceito, "slug" | "vejaNoPortal"> => !!r)
+    .filter((r): r is Pick<Conceito, "slug" | "vejaNoPortal" | "atuaEm"> => !!r)
     .map((r) => ({ slug: r.slug, elos: elosDoVerbete(r).map((e) => e.no) }))
     .filter((v) => v.elos.length > 0);
   return { elos, vizinhos, ligacoes: LIGACOES.filter((l) => marcados.has(l.de) || marcados.has(l.para)) };
