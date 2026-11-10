@@ -11,7 +11,7 @@ import { fmtRefMes, geradoEmPublicado, resumoDiario } from "@/lib/dadosPublicos"
 import { metadadosPortuguesComAlternativas } from "@/lib/i18n-metadata";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { ConviteAperitivo } from "@/components/acesso/ConviteAperitivo";
-import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { paginasTematicasDoCredito } from "@/lib/credito/navegacao";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
 import { goldJuros, rotuloModalidade } from "@/lib/credito/juros";
 import { janela as janelaJuros, num as numJuros } from "@/lib/credito/formato";
@@ -242,10 +242,11 @@ export default function ObservatorioPublicoPage() {
             rota="/observatorio"
             className="mx-auto max-w-page px-6"
             comConta={[
-              `As ${ABAS_OBSERVATORIO.filter((a) => a.gold).length} áreas com dados do observatório, do crédito por estado e por município aos juros de cada instituição`,
+              // a mesma conta do Início do painel e da vitrine da home: as vistas reescritas como páginas das Famílias não entram (10/11/2026)
+              `As ${paginasTematicasDoCredito().length} páginas temáticas do observatório, do crédito por estado e por município aos juros de cada instituição`,
               "Juros por instituição e por modalidade, a comparação entre instituições e o simulador da parcela",
-              "Consignado, crédito imobiliário, rural e direcionado, consórcios e o crédito a estados e municípios",
-              "Bancos na bolsa, captação, Pix, Open Finance, golpes e fraudes, sanções e reclamações",
+              "Crédito rural e direcionado, consórcios e o crédito a estados e municípios",
+              "Bancos na bolsa, captação, Pix e Open Finance",
               "Sinais antecedentes, cenários, o resumo diário completo e a central de alertas",
             ]}
           />
