@@ -1,0 +1,39 @@
+{
+  "esquema": 1,
+  "dominio": "agro",
+  "edicao": "4722433ad6e3b6e1efa389069074ea6fab7d822bad3ebbc68308cccabcda8fb4",
+  "total_arquivos": 6,
+  "total_bytes": 587649,
+  "arquivos": [
+    {
+      "caminho": "gold/catalogo-artefatos.json",
+      "bytes": 135210,
+      "sha256": "70b3b22c672924ab7468f5e70dce634a5b457eeb7e33804979fb80f329183d11"
+    },
+    {
+      "caminho": "gold/credito-ufs.csv",
+      "bytes": 41265,
+      "sha256": "827d8842e5193255a2eed958f39af701f7a874341f3f56b81fd6c0560861b3e9"
+    },
+    {
+      "caminho": "gold/dicionario.json",
+      "bytes": 40771,
+      "sha256": "94e57021154ffb704782848a2e3da597ba6d3c3d4cb44f261ed8e21591708e25"
+    },
+    {
+      "caminho": "gold/manifesto.json",
+      "bytes": 17635,
+      "sha256": "8eb020040d25872085aa2f1a7d2e82f861ebadb026f2c0c0eebc4c1a1c1d4ee5"
+    },
+    {
+      "caminho": "gold/ocupacoes-2022.csv",
+      "bytes": 10543,
+      "sha256": "817204b21d45a49a4bd2e3d4bf430dec43baafe416e8a9825cb7e2bd2f74d0c7"
+    },
+    {
+      "caminho": "gold/snapshot.json",
+      "bytes": 342225,
+      "sha256": "d001671423a7a5df2aef1e93e0fbd964a0c46f0443bf2420016d18ca83be98f8"
+    }
+  ]
+}

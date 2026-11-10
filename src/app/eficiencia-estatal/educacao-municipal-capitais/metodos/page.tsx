@@ -13,7 +13,7 @@ import Link from "next/link";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Dados e métodos",
+  title: "Dados e métodos de Educação nas capitais",
   description:
     "Fichas dos indicadores, fórmulas, matriz de referências, reconciliações, validações, fontes e reprodução do painel Educação nas capitais.",
   alternates: { canonical: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },

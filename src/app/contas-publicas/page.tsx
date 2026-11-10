@@ -71,7 +71,7 @@ export default function Page(){
   }
   caminhos={[
    ...respostas.map((r)=>({pergunta:r.pergunta,resumo:r.nota,href:`/contas-publicas/${r.href}`,numero:{rotulo:r.rotulo,valor:r.valor,unidade:'',periodo:r.recorte.split(' · ')[0],fonte:r.origem.fonte,href:`/contas-publicas/${r.href}`}})),
-   {pergunta:'Quem financia e quem presta o serviço?',resumo:'Contas Públicas acompanha a gestão federal. O OBEE permite explorar acesso, resposta e qualidade dos serviços, considerando as responsabilidades compartilhadas entre esferas.',href:'/eficiencia-estatal'},
+   {pergunta:'Quem financia e quem presta o serviço?',resumo:'Contas Públicas acompanha a gestão federal. A Síntese das capitais permite explorar acesso, resposta e qualidade dos serviços nas 26 capitais, considerando as responsabilidades compartilhadas entre esferas.',href:'/eficiencia-estatal'},
   ]}
   recolhidos={<>
    <Recolhido id="recolhido-cascata" titulo="Da autorização ao pagamento" resumo="A cascata do orçamento no exercício encerrado e no parcial, com os valores exatos."><CascataFederal/></Recolhido>

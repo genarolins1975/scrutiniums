@@ -78,7 +78,7 @@ export function MetodoServicos() {
   return (
     <>
       <p>
-        O observatório reúne os painéis da Eficiência Estatal sobre serviços públicos. Educação e saúde cobrem as 26
+        O observatório reúne os painéis de origem Eficiência Estatal sobre serviços públicos. Educação e saúde cobrem as 26
         capitais, com a rede municipal; Judiciário e segurança pública cobrem o país, nos recortes de cada fonte. As
         medianas das capitais têm peso igual por capital e não equivalem ao valor do Brasil.
       </p>

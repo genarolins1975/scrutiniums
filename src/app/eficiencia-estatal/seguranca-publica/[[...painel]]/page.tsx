@@ -19,7 +19,7 @@ const TITULOS: Record<string, string> = {'': 'Segurança pública', estados: 'Se
 export function generateStaticParams() { return rotas.map((r) => ({painel: r ? [r] : []})); }
 export function generateMetadata({params}: {params: {painel?: string[]}}): Metadata {
   const slug = params.painel?.[0] ?? '';
-  return {title: `${GRUPOS[slug as Grupo]?.titulo ?? TITULOS[slug] ?? 'Segurança pública'} · OBEE`, description: 'Violência registrada pela polícia e pela saúde em cada estado, em taxa por 100 mil habitantes, e a despesa estadual com segurança pública, com fontes, períodos e ausências explícitas.'};
+  return {title: `${GRUPOS[slug as Grupo]?.titulo ?? TITULOS[slug] ?? 'Segurança pública'}`, description: 'Violência registrada pela polícia e pela saúde em cada estado, em taxa por 100 mil habitantes, e a despesa estadual com segurança pública, com fontes, períodos e ausências explícitas.'};
 }
 
 function Fonte({children, dd = false}: {children: React.ReactNode; dd?: boolean}) { const T = dd ? 'dd' : 'p'; return <T className="mt-3 text-xs leading-relaxed text-carvao-muted">{children}</T>; }

@@ -98,7 +98,7 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
           <Recolhido id="recolhido-cobertura" titulo="Onde não há Ideb, e por quê?" resumo="As redes sem resultado, com o motivo.">
             <SecaoCobertura g={g} />
           </Recolhido>
-          <Recolhido id="recolhido-capitais" titulo="As capitais em profundidade" resumo={`O painel ${TITULO_CAPITAIS}, da Eficiência Estatal.`}>
+          <Recolhido id="recolhido-capitais" titulo="As capitais em profundidade" resumo={`O painel ${TITULO_CAPITAIS} (origem: Eficiência Estatal).`}>
             <SecaoCapitais />
           </Recolhido>
         </>
@@ -712,7 +712,7 @@ function SecaoCapitais() {
     <section className="edm-secao" id="capitais" aria-labelledby="capitais-titulo">
       <h2 id="capitais-titulo">As capitais em profundidade</h2>
       <p className="edm-intro">
-        Para as 26 capitais, o painel {TITULO_CAPITAIS}, da Eficiência Estatal, junta ao Ideb e ao Saeb o gasto da prefeitura com educação, por habitante e por matrícula, os alunos
+        Para as 26 capitais, o painel {TITULO_CAPITAIS} (origem: Eficiência Estatal) junta ao Ideb e ao Saeb o gasto da prefeitura com educação, por habitante e por matrícula, os alunos
         por turma e a comparação entre as capitais. O Ideb das capitais é o mesmo nos dois painéis: as duas publicações leem as mesmas planilhas do INEP.
       </p>
       <p className="edm-capital">

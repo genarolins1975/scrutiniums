@@ -8,6 +8,7 @@ import { idsDasColecoes, navegacaoDaColecao, navegacaoDaConta, navegacaoDoObserv
 import { MAX_A_VISTA, destinoAtual, dividirItens, type NavegacaoDaColecao } from "@/lib/observatorios/navegacaoPura";
 import { NavegacaoColecaoCliente } from "@/components/layout/NavegacaoColecaoCliente";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
+import { TEMAS_EFICIENCIA } from "@/lib/eficiencia/temas";
 
 const navegador = vi.hoisted(() => ({ caminho: "/" }));
 vi.mock("next/navigation", async () => ({
@@ -215,8 +216,10 @@ describe("componente NavegacaoColecao", () => {
     const subs = (id: string, rotulo: string) => navegacaoDaColecao(id).itens.find((i) => i.rotulo === rotulo)?.subpaginas?.map((s) => s.href) ?? [];
     expect(subs("protecao", "Segurança alimentar")).toEqual(expect.arrayContaining(["/eficiencia-estatal/seguranca-alimentar/dados", "/eficiencia-estatal/seguranca-alimentar/metodos"]));
     expect(subs("justica", "Acesso à Justiça")).toContain("/eficiencia-estatal/acesso-justica/dados");
-    expect(subs("saneamento", "Nas capitais")).toContain("/eficiencia-estatal/saneamento/dados");
-    expect(subs("conectividade", "Energia e conectividade nas capitais")).toContain("/eficiencia-estatal/energia-conectividade/metodos");
+    // recomendação 3 do parecer estrutural de 10/11/2026: o rótulo do grupo vem do catálogo dos temas (nome e recorte geográfico).
+    // Os dois diziam "nas capitais", e nenhum dos dois temas publica valor por capital (src/tests/recorte-geografico.test.ts)
+    expect(subs("saneamento", TEMAS_EFICIENCIA.saneamento.recorte.rotulo)).toContain("/eficiencia-estatal/saneamento/dados");
+    expect(subs("conectividade", TEMAS_EFICIENCIA.energia.nome)).toContain("/eficiencia-estatal/energia-conectividade/metodos");
     expect(destinoAtual(navegacaoDaColecao("protecao"), "/eficiencia-estatal/seguranca-alimentar/dados")).toMatchObject({ sub: expect.any(Number), atalho: null });
   });
 
