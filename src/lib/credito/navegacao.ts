@@ -110,6 +110,23 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
   { rotulo: "Referência", paginas: ["/observatorio/regulacao"] },
 ];
 
+/** O "Início do painel" da aplicação: lista as páginas dos grupos e por isso não se conta entre elas. */
+export const INICIO_DO_PAINEL = "/observatorio/map";
+/** Prefixo dos endereços da aplicação de página única do Crédito. */
+const PREFIXO_DA_APLICACAO = "/observatorio/";
+
+/**
+ * As páginas temáticas que a aplicação do Crédito mantém: as vistas da aplicação nos grupos, sem o "Início do painel". É a
+ * contagem que o próprio "Início do painel" escreve no cabeçalho (renderMapa em public/obs/app.js: as vistas dos grupos, menos
+ * o mapa e as substituídas por página das Famílias) e a que a vitrine da home mostra para o Crédito (src/lib/vitrine.ts).
+ * Uma vista reescrita como página de outra coleção sai daqui sozinha, porque o grupo passa a guardar o endereço novo; as
+ * páginas Next do Crédito nos grupos (o Simulador da parcela) e as do fim da página (FIM_DA_PAGINA_CREDITO) não entram, como
+ * na aplicação. O teste src/tests/vitrine-credito-contagem.test.ts confere a igualdade com o que a aplicação conta.
+ */
+export function paginasTematicasDoCredito(): string[] {
+  return GRUPOS_CREDITO.flatMap((g) => g.paginas).filter((h) => h.startsWith(PREFIXO_DA_APLICACAO) && h !== INICIO_DO_PAINEL);
+}
+
 /** Páginas da aplicação que ficam no fim da página, fora dos grupos: perguntas rápidas, sugestões e o "Sobre". */
 export const FIM_DA_PAGINA_CREDITO: readonly { rotulo: string; href: string }[] = [
   { rotulo: "Perguntas rápidas", href: "/observatorio/research" },
