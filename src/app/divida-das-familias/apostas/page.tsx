@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { Recolhido } from "@/components/observatorios/Recolhido";
@@ -162,6 +163,7 @@ export default function PaginaApostas() {
 
   return (
     <>
+      <MarcaVisita secao="familias:apostas" />
       <header>
         <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_APOSTAS} fontes={["credito"]} />
         <NavegacaoColecao colecao="divida" />
@@ -536,7 +538,7 @@ export default function PaginaApostas() {
                 kAuto && kApost && kAuto.valor && kApost.valor ? (
                   <>
                     O total de autoexclusões não é prevalência de dependência. É demanda voluntária, que depende de conhecer a ferramenta, ter acesso e decidir usá-la. Para comparar:{" "}
-                    {kAuto.exibir} solicitações ({kAuto.periodo}) e {kApost.exibir} de CPFs apostadores ({kApost.periodo}), cerca de {num((kAuto.valor / kApost.valor) * 100, 1)}%.
+                    {kAuto.exibir} solicitações, {kAuto.periodo}, e {kApost.exibir} de CPFs apostadores em {kApost.periodo}, cerca de {num((kAuto.valor / kApost.valor) * 100, 1)}%.
                     {sus && ` No SUS: ${limpar(sus.evidencia)}.`}
                   </>
                 ) : (

@@ -136,7 +136,7 @@ export function limitesDaEscala(base: readonly Municipio[], cam: IdCamada): { lo
 export function corDaEscala(v: number | null | undefined, lim: { lo: number; hi: number } | null, paleta: Camada["paleta"]): string {
   if (v === null || v === undefined || !lim) return "var(--mapa-nao-se-aplica)";
   const t = Math.max(0, Math.min(1, (v - lim.lo) / Math.max(lim.hi - lim.lo, 1e-9)));
-  return `color-mix(in srgb, var(${paleta === "quente" ? "--cor-bronze" : "--cor-energia"}) ${Math.round(6 + 82 * t)}%, var(--cor-superficie))`;
+  return `color-mix(in srgb, var(--cor-${paleta === "quente" ? "bronze" : "energia"}) ${Math.round(6 + 82 * t)}%, var(--cor-superficie))`;
 }
 
 /** Linhas do perfil municipal: indicador, valor escrito e natureza do dado. */

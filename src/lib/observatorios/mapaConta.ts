@@ -24,7 +24,10 @@ import type { Prontidao } from "@/components/observatorios/SeloProntidao";
  *   domínio é a da própria coleção: o Crédito (meta.json cobre todas as vistas da aplicação), o Agronegócio (snapshot único), o
  *   Território e Clima no Fogo (a referência do domínio é a gold de queimadas).
  * - Lista vazia: a referência do domínio de origem é de outra base (os temas da Eficiência Estatal levam a data da Saúde das
- *   capitais; os Desastres, a das queimadas). A linha sai sem "dados até": nunca uma data emprestada.
+ *   capitais). A linha sai sem "dados até": nunca uma data emprestada.
+ * - Coleção fundida em 10/11/2026 (COLECOES_FUNDIDAS, lista.ts) com duas bases: a data continua sendo a da fonte da porta e
+ *   ALCANCE_DA_DATA diz a que parte da coleção ela se refere e que parte fica com a referência na própria página. Gás e
+ *   combustíveis não precisa: a referência do domínio "gas" já cobre os combustíveis (public/gas/gold/meta.json).
  */
 export const FRESCOR_NO_MAPA: Record<string, readonly DominioFrescorId[]> = {
   renda: [],
@@ -37,16 +40,13 @@ export const FRESCOR_NO_MAPA: Record<string, readonly DominioFrescorId[]> = {
   saude: ["eficiencia"],
   seguranca: [],
   justica: [],
-  cultura: [],
   sintese: FRESCOR_DAS_COLECOES["/eficiencia-estatal"],
   federais: FRESCOR_DAS_COLECOES["/contas-publicas"],
   estaduais: FRESCOR_DAS_COLECOES["/contas-publicas-estaduais"],
   "divida-governos": ["credito"],
   "setor-eletrico": FRESCOR_DAS_COLECOES["/setor-eletrico"],
   gas: FRESCOR_DAS_COLECOES["/gas-natural"],
-  combustiveis: FRESCOR_DAS_COLECOES["/combustiveis"],
   saneamento: FRESCOR_DAS_COLECOES["/saneamento"],
-  mobilidade: [],
   conectividade: FRESCOR_DAS_COLECOES["/conectividade"],
   credito: ["credito"],
   pagamentos: ["credito"],
@@ -54,8 +54,20 @@ export const FRESCOR_NO_MAPA: Record<string, readonly DominioFrescorId[]> = {
   agro: FRESCOR_DAS_COLECOES["/agronegocio"],
   desmatamento: ["agro"],
   "cidades-clima": [],
+  // a referência do domínio Território e Clima é a gold de queimadas (limiares.json: "focos de calor"); a publicação cobre as
+  // duas golds, queimadas e desastres
   fogo: ["territorio"],
-  desastres: [],
+};
+
+/**
+ * Coleções em que a data "dados até" vale só para parte das páginas: `de` é a parte datada pela primeira fonte de
+ * FRESCOR_NO_MAPA; `semData` é a parte de outra base, cuja referência o leitor encontra na própria página. O mapa escreve as
+ * duas partes na linha da coleção e no método, para a data de uma fonte nunca passar pelo conteúdo da outra.
+ */
+export const ALCANCE_DA_DATA: Record<string, { de: string; semData: string }> = {
+  educacao: { de: "Educação", semData: "Cultura" },
+  conectividade: { de: "Conectividade", semData: "Mobilidade" },
+  fogo: { de: "Queimadas", semData: "Desastres" },
 };
 
 export type LinhaColecao = {
@@ -75,6 +87,8 @@ export type LinhaColecao = {
   /** Selo quando a coleção não é "publicado". */
   prontidao: Exclude<Prontidao, "publicado"> | null;
   fontes: readonly DominioFrescorId[];
+  /** Quando a data vale só para parte da coleção (ALCANCE_DA_DATA): a parte datada e a que tem a referência na página. */
+  alcance: { de: string; semData: string } | null;
 };
 
 export type SecaoObservatorio = Pick<Observatorio, "id" | "nomeCurto" | "nome" | "pergunta" | "acento"> & { entrada: string | undefined; colecoes: LinhaColecao[] };
@@ -123,6 +137,7 @@ export function diretorioDoMapa(agora: Date = new Date()): { secoes: SecaoObserv
             : null,
           prontidao,
           fontes,
+          alcance: fontes.length ? (ALCANCE_DA_DATA[c.id] ?? null) : null,
         };
       }),
     };

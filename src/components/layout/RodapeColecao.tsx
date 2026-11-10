@@ -7,8 +7,11 @@ import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { idiomaEnergia, tx } from "@/lib/energia/idioma";
 import { hrefNoIdioma } from "@/lib/i18n-href";
 
-/** Coleções de infraestrutura feitas com a parceria técnica do FGV CERI (decisão do dono de 20/10/2026: a marca em todos os painéis delas). */
-export const COLECOES_COM_PARCERIA = ["setor-eletrico", "gas", "saneamento", "combustiveis"] as const;
+/**
+ * Coleções de infraestrutura feitas com a parceria técnica do FGV CERI (decisão do dono de 20/10/2026: a marca em todos os painéis
+ * delas). Os Combustíveis nos postos seguem com a marca: desde a fusão de 10/11/2026 são páginas da coleção "gas".
+ */
+export const COLECOES_COM_PARCERIA = ["setor-eletrico", "gas", "saneamento"] as const;
 
 /**
  * Rodapé da coleção, antes do rodapé institucional (Footer): as fontes e a data de atualização que a coleção declara
@@ -20,6 +23,7 @@ export const COLECOES_COM_PARCERIA = ["setor-eletrico", "gas", "saneamento", "co
 export function RodapeColecao({ colecao, extras = [], children }: { colecao: string; extras?: { rotulo: string; href: string }[]; children?: ReactNode }) {
   const idioma = idiomaEnergia();
   const nav = navegacaoDaColecao(colecao);
+  // `nav.id` é o id corrente: o de uma coleção fundida (lista.ts) vale pela que a absorveu
   const nome = nav.nome;
   const destinos = [
     { rotulo: tx(`Início de ${nome}`, `${nome} home`, idioma), href: nav.itens[0].href },
@@ -28,7 +32,7 @@ export function RodapeColecao({ colecao, extras = [], children }: { colecao: str
     ...(nav.atalhos.glossario ? [{ rotulo: tx("Glossário", "Glossary", idioma), href: nav.atalhos.glossario }] : []),
     ...extras,
   ];
-  const parceria = (COLECOES_COM_PARCERIA as readonly string[]).includes(colecao);
+  const parceria = (COLECOES_COM_PARCERIA as readonly string[]).includes(nav.id);
   const link = "inline-flex min-h-[44px] items-center gap-1 text-carvao underline-offset-4 hover:underline";
   return (
     <aside aria-label={tx(`${nome}: fontes, método e parceria`, `${nome}: sources, method and partnership`, idioma)} className="border-t border-linha bg-papel" data-rodape-colecao={colecao}>

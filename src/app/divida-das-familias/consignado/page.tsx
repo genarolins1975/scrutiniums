@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -72,6 +73,7 @@ export default function ConsignadoPage() {
 
   return (
     <>
+      <MarcaVisita secao="familias:consignado" />
       <header>
         <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_CONSIGNADO} fontes={["credito"]} />
         <NavegacaoColecao colecao="divida" />

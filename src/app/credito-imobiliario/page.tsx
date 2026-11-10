@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
@@ -92,6 +93,7 @@ export default function CreditoImobiliarioPage() {
   const d = dadosMoradia();
   const cabecalho = (
     <header>
+      <MarcaVisita secao="familias:credito-imobiliario" />
       <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_MORADIA} fontes={["credito"]} />
       <NavegacaoColecao colecao="moradia" />
     </header>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -49,6 +50,7 @@ export default function PaginaSancoes() {
   const { D, B, C, R } = dadosSancoes();
   const cabecalho = (
     <header>
+      <MarcaVisita secao="familias:sancoes-e-reclamacoes" />
       <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_SANCOES} fontes={["credito"]} />
       <NavegacaoColecao colecao="divida" />
     </header>
@@ -319,7 +321,6 @@ export default function PaginaSancoes() {
                     {num(B.tempo_citacao_decisao_meses.p90, 0)} ({n0(B.tempo_citacao_decisao_meses.n)} decisões; só as já decididas).
                   </Texto>
                   <TabelaDados
-                    id="inabilitados"
                     titulo="Inabilitados vigentes por prazo da inabilitação"
                     colunas={["Prazo, anos", "Inabilitados vigentes", "Encerram em 12 meses"]}
                     linhas={(B.inabilitados.por_prazo as any[]).map((p) => [`${num(p.prazo_anos, p.prazo_anos % 1 ? 1 : 0)}`, p.n, p.encerram_12m])}
@@ -388,7 +389,6 @@ export default function PaginaSancoes() {
                       limite={cvmAnual.length}
                     />
                     <TabelaDados
-                      id="cvm-areas"
                       titulo="Processos sancionadores da CVM por área que instruiu"
                       colunas={["Área que instruiu", "Processos", "Parcela dos processos, %"]}
                       linhas={(C.areas as any[]).map((x) => [String(x.area), x.n, x.share])}
@@ -428,7 +428,7 @@ export default function PaginaSancoes() {
                   tituloVisivel="Decisões do Banco Central"
                   titulo="Decisões mais recentes do Banco Central em processos sancionadores, em ordem cronológica"
                   colunas={["Decisão", "Apenado", "Pessoa", "Penalidade", "Multa, R$", "Recurso", "Situação"]}
-                  linhas={[...recentesBcb].reverse().map((x) => [
+                  linhas={recentesBcb.map((x) => [
                     dataOuVazio(x.decisao),
                     String(x.nome),
                     PESSOA[String(x.pessoa)] ?? null,
@@ -449,7 +449,7 @@ export default function PaginaSancoes() {
                     tituloVisivel="Processos da CVM"
                     titulo="Processos sancionadores mais recentes da CVM, em ordem cronológica de abertura"
                     colunas={["Abertura", "Objeto, como publicado pela CVM", "Área", "Fase", "Acusados", "Última movimentação"]}
-                    linhas={[...recentesCvm].reverse().map((x) => [
+                    linhas={recentesCvm.map((x) => [
                       dataOuVazio(x.abertura),
                       `${limpar(x.objeto)}${String(x.objeto).length >= 220 ? "…" : ""}`,
                       x.area ? String(x.area) : null,
@@ -488,7 +488,7 @@ export default function PaginaSancoes() {
                     instituições.
                   </LeituraGuiada>
                 }
-                comoInterpretar={frase(R.nota)}
+                comoInterpretar={limpar(R.nota).replace(/^./, (c) => c.toUpperCase()).replace(/\bBCB\b/g, "Banco Central")}
                 naoConcluir="qual instituição recebe mais reclamações, nem que o atendimento do sistema piorou ou melhorou. A mediana resume o ranking sem nomes e o conjunto de instituições muda de um trimestre para outro."
                 tabela={{
                   titulo: "Índice de reclamações do ranking trimestral do Banco Central: mediana, p90 e instituições",

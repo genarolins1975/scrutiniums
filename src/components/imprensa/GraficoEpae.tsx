@@ -307,7 +307,7 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
       <p className="rotulo mt-10 text-mineral">
         {dados.revisao} ·{" "}
         <Link
-          href="/observatorio/bets-financial-risk"
+          href="/divida-das-familias/apostas"
           className="underline decoration-linha underline-offset-4 hover:text-bronze"
         >
           série mensal completa no painel

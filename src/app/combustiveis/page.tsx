@@ -61,7 +61,7 @@ export default function CombustiveisPage() {
       <header>
         {/* a gold é do pipeline do Gás: as fontes do "Citar" e do "Avisar" são as dele */}
         <CabecalhoPlataforma observatorio="energia-e-infraestrutura" destinoConta="/combustiveis" fontes={["gas"]} />
-        <NavegacaoColecao colecao="combustiveis" />
+        <NavegacaoColecao colecao="gas" />
       </header>
       <EntradaColecao
         tipo="colecao"
@@ -80,7 +80,8 @@ export default function CombustiveisPage() {
         }
         contextoEscala="Preços médios no Brasil"
         paraVoce={<ParaVoce entrada="/combustiveis" />}
-        destinos={destinosDaColecao("combustiveis")}
+        // coleção Gás e combustíveis desde a fusão de 10/11/2026: a consulta por estado, do mesmo grupo, e depois o resto da coleção
+        destinos={destinosDaColecao("gas", { proprio: pagina.href })}
         artefato={
           <ModeloDidatico
             id="como-mede"

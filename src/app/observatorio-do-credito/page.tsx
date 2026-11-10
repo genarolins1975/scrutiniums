@@ -99,7 +99,7 @@ function numerosVivos(): { numeros: NumeroPorta[]; vintages: Record<string, stri
       periodo: `acervo coletado em ${String(judicial.coletado_em).slice(0, 10).split("-").reverse().join("/")}`,
       fonte: "CNJ, DataJud",
       nota: `${judicial.camada_nacional.n_tribunais} tribunais.`,
-      href: "/observatorio/lawsuits",
+      href: "/divida-das-familias/clientes-contra-bancos",
     });
   }
   const vintages = meta?.vintages ?? {};
@@ -121,7 +121,7 @@ function numeroDaArea(area: string): NumeroPorta | undefined {
   if (area === "Apostas e crédito das famílias" || area === "Fraudes financeiras") {
     const g = lerGold(area === "Fraudes financeiras" ? "fraudes" : "bets");
     const s = Array.isArray(g?.sintese) ? g.sintese[0] : null;
-    if (s) return { rotulo: s.rotulo, valor: s.exibir, unidade: "", periodo: s.data_ref, fonte: s.fonte, href: area === "Fraudes financeiras" ? "/observatorio/financial-fraud" : "/observatorio/bets-financial-risk" };
+    if (s) return { rotulo: s.rotulo, valor: s.exibir, unidade: "", periodo: s.data_ref, fonte: s.fonte, href: area === "Fraudes financeiras" ? "/divida-das-familias/golpes-e-fraudes" : "/divida-das-familias/apostas" };
   }
   return undefined;
 }
@@ -172,14 +172,14 @@ const AREAS = [
   },
   {
     titulo: "Apostas e crédito das famílias",
-    href: "/observatorio/bets-financial-risk",
+    href: "/divida-das-familias/apostas",
     pergunta: "O que as apostas online fazem com a saúde financeira das famílias?",
     detalhe:
       "GGR, apostadores, autoexclusão e fluxo Pix com hierarquia de evidências A–E: o painel investiga a hipótese em vez de partir da conclusão, e diz onde a evidência termina.",
   },
   {
     titulo: "Fraudes financeiras",
-    href: "/observatorio/financial-fraud",
+    href: "/divida-das-familias/golpes-e-fraudes",
     pergunta: "Quanto o Brasil perde com golpes, e o que os dados permitem afirmar?",
     detalhe:
       "Perdas reportadas, devoluções via Pix/MED e tipologias — separando dado administrativo oficial de estimativa privada, com a fonte primária de cada número.",

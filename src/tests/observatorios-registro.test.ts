@@ -83,9 +83,12 @@ describe("registro dos seis observatórios", () => {
     for (const d of DIMENSOES.filter((x) => x.href)) expect(DESTINO_TEMAS_EFICIENCIA[d.id], d.id).toBeDefined();
   });
 
-  it("o Crédito se divide entre Famílias e Economia, e nenhum domínio fica sem observatório", () => {
+  // Até 10/11/2026 o Crédito alimentava também as Famílias com abas da aplicação. Por decisão do dono, os nove painéis das
+  // Famílias foram reescritos como páginas do próprio observatório (reescritos.ts, origem null) e leem a gold do Crédito.
+  it("o Crédito fica na Economia e nas Contas Públicas; as Famílias têm páginas próprias; nenhum domínio fica sem observatório", () => {
     const daOrigem = (id: string) => new Set(todos.filter((p) => p.origem === id).map((p) => p.observatorio));
-    expect([...daOrigem("credito")].sort()).toEqual(["contas-publicas", "economia", "familias"]);
+    expect([...daOrigem("credito")].sort()).toEqual(["contas-publicas", "economia"]);
+    expect(todos.filter((p) => p.observatorio === "familias" && p.rota.startsWith("/observatorio/"))).toEqual([]);
     for (const d of DOMINIOS) expect(daOrigem(d.id).size, d.id).toBeGreaterThan(0);
   });
 

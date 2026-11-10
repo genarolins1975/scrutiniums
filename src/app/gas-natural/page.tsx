@@ -14,11 +14,13 @@ import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao"
 import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { Recolhido } from "@/components/observatorios/Recolhido";
 import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: { absolute: "Gás Natural · Scrutiniums" },
+  // a página é a porta da coleção Gás e combustíveis (nome do registro desde 10/11/2026)
+  title: tituloNaColecao("Gás Natural", "/gas-natural"),
   description:
     "Quanto gás o Brasil produz, quanto chega ao mercado, de onde vem o importado e quanto custa em cada elo, do poço ao botijão e ao gás encanado, com fonte, período e fórmula em cada número.",
   alternates: { canonical: "/gas-natural" },

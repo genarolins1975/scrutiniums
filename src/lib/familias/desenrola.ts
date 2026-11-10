@@ -9,7 +9,7 @@ import { lerPublico, mesAno } from "@/lib/perguntas/leitura";
 import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
 
 export const ROTA_DESENROLA = "/divida-das-familias/desenrola";
-export const SECAO_DESENROLA = "familias:divida:desenrola";
+export const SECAO_DESENROLA = "familias:desenrola";
 export const PERGUNTA_DESENROLA = "O que o Desenrola fez, e o que os dados mostram?";
 export const DESCRICAO_DESENROLA =
   "Desenrola Brasil: o que o programa de renegociação de dívidas fez, quanto dele aparece nos dados públicos do Banco Central e até onde eles permitem avaliar seus efeitos.";
@@ -22,12 +22,16 @@ const INICIO_PROGRAMA = "2023-09";
 const FIM_PROGRAMA = "2024-05";
 
 /**
- * Texto que vem da gold, na forma da plataforma: sem travessão, sem palavra em caixa alta para dar ênfase, mês como "set/2026",
+ * Texto que vem da gold, na forma da plataforma: sem travessão (a pontuação equivalente entra no lugar), sem palavra em caixa alta para dar ênfase, mês como "set/2026",
  * data como dd/mm/aaaa e unidade por extenso. Siglas (SCR, BCB, UF, FGO) ficam como estão.
  */
 export const textoGold = (s: unknown): string =>
   String(s ?? "")
-    .replace(/\s+[—–]\s+/g, ", ")
+    // aposto entre dois travessões vira parênteses; travessão simples vira dois-pontos, ou vírgula antes de "e" e "que" e depois de sigla de fonte
+    .replace(/\s+[—–]\s+([^—–.;:]{1,90}?)\s+[—–]\s+/g, " ($1) ")
+    .replace(/\b(BCB|SCR)\s+[—–]\s+/g, "$1, ")
+    .replace(/\s+[—–]\s+(?=(e|que)\s)/g, ", ")
+    .replace(/\s+[—–]\s+/g, ": ")
     .replace(/(\d)\s*[—–]\s*(\d)/g, "$1 a $2")
     .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, (_, a: string, m: string, d: string) => `${d}/${m}/${a}`)
     .replace(/\b(\d{4})-(\d{2})\b/g, (_, a: string, m: string) => mesAno(`${a}-${m}`))

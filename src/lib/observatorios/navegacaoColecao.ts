@@ -1,5 +1,6 @@
 /**
- * Navegação de cada uma das 28 coleções (Iniciativa 2 do parecer de UX de 21/10/2026): uma só forma para toda coleção,
+ * Navegação de cada uma das 24 coleções (Iniciativa 2 do parecer de UX de 21/10/2026; eram 28 até a fusão das coleções de uma
+ * página só, decidida pelo dono em 10/11/2026): uma só forma para toda coleção,
  * lida dos catálogos que já existem, sem lista paralela escrita à mão. NavegacaoColecao desenha o que esta função devolve.
  *
  * Regras (conferidas por src/tests/navegacao-colecao.test.ts):
@@ -12,10 +13,13 @@
  *  5. Grupos (eixos do Saneamento, grupos do Setor Elétrico e do Gás, capítulos do Agronegócio) são itens que levam à primeira
  *     página do grupo e expõem as páginas dele na segunda linha. Não há menu suspenso por grupo.
  *  6. Dados, Método e Glossário ficam fora da lista, como atalhos à direita da linha 1.
+ *  7. A coleção que absorveu outra (COLECOES_FUNDIDAS, lista.ts) mostra as páginas da absorvida como um grupo, com as páginas
+ *     dele na segunda linha; o id antigo continua aceito por navegacaoDaColecao e leva à navegação da coleção nova.
  *
  * Só servidor: lê os catálogos de todos os domínios (como registro.ts). O navegador recebe o resultado (navegacaoPura.ts).
  */
 import { DESTINO_ABAS_CREDITO, observatorio as observatorioPorId, OBSERVATORIOS } from "./registro";
+import { idDaColecao } from "./lista";
 import { colecoesDe } from "./colecoes";
 import { dominio } from "@/lib/dominios";
 import { leva2Aprovada } from "@/lib/rotasPublicas";
@@ -85,20 +89,20 @@ function gas(): Montagem {
       pagina("Início", "/gas-natural"),
       ...(cozinha ? [pagina(cozinha.rotulo, cozinha.href)] : []),
       ...GRUPOS_GAS.filter((g) => g.id !== "dados").map((g) => grupo(g.rotulo, doGrupo(g.id))),
+      combustiveis(),
     ],
     atalhos: { dados: "/gas-natural/dados", metodo: "/gas-natural/metodologia" },
   };
 }
 
-// ------------------------------------------------------------ Combustíveis
-
-function combustiveis(): Montagem {
+/**
+ * Combustíveis nos postos, coleção própria até 10/11/2026 e desde então grupo de Gás e combustíveis: o painel e, com a
+ * aprovação da LEVA_2, a consulta por estado, na segunda linha. A consulta pessoal da coleção continua sendo o Gás de cozinha.
+ */
+function combustiveis(): ItemNav {
+  const painel = PAGINAS_COMBUSTIVEIS.find((p) => p.href === ROTA_COMBUSTIVEIS);
   const consulta = leva2Aprovada("quanto-custa-encher-o-tanque") ? PAGINAS_COMBUSTIVEIS.find((p) => p.href === ROTA_CONSULTA_TANQUE) : undefined;
-  return {
-    consulta: consulta?.href,
-    itens: [pagina("Início", ROTA_COMBUSTIVEIS), ...(consulta ? [pagina(consulta.rotulo, consulta.href)] : [])],
-    atalhos: {},
-  };
+  return grupo("Combustíveis", [pagina(painel?.rotulo ?? "Preços nos postos", ROTA_COMBUSTIVEIS), ...(consulta ? [pagina(consulta.rotulo, consulta.href)] : [])]);
 }
 
 // --------------------------------------------------------------- Saneamento
@@ -240,7 +244,10 @@ function educacao(): Montagem {
       pagina("Início", ROTA_EDUCACAO),
       // o painel das capitais (origem Eficiência Estatal), com as abas dele na segunda linha
       temaComoGrupo(capitais, TITULO_CAPITAIS, [`${ROTA_CAPITAIS}/metodos`]),
-      ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO, ROTA_CAPITAIS]),
+      ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO, ROTA_CAPITAIS, TEMAS_EFICIENCIA.cultura.rota]),
+      // a Cultura (coleção própria até 10/11/2026), com as abas e o método dela na segunda linha: o atalho Método da linha 1 é o
+      // da Educação nas capitais
+      temaComoGrupo(TEMAS_EFICIENCIA.cultura),
     ],
     atalhos: { metodo: `${ROTA_CAPITAIS}/metodos` },
     levar: capitais.levar ? [...capitais.levar] : undefined,
@@ -326,10 +333,6 @@ function eficiencia(id: string): Montagem | null {
       return doTema(T.saude, extras("servicos-publicos", "saude", [T.saude.rota]));
     case "seguranca":
       return doTema(T.seguranca, extras("servicos-publicos", "seguranca", [T.seguranca.rota]));
-    case "cultura":
-      return doTema(T.cultura);
-    case "mobilidade":
-      return doTema(T.mobilidade);
     case "justica": {
       const base = doTema(T.judiciario);
       return { ...base, itens: [...base.itens, temaComoGrupo(T.justica)], levar: undefined };
@@ -364,13 +367,16 @@ function doRegistro(obs: Parameters<typeof colecoesDe>[0], id: string): Montagem
 function conectividade(): Montagem {
   const base = doRegistro("energia-e-infraestrutura", "conectividade");
   const tema = TEMAS_EFICIENCIA.energia;
-  return { ...base, itens: [...base.itens.filter((i) => i.href !== tema.rota), temaComoGrupo(tema)] };
+  // a Mobilidade e transporte (coleção própria até 10/11/2026) vem como grupo, com as abas, o comparar e o método dela na
+  // segunda linha; o recorte que ela leva de uma aba a outra (UF, nível, território) continua acompanhando o leitor
+  const mobilidade = TEMAS_EFICIENCIA.mobilidade;
+  const temas = [tema.rota, mobilidade.rota];
+  return { ...base, itens: [...base.itens.filter((i) => !temas.includes(i.href)), temaComoGrupo(mobilidade), temaComoGrupo(tema)], levar: levarDe(mobilidade, tema) };
 }
 
 const MONTAGENS: Record<string, () => Montagem> = {
   "setor-eletrico": setorEletrico,
   gas,
-  combustiveis,
   saneamento,
   agro,
   credito,
@@ -383,7 +389,9 @@ const MONTAGENS: Record<string, () => Montagem> = {
 };
 
 /** Navegação de uma coleção do registro (id de lista.ts). */
-export function navegacaoDaColecao(id: string): NavegacaoDaColecao {
+export function navegacaoDaColecao(pedido: string): NavegacaoDaColecao {
+  // o id de uma coleção fundida em 10/11/2026 vale pela que a absorveu (COLECOES_FUNDIDAS)
+  const id = idDaColecao(pedido);
   const o = OBSERVATORIOS.find((x) => x.colecoes.some((c) => c.id === id));
   const c = o?.colecoes.find((x) => x.id === id);
   if (!o || !c) throw new Error(`coleção desconhecida: ${id}`);
@@ -412,7 +420,7 @@ export function navegacaoDaConta(admin: boolean): NavegacaoDaColecao {
   };
 }
 
-/** Os ids das 28 coleções, na ordem do registro. */
+/** Os ids das 24 coleções, na ordem do registro. */
 export function idsDasColecoes(): string[] {
   return OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id));
 }

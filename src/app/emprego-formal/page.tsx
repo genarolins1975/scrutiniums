@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -56,6 +57,7 @@ export default function EmpregoFormalPage() {
   const d = dadosEmprego();
   const cabecalho = (
     <header>
+      <MarcaVisita secao="familias:emprego-formal" />
       <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_EMPREGO} fontes={["credito"]} />
       <NavegacaoColecao colecao="renda" />
     </header>

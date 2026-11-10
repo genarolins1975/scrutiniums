@@ -83,6 +83,9 @@ const nextConfig = {
         "./public/gas/gold/*.json",
         "./public/eficiencia/seguranca-publica/gold/seguranca.json",
       ],
+      // painéis das Famílias dinâmicos (recorte na URL): leem a gold a cada instância
+      "/divida-das-familias/clientes-contra-bancos": ["./public/obs/data/gold/judicial.json"],
+      "/divida-das-familias/bancos-cobrando-na-justica": ["./public/obs/data/gold/cobranca.json"],
       "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       "/educacao-municipal/mapa": ["./public/educacao/gold/educacao.json", "./public/educacao/gold/mapa.json"],
       "/educacao-municipal/municipio/*": ["./public/educacao/gold/**/*.json"],

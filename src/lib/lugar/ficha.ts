@@ -20,11 +20,12 @@ import { hrefMunicipio as hrefConectividade } from "@/lib/conectividade/paginas"
 import { consultarMunicipio as consultarPrevidencia, municipioNoAno } from "@/lib/previdencia/dados";
 import { hrefMunicipio as hrefPrevidencia } from "@/lib/previdencia/paginas";
 import { CONSULTAS } from "@/lib/perguntas/portas";
+import { nomeDaColecao } from "@/lib/observatorios/lista";
 import { numeroBotijaoNaUf, numeroContasNaUf, numeroTanqueNaUf, numeroViolenciaNaUf, type NumeroParaVoce } from "@/lib/observatorios/paraVoce";
 
 export type CartaoLugar = {
   id: string;
-  /** Coleção dona do número, como o leitor a vê. */
+  /** Coleção dona do número, como o leitor a vê: o nome do registro (nomeDaColecao), que mudou em quatro delas na fusão de 10/11/2026. */
   colecao: string;
   pergunta: string;
   /** O que a ficha do tema mostra a mais, em uma frase. */
@@ -80,7 +81,7 @@ function escola(id: string, etapa: "ai" | "af"): CartaoLugar {
   const iniciais = etapa === "ai";
   return {
     id: `escola-${etapa}`,
-    colecao: "Educação",
+    colecao: nomeDaColecao("educacao"),
     pergunta: iniciais ? "Como vão as escolas da prefeitura, do 1º ao 5º ano?" : "E do 6º ao 9º ano?",
     resposta: "O Ideb desde 2005, a meta, o aprendizado, a aprovação e o tamanho da rede, na ficha do município.",
     href,
@@ -101,7 +102,7 @@ function internet(id: string, qual: "fixa" | "g5"): CartaoLugar {
   const fixa = qual === "fixa";
   return {
     id: `internet-${qual}`,
-    colecao: "Conectividade",
+    colecao: nomeDaColecao("conectividade"),
     pergunta: fixa ? "Quanta internet fixa a cidade tem?" : "O 5G chega a quem mora aqui?",
     resposta: fixa
       ? "Acessos, fibra, velocidade e empresas que atendem o município, no painel Conectividade."
@@ -147,7 +148,7 @@ function fogo(id: string): CartaoLugar {
   const href = rotaFichaFocos(id);
   return {
     id: "fogo",
-    colecao: "Fogo e queimadas",
+    colecao: nomeDaColecao("fogo"),
     pergunta: "Teve fogo no município este ano?",
     resposta: "Focos de calor no ano em curso, no mesmo período do ano anterior e no último ano completo, com a posição no estado.",
     href,
@@ -185,8 +186,8 @@ export function fichaDoLugar(ibge: string | string[] | undefined): FichaLugar {
     nomeUf: NOME_UF[uf] ?? uf,
     cidade: [saneamento(valor, "agua"), saneamento(valor, "esgoto"), escola(valor, "ai"), escola(valor, "af"), internet(valor, "fixa"), internet(valor, "g5"), inss(valor), fogo(valor)],
     noEstado: [
-      daUf("tanque-uf", "Combustíveis", `Quanto custa a gasolina ${noEstado}?`, "Gasolina, etanol e diesel no estado, mês a mês, e a distância para a média do Brasil.", numeroTanqueNaUf(uf)),
-      daUf("botijao-uf", "Gás Natural", `Quanto custa o botijão ${noEstado}?`, "O botijão de 13 kg no estado, mês a mês, comparado com a média do Brasil.", numeroBotijaoNaUf(uf)),
+      daUf("tanque-uf", nomeDaColecao("gas"), `Quanto custa a gasolina ${noEstado}?`, "Gasolina, etanol e diesel no estado, mês a mês, e a distância para a média do Brasil.", numeroTanqueNaUf(uf)),
+      daUf("botijao-uf", nomeDaColecao("gas"), `Quanto custa o botijão ${noEstado}?`, "O botijão de 13 kg no estado, mês a mês, comparado com a média do Brasil.", numeroBotijaoNaUf(uf)),
       daUf("violencia-uf", "Segurança pública", `Como está a violência ${noEstado}?`, "Homicídios e outros registros por 100 mil habitantes, ao lado da taxa do Brasil.", numeroViolenciaNaUf(uf)),
       daUf("contas-uf", "Contas Estaduais", "Como estão as contas do estado?", "Execução do orçamento, receitas, despesas e dívida, como o estado declara ao Tesouro.", numeroContasNaUf(uf)),
     ],

@@ -90,11 +90,11 @@ export const OBSERVATORIOS: Observatorio[] = [
       // porta da coleção desde 20/10/2026: o painel Educação nos municípios (rede pública de todos os municípios); a
       // eficiência da rede municipal das capitais continua no painel canônico /eficiencia-estatal/educacao-municipal-capitais,
       // que segue na coleção
-      { id: "educacao", nome: "Educação", href: "/educacao-municipal", metodo: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },
+      // desde 10/11/2026 a coleção reúne também a Cultura, que tinha uma página só (fusão decidida pelo dono; COLECOES_FUNDIDAS)
+      { id: "educacao", nome: "Educação e cultura", href: "/educacao-municipal", metodo: "/eficiencia-estatal/educacao-municipal-capitais/metodos" },
       { id: "saude", nome: "Saúde", href: "/eficiencia-estatal/saude-capitais", metodo: "/eficiencia-estatal/saude-capitais/metodos" },
       { id: "seguranca", nome: "Segurança pública", href: "/eficiencia-estatal/seguranca-publica" },
       { id: "justica", nome: "Justiça", href: "/eficiencia-estatal/judiciario" },
-      { id: "cultura", nome: "Cultura", href: "/eficiencia-estatal/cultura" },
       { id: "sintese", nome: "Síntese das capitais", href: "/eficiencia-estatal", dominio: "eficiencia" },
     ],
   },
@@ -120,12 +120,12 @@ export const OBSERVATORIOS: Observatorio[] = [
     acento: "energia",
     colecoes: [
       { id: "setor-eletrico", nome: "Setor Elétrico", href: "/setor-eletrico", dominio: "energia", metodo: "/setor-eletrico/metodologia" },
-      { id: "gas", nome: "Gás Natural", href: "/gas-natural", dominio: "gas", metodo: "/gas-natural/metodologia" },
-      { id: "combustiveis", nome: "Combustíveis", href: "/combustiveis" },
+      // desde 10/11/2026 a coleção reúne também os Combustíveis nos postos, da mesma gold do pipeline do Gás (COLECOES_FUNDIDAS)
+      { id: "gas", nome: "Gás e combustíveis", href: "/gas-natural", dominio: "gas", metodo: "/gas-natural/metodologia" },
       { id: "saneamento", nome: "Saneamento", href: "/saneamento", dominio: "saneamento", metodo: "/saneamento/metodologia" },
-      { id: "mobilidade", nome: "Mobilidade", href: "/eficiencia-estatal/mobilidade-transporte" },
-      // desde 20/10/2026 a porta da coleção é o painel Conectividade (Anatel por município); a página da Eficiência segue na coleção
-      { id: "conectividade", nome: "Conectividade", href: "/conectividade" },
+      // desde 20/10/2026 a porta da coleção é o painel Conectividade (Anatel por município); a página da Eficiência segue na coleção.
+      // Desde 10/11/2026 reúne também a Mobilidade e transporte, que tinha uma página só (COLECOES_FUNDIDAS)
+      { id: "conectividade", nome: "Mobilidade e conectividade", href: "/conectividade" },
     ],
   },
   {
@@ -153,8 +153,8 @@ export const OBSERVATORIOS: Observatorio[] = [
     colecoes: [
       { id: "desmatamento", nome: "Desmatamento e emissões", href: "/agronegocio/ambiente" },
       { id: "cidades-clima", nome: "Cidades e clima", href: "/eficiencia-estatal/meio-ambiente-clima" },
-      { id: "fogo", nome: "Fogo e queimadas", href: "/territorio/queimadas" },
-      { id: "desastres", nome: "Desastres", href: "/territorio/desastres" },
+      // desde 10/11/2026 a coleção reúne as Queimadas e os Desastres reconhecidos, cada um com a sua gold (COLECOES_FUNDIDAS)
+      { id: "fogo", nome: "Fogo e desastres", href: "/territorio/queimadas" },
     ],
   },
 ];
@@ -176,6 +176,33 @@ export const OBSERVATORIO_PRINCIPAL: Record<DominioId, ObservatorioId> = {
   estados: "contas-publicas",
 };
 
+/**
+ * Coleções de uma página só fundidas em 10/11/2026 (decisão do dono): 28 coleções viraram 24. Nenhum endereço mudou e nenhuma
+ * página saiu; a coleção é agrupamento de navegação. Este é o único mapa de apelidos: o id antigo, que pode estar gravado no
+ * cookie de último acesso, num formulário aberto antes da fusão ou num link de busca local, leva à coleção que o absorveu
+ * (`para`). `porta` é a antiga porta da coleção absorvida, que continua no ar como página da coleção nova: o último acesso
+ * por endereço (ultimoAcesso.ts) a reconhece, porque ela não fica abaixo da porta nova. `nome` é o nome que a coleção tinha.
+ */
+export const COLECOES_FUNDIDAS = {
+  desastres: { para: "fogo", nome: "Desastres", porta: "/territorio/desastres" },
+  combustiveis: { para: "gas", nome: "Combustíveis", porta: "/combustiveis" },
+  mobilidade: { para: "conectividade", nome: "Mobilidade", porta: "/eficiencia-estatal/mobilidade-transporte" },
+  cultura: { para: "educacao", nome: "Cultura", porta: "/eficiencia-estatal/cultura" },
+} as const satisfies Record<string, { para: string; nome: string; porta: string }>;
+
+/** Id corrente de uma coleção: o próprio id ou, para o id de uma coleção fundida (COLECOES_FUNDIDAS), o da que a absorveu. */
+export function idDaColecao(id: string): string {
+  return Object.hasOwn(COLECOES_FUNDIDAS, id) ? COLECOES_FUNDIDAS[id as keyof typeof COLECOES_FUNDIDAS].para : id;
+}
+
+/** Nome de uma coleção como o leitor a vê, lido do registro; aceita o id de uma coleção fundida. */
+export function nomeDaColecao(id: string): string {
+  const corrente = idDaColecao(id);
+  const c = OBSERVATORIOS.flatMap((o) => o.colecoes).find((x) => x.id === corrente);
+  if (!c) throw new Error(`coleção desconhecida: ${id}`);
+  return c.nome;
+}
+
 /** Destino de um observatório para quem tem conta: a entrada própria ou a sua seção na escolha pós login. */
 export function destinoObservatorio(o: Observatorio): string {
   return o.entrada ?? `/app/observatorios#obs-${o.id}`;
@@ -190,7 +217,9 @@ export function escolhaObservatorio(obs: unknown, colecao: unknown): { observato
   const o = typeof obs === "string" ? OBSERVATORIOS.find((x) => x.id === obs) : undefined;
   if (!o) return undefined;
   if (colecao === null || colecao === undefined || colecao === "") return o.entrada ? { observatorio: o, href: o.entrada } : undefined;
-  const c = typeof colecao === "string" ? o.colecoes.find((x) => x.id === colecao) : undefined;
+  // id de coleção fundida (formulário aberto antes de 10/11/2026) vale pela coleção que a absorveu
+  const id = typeof colecao === "string" ? idDaColecao(colecao) : undefined;
+  const c = id ? o.colecoes.find((x) => x.id === id) : undefined;
   return c ? { observatorio: o, href: c.href } : undefined;
 }
 

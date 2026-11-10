@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
 
 export const metadata: Metadata = {
   title: {
     default: "Conectividade",
-    template: "%s · Conectividade · Scrutiniums",
+    // "Página · Coleção · Scrutiniums", com o nome da coleção lido do registro (Mobilidade e conectividade desde 10/11/2026)
+    template: modeloDeTitulo("/conectividade").template,
   },
   description:
     "Banda larga fixa, linhas móveis e cobertura 4G e 5G por município, estado e no Brasil, cada medida só onde a Anatel a publica, pelos dados abertos da Anatel, com fonte, período e ressalvas em cada número.",

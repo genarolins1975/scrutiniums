@@ -35,7 +35,7 @@ const minuscula = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
  *  1. `abertura`: H1, busca da plataforma e índice dos seis observatórios;
  *  2. `retomar`: só quando há último acesso, recorte salvo ou aviso; nunca estado vazio;
  *  3. `para-voce`: as perguntas do estado e da cidade do leitor, no mesmo componente das entradas;
- *  4. `destinos`: as 28 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
+ *  4. `destinos`: as 24 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
  *  5. `metodo`: um só `<details>`, com o inventário, a legenda dos selos e as fontes de cada coleção.
  *
  * Todo destino é `<a href>`; os cliques do diretório são contados por LinkMedido, sem formulário. O `<main>` é o do layout da
@@ -231,8 +231,11 @@ function Colecao({ c }: Readonly<{ c: LinhaColecao }>) {
   const estado = (
     <>
       {plural(c.contagem, "página", "páginas")}
-      {c.dadosAte ? <> · dados até {c.dadosAte}</> : <> · referência por página</>}
+      {/* coleção com duas bases (fusão de 10/11/2026): a data leva o nome da parte que ela cobre, e a outra parte o diz */}
+      {c.dadosAte && c.alcance ? <> · {c.alcance.de}: dados até {c.dadosAte}</> : c.dadosAte ? <> · dados até {c.dadosAte}</> : <> · referência por página</>}
+      {/* o atraso é da fonte datada: vem antes da parte que tem a referência na página */}
       {c.atraso && <> · {minuscula(c.atraso)}</>}
+      {c.dadosAte && c.alcance && <> · {c.alcance.semData}: referência por página</>}
     </>
   );
   return (
@@ -347,7 +350,14 @@ function Metodo({ secoes, totais }: Readonly<{ secoes: SecaoObservatorio[]; tota
                 <div key={c.id} className={styles.fonte} data-fontes-colecao={c.id}>
                   <p className="t-corpo font-medium text-carvao">{c.nome}</p>
                   {c.fontes.length > 0 ? (
-                    <FaixaFrescor dominios={c.fontes} variante="metodo" />
+                    <>
+                      <FaixaFrescor dominios={c.fontes} variante="metodo" />
+                      {c.alcance && (
+                        <p className="t-meta mt-1 text-carvao-muted" data-alcance-da-data="">
+                          A data acima vale para {c.alcance.de}. {c.alcance.semData}: fontes e períodos em cada página.
+                        </p>
+                      )}
+                    </>
                   ) : linhas.length > 0 ? (
                     <ul className="t-meta mt-1 space-y-1 text-carvao-muted">
                       {linhas.map((l) => (

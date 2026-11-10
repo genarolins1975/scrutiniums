@@ -9,7 +9,7 @@ import type { Natureza, Proveniencia } from "@/lib/painel/tipos";
 import { RECORTE_PADRAO, faixasDependencia, maioresDaCamada, maioresSensibilidade, noRecorte, type Municipio } from "@/components/familias/consignado/camadas";
 
 export const ROTA_CONSIGNADO = "/divida-das-familias/consignado";
-export const SECAO_CONSIGNADO = "familias:divida:consignado";
+export const SECAO_CONSIGNADO = "familias:consignado";
 export const PERGUNTA_CONSIGNADO = "O consignado pesa mais onde há mais aposentados?";
 export const DESCRICAO_CONSIGNADO =
   "Crédito consignado, benefícios da Previdência e envelhecimento: o que é medido no país, por estado e por município, e o que é só estimativa.";

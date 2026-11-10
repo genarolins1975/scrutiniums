@@ -4,11 +4,13 @@ import { ParaIrAlem } from "@/components/observatorios/ParaIrAlem";
 import { mapaParaIrAlem } from "@/lib/observatorios/mapaParaIrAlem";
 import { Footer } from "@/components/layout/Footer";
 import { RodapeColecao } from "@/components/layout/RodapeColecao";
+import { modeloDeTitulo } from "@/lib/observatorios/contexto";
 
 export const metadata: Metadata = {
   title: {
     default: "Combustíveis nos postos",
-    template: "%s · Combustíveis · Scrutiniums",
+    // "Página · Coleção · Scrutiniums", com o nome da coleção lido do registro (Gás e combustíveis desde 10/11/2026)
+    template: modeloDeTitulo("/combustiveis").template,
   },
   description:
     "Preço médio de revenda da gasolina comum, do etanol hidratado e do óleo diesel por estado e no Brasil, mês a mês desde 2013, pelo Levantamento de Preços de Combustíveis da ANP, com fonte, período e ressalvas em cada número.",
@@ -30,7 +32,7 @@ export default function CombustiveisLayout({ children }: { children: React.React
       </a>
       <div className="flex-1">{children}</div>
       {/* rodapé da coleção, com a parceria técnica com o FGV CERI (Iniciativa 2: a marca saiu do cabeçalho) */}
-      <RodapeColecao colecao="combustiveis" />
+      <RodapeColecao colecao="gas" />
       <ParaIrAlem mapa={mapaParaIrAlem()} />
       <Footer />
     </div>

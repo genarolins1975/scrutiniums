@@ -34,6 +34,7 @@ import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
 import { RESUMO_DIVIDA, ROTA_DIVIDA, TERMOS_DIVIDA, TITULO_PAINEL as TITULO_PAINEL_DIVIDA } from "@/lib/divida/paginas";
+import { PAINEIS_REESCRITOS } from "./reescritos";
 import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
@@ -65,12 +66,18 @@ export const DESTINO_ABAS_CREDITO: Record<string, Destino> = {
   "/subnational-credit": ["contas-publicas", "divida-governos"], "/federal-tax-debt": ["contas-publicas", "divida-governos"],
 };
 export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
+/**
+ * Abas da aplicação do Crédito substituídas por página Next (reescritos.ts): saem do registro, da navegação e da busca, que
+ * passam a apontar para a página nova. O endereço antigo continua servindo a vista antiga até o redirecionamento, decidido
+ * painel por painel depois da conferência de paridade no navegador.
+ */
+export const ABAS_SUBSTITUIDAS = new Map(PAINEIS_REESCRITOS.map((r) => [r.abaAntiga, r.rota]));
 
 function paineisCredito(): Painel[] {
   const raiz: Painel = { rota: "/observatorio", titulo: "Crédito", observatorio: "economia", colecao: "credito", origem: "credito" };
   // páginas Next do Crédito (consultas de juros e método), logo depois da raiz: são as mais procuradas pelo leitor
   const next = PAGINAS_CREDITO.map((p): Painel => ({ rota: p.href, titulo: p.titulo, observatorio: "economia", colecao: "credito", origem: "credito", resumo: p.resumo, termos: p.termos }));
-  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
+  return [raiz, ...next, ...ABAS_OBSERVATORIO.filter((a) => !ABAS_INSTITUCIONAIS_CREDITO.has(a.caminho) && !ABAS_SUBSTITUIDAS.has(a.caminho) && !a.caminho.endsWith("/")).map((a): Painel => {
     const destino = DESTINO_ABAS_CREDITO[a.caminho];
     if (!destino) throw new Error(`aba do Crédito sem observatório: ${a.caminho}`);
     const [observatorio, colecao] = destino;
@@ -88,13 +95,15 @@ export const DESTINO_TEMAS_EFICIENCIA: Record<string, Destino> = {
   saude: ["servicos-publicos", "saude"],
   seguranca: ["servicos-publicos", "seguranca"],
   justica: ["servicos-publicos", "justica"],
-  cultura: ["servicos-publicos", "cultura"],
+  // fusão de 10/11/2026 (decisão do dono, COLECOES_FUNDIDAS em lista.ts): a Cultura entra em Educação e cultura
+  cultura: ["servicos-publicos", "educacao"],
   trabalho: ["familias", "renda"],
   alimentacao: ["familias", "protecao"],
   assistencia: ["familias", "protecao"],
   habitacao: ["familias", "moradia"],
   saneamento: ["energia-e-infraestrutura", "saneamento"],
-  mobilidade: ["energia-e-infraestrutura", "mobilidade"],
+  // fusão de 10/11/2026: a Mobilidade entra em Mobilidade e conectividade
+  mobilidade: ["energia-e-infraestrutura", "conectividade"],
   energia: ["energia-e-infraestrutura", "conectividade"],
   ambiente: ["territorio-e-clima", "cidades-clima"],
   // o tema aponta para o painel Previdência e INSS (21/10/2026), registrado pelo dono nas Contas Federais
@@ -193,9 +202,10 @@ function paineisColecoesInteiras(): Painel[] {
       { rota: "/gas-natural", titulo: "Gás Natural" },
       ...PAGINAS_GAS.map((p) => ({ rota: p.href, titulo: p.rotulo, resumo: p.pergunta, termos: p.termos })),
     ]),
-    // coleção própria com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
+    // painel com a gold do pipeline do Gás (a mesma planilha da ANP do botijão e do GNV): origem gas. A consulta
     // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
-    ...inteira("gas", "energia-e-infraestrutura", "combustiveis",
+    // fusão de 10/11/2026: os Combustíveis entram em Gás e combustíveis (o id "combustiveis" segue como apelido em lista.ts)
+    ...inteira("gas", "energia-e-infraestrutura", "gas",
       PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
@@ -246,7 +256,7 @@ function paineisTerritorio(): Painel[] {
   return [
     { rota: "/territorio/queimadas", titulo: "Queimadas e focos de calor", observatorio: "territorio-e-clima", colecao: "fogo", origem: null,
       resumo: "Onde e quanto o fogo aparece?", termos: ["INPE", "focos de calor", "queimadas", "biomas", "Pantanal"] },
-    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "desastres", origem: null,
+    { rota: "/territorio/desastres", titulo: "Desastres reconhecidos", observatorio: "territorio-e-clima", colecao: "fogo", origem: null, // fusão de 10/11/2026: Fogo e desastres
       resumo: "Onde os desastres atingem os municípios?", termos: ["defesa civil", "enchente", "seca", "reconhecimento federal"] },
     { rota: "/territorio/emissoes", titulo: "Emissões pelo inventário oficial", observatorio: "territorio-e-clima", colecao: "desmatamento", origem: null,
       resumo: "Quanto o Brasil emite de gases de efeito estufa?", termos: ["emissões", "gases de efeito estufa", "inventário oficial", "carbono"] },
@@ -264,6 +274,8 @@ function paineisFamilias(): Painel[] {
     // porta da coleção Dívida e crédito das famílias (10/11/2026): página própria das Famílias sobre a gold do Crédito, só no
     // recorte de pessoa física. O painel do sistema inteiro (/observatorio/credit) fica na Economia e deixou de ser atalho aqui
     { rota: ROTA_DIVIDA, titulo: TITULO_PAINEL_DIVIDA, observatorio: "familias", colecao: "divida", origem: null, resumo: RESUMO_DIVIDA, termos: TERMOS_DIVIDA },
+    // painéis reescritos em Next a partir das vistas da aplicação do Crédito (decisão do dono de 10/11/2026, reescritos.ts)
+    ...PAINEIS_REESCRITOS.map((r): Painel => ({ rota: r.rota, titulo: r.titulo, observatorio: "familias", colecao: r.colecao, origem: null, resumo: r.resumo, termos: r.termos })),
   ];
 }
 

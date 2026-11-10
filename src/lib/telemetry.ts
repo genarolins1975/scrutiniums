@@ -152,6 +152,9 @@ export const VIEW_SECTIONS = [
   "familias:custo-de-vida-na-minha-cidade",
   // Dívida das famílias (Observatório das Famílias, coleção Dívida e crédito das famílias; lê a gold do Crédito)
   "familias:divida",
+  // painéis reescritos das Famílias (src/lib/observatorios/reescritos.ts)
+  "familias:consignado", "familias:desenrola", "familias:apostas", "familias:golpes-e-fraudes", "familias:clientes-contra-bancos",
+  "familias:bancos-cobrando-na-justica", "familias:sancoes-e-reclamacoes", "familias:credito-imobiliario", "familias:emprego-formal",
   // Crédito (páginas Next fora da aplicação de página única)
   "credito:quanto-meu-banco-cobra",
   "credito:simulador-da-parcela",
@@ -310,6 +313,15 @@ export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
   "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
   "familias:divida": "Dívida e crédito das famílias · Dívida das famílias",
+  "familias:consignado": "Dívida e crédito das famílias · Consignado e aposentados",
+  "familias:desenrola": "Dívida e crédito das famílias · Desenrola Brasil",
+  "familias:apostas": "Dívida e crédito das famílias · Apostas e crédito das famílias",
+  "familias:golpes-e-fraudes": "Dívida e crédito das famílias · Golpes e fraudes",
+  "familias:clientes-contra-bancos": "Dívida e crédito das famílias · Clientes contra bancos na Justiça",
+  "familias:bancos-cobrando-na-justica": "Dívida e crédito das famílias · Bancos cobrando na Justiça",
+  "familias:sancoes-e-reclamacoes": "Dívida e crédito das famílias · Sanções e reclamações",
+  "familias:credito-imobiliario": "Moradia · Crédito imobiliário e moradia",
+  "familias:emprego-formal": "Renda e trabalho · Emprego formal",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
   "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
   "credito:metodologia": "Crédito · Metodologia e fontes",

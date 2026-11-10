@@ -147,7 +147,7 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
       pergunta: "Quando a família recorre ao crédito?",
       elos: [
         { titulo: "Dívida com bancos", explicacao: "Cartão, empréstimo pessoal, consignado e financiamentos: quanto da renda vai para as parcelas.", numero: comprometimento, href: "/divida-das-familias", painel: "Dívida das famílias" },
-        { titulo: "Consignado e aposentados", explicacao: "Crédito descontado na folha ou no benefício, por idade e instituição.", numero: null, href: "/observatorio/payroll-lending-aging", painel: "Consignado e aposentados" },
+        { titulo: "Consignado e aposentados", explicacao: "Crédito descontado na folha ou no benefício, por idade e instituição.", numero: null, href: "/divida-das-familias/consignado", painel: "Consignado e aposentados" },
       ],
     },
     {
@@ -156,8 +156,8 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
       pergunta: "O que transforma aperto em inadimplência?",
       elos: [
         { titulo: "Atraso", explicacao: "Parcelas que deixam de ser pagas por mais de 90 dias.", numero: inadimplencia, href: "/divida-das-familias#atraso", painel: "Dívida das famílias" },
-        { titulo: "Golpes e apostas", explicacao: "Fraudes financeiras e apostas online, com o grau de evidência de cada número.", numero: null, href: "/observatorio/financial-fraud", painel: "Golpes e fraudes" },
-        { titulo: "Renegociação", explicacao: "Desenrola Brasil e outras saídas para quem já está em atraso.", numero: null, href: "/observatorio/desenrola", painel: "Desenrola Brasil" },
+        { titulo: "Golpes e apostas", explicacao: "Fraudes financeiras e apostas online, com o grau de evidência de cada número.", numero: null, href: "/divida-das-familias/golpes-e-fraudes", painel: "Golpes e fraudes" },
+        { titulo: "Renegociação", explicacao: "Desenrola Brasil e outras saídas para quem já está em atraso.", numero: null, href: "/divida-das-familias/desenrola", painel: "Desenrola Brasil" },
       ],
     },
   ];

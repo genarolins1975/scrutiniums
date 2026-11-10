@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import Link from "next/link";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
@@ -98,6 +99,7 @@ export default function PaginaGolpes() {
 
   return (
     <>
+      <MarcaVisita secao="familias:golpes-e-fraudes" />
       <header>
         <CabecalhoPlataforma observatorio="familias" destinoConta={ROTA_GOLPES} fontes={["credito"]} />
         <NavegacaoColecao colecao="divida" />
