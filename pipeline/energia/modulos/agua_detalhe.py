@@ -3185,6 +3185,9 @@ REGRAS = {
 }
 
 
+LIMIAR_RECONCILIACAO_RES = 0.2
+
+
 def _valida(d):
     """Validação física e de esquema antes de publicar (seção 5.2 do contrato)."""
     p = []
@@ -3206,6 +3209,14 @@ def _valida(d):
     ref_sin = rec["sin_mesma_captura_mwmes"] if rec["sin_mesma_captura_mwmes"] is not None else rec["sin_mwmes"]
     if rec["soma_bacias_mwmes"] is not None and abs(rec["soma_bacias_mwmes"] - ref_sin) > 0.05:
         p.append(f"soma das bacias difere da EAR do SIN da mesma captura em {_br(rec['soma_bacias_mwmes'] - ref_sin, 3)} MWmês")
+    # A soma dos reservatórios é a conferência da EAR do subsistema. Na gold de 29/09/2026 ficaram fora da tolerância 1.470 de
+    # 39.072 dias comparados (3,8%), em anos com a precisão inteira da fonte; a gold de 02/11/2026 (retida) teve 37.888 de 39.200
+    # (96,7%), em todos os anos e subsistemas. Partes que deixam de somar o todo não são publicadas: a sentinela mantém a Água
+    # anterior até a causa ser entendida (issue #297).
+    comparados, fora = rec.get("dias_reservatorios_comparados") or 0, rec.get("dias_reservatorios_fora_tolerancia") or 0
+    if comparados and fora > LIMIAR_RECONCILIACAO_RES * comparados:
+        p.append(f"CRÍTICO: soma dos reservatórios difere do subsistema além da tolerância em {_br(100.0 * fora / comparados, 1)}% "
+                 f"dos dias comparados ({fora} de {comparados}); limite {_br(100.0 * LIMIAR_RECONCILIACAO_RES, 0)}%")
     for x in rec["reservatorios_por_ano"]:
         p.append(f"{x['ano']} {x['sm']}: soma dos reservatórios difere do subsistema além de {_br(x['tolerancia_mwmes'])} MWmês em "
                  f"{x['dias_fora_ear']} dias (EAR, até {_br(x['max_dif_ear_mwmes'], 1)} MWmês) e {x['dias_fora_ear_max']} dias "

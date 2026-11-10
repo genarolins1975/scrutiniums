@@ -534,18 +534,29 @@ const MODELOS_FRASE_EN: Readonly<Record<IdFrase, readonly [RegExp, (m: RegExpExe
 };
 
 /** Os trechos da frase em inglês, com os mesmos links e caminhos da gold; null quando a frase publicada não segue o modelo conhecido. */
+/**
+ * Formas alternativas de uma frase: o pipeline escreve a do PLD de dois jeitos (pipeline/energia/gold/sintese.py, _m_pld): com a
+ * diferença entre submercados ou, quando ela não passa de R$ 1/MWh, "praticamente igual nos quatro submercados" (24/10/2026). Sem
+ * esta forma, a frase em inglês caía no português marcado.
+ */
+const MODELOS_FRASE_EN_ALTERNATIVOS: Readonly<Partial<Record<IdFrase, readonly (readonly [RegExp, (m: RegExpExecArray) => string])[][]>>> = {
+  pld: [[...MODELOS_FRASE_EN.pld.slice(0, 4), [/^, praticamente igual nos quatro submercados\.$/, () => ", practically the same in the four submarkets."]]],
+};
+
 export function trechosFraseEn(f: Pick<FraseVisao, "id" | "trechos">): TrechoFrase[] | null {
-  const modelo = MODELOS_FRASE_EN[f.id];
-  if (!modelo || modelo.length !== f.trechos.length) return null;
-  const saida: TrechoFrase[] = [];
-  for (let i = 0; i < modelo.length; i++) {
-    const [re, en] = modelo[i];
-    const t = f.trechos[i];
-    const m = re.exec(t.texto);
-    if (!m) return null;
-    saida.push({ ...t, texto: en(m) });
+  for (const modelo of [MODELOS_FRASE_EN[f.id], ...(MODELOS_FRASE_EN_ALTERNATIVOS[f.id] ?? [])]) {
+    if (!modelo || modelo.length !== f.trechos.length) continue;
+    const saida: TrechoFrase[] = [];
+    for (let i = 0; i < modelo.length; i++) {
+      const [re, en] = modelo[i];
+      const t = f.trechos[i];
+      const m = re.exec(t.texto);
+      if (!m) break;
+      saida.push({ ...t, texto: en(m) });
+    }
+    if (saida.length === modelo.length) return saida;
   }
-  return saida;
+  return null;
 }
 
 /** A frase inteira em inglês, ou null quando ela não segue o modelo. */
@@ -1376,6 +1387,8 @@ export function expandeSiglas(texto: string, siglas: readonly string[], idioma: 
 export function enumLegivel(texto: string, idioma: Idioma = idiomaEnergia()): string {
   if (idioma === "en") return texto.replace(/\bEM DIA\b/g, "up to date").replace(/\bATRASADO\b/g, "late").replace(/\bSEM SLA\b/g, "no declared deadline").replace(/\bSEM DADO\b/g, "no record");
   return texto
+    // golds até 02/11/2026 escrevem o código da cadência ("cadência diaria"); a prosa leva a palavra
+    .replace(/\bcadência diaria\b/g, "cadência diária") // i18n: dado
     .replace(/\bEM DIA\b/g, "em dia") // i18n: dado
     .replace(/\bATRASADO\b/g, "atrasado") // i18n: dado
     .replace(/\bSEM SLA\b/g, tx("sem prazo declarado", "no declared deadline", idioma))

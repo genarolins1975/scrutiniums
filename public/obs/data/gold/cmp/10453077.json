@@ -1,7 +1,7 @@
 {
  "cod": "10453077",
  "nome": "COOPERATIVA DE CRÉDITO RURAL COM INTERAÇÃO SOLIDÁRIA REALIZA - CRESOL REALIZA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -301,5 +301,5 @@
    "202303": 77.37978182339609
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

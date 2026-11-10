@@ -1,7 +1,7 @@
 {
  "cod": "C0088321",
  "nome": "TORRA SCD - PRUDENCIAL",
- "sr": null,
+ "sr": "S5",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -65,5 +65,5 @@
    "202512": 71470.16
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

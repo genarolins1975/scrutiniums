@@ -1,7 +1,7 @@
 {
  "cod": "05165103",
  "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA CAMDA-COCREALPA - CREDI-CAMDA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -231,5 +231,5 @@
    "202009": 44.49611852017833
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

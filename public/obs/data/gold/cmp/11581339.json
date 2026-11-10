@@ -1,7 +1,7 @@
 {
  "cod": "11581339",
  "nome": "BMP SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E A EMPRESA DE PEQUENO PORTE LTDA.",
- "sr": null,
+ "sr": "S5",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -197,5 +197,5 @@
    "201903": 26.74441312067656
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

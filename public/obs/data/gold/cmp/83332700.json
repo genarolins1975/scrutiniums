@@ -1,7 +1,7 @@
 {
  "cod": "83332700",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DO PODER JUDICIÁRIO FEDERAL E MINISTÉRIO PÚBLICO DA UNIÃO NO ESTADO DO PARÁ - COOPERJUS-PA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 58.48183908672849
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

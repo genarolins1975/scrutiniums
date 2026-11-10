@@ -1,7 +1,7 @@
 {
  "cod": "02606305",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS PROFISSIONAIS DAS ÁREAS DE TECNOLOGIA, DE ENGENHARIA E DE ARQUITETURA DE MINAS GERAIS LTDA - SICOOB ENGECRED - MG",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -203,5 +203,5 @@
    "201909": 42.0632228342348
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

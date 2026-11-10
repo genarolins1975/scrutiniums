@@ -1,7 +1,7 @@
 {
  "cod": "01151186",
  "nome": "COOPERATIVA DE CRÉDITO DE CAMPINA GRANDE - SICREDI CENTRO PARAIBANA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -203,5 +203,5 @@
    "201909": 56.74564020725759
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

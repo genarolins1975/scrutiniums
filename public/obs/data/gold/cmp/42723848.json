@@ -1,7 +1,7 @@
 {
  "cod": "42723848",
  "nome": "BARU SOCIEDADE DE CRÉDITO DIRETO S/A",
- "sr": null,
+ "sr": "S4",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -256,5 +256,5 @@
    "202509": 0.7421548133869469
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:28+00:00"
 }

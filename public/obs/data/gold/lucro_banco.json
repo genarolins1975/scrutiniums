@@ -1,7 +1,7 @@
 {
  "versao": 1,
  "data_base": "202606",
- "coletado_em": "2026-10-25T20:55:50.041135+00:00",
+ "coletado_em": "2026-11-05T16:36:38.948686+00:00",
  "fonte": "IF.data, Banco Central do Brasil",
  "unidade": "BRL",
  "instituicoes": [
@@ -416699,7 +416699,7 @@
   },
   {
    "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/trel202512_116.json",
-   "sha256": "ada0cf2c3764bbe1a72cd3d71a1fe0d41ad780037f7f59237749e557885de781"
+   "sha256": "ea09fab75b6353f0cb22d58e8ca4042f5c105ac50a15eb8b9c1de4b63e884039"
   },
   {
    "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202512/trel202512_123.json",
@@ -416727,7 +416727,7 @@
   },
   {
    "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/trel202606_116.json",
-   "sha256": "d6375445130bceb22ccceeff430fc9ae6cad47462469bdf7bf975435b34a8efd"
+   "sha256": "a5932da5579d4cd4d0d1ac8b86d8131b26341c5d4b5ebd01e5ea5ba7c4dad12e"
   },
   {
    "url": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030//202606/trel202606_123.json",

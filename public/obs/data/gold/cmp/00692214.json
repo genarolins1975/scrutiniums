@@ -1,7 +1,7 @@
 {
  "cod": "00692214",
  "nome": "CENTRAL DAS COOPERATIVAS DE ECONOMIA E CRÉDITO DO PLANALTO CENTRAL LTDA - SICOOB PLANALTO CENTRAL",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3C",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -287,5 +287,5 @@
    "202209": 15.649252713986241
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

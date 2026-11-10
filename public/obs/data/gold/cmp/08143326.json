@@ -1,7 +1,7 @@
 {
  "cod": "08143326",
  "nome": "COOPERATIVA DE CRÉDITO DOS MÉDICOS E PROFISSIONAIS DE SAÚDE DE SÃO LUÍS - SICREDI SÃO LUÍS",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -343,5 +343,5 @@
    "202409": 55.149484907256095
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

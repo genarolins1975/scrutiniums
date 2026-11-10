@@ -1,7 +1,7 @@
 {
  "cod": "03234384",
  "nome": "UNIPRIME CAMPOS GERAIS - COOPERATIVA DE CRÉDITO LTDA.",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -238,5 +238,5 @@
    "202012": 58.90137752594823
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

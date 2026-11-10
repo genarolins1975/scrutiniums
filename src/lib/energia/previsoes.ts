@@ -819,6 +819,9 @@ export function resumoRodadas(linhas: readonly LinhaArquivo[], idioma: Idioma = 
  * download). Evita levar o arquivo inteiro ao HTML quando ele crescer com as rodadas
  * diárias (contrato, seção 5.1).
  */
+/** Rodadas mais recentes que a página de previsões mostra; o arquivo completo fica no download. */
+export const MAX_RODADAS_PAGINA = 14;
+
 export function rodadasRecentes(linhas: readonly LinhaArquivo[], max: number): { linhas: LinhaArquivo[]; omitidas: number } {
   const rs = resumoRodadas(linhas, "pt");
   if (rs.length <= max) return { linhas: [...linhas], omitidas: 0 };
@@ -868,11 +871,18 @@ export function respostaP015(linhas: readonly LinhaArquivo[], dia: string, total
       : tx("O arquivo de emissões não tem registro publicado.", "The forecast archive has no published record.");
   const rs = resumoRodadas(linhas, idioma);
   const quando = dia ? tx(`Ao fim de ${dataBR(dia)}, o arquivo tinha`, `At the end of ${D(dia)}, the archive had`) : tx("O arquivo tem", "The archive has");
-  const parcial = dia && linhas.length < total ? tx(` (de ${total.toLocaleString("pt-BR")} no arquivo completo)`, ` (of ${num(total, 0, idioma)} in the full archive)`) : "";
-  const abertura = tx(
-    `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`,
-    `${quando} ${plural(linhas.length, "record", "records", idioma)}${parcial} from ${plural(rs.length, "run", "runs", idioma)}.`,
-  );
+  const parcial = linhas.length < total ? tx(` (de ${total.toLocaleString("pt-BR")} no arquivo completo)`, ` (of ${num(total, 0, idioma)} in the full archive)`) : "";
+  // sem data escolhida e com a página mostrando só as rodadas mais recentes (02/11/2026: 14 de 16), a frase fala do recorte, não do arquivo
+  const abertura =
+    !dia && linhas.length < total
+      ? tx(
+          `As ${plural(rs.length, "rodada mais recente tem", "rodadas mais recentes têm")} ${plural(linhas.length, "registro", "registros")}${parcial}.`,
+          `The ${plural(rs.length, "most recent run has", "most recent runs have", idioma)} ${plural(linhas.length, "record", "records", idioma)}${parcial}.`,
+        )
+      : tx(
+          `${quando} ${plural(linhas.length, "registro", "registros")}${parcial} de ${plural(rs.length, "rodada", "rodadas")}.`,
+          `${quando} ${plural(linhas.length, "record", "records", idioma)}${parcial} from ${plural(rs.length, "run", "runs", idioma)}.`,
+        );
   const apurados = linhas.filter((l) => l.realizado !== null).length;
   const prox = primeiraEntregaAMaturar(linhas);
   const comNumero = linhas.filter((l) => l.previsao !== null).length;

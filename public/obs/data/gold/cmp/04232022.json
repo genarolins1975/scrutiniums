@@ -1,7 +1,7 @@
 {
  "cod": "04232022",
  "nome": "COOPERATIVA DE CRÉDITO RURAL COM INTERAÇÃO SOLIDÁRIA DO VALE DO PIQUIRI - CRESOL VALE DO PIQUIRI",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -182,5 +182,5 @@
    "201812": 78.93115589591318
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

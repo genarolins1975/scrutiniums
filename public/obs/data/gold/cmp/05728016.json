@@ -1,7 +1,7 @@
 {
  "cod": "05728016",
  "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES DO MINISTÉRIO DA SAÚDE EM MACEIÓ - SAUDECRED",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -210,5 +210,5 @@
    "201912": 61.51015006647388
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

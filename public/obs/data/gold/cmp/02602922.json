@@ -1,7 +1,7 @@
 {
  "cod": "02602922",
  "nome": "COOPERATIVA DE CRÉDITO DOS MÉDICOS, SERVIDORES PÚBLICOS E EMPRESÁRIOS DO NORDESTE LTDA - UNICRED DO NORDESTE",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -315,5 +315,5 @@
    "202309": 73.99914585621964
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

@@ -658,12 +658,14 @@ describe("números que parecem divergir: causa, classificação e explicação n
     const porMes = new Map<string, number[]>();
     for (const r of verif) porMes.set(r.data.slice(0, 7), [...(porMes.get(r.data.slice(0, 7)) ?? []), Number(r.carga_global_mwmed)]);
     const diasDoMes = (m: string) => new Date(Date.UTC(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0)).getUTCDate();
-    const mes = Array.from(porMes.keys()).filter((m) => porMes.get(m)!.length === diasDoMes(m)).sort().at(-1)!;
-    expect(mes).toBe(C.ultimoMesCompletoMmgd(GC.p026, "SIN")!.m);
+    // o mês da nota é o último completo nos dois produtos (03/11/2026: a Carga de Energia Diária pode terminar antes do mês)
+    const diariaCompleta = (m: string) => dias(`${m}-01`, `${m}-${diasDoMes(m)}`).length === diasDoMes(m);
+    const mes = Array.from(porMes.keys()).filter((m) => porMes.get(m)!.length === diasDoMes(m) && diariaCompleta(m)).sort().at(-1)!;
+    expect(mes <= C.ultimoMesCompletoMmgd(GC.p026, "SIN")!.m).toBe(true);
     const global = media(porMes.get(mes)!);
     const energiaDiaria = media(dias(`${mes}-01`, `${mes}-${diasDoMes(mes)}`));
     expect(dias(`${mes}-01`, `${mes}-${diasDoMes(mes)}`).length).toBe(diasDoMes(mes));
-    expect(Math.abs(global - C.ultimoMesCompletoMmgd(GC.p026, "SIN")!.global)).toBeLessThan(1);
+    expect(Math.abs(global - GC.p026.mmgd_mensal.find((x) => x.sm === "SIN" && x.m === mes)!.global)).toBeLessThan(1);
     // dois produtos do ONS: no mesmo mês, médias diferentes
     expect(Math.abs(global - energiaDiaria)).toBeGreaterThan(100);
     const mw = (v: number) => `${Math.round(v).toLocaleString("pt-BR")} MWmed`;

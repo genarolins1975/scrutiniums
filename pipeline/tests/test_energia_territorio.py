@@ -598,6 +598,13 @@ class GoldPublicada(unittest.TestCase):
         # script em 01/10/2026: fase Operação, DscMuninicpios igual ao município, CEG sem
         # repetição; usinas = sem DscTipoOutorga "Registro" com até 10 kW (MW fiscalizados);
         # registros de até 10 kW à parte (kW)
+        # Os números abaixo são do SIGA de 30/09/2026 e valem só para essa edição (decisão do dono de 03/11/2026: asserção
+        # fixada numa data fica restrita à edição dela). Para qualquer data valem a consistência interna entre o índice
+        # municipal e o arquivo de usinas (teste acima) e o controle dos extremos, que o pipeline recalcula a cada captura.
+        ctl = next(c for c in self.g["controles"] if c["nome"].startswith("Extremos da contagem municipal"))
+        self.assertEqual(ctl["resultado"], "aprovado")
+        if self.g["referencias"]["siga_data"] != "2026-09-30":
+            return
         orig = {"3144805": (12, 15.943, 0, 0.0), "2400208": (31, 1243.97, 0, 0.0), "3106200": (31, 37.045, 0, 0.0),
                 "3550308": (222, 1012.819, 2, 12.0), "4205407": (8, 4.901, 1, 1.0), "1302603": (24, 1298.978, 2, 13.0),
                 "1304203": (5, 31.868, 0, 0.0), "1505809": (0, 0.0, 5708, 5990.0), "5003207": (2, 10.312, 2862, 2862.0),
@@ -866,8 +873,11 @@ class GoldPublicada(unittest.TestCase):
         # revisão anterior servida pela API v3; o índice usa a mesma revisão do mapa (2025)
         self.assertEqual(linhas["CGH.PH.MG.028955-8.1"][U["coord_no_declarado"]], 0)
         r = self.g["resumo"]["usinas"]
-        self.assertEqual(r["coordenada_fora_na_malha_simplificada"], 1379)
-        self.assertLess(r["coordenada_fora_do_municipio_declarado"], 1379)
+        # 1.379 é a contagem do SIGA de 30/09/2026 (restrita à edição, decisão do dono de 03/11/2026); para qualquer data, a
+        # malha máxima nunca acha mais coordenadas fora que a simplificada, e as duas contagens fecham pela identidade abaixo
+        if self.g["referencias"]["siga_data"] == "2026-09-30":
+            self.assertEqual(r["coordenada_fora_na_malha_simplificada"], 1379)
+        self.assertLess(r["coordenada_fora_do_municipio_declarado"], r["coordenada_fora_na_malha_simplificada"])
         self.assertEqual(r["coordenada_fora_na_malha_simplificada"] - r["simplificada_fora_maxima_dentro"]
                          + r["simplificada_dentro_maxima_fora"], r["coordenada_fora_do_municipio_declarado"])
         self.assertEqual(r["conferencia_coordenada"]["conferencia"], "maxima")

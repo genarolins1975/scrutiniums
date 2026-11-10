@@ -1,7 +1,7 @@
 {
  "cod": "01918144",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES DA UNIVERSIDADE FEDERAL DE MINAS GERAIS LTDA. - COOPECREMT-UFMG",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -273,5 +273,5 @@
    "202203": 89.35684926814193
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

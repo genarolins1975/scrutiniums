@@ -91,9 +91,14 @@ describe("mercado por UF: volume de energia", () => {
       .filter((uf) => ["livre", "cativo"].some((t) => (presentes.get(`${uf}|${t}`)?.size ?? 0) < meses.size))
       .sort();
     expect(ufsSemJanela(G).sort()).toEqual(semJanelaNoCsv);
-    expect(ufsSemJanela(G)).toEqual(["RR"]);
-    expect(presentes.get("RR|livre")).toBeUndefined();
-    expect(barrasUfVolume(G).map((x) => x.uf)).not.toContain("RR");
+    // regra para qualquer janela: UF sem a janela completa fica fora das barras de volume
+    for (const uf of ufsSemJanela(G)) expect(barrasUfVolume(G).map((x) => x.uf), uf).not.toContain(uf);
+    // janela que termina em jul/2026 (restrita a ela, decisão do dono de 03/11/2026): Roraima sem nenhum mês de consumo livre;
+    // na de ago/2026 o CSV traz o primeiro mês de Roraima, e Roraima continua sem a janela completa
+    if (ate === "2026-07") {
+      expect(ufsSemJanela(G)).toEqual(["RR"]);
+      expect(presentes.get("RR|livre")).toBeUndefined();
+    }
   });
 });
 
@@ -205,7 +210,7 @@ describe("mercado por UF: na página", () => {
 
   it("a seção abre na participação de sempre, com a opção de volume, a linha do Brasil, o contraste e a ausência de Roraima", () => {
     expect(secao).toContain('data-livre-uf="participacao"');
-    expect(secao).toContain("Participação do livre por UF, 12 meses até jul/2026");
+    expect(secao).toContain(`Participação do livre por UF, 12 meses até ${mesAno(ate)}`);
     // a linha do Brasil é a janela nacional da EPE, que pode terminar um mês depois da janela por UF (o CSV por UF atrasa): o rótulo diz até
     // quando vai, e a comparação com as barras não esconde a diferença de janelas
     const kEpe = G.livre_regulado.kpis.participacao_livre_12m!;

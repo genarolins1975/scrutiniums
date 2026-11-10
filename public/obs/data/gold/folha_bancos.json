@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-10-31T16:28:31+00:00",
+ "gerado_em": "2026-11-09T21:38:06+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,23 +131,23 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 308,
-  "total_editais": 722,
+  "total_contratos_if": 310,
+  "total_editais": 1165,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 107,
+    "contratos": 108,
     "ufs": 20,
     "como_receita": 12
    },
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 75,
+    "contratos": 76,
     "ufs": 16,
-    "como_receita": 22
+    "como_receita": 23
    },
    {
     "cnpj8": "90400888",
@@ -536,6 +536,36 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "01613076000155-2-000030/2026",
+    "ente": "MUNICIPIO DE CURRAL DE DENTRO",
+    "esfera": "Municipal",
+    "municipio": "Curral de Dentro",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-11-04",
+    "vig_fim": "2031-11-04",
+    "valor": 150000.0,
+    "receita": true,
+    "banco": "Banco Bradesco S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/01613076000155/2026/30"
+   },
+   {
+    "controle": "75658377000131-2-000132/2026",
+    "ente": "MUNICIPIO DE ARAPOTI",
+    "esfera": "Municipal",
+    "municipio": "Arapoti",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-30",
+    "vig_fim": "2031-10-30",
+    "valor": 1800000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/75658377000131/2026/132"
+   },
    {
     "controle": "29138377000193-2-000062/2026",
     "ente": "MUNICIPIO DE TRES RIOS",
@@ -1105,83 +1135,26 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/08088254000115/2026/66"
-   },
-   {
-    "controle": "76105535000199-2-000497/2026",
-    "ente": "MUNICIPIO DE ARAUCARIA",
-    "esfera": "Municipal",
-    "municipio": "Araucária",
-    "uf": "PR",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-26",
-    "vig_fim": "2031-08-26",
-    "valor": 15000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/76105535000199/2026/497"
-   },
-   {
-    "controle": "35607532000176-2-000025/2026",
-    "ente": "AUTARQUIA MUNICIPAL DE MOBILIDADE, TRANSITO E CIDADANIA - TRANSITAR",
-    "esfera": "Municipal",
-    "municipio": "Cascavel",
-    "uf": "PR",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-24",
-    "vig_fim": "2031-08-24",
-    "valor": 0.01,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/35607532000176/2026/25"
    }
   ],
   "editais_recentes": [
    {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
+    "ente": "MUNICIPIO DE ARARUNA",
+    "municipio": "Araruna",
+    "uf": "PR",
+    "modalidade": "Pregão – Presencial Internacional ",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/63"
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/75359760000199/2026/123"
    },
    {
-    "ente": "MUNICIPIO DE CAMBUI",
-    "municipio": "Cambuí",
-    "uf": "MG",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/18675975000185/2026/148"
-   },
-   {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
-    "uf": "MG",
+    "ente": "MUNICIPIO DE ESMERALDA",
+    "municipio": "Esmeralda",
+    "uf": "RS",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/62"
-   },
-   {
-    "ente": "MUNICIPIO DE CAPITOLIO",
-    "municipio": "Capitólio",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-29",
-    "url": "https://pncp.gov.br/compras/16726028000140/2026/97"
-   },
-   {
-    "ente": "MUNICIPIO DE APERIBE",
-    "municipio": "Aperibé",
-    "uf": "RJ",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-28",
-    "url": "https://pncp.gov.br/compras/36288900000123/2026/16"
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/88225149000110/2026/83"
    },
    {
     "ente": "MUNICIPIO DE ANAPOLIS",
@@ -1189,62 +1162,89 @@
     "uf": "GO",
     "modalidade": "Inexigibilidade",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/01067479000146/2026/239"
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/01067479000146/2026/243"
    },
    {
-    "ente": "MUNICIPIO DE PATIS",
-    "municipio": "Patis",
+    "ente": "MUNICIPIO DE IBIRACATU",
+    "municipio": "Ibiracatu",
     "uf": "MG",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/01612478000135/2026/58"
+    "publicacao": "2026-11-09",
+    "url": "https://pncp.gov.br/compras/01612477000190/2026/20"
    },
    {
-    "ente": "MUNICIPIO DE ALVARENGA",
-    "municipio": "Alvarenga",
-    "uf": "MG",
+    "ente": "MUNICIPIO DE BOA ESPERANCA DO NORTE",
+    "municipio": "Boa Esperança",
+    "uf": "ES",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/58673892000171/2026/35"
+   },
+   {
+    "ente": "MUNICIPIO DE JOAQUIM NABUCO",
+    "municipio": "Joaquim Nabuco",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/10192441000196/2026/29"
+   },
+   {
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTO",
+    "municipio": "São Carlos",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/45359973000150/2026/236"
+   },
+   {
+    "ente": "MUNICIPIO DE CASTRO",
+    "municipio": "Castro",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/77001311000108/2026/651"
+   },
+   {
+    "ente": "MUNICIPIO DE CASTRO",
+    "municipio": "Castro",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-06",
+    "url": "https://pncp.gov.br/compras/77001311000108/2026/650"
+   },
+   {
+    "ente": "MUNICIPIO DE COLORADO",
+    "municipio": "Colorado",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-05",
+    "url": "https://pncp.gov.br/compras/76970326000103/2026/224"
+   },
+   {
+    "ente": "MUNICIPIO DE IVAI",
+    "municipio": "Ivaí",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-05",
+    "url": "https://pncp.gov.br/compras/76175918000133/2026/47"
+   },
+   {
+    "ente": "MUNICIPIO DE CIDADE GAUCHA",
+    "municipio": "Cidade Gaúcha",
+    "uf": "PR",
     "modalidade": "Dispensa",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/19770288000101/2026/73"
-   },
-   {
-    "ente": "MUNICIPIO DE TAPURAH",
-    "municipio": "Tapurah",
-    "uf": "MT",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-27",
-    "url": "https://pncp.gov.br/compras/24772253000141/2026/155"
-   },
-   {
-    "ente": "MUNICIPIO DE TIMBO",
-    "municipio": "Timbó",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/83102764000115/2026/403"
-   },
-   {
-    "ente": "MUNICIPIO DE TIMBO",
-    "municipio": "Timbó",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/83102764000115/2026/402"
-   },
-   {
-    "ente": "MUNICIPIO DE MIRANDA",
-    "municipio": "Miranda",
-    "uf": "MS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-10-26",
-    "url": "https://pncp.gov.br/compras/03452315000168/2026/12"
+    "publicacao": "2026-11-05",
+    "url": "https://pncp.gov.br/compras/75377200000167/2026/67"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

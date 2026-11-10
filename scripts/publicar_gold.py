@@ -106,8 +106,20 @@ def preparar_meta(candidata, manifesto):
     gravar_json(caminho, empacotar_meta(meta, registros))
 
 
-def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
+def classe(protecao):
+    """"contrato": o teste lê um só grupo (reprovado, retém o grupo). "coerência": lê mais de um grupo além do
+    envelope meta e confere que eles batem entre si. Até 03/11/2026 as duas classes eram tratadas igual, e uma
+    reprovação de coerência numa composição mista (grupo candidato ao lado de grupo retido na edição anterior)
+    retinha todos os grupos lidos: em 02/11/2026 isso derrubou 27 grupos em cascata (issue #291)."""
+    return 'coerencia' if len([g for g in protecao['grupos'] if g != 'meta']) > 1 else 'contrato'
+
+
+def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False, rodada0=None):
+    """rodada0: resultados da rodada 0 (conjunto candidato completo). Nas rodadas seguintes, um teste de coerência
+    que passou na rodada 0 e reprova sobre a composição mista não acusa dado errado, acusa edições diferentes lado
+    a lado: não retém nada e vira aviso ("avisos") para a issue. Reprovação de coerência na rodada 0 é falha real."""
     motivos = {g: list(ms) for g, ms in (retidos or {}).items()}
+    avisos = []
     grupos = manifesto['grupos']
     if inconclusivo:
         motivos = {g: ['Infraestrutura: execução inconclusiva após uma repetição'] for g in grupos}
@@ -116,6 +128,12 @@ def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
             if not protecao['grupos']:
                 continue
             estado = resultados.get(teste, {}).get('estado', 'ausente')
+            if estado != 'passed' and rodada0 is not None and classe(protecao) == 'coerencia' \
+                    and rodada0.get(teste, {}).get('estado') == 'passed':
+                avisos.append({'teste': teste, 'grupos': sorted(protecao['grupos']), 'estado': estado,
+                               'motivo': 'coerência entre edições: passou sobre o conjunto candidato completo e reprovou '
+                                         'sobre a composição com grupos retidos na edição anterior'})
+                continue
             if estado != 'passed':
                 # meta é envelope: na publicação parcial, compor() o remonta a partir da
                 # base e só troca as datas dos grupos publicados. Um teste que também lê
@@ -149,7 +167,7 @@ def selecionar(manifesto, mapa, resultados, retidos=None, inconclusivo=False):
         if antes == set(motivos):
             break
     return {'publicados': sorted(set(grupos) - motivos.keys()), 'retidos': motivos,
-            'inconclusivo': inconclusivo}
+            'inconclusivo': inconclusivo, 'avisos': avisos}
 
 
 def recompor_ufs(pasta, gerado_em):

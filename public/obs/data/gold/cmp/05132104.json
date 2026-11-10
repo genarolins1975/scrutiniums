@@ -1,7 +1,7 @@
 {
  "cod": "05132104",
  "nome": "COOPERATIVA DE CREDITO RURAL COM INTERAÇÃO SOLIDARIA DE CANGUÇU - CRESOL SUL",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -217,5 +217,5 @@
    "202003": 94.4905852058593
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

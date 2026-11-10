@@ -50,6 +50,23 @@ def _integro(g):
     return isinstance(g, dict) and g.get("disponivel") is True
 
 
+# Publicação por módulo (decisão do dono de 03/11/2026). Os módulos leem as golds dos outros do disco e de ctx["golds"], onde a
+# sentinela já deixou a publicação mantida: quem lê uma gold retida calcula sobre o que está no ar. A exceção são módulos que
+# também derivam da MESMA fonte primária da gold retida e se conferem com ela (02/11/2026: Listadas nova sobre o SIGA novo,
+# 6.267,8 MW, contra 6.141,9 MW do mesmo grupo em Empresas retida, calculada sobre o SIGA anterior): esses ficam na publicação
+# anterior junto com ela. pipeline/tests/test_energia_dependencias.py confere que cada dependência é citada pelo módulo.
+DEPENDENCIAS = {
+    "leiloes": ("empresas.json",),
+    "listadas": ("empresas.json",),
+}
+
+
+def dependencia_retida(modulo, regressoes):
+    """Primeira gold lida pelo módulo que ficou retida nesta execução, ou None."""
+    retidas = {r["gold"] for r in regressoes}
+    return next((g for g in DEPENDENCIAS.get(modulo, ()) if g in retidas), None)
+
+
 def publicar(nome, novo, regressoes, falhas):
     anterior = base.le_gold(nome)
     if not _integro(novo) and _integro(anterior):
@@ -163,7 +180,10 @@ def main(argv):
             # sentinela mantiver a gold anterior, os arquivos baixáveis voltam ao que eram (mesma publicação nos dois)
             guardados = base.guarda_arquivos(reg.get("arquivos") or {})
             n_regressoes = len(regressoes)
-            g[nome] = publicar(nome, construir(nome, mod.construir, con_f, ctx), regressoes, falhas)
+            dep = dependencia_retida(reg["id"], regressoes)
+            novo = (c.stub(nome, f"dependência retida: {dep} ficou na publicação anterior nesta execução") if dep
+                    else construir(nome, mod.construir, con_f, ctx))
+            g[nome] = publicar(nome, novo, regressoes, falhas)
             if len(regressoes) > n_regressoes:
                 refeitos = base.restaura_arquivos(guardados)
                 if refeitos:
@@ -178,8 +198,13 @@ def main(argv):
     # publicar_historico remove o arquivo recém-criado (review #283), como em executar_modulo.py
     tem_csv_historico = os.path.isfile(os.path.join(base.SERIES, metadados.NOME_CSV))
     arquivos = metadados.dicionario_historico() if tem_csv_historico else {}
+    retidas = {r["gold"] for r in regressoes}
     for mod in modulos.descobrir():
         for url, desc in (mod.REGISTRO.get("arquivos") or {}).items():
+            # módulo retido: a publicação mantida pode não ter um arquivo que o código atual declara (02/11/2026: a Água retida não
+            # tem agua_revisoes_conhecidas.csv); o dicionário descreve só o que está publicado
+            if mod.REGISTRO["gold"] in retidas and not os.path.isfile(os.path.join(base.RAIZ, "public", url.lstrip("/"))):
+                continue
             arquivos[url] = {"colunas": desc, "modulo": mod.REGISTRO["id"], "gold": mod.REGISTRO["gold"]}
     base.escreve_gold("arquivos.json", {**c.cabecalho("arquivos.json"), "arquivos": arquivos})
     # catálogo único de métricas: a definição publicada é a mesma que o pipeline usa

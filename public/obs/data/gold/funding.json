@@ -1692,9 +1692,9 @@
    }
   ],
   "poupanca_sbpe": {
-   "mes": "2026-09",
-   "valor": 1014280000.0,
-   "var_12m_pct": 0.42
+   "mes": "2026-10",
+   "valor": 1011234000.0,
+   "var_12m_pct": 0.44
   },
   "nota": "Saldos em poder do público (M4 e componentes), fim de período. Letras financeiras e depósitos a prazo aqui excluem o que está com outras instituições financeiras; por isso não fecham com o IF.data."
  },
@@ -1851,64 +1851,64 @@
   },
   "por_segmento": [
    {
-    "sr": "n/d",
-    "n": 284,
-    "captacoes": 11198463615761.322,
-    "share_sfn": 78.48,
-    "varejo_share": 50.86,
-    "mercado_share": 36.74,
-    "repasses_share": 12.39,
-    "ltd": 1.205
-   },
-   {
     "sr": "S1",
-    "n": 4,
-    "captacoes": 1037361633412.68,
-    "share_sfn": 7.27,
-    "varejo_share": 56.65,
-    "mercado_share": 30.02,
-    "repasses_share": 13.32,
-    "ltd": 1.072
-   },
-   {
-    "sr": "S3",
-    "n": 41,
-    "captacoes": 760947273351.3699,
-    "share_sfn": 5.33,
-    "varejo_share": 56.24,
-    "mercado_share": 18.87,
-    "repasses_share": 24.89,
-    "ltd": 1.106
+    "n": 9,
+    "captacoes": 9616361328279.879,
+    "share_sfn": 67.39,
+    "varejo_share": 55.41,
+    "mercado_share": 32.67,
+    "repasses_share": 11.92,
+    "ltd": 1.159
    },
    {
     "sr": "S2",
-    "n": 6,
-    "captacoes": 545261026302.2399,
-    "share_sfn": 3.82,
-    "varejo_share": 55.27,
-    "mercado_share": 32.44,
-    "repasses_share": 12.28,
-    "ltd": 0.926
+    "n": 13,
+    "captacoes": 2183072198963.9,
+    "share_sfn": 15.3,
+    "varejo_share": 33.65,
+    "mercado_share": 55.52,
+    "repasses_share": 10.82,
+    "ltd": 1.2
+   },
+   {
+    "sr": "S3",
+    "n": 68,
+    "captacoes": 1536968461275.7505,
+    "share_sfn": 10.77,
+    "varejo_share": 52.93,
+    "mercado_share": 23.38,
+    "repasses_share": 23.68,
+    "ltd": 1.266
    },
    {
     "sr": "S4",
-    "n": 240,
-    "captacoes": 389348107692.2099,
-    "share_sfn": 2.73,
-    "varejo_share": 81.79,
-    "mercado_share": 9.64,
-    "repasses_share": 8.57,
-    "ltd": 0.931
+    "n": 316,
+    "captacoes": 544275334852.5296,
+    "share_sfn": 3.81,
+    "varejo_share": 76.41,
+    "mercado_share": 12.95,
+    "repasses_share": 10.64,
+    "ltd": 1.0
    },
    {
     "sr": "S5",
-    "n": 469,
-    "captacoes": 337528184676.01,
-    "share_sfn": 2.37,
-    "varejo_share": 97.08,
-    "mercado_share": 0.97,
-    "repasses_share": 1.95,
-    "ltd": 0.855
+    "n": 536,
+    "captacoes": 363346930634.3098,
+    "share_sfn": 2.55,
+    "varejo_share": 96.73,
+    "mercado_share": 1.11,
+    "repasses_share": 2.15,
+    "ltd": 0.839
+   },
+   {
+    "sr": "n/d",
+    "n": 102,
+    "captacoes": 24885587189.470016,
+    "share_sfn": 0.17,
+    "varejo_share": 57.99,
+    "mercado_share": 0.0,
+    "repasses_share": 42.01,
+    "ltd": 0.145
    }
   ],
   "por_tcb": [
@@ -1997,7 +1997,7 @@
    {
     "cod_inst": "C0010069",
     "nome": "ITAU",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "captacoes": 2216192438514.04,
     "share_sfn": 15.53,
@@ -2029,7 +2029,7 @@
    {
     "cod_inst": "C0049906",
     "nome": "BB",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "captacoes": 2068469941602.61,
     "share_sfn": 14.5,
@@ -2061,7 +2061,7 @@
    {
     "cod_inst": "C0051626",
     "nome": "CAIXA ECONÔMICA FEDERAL",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "captacoes": 2063880326327.6,
     "share_sfn": 14.46,
@@ -2093,7 +2093,7 @@
    {
     "cod_inst": "C0010045",
     "nome": "BRADESCO",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "captacoes": 1600488225034.01,
     "share_sfn": 11.22,
@@ -2157,7 +2157,7 @@
    {
     "cod_inst": "33657248",
     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B4",
     "captacoes": 661452492909.06,
     "share_sfn": 4.64,
@@ -2189,7 +2189,7 @@
    {
     "cod_inst": "C0049944",
     "nome": "BTG PACTUAL",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "captacoes": 629968763388.94,
     "share_sfn": 4.41,
@@ -2221,7 +2221,7 @@
    {
     "cod_inst": "C0052120",
     "nome": "XP",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 257969286033.82,
     "share_sfn": 1.81,
@@ -2285,7 +2285,7 @@
    {
     "cod_inst": "C0010083",
     "nome": "SAFRA",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 217838087453.65,
     "share_sfn": 1.53,
@@ -2349,7 +2349,7 @@
    {
     "cod_inst": "C0051750",
     "nome": "BANCO SICOOB",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 188184227628.29,
     "share_sfn": 1.32,
@@ -2381,7 +2381,7 @@
    {
     "cod_inst": "C0030173",
     "nome": "BANRISUL",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 150307926705.45,
     "share_sfn": 1.05,
@@ -2413,7 +2413,7 @@
    {
     "cod_inst": "C0030403",
     "nome": "CITIBANK",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 138789981222.2,
     "share_sfn": 0.97,
@@ -2445,7 +2445,7 @@
    {
     "cod_inst": "C0052072",
     "nome": "C6 BANK",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 123737124704.38,
     "share_sfn": 0.87,
@@ -2509,7 +2509,7 @@
    {
     "cod_inst": "C0051987",
     "nome": "DAYCOVAL",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 89777748250.06,
     "share_sfn": 0.63,
@@ -2541,7 +2541,7 @@
    {
     "cod_inst": "C0020107",
     "nome": "JP MORGAN CHASE",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 81045066034.87,
     "share_sfn": 0.57,
@@ -2701,7 +2701,7 @@
    {
     "cod_inst": "59109165",
     "nome": "BANCO VOLKSWAGEN S.A.",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B2",
     "captacoes": 47916041113.66,
     "share_sfn": 0.34,
@@ -2765,7 +2765,7 @@
    {
     "cod_inst": "01023570",
     "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 44719472447.72,
     "share_sfn": 0.31,
@@ -2829,7 +2829,7 @@
    {
     "cod_inst": "C0030290",
     "nome": "BMG",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 35980204702.67,
     "share_sfn": 0.25,
@@ -2989,7 +2989,7 @@
    {
     "cod_inst": "92894922",
     "nome": "BANCO ORIGINAL S.A.",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 32608251636.37,
     "share_sfn": 0.23,
@@ -3021,7 +3021,7 @@
    {
     "cod_inst": "C0052003",
     "nome": "BOCOM",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 31609074522.79,
     "share_sfn": 0.22,
@@ -3053,7 +3053,7 @@
    {
     "cod_inst": "C0020152",
     "nome": "MERCANTIL DO BRASIL",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 31603355542.46,
     "share_sfn": 0.22,
@@ -3085,7 +3085,7 @@
    {
     "cod_inst": "C0051956",
     "nome": "AGIBANK",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 31489583847.52,
     "share_sfn": 0.22,
@@ -3117,7 +3117,7 @@
    {
     "cod_inst": "C0050304",
     "nome": "PINE",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 31394610988.51,
     "share_sfn": 0.22,
@@ -3149,7 +3149,7 @@
    {
     "cod_inst": "C0052508",
     "nome": "STELLANTIS",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B2",
     "captacoes": 25411466240.18,
     "share_sfn": 0.18,
@@ -3181,7 +3181,7 @@
    {
     "cod_inst": "92816560",
     "nome": "BANCO REGIONAL DE DESENVOLVIMENTO DO EXTREMO SUL",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B4",
     "captacoes": 23606985503.03,
     "share_sfn": 0.17,
@@ -3213,7 +3213,7 @@
    {
     "cod_inst": "07237373",
     "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "captacoes": 23269170709.19,
     "share_sfn": 0.16,
@@ -3245,7 +3245,7 @@
    {
     "cod_inst": "C0051255",
     "nome": "BOFA MERRILL LYNCH",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "captacoes": 21612730281.55,
     "share_sfn": 0.15,
@@ -4109,15 +4109,16 @@
  },
  "fundos": {
   "mes": "2026-07",
-  "mes_parcial_excluido": "2026-09",
+  "mes_parcial_excluido": "2026-10",
   "meses_parciais": [
    "2026-08",
-   "2026-09"
+   "2026-09",
+   "2026-10"
   ],
   "sigilo": {
-   "mes": "2026-09",
-   "valor": 528005368230.0,
-   "liberacao_ate": "2027-03-29"
+   "mes": "2026-10",
+   "valor": 2490597060.0,
+   "liberacao_ate": "2027-01-29"
   },
   "cobertura": {
    "classes_com_papel_bancario": 3136,
@@ -4199,7 +4200,7 @@
     "cnpj_raiz": "01701201",
     "cod_inst": "C0010045",
     "nome": "BRADESCO",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "share": 17.3,
     "ligado_share": 25.41,
@@ -4223,7 +4224,7 @@
     "cnpj_raiz": "00360305",
     "cod_inst": "C0051626",
     "nome": "CAIXA ECONÔMICA FEDERAL",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "share": 10.2,
     "ligado_share": 30.95,
@@ -4249,7 +4250,7 @@
     "cnpj_raiz": "30306294",
     "cod_inst": "C0049944",
     "nome": "BTG PACTUAL",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "share": 9.35,
     "ligado_share": 0.33,
@@ -4299,7 +4300,7 @@
     "cnpj_raiz": "00000000",
     "cod_inst": "C0049906",
     "nome": "BB",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "share": 7.22,
     "ligado_share": 43.38,
@@ -4324,7 +4325,7 @@
     "cnpj_raiz": "60701190",
     "cod_inst": "C0010069",
     "nome": "ITAU",
-    "sr": null,
+    "sr": "S1",
     "tcb": "B1",
     "share": 5.85,
     "ligado_share": 27.28,
@@ -4350,7 +4351,7 @@
     "cnpj_raiz": "03017677",
     "cod_inst": "C0010083",
     "nome": "SAFRA",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "share": 5.71,
     "ligado_share": 20.88,
@@ -4398,7 +4399,7 @@
     "cnpj_raiz": "62232889",
     "cod_inst": "C0051987",
     "nome": "DAYCOVAL",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "share": 2.54,
     "ligado_share": 1.89,
@@ -4423,7 +4424,7 @@
     "cnpj_raiz": "02332886",
     "cod_inst": "C0052120",
     "nome": "XP",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "share": 2.29,
     "ligado_share": 3.25,
@@ -4447,7 +4448,7 @@
     "cnpj_raiz": "59109165",
     "cod_inst": "59109165",
     "nome": "BANCO VOLKSWAGEN S.A.",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B2",
     "share": 2.23,
     "ligado_share": 0.28,
@@ -4544,7 +4545,7 @@
     "cnpj_raiz": "03502961",
     "cod_inst": "C0052508",
     "nome": "STELLANTIS",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B2",
     "share": 1.32,
     "ligado_share": 0.0,
@@ -4569,7 +4570,7 @@
     "cnpj_raiz": "17184037",
     "cod_inst": "C0020152",
     "nome": "MERCANTIL DO BRASIL",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "share": 1.29,
     "ligado_share": 0.0,
@@ -4619,7 +4620,7 @@
     "cnpj_raiz": "31872495",
     "cod_inst": "C0052072",
     "nome": "C6 BANK",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "share": 1.07,
     "ligado_share": 0.0,
@@ -4667,7 +4668,7 @@
     "cnpj_raiz": "10664513",
     "cod_inst": "C0051956",
     "nome": "AGIBANK",
-    "sr": null,
+    "sr": "S3",
     "tcb": "B1",
     "share": 0.98,
     "ligado_share": 0.37,
@@ -4715,7 +4716,7 @@
     "cnpj_raiz": "92702067",
     "cod_inst": "C0030173",
     "nome": "BANRISUL",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "share": 0.81,
     "ligado_share": 1.83,
@@ -4763,7 +4764,7 @@
     "cnpj_raiz": "04862600",
     "cod_inst": "C0051444",
     "nome": "PORTO SEGURO",
-    "sr": null,
+    "sr": "S3",
     "tcb": "N1",
     "share": 0.76,
     "ligado_share": 0.43,
@@ -4787,7 +4788,7 @@
     "cnpj_raiz": "14388334",
     "cod_inst": "C0030881",
     "nome": "PARANÁ BANCO",
-    "sr": null,
+    "sr": "S4",
     "tcb": "B1",
     "share": 0.76,
     "ligado_share": 0.47,
@@ -4812,7 +4813,7 @@
     "cnpj_raiz": "33042953",
     "cod_inst": "C0030403",
     "nome": "CITIBANK",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "share": 0.66,
     "ligado_share": 0.0,
@@ -4908,7 +4909,7 @@
     "cnpj_raiz": "02038232",
     "cod_inst": "C0051750",
     "nome": "BANCO SICOOB",
-    "sr": null,
+    "sr": "S2",
     "tcb": "B1",
     "share": 0.42,
     "ligado_share": 100.0,
@@ -5190,15 +5191,27 @@
    },
    {
     "mes": "2026-09",
-    "valor": 424372630875.05994,
-    "n_emissores": 141,
-    "lf": 311951166619.72,
-    "cdb": 93204320315.46999,
-    "ligado_share": 22.36,
-    "n_classes": 1530,
+    "valor": 472289294561.87994,
+    "n_emissores": 142,
+    "lf": 359303750964.4199,
+    "cdb": 93768399657.59,
+    "ligado_share": 20.5,
+    "n_classes": 1542,
     "parcial": true,
-    "sob_sigilo": 528005368230.0,
+    "sob_sigilo": 480088704554.0,
     "sigilo_ate": "2027-03-29"
+   },
+   {
+    "mes": "2026-10",
+    "valor": 15120985864.15,
+    "n_emissores": 74,
+    "lf": 6487920132.21,
+    "cdb": 8472021824.919999,
+    "ligado_share": 59.15,
+    "n_classes": 67,
+    "parcial": true,
+    "sob_sigilo": 2490597060.0,
+    "sigilo_ate": "2027-01-29"
    }
   ],
   "nota": "Posições diretas das classes de fundos (a classe que compra a cota de outra classe aparece como cota, não como papel, então não há dupla contagem do título). 'Ligado' é a marcação da própria classe de que o emissor é ligado ao gestor. A razão CDA ÷ LF do IF.data cruza um mês com um trimestre e é indicativa."

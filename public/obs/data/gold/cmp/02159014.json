@@ -1,7 +1,7 @@
 {
  "cod": "02159014",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MÉDICOS DE JABOTICABAL - COPERMED JABOTICABAL",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201906": 38.28865274833484
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

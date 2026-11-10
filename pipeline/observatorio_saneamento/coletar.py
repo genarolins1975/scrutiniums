@@ -23,6 +23,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -68,9 +69,18 @@ def gravar(nome, obj):
     caminho = os.path.join(SEED, nome)
     dados = json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode()
     # mtime fixo: o mesmo conteúdo produz o mesmo .gz byte a byte
-    with open(caminho, "wb") as f:
-        with gzip.GzipFile(fileobj=f, mode="wb", mtime=0, filename="") as g:
-            g.write(dados)
+    # Só substitui a captura anterior depois de terminar a compressão. Interrupção
+    # ou erro de disco não pode deixar o seed versionado pela metade.
+    temporario = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=SEED, prefix=".captura-", delete=False) as f:
+            temporario = f.name
+            with gzip.GzipFile(fileobj=f, mode="wb", mtime=0, filename="") as g:
+                g.write(dados)
+        os.replace(temporario, caminho)
+    finally:
+        if temporario and os.path.exists(temporario):
+            os.unlink(temporario)
     print(f"  {nome}: {len(dados) / 1e6:.1f} MB descomprimido")
 
 
@@ -152,6 +162,7 @@ def coletar_sinisa(dir_zips=None):
     manifesto = {"capturado_em": capturado, "pagina": fontes.SINISA_PAGINA, "zips": {}, "planilhas": {}}
     for modulo, z in zips.items():
         manifesto["zips"][modulo] = {k: z[k] for k in ("url", "arquivo", "sha256", "bytes")}
+    planilhas = {}
     for chave, (modulo, padrao) in fontes.SINISA_PLANILHAS.items():
         z = zips[modulo]["zip"]
         alvo = [n for n in z.namelist() if padrao in _decodificar_nome(n) and n.endswith(".xlsx")]
@@ -171,6 +182,10 @@ def coletar_sinisa(dir_zips=None):
         })
         manifesto["planilhas"][chave] = {k: dados[k] for k in ("arquivo", "zip", "sha256", "data_no_zip", "aba", "linha_codigos", "cabecalho")}
         manifesto["planilhas"][chave]["registros"] = len(dados["registros"])
+        planilhas[chave] = dados
+    # Não mistura edições quando a última planilha falha na extração: só inicia
+    # a gravação depois de conseguir ler todas as planilhas exigidas.
+    for chave, dados in planilhas.items():
         gravar(f"sinisa_{chave}.json.gz", dados)
     gravar("sinisa_manifesto.json.gz", manifesto)
 
@@ -312,10 +327,24 @@ def coletar_cadunico():
         url = (f"{fontes.MISOCIAL}?q=anomes_s:{mes}&fl={','.join(c['campos'])}"
                "&rows=6000&wt=json&sort=codigo_ibge%20asc")
         b = baixar(url, timeout=180)
-        docs = json.loads(b)["response"]["docs"]
+        resposta = json.loads(b)["response"]
+        docs = resposta["docs"]
+        total = resposta.get("numFound")
+        if not docs or isinstance(total, bool) or not isinstance(total, int) or total != len(docs):
+            raise ValueError(f"CadÚnico {mes}: captura incompleta ({len(docs)} de {total} registros)")
+        municipios = {}
+        for d in docs:
+            codigo = str(d.get("codigo_ibge", ""))
+            if not re.fullmatch(r"\d{6}", codigo) or codigo[:2] not in {str(uf) for uf in UFS}:
+                raise ValueError(f"CadÚnico {mes}: código de município inválido: {codigo!r}")
+            if str(d.get("anomes_s")) != mes:
+                raise ValueError(f"CadÚnico {mes}: registro de outro mês para {codigo}")
+            if codigo in municipios:
+                raise ValueError(f"CadÚnico {mes}: município duplicado: {codigo}")
+            municipios[codigo] = {k: v for k, v in d.items() if k not in ("codigo_ibge", "anomes_s")}
         saida["meses"][mes] = {
             "url": url, "sha256": sha256(b), "registros": len(docs),
-            "municipios": {d["codigo_ibge"]: {k: v for k, v in d.items() if k not in ("codigo_ibge", "anomes_s")} for d in docs},
+            "municipios": municipios,
         }
         print(f"  CadÚnico {mes}: {len(docs)} municípios")
     gravar("cadunico.json.gz", saida)

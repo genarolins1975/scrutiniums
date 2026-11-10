@@ -1,7 +1,7 @@
 {
  "cod": "10772401",
  "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VERDE PARÁ - SICREDI VERDE PARÁ",
- "sr": "S4",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201906": 64.94375804951012
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

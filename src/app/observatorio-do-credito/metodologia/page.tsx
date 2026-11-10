@@ -352,14 +352,15 @@ export default function MetodologiaCreditoPage() {
       <SecaoCredito id="linhagem" titulo="Linhagem dos arquivos" subtitulo="De cada arquivo bruto coletado (bronze) ao arquivo publicado (gold), com o resumo criptográfico do bruto.">
         <h3 className="text-base font-medium text-carvao">Linhagem recente</h3>
         <div className="mt-3">
-          <Tabela legenda="Linhagem recente, bronze para gold" colunas={["Objeto", "Arquivo bronze", "SHA-256", "Transformação", "Quando"]}>
+          <Tabela legenda="Linhagem recente, bronze para gold" colunas={["Objeto", "Arquivo bronze", "SHA-256", "Transformação", "Quando (UTC)"]}>
             {m.linhagemRecente.map((l, i) => (
               <tr key={`${l.gold_object}-${i}`}>
                 <th scope="row" className="font-normal">{l.gold_object}</th>
                 <td className="break-all">{l.bronze_file}</td>
                 <td className="font-mono text-xs">{l.sha256.slice(0, 12)}…</td>
                 <td>{l.transform}</td>
-                <td className="tabular-nums">{l.created_at.slice(0, 19).replace("T", " ")}</td>
+                {/* carimbo do pipeline em UTC (02/11/2026: 20:47 no log da execução); data por extenso, nunca a forma ISO crua */}
+                <td className="tabular-nums">{`${l.created_at.slice(8, 10)}/${l.created_at.slice(5, 7)}/${l.created_at.slice(0, 4)} ${l.created_at.slice(11, 13)}h${l.created_at.slice(14, 16)}`}</td>
               </tr>
             ))}
           </Tabela>

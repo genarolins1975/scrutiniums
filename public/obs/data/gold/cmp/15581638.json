@@ -1,7 +1,7 @@
 {
  "cod": "15581638",
  "nome": "FACTA FINANCEIRA S.A. - CRÉDITO FINANCIAMENTO E INVESTIMENTO",
- "sr": null,
+ "sr": "S4",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -329,5 +329,5 @@
    "202412": 75.37491495046783
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

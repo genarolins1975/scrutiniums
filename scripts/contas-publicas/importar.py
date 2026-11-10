@@ -10,7 +10,9 @@ edição nova do RTN muda a base de preços do IPCA e o aviso editorial, e por i
 import argparse, datetime as dt, hashlib, json, math, pathlib, tempfile
 import openpyxl, requests
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-URL = 'https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx'
+# Edição de setembro de 2026, anexo do boletim (publicacoes/boletim-resultado-do-tesouro-nacional-rtn/2026/9).
+# O CKAN do Tesouro Transparente ainda apontava para a de julho em 03/11/2026; o vigia confere os dois.
+URL = 'https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/56116_1789206/anexos/29566_977289/serie_historica_set26.xlsx'
 ENDPOINT = 'https://www1.siop.planejamento.gov.br/sparql/'
 FIELDS = ['inicial','atualizada','empenhado','liquidado','pago']
 ROWS = {'receitaTotal':6,'transferencias':29,'receitaLiquida':38,'despesa':39,'previdencia':40,'pessoal':41,'outrasObrigatorias':42,'programacaoFinanceira':63,'resultado':66}

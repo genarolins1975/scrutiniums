@@ -1,7 +1,7 @@
 {
  "cod": "09244973",
  "nome": "COOPERATIVA DE CRÉDITO RURAL ASCOOB COOPEC - ASCOOB COOPEC",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -259,5 +259,5 @@
    "202109": 35.894336441481194
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

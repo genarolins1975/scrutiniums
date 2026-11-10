@@ -1,7 +1,7 @@
 {
  "cod": "02931166",
  "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DO GRUPO PROGRESSO LTDA - PROCRED",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -273,5 +273,5 @@
    "202209": 68.17469843866238
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

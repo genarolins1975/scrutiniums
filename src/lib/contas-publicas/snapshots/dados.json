@@ -1,13 +1,13 @@
 {
   "versao": 1,
-  "captura": "2026-10-12T08:10:31.130658+00:00",
-  "capturaSIOP": "2026-10-27T15:56:38.518840+00:00",
+  "captura": "2026-11-03T13:09:37.774218+00:00",
+  "capturaSIOP": "2026-11-03T17:58:20.974116+00:00",
   "publicacaoRTN": null,
   "unidadeRTN": "R$ milhões correntes",
   "unidadeSIOP": "R$ correntes",
-  "fonteRTN": "https://www.tesourotransparente.gov.br/ckan/dataset/ab56485b-9c40-4efb-8563-9ce3e1973c4b/resource/527ccdb1-3059-42f3-bf23-b5e3ab4c6dc6/download/seriehistoricajul26.xlsx",
+  "fonteRTN": "https://cdn.tesouro.gov.br/sistemas-internos/apex/producao/sistemas/thot/arquivos/publicacoes/56116_1789206/anexos/29566_977289/serie_historica_set26.xlsx",
   "fonteSIOP": "https://www1.siop.planejamento.gov.br/sparql/",
-  "referenciaRTN": "2026-07",
+  "referenciaRTN": "2026-09",
   "linhasRTN": {
     "receitaTotal": 6,
     "transferencias": 29,
@@ -20,11 +20,11 @@
     "resultado": 66
   },
   "sha256": {
-    "rtn.xlsx": "35899d771fc487db1ca17a6a1fb3fc0cc293230b8c5ad98287b69db2a7d0843c",
-    "siop2025.json": "388064b68e10c5045a330877cd7c42cfa216a6191df4dd7cdccbd1ef1649afbf",
-    "siop2026.json": "e8478eb8188345abdc05b838d8c919ddb1423f1ef398e1428150ae269818e013",
-    "gnd2025.json": "7bc0c2edd022fa00f8ef13957d5902cf73e747be231db1660eb8c86a09bcb0ba",
-    "gnd2026.json": "482b9cbaf55328f5d5e51872d121af7a78488f4e80c9477a682330a7a638d4a3"
+    "rtn.xlsx": "8eb4abf01278d083b17d3bd4d381173416bd11965394d22afdd63294207aaab4",
+    "siop2025.json": "d84c08bbbe972d5a8248fa78fdb44c27ebdd99f4b9fa919862d959cdcba8417f",
+    "siop2026.json": "d466a3acafa29bd820869f09f6663ac9ba4ab641294ba69e8f6f86381e57a826",
+    "gnd2025.json": "f3b1f66ab217a522b0170a0f8176f1885045be41e18aae7131b188ec0f3c9036",
+    "gnd2026.json": "7720804aa8d1866214083f647c69a4d47fbd0fbf1249326afdfaa5764c3a6389"
   },
   "rtnMensal": [
     {
@@ -982,12 +982,12 @@
       "receitaTotal": 219030.44659960002,
       "transferencias": 61363.065919046785,
       "receitaLiquida": 157667.38068055324,
-      "despesa": 187613.60890814557,
+      "despesa": 187621.10890814557,
       "previdencia": 81663.49708428,
       "pessoal": 32779.12268988,
-      "outrasObrigatorias": 26138.511644105558,
+      "outrasObrigatorias": 26146.011644105558,
       "programacaoFinanceira": 47032.47748988,
-      "resultado": -29946.228227592335
+      "resultado": -29953.728227592335
     },
     {
       "periodo": "2026-03",
@@ -995,12 +995,12 @@
       "receitaTotal": 235025.65300392997,
       "transferencias": 38707.13491498604,
       "receitaLiquida": 196318.51808894394,
-      "despesa": 269717.3743475155,
+      "despesa": 269727.8492645655,
       "previdencia": 109365.55198051,
       "pessoal": 41568.85942799,
-      "outrasObrigatorias": 65370.254245755554,
+      "outrasObrigatorias": 65380.729162805554,
       "programacaoFinanceira": 53412.70869326,
-      "resultado": -73398.85625857158
+      "resultado": -73409.33117562157
     },
     {
       "periodo": "2026-04",
@@ -1008,12 +1008,12 @@
       "receitaTotal": 279491.45288923,
       "transferencias": 43947.28022980911,
       "receitaLiquida": 235544.17265942087,
-      "despesa": 210122.20483656556,
+      "despesa": 210222.43630236556,
       "previdencia": 94177.23760604,
       "pessoal": 34147.66562049,
-      "outrasObrigatorias": 32861.67610556556,
-      "programacaoFinanceira": 48935.62550446999,
-      "resultado": 25421.96782285531
+      "outrasObrigatorias": 32961.90755172556,
+      "programacaoFinanceira": 48935.62552410999,
+      "resultado": 25321.736357055313
     },
     {
       "periodo": "2026-05",
@@ -1021,12 +1021,12 @@
       "receitaTotal": 256223.38362423,
       "transferencias": 58256.80543224065,
       "receitaLiquida": 197966.57819198933,
-      "despesa": 251216.62462838556,
+      "despesa": 251288.09407523557,
       "previdencia": 122264.92201848,
-      "pessoal": 33478.41880959,
-      "outrasObrigatorias": 34848.02597462556,
-      "programacaoFinanceira": 60625.257825689994,
-      "resultado": -53250.046436396224
+      "pessoal": 33478.40176256,
+      "outrasObrigatorias": 34919.54245677556,
+      "programacaoFinanceira": 60625.22783742,
+      "resultado": -53321.51588324623
     },
     {
       "periodo": "2026-06",
@@ -1034,25 +1034,51 @@
       "receitaTotal": 251923.53976024996,
       "transferencias": 56535.086602783515,
       "receitaLiquida": 195388.45315746643,
-      "despesa": 243300.03856759556,
+      "despesa": 243375.97729592558,
       "previdencia": 112336.6709352,
       "pessoal": 34126.8586125,
-      "outrasObrigatorias": 38705.63050983555,
-      "programacaoFinanceira": 58130.87851006,
-      "resultado": -47911.58541012913
+      "outrasObrigatorias": 38781.67192691556,
+      "programacaoFinanceira": 58130.77582131,
+      "resultado": -47987.52413845915
     },
     {
       "periodo": "2026-07",
       "coluna": "MR",
-      "receitaTotal": 275883.95996691,
-      "transferencias": 49578.50541121805,
-      "receitaLiquida": 226305.45455569198,
-      "despesa": 215522.02237159555,
+      "receitaTotal": 275883.9599669101,
+      "transferencias": 49398.554648076926,
+      "receitaLiquida": 226485.40531883313,
+      "despesa": 215568.06402099555,
       "previdencia": 84142.98047647,
-      "pessoal": 43232.85975561,
-      "outrasObrigatorias": 38807.57838684555,
-      "programacaoFinanceira": 49338.60375267,
-      "resultado": 10783.432184096426
+      "pessoal": 43212.75397146,
+      "outrasObrigatorias": 38873.73836282555,
+      "programacaoFinanceira": 49338.59121024,
+      "resultado": 10917.341297837585
+    },
+    {
+      "periodo": "2026-08",
+      "coluna": "MS",
+      "receitaTotal": 241960.60680256,
+      "transferencias": 54000.70922328749,
+      "receitaLiquida": 187959.8975792725,
+      "despesa": 201517.56589567557,
+      "previdencia": 84526.92385571,
+      "pessoal": 31974.48372576,
+      "outrasObrigatorias": 39814.82271998556,
+      "programacaoFinanceira": 45201.33559422,
+      "resultado": -13557.668316403055
+    },
+    {
+      "periodo": "2026-09",
+      "coluna": "MT",
+      "receitaTotal": 255661.00351847007,
+      "transferencias": 50713.513591205294,
+      "receitaLiquida": 204947.48992726477,
+      "despesa": 200108.40577967555,
+      "previdencia": 84583.39611656,
+      "pessoal": 32083.61078269,
+      "outrasObrigatorias": 38712.45869828555,
+      "programacaoFinanceira": 44728.94018214,
+      "resultado": 4839.084147589223
     }
   ],
   "rtnAnual": [
@@ -1142,7 +1168,7 @@
         {
           "codigo": "20",
           "nome": "Orçamento da Seguridade Social",
-          "atualizacao": "2026-01-24T02:18:46.598-03:00",
+          "atualizacao": "2026-10-28T01:34:25.999-03:00",
           "inicial": 1802688876066.0,
           "atualizada": 1844350221725.0,
           "empenhado": 1841402148204.0,
@@ -1152,7 +1178,7 @@
         {
           "codigo": "10",
           "nome": "Orçamento Fiscal",
-          "atualizacao": "2026-01-24T02:18:46.598-03:00",
+          "atualizacao": "2026-10-28T01:34:25.999-03:00",
           "inicial": 3916698651612.0,
           "atualizada": 3991048692531.0,
           "empenhado": 3537996522719.0,
@@ -1244,24 +1270,24 @@
       "ano": 2026,
       "esferas": [
         {
-          "codigo": "20",
-          "nome": "Orçamento da Seguridade Social",
-          "atualizacao": "2026-10-27T01:46:42.924-03:00",
-          "inicial": 1978187902102.0,
-          "atualizada": 1987440967861.0,
-          "empenhado": 1712974025244.0,
-          "liquidado": 1541153218403.0,
-          "pago": 1523765785530.0
-        },
-        {
           "codigo": "10",
           "nome": "Orçamento Fiscal",
-          "atualizacao": "2026-10-27T01:46:42.924-03:00",
+          "atualizacao": "2026-10-31T01:46:09.751-03:00",
           "inicial": 4366136847772.0,
-          "atualizada": 4546354471416.0,
-          "empenhado": 3814169302608.0,
-          "liquidado": 3431512119717.0,
-          "pago": 3415973917452.0
+          "atualizada": 4542194377330.0,
+          "empenhado": 3845423223855.0,
+          "liquidado": 3484900682307.0,
+          "pago": 3462574897733.0
+        },
+        {
+          "codigo": "20",
+          "nome": "Orçamento da Seguridade Social",
+          "atualizacao": "2026-10-31T01:46:09.751-03:00",
+          "inicial": 1978187902102.0,
+          "atualizada": 1991601061947.0,
+          "empenhado": 1715594729579.0,
+          "liquidado": 1591703112538.0,
+          "pago": 1540774254416.0
         }
       ],
       "grupos": [
@@ -1269,55 +1295,55 @@
           "codigo": "1",
           "nome": "Pessoal e Encargos Sociais",
           "inicial": 489545557921.0,
-          "atualizada": 480870923295.0,
-          "empenhado": 437923494538.0,
-          "liquidado": 357449354188.0,
-          "pago": 340784832163.0
+          "atualizada": 478181244654.0,
+          "empenhado": 441319078917.0,
+          "liquidado": 372788533713.0,
+          "pago": 342618320447.0
         },
         {
           "codigo": "2",
           "nome": "Juros e Encargos da Dívida",
           "inicial": 643939797050.0,
           "atualizada": 643939797050.0,
-          "empenhado": 503536899290.0,
-          "liquidado": 490789362462.0,
-          "pago": 490789362462.0
+          "empenhado": 503543913582.0,
+          "liquidado": 497684306168.0,
+          "pago": 497684306168.0
         },
         {
           "codigo": "3",
           "nome": "Outras Despesas Correntes",
           "inicial": 2644253022371.0,
-          "atualizada": 2726444679153.0,
-          "empenhado": 2392923665433.0,
-          "liquidado": 2041325765340.0,
-          "pago": 2026918602894.0
+          "atualizada": 2729160093323.0,
+          "empenhado": 2398786299173.0,
+          "liquidado": 2092908003047.0,
+          "pago": 2051364080895.0
         },
         {
           "codigo": "4",
           "nome": "Investimentos",
           "inicial": 80820961867.0,
-          "atualizada": 84103075565.0,
-          "empenhado": 58779357341.0,
-          "liquidado": 29906723539.0,
-          "pago": 28358695484.0
+          "atualizada": 84077340036.0,
+          "empenhado": 59144561860.0,
+          "liquidado": 30495900296.0,
+          "pago": 28961387536.0
         },
         {
           "codigo": "5",
           "nome": "Inversões Financeiras",
           "inicial": 228703689140.0,
           "atualizada": 342641331598.0,
-          "empenhado": 285786646308.0,
-          "liquidado": 247537989963.0,
-          "pago": 247232067351.0
+          "empenhado": 290020164878.0,
+          "liquidado": 249656337849.0,
+          "pago": 249650343333.0
         },
         {
           "codigo": "6",
           "nome": "Amortização da Dívida",
           "inicial": 2220511416421.0,
           "atualizada": 2220511416421.0,
-          "empenhado": 1848193264942.0,
-          "liquidado": 1805656142628.0,
-          "pago": 1805656142628.0
+          "empenhado": 1868203935025.0,
+          "liquidado": 1833070713771.0,
+          "pago": 1833070713771.0
         },
         {
           "codigo": "9",
@@ -1332,16 +1358,16 @@
       "total": {
         "inicial": 6344324749874.0,
         "atualizada": 6533795439277.0,
-        "empenhado": 5527143327852.0,
-        "liquidado": 4972665338120.0,
-        "pago": 4939739702982.0
+        "empenhado": 5561017953434.0,
+        "liquidado": 5076603794845.0,
+        "pago": 5003349152149.0
       },
       "residuosEsferasMenosGND": {
         "inicial": 0.0,
         "atualizada": 0.0,
-        "empenhado": 0.0,
-        "liquidado": 0.0,
-        "pago": 0.0
+        "empenhado": -1.0,
+        "liquidado": 1.0,
+        "pago": -1.0
       }
     }
   ],

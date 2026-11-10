@@ -1,7 +1,7 @@
 {
  "cod": "10512171",
  "nome": "COOPERATIVA DE CRÉDITO RURAL COM INTERAÇÃO SOLIDÁRIA DE RIO BRANCO DO SUL - CRESOL RIO BRANCO DO SUL",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201906": 82.82515738272316
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

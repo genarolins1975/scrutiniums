@@ -8,7 +8,8 @@
     "pipeline/saneamento",
     "src/lib/saneamento",
     "src/tests/saneamento-*.test.ts",
-    "pipeline/tests/test_observatorio_saneamento.py"
+    "pipeline/tests/test_observatorio_saneamento.py",
+    "pipeline/tests/test_coleta_saneamento.py"
   ],
   "reconstruir": [["python3", "-m", "pipeline.observatorio_saneamento.gold"]],
   "timeout_reconstruir_min": 15,
@@ -20,7 +21,7 @@
   "testes": [
     {
       "nome": "pipeline do saneamento (Python)",
-      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_observatorio_saneamento", "pipeline.tests.test_saude", "pipeline.tests.test_controle", "pipeline.tests.test_jmp", "pipeline.tests.test_ods", "pipeline.tests.test_saneamento", "pipeline.tests.test_vigilancia_saneamento"],
+      "comando": ["python3", "-m", "unittest", "pipeline.tests.test_observatorio_saneamento", "pipeline.tests.test_coleta_saneamento", "pipeline.tests.test_saude", "pipeline.tests.test_controle", "pipeline.tests.test_jmp", "pipeline.tests.test_ods", "pipeline.tests.test_saneamento", "pipeline.tests.test_vigilancia_saneamento"],
       "timeout_min": 15
     },
     {

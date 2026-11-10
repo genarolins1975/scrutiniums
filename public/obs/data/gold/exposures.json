@@ -4,7 +4,7 @@
  "anomes": "202606",
  "setores": {
   "comercio_reparacao_de_veiculos_automotores_e_mot": {
-   "total_brl": 573346239137.0597,
+   "total_brl": 574350163250.8597,
    "top_volume": [
     {
      "cod_inst": "C0010045",
@@ -71,7 +71,7 @@
    ]
   },
   "outros": {
-   "total_brl": 569332131902.8602,
+   "total_brl": 572204806656.5001,
    "top_volume": [
     {
      "cod_inst": "C0010045",
@@ -138,7 +138,7 @@
    ]
   },
   "industrias_de_transformacao": {
-   "total_brl": 505970461099.71027,
+   "total_brl": 506029336009.7203,
    "top_volume": [
     {
      "cod_inst": "C0010069",
@@ -205,7 +205,7 @@
    ]
   },
   "transporte_armazenagem_e_correio": {
-   "total_brl": 274581423592.33994,
+   "total_brl": 275031822407.91986,
    "top_volume": [
     {
      "cod_inst": "33657248",
@@ -272,7 +272,7 @@
    ]
   },
   "servicos_industriais_de_utilidade_publica": {
-   "total_brl": 245436080717.68002,
+   "total_brl": 245545071282.47003,
    "top_volume": [
     {
      "cod_inst": "33657248",
@@ -339,7 +339,7 @@
    ]
   },
   "administracao_publica_defesa_e_seguridade_social": {
-   "total_brl": 228480073267.17,
+   "total_brl": 229547428753.09003,
    "top_volume": [
     {
      "cod_inst": "C0049906",
@@ -406,7 +406,7 @@
    ]
   },
   "construcao": {
-   "total_brl": 163063251105.77005,
+   "total_brl": 167491469740.93005,
    "top_volume": [
     {
      "cod_inst": "C0051626",
@@ -447,6 +447,12 @@
      "share_da_propria_carteira_pj_pct": 43.8
     },
     {
+     "cod_inst": "01984199",
+     "nome": "CARTAO BRB S/A",
+     "volume_brl": 4428218635.16,
+     "share_da_propria_carteira_pj_pct": 43.8
+    },
+    {
      "cod_inst": "02658435",
      "nome": "BANCO CATERPILLAR S.A.",
      "volume_brl": 2418106897.91,
@@ -463,17 +469,11 @@
      "nome": "BANCO DO ESTADO DO PARÁ S.A.",
      "volume_brl": 380191569.63,
      "share_da_propria_carteira_pj_pct": 37.3
-    },
-    {
-     "cod_inst": "04388688",
-     "nome": "COOPERATIVA DE CRÉDITO SICOOB ENGECRED LTDA.",
-     "volume_brl": 401897261.94,
-     "share_da_propria_carteira_pj_pct": 32.2
     }
    ]
   },
   "industrias_extrativas": {
-   "total_brl": 57002685254.040016,
+   "total_brl": 57004890743.02002,
    "top_volume": [
     {
      "cod_inst": "C0049906",
@@ -540,7 +540,7 @@
    ]
   },
   "agricultura_pecuaria_producao_florestal_pesca_e_": {
-   "total_brl": 53947384350.800064,
+   "total_brl": 54073892959.630066,
    "top_volume": [
     {
      "cod_inst": "C0049906",
@@ -609,23 +609,23 @@
  },
  "portes_sistema": {
   "micro": {
-   "total_brl": 173859949139.88998,
-   "share_pct": 6.7
+   "total_brl": 181758082959.9899,
+   "share_pct": 7.0
   },
   "pequena": {
-   "total_brl": 412008149371.5996,
+   "total_brl": 412437806531.6395,
    "share_pct": 15.9
   },
   "media": {
-   "total_brl": 709578053512.4407,
+   "total_brl": 711369413909.0107,
    "share_pct": 27.4
   },
   "grande": {
    "total_brl": 1294457515693.89,
-   "share_pct": 50.0
+   "share_pct": 49.8
   }
  },
- "pme_share_sistema_pct": 22.6,
+ "pme_share_sistema_pct": 22.9,
  "ranking_pme": [
   {
    "cod_inst": "08561701",
@@ -648,6 +648,12 @@
   {
    "cod_inst": "C0031976",
    "nome": "BRB",
+   "pme_share_pct": 82.3,
+   "carteira_pj_brl": 10119156347.53
+  },
+  {
+   "cod_inst": "01984199",
+   "nome": "CARTAO BRB S/A",
    "pme_share_pct": 82.3,
    "carteira_pj_brl": 10119156347.53
   },
@@ -710,12 +716,6 @@
    "nome": "INTER",
    "pme_share_pct": 58.2,
    "carteira_pj_brl": 9064933655.58
-  },
-  {
-   "cod_inst": "04866275",
-   "nome": "BANCO INBURSA S.A.",
-   "pme_share_pct": 57.9,
-   "carteira_pj_brl": 1137315650.32
   }
  ],
  "metodo": "Somas das carteiras PJ por CNAE/porte reportadas por instituição (IF.data UI, 202606, valores em R$). Shares relativas à carteira PJ da própria instituição; rankings de exposição relativa e PME restritos a carteiras PJ >= R$ 1 bi. Setores excluem exterior, atividade não informada e não individualizado.",

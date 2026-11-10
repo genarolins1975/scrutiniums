@@ -1,7 +1,7 @@
 {
  "cod": "73254757",
  "nome": "COOPERATIVA DE CREDITO E ECONOMIA COM INTERAÇÃO SOLIDARIA DE QUILOMBO - CRESOL QUILOMBO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -308,5 +308,5 @@
    "202306": 70.05080626424497
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

@@ -1,7 +1,7 @@
 {
  "cod": "28128009",
  "nome": "COOPERATIVA DE CRÉDITO DOS EMPRESÁRIOS DA GRANDE CAMPO GRANDE - SICOOB ALIANÇA MS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -112,5 +112,5 @@
    "201812": 37.52704448370376
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

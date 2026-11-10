@@ -1,7 +1,7 @@
 {
  "modulo": "territorio/desastres",
- "capturadoEm": "2026-10-18T10:36:01+00:00",
- "dataReferencia": "2026-10-18",
+ "capturadoEm": "2026-11-02T21:00:23+00:00",
+ "dataReferencia": "2026-11-02",
  "fonte": {
   "nome": "Atlas Digital de Desastres no Brasil, base consolidada (Sedec/MIDR e Ceped/UFSC), extraída do S2iD",
   "pagina": "https://atlasdigital.mdr.gov.br/paginas/downloads.xhtml",
@@ -22,7 +22,7 @@
    "sha256": "78f7efd2d853021678ff4af891e938375b9fd0ce77026cbe052a53dae12bf425",
    "bytes": 86134318,
    "last_modified": "Fri, 07 Aug 2026 14:38:42 GMT",
-   "capturado_em": "2026-10-18T10:36:01+00:00"
+   "capturado_em": "2026-11-02T21:00:23+00:00"
   },
   "atlas_manual": {
    "url": "https://atlasdigital.mdr.gov.br/arquivos/Atlas_Digital_Desastres_Manual_Aplicacao.pdf",
@@ -30,7 +30,7 @@
    "sha256": "2287740926d28205c3f3c58ae5d0b0ae5e16daa8e8bb565e613077e61d9af808",
    "bytes": 6927029,
    "last_modified": "Wed, 27 May 2026 21:38:24 GMT",
-   "capturado_em": "2026-10-18T10:36:18+00:00"
+   "capturado_em": "2026-11-02T21:00:45+00:00"
   },
   "atlas_log_correcoes": {
    "url": "https://atlasdigital.mdr.gov.br/arquivos/2026/2026.08-logs-correcoes.xlsx",
@@ -38,7 +38,7 @@
    "sha256": "fafdf50cfd5f0a185e6fe01b13caed45995446a67cf85e9f354b10ade1e24115",
    "bytes": 158903,
    "last_modified": "Fri, 07 Aug 2026 14:38:40 GMT",
-   "capturado_em": "2026-10-18T10:36:20+00:00"
+   "capturado_em": "2026-11-02T21:00:47+00:00"
   }
  },
  "bloqueios": [

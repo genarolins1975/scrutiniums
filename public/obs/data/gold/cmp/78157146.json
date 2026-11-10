@@ -1,7 +1,7 @@
 {
  "cod": "78157146",
  "nome": "CREDIALIANÇA COOPERATIVA DE CRÉDITO RURAL",
- "sr": null,
+ "sr": "S5",
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -477,5 +477,5 @@
    "202512": 0.0
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:28+00:00"
 }

@@ -1,7 +1,7 @@
 {
  "cod": "02674113",
  "nome": "COOPERATIVA DE CRÉDITO DE SERVIDORES PÚBLICOS COOPERPLAN LTDA. - SICOOB COOPERPLAN",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -301,5 +301,5 @@
    "202303": 74.57126188897091
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

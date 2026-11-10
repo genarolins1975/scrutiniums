@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S2",
   "grupo_pares": "S2 — porte entre 1% e 10% do PIB",
-  "n_pares": 7,
+  "n_pares": 14,
   "conglomerado_prudencial": "C0080484",
   "capital": "não classificado",
   "modelo": null,
@@ -17,21 +17,16 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-10-27T16:59:22+00:00",
+  "atualizado_em": "2026-11-09T21:38:19+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
-   "texto": "Capitalização acima da mediana do grupo S2, rentabilidade do período acima da mediana.",
+   "texto": "Capitalização abaixo da mediana do grupo S2, rentabilidade do período acima da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S2"
   },
   "pontos_fortes": [
-   {
-    "tipo": "ok",
-    "texto": "Basileia de 15.9% (acima da mediana do grupo S2: 15.9%).",
-    "base": "BCB IF.data (Informações de Capital)"
-   },
    {
     "tipo": "ok",
     "texto": "Carteira cresceu 10.1% em 4 trimestres.",
@@ -44,6 +39,11 @@
    }
   ],
   "pontos_atencao": [
+   {
+    "tipo": "warn",
+    "texto": "Basileia de 15.9% (abaixo da mediana do grupo S2: 15.9%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
    {
     "tipo": "warn",
     "texto": "Índice de reclamações 68.6 (acima da mediana do ranking 66.1) — indicador operacional, não de solvência.",
@@ -68,8 +68,20 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 7,
+  "quantidade": 14,
   "maiores_membros": [
+   {
+    "cod": "33657248",
+    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOM"
+   },
+   {
+    "cod": "C0052120",
+    "nome": "XP"
+   },
+   {
+    "cod": "C0010083",
+    "nome": "SAFRA"
+   },
    {
     "cod": "C0052058",
     "nome": "NUBANK"
@@ -79,12 +91,28 @@
     "nome": "BANCO COOPERATIVO SICREDI S.A."
    },
    {
+    "cod": "C0051750",
+    "nome": "BANCO SICOOB"
+   },
+   {
+    "cod": "C0030403",
+    "nome": "CITIBANK"
+   },
+   {
+    "cod": "C0030173",
+    "nome": "BANRISUL"
+   },
+   {
     "cod": "C0051011",
     "nome": "VOTORANTIM"
    },
    {
     "cod": "18236120",
     "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
+   },
+   {
+    "cod": "07237373",
+    "nome": "BANCO DO NORDESTE DO BRASIL S.A."
    },
    {
     "cod": "92934215",
@@ -99,7 +127,11 @@
     "nome": "NUPAY FOR BUSINESS INSTITUICAO DE PAGAME"
    }
   ],
-  "quartis_basileia": null,
+  "quartis_basileia": {
+   "q1": 15.4,
+   "mediana": 15.9,
+   "q3": 20.2
+  },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "kpis": [
@@ -195,8 +227,8 @@
  ],
  "destaques": [
   {
-   "tipo": "ok",
-   "texto": "Basileia de 15.9% (acima da mediana do grupo S2: 15.9%).",
+   "tipo": "warn",
+   "texto": "Basileia de 15.9% (abaixo da mediana do grupo S2: 15.9%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -221,27 +253,27 @@
    "valor": 15.88,
    "unit": "%",
    "d_tri": 0.86,
-   "vs_pares": "na média",
-   "mediana_grupo": 15.88,
-   "percentil": 50.0
+   "vs_pares": "abaixo",
+   "mediana_grupo": 15.91,
+   "percentil": 44.4
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
    "valor": 11.85,
    "unit": "×",
    "d_tri": null,
-   "vs_pares": "na média",
-   "mediana_grupo": 11.85,
-   "percentil": 50.0
+   "vs_pares": "abaixo",
+   "mediana_grupo": 14.95,
+   "percentil": 38.5
   },
   {
    "indicador": "ROE do período",
    "valor": 7.41,
    "unit": "%",
    "d_tri": null,
-   "vs_pares": "na média",
-   "mediana_grupo": 7.41,
-   "percentil": 50.0
+   "vs_pares": "acima",
+   "mediana_grupo": 6.57,
+   "percentil": 61.5
   }
  ],
  "carteira": {
@@ -862,82 +894,103 @@
   "roe": {
    "valores": [
     2.97,
+    6.29,
+    6.17,
+    10.24,
+    4.73,
+    11.39,
     7.41,
+    6.57,
     17.61,
     -150.52,
+    2.95,
     27.93,
     5.22,
     7.84
    ],
    "meu": 7.41,
-   "mediana": 7.41
+   "mediana": 6.57
   },
   "basileia": {
    "valores": [
     20.16,
+    15.14,
+    25.43,
+    18.14,
+    15.91,
+    15.37,
     15.88,
+    20.29,
+    13.28,
     15.51
    ],
    "meu": 15.88,
-   "mediana": 15.88
+   "mediana": 15.91
   },
   "alav": {
    "valores": [
     42.77,
+    4.82,
+    5.94,
+    14.8,
+    14.95,
+    15.5,
     11.85,
+    31.95,
     5.26,
     58.06,
+    27.91,
     17.84,
     1.03,
     1.95
    ],
    "meu": 11.85,
-   "mediana": 11.85
+   "mediana": 14.95
   }
  },
  "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.88,
-    "percentil_pares": 45.1,
-    "mediana_pares": 16.14,
-    "q1_pares": 14.66,
-    "q3_pares": 21.62
+    "percentil_pares": 44.4,
+    "mediana_pares": 15.89,
+    "q1_pares": 15.4,
+    "q3_pares": 19.66
    },
    "rentabilidade": {
     "valor": 7.41,
-    "percentil_pares": 65.7,
-    "mediana_pares": 6.2,
-    "q1_pares": 3.28,
-    "q3_pares": 9.14
+    "percentil_pares": 60.0,
+    "mediana_pares": 6.57,
+    "q1_pares": 5.45,
+    "q3_pares": 10.81
    },
    "alavancagem": {
     "valor": 11.85,
-    "percentil_pares": 57.6,
-    "mediana_pares": 10.92,
-    "q1_pares": 6.89,
-    "q3_pares": 15.73
+    "percentil_pares": 30.0,
+    "mediana_pares": 14.95,
+    "q1_pares": 8.9,
+    "q3_pares": 22.88
    },
    "concentracao_credito": {
     "valor": 51.86,
-    "percentil_pares": 64.6,
-    "mediana_pares": 45.43,
-    "q1_pares": 14.94,
-    "q3_pares": 58.82
+    "percentil_pares": 90.0,
+    "mediana_pares": 28.39,
+    "q1_pares": 20.78,
+    "q3_pares": 42.69
    },
    "dependencia_captacoes": {
     "valor": 73.76,
-    "percentil_pares": 50.5,
-    "mediana_pares": 73.68,
-    "q1_pares": 51.47,
-    "q3_pares": 82.12
+    "percentil_pares": 30.0,
+    "mediana_pares": 78.85,
+    "q1_pares": 67.69,
+    "q3_pares": 84.31
    },
    "concentracao_setorial": {
     "valor": 2463,
-    "percentil_pares": 63.0,
-    "mediana_pares": 2283.0,
-    "q1_pares": 1790.5,
-    "q3_pares": 3180.0
+    "percentil_pares": 66.7,
+    "mediana_pares": 2289.0,
+    "q1_pares": 1978.0,
+    "q3_pares": 2558.5
    }
   },
   "dimensoes_disponiveis": "6/6",
@@ -946,10 +999,10 @@
    "cenario": "severamente adverso",
    "delta_inad_pp": [
     0.54,
-    1.24
+    1.26
    ],
    "impacto_basileia_pp": [
-    -0.56,
+    -0.57,
     -0.24
    ],
    "basileia_atual_pct": 15.88,
@@ -973,9 +1026,9 @@
     "seg": "PF",
     "carteira_brl": 56177072907.11,
     "atraso15_pct": 3.74,
-    "mediana_produto_pct": 1.23,
+    "mediana_produto_pct": 1.24,
     "percentil_no_produto": 85.6,
-    "n_universo": 591,
+    "n_universo": 592,
     "serie": [
      {
       "p": "2025-T2",
@@ -1007,7 +1060,7 @@
     "atraso15_pct": 3.87,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 51.9,
-    "n_universo": 881,
+    "n_universo": 882,
     "serie": [
      {
       "p": "2025-T2",
@@ -1038,8 +1091,8 @@
     "carteira_brl": 5237481536.77,
     "atraso15_pct": 24.81,
     "mediana_produto_pct": 7.4,
-    "percentil_no_produto": 85.5,
-    "n_universo": 228,
+    "percentil_no_produto": 85.1,
+    "n_universo": 229,
     "serie": [
      {
       "p": "2025-T2",
@@ -1071,7 +1124,7 @@
     "atraso15_pct": 2.98,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 81.1,
-    "n_universo": 620,
+    "n_universo": 621,
     "serie": [
      {
       "p": "2025-T2",
@@ -1135,7 +1188,7 @@
     "atraso15_pct": 4.04,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 48.8,
-    "n_universo": 606,
+    "n_universo": 607,
     "serie": [
      {
       "p": "2025-T2",
@@ -1165,9 +1218,9 @@
     "seg": "PJ",
     "carteira_brl": 1341157330.08,
     "atraso15_pct": 0.1,
-    "mediana_produto_pct": 0.73,
-    "percentil_no_produto": 30.0,
-    "n_universo": 204,
+    "mediana_produto_pct": 0.71,
+    "percentil_no_produto": 29.9,
+    "n_universo": 205,
     "serie": [
      {
       "p": "2025-T2",
@@ -1198,8 +1251,8 @@
     "carteira_brl": 1028055813.71,
     "atraso15_pct": 3.95,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 77.8,
-    "n_universo": 745,
+    "percentil_no_produto": 77.9,
+    "n_universo": 746,
     "serie": [
      {
       "p": "2025-T2",
@@ -1231,7 +1284,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.0,
     "percentil_no_produto": 0.0,
-    "n_universo": 304,
+    "n_universo": 305,
     "serie": [
      {
       "p": "2025-T2",
@@ -1263,7 +1316,7 @@
     "atraso15_pct": 20.99,
     "mediana_produto_pct": 0.71,
     "percentil_no_produto": 97.9,
-    "n_universo": 774,
+    "n_universo": 775,
     "serie": [
      {
       "p": "2025-T2",
@@ -1295,7 +1348,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 10.34,
     "percentil_no_produto": 0.0,
-    "n_universo": 577,
+    "n_universo": 578,
     "serie": [
      {
       "p": "2025-T2",

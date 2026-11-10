@@ -52,6 +52,7 @@ import {
   extremosMediaDiaria,
   horaDiaRecorte,
   horaPadrao,
+  diaDasHorasPorSentido,
   horasPorSentidoNoDia,
   inflacaoAcumulada,
   intervaloSemanaOperativa,
@@ -950,10 +951,15 @@ describe("abertura do PLD: o preço antes da aula (página renderizada)", () => 
     }
     const lista = /data-texto="horas-por-sentido"[^>]*>([\s\S]*?)<\/ul>/.exec(h);
     expect(lista).not.toBeNull();
-    const sentidos = horasPorSentidoNoDia(rec, redeGold.dia_referencia).filter((x) => x.horas > 0);
+    // o dia das horas é o do fluxo quando o arquivo horário o cobre; senão, o último dia anterior com fluxo no arquivo (02/11/2026:
+    // fluxo até 31/10 e PLD horário até 24/10)
+    const diaHoras = diaDasHorasPorSentido(rec, redeGold.dia_referencia)!;
+    expect(diaHoras <= redeGold.dia_referencia).toBe(true);
+    if (rec.t.some((t) => t.startsWith(redeGold.dia_referencia))) expect(diaHoras).toBe(redeGold.dia_referencia);
+    const sentidos = horasPorSentidoNoDia(rec, diaHoras).filter((x) => x.horas > 0);
     expect(sentidos.length).toBeGreaterThan(0);
     for (const x of sentidos) expect(lista![1]).toContain(`<li>${escHtml(textoSentidoNoDia(x)!)}</li>`);
-    expect(lista![1]).toContain(`Horas em cada sentido em ${dataBR(redeGold.dia_referencia)}`);
+    expect(lista![1]).toContain(`Horas em cada sentido em ${dataBR(diaHoras)}`);
   });
 
   it("a ideia central diz a base do Balanço do ONS e a MMGD estimada; 'geração verificada' fica só no exemplo sintético de liquidação", () => {
@@ -1562,8 +1568,8 @@ describe("geração do Balanço do ONS no diagrama e na ideia central: a MMGD es
 });
 
 describe("fluxo por hora no dia do mapa: o sentido de cada fronteira, só com as horas publicadas", () => {
-  // o dia do mapa é o dia de referência da gold de rede, o mesmo que a página usa
-  const dia = redeGold.dia_referencia;
+  // o dia das horas é o que a página usa: o do fluxo da gold de rede, ou o último anterior coberto pelo arquivo horário
+  const dia = diaDasHorasPorSentido(rec, redeGold.dia_referencia) ?? redeGold.dia_referencia;
   const conta = (fronteira: "N_NE" | "N_SE" | "NE_SE" | "S_SE") => {
     let no_sentido = 0;
     let contrario = 0;

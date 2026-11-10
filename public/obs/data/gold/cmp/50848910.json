@@ -1,7 +1,7 @@
 {
  "cod": "50848910",
  "nome": "COOPERATIVA DE CRÉDITO DOS PLANTADORES DE CANA DA REGIÃO DE LENÇÓIS PAULISTA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -245,5 +245,5 @@
    "202103": 19.9753622887185
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

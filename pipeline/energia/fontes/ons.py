@@ -10,7 +10,7 @@ import io
 import json
 import sys
 import os
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
@@ -153,19 +153,35 @@ def recursos_csv(pacote_json, prefixo):
     return out
 
 
-def _precisa_recoletar(con, dataset, recurso, ano, hoje, dias=30):
+def _precisa_recoletar(con, dataset, recurso, ano, hoje, dias=30, publicado_em=None):
     if ano >= hoje.year - 1:
         return True
+    vintage = base.ultima_vintage(con, dataset, recurso)
+    if not vintage or base.vintage_orfa(vintage):
+        return True
+    # Conteúdo idêntico conserva a vintage original. A janela de recoleta conta
+    # desde a última tentativa bem-sucedida, não desde a primeira captura.
     row = con.execute(
-        "SELECT MAX(capturado_em) FROM vintages WHERE dataset=? AND recurso=?", (dataset, recurso)
+        "SELECT tentado_em, detalhe FROM coletas WHERE dataset=? AND recurso=? AND ok=1 ORDER BY rowid DESC LIMIT 1",
+        (dataset, recurso),
     ).fetchone()
-    if not row or not row[0]:
+    # O portal também pode alterar só o metadado, sem alterar os bytes. Guardar
+    # a publicação conferida no log evita baixar diariamente sem redatar a vintage.
+    publicacao_conferida = vintage.get("publicado_em")
+    if row:
+        try:
+            detalhe = json.loads(row[1])
+            if isinstance(detalhe, dict) and "publicado_em" in detalhe:
+                publicacao_conferida = detalhe["publicado_em"]
+        except (ValueError, TypeError):
+            pass  # logs antigos eram texto livre
+    if publicado_em and publicacao_conferida != publicado_em:
         return True
     try:
-        ultima = datetime.fromisoformat(row[0].replace("Z", "+00:00"))
+        ultima = datetime.fromisoformat((row[0] if row else vintage["capturado_em"]).replace("Z", "+00:00"))
     except ValueError:
         return True
-    return datetime.now(timezone.utc) - ultima > timedelta(days=dias)
+    return hoje - ultima.date() >= timedelta(days=dias)
 
 
 def coleta_dataset(con, dataset, hoje=None, baixar=http_get):
@@ -175,17 +191,27 @@ def coleta_dataset(con, dataset, hoje=None, baixar=http_get):
     status = {"dataset": dataset, "ok": True, "arquivos": 0, "novas": 0, "revisoes": 0, "falhas": []}
     try:
         corpo, _ = baixar(CKAN + cfg["pacote"])
-        pacote = json.loads(corpo.decode("utf-8"))["result"]
+        resposta = json.loads(corpo.decode("utf-8"))
+        if not resposta.get("success") or not isinstance(resposta.get("result"), dict):
+            raise ValueError("package_show sem resultado válido")
+        pacote = resposta["result"]
     except Exception as e:  # pane da API: registrada, sem dado inventado
         base.registra_coleta(con, dataset, "*", False, f"package_show: {e}")
         status.update(ok=False, falhas=[f"package_show: {e}"])
         return status
     recursos = recursos_csv(pacote, cfg["prefixo"])
-    for ano in sorted(a for a in recursos if a >= cfg["ano_inicial"]):
+    anos = sorted(a for a in recursos if a >= cfg["ano_inicial"])
+    if not anos:
+        motivo = "package_show sem CSV anual compatível"
+        base.registra_coleta(con, dataset, "*", False, motivo)
+        con.commit()
+        status.update(ok=False, falhas=[motivo])
+        return status
+    for ano in anos:
         recurso = f"{cfg['prefixo']}{ano}"
-        if not _precisa_recoletar(con, dataset, recurso, ano, hoje):
-            continue
         info = recursos[ano]
+        if not _precisa_recoletar(con, dataset, recurso, ano, hoje, publicado_em=info.get("last_modified")):
+            continue
         try:
             corpo, meta = baixar(info["url"], timeout=180, accept="*/*")
         except Exception as e:
@@ -194,11 +220,29 @@ def coleta_dataset(con, dataset, hoje=None, baixar=http_get):
             continue
         capturado = base.agora_utc()
         arquivo, sha = base.salva_bronze("ons", dataset, recurso, corpo, "csv", capturado)
-        vid, _nova = base.registra_vintage(con, dataset, recurso, info["url"], capturado,
-                                           info.get("last_modified"), sha, len(corpo), "coleta_direta", arquivo)
-        texto = corpo.decode("utf-8-sig", errors="replace")
-        novas, revs = base.grava_observacoes(con, dataset, vid, cfg["parser"](texto))
-        base.registra_coleta(con, dataset, recurso, True, f"{len(corpo)} bytes, {novas} novas, {revs} revisões")
+        # Uma resposta HTTP 200 pode ser HTML, um CSV vazio ou um esquema alterado.
+        # Falha de parsing não deixa vintage parcial nem interrompe outros recursos.
+        con.execute("SAVEPOINT recurso_ons")
+        try:
+            texto = corpo.decode("utf-8-sig")
+            linhas = list(cfg["parser"](texto))
+            if not any(v is not None for _, _, v in linhas):
+                raise ValueError("CSV sem observações numéricas")
+            vid, _nova = base.registra_vintage(con, dataset, recurso, info["url"], capturado,
+                                               info.get("last_modified"), sha, len(corpo), "coleta_direta", arquivo)
+            novas, revs = base.grava_observacoes(con, dataset, vid, linhas)
+        except Exception as e:
+            con.execute("ROLLBACK TO SAVEPOINT recurso_ons")
+            con.execute("RELEASE SAVEPOINT recurso_ons")
+            base.registra_coleta(con, dataset, recurso, False, f"importação: {e}")
+            con.commit()
+            status["falhas"].append(f"{recurso}: importação: {e}")
+            continue
+        con.execute("RELEASE SAVEPOINT recurso_ons")
+        base.registra_coleta(con, dataset, recurso, True, json.dumps({
+            "bytes": len(corpo), "novas": novas, "revisoes": revs,
+            "publicado_em": info.get("last_modified"),
+        }))
         status["arquivos"] += 1
         status["novas"] += novas
         status["revisoes"] += revs

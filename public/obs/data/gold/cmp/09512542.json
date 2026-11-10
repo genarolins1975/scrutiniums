@@ -1,7 +1,7 @@
 {
  "cod": "09512542",
  "nome": "CODEPE CORRETORA DE VALORES E CÂMBIO S.A.",
- "sr": null,
+ "sr": "S4",
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 0.0
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

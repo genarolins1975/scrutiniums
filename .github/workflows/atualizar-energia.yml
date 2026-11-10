@@ -219,6 +219,8 @@ jobs:
           # autorizada pelo responsável em 06/10/2026 (pipeline/energia/fontes/ccee_mercado.py, DECISAO_ACESSO).
           ENERGIA_CCEE_COLETA: "1"
         run: |
+          # O tee preserva o log, mas não pode esconder uma falha do coletor.
+          set -euo pipefail
           if [ "$SEM_COLETA" = "true" ]; then
             python3 -u pipeline/energia/run.py --sem-coleta | tee energia.log
           else
@@ -429,22 +431,62 @@ jobs:
           # porque o executável do Chromium não existia. Mesma instalação do CI.
           npx --no-install playwright install --with-deps chromium || exit 1
           node scripts/minify-obs.mjs || exit 1
-          # 27/10/2026: HTML precisa corresponder à gold candidata. Falha de
-          # build retém a publicação e não impede o diagnóstico da suíte Python.
-          export NODE_OPTIONS=--max-old-space-size=4096
-          export EXIGIR_BUILD_HTML=1
-          npm run build > build-testes.log 2>&1
-          B=$?
-          cat build-testes.log
-          V=1
-          if [ "$B" = "0" ]; then
-            npx vitest run --reporter=default --reporter=json --outputFile.json=vitest-resultado.json
-            V=$?
+          bash scripts/energia_testar.sh
+
+      # Publicação por gold (decisão do dono de 03/11/2026): um teste de dado reprovado retém só as golds que lê;
+      # teste de interface reprovado não retém; envelope, build ou suíte Python quebrados retêm tudo. As golds retidas
+      # voltam à versão publicada e a publicação recomposta passa pelos testes de novo (rodada 1) antes do commit.
+      - name: Reter por gold e testar a publicação recomposta
+        id: retencao
+        if: steps.testes.outcome == 'failure'
+        continue-on-error: true
+        run: |
+          mkdir -p "$RUNNER_TEMP/energia-retida"
+          # a gold candidata inteira e os relatórios da rodada 0 ficam no artefato antes de qualquer retenção
+          tar -czf "$RUNNER_TEMP/energia-retida/gold-candidata.tar.gz" public/energia || echo "::warning::gold candidata não foi empacotada"
+          for f in vitest-resultado.json pipeline-testes.log testes-codigos.txt build-testes.log energia.log; do
+            [ -f "$f" ] && cp "$f" "$RUNNER_TEMP/energia-retida/rodada0-$f"
+          done
+          set +e
+          python3 scripts/energia_reter_por_gold.py vitest-resultado.json testes-codigos.txt \
+            --log-python pipeline-testes.log --aplicar --saida "$RUNNER_TEMP/energia-retida"
+          R=$?
+          set -e
+          MODO=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['modo'])" "$RUNNER_TEMP/energia-retida/energia-retencao.json" 2>/dev/null || echo tudo)
+          if [ "$R" != "0" ] || [ "$MODO" = "tudo" ]; then
+            echo "modo=tudo" >> "$GITHUB_OUTPUT"
+            exit 1
           fi
-          python3 -m unittest discover -s pipeline/tests -t . 2>&1 | tee pipeline-testes.log
-          P=${PIPESTATUS[0]}
-          echo "vitest=$V pipeline=$P build=$B" | tee testes-codigos.txt
-          [ "$B$V$P" = "000" ]
+          if [ "$MODO" = "parcial" ]; then
+            # a publicação recomposta passa pelos mesmos testes; reprovando, a retenção cresce para as golds inteiras
+            # dos testes de dado reprovados (rodada 1) e os testes correm mais uma vez. Duas recomposições no máximo.
+            for RODADA in 1 2; do
+              echo "Rodada $RODADA: testes sobre a publicação recomposta"
+              if bash scripts/energia_testar.sh; then
+                break
+              fi
+              for f in vitest-resultado.json pipeline-testes.log testes-codigos.txt build-testes.log; do
+                [ -f "$f" ] && cp "$f" "$RUNNER_TEMP/energia-retida/rodada$RODADA-$f"
+              done
+              if [ "$RODADA" = "2" ]; then
+                echo "modo=tudo" >> "$GITHUB_OUTPUT"
+                echo "::error::a publicação recomposta reprovou duas vezes; tudo retido"
+                exit 1
+              fi
+              set +e
+              python3 scripts/energia_reter_por_gold.py vitest-resultado.json testes-codigos.txt \
+                --log-python pipeline-testes.log --aplicar --rodada 1 --saida "$RUNNER_TEMP/energia-retida"
+              R=$?
+              set -e
+              MODO=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['modo'])" "$RUNNER_TEMP/energia-retida/energia-retencao.json" 2>/dev/null || echo tudo)
+              if [ "$R" != "0" ] || [ "$MODO" != "parcial" ]; then
+                echo "modo=tudo" >> "$GITHUB_OUTPUT"
+                echo "::error::a retenção não pôde crescer; tudo retido"
+                exit 1
+              fi
+            done
+          fi
+          echo "modo=$MODO" >> "$GITHUB_OUTPUT"
 
       # De 01/10 a 18/10/2026 a gold de energia ficou retida todos os dias sem que
       # ninguém soubesse: este passo só emitia ::error e a execução terminava verde,
@@ -452,7 +494,7 @@ jobs:
       # e a execução termina vermelha.
       - name: Reter publicação reprovada
         id: reter
-        if: steps.testes.outcome == 'failure'
+        if: steps.testes.outcome == 'failure' && steps.retencao.outputs.modo != 'parcial' && steps.retencao.outputs.modo != 'nada'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -460,7 +502,7 @@ jobs:
           # A gold reprovada e os relatórios dos testes vão para o artefato antes de a gold ser descartada: em
           # 23/10/2026 o diagnóstico das retenções de 20 a 22/10 precisou reconstruir a gold da cópia durável (3,3 GB).
           mkdir -p "$RUNNER_TEMP/energia-retida"
-          tar -czf "$RUNNER_TEMP/energia-retida/gold-retida.tar.gz" public/energia || echo "::warning::gold retida não foi empacotada para o artefato"
+          [ -f "$RUNNER_TEMP/energia-retida/gold-candidata.tar.gz" ] || tar -czf "$RUNNER_TEMP/energia-retida/gold-retida.tar.gz" public/energia || echo "::warning::gold retida não foi empacotada para o artefato"
           cp vitest-resultado.json pipeline-testes.log testes-codigos.txt build-testes.log energia.log "$RUNNER_TEMP/energia-retida/" 2>/dev/null || true
           git checkout -- public/energia
           git clean -fdq public/energia
@@ -488,7 +530,7 @@ jobs:
           echo "::error::testes reprovaram a gold de energia; publicação retida (issue: $TITULO)"
 
       - name: Commit e push
-        if: steps.testes.outcome == 'success'
+        if: steps.testes.outcome == 'success' || steps.retencao.outputs.modo == 'parcial' || steps.retencao.outputs.modo == 'nada'
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"
@@ -505,8 +547,40 @@ jobs:
             exit 1
           fi
 
+      # Publicação parcial (ou inteira com testes de interface reprovados): a execução fica verde, e a issue da
+      # retenção recebe o que ficou na edição anterior e os testes de interface a corrigir.
+      - name: Registrar a retenção por gold na issue
+        if: steps.retencao.outputs.modo == 'parcial' || steps.retencao.outputs.modo == 'nada'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MODO: ${{ steps.retencao.outputs.modo }}
+        run: |
+          {
+            echo "Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}"
+            echo
+            if [ "$MODO" = "parcial" ]; then
+              echo "Publicação por gold: as golds abaixo ficaram na edição anterior; as demais foram publicadas."
+            else
+              echo "Publicação inteira: só testes de interface reprovaram."
+            fi
+            echo
+            cat "$RUNNER_TEMP/energia-retida/energia-retencao.md"
+            echo
+            echo "Relatórios da rodada 0 e, se houve, da rodada 1 no artefato \`energia-retida\` desta execução."
+          } > /tmp/energia-parcial.md
+          TITULO="Setor Elétrico: testes reprovaram a gold do dia; publicação retida"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body-file /tmp/energia-parcial.md
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body-file /tmp/energia-parcial.md \
+              --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi
+
       - name: Guardar a gold retida para diagnóstico
-        if: always() && steps.reter.outputs.retida == '1'
+        if: always() && (steps.reter.outputs.retida == '1' || steps.retencao.outcome != 'skipped')
         uses: actions/upload-artifact@v4
         with:
           name: energia-retida

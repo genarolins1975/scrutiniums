@@ -1,7 +1,7 @@
 {
  "cod": "C0084349",
  "nome": "BANCO RIBEIRÃO PRETO - PRUDENCIAL",
- "sr": null,
+ "sr": "S4",
  "tcb": "B1",
  "porte_quartil": null,
  "nivel": "conglomerado prudencial",
@@ -113,5 +113,5 @@
    "202603": 0.0
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

@@ -52,6 +52,8 @@ class RedeFalsa:
         return r
 
     def json(self, url, params):
+        if isinstance(self.cadunico, Exception):
+            raise self.cadunico
         if self.cadunico is None:
             return {"response": {"docs": []}}
         return {"response": {"docs": [{"anomes_s": self.cadunico}]}}
@@ -176,6 +178,15 @@ class VigiliaSaneamento(unittest.TestCase):
         linhas = self.rodar(self.novo(cadunico=None))
         self.assertEqual(len(linhas), 1)
         self.assertIn("não verificado", linhas[0])
+
+    def test_cadunico_fora_do_ar_diz_o_motivo(self):
+        # 02/11/2026: a API MI Social redirecionava para a página de avisos do MDS e a issue #393 mostrava JSONDecodeError
+        erro = v.FonteForaDoAr("o endereço redireciona para https://www.gov.br/mds/pt-br/avisos")
+        linhas = self.rodar(self.novo(cadunico=erro))
+        self.assertEqual(len(linhas), 1)
+        self.assertIn("CadÚnico: a API MI Social do MDS está fora do ar (o endereço redireciona para https://www.gov.br/mds/pt-br/avisos)", linhas[0])
+        self.assertIn("não verificado", linhas[0])
+        self.assertNotIn("JSONDecodeError", linhas[0])
 
     def test_excecao_de_rede_em_uma_fonte_nao_cala_as_outras(self):
         rede = self.novo(cadunico="202612")

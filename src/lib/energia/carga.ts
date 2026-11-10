@@ -956,7 +956,7 @@ export function entreHoras(h: number, idioma: Idioma = idiomaEnergia()): string 
 /**
  * Veredito do P026 em palavras simples: que parcela da carga global a MMGD estimada representa no último mês completo e em
  * que hora o pico do dia caiu mais vezes no ano. Os dias de cada hora, a carga em MWmed e o maior valor horário ficam em
- * respostaPerfil.
+ * respostaPerfil. Até 40 palavras também quando os dois picos caem em horas diferentes (02/11/2026: eram 44).
  */
 export function vereditoPerfil(p: P026, sm: Regiao, idioma: Idioma = idiomaEnergia()): string {
   const quem = doRegiao(sm, idioma);
@@ -965,8 +965,8 @@ export function vereditoPerfil(p: P026, sm: Regiao, idioma: Idioma = idiomaEnerg
   partes.push(
     m
       ? tx(
-          `Em ${mesAno(m.m)}, a MMGD, estimada pelo ONS e não medida, foi ${num(m.mmgd_pct, 2)}% da carga global ${quem}.`,
-          `In ${mesAno(m.m, "en")}, the MMGD, estimated by ONS and not measured, was ${num(m.mmgd_pct, 2, "en")}% of the global load ${quem}.`,
+          `Em ${mesAno(m.m)}, a MMGD estimada pelo ONS (não medida) foi ${num(m.mmgd_pct, 2)}% da carga global ${quem}.`,
+          `In ${mesAno(m.m, "en")}, the MMGD estimated by ONS (not measured) was ${num(m.mmgd_pct, 2, "en")}% of the global load ${quem}.`,
           idioma,
         )
       : tx(`A carga verificada não tem mês completo com MMGD para a região ${semDo(sm, "pt")}.`, `The verified load has no complete month with MMGD for ${semDo(sm, "en")}.`, idioma),
@@ -975,7 +975,7 @@ export function vereditoPerfil(p: P026, sm: Regiao, idioma: Idioma = idiomaEnerg
   const ult = anos.length ? anos[anos.length - 1] : null;
   const moda = ult ? horaModal(ult.contagem) : null;
   if (ult && moda) {
-    const base = tx(`Em ${ult.ano}, o pico do dia caiu mais vezes ${entreHoras(moda.hora, "pt")}`, `In ${ult.ano}, the daily peak fell most often ${entreHoras(moda.hora, "en")}`, idioma);
+    const base = tx(`Em ${ult.ano}, o pico diário caiu mais vezes ${entreHoras(moda.hora, "pt")}`, `In ${ult.ano}, the daily peak fell most often ${entreHoras(moda.hora, "en")}`, idioma);
     const api = sm === "SIN" && ult ? p.hora_pico_api_sin_por_ano.find((x) => x.ano === ult.ano) : undefined;
     const ml = api ? horaModal(api.contagem_liquida) : null;
     if (!ml) partes.push(tx(`${base} na curva de carga ${quem}.`, `${base} in the load curve ${quem}.`, idioma));
@@ -983,8 +983,8 @@ export function vereditoPerfil(p: P026, sm: Regiao, idioma: Idioma = idiomaEnerg
     else
       partes.push(
         tx(
-          `${base} na curva de carga e ${entreHoras(ml.hora, "pt")} na carga líquida de MMGD.`,
-          `${base} in the load curve and ${entreHoras(ml.hora, "en")} in the load net of MMGD.`,
+          `${base} na curva de carga e ${entreHoras(ml.hora, "pt")} na carga líquida.`,
+          `${base} in the load curve and ${entreHoras(ml.hora, "en")} in the net load.`,
           idioma,
         ),
       );
@@ -1125,8 +1125,12 @@ export function separaCampoDaSerie(rotulo: string): { nome: string; campo: strin
  * A média do mês da carga global (carga verificada) ao lado da média do mesmo mês da Carga de Energia Diária, o produto que a
  * página Carga usa: são produtos diferentes do ONS, e os valores não coincidem. Só para o SIN; vazio sem o mês nos dois.
  */
-export function textoGlobalContraDiaria(p: Pick<P026, "mmgd_mensal">, diaria: readonly { m: string; SIN?: number | null }[], idioma: Idioma = idiomaEnergia()): string {
-  const m = ultimoMesCompletoMmgd(p, "SIN");
+export function textoGlobalContraDiaria(p: Pick<P026, "mmgd_mensal">, diaria: readonly { m: string; dias?: number; SIN?: number | null }[], idioma: Idioma = idiomaEnergia()): string {
+  // o último mês completo nos DOIS produtos: em 02/11/2026 a carga verificada fechava outubro e a Carga de Energia Diária ia até
+  // 30/10; comparar o mês inteiro com 30 dias dele misturaria períodos
+  const completo = (x: { m: string; dias?: number }) => x.dias === undefined || x.dias === new Date(Date.UTC(Number(x.m.slice(0, 4)), Number(x.m.slice(5, 7)), 0)).getUTCDate();
+  const meses = p.mmgd_mensal.filter((x) => x.sm === "SIN" && x.dias === x.dias_no_mes).sort((a, b) => (a.m < b.m ? 1 : -1));
+  const m = meses.find((x) => diaria.some((y) => y.m === x.m && completo(y) && y.SIN !== null && y.SIN !== undefined));
   const d = m ? diaria.find((x) => x.m === m.m) : undefined;
   if (!m || !d || d.SIN === null || d.SIN === undefined) return "";
   return tx(

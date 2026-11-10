@@ -83,9 +83,13 @@ def classificar(codigo, texto, relatorio, suite):
             nome = Path(arquivo['name']).resolve().relative_to(RAIZ).as_posix()
             assertions = arquivo.get('assertionResults', [])
             falhas = [a for a in assertions if a['status'] == 'failed']
-            # Skip não é aprovação de conteúdo. Não alteramos skips existentes.
+            # Skip não é aprovação de conteúdo. Não alteramos skips existentes. Um `it.todo` não é verificação pulada: é uma
+            # checagem que ainda não existe, e não contamina as asserções executadas do arquivo. Até 03/11/2026 contaminava:
+            # o todo de busca-controle.test.ts (23/10/2026) reteve juros e, por dependência, consignado e a cascata de
+            # composições do Crédito (issue #291). Arquivo só com todo continua sem aprovar.
+            executadas = [a for a in assertions if a['status'] != 'todo']
             estado = 'failed' if falhas or arquivo.get('status') == 'failed' else (
-                'skipped' if not assertions or any(a['status'] in ('pending', 'skipped', 'todo') for a in assertions) else 'passed')
+                'skipped' if not executadas or any(a['status'] in ('pending', 'skipped') for a in executadas) else 'passed')
             detalhe = '\n'.join(str(m) for a in falhas for m in a.get('failureMessages', [])) or arquivo.get('message', '')
             if INFRA.search(detalhe):
                 motivo = INFRA.search(detalhe).group(0)
@@ -180,7 +184,7 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
     for nome, motivo in restaurados.items():
         if nome in donos:
             retidos.setdefault(donos[nome], []).append('Sentinela de regressão: ' + str(motivo))
-    historico, decisao = [], None
+    historico, decisao, rodada0, avisos = [], None, None, []
     try:
         testada = candidata
         pg.instalar(testada, publica)
@@ -189,7 +193,13 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
             historico.append(execucoes)
             resultados = {**resultados_das_suites(execucoes), **rcontrato}
             infra = any(s['inconclusivo'] for s in execucoes.values())
-            nova = pg.selecionar(manifesto, mapa, resultados, retidos, infra)
+            # a rodada 0 testa o conjunto candidato completo; é a referência dos testes de coerência
+            nova = pg.selecionar(manifesto, mapa, resultados, retidos, infra, rodada0)
+            if rodada0 is None and not infra:
+                rodada0 = resultados
+            for aviso in nova['avisos']:
+                if aviso not in avisos:
+                    avisos.append({**aviso, 'rodada': rodada})
             pg.instalar(base, publica)
             if infra:
                 decisao = nova
@@ -213,7 +223,7 @@ def validar_e_publicar(candidata, publica, manifesto, mapa, rodar, trabalho):
     except BaseException:
         pg.instalar(base, publica)
         raise
-    return {**pg.relatorio(decisao, base, publica, manifesto), 'execucoes': historico,
+    return {**pg.relatorio(decisao, base, publica, manifesto), 'execucoes': historico, 'avisos': avisos,
             'mapa': mapa, 'resultados': resultados,
             'falhas_sem_gold': {n: r for n, r in resultados.items()
                                if not mapa[n]['grupos'] and r['estado'] == 'failed'}}

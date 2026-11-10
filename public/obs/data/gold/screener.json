@@ -145,7 +145,7 @@
   {
    "cod": "00336036",
    "nome": "COINVALORES CORRETORA DE CÂMBIO E VALORE",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 37558884.8,
    "carteira": 0.0,
@@ -215,7 +215,7 @@
   {
    "cod": "00517645",
    "nome": "BANCO RIBEIRAO PRETO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1816104329.25,
    "carteira": 988469011.69,
@@ -453,7 +453,7 @@
   {
    "cod": "00968602",
    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 654787250.39,
    "carteira": 387009601.21,
@@ -509,7 +509,7 @@
   {
    "cod": "00991739",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 13365840.06,
    "carteira": 9006741.04,
@@ -551,7 +551,7 @@
   {
    "cod": "01023570",
    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 54678970426.16,
    "carteira": 37932272838.13,
@@ -733,7 +733,7 @@
   {
    "cod": "01259518",
    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 959997573.3,
    "carteira": 643693509.56,
@@ -775,7 +775,7 @@
   {
    "cod": "01330387",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E SERVI",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 173390162.99,
    "carteira": 27939030.37,
@@ -1083,7 +1083,7 @@
   {
    "cod": "01667766",
    "nome": "SICOOB CREDINOVA - COOPERATIVA DE CRÉDIT",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 983845434.47,
    "carteira": 360618528.87,
@@ -1279,7 +1279,7 @@
   {
    "cod": "01852137",
    "nome": "BANCO BRASILEIRO DE CRÉDITO SOCIEDADE AN",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 3005856149.29,
    "carteira": 2535614354.48,
@@ -1335,7 +1335,7 @@
   {
    "cod": "02015588",
    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5947631036.79,
    "carteira": 2715140010.64,
@@ -2007,7 +2007,7 @@
   {
    "cod": "02685483",
    "nome": "CM CAPITAL MARKETS CORRETORA DE CÂMBIO, ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 109462724.81,
    "carteira": 0.0,
@@ -2049,7 +2049,7 @@
   {
    "cod": "02766672",
    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO CO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 630390796.86,
    "carteira": 470979208.62,
@@ -2161,7 +2161,7 @@
   {
    "cod": "02869663",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3325491.83,
    "carteira": 1415296.16,
@@ -2203,7 +2203,7 @@
   {
    "cod": "02885855",
    "nome": "BADESUL DESENVOLVIMENTO S.A - AGÊNCIA DE",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 3771044922.34,
    "carteira": 2855746327.37,
@@ -2343,7 +2343,7 @@
   {
    "cod": "02992317",
    "nome": "INTEX BANK BANCO DE CÂMBIO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 62299706.65,
    "carteira": 0.0,
@@ -2413,7 +2413,7 @@
   {
    "cod": "03042597",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 3371023439.98,
    "carteira": 2347045177.06,
@@ -2525,7 +2525,7 @@
   {
    "cod": "03183937",
    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DO AMAZONAS",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 367623027.59,
    "carteira": 36329294.59,
@@ -2595,7 +2595,7 @@
   {
    "cod": "03269540",
    "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES MI",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 503587354.22,
    "carteira": 251923572.15,
@@ -2721,7 +2721,7 @@
   {
    "cod": "03443143",
    "nome": "AVIPAM CORRETORA DE CAMBIO LTDA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 556807.78,
    "carteira": 0.0,
@@ -2833,7 +2833,7 @@
   {
    "cod": "03584906",
    "nome": "AGÊNCIA DE FOMENTO DO PARANÁ S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 4693143442.3,
    "carteira": 1705317721.61,
@@ -2861,7 +2861,7 @@
   {
    "cod": "03609817",
    "nome": "BANCO CARGILL S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 4169756722.14,
    "carteira": 3015051704.56,
@@ -3099,7 +3099,7 @@
   {
    "cod": "03848103",
    "nome": "AGENCIA DE FOMENTO DO RIO GRANDE DO NORT",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 104507897.63,
    "carteira": 61606928.5,
@@ -3141,7 +3141,7 @@
   {
    "cod": "03881423",
    "nome": "SOCINAL S.A. - CRÉDITO, FINANCIAMENTO E ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 488416249.22,
    "carteira": 417860670.04,
@@ -3407,7 +3407,7 @@
   {
    "cod": "04237413",
    "nome": "COOPERATIVA DE CRÉDITO DO VALE DO SÃO FR",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 601039015.06,
    "carteira": 256475396.74,
@@ -3505,7 +3505,7 @@
   {
    "cod": "04307598",
    "nome": "FIDÚCIA SOCIEDADE DE CRÉDITO AO MICROEMP",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 281533238.91,
    "carteira": 1334243.95,
@@ -3715,7 +3715,7 @@
   {
    "cod": "04529074",
    "nome": "COOPERATIVA DE CRÉDITO SICOOB CREDICAPIT",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1670825474.42,
    "carteira": 983243446.5,
@@ -3771,7 +3771,7 @@
   {
    "cod": "04632856",
    "nome": "CREDISIS - CENTRAL DE COOPERATIVAS DE CR",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 3149259878.73,
    "carteira": 97702768.93,
@@ -3981,7 +3981,7 @@
   {
    "cod": "04849745",
    "nome": "HBI SOCIEDADE DE CRÉDITO DIRETO S/A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 12371062.55,
    "carteira": 557905.1,
@@ -4177,7 +4177,7 @@
   {
    "cod": "05040481",
    "nome": "BANCO DE LAGE LANDEN BRASIL S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 12747921970.53,
    "carteira": 10633464861.61,
@@ -4415,7 +4415,7 @@
   {
    "cod": "05289612",
    "nome": "ASPENFIN-BR - SOCIEDADE DE CRÉDITO AO MI",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 21256255.48,
    "carteira": 11987383.04,
@@ -4457,7 +4457,7 @@
   {
    "cod": "05392810",
    "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO MERIDIO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 2351385567.21,
    "carteira": 1390244696.08,
@@ -4485,7 +4485,7 @@
   {
    "cod": "05419025",
    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 6911904.79,
    "carteira": 898638.9,
@@ -4639,7 +4639,7 @@
   {
    "cod": "05545390",
    "nome": "COOPERATIVA DE CRÉDITO - SICREDI LENÇÓIS",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 97881615.3,
    "carteira": 45562284.19,
@@ -4737,7 +4737,7 @@
   {
    "cod": "05669150",
    "nome": "FATORI SOCIEDADE DE CRÉDITO AO MICROEMPR",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 937845.12,
    "carteira": 463156.57,
@@ -4779,7 +4779,7 @@
   {
    "cod": "05746715",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9955998.84,
    "carteira": 3760727.23,
@@ -4835,7 +4835,7 @@
   {
    "cod": "05861932",
    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS ADVOGAD",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 981826294.49,
    "carteira": 295790033.02,
@@ -4863,7 +4863,7 @@
   {
    "cod": "05883884",
    "nome": "CSILATINA ARRENDAMENTO MERCANTIL S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 936458794.64,
    "carteira": 513699255.5,
@@ -4905,7 +4905,7 @@
   {
    "cod": "05940203",
    "nome": "AGENCIA DE FOMENTO DO ESTADO DO RIO DE J",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 828890777.73,
    "carteira": 282938700.73,
@@ -4961,7 +4961,7 @@
   {
    "cod": "06040559",
    "nome": "KREDILIG S.A. - CRÉDITO, FINANCIAMENTO E",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 443580176.96,
    "carteira": 416480179.24,
@@ -5017,7 +5017,7 @@
   {
    "cod": "06132348",
    "nome": "LABOR SOCIEDADE CORRETORA DE CÂMBIO LTDA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 11970206.1,
    "carteira": 0.0,
@@ -5073,7 +5073,7 @@
   {
    "cod": "06284531",
    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE MATO GRO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 258297584.68,
    "carteira": 129319529.94,
@@ -5115,7 +5115,7 @@
   {
    "cod": "06339468",
    "nome": "GRAZZIOTIN FINANCEIRA S/A - CRÉDITO, FIN",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 95988848.55,
    "carteira": 87874346.41,
@@ -5143,7 +5143,7 @@
   {
    "cod": "06373777",
    "nome": "BOA VIAGEM SOCIEDADE CORRETORA DE CÂMBIO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6235397.4,
    "carteira": 0.0,
@@ -5171,7 +5171,7 @@
   {
    "cod": "06942423",
    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS TRABALH",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1889802.9,
    "carteira": 637032.7,
@@ -5297,7 +5297,7 @@
   {
    "cod": "07237373",
    "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
-   "sr": null,
+   "sr": "S2",
    "nivel": "indiv",
    "ativo": 81039782769.7,
    "carteira": 17779920357.22,
@@ -5409,7 +5409,7 @@
   {
    "cod": "07441209",
    "nome": "BANCO MONEO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1745747680.6,
    "carteira": 1678657205.14,
@@ -5465,7 +5465,7 @@
   {
    "cod": "07502031",
    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 780673331.18,
    "carteira": 531195031.93,
@@ -5549,7 +5549,7 @@
   {
    "cod": "07652226",
    "nome": "LECCA CRÉDITO, FINANCIAMENTO E INVESTIME",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 103832464.66,
    "carteira": 72526146.36,
@@ -5759,7 +5759,7 @@
   {
    "cod": "08044854",
    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO SI",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1802268622.93,
    "carteira": 911910741.98,
@@ -5871,7 +5871,7 @@
   {
    "cod": "08430732",
    "nome": "SCB CRÉDITO SOCIEDADE DE CRÉDITO AO MICR",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 10984569.63,
    "carteira": 9075531.34,
@@ -5927,7 +5927,7 @@
   {
    "cod": "08609934",
    "nome": "MONEYCORP BANCO DE CÂMBIO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 48095781.97,
    "carteira": 0.0,
@@ -6109,7 +6109,7 @@
   {
    "cod": "09210106",
    "nome": "SOCRED S.A. - SOCIEDADE DE CRÉDITO AO MI",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9490883.42,
    "carteira": 3307215.35,
@@ -6235,7 +6235,7 @@
   {
    "cod": "09464032",
    "nome": "MIDWAY S.A. - CRÉDITO, FINANCIAMENTO E I",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5910371198.24,
    "carteira": 4911403782.93,
@@ -6249,7 +6249,7 @@
   {
    "cod": "09473806",
    "nome": "TODESCREDI S/A - CRÉDITO, FINANCIAMENTO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 536983320.51,
    "carteira": 508714472.31,
@@ -6319,7 +6319,7 @@
   {
    "cod": "09579249",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 90931316.89,
    "carteira": 39642945.29,
@@ -6515,7 +6515,7 @@
   {
    "cod": "10398952",
    "nome": "CONFEDERAÇÃO NACIONAL DAS COOPERATIVAS C",
-   "sr": "S4",
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 7667717774.11,
    "carteira": 0.0,
@@ -6669,7 +6669,7 @@
   {
    "cod": "10853017",
    "nome": "GET MONEY CORRETORA DE CÂMBIO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 8455278.1,
    "carteira": 0.0,
@@ -6781,7 +6781,7 @@
   {
    "cod": "11476673",
    "nome": "BANCO RANDON S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 2683741487.62,
    "carteira": 1855948290.94,
@@ -6837,7 +6837,7 @@
   {
    "cod": "11836226",
    "nome": "AGÊNCIA DE FOMENTO E DESENVOLVIMENTO DO ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 218103424.07,
    "carteira": 132340944.28,
@@ -6991,7 +6991,7 @@
   {
    "cod": "13009717",
    "nome": "BANCO DO ESTADO DE SERGIPE S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 13095222524.24,
    "carteira": 5161133025.54,
@@ -7005,7 +7005,7 @@
   {
    "cod": "13059145",
    "nome": "EBURY BANCO DE CÂMBIO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 405468645.92,
    "carteira": 0.0,
@@ -7047,7 +7047,7 @@
   {
    "cod": "13203354",
    "nome": "FITBANK INSTITUIÇÃO DE PAGAMENTO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 768268867.62,
    "carteira": 0.0,
@@ -7061,7 +7061,7 @@
   {
    "cod": "13220493",
    "nome": "BR PARTNERS BANCO DE INVESTIMENTO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 18254444495.72,
    "carteira": 178231829.13,
@@ -7089,7 +7089,7 @@
   {
    "cod": "13673855",
    "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 18545369.39,
    "carteira": 0.0,
@@ -7257,7 +7257,7 @@
   {
    "cod": "15163587",
    "nome": "DESENBAHIA - AGENCIA DE FOMENTO DO ESTAD",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1197219413.65,
    "carteira": 624998714.38,
@@ -7313,7 +7313,7 @@
   {
    "cod": "15482499",
    "nome": "TURCÂMBIO - CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 6481271.27,
    "carteira": 0.0,
@@ -7341,7 +7341,7 @@
   {
    "cod": "15761217",
    "nome": "CORRETORA DE CÂMBIO AÇORIANA LIMITADA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 32608574.72,
    "carteira": 0.0,
@@ -7411,7 +7411,7 @@
   {
    "cod": "16695922",
    "nome": "ID CORRETORA DE TÍTULOS E VALORES MOBILI",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 97585813.41,
    "carteira": 0.0,
@@ -7481,7 +7481,7 @@
   {
    "cod": "16944141",
    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 21749120.83,
    "carteira": 0.0,
@@ -7621,7 +7621,7 @@
   {
    "cod": "17359351",
    "nome": "STARA FINANCEIRA S.A. - CRÉDITO FINANCIA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1592150872.11,
    "carteira": 1371961294.12,
@@ -7775,7 +7775,7 @@
   {
    "cod": "17904906",
    "nome": "BRX CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 7357788.31,
    "carteira": 0.0,
@@ -7803,7 +7803,7 @@
   {
    "cod": "18145784",
    "nome": "NUMATUR CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 2708974.12,
    "carteira": 0.0,
@@ -7859,7 +7859,7 @@
   {
    "cod": "18310649",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 19517951.0,
    "carteira": 14400398.47,
@@ -7887,7 +7887,7 @@
   {
    "cod": "18394228",
    "nome": "CDC SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 27244109.66,
    "carteira": 6001452.05,
@@ -7957,7 +7957,7 @@
   {
    "cod": "19086249",
    "nome": "EXECUTIVE CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 7420187.31,
    "carteira": 0.0,
@@ -7985,7 +7985,7 @@
   {
    "cod": "19324634",
    "nome": "LAMARA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3053828.13,
    "carteira": 575779.82,
@@ -8027,7 +8027,7 @@
   {
    "cod": "19468242",
    "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMEN",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5601766851.63,
    "carteira": 0.0,
@@ -8041,7 +8041,7 @@
   {
    "cod": "19495266",
    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 6857944.48,
    "carteira": 4298822.66,
@@ -8125,7 +8125,7 @@
   {
    "cod": "20062766",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 28282650.5,
    "carteira": 13337369.94,
@@ -8209,7 +8209,7 @@
   {
    "cod": "20308187",
    "nome": "PROVER PROMOCAO DE VENDAS INSTITUICAO DE",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 110960335.28,
    "carteira": 0.0,
@@ -8587,7 +8587,7 @@
   {
    "cod": "23010182",
    "nome": "GOOD CORRETORA DE CÂMBIO LTDA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 2665289.83,
    "carteira": 0.0,
@@ -8657,7 +8657,7 @@
   {
    "cod": "23903068",
    "nome": "BANCO KOMATSU DO BRASIL S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1513067395.04,
    "carteira": 1238078561.89,
@@ -8741,7 +8741,7 @@
   {
    "cod": "24361690",
    "nome": "LIMINE TRUST DISTRIBUIDORA DE TÍTULOS E ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 24254694.72,
    "carteira": 0.0,
@@ -8783,7 +8783,7 @@
   {
    "cod": "24654881",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 9392668844.02,
    "carteira": 5390916657.4,
@@ -8881,7 +8881,7 @@
   {
    "cod": "25280945",
    "nome": "AVS CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3121595.85,
    "carteira": 0.0,
@@ -9203,7 +9203,7 @@
   {
    "cod": "26529420",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 14275374824.15,
    "carteira": 8240440582.12,
@@ -9231,7 +9231,7 @@
   {
    "cod": "26555235",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 8289954997.93,
    "carteira": 3047855547.86,
@@ -9343,7 +9343,7 @@
   {
    "cod": "27351731",
    "nome": "REALIZE SOCIEDADE DE CRÉDITO, FINANCIAME",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6127059058.03,
    "carteira": 5052519979.58,
@@ -9357,7 +9357,7 @@
   {
    "cod": "27842177",
    "nome": "BPY CORRETORA DE CÂMBIO, TÍTULOS E VALOR",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 33106698.88,
    "carteira": 0.0,
@@ -9413,7 +9413,7 @@
   {
    "cod": "28145829",
    "nome": "BANCO DE DESENVOLVIMENTO DO ESPIRITO SAN",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 2204638147.49,
    "carteira": 651323164.29,
@@ -9455,7 +9455,7 @@
   {
    "cod": "28517628",
    "nome": "BANCO PACCAR S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 8264223741.71,
    "carteira": 7613096302.24,
@@ -9511,7 +9511,7 @@
   {
    "cod": "28762249",
    "nome": "SADOC SOCIEDADE CORRETORA DE CÂMBIO LTDA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 2496289.56,
    "carteira": 0.0,
@@ -9595,7 +9595,7 @@
   {
    "cod": "30183111",
    "nome": "TROCKA CORRETORA DE CAMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 7056376.83,
    "carteira": 0.0,
@@ -9651,7 +9651,7 @@
   {
    "cod": "30723871",
    "nome": "BANQI INSTITUICAO DE PAGAMENTO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 510822408.17,
    "carteira": 0.0,
@@ -9665,7 +9665,7 @@
   {
    "cod": "30765018",
    "nome": "GALAX PAY INSTITUIÇÃO DE PAGAMENTO S.A.",
-   "sr": "S4",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 97402849.68,
    "carteira": 0.0,
@@ -9749,7 +9749,7 @@
   {
    "cod": "31597552",
    "nome": "BANCO CLASSICO S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 40612776298.85,
    "carteira": 0.0,
@@ -9833,7 +9833,7 @@
   {
    "cod": "32206435",
    "nome": "SUL AMERICA INVESTIMENTOS DISTRIBUIDORA ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 228176285.56,
    "carteira": 0.0,
@@ -9973,7 +9973,7 @@
   {
    "cod": "32648370",
    "nome": "FAIR CORRETORA DE CAMBIO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 126171058.3,
    "carteira": 0.0,
@@ -10015,7 +10015,7 @@
   {
    "cod": "32983165",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 4277773504.41,
    "carteira": 2912318634.0,
@@ -10211,7 +10211,7 @@
   {
    "cod": "33644196",
    "nome": "BANCO FATOR S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 742512779.75,
    "carteira": 1656069.48,
@@ -10225,7 +10225,7 @@
   {
    "cod": "33657248",
    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOM",
-   "sr": null,
+   "sr": "S2",
    "nivel": "indiv",
    "ativo": 1073403746464.46,
    "carteira": 375703868838.9,
@@ -10295,7 +10295,7 @@
   {
    "cod": "33851064",
    "nome": "DILLON S/A DISTRIBUIDORA DE TITULOS E VA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 15665968.91,
    "carteira": 0.0,
@@ -10337,7 +10337,7 @@
   {
    "cod": "33924028",
    "nome": "COOPERATIVA DE CRÉDITO CLÁSSICA DOS EMPR",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 71618869.63,
    "carteira": 27795788.75,
@@ -10421,7 +10421,7 @@
   {
    "cod": "34190991",
    "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍT",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 2658493.05,
    "carteira": 0.0,
@@ -10477,7 +10477,7 @@
   {
    "cod": "34666362",
    "nome": "MONOPÓLIO CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6413716.82,
    "carteira": 0.0,
@@ -10533,7 +10533,7 @@
   {
    "cod": "34978626",
    "nome": "INTEGRAL ACCESS DISTRIBUIDORA DE TÍTULOS",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 13910056.46,
    "carteira": 0.0,
@@ -10547,7 +10547,7 @@
   {
    "cod": "34991938",
    "nome": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E IN",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 817930540.98,
    "carteira": 272774382.72,
@@ -10575,7 +10575,7 @@
   {
    "cod": "35136120",
    "nome": "NVIO BRASIL BITSO INSTITUIÇÃO DE PAGAMEN",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 131222425.05,
    "carteira": 0.0,
@@ -10617,7 +10617,7 @@
   {
    "cod": "35340796",
    "nome": "INCO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 35145857.2,
    "carteira": 0.0,
@@ -10645,7 +10645,7 @@
   {
    "cod": "35479592",
    "nome": "DUFRIO FINANCEIRA, CRÉDITO, FINANCIAMENT",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 11328929.35,
    "carteira": 1215989.46,
@@ -10729,7 +10729,7 @@
   {
    "cod": "35911258",
    "nome": "FARMTECH SOCIEDADE DE CRÉDITO DIRETO S.A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 27482479.07,
    "carteira": 0.0,
@@ -10743,7 +10743,7 @@
   {
    "cod": "35977097",
    "nome": "UP.P SOCIEDADE DE EMPRÉSTIMO ENTRE PESSO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 17900648.72,
    "carteira": 0.0,
@@ -10757,7 +10757,7 @@
   {
    "cod": "36113876",
    "nome": "OLIVEIRA TRUST DISTRIBUIDORA DE TÍTULOS ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1026357663.56,
    "carteira": 0.0,
@@ -10841,7 +10841,7 @@
   {
    "cod": "36586946",
    "nome": "BONUSPAGO SOCIEDADE DE CRÉDITO DIRETO S.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 26533967.45,
    "carteira": 5740190.87,
@@ -10855,7 +10855,7 @@
   {
    "cod": "36588217",
    "nome": "WISE BRASIL CORRETORA DE CÂMBIO LTDA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 451394987.27,
    "carteira": 0.0,
@@ -10911,7 +10911,7 @@
   {
    "cod": "36947229",
    "nome": "COBUCCIO S/A - SOCIEDADE DE CRÉDITO, FIN",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 351933135.88,
    "carteira": 253572.05,
@@ -10967,7 +10967,7 @@
   {
    "cod": "37134759",
    "nome": "TAMBASA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 42735969.85,
    "carteira": 19644875.64,
@@ -11177,7 +11177,7 @@
   {
    "cod": "37763847",
    "nome": "GERU SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 11538652.33,
    "carteira": 2495422.81,
@@ -11219,7 +11219,7 @@
   {
    "cod": "38129006",
    "nome": "NUMBRS SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 7879700.11,
    "carteira": 0.0,
@@ -11275,7 +11275,7 @@
   {
    "cod": "38429045",
    "nome": "FÊNIX DISTRIBUIDORA DE TÍTULOS E VALORES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 26928327.63,
    "carteira": 0.0,
@@ -11289,7 +11289,7 @@
   {
    "cod": "38486817",
    "nome": "BANCO DE DESENVOLVIMENTO DE MINAS GERAIS",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 15427554760.67,
    "carteira": 9253331313.86,
@@ -11317,7 +11317,7 @@
   {
    "cod": "38593706",
    "nome": "MULTICRED SOCIEDADE DE CRÉDITO DIRETO S.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 11214565.9,
    "carteira": 6229784.43,
@@ -11331,7 +11331,7 @@
   {
    "cod": "38653626",
    "nome": "F & F INSTITUICAO DE PAGAMENTO S. A.",
-   "sr": "S5",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 68009865.26,
    "carteira": 0.0,
@@ -11373,7 +11373,7 @@
   {
    "cod": "39431423",
    "nome": "BRCARD SOCIEDADE DE CRÉDITO DIRETO S/A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3771882.75,
    "carteira": 989525.74,
@@ -11387,7 +11387,7 @@
   {
    "cod": "39519944",
    "nome": "OPEA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1332663253.33,
    "carteira": 0.0,
@@ -11429,7 +11429,7 @@
   {
    "cod": "39669186",
    "nome": "HEMERA DISTRIBUIDORA DE TÍTULOS E VALORE",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 77903687.84,
    "carteira": 0.0,
@@ -11443,7 +11443,7 @@
   {
    "cod": "39676772",
    "nome": "CREDIFIT SOCIEDADE DE CRÉDITO DIRETO S.A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 29955820.69,
    "carteira": 9508207.19,
@@ -11457,7 +11457,7 @@
   {
    "cod": "39738065",
    "nome": "FFCRED SOCIEDADE DE CRÉDITO DIRETO S.A..",
-   "sr": "S5",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 45571892.54,
    "carteira": 2726580.15,
@@ -11555,7 +11555,7 @@
   {
    "cod": "40333582",
    "nome": "SAYGO CORRETORA DE CÂMBIO S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5352022.0,
    "carteira": 0.0,
@@ -11569,7 +11569,7 @@
   {
    "cod": "40353377",
    "nome": "FOURTRADE CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6902615.08,
    "carteira": 0.0,
@@ -11583,7 +11583,7 @@
   {
    "cod": "40429946",
    "nome": "BANCO PORTO REAL DE INVESTIMENTOS S.A",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 32201273.77,
    "carteira": 8506909.01,
@@ -11639,7 +11639,7 @@
   {
    "cod": "40710595",
    "nome": "NG CASH INSTITUIÇÃO DE PAGAMENTO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 110323231.2,
    "carteira": 0.0,
@@ -11723,7 +11723,7 @@
   {
    "cod": "41219353",
    "nome": "COOPSEBRAE - COOPERATIVA DE CRÉDITO MÚTU",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 8183305.61,
    "carteira": 4013032.49,
@@ -11737,7 +11737,7 @@
   {
    "cod": "41255225",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 383028893.53,
    "carteira": 148234942.58,
@@ -11765,7 +11765,7 @@
   {
    "cod": "41498340",
    "nome": "TENTOS S.A. CRÉDITO, FINANCIAMENTO E INV",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 477964602.37,
    "carteira": 408416229.42,
@@ -11919,7 +11919,7 @@
   {
    "cod": "42047025",
    "nome": "UNAVANTI SOCIEDADE DE CRÉDITO DIRETO S/A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 19896146.25,
    "carteira": 1874867.54,
@@ -11947,7 +11947,7 @@
   {
    "cod": "42100982",
    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9217176.06,
    "carteira": 904997.72,
@@ -12017,7 +12017,7 @@
   {
    "cod": "42627615",
    "nome": "PROVU SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1378485.43,
    "carteira": 0.0,
@@ -12059,7 +12059,7 @@
   {
    "cod": "42887133",
    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 288716364.82,
    "carteira": 79437704.18,
@@ -12101,7 +12101,7 @@
   {
    "cod": "42963742",
    "nome": "BANSUR JM SOCIEDADE DE CRÉDITO DIRETO S/",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 7175697.36,
    "carteira": 5185176.48,
@@ -12143,7 +12143,7 @@
   {
    "cod": "43180355",
    "nome": "PEFISA S.A. - CRÉDITO, FINANCIAMENTO E I",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5396429037.7,
    "carteira": 3146654082.96,
@@ -12227,7 +12227,7 @@
   {
    "cod": "43488782",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 141922294.02,
    "carteira": 102011239.93,
@@ -12255,7 +12255,7 @@
   {
    "cod": "43599047",
    "nome": "SUPERLÓGICA SOCIEDADE DE CRÉDITO DIRETO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 677268432.45,
    "carteira": 23209763.59,
@@ -12297,7 +12297,7 @@
   {
    "cod": "43978697",
    "nome": "KIKAI SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 22045026.65,
    "carteira": 0.0,
@@ -12311,7 +12311,7 @@
   {
    "cod": "44077014",
    "nome": "BR-CAPITAL DISTRIBUIDORA DE TÍTULOS E VA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 11175262.95,
    "carteira": 0.0,
@@ -12381,7 +12381,7 @@
   {
    "cod": "44292580",
    "nome": "HR DIGITAL - SOCIEDADE DE CRÉDITO DIRETO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 50016919.3,
    "carteira": 57461502.9,
@@ -12395,7 +12395,7 @@
   {
    "cod": "44323831",
    "nome": "ATUAL CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6020097.64,
    "carteira": 0.0,
@@ -12521,7 +12521,7 @@
   {
    "cod": "44564204",
    "nome": "FINLEV SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5265217.35,
    "carteira": 3118982.94,
@@ -12549,7 +12549,7 @@
   {
    "cod": "44683140",
    "nome": "MAGNUM SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9918046.41,
    "carteira": 24641.01,
@@ -12731,7 +12731,7 @@
   {
    "cod": "45331622",
    "nome": "BNK DIGITAL SOCIEDADE DE CRÉDITO DIRETO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 23007405.12,
    "carteira": 1228214.89,
@@ -12759,7 +12759,7 @@
   {
    "cod": "45597546",
    "nome": "NG CASH SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1351068.74,
    "carteira": 17831.19,
@@ -12801,7 +12801,7 @@
   {
    "cod": "45745537",
    "nome": "EAGLE SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 59590902.99,
    "carteira": 10899064.33,
@@ -12871,7 +12871,7 @@
   {
    "cod": "46026562",
    "nome": "MONETARIE SOCIEDADE DE CRÉDITO DIRETO S.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 6003151.13,
    "carteira": 951954.41,
@@ -12885,7 +12885,7 @@
   {
    "cod": "46130566",
    "nome": "BEZZ SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 4126955.88,
    "carteira": 622894.6,
@@ -13165,7 +13165,7 @@
   {
    "cod": "48172860",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5972297.46,
    "carteira": 3004175.71,
@@ -13207,7 +13207,7 @@
   {
    "cod": "48529228",
    "nome": "DAPPER - SOCIEDADE DE CRÉDITO DIRETO S/A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 8221927.09,
    "carteira": 5975301.3,
@@ -13235,7 +13235,7 @@
   {
    "cod": "48632754",
    "nome": "VIA CAPITAL - SOCIEDADE DE CRÉDITO DIRET",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 111955936.26,
    "carteira": 25443347.96,
@@ -13389,7 +13389,7 @@
   {
    "cod": "49035310",
    "nome": "QUEROCRED SOCIEDADE DE CRÉDITO DIRETO S.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 4094355.53,
    "carteira": 556895.06,
@@ -13515,7 +13515,7 @@
   {
    "cod": "49933388",
    "nome": "BRCONDOS SOCIEDADE DE CRÉDITO DIRETO S.A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5503551.19,
    "carteira": 0.0,
@@ -13529,7 +13529,7 @@
   {
    "cod": "49947715",
    "nome": "ZM SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 14241395.41,
    "carteira": 9239126.68,
@@ -13571,7 +13571,7 @@
   {
    "cod": "50286774",
    "nome": "CV INVESTIMENTOS DISTRIBUIDORA DE TÍTULO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5036258.54,
    "carteira": 0.0,
@@ -13585,7 +13585,7 @@
   {
    "cod": "50489148",
    "nome": "MONTE BRAVO CORRETORA DE TÍTULOS E VALOR",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 244156099.75,
    "carteira": 0.0,
@@ -13697,7 +13697,7 @@
   {
    "cod": "51414521",
    "nome": "ALL IN CRED SOCIEDADE DE CREDITO DIRETO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 13349318.92,
    "carteira": 677401.4,
@@ -13795,7 +13795,7 @@
   {
    "cod": "52586293",
    "nome": "Z-ON SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 323831397.91,
    "carteira": 369509.14,
@@ -13823,7 +13823,7 @@
   {
    "cod": "52690487",
    "nome": "RV2 SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 4496126.32,
    "carteira": 0.0,
@@ -13921,7 +13921,7 @@
   {
    "cod": "53518684",
    "nome": "BANCO HSBC S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 16666011147.64,
    "carteira": 5254438748.1,
@@ -13991,7 +13991,7 @@
   {
    "cod": "53800488",
    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3561779.26,
    "carteira": 1981635.28,
@@ -14005,7 +14005,7 @@
   {
    "cod": "53842122",
    "nome": "URBANO S.A. - SOCIEDADE DE CRÉDITO, FINA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 462957190.76,
    "carteira": 0.0,
@@ -14089,7 +14089,7 @@
   {
    "cod": "54190525",
    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 278960496.37,
    "carteira": 157082015.53,
@@ -14103,7 +14103,7 @@
   {
    "cod": "54264235",
    "nome": "VBS SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9417805.87,
    "carteira": 1700.17,
@@ -14145,7 +14145,7 @@
   {
    "cod": "54403563",
    "nome": "BANCO ARBI S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1500558438.6,
    "carteira": 450758365.12,
@@ -14229,7 +14229,7 @@
   {
    "cod": "55823094",
    "nome": "DELTA GLOBAL SOCIEDADE DE CRÉDITO DIRETO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 25568116.81,
    "carteira": 15919779.16,
@@ -14257,7 +14257,7 @@
   {
    "cod": "56198117",
    "nome": "SQUID SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 8047226.99,
    "carteira": 0.0,
@@ -14299,7 +14299,7 @@
   {
    "cod": "57259525",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 9685231.24,
    "carteira": 9281143.48,
@@ -14355,7 +14355,7 @@
   {
    "cod": "57563728",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 28428210.31,
    "carteira": 16128540.87,
@@ -14425,7 +14425,7 @@
   {
    "cod": "58017179",
    "nome": "BANCO VOLVO BRASIL S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 16337892908.63,
    "carteira": 14011635939.01,
@@ -14439,7 +14439,7 @@
   {
    "cod": "58158387",
    "nome": "DIRECAO S.A. CREDITO, FINANCIAMENTO E IN",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 83962495.27,
    "carteira": 6730322.87,
@@ -14537,7 +14537,7 @@
   {
    "cod": "59396084",
    "nome": "BFC SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 11851039.84,
    "carteira": 0.0,
@@ -14649,7 +14649,7 @@
   {
    "cod": "61533584",
    "nome": "BANCO SOCIETE GENERALE BRASIL S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 8109927837.1,
    "carteira": 124565733.07,
@@ -14691,7 +14691,7 @@
   {
    "cod": "62237649",
    "nome": "CAROL DISTRIBUIDORA DE TITULOS E VALORES",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 4049749.69,
    "carteira": 0.0,
@@ -14789,7 +14789,7 @@
   {
    "cod": "62673470",
    "nome": "COOPERATIVA DE CRÉDITO SICOOB COOPMIL",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 274054562.3,
    "carteira": 174611429.59,
@@ -14985,7 +14985,7 @@
   {
    "cod": "65645137",
    "nome": "DASCAM CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5585711.08,
    "carteira": 0.0,
@@ -15083,7 +15083,7 @@
   {
    "cod": "66788142",
    "nome": "COOPERATIVA DE CREDITO CREDIMOTA   SICOO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 447994501.48,
    "carteira": 249477654.45,
@@ -15139,7 +15139,7 @@
   {
    "cod": "67915868",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 30796126.83,
    "carteira": 8626774.64,
@@ -15209,7 +15209,7 @@
   {
    "cod": "68757681",
    "nome": "SIMPAUL CORRETORA DE CAMBIO E VALORES MO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 85540015.41,
    "carteira": 0.0,
@@ -15251,7 +15251,7 @@
   {
    "cod": "69346856",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1155751873.54,
    "carteira": 805850635.34,
@@ -15307,7 +15307,7 @@
   {
    "cod": "70241658",
    "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO,",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1109119774.21,
    "carteira": 472543799.14,
@@ -15349,7 +15349,7 @@
   {
    "cod": "71027866",
    "nome": "BANCO BS2 S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 9319010945.65,
    "carteira": 2346760818.85,
@@ -15391,7 +15391,7 @@
   {
    "cod": "71154876",
    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 422005628.88,
    "carteira": 225571146.45,
@@ -15657,7 +15657,7 @@
   {
    "cod": "71590442",
    "nome": "LASTRO RDV DISTRIBUIDORA DE TÍTULOS E VA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5934621.85,
    "carteira": 0.0,
@@ -15685,7 +15685,7 @@
   {
    "cod": "71884498",
    "nome": "COOPERATIVA DE CRÉDITO DOS MÉDICOS, DENT",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1856652143.45,
    "carteira": 970657284.41,
@@ -15727,7 +15727,7 @@
   {
    "cod": "72257793",
    "nome": "SICREDI CEARÁ - COOPERATIVA DE CRÉDITO D",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 2090920264.38,
    "carteira": 698461175.15,
@@ -15839,7 +15839,7 @@
   {
    "cod": "73302408",
    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 18225736.13,
    "carteira": 0.0,
@@ -15909,7 +15909,7 @@
   {
    "cod": "73622748",
    "nome": "BT CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 46931422.05,
    "carteira": 0.0,
@@ -16021,7 +16021,7 @@
   {
    "cod": "74828799",
    "nome": "NOVO BANCO CONTINENTAL S.A. - BANCO MÚLT",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 4867454355.65,
    "carteira": 4058265211.46,
@@ -16035,7 +16035,7 @@
   {
    "cod": "75647891",
    "nome": "BANCO CRÉDIT AGRICOLE BRASIL S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 20150413675.47,
    "carteira": 8746824697.34,
@@ -16357,7 +16357,7 @@
   {
    "cod": "80202872",
    "nome": "CORREPARTI CORRETORA DE CAMBIO LTDA",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1021515.45,
    "carteira": 0.0,
@@ -16567,7 +16567,7 @@
   {
    "cod": "81466286",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 13974600552.98,
    "carteira": 7514226627.05,
@@ -16637,7 +16637,7 @@
   {
    "cod": "82096447",
    "nome": "CREDI&GENTE - COOPERATIVA DE CRÉDITO E I",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 454673438.89,
    "carteira": 143145927.68,
@@ -16693,7 +16693,7 @@
   {
    "cod": "82937293",
    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE SANTA CA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 2183079596.26,
    "carteira": 1582014180.54,
@@ -16875,7 +16875,7 @@
   {
    "cod": "87510475",
    "nome": "COOPERATIVA DE CRÉDITO ROTA DAS TERRAS -",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 3075342759.48,
    "carteira": 1963578791.32,
@@ -16987,7 +16987,7 @@
   {
    "cod": "87795639",
    "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES ",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6738108536.34,
    "carteira": 3381901574.96,
@@ -17043,7 +17043,7 @@
   {
    "cod": "87963450",
    "nome": "NIKOS DISTRIBUIDORA DE TÍTULOS E VALORES",
-   "sr": "S3",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 6274169.55,
    "carteira": 0.0,
@@ -17253,7 +17253,7 @@
   {
    "cod": "90278987",
    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3561684.13,
    "carteira": 1715599.04,
@@ -17267,7 +17267,7 @@
   {
    "cod": "90497256",
    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5480853583.5,
    "carteira": 2414153796.09,
@@ -17407,7 +17407,7 @@
   {
    "cod": "92816560",
    "nome": "BANCO REGIONAL DE DESENVOLVIMENTO DO EXT",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 30944444984.27,
    "carteira": 24677868526.08,
@@ -17435,7 +17435,7 @@
   {
    "cod": "92874270",
    "nome": "BANCO DIGIMAIS S.A.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 9817919929.0,
    "carteira": 1491826002.94,
@@ -17449,7 +17449,7 @@
   {
    "cod": "92894922",
    "nome": "BANCO ORIGINAL S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 37169760762.97,
    "carteira": 17893178177.74,
@@ -17477,7 +17477,7 @@
   {
    "cod": "92935741",
    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 80342546.18,
    "carteira": 72811835.73,
@@ -17603,7 +17603,7 @@
   {
    "cod": "97259253",
    "nome": "COOPERATIVA E ECONOMIA E CRÉDITO MÚTUO D",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 516005366.17,
    "carteira": 94715563.7,
@@ -17617,7 +17617,7 @@
   {
    "cod": "97406706",
    "nome": "HP FINANCIAL SERVICES ARRENDAMENTO MERCA",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1988447051.08,
    "carteira": 1820850216.87,
@@ -17659,7 +17659,7 @@
   {
    "cod": "C0010045",
    "nome": "BRADESCO",
-   "sr": null,
+   "sr": "S1",
    "nivel": "congl",
    "ativo": 2043928672730.85,
    "carteira": 928041484636.07,
@@ -17673,7 +17673,7 @@
   {
    "cod": "C0010069",
    "nome": "ITAU",
-   "sr": null,
+   "sr": "S1",
    "nivel": "congl",
    "ativo": 2845762304464.61,
    "carteira": 1190712067284.91,
@@ -17687,7 +17687,7 @@
   {
    "cod": "C0010083",
    "nome": "SAFRA",
-   "sr": null,
+   "sr": "S2",
    "nivel": "congl",
    "ativo": 276259563066.16,
    "carteira": 139176939515.16,
@@ -17701,7 +17701,7 @@
   {
    "cod": "C0020107",
    "nome": "JP MORGAN CHASE",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 107680148070.81,
    "carteira": 3735714968.25,
@@ -17715,7 +17715,7 @@
   {
    "cod": "C0020152",
    "nome": "MERCANTIL DO BRASIL",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 43137599153.21,
    "carteira": 23658775834.71,
@@ -17743,7 +17743,7 @@
   {
    "cod": "C0030173",
    "nome": "BANRISUL",
-   "sr": null,
+   "sr": "S2",
    "nivel": "congl",
    "ativo": 172696602028.46,
    "carteira": 60414676014.27,
@@ -17757,7 +17757,7 @@
   {
    "cod": "C0030290",
    "nome": "BMG",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 49915753409.64,
    "carteira": 22600982151.57,
@@ -17785,7 +17785,7 @@
   {
    "cod": "C0030403",
    "nome": "CITIBANK",
-   "sr": null,
+   "sr": "S2",
    "nivel": "congl",
    "ativo": 174129378765.53,
    "carteira": 26053128163.18,
@@ -17813,7 +17813,7 @@
   {
    "cod": "C0030881",
    "nome": "PARANÁ BANCO",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 14353333133.97,
    "carteira": 10228933936.22,
@@ -17827,7 +17827,7 @@
   {
    "cod": "C0031873",
    "nome": "SOFISA",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 18118067042.74,
    "carteira": 8087664933.04,
@@ -17869,7 +17869,7 @@
   {
    "cod": "C0049906",
    "nome": "BB",
-   "sr": null,
+   "sr": "S1",
    "nivel": "congl",
    "ativo": 2583811190314.26,
    "carteira": 1128399194489.67,
@@ -17883,7 +17883,7 @@
   {
    "cod": "C0049944",
    "nome": "BTG PACTUAL",
-   "sr": null,
+   "sr": "S1",
    "nivel": "congl",
    "ativo": 886560321267.82,
    "carteira": 175495662379.39,
@@ -17897,7 +17897,7 @@
   {
    "cod": "C0050304",
    "nome": "PINE",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 37592585740.39,
    "carteira": 19314788504.03,
@@ -17939,7 +17939,7 @@
   {
    "cod": "C0050988",
    "nome": "INDUSTRIAL DO BRASIL",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 8305899310.32,
    "carteira": 5706342215.49,
@@ -17967,7 +17967,7 @@
   {
    "cod": "C0051255",
    "nome": "BOFA MERRILL LYNCH",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 41219618067.25,
    "carteira": 2646246683.06,
@@ -17995,7 +17995,7 @@
   {
    "cod": "C0051341",
    "nome": "PLANNER",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 307149875.22,
    "carteira": 0.0,
@@ -18023,7 +18023,7 @@
   {
    "cod": "C0051413",
    "nome": "MORGAN STANLEY",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 18630283555.73,
    "carteira": 232467614.27,
@@ -18037,7 +18037,7 @@
   {
    "cod": "C0051420",
    "nome": "BMW",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 3867550474.16,
    "carteira": 3669171857.49,
@@ -18051,7 +18051,7 @@
   {
    "cod": "C0051444",
    "nome": "PORTO SEGURO",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 25555236213.64,
    "carteira": 20556574853.42,
@@ -18093,7 +18093,7 @@
   {
    "cod": "C0051585",
    "nome": "GOLDMAN SACHS",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 33589905348.68,
    "carteira": 5684822.76,
@@ -18107,7 +18107,7 @@
   {
    "cod": "C0051626",
    "nome": "CAIXA ECONÔMICA FEDERAL",
-   "sr": null,
+   "sr": "S1",
    "nivel": "congl",
    "ativo": 2368233901633.76,
    "carteira": 1362330927119.52,
@@ -18135,7 +18135,7 @@
   {
    "cod": "C0051688",
    "nome": "FINAXIS",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 65132121.08,
    "carteira": 0.0,
@@ -18149,7 +18149,7 @@
   {
    "cod": "C0051750",
    "nome": "BANCO SICOOB",
-   "sr": null,
+   "sr": "S2",
    "nivel": "congl",
    "ativo": 223147165848.52,
    "carteira": 44908980433.86,
@@ -18177,7 +18177,7 @@
   {
    "cod": "C0051774",
    "nome": "BARIGUI",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 2589248234.45,
    "carteira": 2113637122.86,
@@ -18247,7 +18247,7 @@
   {
    "cod": "C0051949",
    "nome": "ANDBANK",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 4103911941.43,
    "carteira": 2357588218.65,
@@ -18261,7 +18261,7 @@
   {
    "cod": "C0051956",
    "nome": "AGIBANK",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 51173174196.33,
    "carteira": 34675579969.18,
@@ -18275,7 +18275,7 @@
   {
    "cod": "C0051987",
    "nome": "DAYCOVAL",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 107666101778.98,
    "carteira": 63321103247.21,
@@ -18289,7 +18289,7 @@
   {
    "cod": "C0052003",
    "nome": "BOCOM",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 36497550179.0,
    "carteira": 16826462986.49,
@@ -18331,7 +18331,7 @@
   {
    "cod": "C0052041",
    "nome": "INTL FCSTONE",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 345614215.38,
    "carteira": 0.0,
@@ -18359,7 +18359,7 @@
   {
    "cod": "C0052072",
    "nome": "C6 BANK",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 170644963900.36,
    "carteira": 98908783297.41,
@@ -18373,7 +18373,7 @@
   {
    "cod": "C0052089",
    "nome": "CODEPE",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 58227368.73,
    "carteira": 0.0,
@@ -18387,7 +18387,7 @@
   {
    "cod": "C0052120",
    "nome": "XP",
-   "sr": null,
+   "sr": "S2",
    "nivel": "congl",
    "ativo": 347231502420.9,
    "carteira": 35724234398.3,
@@ -18401,7 +18401,7 @@
   {
    "cod": "C0052137",
    "nome": "MONEY PLUS",
-   "sr": null,
+   "sr": "S5",
    "nivel": "congl",
    "ativo": 2167801251.47,
    "carteira": 147722367.07,
@@ -18485,7 +18485,7 @@
   {
    "cod": "C0052357",
    "nome": "DMCARD",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 4430137414.59,
    "carteira": 3009462884.54,
@@ -18499,7 +18499,7 @@
   {
    "cod": "C0052364",
    "nome": "VÓRTX",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 3581979372.66,
    "carteira": 0.0,
@@ -18513,7 +18513,7 @@
   {
    "cod": "C0052508",
    "nome": "STELLANTIS",
-   "sr": null,
+   "sr": "S3",
    "nivel": "congl",
    "ativo": 30785055997.01,
    "carteira": 25840767379.13,
@@ -18555,7 +18555,7 @@
   {
    "cod": "C0083704",
    "nome": "FACTA S.A. CFI - PRUDENCIAL",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 9681584928.69,
    "carteira": 4410743838.94,
@@ -18583,7 +18583,7 @@
   {
    "cod": "59109165",
    "nome": "BANCO VOLKSWAGEN S.A.",
-   "sr": null,
+   "sr": "S3",
    "nivel": "indiv",
    "ativo": 61250495431.21,
    "carteira": 50345581739.39,
@@ -19059,7 +19059,7 @@
   {
    "cod": "57905133",
    "nome": "PERSONAL SOCIEDADE DE CRÉDITO DIRETO S.A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 3678436.62,
    "carteira": 65882.86,
@@ -19073,7 +19073,7 @@
   {
    "cod": "C0052656",
    "nome": "BARU",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 15684418.55,
    "carteira": 10375534.92,
@@ -19227,7 +19227,7 @@
   {
    "cod": "C0085616",
    "nome": "J17 SCD - PRUDENCIAL",
-   "sr": null,
+   "sr": "S5",
    "nivel": "congl",
    "ativo": 46249750.92,
    "carteira": 23267889.08,
@@ -19241,7 +19241,7 @@
   {
    "cod": "C0085874",
    "nome": "MÉRITO DTVM - PRUDENCIAL",
-   "sr": null,
+   "sr": "S4",
    "nivel": "congl",
    "ativo": 35465246.78,
    "carteira": 13696414.8,
@@ -19283,7 +19283,7 @@
   {
    "cod": "57487987",
    "nome": "VIVO PAY SOCIEDADE DE CRÉDITO DIRETO S.A",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 31966391.35,
    "carteira": 0.0,
@@ -19325,7 +19325,7 @@
   {
    "cod": "62469998",
    "nome": "TINO SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 6372793.49,
    "carteira": 0.0,
@@ -19381,7 +19381,7 @@
   {
    "cod": "60717928",
    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 19810689.62,
    "carteira": 0.0,
@@ -19395,7 +19395,7 @@
   {
    "cod": "61637240",
    "nome": "GO SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 8425929.52,
    "carteira": 3349541.58,
@@ -19423,7 +19423,7 @@
   {
    "cod": "61971803",
    "nome": "LARCA CAPITAL - SOCIEDADE DE CRÉDITO DIR",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 1435038.62,
    "carteira": 1311001.34,
@@ -19563,7 +19563,7 @@
   {
    "cod": "63436443",
    "nome": "IGUÁ CORRETORA DE CÂMBIO LTDA.",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 1565853.05,
    "carteira": 0.0,
@@ -19605,7 +19605,7 @@
   {
    "cod": "57707777",
    "nome": "GURU CORRETORA DE TÍTULOS E VALORES MOBI",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 5427783.41,
    "carteira": 0.0,
@@ -19891,7 +19891,7 @@
    "nome": "CONECTA CORRETORA DE CÂMBIO LTDA.",
    "tcb": "N2",
    "uf": "SP",
-   "sr": null,
+   "sr": "S5",
    "situacao": "A",
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 17132661.71,
@@ -20056,7 +20056,7 @@
    "nome": "MOTTU SOCIEDADE DE CRÉDITO DIRETO S.A.",
    "tcb": "N1",
    "uf": "SP",
-   "sr": null,
+   "sr": "S5",
    "situacao": "A",
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 5703336.6,
@@ -20232,7 +20232,7 @@
    "nome": "NGO ASSOCIADOS CORRETORA DE CÂMBIO LTDA.",
    "tcb": "N2",
    "uf": "SP",
-   "sr": null,
+   "sr": "S5",
    "situacao": "A",
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 851225.8,

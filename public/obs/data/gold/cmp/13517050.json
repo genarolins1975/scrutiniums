@@ -1,7 +1,7 @@
 {
  "cod": "13517050",
  "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO ESTADO DO AMAPÁ - SICOOB AMAPÁ",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -182,5 +182,5 @@
    "201812": 54.81983157261555
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

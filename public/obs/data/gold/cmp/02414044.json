@@ -1,7 +1,7 @@
 {
  "cod": "02414044",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS INSTITUIÇÕES DE ENSINO SUPERIOR DO SUL DE MINAS LTDA. - CREDFENAS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -238,5 +238,5 @@
    "202012": 4.092820068637257
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

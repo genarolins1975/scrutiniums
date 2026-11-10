@@ -3,16 +3,17 @@
   "transformacao": "importar-ipca.py v1",
   "fonte": {
     "arquivo": "ipca.json",
-    "url": "https://servicodados.ibge.gov.br/api/v3/agregados/1737/periodos/202301-202607/variaveis/2266?localidades=N1[1]",
+    "formato": "sidra-values",
+    "url": "https://apisidra.ibge.gov.br/values/t/1737/n1/all/v/2266/p/202301-202609",
     "fonte": "IBGE · SIDRA 1737 · variável 2266 · Brasil",
     "publicacao": null,
-    "captura": "2026-10-12T22:44:35.265224+00:00",
-    "sha256": "dc4ce74baa8b5e0a0c51588c1f3de3ccc627ae097b21d77ec858280caad5d562",
+    "captura": "2026-11-03T13:12:02+00:00",
+    "sha256": "f57d604ccfed206991fa494692d06ccb227b19982974ffe58ab65e3acb760d02",
     "referenciaInicial": "2023-01",
-    "referenciaFinal": "2026-07",
-    "basePrecos": "2026-07"
+    "referenciaFinal": "2026-09",
+    "basePrecos": "2026-09"
   },
-  "basePrecos": "2026-07",
+  "basePrecos": "2026-09",
   "metodo": "Cada fluxo mensal RTN é multiplicado por IPCA(base)/IPCA(mês do fluxo); somente depois os meses são somados. Mesma janela nos dois anos, sem anualização.",
   "limite": "IPCA mede preços do consumo das famílias, não os custos específicos do governo. A variação real não mede volume de serviços, qualidade ou eficiência. Valores calculados pela Scrutiniums, não série real oficial do Tesouro.",
   "registros": [
@@ -187,6 +188,14 @@
     {
       "periodo": "2026-07",
       "indice": 7657.73
+    },
+    {
+      "periodo": "2026-08",
+      "indice": 7633.23
+    },
+    {
+      "periodo": "2026-09",
+      "indice": 7695.82
     }
   ]
 }

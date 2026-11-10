@@ -1,7 +1,7 @@
 {
  "cod": "57582264",
  "nome": "TORRE CORRETORA DE CÂMBIO LTDA",
- "sr": "S4",
+ "sr": null,
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -196,5 +196,5 @@
    "201906": 0.0
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

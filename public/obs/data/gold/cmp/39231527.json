@@ -1,7 +1,7 @@
 {
  "cod": "39231527",
  "nome": "UNICRED COSTA DO SOL RJ - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO LTDA.",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -336,5 +336,5 @@
    "202406": 56.711996721456984
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

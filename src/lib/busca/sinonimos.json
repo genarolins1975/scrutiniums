@@ -87,6 +87,10 @@
     "EMS": ["Enersul", "Energisa Mato Grosso do Sul"],
     "ETO": ["Celtins", "Energisa Tocantins"],
     "Âmbar Amazonas": ["Amazonas Energia"],
-    "ÂMBAR ENERGIA RR": ["Roraima Energia", "Boa Vista Energia"]
+    "Âmbar Roraima": ["Roraima Energia", "Boa Vista Energia", "Âmbar Energia RR"]
+  },
+  "_renomeados": {
+    "_regra": "Nome de _nomes que a fonte trocou: a chave é o nome atual e a lista, os anteriores. O apelido vale para qualquer um deles, porque a gold publicada pode ser de antes ou de depois da troca.",
+    "Âmbar Roraima": ["ÂMBAR ENERGIA RR"]
   }
 }

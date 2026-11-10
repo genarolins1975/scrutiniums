@@ -1,7 +1,7 @@
 {
  "cod": "02961072",
  "nome": "COOPERATIVA DE CREDITO RURAL COM INTERACAO SOLIDARIA DE MANGUEIRINHA - CRESOL MANGUEIRINHA",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -189,5 +189,5 @@
    "201903": 88.50559700567882
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

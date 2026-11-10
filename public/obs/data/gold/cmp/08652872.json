@@ -1,7 +1,7 @@
 {
  "cod": "08652872",
  "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE SANTA TEREZINHA DO PROGRESSO - CRESOL SANTA TEREZINHA DO PROGRESSO",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -287,5 +287,5 @@
    "202209": 74.37314217469465
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

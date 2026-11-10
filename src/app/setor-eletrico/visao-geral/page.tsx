@@ -1,3 +1,4 @@
+import { nomeDoConjunto } from "@/lib/energia/dados-ficha";
 import type { Metadata, ResolvingMetadata } from "next";
 import type { ReactNode } from "react";
 import { metadadosEnergia } from "@/lib/energia/metadados-idioma";
@@ -181,7 +182,8 @@ export default function VisaoGeralEnergia() {
       )
     : tx(" Termos: p.p. é a abreviação de pontos percentuais.", " Terms: p.p. stands for percentage points.");
   const saude = lerGold<{ conjuntos?: { id: string; titulo: string }[] }>("publicacao.json");
-  const titulosConjuntos = Object.fromEntries((saude?.conjuntos ?? []).map((c) => [c.id.split("/").pop() ?? c.id, c.titulo]));
+  // nome legível do conjunto, como na saúde dos dados: o título da CCEE é o código "PLD_HORARIO" (atrasado em 02/11/2026)
+  const titulosConjuntos = Object.fromEntries((saude?.conjuntos ?? []).map((c) => [c.id.split("/").pop() ?? c.id, nomeDoConjunto(c).nome]));
   const itens = itensObservar(g.observar, notasRegras, titulosConjuntos, idioma);
   const comparaveis = comparaveisObservar(g.observar, idioma);
   const dominio = dominioEstados(g.observar);

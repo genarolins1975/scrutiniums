@@ -1,7 +1,7 @@
 {
  "cod": "41592532",
  "nome": "MÉRITO DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
- "sr": null,
+ "sr": "S4",
  "tcb": "N2",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -212,5 +212,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:28+00:00"
 }

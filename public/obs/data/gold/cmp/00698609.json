@@ -1,7 +1,7 @@
 {
  "cod": "00698609",
  "nome": "COOPERATIVA DE CRÉDITO DO NORTE E NOROESTE DE MINAS GERAIS LTDA. - SICOOB CREDIGERAIS",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -408,5 +408,5 @@
    "202503": 3.0423448477475805
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

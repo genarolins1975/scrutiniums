@@ -1,7 +1,7 @@
 {
  "cod": "26072728",
  "nome": "COOPERATIVA DE CRÉDITO UNIÃO CENTRO OESTE LTDA. - SICOOB UNIÃO CENTRO OESTE",
- "sr": "S5",
+ "sr": null,
  "tcb": "B3S",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -273,5 +273,5 @@
    "202203": 54.96383035925564
   }
  },
- "gerado_em": "2026-10-26T17:50:13+00:00"
+ "gerado_em": "2026-11-09T21:38:29+00:00"
 }

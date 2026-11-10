@@ -281,6 +281,11 @@ CONJUNTOS_PAINEL = {"preco": "ccee_pld_horario", "agua": "ear_subsistema_di", "g
 
 # ---------------------------------------------------------------- utilidades
 
+
+# rótulo da cadência em prosa (o código "diaria" da gold vira "diária"; 02/11/2026, fonte atrasada do PLD horário)
+ROTULO_CADENCIA = {"diaria": "diária", "semanal": "semanal", "quinzenal": "quinzenal", "mensal": "mensal",
+                   "trimestral": "trimestral", "anual": "anual"}
+
 def versao_regra(meta):
     """Identificador da definição da regra (condição, limiar, durações): a conferência das
     emissões passadas só compara alertas emitidos pela mesma definição."""
@@ -1158,7 +1163,7 @@ def avaliar_regras(golds, cond, conjuntos, hoje, alternativas=None, usados=None)
             item.update({
                 "ativo": bool(atrasados), "estado": "ativo" if atrasados else "normal", "referencia": hoje.isoformat(),
                 "defasagem_dias": 0, "condicao_no_dia": bool(atrasados),
-                "evidencia": ("; ".join(f"{ds}: último período {a.get('ultimo_periodo')}, {a.get('dias_atraso')} dias além do prazo da cadência {a.get('cadencia')}"
+                "evidencia": ("; ".join(f"{ds}: último período {a.get('ultimo_periodo')}, {a.get('dias_atraso')} dias além do prazo da cadência {ROTULO_CADENCIA.get(a.get('cadencia'), a.get('cadencia'))}"
                                         for ds, a in atrasados) + "." if atrasados else
                               f"Os {len(lista) - len(sem)} conjuntos usados nesta página estão em dia ou sem prazo declarado.")
                 + (f" Sem situação publicada: {', '.join(sem)}." if sem else ""),
