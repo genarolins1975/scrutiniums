@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { DadosArquivos, itensDeArquivos } from "@/components/energia/DadosArquivos";
+import { FormaDoConjunto } from "@/components/energia/FormaDoConjunto";
 import { SecaoDoPainel } from "@/components/energia/SecaoDoPainel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { gold } from "@/lib/energia/gold";
@@ -16,7 +17,7 @@ import { carimbo, dataBR, plural } from "@/lib/energia/formato";
 import { tx } from "@/lib/energia/idioma";
 import { LICENCA_EN, PAINEIS_EN, codigo, identificadorDaFicha, marcado, rotuloDado, traduzido } from "@/lib/energia/i18n/regulacao-dados-metodo";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, catalogoDados, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
-import { CSV_DADOS, DEFINICAO_ETAPA_LEITOR, ROTULO_ESTADO_DADOS, ROTULO_PAPEL, linhasIntegracao, refLegivel, rotuloTema, situacaoDoConjunto } from "@/lib/energia/dados";
+import { CSV_DADOS, DEFINICAO_ETAPA_LEITOR, ROTULO_ESTADO_DADOS, ROTULO_PAPEL, evidenciaEtapas, linhasIntegracao, refLegivel, rotuloTema, situacaoDoConjunto } from "@/lib/energia/dados";
 import {
   criterioDaSituacao,
   descricaoDoArquivo,
@@ -37,6 +38,7 @@ import {
   trocaIdentificadores,
 } from "@/lib/energia/dados-ficha";
 import { separaIdentificadores } from "@/lib/energia/dados-leitor";
+import { formaDoConjunto } from "@/lib/energia/forma-conjunto";
 import { descricoesCompletas, manifestoDados, metricasPublicadas, publicacaoDados } from "@/lib/energia/dados-servidor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -204,6 +206,17 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                     </p>
                   )}
                 </aside>
+              )}
+
+              {/* a figura da ficha: o período que os dados cobrem, as datas da atualidade e as etapas do catálogo, lidos da mesma publicação */}
+              {pub && (
+                <FormaDoConjunto
+                  forma={formaDoConjunto(integr[0] ?? null, pub.referencia.hoje, e.quebras)}
+                  dado={integr[0]?.dado ?? null}
+                  semPeriodo={fraseReferencia(integr[0], integr.length > 0)}
+                  etapas={evidenciaEtapas(e)}
+                  paginas={d.paginas.length}
+                />
               )}
 
               <div>

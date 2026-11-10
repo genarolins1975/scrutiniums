@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- validação de JSON gold sem tipos gerados */
 import { ABAS_SUBSTITUIDAS } from "@/lib/observatorios/registro";
+import { DESTINO_DO_ENDERECO_ANTIGO } from "@/lib/observatorios/reescritos";
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -104,9 +105,12 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain("state.cb = {");
     // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
     // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
-    // (/divida-das-familias/bancos-cobrando-na-justica, src/lib/observatorios/reescritos.ts); a vista antiga continua registrada na aplicação, como conferido abaixo
+    // (/divida-das-familias/bancos-cobrando-na-justica, src/lib/observatorios/reescritos.ts); o endereço antigo redireciona para ela
+    // (decisão do dono de 10/11/2026, src/tests/redirecionamento-reescritos.test.ts) e a aplicação sai para a página nova em nav(). O código
+    // da vista segue no app.js, sem caminho que o alcance: as asserções de registro abaixo valem enquanto ele não for removido
     expect(rotuloNaNavegacao("/observatorio/debt-collection-lawsuits")).toBeNull();
     expect(ABAS_SUBSTITUIDAS.get("/debt-collection-lawsuits")).toBe("/divida-das-familias/bancos-cobrando-na-justica");
+    expect(DESTINO_DO_ENDERECO_ANTIGO.get("/observatorio/debt-collection-lawsuits")).toBe("/divida-das-familias/bancos-cobrando-na-justica");
     expect(html).toContain('id="view-cobranca"');
     expect(app).toContain('["cobranca", "Cobrança judicial", "cobranca"]');
     expect(app).toContain('["#uf-cobranca", "Cobrança"]');

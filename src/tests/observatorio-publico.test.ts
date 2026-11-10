@@ -120,10 +120,12 @@ describe("metadados por rota", () => {
   });
 
   it("aba conhecida: título próprio, canônico próprio e dataset", () => {
-    const m = resolverMeta("/bets-financial-risk");
-    expect(m.titulo).toContain("Apostas e crédito das famílias");
-    expect(m.canonico).toBe("https://scrutiniums.com/observatorio/bets-financial-risk");
-    expect(m.gold).toBe("bets.json");
+    // o exemplo era a vista de apostas (/bets-financial-risk), que redireciona para /divida-das-familias/apostas desde a decisão
+    // do dono de 10/11/2026 (reescritos.ts): o route handler não chega mais a ela. Migrado para o Pix, que segue na aplicação
+    const m = resolverMeta("/pix");
+    expect(m.titulo).toContain("Pix e pagamentos");
+    expect(m.canonico).toBe("https://scrutiniums.com/observatorio/pix");
+    expect(m.gold).toBe("pix.json");
   });
 
   it("instituição conhecida ganha o nome no título; desconhecida vira 404", () => {

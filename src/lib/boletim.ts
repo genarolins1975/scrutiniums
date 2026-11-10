@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { and, eq, gte } from "drizzle-orm";
 import { getDb, schema } from "./db";
 import { assinarToken, verificarToken } from "./tokenAssinado";
-import { ABAS_OBSERVATORIO } from "./data/observatorioAbas";
+import { ABAS_OBSERVATORIO, enderecoDaAba } from "./data/observatorioAbas";
 
 /**
  * Boletim mensal por e-mail — o mecanismo de retorno do usuário cadastrado.
@@ -57,7 +57,8 @@ function rotuloMes(data: Date): string {
 
 function urlDaView(view?: string): string {
   const aba = view ? ABAS_OBSERVATORIO.find((a) => a.view === view) : null;
-  return `${BASE}/observatorio${aba ? aba.caminho : "/alerts"}`;
+  // aba redirecionada para página das Famílias (10/11/2026): o e-mail leva direto à página nova
+  return `${BASE}${enderecoDaAba(aba ? aba.caminho : "/alerts")}`;
 }
 
 const NIVEL_ROTULO: Record<string, string> = {

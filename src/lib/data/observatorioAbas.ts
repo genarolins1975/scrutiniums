@@ -8,6 +8,8 @@
  * garante que os dois lados não divirjam.
  */
 
+import { DESTINO_DO_ENDERECO_ANTIGO, PREFIXO_APLICACAO } from "../observatorios/reescritos";
+
 export type AbaObservatorio = {
   /** Chave interna da SPA (data-view). */
   view: string;
@@ -485,6 +487,18 @@ export const PREFIXOS_DINAMICOS = [
 export const ROTAS_APOSENTADAS: Record<string, string> = {
   "/leading-indicators": "/leading-signals",
 };
+
+/**
+ * Endereço que leva o leitor ao conteúdo de uma aba. Seis abas (Desenrola, Apostas, Golpes e fraudes, Clientes contra bancos,
+ * Bancos cobrando na Justiça, Sanções e reclamações) foram substituídas por página Next do Observatório das Famílias e o
+ * endereço antigo redireciona (decisão do dono de 10/11/2026; src/lib/observatorios/reescritos.ts): para elas o endereço é o
+ * da página nova. As entradas continuam no catálogo porque espelham ROUTES e VIEW_TITLES da aplicação (teste
+ * observatorio-publico), mas nenhum link novo deve ser escrito com `/observatorio${caminho}` direto: use esta função.
+ */
+export function enderecoDaAba(caminho: string): string {
+  const antigo = `${PREFIXO_APLICACAO}${caminho}`;
+  return DESTINO_DO_ENDERECO_ANTIGO.get(antigo) ?? antigo;
+}
 
 const porCaminho = new Map(ABAS_OBSERVATORIO.map((a) => [a.caminho, a]));
 

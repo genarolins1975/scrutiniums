@@ -211,6 +211,43 @@ pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O a
 Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
 regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
 
+## Vistas antigas das Famílias: seis redirecionadas, três pendentes (10/11/2026)
+
+Nove painéis das Famílias foram reescritos como páginas Next (`src/lib/observatorios/reescritos.ts`). A auditoria de
+10/11/2026 (`docs/AUDITORIA_QUALIDADE_2026-11-10.md`, achado 4) mostrou que as nove vistas antigas da aplicação do Crédito
+seguiam no ar, rotuladas como Economia. Decisão do dono em 10/11/2026: **redirecionar já, de forma permanente, as seis cujo
+painel novo não tem perda declarada**, e manter as três com perda até os mapas serem migrados.
+
+| Endereço antigo | Página nova | Estado |
+|---|---|---|
+| `/observatorio/desenrola` | `/divida-das-familias/desenrola` | Redirecionado |
+| `/observatorio/bets-financial-risk` | `/divida-das-familias/apostas` | Redirecionado |
+| `/observatorio/financial-fraud` | `/divida-das-familias/golpes-e-fraudes` | Redirecionado |
+| `/observatorio/lawsuits` | `/divida-das-familias/clientes-contra-bancos` | Redirecionado |
+| `/observatorio/debt-collection-lawsuits` | `/divida-das-familias/bancos-cobrando-na-justica` | Redirecionado |
+| `/observatorio/conduct-enforcement` | `/divida-das-familias/sancoes-e-reclamacoes` | Redirecionado |
+| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Pendente: perda declarada (mapa municipal sem estado na URL, dispersão sem bolha) |
+| `/observatorio/housing-credit` | `/credito-imobiliario` | Pendente: o mapa municipal não foi migrado |
+| `/observatorio/formal-employment` | `/emprego-formal` | Pendente: os pesos do score setorial não foram migrados (`docs/familias/PARIDADE.md`) |
+
+Esta é a primeira exceção à regra 2 ("endereços não mudam"), e ela continua valendo no sentido que importa: nenhum endereço
+deixa de responder. O antigo responde com redirecionamento permanente, com a consulta preservada, e quem não tem sessão chega
+ao login com o destino novo.
+
+- A lista é uma só, `src/lib/observatorios/paineis-reescritos.json` (campo `redirecionar`), lida por `next.config.mjs`, pelo
+  registro e pelo índice que a aplicação do Crédito recebe. Não há lista paralela.
+- `GRUPOS_CREDITO` guarda o endereço novo dos seis. O "Início do painel" continua listando os oito grupos por pergunta; os
+  seis itens são link comum para a página das Famílias, com o título e a pergunta dela. A navegação da coleção do Crédito já
+  não os mostrava.
+- Dentro da aplicação, `nav()`, as pontes, os alertas e o histórico saem para a página nova; o boletim por e-mail e o sitemap
+  usam `enderecoDaAba` (`src/lib/data/observatorioAbas.ts`).
+- As três vistas pendentes continuam alcançáveis pelo "Início do painel" da aplicação (grupo "Território e pessoas" e passo 4
+  do ciclo) e pelo endereço direto. Na navegação das coleções, na busca e no registro, quem aparece é a página nova.
+- O código de render das seis vistas ficou em `public/obs/app.js`, morto; a remoção é um PR próprio (detalhe e motivo em
+  `docs/familias/PARIDADE.md`).
+- Testes: `src/tests/redirecionamento-reescritos.test.ts`, `src/tests/mapa-menu.test.ts` e, no navegador,
+  `src/tests/split-bundle-browser.test.ts`.
+
 ## Fusão das coleções de uma página só (10/11/2026)
 
 Decisão do dono em 10/11/2026: das 28 coleções de `src/lib/observatorios/lista.ts`, sete tinham uma única página. Quatro foram

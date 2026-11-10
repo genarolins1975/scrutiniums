@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { INDICADORES } from "@/lib/dadosPublicos";
 import { PAGINAS_GAS } from "@/lib/gas/navegacao";
-import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { ABAS_OBSERVATORIO, enderecoDaAba } from "@/lib/data/observatorioAbas";
 import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
@@ -39,7 +39,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("", 1.0, "weekly"),
     ...IDS_PORTAS.map((p) => rota(rotaPorta(p), 0.9, "weekly")),
     rota("/observatorio", 1.0, "daily"),
-    ...ABAS_OBSERVATORIO.map((a) => rota(`/observatorio${a.caminho}`, 0.9, "daily")),
+    // aba redirecionada entra pelo endereço novo (enderecoDaAba); painel com conta sai no filtro de ehRotaPublica, abaixo
+    ...ABAS_OBSERVATORIO.map((a) => rota(enderecoDaAba(a.caminho), 0.9, "daily")),
     rota("/observatorio-do-credito", 0.9, "daily"),
     rota("/imprensa", 0.9, "weekly"),
     rota("/dados", 0.9, "daily"),

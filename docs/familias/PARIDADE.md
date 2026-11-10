@@ -1,6 +1,30 @@
 # Paridade dos painéis das Famílias reescritos em Next
 
-Decisão do dono de 10/11/2026 (recomendação 5 do parecer estrutural). Uma seção por painel, escrita pelo agente que fez a reescrita a partir da leitura da vista antiga em `public/obs/app.js`. O endereço antigo de cada painel continua servindo a vista antiga até a paridade ser conferida no navegador (`redirecionar` em `src/lib/observatorios/reescritos.ts`).
+Decisão do dono de 10/11/2026 (recomendação 5 do parecer estrutural). Uma seção por painel, escrita pelo agente que fez a reescrita a partir da leitura da vista antiga em `public/obs/app.js`. O estado de cada endereço antigo é o campo `redirecionar` de `src/lib/observatorios/paineis-reescritos.json` (tipado por `reescritos.ts`).
+
+## Estado dos endereços antigos (decisão do dono de 10/11/2026)
+
+O dono decidiu redirecionar já, de forma permanente, as seis vistas cujo painel novo não tem perda declarada nesta página, e manter as três com perda até os mapas serem migrados.
+
+| Vista antiga | Página nova | Estado | Motivo |
+|---|---|---|---|
+| `/observatorio/desenrola` | `/divida-das-familias/desenrola` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/bets-financial-risk` | `/divida-das-familias/apostas` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/financial-fraud` | `/divida-das-familias/golpes-e-fraudes` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/lawsuits` | `/divida-das-familias/clientes-contra-bancos` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/debt-collection-lawsuits` | `/divida-das-familias/bancos-cobrando-na-justica` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/conduct-enforcement` | `/divida-das-familias/sancoes-e-reclamacoes` | Redirecionada (308) | Sem perda declarada |
+| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Mantida no endereço antigo | Perda declarada abaixo: o estado do filtro do mapa municipal não vai para a URL, a dispersão por UF perdeu o tamanho do círculo e o seletor de estado, a pirâmide perdeu o realce de 60 anos ou mais |
+| `/observatorio/housing-credit` | `/credito-imobiliario` | Mantida no endereço antigo | Perda declarada abaixo: o mapa municipal (5.570 polígonos, quatro medidas) não foi migrado |
+| `/observatorio/formal-employment` | `/emprego-formal` | Mantida no endereço antigo | Perda declarada abaixo: os pesos do score setorial (0,15 / 0,19 / 0,56 / 0,25) não foram migrados, por não estarem na gold; a decisão do dono trata as três como um grupo, a liberar junto com a migração dos mapas |
+
+Como funciona, para quem for mexer:
+
+- **Uma lista só.** `redirects()` em `next.config.mjs` lê `paineis-reescritos.json` e gera uma regra permanente para cada painel com `redirecionar: true`. O Next repassa a consulta (`?sec=` e os recortes) ao destino. Redirecionar um dos três pendentes é trocar `false` por `true` nesse arquivo, rodar `node scripts/barra-spa.mjs` e `npm run preparar`, trocar o endereço do painel em `GRUPOS_CREDITO` (`src/lib/credito/navegacao.ts`) e atualizar a lista escrita em `src/tests/redirecionamento-reescritos.test.ts`, que existe para exigir decisão nova.
+- **Sem sessão.** No Next 14 os `redirects()` rodam antes do middleware: o endereço antigo responde 308 para a página nova, e é o middleware, já no endereço novo, que leva a `/entrar?de=<página nova com a consulta>`.
+- **Dentro da aplicação do Crédito.** O índice que o servidor embute (`substituidas`, `src/lib/observatorios/barraSpa.ts`) diz ao `app.js` a página nova, o título e a pergunta de cada vista redirecionada. O "Início do painel" as lista como link comum para a página nova, e `nav()`, as pontes, os alertas e o histórico do navegador saem da aplicação em vez de desenhar a vista.
+- **Código morto.** As funções de render das seis vistas (`renderDesenrola`, `renderBets`, `renderFraudes`, `renderJudicial`, `renderCobranca`, `renderConduta`) continuam em `public/obs/app.js`, sem caminho que as alcance quando o índice está presente. Não foram removidas porque cerca de vinte arquivos de teste leem esse código como texto; a remoção pede um PR próprio, aposentando essas asserções uma a uma. Os verbetes do guia (`GUIA`) dessas vistas também ficaram, sem uso na tela: o "Início do painel" mostra a pergunta da página nova.
+- **Testes.** `src/tests/redirecionamento-reescritos.test.ts` (lista única, permanência, consulta, login com destino novo e, com build, a cadeia inteira no servidor) e `src/tests/split-bundle-browser.test.ts` (no navegador, `nav("desenrola")` e o endereço antigo chegam à página nova).
 
 ---
 
