@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-09T21:38:46+00:00",
+ "gerado_em": "2026-11-10T18:14:46+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1301 processos sancionadores em 1ª instância, com 1370 decisões por apenado: 1312 multas somando R$ 72.3 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 151 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (169 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1303 processos sancionadores em 1ª instância, com 1372 decisões por apenado: 1314 multas somando R$ 72.3 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 151 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (169 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-09",
+  "ultima_decisao": "2026-11-10",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17011,
-   "processos": 13100,
-   "apenados_distintos": 11419
+   "decisoes": 17013,
+   "processos": 13102,
+   "apenados_distintos": 11420
   },
   "janela_12m": {
-   "ini": "2025-11-09",
-   "decisoes": 1370,
-   "processos": 1301,
-   "multas_n": 1312,
-   "multas_valor": 72273000.0,
+   "ini": "2025-11-10",
+   "decisoes": 1372,
+   "processos": 1303,
+   "multas_n": 1314,
+   "multas_valor": 72310500.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 151,
-   "pj": 398,
-   "pf": 972
+   "pj": 399,
+   "pf": 973
   },
   "janela_12m_anterior": {
    "decisoes": 819,
@@ -64,7 +64,7 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1312,
+    "n": 1314,
     "share": 95.77
    },
    {
@@ -92,32 +92,32 @@
    {
     "situacao": "MULTA PAGA",
     "n": 877,
-    "share": 64.01
+    "share": 63.92
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 128,
-    "share": 9.34
+    "share": 9.33
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 117,
-    "share": 8.54
+    "share": 8.53
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 115,
-    "share": 8.39
+    "share": 8.38
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 49,
-    "share": 3.58
+    "n": 51,
+    "share": 3.72
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 46,
-    "share": 3.36
+    "share": 3.35
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11976,
+    "n": 11977,
     "share": 87.79
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 880,
-    "share": 6.45
+    "n": 879,
+    "share": 6.44
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -183,13 +183,13 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 66,
-    "share": 0.48
+    "n": 67,
+    "share": 0.49
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 57,
-    "share": 0.42
+    "n": 58,
+    "share": 0.43
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -400,21 +400,41 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1228,
-    "processos": 1163,
-    "multas_n": 1176,
-    "multas_valor": 69260500.0,
+    "decisoes": 1230,
+    "processos": 1165,
+    "multas_n": 1178,
+    "multas_valor": 69298000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 136,
-    "pf": 879,
-    "pj": 349,
+    "pf": 880,
+    "pj": 350,
     "incompleto": true,
-    "recurso_share": 11.07,
+    "recurso_share": 11.06,
     "sem_penalidade_share": 3.66
    }
   ],
   "recentes": [
+   {
+    "pas": "316207",
+    "nome": "MARCOS ANTONIO BRAGAGNOLO",
+    "pessoa": "PF",
+    "decisao": "2026-11-10",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316098",
+    "nome": "NORSKAN OFFSHORE LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-11-10",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "300935",
     "nome": "GILBERTO FELIPE DE SOUZA JUNIOR",
@@ -794,26 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "313066",
-    "nome": "NETFLIX ENTRETENIMENTO BRASIL LTDA.",
-    "pessoa": "PJ",
-    "decisao": "2026-10-21",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312871",
-    "nome": "ALUBAR METAIS E CABOS S/A",
-    "pessoa": "PJ",
-    "decisao": "2026-10-20",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -935,13 +935,13 @@
   "ultima_abertura": "2026-10-09",
   "ultima_movimentacao": "2026-11-06",
   "acervo": {
-   "processos": 587,
-   "acusados": 2088,
-   "em_curso": 258,
+   "processos": 588,
+   "acusados": 2097,
+   "em_curso": 259,
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-09",
+   "ini": "2025-11-10",
    "processos": 63,
    "acusados": 169
   },
@@ -949,22 +949,22 @@
    {
     "fase": "Finalizado",
     "n": 329,
-    "share": 56.05
+    "share": 55.95
    },
    {
     "fase": "Julgamento",
     "n": 109,
-    "share": 18.57
+    "share": 18.54
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 96,
-    "share": 16.35
+    "n": 97,
+    "share": 16.5
    },
    {
     "fase": "Recurso CRSFN",
     "n": 40,
-    "share": 6.81
+    "share": 6.8
    },
    {
     "fase": "Intimação após julgamento",
@@ -976,57 +976,57 @@
    {
     "area": "GEA-3",
     "n": 91,
-    "share": 15.5
+    "share": 15.48
    },
    {
     "area": "GEA-4",
     "n": 89,
-    "share": 15.16
+    "share": 15.14
    },
    {
     "area": "GNA",
     "n": 80,
-    "share": 13.63
+    "share": 13.61
    },
    {
     "area": "GMA",
     "n": 57,
-    "share": 9.71
+    "share": 9.69
    },
    {
     "area": "GER-3",
     "n": 51,
-    "share": 8.69
+    "share": 8.67
    },
    {
     "area": "GSUI-2",
     "n": 36,
-    "share": 6.13
+    "share": 6.12
    },
    {
     "area": "GSAF",
     "n": 33,
-    "share": 5.62
+    "share": 5.61
+   },
+   {
+    "area": "GPS-2",
+    "n": 27,
+    "share": 4.59
    },
    {
     "area": "GAIN",
     "n": 26,
-    "share": 4.43
-   },
-   {
-    "area": "GPS-2",
-    "n": 26,
-    "share": 4.43
+    "share": 4.42
    },
    {
     "area": "GPS-3",
     "n": 26,
-    "share": 4.43
+    "share": 4.42
    },
    {
     "area": "GPS-1",
     "n": 15,
-    "share": 2.56
+    "share": 2.55
    },
    {
     "area": "GSEC-2",
@@ -1100,9 +1100,9 @@
    "n": 329
   },
   "idade_em_curso_meses": {
-   "mediana": 22.0,
-   "acima_36": 89,
-   "n": 258
+   "mediana": 22,
+   "acima_36": 90,
+   "n": 259
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1172,11 +1172,11 @@
    },
    {
     "ano": "2022",
-    "processos": 57,
+    "processos": 58,
     "finalizados": 45,
-    "acusados": 151,
+    "acusados": 160,
     "incompleto": false,
-    "finalizados_share": 78.95
+    "finalizados_share": 77.59
    },
    {
     "ano": "2023",
