@@ -71,6 +71,21 @@ export function ExploradorCredito({
   }, [janela, indicador.key, escala]);
 
   const primeiro = janela[0]?.mes ?? desde;
+  // No gráfico entram no máximo quatro marcos, cada um a pelo menos um sexto da janela do anterior: todos juntos saíam uns
+  // sobre os outros (auditoria de layout de 10/11/2026). A lista inteira está na linha do tempo da página.
+  const marcosEspacados = useMemo(() => {
+    const posicao = new Map(janela.map((l, i) => [l.mes, i]));
+    const minimo = Math.max(1, Math.ceil(janela.length / 6));
+    const escolhidos: { x: string; rotulo: string }[] = [];
+    let anterior = -Infinity;
+    for (const m of [...marcos].sort((x, y) => x.x.localeCompare(y.x))) {
+      const i = posicao.get(m.x);
+      if (i === undefined || escolhidos.length >= 4 || i - anterior < minimo) continue;
+      escolhidos.push({ x: m.x, rotulo: m.rotulo });
+      anterior = i;
+    }
+    return escolhidos;
+  }, [janela, marcos]);
   const ultimo = janela[janela.length - 1]?.mes ?? desde;
   const unidade = escala === "nivel" ? indicador.unidade : escala === "base100" ? `base 100 em ${mesAno(primeiro)}` : "desvios-padrão em relação à média da janela";
   const nomeEscala = escala === "nivel" ? "valor publicado" : escala === "base100" ? `base 100 em ${mesAno(primeiro)}` : "desvios-padrão na janela";
@@ -131,7 +146,7 @@ export function ExploradorCredito({
           series={[{ id: "v", rotulo: indicador.rotulo, cor: "var(--serie-1)" }]}
           unidade={unidade}
           casas={escala === "base100" ? 1 : 2}
-          marcos={estado.marcos ? marcos.map((m) => ({ x: m.x, rotulo: m.rotulo })) : []}
+          marcos={estado.marcos ? marcosEspacados : []}
           altura={300}
         />
       </div>
