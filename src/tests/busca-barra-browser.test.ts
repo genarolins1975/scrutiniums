@@ -11,7 +11,7 @@ import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 
 /**
  * Busca da plataforma na barra comum (Iniciativa 3 do parecer de UX de 21/10/2026), no build de produção: o campo está em
- * toda superfície com a barra (home, seis portas, 28 entradas de coleção, mapa da conta e a aplicação do Crédito) e não está
+ * toda superfície com a barra (home, seis portas, 24 entradas de coleção, mapa da conta e a aplicação do Crédito) e não está
  * nas páginas de entrar e de cadastro; o índice só desce no foco; "/" leva ao campo, as setas e o Enter abrem o resultado,
  * Esc devolve o foco; sem sessão, os destinos fechados levam o selo e nenhuma requisição cai no login; no celular, a lupa abre
  * a busca em tela cheia. Sessão de teste local, como ux-orcamentos-cromo.test.ts.
@@ -103,8 +103,9 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
     return { page, pedidos, noLogin };
   }
 
-  it("com sessão, o campo está na barra das seis portas, das 28 entradas e do mapa da conta, e na aplicação do Crédito", async () => {
-    expect(ENTRADAS).toHaveLength(28);
+  it("com sessão, o campo está na barra das seis portas, das 24 entradas e do mapa da conta, e na aplicação do Crédito", async () => {
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(ENTRADAS).toHaveLength(24);
     const ctx = await contexto(1440, true);
     const sem: string[] = [];
     try {

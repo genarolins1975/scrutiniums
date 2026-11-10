@@ -211,6 +211,35 @@ pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O a
 Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
 regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
 
+## Fusão das coleções de uma página só (10/11/2026)
+
+Decisão do dono em 10/11/2026: das 28 coleções de `src/lib/observatorios/lista.ts`, sete tinham uma única página. Quatro foram
+fundidas com a vizinha do mesmo observatório; ficaram 24. Coleção é agrupamento de navegação: nenhum endereço mudou, nenhuma
+página saiu, nenhum dado e nenhuma regra de acesso mudou.
+
+| Fusão | Observatório | id que fica | Nome | Porta |
+|---|---|---|---|---|
+| Fogo e queimadas + Desastres | Território e Clima | `fogo` | Fogo e desastres | `/territorio/queimadas` |
+| Combustíveis entra em Gás Natural | Energia e Infraestrutura | `gas` | Gás e combustíveis | `/gas-natural` |
+| Mobilidade + Conectividade | Energia e Infraestrutura | `conectividade` | Mobilidade e conectividade | `/conectividade` |
+| Cultura entra em Educação | Serviços Públicos | `educacao` | Educação e cultura | `/educacao-municipal` |
+
+Contas Estaduais não se funde (piloto com pipeline próprio). Como ficou:
+
+- **Apelidos num só lugar.** `COLECOES_FUNDIDAS` e `idDaColecao` (`lista.ts`): `desastres` → `fogo`, `combustiveis` → `gas`,
+  `mobilidade` → `conectividade`, `cultura` → `educacao`. Usados onde um id gravado é lido: o cookie de último acesso
+  (`lerUltimoAcesso`), a escolha pós login (`escolhaObservatorio`) e `navegacaoDaColecao`. O último acesso por endereço
+  reconhece a antiga porta (`/combustiveis`, por exemplo) como página da coleção nova.
+- **Navegação.** As páginas da coleção absorvida entram como um grupo da coleção nova, com as páginas dele na segunda linha
+  (Combustíveis, Mobilidade e transporte, Cultura); nos Desastres, como página.
+- **Datas.** Onde a fusão juntou bases diferentes, a linha do mapa da conta diz a que parte a data se refere
+  (`ALCANCE_DA_DATA`, `mapaConta.ts`): "Queimadas: dados até … · Desastres: referência por página". Gás e combustíveis segue
+  com uma data só, porque a referência do domínio do gás já cobre os combustíveis.
+- **Nomes lidos do registro.** O domínio `gas` passa a se chamar como a coleção; títulos de aba e rótulos da ficha "Minha
+  cidade" leem o nome do registro.
+
+Teste `src/tests/colecoes-fundidas.test.ts`.
+
 ## Eixo do lugar: a ficha "Minha cidade" (10/11/2026)
 
 Pedido do dono em 10/11/2026 (recomendação 2 do parecer estrutural): as consultas por município viviam separadas, uma por

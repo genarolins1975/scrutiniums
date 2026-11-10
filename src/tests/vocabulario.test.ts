@@ -1,13 +1,13 @@
 /**
  * Um só vocabulário (Iniciativa 1 do parecer de UX de 21/10/2026, docs/observatorios/REAGRUPAMENTO.md): em qualquer tela,
- * Observatório (um dos seis) → Coleção (uma das 28) → Página. Este teste reprova:
+ * Observatório (um dos seis) → Coleção (uma das 24) → Página. Este teste reprova:
  *
  * 1. "Observatório Brasileiro d…" ou "Observatório do Agronegócio Brasileiro" em .tsx de src/components e src/app e em
  *    public/obs/index.html, salvo /sobre, o campo nomeLegado e as exceções listadas abaixo com motivo;
- * 2. seletor da barra sem alguma das 28 coleções (páginas Next e aplicação do Crédito);
+ * 2. seletor da barra sem alguma das 24 coleções (páginas Next e aplicação do Crédito);
  * 3. coluna do rodapé cujo aria-label não seja nome de observatório (a coluna Institucional é a única outra);
  * 4. página de coleção (inventário de src/lib/observatorios/inventario.ts) sem a trilha "Você está em" no HTML do servidor;
- * 5. navegação de módulo sem aria-label "Navegação da coleção X", com X uma das 28 coleções.
+ * 5. navegação de módulo sem aria-label "Navegação da coleção X", com X uma das 24 coleções.
  */
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -85,9 +85,10 @@ describe("1. o nome antigo dos domínios não volta à interface", () => {
 
 // ------------------------------------------------------------------------------------------------------ 2. seletor
 
-describe("2. o seletor da barra lista as 28 coleções", () => {
+describe("2. o seletor da barra lista as 24 coleções", () => {
   it("nas páginas Next, agrupadas pelos seis observatórios, com a coleção dona do endereço marcada", () => {
-    expect(COLECOES).toHaveLength(28);
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(COLECOES).toHaveLength(24);
     for (const c of COLECOES) {
       navegador.caminho = c.href;
       const html = renderToStaticMarkup(createElement(SwitcherObservatorio, { caminho: c.href }));
@@ -185,8 +186,9 @@ describe("4. toda página de coleção traz a trilha \"Você está em\"", () => 
   const rotas = Array.from(new Set(inventario().flatMap((o) => o.colecoes.flatMap((c) => [c.href, ...c.paginas.flatMap((p) => (p.rota ? [p.rota] : []))]))));
   const indice = indiceCompleto();
 
-  it("o inventário tem as 28 coleções e cada endereço resolve no registro", () => {
-    expect(inventario().flatMap((o) => o.colecoes)).toHaveLength(28);
+  it("o inventário tem as 24 coleções e cada endereço resolve no registro", () => {
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(inventario().flatMap((o) => o.colecoes)).toHaveLength(24);
     for (const r of rotas) expect(resolverContexto(r, indice), r).not.toBeNull();
   });
 
@@ -238,7 +240,7 @@ const NAVS_DE_MODULO = [
 ];
 
 describe("5. toda navegação de módulo se chama \"Navegação da coleção X\"", () => {
-  it("cabeçalhos e navegações de domínio, com X uma das 28 coleções", () => {
+  it("cabeçalhos e navegações de domínio, com X uma das 24 coleções", () => {
     // Iniciativa 2: as navegações de domínio deram lugar à navegação da coleção, que monta o rótulo com o nome do registro;
     // a lista abaixo fica com o que restar de navegação própria (hoje, as casas das Contas, que já usam a navegação comum)
     expect(ler("src/components/layout/NavegacaoColecaoCliente.tsx")).toContain("tx(`Navegação da coleção ${nav.nome}`");

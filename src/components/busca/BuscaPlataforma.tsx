@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { buscar, emOrdemDeTela, type RespostaBusca, type Resultado } from "@/lib/busca/buscar";
+import { buscar, emOrdemDeTela, versaoAbertaDoResultado, type RespostaBusca, type Resultado } from "@/lib/busca/buscar";
 import type { IndiceBusca } from "@/lib/busca/tipos";
 import { medirBusca } from "@/lib/busca/medir";
 import { rotuloDoParcial } from "@/lib/busca/textos";
@@ -141,7 +141,7 @@ export function BuscaPlataforma({
   );
   const lista = useMemo(() => (resposta ? emOrdemDeTela(resposta.grupos) : []), [resposta]);
   // a coleção do primeiro resultado é a primeira do primeiro grupo (os grupos seguem a ordem dos resultados)
-  const versaoDoPrimeiro = resposta?.grupos[0]?.colecoes[0]?.colecao?.aberta;
+  const versaoDoPrimeiro = versaoAbertaDoResultado(lista[0]?.href, resposta?.grupos[0]?.colecoes[0]?.colecao);
   // a opção que o Enter abre: a ativa ou, antes de qualquer seta, a primeira com página
   const destacada = ativo >= 0 ? ativo : lista.findIndex((r) => r.href);
   const mostra = aberta && !!resposta;

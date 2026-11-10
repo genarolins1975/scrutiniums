@@ -195,6 +195,12 @@ export function idDaColecao(id: string): string {
   return Object.hasOwn(COLECOES_FUNDIDAS, id) ? COLECOES_FUNDIDAS[id as keyof typeof COLECOES_FUNDIDAS].para : id;
 }
 
+/** O endereço é de uma página que veio de uma coleção fundida (a antiga porta dela ou uma página abaixo). */
+export function ehDeColecaoFundida(href: string): boolean {
+  const c = href.split(/[?#]/)[0];
+  return Object.values(COLECOES_FUNDIDAS).some((f) => c === f.porta || c.startsWith(`${f.porta}/`));
+}
+
 /** Nome de uma coleção como o leitor a vê, lido do registro; aceita o id de uma coleção fundida. */
 export function nomeDaColecao(id: string): string {
   const corrente = idDaColecao(id);

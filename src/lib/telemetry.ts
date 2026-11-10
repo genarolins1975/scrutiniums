@@ -1,5 +1,5 @@
 import { getDb, newId, schema } from "./db";
-import { OBSERVATORIOS } from "./observatorios/lista";
+import { COLECOES_FUNDIDAS, OBSERVATORIOS } from "./observatorios/lista";
 
 /**
  * Telemetria de navegação da área logada — SEM PII.
@@ -179,6 +179,15 @@ export const SECOES_DO_MAPA: Record<string, string> = Object.fromEntries(
   ]),
 );
 
+/**
+ * Chaves `mapa:<coleção>` das coleções fundidas em 10/11/2026 (COLECOES_FUNDIDAS): não são mais gravadas (o mapa não tem mais
+ * essas linhas), mas continuam no histórico de uso. O rótulo guarda o nome que a coleção tinha, para o painel de administração
+ * não mostrar a chave crua nem somar o clique antigo à coleção nova.
+ */
+export const SECOES_DO_MAPA_ANTIGAS: Record<string, string> = Object.fromEntries(
+  Object.entries(COLECOES_FUNDIDAS).map(([id, f]) => [`mapa:${id}`, `Mapa da conta · ${f.nome} (coleção até 10/11/2026)`]),
+);
+
 export type ViewSection = (typeof VIEW_SECTIONS)[number] | `mapa:${string}`;
 
 const SECTIONS = new Set<string>([...VIEW_SECTIONS, ...Object.keys(SECOES_DO_MAPA)]);
@@ -336,7 +345,8 @@ export function isViewSection(value: string): value is ViewSection {
 }
 
 export function sectionLabel(section: string): string {
-  if (!isViewSection(section)) return section;
+  // chave do histórico que deixou de ser aceita na gravação (coleção fundida): continua com rótulo
+  if (!isViewSection(section)) return SECOES_DO_MAPA_ANTIGAS[section] ?? section;
   return SECOES_DO_MAPA[section] ?? SECTION_LABELS[section as (typeof VIEW_SECTIONS)[number]];
 }
 

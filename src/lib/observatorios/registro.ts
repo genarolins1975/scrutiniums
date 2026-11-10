@@ -206,7 +206,7 @@ function paineisColecoesInteiras(): Painel[] {
     // por estado (/combustiveis/no-meu-estado) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2
     // fusão de 10/11/2026: os Combustíveis entram em Gás e combustíveis (o id "combustiveis" segue como apelido em lista.ts)
     ...inteira("gas", "energia-e-infraestrutura", "gas",
-      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos" }))),
+      PAGINAS_COMBUSTIVEIS.filter((p) => p.href === ROTA_COMBUSTIVEIS).map((p) => ({ rota: p.href, titulo: "Combustíveis nos postos", resumo: p.pergunta, termos: p.termos }))),
     ...inteira("saneamento", "energia-e-infraestrutura", "saneamento", [
       { rota: "/saneamento", titulo: "Saneamento" },
       ...CAPITULOS_SANEAMENTO.map((c) => ({ rota: `/saneamento/${c.slug}`, titulo: c.rotulo, resumo: c.pergunta, termos: c.termos })),

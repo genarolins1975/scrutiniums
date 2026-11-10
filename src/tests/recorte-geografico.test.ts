@@ -199,9 +199,10 @@ describe("4. nenhum rótulo de navegação usa \"Eficiência Estatal\" como unid
     }
   });
 
-  it("navegação das 28 coleções e do observatório que mantém painéis próprios: rótulos e aria-label", () => {
+  it("navegação das 24 coleções e do observatório que mantém painéis próprios: rótulos e aria-label", () => {
     const navs = [...idsDasColecoes().map((id) => navegacaoDaColecao(id)), navegacaoDoObservatorio("territorio-e-clima")];
-    expect(navs.length).toBeGreaterThanOrEqual(28);
+    // 24 coleções mais o observatório com painéis próprios; eram 28 coleções até a fusão decidida pelo dono em 10/11/2026
+    expect(navs.length).toBeGreaterThanOrEqual(25);
     for (const nav of navs) {
       expect(COMO_LUGAR.test(nav.nome), nav.id).toBe(false);
       for (const item of nav.itens) {

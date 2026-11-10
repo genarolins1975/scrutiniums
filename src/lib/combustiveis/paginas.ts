@@ -1,5 +1,6 @@
 /**
- * Coleção Combustíveis do Observatório de Energia e Infraestrutura: fonte única de rota, rótulo, pergunta e seção de
+ * Combustíveis nos postos, do Observatório de Energia e Infraestrutura (coleção própria até 10/11/2026; desde então, páginas
+ * da coleção Gás e combustíveis, por decisão do dono): fonte única de rota, rótulo, pergunta e seção de
  * telemetria. Registro (src/lib/observatorios/registro.ts), cabeçalho, telemetria e home leem daqui.
  *
  * A gold é do pipeline do Gás (pipeline/gas, public/gas/gold/combustiveis.json): a mesma planilha da ANP que dá o preço
@@ -14,6 +15,8 @@ export type PaginaCombustiveis = {
   pergunta: string;
   /** Uma linha sobre o que a página mostra. */
   descricao: string;
+  /** Termos que levam a página à busca da plataforma (de 3 a 12; teste busca-cobertura), quando ela entra no registro. */
+  termos?: readonly string[];
   secao: `gas:${string}`;
 };
 
@@ -25,6 +28,7 @@ export const PAGINAS_COMBUSTIVEIS: PaginaCombustiveis[] = [
     slug: "painel", href: ROTA_COMBUSTIVEIS, rotulo: "Preços nos postos", secao: "gas:combustiveis",
     pergunta: "Quanto custa encher o tanque no meu estado?",
     descricao: "Gasolina, etanol e diesel por estado e no Brasil, mês a mês desde 2013, em valores da época e corrigidos pelo IPCA.",
+    termos: ["gasolina", "etanol", "diesel", "posto", "ANP", "preço do litro"],
   },
   {
     slug: "no-meu-estado", href: ROTA_CONSULTA_TANQUE, rotulo: "Consulta por estado", secao: "gas:combustiveis-no-meu-estado",

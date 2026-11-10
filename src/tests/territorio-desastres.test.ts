@@ -34,9 +34,10 @@ describe("desastres do Território e Clima", () => {
     for (const [k, o] of Object.entries(g.originais)) expect(o.sha256, k).toMatch(/^[0-9a-f]{64}$/);
   });
 
-  it("o painel é fechado, pertence à coleção Desastres e diz junto aos números o que a contagem conta", () => {
+  // fusão das coleções de uma página só (decisão do dono de 10/11/2026): os Desastres são página da coleção Fogo e desastres ("fogo")
+  it("o painel é fechado, pertence à coleção Fogo e desastres e diz junto aos números o que a contagem conta", () => {
     expect(ehRotaPublica("/territorio/desastres")).toBe(false);
-    expect(donoDaRota("/territorio/desastres")).toMatchObject({ observatorio: "territorio-e-clima", colecao: "desastres", origem: null });
+    expect(donoDaRota("/territorio/desastres")).toMatchObject({ observatorio: "territorio-e-clima", colecao: "fogo", origem: null });
     const fonte = readFileSync(join(process.cwd(), "src", "app", "territorio", "desastres", "page.tsx"), "utf-8");
     expect(fonte).toContain("A contagem é de registros municipais que obtiveram reconhecimento federal");
     expect(fonte).not.toMatch(/afetados<\/td>/);

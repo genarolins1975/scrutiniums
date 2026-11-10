@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Casca da coleção Combustíveis (Observatório de Energia e Infraestrutura). Os painéis exigem conta: nenhuma rota daqui
+ * Casca das páginas de Combustíveis (coleção Gás e combustíveis desde 10/11/2026, Observatório de Energia e Infraestrutura). Os painéis exigem conta: nenhuma rota daqui
  * consta de src/lib/rotasPublicas.ts fora da LEVA_2, e a consulta por estado nasce fechada. Os tokens visuais são os do Gás
  * Natural (gas.css), que mantém o pipeline e a gold; o cabeçalho é de cada página, porque marca a página atual.
  */

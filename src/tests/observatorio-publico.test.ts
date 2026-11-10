@@ -149,13 +149,14 @@ describe("metadados por rota", () => {
   });
 
   it("o HTML servido injeta title, description, OG, canônico e JSON-LD", () => {
-    const html = montarHtml(resolverMeta("/financial-fraud"));
+    // o exemplo era Golpes e fraudes, que virou página Next das Famílias em 10/11/2026 (reescritos.ts); o Pix segue na aplicação
+    const html = montarHtml(resolverMeta("/pix"));
     // Iniciativa 1 do parecer de UX (21/10/2026): "Página · Coleção · Scrutiniums", com a coleção dona da aba no registro
-    expect(html).toContain("<title>Golpes e fraudes · Dívida e crédito das famílias · Scrutiniums</title>");
-    expect(html).toContain('<link rel="canonical" href="https://scrutiniums.com/observatorio/financial-fraud">');
-    expect(html).toContain('<meta property="og:url" content="https://scrutiniums.com/observatorio/financial-fraud">');
+    expect(html).toContain("<title>Pix e pagamentos · Pagamentos · Scrutiniums</title>");
+    expect(html).toContain('<link rel="canonical" href="https://scrutiniums.com/observatorio/pix">');
+    expect(html).toContain('<meta property="og:url" content="https://scrutiniums.com/observatorio/pix">');
     expect(html).toContain('"@type":"Dataset"');
-    expect(html).toContain("/obs/data/gold/fraudes.json");
+    expect(html).toContain("/obs/data/gold/pix.json");
     // o corpo continua sendo a SPA
     expect(html).toContain('<script src="/obs/app.min.js');
   });

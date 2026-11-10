@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { GRUPOS_CREDITO } from "@/lib/credito/navegacao";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
-import { DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
+import { DESTINO_ABAS_CREDITO, ABAS_SUBSTITUIDAS } from "@/lib/observatorios/registro";
 
 /**
  * Início do painel (antes "Mapa do Observatório"; o dono renomeou em 23/10/2026) e os grupos do Crédito. O que se trava:
@@ -81,6 +81,8 @@ describe("Grupos do Crédito", () => {
     for (const g of GRUPOS_CREDITO) {
       for (const h of g.paginas) {
         if (!h.startsWith("/observatorio/")) continue;
+        // vista substituída por página Next das Famílias (10/11/2026): fora da navegação; a página nova é que entra nela
+        if (ABAS_SUBSTITUIDAS.has(h.slice("/observatorio".length))) continue;
         const [, colecao] = DESTINO_ABAS_CREDITO[h.slice("/observatorio".length)];
         if (colecao === "credito") expect(doCredito.filter((x) => x === h).length, h).toBe(1);
         else {

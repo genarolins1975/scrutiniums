@@ -99,13 +99,17 @@ describe("onde a marca aparece", () => {
     expect(ler("src/components/gas/RodapeGas.tsx")).toContain('<RodapeColecao colecao="gas"');
     expect(ler("src/app/gas-natural/layout.tsx")).toContain("<RodapeGas />");
     expect(ler("src/app/aperitivo/gas-de-cozinha/layout.tsx")).toContain('<RodapeColecao colecao="gas" />');
-    expect(ler("src/app/combustiveis/layout.tsx")).toContain('<RodapeColecao colecao="combustiveis" />');
+    // os Combustíveis são páginas da coleção "gas" desde a fusão decidida pelo dono em 10/11/2026: a casca usa o rodapé dela
+    expect(ler("src/app/combustiveis/layout.tsx")).toContain('<RodapeColecao colecao="gas" />');
   });
 
-  it("o rodapé da coleção leva a marca nas quatro coleções de infraestrutura e em nenhuma outra", async () => {
+  // eram quatro coleções até a fusão de 10/11/2026 (decisão do dono): os Combustíveis entraram em "gas", que segue com a marca
+  it("o rodapé da coleção leva a marca nas três coleções de infraestrutura e em nenhuma outra", async () => {
     const { RodapeColecao, COLECOES_COM_PARCERIA } = await import("@/components/layout/RodapeColecao");
     const { idsDasColecoes } = await import("@/lib/observatorios/navegacaoColecao");
-    expect([...COLECOES_COM_PARCERIA]).toEqual(["setor-eletrico", "gas", "saneamento", "combustiveis"]);
+    expect([...COLECOES_COM_PARCERIA]).toEqual(["setor-eletrico", "gas", "saneamento"]);
+    // o id antigo continua valendo pelo da coleção que o absorveu, com a marca
+    expect(renderToStaticMarkup(createElement(RodapeColecao, { colecao: "combustiveis" }))).toContain(`data-parceria="${CERI.id}"`);
     for (const id of idsDasColecoes()) {
       const h = renderToStaticMarkup(createElement(RodapeColecao, { colecao: id }));
       expect(h.includes(`data-parceria="${CERI.id}"`), id).toBe((COLECOES_COM_PARCERIA as readonly string[]).includes(id));

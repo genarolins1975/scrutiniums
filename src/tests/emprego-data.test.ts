@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- validação de JSON gold sem tipos gerados */
+import { ABAS_SUBSTITUIDAS } from "@/lib/observatorios/registro";
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -156,7 +157,10 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toMatch(/\n  emprego: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.emp = {");
     // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
-    expect(rotuloNaNavegacao("/observatorio/formal-employment")).toBe("Emprego formal");
+    // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
+    // (/emprego-formal, src/lib/observatorios/reescritos.ts); a vista antiga continua registrada na aplicação, como conferido abaixo
+    expect(rotuloNaNavegacao("/observatorio/formal-employment")).toBeNull();
+    expect(ABAS_SUBSTITUIDAS.get("/formal-employment")).toBe("/emprego-formal");
     expect(html).toContain('id="view-emprego"');
     expect(app).toContain('["emprego", "Emprego formal", "emprego"]');
     expect(app).toContain('["#uf-emprego", "Emprego"]');

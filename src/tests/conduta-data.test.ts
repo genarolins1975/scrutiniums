@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- validação de JSON gold sem tipos gerados */
+import { ABAS_SUBSTITUIDAS } from "@/lib/observatorios/registro";
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -81,7 +82,10 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toMatch(/\n  conduta: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.cd = {");
     // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
-    expect(rotuloNaNavegacao("/observatorio/conduct-enforcement")).toBe("Sanções e reclamações");
+    // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
+    // (/divida-das-familias/sancoes-e-reclamacoes, src/lib/observatorios/reescritos.ts); a vista antiga continua registrada na aplicação, como conferido abaixo
+    expect(rotuloNaNavegacao("/observatorio/conduct-enforcement")).toBeNull();
+    expect(ABAS_SUBSTITUIDAS.get("/conduct-enforcement")).toBe("/divida-das-familias/sancoes-e-reclamacoes");
     expect(html).toContain('id="view-conduta"');
   });
   it("o renderizador vive no chunk emergentes e o pipeline registra coletores e gold", () => {

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Painel "Combustíveis nos postos" (coleção Combustíveis, Observatório de Energia e Infraestrutura), com conta. Arquétipo
+ * Painel "Combustíveis nos postos" (coleção Gás e combustíveis desde 10/11/2026, Observatório de Energia e Infraestrutura), com conta. Arquétipo
  * panorama com consulta: a pergunta e o preço no estado do leitor na primeira tela; como a ANP mede; a série desde 2013
  * (nominal e corrigida pelo IPCA, lacuna de 2020 como lacuna); as UFs comparadas no último mês; o etanol em porcentagem da
  * gasolina; método, notas da planilha e downloads recolhidos no fim. Todos os números saem de public/gas/gold/combustiveis.json.

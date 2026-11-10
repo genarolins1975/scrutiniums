@@ -15,13 +15,17 @@ import { ORCAMENTO, TOPO_H1_MAXIMO, aguardarHidratacao, aguardarSessaoResolvida,
  * scripts/obee/judiciario-verificacao.mjs) e sem sessão nas páginas aperitivo. A medida é a mesma de scripts/ux-cromo.mjs.
  *
  * As coleções passam a ser cobradas à medida que recebem a NavegacaoColecao (um PR por bloco da iniciativa): `ENTRADAS` cresce a
- * cada bloco até as 28 entradas. Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
+ * cada bloco até as 28 entradas (24 coleções desde a fusão de 10/11/2026; as quatro antigas portas seguem medidas). Sem build (.next/BUILD_ID) o teste não roda; com EXIGIR_BUILD_HTML=1 (CI), a falta do build reprova.
  */
 const raiz = process.cwd();
 const temBuild = existsSync(join(raiz, ".next/BUILD_ID"));
 const exigir = process.env.EXIGIR_BUILD_HTML === "1";
 
-/** Entradas de coleção já na navegação única, com sessão. */
+/**
+ * Entradas de coleção já na navegação única, com sessão. As chaves são só rótulos: `desastres`, `combustiveis`, `cultura` e
+ * `mobilidade` deixaram de ser coleções na fusão decidida pelo dono em 10/11/2026 (24 coleções), mas as páginas continuam
+ * medidas aqui, agora com a navegação da coleção que as recebeu (o grupo delas abre a segunda linha).
+ */
 const ENTRADAS: Record<string, string> = {
   conectividade: "/conectividade",
   federais: "/contas-publicas",

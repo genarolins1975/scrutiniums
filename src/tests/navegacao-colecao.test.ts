@@ -19,7 +19,7 @@ vi.mock("next/navigation", async () => ({
 /**
  * Uma só navegação de módulo em toda coleção (Iniciativa 2 do parecer de UX de 21/10/2026, docs/PARECER_UX_2026-10-21.md):
  * o catálogo único (src/lib/observatorios/navegacaoColecao.ts) e o componente que o desenha (NavegacaoColecao). As regras
- * valem para as 28 coleções do registro, e cada uma tem um caso que a reprova.
+ * valem para as 24 coleções do registro, e cada uma tem um caso que a reprova.
  */
 const raiz = process.cwd();
 const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
@@ -87,11 +87,12 @@ function existe(href: string): boolean {
   return procura(join(raiz, "src/app"), 0);
 }
 
-describe("catálogo único das 28 coleções", () => {
+describe("catálogo único das 24 coleções", () => {
   const ids = idsDasColecoes();
 
-  it("cobre as 28 coleções do registro, na ordem dos observatórios", () => {
-    expect(ids).toHaveLength(28);
+  it("cobre as 24 coleções do registro, na ordem dos observatórios", () => {
+    // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
+    expect(ids).toHaveLength(24);
     expect(ids).toEqual(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id)));
   });
 
@@ -175,7 +176,7 @@ describe("componente NavegacaoColecao", () => {
 
   it("aria-label padrão, atual com aria-current e filete do acento, alvos de 44 px", () => {
     const h = render(navegacaoDaColecao("gas"), "/gas-natural/gas-de-cozinha");
-    expect(h).toContain('aria-label="Navegação da coleção Gás Natural"');
+    expect(h).toContain('aria-label="Navegação da coleção Gás e combustíveis"'); // nome da coleção "gas" desde a fusão (decisão do dono de 10/11/2026)
     expect(marcado(h, "/gas-natural/gas-de-cozinha")).toBe(true);
     expect((h.match(/aria-current="page"/g) ?? []).length).toBe(1);
     expect(h).toContain("bg-gas");

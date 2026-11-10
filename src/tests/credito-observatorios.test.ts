@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
+import { ABAS_SUBSTITUIDAS, DESTINO_ABAS_CREDITO } from "@/lib/observatorios/registro";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { htmlRotuloSpa } from "@/lib/observatorios/barraSpa";
 
@@ -11,6 +11,8 @@ import { htmlRotuloSpa } from "@/lib/observatorios/barraSpa";
 describe("abas do Crédito que pertencem a outro observatório", () => {
   it("o rótulo acima do título diz o observatório e a coleção que o registro atribui a cada aba", () => {
     for (const [caminho, [obs, col]] of Object.entries(DESTINO_ABAS_CREDITO)) {
+      // aba substituída por página Next (10/11/2026): saiu do registro, o rótulo dela já não é o das Famílias
+      if (ABAS_SUBSTITUIDAS.has(caminho)) continue;
       const o = OBSERVATORIOS.find((x) => x.id === obs)!;
       const c = o.colecoes.find((x) => x.id === col)!;
       expect(htmlRotuloSpa(`/observatorio${caminho}`), caminho).toContain(`<span>${o.nome} · ${c.nome}`);
