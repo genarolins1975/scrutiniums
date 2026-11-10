@@ -6,6 +6,9 @@ import { ehRotaPublica, prefetchDoLink } from "@/lib/rotasPublicas";
 import { rotaPorta } from "@/lib/perguntas/rotas";
 import type { Porta } from "@/lib/perguntas/tipos";
 import { Trilha } from "@/components/layout/Trilha";
+import { EstadoColecao, FraseObservatorio } from "@/components/observatorios/RetratoPortfolio";
+import type { RetratoObservatorio } from "@/lib/observatorios/mapaConta";
+import type { ColecaoPorta } from "@/lib/perguntas/colecoesDaPorta";
 
 function aberto(href: string): boolean {
   return ehRotaPublica(href.split(/[?#]/)[0] || "/");
@@ -28,14 +31,13 @@ function Cadeado() {
  * filtro ou download aqui. Fecha com o que a plataforma ainda não responde e
  * o método recolhido.
  */
-/** Coleção com até quatro painéis de exemplo; sem contagem, porque subpáginas não entram no registro. */
-export type ColecaoPorta = { id: string; nome: string; href: string; destaques: string[]; mais: boolean; origens: string };
+export type { ColecaoPorta };
 
 /**
  * `artefato`: consulta da leva 2 que vive na própria página (ex.: a régua dos R$ 100 nas Contas Públicas),
  * entregue pela rota só quando aprovada em src/lib/rotasPublicas.ts (LEVA_2).
  */
-export function PaginaPorta({ porta, outras, colecoes, entrada, artefato }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[]; entrada?: string; artefato?: ReactNode }>) {
+export function PaginaPorta({ porta, outras, colecoes, retrato, entrada, artefato }: Readonly<{ porta: Porta; outras: Porta[]; colecoes: ColecaoPorta[]; retrato: RetratoObservatorio; entrada?: string; artefato?: ReactNode }>) {
   const a = ACENTO[porta.acento];
   return (
     <main className="bg-papel">
@@ -183,6 +185,7 @@ export function PaginaPorta({ porta, outras, colecoes, entrada, artefato }: Read
               As coleções do {porta.nomeCompleto}, com exemplos de painéis de cada uma e a origem dos dados. Todas abrem
               com a conta gratuita.
             </p>
+            <FraseObservatorio retrato={retrato} className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted" />
           </div>
           <ul className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:col-span-8">
             {colecoes.map((c, i) => (
@@ -199,7 +202,10 @@ export function PaginaPorta({ porta, outras, colecoes, entrada, artefato }: Read
                       {c.mais ? " e outros" : ""}
                     </span>
                   )}
-                  <span className="mt-1 text-xs text-mineral">{c.origens}</span>
+                  <span className="mt-1 flex flex-wrap items-baseline gap-x-2 text-xs text-mineral">
+                    <span>{c.origens}</span>
+                    <EstadoColecao colecao={c.retrato} />
+                  </span>
                 </Link>
               </li>
             ))}

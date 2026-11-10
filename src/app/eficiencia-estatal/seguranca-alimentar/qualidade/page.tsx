@@ -37,7 +37,7 @@ export default function Qualidade() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.alimentacao.nome,
+        grupo: TEMAS_EFICIENCIA.alimentacao.contexto,
         acento: "obee",
         titulo: "A entrega cumpre o compromisso?",
         lead: "Tempo de resposta, regularidade e conformidade precisam de evidências da operação.",

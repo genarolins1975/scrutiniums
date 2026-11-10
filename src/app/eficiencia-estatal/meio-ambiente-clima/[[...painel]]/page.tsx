@@ -34,7 +34,7 @@ function Capitulo({slug,leitura,ids}:{slug:string;leitura:{titulo:string;texto:s
   versao:'snapshot do saneamento, '+edicao,formula:medidas.map(m=>m.id+': '+m.formula).join('\n'),limitacoes:medidas.map(m=>m.nome+': '+m.nota)});
  const limite=leitura.limite.charAt(0).toLowerCase()+leitura.limite.slice(1);
  return <PaginaPainel rota={rota+'/'+slug}
-  abertura={{grupo:TEMAS_EFICIENCIA.ambiente.nome,acento:'obee',titulo:leitura.titulo,lead:leitura.texto,recorte:{periodo:'referência '+ano,universo:'Brasil e cinco regiões',fonte:edicao},limite,
+  abertura={{grupo:TEMAS_EFICIENCIA.ambiente.contexto,acento:'obee',titulo:leitura.titulo,lead:leitura.texto,recorte:{periodo:'referência '+ano,universo:'Brasil e cinco regiões',fonte:edicao},limite,
    fontesDatasSiglas:<><p>Recorte inicial · {edicao} · referência {ano} · Brasil e cinco regiões. Captura pela Scrutiniums em {dataBR(captura,'pt')}.</p><p>SINISA: Sistema Nacional de Informações em Saneamento Básico, do Ministério das Cidades.</p></>}}
   figuras={<FiguraAnalitica id="comparacao" pergunta="Compare medidas, sem transformar diferenças em notas" subtitulo={medidas.map(m=>m.nome).join(' · ')+' · Brasil e cinco regiões, '+ano} natureza="OBSERVADO" idioma="pt"
    naoConcluir="Comparar valores não identifica, por si só, o efeito de uma gestão. Contagens absolutas não são taxas de risco: municípios maiores podem ter mais domicílios expostos."

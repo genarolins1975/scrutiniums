@@ -19,7 +19,7 @@ const FUNDIARIA=<>A aba Inadeq_Fundiária da planilha contém apenas inadequaç�
  * ParaLer. A fundiária total vem do relatório, não da planilha: a figura cita as duas fichas.
  */
 export default function Pagina(){return <PaginaPainel rota={ROTA+'/inadequacao'} principal={false}
- abertura={{grupo:TEMAS_EFICIENCIA.habitacao.nome,acento:'obee',titulo:'A casa existe. Em que condições?',
+ abertura={{grupo:TEMAS_EFICIENCIA.habitacao.contexto,acento:'obee',titulo:'A casa existe. Em que condições?',
   lead:'A inadequação descreve carências em domicílios duráveis urbanos. Infraestrutura, edificação e situação fundiária podem exigir melhorias diferentes e coexistir na mesma moradia.',
   recorte:RECORTE,
   limite:'a soma das três dimensões como total de domicílios com carência: os componentes se sobrepõem, e o universo exclui áreas rurais e os componentes improvisados, rústicos e cômodos do déficit.',

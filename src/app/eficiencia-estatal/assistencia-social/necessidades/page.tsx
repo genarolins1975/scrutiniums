@@ -37,7 +37,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:'obee',
       titulo:'Quem precisa de apoio e quem consegue recebê-lo?',
       lead:'Baixa renda, violações de direitos e necessidade de cuidado são situações diferentes. O número de inscritos no Cadastro Único não é um denominador universal para todos os serviços.',

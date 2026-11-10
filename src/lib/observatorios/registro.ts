@@ -29,6 +29,7 @@ import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from
 import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
 import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
+import { TEMAS_EFICIENCIA, tituloComRecorte, type TemaEficiencia } from "@/lib/eficiencia/temas";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
@@ -108,16 +109,20 @@ function paineisEficiencia(): Painel[] {
     const destino = DESTINO_TEMAS_EFICIENCIA[d.id];
     if (!destino) throw new Error(`tema da Eficiência Estatal sem observatório: ${d.id}`);
     const [observatorio, colecao] = destino;
+    // o título do painel leva o recorte do tema (src/lib/eficiencia/temas.ts): o que só cobre as capitais diz "nas capitais"
+    const tema = (TEMAS_EFICIENCIA as Record<string, TemaEficiencia>)[d.id];
+    if (!tema) throw new Error(`tema da Eficiência Estatal sem recorte geográfico: ${d.id}`);
     return {
-      rota: d.href as string, titulo: d.titulo, observatorio, colecao, origem: "eficiencia" as const, resumo: d.pergunta ?? d.descricao, termos: d.termos,
+      rota: d.href as string, titulo: tituloComRecorte(d.titulo, tema.recorte), observatorio, colecao, origem: "eficiencia" as const, resumo: d.pergunta ?? d.descricao, termos: d.termos,
     };
   });
   return [
+    // os três painéis da Síntese cobrem só as 26 capitais e o dizem no título (src/tests/recorte-geografico.test.ts)
     { rota: "/eficiencia-estatal", titulo: "Comparação entre capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como está a minha capital nos serviços públicos?", termos: ["capitais", "comparação", "serviços públicos", "minha capital"] },
     { rota: "/eficiencia-estatal/indice-de-resultados", titulo: "Índice de resultados das capitais", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como as capitais se saem num índice dos resultados dos serviços públicos?", termos: ["índice de resultados", "capitais", "serviços públicos", "ranking"] },
-    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
+    { rota: "/eficiencia-estatal/laboratorio-cesta", titulo: "Laboratório do índice das capitais (revisão v3)", observatorio: "servicos-publicos", colecao: "sintese", origem: "eficiencia",
       resumo: "Como o índice das capitais muda com outras escolhas de indicadores e pesos?", termos: ["laboratório", "pesos", "revisão do índice", "sensibilidade"] },
     { rota: "/eficiencia-estatal/judiciario", titulo: "Judiciário: filas e tempos", observatorio: "servicos-publicos", colecao: "justica", origem: "eficiencia",
       resumo: "Quanto tempo a Justiça leva e onde estão as filas?", termos: ["CNJ", "tempo do processo", "fila", "tribunais"] },

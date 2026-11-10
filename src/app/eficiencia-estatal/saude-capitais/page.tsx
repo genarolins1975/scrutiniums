@@ -67,7 +67,7 @@ export default function PaginaPanoramaSaude() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.saude.nome,
+        grupo: TEMAS_EFICIENCIA.saude.contexto,
         acento: "obee",
         titulo: "Quanto se aplica em Saúde e o que se observa nas capitais?",
         lead: "Quanto as capitais aplicam em Saúde, que estrutura e atendimento são registrados e quais resultados são observados entre seus moradores, em três perímetros diferentes.",

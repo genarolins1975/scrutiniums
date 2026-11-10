@@ -21,7 +21,7 @@ export default function Page(){
     principal={false}
     idioma="pt"
     abertura={{
-      grupo:TEMAS_EFICIENCIA.assistencia.nome,
+      grupo:TEMAS_EFICIENCIA.assistencia.contexto,
       acento:"obee",
       titulo:"A rede pode ser acessada?",
       lead:"Horários e adaptações declaradas mostram condições de oferta. A espera aqui se refere especificamente ao atendimento do Cadastro Único no CRAS; não é a fila geral da assistência social.",

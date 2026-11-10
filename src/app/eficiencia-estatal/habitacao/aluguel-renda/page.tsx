@@ -17,7 +17,7 @@ const DIVERGENCIA='As tabelas oficiais de renda e de déficit geral divergem em 
  * Piauí e do Ceará como ressalva à vista da distribuição por renda e o "o que a medida não responde" como o limite da abertura.
  */
 export default function Pagina(){return <PaginaPainel rota={ROTA+'/aluguel-renda'} principal={false}
- abertura={{grupo:TEMAS_EFICIENCIA.habitacao.nome,acento:'obee',titulo:'Quando o aluguel pesa demais na renda?',
+ abertura={{grupo:TEMAS_EFICIENCIA.habitacao.contexto,acento:'obee',titulo:'Quando o aluguel pesa demais na renda?',
   lead:'O ônus excessivo combina duas condições: renda domiciliar de até três salários mínimos e aluguel urbano superior a 30% dessa renda. O indicador não mede o preço médio dos aluguéis.',
   recorte:RECORTE,
   limite:'inadimplência de aluguel, risco de despejo, aluguel médio ou elegibilidade a um programa. Também não identifica se auxílio-aluguel, locação social ou novas unidades seriam a resposta mais adequada para cada família.',

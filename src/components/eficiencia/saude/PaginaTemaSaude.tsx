@@ -52,7 +52,7 @@ export function PaginaTemaSaude({ tema }: { tema: TemaSaude }) {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.saude.nome,
+        grupo: TEMAS_EFICIENCIA.saude.contexto,
         acento: "obee",
         titulo: t.h1,
         lead: t.lead,

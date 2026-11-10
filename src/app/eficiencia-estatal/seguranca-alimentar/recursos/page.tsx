@@ -48,7 +48,7 @@ export default function Recursos() {
       principal={false}
       idioma="pt"
       abertura={{
-        grupo: TEMAS_EFICIENCIA.alimentacao.nome,
+        grupo: TEMAS_EFICIENCIA.alimentacao.contexto,
         acento: "obee",
         titulo: "A capacidade instalada no território.",
         lead: "Dinheiro federal para a alimentação escolar, compras públicas de alimentos da agricultura familiar e a estrutura municipal declarada.",

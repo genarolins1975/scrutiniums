@@ -125,8 +125,9 @@ function saneamento(): Montagem {
       ...eixos,
       ...(comparar ? [pagina(comparar.rotulo, `${ROTA_SANEAMENTO}/comparar`)] : []),
       ...(mundo ? [pagina(mundo.rotulo, `${ROTA_SANEAMENTO}/internacional`)] : []),
-      // o saneamento nas 26 capitais (Eficiência Estatal), com as abas dele na segunda linha
-      temaComoGrupo(TEMAS_EFICIENCIA.saneamento, "Nas capitais"),
+      // o saneamento por região e estado (SINISA, origem Eficiência Estatal), com as abas dele na segunda linha. O rótulo é o
+      // recorte do tema (src/lib/eficiencia/temas.ts): até 10/11/2026 dizia "Nas capitais", e o tema não publica valor por capital
+      temaComoGrupo(TEMAS_EFICIENCIA.saneamento, TEMAS_EFICIENCIA.saneamento.recorte.rotulo),
     ],
     atalhos: { metodo: `${ROTA_SANEAMENTO}/metodologia` },
   };
@@ -237,7 +238,7 @@ function educacao(): Montagem {
   return {
     itens: [
       pagina("Início", ROTA_EDUCACAO),
-      // o painel das capitais (Eficiência Estatal), com as abas dele na segunda linha
+      // o painel das capitais (origem Eficiência Estatal), com as abas dele na segunda linha
       temaComoGrupo(capitais, TITULO_CAPITAIS, [`${ROTA_CAPITAIS}/metodos`]),
       ...paineisDaColecao("servicos-publicos", "educacao", [ROTA_EDUCACAO, ROTA_CAPITAIS]),
     ],
@@ -363,7 +364,7 @@ function doRegistro(obs: Parameters<typeof colecoesDe>[0], id: string): Montagem
 function conectividade(): Montagem {
   const base = doRegistro("energia-e-infraestrutura", "conectividade");
   const tema = TEMAS_EFICIENCIA.energia;
-  return { ...base, itens: [...base.itens.filter((i) => i.href !== tema.rota), temaComoGrupo(tema, "Energia e conectividade nas capitais")] };
+  return { ...base, itens: [...base.itens.filter((i) => i.href !== tema.rota), temaComoGrupo(tema)] };
 }
 
 const MONTAGENS: Record<string, () => Montagem> = {
