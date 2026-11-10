@@ -91,7 +91,8 @@ export function textoDaGold(t: string): string {
     .replace(/(^|[\s(])-(\d)/g, "$1−$2")
     .replace(/\ba\/a\b/g, "em 12 meses")
     .replace(/\(z (−?\d)/g, "(desvio $1")
-    .replace(/\bz-scores?\b/g, "desvio da própria história")
+    .replace(/\bz-scores?\b/gi, "desvio da própria história")
+    .replace(/^Desvio da própria história$/i, "Distância da média da própria história")
     .replace(/'([^']+)'/g, "“$1”");
 }
 

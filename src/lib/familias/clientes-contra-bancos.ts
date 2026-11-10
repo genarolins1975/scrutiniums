@@ -124,6 +124,15 @@ export function dataEscala(d: string | null): string | null {
   return d && /^\d{6}$/.test(d) ? mesAno(`${d.slice(0, 4)}-${d.slice(4, 6)}`) : null;
 }
 
+const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/** Competência do TST ("Junho de 2026") como mês ISO ("2026-06"), para o período de referência; null quando a forma não é reconhecida. */
+export function competenciaIso(c: string | null): string | null {
+  const m = c?.trim().match(/^(\S+) de (\d{4})$/);
+  const mes = m ? MESES_LONGOS.indexOf(m[1].toLowerCase()) : -1;
+  return m && mes >= 0 ? `${m[2]}-${String(mes + 1).padStart(2, "0")}` : null;
+}
+
 /** Competência do TST como publicada ("Junho de 2026"), em minúscula no meio da frase. */
 export function competencia(c: string | null): string | null {
   return c ? c.charAt(0).toLowerCase() + c.slice(1) : null;
@@ -199,7 +208,9 @@ export function provenienciaNacional(g: GoldJudicial, o: { indicador: string; na
 
 /** Proveniência da camada nominal (ranking do TST, com a escala do IF.data quando o indicador é normalizado). */
 export function provenienciaNominal(g: GoldJudicial, o: { indicador: string; natureza: Natureza; unidade: string; formula?: string | null }): Proveniencia {
-  const dia = diaIso(g.coletado_em);
+  // a referência do ranking é a competência publicada pelo TST; só sem ela vale o dia da coleta
+  const ref = competenciaIso(g.camada_nominal.competencia);
+  const dia = ref ?? diaIso(g.coletado_em);
   return provenienciaMontada({
     indicador: o.indicador,
     natureza: o.natureza,
@@ -215,7 +226,7 @@ export function provenienciaNominal(g: GoldJudicial, o: { indicador: string; nat
     validadoEm: g.gerado_em,
     transformacoes: ["Identificação manual das partes que são instituições financeiras, com o grau de confiança declarado por linha."],
     formula: o.formula ?? null,
-    limitacoes: [prosa(g.camada_nominal.cobertura), "A data de referência mostrada é a da coleta; a competência do ranking é a publicada pelo TST."],
+    limitacoes: [prosa(g.camada_nominal.cobertura), "A referência é a competência publicada pelo TST; a captura é a data em que a Scrutiniums leu o ranking."],
     versaoPipeline: "pipeline/judicial.py",
     notas: nomeFonte(g.camada_nominal.fonte),
   });

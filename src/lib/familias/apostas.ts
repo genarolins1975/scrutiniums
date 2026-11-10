@@ -48,6 +48,11 @@ export function limpar(texto: unknown): string {
     .replace(/(\d)\s*[–—]\s*(\d)/g, "$1 a $2")
     .replace(/[—–]/g, ", ")
     .replace(/\s+-\s+/g, ", ")
+    // intervalo de anos escrito com hífen ("2020-21", "2024-2025"); número de processo ("/2025-47") fica como está
+    .replace(/(?<![\d/.])((?:19|20)\d{2})-(\d{4}|\d{2})(?![\d-])/g, (tudo, a: string, b: string) => {
+      const fim = b.length === 2 ? Number(a.slice(0, 2) + b) : Number(b);
+      return fim > Number(a) && fim - Number(a) <= 10 ? `${a} a ${fim}` : tudo;
+    })
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -120,6 +125,8 @@ export function provCurada(b: {
   limitacoes?: string[];
   pipeline: string;
   curada?: boolean;
+  /** Licença como a base a registra; sem ela, a página diz que a base não registra. */
+  licenca?: string;
 }): Proveniencia {
   return {
     indicador: b.indicador,
@@ -130,7 +137,7 @@ export function provCurada(b: {
       recurso: b.recurso ?? b.dataset,
       url_dataset: b.url,
       url_primaria: b.url,
-      licenca: "Não registrada na base; consultar as condições de uso na página da fonte",
+      licenca: b.licenca ?? "Não registrada na base; consultar as condições de uso na página da fonte",
     },
     unidade: b.unidade,
     frequencia: b.frequencia,

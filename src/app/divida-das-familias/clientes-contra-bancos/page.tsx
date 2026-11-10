@@ -313,7 +313,7 @@ export default function ClientesContraBancosPage({ searchParams = {} }: { search
               natureza="CALCULADO"
               proveniencia={provenienciaNacional(g, { indicador: `Casos únicos por tribunal e natureza da ação, ${NOME_RAMO[ramo]}`, natureza: "CALCULADO", unidade: "casos únicos" })}
               leitura={<LeituraGuiada>Leia cada barra por dentro: as partes mostram como os temas se dividem naquele tribunal. Cada parte são os casos únicos daquele grupo de assuntos no acervo do tribunal, não o total de processos do tribunal.</LeituraGuiada>}
-              comoInterpretar={`Sem recorte temporal. ${prosa(N.nota_temporal)}`}
+              comoInterpretar={prosa(N.nota_temporal)}
               naoConcluir="que um tribunal tem mais litígios bancários que outro. O acervo indexado varia por tribunal, por sistema de origem e por período de adesão ao DataJud; a leitura válida é a composição dentro de cada tribunal."
               tabela={{
                 titulo: `Casos únicos por tribunal e natureza da ação · ${universoRamo} · ${acervo}`,

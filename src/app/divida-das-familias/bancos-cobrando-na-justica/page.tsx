@@ -220,7 +220,7 @@ export default function BancosCobrandoNaJusticaPage({ searchParams = {} }: { sea
             <p>{prosa(g.sintese)}</p>
             <p className="mt-2">
               Síntese calculada pela mesma regra dos números. Janela de {janela}; meses parciais fora: {parciais}; {cobertura}.
-              {via ? ` Via mais usada: ${via.nome.toLowerCase()}, com ${n0(via.bancario.casos_12m)} casos, ${pct0(via.bancario_share)} deles com assunto bancário.` : ""}
+              {via ? ` Via mais usada: ${via.nome.toLowerCase()}, com ${n0(via.bancario.casos_12m)} casos com assunto bancário, ${pct0(via.bancario_share)} das ações dessa classe com qualquer credor.` : ""}
             </p>
           </>
         }
@@ -442,9 +442,9 @@ export default function BancosCobrandoNaJusticaPage({ searchParams = {} }: { sea
         notas={{
           id: "para-ler",
           itens: [
-            { termo: "Busca e apreensão", definicao: "Ação em que o credor pede a retomada do bem dado em garantia, quase sempre um veículo financiado com alienação fiduciária." },
-            { termo: "Execução de título extrajudicial", definicao: "Cobrança direta de uma dívida que já tem documento com força de cobrança, como uma cédula de crédito ou um contrato assinado." },
-            { termo: "Ação monitória", definicao: "Cobrança de dívida que tem prova escrita, mas não tem título executivo. O juiz primeiro reconhece a dívida." },
+            { termo: "Busca e apreensão", definicao: "Ação em que o credor pede a retomada do bem dado em garantia. É a via do financiamento de veículos com alienação fiduciária." },
+            { termo: "Execução de título extrajudicial", definicao: "Cobrança direta de uma dívida que já tem título, como cédulas de crédito e contratos." },
+            { termo: "Ação monitória", definicao: "Cobrança de dívida que não tem título executivo, o documento que permite a execução direta." },
             { termo: "Execução hipotecária do SFH", definicao: "Cobrança de financiamento de imóvel garantido por hipoteca. É residual: hoje os imóveis são financiados com alienação fiduciária." },
             {
               termo: "Assunto bancário",
@@ -479,8 +479,8 @@ export default function BancosCobrandoNaJusticaPage({ searchParams = {} }: { sea
               Fonte:{" "}
               <a href={g.fonte.catalogo} className={link} rel="noopener noreferrer">
                 {nomeFonte(g.fonte.nome)}
-              </a>{" "}
-              ({g.fonte.licenca}; nível {g.fonte.nivel.replace(/\s+—\s+/, ", ")}). Coletado em {coletado}. Natureza declarada pela base: contagens do DataJud observadas; janelas, variações e razões por habitante e por carteira
+              </a>
+              . Licença: {g.fonte.licenca}. Nível da fonte: {g.fonte.nivel.replace(/\s+—\s+/, ", ")}. Coletado em {coletado}. Natureza declarada pela base: contagens do DataJud observadas; janelas, variações e razões por habitante e por carteira
               calculadas.
             </p>
             <p>

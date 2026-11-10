@@ -468,7 +468,7 @@ export default function EmpregoFormalPage() {
             { termo: "Variação em 12 meses", definicao: "O saldo dos últimos 12 meses dividido pelo estoque de 12 meses antes. Compara o mês com o mesmo mês do ano anterior." },
             {
               termo: "Distância da média (desvio-padrão)",
-              definicao: `Quanto a variação em 12 meses está acima ou abaixo da média da própria seção desde ${inicioJanela}, medida em desvios-padrão. A gold chama de contração o que fica abaixo de −1 e de aquecido o que fica acima de +1.`,
+              definicao: `Quanto a variação em 12 meses está acima ou abaixo da média da própria seção desde ${inicioJanela}, medida em desvios-padrão. A publicação chama de contração o que fica abaixo de −1 e de aquecido o que fica acima de +1.`,
             },
             { termo: "Retenção", definicao: "Saldo em 12 meses dividido pelas admissões em 12 meses, por UF. De cada 100 contratações, quantas viraram vínculo a mais." },
             { termo: "Seção CNAE", definicao: "O nível mais agregado da classificação oficial de atividades econômicas, identificado por uma letra (C é a indústria de transformação, G é o comércio)." },
@@ -481,7 +481,7 @@ export default function EmpregoFormalPage() {
             <TabelaDados
               titulo="Catálogo de indicadores do emprego formal"
               colunas={["Indicador", "Definição", "Unidade", "Fonte", "Limitações"]}
-              linhas={d.catalogo.map((c) => [c.nome, textoDaGold(c.definicao), c.unidade, textoDaGold(c.fonte), textoDaGold(c.limitacoes)])}
+              linhas={d.catalogo.map((c) => [textoDaGold(c.nome), textoDaGold(c.definicao), c.unidade === "σ" ? "desvios-padrão" : c.unidade, textoDaGold(c.fonte), textoDaGold(c.limitacoes)])}
               limite={d.catalogo.length}
               recolhida={false}
             />
@@ -499,11 +499,11 @@ export default function EmpregoFormalPage() {
               <a href={d.fontes.sgs.catalogo} className={link} rel="noopener noreferrer">
                 {textoDaGold(d.fontes.sgs.nome)}
               </a>{" "}
-              ({d.fontes.sgs.licenca}; {textoDaGold(d.fontes.sgs.nivel)}) e{" "}
+              ({d.fontes.sgs.licenca}; nível {textoDaGold(d.fontes.sgs.nivel)}) e{" "}
               <a href={d.fontes.ipea.catalogo} className={link} rel="noopener noreferrer">
                 {textoDaGold(d.fontes.ipea.nome)}
               </a>{" "}
-              ({d.fontes.ipea.licenca}; {textoDaGold(d.fontes.ipea.nivel)}). A Scrutiniums não recalcula nenhum valor desta página: estoque, saldos, variação, distância da média,
+              ({d.fontes.ipea.licenca}; nível {textoDaGold(d.fontes.ipea.nivel)}). A Scrutiniums não recalcula nenhum valor desta página: estoque, saldos, variação, distância da média,
               retenção e posições são os da publicação do Observatório de Crédito.
             </p>
             <p>

@@ -17,7 +17,7 @@ export function BaixarCsv({ nome, conteudo, rotulo }: Readonly<{ nome: string; c
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }}
-      className="inline-flex min-h-[44px] items-center border border-carvao px-4 text-sm text-carvao transition-colors duration-150 hover:bg-carvao hover:text-marfim active:scale-[0.98]"
+      className="inline-flex min-h-[44px] items-center border border-carvao px-4 text-sm text-carvao transition-[color,background-color,transform] duration-150 ease-out hover:bg-carvao hover:text-marfim active:scale-[0.98] motion-reduce:transition-none"
     >
       {rotulo}
     </button>

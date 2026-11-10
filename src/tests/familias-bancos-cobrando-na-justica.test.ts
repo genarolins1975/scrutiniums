@@ -36,10 +36,17 @@ const n = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFract
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 const mesAno = (iso: string) => `${MESES[Number(iso.slice(5, 7)) - 1]}/${iso.slice(0, 4)}`;
 
+/** Cada recorte é renderizado uma vez só (a máquina de teste é compartilhada). */
+const feitos = new Map<string, string>();
 async function html(params: Record<string, string> = {}): Promise<string> {
+  const chave = JSON.stringify(params);
+  const pronto = feitos.get(chave);
+  if (pronto !== undefined) return pronto;
   caminho.atual = ROTA;
   const { default: Pagina } = await import("@/app/divida-das-familias/bancos-cobrando-na-justica/page");
-  return renderToStaticMarkup(Pagina({ searchParams: params }) as ReactElement);
+  const h = renderToStaticMarkup(Pagina({ searchParams: params }) as ReactElement);
+  feitos.set(chave, h);
+  return h;
 }
 
 const painel = (h: string) => h.slice(h.indexOf("data-painel="));
@@ -59,7 +66,7 @@ function existe(href: string): boolean {
   return existsSync(join(raiz, "src/app", c, "page.tsx"));
 }
 
-describe("Bancos cobrando na Justiça: molde e invariantes", () => {
+describe("Bancos cobrando na Justiça: molde e invariantes", { timeout: 120_000 }, () => {
   it("segue o molde de painel no recorte padrão e em cada recorte da URL", async () => {
     conferirPainel(ROTA, await html());
     for (const g of gold.grupos) conferirPainel(ROTA, await html({ classe: g.id }));
@@ -77,7 +84,9 @@ describe("Bancos cobrando na Justiça: molde e invariantes", () => {
     expect((faixa.match(/data-numero-indicador=""/g) ?? []).length).toBe(4);
     for (const esperado of [n0(B.casos_12m), n0(B.casos_12m_todos), n(B.por_mil_hab, 2), n(B.por_bi_carteira, 1)]) expect(faixa, esperado).toContain(`>${esperado}<`);
     const fim = mesAno(gold.janela_12m.fim);
-    for (const [, natureza, prova] of faixa.matchAll(/data-natureza="([A-Z]+)"[^>]*data-prova-numero="([^"]+)"/g)) {
+    const provas = [...faixa.matchAll(/data-natureza="([A-Z]+)"[^>]*data-prova-numero="([^"]+)"/g)];
+    expect(provas.length).toBe(4);
+    for (const [, natureza, prova] of provas) {
       expect(natureza).toBe("CALCULADO");
       const [fonte, periodo] = prova.split(" · ");
       expect(fonte).toContain("DataJud");

@@ -160,7 +160,7 @@ export default function CreditoImobiliarioPage() {
           fontesDatasSiglas: (
             <>
               <p>
-                {fonteCenso}: {textoDaGold(C.tabela)} ESTBAN, data-base {bEstban}. Informações do Mercado Imobiliário: seção de crédito, data-base {dataBr(d.datas.mi_credito)}; seção
+                {textoDaGold(C.tabela)} ESTBAN, data-base {bEstban}. Informações do Mercado Imobiliário: seção de crédito, data-base {dataBr(d.datas.mi_credito)}; seção
                 Imóveis, {dataBr(d.datas.mi_imoveis)}. SCR: {bScr}. Publicação processada em {dataBr(d.geradoEm)}.
               </p>
               <p>
@@ -448,8 +448,8 @@ export default function CreditoImobiliarioPage() {
                 </p>
                 <TabelaDados
                   titulo={`Instituições com saldo no verbete 169 do ESTBAN, ${bEstban}`}
-                  colunas={["Instituição", "Saldo, R$ bilhões", "Participação no saldo nacional, %", "Municípios em que contabiliza", "Quociente locacional mediano"]}
-                  linhas={d.instituicoes.map((i) => [i.nome, i.saldo / 1e9, i.part_nacional, i.municipios, i.ql_mediano ?? null])}
+                  colunas={["Instituição", "Saldo, R$ milhões", "Participação no saldo nacional, %", "Municípios em que contabiliza", "Quociente locacional mediano"]}
+                  linhas={d.instituicoes.map((i) => [i.nome, i.saldo / 1e6, i.part_nacional, i.municipios, i.ql_mediano ?? null])}
                   casas={[null, 1, 2, 0, 2]}
                   ausencia={{ "Quociente locacional mediano": "não aplicável" }}
                   idiomaTexto={["nome", null, null, null, null]}

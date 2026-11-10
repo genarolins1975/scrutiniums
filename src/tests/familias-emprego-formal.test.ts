@@ -113,7 +113,8 @@ describe("Emprego formal das Famílias", () => {
     const figura = html.slice(html.indexOf('data-figura-analitica="brasil-saldo"'), html.indexOf('data-figura-analitica="brasil-estoque"'));
     expect((figura.match(/<tr/g) ?? []).length).toBe(gold.serie.length + 1);
     // catálogo e cautelas do método
-    for (const c of gold.catalogo) expect(texto, c.nome).toContain(c.nome);
+    const { textoDaGold } = await import("@/lib/familias/emprego-formal");
+    for (const c of gold.catalogo) expect(texto, c.nome).toContain(textoDaGold(c.nome));
     expect((html.slice(html.indexOf('data-fatia="metodo"')).match(/<li/g) ?? []).length).toBeGreaterThanOrEqual(gold.cautelas.length);
   }, 60_000);
 

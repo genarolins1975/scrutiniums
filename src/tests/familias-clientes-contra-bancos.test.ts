@@ -35,10 +35,17 @@ const n0 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 }
 const n = (v: number, casas: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 const diaBr = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric" });
 
+/** Cada recorte é renderizado uma vez só (a máquina de teste é compartilhada). */
+const feitos = new Map<string, string>();
 async function html(ramo?: string): Promise<string> {
+  const chave = ramo ?? "";
+  const pronto = feitos.get(chave);
+  if (pronto !== undefined) return pronto;
   caminho.atual = ROTA;
   const { default: Pagina } = await import("@/app/divida-das-familias/clientes-contra-bancos/page");
-  return renderToStaticMarkup(Pagina({ searchParams: ramo ? { ramo } : {} }) as ReactElement);
+  const h = renderToStaticMarkup(Pagina({ searchParams: ramo ? { ramo } : {} }) as ReactElement);
+  feitos.set(chave, h);
+  return h;
 }
 
 /** O trecho do molde (o <main data-painel>), sem o cabeçalho da plataforma. */
@@ -55,7 +62,7 @@ function existe(href: string): boolean {
   return existsSync(join(raiz, "src/app", c, "page.tsx"));
 }
 
-describe("Clientes contra bancos na Justiça: molde e invariantes", () => {
+describe("Clientes contra bancos na Justiça: molde e invariantes", { timeout: 120_000 }, () => {
   it.each(["civel", "trabalhista"])("o ramo %s segue o molde de painel", async (ramo) => {
     conferirPainel(ROTA, await html(ramo));
   });
@@ -82,7 +89,15 @@ describe("Clientes contra bancos na Justiça: molde e invariantes", () => {
     const hoje = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric" });
     if (hoje !== coleta) expect(texto(h)).not.toContain(hoje);
     expect(texto(h)).not.toMatch(/\b(hoje|atualizado diariamente|tempo real|dados atuais)\b/i);
-    // a competência do TST é a publicada
+    // a competência do TST é a publicada, e é ela (não o dia da coleta) a referência das figuras do ranking
+    const [ano, mes] = [String(gold.camada_nominal.competencia).match(/\d{4}/)?.[0], String(gold.camada_nominal.data_escala).slice(4, 6)];
+    for (const id of ["litigantes", "por-escala"]) {
+      const figura = h.slice(h.indexOf(`data-figura-analitica="${id}"`));
+      const rodape = figura.slice(figura.indexOf('data-proveniencia=""'), figura.indexOf("</footer>"));
+      expect(rodape, `rodapé de ${id}`).toMatch(new RegExp(`referência até \\d{2}/${ano}`));
+      expect(rodape, `rodapé de ${id}`).not.toContain(coleta);
+      expect(mes).toMatch(/^\d{2}$/);
+    }
     expect(texto(h).toLowerCase()).toContain(String(gold.camada_nominal.competencia).toLowerCase());
   });
 
