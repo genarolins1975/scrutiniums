@@ -38,7 +38,7 @@ Mudanças deliberadas neste fechamento, sem perda de conteúdo:
 
 O que não foi feito, de propósito:
 
-- O código das três vistas (`renderConsignado`, `renderMoradia`, `renderEmprego`) continua em `public/obs/app.js`, sem caminho que o alcance. A única edição nesse arquivo foi trocar o link escrito à mão para `/observatorio/formal-employment`, no painel Risco setorial, por `linkDaVista("emprego")`, que entrega a página nova.
+- No fechamento, o código das três vistas (`renderConsignado`, `renderMoradia`, `renderEmprego`) ficou em `public/obs/app.js`, sem caminho que o alcançasse; a única edição nesse arquivo foi trocar o link escrito à mão para `/observatorio/formal-employment`, no painel Risco setorial, por `linkDaVista("emprego")`, que entrega a página nova. Esse código foi removido no mesmo dia, 10/11/2026, com o das outras seis vistas (seção "Remoção do código das nove vistas", abaixo).
 - As siglas das 27 UFs dentro da dispersão (a vista antiga escrevia todas, com linha-guia). O kit escreve o nome só no estado consultado e na dica; a tabela equivalente traz todos.
 - Os dois números escritos à mão em "Por que a amostra é restrita" do crédito imobiliário (desvio de 1,45 e lacuna de R$ 2,5 trilhões) continuam fora: não estão na gold. Não constavam da perda declarada na tabela de estado.
 
@@ -49,8 +49,54 @@ Como funciona, para quem for mexer:
 - **Uma lista só.** `redirects()` em `next.config.mjs` lê `paineis-reescritos.json` e gera uma regra permanente para cada painel com `redirecionar: true`. O Next repassa a consulta (`?sec=` e os recortes) ao destino. Redirecionar um painel (como foi feito com os três últimos em 10/11/2026) é trocar `false` por `true` nesse arquivo, rodar `node scripts/barra-spa.mjs` e `npm run preparar`, trocar o endereço do painel em `GRUPOS_CREDITO` (`src/lib/credito/navegacao.ts`) e atualizar a lista escrita em `src/tests/redirecionamento-reescritos.test.ts`, que existe para exigir decisão nova.
 - **Sem sessão.** No Next 14 os `redirects()` rodam antes do middleware: o endereço antigo responde 308 para a página nova, e é o middleware, já no endereço novo, que leva a `/entrar?de=<página nova com a consulta>`.
 - **Dentro da aplicação do Crédito.** O índice que o servidor embute (`substituidas`, `src/lib/observatorios/barraSpa.ts`) diz ao `app.js` a página nova, o título e a pergunta de cada vista redirecionada. O "Início do painel" as lista como link comum para a página nova, e `nav()`, as pontes, os alertas e o histórico do navegador saem da aplicação em vez de desenhar a vista.
-- **Código morto.** As funções de render das nove vistas (`renderDesenrola`, `renderBets`, `renderFraudes`, `renderJudicial`, `renderCobranca`, `renderConduta` e, desde o fechamento da paridade, `renderConsignado`, `renderMoradia`, `renderEmprego`) continuam em `public/obs/app.js`, sem caminho que as alcance quando o índice está presente. Não foram removidas porque cerca de vinte arquivos de teste leem esse código como texto; a remoção pede um PR próprio, aposentando essas asserções uma a uma. Os verbetes do guia (`GUIA`) dessas vistas também ficaram, sem uso na tela: o "Início do painel" mostra a pergunta da página nova.
-- **Testes.** `src/tests/redirecionamento-reescritos.test.ts` (lista única, permanência, consulta, login com destino novo e, com build, a cadeia inteira no servidor) e `src/tests/split-bundle-browser.test.ts` (no navegador, `nav("desenrola")` e o endereço antigo chegam à página nova) e `src/tests/familias-paridade-browser.test.ts` (os três últimos: endereço antigo com consulta, mapa, recorte no endereço, dispersão e pesos).
+- **Código removido em 10/11/2026.** As funções de render das nove vistas (`renderDesenrola`, `renderBets`, `renderFraudes`, `renderJudicial`, `renderCobranca`, `renderConduta`, `renderConsignado`, `renderMoradia`, `renderEmprego`), os verbetes do guia (`GUIA`) e o registro delas nos mapas da aplicação saíram de `public/obs/app.js`. O que saiu, o que ficou e a decisão tomada em cada teste que lia esse código estão na seção "Remoção do código das nove vistas", logo abaixo.
+- **Testes.** `src/tests/redirecionamento-reescritos.test.ts` (lista única, permanência, consulta, login com destino novo e, com build, a cadeia inteira no servidor), `src/tests/split-bundle-browser.test.ts` (no navegador, `nav("desenrola")` e o endereço antigo chegam à página nova), `src/tests/familias-paridade-browser.test.ts` (os três últimos: endereço antigo com consulta, mapa, recorte no endereço, dispersão e pesos) e, desde a remoção, `src/tests/vistas-reescritas-browser.test.ts` (o "Início do painel", três vistas vivas, `nav()` das nove e o gráfico incorporado) e `src/tests/split-bundle.test.ts` (as nove fora da fonte e dos artefatos).
+
+## Remoção do código das nove vistas (10/11/2026)
+
+Feita no mesmo dia do redirecionamento, em mudança própria. As referências de linha do `app.js` nas seções de paridade abaixo (por exemplo "linhas 7700 a 8123") são as do arquivo antes da remoção; o texto das vistas antigas continua no histórico do repositório.
+
+**O que saiu de `public/obs/app.js`** (versão 0.129.0):
+
+- 80 declarações de topo, achadas por análise de alcance a partir das nove funções de render (uma declaração só sai se todas as citações dela, em código e em texto de `onclick`, estão em código que também sai): as nove funções de render e as auxiliares que só elas usavam (`judSet`, `judCSV`, `JUD_CORES`; `desSelo`, `desFiltra`, `desInst`, `desLacuna`, `DES_SELO_DIC`; `betsNivel`, `betsStatus`, `betsEloChip`, `betsBar`, `betsExp`, `betsExpSet`, `betsJSON`, `betsCSV`, `betsExplorerCSV`, `epaeCSV`; `frdExp`, `frdExpSet`, `frdJSON`, `frdCSV`, `frdExplorerCSV`; `cdSet`, `cdCSV`; `empSet`, `empCSV`; `cbSet`, `cbCSV`; as de prefixo `mor` e `MOR_`; as de prefixo `cg` e `CG_`, inclusive `cgEscala`) e os estados `state.jud`, `state.cd`, `state.emp` e `state.cb`.
+- Os nove verbetes do `GUIA`; as nove entradas de `RENDER` e de `VIEW_DATA`; oito de `CHUNK_OF_VIEW` (a vista judicial vivia no núcleo); sete de `VIEW_COLETORES`; três de `VIEW_VINTAGE`.
+- No código vivo: os recortes do judicial e do consignado em `buildQuery` e na leitura da consulta, a carga dos contornos de UF que só o consignado pedia e as duas menções a `#view-consignado` e `#view-moradia` em `adaptaTabelasMoveis`.
+- Fora do `app.js`: os nove contêineres `<section id="view-...">` de `index.html` e de `embed.html` e as regras de `styles.css` presas a `#view-desenrola`, `#view-consignado` e `#view-moradia`. As classes de estilo que essas vistas usavam (`.des*`, `.cg*`, `.mor*`, `.bets-*`) não foram revistas uma a uma: algumas são usadas por vistas vivas (`.bets-tl` nos Marcos regulatórios, `.bets-bar` no comparador).
+- Em volta: as cinco constantes `ROTA_ANTIGA_*` sem uso em `src/lib/familias`; o atalho "Habitação" do "Início do painel" (`public/obs/atlas.js`) passou a ligar direto a `/credito-imobiliario`; e o `embed.html` passou a pedir o `app.min.js` na versão corrente (estava em 0.124.0, e um núcleo antigo guardado em cache pediria pedaços que já não trazem as vistas removidas).
+
+**O que ficou, e por quê:**
+
+- As nove chaves de `ROUTES`. O endereço antigo é a chave do mapa `substituidas` que o servidor embute (`substituta(v)` lê `s[ROUTES[v]]`), é por ele que o "Início do painel" reconhece a vista de cada página nova (`gruposDoMenu`) e é o destino quando o índice falta.
+- Os nove títulos de `VIEW_TITLES`: texto do link e do aviso quando o índice falta.
+- `REG_LABELS` (rótulos dos botões dos Marcos regulatórios, que saem para a página nova por `nav()`), `MAPA_CICLO` e os blocos de moradia, consignado, emprego e cobrança da página do estado, que são de vistas vivas.
+- As golds e o pipeline, intocados: as páginas novas leem os mesmos arquivos de `public/obs/data/gold`.
+
+**Mudança de comportamento, uma só:** o gráfico incorporado (`/obs/embed.html?g=<vista>`) não recebe o índice do servidor e, por isso, ainda desenhava as nove vistas antigas. Sem o desenho, ele mostra um aviso curto com o título e o link para o endereço antigo, que o servidor redireciona para a página nova (exige conta). Dentro de um gráfico incorporado, uma ponte para vista reescrita abre esse endereço em outra aba.
+
+**Tamanho (bytes):** `app.js` de 1.333.401 para 1.085.280; núcleo minificado (`app.min.js`) de 578.100 para 558.808; pedaço emergentes de 360.403 para 275.978; pedaço municipal de 181.276 para 66.554.
+
+**Testes que liam o código removido.** Regra: a asserção que protege gold, pipeline ou conteúdo da página fica, apontada para onde isso vive hoje; a que só protegia o desenho da vista removida é aposentada, com o motivo e a data escritos no próprio teste. Nenhum arquivo de teste foi apagado, e nenhum teste foi pulado.
+
+| Teste | Decisão | Asserções aposentadas | Garantia equivalente |
+|---|---|---|---|
+| `bets-data` | Registro da vista aposentado; "sem modo demo" passa a ler a página nova | 4 | `familias-apostas`, `redirecionamento-reescritos`, `split-bundle-browser` |
+| `epae-data` | Texto do cartão da EPAE mantido, lido na figura `#pix-da-secao` da página nova; carga e CSV da vista aposentados | 3 | `familias-apostas` ("mostra os valores das golds") |
+| `fraudes-data` | Registro da vista aposentado; "sem modo demo" passa a ler a página nova | 4 | `familias-golpes-e-fraudes` |
+| `cobranca-data` | Registro e posição no pedaço aposentados; bloco da página do estado e pipeline mantidos | 10 | `familias-bancos-cobrando-na-justica` |
+| `conduta-data` | Registro, posição no pedaço e texto da ordem cronológica aposentados; guarda contra ordenação passa a ler a página nova | 13 | `familias-sancoes-e-reclamacoes` ("as listas nominais seguem a ordem da gold") |
+| `emprego-data` | Registro e posição no pedaço aposentados; bloco da página do estado, Risco setorial e pipeline mantidos | 10 | `familias-emprego-formal`, `familias-paridade-browser` |
+| `desenrola-data` | Contenções mantidas, lidas na página nova e em `CompararCredores`; ordem no código da vista e uma frase do desenho aposentadas | 2 | `familias-desenrola` |
+| `avaliacao-set26` | `guiaPagina` de bets e fraudes e cabeçalho de sete vistas aposentados; aviso do Desenrola passa a ler a página nova; contagem de `phActions` de 5 para 3; versão 0.129.0 | 9 | `familias-apostas`, `familias-golpes-e-fraudes`, `redirecionamento-reescritos` |
+| `guia-navegacao` | Seis verbetes exigidos aposentados; teste novo confere a pergunta do registro | 6 | `familias-*` ("cumpre a anatomia do molde") |
+| `mapa-menu` | Verbete exigido das nove vistas do ciclo aposentado; as demais seguem exigindo | 9 | `guia-navegacao`, `vistas-reescritas-browser` |
+| `split-bundle` | Cinco vistas saem dos pedaços; teste novo confere que as nove estão fora da fonte e dos três artefatos | 20 | `split-bundle-browser`, `familias-paridade-browser` |
+| `p2-rodada1` | Ponte de Golpes para o MED do Pix mantida, lida na página nova; âncora `px-med` aposentada | 1 | `familias-golpes-e-fraudes` |
+| `regulacao-timeline` | Marcos do consignado e do Desenrola mantidos, lidos em `src/lib/familias`; contagem de usos na aplicação de 4 para 2 | 0 | `familias-consignado` (marcos numerados) |
+| `p1-tecnico` | Contagem de renderizadores que delegam `bi` ao `fmt` de 4 para 3 | 0 | não se aplica |
+
+Total: 91 asserções aposentadas em 12 arquivos; 2 arquivos só com contagem ajustada. Testes novos: `src/tests/vistas-reescritas-browser.test.ts`, `src/tests/vitrine-credito-contagem.test.ts` e o apoio `src/tests/suporte/vistas-reescritas.ts`, que confere o registro inteiro de cada vista (endereço e título ficam, o resto saiu).
+
+**Contagem da vitrine da home.** A vitrine do Crédito contava as abas do catálogo (43, entre elas as nove reescritas, o próprio "Início do painel" e as Perguntas rápidas). Passa a contar pela mesma fonte do "Início do painel", os grupos do Crédito (`paginasTematicasDoCredito`, `src/lib/credito/navegacao.ts`): 32 páginas temáticas, o número que a aplicação escreve na tela. As nove páginas reescritas contam uma vez só, na coleção dona, das Famílias (`src/tests/vitrine-credito-contagem.test.ts`).
 
 ---
 

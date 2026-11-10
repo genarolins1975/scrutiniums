@@ -246,10 +246,16 @@ ao login com o destino novo.
 - Nenhuma vista antiga das Famílias continua alcançável: o "Início do painel" (grupo "Território e pessoas" e passo 4 do
   ciclo) liga à página nova, e o endereço direto redireciona. Um recorte salvo ou um link antigo do consignado com `?cgcam=`,
   `?cgregiao=` ou `?cgconf=` reabre o mesmo recorte na página nova, que lê os mesmos parâmetros.
-- O código de render das nove vistas ficou em `public/obs/app.js`, morto; a remoção é um PR próprio (detalhe e motivo em
-  `docs/familias/PARIDADE.md`).
+- O código de render das nove vistas foi removido de `public/obs/app.js` em 10/11/2026 (versão 0.129.0 da aplicação): funções
+  de render, verbetes do guia e o registro nos mapas. Ficaram as nove chaves de `ROUTES`, porque o endereço antigo é a chave
+  do mapa `substituidas`, e os títulos. O que saiu, o que ficou, o tamanho antes e depois e a decisão em cada teste que lia
+  esse código estão em `docs/familias/PARIDADE.md`, seção "Remoção do código das nove vistas".
+- A vitrine da home passou a contar as páginas do Crédito pela mesma fonte do "Início do painel" (os grupos do Crédito): 32
+  páginas temáticas, no lugar das 43 abas do catálogo, que incluíam as nove reescritas. As nove contam uma vez só, na coleção
+  dona, das Famílias (`src/tests/vitrine-credito-contagem.test.ts`).
 - Testes: `src/tests/redirecionamento-reescritos.test.ts`, `src/tests/mapa-menu.test.ts` e, no navegador,
-  `src/tests/split-bundle-browser.test.ts` e `src/tests/familias-paridade-browser.test.ts` (as três últimas, na página nova).
+  `src/tests/split-bundle-browser.test.ts`, `src/tests/familias-paridade-browser.test.ts` (as três últimas, na página nova) e
+  `src/tests/vistas-reescritas-browser.test.ts` (a aplicação depois da remoção do código das nove vistas).
   Os testes de navegador que abriam a vista antiga do consignado e a da moradia tiveram essas asserções aposentadas, com o
   motivo escrito em cada arquivo (lista em `docs/familias/PARIDADE.md`).
 
