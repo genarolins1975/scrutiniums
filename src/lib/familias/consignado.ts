@@ -32,6 +32,26 @@ export type DadosConsignado = {
   marcosRegulacao: { x: string; rotulo: string }[];
 };
 
+const mesesEntre = (a: string, b: string) => (Number(b.slice(0, 4)) - Number(a.slice(0, 4))) * 12 + Number(b.slice(5, 7)) - Number(a.slice(5, 7));
+
+/**
+ * Os marcos que cabem no gráfico da série sem que um rótulo cubra o outro (auditoria de 10/11/2026, achado 1: oito rótulos de texto se
+ * sobrepunham a 1440 px e ficavam ilegíveis a 390 px). Regra sem escolha editorial: do mais antigo ao mais recente, entra o marco que
+ * está a pelo menos um oitavo do período do último que entrou, até o máximo de quatro. Cada um aparece no gráfico só com o número de
+ * ordem; o texto fica na lista logo abaixo, e todos os eventos seguem na evolução regulatória do método.
+ */
+export function marcosNoGrafico<M extends { x: string; rotulo: string }>(marcos: readonly M[], inicio: string, fim: string, maximo = 4): M[] {
+  const minimo = Math.ceil(mesesEntre(inicio, fim) / 8);
+  const dentro = marcos.filter((m) => m.x >= inicio.slice(0, 7) && m.x <= fim.slice(0, 7)).sort((a, b) => a.x.localeCompare(b.x));
+  const escolhidos: M[] = [];
+  for (const m of dentro) {
+    if (escolhidos.length >= maximo) break;
+    const ultimo = escolhidos.at(-1);
+    if (!ultimo || mesesEntre(ultimo.x, m.x) >= minimo) escolhidos.push(m);
+  }
+  return escolhidos;
+}
+
 let cache: DadosConsignado | null = null;
 
 export function dadosConsignado(): DadosConsignado {

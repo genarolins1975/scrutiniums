@@ -9,7 +9,8 @@ import { ExploradorMunicipios } from "@/components/familias/consignado/Explorado
 import { COLUNAS_SENSIBILIDADE, ROTULO_CONFIABILIDADE, ROTULO_SATURACAO, linhaSensibilidade, moeda, n } from "@/components/familias/consignado/camadas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 import { dataBr, mesAno } from "@/lib/perguntas/leitura";
-import { DESCRICAO_CONSIGNADO, PERGUNTA_CONSIGNADO, ROTA_CONSIGNADO, dadosConsignado, provConsignado } from "@/lib/familias/consignado";
+import { DicaRolagem } from "@/components/familias/DicaRolagem";
+import { DESCRICAO_CONSIGNADO, PERGUNTA_CONSIGNADO, ROTA_CONSIGNADO, dadosConsignado, marcosNoGrafico, provConsignado } from "@/lib/familias/consignado";
 
 export const dynamic = "force-static";
 
@@ -56,10 +57,12 @@ export default function ConsignadoPage() {
   const B = g.brasil, G = g.sgs, a = G.atual, S = g.scr, C = g.circularidade, I = g.instituicoes, R = g.reclamacoes, T = g.totais;
   const mesSgs = mesAno(G.data_base), mesScr = mesAno(S.data_base), dez = `dez/${g.ano}`;
   const saldo = G.series.saldo as { d: string; inss: number; publico: number; privado: number }[];
-  const marcos = [
+  const marcosDaSerie = [
     ...(g.linha_do_tempo as { d: string; t: string; tipo: string }[]).filter((e) => e.d >= saldo[0].d && e.tipo === "margem").map((e) => ({ x: e.d.slice(0, 7), rotulo: e.t })),
     ...marcosRegulacao,
   ];
+  // no gráfico, só os marcos que cabem sem um rótulo cobrir o outro, cada um com o número de ordem; o texto vai na lista abaixo do gráfico
+  const marcos = marcosNoGrafico(marcosDaSerie, saldo[0].d, saldo[saldo.length - 1].d);
   const estados = (g.estados as { uf: string; nome: string; outras_censo: number | null; cons_por_60: number | null; a60: number }[]).filter((e) => e.outras_censo != null && e.cons_por_60 != null);
   const ref = (C.especificacoes as { referencia: boolean; r: number }[]).find((e) => e.referencia);
   const classes = ["baixa_penetracao", "penetracao_elevada", "possivel_saturacao"] as const;
@@ -68,6 +71,22 @@ export default function ConsignadoPage() {
   const ranking = I.ranking as { cnpj8: string; nome: string; taxa_am: number; taxa_aa: number; posicao: number; vs_mediana: number }[];
   const janela = `${dataBr(I.janela.inicio)} a ${dataBr(I.janela.fim)}`;
   const periodoRec = `${mesAno(R.de)} a ${mesAno(R.ate)}`;
+  // Auditoria de 10/11/2026, achado 8: o intervalo esconde mês sem publicação. Os meses publicados e os ausentes saem da lista de
+  // competências da gold; mês ausente não é mês com zero reclamação.
+  const competencias = R.competencias as string[];
+  const mesesDoIntervalo: string[] = [];
+  for (let [ano, mes] = [Number(String(R.de).slice(0, 4)), Number(String(R.de).slice(5, 7))]; `${ano}-${String(mes).padStart(2, "0")}` <= String(R.ate).slice(0, 7); mes === 12 ? ((ano += 1), (mes = 1)) : (mes += 1))
+    mesesDoIntervalo.push(`${ano}-${String(mes).padStart(2, "0")}`);
+  const mesesAusentes = mesesDoIntervalo.filter((m) => !competencias.includes(m));
+  const lista = (itens: string[]) => (itens.length <= 1 ? itens.join("") : `${itens.slice(0, -1).join(", ")} e ${itens.at(-1)}`);
+  const coberturaRec =
+    mesesAusentes.length === 0
+      ? `Os ${competencias.length} meses do período estão publicados.`
+      : `${competencias.length} dos ${mesesDoIntervalo.length} meses do período estão publicados; ${lista(mesesAusentes.map(mesAno))} não ${mesesAusentes.length === 1 ? "está" : "estão"} na base. Mês ausente não é mês sem reclamação.`;
+  const periodoRecNumero = mesesAusentes.length === 0 ? periodoRec : `${periodoRec}, sem ${lista(mesesAusentes.map(mesAno))}`;
+  // Auditoria de 10/11/2026, achado 12: a última faixa do gráfico (recorte sem confiabilidade baixa) e o total nacional da gold contam
+  // universos diferentes; a página diz os dois lado a lado. A última faixa de FAIXAS_DEPENDENCIA é a de 50% ou mais.
+  const acima50NoGrafico = resumo.faixas.at(-1) ?? null;
   const tempo = [...(g.linha_do_tempo as { d: string; t: string; tipo: string; norma: string; o: string }[])].reverse();
   const censo = (indicador: string, natureza: "OBSERVADO" | "CALCULADO", unidade: string, limitacoes: string[]) => provConsignado(g, "censo", { indicador, natureza, unidade, inicio: "2022", fim: "2022", limitacoes });
 
@@ -108,8 +127,8 @@ export default function ConsignadoPage() {
             nota: `${n(a.privado.inad / a.inss.inad, 1)} vezes a do INSS, no mesmo conceito do SGS.`,
           },
           {
-            rotulo: "Reclamações de beneficiários do INSS sobre consignado", valor: R.total, formato: "inteiro", unidade: "reclamações", periodo: periodoRec, recorte: `${n(R.municipios)} municípios`, fonte: "consumidor.gov.br", natureza: "CALCULADO",
-            nota: "Mede propensão a reclamar, não incidência de problema.",
+            rotulo: "Reclamações de beneficiários do INSS sobre consignado", valor: R.total, formato: "inteiro", unidade: "reclamações", periodo: periodoRecNumero, recorte: `${n(R.municipios)} municípios`, fonte: "consumidor.gov.br", natureza: "CALCULADO",
+            nota: `${coberturaRec} Mede propensão a reclamar, não incidência de problema.`,
           },
           {
             rotulo: "Carteira total do consignado", valorTexto: moeda(a.total.saldo * 1e6), formato: "texto", unidade: "de saldo", periodo: mesSgs, recorte: "Brasil", fonte: "Banco Central, SGS", natureza: "CALCULADO",
@@ -130,7 +149,7 @@ export default function ConsignadoPage() {
                   Em {mesSgs}, o saldo era de {biDeMilhoes(a.inss.saldo)} com beneficiários do INSS, {biDeMilhoes(a.publico.saldo)} com servidores públicos e {biDeMilhoes(a.privado.saldo)} com trabalhadores do setor privado.
                 </LeituraGuiada>
               }
-              comoInterpretar="As marcas no gráfico indicam mudanças de margem consignável e normas ligadas ao consignado. Elas estão ali para permitir a inspeção da série."
+              comoInterpretar={`As linhas tracejadas numeradas indicam ${marcos.length} dos ${marcosDaSerie.length} marcos de margem consignável e de normas do período, os que cabem no gráfico sem que um rótulo cubra o outro; a lista abaixo do gráfico diz o que é cada número. Todos os ${tempo.length} eventos, com norma e data, estão em "Evolução regulatória", no método desta página. As marcas servem para a inspeção da série.`}
               naoConcluir="que uma norma causou a variação do saldo. Coincidência no tempo não é efeito, e a página não atribui a variação da série a nenhuma das normas marcadas."
               tabela={{
                 titulo: "Saldo do consignado por vínculo do tomador (R$ bilhões)",
@@ -148,6 +167,7 @@ export default function ConsignadoPage() {
                     recolhida={false}
                     id="vinculo"
                     tituloVisivel={`Consignado por vínculo do tomador, ${mesSgs}`}
+                    lead={<DicaRolagem />}
                     titulo={`Consignado por vínculo do tomador, ${mesSgs}`}
                     colunas={["Vínculo do tomador", "Saldo (R$ bilhões)", "Inadimplência (% da carteira)", "Juros de novas operações (% ao ano)", "Prazo da concessão (meses)"]}
                     linhas={[
@@ -192,15 +212,23 @@ export default function ConsignadoPage() {
                 formatoX="mes"
                 series={[
                   { id: "inss", rotulo: "Beneficiários do INSS", sigla: "INSS", cor: "var(--serie-1)" },
-                  { id: "publico", rotulo: "Servidores públicos", sigla: "Públicos", cor: "var(--serie-2)" },
+                  // o rótulo direto abrevia pelo começo do nome da legenda ("Servidores públicos" não cabe na margem do gráfico)
+                  { id: "publico", rotulo: "Servidores públicos", sigla: "Servidores", cor: "var(--serie-2)" },
                   { id: "privado", rotulo: "Setor privado", sigla: "Privado", cor: "var(--serie-4)" },
                 ]}
                 unidade="R$ bilhões"
                 casas={0}
                 zeroNoEixo
                 zoom
-                marcos={marcos}
+                marcos={marcos.map((m, i) => ({ x: m.x, rotulo: String(i + 1) }))}
               />
+              <ol className="t-meta mt-3 max-w-prose2 space-y-1 text-carvao-muted" data-marcos-do-grafico="" aria-label="Marcos numerados no gráfico">
+                {marcos.map((m, i) => (
+                  <li key={m.x}>
+                    <span className="tabular-nums text-carvao">{i + 1}.</span> {mesAno(m.x)}: {t(m.rotulo)}
+                  </li>
+                ))}
+              </ol>
             </FiguraAnalitica>
 
             <FiguraAnalitica
@@ -227,6 +255,7 @@ export default function ConsignadoPage() {
                   recolhida={false}
                   id="indicadores-nacionais"
                   tituloVisivel="Indicadores nacionais de envelhecimento"
+                  lead={<DicaRolagem />}
                   titulo="Indicadores nacionais de envelhecimento, Censo 2022"
                   colunas={["Indicador", "Valor", "O que mede"]}
                   linhas={[
@@ -268,7 +297,8 @@ export default function ConsignadoPage() {
               complementares={[{ rotulo: "Sobre a renda domiciliar", p: censo("Rendimento domiciliar", "OBSERVADO", "R$ de julho de 2022", ["O Censo não separa aposentadoria e pensão das demais rendas."]) }]}
               leitura={
                 <LeituraGuiada>
-                  Em {n(T.dependencia_acima_50)} dos {n(T.municipios)} municípios do país, os benefícios líquidos passam de 50% da renda domiciliar; no Brasil, o peso é de {n(B.peso, 1)}%.
+                  Em {n(T.dependencia_acima_50)} dos {n(T.municipios)} municípios do país, os benefícios líquidos passam de 50% da renda domiciliar; no Brasil, o peso é de {n(B.peso, 1)}%. O gráfico conta só os {n(resumo.base)} municípios sem confiabilidade baixa
+                  {acima50NoGrafico ? <>, e nele a faixa acima de 50% tem {n(acima50NoGrafico.n)}: os demais dos {n(T.dependencia_acima_50)} têm confiabilidade baixa e ficam fora das barras</> : null}.
                 </LeituraGuiada>
               }
               comoInterpretar={`A massa de benefícios é comparada com a renda domiciliar do Censo, que é de julho de 2022. Por isso o valor de dezembro de ${g.ano} é trazido a preços de 2022 pelo IPCA, com fator de ${n(g.fator_ipca, 4)}. Sem essa correção, o peso apareceria inflado em toda a base.`}
@@ -293,7 +323,7 @@ export default function ConsignadoPage() {
                   </Texto>
                   <FaixaNumeros rotulo="Peso na renda e teste de coerência">
                     <NumeroIndicador rotulo="Peso dos benefícios na renda domiciliar" valor={B.peso} formato="percentual" casas={1} unidade="da renda domiciliar" periodo={`${dez}, a preços de 2022`} recorte="Brasil" fonte="MPS e IBGE" natureza="CALCULADO" nota="Valor líquido deflacionado sobre a renda domiciliar do Censo." />
-                    <NumeroIndicador rotulo="Municípios de alta dependência" valor={T.dependencia_acima_50} formato="inteiro" unidade="municípios" periodo={dez} recorte={`de ${n(T.municipios)}`} fonte="MPS e IBGE" natureza="CALCULADO" nota="Benefícios acima de 50% da renda domiciliar." />
+                    <NumeroIndicador rotulo="Municípios de alta dependência" valor={T.dependencia_acima_50} formato="inteiro" unidade="municípios" periodo={dez} recorte={`de ${n(T.municipios)}`} fonte="MPS e IBGE" natureza="CALCULADO" nota={`Benefícios acima de 50% da renda domiciliar, em todos os municípios, inclusive os de confiabilidade baixa${acima50NoGrafico ? `. No gráfico, que os exclui, a faixa tem ${n(acima50NoGrafico.n)}` : ""}.`} />
                     <NumeroIndicador rotulo="Municípios reprovados no teste de coerência" valor={T.incoerentes} formato="inteiro" unidade="municípios" periodo={dez} recorte={`de ${n(T.municipios)} testados`} fonte="MPS e IBGE" natureza="CALCULADO" nota={`${n((100 * T.incoerentes) / T.municipios, 1)}%: peso acima do teto, rebaixados a confiabilidade baixa.`} />
                     <NumeroIndicador rotulo="Municípios com confiabilidade alta" valor={T.selos.alta} formato="inteiro" unidade="municípios" periodo={dez} recorte={`de ${n(T.municipios)} testados`} fonte="MPS e IBGE" natureza="CALCULADO" nota="Passam no teste e têm benefícios por idoso próximos da mediana." />
                   </FaixaNumeros>
@@ -370,6 +400,7 @@ export default function ConsignadoPage() {
                     recolhida={false}
                     id="especificacoes"
                     tituloVisivel="Quatro especificações da mesma pergunta"
+                    lead={<DicaRolagem />}
                     titulo="Especificações da correlação entre dependência previdenciária e consignado"
                     colunas={["Especificação", "Correlação", "Por que difere"]}
                     linhas={[
@@ -384,6 +415,7 @@ export default function ConsignadoPage() {
                     recolhida={false}
                     id="controles"
                     tituloVisivel="Correlação parcial, controlando por terceiras variáveis"
+                    lead={<DicaRolagem />}
                     titulo="Correlação parcial, controlando por terceiras variáveis"
                     colunas={["Controlando por", "Especificação de referência", "Especificação compartilhada"]}
                     linhas={(C.controles as { variavel: string; parcial_referencia: number | null; parcial_compartilhada: number | null }[]).map((x) => [x.variavel, x.parcial_referencia, x.parcial_compartilhada])}
@@ -395,7 +427,7 @@ export default function ConsignadoPage() {
                     id="mecanismo"
                     tituloVisivel="O mecanismo não está estabelecido"
                     titulo="Candidatos a mecanismo testados"
-                    lead="A direção da associação é robusta, mas nenhuma explicação testada a sustenta. Quatro candidatos foram medidos, e os quatro falham; um deles com o sinal contrário ao que a hipótese previa."
+                    lead={<>A direção da associação é robusta, mas nenhuma explicação testada a sustenta. Quatro candidatos foram medidos, e os quatro falham; um deles com o sinal contrário ao que a hipótese previa.<DicaRolagem /></>}
                     colunas={["Candidato a mecanismo", "Correlação com consignado por pessoa de 60 anos ou mais", "Correlação com a dependência", "Leitura"]}
                     linhas={(C.mecanismo.testados as { variavel: string; com_consignado_por_60: number | null; com_peso: number | null; leitura: string }[]).map((m) => [m.variavel, m.com_consignado_por_60, m.com_peso, t(m.leitura)])}
                     casas={[null, 3, 3, null]}
@@ -447,6 +479,7 @@ export default function ConsignadoPage() {
                   recolhida={false}
                   id="criterios"
                   tituloVisivel="Critérios, para quem quiser recalcular"
+                  lead={<DicaRolagem />}
                   titulo="Critérios da classificação de saturação"
                   colunas={["Classe", "Critério"]}
                   linhas={[
@@ -517,7 +550,7 @@ export default function ConsignadoPage() {
               id="sensibilidade"
               tituloVisivel="Sensibilidade social e regulatória"
               titulo="Os 15 maiores índices de sensibilidade, municípios de 20 mil habitantes ou mais, sem confiabilidade baixa"
-              lead="Este índice mede a sensibilidade do contexto, não a conduta de ninguém. Ele não classifica moradores nem instituições. Um município no topo da lista é um lugar onde envelhecimento, peso dos benefícios na renda e exposição estimada coincidem, o que torna decisões de crédito ali mais consequentes, e não onde há irregularidade demonstrada."
+              lead={<>Este índice mede a sensibilidade do contexto, não a conduta de ninguém. Ele não classifica moradores nem instituições. Um município no topo da lista é um lugar onde envelhecimento, peso dos benefícios na renda e exposição estimada coincidem, o que torna decisões de crédito ali mais consequentes, e não onde há irregularidade demonstrada.<DicaRolagem /></>}
               colunas={COLUNAS_SENSIBILIDADE}
               linhas={resumo.sensiveis.map(linhaSensibilidade)}
               casas={[null, null, 0, 0, 0, 0]}
@@ -529,7 +562,7 @@ export default function ConsignadoPage() {
               id="reclamacoes"
               tituloVisivel="Reclamações sobre consignado de beneficiários do INSS"
               titulo={`Reclamações sobre consignado de beneficiários do INSS por instituição, ${periodoRec}`}
-              lead={`Observado: ${n(R.total)} reclamações de ${periodoRec}, em ${n(R.municipios)} municípios. Fonte: consumidor.gov.br, categoria dedicada a beneficiários do INSS. A tabela traz as 12 instituições com mais reclamações, de ${n(R.instituicoes.length)}.`}
+              lead={<>{`Observado: ${n(R.total)} reclamações de ${periodoRec}, em ${n(R.municipios)} municípios. ${coberturaRec} Fonte: consumidor.gov.br, categoria dedicada a beneficiários do INSS. A tabela traz as 12 instituições com mais reclamações, de ${n(R.instituicoes.length)}.`}<DicaRolagem /></>}
               colunas={["Instituição", "Reclamações", "Com 61 anos ou mais (%)", "Resolvidas (%)", "Nota do consumidor"]}
               linhas={(R.instituicoes as { nome: string; total: number; part_idosos: number | null; taxa_resolucao: number | null; nota: number | null }[]).slice(0, 12).map((x) => [x.nome, x.total, x.part_idosos, x.taxa_resolucao, x.nota])}
               casas={[null, 0, 1, 1, 1]}
