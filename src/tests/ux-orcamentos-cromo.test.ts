@@ -31,6 +31,7 @@ const ENTRADAS: Record<string, string> = {
   gas: "/gas-natural",
   combustiveis: "/combustiveis",
   "custo-de-vida": "/custo-de-vida",
+  divida: "/divida-das-familias",
   educacao: "/educacao-municipal",
   // a apresentação do Crédito (/observatorio-do-credito) tem casca própria até a Iniciativa 4; a navegação mora nas páginas Next
   credito: "/observatorio-do-credito/quanto-meu-banco-cobra",
@@ -53,9 +54,9 @@ const ENTRADAS: Record<string, string> = {
   "cidades-clima": "/eficiencia-estatal/meio-ambiente-clima",
   // bloco 6: o Desmatamento e emissões entra pela página ambiental do Agro
   desmatamento: "/agronegocio/ambiente",
-  // as quatro coleções servidas pela aplicação do Crédito, desde que ela ganhou a navegação da plataforma no lugar da barra lateral
-  // (Iniciativa 2 do parecer de UX de 23/10/2026; antes, 727 px de cromo a 390 px)
-  divida: "/observatorio/payroll-lending-aging",
+  // as três coleções servidas pela aplicação do Crédito, desde que ela ganhou a navegação da plataforma no lugar da barra lateral
+  // (Iniciativa 2 do parecer de UX de 23/10/2026; antes, 727 px de cromo a 390 px). A Dívida das famílias tem porta própria
+  // desde 10/11/2026 (/divida-das-familias, acima)
   "divida-governos": "/observatorio/subnational-credit",
   pagamentos: "/observatorio/pix",
   empresas: "/observatorio/sectors",

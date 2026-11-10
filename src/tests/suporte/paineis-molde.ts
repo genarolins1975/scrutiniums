@@ -279,6 +279,7 @@ export const FORA_DO_MOLDE: Record<string, string> = {
   "/contas-publicas/metodologia": "página de método",
   "/contas-publicas/previdencia": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/custo-de-vida": "entrada no molde EntradaColecao (entradas-molde.ts)",
+  "/divida-das-familias": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/educacao-municipal": "entrada no molde EntradaColecao (entradas-molde.ts)",
   // Pedido do dono, PR 1 de Educação (25/10/2026): ficha individual com ordem editorial própria;
   // valores, acesso e navegação conferidos em educacao.test.ts e educacao-ficha-navegador.test.ts.

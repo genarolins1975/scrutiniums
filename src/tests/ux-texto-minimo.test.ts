@@ -30,7 +30,7 @@ const ABERTAS = [
 const COM_CONTA = [
   "/app/observatorios", "/observatorios/familias", "/observatorios/economia", "/setor-eletrico", "/setor-eletrico/pld", "/saneamento",
   "/saneamento/acesso", "/gas-natural", "/combustiveis", "/eficiencia-estatal", "/eficiencia-estatal/saude-capitais",
-  "/eficiencia-estatal/trabalho-renda", "/contas-publicas", "/contas-publicas-estaduais", "/agronegocio", "/territorio", "/custo-de-vida",
+  "/eficiencia-estatal/trabalho-renda", "/contas-publicas", "/contas-publicas-estaduais", "/agronegocio", "/territorio", "/custo-de-vida", "/divida-das-familias",
   "/conectividade", "/educacao-municipal", "/observatorio/map", "/observatorio/interest-rates", "/app/conta",
   // páginas no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026, painel-molde.test.ts): a conta de luz aqui é o painel completo
   "/setor-eletrico/qualidade", "/setor-eletrico/conta-de-luz",

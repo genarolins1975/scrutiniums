@@ -32,6 +32,7 @@ import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from "@/lib/agro/modelo";
 import { COPIAS } from "./copias";
 import { PAGINAS_CREDITO } from "@/lib/credito/navegacao";
+import { RESUMO_DIVIDA, ROTA_DIVIDA, TERMOS_DIVIDA, TITULO_PAINEL as TITULO_PAINEL_DIVIDA } from "@/lib/divida/paginas";
 import { sinonimosDe } from "@/lib/energia/busca-sinonimos";
 
 export type { Atalho, Colecao, Observatorio, ObservatorioId, Painel } from "./lista";
@@ -217,7 +218,6 @@ function paineisColecoesInteiras(): Painel[] {
 
 /** Temas que aparecem também em outro observatório, sempre apontando para o painel do dono. */
 export const ATALHOS: Atalho[] = [
-  { rota: "/observatorio/credit", observatorio: "familias", colecao: "divida" },
   { rota: "/observatorio-do-credito/quanto-meu-banco-cobra", observatorio: "familias", colecao: "divida" },
   { rota: "/observatorio-do-credito/simulador-da-parcela", observatorio: "familias", colecao: "divida" },
   { rota: "/setor-eletrico/inclusao-energetica", observatorio: "familias", colecao: "protecao" },
@@ -251,9 +251,15 @@ function paineisTerritorio(): Painel[] {
 /**
  * Painéis mantidos pelo próprio Observatório das Famílias, com pipeline e gold próprios (pipeline/inflacao, public/inflacao).
  * A consulta por cidade (/custo-de-vida/na-minha-cidade) herda o dono do painel e só entra nas listas com a aprovação da LEVA_2.
+ * O painel Dívida das famílias não tem pipeline próprio: lê a gold do Crédito (src/lib/divida/dados.ts).
  */
 function paineisFamilias(): Painel[] {
-  return [{ rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null }];
+  return [
+    { rota: ROTA_INFLACAO, titulo: TITULO_PAINEL_INFLACAO, observatorio: "familias", colecao: "custo-de-vida", origem: null },
+    // porta da coleção Dívida e crédito das famílias (10/11/2026): página própria das Famílias sobre a gold do Crédito, só no
+    // recorte de pessoa física. O painel do sistema inteiro (/observatorio/credit) fica na Economia e deixou de ser atalho aqui
+    { rota: ROTA_DIVIDA, titulo: TITULO_PAINEL_DIVIDA, observatorio: "familias", colecao: "divida", origem: null, resumo: RESUMO_DIVIDA, termos: TERMOS_DIVIDA },
+  ];
 }
 
 /**

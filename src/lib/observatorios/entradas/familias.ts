@@ -34,7 +34,7 @@ export function escalaFamilias(): NumeroPorta[] {
         rotulo: "Parte da renda das famílias usada para pagar dívidas com bancos",
         unidade: "% da renda mensal",
         fonte: "Banco Central, SGS série 29034",
-        href: "/observatorio/credit",
+        href: "/divida-das-familias#peso-na-renda",
         nota: "Juros e amortizações sobre a renda disponível, com ajuste sazonal. Só dívidas no sistema financeiro.",
       },
       () => {
@@ -47,7 +47,7 @@ export function escalaFamilias(): NumeroPorta[] {
         rotulo: "Dívida total das famílias com bancos em relação à renda de 12 meses",
         unidade: "% da renda acumulada",
         fonte: "Banco Central, SGS série 29037",
-        href: "/observatorio/credit",
+        href: "/divida-das-familias#peso-na-renda",
         nota: "Inclui financiamento imobiliário, que é dívida de prazo longo.",
       },
       () => {
@@ -85,7 +85,7 @@ export type EtapaOrcamento = { id: string; titulo: string; pergunta: string; elo
  */
 export function orcamentoFamilia(): EtapaOrcamento[] {
   const inadimplencia = numero(
-    { rotulo: "Crédito das famílias com atraso acima de 90 dias", unidade: "% da carteira", fonte: "Banco Central, SGS série 21084", href: "/observatorio/credit" },
+    { rotulo: "Crédito das famílias com atraso acima de 90 dias", unidade: "% da carteira", fonte: "Banco Central, SGS série 21084", href: "/divida-das-familias#atraso" },
     () => {
       const s = serieCredito("inad_pf");
       return { valor: num(s.v, 2), periodo: mesAno(s.ref) };
@@ -114,7 +114,7 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
     },
   );
   const comprometimento = numero(
-    { rotulo: "Renda comprometida com dívidas bancárias", unidade: "% da renda mensal", fonte: "Banco Central, SGS série 29034", href: "/observatorio/credit" },
+    { rotulo: "Renda comprometida com dívidas bancárias", unidade: "% da renda mensal", fonte: "Banco Central, SGS série 29034", href: "/divida-das-familias#peso-na-renda" },
     () => {
       const s = serieCredito("comprometimento");
       return { valor: num(s.v, 1), periodo: mesAno(s.ref) };
@@ -146,7 +146,7 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
       titulo: "Quando falta",
       pergunta: "Quando a família recorre ao crédito?",
       elos: [
-        { titulo: "Dívida com bancos", explicacao: "Cartão, empréstimo pessoal, consignado e financiamentos: quanto da renda vai para as parcelas.", numero: comprometimento, href: "/observatorio/credit", painel: "Pulso do crédito" },
+        { titulo: "Dívida com bancos", explicacao: "Cartão, empréstimo pessoal, consignado e financiamentos: quanto da renda vai para as parcelas.", numero: comprometimento, href: "/divida-das-familias", painel: "Dívida das famílias" },
         { titulo: "Consignado e aposentados", explicacao: "Crédito descontado na folha ou no benefício, por idade e instituição.", numero: null, href: "/observatorio/payroll-lending-aging", painel: "Consignado e aposentados" },
       ],
     },
@@ -155,7 +155,7 @@ export function orcamentoFamilia(): EtapaOrcamento[] {
       titulo: "Os riscos",
       pergunta: "O que transforma aperto em inadimplência?",
       elos: [
-        { titulo: "Atraso", explicacao: "Parcelas que deixam de ser pagas por mais de 90 dias.", numero: inadimplencia, href: "/observatorio/credit", painel: "Pulso do crédito" },
+        { titulo: "Atraso", explicacao: "Parcelas que deixam de ser pagas por mais de 90 dias.", numero: inadimplencia, href: "/divida-das-familias#atraso", painel: "Dívida das famílias" },
         { titulo: "Golpes e apostas", explicacao: "Fraudes financeiras e apostas online, com o grau de evidência de cada número.", numero: null, href: "/observatorio/financial-fraud", painel: "Golpes e fraudes" },
         { titulo: "Renegociação", explicacao: "Desenrola Brasil e outras saídas para quem já está em atraso.", numero: null, href: "/observatorio/desenrola", painel: "Desenrola Brasil" },
       ],

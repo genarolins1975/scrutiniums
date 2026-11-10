@@ -150,6 +150,8 @@ export const VIEW_SECTIONS = [
   // Inflação por cidade (Observatório das Famílias, coleção Custo de vida; pipeline e gold próprios)
   "familias:custo-de-vida",
   "familias:custo-de-vida-na-minha-cidade",
+  // Dívida das famílias (Observatório das Famílias, coleção Dívida e crédito das famílias; lê a gold do Crédito)
+  "familias:divida",
   // Crédito (páginas Next fora da aplicação de página única)
   "credito:quanto-meu-banco-cobra",
   "credito:simulador-da-parcela",
@@ -306,6 +308,7 @@ export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",
   "familias:custo-de-vida-na-minha-cidade": "Custo de vida · Consulta por cidade",
+  "familias:divida": "Dívida e crédito das famílias · Dívida das famílias",
   "credito:quanto-meu-banco-cobra": "Crédito · Quanto meu banco cobra?",
   "credito:simulador-da-parcela": "Crédito · Simulador da parcela",
   "credito:metodologia": "Crédito · Metodologia e fontes",

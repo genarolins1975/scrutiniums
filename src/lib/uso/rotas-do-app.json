@@ -54,6 +54,7 @@
   "/dados/[slug]",
   "/dados/api",
   "/dados/ibcc",
+  "/divida-das-familias",
   "/educacao-municipal",
   "/educacao-municipal/mapa",
   "/educacao-municipal/municipio/[ibge]",

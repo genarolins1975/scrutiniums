@@ -266,6 +266,7 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
       "src/app/gas-natural/page.tsx",
       "src/app/combustiveis/page.tsx",
       "src/app/custo-de-vida/page.tsx",
+      "src/app/divida-das-familias/page.tsx",
       "src/app/educacao-municipal/page.tsx",
       "src/components/credito/Blocos.tsx",
       "src/app/eficiencia-estatal/page.tsx",

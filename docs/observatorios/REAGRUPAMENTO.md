@@ -193,6 +193,24 @@ tratam do mesmo tema; precisa de comparação de conteúdo antes de decidir).
 | Território e Clima, adensamento | Queimadas com pipeline e gold próprios (`/territorio/queimadas`, `docs/territorio/README.md`); desastres (Atlas Digital) e emissões oficiais (MCTI) nos próximos PRs |
 | Um só vocabulário (Iniciativa 1 do parecer de UX de 21/10/2026) | Em PR (branch `claude/iniciativa-1-vocabulario`). Os oito domínios de `src/lib/dominios.ts` passam a se chamar como a coleção do registro (o nome antigo fica em `nomeLegado`, só para testes e `/sobre`); `lista.ts` é a única fonte de coleções (`dominio`, `metodo` e `glossario` por coleção). O seletor da barra e a barra da aplicação do Crédito listam as 28 coleções; o rodapé tem uma coluna por observatório; `RotuloContexto` escreve "Observatório X · Coleção Y · Página Z" acima do H1; a trilha "Você está em" (`Trilha`) vem logo abaixo da barra comum em toda página de coleção, inclusive em cada aba da aplicação do Crédito; seletor, abas e trilha resolvem a coleção pelo endereço também no navegador (`contextoPuro.ts`), porque o cabeçalho mora em layouts. Navegações de módulo com aria-label "Navegação da coleção X" e títulos "Página · Coleção · Scrutiniums". Teste `src/tests/vocabulario.test.ts`. Fica para a Iniciativa 4 o H1 de `/observatorio-do-credito` |
 
+## Dado compartilhado, página de uma pergunta só (10/11/2026)
+
+Pedido do dono em 10/11/2026: o mesmo painel de crédito aparecia nas Famílias e na Economia. A coleção Dívida e crédito das
+famílias tinha como porta o painel de consignado e levava ao panorama do crédito (`/observatorio/credit`, da Economia) por
+atalho; a entrada do Observatório das Famílias mandava os números de dívida para o mesmo painel.
+
+Regra nova, conferida por `src/tests/observatorios-registro.test.ts`:
+
+1. **O dado é compartilhado, a página pertence a uma pergunta.** Duas páginas podem ler a mesma gold; um painel não responde
+   a duas perguntas de observatórios diferentes.
+2. **A porta de uma coleção é um painel da própria coleção, nunca um atalho.** Atalho só complementa.
+
+Aplicação: `/divida-das-familias` (painel Dívida das famílias, com conta) é a porta da coleção. É página do próprio
+Observatório das Famílias (origem `null` no registro), sem pipeline: lê `public/obs/data/gold/pulse.json` só no recorte de
+pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O atalho de `/observatorio/credit` saiu das
+Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
+regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
+
 ## Duplicatas: decisões de 18/10/2026
 
 Comparação de conteúdo feita sobre as páginas, os componentes e as golds de cada par. Nenhuma página foi removida: a que vira atalho continua publicada e mostra o aviso "Painel mais completo" (`src/components/observatorios/PainelMaisCompleto.tsx`).

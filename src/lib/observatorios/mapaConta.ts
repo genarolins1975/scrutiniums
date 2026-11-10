@@ -27,7 +27,7 @@ import type { Prontidao } from "@/components/observatorios/SeloProntidao";
  */
 export const FRESCOR_NO_MAPA: Record<string, readonly DominioFrescorId[]> = {
   renda: [],
-  divida: ["credito"],
+  divida: FRESCOR_DAS_COLECOES["/divida-das-familias"],
   protecao: [],
   moradia: [],
   "custo-de-vida": FRESCOR_DAS_COLECOES["/custo-de-vida"],

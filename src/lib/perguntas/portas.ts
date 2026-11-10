@@ -150,7 +150,7 @@ export const numeroAtrasoFamilias = (): NumeroPorta =>
       rotulo: "Crédito das famílias com atraso acima de 90 dias",
       unidade: "% da carteira",
       fonte: "Banco Central, SGS série 21084",
-      href: "/observatorio/credit",
+      href: "/divida-das-familias",
       nota: "Só dívidas com bancos e financeiras; não inclui crediário informal nem contas de consumo.",
     },
     () => {

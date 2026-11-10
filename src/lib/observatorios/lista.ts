@@ -69,7 +69,9 @@ export const OBSERVATORIOS: Observatorio[] = [
     acento: "bronze",
     colecoes: [
       { id: "renda", nome: "Renda e trabalho", href: "/eficiencia-estatal/trabalho-renda", metodo: "/eficiencia-estatal/trabalho-renda/metodos" },
-      { id: "divida", nome: "Dívida e crédito das famílias", href: "/observatorio/payroll-lending-aging" },
+      // porta da coleção desde 10/11/2026: o painel Dívida das famílias, do próprio observatório, com o recorte de pessoa
+      // física da gold do Crédito; o consignado, que era a porta, segue na coleção
+      { id: "divida", nome: "Dívida e crédito das famílias", href: "/divida-das-familias", metodo: "/observatorio-do-credito/metodologia", glossario: "/glossario" },
       { id: "protecao", nome: "Proteção social", href: "/eficiencia-estatal/assistencia-social", metodo: "/eficiencia-estatal/assistencia-social/metodos" },
       { id: "moradia", nome: "Moradia", href: "/eficiencia-estatal/habitacao" },
       // porta da coleção desde 20/10/2026: o painel Inflação por cidade (todos os itens do orçamento); a comida item por

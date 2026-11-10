@@ -10,7 +10,7 @@ import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { DOMINIOS } from "@/lib/dominios";
 
 /** Diretórios das coleções no App Router; toda página dentro deles precisa de dono. */
-const RAIZES = ["setor-eletrico", "gas-natural", "combustiveis", "custo-de-vida", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
+const RAIZES = ["setor-eletrico", "gas-natural", "combustiveis", "custo-de-vida", "divida-das-familias", "saneamento", "contas-publicas", "contas-publicas-estaduais", "eficiencia-estatal", "agronegocio", "territorio"];
 
 /** Rotas de página (page.tsx) sob uma raiz, com segmentos dinâmicos preservados. */
 function paginas(raiz: string): string[] {
@@ -41,6 +41,28 @@ describe("registro dos seis observatórios", () => {
         expect(rotasDoObservatorio(o.id).has(c.href), `${o.id}/${c.id}: entrada ${c.href} fora do observatório`).toBe(true);
       }
     }
+  });
+
+  // Decisão do dono de 10/11/2026 (o mesmo painel de crédito aparecia nas Famílias e na Economia): o dado é compartilhado, a
+  // página pertence a uma pergunta. A porta de uma coleção é sempre um painel da própria coleção; atalho só complementa.
+  it("a porta de cada coleção é um painel da própria coleção, nunca um atalho", () => {
+    const atalhos = new Set(ATALHOS.map((a) => `${a.observatorio}:${a.rota}`));
+    for (const o of OBSERVATORIOS) {
+      for (const c of o.colecoes) {
+        const dono = todos.find((p) => p.rota === c.href);
+        expect(dono, `${o.id}/${c.id}: porta ${c.href} sem painel registrado`).toBeDefined();
+        expect([dono?.observatorio, dono?.colecao], `${o.id}/${c.id}: porta ${c.href} é de outra coleção`).toEqual([o.id, c.id]);
+        expect(atalhos.has(`${o.id}:${c.href}`), `${o.id}/${c.id}: porta ${c.href} é atalho`).toBe(false);
+      }
+    }
+  });
+
+  it("a Dívida das famílias tem página própria; o painel Crédito do sistema fica só na Economia", () => {
+    const divida = OBSERVATORIOS.find((o) => o.id === "familias")?.colecoes.find((c) => c.id === "divida");
+    const porta = todos.find((p) => p.rota === divida?.href);
+    expect(porta?.origem, "a porta da Dívida é página do próprio observatório, não aba do Crédito").toBeNull();
+    expect(donoDaRota("/observatorio/credit")?.observatorio).toBe("economia");
+    expect(ATALHOS.some((a) => a.observatorio === "familias" && a.rota === "/observatorio/credit")).toBe(false);
   });
 
   it("cada rota tem um único dono, numa coleção que existe", () => {
