@@ -263,27 +263,5 @@
   .edm-placar-metas { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 
-.edm-raiz {
-  --edm-mapa-1: color-mix(in srgb, var(--cor-carvao) 19%, var(--cor-papel));
-  --edm-mapa-2: color-mix(in srgb, var(--cor-carvao) 23%, var(--cor-papel));
-  --edm-mapa-3: color-mix(in srgb, var(--cor-carvao) 27%, var(--cor-papel));
-  --edm-mapa-4: color-mix(in srgb, var(--cor-carvao) 31%, var(--cor-papel));
-  --edm-mapa-5: color-mix(in srgb, var(--cor-carvao) 35%, var(--cor-papel));
-  --edm-mapa-6: color-mix(in srgb, var(--cor-carvao) 39%, var(--cor-papel));
-  --edm-mapa-7: color-mix(in srgb, var(--cor-carvao) 43%, var(--cor-papel));
-  --edm-mapa-8: color-mix(in srgb, var(--cor-carvao) 47%, var(--cor-papel));
-  --edm-mapa-9: color-mix(in srgb, var(--cor-carvao) 51%, var(--cor-papel));
-  --edm-mapa-10: color-mix(in srgb, var(--cor-carvao) 55%, var(--cor-papel));
-  --edm-mapa-11: color-mix(in srgb, var(--cor-carvao) 59%, var(--cor-papel));
-  --edm-mapa-12: color-mix(in srgb, var(--cor-carvao) 63%, var(--cor-papel));
-  --edm-mapa-13: color-mix(in srgb, var(--cor-carvao) 67%, var(--cor-papel));
-  --edm-mapa-14: color-mix(in srgb, var(--cor-carvao) 71%, var(--cor-papel));
-  --edm-mapa-15: color-mix(in srgb, var(--cor-carvao) 75%, var(--cor-papel));
-  --edm-mapa-16: color-mix(in srgb, var(--cor-carvao) 79%, var(--cor-papel));
-  --edm-mapa-17: color-mix(in srgb, var(--cor-carvao) 83%, var(--cor-papel));
-  --edm-mapa-18: color-mix(in srgb, var(--cor-carvao) 87%, var(--cor-papel));
-  --edm-mapa-19: color-mix(in srgb, var(--cor-carvao) 91%, var(--cor-papel));
-  --edm-mapa-20: color-mix(in srgb, var(--cor-carvao) 95%, var(--cor-papel));
-}
 
 @media (min-width: 1100px) { .edm-placar-cidade { grid-template-columns: repeat(8, minmax(0,1fr)); } }

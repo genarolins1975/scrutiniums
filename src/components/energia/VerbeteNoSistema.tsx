@@ -111,8 +111,15 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
   const titulos = elos.map((e) => porId.get(e.no)!.titulo);
   const paineis = Array.from(new Set(elos.flatMap((e) => e.paineis.map((p) => p.rotulo))));
 
-  const descricao =
-    elos.length === 0
+  const atua = elos.length > 0 && elos[0].motivo === "atuacao";
+  const bases = Array.from(new Set(elos.map((e) => e.base).filter((b): b is string => !!b)));
+
+  const descricao = atua
+    ? tx(
+        `As fontes citadas neste verbete (${lista(bases)}) dão a ${rotulo} papel ${titulos.length === 1 ? "no elo" : "nos elos"} ${lista(titulos)}. A marca mostra onde a instituição atua, e não em que página o observatório publica os dados dela.`,
+        `The sources cited in this entry (${lista(bases)}) give ${rotulo} a role in the ${titulos.length === 1 ? "node" : "nodes"} ${lista(titulos)}. The mark shows where the institution acts, not on which page the observatory publishes its data.`,
+      )
+    : elos.length === 0
       ? tx(
           `As páginas que este verbete indica não pertencem a um único elo do mapa. O desenho assinala os elos dos verbetes relacionados: ${lista(Array.from(new Set(vizinhos.flatMap((v) => v.elos))).map((n) => porId.get(n)!.titulo))}.`,
           `The pages this entry points to do not belong to a single node of the map. The drawing flags the nodes of the related entries: ${lista(Array.from(new Set(vizinhos.flatMap((v) => v.elos))).map((n) => porId.get(n)!.titulo))}.`,
@@ -128,7 +135,12 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
           );
 
   const deixaDeFora: ListaDeFora = [
-    tx(
+    atua
+      ? tx(
+          "A marca cobre só as atribuições citadas neste verbete. A lei dá à instituição outras, que o desenho não mostra.",
+          "The mark covers only the duties cited in this entry. The law gives the institution others, which the drawing does not show.",
+        )
+      : tx(
       "A marca diz em que elo o observatório mostra o conceito (no mapa da página inicial ou nas páginas que o verbete indica); não diz que o conceito se limita a esse elo.",
       "The mark shows in which node the observatory presents the concept (on the home page map or on the pages the entry points to); it does not say the concept is limited to that node.",
     ),
@@ -157,7 +169,7 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
       {elos.length > 0 && (
         <li className="inline-flex items-center gap-2">
           <MarcaDoElo estado="verbete" />
-          {tx("elo deste verbete", "node of this entry")}
+          {atua ? tx("elo em que a instituição atua", "node where the institution acts") : tx("elo deste verbete", "node of this entry")}
         </li>
       )}
       {NOS_MAPA.some((n) => estadoDe(n.id) === "vizinho") && (
@@ -238,7 +250,7 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
                       style={{ left: pct(n.pos.x, LARGURA), top: pct(n.pos.y, ALTURA), width: pct(2 * MW, LARGURA), minHeight: pct(2 * MH, ALTURA) }}
                     >
                       <span className={`text-sm leading-[1.2] ${estado === "outro" ? "" : "font-medium"}`}>{n.titulo}</span>
-                      {estado === "verbete" && <span className="mt-1 text-xs leading-tight">{tx("este verbete", "this entry")}</span>}
+                      {estado === "verbete" && <span className="mt-1 text-xs leading-tight">{atua ? tx("atua aqui", "acts here") : tx("este verbete", "this entry")}</span>}
                       {estado === "vizinho" && <span className="mt-1 text-xs leading-tight text-carvao-muted">{tx(plural(perto.length, "relacionado", "relacionados"), `${perto.length} related`)}</span>}
                     </div>
                   );
@@ -280,7 +292,7 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
                         </span>
                         <span className="min-w-0">
                           <span className={`block text-sm leading-snug ${estado === "outro" ? "text-carvao-muted" : "font-medium"}`}>{n.titulo}</span>
-                          {estado === "verbete" && <span className="block text-sm leading-snug">{tx("Este verbete aparece aqui.", "This entry appears here.")}</span>}
+                          {estado === "verbete" && <span className="block text-sm leading-snug">{atua ? elos.find((e) => e.no === n.id)?.oQueFaz : tx("Este verbete aparece aqui.", "This entry appears here.")}</span>}
                           {perto.length > 0 && (
                             <span className={`block text-sm leading-snug ${estado === "verbete" ? "" : "text-carvao-muted"}`}>
                               {tx(perto.length === 1 ? "Verbete relacionado:" : "Verbetes relacionados:", perto.length === 1 ? "Related entry:" : "Related entries:")} {perto.join(", ")}
@@ -303,7 +315,16 @@ export function VerbeteNoSistema({ c }: { c: Conceito }) {
                 <div key={e.no} data-elo={e.no}>
                   <h3 className="rotulo text-mineral">{FAIXAS_MAPA[n.faixa].rotulo}</h3>
                   <p className="mt-1 font-serif text-xl leading-snug text-carvao">{n.titulo}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{n.curto}</p>
+                  {e.oQueFaz ? (
+                    <>
+                      <p className="mt-1 text-sm leading-relaxed text-carvao" data-papel="">
+                        {e.oQueFaz}
+                      </p>
+                      <p className="t-meta mt-1 text-carvao-muted">{e.base}</p>
+                    </>
+                  ) : (
+                    <p className="mt-1 text-sm leading-relaxed text-carvao-muted">{n.curto}</p>
+                  )}
                 </div>
               );
             })}

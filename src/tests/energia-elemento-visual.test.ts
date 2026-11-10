@@ -213,10 +213,17 @@ describe("verbete do Aprenda: a figura do conceito no sistema", () => {
       // nada depende só de cor: o elo marcado diz em texto que é o do verbete, no desenho e na lista
       const pos = posicaoNoSistema(c, (s) => conceito(s));
       expect(desenho.match(/data-estado="verbete"/g)?.length ?? 0, c.slug).toBe(pos.elos.length);
-      expect(vertical.match(/Este verbete aparece aqui\./g)?.length ?? 0, c.slug).toBe(pos.elos.length);
+      if (c.atuaEm?.length) for (const e of pos.elos) expect(texto(vertical), `${c.slug}: ${e.no}`).toContain(e.oQueFaz!);
+      else expect(vertical.match(/Este verbete aparece aqui\./g)?.length ?? 0, c.slug).toBe(pos.elos.length);
       expect(f.match(/<li[^>]* data-tipo="/g)?.length ?? 0, c.slug).toBe(pos.ligacoes.length);
       for (const l of pos.ligacoes) expect(texto(f), `${c.slug}: ${l.de}-${l.para}`).toContain(l.texto);
     }
+  });
+
+  it("o ONS aparece em Operação, e não só onde estão os painéis com os dados dele", () => {
+    const ons = conceito("ons")!;
+    expect(elosDoVerbete(ons).map((e) => e.no)).toEqual(["geracao", "rede", "operacao"]);
+    expect(elosDoVerbete(conceito("ibge")!).every((e) => e.motivo !== "atuacao")).toBe(true);
   });
 
   it("a posição sai do acervo: o elo que o mapa lista, ou o das páginas de “Veja no painel”; sem elo, só os relacionados", () => {
@@ -226,7 +233,19 @@ describe("verbete do Aprenda: a figura do conceito no sistema", () => {
       const f = figura(paginas[c.slug]);
       expect(f, c.slug).toContain(`data-elos="${elos.map((e) => e.no).join(" ")}"`);
       const doMapa = NOS_MAPA.filter((n) => n.conceitos.some((x) => x.slug === c.slug)).map((n) => n.id);
-      if (doMapa.length) expect(elos.map((e) => e.no), c.slug).toEqual(doMapa);
+      if (c.atuaEm?.length) {
+        // instituição: o elo é onde as fontes do verbete lhe dão papel, não onde o observatório publica os dados dela (10/11/2026)
+        expect(new Set(elos.map((e) => e.no)), c.slug).toEqual(new Set(c.atuaEm.map((a) => a.no)));
+        for (const e of elos) {
+          expect(e.motivo, c.slug).toBe("atuacao");
+          expect(texto(f), `${c.slug}: ${e.no}`).toContain(e.oQueFaz!);
+          expect(texto(f), `${c.slug}: ${e.no}`).toContain(e.base!);
+          // a base citada é um dispositivo das fontes do próprio verbete, ou os verbetes que ele mesmo cita como fonte
+          const lei = /n[ºo.]+ ?([\d.]+)/i.exec(e.base!)?.[1];
+          if (lei) expect(c.fontes.some((x) => x.documento.includes(lei)), `${c.slug}: ${e.base}`).toBe(true);
+          else expect(c.porQueImporta, c.slug).toContain(e.base!.replace(/^(fontes|sources)/, "").trim().split(" ").slice(-3).join(" "));
+        }
+      } else if (doMapa.length) expect(elos.map((e) => e.no), c.slug).toEqual(doMapa);
       else
         for (const e of elos) {
           expect(e.motivo, c.slug).toBe("painel");
