@@ -2766,7 +2766,8 @@ function renderMapa() {
   // servidor embute): todas as da aplicação, inclusive as que a navegação mostra na coleção dona (Famílias, Empresas...)
   const grupos = gruposDoMenu();
   const noMenu = grupos.flatMap(g => g.vistas);
-  const abas = noMenu.filter(v => v !== "mapa");
+  // a contagem é das páginas que a aplicação do Crédito mantém: as substituídas por página das Famílias são listadas, não contadas
+  const abas = noMenu.filter(v => v !== "mapa" && !substituta(v));
   el.dataset.paginas = String(abas.length);
   const head = pageHead({
     title: "Início do painel",
