@@ -155,20 +155,24 @@ describe("epae.json: por que a série está num painel de bets", () => {
 });
 
 describe("epae: integração com a plataforma", () => {
-  it("view de bets carrega o arquivo e a aba renderiza o card", () => {
-    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    expect(app).toContain('bets: ["bets", "epae"]');
-    expect(app).toContain("state.data.epae");
-    expect(app).toContain("window.epaeCSV");
-    // o card precisa negar a leitura "série de bets" no próprio texto
-    const card = app.slice(app.indexOf("8b · EPAE"), app.indexOf("9 · evidências científicas"));
-    expect(card).toMatch(/Esta não é uma série de apostas/);
-    expect(card).toMatch(/badge\("observado"\)/);
-    // o card precisa explicar o elo taxonômico e os limites de leitura
-    expect(card).toContain("E.taxonomia");
-    expect(card).toContain("as bets se registram aqui");
-    expect(card).toContain("O que esta série permite dizer");
-    expect(card).toContain("O que ela não permite dizer");
+  it("a página das apostas lê o arquivo e a figura nega a leitura de série de apostas", () => {
+    // Até 10/11/2026 estas asserções liam o cartão "8b · EPAE" de renderBets em public/obs/app.js, removido nessa data. O
+    // conteúdo vive hoje na figura #pix-da-secao da página nova (src/app/divida-das-familias/apostas/page.tsx), que lê a mesma
+    // gold; os valores são conferidos contra epae.json em src/tests/familias-apostas.test.ts ("mostra os valores das golds").
+    // Aposentadas (3 asserções, só o mecanismo da vista antiga): a carga 'bets: ["bets", "epae"]' em VIEW_DATA, "state.data.epae"
+    // e "window.epaeCSV". Equivalentes abaixo: a gold lida no servidor e o arquivo da série mensal.
+    const pagina = readFileSync(join(process.cwd(), "src/app/divida-das-familias/apostas/page.tsx"), "utf-8");
+    expect(pagina).toContain('"/obs/data/gold/epae.json"');
+    expect(pagina).toContain("linhas={csvEpae}");
+    // a figura precisa negar a leitura "série de bets" no próprio texto
+    const figura = pagina.slice(pagina.indexOf('id="pix-da-secao"'), pagina.indexOf("linhas={csvEpae}"));
+    expect(figura).toMatch(/Esta não é uma série de apostas/);
+    expect(figura).toMatch(/natureza="OBSERVADO"/);
+    // e explicar o elo taxonômico e os limites de leitura
+    expect(pagina).toContain("E.taxonomia");
+    expect(figura).toContain("as casas de apostas se registram aqui");
+    expect(figura).toContain("O que esta série permite dizer");
+    expect(figura).toContain("O que ela não permite dizer");
   });
 
   it("pipeline registra coletor e builder do epae.json", () => {

@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
+import { registroNaAplicacao, soEnderecoETitulo } from "./suporte/vistas-reescritas";
 
 /**
  * Emprego formal (Novo Caged). O que se trava:
@@ -145,30 +146,25 @@ describe.skipIf(!U || !U.disponivel || !D.disponivel)("ufs.json: bloco de empreg
   });
 });
 
-describe("SPA: aba registrada em todos os mapas", () => {
-  it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
-    expect(app).toContain('emprego: "/formal-employment"');
-    expect(app).toContain('emprego: "Emprego formal"');
-    expect(app).toContain('emprego: "renderEmprego"');
-    expect(app).toContain('emprego: ["emprego"]');
-    expect(app).toContain('emprego: "caged"');
-    expect(app).toContain('emprego: ["bcb_sgs", "ipea_caged"]');
-    expect(app).toContain('emprego: "emergentes"');
-    expect(app).toMatch(/\n  emprego: \{ q: "[^"]+\?"/);
-    expect(app).toContain("state.emp = {");
-    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
-    // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
-    // (/emprego-formal, src/lib/observatorios/reescritos.ts); a vista antiga continua registrada na aplicação, como conferido abaixo
+describe("Aplicação do Crédito: a vista saiu, o endereço antigo e a página do estado ficam", () => {
+  it("fica o endereço antigo, que leva à página das Famílias; a página do estado segue com o bloco de emprego", () => {
+    // Aposentadas em 10/11/2026 (8 asserções): 'emprego: "render..."' em RENDER, a lista de golds em VIEW_DATA, a fonte em
+    // VIEW_VINTAGE, os coletores em VIEW_COLETORES, o pedaço em CHUNK_OF_VIEW, o verbete do GUIA, o estado da vista (state) e
+    // o contêiner id="view-emprego" do index.html. Só conferiam o registro do desenho da vista, removido de public/obs/app.js
+    // nessa data. No lugar, o registro inteiro: o endereço antigo e o título ficam, o resto saiu. Pergunta, fonte, período e
+    // natureza de cada número da página nova (/emprego-formal) são conferidos por src/tests/familias-emprego-formal.test.ts; o aviso de fonte em pane (fontePane) não
+    // foi migrado, como registra docs/familias/PARIDADE.md.
+    expect(registroNaAplicacao("emprego")).toEqual(soEnderecoETitulo("/formal-employment", "Emprego formal"));
     expect(rotuloNaNavegacao("/observatorio/formal-employment")).toBeNull();
     expect(ABAS_SUBSTITUIDAS.get("/formal-employment")).toBe("/emprego-formal");
-    expect(html).toContain('id="view-emprego"');
+    // a página do estado (vista viva) continua com o bloco de emprego e a âncora dele
     expect(app).toContain('["emprego", "Emprego formal", "emprego"]');
     expect(app).toContain('["#uf-emprego", "Emprego"]');
+    expect(html).toContain('id="view-estado"');
   });
-  it("o renderizador vive no chunk emergentes e o pipeline registra coletor, gold e vintage", () => {
-    const k = app.indexOf("function renderEmprego(");
-    expect(k).toBeGreaterThan(app.indexOf("/* @chunk:emergentes:ini */"));
-    expect(k).toBeLessThan(app.indexOf("/* @chunk:emergentes:fim */"));
+  it("o pipeline registra coletor, gold e vintage", () => {
+    // Aposentadas em 10/11/2026 (2 asserções): a posição de "function renderEmprego(" entre os marcadores do pedaço
+    // emergentes. A função foi removida de public/obs/app.js; a página nova é do Next e não tem pedaço da aplicação.
     expect(read("pipeline/run.py")).toContain('("ipea_caged", ipea_caged)');
     const gold = read("pipeline/gold.py");
     expect(gold).toContain('common.write_gold("emprego.json", r_emp)');

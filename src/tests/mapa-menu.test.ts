@@ -58,7 +58,16 @@ describe("Início do painel: rota padrão e registro", () => {
     const nos = Array.from(ciclo.matchAll(/views: \[([^\]]+)\]/g)).map((m) => Array.from(m[1].matchAll(/"(\w+)"/g)).map((x) => x[1]));
     expect(nos.length).toBe(7);
     const noCiclo = nos.flat();
-    for (const v of noCiclo) { expect(rotas[v]).toBeTruthy(); expect(app).toMatch(new RegExp(`\\n  ${v}: \\{ q: "`)); }
+    // Aposentada em 10/11/2026 para as nove vistas reescritas (9 asserções): o verbete do GUIA saiu de public/obs/app.js com o desenho
+    // delas. A pergunta que o Início do painel mostra para essas nove é a da página nova (resumo do registro, no índice que o
+    // servidor embute), conferida em src/tests/guia-navegacao.test.ts; as demais seguem exigindo o verbete.
+    const reescritas = new Set(PAINEIS_REDIRECIONADOS.map((r) => vistaDe[r.rota]));
+    expect(noCiclo.filter((v) => reescritas.has(v)).length).toBe(9);
+    for (const v of noCiclo) {
+      expect(rotas[v]).toBeTruthy();
+      if (reescritas.has(v)) expect(app).not.toMatch(new RegExp(`\\n  ${v}: \\{ q: "`));
+      else expect(app).toMatch(new RegExp(`\\n  ${v}: \\{ q: "`));
+    }
     expect(new Set(noCiclo).size).toBe(noCiclo.length); // nenhuma aba em dois nós
     const trilhas = app.match(/const MAPA_TRILHAS = \[([\s\S]*?)\n\];/)![1];
     const passos = Array.from(trilhas.matchAll(/passos: \[([^\]]+)\]/g)).map((m) => Array.from(m[1].matchAll(/"(\w+)"/g)).map((x) => x[1]));

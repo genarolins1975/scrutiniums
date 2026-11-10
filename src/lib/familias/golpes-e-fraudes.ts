@@ -15,8 +15,6 @@ export const PERGUNTA_GOLPES = "Quanto se perde com golpes e fraudes financeiras
 export const DESCRICAO_GOLPES =
   "Perdas reportadas, ocorrências registradas, tentativas detectadas e devoluções no Pix: o que cada número de golpes e fraudes mede, com o grau de evidência de cada um e sem somar fontes que se sobrepõem.";
 export const SECAO_GOLPES = "familias:golpes-e-fraudes";
-/** Endereço da vista antiga, na aplicação de página única do Crédito. */
-export const ROTA_ANTIGA_GOLPES = "/observatorio/financial-fraud";
 /** A série completa do MED, mês a mês, está no painel do Pix, na aplicação do Crédito. */
 export const PAINEL_PIX = "/observatorio/pix";
 

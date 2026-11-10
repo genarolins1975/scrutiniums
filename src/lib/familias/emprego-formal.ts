@@ -12,8 +12,6 @@ export const TITULO_EMPREGO = "Emprego formal";
 export const PERGUNTA_EMPREGO = "Como anda o emprego formal por setor e por estado?";
 export const DESCRICAO_EMPREGO =
   "Vínculos formais por seção de atividade e saldo de admissões e desligamentos por estado, do Novo Caged, cada um comparado com a própria história, com fonte, período e ressalva em cada número.";
-/** Endereço da vista antiga, na aplicação do Crédito. */
-export const ROTA_ANTIGA_EMPREGO = "/observatorio/formal-employment";
 
 export type PontoMes = { ref: string; v: number | null };
 

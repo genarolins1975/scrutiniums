@@ -48,8 +48,9 @@
     const cta = link('Explorar o ciclo ↓', '#mp-ciclo'); cta.className = 'obs-primary';
     copy.append(rotuloCasca || subtitle('Crédito e sistema financeiro'), title, node('p', '', 'Entenda de onde vêm os recursos, quem empresta e como o crédito chega à economia.'), cta);
     const points = node('nav', 'atlas-city-points'); points.setAttribute('aria-label', 'Explore os temas do crédito');
-    [['Instituições', '/institutions'], ['Habitação', '/housing-credit'], ['Empresas', '/credit-panorama?pcli=PJ'], ['Famílias', '/credit-panorama?pcli=PF']].forEach(([name, route], i) => {
-      const a = link(name, '/observatorio' + route); a.className = `atlas-city-point point-${i}`; points.append(a);
+    // Habitação liga à página própria do crédito imobiliário (a vista /observatorio/housing-credit saiu da aplicação em 10/11/2026)
+    [['Instituições', '/observatorio/institutions'], ['Habitação', '/credito-imobiliario'], ['Empresas', '/observatorio/credit-panorama?pcli=PJ'], ['Famílias', '/observatorio/credit-panorama?pcli=PF']].forEach(([name, href], i) => {
+      const a = link(name, href); a.className = `atlas-city-point point-${i}`; points.append(a);
     });
     hero.append(image, copy, points, node('p', 'atlas-city-caption', 'Ilustração conceitual gerada por IA · sem proporções quantitativas'));
     const metric = mapa.querySelector('.atlas-metrics'); hero.after(metric);

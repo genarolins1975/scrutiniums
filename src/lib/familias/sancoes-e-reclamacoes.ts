@@ -16,8 +16,6 @@ export const PERGUNTA_SANCOES = "Como o supervisor pune, e o que isso diz do sis
 export const DESCRICAO_SANCOES =
   "O que o Banco Central e a CVM decidiram nos processos sancionadores, em quanto tempo, com que penalidade e se a multa foi paga, e o índice do ranking de reclamações, sem ranking por instituição.";
 export const SECAO_SANCOES = "familias:sancoes-e-reclamacoes";
-/** Endereço da vista antiga, na aplicação de página única do Crédito. */
-export const ROTA_ANTIGA_SANCOES = "/observatorio/conduct-enforcement";
 /** O índice de cada instituição está na ficha dela, na aplicação do Crédito. */
 export const PAINEL_INSTITUICOES = "/observatorio/institutions";
 
