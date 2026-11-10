@@ -12,3 +12,8 @@
   .dominio-familias .familias-abertura { padding-top: 2.5rem; }
   .dominio-familias .familias-secao { padding-block: 3rem; }
 }
+/* A faixa de atualização com aviso vira um <summary> em toda largura (FaixaFrescorCliente): o alvo de 44 px vale no toque;
+   de 640 px em diante a linha volta à altura da faixa em dia, para caber no orçamento de cromo (230 px a 1440). */
+@media (min-width: 640px) {
+  .dominio-familias main [data-frescor-faixa="linha"] summary { min-height: 0; }
+}
