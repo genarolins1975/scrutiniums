@@ -202,14 +202,14 @@ function FatiaRetomar({ retomar }: Readonly<{ retomar: Retomar }>) {
 function MinhaCidade({ perguntas }: Readonly<{ perguntas: PerguntaParaVoce[] }>) {
   return (
     <div data-minha-cidade="">
-      <h3 className="t-h3 text-carvao">Na sua cidade</h3>
-      {/* a ficha do lugar (10/11/2026) reúne estas consultas num município só: vem antes da lista, como o caminho curto */}
-      <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
-        <Link href="/app/minha-cidade" prefetch={false} data-minha-cidade-ficha="" className="text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
+      {/* a ficha do lugar (10/11/2026) reúne estas consultas num município só: o link fica na linha do título, sem altura a mais
+          (o mapa tem orçamento de 3.500 px a 1440) */}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6">
+        <h3 className="t-h3 text-carvao">Na sua cidade</h3>
+        <Link href="/app/minha-cidade" prefetch={false} data-minha-cidade-ficha="" className="text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
           Ver tudo sobre a minha cidade numa página
         </Link>
-        , ou abrir uma consulta por vez:
-      </p>
+      </div>
       <ul className="mt-2 grid gap-x-8 md:grid-cols-2 lg:grid-cols-4">
         {perguntas.map((p) => (
           <li key={p.id} data-para-voce-pergunta={p.id} data-sem-numero={p.semNumero ?? ""} className="min-w-0 border-t border-linha">

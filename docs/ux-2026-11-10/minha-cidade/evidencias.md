@@ -1,6 +1,6 @@
 ### Evidências de página (2026-11-10)
 
-Conta local nova. Build QzAKxg-mZ-WgfeMArUb1T, `next start` local com banco temporário e sessão de teste. Máquina: 4 vCPU, 16 GB. Comando: `npm run evidencias -- --rotas /app/minha-cidade /app/minha-cidade?ibge=2611606 /app/minha-cidade?ibge=1302603 /app/observatorios --saida docs/ux-2026-11-10/minha-cidade`. Tempo: 1 min 55 s.
+Conta local nova. Build w4uo19QjAWTeJNuRwLZdH, `next start` local com banco temporário e sessão de teste. Máquina: 4 vCPU, 16 GB. Comando: `npm run evidencias -- --rotas /app/minha-cidade /app/minha-cidade?ibge=2611606 /app/minha-cidade?ibge=1302603 /app/observatorios --saida docs/ux-2026-11-10/minha-cidade`. Tempo: 1 min 56 s.
 
 Cromo: do topo da barra comum ao início do conteúdo, em px, com o orçamento da Iniciativa 2 a 390 e 1440 px. Axe: violações WCAG 2.1 A e AA (regra e número de nós). Login: requisições feitas pela página (arquivos, dados, APIs) que caíram em /entrar; o redirecionamento da própria página aparece na coluna Endereço final.
 

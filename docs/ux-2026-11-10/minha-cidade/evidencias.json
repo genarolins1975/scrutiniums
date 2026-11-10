@@ -1,10 +1,10 @@
 {
  "data": "2026-11-10",
  "conta": "nova",
- "build": "QzAKxg-mZ-WgfeMArUb1T",
+ "build": "w4uo19QjAWTeJNuRwLZdH",
  "maquina": "4 vCPU, 16 GB",
  "comando": "npm run evidencias -- --rotas /app/minha-cidade /app/minha-cidade?ibge=2611606 /app/minha-cidade?ibge=1302603 /app/observatorios --saida docs/ux-2026-11-10/minha-cidade",
- "tempo": "1 min 55 s",
+ "tempo": "1 min 56 s",
  "resultados": [
   {
    "rota": "/app/minha-cidade",
