@@ -183,6 +183,18 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
     requestAnimationFrame(() => perfil.current?.focus());
   };
 
+  // "Limpar seleção" e o segundo clique no polígono: o mapa é controlado, então o estado e o endereço precisam esquecer o município
+  const limpar = () => {
+    setSel(null);
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.delete("municipio");
+      window.history.replaceState(window.history.state, "", u);
+    } catch {
+      // o endereço é conveniência
+    }
+  };
+
   const recorte = useMemo(() => municipios.filter((m) => regiao === "todas" || m.reg === regiao), [municipios, regiao]);
   const M = METRICAS[metrica];
   const idsDoMapa = useMemo(() => recorte.map((x) => x.c), [recorte]);
@@ -261,7 +273,7 @@ export function ConsultaMunicipal({ arquivo, nomesInstituicoes, censoAno, baseEs
                 periodo={fonteDaMedida}
                 nota={NOTA_DO_MAPA[metrica]}
                 selecionado={sel && porCodigo.has(sel) ? sel : null}
-                onSelecionar={(c) => { if (c) escolher(c); }}
+                onSelecionar={(c) => { if (c) escolher(c); else limpar(); }}
                 detalheRegiao={(c) => { const x = porCodigo.get(c); return x ? detalheNoMapa(x, metrica) : null; }}
               />
             </div>

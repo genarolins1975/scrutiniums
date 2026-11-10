@@ -323,6 +323,11 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito imobiliário e moradia: o m
       await page.locator(`[data-perfil-municipal="${esperado[0].c}"]`).waitFor();
       await mapaPronto(consulta(page)).waitFor({ timeout: 60_000 });
       expect(await foraDaLargura(page)).toEqual([]);
+      // "Limpar seleção" do mapa tira o município do estado e do endereço (o mapa é controlado: sem isso o destaque ficava)
+      await consulta(page).getByRole("button", { name: "Limpar seleção" }).click();
+      await expect.poll(() => new URL(page.url()).searchParams.get("municipio")).toBeNull();
+      await expect.poll(() => page.locator(`[data-perfil-municipal="${esperado[0].c}"]`).count()).toBe(0);
+      expect(new URL(page.url()).searchParams.get("regiao")).toBe("Sul");
     });
   }, 240_000);
 });

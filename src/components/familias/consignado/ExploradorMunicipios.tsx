@@ -214,7 +214,8 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
             periodo={fontes}
             paleta={C.paleta}
             selecionado={perfis[0] ?? null}
-            onSelecionar={(c) => { if (c) abrirPerfil(c); }}
+            // "Limpar seleção" e o segundo clique no polígono chegam como null: sai do perfil o município que o mapa destacava
+            onSelecionar={(c) => { if (c) abrirPerfil(c); else setUrl((a) => ({ cgmun: a.cgmun.slice(1) })); }}
             detalheRegiao={(c) => { const m = porCodigoDaRegiao.get(c); return m ? (noRecorte(m, recorte) ? `confiabilidade ${ROTULO_CONFIABILIDADE[m.sel]}` : "fora do recorte: confiabilidade baixa") : null; }}
             nota={`${C.natureza === "OBSERVADO" ? "Observado" : C.natureza === "CALCULADO" ? "Calculado" : "Estimado"}. ${C.ressalva ? `${C.ressalva} ` : ""}${foraPorConfiabilidade > 0 ? `Em cinza liso, rotulados “não se aplica”: ${n(foraPorConfiabilidade)} municípios fora do recorte por confiabilidade baixa. ` : ""}Hachura: município sem a medida na publicação, nunca zero.`}
           />

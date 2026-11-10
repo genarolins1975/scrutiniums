@@ -101,6 +101,17 @@ describe.skipIf(!temBuild && !exigirBuild)("aplicação do Crédito sem o desenh
     } finally { await contexto.close(); }
   }, 90_000);
 
+  it("o endereço antigo com cerquilha (/observatorio#consignado) também sai para a página nova, e não cai na Visão geral", async () => {
+    const destino = PAINEIS_REDIRECIONADOS.find((p) => p.abaAntiga === Object.keys(VISTA_DA_ABA).find((a) => VISTA_DA_ABA[a as keyof typeof VISTA_DA_ABA] === "consignado"))!.rota;
+    const { contexto, page, erros } = await abrir();
+    try {
+      await page.goto(servidor.origem + "/observatorio#consignado");
+      await page.waitForURL(servidor.origem + destino);
+      await page.getByRole("heading", { level: 1 }).first().waitFor();
+      expect(erros).toEqual([]);
+    } finally { await contexto.close(); }
+  }, 90_000);
+
   it("o gráfico incorporado mostra o aviso no lugar da vista reescrita e segue desenhando uma vista viva", async () => {
     const { contexto, page, erros } = await abrir();
     try {

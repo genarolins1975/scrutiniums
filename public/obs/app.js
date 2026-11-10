@@ -11546,5 +11546,6 @@ function renderCompare() {
     v = RENDER[window.__EMBED__.view] ? window.__EMBED__.view : "overview";
     state._secAlvo = null; // no embed o recorte substitui o scroll
   }
-  showView(RENDER[v] ? v : "overview", { replace: true });
+  // vista reescrita pedida por endereço antigo com cerquilha (/observatorio#consignado): segue para showView, que sai para a página nova
+  showView(RENDER[v] || substituta(v) ? v : "overview", { replace: true });
 })();
