@@ -1,10 +1,10 @@
 {
  "data": "2026-11-10",
  "conta": "nova",
- "build": "57UhU9cLie3VphqS27TAM",
+ "build": "7_Pj0gb55lR4bKJ5luVHK",
  "maquina": "4 vCPU, 16 GB",
- "comando": "npm run evidencias -- --larguras 390,1440 --modos sem --rotas / /perguntas/familias /perguntas/territorio-e-clima --saida docs/ux-2026-11-10/abertas",
- "tempo": "0 min 19 s",
+ "comando": "npm run evidencias -- --larguras 390,1440 --modos sem --rotas / /perguntas/familias --saida docs/ux-2026-11-10/abertas",
+ "tempo": "0 min 15 s",
  "resultados": [
   {
    "rota": "/",
@@ -73,42 +73,6 @@
    "login": [],
    "captura": "perguntas_familias-1440-sem-sessao.jpg",
    "primeiraTela": "perguntas_familias-1440-sem-sessao-primeira-tela.jpg"
-  },
-  {
-   "rota": "/perguntas/territorio-e-clima",
-   "modo": "sem",
-   "largura": 390,
-   "status": 200,
-   "final": "/perguntas/territorio-e-clima",
-   "barra": true,
-   "cromo": 101,
-   "topoH1": 243,
-   "rolagemHorizontal": false,
-   "axe": [],
-   "console": [
-    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
-   ],
-   "login": [],
-   "captura": "perguntas_territorio_e_clima-390-sem-sessao.jpg",
-   "primeiraTela": "perguntas_territorio_e_clima-390-sem-sessao-primeira-tela.jpg"
-  },
-  {
-   "rota": "/perguntas/territorio-e-clima",
-   "modo": "sem",
-   "largura": 1440,
-   "status": 200,
-   "final": "/perguntas/territorio-e-clima",
-   "barra": true,
-   "cromo": 106,
-   "topoH1": 264,
-   "rolagemHorizontal": false,
-   "axe": [],
-   "console": [
-    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
-   ],
-   "login": [],
-   "captura": "perguntas_territorio_e_clima-1440-sem-sessao.jpg",
-   "primeiraTela": "perguntas_territorio_e_clima-1440-sem-sessao-primeira-tela.jpg"
   }
  ]
 }
