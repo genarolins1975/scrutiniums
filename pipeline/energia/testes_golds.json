@@ -353,6 +353,12 @@
     "publicacao.json"
    ]
   },
+  "energia-elemento-visual.test.ts": {
+   "classe": "dado",
+   "golds": [
+    "publicacao.json"
+   ]
+  },
   "energia-empresas.test.ts": {
    "classe": "dado",
    "golds": [
