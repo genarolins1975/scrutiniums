@@ -705,6 +705,10 @@
    "classe": "interface",
    "golds": []
   },
+  "recorte-geografico.test.ts": {
+   "classe": "interface",
+   "golds": []
+  },
   "rotas-publicas.test.ts": {
    "classe": "interface",
    "golds": []

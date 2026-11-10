@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { GravuraObservatorio } from "@/components/observatorios/GravuraObservatorio";
 import Link from "next/link";
 import { ACENTO } from "@/components/home/acentos";
 import { ConviteConta } from "@/components/perguntas/ConviteConta";
@@ -93,6 +94,7 @@ export function PaginaPorta({ porta, outras, colecoes, retrato, entrada, artefat
               </div>
             ))}
           </dl>
+          <GravuraObservatorio id={porta.id} faixa className="mt-10" />
         </div>
       </section>
 

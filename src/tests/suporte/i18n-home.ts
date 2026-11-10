@@ -52,7 +52,7 @@ export const INDICE_HOME = DOMINIOS.map((dominio) => {
   const contagem = contagensIndice[dominio.id];
   return {
     id: dominio.id, nome: dominio.nomeCurto,
-    href: `#obs-${dominio.id}`, imagem: dominio.id === "agro" ? "/home/agro.svg" : `/home/${dominio.id}.webp`, chave: contagem.chave,
+    href: `#obs-${dominio.id}`, imagem: `/home/${dominio.id}.webp`, chave: contagem.chave,
     pt: { valor: contagem.numeros.length === 2 ? contagem.numeros.join(" de ") : formatadorNumero("pt", {}).format(contagem.numeros[0]), unidade: contagem.pt },
     en: { valor: contagem.numeros.map((n) => formatadorNumero("en", {}).format(n)).join(" of "), unidade: contagem.en },
   };

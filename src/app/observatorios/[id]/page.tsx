@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GravuraObservatorio } from "@/components/observatorios/GravuraObservatorio";
 import { notFound } from "next/navigation";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { Footer } from "@/components/layout/Footer";
@@ -100,6 +101,7 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         pergunta={o.pergunta}
         descricao={c.descricao}
         escala={c.escala}
+        gravura={<GravuraObservatorio id={id} faixa className="mt-8" />}
         paraVoce={o.entrada && ehEntradaParaVoce(o.entrada) ? <ParaVoce entrada={o.entrada} /> : null}
         colecoes={colecoesDe(id)}
         artefato={c.artefato}
