@@ -68,6 +68,21 @@ const nextConfig = {
       "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
+      // ficha do lugar (/app/minha-cidade, 10/11/2026): dinâmica (município na URL), lê a cada instância os mesmos arquivos
+      // das consultas por município de cada tema e os números do estado. src/tests/lugar.test.ts confere esta lista
+      "/app/minha-cidade": [
+        "./public/saneamento/gold/municipios.json",
+        "./public/saneamento/gold/meta.json",
+        "./public/saneamento/gold/indice.json",
+        "./public/educacao/gold/educacao.json",
+        "./public/educacao/gold/municipios/*.json",
+        "./public/conectividade/gold/conectividade.json",
+        "./public/conectividade/gold/municipios/*.json",
+        "./public/previdencia/gold/municipios/*.json",
+        "./public/territorio/gold/queimadas_municipios.json",
+        "./public/gas/gold/*.json",
+        "./public/eficiencia/seguranca-publica/gold/seguranca.json",
+      ],
       "/educacao-municipal": ["./public/educacao/gold/**/*.json"],
       "/educacao-municipal/mapa": ["./public/educacao/gold/educacao.json", "./public/educacao/gold/mapa.json"],
       "/educacao-municipal/municipio/*": ["./public/educacao/gold/**/*.json"],

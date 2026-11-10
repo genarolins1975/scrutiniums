@@ -269,10 +269,11 @@ describe("uma só navegação de módulo e um só cabeçalho em toda superfície
     expect(foco).toMatch(/<form action="\/api\/auth\/sair" method="post"[^>]*>[\s\S]*?Sair[\s\S]*?<\/form>/);
   });
 
-  it("navegação da conta: Encontre o painel e Conta; Admin só para quem administra", () => {
+  // "Minha cidade" entrou em 10/11/2026 (ficha do lugar, pedido do dono: eixo do lugar)
+  it("navegação da conta: Encontre o painel, Minha cidade e Conta; Admin só para quem administra", () => {
     const comum = navegacaoDaConta(false);
-    expect(comum.itens.map((i) => [i.rotulo, i.href])).toEqual([["Encontre o painel", "/app/observatorios"], ["Conta", "/app/conta"]]);
-    expect(navegacaoDaConta(true).itens.map((i) => i.rotulo)).toEqual(["Encontre o painel", "Conta", "Admin"]);
+    expect(comum.itens.map((i) => [i.rotulo, i.href])).toEqual([["Encontre o painel", "/app/observatorios"], ["Minha cidade", "/app/minha-cidade"], ["Conta", "/app/conta"]]);
+    expect(navegacaoDaConta(true).itens.map((i) => i.rotulo)).toEqual(["Encontre o painel", "Minha cidade", "Conta", "Admin"]);
     for (const i of navegacaoDaConta(true).itens) expect(existsSync(join(raiz, "src/app/app/(foco)", i.href.replace("/app/", ""), "page.tsx")), i.href).toBe(true);
     navegador.caminho = "/app/conta";
     const h = renderToStaticMarkup(createElement(NavegacaoColecaoCliente, { nav: comum, caminho: "/app/conta", idioma: "pt" }));

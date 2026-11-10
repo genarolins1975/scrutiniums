@@ -406,7 +406,7 @@ export function navegacaoDaConta(admin: boolean): NavegacaoDaColecao {
     nome: "Conta",
     tipo: "conta",
     acento: "bronze",
-    itens: [pagina("Encontre o painel", "/app/observatorios"), pagina("Conta", "/app/conta"), ...(admin ? [pagina("Admin", "/app/admin")] : [])],
+    itens: [pagina("Encontre o painel", "/app/observatorios"), pagina("Minha cidade", "/app/minha-cidade"), pagina("Conta", "/app/conta"), ...(admin ? [pagina("Admin", "/app/admin")] : [])],
     atalhos: {},
   };
 }

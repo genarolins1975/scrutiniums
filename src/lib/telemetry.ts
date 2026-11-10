@@ -161,6 +161,7 @@ export const VIEW_SECTIONS = [
   "agro:paginas",
   "app:conta",
   "app:observatorios",
+  "app:minha-cidade",
 ] as const;
 
 /**
@@ -315,6 +316,7 @@ export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "app:conta": "Plataforma · Conta",
   "agro:paginas": "Agronegócio · Páginas",
   "app:observatorios": "Plataforma · Escolha do observatório",
+  "app:minha-cidade": "Plataforma · Minha cidade",
 };
 
 export function isViewSection(value: string): value is ViewSection {

@@ -211,6 +211,21 @@ pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O a
 Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
 regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
 
+## Eixo do lugar: a ficha "Minha cidade" (10/11/2026)
+
+Pedido do dono em 10/11/2026 (recomendação 2 do parecer estrutural): as consultas por município viviam separadas, uma por
+coleção, cada uma com a sua busca. `/app/minha-cidade?ibge=` reúne numa página, para o município escolhido, o que cinco
+coleções publicam por município (Saneamento, Educação, Conectividade, Contas Federais e Fogo e queimadas) e os quatro números
+do estado (combustíveis, botijão, violência e contas), cada cartão com fonte, período e o endereço da ficha do tema no mesmo
+município. Conta de luz e custo de vida entram como consulta, com o motivo de não terem número por município.
+
+- Nada é calculado na ficha: `src/lib/lugar/ficha.ts` chama os leitores de cada tema. Dado ausente sai "indisponível".
+- O lugar vive só no endereço. Nada é gravado na conta e não há geolocalização: a preferência "Meu lugar" (I3 do parecer de UX
+  de 23/10/2026) continua dependendo da decisão do dono sobre a política de privacidade.
+- A página exige conta, está na navegação da conta e no bloco "Na sua cidade" do mapa da conta.
+- Os arquivos lidos em produção estão em `outputFileTracingIncludes` (`next.config.mjs`); `src/tests/lugar.test.ts` confere.
+- Fica para depois: seletor único de lugar nas coleções (I3, passos 1 e 2), lugares na busca da plataforma e versão aberta.
+
 ## Duplicatas: decisões de 18/10/2026
 
 Comparação de conteúdo feita sobre as páginas, os componentes e as golds de cada par. Nenhuma página foi removida: a que vira atalho continua publicada e mostra o aviso "Painel mais completo" (`src/components/observatorios/PainelMaisCompleto.tsx`).
