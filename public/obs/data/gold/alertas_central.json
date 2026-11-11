@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-09T21:38:49+00:00",
+ "gerado_em": "2026-11-10T18:14:47+00:00",
  "familias": [
   {
    "id": "macro",
@@ -12,7 +12,7 @@
    "persistencia": "número de execuções anteriores em que a mesma regra disparou",
    "limitacao": "Séries agregadas: um alerta macro descreve o sistema, nunca uma instituição.",
    "view": "pulse",
-   "ativos": 4,
+   "ativos": 3,
    "arquivo": "alerts.json",
    "disponivel": true
   },
@@ -79,39 +79,21 @@
  ],
  "alertas": [
   {
-   "id": "macro:stale_data:convolacao_falencia_agregado",
+   "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 192 dias",
-   "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 192,
+   "titulo": "52 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (193 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (193 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (101 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 52,
    "limiar": 100,
    "referencia": null,
-   "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "11 execuções anteriores",
+   "fonte": "múltiplas",
+   "evidencia_persistencia": "14 execuções anteriores",
    "recorrente": true,
    "link": {
-    "view": "pulse"
+    "view": "method"
    },
-   "ordem": 0.92,
-   "serie_recente": null
-  },
-  {
-   "id": "macro:stale_data:extincao_rj_agregado",
-   "familia": "macro",
-   "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 192 dias",
-   "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 192,
-   "limiar": 100,
-   "referencia": null,
-   "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "11 execuções anteriores",
-   "recorrente": true,
-   "link": {
-    "view": "pulse"
-   },
-   "ordem": 0.92,
+   "ordem": 0.48,
    "serie_recente": null
   },
   {
@@ -124,7 +106,7 @@
    "limiar": 0.3,
    "referencia": "2026-09",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "11 execuções anteriores",
+   "evidencia_persistencia": "12 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -239,7 +221,7 @@
    "limiar": 28.0,
    "referencia": "2026-08",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "63 execuções anteriores",
+   "evidencia_persistencia": "64 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -897,7 +879,7 @@
    "ordem": 0.0
   }
  ],
- "total": 36,
+ "total": 35,
  "niveis": [
   "informativo",
   "atencao",
