@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-10T18:14:42+00:00",
+ "gerado_em": "2026-11-11T18:34:21+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -1141,7 +1141,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.49,
+     "pct": 5.5,
      "m_produto": null,
      "phi_if": 2.87,
      "cobertura_if_pct": 89.3,
@@ -2832,7 +2832,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.02,
+     "pct": 8.03,
      "m_produto": null,
      "phi_if": 3.62,
      "cobertura_if_pct": 84.8,
@@ -2957,7 +2957,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 10.83,
+     "pct": 10.84,
      "m_produto": null,
      "phi_if": 3.0,
      "cobertura_if_pct": 96.0,
@@ -4134,7 +4134,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.14,
+     "phi_if": 1.15,
      "cobertura_if_pct": 100.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4623,7 +4623,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 39.3,
+     "pct": 39.31,
      "m_produto": null,
      "phi_if": 2.44,
      "cobertura_if_pct": 67.0,
@@ -4948,7 +4948,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.18,
+     "pct": 18.19,
      "m_produto": null,
      "phi_if": 2.06,
      "cobertura_if_pct": 87.9,
@@ -5048,7 +5048,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 24.07,
+     "pct": 24.08,
      "m_produto": null,
      "phi_if": 2.38,
      "cobertura_if_pct": 85.4,

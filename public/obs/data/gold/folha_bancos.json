@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-10T18:14:22+00:00",
+ "gerado_em": "2026-11-11T18:33:54+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 310,
-  "total_editais": 1165,
+  "total_editais": 1172,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1139,6 +1139,69 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE SERRA CAIADA",
+    "municipio": "Serra Caiada",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/08078412000156/2026/76"
+   },
+   {
+    "ente": "MUNICIPIO DE CAFELANDIA",
+    "municipio": "Cafelândia",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/78121878000172/2026/256"
+   },
+   {
+    "ente": "MUNICIPIO DE CAFELANDIA",
+    "municipio": "Cafelândia",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/78121878000172/2026/255"
+   },
+   {
+    "ente": "MUNICIPIO DE PAROBE",
+    "municipio": "Parobé",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/88372883000101/2026/310"
+   },
+   {
+    "ente": "MUNICIPIO DE FERNANDOPOLIS",
+    "municipio": "Fernandópolis",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-10",
+    "url": "https://pncp.gov.br/compras/47842836000105/2026/193"
+   },
+   {
+    "ente": "MUNICIPIO DE BARRA BONITA",
+    "municipio": "Barra Bonita",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-10",
+    "url": "https://pncp.gov.br/compras/01612527000130/2026/118"
+   },
+   {
+    "ente": "MUNICIPIO DE ANAPOLIS",
+    "municipio": "Anápolis",
+    "uf": "GO",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-10",
+    "url": "https://pncp.gov.br/compras/01067479000146/2027/1"
+   },
+   {
     "ente": "MUNICIPIO DE ARARUNA",
     "municipio": "Araruna",
     "uf": "PR",
@@ -1182,69 +1245,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-06",
     "url": "https://pncp.gov.br/compras/58673892000171/2026/35"
-   },
-   {
-    "ente": "MUNICIPIO DE JOAQUIM NABUCO",
-    "municipio": "Joaquim Nabuco",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-06",
-    "url": "https://pncp.gov.br/compras/10192441000196/2026/29"
-   },
-   {
-    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTO",
-    "municipio": "São Carlos",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-06",
-    "url": "https://pncp.gov.br/compras/45359973000150/2026/236"
-   },
-   {
-    "ente": "MUNICIPIO DE CASTRO",
-    "municipio": "Castro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-06",
-    "url": "https://pncp.gov.br/compras/77001311000108/2026/651"
-   },
-   {
-    "ente": "MUNICIPIO DE CASTRO",
-    "municipio": "Castro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-06",
-    "url": "https://pncp.gov.br/compras/77001311000108/2026/650"
-   },
-   {
-    "ente": "MUNICIPIO DE COLORADO",
-    "municipio": "Colorado",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-05",
-    "url": "https://pncp.gov.br/compras/76970326000103/2026/224"
-   },
-   {
-    "ente": "MUNICIPIO DE IVAI",
-    "municipio": "Ivaí",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-05",
-    "url": "https://pncp.gov.br/compras/76175918000133/2026/47"
-   },
-   {
-    "ente": "MUNICIPIO DE CIDADE GAUCHA",
-    "municipio": "Cidade Gaúcha",
-    "uf": "PR",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-05",
-    "url": "https://pncp.gov.br/compras/75377200000167/2026/67"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

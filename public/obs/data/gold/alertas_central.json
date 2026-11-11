@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-10T18:14:47+00:00",
+ "gerado_em": "2026-11-11T18:34:29+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "52 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (193 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (193 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (101 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 52,
+   "titulo": "23 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (194 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (194 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (102 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 23,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "14 execuções anteriores",
+   "evidencia_persistencia": "15 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.48,
+   "ordem": 0.77,
    "serie_recente": null
   },
   {
@@ -106,7 +106,7 @@
    "limiar": 0.3,
    "referencia": "2026-09",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "12 execuções anteriores",
+   "evidencia_persistencia": "13 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -221,7 +221,7 @@
    "limiar": 28.0,
    "referencia": "2026-08",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "64 execuções anteriores",
+   "evidencia_persistencia": "65 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -382,7 +382,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Outros · PF — inadimplência (arrastada)",
-   "detalhe": "7.67% → 8.33% (2026-06 → 2026-09). Δ3m +0.66 p.p. · Δ12m +1.64 p.p. · carteira R$ 1.342.6 bi. 'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
+   "detalhe": "7.67% → 8.33% (2026-06 → 2026-09). Δ3m +0.66 p.p. · Δ12m +1.64 p.p. · carteira R$ 1.342.2 bi. 'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
    "valor": 8.33,
    "limiar": null,
    "referencia": "2026-09",
@@ -433,7 +433,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Consignado · PF — inadimplência (arrastada)",
-   "detalhe": "3.43% → 3.94% (2026-06 → 2026-09). Δ3m +0.51 p.p. · Δ12m +1.34 p.p. · carteira R$ 817.7 bi.",
+   "detalhe": "3.43% → 3.94% (2026-06 → 2026-09). Δ3m +0.51 p.p. · Δ12m +1.34 p.p. · carteira R$ 817.8 bi.",
    "valor": 3.94,
    "limiar": null,
    "referencia": "2026-09",
@@ -450,7 +450,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Capital de giro · PJ — inadimplência (arrastada)",
-   "detalhe": "5.07% → 5.58% (2026-06 → 2026-09). Δ3m +0.51 p.p. · Δ12m +1.27 p.p. · carteira R$ 848.0 bi.",
+   "detalhe": "5.07% → 5.58% (2026-06 → 2026-09). Δ3m +0.51 p.p. · Δ12m +1.27 p.p. · carteira R$ 848.1 bi.",
    "valor": 5.58,
    "limiar": null,
    "referencia": "2026-09",
@@ -484,8 +484,8 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Empregado de empresa privada · PF — inadimplência (arrastada)",
-   "detalhe": "4.44% → 4.80% (2026-06 → 2026-09). Δ3m +0.36 p.p. · Δ12m +0.71 p.p. · carteira R$ 1.072.6 bi.",
-   "valor": 4.8,
+   "detalhe": "4.44% → 4.81% (2026-06 → 2026-09). Δ3m +0.37 p.p. · Δ12m +0.72 p.p. · carteira R$ 1.072.6 bi.",
+   "valor": 4.81,
    "limiar": null,
    "referencia": "2026-09",
    "fonte": "BCB/SCR.data",
@@ -494,7 +494,7 @@
    "link": {
     "view": "panorama"
    },
-   "ordem": 0.71
+   "ordem": 0.72
   },
   {
    "id": "carteira:uf_deterioracao:Acre (AC)",
@@ -537,8 +537,8 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Alagoas (AL) — inadimplência (arrastada)",
-   "detalhe": "5.72% → 6.21% (2026-06 → 2026-09). Δ3m +0.49 p.p..",
-   "valor": 6.21,
+   "detalhe": "5.72% → 6.22% (2026-06 → 2026-09). Δ3m +0.50 p.p..",
+   "valor": 6.22,
    "limiar": null,
    "referencia": "2026-09",
    "fonte": "BCB/SCR.data",
@@ -548,7 +548,7 @@
     "view": "panorama",
     "uf": "AL"
    },
-   "ordem": 0.49
+   "ordem": 0.5
   },
   {
    "id": "carteira:renda_deterioracao:Mais de 2 a 3 salários mínimos · PF",
