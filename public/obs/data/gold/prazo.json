@@ -9,7 +9,7 @@
   "licenca": "dados abertos do BCB",
   "nivel": "A — registro administrativo do supervisor, mensal"
  },
- "gerado_em": "2026-11-11T18:34:28+00:00",
+ "gerado_em": "2026-11-12T19:11:31+00:00",
  "faixas": [
   {
    "id": "ate90",
@@ -903,23 +903,23 @@
   {
    "ref": "2026-08",
    "total": {
-    "a_vencer": 7439694780174.5205,
+    "a_vencer": 7437713729660.689,
     "vencido_pct": 3.64,
-    "curto_12m_pct": 42.34,
+    "curto_12m_pct": 42.35,
     "longo_5a_pct": 19.81,
     "prazo_medio_anos": 3.52
    },
    "PF": {
-    "a_vencer": 4553071574158.939,
+    "a_vencer": 4553073737947.649,
     "vencido_pct": 4.68,
     "curto_12m_pct": 39.55,
     "longo_5a_pct": 23.22,
     "prazo_medio_anos": 3.98
    },
    "PJ": {
-    "a_vencer": 2886623206015.5806,
+    "a_vencer": 2884639991713.0405,
     "vencido_pct": 1.96,
-    "curto_12m_pct": 46.75,
+    "curto_12m_pct": 46.78,
     "longo_5a_pct": 14.45,
     "prazo_medio_anos": 2.81
    }

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-11T18:34:21+00:00",
+ "gerado_em": "2026-11-12T19:11:24+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -198,9 +198,9 @@
     "npl_inst_pct": 2.33,
     "basileia_pct": 15.35,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 60.88,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 25.54,
-     "Cheque especial - Prefixado": 497.54
+     "Conta garantida - Prefixado": 60.45,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 25.39,
+     "Cheque especial - Prefixado": 498.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -227,9 +227,9 @@
     "npl_inst_pct": 4.01,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 77.67,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 27.15,
-     "Cheque especial - Prefixado": 490.64
+     "Conta garantida - Prefixado": 77.5,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 27.35,
+     "Cheque especial - Prefixado": 489.76
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -256,9 +256,9 @@
     "npl_inst_pct": 4.03,
     "basileia_pct": 15.34,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 37.19,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 23.48,
-     "Cheque especial - Prefixado": 505.9
+     "Conta garantida - Prefixado": 40.31,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 23.5,
+     "Cheque especial - Prefixado": 505.98
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -335,9 +335,9 @@
     "npl_inst_pct": 2.52,
     "basileia_pct": 12.84,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 41.46,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 30.82,
-     "Cheque especial - Prefixado": 175.42
+     "Conta garantida - Prefixado": 44.88,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 31.39,
+     "Cheque especial - Prefixado": 178.68
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -364,9 +364,9 @@
     "npl_inst_pct": 1.76,
     "basileia_pct": 18.14,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 195.61,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 16.43,
-     "Cheque especial - Prefixado": 267.37
+     "Conta garantida - Prefixado": 175.9,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 17.22,
+     "Cheque especial - Prefixado": 270.19
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -445,9 +445,9 @@
     "npl_inst_pct": 5.64,
     "basileia_pct": 16.5,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 295.95,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 30.34,
-     "Cheque especial - Prefixado": 387.49
+     "Conta garantida - Prefixado": 305.2,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 32.01,
+     "Cheque especial - Prefixado": 387.35
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -474,8 +474,8 @@
     "npl_inst_pct": 1.03,
     "basileia_pct": 16.18,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 28.76,
-     "Cheque especial - Prefixado": 190.86
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 29.01,
+     "Cheque especial - Prefixado": 178.41
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -552,9 +552,9 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 22.53,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -581,7 +581,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 21.69,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 21.03
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 20.95
     },
     "taxa_casamento": "nome"
    },
@@ -599,7 +599,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 17.91,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 16.11
+     "Conta garantida - Prefixado": 16.16
     },
     "taxa_casamento": "cnpj8"
    },
@@ -667,9 +667,9 @@
     "npl_inst_pct": 2.68,
     "basileia_pct": 14.89,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 35.94,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 27.75,
-     "Cheque especial - Prefixado": 142.27
+     "Conta garantida - Prefixado": 37.47,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 27.59,
+     "Cheque especial - Prefixado": 140.5
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -796,9 +796,9 @@
     "npl_inst_pct": 2.94,
     "basileia_pct": 17.11,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -975,7 +975,7 @@
     "npl_inst_pct": 2.05,
     "basileia_pct": 15.37,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 24.89,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 24.82,
      "Cheque especial - Prefixado": 29.21
     },
     "taxa_casamento": "nome",
@@ -1228,7 +1228,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 15.73,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1405,7 +1405,7 @@
     "npl_inst_pct": 5.21,
     "basileia_pct": 16.68,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1457,7 +1457,7 @@
     "npl_inst_pct": 5.04,
     "basileia_pct": 21.82,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1484,7 +1484,7 @@
     "npl_inst_pct": 5.93,
     "basileia_pct": 14.68,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1661,7 +1661,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 19.44,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1688,8 +1688,8 @@
     "npl_inst_pct": 7.82,
     "basileia_pct": 13.35,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 58.74,
-     "Cheque especial - Prefixado": 133.22
+     "Conta garantida - Prefixado": 59.78,
+     "Cheque especial - Prefixado": 136.67
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1716,9 +1716,9 @@
     "npl_inst_pct": 1.08,
     "basileia_pct": 11.23,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 84.18,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 34.68,
-     "Cheque especial - Prefixado": 199.65
+     "Conta garantida - Prefixado": 111.49,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 34.7,
+     "Cheque especial - Prefixado": 249.16
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1845,9 +1845,9 @@
     "npl_inst_pct": 8.26,
     "basileia_pct": 13.98,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 43.97,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 29.89,
-     "Cheque especial - Prefixado": 369.82
+     "Conta garantida - Prefixado": 43.36,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 28.44,
+     "Cheque especial - Prefixado": 356.96
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1899,7 +1899,7 @@
     "npl_inst_pct": 4.1,
     "basileia_pct": 24.16,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2026,8 +2026,7 @@
     "npl_inst_pct": 10.15,
     "basileia_pct": 13.31,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 40.4,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 24.17
+     "Conta garantida - Prefixado": 40.4
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2204,9 +2203,9 @@
     "npl_inst_pct": 2.85,
     "basileia_pct": 24.26,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2333,7 +2332,7 @@
     "npl_inst_pct": 6.24,
     "basileia_pct": 16.67,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2360,8 +2359,8 @@
     "npl_inst_pct": 20.73,
     "basileia_pct": 14.5,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 79.71,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 33.79
+     "Conta garantida - Prefixado": 79.53,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 34.04
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2413,7 +2412,7 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 19.01,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2790,7 +2789,7 @@
     "npl_inst_pct": 7.19,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2842,7 +2841,7 @@
     "npl_inst_pct": 1.15,
     "basileia_pct": null,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 79.24
+     "Cheque especial - Prefixado": 76.31
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2869,7 +2868,7 @@
     "npl_inst_pct": 9.21,
     "basileia_pct": null,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 125.17,
+     "Conta garantida - Prefixado": 101.59,
      "Conta garantida - Pós-fixado referenciado em juros flutuantes": 27.22
     },
     "taxa_casamento": "cnpj8",
@@ -3047,7 +3046,7 @@
     "npl_inst_pct": 4.83,
     "basileia_pct": 12.43,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3124,7 +3123,7 @@
     "npl_inst_pct": 9.22,
     "basileia_pct": 17.86,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3301,7 +3300,7 @@
     "npl_inst_pct": 6.79,
     "basileia_pct": 13.45,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3378,7 +3377,7 @@
     "npl_inst_pct": 6.47,
     "basileia_pct": 14.04,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3430,7 +3429,7 @@
     "npl_inst_pct": 6.22,
     "basileia_pct": 15.45,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3582,7 +3581,7 @@
     "npl_inst_pct": 5.88,
     "basileia_pct": 18.26,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3608,8 +3607,10 @@
     "pct_carteira_inst": 4.7,
     "npl_inst_pct": 9.86,
     "basileia_pct": 15.27,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Cheque especial - Prefixado": 384.97
+    },
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 20.45,
      "m_produto": null,
@@ -3634,7 +3635,7 @@
     "npl_inst_pct": 8.5,
     "basileia_pct": 17.34,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3811,7 +3812,7 @@
     "npl_inst_pct": 6.02,
     "basileia_pct": 15.64,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3938,9 +3939,9 @@
     "npl_inst_pct": 9.48,
     "basileia_pct": 14.2,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4042,7 +4043,7 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 17.47,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4119,7 +4120,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 14.49,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4146,7 +4147,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.99,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4173,7 +4174,7 @@
     "npl_inst_pct": 10.69,
     "basileia_pct": 16.36,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4200,7 +4201,7 @@
     "npl_inst_pct": 8.02,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4327,7 +4328,7 @@
     "npl_inst_pct": 1.92,
     "basileia_pct": 13.28,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 99.55,
+     "Conta garantida - Prefixado": 93.73,
      "Cheque especial - Prefixado": 189.05
     },
     "taxa_casamento": "nome",
@@ -4429,10 +4430,8 @@
     "pct_carteira_inst": 1.8,
     "npl_inst_pct": 6.45,
     "basileia_pct": 14.7,
-    "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 41.05
-    },
-    "taxa_casamento": "nome",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 19.82,
      "m_produto": null,
@@ -4457,7 +4456,7 @@
     "npl_inst_pct": 6.12,
     "basileia_pct": 20.94,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4484,7 +4483,7 @@
     "npl_inst_pct": 3.3,
     "basileia_pct": 15.41,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4511,7 +4510,7 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 15.91,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4788,8 +4787,8 @@
     "npl_inst_pct": 5.0,
     "basileia_pct": 13.66,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 79.71,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 33.79
+     "Conta garantida - Prefixado": 79.53,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 34.04
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4941,7 +4940,7 @@
     "npl_inst_pct": 5.97,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4968,7 +4967,7 @@
     "npl_inst_pct": 35.66,
     "basileia_pct": 8.68,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 154.56
+     "Conta garantida - Prefixado": 135.41
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -5045,7 +5044,7 @@
     "npl_inst_pct": 5.31,
     "basileia_pct": 17.01,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5197,8 +5196,8 @@
     "npl_inst_pct": 13.24,
     "basileia_pct": 14.63,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 44.77,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 21.31
+     "Conta garantida - Prefixado": 45.58,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 21.41
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5325,7 +5324,7 @@
     "npl_inst_pct": 5.62,
     "basileia_pct": 16.86,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5352,7 +5351,7 @@
     "npl_inst_pct": 3.8,
     "basileia_pct": 14.31,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 45.31,
+     "Conta garantida - Prefixado": 47.59,
      "Cheque especial - Prefixado": 87.37
     },
     "taxa_casamento": "nome",
@@ -5555,7 +5554,7 @@
     "npl_inst_pct": 7.35,
     "basileia_pct": 17.94,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5607,9 +5606,9 @@
     "npl_inst_pct": 4.35,
     "basileia_pct": 18.65,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5736,7 +5735,7 @@
     "npl_inst_pct": 9.92,
     "basileia_pct": 18.48,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5788,7 +5787,7 @@
     "npl_inst_pct": 7.47,
     "basileia_pct": 15.77,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5840,7 +5839,7 @@
     "npl_inst_pct": 15.7,
     "basileia_pct": 14.32,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5892,7 +5891,7 @@
     "npl_inst_pct": 5.07,
     "basileia_pct": 14.4,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5919,7 +5918,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5971,7 +5970,7 @@
     "npl_inst_pct": 4.51,
     "basileia_pct": 14.52,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6198,7 +6197,7 @@
     "npl_inst_pct": 5.28,
     "basileia_pct": 18.61,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6249,10 +6248,8 @@
     "pct_carteira_inst": 4.4,
     "npl_inst_pct": 5.86,
     "basileia_pct": 30.15,
-    "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 41.05
-    },
-    "taxa_casamento": "nome",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 31.15,
      "m_produto": null,
@@ -6277,7 +6274,7 @@
     "npl_inst_pct": 5.36,
     "basileia_pct": 23.4,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6404,7 +6401,7 @@
     "npl_inst_pct": 7.06,
     "basileia_pct": 17.07,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6556,7 +6553,7 @@
     "npl_inst_pct": 8.77,
     "basileia_pct": 13.21,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6633,7 +6630,7 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 15.55,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6760,7 +6757,7 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 19.55,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6787,7 +6784,7 @@
     "npl_inst_pct": 5.53,
     "basileia_pct": 23.49,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6864,7 +6861,7 @@
     "npl_inst_pct": 7.0,
     "basileia_pct": 14.59,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7216,7 +7213,7 @@
     "npl_inst_pct": 7.2,
     "basileia_pct": 16.25,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7267,10 +7264,8 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 4.02,
     "basileia_pct": 20.43,
-    "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 41.05
-    },
-    "taxa_casamento": "nome",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 23.97,
      "m_produto": null,
@@ -7670,7 +7665,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.6,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7697,9 +7692,9 @@
     "npl_inst_pct": null,
     "basileia_pct": 51.4,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome"
    },
@@ -7767,7 +7762,7 @@
     "npl_inst_pct": 6.16,
     "basileia_pct": 16.19,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7844,7 +7839,7 @@
     "npl_inst_pct": 3.77,
     "basileia_pct": 13.74,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7871,9 +7866,9 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 20.47,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7900,7 +7895,7 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 17.56,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 24.79
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 25.81
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -8127,7 +8122,7 @@
     "npl_inst_pct": 3.24,
     "basileia_pct": 14.88,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8455,7 +8450,7 @@
     "basileia_pct": 15.14,
     "taxas_novas": {
      "Conta garantida - Prefixado": 22.33,
-     "Cheque especial - Prefixado": 134.52
+     "Cheque especial - Prefixado": 134.63
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -8732,7 +8727,7 @@
     "npl_inst_pct": 5.79,
     "basileia_pct": 16.01,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8886,7 +8881,7 @@
     "npl_inst_pct": 1.41,
     "basileia_pct": 16.28,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 33.94,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 33.93,
      "Cheque especial - Prefixado": 46.26
     },
     "taxa_casamento": "cnpj8",
@@ -8939,7 +8934,7 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 12.48,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9141,7 +9136,7 @@
     "npl_inst_pct": 5.27,
     "basileia_pct": 16.23,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9218,7 +9213,7 @@
     "npl_inst_pct": 5.85,
     "basileia_pct": 22.83,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9820,7 +9815,7 @@
     "npl_inst_pct": 3.78,
     "basileia_pct": 26.69,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 79.24
+     "Cheque especial - Prefixado": 76.31
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10046,10 +10041,8 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 6.25,
     "basileia_pct": 26.45,
-    "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 41.05
-    },
-    "taxa_casamento": "nome",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 5.03,
      "m_produto": null,
@@ -10324,7 +10317,7 @@
     "npl_inst_pct": 3.87,
     "basileia_pct": 23.45,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 52.12
+     "Conta garantida - Prefixado": 52.49
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -10426,7 +10419,7 @@
     "npl_inst_pct": 2.91,
     "basileia_pct": 18.54,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10553,7 +10546,7 @@
     "npl_inst_pct": 3.55,
     "basileia_pct": 18.28,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10955,7 +10948,7 @@
     "npl_inst_pct": 3.61,
     "basileia_pct": 16.74,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 259.87
+     "Cheque especial - Prefixado": 261.45
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -11157,7 +11150,7 @@
     "npl_inst_pct": 2.31,
     "basileia_pct": 22.33,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11927,7 +11920,7 @@
     "npl_inst_pct": 7.76,
     "basileia_pct": 14.44,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12429,9 +12422,9 @@
     "npl_inst_pct": 4.96,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13674,7 +13667,7 @@
     "npl_inst_pct": 12.04,
     "basileia_pct": 26.72,
     "taxas_novas": {
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 23.47,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 22.57,
      "Cheque especial - Prefixado": 73.78
     },
     "taxa_casamento": "nome",
@@ -13852,9 +13845,9 @@
     "npl_inst_pct": 10.97,
     "basileia_pct": 53.16,
     "taxas_novas": {
-     "Conta garantida - Prefixado": 28.05,
-     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.59,
-     "Cheque especial - Prefixado": 410.48
+     "Conta garantida - Prefixado": 28.25,
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 40.29,
+     "Cheque especial - Prefixado": 438.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14663,7 +14656,7 @@
     "npl_inst_pct": 1.47,
     "basileia_pct": 37.12,
     "taxas_novas": {
-     "Cheque especial - Prefixado": 387.1
+     "Cheque especial - Prefixado": 384.97
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14739,8 +14732,10 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 0.03,
     "basileia_pct": 28.85,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Conta garantida - Pós-fixado referenciado em juros flutuantes": 24.95
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
@@ -15158,14 +15153,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Conta garantida - Prefixado",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
      "n_inst": 30,
-     "mediana_aa": 44.77,
-     "p25_aa": 35.94,
-     "p75_aa": 84.18,
-     "min_aa": 16.11,
-     "max_aa": 416.65,
+     "mediana_aa": 45.58,
+     "p25_aa": 37.47,
+     "p75_aa": 93.73,
+     "min_aa": 16.16,
+     "max_aa": 436.54,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -16219,19 +16214,19 @@
        "n": 29
       },
       {
-       "inicio": "2026-10-21",
-       "mediana_aa": 44.77,
-       "p25_aa": 35.94,
-       "p75_aa": 84.18,
+       "inicio": "2026-10-22",
+       "mediana_aa": 45.58,
+       "p25_aa": 37.47,
+       "p75_aa": 93.73,
        "n": 30
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 31.66,
-       "p25_aa": 28.05,
-       "p75_aa": 60.88,
+       "mediana_aa": 31.64,
+       "p25_aa": 28.25,
+       "p75_aa": 60.45,
        "serie": [
         {
          "inicio": "2023-12-13",
@@ -17284,19 +17279,19 @@
          "n": 5
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 31.66,
-         "p25_aa": 28.05,
-         "p75_aa": 60.88,
+         "inicio": "2026-10-22",
+         "mediana_aa": 31.64,
+         "p25_aa": 28.25,
+         "p75_aa": 60.45,
          "n": 6
         }
        ]
       },
       "S3": {
        "n": 11,
-       "mediana_aa": 43.97,
-       "p25_aa": 35.94,
-       "p75_aa": 84.18,
+       "mediana_aa": 44.88,
+       "p25_aa": 37.47,
+       "p75_aa": 111.49,
        "serie": [
         {
          "inicio": "2023-12-12",
@@ -18349,19 +18344,19 @@
          "n": 11
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 43.97,
-         "p25_aa": 35.94,
-         "p75_aa": 84.18,
+         "inicio": "2026-10-22",
+         "mediana_aa": 44.88,
+         "p25_aa": 37.47,
+         "p75_aa": 111.49,
          "n": 11
         }
        ]
       },
       "S4": {
        "n": 9,
-       "mediana_aa": 58.74,
-       "p25_aa": 44.77,
-       "p75_aa": 99.55,
+       "mediana_aa": 59.78,
+       "p25_aa": 45.58,
+       "p75_aa": 93.73,
        "serie": [
         {
          "inicio": "2023-12-12",
@@ -19414,10 +19409,10 @@
          "n": 10
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 58.74,
-         "p25_aa": 44.77,
-         "p75_aa": 99.55,
+         "inicio": "2026-10-22",
+         "mediana_aa": 59.78,
+         "p25_aa": 45.58,
+         "p75_aa": 93.73,
          "n": 9
         }
        ]
@@ -19427,8 +19422,8 @@
       {
        "cnpj8": "62331228",
        "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
-       "taxa_am": 1.25,
-       "taxa_aa": 16.11,
+       "taxa_am": 1.26,
+       "taxa_aa": 16.16,
        "posicao": 1,
        "cod_congl": "C0080532",
        "sr": "S3"
@@ -19445,8 +19440,8 @@
       {
        "cnpj8": "59285411",
        "nome": "BANCO PAN",
-       "taxa_am": 1.76,
-       "taxa_aa": 23.23,
+       "taxa_am": 1.7,
+       "taxa_aa": 22.46,
        "posicao": 3,
        "cod_congl": "C0080336",
        "sr": "S1"
@@ -19454,8 +19449,8 @@
       {
        "cnpj8": "61186680",
        "nome": "BCO BMG S.A.",
-       "taxa_am": 1.97,
-       "taxa_aa": 26.38,
+       "taxa_am": 1.95,
+       "taxa_aa": 26.1,
        "posicao": 4,
        "cod_congl": "C0080178",
        "sr": "S3"
@@ -19463,56 +19458,56 @@
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 2.08,
-       "taxa_aa": 28.05,
+       "taxa_am": 2.1,
+       "taxa_aa": 28.25,
        "posicao": 5,
        "cod_congl": "C0080329",
        "sr": "S1"
       },
       {
-       "cnpj8": "91884981",
-       "nome": "BANCO JOHN DEERE S.A.",
-       "taxa_am": 2.32,
-       "taxa_aa": 31.66,
-       "posicao": 6,
-       "cod_congl": "C0080075",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 2.45,
-       "taxa_aa": 33.7,
-       "posicao": 7,
+       "taxa_am": 2.23,
+       "taxa_aa": 30.24,
+       "posicao": 6,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
+       "cnpj8": "91884981",
+       "nome": "BANCO JOHN DEERE S.A.",
+       "taxa_am": 2.32,
+       "taxa_aa": 31.64,
+       "posicao": 7,
+       "cod_congl": "C0080075",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 2.59,
-       "taxa_aa": 35.94,
+       "taxa_am": 2.69,
+       "taxa_aa": 37.47,
        "posicao": 8,
        "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
-       "cnpj8": "90400888",
-       "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 2.67,
-       "taxa_aa": 37.19,
-       "posicao": 9,
-       "cod_congl": "C0080185",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "00000208",
        "nome": "BRB - BCO DE BRASILIA S.A.",
-       "taxa_am": 2.74,
-       "taxa_aa": 38.39,
-       "posicao": 10,
+       "taxa_am": 2.81,
+       "taxa_aa": 39.44,
+       "posicao": 9,
        "cod_congl": "C0080288",
        "sr": "S3"
+      },
+      {
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 2.86,
+       "taxa_aa": 40.31,
+       "posicao": 10,
+       "cod_congl": "C0080185",
+       "sr": "S1"
       },
       {
        "cnpj8": "00795423",
@@ -19524,37 +19519,37 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "62232889",
-       "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 2.93,
-       "taxa_aa": 41.46,
-       "posicao": 12,
-       "cod_congl": "C0081744",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "09313766",
        "nome": "CARUANA SCFI",
        "taxa_am": 2.98,
        "taxa_aa": 42.27,
-       "posicao": 13,
+       "posicao": 12,
        "cod_congl": "C0083591",
        "sr": "S4"
       },
       {
        "cnpj8": "71027866",
        "nome": "BCO BS2 S.A.",
-       "taxa_am": 3.08,
-       "taxa_aa": 43.97,
-       "posicao": 14,
+       "taxa_am": 3.05,
+       "taxa_aa": 43.36,
+       "posicao": 13,
        "cod_congl": "C0080422",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "62232889",
+       "nome": "BCO DAYCOVAL S.A",
+       "taxa_am": 3.14,
+       "taxa_aa": 44.88,
+       "posicao": 14,
+       "cod_congl": "C0081744",
        "sr": "S3"
       },
       {
        "cnpj8": "60850229",
        "nome": "OMNI BANCO S.A.",
-       "taxa_am": 3.13,
-       "taxa_aa": 44.77,
+       "taxa_am": 3.18,
+       "taxa_aa": 45.58,
        "posicao": 15,
        "cod_congl": "C0080460",
        "sr": "S4"
@@ -19562,35 +19557,35 @@
       {
        "cnpj8": "62144175",
        "nome": "BCO PINE S.A.",
-       "taxa_am": 3.16,
-       "taxa_aa": 45.31,
+       "taxa_am": 3.3,
+       "taxa_aa": 47.59,
        "posicao": 16,
        "cod_congl": "C0080374",
        "sr": "S3"
       },
       {
-       "cnpj8": "07679404",
-       "nome": "BANCO TOPÁZIO S.A.",
-       "taxa_am": 3.56,
-       "taxa_aa": 52.12,
-       "posicao": 17,
-       "cod_congl": "C0081517",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 3.87,
-       "taxa_aa": 57.76,
-       "posicao": 18,
+       "taxa_am": 3.44,
+       "taxa_aa": 50.06,
+       "posicao": 17,
        "cod_congl": "C0080123",
        "sr": "S3"
       },
       {
+       "cnpj8": "07679404",
+       "nome": "BANCO TOPÁZIO S.A.",
+       "taxa_am": 3.58,
+       "taxa_aa": 52.49,
+       "posicao": 18,
+       "cod_congl": "C0081517",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "13009717",
        "nome": "BCO DO EST. DE SE S.A.",
-       "taxa_am": 3.93,
-       "taxa_aa": 58.74,
+       "taxa_am": 3.98,
+       "taxa_aa": 59.78,
        "posicao": 19,
        "cod_congl": "C0081634",
        "sr": "S4"
@@ -19598,8 +19593,8 @@
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 4.04,
-       "taxa_aa": 60.88,
+       "taxa_am": 4.02,
+       "taxa_aa": 60.45,
        "posicao": 20,
        "cod_congl": "C0080099",
        "sr": "S1"
@@ -19607,8 +19602,8 @@
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 4.91,
-       "taxa_aa": 77.67,
+       "taxa_am": 4.9,
+       "taxa_aa": 77.5,
        "posicao": 21,
        "cod_congl": "C0080075",
        "sr": "S1"
@@ -19616,44 +19611,44 @@
       {
        "cnpj8": "17351180",
        "nome": "BCO TRIANGULO S.A.",
-       "taxa_am": 5.01,
-       "taxa_aa": 79.71,
+       "taxa_am": 5.0,
+       "taxa_aa": 79.53,
        "posicao": 22,
        "cod_congl": "C0081438",
        "sr": "S4"
       },
       {
-       "cnpj8": "58616418",
-       "nome": "BCO FIBRA S.A.",
-       "taxa_am": 5.22,
-       "taxa_aa": 84.18,
-       "posicao": 23,
-       "cod_congl": "C0081483",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "68900810",
        "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 5.93,
-       "taxa_aa": 99.55,
-       "posicao": 24,
+       "taxa_am": 5.67,
+       "taxa_aa": 93.73,
+       "posicao": 23,
        "cod_congl": "C0080659",
        "sr": "S4"
       },
       {
        "cnpj8": "31880826",
        "nome": "BCO GUANABARA S.A.",
-       "taxa_am": 7.0,
-       "taxa_aa": 125.17,
-       "posicao": 25,
+       "taxa_am": 6.02,
+       "taxa_aa": 101.59,
+       "posicao": 24,
        "cod_congl": "C0081672",
        "sr": "S4"
       },
       {
+       "cnpj8": "58616418",
+       "nome": "BCO FIBRA S.A.",
+       "taxa_am": 6.44,
+       "taxa_aa": 111.49,
+       "posicao": 25,
+       "cod_congl": "C0081483",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "04814563",
        "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 8.1,
-       "taxa_aa": 154.56,
+       "taxa_am": 7.4,
+       "taxa_aa": 135.41,
        "posicao": 26,
        "cod_congl": "C0083539",
        "sr": "S4"
@@ -19670,8 +19665,8 @@
       {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 9.45,
-       "taxa_aa": 195.61,
+       "taxa_am": 8.83,
+       "taxa_aa": 175.9,
        "posicao": 28,
        "cod_congl": "C0080109",
        "sr": "S2"
@@ -19679,8 +19674,8 @@
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
-       "taxa_am": 12.15,
-       "taxa_aa": 295.95,
+       "taxa_am": 12.37,
+       "taxa_aa": 305.2,
        "posicao": 29,
        "cod_congl": "C0080271",
        "sr": "S3"
@@ -19688,8 +19683,8 @@
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 14.67,
-       "taxa_aa": 416.65,
+       "taxa_am": 15.03,
+       "taxa_aa": 436.54,
        "posicao": 30,
        "cod_congl": "C0084844",
        "sr": "S3"
@@ -19699,14 +19694,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Conta garantida - Pós-fixado referenciado em juros flutuantes",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
-     "n_inst": 24,
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
+     "n_inst": 23,
      "mediana_aa": 27.22,
-     "p25_aa": 23.48,
-     "p75_aa": 30.82,
-     "min_aa": 16.43,
-     "max_aa": 52.66,
+     "p25_aa": 23.5,
+     "p75_aa": 31.39,
+     "min_aa": 17.22,
+     "max_aa": 52.2,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -20963,19 +20958,19 @@
        "n": 24
       },
       {
-       "inicio": "2026-10-21",
+       "inicio": "2026-10-22",
        "mediana_aa": 27.22,
-       "p25_aa": 23.48,
-       "p75_aa": 30.82,
-       "n": 24
+       "p25_aa": 23.5,
+       "p75_aa": 31.39,
+       "n": 23
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 5,
-       "mediana_aa": 25.54,
-       "p25_aa": 23.48,
-       "p75_aa": 27.15,
+       "mediana_aa": 25.39,
+       "p25_aa": 23.5,
+       "p75_aa": 27.35,
        "serie": [
         {
          "inicio": "2023-05-25",
@@ -22224,19 +22219,19 @@
          "n": 5
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 25.54,
-         "p25_aa": 23.48,
-         "p75_aa": 27.15,
+         "inicio": "2026-10-22",
+         "mediana_aa": 25.39,
+         "p25_aa": 23.5,
+         "p75_aa": 27.35,
          "n": 5
         }
        ]
       },
       "S3": {
-       "n": 9,
-       "mediana_aa": 29.89,
-       "p25_aa": 27.75,
-       "p75_aa": 30.82,
+       "n": 10,
+       "mediana_aa": 28.44,
+       "p25_aa": 24.95,
+       "p75_aa": 32.01,
        "serie": [
         {
          "inicio": "2023-05-24",
@@ -23492,19 +23487,19 @@
          "n": 9
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 29.89,
-         "p25_aa": 27.75,
-         "p75_aa": 30.82,
-         "n": 9
+         "inicio": "2026-10-22",
+         "mediana_aa": 28.44,
+         "p25_aa": 24.95,
+         "p75_aa": 32.01,
+         "n": 10
         }
        ]
       },
       "S4": {
-       "n": 7,
+       "n": 5,
        "mediana_aa": 27.22,
-       "p25_aa": 24.79,
-       "p75_aa": 33.79,
+       "p25_aa": 25.81,
+       "p75_aa": 33.93,
        "serie": [
         {
          "inicio": "2023-05-25",
@@ -24718,11 +24713,11 @@
          "n": 7
         },
         {
-         "inicio": "2026-10-21",
+         "inicio": "2026-10-22",
          "mediana_aa": 27.22,
-         "p25_aa": 24.79,
-         "p75_aa": 33.79,
-         "n": 7
+         "p25_aa": 25.81,
+         "p75_aa": 33.93,
+         "n": 5
         }
        ]
       }
@@ -24731,188 +24726,188 @@
       {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 1.28,
-       "taxa_aa": 16.43,
+       "taxa_am": 1.33,
+       "taxa_aa": 17.22,
        "posicao": 1,
        "cod_congl": "C0080109",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 1.58,
+       "taxa_aa": 20.68,
+       "posicao": 2,
+       "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
        "cnpj8": "33172537",
        "nome": "BCO J.P. MORGAN S.A.",
        "taxa_am": 1.6,
-       "taxa_aa": 21.03,
-       "posicao": 2,
+       "taxa_aa": 20.95,
+       "posicao": 3,
        "cod_congl": "C0080116",
        "sr": "S3"
       },
       {
        "cnpj8": "60850229",
        "nome": "OMNI BANCO S.A.",
-       "taxa_am": 1.62,
-       "taxa_aa": 21.31,
-       "posicao": 3,
+       "taxa_am": 1.63,
+       "taxa_aa": 21.41,
+       "posicao": 4,
        "cod_congl": "C0080460",
        "sr": "S4"
       },
       {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 1.63,
-       "taxa_aa": 21.34,
-       "posicao": 4,
-       "cod_congl": "C0080154",
-       "sr": "S2"
+       "cnpj8": "62073200",
+       "nome": "BOFA MERRILL LYNCH BM S.A.",
+       "taxa_am": 1.71,
+       "taxa_aa": 22.57,
+       "posicao": 5,
+       "cod_congl": "C0080556",
+       "sr": "S3"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 1.74,
-       "taxa_aa": 23.07,
-       "posicao": 5,
+       "taxa_aa": 23.06,
+       "posicao": 6,
        "cod_congl": "C0080738",
        "sr": "S1"
-      },
-      {
-       "cnpj8": "62073200",
-       "nome": "BOFA MERRILL LYNCH BM S.A.",
-       "taxa_am": 1.77,
-       "taxa_aa": 23.47,
-       "posicao": 6,
-       "cod_congl": "C0080556",
-       "sr": "S3"
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
        "taxa_am": 1.77,
-       "taxa_aa": 23.48,
+       "taxa_aa": 23.5,
        "posicao": 7,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
       {
-       "cnpj8": "00795423",
-       "nome": "BANCO SEMEAR",
-       "taxa_am": 1.82,
-       "taxa_aa": 24.17,
-       "posicao": 8,
-       "cod_congl": "C0081380",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "78632767",
-       "nome": "OURIBANK S.A.",
-       "taxa_am": 1.86,
-       "taxa_aa": 24.79,
-       "posicao": 9,
-       "cod_congl": "C0081012",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "33479023",
        "nome": "BCO CITIBANK S.A.",
        "taxa_am": 1.87,
-       "taxa_aa": 24.89,
-       "posicao": 10,
+       "taxa_aa": 24.82,
+       "posicao": 8,
        "cod_congl": "C0080192",
        "sr": "S2"
       },
       {
+       "cnpj8": "75647891",
+       "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
+       "taxa_am": 1.87,
+       "taxa_aa": 24.95,
+       "posicao": 9,
+       "cod_congl": "C0080491",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 1.91,
-       "taxa_aa": 25.54,
-       "posicao": 11,
+       "taxa_am": 1.9,
+       "taxa_aa": 25.39,
+       "posicao": 10,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 2.02,
-       "taxa_aa": 27.15,
-       "posicao": 12,
-       "cod_congl": "C0080075",
-       "sr": "S1"
+       "cnpj8": "78632767",
+       "nome": "OURIBANK S.A.",
+       "taxa_am": 1.93,
+       "taxa_aa": 25.81,
+       "posicao": 11,
+       "cod_congl": "C0081012",
+       "sr": "S4"
       },
       {
        "cnpj8": "31880826",
        "nome": "BCO GUANABARA S.A.",
        "taxa_am": 2.03,
        "taxa_aa": 27.22,
-       "posicao": 13,
+       "posicao": 12,
        "cod_congl": "C0081672",
        "sr": "S4"
       },
       {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 2.04,
+       "taxa_aa": 27.35,
+       "posicao": 13,
+       "cod_congl": "C0080075",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 2.06,
-       "taxa_aa": 27.75,
+       "taxa_am": 2.05,
+       "taxa_aa": 27.59,
        "posicao": 14,
        "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 2.13,
-       "taxa_aa": 28.76,
-       "posicao": 15,
-       "cod_congl": "C0080312",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "71027866",
        "nome": "BCO BS2 S.A.",
-       "taxa_am": 2.2,
-       "taxa_aa": 29.89,
-       "posicao": 16,
+       "taxa_am": 2.11,
+       "taxa_aa": 28.44,
+       "posicao": 15,
        "cod_congl": "C0080422",
        "sr": "S3"
       },
       {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
-       "taxa_am": 2.23,
-       "taxa_aa": 30.34,
-       "posicao": 17,
-       "cod_congl": "C0080271",
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
+       "taxa_am": 2.15,
+       "taxa_aa": 29.01,
+       "posicao": 16,
+       "cod_congl": "C0080312",
        "sr": "S3"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 2.26,
-       "taxa_aa": 30.82,
-       "posicao": 18,
+       "taxa_am": 2.3,
+       "taxa_aa": 31.39,
+       "posicao": 17,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
       {
-       "cnpj8": "17351180",
-       "nome": "BCO TRIANGULO S.A.",
-       "taxa_am": 2.46,
-       "taxa_aa": 33.79,
-       "posicao": 19,
-       "cod_congl": "C0081438",
-       "sr": "S4"
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 2.34,
+       "taxa_aa": 32.01,
+       "posicao": 18,
+       "cod_congl": "C0080271",
+       "sr": "S3"
       },
       {
        "cnpj8": "00517645",
        "nome": "BCO RIBEIRAO PRETO S.A.",
-       "taxa_am": 2.47,
-       "taxa_aa": 33.94,
-       "posicao": 20,
+       "taxa_am": 2.46,
+       "taxa_aa": 33.93,
+       "posicao": 19,
        "cod_congl": "C0084349",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "17351180",
+       "nome": "BCO TRIANGULO S.A.",
+       "taxa_am": 2.47,
+       "taxa_aa": 34.04,
+       "posicao": 20,
+       "cod_congl": "C0081438",
        "sr": "S4"
       },
       {
        "cnpj8": "58616418",
        "nome": "BCO FIBRA S.A.",
        "taxa_am": 2.51,
-       "taxa_aa": 34.68,
+       "taxa_aa": 34.7,
        "posicao": 21,
        "cod_congl": "C0081483",
        "sr": "S3"
@@ -24920,27 +24915,18 @@
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 2.88,
-       "taxa_aa": 40.59,
+       "taxa_am": 2.86,
+       "taxa_aa": 40.29,
        "posicao": 22,
        "cod_congl": "C0080329",
        "sr": "S1"
       },
       {
-       "cnpj8": "14388334",
-       "nome": "PARANA BCO S.A.",
-       "taxa_am": 2.91,
-       "taxa_aa": 41.05,
-       "posicao": 23,
-       "cod_congl": "C0080233",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 3.59,
-       "taxa_aa": 52.66,
-       "posicao": 24,
+       "taxa_am": 3.56,
+       "taxa_aa": 52.2,
+       "posicao": 23,
        "cod_congl": "C0080123",
        "sr": "S3"
       }
@@ -24949,14 +24935,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Cheque especial - Prefixado",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
-     "n_inst": 31,
-     "mediana_aa": 190.86,
-     "p25_aa": 134.52,
-     "p75_aa": 387.1,
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
+     "n_inst": 30,
+     "mediana_aa": 189.05,
+     "p25_aa": 134.63,
+     "p75_aa": 387.35,
      "min_aa": 29.21,
-     "max_aa": 505.9,
+     "max_aa": 505.98,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -26080,19 +26066,19 @@
        "n": 31
       },
       {
-       "inicio": "2026-10-21",
-       "mediana_aa": 190.86,
-       "p25_aa": 134.52,
-       "p75_aa": 387.1,
-       "n": 31
+       "inicio": "2026-10-22",
+       "mediana_aa": 189.05,
+       "p25_aa": 134.63,
+       "p75_aa": 387.35,
+       "n": 30
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 443.93,
-       "p25_aa": 431.94,
-       "p75_aa": 497.54,
+       "mediana_aa": 444.75,
+       "p25_aa": 438.02,
+       "p75_aa": 498.75,
        "serie": [
         {
          "inicio": "2023-10-04",
@@ -27215,328 +27201,19 @@
          "n": 6
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 443.93,
-         "p25_aa": 431.94,
-         "p75_aa": 497.54,
+         "inicio": "2026-10-22",
+         "mediana_aa": 444.75,
+         "p25_aa": 438.02,
+         "p75_aa": 498.75,
          "n": 6
-        }
-       ]
-      },
-      "S2": {
-       "n": 5,
-       "mediana_aa": 159.6,
-       "p25_aa": 134.52,
-       "p75_aa": 267.37,
-       "serie": [
-        {
-         "inicio": "2025-11-12",
-         "mediana_aa": 146.64,
-         "p25_aa": 139.69,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2025-11-25",
-         "mediana_aa": 147.36,
-         "p25_aa": 146.19,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2025-12-01",
-         "mediana_aa": 150.11,
-         "p25_aa": 145.09,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2025-12-08",
-         "mediana_aa": 142.15,
-         "p25_aa": 138.8,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2025-12-15",
-         "mediana_aa": 139.16,
-         "p25_aa": 135.22,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2025-12-22",
-         "mediana_aa": 159.6,
-         "p25_aa": 140.98,
-         "p75_aa": 303.05,
-         "n": 5
-        },
-        {
-         "inicio": "2026-01-14",
-         "mediana_aa": 159.6,
-         "p25_aa": 151.36,
-         "p75_aa": 445.18,
-         "n": 5
-        },
-        {
-         "inicio": "2026-01-21",
-         "mediana_aa": 159.6,
-         "p25_aa": 136.93,
-         "p75_aa": 366.36,
-         "n": 5
-        },
-        {
-         "inicio": "2026-02-11",
-         "mediana_aa": 159.6,
-         "p25_aa": 149.7,
-         "p75_aa": 322.3,
-         "n": 5
-        },
-        {
-         "inicio": "2026-02-18",
-         "mediana_aa": 159.6,
-         "p25_aa": 151.04,
-         "p75_aa": 328.29,
-         "n": 5
-        },
-        {
-         "inicio": "2026-02-24",
-         "mediana_aa": 159.6,
-         "p25_aa": 157.51,
-         "p75_aa": 316.31,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-02",
-         "mediana_aa": 159.6,
-         "p25_aa": 156.07,
-         "p75_aa": 194.31,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-10",
-         "mediana_aa": 159.6,
-         "p25_aa": 150.93,
-         "p75_aa": 259.36,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-16",
-         "mediana_aa": 159.6,
-         "p25_aa": 149.49,
-         "p75_aa": 235.68,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-23",
-         "mediana_aa": 159.6,
-         "p25_aa": 136.33,
-         "p75_aa": 447.41,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-06",
-         "mediana_aa": 159.6,
-         "p25_aa": 135.37,
-         "p75_aa": 225.73,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-13",
-         "mediana_aa": 159.6,
-         "p25_aa": 137.74,
-         "p75_aa": 284.11,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-20",
-         "mediana_aa": 159.6,
-         "p25_aa": 143.77,
-         "p75_aa": 449.58,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-27",
-         "mediana_aa": 156.96,
-         "p25_aa": 152.39,
-         "p75_aa": 159.6,
-         "n": 5
-        },
-        {
-         "inicio": "2026-05-04",
-         "mediana_aa": 159.6,
-         "p25_aa": 150.67,
-         "p75_aa": 296.14,
-         "n": 5
-        },
-        {
-         "inicio": "2026-05-12",
-         "mediana_aa": 159.6,
-         "p25_aa": 140.72,
-         "p75_aa": 268.3,
-         "n": 5
-        },
-        {
-         "inicio": "2026-05-18",
-         "mediana_aa": 159.6,
-         "p25_aa": 147.2,
-         "p75_aa": 275.05,
-         "n": 5
-        },
-        {
-         "inicio": "2026-06-11",
-         "mediana_aa": 159.6,
-         "p25_aa": 158.24,
-         "p75_aa": 262.83,
-         "n": 5
-        },
-        {
-         "inicio": "2026-06-17",
-         "mediana_aa": 159.6,
-         "p25_aa": 156.76,
-         "p75_aa": 276.02,
-         "n": 5
-        },
-        {
-         "inicio": "2026-06-23",
-         "mediana_aa": 159.6,
-         "p25_aa": 155.54,
-         "p75_aa": 275.89,
-         "n": 5
-        },
-        {
-         "inicio": "2026-06-29",
-         "mediana_aa": 159.6,
-         "p25_aa": 158.54,
-         "p75_aa": 260.9,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-06",
-         "mediana_aa": 159.6,
-         "p25_aa": 159.41,
-         "p75_aa": 289.43,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-13",
-         "mediana_aa": 159.93,
-         "p25_aa": 159.6,
-         "p75_aa": 271.41,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-20",
-         "mediana_aa": 160.63,
-         "p25_aa": 159.6,
-         "p75_aa": 282.51,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-28",
-         "mediana_aa": 159.6,
-         "p25_aa": 159.16,
-         "p75_aa": 281.07,
-         "n": 5
-        },
-        {
-         "inicio": "2026-08-03",
-         "mediana_aa": 159.6,
-         "p25_aa": 156.06,
-         "p75_aa": 259.43,
-         "n": 5
-        },
-        {
-         "inicio": "2026-08-10",
-         "mediana_aa": 159.6,
-         "p25_aa": 147.23,
-         "p75_aa": 279.02,
-         "n": 5
-        },
-        {
-         "inicio": "2026-08-17",
-         "mediana_aa": 146.22,
-         "p25_aa": 66.07,
-         "p75_aa": 276.69,
-         "n": 5
-        },
-        {
-         "inicio": "2026-08-24",
-         "mediana_aa": 159.6,
-         "p25_aa": 147.37,
-         "p75_aa": 281.86,
-         "n": 5
-        },
-        {
-         "inicio": "2026-08-31",
-         "mediana_aa": 159.6,
-         "p25_aa": 148.49,
-         "p75_aa": 259.04,
-         "n": 5
-        },
-        {
-         "inicio": "2026-09-08",
-         "mediana_aa": 159.6,
-         "p25_aa": 152.42,
-         "p75_aa": 267.82,
-         "n": 5
-        },
-        {
-         "inicio": "2026-09-14",
-         "mediana_aa": 159.6,
-         "p25_aa": 144.09,
-         "p75_aa": 272.63,
-         "n": 5
-        },
-        {
-         "inicio": "2026-09-21",
-         "mediana_aa": 159.6,
-         "p25_aa": 145.63,
-         "p75_aa": 276.31,
-         "n": 5
-        },
-        {
-         "inicio": "2026-09-28",
-         "mediana_aa": 159.6,
-         "p25_aa": 144.89,
-         "p75_aa": 239.65,
-         "n": 5
-        },
-        {
-         "inicio": "2026-10-05",
-         "mediana_aa": 159.6,
-         "p25_aa": 136.32,
-         "p75_aa": 259.51,
-         "n": 5
-        },
-        {
-         "inicio": "2026-10-13",
-         "mediana_aa": 159.6,
-         "p25_aa": 142.34,
-         "p75_aa": 271.63,
-         "n": 5
-        },
-        {
-         "inicio": "2026-10-19",
-         "mediana_aa": 159.6,
-         "p25_aa": 140.23,
-         "p75_aa": 263.42,
-         "n": 5
-        },
-        {
-         "inicio": "2026-10-21",
-         "mediana_aa": 159.6,
-         "p25_aa": 134.52,
-         "p75_aa": 267.37,
-         "n": 5
         }
        ]
       },
       "S3": {
        "n": 17,
-       "mediana_aa": 175.42,
+       "mediana_aa": 178.41,
        "p25_aa": 87.37,
-       "p75_aa": 325.8,
+       "p75_aa": 301.77,
        "serie": [
         {
          "inicio": "2023-10-03",
@@ -28659,10 +28336,10 @@
          "n": 17
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 175.42,
+         "inicio": "2026-10-22",
+         "mediana_aa": 178.41,
          "p25_aa": 87.37,
-         "p75_aa": 325.8,
+         "p75_aa": 301.77,
          "n": 17
         }
        ]
@@ -28699,8 +28376,8 @@
       {
        "cnpj8": "61186680",
        "nome": "BCO BMG S.A.",
-       "taxa_am": 3.97,
-       "taxa_aa": 59.51,
+       "taxa_am": 3.79,
+       "taxa_aa": 56.28,
        "posicao": 4,
        "cod_congl": "C0080178",
        "sr": "S3"
@@ -28717,8 +28394,8 @@
       {
        "cnpj8": "92894922",
        "nome": "BANCO ORIGINAL",
-       "taxa_am": 4.98,
-       "taxa_aa": 79.24,
+       "taxa_am": 4.84,
+       "taxa_aa": 76.31,
        "posicao": 6,
        "cod_congl": "C0080903",
        "sr": "S3"
@@ -28733,28 +28410,28 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "13009717",
-       "nome": "BCO DO EST. DE SE S.A.",
-       "taxa_am": 7.31,
-       "taxa_aa": 133.22,
-       "posicao": 8,
-       "cod_congl": "C0081634",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "07237373",
        "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 7.36,
-       "taxa_aa": 134.52,
-       "posicao": 9,
+       "taxa_am": 7.37,
+       "taxa_aa": 134.63,
+       "posicao": 8,
        "cod_congl": "C0081593",
        "sr": "S2"
       },
       {
+       "cnpj8": "13009717",
+       "nome": "BCO DO EST. DE SE S.A.",
+       "taxa_am": 7.44,
+       "taxa_aa": 136.67,
+       "posicao": 9,
+       "cod_congl": "C0081634",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 7.65,
-       "taxa_aa": 142.27,
+       "taxa_am": 7.59,
+       "taxa_aa": 140.5,
        "posicao": 10,
        "cod_congl": "C0080147",
        "sr": "S3"
@@ -28769,28 +28446,28 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "33264668",
-       "nome": "BCO XP S.A.",
-       "taxa_am": 8.27,
-       "taxa_aa": 159.6,
-       "posicao": 12,
-       "cod_congl": "C0082475",
-       "sr": "S2"
-      },
-      {
        "cnpj8": "00000208",
        "nome": "BRB - BCO DE BRASILIA S.A.",
-       "taxa_am": 8.53,
-       "taxa_aa": 166.97,
-       "posicao": 13,
+       "taxa_am": 8.49,
+       "taxa_aa": 165.95,
+       "posicao": 12,
        "cod_congl": "C0080288",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
+       "taxa_am": 8.91,
+       "taxa_aa": 178.41,
+       "posicao": 13,
+       "cod_congl": "C0080312",
        "sr": "S3"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 8.81,
-       "taxa_aa": 175.42,
+       "taxa_am": 8.92,
+       "taxa_aa": 178.68,
        "posicao": 14,
        "cod_congl": "C0081744",
        "sr": "S3"
@@ -28805,74 +28482,65 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 9.31,
-       "taxa_aa": 190.86,
-       "posicao": 16,
-       "cod_congl": "C0080312",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "58616418",
        "nome": "BCO FIBRA S.A.",
-       "taxa_am": 9.58,
-       "taxa_aa": 199.65,
-       "posicao": 17,
+       "taxa_am": 10.98,
+       "taxa_aa": 249.16,
+       "posicao": 16,
        "cod_congl": "C0081483",
        "sr": "S3"
       },
       {
        "cnpj8": "04913711",
        "nome": "BCO DO EST. DO PA S.A.",
-       "taxa_am": 11.26,
-       "taxa_aa": 259.87,
-       "posicao": 18,
+       "taxa_am": 11.3,
+       "taxa_aa": 261.45,
+       "posicao": 17,
        "cod_congl": "C0081586",
        "sr": "S3"
       },
       {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 11.45,
-       "taxa_aa": 267.37,
-       "posicao": 19,
+       "taxa_am": 11.52,
+       "taxa_aa": 270.19,
+       "posicao": 18,
        "cod_congl": "C0080109",
        "sr": "S2"
       },
       {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 12.83,
-       "taxa_aa": 325.8,
-       "posicao": 20,
+       "taxa_am": 12.29,
+       "taxa_aa": 301.77,
+       "posicao": 19,
        "cod_congl": "C0080123",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "71027866",
-       "nome": "BCO BS2 S.A.",
-       "taxa_am": 13.76,
-       "taxa_aa": 369.82,
-       "posicao": 21,
-       "cod_congl": "C0080422",
        "sr": "S3"
       },
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 13.91,
-       "taxa_aa": 377.03,
-       "posicao": 22,
+       "taxa_am": 13.37,
+       "taxa_aa": 350.99,
+       "posicao": 20,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
+       "cnpj8": "71027866",
+       "nome": "BCO BS2 S.A.",
+       "taxa_am": 13.5,
+       "taxa_aa": 356.96,
+       "posicao": 21,
+       "cod_congl": "C0080422",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 14.1,
-       "taxa_aa": 387.1,
-       "posicao": 23,
+       "taxa_am": 14.06,
+       "taxa_aa": 384.97,
+       "posicao": 22,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
@@ -28880,26 +28548,17 @@
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
        "taxa_am": 14.11,
-       "taxa_aa": 387.49,
-       "posicao": 24,
+       "taxa_aa": 387.35,
+       "posicao": 23,
        "cod_congl": "C0080271",
        "sr": "S3"
       },
       {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 14.55,
-       "taxa_aa": 410.48,
-       "posicao": 25,
-       "cod_congl": "C0080329",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 14.85,
-       "taxa_aa": 426.79,
-       "posicao": 26,
+       "taxa_am": 14.87,
+       "taxa_aa": 427.7,
+       "posicao": 24,
        "cod_congl": "C0084844",
        "sr": "S3"
       },
@@ -28908,34 +28567,43 @@
        "nome": "BANCO BTG PACTUAL S.A.",
        "taxa_am": 14.94,
        "taxa_aa": 431.94,
-       "posicao": 27,
+       "posicao": 25,
        "cod_congl": "C0080336",
+       "sr": "S1"
+      },
+      {
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 15.05,
+       "taxa_aa": 438.02,
+       "posicao": 26,
+       "cod_congl": "C0080329",
        "sr": "S1"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 15.16,
-       "taxa_aa": 443.93,
-       "posicao": 28,
+       "taxa_am": 15.17,
+       "taxa_aa": 444.75,
+       "posicao": 27,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 15.95,
-       "taxa_aa": 490.64,
-       "posicao": 29,
+       "taxa_am": 15.94,
+       "taxa_aa": 489.76,
+       "posicao": 28,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 16.06,
-       "taxa_aa": 497.54,
-       "posicao": 30,
+       "taxa_am": 16.08,
+       "taxa_aa": 498.75,
+       "posicao": 29,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
@@ -28943,8 +28611,8 @@
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
        "taxa_am": 16.2,
-       "taxa_aa": 505.9,
-       "posicao": 31,
+       "taxa_aa": 505.98,
+       "posicao": 30,
        "cod_congl": "C0080185",
        "sr": "S1"
       }

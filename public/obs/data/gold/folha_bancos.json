@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-11T18:33:54+00:00",
+ "gerado_em": "2026-11-12T19:10:58+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 310,
-  "total_editais": 1172,
+  "total_contratos_if": 313,
+  "total_editais": 1179,
   "backfill_completo": false,
   "ranking": [
    {
@@ -145,16 +145,16 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 76,
+    "contratos": 77,
     "ufs": 16,
     "como_receita": 23
    },
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 25,
+    "contratos": 26,
     "ufs": 9,
-    "como_receita": 10
+    "como_receita": 11
    },
    {
     "cnpj8": "00000000",
@@ -166,7 +166,7 @@
    {
     "cnpj8": "60701190",
     "banco": "ITAU UNIBANCO S.A.",
-    "contratos": 11,
+    "contratos": 12,
     "ufs": 6,
     "como_receita": 2
    },
@@ -537,6 +537,21 @@
   ],
   "recentes": [
    {
+    "controle": "46177523000109-2-000055/2026",
+    "ente": "MUNICIPIO DE SAO VICENTE",
+    "esfera": "Municipal",
+    "municipio": "São Vicente",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-11-09",
+    "vig_fim": "2031-11-12",
+    "valor": 26401000.0,
+    "receita": true,
+    "banco": "BANCO SANTANDER BRASIL SA",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/46177523000109/2026/55"
+   },
+   {
     "controle": "01613076000155-2-000030/2026",
     "ente": "MUNICIPIO DE CURRAL DE DENTRO",
     "esfera": "Municipal",
@@ -565,6 +580,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/75658377000131/2026/132"
+   },
+   {
+    "controle": "46482840000139-2-000114/2026",
+    "ente": "MUNICIPIO DE CARAGUATATUBA",
+    "esfera": "Municipal",
+    "municipio": "Caraguatatuba",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-10-28",
+    "vig_fim": "2031-10-27",
+    "valor": 11348803.58,
+    "receita": false,
+    "banco": "ITAU UNIBANCO SA",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/46482840000139/2026/114"
    },
    {
     "controle": "29138377000193-2-000062/2026",
@@ -882,6 +912,21 @@
     "url": "https://pncp.gov.br/contratos/46634317000180/2026/67"
    },
    {
+    "controle": "06447833000181-2-000178/2026",
+    "ente": "MUNICIPIO DE PIO XII",
+    "esfera": "Municipal",
+    "municipio": "Pio XII",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-21",
+    "vig_fim": "2031-09-21",
+    "valor": 200000.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/06447833000181/2026/178"
+   },
+   {
     "controle": "18715383000140-2-002052/2026",
     "ente": "MUNICIPIO DE BELO HORIZONTE",
     "esfera": "Municipal",
@@ -1090,54 +1135,90 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/03576220000156/2026/95"
-   },
-   {
-    "controle": "01223916000173-2-000433/2026",
-    "ente": "MUNICIPIO DE JARAGUA",
-    "esfera": "Municipal",
-    "municipio": "Jaraguá",
-    "uf": "GO",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-01",
-    "vig_fim": "2031-09-01",
-    "valor": 3795512.01,
-    "receita": false,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/01223916000173/2026/433"
-   },
-   {
-    "controle": "22646525000131-2-000108/2026",
-    "ente": "MUNICIPIO DE MONTE SIAO",
-    "esfera": "Municipal",
-    "municipio": "Monte Sião",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-08-27",
-    "vig_fim": "2031-08-27",
-    "valor": 0.6,
-    "receita": true,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/22646525000131/2026/108"
-   },
-   {
-    "controle": "08088254000115-2-000066/2026",
-    "ente": "MUNICIPIO DE CARNAUBA DOS DANTAS",
-    "esfera": "Municipal",
-    "municipio": "Carnaúba dos Dantas",
-    "uf": "RN",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-08-26",
-    "vig_fim": "2031-08-26",
-    "valor": 220000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/08088254000115/2026/66"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE RONDON",
+    "municipio": "Rondon",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/75380071000166/2026/178"
+   },
+   {
+    "ente": "MUNICIPIO DE PROGRESSO",
+    "municipio": "Progresso",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/92454800000109/2026/1425"
+   },
+   {
+    "ente": "MUNICIPIO DE SANTA MARIA DO OESTE",
+    "municipio": "Santa Maria do Oeste",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/95684544000126/2026/44"
+   },
+   {
+    "ente": "MUNICIPIO DE MACAUBAS",
+    "municipio": "Macaúbas",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/13782461000105/2026/46"
+   },
+   {
+    "ente": "MUNICIPIO DE QUARAI",
+    "municipio": "Quaraí",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/88123492000153/2026/172"
+   },
+   {
+    "ente": "MUNICIPIO DE PIRAUBA",
+    "municipio": "Piraúba",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/18554147000199/2026/171"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO MIGUEL DO IGUACU",
+    "municipio": "São Miguel do Iguaçu",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/76206499000150/2026/226"
+   },
+   {
+    "ente": "MUNICIPIO DE CAFELANDIA",
+    "municipio": "Cafelândia",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/78121878000172/2026/256"
+   },
+   {
+    "ente": "MUNICIPIO DE PAROBE",
+    "municipio": "Parobé",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-11",
+    "url": "https://pncp.gov.br/compras/88372883000101/2026/310"
+   },
    {
     "ente": "MUNICIPIO DE SERRA CAIADA",
     "municipio": "Serra Caiada",
@@ -1154,25 +1235,7 @@
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/78121878000172/2026/256"
-   },
-   {
-    "ente": "MUNICIPIO DE CAFELANDIA",
-    "municipio": "Cafelândia",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-11",
     "url": "https://pncp.gov.br/compras/78121878000172/2026/255"
-   },
-   {
-    "ente": "MUNICIPIO DE PAROBE",
-    "municipio": "Parobé",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/88372883000101/2026/310"
    },
    {
     "ente": "MUNICIPIO DE FERNANDOPOLIS",
@@ -1182,69 +1245,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-10",
     "url": "https://pncp.gov.br/compras/47842836000105/2026/193"
-   },
-   {
-    "ente": "MUNICIPIO DE BARRA BONITA",
-    "municipio": "Barra Bonita",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-10",
-    "url": "https://pncp.gov.br/compras/01612527000130/2026/118"
-   },
-   {
-    "ente": "MUNICIPIO DE ANAPOLIS",
-    "municipio": "Anápolis",
-    "uf": "GO",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-10",
-    "url": "https://pncp.gov.br/compras/01067479000146/2027/1"
-   },
-   {
-    "ente": "MUNICIPIO DE ARARUNA",
-    "municipio": "Araruna",
-    "uf": "PR",
-    "modalidade": "Pregão – Presencial Internacional ",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-09",
-    "url": "https://pncp.gov.br/compras/75359760000199/2026/123"
-   },
-   {
-    "ente": "MUNICIPIO DE ESMERALDA",
-    "municipio": "Esmeralda",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-09",
-    "url": "https://pncp.gov.br/compras/88225149000110/2026/83"
-   },
-   {
-    "ente": "MUNICIPIO DE ANAPOLIS",
-    "municipio": "Anápolis",
-    "uf": "GO",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-09",
-    "url": "https://pncp.gov.br/compras/01067479000146/2026/243"
-   },
-   {
-    "ente": "MUNICIPIO DE IBIRACATU",
-    "municipio": "Ibiracatu",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-09",
-    "url": "https://pncp.gov.br/compras/01612477000190/2026/20"
-   },
-   {
-    "ente": "MUNICIPIO DE BOA ESPERANCA DO NORTE",
-    "municipio": "Boa Esperança",
-    "uf": "ES",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-06",
-    "url": "https://pncp.gov.br/compras/58673892000171/2026/35"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

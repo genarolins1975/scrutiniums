@@ -1,8 +1,30 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-11T18:33:54+00:00",
+ "gerado_em": "2026-11-12T19:10:58+00:00",
  "titulo": "Sob regime de resolução do BCB",
  "vigentes": [
+  {
+   "cnpj": "61550836000154",
+   "cnpj8": "61550836",
+   "nome": "COOPERATIVA ADMINISTRADORA DE CONSÓRCIOS ROMA - PROIBIDA DE CONSTITUIR NOVOS GRUPOS DE CONSÓRCIO ATÉ 21.4.2029",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "12/11/2026",
+   "inicio_iso": "2026-11-12",
+   "responsavel": "SMM REGIMES ESPECIAIS DE EMPRESAS LTDA.",
+   "municipio": "Barueri",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "08482873000190",
+   "cnpj8": "08482873",
+   "nome": "COOPERATIVA DE CRÉDITO RURAL DO AGRESTE ALAGOANO - COOPERAGRE",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "12/11/2026",
+   "inicio_iso": "2026-11-12",
+   "responsavel": "JUBSON TELLES MEDEIROS DE LIMA",
+   "municipio": "Igaci",
+   "uf": "AL"
+  },
   {
    "cnpj": "53822116000172",
    "cnpj8": "53822116",

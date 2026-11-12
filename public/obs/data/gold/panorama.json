@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-11T18:34:18+00:00",
+ "gerado_em": "2026-11-12T19:11:21+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-09",
  "data_base_anterior": "2026-08",
@@ -366,12 +366,12 @@
   },
   {
    "p": "2026-08",
-   "saldo": 7720897424370,
+   "saldo": 7718922519583,
    "inad": 5.02,
    "atraso15_90": 0.99,
    "ap": 8.59,
-   "pf": 4776626219700,
-   "pj": 2944271204670
+   "pf": 4776623737029,
+   "pj": 2942298782554
   },
   {
    "p": "2026-09",
@@ -620,7 +620,7 @@
    "cresc12": 7.27,
    "d_inad_3m": 0.35,
    "d_inad_12m": 2.42,
-   "z_inad": 1.53,
+   "z_inad": 1.54,
    "prod_dominante": "Consignado",
    "renda_dominante": "Acima de 20 salários mínimos"
   },

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-11T18:34:21+00:00",
+ "gerado_em": "2026-11-12T19:11:24+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -198,10 +198,10 @@
     "npl_inst_pct": 4.01,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 32.17,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 31.26,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 34.35,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 18.69
+     "Capital de giro com prazo até 365 dias - Prefixado": 33.63,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 31.58,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 20.58,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 18.46
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -228,10 +228,10 @@
     "npl_inst_pct": 2.33,
     "basileia_pct": 15.35,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 29.33,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 24.75,
+     "Capital de giro com prazo até 365 dias - Prefixado": 29.39,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 25.0,
      "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 14.89,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 17.4
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 17.39
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -308,8 +308,8 @@
     "npl_inst_pct": 0.1,
     "basileia_pct": 15.04,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -336,8 +336,8 @@
     "npl_inst_pct": 4.03,
     "basileia_pct": 15.34,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 29.28,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 23.1,
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.24,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 22.78,
      "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 15.01,
      "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 19.59
     },
@@ -366,8 +366,8 @@
     "npl_inst_pct": 0.13,
     "basileia_pct": 12.67,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 58.26,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 49.04,
+     "Capital de giro com prazo até 365 dias - Prefixado": 57.97,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 44.59,
      "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 14.4
     },
     "taxa_casamento": "nome",
@@ -396,7 +396,7 @@
     "basileia_pct": 18.14,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 132.49,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 140.75
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 118.22
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -448,8 +448,8 @@
     "npl_inst_pct": 8.04,
     "basileia_pct": 15.14,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 18.79,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 22.35
+     "Capital de giro com prazo até 365 dias - Prefixado": 10.74,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 22.0
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -476,9 +476,9 @@
     "npl_inst_pct": 6.64,
     "basileia_pct": 16.04,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 52.24,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 51.82,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 17.45
+     "Capital de giro com prazo até 365 dias - Prefixado": 51.14,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 50.19,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 18.32
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -555,9 +555,9 @@
     "npl_inst_pct": 2.52,
     "basileia_pct": 12.84,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 51.82,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.41,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 29.11
+     "Capital de giro com prazo até 365 dias - Prefixado": 46.4,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.74,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 22.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -634,8 +634,8 @@
     "npl_inst_pct": 5.07,
     "basileia_pct": 14.4,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -690,7 +690,7 @@
     "basileia_pct": 13.02,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 45.51,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 37.41,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 37.72,
      "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 24.99
     },
     "taxa_casamento": "cnpj8",
@@ -821,8 +821,8 @@
     "basileia_pct": 16.18,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 25.82,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 20.92,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 23.17
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 18.79,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 23.5
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -849,9 +849,9 @@
     "npl_inst_pct": 2.68,
     "basileia_pct": 14.89,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 50.97,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 31.74,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 30.33
+     "Capital de giro com prazo até 365 dias - Prefixado": 85.32,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 31.03,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 30.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1080,10 +1080,10 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 22.53,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1316,8 +1316,8 @@
     "npl_inst_pct": 1.66,
     "basileia_pct": 20.95,
     "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 22.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.95
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 22.36,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.52
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1344,7 +1344,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 17.91,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 13.73
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 13.71
     },
     "taxa_casamento": "cnpj8"
    },
@@ -1491,7 +1491,7 @@
     "npl_inst_pct": 8.26,
     "basileia_pct": 13.98,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 32.16,
+     "Capital de giro com prazo até 365 dias - Prefixado": 31.84,
      "Capital de giro com prazo superior a 365 dias - Prefixado": 26.49
     },
     "taxa_casamento": "cnpj8",
@@ -1674,10 +1674,8 @@
     "pct_carteira_inst": 5.7,
     "npl_inst_pct": 1.15,
     "basileia_pct": null,
-    "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 19.87
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 3.95,
      "m_produto": 1.03,
@@ -1805,7 +1803,7 @@
     "basileia_pct": 15.88,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 35.53,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 33.89,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 37.94,
      "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 15.81
     },
     "taxa_casamento": "nome",
@@ -2118,12 +2116,9 @@
     "npl_inst_pct": null,
     "basileia_pct": 21.26,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 14.97
     },
-    "taxa_casamento": "nome"
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "03320525",
@@ -2318,9 +2313,8 @@
     "npl_inst_pct": 5.64,
     "basileia_pct": 16.5,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 80.16,
+     "Capital de giro com prazo até 365 dias - Prefixado": 80.61,
      "Capital de giro com prazo superior a 365 dias - Prefixado": 23.26,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 18.88,
      "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 27.97
     },
     "taxa_casamento": "nome",
@@ -2425,8 +2419,8 @@
     "npl_inst_pct": 12.63,
     "basileia_pct": 13.89,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 30.95,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.29
+     "Capital de giro com prazo até 365 dias - Prefixado": 31.45,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.37
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2934,7 +2928,7 @@
     "basileia_pct": 14.5,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 25.25,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 25.94
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.41
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -3146,7 +3140,7 @@
     "npl_inst_pct": 36.87,
     "basileia_pct": 27.8,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 18.44
+     "Capital de giro com prazo até 365 dias - Prefixado": 18.33
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -3891,8 +3885,8 @@
     "npl_inst_pct": 5.93,
     "basileia_pct": 14.68,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3971,8 +3965,8 @@
     "npl_inst_pct": 5.04,
     "basileia_pct": 21.82,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3999,8 +3993,7 @@
     "npl_inst_pct": 3.61,
     "basileia_pct": 16.74,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 180.36,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 61.35
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 69.37
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4233,8 +4226,8 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 19.01,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4317,7 +4310,7 @@
     "basileia_pct": 13.31,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 31.66,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 35.96
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 36.75
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4752,10 +4745,10 @@
     "npl_inst_pct": 3.08,
     "basileia_pct": 17.22,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4782,7 +4775,7 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 14.91,
     "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 24.66
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.5
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4888,8 +4881,8 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 15.73,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5489,8 +5482,8 @@
     "npl_inst_pct": 4.1,
     "basileia_pct": 24.16,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5642,8 +5635,8 @@
     "npl_inst_pct": 7.82,
     "basileia_pct": 13.35,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 40.88,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 40.54
+     "Capital de giro com prazo até 365 dias - Prefixado": 38.69,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 40.41
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -5722,8 +5715,8 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 19.44,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5774,10 +5767,8 @@
     "pct_carteira_inst": 4.4,
     "npl_inst_pct": 2.25,
     "basileia_pct": 19.2,
-    "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 17.46
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 3.81,
      "m_produto": 1.03,
@@ -6216,8 +6207,8 @@
     "npl_inst_pct": 5.21,
     "basileia_pct": 16.68,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6760,8 +6751,8 @@
     "npl_inst_pct": 10.69,
     "basileia_pct": 16.36,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7068,10 +7059,10 @@
     "npl_inst_pct": 9.48,
     "basileia_pct": 14.2,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7176,8 +7167,10 @@
     "pct_carteira_inst": 20.9,
     "npl_inst_pct": 3.9,
     "basileia_pct": 17.56,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.84
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 11.61,
      "m_produto": 1.03,
@@ -7218,8 +7211,8 @@
     "npl_inst_pct": 5.88,
     "basileia_pct": 18.26,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7555,8 +7548,8 @@
     "npl_inst_pct": 6.02,
     "basileia_pct": 15.64,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7687,8 +7680,8 @@
     "npl_inst_pct": 7.19,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7769,7 +7762,7 @@
     "npl_inst_pct": 6.53,
     "basileia_pct": 19.63,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 73.16
+     "Capital de giro com prazo até 365 dias - Prefixado": 65.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8006,8 +7999,8 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.99,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8086,8 +8079,8 @@
     "npl_inst_pct": 6.22,
     "basileia_pct": 15.45,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8294,8 +8287,10 @@
     "pct_carteira_inst": 26.2,
     "npl_inst_pct": 3.78,
     "basileia_pct": 26.69,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 15.53
+    },
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 1.43,
      "m_produto": 1.03,
@@ -8675,8 +8670,8 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 15.55,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8731,7 +8726,7 @@
     "basileia_pct": 13.28,
     "taxas_novas": {
      "Capital de giro com prazo até 365 dias - Prefixado": 193.1,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 65.42
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 57.85
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8783,8 +8778,8 @@
     "npl_inst_pct": 5.97,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8811,8 +8806,8 @@
     "npl_inst_pct": 6.24,
     "basileia_pct": 16.67,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8839,8 +8834,8 @@
     "npl_inst_pct": 6.47,
     "basileia_pct": 14.04,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8894,8 +8889,8 @@
     "npl_inst_pct": 8.5,
     "basileia_pct": 17.34,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8976,8 +8971,8 @@
     "npl_inst_pct": 8.02,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9108,8 +9103,8 @@
     "npl_inst_pct": null,
     "basileia_pct": 24.44,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome"
    },
@@ -9127,10 +9122,10 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 20.47,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9157,8 +9152,8 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9185,8 +9180,8 @@
     "npl_inst_pct": 4.83,
     "basileia_pct": 12.43,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9450,8 +9445,9 @@
     "npl_inst_pct": 3.87,
     "basileia_pct": 23.45,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.51,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 27.14
+     "Capital de giro com prazo até 365 dias - Prefixado": 35.62,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.98,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 14.74
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -9708,8 +9704,8 @@
     "npl_inst_pct": 6.12,
     "basileia_pct": 20.94,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9736,8 +9732,8 @@
     "npl_inst_pct": 3.2,
     "basileia_pct": 14.21,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9791,8 +9787,8 @@
     "npl_inst_pct": 9.86,
     "basileia_pct": 15.27,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9991,8 +9987,8 @@
     "npl_inst_pct": 6.79,
     "basileia_pct": 13.45,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10071,8 +10067,8 @@
     "npl_inst_pct": 8.77,
     "basileia_pct": 13.21,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10151,8 +10147,8 @@
     "npl_inst_pct": 7.35,
     "basileia_pct": 17.94,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10179,8 +10175,8 @@
     "npl_inst_pct": 3.3,
     "basileia_pct": 15.41,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10286,8 +10282,8 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 15.91,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10314,8 +10310,8 @@
     "npl_inst_pct": 5.31,
     "basileia_pct": 17.01,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10435,8 +10431,8 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 14.49,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10619,8 +10615,8 @@
     "npl_inst_pct": 7.89,
     "basileia_pct": 29.26,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 24.23,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 62.28
+     "Capital de giro com prazo até 365 dias - Prefixado": 24.93,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 61.27
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -10699,8 +10695,8 @@
     "npl_inst_pct": null,
     "basileia_pct": 105.34,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 21.81,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 20.4
+     "Capital de giro com prazo até 365 dias - Prefixado": 21.66,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 19.81
     },
     "taxa_casamento": "cnpj8"
    },
@@ -11132,7 +11128,7 @@
     "npl_inst_pct": 15.51,
     "basileia_pct": null,
     "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 40.92
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 36.53
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -11265,8 +11261,8 @@
     "npl_inst_pct": null,
     "basileia_pct": 18.87,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome"
    },
@@ -11537,8 +11533,8 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 17.47,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11642,8 +11638,8 @@
     "npl_inst_pct": 5.28,
     "basileia_pct": 18.61,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11934,8 +11930,8 @@
     "npl_inst_pct": 5.62,
     "basileia_pct": 16.86,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12122,7 +12118,7 @@
     "npl_inst_pct": 35.66,
     "basileia_pct": 8.68,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 162.09,
+     "Capital de giro com prazo até 365 dias - Prefixado": 159.86,
      "Capital de giro com prazo superior a 365 dias - Prefixado": 64.02
     },
     "taxa_casamento": "cnpj8",
@@ -12176,10 +12172,8 @@
     "pct_carteira_inst": 10.7,
     "npl_inst_pct": 7.2,
     "basileia_pct": 8.94,
-    "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 26.09
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 5.4,
      "m_produto": 1.03,
@@ -12204,8 +12198,8 @@
     "npl_inst_pct": 4.51,
     "basileia_pct": 14.52,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12363,7 +12357,7 @@
     "npl_inst_pct": 19.1,
     "basileia_pct": 25.11,
     "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 51.97
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 50.54
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -12442,10 +12436,10 @@
     "npl_inst_pct": null,
     "basileia_pct": 40.07,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome"
    },
@@ -12623,7 +12617,7 @@
     "npl_inst_pct": 8.38,
     "basileia_pct": 12.87,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 18.7
+     "Capital de giro com prazo até 365 dias - Prefixado": 19.29
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -12650,8 +12644,8 @@
     "npl_inst_pct": 5.53,
     "basileia_pct": 23.49,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12678,8 +12672,8 @@
     "npl_inst_pct": 3.77,
     "basileia_pct": 13.74,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12731,8 +12725,8 @@
     "npl_inst_pct": 3.24,
     "basileia_pct": 14.88,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12812,8 +12806,10 @@
     "pct_carteira_inst": 12.9,
     "npl_inst_pct": 6.0,
     "basileia_pct": 47.86,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 28.24
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 1.11,
      "m_produto": 1.03,
@@ -12942,8 +12938,8 @@
     "npl_inst_pct": 7.2,
     "basileia_pct": 16.25,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13022,8 +13018,8 @@
     "npl_inst_pct": 7.0,
     "basileia_pct": 14.59,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13050,8 +13046,8 @@
     "npl_inst_pct": 7.06,
     "basileia_pct": 17.07,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13078,8 +13074,8 @@
     "npl_inst_pct": 5.36,
     "basileia_pct": 23.4,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13106,7 +13102,7 @@
     "npl_inst_pct": 3.74,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.72
+     "Capital de giro com prazo até 365 dias - Prefixado": 35.8
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -13214,8 +13210,8 @@
     "npl_inst_pct": 9.92,
     "basileia_pct": 18.48,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13242,8 +13238,8 @@
     "npl_inst_pct": 7.47,
     "basileia_pct": 15.77,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -13794,8 +13790,8 @@
     "npl_inst_pct": 5.79,
     "basileia_pct": 16.01,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14059,8 +14055,8 @@
     "npl_inst_pct": 6.16,
     "basileia_pct": 16.19,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14164,10 +14160,10 @@
     "npl_inst_pct": null,
     "basileia_pct": 62.21,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome"
    },
@@ -14289,8 +14285,8 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.6,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14500,8 +14496,8 @@
     "npl_inst_pct": 5.85,
     "basileia_pct": 22.83,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14528,8 +14524,8 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 12.48,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14556,10 +14552,10 @@
     "npl_inst_pct": 10.97,
     "basileia_pct": 53.16,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14611,10 +14607,10 @@
     "npl_inst_pct": 0.51,
     "basileia_pct": 13.01,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -14957,8 +14953,8 @@
     "npl_inst_pct": 2.31,
     "basileia_pct": 22.33,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15062,8 +15058,8 @@
     "npl_inst_pct": 15.7,
     "basileia_pct": 14.32,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15357,8 +15353,8 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 19.55,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15586,8 +15582,8 @@
     "npl_inst_pct": 5.27,
     "basileia_pct": 16.23,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15639,8 +15635,8 @@
     "npl_inst_pct": 2.91,
     "basileia_pct": 18.54,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15850,8 +15846,8 @@
     "npl_inst_pct": 7.76,
     "basileia_pct": 14.44,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -16046,10 +16042,10 @@
     "npl_inst_pct": null,
     "basileia_pct": 51.4,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 34.75,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.19,
-     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.28,
-     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 20.56
+     "Capital de giro com prazo até 365 dias - Prefixado": 34.0,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 26.01,
+     "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes": 21.72,
+     "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes": 21.13
     },
     "taxa_casamento": "nome"
    },
@@ -16121,8 +16117,8 @@
     "npl_inst_pct": 3.55,
     "basileia_pct": 18.28,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -16320,10 +16316,8 @@
     "pct_carteira_inst": 55.4,
     "npl_inst_pct": 28.59,
     "basileia_pct": 311.51,
-    "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 27.37
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 26.01,
      "m_produto": 1.03,
@@ -16476,10 +16470,8 @@
     "pct_carteira_inst": 36.3,
     "npl_inst_pct": null,
     "basileia_pct": 14.62,
-    "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 28.32
-    },
-    "taxa_casamento": "cnpj8"
+    "taxas_novas": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0030881",
@@ -17439,10 +17431,8 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 29.45,
     "basileia_pct": 14.85,
-    "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 15.66
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 23.99,
      "m_produto": 1.03,
@@ -18523,7 +18513,7 @@
     "npl_inst_pct": 8.0,
     "basileia_pct": 46.08,
     "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 34.34
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 36.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -19071,10 +19061,8 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 35.68,
     "basileia_pct": 14.15,
-    "taxas_novas": {
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 36.21
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 1.03,
@@ -19217,8 +19205,8 @@
     "npl_inst_pct": 1.47,
     "basileia_pct": 37.12,
     "taxas_novas": {
-     "Capital de giro com prazo até 365 dias - Prefixado": 42.96,
-     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.96
+     "Capital de giro com prazo até 365 dias - Prefixado": 54.18,
+     "Capital de giro com prazo superior a 365 dias - Prefixado": 32.84
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -19722,14 +19710,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo até 365 dias - Prefixado",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
-     "n_inst": 53,
-     "mediana_aa": 34.75,
-     "p25_aa": 25.82,
-     "p75_aa": 72.17,
-     "min_aa": 14.16,
-     "max_aa": 297.27,
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
+     "n_inst": 50,
+     "mediana_aa": 35.62,
+     "p25_aa": 25.25,
+     "p75_aa": 74.14,
+     "min_aa": 10.74,
+     "max_aa": 320.46,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -20503,19 +20491,19 @@
        "n": 52
       },
       {
-       "inicio": "2026-10-21",
-       "mediana_aa": 34.75,
-       "p25_aa": 25.82,
-       "p75_aa": 72.17,
-       "n": 53
+       "inicio": "2026-10-22",
+       "mediana_aa": 35.62,
+       "p25_aa": 25.25,
+       "p75_aa": 74.14,
+       "n": 50
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 32.17,
-       "p25_aa": 29.33,
-       "p75_aa": 34.75,
+       "mediana_aa": 34.0,
+       "p25_aa": 33.63,
+       "p75_aa": 34.24,
        "serie": [
         {
          "inicio": "2024-09-20",
@@ -21288,10 +21276,10 @@
          "n": 6
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 32.17,
-         "p25_aa": 29.33,
-         "p75_aa": 34.75,
+         "inicio": "2026-10-22",
+         "mediana_aa": 34.0,
+         "p25_aa": 33.63,
+         "p75_aa": 34.24,
          "n": 6
         }
        ]
@@ -21299,8 +21287,8 @@
       "S2": {
        "n": 6,
        "mediana_aa": 35.53,
-       "p25_aa": 21.09,
-       "p75_aa": 96.68,
+       "p25_aa": 21.12,
+       "p75_aa": 96.09,
        "serie": [
         {
          "inicio": "2024-09-20",
@@ -22017,19 +22005,19 @@
          "n": 7
         },
         {
-         "inicio": "2026-10-21",
+         "inicio": "2026-10-22",
          "mediana_aa": 35.53,
-         "p25_aa": 21.09,
-         "p75_aa": 96.68,
+         "p25_aa": 21.12,
+         "p75_aa": 96.09,
          "n": 6
         }
        ]
       },
       "S3": {
        "n": 17,
-       "mediana_aa": 45.51,
-       "p25_aa": 25.82,
-       "p75_aa": 72.17,
+       "mediana_aa": 36.97,
+       "p25_aa": 21.99,
+       "p75_aa": 57.97,
        "serie": [
         {
          "inicio": "2024-09-19",
@@ -22802,19 +22790,19 @@
          "n": 19
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 45.51,
-         "p25_aa": 25.82,
-         "p75_aa": 72.17,
+         "inicio": "2026-10-22",
+         "mediana_aa": 36.97,
+         "p25_aa": 21.99,
+         "p75_aa": 57.97,
          "n": 17
         }
        ]
       },
       "S4": {
-       "n": 20,
-       "mediana_aa": 34.72,
+       "n": 17,
+       "mediana_aa": 37.66,
        "p25_aa": 25.25,
-       "p75_aa": 73.16,
+       "p75_aa": 147.54,
        "serie": [
         {
          "inicio": "2024-09-20",
@@ -23587,69 +23575,69 @@
          "n": 16
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 34.72,
+         "inicio": "2026-10-22",
+         "mediana_aa": 37.66,
          "p25_aa": 25.25,
-         "p75_aa": 73.16,
-         "n": 20
+         "p75_aa": 147.54,
+         "n": 17
         }
        ]
       }
      },
      "ranking": [
       {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 0.85,
+       "taxa_aa": 10.74,
+       "posicao": 1,
+       "cod_congl": "C0081593",
+       "sr": "S2"
+      },
+      {
        "cnpj8": "11285104",
        "nome": "NEON FINANCEIRA - SCFI S.A.",
        "taxa_am": 1.11,
        "taxa_aa": 14.16,
-       "posicao": 1,
+       "posicao": 2,
        "cod_congl": "C0085702",
        "sr": "S4"
       },
       {
-       "cnpj8": "05192316",
-       "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 1.22,
-       "taxa_aa": 15.66,
-       "posicao": 2,
-       "cod_congl": "C0080831",
-       "sr": "S4"
+       "cnpj8": "61088183",
+       "nome": "BCO MIZUHO S.A.",
+       "taxa_am": 1.17,
+       "taxa_aa": 14.97,
+       "posicao": 3,
+       "cod_congl": "C0080697",
+       "sr": "S3"
       },
       {
        "cnpj8": "60850229",
        "nome": "OMNI BANCO S.A.",
        "taxa_am": 1.4,
        "taxa_aa": 18.16,
-       "posicao": 3,
+       "posicao": 4,
        "cod_congl": "C0080460",
        "sr": "S4"
       },
       {
        "cnpj8": "60518222",
        "nome": "BCO SUMITOMO MITSUI BRASIL S.A.",
-       "taxa_am": 1.42,
-       "taxa_aa": 18.44,
-       "posicao": 4,
+       "taxa_am": 1.41,
+       "taxa_aa": 18.33,
+       "posicao": 5,
        "cod_congl": "C0081720",
        "sr": "S3"
       },
       {
        "cnpj8": "11417016",
        "nome": "SCANIA BCO S.A.",
-       "taxa_am": 1.44,
-       "taxa_aa": 18.7,
-       "posicao": 5,
+       "taxa_am": 1.48,
+       "taxa_aa": 19.29,
+       "posicao": 6,
        "cod_congl": "C0080776",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 1.45,
-       "taxa_aa": 18.79,
-       "posicao": 6,
-       "cod_congl": "C0081593",
-       "sr": "S2"
       },
       {
        "cnpj8": "59274605",
@@ -23664,7 +23652,7 @@
        "cnpj8": "33264668",
        "nome": "BCO XP S.A.",
        "taxa_am": 1.61,
-       "taxa_aa": 21.09,
+       "taxa_aa": 21.12,
        "posicao": 8,
        "cod_congl": "C0082475",
        "sr": "S2"
@@ -23672,8 +23660,8 @@
       {
        "cnpj8": "62448932",
        "nome": "MULTIPLIKE FINANCEIRA S.A. SCFI",
-       "taxa_am": 1.66,
-       "taxa_aa": 21.81,
+       "taxa_am": 1.65,
+       "taxa_aa": 21.66,
        "posicao": 9,
        "cod_congl": "C0088651",
        "sr": "S4"
@@ -23682,7 +23670,7 @@
        "cnpj8": "10264663",
        "nome": "BANCOSEGURO S.A.",
        "taxa_am": 1.67,
-       "taxa_aa": 21.96,
+       "taxa_aa": 21.99,
        "posicao": 10,
        "cod_congl": "C0084813",
        "sr": "S3"
@@ -23690,8 +23678,8 @@
       {
        "cnpj8": "37880206",
        "nome": "CORA SCFI",
-       "taxa_am": 1.82,
-       "taxa_aa": 24.23,
+       "taxa_am": 1.87,
+       "taxa_aa": 24.93,
        "posicao": 11,
        "cod_congl": "C0085317",
        "sr": "S5"
@@ -23724,56 +23712,29 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "54403563",
-       "nome": "BCO ARBI S.A.",
-       "taxa_am": 1.95,
-       "taxa_aa": 26.09,
-       "posicao": 15,
-       "cod_congl": "C0081201",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "35551187",
-       "nome": "PLANTAE CFI",
-       "taxa_am": 2.1,
-       "taxa_aa": 28.32,
-       "posicao": 16,
-       "cod_congl": "C0085630",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "11271860",
        "nome": "LEBES FINANCEIRA S.A. - CFI",
        "taxa_am": 2.16,
        "taxa_aa": 29.27,
-       "posicao": 17,
+       "posicao": 15,
        "cod_congl": "C0083656",
        "sr": "S5"
-      },
-      {
-       "cnpj8": "90400888",
-       "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 2.16,
-       "taxa_aa": 29.28,
-       "posicao": 18,
-       "cod_congl": "C0080185",
-       "sr": "S1"
       },
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
        "taxa_am": 2.17,
-       "taxa_aa": 29.33,
-       "posicao": 19,
+       "taxa_aa": 29.39,
+       "posicao": 16,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 2.27,
-       "taxa_aa": 30.95,
-       "posicao": 20,
+       "taxa_am": 2.31,
+       "taxa_aa": 31.45,
+       "posicao": 17,
        "cod_congl": "C0080642",
        "sr": "S3"
       },
@@ -23782,62 +23743,53 @@
        "nome": "BANCO SEMEAR",
        "taxa_am": 2.32,
        "taxa_aa": 31.66,
-       "posicao": 21,
+       "posicao": 18,
        "cod_congl": "C0081380",
        "sr": "S4"
       },
       {
        "cnpj8": "71027866",
        "nome": "BCO BS2 S.A.",
-       "taxa_am": 2.35,
-       "taxa_aa": 32.16,
-       "posicao": 22,
+       "taxa_am": 2.33,
+       "taxa_aa": 31.84,
+       "posicao": 19,
        "cod_congl": "C0080422",
        "sr": "S3"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 2.35,
-       "taxa_aa": 32.17,
-       "posicao": 23,
+       "taxa_am": 2.45,
+       "taxa_aa": 33.63,
+       "posicao": 20,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
-       "cnpj8": "07679404",
-       "nome": "BANCO TOPÁZIO S.A.",
-       "taxa_am": 2.5,
-       "taxa_aa": 34.51,
-       "posicao": 24,
-       "cod_congl": "C0081517",
-       "sr": "S4"
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 2.47,
+       "taxa_aa": 34.0,
+       "posicao": 21,
+       "cod_congl": "C0080329",
+       "sr": "S1"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 2.5,
-       "taxa_aa": 34.53,
-       "posicao": 25,
+       "taxa_am": 2.48,
+       "taxa_aa": 34.22,
+       "posicao": 22,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
-       "cnpj8": "33603457",
-       "nome": "BCO RODOBENS S.A.",
-       "taxa_am": 2.51,
-       "taxa_aa": 34.72,
-       "posicao": 26,
-       "cod_congl": "C0080855",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 2.52,
-       "taxa_aa": 34.75,
-       "posicao": 27,
-       "cod_congl": "C0080329",
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 2.48,
+       "taxa_aa": 34.24,
+       "posicao": 23,
+       "cod_congl": "C0080185",
        "sr": "S1"
       },
       {
@@ -23845,25 +23797,52 @@
        "nome": "BCO VOTORANTIM S.A.",
        "taxa_am": 2.57,
        "taxa_aa": 35.53,
-       "posicao": 28,
+       "posicao": 24,
        "cod_congl": "C0080484",
        "sr": "S2"
+      },
+      {
+       "cnpj8": "07679404",
+       "nome": "BANCO TOPÁZIO S.A.",
+       "taxa_am": 2.57,
+       "taxa_aa": 35.62,
+       "posicao": 25,
+       "cod_congl": "C0081517",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "33603457",
+       "nome": "BCO RODOBENS S.A.",
+       "taxa_am": 2.58,
+       "taxa_aa": 35.8,
+       "posicao": 26,
+       "cod_congl": "C0080855",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 2.66,
+       "taxa_aa": 36.97,
+       "posicao": 27,
+       "cod_congl": "C0084844",
+       "sr": "S3"
       },
       {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
        "taxa_am": 2.7,
        "taxa_aa": 37.66,
-       "posicao": 29,
+       "posicao": 28,
        "cod_congl": "C0080477",
        "sr": "S4"
       },
       {
        "cnpj8": "13009717",
        "nome": "BCO DO EST. DE SE S.A.",
-       "taxa_am": 2.9,
-       "taxa_aa": 40.88,
-       "posicao": 30,
+       "taxa_am": 2.76,
+       "taxa_aa": 38.69,
+       "posicao": 29,
        "cod_congl": "C0081634",
        "sr": "S4"
       },
@@ -23872,124 +23851,115 @@
        "nome": "BCO GUANABARA S.A.",
        "taxa_am": 3.01,
        "taxa_aa": 42.81,
-       "posicao": 31,
+       "posicao": 30,
        "cod_congl": "C0081672",
        "sr": "S4"
-      },
-      {
-       "cnpj8": "00416968",
-       "nome": "BANCO INTER",
-       "taxa_am": 3.02,
-       "taxa_aa": 42.96,
-       "posicao": 32,
-       "cod_congl": "C0080996",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 3.17,
-       "taxa_aa": 45.44,
-       "posicao": 33,
-       "cod_congl": "C0080154",
-       "sr": "S2"
       },
       {
        "cnpj8": "04902979",
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 3.18,
        "taxa_aa": 45.51,
-       "posicao": 34,
+       "posicao": 31,
        "cod_congl": "C0081249",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "28127603",
-       "nome": "BCO BANESTES S.A.",
-       "taxa_am": 3.49,
-       "taxa_aa": 50.97,
-       "posicao": 35,
-       "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 3.54,
-       "taxa_aa": 51.82,
-       "posicao": 36,
+       "taxa_am": 3.23,
+       "taxa_aa": 46.4,
+       "posicao": 32,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
       {
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 3.56,
-       "taxa_aa": 52.24,
-       "posicao": 37,
+       "taxa_am": 3.5,
+       "taxa_aa": 51.14,
+       "posicao": 33,
        "cod_congl": "C0080336",
        "sr": "S1"
       },
       {
-       "cnpj8": "53505601",
-       "nome": "STONE CFI S.A.",
-       "taxa_am": 3.9,
-       "taxa_aa": 58.26,
-       "posicao": 38,
-       "cod_congl": "C0084686",
+       "cnpj8": "00416968",
+       "nome": "BANCO INTER",
+       "taxa_am": 3.67,
+       "taxa_aa": 54.18,
+       "posicao": 34,
+       "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
-       "cnpj8": "48703388",
-       "nome": "ASA SCFI S.A.",
-       "taxa_am": 4.36,
-       "taxa_aa": 66.96,
-       "posicao": 39,
-       "cod_congl": "C0086608",
-       "sr": "S5"
-      },
-      {
-       "cnpj8": "31872495",
-       "nome": "BCO C6 S.A.",
-       "taxa_am": 4.63,
-       "taxa_aa": 72.17,
-       "posicao": 40,
-       "cod_congl": "C0084844",
+       "cnpj8": "53505601",
+       "nome": "STONE CFI S.A.",
+       "taxa_am": 3.88,
+       "taxa_aa": 57.97,
+       "posicao": 35,
+       "cod_congl": "C0084686",
        "sr": "S3"
       },
       {
        "cnpj8": "03634220",
        "nome": "BCO HONDA S.A.",
-       "taxa_am": 4.68,
-       "taxa_aa": 73.16,
-       "posicao": 41,
+       "taxa_am": 4.27,
+       "taxa_aa": 65.1,
+       "posicao": 36,
        "cod_congl": "C0080611",
        "sr": "S4"
       },
       {
+       "cnpj8": "48703388",
+       "nome": "ASA SCFI S.A.",
+       "taxa_am": 4.29,
+       "taxa_aa": 65.6,
+       "posicao": 37,
+       "cod_congl": "C0086608",
+       "sr": "S5"
+      },
+      {
        "cnpj8": "37229413",
        "nome": "SCFI EFÍ S.A.",
-       "taxa_am": 4.88,
-       "taxa_aa": 77.22,
-       "posicao": 42,
+       "taxa_am": 4.73,
+       "taxa_aa": 74.14,
+       "posicao": 38,
        "cod_congl": "C0084978",
        "sr": "S5"
       },
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
-       "taxa_am": 5.03,
-       "taxa_aa": 80.16,
-       "posicao": 43,
+       "taxa_am": 5.05,
+       "taxa_aa": 80.61,
+       "posicao": 39,
        "cod_congl": "C0080271",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 5.2,
+       "taxa_aa": 83.69,
+       "posicao": 40,
+       "cod_congl": "C0080154",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "28127603",
+       "nome": "BCO BANESTES S.A.",
+       "taxa_am": 5.28,
+       "taxa_aa": 85.32,
+       "posicao": 41,
+       "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 5.8,
-       "taxa_aa": 96.68,
-       "posicao": 44,
+       "taxa_am": 5.77,
+       "taxa_aa": 96.09,
+       "posicao": 42,
        "cod_congl": "C0084693",
        "sr": "S2"
       },
@@ -23998,79 +23968,70 @@
        "nome": "BCO SAFRA S.A.",
        "taxa_am": 7.28,
        "taxa_aa": 132.49,
-       "posicao": 45,
+       "posicao": 43,
        "cod_congl": "C0080109",
        "sr": "S2"
       },
       {
-       "cnpj8": "04814563",
-       "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 8.36,
-       "taxa_aa": 162.09,
-       "posicao": 46,
-       "cod_congl": "C0083539",
+       "cnpj8": "36947229",
+       "nome": "COBUCCIO S.A. SCFI",
+       "taxa_am": 7.85,
+       "taxa_aa": 147.54,
+       "posicao": 44,
+       "cod_congl": "C0085173",
        "sr": "S4"
       },
       {
-       "cnpj8": "04913711",
-       "nome": "BCO DO EST. DO PA S.A.",
-       "taxa_am": 8.97,
-       "taxa_aa": 180.36,
-       "posicao": 47,
-       "cod_congl": "C0081586",
-       "sr": "S3"
+       "cnpj8": "04814563",
+       "nome": "BCO AFINZ S.A. - BM",
+       "taxa_am": 8.28,
+       "taxa_aa": 159.86,
+       "posicao": 45,
+       "cod_congl": "C0083539",
+       "sr": "S4"
       },
       {
        "cnpj8": "68900810",
        "nome": "BCO RENDIMENTO S.A.",
        "taxa_am": 9.37,
        "taxa_aa": 193.1,
-       "posicao": 48,
+       "posicao": 46,
        "cod_congl": "C0080659",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "36947229",
-       "nome": "COBUCCIO S.A. SCFI",
-       "taxa_am": 9.38,
-       "taxa_aa": 193.4,
-       "posicao": 49,
-       "cod_congl": "C0085173",
        "sr": "S4"
       },
       {
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
-       "taxa_am": 9.49,
-       "taxa_aa": 196.79,
-       "posicao": 50,
+       "taxa_am": 9.56,
+       "taxa_aa": 199.24,
+       "posicao": 47,
        "cod_congl": "C0084820",
        "sr": "S3"
       },
       {
        "cnpj8": "37241230",
        "nome": "SUMUP SCFI S.A",
-       "taxa_am": 10.21,
-       "taxa_aa": 221.28,
-       "posicao": 51,
+       "taxa_am": 10.24,
+       "taxa_aa": 222.1,
+       "posicao": 48,
        "cod_congl": "C0085238",
        "sr": "S4"
       },
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 11.16,
-       "taxa_aa": 255.9,
-       "posicao": 52,
+       "taxa_am": 11.3,
+       "taxa_aa": 261.18,
+       "posicao": 49,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
       {
        "cnpj8": "05503849",
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
-       "taxa_am": 12.18,
-       "taxa_aa": 297.27,
-       "posicao": 53,
+       "taxa_am": 12.71,
+       "taxa_aa": 320.46,
+       "posicao": 50,
        "cod_congl": "C0086581",
        "sr": "S4"
       }
@@ -24079,14 +24040,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo superior a 365 dias - Prefixado",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
-     "n_inst": 52,
-     "mediana_aa": 31.74,
-     "p25_aa": 24.9,
-     "p75_aa": 49.03,
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
+     "n_inst": 51,
+     "mediana_aa": 31.48,
+     "p25_aa": 26.01,
+     "p75_aa": 50.19,
      "min_aa": 15.53,
-     "max_aa": 296.48,
+     "max_aa": 146.24,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -24811,19 +24772,19 @@
        "n": 52
       },
       {
-       "inicio": "2026-10-21",
-       "mediana_aa": 31.74,
-       "p25_aa": 24.9,
-       "p75_aa": 49.03,
-       "n": 52
+       "inicio": "2026-10-22",
+       "mediana_aa": 31.48,
+       "p25_aa": 26.01,
+       "p75_aa": 50.19,
+       "n": 51
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 24.75,
-       "p25_aa": 23.1,
-       "p75_aa": 31.26,
+       "mediana_aa": 25.0,
+       "p25_aa": 22.78,
+       "p75_aa": 31.58,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -25547,19 +25508,19 @@
          "n": 6
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 24.75,
-         "p25_aa": 23.1,
-         "p75_aa": 31.26,
+         "inicio": "2026-10-22",
+         "mediana_aa": 25.0,
+         "p25_aa": 22.78,
+         "p75_aa": 31.58,
          "n": 6
         }
        ]
       },
       "S2": {
        "n": 7,
-       "mediana_aa": 31.51,
-       "p25_aa": 22.35,
-       "p75_aa": 33.89,
+       "mediana_aa": 31.48,
+       "p25_aa": 22.0,
+       "p75_aa": 37.94,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -26283,19 +26244,19 @@
          "n": 7
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 31.51,
-         "p25_aa": 22.35,
-         "p75_aa": 33.89,
+         "inicio": "2026-10-22",
+         "mediana_aa": 31.48,
+         "p25_aa": 22.0,
+         "p75_aa": 37.94,
          "n": 7
         }
        ]
       },
       "S3": {
        "n": 16,
-       "mediana_aa": 32.96,
+       "mediana_aa": 32.84,
        "p25_aa": 26.49,
-       "p75_aa": 44.5,
+       "p75_aa": 42.93,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -27019,19 +26980,19 @@
          "n": 17
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 32.96,
+         "inicio": "2026-10-22",
+         "mediana_aa": 32.84,
          "p25_aa": 26.49,
-         "p75_aa": 44.5,
+         "p75_aa": 42.93,
          "n": 16
         }
        ]
       },
       "S4": {
-       "n": 20,
-       "mediana_aa": 34.34,
+       "n": 19,
+       "mediana_aa": 36.1,
        "p25_aa": 26.68,
-       "p75_aa": 49.03,
+       "p75_aa": 50.54,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -27755,11 +27716,11 @@
          "n": 19
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 34.34,
+         "inicio": "2026-10-22",
+         "mediana_aa": 36.1,
          "p25_aa": 26.68,
-         "p75_aa": 49.03,
-         "n": 20
+         "p75_aa": 50.54,
+         "n": 19
         }
        ]
       }
@@ -27784,29 +27745,20 @@
        "sr": "S2"
       },
       {
-       "cnpj8": "02658435",
-       "nome": "BCO CATERPILLAR S.A.",
-       "taxa_am": 1.35,
-       "taxa_aa": 17.46,
-       "posicao": 3,
-       "cod_congl": "C0081397",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 1.43,
-       "taxa_aa": 18.56,
-       "posicao": 4,
+       "taxa_am": 1.41,
+       "taxa_aa": 18.29,
+       "posicao": 3,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
        "cnpj8": "62448932",
        "nome": "MULTIPLIKE FINANCEIRA S.A. SCFI",
-       "taxa_am": 1.56,
-       "taxa_aa": 20.4,
-       "posicao": 5,
+       "taxa_am": 1.52,
+       "taxa_aa": 19.81,
+       "posicao": 4,
        "cod_congl": "C0088651",
        "sr": "S4"
       },
@@ -27815,204 +27767,213 @@
        "nome": "BCO BMG S.A.",
        "taxa_am": 1.64,
        "taxa_aa": 21.58,
-       "posicao": 6,
+       "posicao": 5,
        "cod_congl": "C0080178",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "38486817",
-       "nome": "BCO DES. DE MG S.A.",
-       "taxa_am": 1.69,
-       "taxa_aa": 22.28,
-       "posicao": 7,
-       "cod_congl": "C0081328",
        "sr": "S3"
       },
       {
        "cnpj8": "07237373",
        "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 1.7,
-       "taxa_aa": 22.35,
-       "posicao": 8,
+       "taxa_am": 1.67,
+       "taxa_aa": 22.0,
+       "posicao": 6,
        "cod_congl": "C0081593",
        "sr": "S2"
       },
       {
-       "cnpj8": "31872495",
-       "nome": "BCO C6 S.A.",
-       "taxa_am": 1.73,
-       "taxa_aa": 22.88,
-       "posicao": 9,
-       "cod_congl": "C0084844",
+       "cnpj8": "38486817",
+       "nome": "BCO DES. DE MG S.A.",
+       "taxa_am": 1.7,
+       "taxa_aa": 22.36,
+       "posicao": 7,
+       "cod_congl": "C0081328",
        "sr": "S3"
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 1.75,
-       "taxa_aa": 23.1,
-       "posicao": 10,
+       "taxa_am": 1.73,
+       "taxa_aa": 22.78,
+       "posicao": 8,
        "cod_congl": "C0080185",
        "sr": "S1"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 1.74,
+       "taxa_aa": 23.05,
+       "posicao": 9,
+       "cod_congl": "C0084844",
+       "sr": "S3"
       },
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
        "taxa_am": 1.76,
        "taxa_aa": 23.26,
-       "posicao": 11,
+       "posicao": 10,
        "cod_congl": "C0080271",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "11970623",
-       "nome": "BCO SENFF S.A.",
-       "taxa_am": 1.85,
-       "taxa_aa": 24.66,
-       "posicao": 12,
-       "cod_congl": "C0083670",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "60701190",
-       "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 1.86,
-       "taxa_aa": 24.75,
-       "posicao": 13,
-       "cod_congl": "C0080099",
-       "sr": "S1"
       },
       {
        "cnpj8": "31880826",
        "nome": "BCO GUANABARA S.A.",
        "taxa_am": 1.87,
        "taxa_aa": 24.9,
-       "posicao": 14,
+       "posicao": 11,
        "cod_congl": "C0081672",
        "sr": "S4"
       },
       {
-       "cnpj8": "17351180",
-       "nome": "BCO TRIANGULO S.A.",
-       "taxa_am": 1.94,
-       "taxa_aa": 25.94,
-       "posicao": 15,
-       "cod_congl": "C0081438",
-       "sr": "S4"
+       "cnpj8": "60701190",
+       "nome": "ITAÚ UNIBANCO S.A.",
+       "taxa_am": 1.88,
+       "taxa_aa": 25.0,
+       "posicao": 12,
+       "cod_congl": "C0080099",
+       "sr": "S1"
       },
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.96,
-       "taxa_aa": 26.19,
-       "posicao": 16,
+       "taxa_am": 1.95,
+       "taxa_aa": 26.01,
+       "posicao": 13,
        "cod_congl": "C0080329",
        "sr": "S1"
+      },
+      {
+       "cnpj8": "17351180",
+       "nome": "BCO TRIANGULO S.A.",
+       "taxa_am": 1.97,
+       "taxa_aa": 26.41,
+       "posicao": 14,
+       "cod_congl": "C0081438",
+       "sr": "S4"
       },
       {
        "cnpj8": "71027866",
        "nome": "BCO BS2 S.A.",
        "taxa_am": 1.98,
        "taxa_aa": 26.49,
-       "posicao": 17,
+       "posicao": 15,
        "cod_congl": "C0080422",
        "sr": "S3"
+      },
+      {
+       "cnpj8": "11970623",
+       "nome": "BCO SENFF S.A.",
+       "taxa_am": 1.98,
+       "taxa_aa": 26.5,
+       "posicao": 16,
+       "cod_congl": "C0083670",
+       "sr": "S4"
       },
       {
        "cnpj8": "11476673",
        "nome": "BANCO RANDON S.A.",
        "taxa_am": 1.99,
        "taxa_aa": 26.68,
-       "posicao": 18,
+       "posicao": 17,
        "cod_congl": "C0080800",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "60850229",
-       "nome": "OMNI BANCO S.A.",
-       "taxa_am": 2.0,
-       "taxa_aa": 26.88,
-       "posicao": 19,
-       "cod_congl": "C0080460",
        "sr": "S4"
       },
       {
        "cnpj8": "07679404",
        "nome": "BANCO TOPÁZIO S.A.",
-       "taxa_am": 2.02,
-       "taxa_aa": 27.14,
-       "posicao": 20,
+       "taxa_am": 2.01,
+       "taxa_aa": 26.98,
+       "posicao": 18,
        "cod_congl": "C0081517",
        "sr": "S4"
       },
       {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-       "taxa_am": 2.02,
-       "taxa_aa": 27.17,
-       "posicao": 21,
+       "taxa_am": 2.03,
+       "taxa_aa": 27.23,
+       "posicao": 19,
        "cod_congl": "C0080477",
        "sr": "S4"
       },
       {
-       "cnpj8": "33588252",
-       "nome": "BCO INDUSCRED DE INVESTIM. S/A",
-       "taxa_am": 2.04,
-       "taxa_aa": 27.37,
-       "posicao": 22,
-       "cod_congl": "C0081342",
+       "cnpj8": "60850229",
+       "nome": "OMNI BANCO S.A.",
+       "taxa_am": 2.09,
+       "taxa_aa": 28.14,
+       "posicao": 20,
+       "cod_congl": "C0080460",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "00122327",
+       "nome": "SANTINVEST S.A. - CFI",
+       "taxa_am": 2.09,
+       "taxa_aa": 28.24,
+       "posicao": 21,
+       "cod_congl": "C0080446",
+       "sr": "S5"
       },
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
        "taxa_am": 2.1,
-       "taxa_aa": 28.29,
-       "posicao": 23,
+       "taxa_aa": 28.37,
+       "posicao": 22,
        "cod_congl": "C0080642",
        "sr": "S3"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 2.11,
-       "taxa_aa": 28.41,
-       "posicao": 24,
+       "taxa_am": 2.13,
+       "taxa_aa": 28.74,
+       "posicao": 23,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
       {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 2.29,
-       "taxa_aa": 31.26,
+       "cnpj8": "78632767",
+       "nome": "OURIBANK S.A.",
+       "taxa_am": 2.13,
+       "taxa_aa": 28.84,
+       "posicao": 24,
+       "cod_congl": "C0081012",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "28127603",
+       "nome": "BCO BANESTES S.A.",
+       "taxa_am": 2.28,
+       "taxa_aa": 31.03,
        "posicao": 25,
-       "cod_congl": "C0080075",
-       "sr": "S1"
+       "cod_congl": "C0080147",
+       "sr": "S3"
       },
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
        "taxa_am": 2.31,
-       "taxa_aa": 31.51,
+       "taxa_aa": 31.48,
        "posicao": 26,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
-       "cnpj8": "28127603",
-       "nome": "BCO BANESTES S.A.",
-       "taxa_am": 2.32,
-       "taxa_aa": 31.74,
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 2.31,
+       "taxa_aa": 31.58,
        "posicao": 27,
-       "cod_congl": "C0080147",
-       "sr": "S3"
+       "cod_congl": "C0080075",
+       "sr": "S1"
       },
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 2.4,
-       "taxa_aa": 32.96,
+       "taxa_am": 2.39,
+       "taxa_aa": 32.84,
        "posicao": 28,
        "cod_congl": "C0080996",
        "sr": "S3"
@@ -28027,76 +27988,76 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "59588111",
-       "nome": "BCO VOTORANTIM S.A.",
-       "taxa_am": 2.46,
-       "taxa_aa": 33.89,
-       "posicao": 30,
-       "cod_congl": "C0080484",
-       "sr": "S2"
-      },
-      {
        "cnpj8": "42723848",
        "nome": "BARU SCFI S/A",
-       "taxa_am": 2.49,
-       "taxa_aa": 34.34,
-       "posicao": 31,
+       "taxa_am": 2.6,
+       "taxa_aa": 36.1,
+       "posicao": 30,
        "cod_congl": "C0085805",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "36321990",
-       "nome": "AGORACRED S/A SCFI",
-       "taxa_am": 2.61,
-       "taxa_aa": 36.21,
-       "posicao": 32,
-       "cod_congl": "C0083618",
-       "sr": "S5"
-      },
-      {
-       "cnpj8": "04902979",
-       "nome": "BCO DA AMAZONIA S.A.",
-       "taxa_am": 2.68,
-       "taxa_aa": 37.41,
-       "posicao": 33,
-       "cod_congl": "C0081249",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "13009717",
-       "nome": "BCO DO EST. DE SE S.A.",
-       "taxa_am": 2.88,
-       "taxa_aa": 40.54,
-       "posicao": 34,
-       "cod_congl": "C0081634",
        "sr": "S4"
       },
       {
        "cnpj8": "11760553",
        "nome": "GAZINCRED S.A. SCFI",
-       "taxa_am": 2.9,
-       "taxa_aa": 40.92,
-       "posicao": 35,
+       "taxa_am": 2.63,
+       "taxa_aa": 36.53,
+       "posicao": 31,
        "cod_congl": "C0080824",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "04902979",
+       "nome": "BCO DA AMAZONIA S.A.",
+       "taxa_am": 2.7,
+       "taxa_aa": 37.72,
+       "posicao": 32,
+       "cod_congl": "C0081249",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "59588111",
+       "nome": "BCO VOTORANTIM S.A.",
+       "taxa_am": 2.72,
+       "taxa_aa": 37.94,
+       "posicao": 33,
+       "cod_congl": "C0080484",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "13009717",
+       "nome": "BCO DO EST. DE SE S.A.",
+       "taxa_am": 2.87,
+       "taxa_aa": 40.41,
+       "posicao": 34,
+       "cod_congl": "C0081634",
        "sr": "S4"
       },
       {
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
-       "taxa_am": 3.12,
-       "taxa_aa": 44.5,
-       "posicao": 36,
+       "taxa_am": 3.02,
+       "taxa_aa": 42.93,
+       "posicao": 35,
        "cod_congl": "C0084820",
        "sr": "S3"
       },
       {
-       "cnpj8": "37229413",
-       "nome": "SCFI EFÍ S.A.",
-       "taxa_am": 3.13,
-       "taxa_aa": 44.72,
+       "cnpj8": "53505601",
+       "nome": "STONE CFI S.A.",
+       "taxa_am": 3.12,
+       "taxa_aa": 44.59,
+       "posicao": 36,
+       "cod_congl": "C0084686",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "92228410",
+       "nome": "OMNI SA CFI",
+       "taxa_am": 3.37,
+       "taxa_aa": 48.92,
        "posicao": 37,
-       "cod_congl": "C0084978",
-       "sr": "S5"
+       "cod_congl": "C0080460",
+       "sr": "S4"
       },
       {
        "cnpj8": "06249129",
@@ -28108,101 +28069,92 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "92228410",
-       "nome": "OMNI SA CFI",
-       "taxa_am": 3.38,
-       "taxa_aa": 49.03,
-       "posicao": 39,
-       "cod_congl": "C0080460",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "53505601",
-       "nome": "STONE CFI S.A.",
-       "taxa_am": 3.38,
-       "taxa_aa": 49.04,
-       "posicao": 40,
-       "cod_congl": "C0084686",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 3.54,
-       "taxa_aa": 51.82,
-       "posicao": 41,
+       "taxa_am": 3.45,
+       "taxa_aa": 50.19,
+       "posicao": 39,
        "cod_congl": "C0080336",
        "sr": "S1"
       },
       {
        "cnpj8": "80271455",
        "nome": "BCO RNX S.A.",
-       "taxa_am": 3.55,
-       "taxa_aa": 51.97,
-       "posicao": 42,
+       "taxa_am": 3.47,
+       "taxa_aa": 50.54,
+       "posicao": 40,
        "cod_congl": "C0081775",
        "sr": "S4"
       },
       {
-       "cnpj8": "04913711",
-       "nome": "BCO DO EST. DO PA S.A.",
-       "taxa_am": 4.07,
-       "taxa_aa": 61.35,
-       "posicao": 43,
-       "cod_congl": "C0081586",
-       "sr": "S3"
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 3.88,
+       "taxa_aa": 57.85,
+       "posicao": 41,
+       "cod_congl": "C0080659",
+       "sr": "S4"
       },
       {
        "cnpj8": "37880206",
        "nome": "CORA SCFI",
-       "taxa_am": 4.12,
-       "taxa_aa": 62.28,
-       "posicao": 44,
+       "taxa_am": 4.06,
+       "taxa_aa": 61.27,
+       "posicao": 42,
        "cod_congl": "C0085317",
        "sr": "S5"
       },
       {
-       "cnpj8": "10264663",
-       "nome": "BANCOSEGURO S.A.",
-       "taxa_am": 4.18,
-       "taxa_aa": 63.42,
-       "posicao": 45,
-       "cod_congl": "C0084813",
-       "sr": "S3"
+       "cnpj8": "37229413",
+       "nome": "SCFI EFÍ S.A.",
+       "taxa_am": 4.09,
+       "taxa_aa": 61.76,
+       "posicao": 43,
+       "cod_congl": "C0084978",
+       "sr": "S5"
       },
       {
        "cnpj8": "04814563",
        "nome": "BCO AFINZ S.A. - BM",
        "taxa_am": 4.21,
        "taxa_aa": 64.02,
-       "posicao": 46,
+       "posicao": 44,
        "cod_congl": "C0083539",
        "sr": "S4"
       },
       {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 4.28,
-       "taxa_aa": 65.42,
-       "posicao": 47,
-       "cod_congl": "C0080659",
-       "sr": "S4"
+       "cnpj8": "10264663",
+       "nome": "BANCOSEGURO S.A.",
+       "taxa_am": 4.25,
+       "taxa_aa": 64.74,
+       "posicao": 45,
+       "cod_congl": "C0084813",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "04913711",
+       "nome": "BCO DO EST. DO PA S.A.",
+       "taxa_am": 4.49,
+       "taxa_aa": 69.37,
+       "posicao": 46,
+       "cod_congl": "C0081586",
+       "sr": "S3"
       },
       {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 4.71,
-       "taxa_aa": 73.64,
-       "posicao": 48,
+       "taxa_am": 4.6,
+       "taxa_aa": 71.52,
+       "posicao": 47,
        "cod_congl": "C0084693",
        "sr": "S2"
       },
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 5.06,
-       "taxa_aa": 80.89,
-       "posicao": 49,
+       "taxa_am": 5.04,
+       "taxa_aa": 80.49,
+       "posicao": 48,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
@@ -28211,25 +28163,25 @@
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
        "taxa_am": 5.99,
        "taxa_aa": 100.96,
-       "posicao": 50,
+       "posicao": 49,
        "cod_congl": "C0086581",
        "sr": "S4"
       },
       {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 7.6,
-       "taxa_aa": 140.75,
-       "posicao": 51,
+       "taxa_am": 6.72,
+       "taxa_aa": 118.22,
+       "posicao": 50,
        "cod_congl": "C0080109",
        "sr": "S2"
       },
       {
        "cnpj8": "36947229",
        "nome": "COBUCCIO S.A. SCFI",
-       "taxa_am": 12.16,
-       "taxa_aa": 296.48,
-       "posicao": 52,
+       "taxa_am": 7.8,
+       "taxa_aa": 146.24,
+       "posicao": 51,
        "cod_congl": "C0085173",
        "sr": "S4"
       }
@@ -28238,14 +28190,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
      "n_inst": 15,
      "mediana_aa": 21.27,
      "p25_aa": 15.81,
      "p75_aa": 24.64,
-     "min_aa": 13.73,
-     "max_aa": 35.96,
+     "min_aa": 13.71,
+     "max_aa": 38.81,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -29642,7 +29594,7 @@
        "n": 17
       },
       {
-       "inicio": "2026-10-21",
+       "inicio": "2026-10-22",
        "mediana_aa": 21.27,
        "p25_aa": 15.81,
        "p75_aa": 24.64,
@@ -29652,9 +29604,9 @@
      "por_segmento": {
       "S1": {
        "n": 5,
-       "mediana_aa": 21.27,
+       "mediana_aa": 20.58,
        "p25_aa": 15.01,
-       "p75_aa": 21.28,
+       "p75_aa": 21.27,
        "serie": [
         {
          "inicio": "2023-01-04",
@@ -30763,10 +30715,10 @@
          "n": 5
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 21.27,
+         "inicio": "2026-10-22",
+         "mediana_aa": 20.58,
          "p25_aa": 15.01,
-         "p75_aa": 21.28,
+         "p75_aa": 21.27,
          "n": 5
         }
        ]
@@ -30777,7 +30729,7 @@
        "cnpj8": "62331228",
        "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
        "taxa_am": 1.08,
-       "taxa_aa": 13.73,
+       "taxa_aa": 13.71,
        "posicao": 1,
        "cod_congl": "C0080532",
        "sr": "S3"
@@ -30819,22 +30771,22 @@
        "sr": "S2"
       },
       {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
        "taxa_am": 1.45,
-       "taxa_aa": 18.88,
+       "taxa_aa": 18.79,
        "posicao": 6,
-       "cod_congl": "C0080271",
+       "cod_congl": "C0080312",
        "sr": "S3"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 1.6,
-       "taxa_aa": 20.92,
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 1.57,
+       "taxa_aa": 20.58,
        "posicao": 7,
-       "cod_congl": "C0080312",
-       "sr": "S3"
+       "cod_congl": "C0080075",
+       "sr": "S1"
       },
       {
        "cnpj8": "00360305",
@@ -30848,8 +30800,8 @@
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.62,
-       "taxa_aa": 21.28,
+       "taxa_am": 1.65,
+       "taxa_aa": 21.72,
        "posicao": 9,
        "cod_congl": "C0080329",
        "sr": "S1"
@@ -30882,30 +30834,30 @@
        "sr": "S2"
       },
       {
-       "cnpj8": "31895683",
-       "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-       "taxa_am": 2.24,
-       "taxa_aa": 30.45,
+       "cnpj8": "48703388",
+       "nome": "ASA SCFI S.A.",
+       "taxa_am": 2.12,
+       "taxa_aa": 28.69,
        "posicao": 13,
-       "cod_congl": "C0080477",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 2.49,
-       "taxa_aa": 34.35,
-       "posicao": 14,
-       "cod_congl": "C0080075",
-       "sr": "S1"
+       "cod_congl": "C0086608",
+       "sr": "S5"
       },
       {
        "cnpj8": "00795423",
        "nome": "BANCO SEMEAR",
-       "taxa_am": 2.59,
-       "taxa_aa": 35.96,
-       "posicao": 15,
+       "taxa_am": 2.64,
+       "taxa_aa": 36.75,
+       "posicao": 14,
        "cod_congl": "C0081380",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "31895683",
+       "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+       "taxa_am": 2.77,
+       "taxa_aa": 38.81,
+       "posicao": 15,
+       "cod_congl": "C0080477",
        "sr": "S4"
       }
      ]
@@ -30913,14 +30865,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "inicio": "2026-10-21",
-     "fim": "2026-10-27",
+     "inicio": "2026-10-22",
+     "fim": "2026-10-28",
      "n_inst": 16,
      "mediana_aa": 20.11,
-     "p25_aa": 18.27,
-     "p75_aa": 23.17,
+     "p25_aa": 18.23,
+     "p75_aa": 22.8,
      "min_aa": 13.1,
-     "max_aa": 30.33,
+     "max_aa": 30.8,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -32226,18 +32178,18 @@
        "n": 16
       },
       {
-       "inicio": "2026-10-21",
+       "inicio": "2026-10-22",
        "mediana_aa": 20.11,
-       "p25_aa": 18.27,
-       "p75_aa": 23.17,
+       "p25_aa": 18.23,
+       "p75_aa": 22.8,
        "n": 16
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 18.27,
-       "p25_aa": 17.45,
+       "mediana_aa": 18.32,
+       "p25_aa": 18.23,
        "p75_aa": 19.59,
        "serie": [
         {
@@ -33529,18 +33481,18 @@
          "n": 6
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 18.27,
-         "p25_aa": 17.45,
+         "inicio": "2026-10-22",
+         "mediana_aa": 18.32,
+         "p25_aa": 18.23,
          "p75_aa": 19.59,
          "n": 6
         }
        ]
       },
       "S3": {
-       "n": 7,
-       "mediana_aa": 24.99,
-       "p25_aa": 23.17,
+       "n": 6,
+       "mediana_aa": 23.5,
+       "p25_aa": 22.8,
        "p75_aa": 27.97,
        "serie": [
         {
@@ -34846,11 +34798,11 @@
          "n": 7
         },
         {
-         "inicio": "2026-10-21",
-         "mediana_aa": 24.99,
-         "p25_aa": 23.17,
+         "inicio": "2026-10-22",
+         "mediana_aa": 23.5,
+         "p25_aa": 22.8,
          "p75_aa": 27.97,
-         "n": 7
+         "n": 6
         }
        ]
       }
@@ -34866,11 +34818,20 @@
        "sr": "S4"
       },
       {
+       "cnpj8": "07679404",
+       "nome": "BANCO TOPÁZIO S.A.",
+       "taxa_am": 1.15,
+       "taxa_aa": 14.74,
+       "posicao": 2,
+       "cod_congl": "C0081517",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
        "taxa_am": 1.32,
-       "taxa_aa": 16.97,
-       "posicao": 2,
+       "taxa_aa": 16.98,
+       "posicao": 3,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
@@ -34878,35 +34839,35 @@
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
        "taxa_am": 1.35,
-       "taxa_aa": 17.4,
-       "posicao": 3,
-       "cod_congl": "C0080099",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "30306294",
-       "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 1.35,
-       "taxa_aa": 17.45,
+       "taxa_aa": 17.39,
        "posicao": 4,
-       "cod_congl": "C0080336",
+       "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 1.41,
-       "taxa_aa": 18.27,
+       "taxa_aa": 18.23,
        "posicao": 5,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
+       "cnpj8": "30306294",
+       "nome": "BANCO BTG PACTUAL S.A.",
+       "taxa_am": 1.41,
+       "taxa_aa": 18.32,
+       "posicao": 6,
+       "cod_congl": "C0080336",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 1.44,
-       "taxa_aa": 18.69,
-       "posicao": 6,
+       "taxa_am": 1.42,
+       "taxa_aa": 18.46,
+       "posicao": 7,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
@@ -34915,18 +34876,9 @@
        "nome": "BCO SANTANDER (BRASIL) S.A.",
        "taxa_am": 1.5,
        "taxa_aa": 19.59,
-       "posicao": 7,
+       "posicao": 8,
        "cod_congl": "C0080185",
        "sr": "S1"
-      },
-      {
-       "cnpj8": "92894922",
-       "nome": "BANCO ORIGINAL",
-       "taxa_am": 1.52,
-       "taxa_aa": 19.87,
-       "posicao": 8,
-       "cod_congl": "C0080903",
-       "sr": "S3"
       },
       {
        "cnpj8": "33264668",
@@ -34940,8 +34892,8 @@
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.57,
-       "taxa_aa": 20.56,
+       "taxa_am": 1.61,
+       "taxa_aa": 21.13,
        "posicao": 10,
        "cod_congl": "C0080329",
        "sr": "S1"
@@ -34949,18 +34901,27 @@
       {
        "cnpj8": "38486817",
        "nome": "BCO DES. DE MG S.A.",
-       "taxa_am": 1.6,
-       "taxa_aa": 20.95,
+       "taxa_am": 1.64,
+       "taxa_aa": 21.52,
        "posicao": 11,
        "cod_congl": "C0081328",
        "sr": "S3"
       },
       {
+       "cnpj8": "62232889",
+       "nome": "BCO DAYCOVAL S.A",
+       "taxa_am": 1.73,
+       "taxa_aa": 22.8,
+       "posicao": 12,
+       "cod_congl": "C0081744",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "28195667",
        "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 1.75,
-       "taxa_aa": 23.17,
-       "posicao": 12,
+       "taxa_am": 1.78,
+       "taxa_aa": 23.5,
+       "posicao": 13,
        "cod_congl": "C0080312",
        "sr": "S3"
       },
@@ -34969,7 +34930,7 @@
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 1.88,
        "taxa_aa": 24.99,
-       "posicao": 13,
+       "posicao": 14,
        "cod_congl": "C0081249",
        "sr": "S3"
       },
@@ -34978,24 +34939,15 @@
        "nome": "BCO SOFISA S.A.",
        "taxa_am": 2.08,
        "taxa_aa": 27.97,
-       "posicao": 14,
-       "cod_congl": "C0080271",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "62232889",
-       "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 2.15,
-       "taxa_aa": 29.11,
        "posicao": 15,
-       "cod_congl": "C0081744",
+       "cod_congl": "C0080271",
        "sr": "S3"
       },
       {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 2.23,
-       "taxa_aa": 30.33,
+       "taxa_am": 2.26,
+       "taxa_aa": 30.8,
        "posicao": 16,
        "cod_congl": "C0080147",
        "sr": "S3"

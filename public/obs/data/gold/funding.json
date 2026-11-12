@@ -4117,8 +4117,8 @@
   ],
   "sigilo": {
    "mes": "2026-10",
-   "valor": 2490597060.0,
-   "liberacao_ate": "2027-01-29"
+   "valor": 356715406515.0,
+   "liberacao_ate": "2027-04-29"
   },
   "cobertura": {
    "classes_com_papel_bancario": 3136,
@@ -5203,15 +5203,15 @@
    },
    {
     "mes": "2026-10",
-    "valor": 15120985864.15,
-    "n_emissores": 74,
-    "lf": 6487920132.21,
-    "cdb": 8472021824.919999,
-    "ligado_share": 59.15,
-    "n_classes": 67,
+    "valor": 354787956127.85004,
+    "n_emissores": 118,
+    "lf": 257519525997.48004,
+    "cdb": 77586492368.43,
+    "ligado_share": 25.16,
+    "n_classes": 961,
     "parcial": true,
-    "sob_sigilo": 2490597060.0,
-    "sigilo_ate": "2027-01-29"
+    "sob_sigilo": 356715406515.0,
+    "sigilo_ate": "2027-04-29"
    }
   ],
   "nota": "Posições diretas das classes de fundos (a classe que compra a cota de outra classe aparece como cota, não como papel, então não há dupla contagem do título). 'Ligado' é a marcação da própria classe de que o emissor é ligado ao gestor. A razão CDA ÷ LF do IF.data cruza um mês com um trimestre e é indicativa."
