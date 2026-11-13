@@ -30,9 +30,14 @@ describe("pontes entre painéis irmãos", () => {
     expect(app).toContain('<section id="sec-exposicoes">');
     expect(app).toMatch(/RJs por setor não implicam perda nos credores/);
     expect(app).toMatch(/dívida TRIBUTÁRIA com a União; lá, crédito BANCÁRIO/);
-    // Fraudes → série do MED no Pix
-    expect(app).toContain('ponte("A série completa do MED, mês a mês, no painel do Pix", "pix", "px-med"');
-    expect(app).toMatch(/contestação ≠ fraude confirmada, lá como aqui/);
+    // Fraudes → série do MED no Pix. Até 10/11/2026 a ponte era lida em renderFraudes (public/obs/app.js), removido nessa
+    // data; ela vive hoje na página nova, /divida-das-familias/golpes-e-fraudes, com a mesma cautela do par. Aposentada
+    // (1 asserção): a âncora "px-med" na chamada de ponte(); a página nova liga ao painel do Pix sem a âncora, como
+    // registra docs/familias/PARIDADE.md.
+    const golpes = read("src/app/divida-das-familias/golpes-e-fraudes/page.tsx");
+    expect(golpes).toMatch(/<Link href=\{PAINEL_PIX\}[^>]*>\s*A série completa do MED, mês a mês, no painel do Pix\s*<\/Link>/);
+    expect(read("src/lib/familias/golpes-e-fraudes.ts")).toContain('export const PAINEL_PIX = "/observatorio/pix";');
+    expect(golpes).toMatch(/Contestação não é fraude confirmada, lá como aqui/);
   });
 });
 

@@ -77,12 +77,13 @@ export const METODO_SPA = "/observatorio/methodology";
  * caberem numa linha a 1440 px (medido em 23/10/2026: faltavam 90 px e "Marcos regulatórios" saía cortado), como o Setor
  * Elétrico faz com os grupos longos; o nome inteiro continua no "Início do painel".
  *
- * Desde 10/11/2026 (decisão do dono), seis páginas dos grupos "Risco, cobrança e recuperação" e "Pagamentos, conduta e
- * fronteiras" são páginas Next do Observatório das Famílias (/divida-das-familias/*, `redirecionar: true` em
- * src/lib/observatorios/paineis-reescritos.json): o grupo guarda o endereço novo, o "Início do painel" as lista como link para fora
- * da aplicação e a navegação do Crédito não as mostra (são de outra coleção). O teste src/tests/mapa-menu.test.ts confere que
- * nenhum grupo aponta para um endereço redirecionado. As três vistas ainda não redirecionadas (Consignado, Crédito
- * imobiliário e Emprego formal) continuam com o endereço da aplicação.
+ * Desde 10/11/2026 (decisão do dono), nove páginas dos grupos "Território e pessoas", "Risco, cobrança e recuperação" e
+ * "Pagamentos, conduta e fronteiras" são páginas Next do Observatório das Famílias (/divida-das-familias/*, /credito-imobiliario e
+ * /emprego-formal, `redirecionar: true` em src/lib/observatorios/paineis-reescritos.json): o grupo guarda o endereço novo, o
+ * "Início do painel" as lista como link para fora da aplicação e a navegação do Crédito não as mostra (são de outra coleção). O
+ * teste src/tests/mapa-menu.test.ts confere que nenhum grupo aponta para um endereço redirecionado. As três últimas (Consignado,
+ * Crédito imobiliário e Emprego formal) entraram na lista no mesmo dia, depois de fechada a paridade declarada em
+ * docs/familias/PARIDADE.md (mapa municipal, estado no endereço, dispersão e pesos do Risco setorial).
  */
 export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas: readonly string[] }[] = [
   { rotulo: "Começar", paginas: ["/observatorio/map", "/observatorio/overview", "/observatorio/alerts", METODO_SPA] },
@@ -99,7 +100,7 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
   {
     rotulo: "Território e pessoas",
     curto: "Território",
-    paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/observatorio/housing-credit", "/observatorio/payroll-lending-aging", "/observatorio/formal-employment", "/observatorio/subnational-credit"],
+    paginas: ["/observatorio/states", "/observatorio/credit-panorama", "/observatorio/credit-penetration", "/credito-imobiliario", "/divida-das-familias/consignado", "/emprego-formal", "/observatorio/subnational-credit"],
   },
   { rotulo: "Risco, cobrança e recuperação", paginas: ["/observatorio/sectors", "/divida-das-familias/desenrola", "/divida-das-familias/bancos-cobrando-na-justica", "/observatorio/recoveries", "/observatorio/federal-tax-debt"] },
   {
@@ -108,6 +109,23 @@ export const GRUPOS_CREDITO: readonly { rotulo: string; curto?: string; paginas:
   },
   { rotulo: "Referência", paginas: ["/observatorio/regulacao"] },
 ];
+
+/** O "Início do painel" da aplicação: lista as páginas dos grupos e por isso não se conta entre elas. */
+export const INICIO_DO_PAINEL = "/observatorio/map";
+/** Prefixo dos endereços da aplicação de página única do Crédito. */
+const PREFIXO_DA_APLICACAO = "/observatorio/";
+
+/**
+ * As páginas temáticas que a aplicação do Crédito mantém: as vistas da aplicação nos grupos, sem o "Início do painel". É a
+ * contagem que o próprio "Início do painel" escreve no cabeçalho (renderMapa em public/obs/app.js: as vistas dos grupos, menos
+ * o mapa e as substituídas por página das Famílias) e a que a vitrine da home mostra para o Crédito (src/lib/vitrine.ts).
+ * Uma vista reescrita como página de outra coleção sai daqui sozinha, porque o grupo passa a guardar o endereço novo; as
+ * páginas Next do Crédito nos grupos (o Simulador da parcela) e as do fim da página (FIM_DA_PAGINA_CREDITO) não entram, como
+ * na aplicação. O teste src/tests/vitrine-credito-contagem.test.ts confere a igualdade com o que a aplicação conta.
+ */
+export function paginasTematicasDoCredito(): string[] {
+  return GRUPOS_CREDITO.flatMap((g) => g.paginas).filter((h) => h.startsWith(PREFIXO_DA_APLICACAO) && h !== INICIO_DO_PAINEL);
+}
 
 /** Páginas da aplicação que ficam no fim da página, fora dos grupos: perguntas rápidas, sugestões e o "Sobre". */
 export const FIM_DA_PAGINA_CREDITO: readonly { rotulo: string; href: string }[] = [

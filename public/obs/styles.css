@@ -827,10 +827,6 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .desmz .i { background: color-mix(in srgb, var(--unavail) 55%, transparent); }
 .desmz .leg { font-size: var(--tipo-meta); color: var(--text-3); }
 
-/* ritmo vertical: seções longas precisam de respiro entre si */
-#view-desenrola .sechead { margin-top: 34px; }
-#view-desenrola > section:first-of-type .sechead { margin-top: 22px; }
-
 @media (max-width: 700px) {
   .desarq, .desarq thead, .desarq tbody, .desarq tr, .desarq th, .desarq td { display: block; }
   .desarq thead { margin-bottom: 6px; }
@@ -839,24 +835,6 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
   .desindex { gap: 0; }
   .desindex a { border-right: 0; padding: 4px 9px 4px 0; }
 }
-
-/* Medida de leitura no escopo da página: qualquer texto corrido para de crescer
-   com a janela. Seletores de filho direto — tabelas, gráficos e mapas ficam de
-   fora, porque neles a largura é informação. */
-#view-desenrola .card > p,
-#view-desenrola .card > .src,
-#view-desenrola .card > ul,
-#view-desenrola .card > ol,
-#view-desenrola .card > dl,
-#view-desenrola .note,
-#view-desenrola .judalerta > div,
-#view-desenrola .deslacuna ul,
-#view-desenrola .destl li > div,
-#view-desenrola .descomoler dd { max-width: 74ch; }
-
-/* a lista da metodologia e as lacunas ganham entrelinha um pouco maior:
-   são leitura densa e sequencial, não varredura */
-#view-desenrola .card > ul.src li { margin-bottom: 4px; }
 
 /* dicionário: verbete em bloco. Em tabela de oito colunas cada célula virava
    uma coluna de uma palavra por linha. */
@@ -1406,16 +1384,16 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 .seal { position: relative; }
 
 /* Abertura das páginas homologadas: referências e ações partilham a linha. */
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left { display: contents; }
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > * { grid-column: 1 / -1; }
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > .ph-fontes { grid-column: 1; }
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead > .ph-actions { grid-column: 2; align-self: start; }
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left { display: contents; }
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > * { grid-column: 1 / -1; }
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead .ph-left > .ph-fontes { grid-column: 1; }
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .pagehead > .ph-actions { grid-column: 2; align-self: start; }
 
 /* Dispersão estadual: preserva os rótulos de 12 px e oferece tabela equivalente. */
 .cgdisp-wrap .cgdisp { width:720px; min-width:720px; max-width:none; display:block; }
 
-@media (max-width:640px) { :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }
+@media (max-width:640px) { :is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) .ph-menu .ph-items { right:0; left:auto; } }
 
 .px-setor-legenda { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:6px 20px; list-style:none; padding:0; font-size:var(--tipo-rotulo); color:var(--text-2); }
 .px-setor-legenda b { display:inline-block; min-width:2em; font-variant-numeric:lining-nums tabular-nums; color:var(--text); }
@@ -1445,12 +1423,12 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { display:inline-flex; align-items:center; min-inline-size:24px; min-block-size:24px; vertical-align:middle; }
 :is(#view-sectors, #view-institutions) table.data td > a + .star { margin-inline-start:4px; }
 /* Disclosures: alvo real, sem sobrepor controles vizinhos ou substituir o marcador nativo. */
-:is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
+:is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
   min-block-size:24px; padding-block:4px; box-sizing:border-box;
 }
 @media (max-width:768px), (any-pointer:coarse) {
   .star, :is(#view-sectors, #view-institutions) table.data td > a:has(+ .star) { min-inline-size:44px; min-block-size:44px; }
-  :is(#view-pulse, #view-consignado, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
+  :is(#view-pulse, #view-pix, #view-sectors, #view-institutions, #view-subnacional) :is(.charttable, .decomp) > summary, .guid-formula > summary {
     min-block-size:44px; padding-block:12px;
   }
 }
@@ -1458,13 +1436,6 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
 /* A natureza deve continuar inteira e legível com ampliação apenas do texto. */
 .seal { white-space:normal; max-inline-size:100%; box-sizing:border-box; overflow-wrap:anywhere; }
 .seal > [aria-hidden="true"] { flex-shrink:0; }
-
-/* O termo Aposentado/pensionista pode exceder a nota com texto ampliado. */
-#view-consignado .judalerta { overflow-wrap:anywhere; }
-
-/* A régua de indicadores refluí com o tamanho do texto, sem comprimir números em duas colunas fixas. */
-#view-consignado .pgkpi { grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr)); column-gap:var(--sp-4); }
-#view-consignado .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
 
 /* Linhas de medidas refluem quando o texto cresce; barras mantêm sua escala. */
 #view-sectors .contrib, #view-subnacional .contrib, .pxstats > div { flex-wrap:wrap; }
@@ -1530,8 +1501,6 @@ table.cg-analitica th { white-space:normal; vertical-align:top; }
 #view-penetracao .panbar .track, #view-rural .atrasorow > .abarwrap { flex:0 0 100%; order:2; }
 #view-rural .contrib { flex-wrap:wrap; }
 #view-rural .contrib > .lbl, #view-rural .contrib > .num { min-width:0; max-width:100%; overflow-wrap:anywhere; }
-#view-moradia .pgkpi { grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr)); column-gap:var(--sp-4); }
-#view-moradia .pgkpi .mk { border:0; padding:var(--sp-4) 0; }
 
 
 /* Contornos territoriais em duas cores: preservam a rampa e não traçam cada município. */

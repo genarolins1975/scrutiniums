@@ -4,7 +4,7 @@ Decisão do dono de 10/11/2026 (recomendação 5 do parecer estrutural). Uma se�
 
 ## Estado dos endereços antigos (decisão do dono de 10/11/2026)
 
-O dono decidiu redirecionar já, de forma permanente, as seis vistas cujo painel novo não tem perda declarada nesta página, e manter as três com perda até os mapas serem migrados.
+O dono decidiu redirecionar já, de forma permanente, as seis vistas cujo painel novo não tem perda declarada nesta página, e manter as três com perda até os mapas serem migrados. No mesmo dia, 10/11/2026, a perda declarada das três foi fechada (seção "Fechamento da paridade", logo abaixo) e as três foram redirecionadas: nenhuma vista antiga das Famílias fica no endereço antigo.
 
 | Vista antiga | Página nova | Estado | Motivo |
 |---|---|---|---|
@@ -14,17 +14,89 @@ O dono decidiu redirecionar já, de forma permanente, as seis vistas cujo painel
 | `/observatorio/lawsuits` | `/divida-das-familias/clientes-contra-bancos` | Redirecionada (308) | Sem perda declarada |
 | `/observatorio/debt-collection-lawsuits` | `/divida-das-familias/bancos-cobrando-na-justica` | Redirecionada (308) | Sem perda declarada |
 | `/observatorio/conduct-enforcement` | `/divida-das-familias/sancoes-e-reclamacoes` | Redirecionada (308) | Sem perda declarada |
-| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Mantida no endereço antigo | Perda declarada abaixo: o estado do filtro do mapa municipal não vai para a URL, a dispersão por UF perdeu o tamanho do círculo e o seletor de estado, a pirâmide perdeu o realce de 60 anos ou mais |
-| `/observatorio/housing-credit` | `/credito-imobiliario` | Mantida no endereço antigo | Perda declarada abaixo: o mapa municipal (5.570 polígonos, quatro medidas) não foi migrado |
-| `/observatorio/formal-employment` | `/emprego-formal` | Mantida no endereço antigo | Perda declarada abaixo: os pesos do score setorial (0,15 / 0,19 / 0,56 / 0,25) não foram migrados, por não estarem na gold; a decisão do dono trata as três como um grupo, a liberar junto com a migração dos mapas |
+| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Redirecionada (308) em 10/11/2026 | Perda fechada: o recorte do mapa municipal vai para a URL, a dispersão por UF voltou a ter o tamanho do círculo e o seletor de estado, a pirâmide voltou a realçar 60 anos ou mais |
+| `/observatorio/housing-credit` | `/credito-imobiliario` | Redirecionada (308) em 10/11/2026 | Perda fechada: o mapa municipal (5.570 municípios, quatro medidas) foi migrado |
+| `/observatorio/formal-employment` | `/emprego-formal` | Redirecionada (308) em 10/11/2026 | Perda fechada: os pesos do Risco setorial (0,56 / 0,25 / 0,19, originais 0,45 / 0,20 / 0,15) são lidos da gold do Risco setorial, `sectors.json`, onde estão publicados |
+
+## Fechamento da paridade das três últimas (10/11/2026)
+
+| Painel | Perda declarada | Como foi fechada | Onde está no código |
+|---|---|---|---|
+| Consignado | Estado do filtro do mapa municipal fora da URL | Medida, região e confiabilidade ficam no endereço, com os mesmos nomes de parâmetro da vista antiga (`?cgcam=`, `?cgregiao=`, `?cgconf=`): o link antigo, que o redirecionamento repassa com a consulta, reabre o mesmo recorte. Os municípios do perfil também (`?cgmun=`, até cinco). Com recorte no endereço, o explorador carrega sem esperar o botão. Parâmetro inválido vale o padrão | `ExploradorMunicipios.tsx` (`useEstadoUrl`) |
+| Consignado | Dispersão por UF sem o tamanho do círculo | A área do círculo acompanha a população de 60 anos ou mais (a mesma medida da vista antiga). O kit ganhou a terceira medida opcional (`tamanho`), com legenda de dois tamanhos de referência, linha na dica, leitura e coluna na tabela. A vista antiga fazia o raio crescer com a raiz do valor a partir de 4 px; a nova faz a área crescer com o valor, entre 3 e 14 px de raio (10 no celular) | `GraficoDispersao.tsx`, `raioPorArea` em `src/lib/painel/dispersao.ts` |
+| Consignado | Dispersão sem o seletor "Consultar estado" | Seletor nativo acima do gráfico: o estado escolhido ganha destaque com o nome, a leitura das três medidas por extenso e fica no endereço (`?cguf=`) | `DispersaoEstados.tsx` |
+| Consignado | Pirâmide sem o realce de 60 anos ou mais | Os grupos a partir de 60 anos formam uma série própria ("60 anos ou mais"), com legenda; os demais ficam em "Até 59 anos". Cada grupo tem valor numa série só | `page.tsx`, figura `#idade` |
+| Crédito imobiliário | Mapa municipal não migrado | Mapa coroplético da plataforma sobre a malha oficial do IBGE (`/energia/geo/municipios.json`), nas quatro medidas, com filtro de região, clique que abre o perfil, busca por nome e teclado. Medida e região ficam no endereço (`?medida=`, `?regiao=`), junto do `?municipio=` que já existia | `ConsultaMunicipal.tsx`, `MapaMunicipios.tsx` |
+| Emprego formal | Pesos do score setorial fora da página | Tabela "Quanto cada componente pesa no Risco setorial" na figura `#risco-setorial`, lida de `public/obs/data/gold/sectors.json` (campo `componentes.<id>.peso` de cada atividade) e a frase do método dessa gold, que traz os pesos originais. Nada é recalculado; se a gold faltar ou as atividades divergirem, a página diz que não pôde ler e não mostra peso algum | `pesosRiscoSetorial` em `src/lib/familias/emprego-formal.ts` |
+
+Mudanças deliberadas neste fechamento, sem perda de conteúdo:
+
+- **Classes no lugar do sombreado contínuo.** Os dois mapas municipais (consignado e crédito imobiliário) passam a usar cinco classes por quantis, com o método escrito na legenda e a contagem de municípios em cada classe, no lugar do sombreado contínuo entre os percentis 5 e 95 das vistas antigas. Município sem a medida aparece em hachura e contado como "sem dado", nunca como zero.
+- **"Não se aplica" tem cor própria.** No consignado, com o filtro "sem confiabilidade baixa", os municípios de confiabilidade baixa ficam no mapa em cinza liso, contados à parte (antes ficavam na cor do fundo). No crédito imobiliário, na lacuna de penetração, cinza liso é o município na mediana do grupo comparável ou acima dela (sem lacuna estimada) e hachura é o grupo pequeno demais para estimar.
+- **Uma malha só.** O consignado deixa de ler `penetracao_malha.json` e `/obs/geo/uf.json`: os dois mapas usam a malha municipal oficial que a plataforma já publica, com as divisas de UF.
+- **Pesos com três casas na gold, duas na página.** A gold setorial traz 0,5625, 0,25 e 0,1875; a página mostra 0,56, 0,25 e 0,19, como a vista antiga e o método da gold escrevem. O peso original de 0,15 que a vista antiga citava está na frase do método, reproduzida entre aspas.
+
+O que não foi feito, de propósito:
+
+- No fechamento, o código das três vistas (`renderConsignado`, `renderMoradia`, `renderEmprego`) ficou em `public/obs/app.js`, sem caminho que o alcançasse; a única edição nesse arquivo foi trocar o link escrito à mão para `/observatorio/formal-employment`, no painel Risco setorial, por `linkDaVista("emprego")`, que entrega a página nova. Esse código foi removido no mesmo dia, 10/11/2026, com o das outras seis vistas (seção "Remoção do código das nove vistas", abaixo).
+- As siglas das 27 UFs dentro da dispersão (a vista antiga escrevia todas, com linha-guia). O kit escreve o nome só no estado consultado e na dica; a tabela equivalente traz todos.
+- Os dois números escritos à mão em "Por que a amostra é restrita" do crédito imobiliário (desvio de 1,45 e lacuna de R$ 2,5 trilhões) continuam fora: não estão na gold. Não constavam da perda declarada na tabela de estado.
+
+Testes de navegador que abriam as vistas antigas e tiveram asserções aposentadas, com o motivo escrito no próprio arquivo: `pix-ux-browser` (metade do consignado em três testes), `credito-residual-browser` (rota em duas listas e a rolagem das tabelas de `#cg-circ`), `credito-historico-browser` (rota na lista), `credito-leitura-browser` (dois testes do consignado), `graficos-identificacao-browser` (rota na lista, pirâmide e dispersão, três testes da tabela municipal), `rankings-municipais-reflow-browser` (consignado e moradia), `consignado-dispersao-browser` (siglas da dispersão) e `consignado-mapa-teclado-browser` (reescrito para a página nova). As garantias equivalentes na página nova estão em `src/tests/familias-paridade-browser.test.ts` e em `src/tests/familias-consignado.test.ts`. O que esses testes mediam e a página nova não tem teste próprio: texto de 12 px em todo SVG com a fonte do sistema dobrada (32 px) e o reflow das listas dos 25 maiores nessa fonte.
 
 Como funciona, para quem for mexer:
 
-- **Uma lista só.** `redirects()` em `next.config.mjs` lê `paineis-reescritos.json` e gera uma regra permanente para cada painel com `redirecionar: true`. O Next repassa a consulta (`?sec=` e os recortes) ao destino. Redirecionar um dos três pendentes é trocar `false` por `true` nesse arquivo, rodar `node scripts/barra-spa.mjs` e `npm run preparar`, trocar o endereço do painel em `GRUPOS_CREDITO` (`src/lib/credito/navegacao.ts`) e atualizar a lista escrita em `src/tests/redirecionamento-reescritos.test.ts`, que existe para exigir decisão nova.
+- **Uma lista só.** `redirects()` em `next.config.mjs` lê `paineis-reescritos.json` e gera uma regra permanente para cada painel com `redirecionar: true`. O Next repassa a consulta (`?sec=` e os recortes) ao destino. Redirecionar um painel (como foi feito com os três últimos em 10/11/2026) é trocar `false` por `true` nesse arquivo, rodar `node scripts/barra-spa.mjs` e `npm run preparar`, trocar o endereço do painel em `GRUPOS_CREDITO` (`src/lib/credito/navegacao.ts`) e atualizar a lista escrita em `src/tests/redirecionamento-reescritos.test.ts`, que existe para exigir decisão nova.
 - **Sem sessão.** No Next 14 os `redirects()` rodam antes do middleware: o endereço antigo responde 308 para a página nova, e é o middleware, já no endereço novo, que leva a `/entrar?de=<página nova com a consulta>`.
 - **Dentro da aplicação do Crédito.** O índice que o servidor embute (`substituidas`, `src/lib/observatorios/barraSpa.ts`) diz ao `app.js` a página nova, o título e a pergunta de cada vista redirecionada. O "Início do painel" as lista como link comum para a página nova, e `nav()`, as pontes, os alertas e o histórico do navegador saem da aplicação em vez de desenhar a vista.
-- **Código morto.** As funções de render das seis vistas (`renderDesenrola`, `renderBets`, `renderFraudes`, `renderJudicial`, `renderCobranca`, `renderConduta`) continuam em `public/obs/app.js`, sem caminho que as alcance quando o índice está presente. Não foram removidas porque cerca de vinte arquivos de teste leem esse código como texto; a remoção pede um PR próprio, aposentando essas asserções uma a uma. Os verbetes do guia (`GUIA`) dessas vistas também ficaram, sem uso na tela: o "Início do painel" mostra a pergunta da página nova.
-- **Testes.** `src/tests/redirecionamento-reescritos.test.ts` (lista única, permanência, consulta, login com destino novo e, com build, a cadeia inteira no servidor) e `src/tests/split-bundle-browser.test.ts` (no navegador, `nav("desenrola")` e o endereço antigo chegam à página nova).
+- **Código removido em 10/11/2026.** As funções de render das nove vistas (`renderDesenrola`, `renderBets`, `renderFraudes`, `renderJudicial`, `renderCobranca`, `renderConduta`, `renderConsignado`, `renderMoradia`, `renderEmprego`), os verbetes do guia (`GUIA`) e o registro delas nos mapas da aplicação saíram de `public/obs/app.js`. O que saiu, o que ficou e a decisão tomada em cada teste que lia esse código estão na seção "Remoção do código das nove vistas", logo abaixo.
+- **Testes.** `src/tests/redirecionamento-reescritos.test.ts` (lista única, permanência, consulta, login com destino novo e, com build, a cadeia inteira no servidor), `src/tests/split-bundle-browser.test.ts` (no navegador, `nav("desenrola")` e o endereço antigo chegam à página nova), `src/tests/familias-paridade-browser.test.ts` (os três últimos: endereço antigo com consulta, mapa, recorte no endereço, dispersão e pesos) e, desde a remoção, `src/tests/vistas-reescritas-browser.test.ts` (o "Início do painel", três vistas vivas, `nav()` das nove e o gráfico incorporado) e `src/tests/split-bundle.test.ts` (as nove fora da fonte e dos artefatos).
+
+## Remoção do código das nove vistas (10/11/2026)
+
+Feita no mesmo dia do redirecionamento, em mudança própria. As referências de linha do `app.js` nas seções de paridade abaixo (por exemplo "linhas 7700 a 8123") são as do arquivo antes da remoção; o texto das vistas antigas continua no histórico do repositório.
+
+**O que saiu de `public/obs/app.js`** (versão 0.129.0):
+
+- 80 declarações de topo, achadas por análise de alcance a partir das nove funções de render (uma declaração só sai se todas as citações dela, em código e em texto de `onclick`, estão em código que também sai): as nove funções de render e as auxiliares que só elas usavam (`judSet`, `judCSV`, `JUD_CORES`; `desSelo`, `desFiltra`, `desInst`, `desLacuna`, `DES_SELO_DIC`; `betsNivel`, `betsStatus`, `betsEloChip`, `betsBar`, `betsExp`, `betsExpSet`, `betsJSON`, `betsCSV`, `betsExplorerCSV`, `epaeCSV`; `frdExp`, `frdExpSet`, `frdJSON`, `frdCSV`, `frdExplorerCSV`; `cdSet`, `cdCSV`; `empSet`, `empCSV`; `cbSet`, `cbCSV`; as de prefixo `mor` e `MOR_`; as de prefixo `cg` e `CG_`, inclusive `cgEscala`) e os estados `state.jud`, `state.cd`, `state.emp` e `state.cb`.
+- Os nove verbetes do `GUIA`; as nove entradas de `RENDER` e de `VIEW_DATA`; oito de `CHUNK_OF_VIEW` (a vista judicial vivia no núcleo); sete de `VIEW_COLETORES`; três de `VIEW_VINTAGE`.
+- No código vivo: os recortes do judicial e do consignado em `buildQuery` e na leitura da consulta, a carga dos contornos de UF que só o consignado pedia e as duas menções a `#view-consignado` e `#view-moradia` em `adaptaTabelasMoveis`.
+- Fora do `app.js`: os nove contêineres `<section id="view-...">` de `index.html` e de `embed.html` e as regras de `styles.css` presas a `#view-desenrola`, `#view-consignado` e `#view-moradia`. As classes de estilo que essas vistas usavam (`.des*`, `.cg*`, `.mor*`, `.bets-*`) não foram revistas uma a uma: algumas são usadas por vistas vivas (`.bets-tl` nos Marcos regulatórios, `.bets-bar` no comparador).
+- Em volta: as cinco constantes `ROTA_ANTIGA_*` sem uso em `src/lib/familias`; o atalho "Habitação" do "Início do painel" (`public/obs/atlas.js`) passou a ligar direto a `/credito-imobiliario`; e o `embed.html` passou a pedir o `app.min.js` na versão corrente (estava em 0.124.0, e um núcleo antigo guardado em cache pediria pedaços que já não trazem as vistas removidas).
+
+**O que ficou, e por quê:**
+
+- As nove chaves de `ROUTES`. O endereço antigo é a chave do mapa `substituidas` que o servidor embute (`substituta(v)` lê `s[ROUTES[v]]`), é por ele que o "Início do painel" reconhece a vista de cada página nova (`gruposDoMenu`) e é o destino quando o índice falta.
+- Os nove títulos de `VIEW_TITLES`: texto do link e do aviso quando o índice falta.
+- `REG_LABELS` (rótulos dos botões dos Marcos regulatórios, que saem para a página nova por `nav()`), `MAPA_CICLO` e os blocos de moradia, consignado, emprego e cobrança da página do estado, que são de vistas vivas.
+- As golds e o pipeline, intocados: as páginas novas leem os mesmos arquivos de `public/obs/data/gold`.
+
+**Mudança de comportamento, uma só:** o gráfico incorporado (`/obs/embed.html?g=<vista>`) não recebe o índice do servidor e, por isso, ainda desenhava as nove vistas antigas. Sem o desenho, ele mostra um aviso curto com o título e o link para o endereço antigo, que o servidor redireciona para a página nova (exige conta). Dentro de um gráfico incorporado, uma ponte para vista reescrita abre esse endereço em outra aba.
+
+**Tamanho (bytes):** `app.js` de 1.333.401 para 1.085.280; núcleo minificado (`app.min.js`) de 578.100 para 558.808; pedaço emergentes de 360.403 para 275.978; pedaço municipal de 181.276 para 66.554.
+
+**Testes que liam o código removido.** Regra: a asserção que protege gold, pipeline ou conteúdo da página fica, apontada para onde isso vive hoje; a que só protegia o desenho da vista removida é aposentada, com o motivo e a data escritos no próprio teste. Nenhum arquivo de teste foi apagado, e nenhum teste foi pulado.
+
+| Teste | Decisão | Asserções aposentadas | Garantia equivalente |
+|---|---|---|---|
+| `bets-data` | Registro da vista aposentado; "sem modo demo" passa a ler a página nova | 4 | `familias-apostas`, `redirecionamento-reescritos`, `split-bundle-browser` |
+| `epae-data` | Texto do cartão da EPAE mantido, lido na figura `#pix-da-secao` da página nova; carga e CSV da vista aposentados | 3 | `familias-apostas` ("mostra os valores das golds") |
+| `fraudes-data` | Registro da vista aposentado; "sem modo demo" passa a ler a página nova | 4 | `familias-golpes-e-fraudes` |
+| `cobranca-data` | Registro e posição no pedaço aposentados; bloco da página do estado e pipeline mantidos | 10 | `familias-bancos-cobrando-na-justica` |
+| `conduta-data` | Registro, posição no pedaço e texto da ordem cronológica aposentados; guarda contra ordenação passa a ler a página nova | 13 | `familias-sancoes-e-reclamacoes` ("as listas nominais seguem a ordem da gold") |
+| `emprego-data` | Registro e posição no pedaço aposentados; bloco da página do estado, Risco setorial e pipeline mantidos | 10 | `familias-emprego-formal`, `familias-paridade-browser` |
+| `desenrola-data` | Contenções mantidas, lidas na página nova e em `CompararCredores`; ordem no código da vista e uma frase do desenho aposentadas | 2 | `familias-desenrola` |
+| `avaliacao-set26` | `guiaPagina` de bets e fraudes e cabeçalho de sete vistas aposentados; aviso do Desenrola passa a ler a página nova; contagem de `phActions` de 5 para 3; versão 0.129.0 | 9 | `familias-apostas`, `familias-golpes-e-fraudes`, `redirecionamento-reescritos` |
+| `guia-navegacao` | Seis verbetes exigidos aposentados; teste novo confere a pergunta do registro | 6 | `familias-*` ("cumpre a anatomia do molde") |
+| `mapa-menu` | Verbete exigido das nove vistas do ciclo aposentado; as demais seguem exigindo | 9 | `guia-navegacao`, `vistas-reescritas-browser` |
+| `split-bundle` | Cinco vistas saem dos pedaços; teste novo confere que as nove estão fora da fonte e dos três artefatos | 20 | `split-bundle-browser`, `familias-paridade-browser` |
+| `p2-rodada1` | Ponte de Golpes para o MED do Pix mantida, lida na página nova; âncora `px-med` aposentada | 1 | `familias-golpes-e-fraudes` |
+| `regulacao-timeline` | Marcos do consignado e do Desenrola mantidos, lidos em `src/lib/familias`; contagem de usos na aplicação de 4 para 2 | 0 | `familias-consignado` (marcos numerados) |
+| `p1-tecnico` | Contagem de renderizadores que delegam `bi` ao `fmt` de 4 para 3 | 0 | não se aplica |
+
+Total: 91 asserções aposentadas em 12 arquivos; 2 arquivos só com contagem ajustada. Testes novos: `src/tests/vistas-reescritas-browser.test.ts`, `src/tests/vitrine-credito-contagem.test.ts` e o apoio `src/tests/suporte/vistas-reescritas.ts`, que confere o registro inteiro de cada vista (endereço e título ficam, o resto saiu).
+
+**Contagem da vitrine da home.** A vitrine do Crédito contava as abas do catálogo (43, entre elas as nove reescritas, o próprio "Início do painel" e as Perguntas rápidas). Passa a contar pela mesma fonte do "Início do painel", os grupos do Crédito (`paginasTematicasDoCredito`, `src/lib/credito/navegacao.ts`): 32 páginas temáticas, o número que a aplicação escreve na tela. As nove páginas reescritas contam uma vez só, na coleção dona, das Famílias (`src/tests/vitrine-credito-contagem.test.ts`).
 
 ---
 
@@ -167,17 +239,17 @@ Golds: `public/obs/data/gold/consignado.json` (lida no servidor) e `consignado_m
 | 1. KPI consignado de aposentados (SCR) | Figura `#saldo`, número com o aviso do grupo do SCR | |
 | 1. KPI municípios de alta dependência | Figura `#previdencia`, número e leitura | |
 | Aviso "Três coisas que este dado não é" | Figura `#previdencia`, ressalva à vista; repetido no método | |
-| 2. Pirâmide etária | Figura `#idade`, GraficoBarras horizontal + tabela equivalente | Não migrado: o realce de cor das barras de 60 anos ou mais (o kit de barras não tem cor por categoria); o total de 60+ está na leitura |
+| 2. Pirâmide etária | Figura `#idade`, GraficoBarras horizontal + tabela equivalente | Realce migrado em 10/11/2026: os grupos de 60 anos ou mais são uma série própria, com legenda; o total de 60+ continua na leitura |
 | 2. Indicadores nacionais + definições | Figura `#idade`, tabela "Indicadores nacionais de envelhecimento" (coluna "O que mede") | |
 | 3. Previdência: parágrafo do IPCA | Figura `#previdencia`, "Como interpretar" e fórmula da proveniência | |
 | 3. KPIs ben/100, peso, benefício médio | Figura `#previdencia`, faixas de números | |
 | 3. Aviso "razão entre bases agregadas" | Figura `#previdencia`, "O que não é possível concluir" | |
 | 3. Teste de coerência (texto + 3 KPIs) | Figura `#previdencia`, texto e números | "Municípios testados" virou o recorte "de 5.570 testados" dos outros dois números |
-| 4. Mapa municipal, 9 camadas | Figura `#municipios`, ExploradorMunicipios (carga sob demanda) | Botões de camada viraram um `<select>` "Medida"; escala contínua p5 a p95 mantida (mistura do token com a superfície); paleta fria = token energia, quente = token bronze |
-| 4. Filtro de região e de confiabilidade, contagem do recorte | Explorador, Controles do kit | Estado do filtro não vai mais para a URL (a vista antiga gravava no hash): **não migrado**, por custo; registrar se for necessário |
-| 4. Dica (tooltip) do município | `<title>` do município no SVG | Simplificada: medida da camada e confiabilidade; 60+, benefícios e peso ficam no perfil |
-| 4. Contornos de UF | Explorador (lê `/obs/geo/uf.json`) | |
-| 4. Legenda da escala e nota das paletas | Explorador | |
+| 4. Mapa municipal, 9 camadas | Figura `#municipios`, ExploradorMunicipios (carga sob demanda) com o mapa coroplético da plataforma (`MapaMunicipios`) | Botões de camada viraram um `<select>` "Medida"; desde 10/11/2026, cinco classes por quantis no lugar da escala contínua p5 a p95; paleta fria = rampa sequencial da plataforma, quente = rampa do token bronze |
+| 4. Filtro de região e de confiabilidade, contagem do recorte | Explorador, Controles do kit | Migrado em 10/11/2026: medida, região e confiabilidade na URL, com os nomes da vista antiga (`?cgcam=`, `?cgregiao=`, `?cgconf=`) |
+| 4. Dica (tooltip) do município | Dica do mapa da plataforma (ponteiro, toque e busca por teclado) | Medida da camada, classe e confiabilidade; 60+, benefícios e peso ficam no perfil |
+| 4. Contornos de UF | Mapa da plataforma (divisas da malha municipal do IBGE) | |
+| 4. Legenda da escala e nota das paletas | Legenda do mapa (classes, contagem por classe, sem dado, não se aplica, método) e nota abaixo | |
 | 4. Tabela "Dados do mapa" com busca, paginação de 50 e CSV | Explorador, `<details>` com TabelaDados do kit | CSV pelo ExportacaoComConta; o valor sai numérico (vírgula decimal), não mais formatado com unidade |
 | 4. Lista "Maiores" (25) | Explorador; e, no HTML do servidor, tabela equivalente com os 25 maiores de 60+ no recorte padrão | |
 | 4. Distribuição por faixa de dependência | Figura `#previdencia` (gráfico e tabela, recorte padrão, no servidor) e, reativa ao filtro, no explorador | |
@@ -187,7 +259,7 @@ Golds: `public/obs/data/gold/consignado.json` (lida no servidor) e `consignado_m
 | 6. Circularidade: texto, "Uma correção desta página" | Figura `#relacao`, complemento | |
 | 6. Tabela das 4 especificações + linha municipal (hipótese) | Figura `#relacao`, tabela "Quatro especificações" | Referência como linha destacada |
 | 6. Correlação parcial com controles | Figura `#relacao`, tabela | |
-| 6. Dispersão por UF com seletor de estado e tabela | Figura `#relacao`, GraficoDispersao do kit + tabela equivalente | **Não migrado**: o tamanho do círculo proporcional à população 60+ (o kit não tem bolha; a população está na tabela) e o `<select>` "Consultar estado" (a leitura ponto a ponto é a do kit: ponteiro, toque e setas) |
+| 6. Dispersão por UF com seletor de estado e tabela | Figura `#relacao`, `DispersaoEstados` (GraficoDispersao do kit) + tabela equivalente | Migrados em 10/11/2026: a área do círculo acompanha a população de 60 anos ou mais e o `<select>` "Consultar estado" destaca o estado, com a escolha na URL (`?cguf=`). Continuam de fora as 27 siglas escritas no desenho |
 | 6. "O mecanismo não está estabelecido" (tabela + conclusão) | Figura `#relacao`, tabela "O mecanismo não está estabelecido" | |
 | 6. Regra de conclusão | Figura `#relacao`, "O que não é possível concluir" | |
 | 7. Saturação: texto, 4 KPIs, critérios | Figura `#saturacao`: gráfico de barras das 4 classes, tabela equivalente, tabela de critérios | Os 4 KPIs viraram as 4 barras (mesmos valores) |
@@ -206,7 +278,7 @@ Campos da gold que a vista antiga não mostrava e a página nova também não mo
 
 # Paridade: /observatorio/housing-credit (renderMoradia) → /credito-imobiliario
 
-Golds: `public/obs/data/gold/moradia.json` (servidor) e `moradia_mun.json` (só no navegador, sob demanda). Verificado por código e por `src/tests/familias-credito-imobiliario.test.ts`; a página não foi vista no navegador.
+Golds: `public/obs/data/gold/moradia.json` (servidor) e `moradia_mun.json` (só no navegador, sob demanda). Verificado por código e por `src/tests/familias-credito-imobiliario.test.ts`; desde 10/11/2026, o mapa e a consulta municipal também no navegador (`src/tests/familias-paridade-browser.test.ts` e capturas em `docs/ux-2026-11-10/paridade`).
 
 | Bloco da vista antiga | Onde ficou na página nova |
 |---|---|
@@ -214,7 +286,7 @@ Golds: `public/obs/data/gold/moradia.json` (servidor) e `moradia_mun.json` (só 
 | Pedagogia (q, importa, ler, não) | q = H1; importa e ler = nota de "Para ler esta página"; não = limite da abertura |
 | Índice numerado das 6 seções | Links de âncora abaixo dos achados, sem numeração (o molde reprova "01 ·") |
 | Abertura: 5 indicadores | 4 números na faixa; o 5º (taxa de contratação e LTV do SFH) está na nota da faixa e na tabela por segmento |
-| Mapa municipal (5.570 polígonos, 4 medidas, filtro de região, clique abre perfil) | NÃO MIGRADO o mapa. O kit não tem mapa municipal e a malha é outra gold de 1,35 MB (`penetracao_malha.json`). As 4 medidas, o filtro de região e o perfil estão na consulta `#municipios` |
+| Mapa municipal (5.570 polígonos, 4 medidas, filtro de região, clique abre perfil) | Migrado em 10/11/2026: mapa coroplético da plataforma em `#municipios`, sobre a malha oficial do IBGE (1,3 MB, pedida junto com o arquivo dos municípios, só quando o bloco se aproxima da tela), nas 4 medidas, com filtro de região e clique que abre o perfil. Cinco classes por quantis no lugar do sombreado entre os percentis 5 e 95; medida e região na URL |
 | Lista "Maiores" (25) ao lado do mapa | `ConsultaMunicipal`: 25 maiores por medida e região, calculados no navegador como antes |
 | "O que os dados mostram" (4 achados com selo) | Lista abaixo dos números, com a natureza de cada um |
 | 1. Como o Brasil mora: barras, prosa, soma x total, alerta, "não coletou" | Figura `#como-mora` (GraficoBarras, tabela, leitura, ressalva, complemento) |
@@ -300,7 +372,7 @@ Não vi a página no navegador. A conferência foi pelo HTML do servidor (teste)
 
 # Paridade: /observatorio/formal-employment (renderEmprego) → /emprego-formal
 
-Gold: `public/obs/data/gold/emprego.json` (a mesma). Verificado por código e por `src/tests/familias-emprego-formal.test.ts`; a página não foi vista no navegador.
+Gold: `public/obs/data/gold/emprego.json` (a mesma). Verificado por código e por `src/tests/familias-emprego-formal.test.ts`; desde 10/11/2026, o bloco dos pesos também no navegador (`src/tests/familias-paridade-browser.test.ts` e capturas em `docs/ux-2026-11-10/paridade`).
 
 | Bloco da vista antiga | Onde ficou na página nova |
 |---|---|
@@ -323,7 +395,7 @@ Gold: `public/obs/data/gold/emprego.json` (a mesma). Verificado por código e po
 | UFs: nota de retenção e conferência Ipeadata x SGS | "Como interpretar" e "Ressalva" da figura `#ufs`; acrescentado o `ufs_nao_identificado` da gold, que a vista antiga só citava no texto |
 | Ponte para Estados | Link "painel Estados" depois da figura |
 | Score: texto e barras de z por seção não agregada | Figura `#risco-setorial` (GraficoBarras, mesmas 18 seções, tabela equivalente) |
-| Score: pesos 0,15 / 0,19 / 0,56 / 0,25 escritos à mão no app.js | NÃO MIGRADO. Não estão na gold emprego.json e não pude conferi-los; o texto remete ao painel Risco setorial, que é o dono dos pesos. Decidir se entram, com a fonte |
+| Score: pesos 0,15 / 0,19 / 0,56 / 0,25 escritos à mão no app.js | Migrado em 10/11/2026, sem constante escrita à mão: os pesos não estão em `emprego.json`, mas estão na gold do próprio Risco setorial (`sectors.json`, `componentes.<id>.peso`: 0,5625, 0,25 e 0,1875, iguais nas 43 atividades, e peso zero para o estresse empresarial, em construção). A figura `#risco-setorial` os mostra em tabela (duas casas), com o que cada componente mede, a ressalva de que são escolha de método e não dado medido, e a frase do método da gold que traz os originais (0,45 / 0,20 / 0,15). O score por atividade não é exibido nem recalculado nesta página, como na vista antiga |
 | Ponte para Risco setorial | Link depois da figura |
 | Método: `D.metodo`, catálogo (5 linhas), limitações, cautelas, fontes com link e licença | Fatia método, tudo; catálogo em TabelaDados |
 | Estado "painel indisponível" (`!D.disponivel`) | Página mínima com o motivo, sem número |

@@ -117,10 +117,11 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
       }
     } finally { await page.close(); }
   }, 120_000);
-  it("Escape fecha ações e devolve foco ao acionador nas seis rotas", async () => {
+  it("Escape fecha ações e devolve foco ao acionador nas cinco rotas", async () => {
     const page=await contexto.newPage();
     try {
-      for(const width of [390,1440]) for(const rota of ['credit','pix','payroll-lending-aging','sectors','institutions','subnational-credit']) {
+      // 'payroll-lending-aging' saiu da lista em 10/11/2026: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada.
+      for(const width of [390,1440]) for(const rota of ['credit','pix','sectors','institutions','subnational-credit']) {
         await page.setViewportSize({width,height:900});
         await page.goto(servidor.origem+'/observatorio/'+rota);
         const menu=page.locator('.view.active .ph-menu'), summary=menu.locator('summary');
@@ -176,7 +177,8 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
   it("selos completos permanecem contidos com fonte duplicada", async () => {
     const page=await contexto.newPage();
     try {
-      for(const width of [320,390,768,1440]) for(const rota of ['credit','payroll-lending-aging','pix','sectors','institutions','subnational-credit']) {
+      // 'payroll-lending-aging' saiu da lista em 10/11/2026: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada.
+      for(const width of [320,390,768,1440]) for(const rota of ['credit','pix','sectors','institutions','subnational-credit']) {
         await page.setViewportSize({width,height:900});
         await page.goto(servidor.origem+'/observatorio/'+rota);
         await page.locator('.view.active .seal').first().waitFor();
@@ -198,20 +200,9 @@ describe.skipIf(!temBuild && !exigirBuild)("Crédito: regressões da auditoria i
         }).filter(e=>e.scroll>e.client+1||e.fora.length>0));
         expect(problemas,`selos em ${rota}, ${width}px`).toEqual([]);
         await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), {message:`overflow em ${rota}, ${width}px`}).toBe(true);
-        if(rota==='payroll-lending-aging'&&width===768){
-          const scroll=page.locator('#cg-circ .tblwrap:has(> table.cgespec)');
-          await expect.poll(()=>scroll.getAttribute('tabindex')).toBe('0');
-          await scroll.focus();expect(await scroll.evaluate(e=>e===document.activeElement)).toBe(true);
-          await page.keyboard.press('ArrowDown');
-          await expect.poll(()=>scroll.evaluate(e=>e.scrollTop)).toBeGreaterThan(0);
-          const tabelas=page.locator('#cg-circ .tblwrap:has(> table.data)');
-          const indice=await tabelas.evaluateAll(ns=>ns.findIndex(e=>e.scrollWidth>e.clientWidth+2));
-          expect(indice).toBeGreaterThanOrEqual(0);
-          const horizontal=tabelas.nth(indice);await horizontal.focus();
-          expect(await horizontal.evaluate(e=>e===document.activeElement)).toBe(true);
-          await page.keyboard.press('ArrowRight');
-          await expect.poll(()=>horizontal.evaluate(e=>e.scrollLeft)).toBeGreaterThan(0);
-        }
+        // Asserção aposentada em 10/11/2026: a rolagem por teclado das tabelas de #cg-circ (especificações e mecanismos) a 768 px.
+        // Motivo: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada. Na página nova as duas tabelas são TabelaDados do kit,
+        // com a região rolável e o aviso de rolagem conferidos em src/tests/familias-consignado.test.ts.
         if(rota==='subnational-credit'&&width===768){
           const rotulo=page.locator('#view-subnacional svg text').filter({hasText:/^DCL ÷ RCL$/});
           expect(await rotulo.count()).toBe(1);

@@ -36,7 +36,9 @@ describe("T5: um só lugar para _r, _share, _mes_menos, _mil e _dec no pipeline"
     expect((app.match(/const pct = \(v, d = \d\) => v == null/g) || []).length).toBe(0);
     expect((app.match(/const (n0|brl) = v => v == null/g) || []).length).toBe(0);
     expect((app.match(/const bi = v =>/g) || []).length).toBe(0);
-    expect((app.match(/const bi = fmt\.brlBi(DeMilhoes)?;/g) || []).length).toBe(4);
+    // eram 4 renderizadores até 10/11/2026; um deles desenhava uma das nove vistas das Famílias reescritas, removidas de
+    // public/obs/app.js nessa data. A regra não mudou: quem precisa de "bi" delega ao fmt.
+    expect((app.match(/const bi = fmt\.brlBi(DeMilhoes)?;/g) || []).length).toBe(3);
   });
 });
 

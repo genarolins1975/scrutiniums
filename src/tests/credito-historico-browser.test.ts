@@ -18,7 +18,8 @@ const pronta = async (page: Page) => {
 };
 
 describe.skipIf(!temBuild && !exigirBuild)("Histórico entre a SPA de Crédito e a conta", () => {
-  it.each(['credit','payroll-lending-aging','pix','sectors','subnational-credit','institutions'])("%s: link real, voltar e avançar preservam a entrada da conta", async route => {
+  // 'payroll-lending-aging' saiu da lista em 10/11/2026: decisão do dono de 10/11/2026: fechada a paridade (docs/familias/PARIDADE.md), /observatorio/payroll-lending-aging redireciona (308) para /divida-das-familias/consignado e a vista antiga não é mais desenhada. As outras cinco rotas continuam.
+  it.each(['credit','pix','sectors','subnational-credit','institutions'])("%s: link real, voltar e avançar preservam a entrada da conta", async route => {
     const context = await navegador.newContext({viewport:{width:390,height:844},hasTouch:true});
     await context.addCookies([{name:'scrutiniums_session',value:servidor.cookie,url:servidor.origem}]);
     const page = await context.newPage();

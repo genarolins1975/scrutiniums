@@ -16,6 +16,8 @@ export type PontoDispersao = {
   rotulo: string;
   x: number | null | undefined;
   y: number | null | undefined;
+  /** Terceira medida, desenhada como área do círculo quando o gráfico recebe `tamanho`; ausência não vira zero (círculo padrão, vazado). */
+  tamanho?: number | null;
 };
 
 export type PontoValido = PontoDispersao & { x: number; y: number };
@@ -154,4 +156,20 @@ export function afastaRotulos(ys: readonly number[], distancia: number, topo: nu
 /** Largura aproximada de um texto em px (fonte de 11 px), para decidir o lado do rótulo. */
 export function larguraTexto(texto: string, tamanho = 11): number {
   return texto.length * tamanho * 0.56;
+}
+
+/**
+ * Raio do círculo para uma terceira medida: a área (não o raio) é proporcional ao valor, com o maior valor no raio máximo. O raio
+ * mínimo é só um piso de legibilidade: somá-lo a todos os raios (como era até 10/11/2026) fazia um valor de 1% do máximo ocupar perto
+ * de 9% da área máxima. Quem cai no piso aparece maior que a proporção, e o chamador diz isso (`noPisoDoRaio`). Valor ausente, negativo
+ * ou máximo nulo devolve null: o chamador desenha o círculo padrão, sem tamanho.
+ */
+export function raioPorArea(valor: number | null | undefined, maximo: number, rMin = 3, rMax = 14): number | null {
+  if (!finito(valor) || valor < 0 || !finito(maximo) || maximo <= 0) return null;
+  return Math.max(rMin, rMax * Math.sqrt(Math.min(1, valor / maximo)));
+}
+
+/** O valor é pequeno demais para o raio proporcional e fica no piso de legibilidade: o círculo aparece maior que a proporção. */
+export function noPisoDoRaio(valor: number | null | undefined, maximo: number, rMin = 3, rMax = 14): boolean {
+  return finito(valor) && valor >= 0 && finito(maximo) && maximo > 0 && rMax * Math.sqrt(Math.min(1, valor / maximo)) < rMin;
 }

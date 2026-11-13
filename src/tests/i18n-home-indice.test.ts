@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { pt } from "@/i18n/pt";
 import { en } from "@/i18n/en";
-import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { GRUPOS_CREDITO } from "@/lib/credito/navegacao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
@@ -66,9 +66,12 @@ const CONTAGENS_REAIS = {
   agro: { tipo: "simples", quantidade: 16, unidade: "paginas_por_pergunta" },
   credito: {
     tipo: "simples",
-    quantidade: ABAS_OBSERVATORIO.reduce((n, aba) => n + Number(
-      !aba.caminho.endsWith("/") && aba.caminho !== "/suggestions" && aba.caminho !== "/about",
-    ), 0),
+    // Desde 10/11/2026 a contagem é a do "Início do painel" da aplicação: as vistas da aplicação nos grupos do Crédito, sem o
+    // próprio Início. Antes saía do catálogo de abas (43), que ainda contava as nove vistas reescritas como páginas das
+    // Famílias, o Início e as Perguntas rápidas. src/tests/vitrine-credito-contagem.test.ts confere o número contra a aplicação.
+    quantidade: GRUPOS_CREDITO.reduce((n, grupo) => n + grupo.paginas.reduce((m, h) => m + Number(
+      h.startsWith("/observatorio/") && h !== "/observatorio/map",
+    ), 0), 0),
     unidade: "paginas_tematicas",
   },
   energia: {

@@ -13,8 +13,6 @@ export const TITULO_MORADIA = "Crédito imobiliário e moradia";
 export const PERGUNTA_MORADIA = "Como o Brasil mora e onde o crédito imobiliário chega?";
 export const DESCRICAO_MORADIA =
   "Como o país mora, quanto crédito imobiliário existe e onde ele não chega, com o Censo 2022 e as três bases do Banco Central mantidas separadas, e um simulador de prestação pelas tabelas Price e SAC.";
-/** Endereço da vista antiga, na aplicação do Crédito. */
-export const ROTA_ANTIGA_MORADIA = "/observatorio/housing-credit";
 /** Arquivo por município, servido como estático e lido só no navegador. */
 export const ARQUIVO_MUNICIPIOS = "/obs/data/gold/moradia_mun.json";
 

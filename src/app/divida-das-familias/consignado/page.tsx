@@ -4,7 +4,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { CabecalhoPlataforma } from "@/components/layout/CabecalhoPlataforma";
 import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
-import { FaixaNumeros, FiguraAnalitica, GraficoBarras, GraficoDispersao, GraficoLinhas, LeituraGuiada, NumeroIndicador, PaginaPainel, TabelaDados } from "@/components/painel";
+import { FaixaNumeros, FiguraAnalitica, GraficoBarras, GraficoLinhas, LeituraGuiada, NumeroIndicador, PaginaPainel, TabelaDados } from "@/components/painel";
+import { DispersaoEstados } from "@/components/familias/consignado/DispersaoEstados";
 import { ExploradorMunicipios } from "@/components/familias/consignado/ExploradorMunicipios";
 import { COLUNAS_SENSIBILIDADE, ROTULO_CONFIABILIDADE, ROTULO_SATURACAO, linhaSensibilidade, moeda, n } from "@/components/familias/consignado/camadas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
@@ -234,7 +235,7 @@ export default function ConsignadoPage() {
             <FiguraAnalitica
               id="idade"
               pergunta="Quantas pessoas têm 60 anos ou mais?"
-              subtitulo="População por grupo de idade · milhões de pessoas · Brasil, Censo 2022"
+              subtitulo="População por grupo de idade, com os grupos de 60 anos ou mais em série própria · milhões de pessoas · Brasil, Censo 2022"
               natureza="OBSERVADO"
               proveniencia={censo("População por grupo quinquenal de idade", "OBSERVADO", "pessoas", ["A idade mediana é interpolada dentro do grupo quinquenal; não é a mediana do microdado."])}
               leitura={
@@ -273,13 +274,23 @@ export default function ConsignadoPage() {
               <GraficoBarras
                 semTabela
                 titulo="População por grupo de idade"
-                dados={[...(B.piramide as { g: string; pop: number }[])].reverse().map((p) => ({ grupo: `${p.g} anos`, pop: p.pop / 1e6 }))}
+                dados={[...(B.piramide as { g: string; pop: number }[])].reverse().map((p) => {
+                  // o realce da vista antiga: grupos a partir de 60 anos em série própria; cada grupo tem valor numa série só (séries opcionais:
+                  // o nulo da outra não é lacuna)
+                  const idoso = parseInt(p.g, 10) >= 60;
+                  return { grupo: `${p.g} anos`, ate59: idoso ? null : p.pop / 1e6, de60: idoso ? p.pop / 1e6 : null };
+                })}
                 chaveCategoria="grupo"
-                series={[{ id: "pop", rotulo: "População", cor: "var(--cor-energia)" }]}
+                empilhado
+                series={[
+                  { id: "ate59", rotulo: "Até 59 anos", cor: "var(--cor-mineral)", opcional: true },
+                  { id: "de60", rotulo: "60 anos ou mais", cor: "var(--cor-energia)", opcional: true },
+                ]}
                 unidade="milhões de pessoas"
                 casas={2}
                 orientacao="horizontal"
                 alturaCategoria={26}
+                alturaMaxima={640}
                 rotulosValor
               />
             </FiguraAnalitica>
@@ -370,7 +381,7 @@ export default function ConsignadoPage() {
             <FiguraAnalitica
               id="relacao"
               pergunta="Estados mais dependentes de benefícios têm mais consignado?"
-              subtitulo={`Rendimento que não vem do trabalho (%) e consignado de aposentados por pessoa de 60 anos ou mais (R$) · ${estados.length} unidades da federação · Censo 2022 e SCR de ${mesScr}`}
+              subtitulo={`Rendimento que não vem do trabalho (%) e consignado de aposentados por pessoa de 60 anos ou mais (R$); a área do círculo é a população de 60 anos ou mais · ${estados.length} unidades da federação · Censo 2022 e SCR de ${mesScr}`}
               natureza="OBSERVADO"
               proveniencia={provConsignado(g, "scr", { indicador: "Consignado de aposentados e pensionistas por pessoa de 60 anos ou mais, por UF", natureza: "OBSERVADO", unidade: "R$ por pessoa de 60 anos ou mais", inicio: S.data_base, fim: S.data_base, limitacoes: [t(S.aviso_grupo)] })}
               complementares={[{ rotulo: "Sobre o rendimento no Censo", p: censo("Participação do rendimento que não vem do trabalho", "OBSERVADO", "% do rendimento domiciliar", ["O Censo não separa aposentadoria e pensão das demais rendas: a participação de outras fontes é um teto, não a renda previdenciária."]) }]}
@@ -436,18 +447,9 @@ export default function ConsignadoPage() {
                 </>
               }
             >
-              <GraficoDispersao
-                titulo="Dependência previdenciária e consignado, por unidade da federação"
-                pontos={estados.map((e) => ({ id: e.uf, rotulo: `${e.nome} (${e.uf})`, x: e.outras_censo, y: e.cons_por_60 }))}
-                eixoX={{ rotulo: "Rendimento que não vem do trabalho, no Censo", unidade: "%", casas: 1 }}
-                eixoY={{ rotulo: "Consignado por pessoa de 60 anos ou mais", unidade: "R$", casas: 0 }}
-                entidade={{ singular: "estado", plural: "estados" }}
-                rodape={{
-                  periodo: `Censo 2022 e SCR de ${mesScr}`,
-                  avisoCausalidade: "Associação entre estados não é causa: o mecanismo desta relação não está estabelecido.",
-                  nota: "A população de 60 anos ou mais de cada estado está na tabela equivalente.",
-                }}
-                rotulosSaoNomes
+              <DispersaoEstados
+                estados={estados.map((e) => ({ uf: e.uf, nome: e.nome, outras_censo: e.outras_censo as number, cons_por_60: e.cons_por_60 as number, a60: typeof e.a60 === "number" ? e.a60 : null }))}
+                periodo={`SCR de ${mesScr}`}
               />
             </FiguraAnalitica>
 

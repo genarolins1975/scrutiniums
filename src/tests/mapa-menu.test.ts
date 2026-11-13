@@ -15,7 +15,7 @@ import { PAINEIS_REDIRECIONADOS } from "@/lib/observatorios/reescritos";
  * - cada aba aparece na navegação da coleção dona: as do Crédito nos grupos dele, as das outras coleções na navegação delas;
  * - o ciclo do Início do painel cobre todas as abas temáticas (cada aba aparece em um nó do ciclo ou é de Referência/Começar);
  * - as trilhas só apontam para abas existentes com GUIA;
- * - desde 10/11/2026 (decisão do dono), seis vistas das Famílias redirecionam para a página Next: o grupo guarda o endereço novo,
+ * - desde 10/11/2026 (decisão do dono), nove vistas das Famílias redirecionam para a página Next (as três últimas depois de fechada a paridade, docs/familias/PARIDADE.md): o grupo guarda o endereço novo,
  *   a correspondência entre grupo e vista é feita pela página nova (PAINEIS_REDIRECIONADOS) e o ciclo e as trilhas ligam à página nova.
  */
 const raiz = process.cwd();
@@ -58,7 +58,16 @@ describe("Início do painel: rota padrão e registro", () => {
     const nos = Array.from(ciclo.matchAll(/views: \[([^\]]+)\]/g)).map((m) => Array.from(m[1].matchAll(/"(\w+)"/g)).map((x) => x[1]));
     expect(nos.length).toBe(7);
     const noCiclo = nos.flat();
-    for (const v of noCiclo) { expect(rotas[v]).toBeTruthy(); expect(app).toMatch(new RegExp(`\\n  ${v}: \\{ q: "`)); }
+    // Aposentada em 10/11/2026 para as nove vistas reescritas (9 asserções): o verbete do GUIA saiu de public/obs/app.js com o desenho
+    // delas. A pergunta que o Início do painel mostra para essas nove é a da página nova (resumo do registro, no índice que o
+    // servidor embute), conferida em src/tests/guia-navegacao.test.ts; as demais seguem exigindo o verbete.
+    const reescritas = new Set(PAINEIS_REDIRECIONADOS.map((r) => vistaDe[r.rota]));
+    expect(noCiclo.filter((v) => reescritas.has(v)).length).toBe(9);
+    for (const v of noCiclo) {
+      expect(rotas[v]).toBeTruthy();
+      if (reescritas.has(v)) expect(app).not.toMatch(new RegExp(`\\n  ${v}: \\{ q: "`));
+      else expect(app).toMatch(new RegExp(`\\n  ${v}: \\{ q: "`));
+    }
     expect(new Set(noCiclo).size).toBe(noCiclo.length); // nenhuma aba em dois nós
     const trilhas = app.match(/const MAPA_TRILHAS = \[([\s\S]*?)\n\];/)![1];
     const passos = Array.from(trilhas.matchAll(/passos: \[([^\]]+)\]/g)).map((m) => Array.from(m[1].matchAll(/"(\w+)"/g)).map((x) => x[1]));

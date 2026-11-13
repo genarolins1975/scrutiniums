@@ -6,7 +6,7 @@ import { ACESSO, listaObservatorios, observatoriosPorExtenso } from "@/lib/acess
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
 import { OBSERVATORIOS } from "@/lib/observatorios/lista";
 import { formatadorNumero } from "@/lib/format";
-import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { GRUPOS_CREDITO } from "@/lib/credito/navegacao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { CAPITULOS, PAINEIS_COM_DADOS } from "@/lib/contas-publicas/catalogo";
@@ -39,7 +39,9 @@ const CHAVES = {
 
 /** Oráculo independente de vitrine/formatarContagemIndice: lê os registros, não o texto renderizado. */
 const contagensIndice: Record<DominioId, { numeros: readonly number[]; chave: (typeof CHAVES.indice)[number]; pt: string; en: string }> = {
-  credito: { numeros: [ABAS_OBSERVATORIO.filter((a) => !a.caminho.endsWith("/") && !["/suggestions", "/about"].includes(a.caminho)).length], chave: "home.indice.paginas_tematicas", pt: "páginas temáticas", en: "thematic pages" },
+  // desde 10/11/2026: as vistas da aplicação nos grupos do Crédito, sem o "Início do painel" (a contagem do próprio Início);
+  // conferida contra a aplicação em src/tests/vitrine-credito-contagem.test.ts
+  credito: { numeros: [GRUPOS_CREDITO.flatMap((g) => g.paginas).filter((h) => h.startsWith("/observatorio/") && h !== "/observatorio/map").length], chave: "home.indice.paginas_tematicas", pt: "páginas temáticas", en: "thematic pages" },
   energia: { numeros: [DESTINOS_NAVEGACAO.filter((d) => d.publicado).length], chave: "home.indice.secoes_publicadas", pt: "seções publicadas", en: "published sections" },
   eficiencia: { numeros: [DIMENSOES.filter((d) => d.href).length], chave: "home.indice.temas_publicados", pt: "temas publicados", en: "published topics" },
   contas: { numeros: [PAINEIS_COM_DADOS.length, CAPITULOS.length], chave: "home.indice.capitulos_com_dados", pt: "capítulos com dados", en: "chapters with data" },
