@@ -6,7 +6,7 @@ name: Depósito mensal no Zenodo (preparo, sem publicar)
 # sempre manual no próprio Zenodo.
 on:
   schedule:
-    - cron: "17 13 6 * *" # dia 6, depois do fechamento do mês nas fontes mensais
+    - cron: "17 13 * * 1" # segunda, 10:17 em São Paulo
   workflow_dispatch:
 
 permissions:

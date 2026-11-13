@@ -2,11 +2,11 @@
   "versao": 1,
   "descricao": "Fonte única do frescor das entradas: cadência esperada e limiar de atraso de cada domínio, e onde cada um publica as próprias datas. Lida pela faixa de frescor (src/lib/frescor/) e pela vigília (scripts/vigilancia_frescor.py). Os caminhos de campo usam pontos e '*' para percorrer todos os itens de um objeto ou lista.",
   "cadencias": {
-    "diaria": {
-      "intervalo": 1,
-      "limite": 2,
-      "rotulo": "diária",
-      "rotuloEn": "daily"
+    "semanal": {
+      "intervalo": 7,
+      "limite": 8,
+      "rotulo": "semanal",
+      "rotuloEn": "weekly"
     },
     "quinzenal": {
       "intervalo": 15,
@@ -32,8 +32,8 @@
       "nome": "Crédito",
       "nomeEn": "Credit",
       "rotulo": "Fontes: Banco Central e outras",
-      "cadencia": "diaria",
-      "nota": "Coleta diária com publicação por grupo, depois dos testes de conteúdo. A data é a do grupo publicado há mais tempo; quando um grupo fica retido pelos testes, os demais seguem publicados.",
+      "cadencia": "semanal",
+      "nota": "Coleta e publicação semanais, toda segunda, com publicação por grupo depois dos testes de conteúdo. A data é a do grupo publicado há mais tempo; quando um grupo fica retido pelos testes, os demais seguem publicados.",
       "publicacao": [
         {
           "arquivo": "public/obs/data/gold/meta.json",
@@ -59,9 +59,9 @@
       "nomeEn": "Power sector",
       "rotulo": "Dados diários de preço e operação",
       "rotuloEn": "Daily price and operation data",
-      "cadencia": "diaria",
-      "nota": "O ONS e a CCEE publicam todos os dias, e a plataforma publica a cada noite. A data é a mais antiga entre as sete publicações diárias: preço, reservatórios, carga, geração, rede, custo marginal e síntese.",
-      "notaEn": "ONS and CCEE publish every day, and the platform publishes every night. The date is the oldest among the seven daily publications: price, reservoirs, load, generation, grid, marginal cost and summary.",
+      "cadencia": "semanal",
+      "nota": "O ONS e a CCEE publicam todos os dias; a plataforma coleta no domingo à noite e publica toda segunda. A data é a mais antiga entre os sete conjuntos de dados diários: preço, reservatórios, carga, geração, rede, custo marginal e síntese.",
+      "notaEn": "ONS and CCEE publish every day; the platform collects on Sunday night and publishes every Monday. The date is the oldest among the seven daily datasets: price, reservoirs, load, generation, grid, marginal cost and summary.",
       "publicacao": [
         {
           "arquivo": "public/energia/gold/meta.json",
@@ -88,7 +88,7 @@
       "nomeEn": "Natural gas",
       "rotulo": "Fontes: ANP, IBGE, BCB, Comex Stat e Banco Mundial",
       "cadencia": "mensal",
-      "nota": "A ANP publica a maior parte dos conjuntos todo mês. A plataforma recoleta nos dias 3 e 18 e só republica quando um arquivo de origem muda; a data é a da captura mais recente que mudou um conjunto.",
+      "nota": "A ANP publica a maior parte dos conjuntos todo mês. A plataforma recoleta toda segunda e só republica quando um arquivo de origem muda; a data é a da captura mais recente que mudou um conjunto.",
       "publicacao": [
         {
           "arquivo": "public/gas/gold/meta.json",
@@ -136,7 +136,7 @@
       "nomeEn": "Agribusiness",
       "rotulo": "Fontes: IBGE, Comex Stat, BCB e outras",
       "cadencia": "mensal",
-      "nota": "IBGE e Comex Stat publicam todo mês. A plataforma recoleta nos dias 9 e 24; a data é a da última publicação da gold do Agronegócio.",
+      "nota": "IBGE e Comex Stat publicam todo mês. A plataforma recoleta toda segunda; a data é a da última publicação da gold do Agronegócio.",
       "publicacao": [
         {
           "arquivo": "public/agro/gold/snapshot.json",
@@ -164,7 +164,7 @@
       "nomeEn": "Territory and climate",
       "rotulo": "Fontes: INPE, Defesa Civil e MCTI",
       "cadencia": "quinzenal",
-      "nota": "O INPE publica focos de calor todos os dias e a Defesa Civil registra desastres continuamente. A plataforma recoleta nos dias 2 e 16; a data é a captura mais antiga entre focos de calor e desastres.",
+      "nota": "O INPE publica focos de calor todos os dias e a Defesa Civil registra desastres continuamente. A plataforma recoleta toda segunda; a data é a captura mais antiga entre focos de calor e desastres.",
       "publicacao": [
         {
           "arquivo": "public/territorio/gold/queimadas.json",
@@ -188,7 +188,7 @@
       "nomeEn": "Inflation by city (IPCA)",
       "rotulo": "Fonte: IBGE, IPCA",
       "cadencia": "mensal",
-      "nota": "O IBGE divulga o IPCA do mês anterior entre os dias 8 e 12. A plataforma recoleta nos dias 10 e 14 e só republica quando um número muda; a data é a da captura que trouxe o mês novo.",
+      "nota": "O IBGE divulga o IPCA do mês anterior entre os dias 8 e 12. A plataforma recoleta toda segunda e só republica quando um número muda; a data é a da captura que trouxe o mês novo.",
       "publicacao": [
         {
           "arquivo": "public/inflacao/gold/ipca.json",
@@ -208,7 +208,7 @@
       "nomeEn": "Social security (INSS)",
       "rotulo": "Fontes: Ministério da Previdência Social e Tesouro Nacional",
       "cadencia": "mensal",
-      "nota": "O Ministério da Previdência publica o boletim estatístico do mês cerca de quatro semanas depois, e o Tesouro publica o Resultado do Tesouro Nacional no fim do mês seguinte; o arquivo por município é anual. A plataforma recoleta nos dias 2 e 18 e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "nota": "O Ministério da Previdência publica o boletim estatístico do mês cerca de quatro semanas depois, e o Tesouro publica o Resultado do Tesouro Nacional no fim do mês seguinte; o arquivo por município é anual. A plataforma recoleta toda segunda e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
       "publicacao": [
         {
           "arquivo": "public/previdencia/gold/previdencia.json",
@@ -228,7 +228,7 @@
       "nomeEn": "Education in municipalities",
       "rotulo": "Fonte: INEP, Ideb e Censo Escolar",
       "cadencia": "anual",
-      "nota": "O INEP divulga o Ideb a cada dois anos, no ano seguinte ao do Saeb, e a Sinopse do Censo Escolar uma vez por ano. A plataforma recoleta todo mês e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
+      "nota": "O INEP divulga o Ideb a cada dois anos, no ano seguinte ao do Saeb, e a Sinopse do Censo Escolar uma vez por ano. A plataforma recoleta toda segunda e só republica quando um número muda; a data é a da captura que trouxe o dado novo.",
       "publicacao": [
         {
           "arquivo": "public/educacao/gold/educacao.json",
@@ -336,7 +336,7 @@
       "nomeEn": "Connectivity",
       "rotulo": "Fonte: Anatel, dados abertos",
       "cadencia": "mensal",
-      "nota": "A Anatel atualiza os acessos de banda larga fixa e de telefonia móvel no começo de cada mês, com o mês de referência cerca de dois meses antes, e a cobertura das redes móveis a cada trimestre. A plataforma recoleta nos dias 12 e 26 e só republica quando um número muda; a data é a da captura mais antiga entre as duas bases mensais, para que uma base retida apareça mesmo quando a outra segue em dia. A cobertura, trimestral, conta como parte: o pipeline a retém acima de oito meses.",
+      "nota": "A Anatel atualiza os acessos de banda larga fixa e de telefonia móvel no começo de cada mês, com o mês de referência cerca de dois meses antes, e a cobertura das redes móveis a cada trimestre. A plataforma recoleta toda segunda e só republica quando um número muda; a data é a da captura mais antiga entre as duas bases mensais, para que uma base retida apareça mesmo quando a outra segue em dia. A cobertura, trimestral, conta como parte: o pipeline a retém acima de oito meses.",
       "publicacao": [
         {
           "arquivo": "public/conectividade/gold/conectividade.json",

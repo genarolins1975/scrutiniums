@@ -12,12 +12,12 @@ name: Atualizar dados da Conectividade
 #
 # Cadência pela fonte: a Anatel atualiza os zips de acessos no começo de cada mês (os de banda larga fixa e telefonia
 # móvel foram gravados em 08/10/2026 com o mês de agosto) e o de cobertura a cada trimestre (10/10/2026, com setembro).
-# Duas execuções por mês, nos dias 12 e 26, cobrem a publicação mensal e a trimestral; dado igual não gera commit (o
+# Uma execução por semana, às segundas, cobre a publicação mensal e a trimestral; dado igual não gera commit (o
 # sinal é o hash_dados da gold). Os zips somam mais de 4 GB, mas a coleta lê só os membros necessários por faixa de
 # bytes: cerca de 250 MB por execução.
 on:
   schedule:
-    - cron: "23 12 12,26 * *" # dias 12 e 26, 09:23 em São Paulo
+    - cron: "23 12 * * 1" # segunda, 09:23 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

@@ -299,9 +299,9 @@ export default function ObservatorioPublicoPage() {
             </div>
           </div>
           <div id="acesso" className="space-y-4">
-            <h3 className="font-serif text-xl text-carvao">Coleta diária, sem custo</h3>
+            <h3 className="font-serif text-xl text-carvao">Coleta semanal, sem custo</h3>
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-              O pipeline roda todos os dias e só publica a base inteira quando ela passa nos testes
+              O pipeline roda toda segunda e só publica a base inteira quando ela passa nos testes
               de conteúdo; reprovada, a última publicação aprovada segue no ar. Cada fonte tem seu
               próprio calendário, e a plataforma mostra a data-base real de cada uma, em vez de uma
               data única de atualização que esconderia a diferença.

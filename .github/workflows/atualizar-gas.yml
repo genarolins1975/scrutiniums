@@ -9,7 +9,7 @@ name: Atualizar dados do Gás Natural
 # domínios: falha de um não atrasa o outro.
 on:
   schedule:
-    - cron: "17 12 3,18 * *" # dias 3 e 18, 09:17 em São Paulo
+    - cron: "17 12 * * 1" # segunda, 09:17 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

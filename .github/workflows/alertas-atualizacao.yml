@@ -1,14 +1,15 @@
 name: Alertas de atualização por e-mail
 
-# Verificação diária dos alertas que as contas assinam em "Avisar quando atualizar"
+# Verificação semanal dos alertas que as contas assinam em "Avisar quando atualizar"
 # (src/app/api/alertas/enviar). A rota lê a data de referência que cada fonte publica
 # neste deploy e avisa só as assinaturas cuja referência avançou; sem dado novo, nada
 # sai. Idempotente: a reserva grava a referência avisada antes do envio, então um
 # disparo manual no mesmo dia não repete aviso. Cada execução autorizada fica
-# registrada; sem ela nos últimos três dias, a conta diz que o envio não está ligado.
+# registrada; sem ela nos últimos oito dias, a conta diz que o envio não está ligado. Semanal desde 01/11/2026:
+# roda na segunda às 18h00 UTC, depois da publicação semanal (16h07 UTC), quando as datas de referência avançam.
 on:
   schedule:
-    - cron: "37 11 * * *" # 08:37 em São Paulo, depois das publicações noturnas e matinais
+    - cron: "0 18 * * 1" # segunda, 15:00 em São Paulo, depois da publicação semanal
   workflow_dispatch:
     inputs:
       simular:

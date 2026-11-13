@@ -35,7 +35,10 @@ describe("quadro operacional do ADM", () => {
   it("declara monitor vencido, ausente e com relógio futuro", () => {
     expect(monitorVigente(null, agora)).toBe(false);
     expect(monitorVigente(estado, agora)).toBe(true);
-    expect(monitorVigente({ ...estado, geradoEm: "2026-10-27T08:59:00Z" }, agora)).toBe(false);
+    // validade de 192 h desde a cadência semanal do monitor (01/11/2026; eram 3 h)
+    expect(monitorVigente({ ...estado, geradoEm: "2026-10-27T08:59:00Z" }, agora)).toBe(true);
+    expect(monitorVigente({ ...estado, geradoEm: "2026-10-19T12:00:00Z" }, agora)).toBe(true);
+    expect(monitorVigente({ ...estado, geradoEm: "2026-10-19T11:59:00Z" }, agora)).toBe(false);
     expect(monitorVigente({ ...estado, geradoEm: "2026-10-27T13:00:00Z" }, agora)).toBe(false);
   });
   it("recusa contratos inválidos e links de outra origem", () => {
