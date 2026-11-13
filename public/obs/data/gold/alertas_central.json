@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-12T19:11:32+00:00",
+ "gerado_em": "2026-11-13T18:28:29+00:00",
  "familias": [
   {
    "id": "macro",
@@ -42,7 +42,7 @@
    "persistencia": "semanas consecutivas fora do limiar",
    "limitacao": "Métrica de disponibilidade técnica do ecossistema; não mede risco de crédito.",
    "view": "openfinance",
-   "ativos": 2,
+   "ativos": 1,
    "arquivo": "openfinance.json",
    "disponivel": true
   },
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "22 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (195 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (195 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (103 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 22,
+   "titulo": "8 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (196 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (196 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (104 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 8,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "16 execuções anteriores",
+   "evidencia_persistencia": "17 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.78,
+   "ordem": 0.92,
    "serie_recente": null
   },
   {
@@ -106,7 +106,7 @@
    "limiar": 0.3,
    "referencia": "2026-09",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "14 execuções anteriores",
+   "evidencia_persistencia": "15 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -221,7 +221,7 @@
    "limiar": 28.0,
    "referencia": "2026-08",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "66 execuções anteriores",
+   "evidencia_persistencia": "67 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -679,34 +679,17 @@
    "familia": "openfinance",
    "nivel": "relevante",
    "titulo": "taxa de sucesso — iniciacao pagamento",
-   "detalhe": "91.83 contra limiar 97 há 12 semanas (dado de 2026-09-25).",
-   "valor": 91.83,
+   "detalhe": "88.93 contra limiar 97 há 17 semanas (dado de 2026-10-30).",
+   "valor": 88.93,
    "limiar": 97,
-   "referencia": "2026-09-25",
+   "referencia": "2026-10-30",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "12 semanas consecutivas fora do limiar",
+   "evidencia_persistencia": "17 semanas consecutivas fora do limiar",
    "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 12
-  },
-  {
-   "id": "openfinance:taxa de sucesso — dados transacionais",
-   "familia": "openfinance",
-   "nivel": "atencao",
-   "titulo": "taxa de sucesso — dados transacionais",
-   "detalhe": "96.45 contra limiar 97 há 1 semanas (dado de 2026-09-25).",
-   "valor": 96.45,
-   "limiar": 97,
-   "referencia": "2026-09-25",
-   "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
-   "recorrente": false,
-   "link": {
-    "view": "openfinance"
-   },
-   "ordem": 1
+   "ordem": 17
   },
   {
    "id": "antecedentes:Pressão Financeira das Famílias está 1.1",
@@ -879,7 +862,7 @@
    "ordem": 0.0
   }
  ],
- "total": 35,
+ "total": 34,
  "niveis": [
   "informativo",
   "atencao",

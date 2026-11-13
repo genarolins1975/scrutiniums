@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-12T19:10:58+00:00",
+ "gerado_em": "2026-11-13T18:27:55+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 313,
-  "total_editais": 1179,
+  "total_contratos_if": 315,
+  "total_editais": 1181,
   "backfill_completo": false,
   "ranking": [
    {
@@ -145,9 +145,9 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 77,
+    "contratos": 78,
     "ufs": 16,
-    "como_receita": 23
+    "como_receita": 24
    },
    {
     "cnpj8": "90400888",
@@ -274,6 +274,13 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
+   },
+   {
+    "cnpj8": "25798596",
+    "banco": "SICOOB CREDIVAR",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
    },
    {
     "cnpj8": "81466286",
@@ -550,6 +557,21 @@
     "banco": "BANCO SANTANDER BRASIL SA",
     "cnpj8": "90400888",
     "url": "https://pncp.gov.br/contratos/46177523000109/2026/55"
+   },
+   {
+    "controle": "08358053000190-2-000116/2026",
+    "ente": "MUNICIPIO DE PORTALEGRE",
+    "esfera": "Municipal",
+    "municipio": "Portalegre",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-11-09",
+    "vig_fim": "2031-11-09",
+    "valor": 59000.0,
+    "receita": true,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/08358053000190/2026/116"
    },
    {
     "controle": "01613076000155-2-000030/2026",
@@ -897,6 +919,21 @@
     "url": "https://pncp.gov.br/contratos/18675975000185/2026/281"
    },
    {
+    "controle": "18194076000160-2-000125/2026",
+    "ente": "MUNICIPIO DE BOCAINA DE MINAS",
+    "esfera": "Municipal",
+    "municipio": "Bocaina de Minas",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-22",
+    "vig_fim": "2031-09-22",
+    "valor": 10000.0,
+    "receita": true,
+    "banco": "SICOOB CREDIVAR",
+    "cnpj8": "25798596",
+    "url": "https://pncp.gov.br/contratos/18194076000160/2026/125"
+   },
+   {
     "controle": "46634317000180-2-000067/2026",
     "ente": "MUNICIPIO DE BARRA DO TURVO",
     "esfera": "Municipal",
@@ -1105,36 +1142,6 @@
     "banco": "ITAU UNIBANCO S.A",
     "cnpj8": "60701190",
     "url": "https://pncp.gov.br/contratos/75741330000137/2026/118"
-   },
-   {
-    "controle": "45276128000110-2-000913/2026",
-    "ente": "MUNICIPIO DE ARARAQUARA",
-    "esfera": "Municipal",
-    "municipio": "Araraquara",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-03",
-    "vig_fim": "2031-09-03",
-    "valor": 15500619.22,
-    "receita": true,
-    "banco": "BANCO BRADESCO S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/45276128000110/2026/913"
-   },
-   {
-    "controle": "03576220000156-2-000095/2026",
-    "ente": "MUNICIPIO DE BATAGUASSU",
-    "esfera": "Municipal",
-    "municipio": "Bataguassu",
-    "uf": "MS",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-02",
-    "vig_fim": "2031-09-01",
-    "valor": 1256700.0,
-    "receita": true,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/03576220000156/2026/95"
    }
   ],
   "editais_recentes": [
@@ -1184,6 +1191,24 @@
     "url": "https://pncp.gov.br/compras/88123492000153/2026/172"
    },
    {
+    "ente": "SARANDI CAMARA MUNICIPAL",
+    "municipio": "Sarandi",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/78844834000170/2026/25"
+   },
+   {
+    "ente": "MUNICIPIO DE SERRA CAIADA",
+    "municipio": "Serra Caiada",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/08078412000156/2026/78"
+   },
+   {
     "ente": "MUNICIPIO DE PIRAUBA",
     "municipio": "Piraúba",
     "uf": "MG",
@@ -1227,24 +1252,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-11",
     "url": "https://pncp.gov.br/compras/08078412000156/2026/76"
-   },
-   {
-    "ente": "MUNICIPIO DE CAFELANDIA",
-    "municipio": "Cafelândia",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/78121878000172/2026/255"
-   },
-   {
-    "ente": "MUNICIPIO DE FERNANDOPOLIS",
-    "municipio": "Fernandópolis",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-10",
-    "url": "https://pncp.gov.br/compras/47842836000105/2026/193"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

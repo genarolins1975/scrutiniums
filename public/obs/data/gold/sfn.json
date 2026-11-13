@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-12T19:11:32+00:00",
+ "gerado_em": "2026-11-13T18:28:29+00:00",
  "fontes": {
   "cadastro": {
    "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
@@ -24,11 +24,11 @@
    "nivel": "A — lista oficial vigente, diária"
   }
  },
- "sintese": "Em 2026-11-12, 1722 sedes estavam autorizadas e em funcionamento: 166 bancos, 736 cooperativas de crédito, 194 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (41 fora do cadastro do BCB hoje, 6 ainda autorizadas). 27 instituições estão sob regime de resolução, 25 decretados nos últimos 12 meses.",
+ "sintese": "Em 2026-11-13, 1721 sedes estavam autorizadas e em funcionamento: 166 bancos, 735 cooperativas de crédito, 194 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (41 fora do cadastro do BCB hoje, 6 ainda autorizadas). 27 instituições estão sob regime de resolução, 25 decretados nos últimos 12 meses.",
  "cadastro": {
   "disponivel": true,
-  "data": "2026-11-12",
-  "total": 1722,
+  "data": "2026-11-13",
+  "total": 1721,
   "grupos": [
    {
     "grupo": "Bancos",
@@ -68,16 +68,16 @@
       "n": 1
      }
     ],
-    "share": 9.64
+    "share": 9.65
    },
    {
     "grupo": "Cooperativas de crédito",
     "cor": "#2f7d4f",
-    "n": 736,
+    "n": 735,
     "segmentos": [
      {
       "segmento": "Cooperativa de crédito (singular)",
-      "n": 702
+      "n": 701
      },
      {
       "segmento": "Cooperativa de crédito (central)",
@@ -92,7 +92,7 @@
       "n": 3
      }
     ],
-    "share": 42.74
+    "share": 42.71
    },
    {
     "grupo": "Instituições de pagamento",
@@ -120,7 +120,7 @@
       "n": 11
      }
     ],
-    "share": 8.65
+    "share": 8.66
    },
    {
     "grupo": "Financeiras e crédito especializado",
@@ -148,16 +148,16 @@
       "n": 1
      }
     ],
-    "share": 7.14
+    "share": 7.15
    },
    {
     "grupo": "Mercado de capitais e câmbio",
     "cor": "#8d5a2b",
-    "n": 204,
+    "n": 205,
     "segmentos": [
      {
       "segmento": "Sociedade Distribuidora de TVM",
-      "n": 100
+      "n": 101
      },
      {
       "segmento": "Sociedade Corretora de TVM",
@@ -168,7 +168,7 @@
       "n": 47
      }
     ],
-    "share": 11.85
+    "share": 11.91
    },
    {
     "grupo": "Fomento e desenvolvimento",
@@ -193,14 +193,14 @@
    {
     "grupo": "Consórcios",
     "cor": "#9a3412",
-    "n": 130,
+    "n": 129,
     "segmentos": [
      {
       "segmento": "Administradora de consórcio",
-      "n": 130
+      "n": 129
      }
     ],
-    "share": 7.55
+    "share": 7.5
    }
   ],
   "ufs": [
@@ -367,15 +367,6 @@
     "fintechs": 0
    },
    {
-    "uf": "AL",
-    "regiao": "Nordeste",
-    "n": 6,
-    "bancos": 0,
-    "cooperativas": 4,
-    "ips": 0,
-    "fintechs": 0
-   },
-   {
     "uf": "SE",
     "regiao": "Nordeste",
     "n": 5,
@@ -410,6 +401,15 @@
     "cooperativas": 1,
     "ips": 1,
     "fintechs": 1
+   },
+   {
+    "uf": "AL",
+    "regiao": "Nordeste",
+    "n": 5,
+    "bancos": 0,
+    "cooperativas": 3,
+    "ips": 0,
+    "fintechs": 0
    },
    {
     "uf": "TO",
@@ -454,14 +454,14 @@
     "n": 1075,
     "cooperativas": 357,
     "bancos": 138,
-    "share": 62.43
+    "share": 62.46
    },
    {
     "regiao": "Sul",
     "n": 415,
     "cooperativas": 238,
     "bancos": 18,
-    "share": 24.1
+    "share": 24.11
    },
    {
     "regiao": "Centro-Oeste",
@@ -472,41 +472,41 @@
    },
    {
     "regiao": "Nordeste",
-    "n": 93,
-    "cooperativas": 50,
+    "n": 92,
+    "cooperativas": 49,
     "bancos": 4,
-    "share": 5.4
+    "share": 5.35
    },
    {
     "regiao": "Norte",
     "n": 39,
     "cooperativas": 25,
     "bancos": 2,
-    "share": 2.26
+    "share": 2.27
    }
   ],
   "cooperativas": {
-   "n": 736,
+   "n": 735,
    "por_sistema": [
     {
      "sistema": "Sicoob",
      "n": 309,
-     "share": 41.98
+     "share": 42.04
     },
     {
      "sistema": "Independente ou outra central",
-     "n": 206,
-     "share": 27.99
+     "n": 205,
+     "share": 27.89
     },
     {
      "sistema": "Sicredi",
      "n": 103,
-     "share": 13.99
+     "share": 14.01
     },
     {
      "sistema": "Cresol",
      "n": 56,
-     "share": 7.61
+     "share": 7.62
     },
     {
      "sistema": "Unicred",
@@ -533,12 +533,12 @@
     {
      "criterio": "Livre Admissão",
      "n": 395,
-     "share": 53.67
+     "share": 53.74
     },
     {
      "criterio": "Empregados ou Servidores",
      "n": 221,
-     "share": 30.03
+     "share": 30.07
     },
     {
      "criterio": "Atividade Profissional",
@@ -548,17 +548,17 @@
     {
      "criterio": "não informado",
      "n": 34,
-     "share": 4.62
+     "share": 4.63
     },
     {
      "criterio": "Produtor Rural",
-     "n": 19,
-     "share": 2.58
+     "n": 18,
+     "share": 2.45
     },
     {
      "criterio": "Critérios de Associação Mistos Outros",
      "n": 11,
-     "share": 1.49
+     "share": 1.5
     },
     {
      "criterio": "Critérios de Associação Mistos Empresários",
@@ -579,23 +579,23 @@
    "por_categoria": [
     {
      "categoria": "Clássica",
-     "n": 492,
-     "share": 66.85
+     "n": 491,
+     "share": 66.8
     },
     {
      "categoria": "Capital e Empréstimo",
      "n": 142,
-     "share": 19.29
+     "share": 19.32
     },
     {
      "categoria": "Plena",
      "n": 68,
-     "share": 9.24
+     "share": 9.25
     },
     {
      "categoria": "Não Informada",
      "n": 28,
-     "share": 3.8
+     "share": 3.81
     },
     {
      "categoria": "não informada",
@@ -612,6 +612,14 @@
   "historico_proprio": {
    "desde": "2026-10-15",
    "entradas": [
+    {
+     "cnpj8": "59971967",
+     "nome": "BNP PARIBAS BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+     "grupo": "Mercado de capitais e câmbio",
+     "segmento": "Sociedade Distribuidora de TVM",
+     "uf": "SP",
+     "data": "2026-11-13"
+    },
     {
      "cnpj8": "53462069",
      "nome": "TRACE FINANCE SOCIEDADE PRESTADORA DE SERVICOS DE ATIVOS VIRTUAIS LTDA.",
@@ -662,6 +670,22 @@
     }
    ],
    "saidas": [
+    {
+     "cnpj8": "08482873",
+     "nome": "COOPERATIVA DE CRÉDITO RURAL DO AGRESTE ALAGOANO - COOPERAGRE",
+     "grupo": "Cooperativas de crédito",
+     "segmento": "Cooperativa de crédito (singular)",
+     "uf": "AL",
+     "data": "2026-11-12"
+    },
+    {
+     "cnpj8": "61550836",
+     "nome": "COOPERATIVA ADMINISTRADORA DE CONSÓRCIOS ROMA - PROIBIDA DE CONSTITUIR NOVOS GRUPOS DE CONSÓRCIO ATÉ 21.4.2029",
+     "grupo": "Consórcios",
+     "segmento": "Administradora de consórcio",
+     "uf": "SP",
+     "data": "2026-11-12"
+    },
     {
      "cnpj8": "33022690",
      "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO NOROESTE DE MATO GROSSO, ACRE E AMAZONAS - SICREDI BIOMAS",
@@ -1175,6 +1199,17 @@
      "Fomento e desenvolvimento": 20,
      "Instituições de pagamento": 194,
      "Mercado de capitais e câmbio": 204
+    },
+    {
+     "data": "2026-11-13",
+     "Bancos": 166,
+     "Consórcios": 129,
+     "Cooperativas de crédito": 735,
+     "Financeiras e crédito especializado": 123,
+     "Fintechs de crédito": 149,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 194,
+     "Mercado de capitais e câmbio": 205
     }
    ]
   },
@@ -1219,10 +1254,10 @@
     "ausencias": null,
     "por_tcb": {
      "B3S": 1091,
-     "N1": 109,
      "B2": 35,
-     "B3C": 37,
      "N2": 170,
+     "B3C": 37,
+     "N1": 109,
      "B1": 105,
      "B4": 4
     },
@@ -1239,10 +1274,10 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 1070,
-     "N1": 106,
      "B2": 35,
-     "B3C": 37,
      "N2": 170,
+     "B3C": 37,
+     "N1": 106,
      "B1": 105,
      "B4": 4
     },
@@ -1259,10 +1294,10 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 1064,
-     "N1": 106,
      "B2": 34,
-     "B3C": 37,
      "N2": 160,
+     "B3C": 37,
+     "N1": 106,
      "B1": 105,
      "B4": 4
     },
@@ -1279,11 +1314,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1057,
-     "N1": 106,
      "B2": 33,
-     "B1": 104,
-     "B3C": 37,
      "N2": 159,
+     "B3C": 37,
+     "N1": 106,
+     "B1": 104,
      "B4": 4
     },
     "provisorio": false
@@ -1299,11 +1334,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1050,
-     "N1": 105,
      "B2": 33,
-     "B1": 104,
-     "B3C": 37,
      "N2": 156,
+     "B3C": 37,
+     "N1": 105,
+     "B1": 104,
      "B4": 4
     },
     "provisorio": false
@@ -1319,11 +1354,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1043,
-     "N1": 104,
      "B2": 34,
-     "B1": 104,
-     "B3C": 37,
      "N2": 152,
+     "B3C": 37,
+     "N1": 104,
+     "B1": 104,
      "B4": 4
     },
     "provisorio": false
@@ -1339,11 +1374,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1034,
-     "N1": 103,
      "B2": 33,
-     "B1": 105,
-     "B3C": 37,
      "N2": 150,
+     "B3C": 37,
+     "N1": 103,
+     "B1": 105,
      "B4": 4
     },
     "provisorio": false
@@ -1359,11 +1394,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1014,
-     "N1": 103,
      "B2": 33,
-     "B1": 105,
-     "B3C": 37,
      "N2": 149,
+     "B3C": 37,
+     "N1": 103,
+     "B1": 105,
      "B4": 4
     },
     "provisorio": false
@@ -1379,11 +1414,11 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1000,
-     "N1": 102,
      "B2": 34,
-     "B1": 104,
-     "B3C": 37,
      "N2": 151,
+     "B3C": 37,
+     "N1": 102,
+     "B1": 104,
      "B4": 4
     },
     "provisorio": false
@@ -1399,12 +1434,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 984,
-     "N1": 101,
      "B2": 34,
-     "B1": 104,
+     "N2": 148,
      "B3C": 36,
-     "B4": 4,
-     "N2": 148
+     "N1": 101,
+     "B1": 104,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1419,12 +1454,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 971,
-     "N1": 102,
      "B2": 34,
-     "B1": 104,
+     "N2": 144,
      "B3C": 36,
-     "B4": 4,
-     "N2": 144
+     "N1": 102,
+     "B1": 104,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1439,12 +1474,12 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 967,
-     "N1": 103,
      "B2": 34,
-     "B1": 104,
      "B3C": 37,
-     "B4": 4,
+     "N1": 103,
      "N2": 144,
+     "B1": 104,
+     "B4": 4,
      "N4": 6
     },
     "provisorio": false
@@ -1460,12 +1495,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 964,
-     "N1": 103,
      "B2": 34,
-     "B1": 105,
      "B3C": 37,
-     "B4": 4,
+     "N1": 103,
      "N2": 143,
+     "B1": 105,
+     "B4": 4,
      "N4": 6
     },
     "provisorio": false
@@ -1481,12 +1516,12 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 952,
-     "N1": 102,
      "B2": 34,
-     "B1": 103,
      "B3C": 37,
-     "B4": 4,
+     "N1": 102,
      "N2": 143,
+     "B1": 103,
+     "B4": 4,
      "N4": 7
     },
     "provisorio": false
@@ -1502,13 +1537,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 933,
-     "N1": 101,
      "B2": 34,
-     "B1": 103,
      "B3C": 37,
-     "B4": 4,
+     "N1": 101,
      "N2": 143,
-     "N4": 8
+     "B1": 103,
+     "N4": 8,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1523,13 +1558,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 921,
-     "N1": 102,
      "B2": 34,
-     "B1": 103,
      "B3C": 37,
-     "B4": 4,
+     "N1": 102,
      "N2": 141,
-     "N4": 10
+     "B1": 103,
+     "N4": 10,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1544,13 +1579,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 908,
-     "N1": 104,
      "B2": 34,
-     "B1": 105,
      "B3C": 36,
-     "B4": 4,
+     "N1": 104,
      "N2": 137,
-     "N4": 11
+     "B1": 105,
+     "N4": 11,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1565,13 +1600,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 893,
-     "N1": 106,
      "B2": 35,
-     "B1": 105,
      "B3C": 36,
+     "N1": 106,
+     "N2": 135,
+     "B1": 105,
      "N4": 13,
-     "B4": 4,
-     "N2": 135
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1586,13 +1621,13 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 883,
-     "N1": 107,
      "B2": 35,
-     "B1": 105,
      "B3C": 36,
+     "N1": 107,
+     "N2": 130,
+     "B1": 105,
      "N4": 18,
      "B4": 4,
-     "N2": 130,
      "?": 1
     },
     "provisorio": false
@@ -1608,13 +1643,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 872,
-     "N1": 108,
      "B2": 34,
-     "B1": 104,
      "B3C": 36,
+     "N1": 108,
+     "N2": 127,
+     "B1": 104,
      "N4": 18,
      "B4": 4,
-     "N2": 127,
      "?": 1
     },
     "provisorio": false
@@ -1630,13 +1665,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 862,
-     "N1": 109,
      "B2": 34,
-     "B1": 105,
      "B3C": 36,
+     "N1": 109,
+     "N2": 128,
+     "B1": 105,
      "N4": 20,
      "B4": 4,
-     "N2": 128,
      "?": 1
     },
     "provisorio": false
@@ -1652,13 +1687,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 857,
-     "N1": 113,
      "B2": 34,
-     "B1": 105,
      "B3C": 36,
+     "N1": 113,
+     "N2": 127,
+     "B1": 105,
      "N4": 22,
      "B4": 4,
-     "N2": 127,
      "?": 1
     },
     "provisorio": false
@@ -1674,13 +1709,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 851,
-     "N1": 123,
      "B2": 35,
-     "B1": 103,
      "B3C": 36,
+     "N1": 123,
+     "N2": 129,
+     "B1": 103,
      "N4": 24,
      "B4": 4,
-     "N2": 129,
      "?": 1
     },
     "provisorio": false
@@ -1696,13 +1731,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 841,
-     "N1": 131,
      "B2": 34,
-     "B1": 103,
      "B3C": 36,
+     "N1": 131,
+     "N2": 128,
+     "B1": 103,
      "N4": 26,
      "B4": 4,
-     "N2": 128,
      "?": 1
     },
     "provisorio": false
@@ -1718,13 +1753,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 834,
-     "N1": 134,
      "B2": 35,
-     "B1": 103,
      "B3C": 36,
+     "N1": 134,
+     "N2": 126,
+     "B1": 103,
      "N4": 28,
      "B4": 4,
-     "N2": 126,
      "?": 1
     },
     "provisorio": false
@@ -1740,13 +1775,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 828,
-     "N1": 141,
      "B2": 35,
-     "B1": 101,
      "B3C": 36,
+     "N1": 141,
+     "N2": 127,
+     "B1": 101,
      "N4": 31,
      "B4": 4,
-     "N2": 127,
      "?": 1
     },
     "provisorio": false
@@ -1762,13 +1797,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 821,
-     "N1": 145,
      "B2": 35,
-     "B1": 103,
      "B3C": 35,
+     "N1": 145,
+     "N2": 126,
+     "B1": 103,
      "N4": 33,
      "B4": 4,
-     "N2": 126,
      "?": 1
     },
     "provisorio": false
@@ -1784,13 +1819,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 817,
-     "N1": 158,
      "B2": 35,
-     "B1": 102,
      "B3C": 35,
+     "N1": 158,
+     "N2": 130,
+     "B1": 102,
      "N4": 37,
      "B4": 4,
-     "N2": 130,
      "?": 1
     },
     "provisorio": false
@@ -1806,13 +1841,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 815,
-     "N1": 163,
      "B2": 35,
-     "B1": 104,
      "B3C": 35,
+     "N1": 163,
+     "N2": 128,
+     "B1": 104,
      "N4": 44,
      "B4": 4,
-     "N2": 128,
      "?": 1
     },
     "provisorio": false
@@ -1828,13 +1863,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 812,
-     "N1": 165,
      "B2": 34,
-     "B1": 103,
      "B3C": 35,
+     "N1": 165,
+     "N2": 127,
+     "B1": 103,
      "N4": 47,
      "B4": 4,
-     "N2": 127,
      "?": 1
     },
     "provisorio": false
@@ -1850,13 +1885,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 803,
-     "N1": 170,
      "B2": 33,
+     "B3C": 35,
+     "N1": 170,
+     "N2": 128,
      "B1": 102,
      "N4": 55,
-     "B3C": 35,
      "B4": 4,
-     "N2": 128,
      "?": 1
     },
     "provisorio": false
@@ -1872,13 +1907,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 796,
-     "N1": 184,
      "B2": 33,
+     "B3C": 33,
+     "N1": 184,
+     "N2": 127,
      "B1": 103,
      "N4": 72,
-     "B3C": 33,
      "B4": 4,
-     "N2": 127,
      "?": 1
     },
     "provisorio": false
@@ -1894,13 +1929,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 788,
-     "N1": 190,
      "B2": 33,
+     "B3C": 32,
+     "N1": 190,
+     "N2": 128,
      "B1": 102,
      "N4": 83,
-     "B3C": 32,
      "B4": 4,
-     "N2": 128,
      "?": 1
     },
     "provisorio": false
@@ -1916,13 +1951,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 784,
-     "N1": 195,
      "B2": 33,
-     "B1": 102,
      "B3C": 32,
+     "N1": 195,
+     "N2": 129,
+     "B1": 102,
      "N4": 87,
      "B4": 4,
-     "N2": 129,
      "?": 1
     },
     "provisorio": false
@@ -1938,13 +1973,13 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 777,
-     "N1": 202,
      "B2": 33,
      "B3C": 32,
-     "N4": 96,
-     "B1": 101,
-     "B4": 4,
+     "N1": 202,
      "N2": 133,
+     "B1": 101,
+     "N4": 96,
+     "B4": 4,
      "?": 1
     },
     "provisorio": false
@@ -1960,13 +1995,13 @@
     "ausencias": 2,
     "por_tcb": {
      "B3S": 768,
-     "N1": 212,
      "B2": 32,
      "B3C": 32,
-     "N4": 103,
-     "B1": 99,
-     "B4": 4,
+     "N1": 212,
      "N2": 131,
+     "B1": 99,
+     "N4": 103,
+     "B4": 4,
      "?": 1
     },
     "provisorio": false
@@ -1982,13 +2017,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 767,
-     "N1": 214,
      "B2": 32,
-     "N4": 114,
      "B3C": 32,
-     "B1": 100,
-     "B4": 4,
+     "N1": 214,
      "N2": 131,
+     "B1": 100,
+     "N4": 114,
+     "B4": 4,
      "?": 1
     },
     "provisorio": false
@@ -2004,13 +2039,13 @@
     "ausencias": 2,
     "por_tcb": {
      "B3S": 760,
-     "N1": 218,
-     "N4": 125,
-     "B1": 97,
-     "B4": 4,
+     "B2": 32,
      "B3C": 31,
      "N2": 128,
-     "B2": 32,
+     "N1": 218,
+     "B1": 97,
+     "N4": 125,
+     "B4": 4,
      "?": 1
     },
     "provisorio": false
@@ -2026,13 +2061,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 757,
-     "N1": 223,
-     "N4": 139,
-     "B1": 97,
-     "B4": 4,
+     "B2": 31,
      "B3C": 30,
      "N2": 130,
-     "B2": 31,
+     "N1": 223,
+     "B1": 97,
+     "N4": 139,
+     "B4": 4,
      "?": 1
     },
     "provisorio": false
@@ -2048,13 +2083,13 @@
     "ausencias": 7,
     "por_tcb": {
      "B3S": 753,
-     "N1": 224,
      "N4": 144,
-     "B1": 98,
-     "B4": 4,
+     "B2": 32,
      "B3C": 27,
      "N2": 133,
-     "B2": 32
+     "N1": 224,
+     "B1": 98,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2069,13 +2104,13 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 752,
-     "N1": 222,
      "N4": 152,
-     "B1": 97,
-     "B4": 4,
+     "B2": 32,
      "B3C": 29,
      "N2": 128,
-     "B2": 32
+     "N1": 222,
+     "B1": 97,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2090,13 +2125,13 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 748,
-     "N1": 224,
      "N4": 157,
-     "B1": 97,
-     "B4": 4,
+     "B2": 31,
      "B3C": 29,
      "N2": 128,
-     "B2": 31
+     "N1": 224,
+     "B1": 97,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2111,13 +2146,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 747,
-     "N1": 227,
      "N4": 161,
-     "B1": 96,
-     "B4": 4,
+     "B2": 33,
      "B3C": 29,
      "N2": 127,
-     "B2": 33
+     "N1": 227,
+     "B1": 96,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2132,13 +2167,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 734,
-     "N1": 233,
      "N4": 181,
-     "B1": 93,
-     "B4": 4,
+     "B2": 33,
      "B3C": 29,
      "N2": 123,
-     "B2": 33
+     "N1": 233,
+     "B1": 93,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2153,13 +2188,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 719,
-     "N1": 237,
      "N4": 182,
-     "B1": 94,
-     "B4": 4,
+     "B2": 33,
      "B3C": 29,
      "N2": 124,
-     "B2": 33
+     "N1": 237,
+     "B1": 94,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -2174,13 +2209,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 710,
-     "N1": 234,
      "N4": 183,
-     "B1": 94,
-     "B4": 4,
+     "B2": 33,
      "B3C": 29,
      "N2": 119,
-     "B2": 33
+     "N1": 234,
+     "B1": 94,
+     "B4": 4
     },
     "provisorio": true
    }
@@ -2237,13 +2272,13 @@
   ],
   "var_4t_por_tcb": {
    "B3S": -29,
-   "N1": 13,
    "N4": 25,
-   "B1": -3,
-   "B4": 0,
+   "B2": 2,
    "B3C": 0,
    "N2": -4,
-   "B2": 2
+   "N1": 13,
+   "B1": -3,
+   "B4": 0
   },
   "entradas": [
    {
@@ -3383,22 +3418,6 @@
     "leitura": "instituição nova: início de atividade em 08/2025"
    },
    {
-    "cod": "C0052657",
-    "nome": "PLENO",
-    "tcb": "B1",
-    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
-    "uf": "SP",
-    "sr": "S4",
-    "anomes": "202509",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "196708",
-    "cnpj8": "61024352",
-    "entregou": false,
-    "classe": "antiga",
-    "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
-   },
-   {
     "cod": "C0084820",
     "nome": "MERCADO PAGO IP - PRUDENCIAL",
     "tcb": "N1",
@@ -3429,6 +3448,22 @@
     "entregou": false,
     "classe": "troca_codigo",
     "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
+   },
+   {
+    "cod": "C0052657",
+    "nome": "PLENO",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202509",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "196708",
+    "cnpj8": "61024352",
+    "entregou": false,
+    "classe": "antiga",
+    "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
    },
    {
     "cod": "32343119",
@@ -4135,22 +4170,6 @@
     "leitura": "instituição nova: início de atividade em 10/2024"
    },
    {
-    "cod": "04891850",
-    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
-    "tcb": "B3C",
-    "tcb_nome": "Cooperativa central ou confederação",
-    "uf": "DF",
-    "sr": null,
-    "anomes": "202412",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "202410",
-    "cnpj8": "04891850",
-    "entregou": false,
-    "classe": "nova",
-    "leitura": "instituição nova: início de atividade em 10/2024"
-   },
-   {
     "cod": "03795072",
     "nome": "CONFEDERACAO DAS COOPERATIVAS DO SICREDI - CONFEDERACAO SICREDI",
     "tcb": "B3C",
@@ -4162,6 +4181,22 @@
     "provisorio": false,
     "inicio_atividade": "202410",
     "cnpj8": "03795072",
+    "entregou": false,
+    "classe": "nova",
+    "leitura": "instituição nova: início de atividade em 10/2024"
+   },
+   {
+    "cod": "04891850",
+    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
+    "tcb": "B3C",
+    "tcb_nome": "Cooperativa central ou confederação",
+    "uf": "DF",
+    "sr": null,
+    "anomes": "202412",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "202410",
+    "cnpj8": "04891850",
     "entregou": false,
     "classe": "nova",
     "leitura": "instituição nova: início de atividade em 10/2024"
@@ -6031,6 +6066,17 @@
     "ativo": 559140.45
    },
    {
+    "cod": "23862762",
+    "nome": "WILL FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S3",
+    "anomes": "202512",
+    "ausente_desde": "202409",
+    "ativo": null
+   },
+   {
     "cod": "33884941",
     "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
     "tcb": "B1",
@@ -6050,17 +6096,6 @@
     "sr": "S5",
     "anomes": "202512",
     "ausente_desde": "202412",
-    "ativo": null
-   },
-   {
-    "cod": "23862762",
-    "nome": "WILL FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "tcb": "N1",
-    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
-    "uf": "SP",
-    "sr": "S3",
-    "anomes": "202512",
-    "ausente_desde": "202409",
     "ativo": null
    },
    {
@@ -6174,17 +6209,6 @@
     "ativo": 3882177.47
    },
    {
-    "cod": "23757411",
-    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "tcb": "N4",
-    "tcb_nome": "Instituição de pagamento",
-    "uf": "MG",
-    "sr": null,
-    "anomes": "202412",
-    "ausente_desde": "202306",
-    "ativo": null
-   },
-   {
     "cod": "46009412",
     "nome": "FOR YOU SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "tcb": "N1",
@@ -6193,6 +6217,17 @@
     "sr": null,
     "anomes": "202412",
     "ausente_desde": "202406",
+    "ativo": null
+   },
+   {
+    "cod": "23757411",
+    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": null,
+    "anomes": "202412",
+    "ausente_desde": "202306",
     "ativo": null
    },
    {
@@ -8277,7 +8312,7 @@
     "uf": "SP"
    }
   ],
-  "gerado_em": "2026-11-12T19:10:58+00:00"
+  "gerado_em": "2026-11-13T18:27:55+00:00"
  },
  "catalogo": [
   {
