@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-13T18:27:55+00:00",
+ "gerado_em": "2026-11-14T17:03:23+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 315,
-  "total_editais": 1181,
+  "total_editais": 1183,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1146,6 +1146,24 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE RIO DOS INDIOS",
+    "municipio": "Rio dos Índios",
+    "uf": "RS",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-13",
+    "url": "https://pncp.gov.br/compras/94704103000186/2026/37"
+   },
+   {
+    "ente": "MUNICIPIO DE DOM FELICIANO",
+    "municipio": "Dom Feliciano",
+    "uf": "RS",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-13",
+    "url": "https://pncp.gov.br/compras/88601943000110/2026/310"
+   },
+   {
     "ente": "MUNICIPIO DE RONDON",
     "municipio": "Rondon",
     "uf": "PR",
@@ -1234,24 +1252,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-11",
     "url": "https://pncp.gov.br/compras/78121878000172/2026/256"
-   },
-   {
-    "ente": "MUNICIPIO DE PAROBE",
-    "municipio": "Parobé",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/88372883000101/2026/310"
-   },
-   {
-    "ente": "MUNICIPIO DE SERRA CAIADA",
-    "municipio": "Serra Caiada",
-    "uf": "RN",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/08078412000156/2026/76"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

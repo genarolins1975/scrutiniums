@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-13T18:28:27+00:00",
+ "gerado_em": "2026-11-14T17:03:57+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,28 +24,28 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1323 processos sancionadores em 1ª instância, com 1430 decisões por apenado: 1359 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1324 processos sancionadores em 1ª instância, com 1431 decisões por apenado: 1360 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-13",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17074,
-   "processos": 13125,
-   "apenados_distintos": 11461
+   "decisoes": 17075,
+   "processos": 13126,
+   "apenados_distintos": 11462
   },
   "janela_12m": {
-   "ini": "2025-11-13",
-   "decisoes": 1430,
-   "processos": 1323,
-   "multas_n": 1359,
-   "multas_valor": 78604100.0,
+   "ini": "2025-11-14",
+   "decisoes": 1431,
+   "processos": 1324,
+   "multas_n": 1360,
+   "multas_valor": 78629100.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 152,
-   "pj": 408,
+   "pj": 409,
    "pf": 1022
   },
   "janela_12m_anterior": {
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1359,
-    "share": 95.03
+    "n": 1360,
+    "share": 95.04
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.13
+    "share": 4.12
    },
    {
     "pena": "INABILITAÇÃO",
@@ -92,12 +92,12 @@
    {
     "situacao": "MULTA PAGA",
     "n": 881,
-    "share": 61.61
+    "share": 61.57
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 132,
-    "share": 9.23
+    "share": 9.22
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -111,13 +111,13 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 94,
-    "share": 6.57
+    "n": 95,
+    "share": 6.64
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.78
+    "share": 3.77
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -154,7 +154,7 @@
    {
     "situacao": "MULTA PAGA",
     "n": 11986,
-    "share": 87.55
+    "share": 87.54
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -178,7 +178,7 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 94,
+    "n": 95,
     "share": 0.69
    },
    {
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3192
+   "n": 3186
   },
   "anual": [
    {
@@ -400,21 +400,31 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1291,
-    "processos": 1188,
-    "multas_n": 1226,
-    "multas_valor": 75641600.0,
+    "decisoes": 1292,
+    "processos": 1189,
+    "multas_n": 1227,
+    "multas_valor": 75666600.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
     "recursos": 137,
     "pf": 931,
-    "pj": 360,
+    "pj": 361,
     "incompleto": true,
-    "recurso_share": 10.61,
-    "sem_penalidade_share": 4.11
+    "recurso_share": 10.6,
+    "sem_penalidade_share": 4.1
    }
   ],
   "recentes": [
+   {
+    "pas": "299083",
+    "nome": "AMAGGI LOUIS DREYFUS ZEN-NOH GRAOS S.A.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-13",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "315977",
     "nome": "DANIELA LEAO SALVINI MORGEN",
@@ -804,16 +814,6 @@
     "multa": null,
     "recurso": "NÃO",
     "situacao": "NÃO HOUVE PENALIDADE"
-   },
-   {
-    "pas": "273110",
-    "nome": "JEANETE ALVES MOREIRA",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -933,7 +933,7 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-11-12",
+  "ultima_movimentacao": "2026-11-13",
   "acervo": {
    "processos": 588,
    "acusados": 2097,
@@ -941,7 +941,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-13",
+   "ini": "2025-11-14",
    "processos": 62,
    "acusados": 164
   },
@@ -1288,7 +1288,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-06",
+    "ultima_mov": "2026-11-13",
     "acusados": 1,
     "objeto": "O presente Termo de Acusação originou-se do Processo CVM n.º 19957.001961/2026-16 (anexado ao PAS), instaurado pela SEP - Superintendência de Relações com Empresas, que teve como objetivo analisar os fatos relacionados à"
    },

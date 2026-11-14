@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:49+00:00"
+    "last_collected_at": "2026-11-14T15:37:13+00:00"
    },
    "obs": [
     {
@@ -128,7 +128,7 @@
      "estabilidade": 60.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 2
@@ -146,7 +146,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:49+00:00"
+    "last_collected_at": "2026-11-14T15:37:13+00:00"
    },
    "obs": [
     {
@@ -259,7 +259,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -277,7 +277,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:51+00:00"
+    "last_collected_at": "2026-11-14T15:37:15+00:00"
    },
    "obs": [
     {
@@ -390,7 +390,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -408,7 +408,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:57+00:00"
+    "last_collected_at": "2026-11-14T15:37:22+00:00"
    },
    "obs": [
     {
@@ -533,7 +533,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 7,
+    "dias_sem_atualizar": 8,
     "ultima_ref": "2026-11-06",
     "n_obs": 28,
     "n_revisoes": 0
@@ -551,7 +551,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:59+00:00"
+    "last_collected_at": "2026-11-14T15:37:25+00:00"
    },
    "obs": [
     {
@@ -664,7 +664,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -682,7 +682,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:56+00:00"
+    "last_collected_at": "2026-11-14T15:37:21+00:00"
    },
    "obs": [
     {
@@ -795,7 +795,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -813,7 +813,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:01:58+00:00"
+    "last_collected_at": "2026-11-14T15:37:23+00:00"
    },
    "obs": [
     {
@@ -938,7 +938,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 7,
+    "dias_sem_atualizar": 8,
     "ultima_ref": "2026-11-06",
     "n_obs": 28,
     "n_revisoes": 0
@@ -956,7 +956,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-13T17:02:01+00:00"
+    "last_collected_at": "2026-11-14T15:37:26+00:00"
    },
    "obs": [
     {
@@ -1069,7 +1069,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -1686,7 +1686,7 @@
    "organisation": "BANCO GUANABARA",
    "chamadas_semana": 15234.0,
    "share_pct": 0.0,
-   "familias_api": 41,
+   "familias_api": 42,
    "papeis": [
     "CCORR",
     "CONTA",
