@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-14T17:03:23+00:00",
+ "gerado_em": "2026-11-15T18:04:26+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -445,7 +445,7 @@
       },
       "var_aa_pct": -1.6,
       "fre_ano": 2026,
-      "versao": 7
+      "versao": 8
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4849,7 +4849,7 @@
       },
       "var_aa_pct": 5.2,
       "fre_ano": 2026,
-      "versao": 3
+      "versao": 4
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -5195,7 +5195,7 @@
       },
       "var_aa_pct": 49.1,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 10
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -43544,40 +43544,6 @@
     "nome": "BCO BRASIL S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 64040204.76,
-       "membros": 31.92,
-       "media_por_membro_brl": 2006272,
-       "composicao": {
-        "salario": 29148990.51,
-        "beneficios": 6571862.93,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 15137905.82,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 603965.82
-       },
-       "maior": 2341685.44,
-       "media_individual": 1711389.75
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 96243372.36,
-       "membros": 34.0,
-       "media_por_membro_brl": 2830687,
-       "composicao": {
-        "salario": 33323808.31,
-        "beneficios": 16778906.39,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 15380219.22,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 15380219.22
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -43609,6 +43575,40 @@
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 392044.8
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 64040204.76,
+       "membros": 31.92,
+       "media_por_membro_brl": 2006272,
+       "composicao": {
+        "salario": 29148990.51,
+        "beneficios": 6571862.93,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 15137905.82,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 603965.82
+       },
+       "maior": 2341685.44,
+       "media_individual": 1711389.75
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 96243372.36,
+       "membros": 34.0,
+       "media_por_membro_brl": 2830687,
+       "composicao": {
+        "salario": 33323808.31,
+        "beneficios": 16778906.39,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 15380219.22,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 15380219.22
        }
       }
      }

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-14T17:03:23+00:00",
+ "gerado_em": "2026-11-15T18:04:26+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -1164,6 +1164,24 @@
     "url": "https://pncp.gov.br/compras/88601943000110/2026/310"
    },
    {
+    "ente": "SARANDI CAMARA MUNICIPAL",
+    "municipio": "Sarandi",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/78844834000170/2026/25"
+   },
+   {
+    "ente": "MUNICIPIO DE SERRA CAIADA",
+    "municipio": "Serra Caiada",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/08078412000156/2026/78"
+   },
+   {
     "ente": "MUNICIPIO DE RONDON",
     "municipio": "Rondon",
     "uf": "PR",
@@ -1171,6 +1189,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-12",
     "url": "https://pncp.gov.br/compras/75380071000166/2026/178"
+   },
+   {
+    "ente": "MUNICIPIO DE PIRAUBA",
+    "municipio": "Piraúba",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/18554147000199/2026/171"
    },
    {
     "ente": "MUNICIPIO DE PROGRESSO",
@@ -1191,6 +1218,15 @@
     "url": "https://pncp.gov.br/compras/95684544000126/2026/44"
    },
    {
+    "ente": "MUNICIPIO DE SAO MIGUEL DO IGUACU",
+    "municipio": "São Miguel do Iguaçu",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-12",
+    "url": "https://pncp.gov.br/compras/76206499000150/2026/226"
+   },
+   {
     "ente": "MUNICIPIO DE MACAUBAS",
     "municipio": "Macaúbas",
     "uf": "BA",
@@ -1209,49 +1245,13 @@
     "url": "https://pncp.gov.br/compras/88123492000153/2026/172"
    },
    {
-    "ente": "SARANDI CAMARA MUNICIPAL",
-    "municipio": "Sarandi",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/78844834000170/2026/25"
-   },
-   {
     "ente": "MUNICIPIO DE SERRA CAIADA",
     "municipio": "Serra Caiada",
     "uf": "RN",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/08078412000156/2026/78"
-   },
-   {
-    "ente": "MUNICIPIO DE PIRAUBA",
-    "municipio": "Piraúba",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/18554147000199/2026/171"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO MIGUEL DO IGUACU",
-    "municipio": "São Miguel do Iguaçu",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/76206499000150/2026/226"
-   },
-   {
-    "ente": "MUNICIPIO DE CAFELANDIA",
-    "municipio": "Cafelândia",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-11",
-    "url": "https://pncp.gov.br/compras/78121878000172/2026/256"
+    "url": "https://pncp.gov.br/compras/08078412000156/2026/76"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-14T17:03:57+00:00",
+ "gerado_em": "2026-11-15T18:05:04+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1324 processos sancionadores em 1ª instância, com 1431 decisões por apenado: 1360 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 381 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1322 processos sancionadores em 1ª instância, com 1429 decisões por apenado: 1358 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 375 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-13",
@@ -35,42 +35,42 @@
    "apenados_distintos": 11462
   },
   "janela_12m": {
-   "ini": "2025-11-14",
-   "decisoes": 1431,
-   "processos": 1324,
-   "multas_n": 1360,
-   "multas_valor": 78629100.0,
+   "ini": "2025-11-15",
+   "decisoes": 1429,
+   "processos": 1322,
+   "multas_n": 1358,
+   "multas_valor": 78579100.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 152,
-   "pj": 409,
-   "pf": 1022
+   "pj": 408,
+   "pf": 1021
   },
   "janela_12m_anterior": {
-   "decisoes": 815,
-   "processos": 643,
-   "multas_n": 680,
-   "multas_valor": 24975383.9,
+   "decisoes": 817,
+   "processos": 645,
+   "multas_n": 682,
+   "multas_valor": 25025383.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
    "recursos": 133,
-   "pj": 254,
-   "pf": 561
+   "pj": 255,
+   "pf": 562
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1360,
-    "share": 95.04
+    "n": 1358,
+    "share": 95.03
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.12
+    "share": 4.13
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,33 +91,33 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 881,
-    "share": 61.57
+    "n": 879,
+    "share": 61.51
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 132,
-    "share": 9.22
+    "share": 9.24
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 117,
-    "share": 8.18
+    "share": 8.19
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 108,
-    "share": 7.55
+    "share": 7.56
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
     "n": 95,
-    "share": 6.64
+    "share": 6.65
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.77
+    "share": 3.78
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -817,7 +817,7 @@
    }
   ],
   "inabilitados": {
-   "vigentes": 381,
+   "vigentes": 375,
    "por_prazo": [
     {
      "prazo_anos": 2.0,
@@ -866,8 +866,8 @@
     },
     {
      "prazo_anos": 10.0,
-     "n": 47,
-     "encerram_12m": 6
+     "n": 41,
+     "encerram_12m": 0
     },
     {
      "prazo_anos": 11.0,
@@ -925,7 +925,7 @@
      "encerram_12m": 0
     }
    ],
-   "encerram_12m": 10
+   "encerram_12m": 4
   },
   "proibidos_vigentes": 2,
   "nota": "Uma linha por apenado e decisão. A penalidade que vale é a de 2ª instância quando existe; multa aplicada não é multa paga (a situação da cobrança está à parte). Pessoa física é o CPF mascarado; pessoa jurídica é o CNPJ. Sem ranking por nome: a lista é cronológica."
@@ -941,7 +941,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-14",
+   "ini": "2025-11-15",
    "processos": 62,
    "acusados": 164
   },

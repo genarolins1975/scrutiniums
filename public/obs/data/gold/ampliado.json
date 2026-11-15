@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-14T17:03:57+00:00",
+ "gerado_em": "2026-11-15T18:05:04+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -10498,10 +10498,10 @@
      "2026-10"
     ],
     "kpis": {
-     "n_cert": 2486,
-     "creditos": 263306602530.8005,
+     "n_cert": 2487,
+     "creditos": 263428753867.7405,
      "vencidos_pct": 1.33,
-     "atraso_pct": 2.85,
+     "atraso_pct": 2.84,
      "pdd_pct": 1.84,
      "var_12m_pct": 7.9,
      "vencidos_pct_12m_atras": 1.87
@@ -11517,14 +11517,14 @@
      },
      {
       "mes": "2026-09",
-      "n_cert": 2486,
-      "n_com_credito": 2455,
-      "creditos": 263306602530.8005,
+      "n_cert": 2487,
+      "n_com_credito": 2457,
+      "creditos": 263428753867.7405,
       "vencidos_pct": 1.33,
-      "atraso_pct": 2.85,
+      "atraso_pct": 2.84,
       "pdd_pct": 1.84,
-      "ativo": 267726864631.88034,
-      "excluidos_unidade": 31,
+      "ativo": 267863197286.11035,
+      "excluidos_unidade": 30,
       "parcial": false
      },
      {
@@ -11544,32 +11544,32 @@
      {
       "segmento": "Outros",
       "valor": 44945853174.359985,
-      "share": 30.87
+      "share": 30.84
      },
      {
       "segmento": "Aquisição de imóveis",
-      "valor": 41188648534.539986,
-      "share": 28.29
+      "valor": 41310799871.47999,
+      "share": 28.35
      },
      {
       "segmento": "Incorporação imobiliária",
       "valor": 27848762474.419987,
-      "share": 19.13
+      "share": 19.11
      },
      {
       "segmento": "Multipropriedade",
       "valor": 12354681245.160002,
-      "share": 8.49
+      "share": 8.48
      },
      {
       "segmento": "Aluguéis",
       "valor": 9138440504.809998,
-      "share": 6.28
+      "share": 6.27
      },
      {
       "segmento": "Home equity",
       "valor": 6710144183.780002,
-      "share": 4.61
+      "share": 4.6
      },
      {
       "segmento": "Loteamento",
@@ -11580,20 +11580,20 @@
     "series_situacao": [
      {
       "situacao": "Adimplente",
-      "n": 4352,
-      "valor": 165843114750.7404,
-      "share_n": 89.33,
-      "share_valor": 86.95
+      "n": 4354,
+      "valor": 165882856044.57034,
+      "share_n": 89.37,
+      "share_valor": 86.96
      },
      {
       "situacao": "Em atraso",
-      "n": 520,
-      "valor": 24885462705.009987,
-      "share_n": 10.67,
-      "share_valor": 13.05
+      "n": 518,
+      "valor": 24885462705.009983,
+      "share_n": 10.63,
+      "share_valor": 13.04
      }
     ],
-    "excluidos_unidade_ultimo_mes": 31
+    "excluidos_unidade_ultimo_mes": 30
    },
    "cra": {
     "nome": "CRA",
