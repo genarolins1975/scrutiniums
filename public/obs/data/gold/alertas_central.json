@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-14T17:04:00+00:00",
+ "gerado_em": "2026-11-16T20:59:55+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "8 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (197 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (197 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (105 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 8,
+   "titulo": "7 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (199 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (199 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (107 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 7,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "18 execuções anteriores",
+   "evidencia_persistencia": "20 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.92,
+   "ordem": 0.93,
    "serie_recente": null
   },
   {
@@ -106,7 +106,7 @@
    "limiar": 0.3,
    "referencia": "2026-09",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "16 execuções anteriores",
+   "evidencia_persistencia": "18 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -221,7 +221,7 @@
    "limiar": 28.0,
    "referencia": "2026-08",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "68 execuções anteriores",
+   "evidencia_persistencia": "70 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"

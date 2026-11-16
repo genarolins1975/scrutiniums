@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-15T18:05:04+00:00",
+ "gerado_em": "2026-11-16T20:59:52+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1322 processos sancionadores em 1ª instância, com 1429 decisões por apenado: 1358 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 375 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1325 processos sancionadores em 1ª instância, com 1432 decisões por apenado: 1361 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 375 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-13",
+  "ultima_decisao": "2026-11-16",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17075,
-   "processos": 13126,
+   "decisoes": 17078,
+   "processos": 13129,
    "apenados_distintos": 11462
   },
   "janela_12m": {
-   "ini": "2025-11-15",
-   "decisoes": 1429,
-   "processos": 1322,
-   "multas_n": 1358,
-   "multas_valor": 78579100.0,
+   "ini": "2025-11-16",
+   "decisoes": 1432,
+   "processos": 1325,
+   "multas_n": 1361,
+   "multas_valor": 78629100.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 152,
    "pj": 408,
-   "pf": 1021
+   "pf": 1024
   },
   "janela_12m_anterior": {
    "decisoes": 817,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1358,
-    "share": 95.03
+    "n": 1361,
+    "share": 95.04
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.13
+    "share": 4.12
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,33 +91,33 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 879,
-    "share": 61.51
+    "n": 880,
+    "share": 61.45
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 132,
-    "share": 9.24
+    "share": 9.22
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 117,
-    "share": 8.19
+    "share": 8.17
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 108,
-    "share": 7.56
+    "share": 7.54
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 95,
-    "share": 6.65
+    "n": 97,
+    "share": 6.77
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.78
+    "share": 3.77
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -153,8 +153,8 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11986,
-    "share": 87.54
+    "n": 11985,
+    "share": 87.51
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -163,8 +163,8 @@
    },
    {
     "situacao": "PENALIDADE EXTINTA",
-    "n": 317,
-    "share": 2.32
+    "n": 315,
+    "share": 2.3
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -178,18 +178,18 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 95,
-    "share": 0.69
+    "n": 97,
+    "share": 0.71
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
-    "n": 87,
-    "share": 0.64
+    "n": 89,
+    "share": 0.65
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 69,
-    "share": 0.5
+    "n": 71,
+    "share": 0.52
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3186
+   "n": 3189
   },
   "anual": [
    {
@@ -400,21 +400,51 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1292,
-    "processos": 1189,
-    "multas_n": 1227,
-    "multas_valor": 75666600.0,
+    "decisoes": 1295,
+    "processos": 1192,
+    "multas_n": 1230,
+    "multas_valor": 75716600.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
     "recursos": 137,
-    "pf": 931,
+    "pf": 934,
     "pj": 361,
     "incompleto": true,
-    "recurso_share": 10.6,
-    "sem_penalidade_share": 4.1
+    "recurso_share": 10.58,
+    "sem_penalidade_share": 4.09
    }
   ],
   "recentes": [
+   {
+    "pas": "316211",
+    "nome": "CORNELIUS LITTMANN",
+    "pessoa": "PF",
+    "decisao": "2026-11-16",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "315968",
+    "nome": "IZAIR JOSE GAMBATTO",
+    "pessoa": "PF",
+    "decisao": "2026-11-16",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316042",
+    "nome": "MARLI MARIA DE JESUS DENSER",
+    "pessoa": "PF",
+    "decisao": "2026-11-16",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "299083",
     "nome": "AMAGGI LOUIS DREYFUS ZEN-NOH GRAOS S.A.",
@@ -784,36 +814,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "273110",
-    "nome": "HERBETE HALAMO RODRIGUES CAETANO DAVI",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "273110",
-    "nome": "IASMIM KETLIM CAMARA DINIZ RODRIGUES",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "273110",
-    "nome": "IORIS RAMALHO CORTEZ",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "NÃO HOUVE PENALIDADE",
-    "multa": null,
-    "recurso": "NÃO",
-    "situacao": "NÃO HOUVE PENALIDADE"
    }
   ],
   "inabilitados": {
@@ -941,7 +941,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-15",
+   "ini": "2025-11-16",
    "processos": 62,
    "acusados": 164
   },
