@@ -1,7 +1,7 @@
 {
  "id": "queimadas_focos_referencia",
- "capturadoEm": "2026-11-02T20:53:31+00:00",
- "dataReferencia": "2026-11-02",
+ "capturadoEm": "2026-11-16T21:14:16+00:00",
+ "dataReferencia": "2026-11-16",
  "fonte": {
   "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/",
@@ -248,10 +248,10 @@
   },
   {
    "ano": 2026,
-   "focos": 104058,
+   "focos": 117285,
    "parcial": true,
    "primeiroDia": "2026-01-01",
-   "ultimoDia": "2026-11-01",
+   "ultimoDia": "2026-11-15",
    "origem": "mensal_todos_sats_filtrado",
    "nota": "Ano em curso: soma dos meses disponíveis, inclusive o mês corrente incompleto. Não comparar com anos fechados."
   }
@@ -414,9 +414,9 @@
    },
    {
     "mes": "2026-11",
-    "focos": 1254,
+    "focos": 14481,
     "parcial": true,
-    "ultimoDiaComFoco": "2026-11-01",
+    "ultimoDiaComFoco": "2026-11-15",
     "origem": "mensal_todos_sats_filtrado",
     "arquivo": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202611.csv"
    }
@@ -42438,18 +42438,18 @@
    "METOP-C": 15126
   },
   "2026-11": {
-   "GOES-19": 6359,
-   "MSG-03": 71,
-   "METOP-B": 689,
-   "TERRA_M-M": 80,
-   "METOP-C": 913,
-   "NOAA-20": 5878,
-   "NOAA-21": 4215,
-   "NPP-375D": 1744,
-   "AQUA_M-M": 83,
-   "TERRA_M-T": 760,
-   "NPP-375": 4168,
-   "AQUA_M-T": 1254
+   "GOES-19": 70914,
+   "MSG-03": 1071,
+   "METOP-B": 8976,
+   "TERRA_M-M": 4215,
+   "METOP-C": 7358,
+   "NOAA-20": 68732,
+   "NOAA-21": 66455,
+   "NPP-375D": 2532,
+   "AQUA_M-M": 1468,
+   "TERRA_M-T": 5659,
+   "NPP-375": 4174,
+   "AQUA_M-T": 14481
   }
  },
  "originais": {
@@ -42619,9 +42619,9 @@
    "lastModified": "Sun, 01 Nov 2026 23:56:43 GMT"
   },
   "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/mensal/Brasil/focos_mensal_br_202611.csv": {
-   "sha256": "4fe513730a99e3a73660d95d2ae6178824a48c38b8e9c46269899cca01e92474",
-   "bytes": 3799558,
-   "lastModified": "Mon, 02 Nov 2026 17:56:03 GMT"
+   "sha256": "d76ea8f78b9c619120d5b6107abb2019ab3e875e335cb51104d0d123b5d499aa",
+   "bytes": 39416820,
+   "lastModified": "Mon, 16 Nov 2026 17:56:16 GMT"
   }
  },
  "ressalvas": [
@@ -42636,9 +42636,9 @@
   "id": "aq1km_colecao2_biomas",
   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/area_queimada/colecao2/csv/aq1km_biomas_v2.csv",
   "original": {
-   "sha256": "4ea3d9e9d1afc866ba3eed802f06f50c15dcda5c9683cd157ac98d647778f371",
-   "bytes": 13729,
-   "lastModified": "Fri, 02 Oct 2026 16:28:50 GMT"
+   "sha256": "3cc010921f93a59a317d8ce7d325b4f53539307b5282426e70f297ac28ceb499",
+   "bytes": 13775,
+   "lastModified": "Tue, 03 Nov 2026 19:47:07 GMT"
   },
   "unidade": "km² de área queimada mapeada (pixel de 1 km, MODIS AQUA e TERRA)",
   "maturidade": "Provisório (INPE): sujeito a revisão; publicações devem indicar a qualidade provisória",
@@ -46110,6 +46110,18 @@
      "Pantanal": 459.0
     },
     "totalKm2": 101356.0
+   },
+   {
+    "mes": "2026-10",
+    "km2": {
+     "Amazônia": 56152.0,
+     "Caatinga": 16558.0,
+     "Cerrado": 33538.0,
+     "Mata Atlântica": 3686.0,
+     "Pampa": 29.0,
+     "Pantanal": 43.0
+    },
+    "totalKm2": 110006.0
    }
   ],
   "anual": [
@@ -46452,16 +46464,16 @@
    {
     "ano": 2026,
     "km2": {
-     "Amazônia": 80157.0,
-     "Caatinga": 27983.0,
-     "Cerrado": 113518.0,
-     "Mata Atlântica": 12616.0,
-     "Pampa": 358.0,
-     "Pantanal": 1542.0
+     "Amazônia": 136309.0,
+     "Caatinga": 44541.0,
+     "Cerrado": 147056.0,
+     "Mata Atlântica": 16302.0,
+     "Pampa": 387.0,
+     "Pantanal": 1585.0
     },
-    "totalKm2": 236174.0,
+    "totalKm2": 346180.0,
     "parcial": true,
-    "meses": 9
+    "meses": 10
    }
   ],
   "ressalvas": [

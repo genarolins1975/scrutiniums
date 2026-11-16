@@ -2,8 +2,8 @@
  "dominio": "territorio",
  "gold": "queimadas_municipios",
  "versaoPipeline": "territorio-1.0.0",
- "capturadoEm": "2026-11-02T20:53:31+00:00",
- "dataReferencia": "2026-11-02",
+ "capturadoEm": "2026-11-16T21:14:16+00:00",
+ "dataReferencia": "2026-11-16",
  "fonte": {
   "nome": "INPE, Programa Queimadas, focos de calor (servidor de dados abertos COIDS)",
   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/",
