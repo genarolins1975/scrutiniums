@@ -1,7 +1,7 @@
 {
   "versao": 1,
   "captura": "2026-11-03T13:09:37.774218+00:00",
-  "capturaSIOP": "2026-11-10T17:52:36.877761+00:00",
+  "capturaSIOP": "2026-11-17T19:14:10.512896+00:00",
   "publicacaoRTN": null,
   "unidadeRTN": "R$ milhões correntes",
   "unidadeSIOP": "R$ correntes",
@@ -21,10 +21,10 @@
   },
   "sha256": {
     "rtn.xlsx": "8eb4abf01278d083b17d3bd4d381173416bd11965394d22afdd63294207aaab4",
-    "siop2025.json": "d84c08bbbe972d5a8248fa78fdb44c27ebdd99f4b9fa919862d959cdcba8417f",
-    "siop2026.json": "e117c8cea12d803283598fb36f0ce372eca77d31288dceb57cd916a660a2bc57",
+    "siop2025.json": "e86a339c9e391d2835b6f3be6b24104f77add6299e184619b2d9b43ee71ebd10",
+    "siop2026.json": "25639a138a908e8388cc578e03e287558524e1e57a7c87b0e4a65e282ac9fa75",
     "gnd2025.json": "f3b1f66ab217a522b0170a0f8176f1885045be41e18aae7131b188ec0f3c9036",
-    "gnd2026.json": "e30b8fed15707e92929a7d2bd61d3c80603a1df45d577aa4dc855708c1b44c01"
+    "gnd2026.json": "0f899731bcddc8b14ca5daee38b98d0456363f73effcba0e1f16ca33fcff8a02"
   },
   "rtnMensal": [
     {
@@ -1166,24 +1166,24 @@
       "ano": 2025,
       "esferas": [
         {
-          "codigo": "20",
-          "nome": "Orçamento da Seguridade Social",
-          "atualizacao": "2026-10-28T01:34:25.999-03:00",
-          "inicial": 1802688876066.0,
-          "atualizada": 1844350221725.0,
-          "empenhado": 1841402148204.0,
-          "liquidado": 1807694982094.0,
-          "pago": 1728032045940.0
-        },
-        {
           "codigo": "10",
           "nome": "Orçamento Fiscal",
-          "atualizacao": "2026-10-28T01:34:25.999-03:00",
+          "atualizacao": "2026-11-17T02:03:22.488-03:00",
           "inicial": 3916698651612.0,
           "atualizada": 3991048692531.0,
           "empenhado": 3537996522719.0,
           "liquidado": 3347049017640.0,
           "pago": 3326213910577.0
+        },
+        {
+          "codigo": "20",
+          "nome": "Orçamento da Seguridade Social",
+          "atualizacao": "2026-11-17T02:03:22.488-03:00",
+          "inicial": 1802688876066.0,
+          "atualizada": 1844350221725.0,
+          "empenhado": 1841402148204.0,
+          "liquidado": 1807694982094.0,
+          "pago": 1728032045940.0
         }
       ],
       "grupos": [
@@ -1272,22 +1272,22 @@
         {
           "codigo": "10",
           "nome": "Orçamento Fiscal",
-          "atualizacao": "2026-11-10T01:34:54.821-03:00",
+          "atualizacao": "2026-11-17T02:03:22.488-03:00",
           "inicial": 4366136847772.0,
-          "atualizada": 4542240001931.0,
-          "empenhado": 3866881060887.0,
-          "liquidado": 3517303141366.0,
-          "pago": 3510287183953.0
+          "atualizada": 4542149176931.0,
+          "empenhado": 3928249460927.0,
+          "liquidado": 3606926045713.0,
+          "pago": 3598945544871.0
         },
         {
           "codigo": "20",
           "nome": "Orçamento da Seguridade Social",
-          "atualizacao": "2026-11-10T01:34:54.821-03:00",
+          "atualizacao": "2026-11-17T02:03:22.488-03:00",
           "inicial": 1978187902102.0,
-          "atualizada": 1991555437346.0,
-          "empenhado": 1734038721988.0,
-          "liquidado": 1632377027945.0,
-          "pago": 1628065172497.0
+          "atualizada": 1991646262346.0,
+          "empenhado": 1764056476023.0,
+          "liquidado": 1661026079655.0,
+          "pago": 1656366144952.0
         }
       ],
       "grupos": [
@@ -1295,55 +1295,55 @@
           "codigo": "1",
           "nome": "Pessoal e Encargos Sociais",
           "inicial": 489545557921.0,
-          "atualizada": 478181244654.0,
-          "empenhado": 440767598226.0,
-          "liquidado": 373146567768.0,
-          "pago": 367573619384.0
+          "atualizada": 478199852654.0,
+          "empenhado": 443247810038.0,
+          "liquidado": 377313304989.0,
+          "pago": 370943208404.0
         },
         {
           "codigo": "2",
           "nome": "Juros e Encargos da Dívida",
           "inicial": 643939797050.0,
           "atualizada": 643939797050.0,
-          "empenhado": 503876153705.0,
-          "liquidado": 498552904909.0,
-          "pago": 498552904909.0
+          "empenhado": 532556251614.0,
+          "liquidado": 527756421203.0,
+          "pago": 527756421203.0
         },
         {
           "codigo": "3",
           "nome": "Outras Despesas Correntes",
           "inicial": 2644253022371.0,
-          "atualizada": 2729559182015.0,
-          "empenhado": 2421511261230.0,
-          "liquidado": 2156638731179.0,
-          "pago": 2152240239546.0
+          "atualizada": 2729558562657.0,
+          "empenhado": 2457133779578.0,
+          "liquidado": 2215912089518.0,
+          "pago": 2210737481999.0
         },
         {
           "codigo": "4",
           "nome": "Investimentos",
           "inicial": 80820961867.0,
-          "atualizada": 83728251344.0,
-          "empenhado": 60068804623.0,
-          "liquidado": 31573962773.0,
-          "pago": 30522581917.0
+          "atualizada": 83710262702.0,
+          "empenhado": 61371829425.0,
+          "liquidado": 34126032734.0,
+          "pago": 33036213998.0
         },
         {
           "codigo": "5",
           "nome": "Inversões Financeiras",
           "inicial": 228703689140.0,
           "atualizada": 342591331598.0,
-          "empenhado": 306362317667.0,
-          "liquidado": 253018064744.0,
-          "pago": 252713072757.0
+          "empenhado": 316485580904.0,
+          "liquidado": 259249163226.0,
+          "pago": 259243250522.0
         },
         {
           "codigo": "6",
           "nome": "Amortização da Dívida",
           "inicial": 2220511416421.0,
           "atualizada": 2220511416421.0,
-          "empenhado": 1868333647425.0,
-          "liquidado": 1836749937938.0,
-          "pago": 1836749937938.0
+          "empenhado": 1881510685391.0,
+          "liquidado": 1853595113696.0,
+          "pago": 1853595113696.0
         },
         {
           "codigo": "9",
@@ -1358,16 +1358,16 @@
       "total": {
         "inicial": 6344324749874.0,
         "atualizada": 6533795439277.0,
-        "empenhado": 5600919782875.0,
-        "liquidado": 5149680169311.0,
-        "pago": 5138352356450.0
+        "empenhado": 5692305936950.0,
+        "liquidado": 5267952125368.0,
+        "pago": 5255311689823.0
       },
       "residuosEsferasMenosGND": {
         "inicial": 0.0,
         "atualizada": 0.0,
-        "empenhado": -1.0,
-        "liquidado": 0.0,
-        "pago": -1.0
+        "empenhado": 0.0,
+        "liquidado": 2.0,
+        "pago": 1.0
       }
     }
   ],
