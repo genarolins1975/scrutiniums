@@ -1693,8 +1693,8 @@
   ],
   "poupanca_sbpe": {
    "mes": "2026-10",
-   "valor": 1011234000.0,
-   "var_12m_pct": 0.44
+   "valor": 1010036000.0,
+   "var_12m_pct": 0.32
   },
   "nota": "Saldos em poder do público (M4 e componentes), fim de período. Letras financeiras e depósitos a prazo aqui excluem o que está com outras instituições financeiras; por isso não fecham com o IF.data."
  },

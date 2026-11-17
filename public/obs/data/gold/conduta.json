@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-16T20:59:52+00:00",
+ "gerado_em": "2026-11-17T19:42:27+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1325 processos sancionadores em 1ª instância, com 1432 decisões por apenado: 1361 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 375 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1329 processos sancionadores em 1ª instância, com 1436 decisões por apenado: 1365 multas somando R$ 78.7 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 152 apenados recorreram. 375 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (164 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-16",
+  "ultima_decisao": "2026-11-17",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17078,
-   "processos": 13129,
-   "apenados_distintos": 11462
+   "decisoes": 17082,
+   "processos": 13133,
+   "apenados_distintos": 11466
   },
   "janela_12m": {
-   "ini": "2025-11-16",
-   "decisoes": 1432,
-   "processos": 1325,
-   "multas_n": 1361,
-   "multas_valor": 78629100.0,
+   "ini": "2025-11-17",
+   "decisoes": 1436,
+   "processos": 1329,
+   "multas_n": 1365,
+   "multas_valor": 78729100.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 152,
-   "pj": 408,
-   "pf": 1024
+   "pj": 409,
+   "pf": 1027
   },
   "janela_12m_anterior": {
    "decisoes": 817,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1361,
-    "share": 95.04
+    "n": 1365,
+    "share": 95.06
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.12
+    "share": 4.11
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,38 +91,38 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 880,
-    "share": 61.45
+    "n": 883,
+    "share": 61.49
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 132,
-    "share": 9.22
+    "n": 134,
+    "share": 9.33
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 117,
-    "share": 8.17
+    "share": 8.15
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 108,
-    "share": 7.54
+    "n": 106,
+    "share": 7.38
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 97,
-    "share": 6.77
+    "n": 95,
+    "share": 6.62
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.77
+    "share": 3.76
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 25,
-    "share": 1.75
+    "share": 1.74
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
@@ -133,6 +133,11 @@
     "situacao": "PENALIDADE EXTINTA",
     "n": 7,
     "share": 0.49
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 3,
+    "share": 0.21
    },
    {
     "situacao": "PENALIDADE ENCAMINHADA PARA A STN",
@@ -153,13 +158,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11985,
+    "n": 11988,
     "share": 87.51
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 882,
-    "share": 6.44
+    "n": 884,
+    "share": 6.45
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -173,13 +178,13 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 115,
-    "share": 0.84
+    "n": 113,
+    "share": 0.82
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 97,
-    "share": 0.71
+    "n": 95,
+    "share": 0.69
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -195,12 +200,17 @@
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 3,
+    "share": 0.02
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3189
+   "n": 3193
   },
   "anual": [
    {
@@ -400,21 +410,61 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1295,
-    "processos": 1192,
-    "multas_n": 1230,
-    "multas_valor": 75716600.0,
+    "decisoes": 1299,
+    "processos": 1196,
+    "multas_n": 1234,
+    "multas_valor": 75816600.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
     "recursos": 137,
-    "pf": 934,
-    "pj": 361,
+    "pf": 937,
+    "pj": 362,
     "incompleto": true,
-    "recurso_share": 10.58,
-    "sem_penalidade_share": 4.09
+    "recurso_share": 10.55,
+    "sem_penalidade_share": 4.08
    }
   ],
   "recentes": [
+   {
+    "pas": "316067",
+    "nome": "IRMAOS PASSAURA S.A",
+    "pessoa": "PJ",
+    "decisao": "2026-11-17",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "315986",
+    "nome": "MARIA CECILIA DIAS DE MELLO FLORES",
+    "pessoa": "PF",
+    "decisao": "2026-11-17",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316155",
+    "nome": "RUDIMAR DALL ONDER",
+    "pessoa": "PF",
+    "decisao": "2026-11-17",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "300800",
+    "nome": "SANDRA MARIA LORUSSO VILAR",
+    "pessoa": "PF",
+    "decisao": "2026-11-17",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
    {
     "pas": "316211",
     "nome": "CORNELIUS LITTMANN",
@@ -774,46 +824,6 @@
     "multa": null,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO"
-   },
-   {
-    "pas": "293953",
-    "nome": "FIDUCIA SOCIEDADE DE CREDITO AO MICROEMPREENDEDOR E A EMPRESA DE PEQUENO PORTE LIMITADA",
-    "pessoa": "PJ",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 1048000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312215",
-    "nome": "FORIS GFS BR INSTITUICAO DE PAGAMENTO LTDA",
-    "pessoa": "PJ",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "273110",
-    "nome": "FRANCISCO CARLUCIO PORFIRIO",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "300935",
-    "nome": "GILBERTO FELIPE DE SOUZA JUNIOR",
-    "pessoa": "PF",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -941,7 +951,7 @@
    "finalizados": 329
   },
   "abertos_12m": {
-   "ini": "2025-11-16",
+   "ini": "2025-11-17",
    "processos": 62,
    "acusados": 164
   },

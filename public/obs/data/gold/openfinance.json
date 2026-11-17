@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:23+00:00"
+    "last_collected_at": "2026-11-17T18:10:40+00:00"
    },
    "obs": [
     {
@@ -128,7 +128,7 @@
      "estabilidade": 60.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 2
@@ -146,7 +146,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:23+00:00"
+    "last_collected_at": "2026-11-17T18:10:40+00:00"
    },
    "obs": [
     {
@@ -259,7 +259,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -277,7 +277,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:25+00:00"
+    "last_collected_at": "2026-11-17T18:10:42+00:00"
    },
    "obs": [
     {
@@ -390,7 +390,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -408,7 +408,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:32+00:00"
+    "last_collected_at": "2026-11-17T18:10:48+00:00"
    },
    "obs": [
     {
@@ -537,7 +537,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 3,
+    "dias_sem_atualizar": 4,
     "ultima_ref": "2026-11-13",
     "n_obs": 29,
     "n_revisoes": 0
@@ -555,7 +555,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:34+00:00"
+    "last_collected_at": "2026-11-17T18:10:51+00:00"
    },
    "obs": [
     {
@@ -668,7 +668,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -686,7 +686,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:30+00:00"
+    "last_collected_at": "2026-11-17T18:10:47+00:00"
    },
    "obs": [
     {
@@ -799,7 +799,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -817,7 +817,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:33+00:00"
+    "last_collected_at": "2026-11-17T18:10:50+00:00"
    },
    "obs": [
     {
@@ -946,7 +946,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 3,
+    "dias_sem_atualizar": 4,
     "ultima_ref": "2026-11-13",
     "n_obs": 29,
     "n_revisoes": 0
@@ -964,7 +964,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-16T19:18:36+00:00"
+    "last_collected_at": "2026-11-17T18:10:52+00:00"
    },
    "obs": [
     {
@@ -1077,7 +1077,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 17,
+    "dias_sem_atualizar": 18,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -1109,7 +1109,7 @@
    "organisation": "SANTANDER BRASIL",
    "chamadas_semana": 8427522889.0,
    "share_pct": 9.0,
-   "familias_api": 53,
+   "familias_api": 51,
    "papeis": [
     "CCORR",
     "CONTA",
@@ -1324,7 +1324,7 @@
    "organisation": "SANTANDER BRASIL",
    "chamadas_semana": 164590077.0,
    "share_pct": 0.2,
-   "familias_api": 53,
+   "familias_api": 51,
    "papeis": [
     "CCORR",
     "CONTA",
@@ -1568,7 +1568,7 @@
    "organisation": "SANTANDER BRASIL",
    "chamadas_semana": 1180957.0,
    "share_pct": 0.0,
-   "familias_api": 53,
+   "familias_api": 51,
    "papeis": [
     "CCORR",
     "CONTA",
