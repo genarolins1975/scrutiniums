@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-17T19:41:53+00:00",
+ "gerado_em": "2026-11-18T19:46:49+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 315,
-  "total_editais": 1186,
+  "total_contratos_if": 316,
+  "total_editais": 1195,
   "backfill_completo": false,
   "ranking": [
    {
@@ -267,6 +267,13 @@
     "contratos": 2,
     "ufs": 1,
     "como_receita": 1
+   },
+   {
+    "cnpj8": "88894548",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO UN",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "33136888",
@@ -543,6 +550,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "27165638000139-2-000149/2026",
+    "ente": "MUNICIPIO DE CASTELO",
+    "esfera": "Municipal",
+    "municipio": "Castelo",
+    "uf": "ES",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-11-16",
+    "vig_fim": "2031-12-31",
+    "valor": 1020205.07,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO UN",
+    "cnpj8": "88894548",
+    "url": "https://pncp.gov.br/contratos/27165638000139/2026/149"
+   },
    {
     "controle": "46177523000109-2-000055/2026",
     "ente": "MUNICIPIO DE SAO VICENTE",
@@ -1127,32 +1149,89 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
-   },
-   {
-    "controle": "75741330000137-2-000118/2026",
-    "ente": "MUNICIPIO DE IVAIPORA",
-    "esfera": "Municipal",
-    "municipio": "Ivaiporã",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-08",
-    "vig_fim": "2031-09-07",
-    "valor": 1610005.0,
-    "receita": false,
-    "banco": "ITAU UNIBANCO S.A",
-    "cnpj8": "60701190",
-    "url": "https://pncp.gov.br/contratos/75741330000137/2026/118"
    }
   ],
   "editais_recentes": [
    {
-    "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
-    "municipio": "Presidente Dutra",
-    "uf": "MA",
+    "ente": "MUNICIPIO DE GRANITO",
+    "municipio": "Granito",
+    "uf": "PE",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-16",
-    "url": "https://pncp.gov.br/compras/06138366000108/2026/31"
+    "publicacao": "2026-11-18",
+    "url": "https://pncp.gov.br/compras/11040888000102/2026/79"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO MIGUEL DAS MISSOES",
+    "municipio": "São Miguel das Missões",
+    "uf": "RS",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-18",
+    "url": "https://pncp.gov.br/compras/89971758000180/2026/1467"
+   },
+   {
+    "ente": "MUNICIPIO DE ITAIPE",
+    "municipio": "Itaipé",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-18",
+    "url": "https://pncp.gov.br/compras/18404756000161/2026/23"
+   },
+   {
+    "ente": "MUNICIPIO DE LUISLANDIA",
+    "municipio": "Luislândia",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/01612887000131/2026/14"
+   },
+   {
+    "ente": "MUNICIPIO DE CAPITOLIO",
+    "municipio": "Capitólio",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/16726028000140/2026/104"
+   },
+   {
+    "ente": "MUNICIPIO DE SANTO ANTONIO DA PATRULHA",
+    "municipio": "Santo Antônio da Patrulha",
+    "uf": "RS",
+    "modalidade": "Concorrência - Presencial",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/88814199000132/2026/280"
+   },
+   {
+    "ente": "MUNICIPIO DE BARRA FUNDA",
+    "municipio": "Barra Funda",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/94704004000102/2026/111"
+   },
+   {
+    "ente": "MUNICIPIO DE BARRA FUNDA",
+    "municipio": "Barra Funda",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/94704004000102/2026/109"
+   },
+   {
+    "ente": "MUNICIPIO DE BOTELHOS",
+    "municipio": "Botelhos",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-17",
+    "url": "https://pncp.gov.br/compras/17847641000189/2026/214"
    },
    {
     "ente": "MUNICIPIO DE MEDEIROS NETO",
@@ -1173,85 +1252,13 @@
     "url": "https://pncp.gov.br/compras/87246120000151/2026/223"
    },
    {
-    "ente": "MUNICIPIO DE RIO DOS INDIOS",
-    "municipio": "Rio dos Índios",
-    "uf": "RS",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-13",
-    "url": "https://pncp.gov.br/compras/94704103000186/2026/37"
-   },
-   {
-    "ente": "MUNICIPIO DE DOM FELICIANO",
-    "municipio": "Dom Feliciano",
-    "uf": "RS",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-13",
-    "url": "https://pncp.gov.br/compras/88601943000110/2026/310"
-   },
-   {
-    "ente": "SARANDI CAMARA MUNICIPAL",
-    "municipio": "Sarandi",
-    "uf": "PR",
+    "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
+    "municipio": "Presidente Dutra",
+    "uf": "MA",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/78844834000170/2026/25"
-   },
-   {
-    "ente": "MUNICIPIO DE SERRA CAIADA",
-    "municipio": "Serra Caiada",
-    "uf": "RN",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/08078412000156/2026/78"
-   },
-   {
-    "ente": "MUNICIPIO DE RONDON",
-    "municipio": "Rondon",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/75380071000166/2026/178"
-   },
-   {
-    "ente": "MUNICIPIO DE PIRAUBA",
-    "municipio": "Piraúba",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/18554147000199/2026/171"
-   },
-   {
-    "ente": "MUNICIPIO DE PROGRESSO",
-    "municipio": "Progresso",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/92454800000109/2026/1425"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTA MARIA DO OESTE",
-    "municipio": "Santa Maria do Oeste",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/95684544000126/2026/44"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO MIGUEL DO IGUACU",
-    "municipio": "São Miguel do Iguaçu",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-12",
-    "url": "https://pncp.gov.br/compras/76206499000150/2026/226"
+    "publicacao": "2026-11-16",
+    "url": "https://pncp.gov.br/compras/06138366000108/2026/31"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
