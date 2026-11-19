@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-18T19:47:13+00:00",
+ "gerado_em": "2026-11-19T19:52:36+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -62,7 +62,7 @@
   "beta": 1.121,
   "r2_nao_centrado": 0.81,
   "ep_beta": 0.0176,
-  "n_ifs": 958,
+  "n_ifs": 959,
   "m_produtos": {
    "capital-de-giro-pj": 1.03,
    "cartao-de-credito-pf": 0.76,
@@ -77,7 +77,7 @@
    0.25,
    4.0
   ],
-  "estimativas": 6024,
+  "estimativas": 6031,
   "estimativas_baixa_cobertura": 19,
   "estimativas_teto_sanidade": 63,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
@@ -96,7 +96,7 @@
   "data_base": "202606",
   "mercado_total_brl": 689327220353.85,
   "n_instituicoes": 205,
-  "share_segmento_pct": 20.99,
+  "share_segmento_pct": 20.98,
   "crescimento_4t_pct": 10.83,
   "crescimento_4t_n_pareado": 179,
   "crescimento_1t_pct": 2.18,
@@ -227,7 +227,7 @@
     "npl_prod_est": {
      "pct": 0.02,
      "m_produto": null,
-     "phi_if": 1.66,
+     "phi_if": 1.65,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4525,7 +4525,7 @@
     "npl_prod_est": {
      "pct": 6.96,
      "m_produto": null,
-     "phi_if": 0.86,
+     "phi_if": 0.85,
      "cobertura_if_pct": 48.0,
      "baixa_cobertura": false,
      "perfil_neutro": true,

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-18T19:47:00+00:00",
+ "gerado_em": "2026-11-19T19:52:19+00:00",
  "paginas": 1457,
  "anomes": "202606",
  "instituicoes": [
@@ -14577,7 +14577,7 @@
  "sem_balanco_na_data_base": [
   {
    "cod": "C0031976",
-   "nome": "BRB",
+   "nome": "C0031976",
    "ultima_entrega": "202509",
    "ativo_ultima_entrega": 81653987621.78,
    "com_pagina": true
@@ -14598,7 +14598,7 @@
   },
   {
    "cod": "C0084514",
-   "nome": "TERRA INVESTIMENTOS DTVM - PRUDENCIAL",
+   "nome": "C0084514",
    "ultima_entrega": "202512",
    "ativo_ultima_entrega": 792391272.14,
    "com_pagina": true
@@ -14633,7 +14633,7 @@
   },
   {
    "cod": "C0086354",
-   "nome": "TRUSTEE/BANVOX - PRUDENCIAL",
+   "nome": "C0086354",
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 90688261.88,
    "com_pagina": true

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-18T19:47:13+00:00",
+ "gerado_em": "2026-11-19T19:52:36+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -62,7 +62,7 @@
   "beta": 1.121,
   "r2_nao_centrado": 0.81,
   "ep_beta": 0.0176,
-  "n_ifs": 958,
+  "n_ifs": 959,
   "m_produtos": {
    "capital-de-giro-pj": 1.03,
    "cartao-de-credito-pf": 0.76,
@@ -77,7 +77,7 @@
    0.25,
    4.0
   ],
-  "estimativas": 6024,
+  "estimativas": 6031,
   "estimativas_baixa_cobertura": 19,
   "estimativas_teto_sanidade": 63,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
@@ -114,8 +114,8 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 667143454407.81,
-     "n_inst": 227
+     "total_brl": 673603139742.46,
+     "n_inst": 228
     },
     {
      "anomes": "202512",
@@ -153,7 +153,7 @@
      {
       "anomes": "202509",
       "agg_pct": 11.27,
-      "n": 227
+      "n": 228
      },
      {
       "anomes": "202512",
@@ -219,13 +219,13 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 736332313332.92,
-     "n_inst": 794
+     "total_brl": 736342233034.27,
+     "n_inst": 795
     },
     {
      "anomes": "202512",
-     "total_brl": 765730340308.66,
-     "n_inst": 787
+     "total_brl": 769180470705.91,
+     "n_inst": 788
     },
     {
      "anomes": "202603",
@@ -258,12 +258,12 @@
      {
       "anomes": "202509",
       "agg_pct": 0.9,
-      "n": 794
+      "n": 795
      },
      {
       "anomes": "202512",
       "agg_pct": 1.0,
-      "n": 787
+      "n": 788
      },
      {
       "anomes": "202603",
@@ -305,8 +305,8 @@
    "nota_taxonomia": "",
    "modalidade_original": "emprestimo_sem_consignacao_em_folha",
    "data_base": "202606",
-   "mercado_total_brl": 403370226062.42,
-   "n_instituicoes": 882,
+   "mercado_total_brl": 403374214867.34,
+   "n_instituicoes": 883,
    "share_segmento_pct": 8.3,
    "crescimento_4t_pct": 7.95,
    "crescimento_4t_n_pareado": 845,
@@ -324,13 +324,13 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 384658146291.52,
-     "n_inst": 901
+     "total_brl": 385132872947.58,
+     "n_inst": 902
     },
     {
      "anomes": "202512",
-     "total_brl": 397259603686.2,
-     "n_inst": 893
+     "total_brl": 398020673899.66,
+     "n_inst": 894
     },
     {
      "anomes": "202603",
@@ -339,15 +339,15 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 403370226062.42,
-     "n_inst": 882
+     "total_brl": 403374214867.34,
+     "n_inst": 883
     }
    ],
    "atraso15": {
     "agg_pct": 6.38,
-    "n": 882,
+    "n": 883,
     "mediana_pct": 3.68,
-    "p25_pct": 1.81,
+    "p25_pct": 1.8,
     "p75_pct": 7.78,
     "serie": [
      {
@@ -363,12 +363,12 @@
      {
       "anomes": "202509",
       "agg_pct": 5.77,
-      "n": 901
+      "n": 902
      },
      {
       "anomes": "202512",
       "agg_pct": 5.9,
-      "n": 893
+      "n": 894
      },
      {
       "anomes": "202603",
@@ -378,7 +378,7 @@
      {
       "anomes": "202606",
       "agg_pct": 6.38,
-      "n": 882
+      "n": 883
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -389,10 +389,10 @@
     "top5_pct": 52.1,
     "top10_pct": 65.0,
     "hhi": 684,
-    "n_inst": 882,
+    "n_inst": 883,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Crédito pessoal não consignado: carteira cresceu 7.9% em 4 trimestres (amostra pareada, n=845); representa 8.3% da carteira PF no universo IF.data; atraso ≥15d agregado de 6.4% da carteira (n=882); top-5 concentra 52% (HHI 684).",
+   "sintese": "Crédito pessoal não consignado: carteira cresceu 7.9% em 4 trimestres (amostra pareada, n=845); representa 8.3% da carteira PF no universo IF.data; atraso ≥15d agregado de 6.4% da carteira (n=883); top-5 concentra 52% (HHI 684).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0052058",
@@ -515,8 +515,8 @@
    "nota_taxonomia": "",
    "modalidade_original": "habitacao",
    "data_base": "202606",
-   "mercado_total_brl": 1414184458720.55,
-   "n_instituicoes": 126,
+   "mercado_total_brl": 1414184660554.35,
+   "n_instituicoes": 127,
    "share_segmento_pct": 29.11,
    "crescimento_4t_pct": 13.05,
    "crescimento_4t_n_pareado": 113,
@@ -549,16 +549,16 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 1414184458720.55,
-     "n_inst": 126
+     "total_brl": 1414184660554.35,
+     "n_inst": 127
     }
    ],
    "atraso15": {
     "agg_pct": 0.44,
-    "n": 126,
+    "n": 127,
     "mediana_pct": 0.12,
     "p25_pct": 0.0,
-    "p75_pct": 0.42,
+    "p75_pct": 0.4,
     "serie": [
      {
       "anomes": "202503",
@@ -588,7 +588,7 @@
      {
       "anomes": "202606",
       "agg_pct": 0.44,
-      "n": 126
+      "n": 127
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -599,10 +599,10 @@
     "top5_pct": 96.0,
     "top10_pct": 99.0,
     "hhi": 5008,
-    "n_inst": 126,
+    "n_inst": 127,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Crédito imobiliário (habitação): carteira cresceu 13.0% em 4 trimestres (amostra pareada, n=113); representa 29.1% da carteira PF no universo IF.data; atraso ≥15d agregado de 0.4% da carteira (n=126); top-5 concentra 96% (HHI 5008).",
+   "sintese": "Crédito imobiliário (habitação): carteira cresceu 13.0% em 4 trimestres (amostra pareada, n=113); representa 29.1% da carteira PF no universo IF.data; atraso ≥15d agregado de 0.4% da carteira (n=127); top-5 concentra 96% (HHI 5008).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0051626",
@@ -725,8 +725,8 @@
    "nota_taxonomia": "",
    "modalidade_original": "capital_de_giro",
    "data_base": "202606",
-   "mercado_total_brl": 785106715334.26,
-   "n_instituicoes": 746,
+   "mercado_total_brl": 785502900661.23,
+   "n_instituicoes": 747,
    "share_segmento_pct": 23.91,
    "crescimento_4t_pct": 10.47,
    "crescimento_4t_n_pareado": 719,
@@ -744,13 +744,13 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 727577394107.2,
-     "n_inst": 766
+     "total_brl": 727848980493.23,
+     "n_inst": 767
     },
     {
      "anomes": "202512",
-     "total_brl": 761713910032.42,
-     "n_inst": 765
+     "total_brl": 761981691675.9,
+     "n_inst": 766
     },
     {
      "anomes": "202603",
@@ -759,16 +759,16 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 785106715334.26,
-     "n_inst": 746
+     "total_brl": 785502900661.23,
+     "n_inst": 747
     }
    ],
    "atraso15": {
-    "agg_pct": 2.4,
-    "n": 746,
+    "agg_pct": 2.41,
+    "n": 747,
     "mediana_pct": 1.79,
     "p25_pct": 0.84,
-    "p75_pct": 3.6,
+    "p75_pct": 3.61,
     "serie": [
      {
       "anomes": "202503",
@@ -783,12 +783,12 @@
      {
       "anomes": "202509",
       "agg_pct": 1.98,
-      "n": 766
+      "n": 767
      },
      {
       "anomes": "202512",
       "agg_pct": 1.99,
-      "n": 765
+      "n": 766
      },
      {
       "anomes": "202603",
@@ -797,8 +797,8 @@
      },
      {
       "anomes": "202606",
-      "agg_pct": 2.4,
-      "n": 746
+      "agg_pct": 2.41,
+      "n": 747
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -806,18 +806,18 @@
    },
    "concentracao": {
     "top1_pct": 15.6,
-    "top5_pct": 57.5,
-    "top10_pct": 70.4,
+    "top5_pct": 57.4,
+    "top10_pct": 70.3,
     "hhi": 778,
-    "n_inst": 746,
+    "n_inst": 747,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Capital de giro: carteira cresceu 10.5% em 4 trimestres (amostra pareada, n=719); representa 23.9% da carteira PJ no universo IF.data; atraso ≥15d agregado de 2.4% da carteira (n=746); top-5 concentra 58% (HHI 778).",
+   "sintese": "Capital de giro: carteira cresceu 10.5% em 4 trimestres (amostra pareada, n=719); representa 23.9% da carteira PJ no universo IF.data; atraso ≥15d agregado de 2.4% da carteira (n=747); top-5 concentra 57% (HHI 778).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0010045",
     "nome": "BRADESCO",
-    "share_pct": 15.6
+    "share_pct": 15.59
    },
    "taxas_disponiveis": true
   },
@@ -830,8 +830,8 @@
    "nota_taxonomia": "",
    "modalidade_original": "cheque_especial_e_conta_garantida",
    "data_base": "202606",
-   "mercado_total_brl": 67193731452.28,
-   "n_instituicoes": 578,
+   "mercado_total_brl": 67254250826.43,
+   "n_instituicoes": 579,
    "share_segmento_pct": 2.05,
    "crescimento_4t_pct": 5.35,
    "crescimento_4t_n_pareado": 575,
@@ -849,8 +849,8 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 61255274974.68,
-     "n_inst": 590
+     "total_brl": 61270776584.6,
+     "n_inst": 591
     },
     {
      "anomes": "202512",
@@ -864,15 +864,15 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 67193731452.28,
-     "n_inst": 578
+     "total_brl": 67254250826.43,
+     "n_inst": 579
     }
    ],
    "atraso15": {
-    "agg_pct": 11.82,
-    "n": 578,
+    "agg_pct": 11.81,
+    "n": 579,
     "mediana_pct": 10.25,
-    "p25_pct": 4.25,
+    "p25_pct": 4.24,
     "p75_pct": 20.72,
     "serie": [
      {
@@ -887,8 +887,8 @@
      },
      {
       "anomes": "202509",
-      "agg_pct": 10.2,
-      "n": 590
+      "agg_pct": 10.19,
+      "n": 591
      },
      {
       "anomes": "202512",
@@ -902,8 +902,8 @@
      },
      {
       "anomes": "202606",
-      "agg_pct": 11.82,
-      "n": 578
+      "agg_pct": 11.81,
+      "n": 579
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -912,17 +912,17 @@
    "concentracao": {
     "top1_pct": 25.9,
     "top5_pct": 63.0,
-    "top10_pct": 71.0,
-    "hhi": 1083,
-    "n_inst": 578,
+    "top10_pct": 70.9,
+    "hhi": 1081,
+    "n_inst": 579,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Cheque especial e conta garantida: carteira cresceu 5.3% em 4 trimestres (amostra pareada, n=575); representa 2.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 11.8% da carteira (n=578); top-5 concentra 63% (HHI 1083).",
+   "sintese": "Cheque especial e conta garantida: carteira cresceu 5.3% em 4 trimestres (amostra pareada, n=575); representa 2.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 11.8% da carteira (n=579); top-5 concentra 63% (HHI 1081).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0010069",
     "nome": "ITAU",
-    "share_pct": 25.93
+    "share_pct": 25.91
    },
    "taxas_disponiveis": true
   },
@@ -935,9 +935,9 @@
    "nota_taxonomia": "",
    "modalidade_original": "operacoes_com_recebiveis",
    "data_base": "202606",
-   "mercado_total_brl": 216291273286.87,
-   "n_instituicoes": 607,
-   "share_segmento_pct": 6.59,
+   "mercado_total_brl": 216292851838.41,
+   "n_instituicoes": 608,
+   "share_segmento_pct": 6.58,
    "crescimento_4t_pct": 7.43,
    "crescimento_4t_n_pareado": 593,
    "crescimento_1t_pct": 4.65,
@@ -969,15 +969,15 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 216291273286.87,
-     "n_inst": 607
+     "total_brl": 216292851838.41,
+     "n_inst": 608
     }
    ],
    "atraso15": {
     "agg_pct": 1.25,
-    "n": 607,
+    "n": 608,
     "mediana_pct": 4.14,
-    "p25_pct": 1.29,
+    "p25_pct": 1.24,
     "p75_pct": 8.52,
     "serie": [
      {
@@ -1008,7 +1008,7 @@
      {
       "anomes": "202606",
       "agg_pct": 1.25,
-      "n": 607
+      "n": 608
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -1019,10 +1019,10 @@
     "top5_pct": 52.7,
     "top10_pct": 72.6,
     "hhi": 714,
-    "n_inst": 607,
+    "n_inst": 608,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Antecipação de recebíveis: carteira cresceu 7.4% em 4 trimestres (amostra pareada, n=593); representa 6.6% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.2% da carteira (n=607); top-5 concentra 53% (HHI 714).",
+   "sintese": "Antecipação de recebíveis: carteira cresceu 7.4% em 4 trimestres (amostra pareada, n=593); representa 6.6% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.2% da carteira (n=608); top-5 concentra 53% (HHI 714).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0010069",
@@ -1040,9 +1040,9 @@
    "nota_taxonomia": "",
    "modalidade_original": "investimento",
    "data_base": "202606",
-   "mercado_total_brl": 322515120608.97003,
-   "n_instituicoes": 621,
-   "share_segmento_pct": 9.82,
+   "mercado_total_brl": 323202614558.3,
+   "n_instituicoes": 622,
+   "share_segmento_pct": 9.84,
    "crescimento_4t_pct": 1.59,
    "crescimento_4t_n_pareado": 599,
    "crescimento_1t_pct": 0.62,
@@ -1059,8 +1059,8 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 315270450357.52,
-     "n_inst": 641
+     "total_brl": 315328762979.47,
+     "n_inst": 642
     },
     {
      "anomes": "202512",
@@ -1074,16 +1074,16 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 322515120608.97003,
-     "n_inst": 621
+     "total_brl": 323202614558.3,
+     "n_inst": 622
     }
    ],
    "atraso15": {
     "agg_pct": 1.36,
-    "n": 621,
+    "n": 622,
     "mediana_pct": 1.12,
     "p25_pct": 0.49,
-    "p75_pct": 2.27,
+    "p75_pct": 2.34,
     "serie": [
      {
       "anomes": "202503",
@@ -1098,7 +1098,7 @@
      {
       "anomes": "202509",
       "agg_pct": 0.98,
-      "n": 641
+      "n": 642
      },
      {
       "anomes": "202512",
@@ -1113,26 +1113,26 @@
      {
       "anomes": "202606",
       "agg_pct": 1.36,
-      "n": 621
+      "n": 622
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
     "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
    },
    "concentracao": {
-    "top1_pct": 28.9,
-    "top5_pct": 57.3,
-    "top10_pct": 68.8,
-    "hhi": 1114,
-    "n_inst": 621,
+    "top1_pct": 28.8,
+    "top5_pct": 57.1,
+    "top10_pct": 68.6,
+    "hhi": 1110,
+    "n_inst": 622,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Financiamento de investimentos: carteira cresceu 1.6% em 4 trimestres (amostra pareada, n=599); representa 9.8% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.4% da carteira (n=621); top-5 concentra 57% (HHI 1114).",
+   "sintese": "Financiamento de investimentos: carteira cresceu 1.6% em 4 trimestres (amostra pareada, n=599); representa 9.8% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.4% da carteira (n=622); top-5 concentra 57% (HHI 1110).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0049906",
     "nome": "BB",
-    "share_pct": 28.89
+    "share_pct": 28.83
    },
    "taxas_disponiveis": false
   },
@@ -1252,7 +1252,7 @@
    "data_base": "202606",
    "mercado_total_brl": 689327220353.85,
    "n_instituicoes": 205,
-   "share_segmento_pct": 20.99,
+   "share_segmento_pct": 20.98,
    "crescimento_4t_pct": 10.83,
    "crescimento_4t_n_pareado": 179,
    "crescimento_1t_pct": 2.18,
@@ -1355,8 +1355,8 @@
    "nota_taxonomia": "",
    "modalidade_original": "rural_e_agroindustrial",
    "data_base": "202606",
-   "mercado_total_brl": 91072422929.96,
-   "n_instituicoes": 305,
+   "mercado_total_brl": 91092814278.59,
+   "n_instituicoes": 306,
    "share_segmento_pct": 2.77,
    "crescimento_4t_pct": 17.52,
    "crescimento_4t_n_pareado": 267,
@@ -1389,13 +1389,13 @@
     },
     {
      "anomes": "202606",
-     "total_brl": 91072422929.96,
-     "n_inst": 305
+     "total_brl": 91092814278.59,
+     "n_inst": 306
     }
    ],
    "atraso15": {
     "agg_pct": 0.34,
-    "n": 305,
+    "n": 306,
     "mediana_pct": 0.0,
     "p25_pct": 0.0,
     "p75_pct": 0.0,
@@ -1428,7 +1428,7 @@
      {
       "anomes": "202606",
       "agg_pct": 0.34,
-      "n": 305
+      "n": 306
      }
     ],
     "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -1439,10 +1439,10 @@
     "top5_pct": 65.7,
     "top10_pct": 81.6,
     "hhi": 1034,
-    "n_inst": 305,
+    "n_inst": 306,
     "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
    },
-   "sintese": "Crédito rural PJ: carteira cresceu 17.5% em 4 trimestres (amostra pareada, n=267); representa 2.8% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.3% da carteira (n=305); top-5 concentra 66% (HHI 1034).",
+   "sintese": "Crédito rural PJ: carteira cresceu 17.5% em 4 trimestres (amostra pareada, n=267); representa 2.8% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.3% da carteira (n=306); top-5 concentra 66% (HHI 1034).",
    "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
    "lider": {
     "cod": "C0010069",

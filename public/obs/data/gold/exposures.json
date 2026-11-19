@@ -4,7 +4,7 @@
  "anomes": "202606",
  "setores": {
   "comercio_reparacao_de_veiculos_automotores_e_mot": {
-   "total_brl": 574350163250.8597,
+   "total_brl": 574405495369.5298,
    "top_volume": [
     {
      "cod_inst": "C0010045",
@@ -71,7 +71,7 @@
    ]
   },
   "outros": {
-   "total_brl": 572204806656.5001,
+   "total_brl": 572342318208.3202,
    "top_volume": [
     {
      "cod_inst": "C0010045",
@@ -138,7 +138,7 @@
    ]
   },
   "industrias_de_transformacao": {
-   "total_brl": 506029336009.7203,
+   "total_brl": 506106292785.6403,
    "top_volume": [
     {
      "cod_inst": "C0010069",
@@ -205,7 +205,7 @@
    ]
   },
   "transporte_armazenagem_e_correio": {
-   "total_brl": 275031822407.91986,
+   "total_brl": 275818777216.5999,
    "top_volume": [
     {
      "cod_inst": "33657248",
@@ -272,7 +272,7 @@
    ]
   },
   "servicos_industriais_de_utilidade_publica": {
-   "total_brl": 245545071282.47003,
+   "total_brl": 245558639704.77005,
    "top_volume": [
     {
      "cod_inst": "33657248",
@@ -406,7 +406,7 @@
    ]
   },
   "construcao": {
-   "total_brl": 167491469740.93005,
+   "total_brl": 167591971688.33008,
    "top_volume": [
     {
      "cod_inst": "C0051626",
@@ -609,23 +609,23 @@
  },
  "portes_sistema": {
   "micro": {
-   "total_brl": 181758082959.9899,
+   "total_brl": 181785180036.59995,
    "share_pct": 7.0
   },
   "pequena": {
-   "total_brl": 412437806531.6395,
+   "total_brl": 412571378663.1395,
    "share_pct": 15.9
   },
   "media": {
-   "total_brl": 711369413909.0107,
+   "total_brl": 712007518606.2806,
    "share_pct": 27.4
   },
   "grande": {
-   "total_brl": 1294457515693.89,
+   "total_brl": 1294822412053.55,
    "share_pct": 49.8
   }
  },
- "pme_share_sistema_pct": 22.9,
+ "pme_share_sistema_pct": 22.8,
  "ranking_pme": [
   {
    "cod_inst": "08561701",

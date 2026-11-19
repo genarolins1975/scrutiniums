@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-18T19:46:56+00:00",
+  "atualizado_em": "2026-11-19T19:52:14+00:00",
   "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela.",
   "cnpj": "raiz 59.109.165"
  },
@@ -1194,8 +1194,8 @@
     "carteira_brl": 15897721460.86,
     "atraso15_pct": 4.73,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 91.5,
-    "n_universo": 621,
+    "percentil_no_produto": 91.3,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",
@@ -1226,8 +1226,8 @@
     "carteira_brl": 5894365568.5,
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 4.14,
-    "percentil_no_produto": 14.9,
-    "n_universo": 607,
+    "percentil_no_produto": 15.0,
+    "n_universo": 608,
     "serie": [
      {
       "p": "2025-T2",
@@ -1291,7 +1291,7 @@
     "atraso15_pct": 14.44,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 93.4,
-    "n_universo": 746,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",
@@ -1323,7 +1323,7 @@
     "atraso15_pct": 28.68,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 92.1,
-    "n_universo": 882,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",

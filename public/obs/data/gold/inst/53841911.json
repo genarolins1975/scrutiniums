@@ -21,7 +21,7 @@
    "ultima_entrega": "2025-T4",
    "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2025-T4; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-11-18T19:46:59+00:00",
+  "atualizado_em": "2026-11-19T19:52:19+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 53.841.911"
  },
@@ -1646,7 +1646,7 @@
     "atraso15_pct": 0.3,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 16.0,
-    "n_universo": 746,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",
@@ -1678,7 +1678,7 @@
     "atraso15_pct": 0.43,
     "mediana_produto_pct": 3.68,
     "percentil_no_produto": 9.4,
-    "n_universo": 882,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",
@@ -1710,7 +1710,7 @@
     "atraso15_pct": 26.24,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 95.2,
-    "n_universo": 607,
+    "n_universo": 608,
     "serie": [
      {
       "p": "2025-T2",
@@ -1740,9 +1740,9 @@
     "seg": "PJ",
     "carteira_brl": 416003.56,
     "atraso15_pct": 0.14,
-    "mediana_produto_pct": 10.34,
-    "percentil_no_produto": 12.1,
-    "n_universo": 578,
+    "mediana_produto_pct": 10.25,
+    "percentil_no_produto": 12.3,
+    "n_universo": 579,
     "serie": [
      {
       "p": "2025-T2",
@@ -1773,8 +1773,8 @@
     "carteira_brl": 321839.03,
     "atraso15_pct": 4.39,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 89.2,
-    "n_universo": 621,
+    "percentil_no_produto": 89.0,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",

@@ -19690,11 +19690,11 @@
  "sem_balanco_na_data_base": [
   {
    "cod_inst": "C0031976",
-   "nome": "BRB",
-   "tcb": "B1",
-   "uf": "DF",
-   "sr": "S3",
-   "situacao": "A",
+   "nome": "C0031976",
+   "tcb": null,
+   "uf": null,
+   "sr": null,
+   "situacao": null,
    "ultima_entrega": "202509",
    "ativo_ultima_entrega": 81653987621.78,
    "nunca_entregou": false
@@ -19723,11 +19723,11 @@
   },
   {
    "cod_inst": "C0084514",
-   "nome": "TERRA INVESTIMENTOS DTVM - PRUDENCIAL",
-   "tcb": "N2",
-   "uf": "SP",
-   "sr": "S4",
-   "situacao": "A",
+   "nome": "C0084514",
+   "tcb": null,
+   "uf": null,
+   "sr": null,
+   "situacao": null,
    "ultima_entrega": "202512",
    "ativo_ultima_entrega": 792391272.14,
    "nunca_entregou": false
@@ -19778,11 +19778,11 @@
   },
   {
    "cod_inst": "C0086354",
-   "nome": "TRUSTEE/BANVOX - PRUDENCIAL",
-   "tcb": "N2",
-   "uf": "SP",
-   "sr": "S4",
-   "situacao": "A",
+   "nome": "C0086354",
+   "tcb": null,
+   "uf": null,
+   "sr": null,
+   "situacao": null,
    "ultima_entrega": "202603",
    "ativo_ultima_entrega": 90688261.88,
    "nunca_entregou": false

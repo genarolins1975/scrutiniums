@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-18T19:46:57+00:00",
+  "atualizado_em": "2026-11-19T19:52:16+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 91.159.764"
  },
@@ -2035,7 +2035,7 @@
     "atraso15_pct": 0.54,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 19.6,
-    "n_universo": 746,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",
@@ -2066,8 +2066,8 @@
     "carteira_brl": 209809954.92,
     "atraso15_pct": 1.97,
     "mediana_produto_pct": 1.12,
-    "percentil_no_produto": 71.3,
-    "n_universo": 621,
+    "percentil_no_produto": 71.2,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",
@@ -2162,8 +2162,8 @@
     "carteira_brl": 157521708.71,
     "atraso15_pct": 2.69,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 37.8,
-    "n_universo": 882,
+    "percentil_no_produto": 37.9,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",
@@ -2193,9 +2193,9 @@
     "seg": "PJ",
     "carteira_brl": 132848704.91,
     "atraso15_pct": 8.54,
-    "mediana_produto_pct": 10.34,
-    "percentil_no_produto": 43.8,
-    "n_universo": 578,
+    "mediana_produto_pct": 10.25,
+    "percentil_no_produto": 43.9,
+    "n_universo": 579,
     "serie": [
      {
       "p": "2025-T2",
@@ -2258,8 +2258,8 @@
     "carteira_brl": 35589280.37,
     "atraso15_pct": 0.08,
     "mediana_produto_pct": 0.12,
-    "percentil_no_produto": 45.6,
-    "n_universo": 126,
+    "percentil_no_produto": 46.0,
+    "n_universo": 127,
     "serie": [
      {
       "p": "2025-T2",
@@ -2290,8 +2290,8 @@
     "carteira_brl": 33785463.02,
     "atraso15_pct": 2.16,
     "mediana_produto_pct": 4.14,
-    "percentil_no_produto": 32.3,
-    "n_universo": 607,
+    "percentil_no_produto": 32.5,
+    "n_universo": 608,
     "serie": [
      {
       "p": "2025-T2",
@@ -2379,7 +2379,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.0,
     "percentil_no_produto": 0.0,
-    "n_universo": 305,
+    "n_universo": 306,
     "serie": [
      {
       "p": "2025-T2",

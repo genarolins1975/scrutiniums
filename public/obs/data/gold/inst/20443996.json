@@ -21,7 +21,7 @@
    "ultima_entrega": "2026-T1",
    "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-11-18T19:46:59+00:00",
+  "atualizado_em": "2026-11-19T19:52:19+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 20.443.996"
  },
@@ -2001,8 +2001,8 @@
     "carteira_brl": 85030062.36,
     "atraso15_pct": 13.42,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 84.3,
-    "n_universo": 882,
+    "percentil_no_produto": 84.4,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",
@@ -2114,7 +2114,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 0.0,
-    "n_universo": 621,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",
@@ -2142,7 +2142,7 @@
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 1.79,
     "percentil_no_produto": 0.0,
-    "n_universo": 746,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",

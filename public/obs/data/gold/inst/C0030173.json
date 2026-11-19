@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-18T19:46:57+00:00",
+  "atualizado_em": "2026-11-19T19:52:16+00:00",
   "aviso_pares": null,
   "cnpj": "92.702.067/0001-96 (companhia listada/holding)"
  },
@@ -1094,8 +1094,8 @@
     "carteira_brl": 9001688377.92,
     "atraso15_pct": 3.16,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 71.7,
-    "n_universo": 746,
+    "percentil_no_produto": 71.6,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",
@@ -1126,8 +1126,8 @@
     "carteira_brl": 5535971861.35,
     "atraso15_pct": 0.07,
     "mediana_produto_pct": 0.12,
-    "percentil_no_produto": 41.6,
-    "n_universo": 126,
+    "percentil_no_produto": 42.1,
+    "n_universo": 127,
     "serie": [
      {
       "p": "2025-T2",
@@ -1158,8 +1158,8 @@
     "carteira_brl": 3581917673.04,
     "atraso15_pct": 5.31,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 64.2,
-    "n_universo": 882,
+    "percentil_no_produto": 64.3,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",
@@ -1287,7 +1287,7 @@
     "atraso15_pct": 1.28,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 55.6,
-    "n_universo": 621,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",
@@ -1317,9 +1317,9 @@
     "seg": "PJ",
     "carteira_brl": 314254818.98,
     "atraso15_pct": 26.52,
-    "mediana_produto_pct": 10.34,
+    "mediana_produto_pct": 10.25,
     "percentil_no_produto": 85.8,
-    "n_universo": 578,
+    "n_universo": 579,
     "serie": [
      {
       "p": "2025-T2",
@@ -1350,8 +1350,8 @@
     "carteira_brl": 256480896.3,
     "atraso15_pct": 0.0,
     "mediana_produto_pct": 0.0,
-    "percentil_no_produto": 82.2,
-    "n_universo": 305,
+    "percentil_no_produto": 82.3,
+    "n_universo": 306,
     "serie": [
      {
       "p": "2025-T2",
@@ -1383,7 +1383,7 @@
     "atraso15_pct": 12.38,
     "mediana_produto_pct": 4.14,
     "percentil_no_produto": 84.2,
-    "n_universo": 607,
+    "n_universo": 608,
     "serie": [
      {
       "p": "2025-T2",

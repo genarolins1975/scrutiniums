@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-18T19:46:53+00:00",
+  "atualizado_em": "2026-11-19T19:52:10+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 05.477.038"
  },
@@ -2124,8 +2124,8 @@
     "carteira_brl": 40782769.9,
     "atraso15_pct": 1.73,
     "mediana_produto_pct": 1.79,
-    "percentil_no_produto": 48.9,
-    "n_universo": 746,
+    "percentil_no_produto": 48.8,
+    "n_universo": 747,
     "serie": [
      {
       "p": "2025-T2",
@@ -2188,8 +2188,8 @@
     "carteira_brl": 7930355.61,
     "atraso15_pct": 5.42,
     "mediana_produto_pct": 4.14,
-    "percentil_no_produto": 58.7,
-    "n_universo": 607,
+    "percentil_no_produto": 58.8,
+    "n_universo": 608,
     "serie": [
      {
       "p": "2025-T2",
@@ -2221,7 +2221,7 @@
     "atraso15_pct": 0.23,
     "mediana_produto_pct": 1.12,
     "percentil_no_produto": 14.8,
-    "n_universo": 621,
+    "n_universo": 622,
     "serie": [
      {
       "p": "2025-T2",
@@ -2252,8 +2252,8 @@
     "carteira_brl": 3000248.23,
     "atraso15_pct": 2.77,
     "mediana_produto_pct": 3.68,
-    "percentil_no_produto": 38.6,
-    "n_universo": 882,
+    "percentil_no_produto": 38.7,
+    "n_universo": 883,
     "serie": [
      {
       "p": "2025-T2",
@@ -2347,9 +2347,9 @@
     "seg": "PJ",
     "carteira_brl": 871166.67,
     "atraso15_pct": 31.91,
-    "mediana_produto_pct": 10.34,
-    "percentil_no_produto": 93.2,
-    "n_universo": 578,
+    "mediana_produto_pct": 10.25,
+    "percentil_no_produto": 93.3,
+    "n_universo": 579,
     "serie": [
      {
       "p": "2025-T2",
