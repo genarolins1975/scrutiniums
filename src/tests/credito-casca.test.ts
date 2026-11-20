@@ -185,10 +185,10 @@ describe("3. o HTML que o servidor entrega para cada coleção servida pela apli
     expect(htmlRotulo(indiceCasca(), c.rota, CLASSE_ROTULO_SPA)).toContain(`<span>${c.observatorio} · ${c.colecao}`);
   });
 
-  // Decisão do dono de 10/11/2026: os painéis das Famílias saem da aplicação do Crédito. Seis endereços antigos redirecionam
-  // para a página nova (src/tests/redirecionamento-reescritos.test.ts); os três com perda declarada continuam servindo a vista
-  // antiga, que já não pertence às Famílias no registro nem aparece na navegação. A casca conferida aqui é a que o route
-  // handler montaria: para os seis redirecionados o pedido não chega a ele, e a asserção vale como defesa.
+  // Decisão do dono de 10/11/2026: os painéis das Famílias saem da aplicação do Crédito. Os nove endereços antigos redirecionam
+  // para a página nova (src/tests/redirecionamento-reescritos.test.ts; os três que tinham perda declarada entraram na lista no
+  // mesmo dia, fechada a paridade). A casca conferida aqui é a que o route handler montaria: para um endereço redirecionado o
+  // pedido não chega a ele, e a asserção vale como defesa.
   it("as vistas substituídas por página Next saem do registro; a página nova é a dona, nas Famílias", () => {
     expect(ABAS_SUBSTITUIDAS.get("/payroll-lending-aging")).toBe("/divida-das-familias/consignado");
     const rotas = new Set(paineis().map((p) => p.rota));

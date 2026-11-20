@@ -43,10 +43,12 @@ async function glifosIntegrais(alvos: Locator) {
   }));
 }
 type Municipio={c?:string;cod?:string;n?:string;nome?:string;uf:string;p60?:number;pgp?:number;penetracao?:number;valor_hab?:number};
+// Asserções aposentadas em 10/11/2026: as linhas de payroll-lending-aging (#view-consignado) e housing-credit (#view-moradia) saíram
+// desta lista. Motivo: decisão do dono de 10/11/2026; fechada a paridade (docs/familias/PARIDADE.md), os dois endereços redirecionam
+// (308) para /divida-das-familias/consignado e /credito-imobiliario, e a vista antiga, com a lista .penlista, não é mais desenhada.
+// As listas dos 25 maiores das páginas novas são conferidas em src/tests/familias-paridade-browser.test.ts.
 const rotas=[
-  {rota:"payroll-lending-aging",gold:"consignado_mun",root:"#view-consignado",perfil:"#cg-perfil",campo:"p60",dec:1,moeda:false,asc:false},
   {rota:"credit-penetration",gold:"penetracao_mun",root:"#view-penetracao",perfil:"#pen-perfil",campo:"penetracao",dec:1,moeda:false,asc:true},
-  {rota:"housing-credit",gold:"moradia_mun",root:"#view-moradia",perfil:".morperfil",campo:"pgp",dec:1,moeda:false,asc:false},
   {rota:"rural-credit",gold:"rural_mun",root:"#view-rural",perfil:"#ru-perfil",campo:"valor_hab",dec:0,moeda:true,asc:false},
 ] as const;
 const casos=rotas.flatMap(rota=>[16,32].map(fonte=>({...rota,fonte})));

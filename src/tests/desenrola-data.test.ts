@@ -16,13 +16,13 @@ import { join } from "node:path";
  */
 const G = "public/obs/data/gold/";
 const D = JSON.parse(readFileSync(join(process.cwd(), G + "desenrola.json"), "utf-8"));
-const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
 const coletor = readFileSync(join(process.cwd(), "pipeline/sources/desenrola.py"), "utf-8");
 
-const pagina = (() => {
-  const i = app.indexOf("function renderDesenrola(");
-  return app.slice(i, app.indexOf("\n/* ---------- ALERTAS", i));
-})();
+// Até 10/11/2026 "a página" era o corpo de renderDesenrola em public/obs/app.js, removido nessa data (a vista virou a página
+// própria /divida-das-familias/desenrola, que lê a mesma gold). As garantias de contenção lidas no código passam a ser lidas
+// na página nova e na comparação de credores dela. O HTML servido é conferido por src/tests/familias-desenrola.test.ts.
+const pagina = readFileSync(join(process.cwd(), "src/app/divida-das-familias/desenrola/page.tsx"), "utf-8");
+const comparar = readFileSync(join(process.cwd(), "src/components/familias/desenrola/CompararCredores.tsx"), "utf-8");
 
 describe("universos separados: PF e Pequenos Negócios não se somam", () => {
   it("os totais publicados cobrem apenas as faixas 1 e 2", () => {
@@ -39,7 +39,7 @@ describe("universos separados: PF e Pequenos Negócios não se somam", () => {
   it("o aviso sobre o programa de pessoas jurídicas é explícito", () => {
     expect(D.aviso_tipo3).toMatch(/programa distinto/i);
     expect(D.aviso_tipo3).toMatch(/não se soma/i);
-    expect(pagina).toContain("D.aviso_tipo3");
+    expect(pagina).toContain("g.aviso_tipo3");
   });
 
   it("o mapa e os credores usam só as faixas de pessoa física", () => {
@@ -64,9 +64,16 @@ describe("o volume do SCR não é apresentado como o total do programa", () => {
     }
   });
 
-  it("a página mostra o aviso antes do primeiro número", () => {
-    expect(pagina.indexOf("D.aviso_cobertura")).toBeGreaterThan(-1);
-    expect(pagina.indexOf("D.aviso_cobertura")).toBeLessThan(pagina.indexOf("const kpis"));
+  it("a página mostra o aviso de cobertura à vista, junto dos números do SCR e antes do gráfico", () => {
+    // Aposentada em 10/11/2026 (1 asserção): a ordem de "D.aviso_cobertura" em relação a "const kpis" no corpo de
+    // renderDesenrola, que media a posição no código da vista removida. Na página nova o aviso é uma nota à vista na figura
+    // #alcance, logo depois dos quatro números do SCR e antes do gráfico (número antes do método, como a avaliação de
+    // 05/09/2026 pediu); a ordem das fatias no HTML servido é conferida pelo conferidor do molde em
+    // src/tests/familias-desenrola.test.ts ("cumpre a anatomia do molde").
+    const aviso = pagina.indexOf('<Nota titulo="Esta base não cobre o programa inteiro.">{t(g.aviso_cobertura)}</Nota>');
+    expect(aviso).toBeGreaterThan(-1);
+    expect(aviso).toBeGreaterThan(pagina.indexOf('rotulo="Grupos credores"'));
+    expect(aviso).toBeLessThan(pagina.indexOf("<LinhasComSeletor"));
   });
 
   it("o valor é declarado como pós-desconto em toda parte que importa", () => {
@@ -176,9 +183,13 @@ describe("matriz de viabilidade e lacunas", () => {
   });
 
   it("a página desenha blocos de lacuna e não preenche com número inventado", () => {
-    expect(pagina).toContain("desLacuna(");
-    expect((pagina.match(/desLacuna\(/g) ?? []).length).toBeGreaterThanOrEqual(5);
-    expect(pagina).toMatch(/não há número aqui porque não há dado/i);
+    // Na página nova o bloco de lacuna é o componente Lacunas (tabela "O que falta, por que falta, o que seria preciso").
+    expect(pagina).toContain("function Lacunas(");
+    expect((pagina.match(/<Lacunas\s/g) ?? []).length).toBeGreaterThanOrEqual(5);
+    // Aposentada em 10/11/2026 (1 asserção): a frase "não há número aqui porque não há dado", texto do desenho da vista
+    // removida. A garantia equivalente é a tabela de três colunas, sem coluna de valor, e a ausência escrita como texto.
+    expect(pagina).toContain('colunas={["O que falta", "Por que falta", "O que seria preciso"]}');
+    expect(pagina).toContain('ausencia={{ "O que seria preciso": "não indicado" }}');
   });
 });
 
@@ -251,7 +262,9 @@ describe("coleta: procedência auditável e falha alta se o esquema mudar", () =
 describe("credores: comparação sem ranking simplista", () => {
   it("a página avisa que não é ranking de melhores e piores", () => {
     expect(pagina).toMatch(/não é um ranking de melhores e piores/i);
-    expect(pagina).toMatch(/654 credores/);
+    // o número de credores do leilão era texto fixo na vista antiga ("654 credores"); a página nova o lê da nota da gold
+    expect(JSON.stringify(D.oficiais)).toMatch(/654 credores/);
+    expect(pagina).toContain("O leilão da Faixa 1 teve ${credoresLeilao} credores.");
   });
 
   it("a identidade do conglomerado é o código, não o nome", () => {
@@ -261,7 +274,9 @@ describe("credores: comparação sem ranking simplista", () => {
   });
 
   it("a comparação é limitada a cinco seleções", () => {
-    expect(app).toMatch(/s\.size < 5/);
+    // até 10/11/2026: "s.size < 5" em window.desInst (public/obs/app.js, removido); hoje, o limite da comparação da página nova
+    expect(comparar).toContain("const LIMITE = 5;");
+    expect(comparar).toMatch(/\.length (>=|<) LIMITE/);
   });
 });
 
@@ -294,6 +309,9 @@ describe("consolidação financeiro + prudencial (mesmo grupo, uma linha)", () =
     const hhi = D.instituicoes.reduce((s: number, i: any) => s + Math.pow(i.part_op || 0, 2), 0);
     expect(Math.abs(hhi - D.concentracao.hhi_operacoes)).toBeLessThan(1);
     expect(D.concentracao.nota_consolidacao).toMatch(/consolidada/);
-    expect(app).toMatch(/consolidado ⓘ/);
+    // até 10/11/2026: o rótulo "consolidado ⓘ" da vista antiga; na página nova a linha consolidada é nomeada e os
+    // componentes de cada uma ficam numa tabela à vista
+    expect(pagina).toContain("`${i.nome} (consolidado)`");
+    expect(pagina).toContain("Componentes das ${n(consolidados.length)} linhas consolidadas");
   });
 });

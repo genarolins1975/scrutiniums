@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
 import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
+import { fonteDaPagina, registroNaAplicacao, soEnderecoETitulo } from "./suporte/vistas-reescritas";
 
 /**
  * Testes de consistência do dado curado da aba "Apostas e crédito das famílias".
@@ -201,28 +202,25 @@ describe("bets: integração com a plataforma", () => {
     expect(sectionLabel("obs:bets")).toMatch(/Apostas/);
   });
 
-  it("view registrada na SPA (rota, dados, render, navegação)", () => {
-    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    expect(app).toContain('bets: "/bets-financial-risk"');
-    expect(app).toContain('bets: ["bets", "epae"]'); // pulse é CORE_FILES; epae entra junto com a aba
-    expect(app).toContain('bets: "renderBets"');
-    expect(app).toContain("function renderBets()");
+  it("a vista saiu da aplicação do Crédito: fica o endereço antigo, que leva à página das Famílias", () => {
+    // Aposentadas em 10/11/2026 (4 asserções): 'bets: ["bets", "epae"]' em VIEW_DATA, 'bets: "renderBets"' em RENDER,
+    // "function renderBets()" e o contêiner id="view-bets" do index.html. Só conferiam o registro do desenho da vista, removido
+    // de public/obs/app.js nessa data. No lugar, o registro inteiro: o endereço antigo e o título ficam, o resto saiu. A página
+    // nova (/divida-das-familias/apostas) é conferida por src/tests/familias-apostas.test.ts e o caminho do endereço antigo até
+    // ela, por src/tests/redirecionamento-reescritos.test.ts e src/tests/split-bundle-browser.test.ts.
+    expect(registroNaAplicacao("bets")).toEqual(soEnderecoETitulo("/bets-financial-risk", "Apostas e crédito das famílias"));
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
-    // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
-    // (/divida-das-familias/apostas, src/lib/observatorios/reescritos.ts); o endereço antigo redireciona para ela
-    // (decisão do dono de 10/11/2026, src/tests/redirecionamento-reescritos.test.ts) e a aplicação sai para a página nova em nav(). O código
-    // da vista segue no app.js, sem caminho que o alcance: as asserções de registro abaixo valem enquanto ele não for removido
     expect(rotuloNaNavegacao("/observatorio/bets-financial-risk")).toBeNull();
     expect(ABAS_SUBSTITUIDAS.get("/bets-financial-risk")).toBe("/divida-das-familias/apostas");
     expect(DESTINO_DO_ENDERECO_ANTIGO.get("/observatorio/bets-financial-risk")).toBe("/divida-das-familias/apostas");
-    expect(html).toContain('id="view-bets"');
     expect(html).toContain("Pagamentos, conduta e fronteiras");
   });
 
-  it("sem dados sintéticos: aba não possui modo demo e pipeline copia o curado", () => {
-    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    const bloco = app.slice(app.indexOf("function renderBets()"), app.indexOf("const RENDER = {"));
+  it("sem dados sintéticos: a página não tem modo demo e o pipeline copia o curado", () => {
+    // Até 10/11/2026 o bloco lido era o de renderBets em public/obs/app.js, removido nessa data. A garantia vive hoje na página
+    // nova, que lê a mesma gold: src/app/divida-das-familias/apostas/page.tsx e src/lib/familias/apostas.ts.
+    const bloco = fonteDaPagina("src/app/divida-das-familias/apostas/page.tsx") + fonteDaPagina("src/lib/familias/apostas.ts");
+    expect(bloco.length).toBeGreaterThan(10_000);
     expect(bloco).not.toMatch(/\bdemo\b|badge\("demo"\)|DEMONSTRATIVO|placeholder/i);
     const gold = readFileSync(join(process.cwd(), "pipeline/gold.py"), "utf-8");
     // cópia generalizada: todo pipeline/curated/*.json vai ao gold

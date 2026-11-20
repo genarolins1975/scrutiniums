@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { montarHtml, resolverMeta } from "@/lib/observatorioHead";
+import { PAINEIS_REDIRECIONADOS } from "@/lib/observatorios/reescritos";
 
 /**
  * Guia didático por página: toda página listada na navegação principal precisa
@@ -43,12 +44,26 @@ describe("guia didático das páginas", () => {
     const chaves = new Set(chavesDoGuia());
     const principais = ["overview", "panorama", "pulse", "leading", "trends", "sectors", "rj",
       "institutions", "compare", "products", "juros", "market", "pix", "openfinance",
-      "judicial", "scenarios", "alerts", "method",
+      "scenarios", "alerts", "method",
       // avaliação de 05/09: as abas que renderizavam sem guia e as rotas dinâmicas
-      "bets", "fraudes", "regulacao", "pgfn", "desenrola", "penetracao", "moradia",
-      "consignado", "operacional", "inst", "product", "sector", "presmun"];
+      "regulacao", "pgfn", "penetracao", "operacional", "inst", "product", "sector", "presmun"];
     const faltando = principais.filter((v) => !chaves.has(v));
     expect(faltando).toEqual([]);
+  });
+
+  it("as nove vistas reescritas não têm verbete: a pergunta é a da página nova, lida do registro", () => {
+    // Aposentadas em 10/11/2026 (6 verbetes exigidos: judicial, bets, fraudes, desenrola, moradia e consignado). Os verbetes
+    // das nove vistas reescritas saíram de public/obs/app.js com o desenho delas. O "Início do painel" mostra a pergunta da
+    // página nova, que o servidor manda no índice (substituidas, src/lib/observatorios/barraSpa.ts) a partir do registro; em
+    // cada página nova, pergunta (H1), por que importa, como ler e limite são conferidos pelo molde nos testes
+    // src/tests/familias-*.test.ts ("cumpre a anatomia do molde").
+    const chaves = new Set(chavesDoGuia());
+    for (const v of ["judicial", "bets", "fraudes", "desenrola", "moradia", "consignado", "conduta", "emprego", "cobranca"]) expect(chaves.has(v), v).toBe(false);
+    expect(PAINEIS_REDIRECIONADOS.length).toBe(9);
+    for (const r of PAINEIS_REDIRECIONADOS) expect(r.resumo.trim().endsWith("?"), r.rota).toBe(true);
+    // a pergunta e o link do Início do painel saem do índice, não do GUIA
+    expect(app).toContain("return (sub && sub.pergunta) || (GUIA[v] ? GUIA[v].q : \"\");");
+    expect(app).toContain("(GUIA[v] || substituta(v))");
   });
 
   it("o guia é renderizado pelo cabeçalho comum e na visão geral", () => {

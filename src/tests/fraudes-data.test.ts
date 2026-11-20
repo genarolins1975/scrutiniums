@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
 import { rotuloNaNavegacao } from "./suporte/navegacao-spa";
+import { fonteDaPagina, registroNaAplicacao, soEnderecoETitulo } from "./suporte/vistas-reescritas";
 
 /**
  * Testes de consistência do dado curado da aba "Fraudes financeiras e
@@ -181,26 +182,21 @@ describe("fraudes: integração com a plataforma", () => {
     expect(sectionLabel("obs:fraudes")).toMatch(/fraudes/);
   });
 
-  it("view registrada na SPA e pipeline copia todos os curados", () => {
-    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    expect(app).toContain('fraudes: "/financial-fraud"');
-    expect(app).toContain('fraudes: ["fraudes"]'); // pulse agora é CORE_FILES
-    expect(app).toContain('fraudes: "renderFraudes"');
-    expect(app).toContain("function renderFraudes()");
-    const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    // na navegação da coleção dona (sem barra lateral desde a Iniciativa 2 do parecer de UX de 23/10/2026)
-    // desde 10/11/2026 a vista saiu da navegação da aplicação: o painel da coleção é a página Next das Famílias
-    // (/divida-das-familias/golpes-e-fraudes, src/lib/observatorios/reescritos.ts); o endereço antigo redireciona para ela
-    // (decisão do dono de 10/11/2026, src/tests/redirecionamento-reescritos.test.ts) e a aplicação sai para a página nova em nav(). O código
-    // da vista segue no app.js, sem caminho que o alcance: as asserções de registro abaixo valem enquanto ele não for removido
+  it("a vista saiu da aplicação do Crédito, fica o endereço antigo, e o pipeline copia todos os curados", () => {
+    // Aposentadas em 10/11/2026 (4 asserções): 'fraudes: ["fraudes"]' em VIEW_DATA, 'fraudes: "renderFraudes"' em RENDER,
+    // "function renderFraudes()" e o contêiner id="view-fraudes" do index.html. Só conferiam o registro do desenho da vista,
+    // removido de public/obs/app.js nessa data. No lugar, o registro inteiro: o endereço antigo e o título ficam, o resto saiu.
+    // A página nova (/divida-das-familias/golpes-e-fraudes) é conferida por src/tests/familias-golpes-e-fraudes.test.ts e o
+    // caminho do endereço antigo até ela, por src/tests/redirecionamento-reescritos.test.ts.
+    expect(registroNaAplicacao("fraudes")).toEqual(soEnderecoETitulo("/financial-fraud", "Golpes e fraudes"));
     expect(rotuloNaNavegacao("/observatorio/financial-fraud")).toBeNull();
     expect(ABAS_SUBSTITUIDAS.get("/financial-fraud")).toBe("/divida-das-familias/golpes-e-fraudes");
     expect(DESTINO_DO_ENDERECO_ANTIGO.get("/observatorio/financial-fraud")).toBe("/divida-das-familias/golpes-e-fraudes");
-    expect(html).toContain('id="view-fraudes"');
     const gold = readFileSync(join(process.cwd(), "pipeline/gold.py"), "utf-8");
     expect(gold).toContain("curated_dir");
-    // sem modo demo/placeholder no bloco da view
-    const bloco = app.slice(app.indexOf("function renderFraudes()"), app.indexOf("const RENDER = {"));
+    // sem modo demo/placeholder: até 10/11/2026 o bloco lido era o de renderFraudes; hoje é a página nova, que lê a mesma gold
+    const bloco = fonteDaPagina("src/app/divida-das-familias/golpes-e-fraudes/page.tsx") + fonteDaPagina("src/lib/familias/golpes-e-fraudes.ts");
+    expect(bloco.length).toBeGreaterThan(10_000);
     expect(bloco).not.toMatch(/\bdemo\b|DEMONSTRATIVO|placeholder/i);
   });
 });
