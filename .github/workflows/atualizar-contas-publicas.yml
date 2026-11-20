@@ -19,7 +19,7 @@ name: Atualizar dados das Contas Públicas Federais
 # os denominadores do IBGE também são integrados por edição.
 on:
   schedule:
-    - cron: "19 10 * * 2" # terças, 07:19 em São Paulo
+    - cron: "19 10 * * 1" # segunda, 07:19 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

@@ -57,12 +57,12 @@ export function referenciaAvancou(conhecida: string | null, atual: string | null
 
 /* ---------------- disparo ---------------- */
 
-/** Janela em que uma verificação registrada vale como prova de que o disparo diário está funcionando. */
-export const JANELA_VERIFICACAO_DIAS = 3;
+/** Janela em que uma verificação registrada vale como prova de que o disparo semanal (segunda, desde 01/11/2026) está funcionando. */
+export const JANELA_VERIFICACAO_DIAS = 8;
 
 /**
- * O envio está ligado de fato? Só quando há provedor de e-mail configurado E o disparo diário rodou autorizado nos
- * últimos três dias (evento "alertas_verificacao", gravado pela rota de disparo). Sem isso, a interface diz que a
+ * O envio está ligado de fato? Só quando há provedor de e-mail configurado E o disparo semanal rodou autorizado nos
+ * últimos oito dias (evento "alertas_verificacao", gravado pela rota de disparo). Sem isso, a interface diz que a
  * assinatura fica registrada e que nenhum e-mail sai ainda: em 19/10/2026 o segredo do disparo agendado
  * (BOLETIM_SECRET) faltava no GitHub Actions e os envios do resumo falhavam antes de chamar a rota.
  */

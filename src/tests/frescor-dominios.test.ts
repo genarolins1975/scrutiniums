@@ -81,11 +81,11 @@ describe("regra compartilhada com a vigília (casos.json)", () => {
     }
   });
 
-  it("limiares: cada cadência tem limiar maior ou igual ao intervalo, e o selo do Crédito usa o da diária", () => {
+  it("limiares: cada cadência tem limiar maior ou igual ao intervalo, e o selo do Crédito usa o da semanal", () => {
     for (const c of cadencias()) expect(c.limite).toBeGreaterThanOrEqual(c.intervalo);
     const vig = ler("scripts/vigilancia.py");
     expect(vig).toContain('"src" / "lib" / "frescor" / "limiares.json"');
-    expect(vig).toMatch(/LIMITE_DIAS = .*\["cadencias"\]\["diaria"\]\["limite"\]/);
+    expect(vig).toMatch(/LIMITE_DIAS = .*\["cadencias"\]\["semanal"\]\["limite"\]/);
     expect(ler("scripts/vigilancia_frescor.py")).toContain('"src" / "lib" / "frescor" / "limiares.json"');
   });
 
@@ -120,14 +120,14 @@ describe("faixa renderizada", () => {
     expect(h).toContain('data-frescor-geral="calculando"');
     expect(h).toContain("29/09/2026");
     expect(h).toContain("30/09/2026");
-    expect(h).toContain("diária");
+    expect(h).toContain("semanal"); // cadência do Setor Elétrico desde 01/11/2026 (publicação semanal)
     expect(h).not.toMatch(/Em dia|atrasada|retida|data-frescor-estado/);
   });
 
   it("atrasado: texto explícito com os dias, marcador neutro e nenhuma cor de julgamento", () => {
     const h = html([ENERGIA], AGORA);
     expect(h).toContain('data-frescor-estado="atrasado"');
-    expect(h).toContain("Atualização atrasada há 18 dias");
+    expect(h).toContain("Atualização atrasada há 12 dias");
     expect(h).toContain("<svg");
     expect(h).toContain("Dados diários de preço e operação");
     expect(h).toContain("(PLD)");
@@ -152,14 +152,14 @@ describe("faixa renderizada", () => {
   it("retida em parte: diz que parte da publicação ficou para trás", () => {
     const h = html([{ ...CREDITO, publicadoEm: "2026-09-24T15:25:15+00:00", parteMaisRecente: "2026-10-18T15:09:35+00:00" }], AGORA);
     expect(h).toContain('data-frescor-estado="retida"');
-    expect(h).toContain("Publicação retida em parte há 23 dias");
+    expect(h).toContain("Publicação retida em parte há 17 dias");
   });
 
   it("várias fontes: resumo numa linha com o domínio atrasado nomeado e a lista por fonte recolhida", () => {
     const h = html([CREDITO, ENERGIA], AGORA);
     expect(h).toContain("2 fontes");
     expect(h).toContain("Atualizadas entre 29/09/2026 e 18/10/2026");
-    expect(h).toContain("Setor Elétrico: atualização atrasada há 18 dias");
+    expect(h).toContain("Setor Elétrico: atualização atrasada há 12 dias");
     expect(h).toContain("<details");
     expect(h).toContain('data-frescor-dominio="credito"');
     expect(h).toContain('data-frescor-regra=""');
@@ -180,14 +180,14 @@ describe("faixa renderizada", () => {
   it("método: lista por fonte com nota e regra", () => {
     const h = html([ENERGIA], AGORA, { variante: "metodo" });
     expect(h).toContain('data-frescor-faixa="metodo"');
-    expect(h).toContain("sete publicações diárias");
+    expect(h).toContain("sete conjuntos de dados diários");
     expect(h).toContain("O cálculo é feito no seu navegador");
   });
 
   it("inglês no Setor Elétrico", () => {
     const h = html([ENERGIA], AGORA, { idioma: "en" });
     expect(h).toContain("Data updates");
-    expect(h).toContain("Update late by 18 days");
+    expect(h).toContain("Update late by 12 days");
     expect(h).toContain("Sep 29, 2026");
     expect(h).toContain("Daily price and operation data");
     expect(h).not.toMatch(/Atualização|atrasada|diária/);

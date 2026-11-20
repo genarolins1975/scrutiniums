@@ -103,7 +103,8 @@ describe("T2: CI e vigília encadeados ao pipeline", () => {
   it("ci.yml e vigilancia.yml disparam por workflow_run do pipeline", () => {
     for (const f of [".github/workflows/ci.yml", ".github/workflows/vigilancia.yml"]) {
       const y = read(f);
-      expect(y, f).toMatch(/workflow_run:\n\s+workflows: \["Atualizar dados do Observatório"\]\n\s+types: \[completed\]/);
+      // o ci.yml também acompanha a publicação semanal (01/11/2026)
+      expect(y, f).toMatch(/workflow_run:\n\s+workflows: \["Atualizar dados do Observatório"(, "Publicação semanal do Observatório")?\]\n\s+types: \[completed\]/);
     }
     expect(read(".github/workflows/vigilancia.yml")).toContain('"${{ github.event_name }}" = "workflow_run"');
   });

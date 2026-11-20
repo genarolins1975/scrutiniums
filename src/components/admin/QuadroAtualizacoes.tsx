@@ -31,7 +31,7 @@ export function QuadroAtualizacoes({ linhas, leitura, agora, filtro }: { linhas:
     </div>
     <div className="my-3 max-w-4xl text-sm text-carvao-muted">
       <p>{aviso ?? `Rotinas consultadas em ${fmtDateTime(estado!.geradoEm)} (Brasília).`}</p>
-      {estado && !vigente && <p className="mt-2 font-semibold text-bronze-dark">Consulta fora do prazo de três horas ou com relógio inconsistente. Os resultados abaixo são históricos; confira as execuções antes de decidir.</p>}
+      {estado && !vigente && <p className="mt-2 font-semibold text-bronze-dark">Consulta fora do prazo de oito dias ou com relógio inconsistente. Os resultados abaixo são históricos; confira as execuções antes de decidir.</p>}
       {!!estado?.erros.length && <p className="mt-2 text-bronze-dark">{estado.erros.length} consultas do monitor não puderam ser concluídas. A ausência de resultado não significa aprovação.</p>}
       {aviso && <a href={`${GITHUB}/actions`} className="inline-flex min-h-11 items-center text-destaque underline underline-offset-4">Conferir execuções no GitHub</a>}
     </div>

@@ -29,8 +29,11 @@ describe("situação de frescor", () => {
     const mesmoDia = situacaoFrescor(GERADO, new Date("2026-09-24T20:00:00Z"))!;
     expect(mesmoDia).toMatchObject({ dias: 0, atrasado: false, idade: "hoje" });
     expect(situacaoFrescor(GERADO, new Date("2026-09-25T16:00:00Z"))).toMatchObject({ dias: 1, atrasado: false, idade: "ontem" });
-    expect(situacaoFrescor(GERADO, new Date("2026-09-26T15:24:00Z"))!.atrasado).toBe(false);
-    expect(situacaoFrescor(GERADO, new Date("2026-09-26T15:26:00Z"))).toMatchObject({ dias: 2, atrasado: true, idade: "há 2 dias" });
+    // publicação semanal desde 01/11/2026: limiar de 8 dias; com 7 dias o selo não acusa
+    expect(situacaoFrescor(GERADO, new Date("2026-09-26T15:26:00Z"))).toMatchObject({ dias: 2, atrasado: false, idade: "há 2 dias" });
+    expect(situacaoFrescor(GERADO, new Date("2026-10-01T16:00:00Z"))).toMatchObject({ dias: 7, atrasado: false });
+    expect(situacaoFrescor(GERADO, new Date("2026-10-02T15:24:00Z"))!.atrasado).toBe(false);
+    expect(situacaoFrescor(GERADO, new Date("2026-10-02T15:26:00Z"))).toMatchObject({ dias: 8, atrasado: true, idade: "há 8 dias" });
     expect(situacaoFrescor(GERADO, new Date("2026-10-13T12:00:00Z"))).toMatchObject({ dias: 18, atrasado: true });
   });
 
@@ -39,10 +42,10 @@ describe("situação de frescor", () => {
     expect(situacaoFrescor("não é data", new Date())).toBeNull();
   });
 
-  it("o limite é o mesmo da vigília de frescor do repositório: os dois leem a cadência diária de limiares.json", () => {
+  it("o limite é o mesmo da vigília de frescor do repositório: os dois leem a cadência semanal de limiares.json (publicação semanal desde 01/11/2026)", () => {
     // até 19/10/2026 o número estava escrito nos dois lados; agora há uma fonte só
-    expect(LIMITE_ATRASO_DIAS).toBe(limiares.cadencias.diaria.limite);
-    expect(ler("scripts/vigilancia.py")).toMatch(/^LIMITE_DIAS = json\.loads\(\(RAIZ \/ "src" \/ "lib" \/ "frescor" \/ "limiares\.json"\)[^\n]*\["cadencias"\]\["diaria"\]\["limite"\]/m);
+    expect(LIMITE_ATRASO_DIAS).toBe(limiares.cadencias.semanal.limite);
+    expect(ler("scripts/vigilancia.py")).toMatch(/^LIMITE_DIAS = json\.loads\(\(RAIZ \/ "src" \/ "lib" \/ "frescor" \/ "limiares\.json"\)[^\n]*\["cadencias"\]\["semanal"\]\["limite"\]/m);
   });
 });
 

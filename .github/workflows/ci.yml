@@ -15,7 +15,7 @@ name: CI
 # navegador por tema (Judiciário aqui, Agronegócio em agro-interface.yml) só rodam
 # em pull_request quando a mudança as alcança (job `mudancas`). Nenhum passo foi
 # retirado: a tabela de equivalência está no PR "Ciclo: CI em paralelo" e, em
-# push no main, workflow_run, cron e dispatch, todos os jobs rodam sempre.
+# push no main, workflow_run e dispatch, todos os jobs rodam sempre.
 on:
   pull_request:
   push:
@@ -28,17 +28,17 @@ on:
   # começando com 3 a 11 h de atraso desde 27/08 e o cron das 11:45 UTC
   # testava o gold do dia anterior (auditoria de 06/09/2026, achado T2).
   workflow_run:
-    workflows: ["Atualizar dados do Observatório"]
+    workflows: ["Atualizar dados do Observatório", "Publicação semanal do Observatório"]
     types: [completed]
-  schedule:
-    # reserva: se o workflow_run não disparar, ainda há uma passagem diária
-    - cron: "45 17 * * *"
 
 permissions:
   contents: read
 
+# Uma fila por branch: novo push cancela a execução anterior do mesmo branch. O cron diário de reserva saiu em
+# 01/11/2026 (publicação semanal): o workflow_run acima cobre a coleta do Crédito e a publicação semanal
+# (publicacao-semanal.yml), cujo push com GITHUB_TOKEN não dispararia o gatilho push.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 env:

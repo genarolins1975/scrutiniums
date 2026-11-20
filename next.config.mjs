@@ -33,6 +33,14 @@ const ARQUIVOS_DAS_FONTES = [
 ].sort();
 
 /**
+ * Build da Vercel só gera o site (01/11/2026). Lint e checagem de tipos já rodam no ci.yml em todo PR e em todo push
+ * humano no main (jobs "lint" e "tipos"), antes do merge; repeti-los na Vercel custava cerca de 112 s de 371 s por build
+ * (medido em 01/11/2026, máquina de 4 vCPUs, build sem cache). Fora da Vercel (CI, `npm run build` local, build das
+ * candidatas nos workflows de dados) o comportamento não muda: `next build` continua reprovando erro de lint ou de tipo.
+ */
+const BUILD_SO_SITE = process.env.VERCEL === "1";
+
+/**
  * Vistas da aplicação do Crédito substituídas por página Next das Famílias e já redirecionadas (decisão do dono de
  * 10/11/2026). A lista é a de src/lib/observatorios/paineis-reescritos.json, a mesma que reescritos.ts tipa para o registro, a
  * navegação e a busca: só entra aqui o painel com `redirecionar: true`. Redirecionamento permanente; o Next preserva a consulta.
@@ -48,6 +56,8 @@ export const REDIRECIONAMENTOS_REESCRITOS = PAINEIS_REESCRITOS.filter((p) => p.r
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: { ignoreDuringBuilds: BUILD_SO_SITE },
+  typescript: { ignoreBuildErrors: BUILD_SO_SITE },
   experimental: {
     // Drivers de banco fora do bundle do servidor: o PGlite carrega assets
     // (WASM) em tempo de execução e o pg usa require dinâmico.

@@ -128,11 +128,11 @@ export default function PaginaP036() {
 
   const oQueMudou = tx(
     <>
-      Revisões detectadas nos dados desta publicação: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. O SIGA e o SIGET são lidos todo dia; o cadastro de agentes e o conjunto Agentes de
+      Revisões detectadas nos dados desta publicação: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. O SIGA e o SIGET são lidos toda semana; o cadastro de agentes e o conjunto Agentes de
       Geração, todo mês. <span data-nivel="analisar">{textoConferenciaAgentes(a.conferencia_agentes_geracao)}</span>
     </>,
     <>
-      Revisions detected in the data of this release: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. SIGA and SIGET are read every day; the agent registry and the{" "}
+      Revisions detected in the data of this release: {inteiro(g.proveniencia.ativos.revisoes_conhecidas?.total)}. SIGA and SIGET are read every week; the agent registry and the{" "}
       <Nome>Agentes de Geração</Nome> dataset, every month. <span data-nivel="analisar">{comNomes(textoConferenciaAgentes(a.conferencia_agentes_geracao))}</span>
     </>,
   );
