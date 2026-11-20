@@ -80,6 +80,9 @@ describe.skipIf(!temBuild&&!exigirBuild)("Gráficos: identificação, dados equi
    // A moldura responsiva nasce após o HTML inicial; uma amostra vazia não é linha de base.
    await expect.poll(()=>page.locator("#view-pulse svg.chart[data-chart]").evaluateAll(svgs=>svgs.length>0&&svgs.every(svg=>svg.closest(".line-chart")))).toBe(true);
    const grafico=page.locator("#view-pulse svg.chart[data-ix]").first();await grafico.focus();await page.keyboard.press("ArrowRight");
+   // a linha de base é o que dadosSeries lê (seção ativa e bloco com largura), não só a existência do SVG: no CI de
+   // 03/11/2026 a leitura veio vazia logo depois da espera acima, antes de a seção ficar ativa e com largura
+   await expect.poll(async()=>(await dadosSeries(page)).length).toBeGreaterThan(0);
    const antes=await dadosSeries(page);expect(antes.length).toBeGreaterThan(0);await page.setViewportSize({width:390,height:900});
    await expect.poll(()=>page.evaluate(()=>document.activeElement?.matches("svg.chart[data-ix]")||false)).toBe(true);
    await expect.poll(()=>page.locator("#view-pulse .line-chart").evaluateAll(bs=>bs.every(b=>!b.getBoundingClientRect().width||Math.abs(b.getBoundingClientRect().width-Number((b as HTMLElement).dataset.lineWidth))<2))).toBe(true);
