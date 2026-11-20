@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-19T19:52:04+00:00",
+ "gerado_em": "2026-11-20T19:15:45+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,21 +131,21 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 316,
-  "total_editais": 1195,
+  "total_contratos_if": 318,
+  "total_editais": 1197,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 108,
+    "contratos": 109,
     "ufs": 20,
     "como_receita": 12
    },
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 78,
+    "contratos": 79,
     "ufs": 16,
     "como_receita": 24
    },
@@ -550,6 +550,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "19770288000101-2-000204/2026",
+    "ente": "MUNICIPIO DE ALVARENGA",
+    "esfera": "Municipal",
+    "municipio": "Alvarenga",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-11-17",
+    "vig_fim": "2031-11-17",
+    "valor": 360000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/19770288000101/2026/204"
+   },
    {
     "controle": "27165638000139-2-000149/2026",
     "ente": "MUNICIPIO DE CASTELO",
@@ -1134,24 +1149,36 @@
     "banco": "COOPERATIVA DE CRÃ‰DITO CREDICAF LTDA - SICOOB CRED",
     "cnpj8": "25395435",
     "url": "https://pncp.gov.br/contratos/18392522000141/2026/85"
-   },
-   {
-    "controle": "83509547000144-2-000096/2026",
-    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
-    "esfera": "Municipal",
-    "municipio": "Lages",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-09-09",
-    "vig_fim": "2031-09-15",
-    "valor": 84000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
+    "municipio": "Vertente do Lério",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-19",
+    "url": "https://pncp.gov.br/compras/40893646000160/2026/54"
+   },
+   {
+    "ente": "MUNICIPIO DE MILAGRES DO MARANHAO",
+    "municipio": "Milagres do Maranhão",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-19",
+    "url": "https://pncp.gov.br/compras/01612319000130/2026/26"
+   },
+   {
+    "ente": "MUNICIPIO DE ITAIPE",
+    "municipio": "Itaipé",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-18",
+    "url": "https://pncp.gov.br/compras/18404756000161/2026/23"
+   },
    {
     "ente": "MUNICIPIO DE GRANITO",
     "municipio": "Granito",
@@ -1169,15 +1196,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-18",
     "url": "https://pncp.gov.br/compras/89971758000180/2026/1467"
-   },
-   {
-    "ente": "MUNICIPIO DE ITAIPE",
-    "municipio": "Itaipé",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-18",
-    "url": "https://pncp.gov.br/compras/18404756000161/2026/23"
    },
    {
     "ente": "MUNICIPIO DE LUISLANDIA",
@@ -1241,24 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-16",
     "url": "https://pncp.gov.br/compras/13786520000113/2026/35"
-   },
-   {
-    "ente": "MUNICIPIO DE ESTRELA",
-    "municipio": "Estrela",
-    "uf": "RS",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-16",
-    "url": "https://pncp.gov.br/compras/87246120000151/2026/223"
-   },
-   {
-    "ente": "MUNICIPIO DE PRESIDENTE DUTRA",
-    "municipio": "Presidente Dutra",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-16",
-    "url": "https://pncp.gov.br/compras/06138366000108/2026/31"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

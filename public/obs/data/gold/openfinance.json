@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:09+00:00"
+    "last_collected_at": "2026-11-20T17:35:28+00:00"
    },
    "obs": [
     {
@@ -128,7 +128,7 @@
      "estabilidade": 60.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 2
@@ -146,7 +146,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:10+00:00"
+    "last_collected_at": "2026-11-20T17:35:28+00:00"
    },
    "obs": [
     {
@@ -259,7 +259,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -277,7 +277,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:12+00:00"
+    "last_collected_at": "2026-11-20T17:35:30+00:00"
    },
    "obs": [
     {
@@ -390,7 +390,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -408,7 +408,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:19+00:00"
+    "last_collected_at": "2026-11-20T17:35:36+00:00"
    },
    "obs": [
     {
@@ -537,7 +537,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 6,
+    "dias_sem_atualizar": 7,
     "ultima_ref": "2026-11-13",
     "n_obs": 29,
     "n_revisoes": 0
@@ -555,7 +555,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:21+00:00"
+    "last_collected_at": "2026-11-20T17:35:38+00:00"
    },
    "obs": [
     {
@@ -668,7 +668,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -686,7 +686,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:18+00:00"
+    "last_collected_at": "2026-11-20T17:35:35+00:00"
    },
    "obs": [
     {
@@ -799,7 +799,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -817,7 +817,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:20+00:00"
+    "last_collected_at": "2026-11-20T17:35:37+00:00"
    },
    "obs": [
     {
@@ -946,7 +946,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 6,
+    "dias_sem_atualizar": 7,
     "ultima_ref": "2026-11-13",
     "n_obs": 29,
     "n_revisoes": 0
@@ -964,7 +964,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-19T18:06:23+00:00"
+    "last_collected_at": "2026-11-20T17:35:40+00:00"
    },
    "obs": [
     {
@@ -1077,7 +1077,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 20,
+    "dias_sem_atualizar": 21,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -1087,16 +1087,16 @@
  "ranking": [
   {
    "organisation": "NUBANK",
-   "chamadas_semana": 22501313691.0,
-   "share_pct": 24.0,
+   "chamadas_semana": 20430483891.0,
+   "share_pct": 23.8,
    "familias_api": null,
    "papeis": null,
    "match_diretorio": false
   },
   {
    "organisation": "MERCADO PAGO",
-   "chamadas_semana": 9629022957.0,
-   "share_pct": 10.3,
+   "chamadas_semana": 8792806871.0,
+   "share_pct": 10.2,
    "familias_api": 34,
    "papeis": [
     "CONTA",
@@ -1107,7 +1107,7 @@
   },
   {
    "organisation": "SANTANDER BRASIL",
-   "chamadas_semana": 8427522889.0,
+   "chamadas_semana": 7688563596.0,
    "share_pct": 9.0,
    "familias_api": 51,
    "papeis": [
@@ -1120,15 +1120,15 @@
   },
   {
    "organisation": "ITAÚ UNIBANCO",
-   "chamadas_semana": 8202717928.0,
-   "share_pct": 8.7,
+   "chamadas_semana": 7528381956.0,
+   "share_pct": 8.8,
    "familias_api": null,
    "papeis": null,
    "match_diretorio": false
   },
   {
    "organisation": "PICPAY",
-   "chamadas_semana": 8056727907.0,
+   "chamadas_semana": 7375705519.0,
    "share_pct": 8.6,
    "familias_api": 32,
    "papeis": [
@@ -1140,7 +1140,7 @@
   },
   {
    "organisation": "BANCO DO BRASIL",
-   "chamadas_semana": 6817565631.0,
+   "chamadas_semana": 6229632640.0,
    "share_pct": 7.3,
    "familias_api": 0,
    "papeis": [
@@ -1150,7 +1150,7 @@
   },
   {
    "organisation": "BRADESCO",
-   "chamadas_semana": 6141121573.0,
+   "chamadas_semana": 5609422448.0,
    "share_pct": 6.5,
    "familias_api": 15,
    "papeis": [
@@ -1161,7 +1161,7 @@
   },
   {
    "organisation": "CAIXA ECONOMICA FEDERAL",
-   "chamadas_semana": 5769324726.0,
+   "chamadas_semana": 5274570552.0,
    "share_pct": 6.1,
    "familias_api": 55,
    "papeis": [
@@ -1174,7 +1174,7 @@
   },
   {
    "organisation": "BANCO INTER",
-   "chamadas_semana": 4136516615.0,
+   "chamadas_semana": 3800474965.0,
    "share_pct": 4.4,
    "familias_api": 48,
    "papeis": [
@@ -1186,7 +1186,7 @@
   },
   {
    "organisation": "BANCO BTG PACTUAL",
-   "chamadas_semana": 2989227311.0,
+   "chamadas_semana": 2756103831.0,
    "share_pct": 3.2,
    "familias_api": 43,
    "papeis": [
@@ -1198,7 +1198,7 @@
   },
   {
    "organisation": "BANCO XP",
-   "chamadas_semana": 1795071913.0,
+   "chamadas_semana": 1655045761.0,
    "share_pct": 1.9,
    "familias_api": null,
    "papeis": null,
@@ -1206,8 +1206,8 @@
   },
   {
    "organisation": "PAGSEGURO",
-   "chamadas_semana": 1450727285.0,
-   "share_pct": 1.5,
+   "chamadas_semana": 1340724846.0,
+   "share_pct": 1.6,
    "familias_api": 37,
    "papeis": [
     "CONTA",
@@ -1218,15 +1218,15 @@
   },
   {
    "organisation": "BANCO C6",
-   "chamadas_semana": 1358262121.0,
-   "share_pct": 1.4,
+   "chamadas_semana": 1254905299.0,
+   "share_pct": 1.5,
    "familias_api": null,
    "papeis": null,
    "match_diretorio": false
   },
   {
    "organisation": "SICREDI",
-   "chamadas_semana": 1203432569.0,
+   "chamadas_semana": 1101734048.0,
    "share_pct": 1.3,
    "familias_api": 51,
    "papeis": [
@@ -1238,7 +1238,7 @@
   },
   {
    "organisation": "SHOPEE",
-   "chamadas_semana": 1050973508.0,
+   "chamadas_semana": 968552459.0,
    "share_pct": 1.1,
    "familias_api": 24,
    "papeis": [
@@ -1250,7 +1250,7 @@
   },
   {
    "organisation": "SICOOB",
-   "chamadas_semana": 853831962.0,
+   "chamadas_semana": 781098935.0,
    "share_pct": 0.9,
    "familias_api": 52,
    "papeis": [
@@ -1262,7 +1262,7 @@
   },
   {
    "organisation": "NEON PAGAMENTOS",
-   "chamadas_semana": 825863968.0,
+   "chamadas_semana": 757219929.0,
    "share_pct": 0.9,
    "familias_api": 27,
    "papeis": [
@@ -1274,7 +1274,7 @@
   },
   {
    "organisation": "CLOUDWALK",
-   "chamadas_semana": 759964150.0,
+   "chamadas_semana": 698019780.0,
    "share_pct": 0.8,
    "familias_api": 28,
    "papeis": [
@@ -1286,7 +1286,7 @@
   },
   {
    "organisation": "NUBANK",
-   "chamadas_semana": 329789702.0,
+   "chamadas_semana": 302562847.0,
    "share_pct": 0.4,
    "familias_api": null,
    "papeis": null,
@@ -1294,7 +1294,7 @@
   },
   {
    "organisation": "RECARGAPAY",
-   "chamadas_semana": 302827013.0,
+   "chamadas_semana": 282265372.0,
    "share_pct": 0.3,
    "familias_api": 22,
    "papeis": [
@@ -1306,7 +1306,7 @@
   },
   {
    "organisation": "BANCO BMG",
-   "chamadas_semana": 271796492.0,
+   "chamadas_semana": 248266396.0,
    "share_pct": 0.3,
    "familias_api": null,
    "papeis": null,
@@ -1314,7 +1314,7 @@
   },
   {
    "organisation": "ITAÚ UNIBANCO",
-   "chamadas_semana": 172166135.0,
+   "chamadas_semana": 158068284.0,
    "share_pct": 0.2,
    "familias_api": null,
    "papeis": null,
@@ -1322,7 +1322,7 @@
   },
   {
    "organisation": "SANTANDER BRASIL",
-   "chamadas_semana": 164590077.0,
+   "chamadas_semana": 151513329.0,
    "share_pct": 0.2,
    "familias_api": 51,
    "papeis": [
@@ -1335,7 +1335,7 @@
   },
   {
    "organisation": "BRADESCO",
-   "chamadas_semana": 117824825.0,
+   "chamadas_semana": 108734761.0,
    "share_pct": 0.1,
    "familias_api": 15,
    "papeis": [
@@ -1346,7 +1346,7 @@
   },
   {
    "organisation": "CAIXA ECONOMICA FEDERAL",
-   "chamadas_semana": 108055586.0,
+   "chamadas_semana": 97723496.0,
    "share_pct": 0.1,
    "familias_api": 55,
    "papeis": [
@@ -1358,20 +1358,8 @@
    "match_diretorio": true
   },
   {
-   "organisation": "MERCADO PAGO",
-   "chamadas_semana": 95345291.0,
-   "share_pct": 0.1,
-   "familias_api": 34,
-   "papeis": [
-    "CONTA",
-    "DADOS",
-    "PAGTO"
-   ],
-   "match_diretorio": true
-  },
-  {
    "organisation": "PICPAY",
-   "chamadas_semana": 95202221.0,
+   "chamadas_semana": 87399238.0,
    "share_pct": 0.1,
    "familias_api": 32,
    "papeis": [
@@ -1382,8 +1370,20 @@
    "match_diretorio": true
   },
   {
+   "organisation": "MERCADO PAGO",
+   "chamadas_semana": 87382959.0,
+   "share_pct": 0.1,
+   "familias_api": 34,
+   "papeis": [
+    "CONTA",
+    "DADOS",
+    "PAGTO"
+   ],
+   "match_diretorio": true
+  },
+  {
    "organisation": "BANCO DO BRASIL",
-   "chamadas_semana": 76064922.0,
+   "chamadas_semana": 69915082.0,
    "share_pct": 0.1,
    "familias_api": 0,
    "papeis": [
@@ -1393,7 +1393,7 @@
   },
   {
    "organisation": "BANCO INTER",
-   "chamadas_semana": 58706732.0,
+   "chamadas_semana": 54333398.0,
    "share_pct": 0.1,
    "familias_api": 48,
    "papeis": [
@@ -1405,7 +1405,7 @@
   },
   {
    "organisation": "PAGSEGURO",
-   "chamadas_semana": 28074810.0,
+   "chamadas_semana": 26166329.0,
    "share_pct": 0.0,
    "familias_api": 37,
    "papeis": [
@@ -1417,7 +1417,7 @@
   },
   {
    "organisation": "BANCO C6",
-   "chamadas_semana": 18104296.0,
+   "chamadas_semana": 16828793.0,
    "share_pct": 0.0,
    "familias_api": null,
    "papeis": null,
@@ -1425,7 +1425,7 @@
   },
   {
    "organisation": "CLOUDWALK",
-   "chamadas_semana": 14495182.0,
+   "chamadas_semana": 13580804.0,
    "share_pct": 0.0,
    "familias_api": 28,
    "papeis": [
@@ -1436,8 +1436,20 @@
    "match_diretorio": true
   },
   {
+   "organisation": "SHOPEE",
+   "chamadas_semana": 10808944.0,
+   "share_pct": 0.0,
+   "familias_api": 24,
+   "papeis": [
+    "CONTA",
+    "DADOS",
+    "PAGTO"
+   ],
+   "match_diretorio": true
+  },
+  {
    "organisation": "BANCO BTG PACTUAL",
-   "chamadas_semana": 11439587.0,
+   "chamadas_semana": 10749454.0,
    "share_pct": 0.0,
    "familias_api": 43,
    "papeis": [
@@ -1449,7 +1461,7 @@
   },
   {
    "organisation": "SICREDI",
-   "chamadas_semana": 11346477.0,
+   "chamadas_semana": 10526224.0,
    "share_pct": 0.0,
    "familias_api": 51,
    "papeis": [
@@ -1460,20 +1472,8 @@
    "match_diretorio": true
   },
   {
-   "organisation": "SHOPEE",
-   "chamadas_semana": 11038656.0,
-   "share_pct": 0.0,
-   "familias_api": 24,
-   "papeis": [
-    "CONTA",
-    "DADOS",
-    "PAGTO"
-   ],
-   "match_diretorio": true
-  },
-  {
    "organisation": "NEON PAGAMENTOS",
-   "chamadas_semana": 10200618.0,
+   "chamadas_semana": 9337464.0,
    "share_pct": 0.0,
    "familias_api": 27,
    "papeis": [
@@ -1485,7 +1485,7 @@
   },
   {
    "organisation": "99PAY INSTITUICAO DE PAGAMENTO S.A.",
-   "chamadas_semana": 4429166.0,
+   "chamadas_semana": 4212743.0,
    "share_pct": 0.0,
    "familias_api": 17,
    "papeis": [
@@ -1497,7 +1497,7 @@
   },
   {
    "organisation": "STONE",
-   "chamadas_semana": 4133709.0,
+   "chamadas_semana": 3908613.0,
    "share_pct": 0.0,
    "familias_api": 27,
    "papeis": [
@@ -1509,7 +1509,7 @@
   },
   {
    "organisation": "SICOOB",
-   "chamadas_semana": 3865374.0,
+   "chamadas_semana": 3522353.0,
    "share_pct": 0.0,
    "familias_api": 52,
    "papeis": [
@@ -1521,7 +1521,7 @@
   },
   {
    "organisation": "RECARGAPAY",
-   "chamadas_semana": 3502105.0,
+   "chamadas_semana": 3287980.0,
    "share_pct": 0.0,
    "familias_api": 22,
    "papeis": [
@@ -1533,7 +1533,7 @@
   },
   {
    "organisation": "BANCO VOTORANTIM",
-   "chamadas_semana": 1780000.0,
+   "chamadas_semana": 1640000.0,
    "share_pct": 0.0,
    "familias_api": 41,
    "papeis": [
@@ -1546,7 +1546,7 @@
   },
   {
    "organisation": "BANCO XP",
-   "chamadas_semana": 1464484.0,
+   "chamadas_semana": 1407299.0,
    "share_pct": 0.0,
    "familias_api": null,
    "papeis": null,
@@ -1554,7 +1554,7 @@
   },
   {
    "organisation": "SICOOB",
-   "chamadas_semana": 1215727.0,
+   "chamadas_semana": 1171268.0,
    "share_pct": 0.0,
    "familias_api": 52,
    "papeis": [
@@ -1566,7 +1566,7 @@
   },
   {
    "organisation": "SANTANDER BRASIL",
-   "chamadas_semana": 1180957.0,
+   "chamadas_semana": 1115958.0,
    "share_pct": 0.0,
    "familias_api": 51,
    "papeis": [
@@ -1579,7 +1579,7 @@
   },
   {
    "organisation": "SICREDI",
-   "chamadas_semana": 646061.0,
+   "chamadas_semana": 629664.0,
    "share_pct": 0.0,
    "familias_api": 51,
    "papeis": [
@@ -1591,7 +1591,7 @@
   },
   {
    "organisation": "BANRISUL",
-   "chamadas_semana": 555722.0,
+   "chamadas_semana": 547320.0,
    "share_pct": 0.0,
    "familias_api": null,
    "papeis": null,
@@ -1599,7 +1599,7 @@
   },
   {
    "organisation": "BANCO MERCANTIL DO BRASIL",
-   "chamadas_semana": 285865.0,
+   "chamadas_semana": 268827.0,
    "share_pct": 0.0,
    "familias_api": 43,
    "papeis": [
@@ -1612,7 +1612,7 @@
   },
   {
    "organisation": "BRADESCO",
-   "chamadas_semana": 147631.0,
+   "chamadas_semana": 146881.0,
    "share_pct": 0.0,
    "familias_api": 15,
    "papeis": [
@@ -1634,7 +1634,7 @@
   },
   {
    "organisation": "CITIBANK",
-   "chamadas_semana": 115836.0,
+   "chamadas_semana": 106183.0,
    "share_pct": 0.0,
    "familias_api": 26,
    "papeis": [
@@ -1659,7 +1659,7 @@
   },
   {
    "organisation": "BANCO CSF S/A",
-   "chamadas_semana": 49551.0,
+   "chamadas_semana": 45662.0,
    "share_pct": 0.0,
    "familias_api": 17,
    "papeis": [
@@ -1669,7 +1669,7 @@
   },
   {
    "organisation": "STONE",
-   "chamadas_semana": 34954.0,
+   "chamadas_semana": 32655.0,
    "share_pct": 0.0,
    "familias_api": 27,
    "papeis": [
@@ -1681,7 +1681,7 @@
   },
   {
    "organisation": "BANCO SOFISA",
-   "chamadas_semana": 19805.0,
+   "chamadas_semana": 18120.0,
    "share_pct": 0.0,
    "familias_api": 33,
    "papeis": [
@@ -1693,7 +1693,7 @@
   },
   {
    "organisation": "RECARGAPAY",
-   "chamadas_semana": 17301.0,
+   "chamadas_semana": 17053.0,
    "share_pct": 0.0,
    "familias_api": 22,
    "papeis": [
@@ -1728,7 +1728,7 @@
   },
   {
    "organisation": "BANCO DO NORDESTE",
-   "chamadas_semana": 8033.0,
+   "chamadas_semana": 7472.0,
    "share_pct": 0.0,
    "familias_api": 41,
    "papeis": [
@@ -1740,7 +1740,7 @@
   },
   {
    "organisation": "INICIADOR",
-   "chamadas_semana": 6860.0,
+   "chamadas_semana": 5954.0,
    "share_pct": 0.0,
    "familias_api": 12,
    "papeis": [
@@ -1751,7 +1751,7 @@
   },
   {
    "organisation": "CAIXA ECONOMICA FEDERAL",
-   "chamadas_semana": 5802.0,
+   "chamadas_semana": 5708.0,
    "share_pct": 0.0,
    "familias_api": 55,
    "papeis": [
@@ -1767,179 +1767,179 @@
   "dados_transacionais": [
    {
     "organisation": "NUBANK",
-    "chamadas": 22501313691.0,
-    "share_pct": 24.3
+    "chamadas": 20430483891.0,
+    "share_pct": 24.2
    },
    {
     "organisation": "MERCADO PAGO",
-    "chamadas": 9629022957.0,
+    "chamadas": 8792806871.0,
     "share_pct": 10.4
    },
    {
     "organisation": "SANTANDER BRASIL",
-    "chamadas": 8427522889.0,
+    "chamadas": 7688563596.0,
     "share_pct": 9.1
    },
    {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas": 8202717928.0,
+    "chamadas": 7528381956.0,
     "share_pct": 8.9
    },
    {
     "organisation": "PICPAY",
-    "chamadas": 8056727907.0,
+    "chamadas": 7375705519.0,
     "share_pct": 8.7
    },
    {
     "organisation": "BANCO DO BRASIL",
-    "chamadas": 6817565631.0,
+    "chamadas": 6229632640.0,
     "share_pct": 7.4
    },
    {
     "organisation": "BRADESCO",
-    "chamadas": 6141121573.0,
+    "chamadas": 5609422448.0,
     "share_pct": 6.6
    },
    {
     "organisation": "CAIXA ECONOMICA FEDERAL",
-    "chamadas": 5769324726.0,
+    "chamadas": 5274570552.0,
     "share_pct": 6.2
    },
    {
     "organisation": "BANCO INTER",
-    "chamadas": 4136516615.0,
+    "chamadas": 3800474965.0,
     "share_pct": 4.5
    },
    {
     "organisation": "BANCO BTG PACTUAL",
-    "chamadas": 2989227311.0,
-    "share_pct": 3.2
+    "chamadas": 2756103831.0,
+    "share_pct": 3.3
    },
    {
     "organisation": "BANCO XP",
-    "chamadas": 1795071913.0,
-    "share_pct": 1.9
+    "chamadas": 1655045761.0,
+    "share_pct": 2.0
    },
    {
     "organisation": "PAGSEGURO",
-    "chamadas": 1450727285.0,
+    "chamadas": 1340724846.0,
     "share_pct": 1.6
    },
    {
     "organisation": "BANCO C6",
-    "chamadas": 1358262121.0,
+    "chamadas": 1254905299.0,
     "share_pct": 1.5
    },
    {
     "organisation": "SICREDI",
-    "chamadas": 1203432569.0,
+    "chamadas": 1101734048.0,
     "share_pct": 1.3
    },
    {
     "organisation": "SHOPEE",
-    "chamadas": 1050973508.0,
+    "chamadas": 968552459.0,
     "share_pct": 1.1
    },
    {
     "organisation": "SICOOB",
-    "chamadas": 853831962.0,
+    "chamadas": 781098935.0,
     "share_pct": 0.9
    },
    {
     "organisation": "NEON PAGAMENTOS",
-    "chamadas": 825863968.0,
+    "chamadas": 757219929.0,
     "share_pct": 0.9
    },
    {
     "organisation": "CLOUDWALK",
-    "chamadas": 759964150.0,
+    "chamadas": 698019780.0,
     "share_pct": 0.8
    },
    {
     "organisation": "RECARGAPAY",
-    "chamadas": 302827013.0,
+    "chamadas": 282265372.0,
     "share_pct": 0.3
    },
    {
     "organisation": "BANCO BMG",
-    "chamadas": 271796492.0,
+    "chamadas": 248266396.0,
     "share_pct": 0.3
    }
   ],
   "dados_abertos": [
    {
     "organisation": "BANCO VOTORANTIM",
-    "chamadas": 1780000.0,
-    "share_pct": 23.0
+    "chamadas": 1640000.0,
+    "share_pct": 22.2
    },
    {
     "organisation": "BANCO XP",
-    "chamadas": 1464484.0,
-    "share_pct": 18.9
+    "chamadas": 1407299.0,
+    "share_pct": 19.1
    },
    {
     "organisation": "SICOOB",
-    "chamadas": 1215727.0,
-    "share_pct": 15.7
+    "chamadas": 1171268.0,
+    "share_pct": 15.9
    },
    {
     "organisation": "SANTANDER BRASIL",
-    "chamadas": 1180957.0,
-    "share_pct": 15.2
+    "chamadas": 1115958.0,
+    "share_pct": 15.1
    },
    {
     "organisation": "SICREDI",
-    "chamadas": 646061.0,
-    "share_pct": 8.3
+    "chamadas": 629664.0,
+    "share_pct": 8.5
    },
    {
     "organisation": "BANRISUL",
-    "chamadas": 555722.0,
-    "share_pct": 7.2
+    "chamadas": 547320.0,
+    "share_pct": 7.4
    },
    {
     "organisation": "BANCO MERCANTIL DO BRASIL",
-    "chamadas": 285865.0,
-    "share_pct": 3.7
+    "chamadas": 268827.0,
+    "share_pct": 3.6
    },
    {
     "organisation": "BRADESCO",
-    "chamadas": 147631.0,
-    "share_pct": 1.9
+    "chamadas": 146881.0,
+    "share_pct": 2.0
    },
    {
     "organisation": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
     "chamadas": 125661.0,
-    "share_pct": 1.6
+    "share_pct": 1.7
    },
    {
     "organisation": "CITIBANK",
-    "chamadas": 115836.0,
-    "share_pct": 1.5
+    "chamadas": 106183.0,
+    "share_pct": 1.4
    },
    {
     "organisation": "BANCO GUANABARA",
     "chamadas": 63355.0,
-    "share_pct": 0.8
+    "share_pct": 0.9
    },
    {
     "organisation": "BANCO CSF S/A",
-    "chamadas": 49551.0,
+    "chamadas": 45662.0,
     "share_pct": 0.6
    },
    {
     "organisation": "STONE",
-    "chamadas": 34954.0,
-    "share_pct": 0.5
+    "chamadas": 32655.0,
+    "share_pct": 0.4
    },
    {
     "organisation": "BANCO SOFISA",
-    "chamadas": 19805.0,
-    "share_pct": 0.3
+    "chamadas": 18120.0,
+    "share_pct": 0.2
    },
    {
     "organisation": "RECARGAPAY",
-    "chamadas": 17301.0,
+    "chamadas": 17053.0,
     "share_pct": 0.2
    },
    {
@@ -1954,146 +1954,146 @@
    },
    {
     "organisation": "BANCO DO NORDESTE",
-    "chamadas": 8033.0,
+    "chamadas": 7472.0,
     "share_pct": 0.1
    },
    {
     "organisation": "INICIADOR",
-    "chamadas": 6860.0,
+    "chamadas": 5954.0,
     "share_pct": 0.1
    },
    {
     "organisation": "CAIXA ECONOMICA FEDERAL",
-    "chamadas": 5802.0,
+    "chamadas": 5708.0,
     "share_pct": 0.1
    }
   ],
   "iniciacao_pagamento": [
    {
     "organisation": "NUBANK",
-    "chamadas": 329789702.0,
+    "chamadas": 302562847.0,
     "share_pct": 24.6
    },
    {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas": 172166135.0,
-    "share_pct": 12.9
+    "chamadas": 158068284.0,
+    "share_pct": 12.8
    },
    {
     "organisation": "SANTANDER BRASIL",
-    "chamadas": 164590077.0,
+    "chamadas": 151513329.0,
     "share_pct": 12.3
    },
    {
     "organisation": "BRADESCO",
-    "chamadas": 117824825.0,
+    "chamadas": 108734761.0,
     "share_pct": 8.8
    },
    {
     "organisation": "CAIXA ECONOMICA FEDERAL",
-    "chamadas": 108055586.0,
-    "share_pct": 8.1
-   },
-   {
-    "organisation": "MERCADO PAGO",
-    "chamadas": 95345291.0,
-    "share_pct": 7.1
+    "chamadas": 97723496.0,
+    "share_pct": 7.9
    },
    {
     "organisation": "PICPAY",
-    "chamadas": 95202221.0,
+    "chamadas": 87399238.0,
+    "share_pct": 7.1
+   },
+   {
+    "organisation": "MERCADO PAGO",
+    "chamadas": 87382959.0,
     "share_pct": 7.1
    },
    {
     "organisation": "BANCO DO BRASIL",
-    "chamadas": 76064922.0,
+    "chamadas": 69915082.0,
     "share_pct": 5.7
    },
    {
     "organisation": "BANCO INTER",
-    "chamadas": 58706732.0,
+    "chamadas": 54333398.0,
     "share_pct": 4.4
    },
    {
     "organisation": "PAGSEGURO",
-    "chamadas": 28074810.0,
+    "chamadas": 26166329.0,
     "share_pct": 2.1
    },
    {
     "organisation": "BANCO C6",
-    "chamadas": 18104296.0,
+    "chamadas": 16828793.0,
     "share_pct": 1.4
    },
    {
     "organisation": "CLOUDWALK",
-    "chamadas": 14495182.0,
+    "chamadas": 13580804.0,
     "share_pct": 1.1
    },
    {
+    "organisation": "SHOPEE",
+    "chamadas": 10808944.0,
+    "share_pct": 0.9
+   },
+   {
     "organisation": "BANCO BTG PACTUAL",
-    "chamadas": 11439587.0,
+    "chamadas": 10749454.0,
     "share_pct": 0.9
    },
    {
     "organisation": "SICREDI",
-    "chamadas": 11346477.0,
-    "share_pct": 0.8
-   },
-   {
-    "organisation": "SHOPEE",
-    "chamadas": 11038656.0,
-    "share_pct": 0.8
+    "chamadas": 10526224.0,
+    "share_pct": 0.9
    },
    {
     "organisation": "NEON PAGAMENTOS",
-    "chamadas": 10200618.0,
+    "chamadas": 9337464.0,
     "share_pct": 0.8
    },
    {
     "organisation": "99PAY INSTITUICAO DE PAGAMENTO S.A.",
-    "chamadas": 4429166.0,
+    "chamadas": 4212743.0,
     "share_pct": 0.3
    },
    {
     "organisation": "STONE",
-    "chamadas": 4133709.0,
+    "chamadas": 3908613.0,
     "share_pct": 0.3
    },
    {
     "organisation": "SICOOB",
-    "chamadas": 3865374.0,
+    "chamadas": 3522353.0,
     "share_pct": 0.3
    },
    {
     "organisation": "RECARGAPAY",
-    "chamadas": 3502105.0,
+    "chamadas": 3287980.0,
     "share_pct": 0.3
    }
   ]
  },
  "concentracao": {
   "dados_transacionais": {
-   "top1_pct": 24.3,
-   "top5_pct": 61.4,
+   "top1_pct": 24.2,
+   "top5_pct": 61.3,
    "top10_pct": 89.3,
-   "fora_top5_pct": 38.6,
-   "hhi_parcial": 1118,
+   "fora_top5_pct": 38.7,
+   "hhi_parcial": 1112,
    "nota": "shares sobre o universo DIVULGADO (top-20 do dashboard) — HHI é limite inferior parcial"
   },
   "dados_abertos": {
-   "top1_pct": 23.0,
-   "top5_pct": 81.2,
+   "top1_pct": 22.2,
+   "top5_pct": 80.8,
    "top10_pct": 97.0,
-   "fora_top5_pct": 18.8,
-   "hhi_parcial": 1509,
+   "fora_top5_pct": 19.2,
+   "hhi_parcial": 1490,
    "nota": "shares sobre o universo DIVULGADO (top-20 do dashboard) — HHI é limite inferior parcial"
   },
   "iniciacao_pagamento": {
    "top1_pct": 24.6,
-   "top5_pct": 66.7,
-   "top10_pct": 93.1,
-   "fora_top5_pct": 33.3,
-   "hhi_parcial": 1230,
+   "top5_pct": 66.5,
+   "top10_pct": 92.9,
+   "fora_top5_pct": 33.5,
+   "hhi_parcial": 1226,
    "nota": "shares sobre o universo DIVULGADO (top-20 do dashboard) — HHI é limite inferior parcial"
   }
  },
@@ -2102,105 +2102,105 @@
    "endpoints": [
     {
      "nome": "Saldos da Conta",
-     "chamadas": 13602853830.0
+     "chamadas": 12565892392.0
     },
     {
      "nome": "Obtém a lista de recursos consentidos pelo cliente",
-     "chamadas": 12754866202.0
+     "chamadas": 11702741970.0
     },
     {
      "nome": "Transações recentes da Conta",
-     "chamadas": 8048313643.0
+     "chamadas": 7344367646.0
     },
     {
      "nome": "Saldos",
-     "chamadas": 6463735496.0
+     "chamadas": 5876398750.0
     },
     {
      "nome": "Limites da Conta",
-     "chamadas": 6019927756.0
+     "chamadas": 5494257134.0
     },
     {
      "nome": "Transações recentes de cartão de crédito",
-     "chamadas": 4301769701.0
+     "chamadas": 3937279847.0
     },
     {
      "nome": "Pagamentos do Contrato",
-     "chamadas": 4255015725.0
-    },
-    {
-     "nome": "Transações recentes",
-     "chamadas": 4143204107.0
+     "chamadas": 3882203855.0
     },
     {
      "nome": "Limites de cartão de crédito",
-     "chamadas": 4101181151.0
+     "chamadas": 3745757423.0
+    },
+    {
+     "nome": "Transações recentes",
+     "chamadas": 3735486093.0
     },
     {
      "nome": "Parcelas do Contrato",
-     "chamadas": 3320846043.0
+     "chamadas": 3032453618.0
     }
    ],
    "familias": [
     {
      "nome": "Contas",
-     "chamadas": 32340547637.0
+     "chamadas": 29667952928.0
     },
     {
      "nome": "Renda Fixa Bancária",
-     "chamadas": 13901689173.0
+     "chamadas": 12606175878.0
     },
     {
      "nome": "Cartão de Crédito",
-     "chamadas": 13572970162.0
+     "chamadas": 12389685542.0
     },
     {
      "nome": "Recursos",
-     "chamadas": 12754866202.0
+     "chamadas": 11702741970.0
     },
     {
      "nome": "Operações de Crédito - Empréstimos",
-     "chamadas": 10632858465.0
+     "chamadas": 9698906360.0
     },
     {
      "nome": "Consentimento",
-     "chamadas": 2725961775.0
+     "chamadas": 2475782860.0
     },
     {
      "nome": "Renda Variável",
-     "chamadas": 2362336276.0
+     "chamadas": 2163902279.0
     },
     {
      "nome": "Dados Cadastrais",
-     "chamadas": 1924746187.0
+     "chamadas": 1771961402.0
     },
     {
      "nome": "Operações de Crédito - Financiamentos",
-     "chamadas": 1392809435.0
+     "chamadas": 1256852803.0
     },
     {
      "nome": "Fundos de Investimento",
-     "chamadas": 1010322044.0
+     "chamadas": 922779535.0
     },
     {
      "nome": "Títulos do Tesouro Direto",
-     "chamadas": 755317663.0
+     "chamadas": 689410448.0
     },
     {
      "nome": "Renda Fixa Crédito",
-     "chamadas": 264327641.0
-    },
-    {
-     "nome": "Operações de Crédito - Adiantamento a Depositantes",
-     "chamadas": 176143094.0
+     "chamadas": 240270004.0
     },
     {
      "nome": "Operações de Crédito - Direitos Creditórios Descontados",
-     "chamadas": 175180555.0
+     "chamadas": 158950145.0
+    },
+    {
+     "nome": "Operações de Crédito - Adiantamento a Depositantes",
+     "chamadas": 158692140.0
     },
     {
      "nome": "Câmbio",
-     "chamadas": 31540344.0
+     "chamadas": 29266444.0
     }
    ]
   },
@@ -2208,97 +2208,97 @@
    "endpoints": [
     {
      "nome": "Conjunto de informações de Câmbio para taxa online",
-     "chamadas": 2520971.0
+     "chamadas": 2501643.0
     },
     {
      "nome": "Correspondentes Bancários",
-     "chamadas": 796416.0
+     "chamadas": 748050.0
     },
     {
      "nome": "Lista de produtos de renda fixa bancária",
-     "chamadas": 639241.0
+     "chamadas": 610147.0
     },
     {
      "nome": "Cartão de crédito de pessoa natural",
-     "chamadas": 434631.0
+     "chamadas": 404063.0
     },
     {
      "nome": "Dependências próprias",
-     "chamadas": 381970.0
+     "chamadas": 355612.0
     },
     {
      "nome": "Empréstimos pessoa natural",
-     "chamadas": 296302.0
+     "chamadas": 275280.0
     },
     {
      "nome": "Canais de atendimento eletrônico",
-     "chamadas": 291439.0
+     "chamadas": 269906.0
     },
     {
      "nome": "Canais de atendimento telefônico",
-     "chamadas": 290418.0
+     "chamadas": 269069.0
     },
     {
      "nome": "Empréstimos pessoa jurídica",
-     "chamadas": 276501.0
+     "chamadas": 257097.0
     },
     {
      "nome": "Financiamento pessoa natural",
-     "chamadas": 261399.0
+     "chamadas": 243288.0
     }
    ],
    "familias": [
     {
      "nome": "Câmbio",
-     "chamadas": 2747299.0
+     "chamadas": 2709704.0
     },
     {
      "nome": "Canais de Atendimento",
-     "chamadas": 1798307.0
+     "chamadas": 1677527.0
     },
     {
      "nome": "Investimentos ",
-     "chamadas": 908923.0
+     "chamadas": 861943.0
     },
     {
      "nome": "Empréstimos",
-     "chamadas": 572803.0
+     "chamadas": 532377.0
     },
     {
      "nome": "Cartão de Crédito",
-     "chamadas": 531331.0
+     "chamadas": 494838.0
     },
     {
      "nome": "Financiamentos",
-     "chamadas": 511606.0
+     "chamadas": 474443.0
     },
     {
      "nome": "Adiantamento a Depositantes",
-     "chamadas": 359437.0
+     "chamadas": 330967.0
     },
     {
      "nome": "Contas",
-     "chamadas": 126774.0
+     "chamadas": 119413.0
     },
     {
      "nome": "Credenciamento",
-     "chamadas": 92706.0
+     "chamadas": 86113.0
     },
     {
      "nome": "Direitos Creditórios Descontados",
-     "chamadas": 49003.0
+     "chamadas": 45564.0
     },
     {
      "nome": "Seguros",
-     "chamadas": 33121.0
+     "chamadas": 30739.0
     },
     {
      "nome": "Previdência",
-     "chamadas": 32093.0
+     "chamadas": 29843.0
     },
     {
      "nome": "Títulos de Capitalização",
-     "chamadas": 5496.0
+     "chamadas": 5059.0
     }
    ]
   },
@@ -2306,57 +2306,57 @@
    "endpoints": [
     {
      "nome": "Consultar consentimento para iniciação de pagamento",
-     "chamadas": 522342173.0
+     "chamadas": 483012266.0
     },
     {
      "nome": "Pix - Consultar transações de pagamento",
-     "chamadas": 212959773.0
+     "chamadas": 195511668.0
     },
     {
      "nome": "Pix - Consultar iniciação",
-     "chamadas": 211740516.0
+     "chamadas": 192207684.0
     },
     {
      "nome": "Pix - Criar iniciação de pagamento",
-     "chamadas": 171347459.0
+     "chamadas": 159840724.0
     },
     {
      "nome": "Criar consentimento",
-     "chamadas": 53689932.0
+     "chamadas": 49037581.0
     },
     {
      "nome": "Pix - Criar iniciação",
-     "chamadas": 46895700.0
+     "chamadas": 42728052.0
     },
     {
      "nome": "Obter parâmetros para autenticação FIDO2",
-     "chamadas": 42242137.0
+     "chamadas": 38329573.0
     },
     {
      "nome": "autorização de um consentimentode pagamentos na jornada sem redirecionamento",
-     "chamadas": 39473924.0
+     "chamadas": 35775223.0
     },
     {
      "nome": "Criar consentimento para iniciação de pagamento",
-     "chamadas": 16273970.0
+     "chamadas": 15154031.0
     },
     {
      "nome": "Consultar consentimento",
-     "chamadas": 9562947.0
+     "chamadas": 8503884.0
     }
    ],
    "familias": [
     {
      "nome": "Iniciação de Pagamentos Automáticos",
-     "chamadas": 923412369.0
+     "chamadas": 853971556.0
     },
     {
      "nome": "Iniciação de Pagamentos",
-     "chamadas": 322391568.0
+     "chamadas": 292928030.0
     },
     {
      "nome": "Pagamentos sem Redirecionamento",
-     "chamadas": 102842518.0
+     "chamadas": 93272801.0
     }
    ]
   }
@@ -2449,7 +2449,7 @@
   "pares": [
    {
     "organisation": "NUBANK",
-    "share_chamadas_pct": 24.3,
+    "share_chamadas_pct": 24.2,
     "share_carteira_pct": 1.03
    },
    {
@@ -2484,7 +2484,7 @@
    },
    {
     "organisation": "BANCO BTG PACTUAL",
-    "share_chamadas_pct": 3.2,
+    "share_chamadas_pct": 3.3,
     "share_carteira_pct": 2.38
    },
    {

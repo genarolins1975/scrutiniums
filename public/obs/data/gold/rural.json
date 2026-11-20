@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-19T19:52:41+00:00",
+ "gerado_em": "2026-11-20T19:16:11+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -47,6 +47,150 @@
   "municipios_com_contratacao": 5488
  },
  "serie_mensal": [
+  {
+   "mes": "2017-03",
+   "custeio": 7581876796.02,
+   "investimento": 3002881197.87,
+   "comercializacao": 2335082850.85,
+   "industrializacao": 379989520.28,
+   "qtd": 157824,
+   "agricola": 8338942272.85,
+   "pecuaria": 4960888092.17,
+   "parcial": false,
+   "valor": 13299830365.02
+  },
+  {
+   "mes": "2017-04",
+   "custeio": 6853462592.64,
+   "investimento": 2579026386.18,
+   "comercializacao": 2056991366.39,
+   "industrializacao": 263437146.0,
+   "qtd": 142170,
+   "agricola": 7160125054.12,
+   "pecuaria": 4592792437.09,
+   "parcial": false,
+   "valor": 11752917491.21
+  },
+  {
+   "mes": "2017-05",
+   "custeio": 8271656575.36,
+   "investimento": 3378530571.33,
+   "comercializacao": 2232449492.93,
+   "industrializacao": 325342385.96,
+   "qtd": 180879,
+   "agricola": 9431244011.01,
+   "pecuaria": 4776735014.57,
+   "parcial": false,
+   "valor": 14207979025.58
+  },
+  {
+   "mes": "2017-06",
+   "custeio": 11361372955.98,
+   "investimento": 4832463754.08,
+   "comercializacao": 3040480840.12,
+   "industrializacao": 932548897.72,
+   "qtd": 181240,
+   "agricola": 13359842041.99,
+   "pecuaria": 6807024405.91,
+   "parcial": false,
+   "valor": 20166866447.9
+  },
+  {
+   "mes": "2017-07",
+   "custeio": 6430084800.7,
+   "investimento": 1987536714.92,
+   "comercializacao": 1239987635.86,
+   "industrializacao": 39777416.42,
+   "qtd": 175138,
+   "agricola": 7041031631.89,
+   "pecuaria": 2656354936.01,
+   "parcial": false,
+   "valor": 9697386567.9
+  },
+  {
+   "mes": "2017-08",
+   "custeio": 12722245506.98,
+   "investimento": 3463968691.87,
+   "comercializacao": 2886066033.84,
+   "industrializacao": 344630446.21,
+   "qtd": 285330,
+   "agricola": 14387986862.76,
+   "pecuaria": 5028923816.14,
+   "parcial": false,
+   "valor": 19416910678.9
+  },
+  {
+   "mes": "2017-09",
+   "custeio": 10115190775.86,
+   "investimento": 3532855534.68,
+   "comercializacao": 2393857108.88,
+   "industrializacao": 853713614.0,
+   "qtd": 223825,
+   "agricola": 11877688160.78,
+   "pecuaria": 5017928872.64,
+   "parcial": false,
+   "valor": 16895617033.42
+  },
+  {
+   "mes": "2017-10",
+   "custeio": 8198297635.48,
+   "investimento": 3587093392.46,
+   "comercializacao": 2467846426.46,
+   "industrializacao": 1070349070.16,
+   "qtd": 188613,
+   "agricola": 10032702812.88,
+   "pecuaria": 5290883711.68,
+   "parcial": false,
+   "valor": 15323586524.56
+  },
+  {
+   "mes": "2017-11",
+   "custeio": 7471315573.72,
+   "investimento": 3251615506.74,
+   "comercializacao": 2321148363.56,
+   "industrializacao": 931335659.91,
+   "qtd": 177120,
+   "agricola": 9046837087.96,
+   "pecuaria": 4928578015.97,
+   "parcial": false,
+   "valor": 13975415103.93
+  },
+  {
+   "mes": "2017-12",
+   "custeio": 7335324884.13,
+   "investimento": 3830998261.42,
+   "comercializacao": 3787006580.32,
+   "industrializacao": 692783501.0,
+   "qtd": 159240,
+   "agricola": 10389187855.4,
+   "pecuaria": 5256925371.47,
+   "parcial": false,
+   "valor": 15646113226.87
+  },
+  {
+   "mes": "2018-01",
+   "custeio": 4351957296.59,
+   "investimento": 2201909947.37,
+   "comercializacao": 1217011825.34,
+   "industrializacao": 494556065.0,
+   "qtd": 108677,
+   "agricola": 4841544465.64,
+   "pecuaria": 3423890668.66,
+   "parcial": false,
+   "valor": 8265435134.3
+  },
+  {
+   "mes": "2018-02",
+   "custeio": 4315231557.81,
+   "investimento": 2434164112.4,
+   "comercializacao": 1336779785.35,
+   "industrializacao": 237430420.0,
+   "qtd": 120683,
+   "agricola": 4682321000.04,
+   "pecuaria": 3641284875.52,
+   "parcial": false,
+   "valor": 8323605875.56
+  },
   {
    "mes": "2018-03",
    "custeio": 6356817123.93,
@@ -1285,28 +1429,39 @@
   },
   {
    "mes": "2026-10",
-   "custeio": 12645065501.48,
-   "investimento": 5188518451.64,
-   "comercializacao": 3478298200.15,
-   "industrializacao": 1243487165.42,
-   "qtd": 148563,
-   "agricola": 15576879154.89,
-   "pecuaria": 6978490163.8,
+   "custeio": 12766302487.23,
+   "investimento": 5482246199.11,
+   "comercializacao": 3488198200.15,
+   "industrializacao": 1247487165.42,
+   "qtd": 160492,
+   "agricola": 15804700655.22,
+   "pecuaria": 7179533396.69,
    "parcial": true,
-   "valor": 22555369318.69
+   "valor": 22984234051.91
   }
  ],
  "safras": [
   {
-   "safra": "2017/18",
-   "valor": 63054366544.52,
-   "qtd": 647481,
-   "custeio": 30726656475.68,
-   "investimento": 17213977085.04,
-   "comercializacao": 12543387016.35,
-   "industrializacao": 2570345967.45,
+   "safra": "2016/17",
+   "valor": 59427593329.71,
+   "qtd": 662113,
+   "custeio": 34068368920.0,
+   "investimento": 13792901909.46,
+   "comercializacao": 9665004550.29,
+   "industrializacao": 1901317949.96,
    "meses": 4,
    "incompleta": true
+  },
+  {
+   "safra": "2017/18",
+   "valor": 170598436689.96,
+   "qtd": 2086107,
+   "custeio": 91666304506.95,
+   "investimento": 41504119246.9,
+   "comercializacao": 30193090775.96,
+   "industrializacao": 7234922160.15,
+   "meses": 12,
+   "incompleta": false
   },
   {
    "safra": "2018/19",
@@ -1398,12 +1553,12 @@
   },
   {
    "safra": "2026/27",
-   "valor": 109810435337.56,
-   "qtd": 803144,
-   "custeio": 65304990883.31,
-   "investimento": 25165185169.24,
-   "comercializacao": 11997652223.93,
-   "industrializacao": 7342607061.08,
+   "valor": 110239300070.78,
+   "qtd": 815073,
+   "custeio": 65426227869.06,
+   "investimento": 25458912916.71,
+   "comercializacao": 12007552223.93,
+   "industrializacao": 7346607061.08,
    "meses": 4,
    "incompleta": true
   }
@@ -1537,12 +1692,20 @@
   ],
   "por_safra": [
    {
-    "safra": "2017/18",
-    "PRONAF": 7125289500.61,
-    "PRONAMP": 6618021766.3,
-    "Demais programas": 5781782219.84,
-    "Sem programa": 43529273057.77,
+    "safra": "2016/17",
+    "PRONAF": 6902975350.57,
+    "PRONAMP": 6438757664.3,
+    "Demais programas": 4877419247.27,
+    "Sem programa": 41208441067.57,
     "incompleta": true
+   },
+   {
+    "safra": "2017/18",
+    "PRONAF": 22903084957.02,
+    "PRONAMP": 19850233705.42,
+    "Demais programas": 15794943021.41,
+    "Sem programa": 112050175006.11,
+    "incompleta": false
    },
    {
     "safra": "2018/19",
@@ -1610,10 +1773,10 @@
    },
    {
     "safra": "2026/27",
-    "PRONAF": 29729274141.86,
-    "PRONAMP": 22789539124.03,
-    "Demais programas": 8971218737.24,
-    "Sem programa": 48320403334.43,
+    "PRONAF": 29911838001.21,
+    "PRONAMP": 22849369181.2,
+    "Demais programas": 9020497307.69,
+    "Sem programa": 48457595580.68,
     "incompleta": true
    }
   ],
@@ -1890,17 +2053,30 @@
   ],
   "por_safra": [
    {
-    "safra": "2017/18",
-    "BNDES e Finame": 5429525054.82,
-    "Outras fontes": 943032253.54,
-    "Funcafé": 103562791.38,
-    "Fundos constitucionais (FNE, FNO, FCO)": 6372371156.39,
-    "LCA": 9954400701.66,
-    "Exigibilidades (MCR 6.2)": 22940563275.43,
-    "Poupança rural": 14910834686.31,
-    "Recursos livres": 2388154554.9,
-    "Tesouro Nacional": 11922070.09,
+    "safra": "2016/17",
+    "BNDES e Finame": 5733941222.26,
+    "Outras fontes": 2136568903.94,
+    "Funcafé": 75989621.98,
+    "Fundos constitucionais (FNE, FNO, FCO)": 4204591752.15,
+    "LCA": 7207499961.71,
+    "Exigibilidades (MCR 6.2)": 17210578310.5,
+    "Poupança rural": 21187761052.58,
+    "Recursos livres": 1649563949.02,
+    "Tesouro Nacional": 21098555.57,
     "incompleta": true
+   },
+   {
+    "safra": "2017/18",
+    "BNDES e Finame": 13999303930.42,
+    "Outras fontes": 4535202803.04,
+    "Funcafé": 2602474591.65,
+    "Fundos constitucionais (FNE, FNO, FCO)": 16278488032.0,
+    "LCA": 22757533748.29,
+    "Exigibilidades (MCR 6.2)": 58072474953.98,
+    "Poupança rural": 47062199371.75,
+    "Recursos livres": 5232190305.77,
+    "Tesouro Nacional": 58568953.06,
+    "incompleta": false
    },
    {
     "safra": "2018/19",
@@ -2008,15 +2184,15 @@
    },
    {
     "safra": "2026/27",
-    "BNDES e Finame": 7729148504.64,
-    "Outras fontes": 569827270.39,
-    "Funcafé": 4728508167.43,
-    "Fundos constitucionais (FNE, FNO, FCO)": 11467982167.57,
-    "LCA": 41042225720.06,
-    "Exigibilidades (MCR 6.2)": 29345741862.43,
-    "Poupança rural": 11534126021.74,
-    "Recursos livres": 3055097417.59,
-    "Tesouro Nacional": 337778205.71,
+    "BNDES e Finame": 7817454115.23,
+    "Outras fontes": 586664956.64,
+    "Funcafé": 4731487628.6,
+    "Fundos constitucionais (FNE, FNO, FCO)": 11629223958.69,
+    "LCA": 41112426016.61,
+    "Exigibilidades (MCR 6.2)": 29373363529.98,
+    "Poupança rural": 11580341961.5,
+    "Recursos livres": 3068583314.65,
+    "Tesouro Nacional": 339754588.88,
     "incompleta": true
    }
   ],
@@ -2325,10 +2501,16 @@
   ],
   "serie_safra": [
    {
-    "safra": "2017/18",
-    "mulheres_share_valor": 14.98,
-    "mulheres_share_qtd": 29.22,
+    "safra": "2016/17",
+    "mulheres_share_valor": 15.17,
+    "mulheres_share_qtd": 28.97,
     "incompleta": true
+   },
+   {
+    "safra": "2017/18",
+    "mulheres_share_valor": 15.04,
+    "mulheres_share_qtd": 27.41,
+    "incompleta": false
    },
    {
     "safra": "2018/19",
@@ -2380,8 +2562,8 @@
    },
    {
     "safra": "2026/27",
-    "mulheres_share_valor": 20.64,
-    "mulheres_share_qtd": 33.45,
+    "mulheres_share_valor": 20.88,
+    "mulheres_share_qtd": 34.17,
     "incompleta": true
    }
   ]

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-19T19:52:43+00:00",
+ "gerado_em": "2026-11-20T19:16:12+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1340 processos sancionadores em 1ª instância, com 1447 decisões por apenado: 1376 multas somando R$ 79.0 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (163 acusados); 259 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1340 processos sancionadores em 1ª instância, com 1447 decisões por apenado: 1376 multas somando R$ 79.0 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (163 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-19",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11471
   },
   "janela_12m": {
-   "ini": "2025-11-19",
+   "ini": "2025-11-20",
    "decisoes": 1447,
    "processos": 1340,
    "multas_n": 1376,
@@ -49,16 +49,16 @@
    "pf": 1038
   },
   "janela_12m_anterior": {
-   "decisoes": 819,
-   "processos": 647,
-   "multas_n": 684,
-   "multas_valor": 25062883.9,
+   "decisoes": 816,
+   "processos": 644,
+   "multas_n": 681,
+   "multas_valor": 25000383.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
-   "recursos": 132,
-   "pj": 256,
+   "recursos": 131,
+   "pj": 253,
    "pf": 563
   },
   "penas_12m": [
@@ -106,8 +106,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 109,
-    "share": 7.53
+    "n": 110,
+    "share": 7.6
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -145,11 +145,6 @@
     "share": 0.07
    },
    {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 1,
-    "share": 0.07
-   },
-   {
     "situacao": "EM PRAZO DE RECURSO",
     "n": 1,
     "share": 0.07
@@ -177,12 +172,12 @@
     "share": 0.86
    },
    {
-    "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 109,
-    "share": 0.79
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
+    "n": 110,
+    "share": 0.8
    },
    {
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
+    "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 109,
     "share": 0.79
    },
@@ -200,11 +195,6 @@
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 23,
     "share": 0.17
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 1,
-    "share": 0.01
    }
   ],
   "tempo_citacao_decisao_meses": {
@@ -453,7 +443,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "315903",
@@ -943,28 +933,28 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-10-09",
-  "ultima_movimentacao": "2026-11-18",
+  "ultima_movimentacao": "2026-11-19",
   "acervo": {
    "processos": 589,
    "acusados": 2098,
-   "em_curso": 259,
-   "finalizados": 330
+   "em_curso": 258,
+   "finalizados": 331
   },
   "abertos_12m": {
-   "ini": "2025-11-19",
+   "ini": "2025-11-20",
    "processos": 62,
    "acusados": 163
   },
   "fases": [
    {
     "fase": "Finalizado",
-    "n": 330,
-    "share": 56.03
+    "n": 331,
+    "share": 56.2
    },
    {
     "fase": "Julgamento",
-    "n": 104,
-    "share": 17.66
+    "n": 102,
+    "share": 17.32
    },
    {
     "fase": "Citação e envio de defesas",
@@ -978,8 +968,8 @@
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 20,
-    "share": 3.4
+    "n": 21,
+    "share": 3.57
    }
   ],
   "areas": [
@@ -1106,13 +1096,13 @@
   ],
   "duracao_finalizados_meses": {
    "mediana": 31.1,
-   "p90": 66.3,
-   "n": 330
+   "p90": 65.9,
+   "n": 331
   },
   "idade_em_curso_meses": {
-   "mediana": 22,
+   "mediana": 21.5,
    "acima_36": 90,
-   "n": 259
+   "n": 258
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1191,10 +1181,10 @@
    {
     "ano": "2023",
     "processos": 77,
-    "finalizados": 56,
+    "finalizados": 57,
     "acusados": 202,
     "incompleto": false,
-    "finalizados_share": 72.73
+    "finalizados_share": 74.03
    },
    {
     "ano": "2024",
