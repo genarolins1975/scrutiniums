@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "modelos.json",
- "gerado_em": "2026-11-19T17:46:46Z",
+ "gerado_em": "2026-11-20T17:22:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "5c29c41ebaea",
+ "versao_codigo": "05441c1eb0ee",
  "disponivel": true,
  "fonte": {
   "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
