@@ -1,10 +1,10 @@
 {
- "capturado_em": "2026-10-20T15:32:04Z",
+ "capturado_em": "2026-11-22T18:37:05Z",
  "cadastro": {
   "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/CAD/DADOS/cad_cia_aberta.csv",
-  "sha256": "e5c911c89922ac0a62eaaf05015ab6859cf3c7fc866ed2aa92277325c5446843",
-  "bytes": 1493746,
-  "last_modified": "Tue, 20 Oct 2026 04:16:11 GMT"
+  "sha256": "bfa32041402a430b8cc1e5237d377554035369f511d0c9c2169a0182b4105d8c",
+  "bytes": 1495351,
+  "last_modified": "Sat, 21 Nov 2026 04:13:27 GMT"
  },
  "originais": [
   {
@@ -563,45 +563,45 @@
    "fonte": "DFP",
    "ano": 2022,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2022.zip",
-   "sha256": "1272858bbaf30c0434e70dae060ef12ec6474131f8ec5fd05938686184e907c9",
-   "bytes": 13448937,
-   "last_modified": "Sun, 18 Oct 2026 10:36:20 GMT",
+   "sha256": "9eb49d92587a031b72017678630cecd438e85ac59fdb38fae62a35fe4960899d",
+   "bytes": 13449826,
+   "last_modified": "Sun, 22 Nov 2026 10:40:33 GMT",
    "membros": {
     "dfp_cia_aberta_2022.csv": {
-     "sha256": "33e354bd2cc9a81fc897d3f40e66991c4250821b1abe9e083ae4c98cd2e59c60",
-     "bytes": 195716
+     "sha256": "9384678e17a49933bdf566f7a182f1ac7e1b7a3c45e9b2cbef49d6eb885b0a76",
+     "bytes": 195756
     },
     "dfp_cia_aberta_BPA_con_2022.csv": {
-     "sha256": "5d65b9c0a7d4eab1bb678c87d7d94bd2521ac076094a57bc9105a0af78ad8891",
-     "bytes": 12470946
+     "sha256": "ad841b752161adb6095a58e039c9c37416c679c2cb5c4a0749e7c0f5debff3b5",
+     "bytes": 12475738
     },
     "dfp_cia_aberta_BPA_ind_2022.csv": {
-     "sha256": "99c5de3ca263e36741fcf8198a7f3f22fd3b3c1ab271ac43ea3f988ae0a717e1",
-     "bytes": 19084516
+     "sha256": "9dc78287c5f9f240a77c8aa2a0fa0efac76f7dbb9ad9b563abfc3dc3c03b17ef",
+     "bytes": 19089740
     },
     "dfp_cia_aberta_BPP_con_2022.csv": {
-     "sha256": "50f0025736c8c29696f449292a7d5812d37c4e40379f8c9e39c536d28f0c58e6",
-     "bytes": 21650960
+     "sha256": "27219e9e3186e85d9254aa24081038c37eeaca9fd2ed74f75b3a315fef34080d",
+     "bytes": 21659408
     },
     "dfp_cia_aberta_BPP_ind_2022.csv": {
-     "sha256": "a0f2229079b269bb94f8842f86b93eb9497c5201706457e3ad786ae58cee7165",
-     "bytes": 32671377
+     "sha256": "f0aba436f8be95b2a7ef25831df04ac5b4583e1e51573bac6929d6e0cb5f6315",
+     "bytes": 32680677
     },
     "dfp_cia_aberta_DRE_con_2022.csv": {
-     "sha256": "3d821261007fe20c02495ccbc6080b2e151aac03b34b60765cb4972c54cd1d56",
-     "bytes": 7022409
+     "sha256": "2061e47937cec3b079de794ad258d7cb9ab6903ff9441cf1dba7acc8b4fd2c32",
+     "bytes": 7024861
     },
     "dfp_cia_aberta_DRE_ind_2022.csv": {
-     "sha256": "1bc0023421ba392788a46c648b72c81df7b39a27ac7ff9ef524d5ed7fdebaa49",
-     "bytes": 10005621
+     "sha256": "b72d87234fa44fffa50e12a74431ac23e3874e9b74b02e81fc8331dbe0339125",
+     "bytes": 10008089
     },
     "dfp_cia_aberta_DVA_con_2022.csv": {
-     "sha256": "be3b90fff3aad259f3919d686ac0de7056f1585aa4b859f91bc1fcd610278af9",
-     "bytes": 8785893
+     "sha256": "9e289abda26b5f2064a6d662e0c7444085e3c21e76ea2bfaf78a69e512cb0eb9",
+     "bytes": 8789245
     },
     "dfp_cia_aberta_DVA_ind_2022.csv": {
-     "sha256": "10754a34025f2f5620fa842af4033ad0acc7a96479982874b9356a2a2eeadc9e",
-     "bytes": 12925555
+     "sha256": "7db271b71b776cd4715d83a5111795c20ef96f1f819ab98c62bc85fa8f349a0f",
+     "bytes": 12928859
     }
    }
   },
@@ -609,45 +609,45 @@
    "fonte": "DFP",
    "ano": 2023,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2023.zip",
-   "sha256": "46f281e5849ae7e7f0862aa9b65241a1ead95bb22644d1b5310d6b6542d7c398",
-   "bytes": 13561550,
-   "last_modified": "Sun, 18 Oct 2026 10:31:22 GMT",
+   "sha256": "504b124cb4073ff9e156ffca977565f10cd62589dbf9b1a716d433cddfc6651d",
+   "bytes": 13563506,
+   "last_modified": "Sun, 22 Nov 2026 10:34:56 GMT",
    "membros": {
     "dfp_cia_aberta_2023.csv": {
-     "sha256": "7db380e10558af40dbadcd6b366c8b706c4ecdb441cb1b40e96580ff7dae293a",
-     "bytes": 187136
+     "sha256": "a4987e6f61fc67860a59703165c624dfa0da5f401aef545ae9d68f6bd95f700b",
+     "bytes": 187234
     },
     "dfp_cia_aberta_BPA_con_2023.csv": {
-     "sha256": "a9aa601a31c509ab3cd1e4fe2d434d7f0013af2478a5c51b1afee1afe5968e8a",
-     "bytes": 12656606
+     "sha256": "3965818a8374e2045c927bcc409793a33d33c020b73c68e51ae91f51f9d6a4b3",
+     "bytes": 12661346
     },
     "dfp_cia_aberta_BPA_ind_2023.csv": {
-     "sha256": "9b53df4ecdabff4a2d49f18d637c4d92daee611d776f009cc5b388e10ed5a70a",
-     "bytes": 19557122
+     "sha256": "029fe335047b19c784bbe82a60891d2c2496382192c02c81ea18ae2fe8aab87d",
+     "bytes": 19562326
     },
     "dfp_cia_aberta_BPP_con_2023.csv": {
-     "sha256": "b029676e9b76846796f1aafd260535cc13374f664bd2caa0fca4d482ea8e7e60",
-     "bytes": 21951077
+     "sha256": "db46a1536f1be626cb7ccb3c60c38483860097f927abb31d4d9d1372f8b98f29",
+     "bytes": 21959525
     },
     "dfp_cia_aberta_BPP_ind_2023.csv": {
-     "sha256": "48223308f5a582c43804a2245098109cebeb7d484a1bd7f15cb5d7363cf65543",
-     "bytes": 33348227
+     "sha256": "2bb8f5224c5bc2b156ad7e8e1b263a60336a902be99392670afc39a3d6365c65",
+     "bytes": 33357527
     },
     "dfp_cia_aberta_DRE_con_2023.csv": {
-     "sha256": "b9a67cdae77e5559357d1d8b838f620ebd9efc90cdfe86b3393dfbf9192802aa",
-     "bytes": 7066452
+     "sha256": "6cfdd302dfd944ab4f8320852ccc641919650f07fe3c8d619e64520ae35e1ac4",
+     "bytes": 7068904
     },
     "dfp_cia_aberta_DRE_ind_2023.csv": {
-     "sha256": "bccf416bf35259b4130d5e741185e73e927fb589980dafc27c154a8d98afb6fc",
-     "bytes": 10167500
+     "sha256": "d408f933892ebc481cb7f21800ec1e45531636ef2a1c186ab83c25c4d39731fb",
+     "bytes": 10170000
     },
     "dfp_cia_aberta_DVA_con_2023.csv": {
-     "sha256": "6f05c507d32ecd24fcb696bea8cb956bf70c06538b88b3abc6d575d43a2bfe76",
-     "bytes": 8851414
+     "sha256": "64889375bbc251af794c5a56d655b2bda4f8af122013a622e01556031bc7b93a",
+     "bytes": 8854766
     },
     "dfp_cia_aberta_DVA_ind_2023.csv": {
-     "sha256": "bcac2150a22b835c112cb082f03a333875667f2107269829119703eb93bc9c83",
-     "bytes": 13184910
+     "sha256": "f25e5ed557954c8fa75a73893c157b2b136ac2b72c73dd517b93eac93480d6de",
+     "bytes": 13188262
     }
    }
   },
@@ -655,45 +655,45 @@
    "fonte": "DFP",
    "ano": 2024,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2024.zip",
-   "sha256": "b51c920793c18edb66e8780c0780836d441af1199e1077064b73c7de6c865df0",
-   "bytes": 13396140,
-   "last_modified": "Sun, 18 Oct 2026 10:25:54 GMT",
+   "sha256": "bbe832918cc3bf3bbfeea1feb1acc9126e398f8e69ada5193bf70b17a0352d2a",
+   "bytes": 13397597,
+   "last_modified": "Sun, 22 Nov 2026 10:28:52 GMT",
    "membros": {
     "dfp_cia_aberta_2024.csv": {
-     "sha256": "a608a00fbd85205861a7af615072c2b453e5e357b9de1693a1a700f9bb12d057",
-     "bytes": 182955
+     "sha256": "21303867fca077b50a199c8772b065d9544ec2b5bd1bf2501974df4e84307460",
+     "bytes": 183011
     },
     "dfp_cia_aberta_BPA_con_2024.csv": {
-     "sha256": "c56ce43e4c7e3c18d1688cc4d568014a20429c23bd8ecf30553699de4f275607",
-     "bytes": 12274977
+     "sha256": "75dca9ab3680d9a23b178e42eea63a64f28974de084238d86f364936922102eb",
+     "bytes": 12279613
     },
     "dfp_cia_aberta_BPA_ind_2024.csv": {
-     "sha256": "9d3be511c4d9b24047de3567a1f141a9eee40a313adc9226d16b8e0349d5dbce",
-     "bytes": 18581321
+     "sha256": "d8769187ab48161ec36e7a59d17f385b111adced222ea34a452764e070b37c1d",
+     "bytes": 18586505
     },
     "dfp_cia_aberta_BPP_con_2024.csv": {
-     "sha256": "79dd55780ca0a4fdda83a77a62a999766df517c28305bfff2d2b0f3cfbefd1a4",
-     "bytes": 21283129
+     "sha256": "f3c821194dc106bd49a98b1ae10b5138749dd8605d16e3742a52320d745555fb",
+     "bytes": 21291665
     },
     "dfp_cia_aberta_BPP_ind_2024.csv": {
-     "sha256": "d95554b29a51c0030680c6e97ae98bcaa388a605db33fcc4bc2ba4c218f99625",
-     "bytes": 31724961
+     "sha256": "3a9ff36ed33eb3452934896f877a47028fd156ec8d71e7f4f069b43f984be601",
+     "bytes": 31734189
     },
     "dfp_cia_aberta_DRE_con_2024.csv": {
-     "sha256": "5d607f4e47182bca64d6b719bae4ae3f8d1fe4fa1e8674fa0cbeae6acfd99cd4",
-     "bytes": 6818963
+     "sha256": "bc0e2004b5901dd5c28ca66c52f4f7bb2d4c734f3c9d0fcd7c779ff5959c1a28",
+     "bytes": 6821623
     },
     "dfp_cia_aberta_DRE_ind_2024.csv": {
-     "sha256": "e485761385ac2dea112008c81dff275fae165713944bc8b404401f7770a92f22",
-     "bytes": 9600914
+     "sha256": "76ec35b7db06b917477fdecf650221a546a034df119e128b25ae7771233fbbad",
+     "bytes": 9603414
     },
     "dfp_cia_aberta_DVA_con_2024.csv": {
-     "sha256": "f79145e64532058c6ea0f6fe1cc9e71dbae78766ae1b7fed705dd55d3630cdd3",
-     "bytes": 8540151
+     "sha256": "a14e66a2ddd6ce4906fd37da25fa6947d84bc8ebea2bd907261b8b162070a75b",
+     "bytes": 8543503
     },
     "dfp_cia_aberta_DVA_ind_2024.csv": {
-     "sha256": "d0ae23a8a18f6070c0dcc1eaee30512dc18156fce53e4688e428e9c019a1a16b",
-     "bytes": 12467186
+     "sha256": "2c522f97f9eb56d28abc87bce088d5d08f1055f68349c0961b3a077fb07937c6",
+     "bytes": 12470538
     }
    }
   },
@@ -701,45 +701,45 @@
    "fonte": "DFP",
    "ano": 2025,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
-   "sha256": "5e273568aae97d1301c852e9f5d2ed024584beab31ee82a65eff47478ffdf34f",
-   "bytes": 12806041,
-   "last_modified": "Sun, 18 Oct 2026 10:20:36 GMT",
+   "sha256": "d0364bf186449b89b4f91ad4fb2947dcfc6403926cbbbfc80dbc2d45b544ff6b",
+   "bytes": 12898422,
+   "last_modified": "Sun, 22 Nov 2026 10:22:30 GMT",
    "membros": {
     "dfp_cia_aberta_2025.csv": {
-     "sha256": "52db41257940d9b1b6641fdbd54319ddba2085f4d3d1739c22d2c9b1ca3f0aff",
-     "bytes": 159051
+     "sha256": "ff55100434320a6a53b3c73c00ff52c51dc1ca4f72164b5ea4a4306735962849",
+     "bytes": 159886
     },
     "dfp_cia_aberta_BPA_con_2025.csv": {
-     "sha256": "b49ac1effeea184ff69b485b165e2f915a10ff70b8bf9ff34ba822fd8455a5b4",
-     "bytes": 11686133
+     "sha256": "4c85c4f5181183a461bc4b34a00c31cdbeafd178cab28e6c009c9bc983626821",
+     "bytes": 11819735
     },
     "dfp_cia_aberta_BPA_ind_2025.csv": {
-     "sha256": "62c10296598078233480db643c70fbfbd5b77e3ef35134a6d01836fab2de5ea1",
-     "bytes": 17576218
+     "sha256": "0e1692a914d920e4d2588a11c14966a4223e8e2ee5a61ed9b4bad2cb0d3503ab",
+     "bytes": 17703097
     },
     "dfp_cia_aberta_BPP_con_2025.csv": {
-     "sha256": "ca52804cf87053bcc9e68fc628b6455a3ab2b2c7f84167ee70d03f4beedd414a",
-     "bytes": 20286751
+     "sha256": "5b7bd958e7b14db61c9f67760a2ef8b28befcd075a53400b7b87d1c6b76dbfab",
+     "bytes": 20504460
     },
     "dfp_cia_aberta_BPP_ind_2025.csv": {
-     "sha256": "38be09856f8dbfef17904209c8907110a714d6aae0610965a2be73c39e57b520",
-     "bytes": 30016926
+     "sha256": "0ba94db399000a70e112e0c8c132ad1655d18ad326f0eb2839e4f339641eba01",
+     "bytes": 30228781
     },
     "dfp_cia_aberta_DRE_con_2025.csv": {
-     "sha256": "e53f4abefea67509e3eb39e61dba3955f18238dde2591daba4fa2c6cd63e8c89",
-     "bytes": 6447087
+     "sha256": "e091c693644b1d0a3094b819f6d3cf1c949d71c5dcd821debe76390a60fc3efc",
+     "bytes": 6537771
     },
     "dfp_cia_aberta_DRE_ind_2025.csv": {
-     "sha256": "308bb44cdd96b5e49b0fc0290ef53257156e72cffb30db370893514ee6f0df78",
-     "bytes": 9038849
+     "sha256": "6718eb4919cc66a9ecbed832ad0031a947bd0e6f03958bbfa466d7bc422bf674",
+     "bytes": 9123927
     },
     "dfp_cia_aberta_DVA_con_2025.csv": {
-     "sha256": "d8e66e51cc745db8cb7052185353f1b8fbaf3dce20c06f735ef010bb8893a323",
-     "bytes": 8119687
+     "sha256": "b651528b3b656d56b279365bda3f8b94ea7c0936c7644ed3e6103fafe2bd0432",
+     "bytes": 8240692
     },
     "dfp_cia_aberta_DVA_ind_2025.csv": {
-     "sha256": "6101a5adf89a4e0699b3840cdf2df908da3e5f39a9d778a119c89ede3a739b48",
-     "bytes": 11767259
+     "sha256": "8ef2dcf395962173fa1dca0661c69ba1f3e2380b553dfb851f55adaaf95c78cf",
+     "bytes": 11877161
     }
    }
   },
@@ -747,9 +747,9 @@
    "fonte": "DFP",
    "ano": 2026,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2026.zip",
-   "sha256": "b5a805d46cdb3c865eaff362013e2ff7df058b2112874d5be5e88cfe17dc50c6",
+   "sha256": "83fd5169daa0acc930c0a75cd49bdff1a615a66fec26d373be2be42862b6ae52",
    "bytes": 243348,
-   "last_modified": "Sun, 18 Oct 2026 10:15:18 GMT",
+   "last_modified": "Sun, 22 Nov 2026 10:17:02 GMT",
    "membros": {
     "dfp_cia_aberta_2026.csv": {
      "sha256": "484b040e54ea3c8a9f85457a884e7c1598e02f986088532fb5c22c044d20edea",
@@ -1115,45 +1115,45 @@
    "fonte": "ITR",
    "ano": 2022,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2022.zip",
-   "sha256": "cc60db111b600ea9e762189a4c30f53cef2da7425fce160281772c2cc7d2f0ab",
-   "bytes": 32324776,
-   "last_modified": "Sun, 18 Oct 2026 11:49:22 GMT",
+   "sha256": "7c6311c2a0a832e97e089843600cf4972b4ebe9a21efddc450705547f8c74f73",
+   "bytes": 32329024,
+   "last_modified": "Sun, 22 Nov 2026 11:57:36 GMT",
    "membros": {
     "itr_cia_aberta_2022.csv": {
-     "sha256": "a9fdf839c3d804450545901c2eaa77920cd93c0d3e8c513d08569a5b4e3a78be",
-     "bytes": 524547
+     "sha256": "33090121e3bca629b76e2967ca3d4a542d38231381a39e6320bcc8ec24ea5630",
+     "bytes": 524663
     },
     "itr_cia_aberta_BPA_con_2022.csv": {
-     "sha256": "d46b617ef7b13af13859a3b854bbfddaa1332af77cbbf981c6bc4c5dabd5c300",
-     "bytes": 35866897
+     "sha256": "b2cba7e87925747729448dda44c97d185cecc90dc7aee063228b50cafc41d2c0",
+     "bytes": 35880189
     },
     "itr_cia_aberta_BPA_ind_2022.csv": {
-     "sha256": "1b9c200652dc8b3ddac76156497d40ab86a4b75fdc39926949b14ebb207cecdb",
-     "bytes": 56867596
+     "sha256": "e61990df7327e5ee63d6de60ad1b393a4aaa2058b55f37d6e0e68d0e8c91854a",
+     "bytes": 56883028
     },
     "itr_cia_aberta_BPP_con_2022.csv": {
-     "sha256": "6c1eb4f7ea4901c10e8dbfbebde2103fadf5e931fc05c68e18d88f7c7896ed2e",
-     "bytes": 62313977
+     "sha256": "ff1e15ec7728b1c21e4a9cfef21cb340833255c2dea4046412d45827fc37a3f4",
+     "bytes": 62339085
     },
     "itr_cia_aberta_BPP_ind_2022.csv": {
-     "sha256": "43e0931654c5f088b0b523a5ea6855d0cfdd31c7c60f15d1867ac2d750ff3669",
-     "bytes": 97374898
+     "sha256": "ee0ff8fc305938690bfb14921bef18db88d5e31489c97d55bc43a7e671dc1ad9",
+     "bytes": 97402230
     },
     "itr_cia_aberta_DRE_con_2022.csv": {
-     "sha256": "f2167a2fced059a7ef015f196ec8409e48d501a02b1d69a7cb25377781fc10b9",
-     "bytes": 33570155
+     "sha256": "62d89a4ce86c200ebcb77e7e2444455bec3cc9ed189e722ff61f4d207d4f54ae",
+     "bytes": 33582415
     },
     "itr_cia_aberta_DRE_ind_2022.csv": {
-     "sha256": "913517927b03a7220b1b67a844aa51a0add64f3239f1f33d5e712fde0092fa55",
-     "bytes": 49568679
+     "sha256": "945c8a221fe83a68671a2a675691d48de0af95a71ea8cde69cc0cf81afafbe0d",
+     "bytes": 49581179
     },
     "itr_cia_aberta_DVA_con_2022.csv": {
-     "sha256": "355b13842f48e3907abcdcfb4cc0043e2e9ed7d4600c10a2beca35f06aac1b07",
-     "bytes": 24877541
+     "sha256": "af85802d52fd645824c96b2ffb21f97a18af65b37148b7e16033c838999007ac",
+     "bytes": 24887441
     },
     "itr_cia_aberta_DVA_ind_2022.csv": {
-     "sha256": "ef1929eeb732c13bdcceddc843f876ba6a45a9568ca5d97a7d11c05f61999955",
-     "bytes": 38176335
+     "sha256": "5e3ffb18ac845686c951ce4202f4ee56061b83d029e42f008255d84ec1b1cb20",
+     "bytes": 38186199
     }
    }
   },
@@ -1161,45 +1161,45 @@
    "fonte": "ITR",
    "ano": 2023,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2023.zip",
-   "sha256": "fcd4729afacde921b8d74766dd439b8afef225af054b52633b60b18443eb6531",
-   "bytes": 32350759,
-   "last_modified": "Sun, 18 Oct 2026 11:34:23 GMT",
+   "sha256": "8edfee11a299f60cf9cf900f03ee4a0b263a3b64893c85d63cbc50a6665bb18b",
+   "bytes": 32355974,
+   "last_modified": "Sun, 22 Nov 2026 11:42:48 GMT",
    "membros": {
     "itr_cia_aberta_2023.csv": {
-     "sha256": "5ba5e5e7d6076c13500726be2a51b4cf83aae0b6ceb442d0543dece82bb165c7",
-     "bytes": 505652
+     "sha256": "f5ee0037adc8c2fe52c0d95aceb071c699b9924cd6ec274920f5970a7f34663c",
+     "bytes": 505746
     },
     "itr_cia_aberta_BPA_con_2023.csv": {
-     "sha256": "b6fa50e2afd386b02bd3d7c801e8242e90b158b74491c64f56f27b9d35c78344",
-     "bytes": 36474180
+     "sha256": "2902dd43df5249ce0cbf1a01740c72c3a46f929f68843978df3e3d9c05359822",
+     "bytes": 36488652
     },
     "itr_cia_aberta_BPA_ind_2023.csv": {
-     "sha256": "57b34664fb164802f308a72e8e0be93fd792a391466e75b40eb82854fea14fed",
-     "bytes": 56132102
+     "sha256": "cdfbe840dd7270076a410d694c59323b7e5c3913c9549678a796fd6948f339b2",
+     "bytes": 56147650
     },
     "itr_cia_aberta_BPP_con_2023.csv": {
-     "sha256": "3756fd496f598a84980a8198026f6be61dd3474b209f6069b9d3d4335d89a089",
-     "bytes": 63269767
+     "sha256": "e8ac253d2e06a5a2430ba1ceffb9597a63725d1bc4a171cd84b2e701779c3a74",
+     "bytes": 63295111
     },
     "itr_cia_aberta_BPP_ind_2023.csv": {
-     "sha256": "abf372db90a9d1c0741d08c17233026fa28a7c896052823180a83779e9d59177",
-     "bytes": 95946492
+     "sha256": "b2801d0661f830d134d88bcefa683f67b50a4f32712fff707e3492ca78c4db37",
+     "bytes": 95974392
     },
     "itr_cia_aberta_DRE_con_2023.csv": {
-     "sha256": "d801b79b55e59bb078126e3668f754301f3587eb34f8310ad01eefd235f6de7e",
-     "bytes": 33925697
+     "sha256": "03fdce9e433e5f6ff36321d2a52b678203bbf760678474ac37b63b39b179384c",
+     "bytes": 33937957
     },
     "itr_cia_aberta_DRE_ind_2023.csv": {
-     "sha256": "facfb36f81c7824b56068d29b8551603e7d4ccf3716c03cef4bc0cb5c0c45a0b",
-     "bytes": 49102923
+     "sha256": "ab3f94f0e1a75835eb5bf6f675b4d9c133c616862000dfca2cf54e0fa88d8f72",
+     "bytes": 49115423
     },
     "itr_cia_aberta_DVA_con_2023.csv": {
-     "sha256": "961c682f065deafe76716545e9a6000f33f9c9a72ebc150684671904f6b0e735",
-     "bytes": 25166277
+     "sha256": "ad601648b33661c96066392df73d6d05738a6ff1ba8bc506696871c1369cf79e",
+     "bytes": 25176177
     },
     "itr_cia_aberta_DVA_ind_2023.csv": {
-     "sha256": "f1af8f72f0c1d39584907168da2ab5e6996af2baff7a672c054ef1e0cccc1dc1",
-     "bytes": 37479235
+     "sha256": "dc74f27d8ffadc71c967d88a79c63adbfc1ce8193d115448dd953db79338723b",
+     "bytes": 37489131
     }
    }
   },
@@ -1207,45 +1207,45 @@
    "fonte": "ITR",
    "ano": 2024,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2024.zip",
-   "sha256": "e77515e113d27c8a8f17cdeea2e10e7425ac78c1ec397f179790a4eae64b2f57",
-   "bytes": 32722970,
-   "last_modified": "Sun, 18 Oct 2026 11:17:43 GMT",
+   "sha256": "c2fb52cb213cf5fc09e75a47aec60fffe027e0e49ad630744861907842237189",
+   "bytes": 32725987,
+   "last_modified": "Sun, 22 Nov 2026 11:27:23 GMT",
    "membros": {
     "itr_cia_aberta_2024.csv": {
-     "sha256": "82779e5e02201bac22fb6cb65ed5e1ef543eae9aa194b5459c0c02b776c06122",
-     "bytes": 513883
+     "sha256": "0049059008caac217b291dd069484439ab16793f9dd26ef05716eba99647487e",
+     "bytes": 514035
     },
     "itr_cia_aberta_BPA_con_2024.csv": {
-     "sha256": "4b7a75c7ad0cdf811f7880737871b38e4d5a89230c642cda3569cf0e1acddebd",
-     "bytes": 37122822
+     "sha256": "593c55ffac95bb1d79a532c65374a84e9fedbde9eec46e7046fb2efdbd5bacde",
+     "bytes": 37137042
     },
     "itr_cia_aberta_BPA_ind_2024.csv": {
-     "sha256": "da70a57502978078490b8a430467e07fb2492386f4541daef9d09ff7ebc4d34c",
-     "bytes": 56815394
+     "sha256": "408099503e4b5b0b62682541064357c3338ac305255e4d2e1760ffa087f18773",
+     "bytes": 56830986
     },
     "itr_cia_aberta_BPP_con_2024.csv": {
-     "sha256": "e76bf0c0f4a25b9640e700c82b0576fa5eaab4522ae2a9477e07de049fcfe499",
-     "bytes": 64484923
+     "sha256": "9f5ce32a88f29f15ee9199d4a7b6cc9ae243f552387e1cd3751056e3aeb0b2ef",
+     "bytes": 64510427
     },
     "itr_cia_aberta_BPP_ind_2024.csv": {
-     "sha256": "6f6aa06aebf6cf739f4a93c7464e25b47ca5a22be73f74e2aa6a112f6970bca3",
-     "bytes": 97042675
+     "sha256": "71b6ec367efb8e0e8a3c765e60aa18c88134d0ee082309e265b5589742cff03a",
+     "bytes": 97070407
     },
     "itr_cia_aberta_DRE_con_2024.csv": {
-     "sha256": "a69ff3fbac9f51e526f185a0f8f0f8cfc38ec37f873c90f612414213cece94da",
-     "bytes": 34185885
+     "sha256": "5bc2b7718b99d91abfb7f10a0c5ec80dfd39415c037b8f777c11da3e79cdb2e7",
+     "bytes": 34199185
     },
     "itr_cia_aberta_DRE_ind_2024.csv": {
-     "sha256": "36baef8dcb6fbffddb1b0494e55cf6491619023cf987cda259ffb58877114d53",
-     "bytes": 49200419
+     "sha256": "c014e5a9f61cc03f3179c8b2255d0caecd92ce7ca35a2cb229064b4c6012d070",
+     "bytes": 49212919
     },
     "itr_cia_aberta_DVA_con_2024.csv": {
-     "sha256": "6710109476e8213b15aba71b4bb5e80f849f2e3bdc8611e879fa082c2eaa4901",
-     "bytes": 25535506
+     "sha256": "7046b8e45e9c967894be7f5d9156ef090a1a02ea575069479993392f2368905c",
+     "bytes": 25545406
     },
     "itr_cia_aberta_DVA_ind_2024.csv": {
-     "sha256": "fb708da98a1c112e845806452f015ec9c2c951b526e8c63f3772cdd2b464bdcc",
-     "bytes": 37859600
+     "sha256": "ddc7a456aa5c88d9923766fa10b4bdbd26102d13c43a4cb223b69b2180f885a8",
+     "bytes": 37869496
     }
    }
   },
@@ -1253,45 +1253,45 @@
    "fonte": "ITR",
    "ano": 2025,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
-   "sha256": "91d400df6f832c33a2b3cc1f233b06883037ad0843942aeb8e96d312123004d2",
-   "bytes": 31680660,
-   "last_modified": "Sun, 18 Oct 2026 11:01:31 GMT",
+   "sha256": "133fd24d15a60e19a4ada78499148370d561d8506a6daea851f292010f18a5b2",
+   "bytes": 31724828,
+   "last_modified": "Sun, 22 Nov 2026 11:11:34 GMT",
    "membros": {
     "itr_cia_aberta_2025.csv": {
-     "sha256": "eed1a1a3f49826535b47bf057683d15aa5f4b3fcde47016fbbf35b79731c6701",
-     "bytes": 474229
+     "sha256": "d5c225c286a98f45641d61eadea3d659190ac2ec5cab933205d6e6860988ee69",
+     "bytes": 474967
     },
     "itr_cia_aberta_BPA_con_2025.csv": {
-     "sha256": "2c4d32ebe05a78c56d2ad1d4165cd406adb269889fb3d3d4b17de22a2b59c916",
-     "bytes": 35665054
+     "sha256": "75615faa04187ca92921e244b9cc0b63dde368fcd1be5b7f4c27224d585a3e67",
+     "bytes": 35735804
     },
     "itr_cia_aberta_BPA_ind_2025.csv": {
-     "sha256": "5c1b07105fc6ff6189b41ddc6be13d236294a49fb4d09cba1177fa128321be61",
-     "bytes": 54362084
+     "sha256": "a7349c7211bccf58dd14da454ba67ba4ee665bf747f275be9200ad0b73c2395f",
+     "bytes": 54428063
     },
     "itr_cia_aberta_BPP_con_2025.csv": {
-     "sha256": "fddad1dbcda1a358612f61197fabb00026ac8875e3db52323452f20146448c5f",
-     "bytes": 61820465
+     "sha256": "70bd5199c6e413c8b4b23888009443a6a4b648226d70231fab9aba427651e287",
+     "bytes": 61947073
     },
     "itr_cia_aberta_BPP_ind_2025.csv": {
-     "sha256": "224fd5724daa8ab124bf6e23978420ee9e4a67cf9cbb265fae14ed30cc53f29d",
-     "bytes": 92798753
+     "sha256": "11e9bca4edf862474a12662ce324dda4ff3464cf05c4a4bf286abb30f438d82d",
+     "bytes": 92924776
     },
     "itr_cia_aberta_DRE_con_2025.csv": {
-     "sha256": "9937ab13e8420bf4baa08f0d9bf11b065e266228570bab07b1b63c649a8a6b0f",
-     "bytes": 32673027
+     "sha256": "cf8158ea5c9af2a5243b8a1cc16f53e9ca6fe6f88de8e6b786fc5d4b8d3674f2",
+     "bytes": 32724202
     },
     "itr_cia_aberta_DRE_ind_2025.csv": {
-     "sha256": "9072e79eea41802f57f0d817a60ab68c7ce7d69966ae8e534375cbd02448935b",
-     "bytes": 46984131
+     "sha256": "1f4aac8bd55e9cb9f257d95609ceb3d422bc82a0b5d71890fad67a227b20cb52",
+     "bytes": 47032213
     },
     "itr_cia_aberta_DVA_con_2025.csv": {
-     "sha256": "4de9553de57923237a7be53e4e99c693a07f8d02975ee288058538fb32d00c25",
-     "bytes": 24437161
+     "sha256": "91f4e2f02d4ecc22d053a7a4276be90a9581a411173df085809afddbacd07903",
+     "bytes": 24486789
     },
     "itr_cia_aberta_DVA_ind_2025.csv": {
-     "sha256": "a2df54e1125763bfc64e7fc1411e8e2860e51b1b8e58d60692563f19e1abb16f",
-     "bytes": 36180519
+     "sha256": "42419355e34c69c880b4693fc37396c7a89b2331f60b61da70adc32e859e6cb1",
+     "bytes": 36229646
     }
    }
   },
@@ -1299,45 +1299,45 @@
    "fonte": "ITR",
    "ano": 2026,
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
-   "sha256": "56a82941d1c381b421a8075a584b498e4f183986ad526546e14682422773e6a1",
-   "bytes": 19690261,
-   "last_modified": "Sun, 18 Oct 2026 10:46:10 GMT",
+   "sha256": "bc09a9809f77bb66966d0ceff22dda1abde87e2f84bfdb668adc44146cf8da14",
+   "bytes": 29511192,
+   "last_modified": "Sun, 22 Nov 2026 10:56:43 GMT",
    "membros": {
     "itr_cia_aberta_2026.csv": {
-     "sha256": "7a4b7f2461a63a3c7aae4368789a8c4eed20ac0fadef6414336c99926adc3897",
-     "bytes": 280228
+     "sha256": "93a722d6726531616b5e4acff64e5f5a8d936705234443754acb0372e02d3d11",
+     "bytes": 418137
     },
     "itr_cia_aberta_BPA_con_2026.csv": {
-     "sha256": "e65e99c9642fdf1753ceb09edc830643a1a36947e7f293cd5de5ad25a364f4ca",
-     "bytes": 22001734
+     "sha256": "c8f34163179ca3db133b05631c96464a8d9026f7d9c7b054d8b77943a656f40c",
+     "bytes": 33117542
     },
     "itr_cia_aberta_BPA_ind_2026.csv": {
-     "sha256": "0aa37b1242ba563fb215c3ac6ef50dab783307cd02854825a2cf16d1f7c941c3",
-     "bytes": 33432458
+     "sha256": "3d0de22833e5562d4841264dbf58927349982595329968b3f3b3a4f56841e908",
+     "bytes": 50230075
     },
     "itr_cia_aberta_BPP_con_2026.csv": {
-     "sha256": "fbd58670f9d6071b32632def4bfb07bd4c0c58565faae3de0feb0cd7f6feadb3",
-     "bytes": 38261424
+     "sha256": "2a434c1c7234625cb163000b849d552e7e904886559061566c808a97e1a65dcb",
+     "bytes": 57563468
     },
     "itr_cia_aberta_BPP_ind_2026.csv": {
-     "sha256": "8dc756ba0470fe18d2718f439577319c297128de560171ca034400b96d72ee1b",
-     "bytes": 57224695
+     "sha256": "89638fca6ed08ee532301a6af66828be8f08c20b635f0546ae1cd893fa0dd014",
+     "bytes": 85915519
     },
     "itr_cia_aberta_DRE_con_2026.csv": {
-     "sha256": "71c5d7067e36ec4f0888386b3eb924573520f6ada1d3295e7f029839b70a1de1",
-     "bytes": 18045963
+     "sha256": "2872049e1587233c6b623d31d7c8fa926d57a4934268a21af0d7f7a69d856805",
+     "bytes": 30156530
     },
     "itr_cia_aberta_DRE_ind_2026.csv": {
-     "sha256": "5755d2d5b0df212ee5398c0782a97cde464e2f73f7c210d8508aae08af4f91f4",
-     "bytes": 26021896
+     "sha256": "0d5afa2ba661c10235b9aa90c61c7dd47ded54615d2ec6a00077bf44aff43d9f",
+     "bytes": 43463436
     },
     "itr_cia_aberta_DVA_con_2026.csv": {
-     "sha256": "b640d928c325c4619871893725f933b0cd30e5797bcb10e872bd1e9adcea920d",
-     "bytes": 15018527
+     "sha256": "019327673c052fd85bc2d575bfc36f98e9da6c0317a90d11053dbb8993e5f387",
+     "bytes": 22648065
     },
     "itr_cia_aberta_DVA_ind_2026.csv": {
-     "sha256": "371ec43d8a0b841ae3ce346981fc368c6b90561f348ba354d69e2edbfc6df731",
-     "bytes": 22158980
+     "sha256": "d251d43df09b926f87f07aa8bd91604641947af40360cd1d70d65d0da0596dd8",
+     "bytes": 33334258
     }
    }
   }
@@ -1555,20 +1555,20 @@
  "arquivos": {
   "demonstracoes": {
    "arquivo": "demonstracoes.csv.gz",
-   "sha256": "7033a36e64c6d8a6b61ea0cebde071f95d5ad72fda033a64aaf049f9655ad8e3",
-   "bytes": 4025102,
-   "linhas": 31502
+   "sha256": "b998883b2403654748b2043026ab5d46757591a4edd7edc6fc1a882a268a9f49",
+   "bytes": 4137640,
+   "linhas": 32376
   },
   "documentos": {
    "arquivo": "documentos.csv.gz",
-   "sha256": "3bc056d92394a0f8ce588ef65c8caca81c526bba96f246dcda2601892c6dd574",
-   "bytes": 187692,
-   "linhas": 873
+   "sha256": "9921bcba9e2594658a3b22bff1d64be20e9e3f49f04c9aee9f86e5f74a254c61",
+   "bytes": 192395,
+   "linhas": 895
   },
   "cadastro": {
    "arquivo": "cadastro.csv.gz",
-   "sha256": "c8932b36b945cc728b4aca9edce177850f0b0bd157311231f7bb9e494ff9d174",
-   "bytes": 7983,
+   "sha256": "0a1a2f31f8f07d5a2c2355cdf71c0577c2918cac373846366842c99b6664c6ea",
+   "bytes": 8067,
    "linhas": 50
   }
  }
