@@ -1,0 +1,409 @@
+{
+  "slug": "amazon-brasil",
+  "grupo": "Amazon (operação no Brasil)",
+  "resumo": "Operação brasileira da Amazon: loja digital com venda própria e marketplace de vendedores parceiros, sem lojas físicas.",
+  "controlador": {
+    "nome": "Amazon.com, Inc. (Estados Unidos)",
+    "nota": "O IRTT registra controle não nacional e informa que a Amazon tem ações negociadas nos Estados Unidos. O 10-K é da controladora. A razão social e a estrutura societária da operação brasileira não foram verificadas em documento.",
+    "fonte": {
+      "titulo": "Amazon.com, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 06/02/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm",
+      "pagina": "capa e 67",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto no exterior",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Amazon.com.br",
+      "formato": "loja digital com venda própria (1P) e marketplace (3P)",
+      "nota": "O IRTT lista a bandeira como Amazon.com e classifica a empresa como 100% digital."
+    }
+  ],
+  "formatos": [
+    "comércio eletrônico com estoque próprio (1P)",
+    "marketplace de vendedores parceiros (3P)"
+  ],
+  "regioes": {
+    "texto": "Atuação em todos os 27 estados, segundo o IRTT, com sede em São Paulo. A empresa informou ter centros logísticos em todos os estados em novembro de 2025.",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "site e aplicativo próprios",
+    "marketplace próprio para vendedores parceiros"
+  ],
+  "clientes": "Consumidores finais em todo o país e, no marketplace, vendedores parceiros que usam a plataforma e a logística da empresa (mais de 100 mil em novembro de 2025, segundo a companhia).",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda direta de mercadorias (1P)",
+      "descricao": "Produtos comprados e revendidos pela própria Amazon. É a única parcela que o IRTT usa para posicionar a empresa no ranking, por estimativa."
+    },
+    {
+      "nome": "Serviços a vendedores do marketplace (3P)",
+      "descricao": "Comissões e serviços de logística cobrados de vendedores parceiros, como o programa Fulfillment by Amazon. A venda dos vendedores não é receita de mercadorias da Amazon."
+    },
+    {
+      "nome": "Outras atividades no país",
+      "descricao": "Assinatura Prime, streaming Prime Video e computação em nuvem (AWS), citados nas reportagens sobre investimento. A empresa não segmenta esses números por linha de negócio no Brasil."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Mercado Livre",
+      "slug": "mercado-livre"
+    },
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Grupo Casas Bahia",
+      "slug": "casas-bahia"
+    },
+    {
+      "nome": "Americanas",
+      "slug": "americanas"
+    },
+    {
+      "nome": "Shopee",
+      "slug": null
+    },
+    {
+      "nome": "Shein, AliExpress e Temu",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda direta ao consumidor (1P)",
+      "unidade": "R$ milhões",
+      "nota": "Estimativa do IRTT (nota de fonte 5, em itálico no original). Sem valor para 2024. O instituto não faz comparação entre anos com dados estimados.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20000,
+          "natureza": "estimado_pela_fonte"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38, 74 e 113",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda de vendedores parceiros no marketplace (3P)",
+      "unidade": "R$ milhões",
+      "nota": "Estimativa do IRTT. Não entra na venda usada no ranking.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 20000,
+          "natureza": "estimado_pela_fonte"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "115",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "GMV digital (1P mais 3P)",
+      "unidade": "R$ milhões",
+      "nota": "GMV é o valor total das mercadorias vendidas na plataforma, somando venda própria e de terceiros. Estimativa do IRTT, 4ª posição na tabela de marketplaces.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 40000,
+          "natureza": "estimado_pela_fonte"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "115",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Centros logísticos no Brasil",
+      "unidade": "unidades",
+      "nota": "Informado pela empresa à imprensa. Inclui centros de distribuição e estações de entrega. Julho de 2025: InfoMoney de 31/07/2025. Novembro de 2025: CNN Brasil de 04/11/2025. Novembro de 2026: InfoMoney de 17/11/2026.",
+      "valores": [
+        {
+          "periodo": "julho de 2025",
+          "valor": 200,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "novembro de 2025",
+          "valor": 250,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "novembro de 2026",
+          "valor": 350,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "InfoMoney, Amazon espera Black Friday recorde no Brasil com 350 centros logísticos e IA",
+        "url": "https://www.infomoney.com.br/business/amazon-espera-black-friday-recorde-no-brasil-com-350-centros-logisticos-e-ia/",
+        "pagina": "página única",
+        "periodo": "publicado em 17/11/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Investimento no Brasil",
+      "unidade": "R$ bilhões",
+      "nota": "Informado pela empresa à imprensa. Abrange loja digital, AWS e Prime Video, sem segmentação por negócio. 2024: InfoMoney de 31/07/2025. 2025: mais de R$ 19 bilhões, CNN Brasil de 17/06/2026.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 13.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 19,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "CNN Brasil, Ultrapassando R$ 75 bi em investimento, Amazon vê Brasil como marketplace",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/ultrapassando-r-75-bi-em-investimento-amazon-ve-brasil-como-marketplace/",
+        "pagina": "página única",
+        "periodo": "publicado em 17/06/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Itens no catálogo",
+      "unidade": "milhões de itens",
+      "nota": "Informado pela empresa à imprensa: 30 milhões adicionados em 2025.",
+      "valores": [
+        {
+          "periodo": "novembro de 2025",
+          "valor": 180,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "CNN Brasil, Amazon ultrapassa 250 centros logísticos no Brasil",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/amazon-ultrapassa-250-centros-logisticos-no-brasil/",
+        "pagina": "página única",
+        "periodo": "publicado em 04/11/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita líquida do grupo fora dos quatro países divulgados (Rest of world)",
+      "unidade": "US$ milhões",
+      "nota": "O 10-K divulga receita por país só para Estados Unidos, Alemanha, Reino Unido e Japão. O Brasil está dentro desta linha residual, sem valor próprio. A linha soma todos os demais países e inclui AWS. Não é dado do Brasil.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 93832,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 107467,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Amazon.com, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 06/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm",
+        "pagina": "69, Nota 10",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2025-02",
+      "tipo": "outro",
+      "descricao": "Inauguração do maior centro de distribuição da empresa no país, em Cajamar (SP), segundo reportagem de julho de 2025.",
+      "fonte": {
+        "titulo": "InfoMoney, Amazon acelera investimento no Brasil: foram R$ 13,6 bilhões em 1 ano",
+        "url": "https://www.infomoney.com.br/business/amazon-acelera-investimento-no-brasil-foram-r-136-bilhoes-em-1-ano/",
+        "pagina": "página única",
+        "periodo": "publicado em 31/07/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-11",
+      "tipo": "outro",
+      "descricao": "A empresa informa ter atingido 250 centros logísticos, com mais de 100 unidades adicionadas em 2025, e gratuidade temporária do programa Fulfillment by Amazon para vendedores.",
+      "fonte": {
+        "titulo": "CNN Brasil, Amazon ultrapassa 250 centros logísticos no Brasil",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/amazon-ultrapassa-250-centros-logisticos-no-brasil/",
+        "pagina": "página única",
+        "periodo": "publicado em 04/11/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "Grupo Casas Bahia anuncia em fato relevante parceria comercial para vender seus produtos na plataforma da Amazon, com integração logística prevista para uma segunda fase.",
+      "fonte": {
+        "titulo": "InfoMoney, Casas Bahia (BHIA3) anuncia parceria com Amazon para vendas de produtos no Brasil",
+        "url": "https://www.infomoney.com.br/mercados/casas-bahia-bhia3-anuncia-parceria-com-amazon-para-vendas-de-produtos-no-brasil/",
+        "pagina": "página única",
+        "periodo": "publicado em 23/03/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-02",
+      "tipo": "outro",
+      "descricao": "A controladora arquiva o 10-K de 2025. Os segmentos são América do Norte, Internacional e AWS. A receita por país é divulgada só para Estados Unidos, Alemanha, Reino Unido e Japão. O Brasil não é reportado em separado.",
+      "fonte": {
+        "titulo": "Amazon.com, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 06/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm",
+        "pagina": "67 a 69, Nota 10",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-06",
+      "tipo": "outro",
+      "descricao": "Reportagem registra investimento acumulado superior a R$ 75 bilhões no país e mais de R$ 19 bilhões em 2025.",
+      "fonte": {
+        "titulo": "CNN Brasil, Ultrapassando R$ 75 bi em investimento, Amazon vê Brasil como marketplace",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/ultrapassando-r-75-bi-em-investimento-amazon-ve-brasil-como-marketplace/",
+        "pagina": "página única",
+        "periodo": "publicado em 17/06/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "A empresa informa 350 centros logísticos, mais de 120 adicionados desde a Black Friday anterior, e lança a ferramenta Alexa para Compras.",
+      "fonte": {
+        "titulo": "InfoMoney, Amazon espera Black Friday recorde no Brasil com 350 centros logísticos e IA",
+        "url": "https://www.infomoney.com.br/business/amazon-espera-black-friday-recorde-no-brasil-com-350-centros-logisticos-e-ia/",
+        "pagina": "página única",
+        "periodo": "publicado em 17/11/2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda de R$ 20 bilhões que coloca a Amazon em 13º lugar é ESTIMADA pelo IRTT (nota 5) e cobre só a venda direta da empresa ao consumidor (1P), com impostos. O critério do instituto exclui a venda de vendedores parceiros no marketplace (3P), estimada em outros R$ 20 bilhões. O GMV estimado, soma das duas parcelas, é de R$ 40 bilhões e aparece em tabela separada (página 115). Comissões, assinatura Prime, publicidade e AWS não são venda de mercadorias, e o IRTT não informa como os trata. A Amazon não divulga resultado do Brasil. Conferimos no formulário 10-K de 2025 (Nota 10, páginas 67 a 69): os segmentos são América do Norte, Internacional e AWS, e a receita por país aparece só para Estados Unidos, Alemanha, Reino Unido e Japão. O Brasil está na linha residual do resto do mundo (US$ 107.467 milhões em 2025, todos os demais países somados, com AWS). No documento inteiro o país é citado uma única vez, em nota sobre litígio de patentes.",
+  "analise": {
+    "crescimento": "Não há taxa de crescimento verificável: a venda de 2025 é estimativa do IRTT, a de 2024 não foi publicada e o instituto não compara anos com dados estimados. A empresa caiu da 8ª para a 13ª posição entre as duas edições, movimento que reflete a estimativa e não um resultado divulgado. A evidência disponível é de capacidade instalada, informada pela empresa à imprensa: de 200 centros logísticos em julho de 2025 para 250 em novembro de 2025 e 350 em novembro de 2026. O investimento declarado no país passou de R$ 13,6 bilhões em 2024 para mais de R$ 19 bilhões em 2025, incluindo AWS e Prime Video. O catálogo chegou a 180 milhões de itens. Esses números indicam expansão da oferta e da entrega, não o tamanho da venda.",
+    "rentabilidade_caixa": "A Amazon não publica demonstração da operação brasileira. O formulário 10-K de 2025 reporta três segmentos (América do Norte, Internacional e AWS) e abre a receita por país só para Estados Unidos, Alemanha, Reino Unido e Japão. O Brasil fica na linha residual do resto do mundo. Margem, lucro e geração de caixa no país ficam sem avaliação. A posição competitiva só pode ser descrita por evidência indireta. Na tabela de marketplaces do IRTT, o GMV estimado de R$ 40 bilhões coloca a Amazon em 4º lugar, atrás de Mercado Livre (R$ 185 bilhões, estimado), Shopee (R$ 70 bilhões, estimado) e Magazine Luiza (R$ 44,3 bilhões, divulgado). O investimento declarado mostra que a operação recebe recursos da controladora para logística, mas não permite concluir se já gera lucro no país.",
+    "acompanhar": {
+      "indicador": "Posição e GMV na tabela de marketplaces do IRTT e número de centros logísticos",
+      "reforca": "Publicação de venda ou GMV do Brasil pela empresa, ou estimativa maior do IRTT na próxima edição acompanhada de novos centros logísticos.",
+      "enfraquece": "Estimativa menor na próxima edição, redução do ritmo de abertura de centros ou perda de posição para Magazine Luiza e Casas Bahia na tabela de marketplaces."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Venda de 2024 e crescimento: n.d. no IRTT, que não compara anos com dados estimados.",
+    "Receita líquida, margem, lucro e caixa da operação brasileira: não divulgados. O 10-K de 2025 (Nota 10, páginas 67 a 69) não reporta o Brasil como segmento nem como país com receita própria.",
+    "Funcionários: n.d. no IRTT. A imprensa cita mais de 36 mil diretos e indiretos (novembro de 2025) e mais de 30 mil (abril de 2026), números não conciliados e não usados.",
+    "Base ativa de clientes e número de assinantes Prime no Brasil: não divulgados.",
+    "Separação do investimento entre loja digital, AWS e Prime Video: a empresa não segmenta.",
+    "ir.aboutamazon.com e www.aboutamazon.com.br continuam bloqueados; o 10-K foi lido em www.sec.gov."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "31, 32, 38, 74, 99, 112, 113 e 115",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Amazon.com, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 06/02/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm",
+      "pagina": "67 a 69, Nota 10",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Amazon acelera investimento no Brasil: foram R$ 13,6 bilhões em 1 ano",
+      "url": "https://www.infomoney.com.br/business/amazon-acelera-investimento-no-brasil-foram-r-136-bilhoes-em-1-ano/",
+      "pagina": "página única",
+      "periodo": "publicado em 31/07/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, Amazon ultrapassa 250 centros logísticos no Brasil",
+      "url": "https://www.cnnbrasil.com.br/economia/negocios/amazon-ultrapassa-250-centros-logisticos-no-brasil/",
+      "pagina": "página única",
+      "periodo": "publicado em 04/11/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, Ultrapassando R$ 75 bi em investimento, Amazon vê Brasil como marketplace",
+      "url": "https://www.cnnbrasil.com.br/economia/negocios/ultrapassando-r-75-bi-em-investimento-amazon-ve-brasil-como-marketplace/",
+      "pagina": "página única",
+      "periodo": "publicado em 17/06/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Amazon espera Black Friday recorde no Brasil com 350 centros logísticos e IA",
+      "url": "https://www.infomoney.com.br/business/amazon-espera-black-friday-recorde-no-brasil-com-350-centros-logisticos-e-ia/",
+      "pagina": "página única",
+      "periodo": "publicado em 17/11/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Casas Bahia (BHIA3) anuncia parceria com Amazon para vendas de produtos no Brasil",
+      "url": "https://www.infomoney.com.br/mercados/casas-bahia-bhia3-anuncia-parceria-com-amazon-para-vendas-de-produtos-no-brasil/",
+      "pagina": "página única",
+      "periodo": "publicado em 23/03/2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

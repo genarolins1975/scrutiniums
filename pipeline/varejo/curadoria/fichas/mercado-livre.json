@@ -1,0 +1,660 @@
+{
+  "slug": "mercado-livre",
+  "grupo": "Mercado Livre",
+  "resumo": "Plataforma de comércio eletrônico e de serviços financeiros (Mercado Pago). Fora do ranking do IRTT por ser marketplace.",
+  "controlador": {
+    "nome": null,
+    "nota": "Controlador não verificado: a seção de acionistas do 10-K não foi consultada. A companhia é a MercadoLibre, Inc., com ações na Nasdaq (MELI) e sede em Montevidéu, conforme o release arquivado na SEC.",
+    "fonte": {
+      "titulo": "MercadoLibre, Inc., release de resultados do 3T26, anexo 99.1 do formulário 8-K (SEC, 04/11/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000027/meli-20260930xex991.htm",
+      "pagina": "carta aos acionistas, páginas 1, 2, 4 e 6",
+      "periodo": "3T26",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto no exterior",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Mercado Livre",
+      "formato": "marketplace com venda de terceiros (3P) e venda própria (1P)",
+      "nota": "Maior marketplace em operação no Brasil pela estimativa de GMV do IRTT."
+    },
+    {
+      "nome": "Mercado Pago",
+      "formato": "serviços financeiros: pagamentos, cartão de crédito e crédito a consumidores e vendedores",
+      "nota": "Não é atividade de varejo."
+    }
+  ],
+  "formatos": [
+    "marketplace (3P)",
+    "venda própria (1P)",
+    "logística para vendedores (centros de distribuição fulfillment)",
+    "serviços financeiros"
+  ],
+  "regioes": {
+    "texto": "Operação digital de alcance nacional, sem lojas físicas. O IRTT não lista estados de atuação porque a empresa não integra o ranking. Os segmentos da companhia são Brasil, México, Argentina e outros países. O Brasil respondeu por 52,6% da receita consolidada em 2025.",
+    "estados": []
+  },
+  "canais": [
+    "site e aplicativo próprios",
+    "marketplace próprio",
+    "aplicativo de serviços financeiros"
+  ],
+  "clientes": "Compradores finais e vendedores que anunciam na plataforma. A companhia informa 5,8 milhões de pequenas e médias empresas no país ligadas ao seu ecossistema.",
+  "fontes_de_receita": [
+    {
+      "nome": "Receita de comércio: serviços",
+      "descricao": "Comissões cobradas dos vendedores, tarifas de frete, publicidade, classificados e assinaturas. No Brasil, US$ 6.859 milhões em 2025. É menor que o GMV, porque na venda de terceiros a empresa fica só com a comissão."
+    },
+    {
+      "nome": "Receita de comércio: venda de produtos próprios (1P)",
+      "descricao": "Mercadorias compradas e revendidas pela própria companhia. No Brasil, US$ 2.325 milhões em 2025, 15,3% da receita do país."
+    },
+    {
+      "nome": "Receita de fintech",
+      "descricao": "Mercado Pago: tarifas de pagamentos fora da plataforma, rendimentos, juros de crédito e de cartão. No Brasil, US$ 6.017 milhões em 2025, 39,6% da receita do país. Não tem relação direta com venda de mercadorias."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Amazon",
+      "slug": "amazon-brasil"
+    },
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Grupo Casas Bahia",
+      "slug": "casas-bahia"
+    },
+    {
+      "nome": "Shopee",
+      "slug": null
+    },
+    {
+      "nome": "Shein, AliExpress e Temu",
+      "slug": null
+    },
+    {
+      "nome": "RD Saúde (na venda de medicamentos)",
+      "slug": "rd-saude"
+    },
+    {
+      "nome": "Pague Menos (na venda de medicamentos)",
+      "slug": "pague-menos"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "GMV digital no Brasil (1P mais 3P)",
+      "unidade": "R$ milhões",
+      "nota": "GMV é o valor total das mercadorias negociadas na plataforma, por terceiros e pela própria empresa. Estimativa do IRTT (nota de fonte 5), em tabela separada do ranking. Sem valor para 2024 e sem separação entre 1P e 3P. A companhia não divulga o GMV do Brasil em valor: o 10-K e o release trazem só o GMV consolidado em dólares e, para o Brasil, a taxa de crescimento em câmbio neutro.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 185000,
+          "natureza": "estimado_pela_fonte"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "114 e 115",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "GMV consolidado, todos os países",
+      "unidade": "US$ milhões",
+      "nota": "GMV é a soma em dólares das transações concluídas no marketplace, de terceiros e da própria empresa, sem classificados. Não há abertura por país. Alta de 26,4% em 2025 e de 38% no 3T26 (33% em câmbio neutro).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 51467,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 65037,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 16543,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 22818,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "57 (2024 e 2025); release do 3T26, página 6, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Crescimento do GMV no Brasil em câmbio neutro",
+      "unidade": "%",
+      "nota": "Único dado de GMV do Brasil divulgado pela companhia. No mesmo trimestre, os itens vendidos no Brasil cresceram 45%.",
+      "valores": [
+        {
+          "periodo": "3T26",
+          "valor": 36,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., release de resultados do 3T26, anexo 99.1 do formulário 8-K (SEC, 04/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000027/meli-20260930xex991.htm",
+        "pagina": "carta aos acionistas, páginas 1, 2, 4 e 6",
+        "periodo": "3T26",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita líquida e financeira do segmento Brasil",
+      "unidade": "US$ milhões",
+      "nota": "Soma comércio e fintech. Alta de 33,3% em dólares e 37,0% em moeda local em 2025. No 3T26, alta de 50% em dólares e 41,2% em moeda local.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 11406,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 15201,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 4009,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 6001,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "nove meses de 2026",
+          "valor": 16305,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "43 e 45 (anos); 10-Q do 3T26, páginas 19, 20 e 49, para 2026",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação do Brasil na receita consolidada",
+      "unidade": "%",
+      "nota": "2025 calculado por nós: 15.201 dividido por 28.893. 3T26 publicado no 10-Q.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 52.6,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 55.8,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-Q do terceiro trimestre de 2026 (SEC, arquivado em 05/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000029/meli-20260930.htm",
+        "pagina": "45",
+        "periodo": "3T26 e nove meses de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita de comércio no Brasil",
+      "unidade": "US$ milhões",
+      "nota": "Comissões, frete, publicidade e outros serviços (US$ 6.859 milhões em 2025) mais venda de produtos próprios. Alta de 30,5% em 2025 e de 51,5% no 3T26.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 7038,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 9184,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 2416,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 3659,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "43 e 109 (anos); 10-Q do 3T26, página 20, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda de produtos próprios (1P) no Brasil",
+      "unidade": "US$ milhões",
+      "nota": "Linha Commerce products sales da nota de receitas. É a parcela da receita de comércio mais próxima de venda de varejo. Receita líquida, sem os impostos que o IRTT inclui.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 2325,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 627,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 1041,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "109 (2025); 10-Q do 3T26, página 20, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita de fintech no Brasil",
+      "unidade": "US$ milhões",
+      "nota": "Mercado Pago: serviços financeiros (US$ 2.829 milhões em 2025), receita de crédito (US$ 3.158 milhões) e venda de produtos de fintech (US$ 30 milhões). Alta de 37,8% em 2025 e de 47,1% no 3T26.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 4368,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 6017,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 1593,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 2342,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "43 e 109 (anos); 10-Q do 3T26, página 20, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Margem de contribuição direta do segmento Brasil",
+      "unidade": "%",
+      "nota": "Contribuição direta é a receita do país menos os custos atribuídos a ele, antes de despesas corporativas. Anos publicados no 10-K. Trimestres calculados por nós: 479 dividido por 6.001 e 475 dividido por 4.009.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 20.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 11.8,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 8.0,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "50 (anos); 10-Q do 3T26, página 19, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita líquida e financeira consolidada",
+      "unidade": "US$ milhões",
+      "nota": "Todos os países, comércio e fintech. Alta de 39,1% em 2025 e de 45,1% no 3T26.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 20777,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 28893,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 8759,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1T26",
+          "valor": 8845,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2T26",
+          "valor": 10169,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 10750,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "43 e 44 (anos e 4T25); 10-Q do 3T26, páginas 47 e 49, para 2026",
+        "periodo": "2024 a 3T26",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Margem operacional consolidada",
+      "unidade": "%",
+      "nota": "Lucro operacional dividido pela receita. 2024 e 2025 calculados por nós a partir do 10-K (2.631 sobre 20.777 e 3.201 sobre 28.893). 3T26 publicado no release.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 12.7,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 11.1,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 6.3,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., release de resultados do 3T26, anexo 99.1 do formulário 8-K (SEC, 04/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000027/meli-20260930xex991.htm",
+        "pagina": "carta aos acionistas, páginas 1, 2, 4 e 6",
+        "periodo": "3T26",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários no Brasil",
+      "unidade": "pessoas",
+      "nota": "Em 31/12/2025.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 61139,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+        "pagina": "11",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita líquida no Brasil em reais",
+      "unidade": "R$ bilhões",
+      "nota": "Informado pela companhia à imprensa. Soma comércio e fintech. O 10-K traz o mesmo dado em dólares (US$ 15.201 milhões) e a mesma participação de 52,6% no total. Não convertemos moedas.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 84.5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "CNN Brasil, Mercado Livre anuncia investimento recorde de R$ 57 bilhões no Brasil",
+        "url": "https://www.cnnbrasil.com.br/economia/money/negocios/mercado-livre-anuncia-investimento-recorde-de-r-57-bilhoes-no-brasil/",
+        "pagina": "página única",
+        "periodo": "publicado em 24/03/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Investimento anunciado no Brasil",
+      "unidade": "R$ bilhões",
+      "nota": "Informado pela companhia. Inclui investimentos e despesas operacionais, portanto não é comparável a investimento em ativos.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 38,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2026, plano",
+          "valor": 57,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "InfoMoney, Mercado Livre amplia aposta no Brasil e anuncia R$ 57 bi em 2026",
+        "url": "https://www.infomoney.com.br/business/mercado-livre-amplia-aposta-no-brasil-e-anuncia-r-57-bi-em-2026/",
+        "pagina": "página única",
+        "periodo": "publicado em 24/03/2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2025-06",
+      "tipo": "outro",
+      "descricao": "Redução do valor mínimo de compra para frete grátis no Brasil de R$ 79 para R$ 19, segundo relatório da Genial citado pela imprensa.",
+      "fonte": {
+        "titulo": "InfoMoney, Mercado Livre vê lucro e margens pressionados por investimentos e frete grátis",
+        "url": "https://www.infomoney.com.br/mercados/mercado-livre-ve-lucro-e-margens-pressionados-por-investimentos-e-frete-gratis/",
+        "pagina": "página única",
+        "periodo": "2T25, publicado em 05/08/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-02",
+      "tipo": "outro",
+      "descricao": "Resultado do 4T25: receita consolidada de US$ 8,8 bilhões e lucro líquido de US$ 559 milhões, queda de 12,5%. A administração atribui a queda à emissão de cartões de crédito, à expansão do frete grátis e ao aumento da venda própria (1P).",
+      "fonte": {
+        "titulo": "InfoMoney (Reuters), Mercado Livre tem lucro abaixo do esperado no 4° tri, mas receita bate estimativas",
+        "url": "https://www.infomoney.com.br/mercados/mercado-livre-meli34-resultados-quarto-trimestre-2025/",
+        "pagina": "página única",
+        "periodo": "4T25, publicado em 24/02/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "Anúncio de R$ 57 bilhões para o Brasil em 2026, alta de 50% sobre os R$ 38 bilhões de 2025, com 14 novos centros de distribuição fulfillment, para um total de 42.",
+      "fonte": {
+        "titulo": "InfoMoney, Mercado Livre amplia aposta no Brasil e anuncia R$ 57 bi em 2026",
+        "url": "https://www.infomoney.com.br/business/mercado-livre-amplia-aposta-no-brasil-e-anuncia-r-57-bi-em-2026/",
+        "pagina": "página única",
+        "periodo": "publicado em 24/03/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "outro",
+      "descricao": "Ampliação da venda de medicamentos no Brasil, incluindo os que exigem retenção de receita, em modelo 3P com entrega por farmácias parceiras, segundo relatórios de bancos citados pela imprensa.",
+      "fonte": {
+        "titulo": "InfoMoney, Mercado Livre amplia ofensiva em farmácias; o que significa para MELI34?",
+        "url": "https://www.infomoney.com.br/mercados/mercado-livre-amplia-ofensiva-em-farmacias-o-que-significa-para-meli34/",
+        "pagina": "página única",
+        "periodo": "publicado em 25/09/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Resultado do 3T26: receita consolidada de US$ 10.750 milhões, lucro operacional de US$ 676 milhões (margem de 6,3%) e lucro líquido de US$ 448 milhões. A companhia atribui a margem menor ao custo do frete grátis, à capacidade logística adicionada antes do fim de ano e ao aumento do gasto com marketing de afiliados no Brasil.",
+      "fonte": {
+        "titulo": "MercadoLibre, Inc., release de resultados do 3T26, anexo 99.1 do formulário 8-K (SEC, 04/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000027/meli-20260930xex991.htm",
+        "pagina": "carta aos acionistas, páginas 1, 2, 4 e 6",
+        "periodo": "3T26",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "O Mercado Livre NÃO está no ranking do IRTT. O método (páginas 31 e 32 do PDF) classifica as empresas pela venda feita diretamente ao consumidor (1P) e exclui a venda de terceiros em marketplaces (3P). O instituto publica à parte, na página 115, uma tabela de GMV digital, que soma 1P e 3P: Mercado Livre em 1º, com R$ 185 bilhões ESTIMADOS (nota 5), Shopee em 2º, com R$ 70 bilhões estimados, e Amazon em 4º, com R$ 40 bilhões estimados. O texto das páginas 114 e 115 afirma que o Mercado Livre seria o maior varejista do país se suas vendas viessem de uma única empresa e não de milhares de vendedores. Três medidas não se confundem. GMV é o valor negociado na plataforma por terceiros e pela própria empresa: a companhia só o divulga consolidado (US$ 65.037 milhões em 2025), sem valor para o Brasil. Receita de comércio são comissões, frete, publicidade e venda própria: US$ 9.184 milhões no Brasil em 2025, dos quais US$ 2.325 milhões de venda própria. Receita de fintech vem do Mercado Pago: US$ 6.017 milhões. A soma, US$ 15.201 milhões, é a receita do segmento Brasil (R$ 84,5 bilhões, segundo a companhia). Nenhum desses números é venda de varejo comparável à do ranking. A venda própria é a parcela mais próxima, mas é receita líquida, sem impostos, e o IRTT não a publica para a empresa.",
+  "analise": {
+    "crescimento": "A receita do segmento Brasil foi de US$ 11.406 milhões em 2024 para US$ 15.201 milhões em 2025, alta de 33,3% em dólares e de 37,0% em moeda local, segundo o 10-K. A receita de comércio cresceu 30,5% e a de fintech, 37,8%. Dentro do comércio, a venda de produtos próprios aumentou US$ 982 milhões e os serviços, US$ 1.164 milhões. No terceiro trimestre de 2026 a receita do Brasil chegou a US$ 6.001 milhões, alta de 41,2% em moeda local, com comércio em alta de 51,5% e fintech de 47,1%. O GMV do Brasil cresceu 36% em câmbio neutro e os itens vendidos, 45%. A companhia atribui o ritmo à redução do valor mínimo para frete grátis. O GMV do Brasil em valor não é divulgado, e o IRTT não compara anos com dados estimados.",
+    "rentabilidade_caixa": "A companhia não divulga lucro por país, mas publica a contribuição direta de cada segmento, que é a receita menos os custos atribuídos ao país, antes de despesas corporativas. No Brasil ela caiu de US$ 2.286 milhões em 2024 (20,0% da receita) para US$ 2.075 milhões em 2025 (13,7%). No terceiro trimestre de 2026 foi de US$ 479 milhões, 8,0% da receita pelo nosso cálculo, contra 11,8% um ano antes. A margem operacional consolidada foi de 6,3% no trimestre. Segundo a companhia, pesam o frete grátis, a capacidade logística adicionada antes do fim de ano e o marketing de afiliados no Brasil. A receita de crédito no Brasil somou US$ 3.158 milhões em 2025. Geração de caixa e inadimplência por país não foram consultadas, e nada aqui é comparável à margem de um varejista do ranking.",
+    "acompanhar": {
+      "indicador": "Margem de contribuição direta do segmento Brasil e crescimento da receita do Brasil em moeda local",
+      "reforca": "Recuperação da margem de contribuição do Brasil nos trimestres seguintes à ampliação da capacidade, com receita em moeda local mantendo ritmo próximo de 40%.",
+      "enfraquece": "Margem de contribuição do Brasil em queda por mais trimestres com desaceleração da receita, o que indicaria que o frete grátis e o crédito custam mais do que trazem em vendas."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Posição e venda no ranking do IRTT: não se aplica, a empresa fica fora por ser marketplace.",
+    "GMV do Brasil em valor: não divulgado pela companhia (só o consolidado em dólares e a taxa de crescimento do Brasil em câmbio neutro). O único valor em reais é a estimativa do IRTT.",
+    "GMV de 2024 no Brasil e separação entre 1P e 3P na tabela do IRTT: n.d.",
+    "Lucro operacional e lucro líquido do Brasil: a companhia divulga por país só a contribuição direta.",
+    "Receita em reais por linha de negócio: os documentos da SEC estão em dólares, e não convertemos moedas.",
+    "Lojas, venda por loja e estados de atuação: não se aplicam a operação sem lojas físicas.",
+    "Geração de caixa e inadimplência da carteira de crédito por país: não consultadas.",
+    "Controlador: seção de acionistas do 10-K não consultada.",
+    "investor.mercadolibre.com continua bloqueado; os documentos foram lidos em www.sec.gov."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "31, 32, 114 e 115",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "MercadoLibre, Inc., formulário 10-K do exercício de 2025 (SEC, arquivado em 25/02/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000006/meli-20251231.htm",
+      "pagina": "11, 43 a 45, 50, 57 e 109",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "MercadoLibre, Inc., formulário 10-Q do terceiro trimestre de 2026 (SEC, arquivado em 05/11/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000029/meli-20260930.htm",
+      "pagina": "19, 20 e 45 a 49",
+      "periodo": "3T26 e nove meses de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "MercadoLibre, Inc., release de resultados do 3T26, anexo 99.1 do formulário 8-K (SEC, 04/11/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1099590/000109959026000027/meli-20260930xex991.htm",
+      "pagina": "carta aos acionistas, páginas 1, 2, 4 e 6",
+      "periodo": "3T26",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, Mercado Livre anuncia investimento recorde de R$ 57 bilhões no Brasil",
+      "url": "https://www.cnnbrasil.com.br/economia/money/negocios/mercado-livre-anuncia-investimento-recorde-de-r-57-bilhoes-no-brasil/",
+      "pagina": "página única",
+      "periodo": "publicado em 24/03/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Mercado Livre amplia aposta no Brasil e anuncia R$ 57 bi em 2026",
+      "url": "https://www.infomoney.com.br/business/mercado-livre-amplia-aposta-no-brasil-e-anuncia-r-57-bi-em-2026/",
+      "pagina": "página única",
+      "periodo": "publicado em 24/03/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney (Reuters), Mercado Livre tem lucro abaixo do esperado no 4° tri, mas receita bate estimativas",
+      "url": "https://www.infomoney.com.br/mercados/mercado-livre-meli34-resultados-quarto-trimestre-2025/",
+      "pagina": "página única",
+      "periodo": "4T25, publicado em 24/02/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney (Reuters), Mercado Livre (MELI34) tem lucro acima da estimativa no 2° tri",
+      "url": "https://www.infomoney.com.br/mercados/mercado-livre-meli34-resultados-segundo-trimestre-2026/",
+      "pagina": "página única",
+      "periodo": "2T26, publicado em 05/08/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney (Reuters), Mercado Livre (MELI34) tem lucro líquido abaixo do esperado e registra US$ 448 mi",
+      "url": "https://www.infomoney.com.br/mercados/resultado-mercado-livre-meli34-terceiro-trimestre-2026/",
+      "pagina": "página única",
+      "periodo": "3T26, publicado em 04/11/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Mercado Livre vê lucro e margens pressionados por investimentos e frete grátis",
+      "url": "https://www.infomoney.com.br/mercados/mercado-livre-ve-lucro-e-margens-pressionados-por-investimentos-e-frete-gratis/",
+      "pagina": "página única",
+      "periodo": "2T25, publicado em 05/08/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Mercado Livre amplia ofensiva em farmácias; o que significa para MELI34?",
+      "url": "https://www.infomoney.com.br/mercados/mercado-livre-amplia-ofensiva-em-farmacias-o-que-significa-para-meli34/",
+      "pagina": "página única",
+      "periodo": "publicado em 25/09/2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

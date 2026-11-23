@@ -1,0 +1,512 @@
+{
+  "slug": "arcos-dorados",
+  "grupo": "Arcos Dorados (McDonald's)",
+  "resumo": "Maior franqueada independente do McDonald's no mundo, opera a marca no Brasil e em outros países da América Latina e do Caribe.",
+  "controlador": {
+    "nome": "Los Laureles Ltd. (Woods Staton)",
+    "nota": "Segundo o 20-F, o controlador é a Los Laureles Ltd., sociedade das Ilhas Virgens Britânicas de propriedade de Woods Staton, presidente executivo do conselho, que detém 38,0% do capital econômico e 75,4% dos votos. As ações classe A são negociadas na Bolsa de Nova York (ARCO). A sede fica em Montevidéu. A subsidiária brasileira é a Arcos Dourados Comércio de Alimentos S.A.",
+    "fonte": {
+      "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+      "pagina": "capa, 30, 33 e 56",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto no exterior",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "McDonald's",
+      "formato": "restaurante de serviço rápido",
+      "nota": "No Brasil, em 31/12/2025: 1.230 restaurantes (762 operados pela companhia e 468 franqueados), 2.028 quiosques de sobremesa e 203 McCafés. A companhia não conta quiosques e McCafés como restaurantes."
+    }
+  ],
+  "formatos": [
+    "restaurante de serviço rápido operado pela companhia",
+    "restaurante franqueado",
+    "quiosque de sobremesa",
+    "McCafé"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em 25 unidades da federação, segundo o IRTT. Não constam Acre e Amapá. A companhia divide a operação em Brasil, NOLAD (norte da América Latina) e SLAD (sul da América Latina). Fora do Brasil havia 1.290 restaurantes em 31/12/2025.",
+    "estados": [
+      "AL",
+      "AM",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "restaurantes",
+    "comércio eletrônico próprio",
+    "marketplaces de terceiros"
+  ],
+  "clientes": "Consumidores finais em refeições no restaurante, para viagem e por entrega.",
+  "fontes_de_receita": [
+    {
+      "nome": "Vendas dos restaurantes operados pela companhia",
+      "descricao": "No Brasil, US$ 1.632 milhões em 2025. É a maior parte da receita da divisão (US$ 1.770 milhões)."
+    },
+    {
+      "nome": "Receita de restaurantes franqueados",
+      "descricao": "Principalmente aluguel, em geral o maior valor entre um fixo e um percentual da venda do franqueado. A venda dos franqueados (US$ 1.056 milhões no Brasil em 2025) não é receita da companhia. O critério do IRTT, ao contrário, soma a venda ao consumidor de lojas próprias e franqueadas."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Zamp (Burger King)",
+      "slug": "zamp"
+    },
+    {
+      "nome": "Habib's",
+      "slug": null
+    },
+    {
+      "nome": "BFFC (Bob's)",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda ao consumidor no Brasil (lojas próprias e franqueadas)",
+      "unidade": "R$ milhões",
+      "nota": "Estimativa do IRTT (nota de fonte 5). Sem valor para 2024. Líder do segmento Foodservice no ranking. A medida equivalente da companhia está em dólares, no indicador seguinte. Não convertemos moedas.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13000,
+          "natureza": "estimado_pela_fonte"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 75",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas do sistema no Brasil (restaurantes próprios e franqueados)",
+      "unidade": "US$ milhares",
+      "nota": "Soma, feita por nós, de duas linhas do 20-F: restaurantes operados pela companhia (1.632.177 em 2025 e 1.635.954 em 2024) e franqueados (1.056.132 e 1.017.972). Alta de 1,3% em dólares.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 2653926,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2688309,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "64",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita da divisão Brasil",
+      "unidade": "US$ milhares",
+      "nota": "Vendas dos restaurantes próprios mais receita de franqueados. Alta de 0,1% em 2025. No 3T26, alta de 15,4% em dólares e de 8,8% em moeda constante. Nove meses de 2026: 1.514.370.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 1768311,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1770301,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 452589,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 522271,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "3 (anos); 6-K do 3T26, tabela de resultados por divisão, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas comparáveis no Brasil, restaurantes operados pela companhia",
+      "unidade": "%",
+      "nota": "Vendas comparáveis medem, em moeda constante, a variação das vendas dos restaurantes abertos há pelo menos treze meses. Segundo a companhia, em 2025 o tíquete médio subiu e o tráfego de clientes caiu no Brasil.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 6.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": -0.5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "63 e 64",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas comparáveis no Brasil, restaurantes franqueados",
+      "unidade": "%",
+      "nota": "Mesmo conceito, para os franqueados.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 9.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 4.6,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "64",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas comparáveis do sistema no Brasil",
+      "unidade": "%",
+      "nota": "Restaurantes próprios e franqueados, trimestre contra o mesmo trimestre do ano anterior.",
+      "valores": [
+        {
+          "periodo": "3T25",
+          "valor": 1.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 3.5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 6-K com o release de resultados do 3T26 (SEC, 12/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000095010326017316/dp256682_6k.htm",
+        "pagina": "Figura 7",
+        "periodo": "3T26 e 3T25",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Restaurantes no Brasil",
+      "unidade": "restaurantes",
+      "nota": "Fim de período. Em 31/12/2025: 762 operados pela companhia e 468 franqueados. Em 30/09/2026: 790 e 482. Aumento líquido de 57 restaurantes em 2025 (calculado). Não inclui quiosques de sobremesa nem McCafés.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 1130,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1173,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1230,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "setembro de 2026",
+          "valor": 1272,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "4 (anos); 6-K do 3T26, Figura 3, para setembro de 2026",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Quiosques de sobremesa no Brasil",
+      "unidade": "pontos",
+      "nota": "Funcionam junto a restaurantes ou em pontos separados e dependem de um restaurante para abastecimento. A companhia não os conta como restaurantes.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 2028,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "setembro de 2026",
+          "valor": 2015,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "39 (2025); 6-K do 3T26, Figura 3, para setembro de 2026",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no Brasil segundo o IRTT",
+      "unidade": "lojas",
+      "nota": "Origem IRTT, em linha com nota 5. Não coincide com nenhuma contagem da companhia em 31/12/2025: 1.230 restaurantes, 2.028 quiosques de sobremesa, 203 McCafés. O IRTT não explica a composição do número e declara estimar só a venda total (página 31).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2800,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 81",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Expansão orgânica de lojas segundo o IRTT",
+      "unidade": "lojas",
+      "nota": "Origem IRTT, 9ª maior do ranking. O 20-F não traz aberturas brutas do Brasil: informa aumento líquido de 57 restaurantes no país em 2025 e 102 aberturas em todos os territórios.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 64,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 86",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Restaurantes fora do Brasil",
+      "unidade": "restaurantes",
+      "nota": "NOLAD (669) mais SLAD (621), em 31/12/2025. Coincide com as 1.290 operações fora do Brasil publicadas pelo IRTT.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 1290,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "4",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "O 20-F informa cerca de 96.782 funcionários em todos os territórios em 31/12/2025, nos restaurantes operados pela companhia e na administração, dos quais cerca de 39% no Brasil. Não inclui funcionários de franqueados. O IRTT traz 70.000 para 2024 e n.d. para 2025, sem explicar a abrangência. Valor abaixo: total da companhia, todos os territórios.",
+      "valores": [
+        {
+          "periodo": "2025, todos os territórios",
+          "valor": 96782,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "99",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lucro operacional da divisão Brasil",
+      "unidade": "US$ milhares",
+      "nota": "Margem operacional publicada: 15,2% em 2024 e 15,7% em 2025. O 3T25 inclui crédito tributário federal líquido de US$ 85,6 milhões, o que distorce a comparação com o 3T26.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 269019,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 278043,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T25",
+          "valor": 127325,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 46221,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "3 (anos); 6-K do 3T26, tabela de resultados por divisão, para os trimestres",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Margem EBITDA ajustada da divisão Brasil",
+      "unidade": "%",
+      "nota": "EBITDA ajustado é o lucro operacional antes de depreciação, amortização e de alguns itens que a companhia exclui, dividido pela receita da divisão. Anos publicados no 20-F. 3T26 calculado por nós: 68.076 dividido por 522.271.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 17.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 19.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 13.0,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+        "pagina": "3 (anos); 6-K do 3T26, tabela de resultados por divisão, para o trimestre",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Resultado do 3T26: receita consolidada de US$ 1,3 bilhão, alta de 11,3% em dólares, e vendas comparáveis do sistema de 15,5%. No Brasil, receita de US$ 522,3 milhões e vendas comparáveis de 3,5%. O conselho aprovou recompra de até US$ 25 milhões em ações classe A.",
+      "fonte": {
+        "titulo": "Arcos Dorados Holdings Inc., formulário 6-K com o release de resultados do 3T26 (SEC, 12/11/2026)",
+        "url": "https://www.sec.gov/Archives/edgar/data/1508478/000095010326017316/dp256682_6k.htm",
+        "pagina": "release, página inicial e Figura 7",
+        "periodo": "3T26 e 3T25",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda de R$ 13 bilhões é ESTIMADA pelo IRTT (nota 5) e segue o critério do instituto para redes de franquia: venda total ao consumidor final, com impostos, somando lojas próprias, lojas franqueadas e venda online. Não é a receita da companhia. No 20-F, a receita da divisão Brasil em 2025 foi de US$ 1.770 milhões e inclui só a venda dos restaurantes próprios (US$ 1.632 milhões) e a receita cobrada dos franqueados. A venda dos franqueados (US$ 1.056 milhões) fica fora da receita. A medida da companhia mais próxima do conceito do IRTT é a venda do sistema no Brasil, US$ 2.688 milhões pela nossa soma, em dólares e sem os impostos sobre venda. Não convertemos esse valor em reais. A contagem de lojas também diverge: o IRTT publica 2.800 e a companhia informa 1.230 restaurantes e 2.028 quiosques de sobremesa no Brasil.",
+  "analise": {
+    "crescimento": "O IRTT não permite medir o crescimento: a venda de 2025 é estimada e a de 2024 não foi publicada. Pelo 20-F, a receita da divisão Brasil ficou estável em dólares, de US$ 1.768 milhões em 2024 para US$ 1.770 milhões em 2025 (0,1%). Em moeda constante, a venda dos restaurantes operados pela companhia cresceu 3,3% e a dos franqueados, 7,4%. As vendas comparáveis, que consideram só restaurantes abertos há pelo menos treze meses, caíram 0,5% nos restaurantes próprios e subiram 4,6% nos franqueados. O crescimento de 2025 veio, portanto, da abertura de unidades: o país ganhou 57 restaurantes em termos líquidos, para 1.230. Segundo a companhia, o tíquete médio subiu e o tráfego de clientes caiu. No terceiro trimestre de 2026, a receita cresceu 8,8% em moeda constante e as vendas comparáveis, 3,5%.",
+    "rentabilidade_caixa": "O Brasil é a divisão de maior margem da companhia. O lucro operacional da divisão foi de US$ 278 milhões em 2025, 15,7% da receita, contra 15,2% em 2024. A margem EBITDA ajustada, que mede o resultado operacional antes de depreciação, subiu de 19,2% para 20,3%, acima dos 12,3% do consolidado. No terceiro trimestre de 2026 o EBITDA ajustado do Brasil foi de US$ 68,1 milhões, 13,0% da receita pelo nosso cálculo. A queda sobre os US$ 147,4 milhões de um ano antes reflete o crédito tributário federal de US$ 85,6 milhões reconhecido em 2025. A companhia não divulga dívida nem geração de caixa por divisão, e os números estão em dólares, sujeitos ao câmbio. A comparação com a Zamp exige cautela: os números da Zamp estão em reais, na base da CVM, e os da Arcos Dorados em dólares.",
+    "acompanhar": {
+      "indicador": "Vendas comparáveis e margem EBITDA ajustada da divisão Brasil nos resultados trimestrais",
+      "reforca": "Vendas comparáveis dos restaurantes próprios de volta ao campo positivo com tráfego de clientes em alta e margem EBITDA ajustada perto de 20% no ano.",
+      "enfraquece": "Vendas comparáveis abaixo da inflação por vários trimestres, tráfego em queda ou margem da divisão recuando sem efeito tributário que a explique."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Venda de 2024 e crescimento no IRTT: n.d., o instituto não compara anos com dados estimados.",
+    "Venda do sistema no Brasil em reais: a companhia reporta em dólares, e não convertemos moedas.",
+    "Composição das 2.800 lojas publicadas pelo IRTT: não explicada. Não coincide com restaurantes (1.230) nem com quiosques de sobremesa (2.028) informados pela companhia.",
+    "Aberturas brutas de restaurantes no Brasil em 2025: o 20-F consultado traz o saldo por divisão e as aberturas só para o conjunto dos territórios.",
+    "Número exato de funcionários no Brasil: a companhia informa o total (96.782) e a proporção aproximada do país (39%).",
+    "Dívida, caixa e investimento por divisão: não divulgados em separado.",
+    "Venda por loja: não calculada, porque a venda do IRTT é estimada.",
+    "Base ativa de clientes no Brasil: n.d. no IRTT. O release informa quase 38 milhões de membros do programa de fidelidade em todos os territórios.",
+    "ir.arcosdorados.com e www.arcosdorados.com continuam bloqueados; os documentos foram lidos em www.sec.gov."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "31, 32, 38, 75, 81, 86, 100, 104 e 106",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Arcos Dorados Holdings Inc., formulário 20-F do exercício de 2025 (SEC)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1508478/000162828026028950/arco-20251231.htm",
+      "pagina": "capa, 3, 4, 30, 33, 34, 39, 56, 63, 64 e 99",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Arcos Dorados Holdings Inc., formulário 6-K com o release de resultados do 3T26 (SEC, 12/11/2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/1508478/000095010326017316/dp256682_6k.htm",
+      "pagina": "release: destaques, Figuras 3 e 7 e tabela de resultados por divisão",
+      "periodo": "3T26 e 3T25",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}
