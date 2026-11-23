@@ -1,0 +1,954 @@
+{
+  "slug": "magazine-luiza",
+  "grupo": "Magazine Luiza",
+  "resumo": "Varejista de bens duráveis com lojas físicas, e-commerce de estoque próprio, marketplace e braço financeiro (Luizacred e Magalupay).",
+  "controlador": {
+    "nome": "LTD Administração e Participação S.A.",
+    "nota": "A nota 1 das demonstrações de 2025 identifica a LTD como controladora e holding da companhia. A participação percentual não consta dos documentos lidos.",
+    "fonte": {
+      "titulo": "Magazine Luiza, Demonstrações Financeiras de 31/12/2025 (notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489805&numSequencia=1014511&numVersao=1",
+      "pagina": "p. 18 do PDF (nota 1)",
+      "consultado_em": "2026-11-23",
+      "periodo": "31/12/2025"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "magazine-luiza",
+  "bandeiras": [
+    {
+      "nome": "Magazine Luiza (Magalu)",
+      "formato": "lojas convencionais e lojas virtuais de bens duráveis; site e aplicativo",
+      "nota": "1.016 lojas convencionais e 230 virtuais em dez/2025 (release 4T25, p. 8)."
+    },
+    {
+      "nome": "Netshoes",
+      "formato": "e-commerce de artigos esportivos e moda (inclui Zattini e Shoestock)",
+      "nota": ""
+    },
+    {
+      "nome": "KaBuM!",
+      "formato": "e-commerce de tecnologia e games",
+      "nota": ""
+    },
+    {
+      "nome": "Época Cosméticos",
+      "formato": "e-commerce de beleza",
+      "nota": ""
+    },
+    {
+      "nome": "Estante Virtual",
+      "formato": "marketplace de livros",
+      "nota": "Listada pelo IRTT entre as bandeiras do grupo (p. 38)."
+    },
+    {
+      "nome": "AiQfome",
+      "formato": "aplicativo de entrega de comida",
+      "nota": ""
+    },
+    {
+      "nome": "Luizacred",
+      "formato": "cartão de crédito, controlada em conjunto com o Banco Itaúcard",
+      "nota": "Não é consolidada: entra no resultado por equivalência patrimonial (DF 2025, nota 1 e nota de partes relacionadas, p. 18 e 31 do PDF)."
+    },
+    {
+      "nome": "Magalupay",
+      "formato": "conta de pagamentos e sociedade de crédito (CDC)",
+      "nota": ""
+    },
+    {
+      "nome": "Galeria Magalu",
+      "formato": "loja em São Paulo que reúne as marcas do grupo",
+      "nota": "Inaugurada em dez/2025 (release 4T25, p. 4 e 8)."
+    }
+  ],
+  "formatos": [
+    "loja convencional",
+    "loja virtual (sem estoque, venda por terminal)",
+    "e-commerce de estoque próprio (1P)",
+    "marketplace (3P)",
+    "aplicativo de entrega de comida"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em 20 unidades da federação segundo o IRTT; 21 centros de distribuição e lojas em todas as regiões do país segundo a nota 1 das demonstrações de 2025. Sede em Franca (SP).",
+    "estados": [
+      "AL",
+      "BA",
+      "CE",
+      "DF",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PR",
+      "PI",
+      "RJ",
+      "RN",
+      "RS",
+      "SC",
+      "SE",
+      "SP"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "site e aplicativo (1P)",
+    "marketplace próprio (3P)",
+    "venda em marketplaces de terceiros",
+    "televendas e lojas virtuais"
+  ],
+  "clientes": "Consumidores finais de eletrodomésticos, eletrônicos, móveis, artigos esportivos e beleza; o IRTT registra base ativa de 33.272.789 clientes em 2025. No marketplace, os clientes da plataforma são também os vendedores parceiros (sellers), que pagam comissão e serviços.",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria",
+      "descricao": "Revenda em lojas e no e-commerce 1P: receita bruta de R$ 43.630,5 milhões em 2025 (release 4T25, p. 9)."
+    },
+    {
+      "nome": "Serviços",
+      "descricao": "Comissões do marketplace, serviços financeiros, logística para terceiros (Magalog), publicidade e outros: receita bruta de R$ 4.531,4 milhões em 2025 (release 4T25, p. 9). O release não abre a comissão do marketplace em separado."
+    },
+    {
+      "nome": "Serviços financeiros",
+      "descricao": "Luizacred (cartão, com o Itaú) entra por equivalência patrimonial; Magalupay origina o crédito direto ao consumidor (CDC) das lojas."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Grupo Casas Bahia",
+      "slug": "casas-bahia"
+    },
+    {
+      "nome": "Mercado Livre",
+      "slug": "mercado-livre"
+    },
+    {
+      "nome": "Amazon Brasil",
+      "slug": "amazon-brasil"
+    },
+    {
+      "nome": "Americanas",
+      "slug": "americanas"
+    },
+    {
+      "nome": "Havan",
+      "slug": "havan"
+    },
+    {
+      "nome": "Gazin",
+      "slug": "gazin"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas físicas",
+      "unidade": "%",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 0.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 0.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 4.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 11.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 6.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 8.6,
+          "natureza": "divulgado",
+          "nota": "Janeiro a setembro de 2026; no 3T26 isolado, 9,5%."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes. IRTT 2026 (p. 38) traz 1.246 lojas em 2025 e 1.245 em 2024, iguais aos do release.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 1481,
+          "natureza": "divulgado",
+          "nota": "Inclui 194 quiosques em lojas de parceiros."
+        },
+        {
+          "periodo": "2022",
+          "valor": 1339,
+          "natureza": "divulgado",
+          "nota": "Inclui 54 quiosques."
+        },
+        {
+          "periodo": "2023",
+          "valor": 1286,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1245,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1246,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 1238,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 6 e 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e set/2026"
+      }
+    },
+    {
+      "indicador": "Aberturas e fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "Variação líquida do número de lojas; aberturas e fechamentos brutos só quando o release os informa.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": -142,
+          "natureza": "divulgado",
+          "nota": "Variação líquida. O release 4T22 (p. 10) informa 15 aberturas e 157 fechamentos em 12 meses, dos quais 140 quiosques."
+        },
+        {
+          "periodo": "2023",
+          "valor": -53,
+          "natureza": "divulgado",
+          "nota": "Variação líquida. O release 4T23 (p. 10) informa 1 abertura em 12 meses e o encerramento de 17 quiosques no 4T23; os demais fechamentos do ano são de quiosques."
+        },
+        {
+          "periodo": "2024",
+          "valor": -41,
+          "natureza": "divulgado",
+          "nota": "Variação líquida: 34 lojas convencionais e 7 virtuais a menos (release 4T24, p. 20)."
+        },
+        {
+          "periodo": "2025",
+          "valor": 1,
+          "natureza": "divulgado",
+          "nota": "Variação líquida: abertura da Galeria Magalu (release 4T25, p. 8 e 20)."
+        },
+        {
+          "periodo": "12 meses até set/2026",
+          "valor": -7,
+          "natureza": "divulgado",
+          "nota": "2 aberturas e 9 fechamentos (5 convencionais e 4 virtuais), release 3T26, p. 7."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 3T26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586530&numSequencia=1111236&numVersao=1",
+        "pagina": "p. 7 e 19",
+        "consultado_em": "2026-11-23",
+        "periodo": "2022 a set/2026"
+      }
+    },
+    {
+      "indicador": "Vendas totais (GMV: lojas, 1P e 3P)",
+      "unidade": "R$ milhões",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes. Soma a receita bruta das lojas e do e-commerce próprio às vendas dos parceiros no marketplace.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 55607.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 60160.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 63056.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 65330.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 64665.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 44223.8,
+          "natureza": "divulgado",
+          "nota": "Janeiro a setembro; mesmo período de 2025: 46.443,8."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 20 (anexo VI)",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Vendas próprias no e-commerce (1P)",
+      "unidade": "R$ milhões",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 26688.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 27940.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 27575.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 27472.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 27158.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 17673.0,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 19.554,6."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Vendas de parceiros no marketplace (3P)",
+      "unidade": "R$ milhões",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes. Venda dos sellers, que não é receita do Magalu; a companhia fica com a comissão.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 13062.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 15449.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 18041.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 18652.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 17162.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 10957.8,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 12.592,5."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Vendas das lojas físicas",
+      "unidade": "R$ milhões",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes. O IRTT 2026 (p. 38) registra R$ 20.345 milhões em 2025, mesmo valor.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 15856.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 16771.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 17439.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 19206.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20345.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 15593.0,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 14.296,7."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Participação do e-commerce total (1P + 3P) nas vendas totais",
+      "unidade": "%",
+      "nota": "Cada valor anual vem do release do quarto trimestre do próprio ano (4T21 p. 9 e 22; 4T22 p. 8 e 22; 4T23 p. 6 e 22; 4T24 p. 6 e 20; 4T25 p. 6 e 20); o de 2026 vem do release do 3T26 (p. 5 e 19). A url abaixo é a do release 4T25; as demais estão em fontes.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 71.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 72.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 72.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 70.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 68.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 64.7,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Carteira de cartão de crédito da Luizacred",
+      "unidade": "R$ milhões",
+      "nota": "Carteira pelo critério de atraso, antes da expectativa de recebimento da carteira vencida acima de 360 dias. Luizacred é controlada em conjunto com o Itaú e não é consolidada. Fontes por ano: 4T21 p. 26; 4T22 p. 26; 4T23 p. 26; 4T24 p. 24; 4T25 p. 24; 3T26 p. 25.",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 17461,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 20566,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 20235,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 20274,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 20826,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 19891,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 24",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a set/2026"
+      }
+    },
+    {
+      "indicador": "Inadimplência da Luizacred: carteira vencida há mais de 90 dias",
+      "unidade": "% da carteira",
+      "nota": "Indicador NPL 90 divulgado pela companhia. Mesmas páginas da linha anterior.",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 5.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 10.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 9.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 8.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 7.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 7.3,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 24",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a set/2026"
+      }
+    },
+    {
+      "indicador": "Inadimplência da Luizacred: carteira vencida de 15 a 90 dias",
+      "unidade": "% da carteira",
+      "nota": "Indicador NPL 15 divulgado pela companhia.",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 2.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 3.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 3.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 2.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 2.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 2.4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 24",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a set/2026"
+      }
+    },
+    {
+      "indicador": "Carteira de crédito direto ao consumidor (CDC) da Magalupay",
+      "unidade": "R$ milhões",
+      "nota": "As duas datas usam perímetros diferentes e não formam série.",
+      "valores": [
+        {
+          "periodo": "dez/2025",
+          "valor": 1800,
+          "natureza": "divulgado",
+          "nota": "O release informa R$ 1,8 bilhão, alta de 15% sobre dez/2024."
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 838.5,
+          "natureza": "divulgado",
+          "nota": "Carteira bruta da Magalupay SCFI, a sociedade de crédito criada para originar o CDC; base diferente da de dez/2025."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 5 e 21 (4T25); p. 1 (3T26)",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2025 e set/2026"
+      }
+    },
+    {
+      "indicador": "Saldo de fornecedores por convênio (risco sacado)",
+      "unidade": "R$ milhões",
+      "nota": "Parcela da conta fornecedores em que o banco antecipou o pagamento ao fornecedor e passou a ser o credor. Fontes: 4T22 p. 19 (dez/2021 e dez/2022); 4T23 p. 19; 4T24 p. 17; 4T25 p. 17; 3T26 p. 16.",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 4460.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 3802.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 2358.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 3100.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 3356.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 1110.2,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 17 (anexo III)",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a set/2026"
+      }
+    },
+    {
+      "indicador": "Pagamentos a fornecedores por convênio apresentados no fluxo de financiamento",
+      "unidade": "R$ milhões",
+      "nota": "Como a companhia descreve a operação (nota 19 das demonstrações de 2025): mantém convênios com bancos parceiros para estruturar, com seus principais fornecedores, a antecipação de créditos em que ela é a devedora; o fornecedor transfere o título ao banco, recebe antes e o banco passa a ser o credor. Em linha com as alterações da IAS 7 e da IFRS 7, o saldo é apresentado separado de Fornecedores, \"apesar de manter a essência de uma transação mercantil\". A companhia liquida o título na data combinada com o fornecedor e recebe do banco um prêmio, reconhecido como receita financeira: R$ 155,8 milhões em 2025 e R$ 148,6 milhões em 2024. O prazo médio de pagamento foi 51 dias maior para fornecedores com convênio do que para fornecedores comparáveis sem convênio em 31/12/2025 (44 dias em 30/09/2026). Há também o convênio de importação da KaBuM!, com extensão média de prazo de 99 dias a 51,29% do CDI. Os pagamentos desses títulos aparecem nas atividades de financiamento, e a nota de transações sem efeito caixa registra R$ 13.725,5 milhões de contratações de fornecedores convênio em 2025 (p. 77 do PDF). São os mesmos valores do campo convenio_fornecedores_no_financiamento da gold.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 12337.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13469.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 12228.0,
+          "natureza": "divulgado",
+          "nota": "Janeiro a setembro de 2026; mesmo período de 2025: 9.669,6."
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Demonstrações Financeiras de 31/12/2025 (notas explicativas)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489805&numSequencia=1014511&numVersao=1",
+        "pagina": "p. 16 do PDF (fluxo de caixa) e p. 51 (nota 19); ITR de 30/09/2026, p. 10 e 31 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024, 2025 e 9M26"
+      }
+    },
+    {
+      "indicador": "Fluxo de caixa operacional gerencial (convênio tratado como fornecedor)",
+      "unidade": "R$ milhões",
+      "nota": "Medida da administração, não contábil: além de devolver o convênio ao operacional, trata títulos e valores mobiliários como caixa e os recebíveis de cartão como caixa (nota ao pé do anexo IV). Por isso difere do caixa operacional após convênio calculado na gold (R$ 2.250,1 milhões em 2025). Fontes: 4T22 p. 20; 4T23 p. 20; 4T24 p. 18; 4T25 p. 18; 3T26 p. 17.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 827.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 223.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 3052.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2655.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "12 meses até set/2026",
+          "valor": 1462.1,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 18 (anexo IV)",
+        "consultado_em": "2026-11-23",
+        "periodo": "2022 a set/2026"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado declarado pela empresa ao IRTT (nota de fonte 1).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 42744,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 40690,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2024-01",
+      "tipo": "outro",
+      "descricao": "Fato relevante de 28/01/2024 anuncia aumento de capital privado; o fluxo de caixa de 2024 registra entrada de R$ 1.250,0 milhões (release 4T25, p. 18). Homologação total em 22/03/2024.",
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25 (fluxo de caixa gerencial) e cadastro IPE da CVM (fatos relevantes de 28/01/2024 e 22/03/2024)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 18",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "outro",
+      "descricao": "Inauguração da Galeria Magalu, em São Paulo, loja que reúne Magalu, KaBuM!, Netshoes, Época Cosméticos e Estante Virtual.",
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+        "pagina": "p. 4 e 8",
+        "consultado_em": "2026-11-23",
+        "periodo": "4T25"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "outro",
+      "descricao": "Saldo de fornecedores por convênio cai de R$ 2,6 bilhões em jun/2026 para R$ 1,1 bilhão em set/2026; segundo a administração, com manutenção do prazo médio de compras e aumento dos fornecedores diretos.",
+      "fonte": {
+        "titulo": "Magazine Luiza, Divulgação de Resultados 3T26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586530&numSequencia=1111236&numVersao=1",
+        "pagina": "p. 1, 11 e 16",
+        "consultado_em": "2026-11-23",
+        "periodo": "3T26"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Fato relevante divulga, em caráter excepcional, prévia de outubro de 2026: receita bruta da controladora cresce 16% nas lojas físicas e 14% no e-commerce 1P sobre outubro de 2025; a companhia atribui a divulgação a uma alteração na dinâmica competitiva do varejo de bens duráveis.",
+      "fonte": {
+        "titulo": "Magazine Luiza, Fato Relevante de 09/11/2026: prévia operacional de receita bruta da controladora, outubro de 2026",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586491&numSequencia=1111197&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "out/2026"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT classifica o Magazine Luiza por R$ 47.524 milhões em 2025 (R$ 46.715 milhões em 2024), venda com impostos e sem as vendas dos sellers no marketplace (3P), dado declarado pela empresa (IRTT, p. 31, 32 e 38). No release 4T25 (p. 20), lojas físicas (R$ 20.345,1 milhões) e e-commerce de estoque próprio (R$ 27.158,1 milhões) somam R$ 47.503,2 milhões (soma nossa); a diferença de R$ 20,8 milhões para o IRTT não é explicada nos documentos. As vendas totais com o marketplace foram de R$ 64.665,5 milhões, dos quais R$ 17.162,3 milhões de parceiros. A receita líquida da CVM, R$ 38.703,4 milhões, é menor porque exclui impostos e devoluções; ela inclui R$ 3.724,4 milhões de serviços, entre eles as comissões cobradas dos sellers. A Luizacred fica fora das duas medidas: é controlada em conjunto com o Itaú e entra por equivalência patrimonial.",
+  "analise": {
+    "crescimento": "A receita líquida passou de R$ 38.038,1 milhões em 2024 para R$ 38.703,4 milhões em 2025, alta de 1,7%, com 1.246 lojas, uma a mais que em 2024. O avanço veio das lojas já existentes: as vendas das lojas físicas subiram 5,9% (6,3% nas mesmas lojas, isto é, nas unidades que já operavam no período comparado), enquanto o e-commerce de estoque próprio caiu 1,1% e as vendas de parceiros no marketplace caíram 8,0%. Somados os três canais, as vendas totais recuaram 1,0%, para R$ 64.665,5 milhões. A administração descreve o período como de vendas com foco em rentabilidade. De janeiro a setembro de 2026 o padrão se repetiu: receita líquida de R$ 27.048,1 milhões, 1,8% abaixo do mesmo período de 2025, com lojas físicas em alta de 9,1% e e-commerce total em queda de 10,9%.",
+    "rentabilidade_caixa": "Em 2025 a margem bruta foi de 29,85% e a margem operacional, de 4,96% da receita líquida. O resultado financeiro negativo de R$ 2.044,2 milhões (R$ 1.475,0 milhões em 2024) consumiu esse ganho e o lucro líquido ficou em R$ 204,6 milhões, ou 0,53% da receita; a companhia atribui a piora à alta dos juros. O caixa operacional declarado, de R$ 15.719,4 milhões, depende da classificação contábil: R$ 13.469,3 milhões pagos a bancos que anteciparam faturas de fornecedores (convênio, ou risco sacado) aparecem no fluxo de financiamento. Descontados esses pagamentos, o caixa operacional é de R$ 2.250,1 milhões, para investimentos de R$ 891,6 milhões. De janeiro a setembro de 2026 houve prejuízo de R$ 138,4 milhões e caixa operacional após convênio de R$ 1.646,9 milhões.",
+    "acompanhar": {
+      "indicador": "Caixa operacional após pagamentos de fornecedores por convênio, lido junto com o saldo de fornecedores convênio e com a venda 1P do e-commerce",
+      "reforca": "Caixa após convênio positivo e acima do investimento enquanto o saldo de convênio permanece baixo (R$ 1,1 bilhão em set/2026) e o e-commerce 1P volta a crescer, como na prévia de outubro de 2026: indicaria que o capital de giro deixou de depender do financiamento bancário das compras.",
+      "enfraquece": "Nova alta do saldo de convênio, ou caixa após convênio abaixo do investimento, com o e-commerce 1P de volta à queda: indicaria que a liquidez continua apoiada no prazo financiado dos fornecedores."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Comissão do marketplace (receita 3P) em reais: o release só divulga a receita de serviços agregada.",
+    "Aberturas e fechamentos brutos de lojas em 2021, 2023, 2024 e 2025: o release traz a variação líquida e, em alguns anos, só parte do detalhe.",
+    "Participação percentual do controlador (LTD): não consta dos documentos lidos; o formulário de referência não foi consultado.",
+    "Composição exata dos R$ 47.524 milhões usados pelo IRTT: a soma de lojas e 1P no release dá R$ 47.503,2 milhões.",
+    "Carteira de CDC em série comparável: dez/2025 (R$ 1,8 bilhão) e set/2026 (R$ 838,5 milhões da Magalupay SCFI) têm perímetros diferentes."
+  ],
+  "fontes": [
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 4T25",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489806&numSequencia=1014512&numVersao=1",
+      "pagina": "p. 1, 4 a 13, 17, 18, 20, 21, 24",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T25 e 2025"
+    },
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 3T26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586530&numSequencia=1111236&numVersao=1",
+      "pagina": "p. 1 a 5, 7, 11, 16, 17, 19, 25",
+      "consultado_em": "2026-11-23",
+      "periodo": "3T26 e 9M26"
+    },
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 4T24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1346607&numSequencia=871333&numVersao=1",
+      "pagina": "p. 6, 8, 17, 18, 20, 24",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T24 e 2024"
+    },
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 4T23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1208867&numSequencia=733593&numVersao=1",
+      "pagina": "p. 6, 10, 19, 20, 22, 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T23 e 2023"
+    },
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 4T22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1071160&numSequencia=595890&numVersao=1",
+      "pagina": "p. 8, 10, 19, 20, 22, 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T22 e 2022"
+    },
+    {
+      "titulo": "Magazine Luiza, Divulgação de Resultados 4T21",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=953875&numSequencia=478609&numVersao=1",
+      "pagina": "p. 9, 11, 22, 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T21 e 2021"
+    },
+    {
+      "titulo": "Magazine Luiza, Demonstrações Financeiras de 31/12/2025 (notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489805&numSequencia=1014511&numVersao=1",
+      "pagina": "p. 16 (fluxo de caixa), 18 (nota 1), 31 (Luizacred), 51 (nota 19, fornecedores convênio) do PDF",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "Magazine Luiza, Demonstração Financeira Intermediária de 30/09/2026",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586528&numSequencia=1111234&numVersao=1",
+      "pagina": "p. 6, 10 e 31 do PDF (nota 17, fornecedores convênio)",
+      "consultado_em": "2026-11-23",
+      "periodo": "9M26"
+    },
+    {
+      "titulo": "Magazine Luiza, Fato Relevante de 09/11/2026: prévia operacional de receita bruta da controladora, outubro de 2026",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1586491&numSequencia=1111197&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "out/2026"
+    },
+    {
+      "titulo": "CVM, DFP 2025 do Magazine Luiza (base da gold public/varejo/gold/empresas.json)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=155314",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "CVM, ITR de 30/09/2026 do Magazine Luiza (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=162170",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "9M26"
+    },
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 24, 25, 31, 32, 38, 72, 113, 115, 120",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    }
+  ]
+}

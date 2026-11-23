@@ -1,0 +1,1070 @@
+{
+  "slug": "casas-bahia",
+  "grupo": "Grupo Casas Bahia",
+  "resumo": "Varejista de eletrodomésticos, eletrônicos e móveis com lojas, e-commerce, marketplace e crediário próprio; em recuperação judicial desde 2026.",
+  "controlador": {
+    "nome": "Mapa Capital (por meio da Domus VII Participações S.A.)",
+    "nota": "Segundo o relatório da administração de 2025, a conversão de debêntures da 10ª emissão em ações, em agosto e dezembro de 2025, levou a Mapa Capital a 89,6% do capital social, com projeção de estabilização em torno de 69% ao fim do cronograma de conversões. O fato relevante de 16/08/2026 registra que o pedido de recuperação judicial teve aprovação do acionista controlador, sem nomeá-lo.",
+    "fonte": {
+      "titulo": "Grupo Casas Bahia, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489331&numSequencia=1014037&numVersao=1",
+      "pagina": "p. 3 e 77 do PDF",
+      "consultado_em": "2026-11-23",
+      "periodo": "31/12/2025"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "casas-bahia",
+  "bandeiras": [
+    {
+      "nome": "Casas Bahia",
+      "formato": "lojas de rua e de shopping de eletrodomésticos, eletrônicos e móveis; site e aplicativo",
+      "nota": "923 lojas em dez/2025 (release 4T25, p. 7)."
+    },
+    {
+      "nome": "Pontofrio",
+      "formato": "lojas de rua e de shopping; site",
+      "nota": "119 lojas em dez/2025 (release 4T25, p. 7)."
+    },
+    {
+      "nome": "Extra.com.br",
+      "formato": "e-commerce",
+      "nota": ""
+    },
+    {
+      "nome": "banQi",
+      "formato": "conta digital e crediário digital",
+      "nota": "8,8 milhões de contas abertas em dez/2025 (release 4T25, p. 8 e 9)."
+    },
+    {
+      "nome": "Bartira",
+      "formato": "fábrica de móveis do grupo",
+      "nota": "Uma das empresas incluídas no pedido de recuperação judicial de 16/08/2026."
+    }
+  ],
+  "formatos": [
+    "loja de rua",
+    "loja de shopping",
+    "e-commerce de estoque próprio (1P)",
+    "marketplace (3P)",
+    "venda em marketplaces de terceiros (Mercado Livre desde nov/2025, Amazon desde mar/2026)"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em 23 unidades da federação segundo o IRTT; sede em São Paulo (SP). Em 2026 a companhia informou o fechamento de 298 lojas até 16/08/2026, sem divulgar nos documentos lidos a distribuição por estado.",
+    "estados": [
+      "AL",
+      "AM",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MT",
+      "MS",
+      "MG",
+      "PA",
+      "PB",
+      "PR",
+      "PE",
+      "PI",
+      "RJ",
+      "RN",
+      "RS",
+      "SC",
+      "SP",
+      "SE",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "site e aplicativo (1P)",
+    "marketplace próprio (3P)",
+    "marketplaces de terceiros",
+    "crediário (carnê) em loja e digital"
+  ],
+  "clientes": "Consumidores finais de eletrodomésticos, eletrônicos e móveis. A companhia descreve o crediário como oportunidade de compra para a população com pouco ou nenhum acesso a crédito (release 4T25, p. 8). O IRTT registra base ativa de 14.006.987 clientes em 2025.",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria",
+      "descricao": "Receita bruta de mercadorias de R$ 29.496 milhões em 2025 (release 4T25, p. 3)."
+    },
+    {
+      "nome": "Comissões de marketplace",
+      "descricao": "Receita bruta do 3P de R$ 964 milhões em 2025, sobre GMV de parceiros de R$ 7.662 milhões; taxa de comissão (take rate) de 12,1% no 4T25 (release 4T25, p. 2)."
+    },
+    {
+      "nome": "Serviços",
+      "descricao": "Receita bruta de serviços de R$ 2.090 milhões em 2025 (release 4T25, p. 3); o release não detalha a composição nessa página."
+    },
+    {
+      "nome": "Crediário e cartões",
+      "descricao": "Receita bruta de R$ 3.212 milhões em 2025; o crediário respondeu por 16,1% da receita bruta consolidada no ano (release 4T25, p. 3)."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Mercado Livre",
+      "slug": "mercado-livre"
+    },
+    {
+      "nome": "Amazon Brasil",
+      "slug": "amazon-brasil"
+    },
+    {
+      "nome": "Gazin",
+      "slug": "gazin"
+    },
+    {
+      "nome": "Lojas Cem",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas (GMV de lojas físicas)",
+      "unidade": "%",
+      "nota": "A companhia mede o indicador sobre o GMV das lojas. Só o release de 2025 traz o número do ano; para 2022 a 2024 há apenas o do quarto trimestre. Fontes: 4T22 p. 16; 4T23 p. 4; 4T24 p. 2; 4T25 p. 2; 2T26 p. 3.",
+      "valores": [
+        {
+          "periodo": "4T22",
+          "valor": 11.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T23",
+          "valor": -5.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T24",
+          "valor": 17.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 8.2,
+          "natureza": "divulgado",
+          "nota": "Ano de 2025; no 4T25 isolado, 2,6%."
+        },
+        {
+          "periodo": "2T26",
+          "valor": -3.2,
+          "natureza": "divulgado",
+          "nota": "No 2T25 havia sido 6,7%."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "4T22 a 2T26"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Fontes: 4T21 p. 26; 4T22 p. 21; 4T23 p. 9; 4T24 p. 2 e 7; 4T25 p. 7; 2T26 p. 8. IRTT 2026 (p. 38): 1.042 lojas em 2025 e 1.064 em 2024, iguais aos do release.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 1091,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 1133,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1078,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1064,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1042,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "jun/2026",
+          "valor": 1034,
+          "natureza": "divulgado",
+          "nota": "Depois dessa data a companhia informou ter concluído o fechamento de 298 lojas até 16/08/2026 (ITR 2T26, p. 3)."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2 e 7",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a jun/2026"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas",
+      "unidade": "lojas",
+      "nota": "O release de 2021 fala em 101 lojas novas e 62 fechadas no ano. Para 2024 e 2025 os releases lidos só trazem o movimento do trimestre e a variação líquida.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 101,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 63,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 0,
+          "natureza": "calculado",
+          "nota": "O release 4T23 informa 55 fechamentos no ano e 1.078 lojas no fim, contra 1.133 um ano antes: a diferença não deixa espaço para aberturas."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T22",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1071027&numSequencia=595757&numVersao=1",
+        "pagina": "p. 7 e 21 (4T22); p. 21 (4T21); p. 9 (4T23)",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2023"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 62,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 21,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 55,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 22,
+          "natureza": "calculado",
+          "nota": "Fechamento líquido em 12 meses citado no release 4T25 (p. 2); corresponde a 1.064 menos 1.042."
+        },
+        {
+          "periodo": "até 16/08/2026",
+          "valor": 298,
+          "natureza": "divulgado",
+          "nota": "Fechamentos concluídos na Fase 2 do Plano de Transformação até a data de autorização do ITR do 2T26."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Informações Financeiras Intermediárias de 30/06/2026 (relatório da administração, relatório do auditor e notas)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1558373&numSequencia=1083079&numVersao=1",
+        "pagina": "p. 3 do PDF (2026); releases 4T21 p. 21, 4T22 p. 7, 4T23 p. 1 e 9, 4T25 p. 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a ago/2026"
+      }
+    },
+    {
+      "indicador": "GMV total bruto (lojas, 1P online e 3P)",
+      "unidade": "R$ milhões",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 16; 4T23 p. 4; 4T24 p. 2; 4T25 p. 2; 2T26 p. 3. A url abaixo é a do release 4T25; as demais estão em fontes. GMV é o valor total vendido nas plataformas, incluindo o dos parceiros.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 44604,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 44378,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 42750,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 41120,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 44721,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 21720,
+          "natureza": "divulgado",
+          "nota": "Janeiro a junho; mesmo período de 2025: 21.126."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 1S26"
+      }
+    },
+    {
+      "indicador": "Vendas próprias (GMV 1P: lojas físicas e online)",
+      "unidade": "R$ milhões",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 16; 4T23 p. 4; 4T24 p. 2; 4T25 p. 2; 2T26 p. 3. A url abaixo é a do release 4T25; as demais estão em fontes. O valor de 2021 vem da coluna comparativa do release 4T22.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 38230,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 39026,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 36919,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 34523,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 37059,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 18339,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 17.574."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 1S26"
+      }
+    },
+    {
+      "indicador": "Vendas de parceiros no marketplace (GMV 3P)",
+      "unidade": "R$ milhões",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 16; 4T23 p. 4; 4T24 p. 2; 4T25 p. 2; 2T26 p. 3. A url abaixo é a do release 4T25; as demais estão em fontes.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 6374,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 5352,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 5831,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 6597,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 7662,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 3381,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 3.551."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 1S26"
+      }
+    },
+    {
+      "indicador": "Participação do online (1P + 3P) no GMV total",
+      "unidade": "%",
+      "nota": "Conta nossa: venda online total (R$ 16.614 milhões em 2024, R$ 18.629 milhões em 2025 e R$ 9.443 milhões no 1S26) dividida pelo GMV total do período.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 40.4,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 41.7,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 43.5,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2 (4T25); p. 3 (2T26)",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 a 1S26"
+      }
+    },
+    {
+      "indicador": "Receita bruta de comissões do marketplace (3P)",
+      "unidade": "R$ milhões",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 604,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 713,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 824,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 964,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 441,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 448."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 2 (4T25); 4T23 p. 4; 4T24 p. 2; 2T26 p. 3",
+        "consultado_em": "2026-11-23",
+        "periodo": "2022 a 1S26"
+      }
+    },
+    {
+      "indicador": "Carteira do crediário (carteira ativa de carnês)",
+      "unidade": "R$ bilhões",
+      "nota": "Base de carnês sem os juros a incorrer, arredondada pela companhia. Fontes: 4T21 p. 1 e 15; 4T22 p. 1 e 11; 4T23 p. 11; 4T24 p. 1 e 8; 4T25 p. 1 e 8; 2T26 p. 1 e 9.",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 5.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 5.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 5.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 6.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 6.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "jun/2026",
+          "valor": 6.3,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 1 e 8",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a jun/2026"
+      }
+    },
+    {
+      "indicador": "Inadimplência do crediário: carteira vencida há mais de 90 dias",
+      "unidade": "% da carteira",
+      "nota": "Taxa \"over 90\" divulgada pela companhia. Fontes: 4T22 p. 11; 4T23 p. 11 e 12; 4T24 p. 1 e 9; 4T25 p. 9; 2T26 p. 10. O release 4T21 só traz o número em gráfico, sem leitura segura.",
+      "valores": [
+        {
+          "periodo": "dez/2022",
+          "valor": 9.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 9.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 8.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 8.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "jun/2026",
+          "valor": 8.9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 8 e 9",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2022 a jun/2026"
+      }
+    },
+    {
+      "indicador": "Perda sobre a carteira ativa do crediário",
+      "unidade": "% da carteira",
+      "nota": "Mesmas páginas da linha anterior.",
+      "valores": [
+        {
+          "periodo": "4T22",
+          "valor": 4.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T23",
+          "valor": 4.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T24",
+          "valor": 4.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 4.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2T26",
+          "valor": 4.3,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 8 e 9",
+        "consultado_em": "2026-11-23",
+        "periodo": "4T22 a 2T26"
+      }
+    },
+    {
+      "indicador": "Saldo de obrigações com risco sacado (convênio)",
+      "unidade": "R$ milhões",
+      "nota": "Faturas de fornecedores que bancos ou fundos anteciparam e das quais passaram a ser credores. Fontes: release 4T22 p. 18 e 19 (dez/2021 e dez/2022); 4T23 p. 6; DF 2025 nota 15; ITR 2T26 p. 7 e 18 do PDF. A queda de 2026 inclui a conversão de R$ 1.426 milhões do saldo em nota comercial de dois anos (DF 2025, p. 35 do PDF).",
+      "valores": [
+        {
+          "periodo": "dez/2021",
+          "valor": 1904,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2022",
+          "valor": 2463,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 1765,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 2446,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 2430,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "jun/2026",
+          "valor": 861,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489331&numSequencia=1014037&numVersao=1",
+        "pagina": "p. 75 e 76 do PDF (nota 15)",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2021 a jun/2026"
+      }
+    },
+    {
+      "indicador": "Pagamentos de obrigações com risco sacado (convênio) apresentados no fluxo de financiamento",
+      "unidade": "R$ milhões",
+      "nota": "Como a companhia descreve a operação (nota 15 das demonstrações de 2025): são transações mercantis recorrentes com fornecedores de mercadorias; pelas características de negociação de prazos, esses passivos foram incluídos em programas de captação por linhas de crédito com instituições financeiras e FIDCs; o fornecedor transfere o direito de recebimento ao financiador, recebe antes, e o financiador passa a ser o credor. Em 31/12/2025 o prazo médio era de 90 dias e o custo financeiro, de 28,30% ao ano (73 dias e 25,72% em 2024), lançado no resultado financeiro. A companhia \"entende que esta transação tem natureza específica e a classifica separadamente da rubrica Fornecedores\". A movimentação da nota mostra R$ 14.828 milhões transferidos de fornecedores para convênio e R$ 14.844 milhões pagos em 2025. Para covenants e estrutura de capital, a companhia não conta o convênio como endividamento bruto (p. 7 do PDF), mas o soma no indicador de alavancagem do release. São os mesmos valores do campo convenio_fornecedores_no_financiamento da gold.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 9598,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 14844,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1S26",
+          "valor": 6544,
+          "natureza": "divulgado",
+          "nota": "Janeiro a junho de 2026; mesmo período de 2025: 5.245."
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489331&numSequencia=1014037&numVersao=1",
+        "pagina": "p. 33 do PDF (fluxo de caixa) e p. 75 e 76 (nota 15); ITR 2T26, p. 22 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024, 2025 e 1S26"
+      }
+    },
+    {
+      "indicador": "Cotas seniores de FIDCs (fundos de recebíveis) na estrutura de capital",
+      "unidade": "R$ milhões",
+      "nota": "Captação por fundos de crediário e de risco sacado, que a companhia passou a usar entre 2024 e 2025 (release 4T25, p. 5).",
+      "valores": [
+        {
+          "periodo": "dez/2024",
+          "valor": 269,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 1742,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "jun/2026",
+          "valor": 2016,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+        "pagina": "p. 12 (4T25); 2T26 p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2024 a jun/2026"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado declarado pela empresa ao IRTT (nota de fonte 1).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 23598,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 21865,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2024-04",
+      "tipo": "outro",
+      "descricao": "Recuperação extrajudicial: em 28/04/2024 a companhia pede a homologação de plano para reperfilar cerca de R$ 4,1 bilhões de dívidas financeiras sem garantia (debêntures da 6ª à 9ª emissão e cédulas de crédito bancário), com carência de 24 meses para juros e 30 meses para principal e prazo total de 78 meses.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 28/04/2024: Continuação do Reperfilamento da Dívida Financeira",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1227812&numSequencia=752538&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "28/04/2024"
+      }
+    },
+    {
+      "data": "2024-06",
+      "tipo": "outro",
+      "descricao": "Recuperação extrajudicial: em 19/06/2024 a 1ª Vara de Falências e Recuperações Judiciais de São Paulo homologa o plano na íntegra, o que o torna vinculante para todos os credores financeiros abrangidos.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 19/06/2024: Homologação da Recuperação Extrajudicial",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1251844&numSequencia=776570&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "19/06/2024"
+      }
+    },
+    {
+      "data": "2025-08",
+      "tipo": "mudanca_de_controle",
+      "descricao": "Conversão de debêntures da 10ª emissão em ações: capitalização de R$ 1.648 milhões em 06/08/2025, com ações subscritas pela Domus VII Participações, subsidiária da Mapa Capital. Com as conversões de agosto e dezembro, a Mapa Capital chega a 89,6% do capital, segundo o relatório da administração.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489331&numSequencia=1014037&numVersao=1",
+        "pagina": "p. 3, 35 e 77 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "data": "2025-10",
+      "tipo": "outro",
+      "descricao": "Parceria com o Mercado Livre: produtos das categorias principais da Casas Bahia passam a ser vendidos na plataforma a partir de novembro de 2025. Em 23/03/2026 a companhia anuncia operação semelhante na Amazon.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 23/10/2025: parceria para venda no Mercado Livre",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1434933&numSequencia=959645&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "23/10/2025"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "desinvestimento",
+      "descricao": "Contrato de 08/12/2025 para vender ao Itaú Unibanco as participações na Financeira Itaú CBD (FIC) e no Banco Investcred por R$ 266,1 milhões, sujeito a ajustes e à aprovação do CADE e do Banco Central.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 08/12/2025: alienação da FIC e do Investcred",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453757&numSequencia=978469&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "08/12/2025"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "outro",
+      "descricao": "Conclusão do Plano de Transformação da Estrutura de Capital em 29/12/2025: liquidação da 11ª emissão de debêntures, de R$ 2.408,4 milhões, com adesão de 90,5% das debêntures da 10ª emissão; vencimento das séries remanescentes da 10ª emissão alterado para 2050. A nota 1 das demonstrações registra conversão de R$ 1.675 milhões em 29/12/2025.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 30/12/2025: Conclusão do Plano de Transformação da Estrutura de Capital",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1462225&numSequencia=986931&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "30/12/2025"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "Em 26/03/2026 o conselho constitui comitê independente de investigação após notícias sobre apuração de autoridades a respeito de supostas liberações indevidas de créditos de ICMS em São Paulo; a companhia informa não ter sido notificada. O auditor cita o tema em parágrafo de ênfase no ITR do 2T26.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 26/03/2026: Constituição de Comitê Independente de Investigação",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1496205&numSequencia=1020911&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "consultado_em": "2026-11-23",
+        "periodo": "26/03/2026"
+      }
+    },
+    {
+      "data": "2026-08",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Em 16/08/2026 a companhia e nove subsidiárias ajuízam pedido de recuperação judicial no Foro Central Cível de São Paulo. A companhia atribui o pedido à deterioração das condições econômico-financeiras: juros altos, restrição de crédito, pressão sobre consumo e capital de giro e não concretização de alternativas de liquidez, entre elas uma captação internacional. No mesmo dia divulga o ITR do 2T26, com prejuízo de R$ 11.181 milhões no semestre, patrimônio líquido negativo de R$ 8.270 milhões e relatório do auditor com abstenção de conclusão por incerteza relevante sobre a continuidade operacional.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 16/08/2026: Pedido de Recuperação Judicial",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1558381&numSequencia=1083087&numVersao=1",
+        "pagina": "p. 1 e 2; ITR de 30/06/2026, p. 3, 14 e 15 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "16/08/2026"
+      }
+    },
+    {
+      "data": "2026-08",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Em 28/08/2026 a 2ª Vara de Falências e Recuperações Judiciais de São Paulo antecipa os efeitos do período de suspensão (stay period): ações e execuções contra a companhia ficam suspensas por 180 dias a contar de 19/08/2026.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 31/08/2026: Deferimento de Tutela de Urgência na Recuperação Judicial",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1562849&numSequencia=1087555&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "31/08/2026"
+      }
+    },
+    {
+      "data": "2026-10",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Em 19/10/2026 a assembleia de acionistas ratifica o pedido. O fato relevante de 21/10/2026 informa que a 2ª Vara deferiu o processamento da recuperação judicial da companhia e das subsidiárias; o fato relevante de 13/11/2026 já traz a denominação com \"em recuperação judicial\". Até 23/11/2026 não foi localizado no cadastro da CVM plano de recuperação apresentado.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 21/10/2026: Deferimento do pedido de Recuperação Judicial",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1579129&numSequencia=1103835&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "21/10/2026"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Acordo de 13/11/2026 com o GPA encerra as pendências do Acordo de Associação de 2009: a companhia fica com créditos tributários estimados em cerca de R$ 700 milhões sem repasse ao GPA e assume contingências, entre elas débitos tributários de valor nominal aproximado de R$ 424 milhões.",
+      "fonte": {
+        "titulo": "Grupo Casas Bahia, Fato Relevante de 13/11/2026: acordo com a Companhia Brasileira de Distribuição (GPA)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1589330&numSequencia=1114036&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "13/11/2026"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT classifica o Grupo Casas Bahia por R$ 33.833 milhões em 2025 (R$ 31.590 milhões em 2024), dado declarado pela empresa, com impostos e sem as vendas de parceiros no marketplace (IRTT, p. 31, 32 e 38). O número coincide com a receita bruta consolidada do release, R$ 34.797 milhões, menos a receita bruta do 3P, R$ 964 milhões (conta nossa; em 2024, R$ 32.414 milhões menos R$ 824 milhões). Inclui, portanto, mercadorias (R$ 29.496 milhões), serviços e a receita de crediário e cartões (R$ 3.212 milhões), e não é o GMV: o GMV total foi de R$ 44.721 milhões, dos quais R$ 37.059 milhões de vendas próprias e R$ 7.662 milhões de parceiros. A receita líquida da CVM, R$ 29.197 milhões, exclui impostos e devoluções e inclui as comissões do marketplace.",
+  "analise": {
+    "crescimento": "A receita líquida subiu de R$ 27.206 milhões em 2024 para R$ 29.197 milhões em 2025, alta de 7,3%, com 22 lojas a menos (1.042 no fim do ano). O crescimento veio de lojas existentes e do online: o valor vendido nas lojas físicas (GMV) cresceu 6,5%, com 8,2% nas mesmas lojas; o online de estoque próprio cresceu 9,5% e as vendas de parceiros no marketplace, 16,1%. A administração atribui o avanço do online a ganho de mercado em linha branca e tecnologia, a mais tráfego nos canais próprios e à abertura de canais por parcerias. No primeiro semestre de 2026 a receita líquida foi de R$ 14.393 milhões, 3,9% acima de 2025, mas o GMV das lojas caiu 2,4% e as mesmas lojas recuaram 3,2% no segundo trimestre; a companhia informa ter reduzido as compras de estoque e fechado 298 lojas até agosto.",
+    "rentabilidade_caixa": "Em 2025 a margem bruta foi de 30,51% e a margem operacional, de 4,6%, mas o resultado financeiro negativo de R$ 3.687 milhões (R$ 2.187 milhões em 2024) levou a prejuízo de R$ 2.988 milhões; a companhia atribui a piora à alta do CDI médio e registrou baixa de imposto diferido. O caixa operacional declarado, de R$ 15.129 milhões, depende da classificação contábil: R$ 14.844 milhões pagos a financiadores de faturas de fornecedores (risco sacado por convênio) aparecem no fluxo de financiamento. Descontados, restam R$ 285 milhões, para investimento de R$ 265 milhões. No primeiro semestre de 2026 o prejuízo foi de R$ 11.181 milhões, com baixas de ágio e de tributos diferidos e provisões, o patrimônio líquido ficou negativo em R$ 8.270 milhões e o caixa operacional após convênio foi de R$ 230 milhões. Em 16/08/2026 a companhia pediu recuperação judicial.",
+    "acompanhar": {
+      "indicador": "Caixa operacional após pagamentos de risco sacado (convênio), lido junto com o prazo e o custo desse financiamento e com o andamento do plano de recuperação judicial",
+      "reforca": "Caixa após convênio seguidamente positivo depois do fechamento de lojas, com fornecedores mantendo prazo sem intermediação financeira e plano de recuperação aprovado pelos credores: indicaria que a operação menor se financia sozinha.",
+      "enfraquece": "Caixa após convênio negativo, encurtamento do prazo de fornecedores ou novas baixas de ativos: indicaria que o redimensionamento não bastou para cobrir o custo de financiar as vendas a prazo. Desde junho de 2026 não há ITR novo na gold; os relatórios mensais do administrador judicial são gerenciais e não auditados."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "ITR de 30/09/2026: não consta do cadastro da CVM até 23/11/2026; o último ITR disponível é o de 30/06/2026. Os relatórios mensais do administrador judicial (o de agosto de 2026 foi anunciado em 11/11/2026) estão no site de RI da companhia, host não liberado neste ambiente, e não foram lidos.",
+    "Vendas nas mesmas lojas do ano fechado em 2021, 2022, 2023 e 2024: os releases lidos trazem o número anual só para 2025.",
+    "Inadimplência (over 90) de dez/2021: aparece apenas em gráfico no release 4T21.",
+    "Aberturas e fechamentos brutos de lojas em 2024 e 2025: os releases lidos trazem o movimento do trimestre e a variação líquida.",
+    "Distribuição por estado das 298 lojas fechadas em 2026 e número de lojas após os fechamentos.",
+    "Plano de recuperação judicial e lista de credores: não localizados no cadastro da CVM até 23/11/2026; a petição inicial foi protocolada em agosto e não foi lida.",
+    "Margem líquida no IRTT (p. 120): o ranking traz -5,3% em 2025, e a gold, calculada sobre o prejuízo contábil de R$ 2.988 milhões, traz -10,23%; o IRTT não informa o critério, que parece ser o prejuízo ajustado."
+  ],
+  "fontes": [
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 4T25",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489329&numSequencia=1014035&numVersao=1",
+      "pagina": "p. 1 a 9 e 12",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T25 e 2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 2T26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1558371&numSequencia=1083077&numVersao=1",
+      "pagina": "p. 1 a 3, 5, 6, 8 a 10",
+      "consultado_em": "2026-11-23",
+      "periodo": "2T26 e 1S26"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 4T24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1346257&numSequencia=870983&numVersao=1",
+      "pagina": "p. 1, 2, 4, 5, 7 a 9",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T24 e 2024"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 4T23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1212254&numSequencia=736980&numVersao=1",
+      "pagina": "p. 1, 2, 4, 6, 9, 11, 12",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T23 e 2023"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 4T22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1071027&numSequencia=595757&numVersao=1",
+      "pagina": "p. 1, 7, 11, 16, 18, 19, 21",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T22 e 2022"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Release de Resultado 4T21",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=951859&numSequencia=476593&numVersao=1",
+      "pagina": "p. 1, 2, 15, 21, 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T21 e 2021"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1489331&numSequencia=1014037&numVersao=1",
+      "pagina": "p. 3, 6, 7, 29, 33, 35, 75, 76, 77 do PDF",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Informações Financeiras Intermediárias de 30/06/2026 (relatório da administração, relatório do auditor e notas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1558373&numSequencia=1083079&numVersao=1",
+      "pagina": "p. 3, 5, 7, 14, 15, 18, 22, 24 do PDF",
+      "consultado_em": "2026-11-23",
+      "periodo": "1S26"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 28/04/2024: Continuação do Reperfilamento da Dívida Financeira (recuperação extrajudicial)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1227812&numSequencia=752538&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "28/04/2024"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 19/06/2024: Homologação da Recuperação Extrajudicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1251844&numSequencia=776570&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "19/06/2024"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 05/06/2025: Plano de Transformação da Estrutura de Capital",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1387530&numSequencia=912242&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "05/06/2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 23/10/2025: parceria com o Mercado Livre",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1434933&numSequencia=959645&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "23/10/2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 08/12/2025: alienação da FIC e do Investcred",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453757&numSequencia=978469&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "08/12/2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 30/12/2025: Conclusão do Plano de Transformação da Estrutura de Capital",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1462225&numSequencia=986931&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "30/12/2025"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 23/03/2026: operação na Amazon",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1493426&numSequencia=1018132&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "23/03/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 26/03/2026: Constituição de Comitê Independente de Investigação",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1496205&numSequencia=1020911&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "26/03/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 16/08/2026: Pedido de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1558381&numSequencia=1083087&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "consultado_em": "2026-11-23",
+      "periodo": "16/08/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 31/08/2026: Deferimento de Tutela de Urgência na Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1562849&numSequencia=1087555&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "31/08/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 19/10/2026: Ratificação do Pedido de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1578469&numSequencia=1103175&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "19/10/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 21/10/2026: Deferimento do pedido de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1579129&numSequencia=1103835&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "21/10/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 11/11/2026: Informações Financeiras Gerenciais Mensais de agosto de 2026",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1587708&numSequencia=1112414&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "11/11/2026"
+    },
+    {
+      "titulo": "Grupo Casas Bahia, Fato Relevante de 13/11/2026: acordo com o GPA",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1589330&numSequencia=1114036&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "13/11/2026"
+    },
+    {
+      "titulo": "CVM, DFP 2025 do Grupo Casas Bahia (base da gold public/varejo/gold/empresas.json)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=155289",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "CVM, ITR de 30/06/2026 do Grupo Casas Bahia (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=160926",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "1S26"
+    },
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 26, 31, 32, 38, 72, 73, 115, 120",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    }
+  ]
+}

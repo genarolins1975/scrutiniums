@@ -1,0 +1,756 @@
+{
+  "slug": "americanas",
+  "grupo": "Americanas",
+  "resumo": "Rede de lojas de variedades e conveniência com operação digital reduzida; saiu da recuperação judicial em outubro de 2026.",
+  "controlador": {
+    "nome": "Acionistas de referência, por meio das afiliadas Cedar Trade LLC, Sawdog Holdings LLC e Samer Investment LLC",
+    "nota": "As demonstrações de 2025 tratam os acionistas de referência como os atuais controladores. No aumento de capital homologado em 25/07/2024, as afiliadas subscreveram 9.437.503.566 das 18.815.921.100 novas ações. Os documentos lidos não informam a participação percentual atual nem os nomes das pessoas físicas.",
+    "fonte": {
+      "titulo": "Americanas, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1498018&numSequencia=1022724&numVersao=1",
+      "pagina": "p. 92 do PDF; Fato Relevante de 25/07/2024, p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "2024 e 2025"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "americanas",
+  "bandeiras": [
+    {
+      "nome": "Americanas",
+      "formato": "lojas de variedades no formato convencional",
+      "nota": "906 lojas e 838 mil m² em dez/2025 (release 2025, p. 6)."
+    },
+    {
+      "nome": "Americanas Express",
+      "formato": "lojas de conveniência de menor área",
+      "nota": "564 lojas e 215 mil m² em dez/2025."
+    },
+    {
+      "nome": "Americanas (site e aplicativo)",
+      "formato": "e-commerce, hoje voltado a complementar a loja (compra online com retirada, que a companhia chama de O2O), e marketplace reduzido",
+      "nota": ""
+    },
+    {
+      "nome": "Ame Digital",
+      "formato": "carteira digital e serviços financeiros",
+      "nota": "Tratada como operação descontinuada em 2024; voltou a ser consolidada no fim de 2025 por não ter recebido proposta de compra (release 2025, p. 4)."
+    },
+    {
+      "nome": "Hortifruti Natural da Terra (HNT)",
+      "formato": "lojas de frutas, legumes e verduras",
+      "nota": "Operação descontinuada e em venda: em 13/08/2026 foi concluída a transferência de 3 das 10 lojas vendidas ao Oba Hortifruti (release 3T26, p. 18). O IRTT ainda a lista entre as bandeiras."
+    },
+    {
+      "nome": "Uni.Co (Imaginarium, Puket, MinD, Lovebrands)",
+      "formato": "lojas e franquias de presentes e moda",
+      "nota": "Vendida à Fan Store Entretenimento (BandUP!), com fechamento em 02/07/2026. O IRTT ainda a lista entre as bandeiras."
+    }
+  ],
+  "formatos": [
+    "loja de variedades convencional",
+    "loja Express",
+    "e-commerce com retirada em loja (O2O)",
+    "marketplace (3P), em redução"
+  ],
+  "regioes": {
+    "texto": "Lojas em todas as 27 unidades da federação segundo o IRTT; a companhia informa presença em mais de 800 municípios (release 2024, p. 2) e mais de 1.400 lojas em set/2026 (release 3T26, p. 5). Sede no estado do Rio de Janeiro segundo o IRTT; o processo de recuperação correu na 4ª Vara Empresarial da Comarca da Capital do Rio de Janeiro.",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "site e aplicativo com retirada em loja (O2O)",
+    "marketplace",
+    "serviços financeiros e programa de fidelidade"
+  ],
+  "clientes": "Consumidores de itens de uso diário e de ocasião: bomboniere, alimentos, limpeza, cuidados pessoais, brinquedos, utilidades e eletrônicos. A companhia fala em 50 milhões de clientes (release 2024, p. 2); o IRTT registra base ativa de 41.000.000 em 2025.",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria",
+      "descricao": "Venda nas lojas físicas: receita líquida do físico de R$ 11,7 bilhões em 2025, 95% do total (release 2025, p. 7)."
+    },
+    {
+      "nome": "Digital e comissões de marketplace",
+      "descricao": "A receita líquida do digital caiu 49,0% em 2025 e passou de 7% para 4% do total; a administração atribui a queda à decisão de redimensionar a operação e à redução do marketplace (release 2025, p. 7). A comissão do 3P não é divulgada em separado."
+    },
+    {
+      "nome": "Plataforma de clientes e parceiros (PCP)",
+      "descricao": "Publicidade em loja, crédito, seguros e serviços com parceiros; a receita cresceu 10% em 2025, sem valor divulgado no release (p. 7)."
+    },
+    {
+      "nome": "Serviços financeiros",
+      "descricao": "Ame Digital, cartão e programa de fidelidade lançados em 2025 (release 2025, p. 4 e 7); valores não divulgados nos documentos lidos."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Havan",
+      "slug": "havan"
+    },
+    {
+      "nome": "Mercado Livre",
+      "slug": "mercado-livre"
+    },
+    {
+      "nome": "Amazon Brasil",
+      "slug": "amazon-brasil"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas (vendas brutas)",
+      "unidade": "%",
+      "nota": "Lojas com vendas ininterruptas nos últimos 12 meses; indicador não revisado pelos auditores. Fontes: 4T21 p. 14; release 2023 p. 6; release 2024 p. 6; release 2025 p. 4 e 5; release 3T26 p. 10.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 4.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "Não localizado no release de 2022, publicado em novembro de 2023 com as demonstrações reapresentadas."
+        },
+        {
+          "periodo": "2023",
+          "valor": 1.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 14.8,
+          "natureza": "divulgado",
+          "nota": "A partir do 4T24 o cálculo exclui cancelamentos, devoluções e descontos."
+        },
+        {
+          "periodo": "2025",
+          "valor": 7.8,
+          "natureza": "divulgado",
+          "nota": "O release cita 7,8% no resumo e na mensagem da administração (p. 3 e 4); o parágrafo da p. 5 lista 7,8% e 2,9% para trimestre e ano em ordem trocada. No 4T25, 2,9%."
+        },
+        {
+          "periodo": "9M26",
+          "valor": 8.7,
+          "natureza": "divulgado",
+          "nota": "Janeiro a setembro de 2026; no 3T26 isolado, 7,3%."
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 3 a 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 9M26"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Formatos convencional e Express; não inclui Hortifruti Natural da Terra nem Uni.Co. Fontes: release 2023 p. 6; release 2024 p. 7; release 2025 p. 6. O IRTT 2026 (p. 38) traz 1.470 lojas em 2025 e 1.663 em 2024; o número de 2024 difere do release (1.587) e o ranking não explica o perímetro.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 1803,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1731,
+          "natureza": "divulgado",
+          "nota": "Inclui 53 lojas do formato Local, reincorporadas em dezembro de 2023; sem elas, 1.678, base usada no release de 2024."
+        },
+        {
+          "periodo": "2024",
+          "valor": 1587,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1470,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "O release do 3T26 diz apenas \"mais de 1.400 lojas\"."
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2022 a 2025"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "Unidades que, segundo a administração, não atendiam aos critérios de rentabilidade.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 125,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 92,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 117,
+          "natureza": "divulgado",
+          "nota": "54 convencionais e 63 Express; redução de 6,9% da área de vendas."
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 6 (2025); release 2024 p. 7; release 2023 p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2023 a 2025"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas",
+      "unidade": "lojas",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 168,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1,
+          "natureza": "divulgado",
+          "nota": "Uma unidade em Eusébio (CE), citada no release de 2024."
+        },
+        {
+          "periodo": "2025",
+          "valor": 0,
+          "natureza": "calculado",
+          "nota": "1.587 lojas menos 117 fechamentos resulta nas 1.470 do fim de 2025."
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2024",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1352242&numSequencia=876968&numVersao=1",
+        "pagina": "p. 7 (2024); 4T21 p. 4 (2021); release 2025 p. 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021, 2024 e 2025"
+      }
+    },
+    {
+      "indicador": "GMV total",
+      "unidade": "R$ milhões",
+      "nota": "Os perímetros mudam ao longo da série e os anos não são diretamente comparáveis. Fontes: 4T21 p. 14; release 2023 p. 5 (2022 e 2023); release 2024 p. 5; release 2025 p. 5. O release do 3T26 não divulga GMV.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 55275,
+          "natureza": "divulgado",
+          "nota": "Divulgado antes da descoberta das inconsistências contábeis."
+        },
+        {
+          "periodo": "2022",
+          "valor": 42117,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 22794,
+          "natureza": "divulgado",
+          "nota": "Reapresentado como 22.517 no release de 2024."
+        },
+        {
+          "periodo": "2024",
+          "valor": 21380,
+          "natureza": "divulgado",
+          "nota": "Reapresentado como 18.708 no release de 2025, sem Hortifruti Natural da Terra e Uni.Co, tratadas como operações descontinuadas."
+        },
+        {
+          "periodo": "2025",
+          "valor": 17013,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 2025"
+      }
+    },
+    {
+      "indicador": "GMV das lojas físicas",
+      "unidade": "R$ milhões",
+      "nota": "O IRTT 2026 (p. 38) registra R$ 15.765 milhões de venda em lojas físicas em 2025, mesmo valor.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 14068,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 15166,
+          "natureza": "divulgado",
+          "nota": "Base do release de 2025; no release de 2024, 15.742."
+        },
+        {
+          "periodo": "2025",
+          "valor": 15765,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "2023 a 2025"
+      }
+    },
+    {
+      "indicador": "GMV digital",
+      "unidade": "R$ milhões",
+      "nota": "A companhia não separa 1P de 3P no GMV digital. Fontes: release 2023 p. 5; release 2025 p. 5.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 24753,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 6026,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 3099,
+          "natureza": "divulgado",
+          "nota": "Base do release de 2025; no release de 2024, 3.078."
+        },
+        {
+          "periodo": "2025",
+          "valor": 1001,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "2022 a 2025"
+      }
+    },
+    {
+      "indicador": "Participação do digital no GMV total",
+      "unidade": "%",
+      "nota": "Conta nossa sobre a tabela do release de 2025: 3.099 ÷ 18.708 e 1.001 ÷ 17.013.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 16.6,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 5.9,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2025",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+        "pagina": "p. 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Receita bruta consolidada",
+      "unidade": "R$ bilhões",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "9M26",
+          "valor": 11.2,
+          "natureza": "divulgado",
+          "nota": "Alta de 8,3% sobre janeiro a setembro de 2025; canal físico R$ 10,1 bilhões (+3,2%); vendas online com retirada em loja (O2O) R$ 494 milhões (+80,3%)."
+        }
+      ],
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 3T26 e 9M26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588037&numSequencia=1112743&numVersao=1",
+        "pagina": "p. 9 e 10",
+        "consultado_em": "2026-11-23",
+        "periodo": "9M26"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado declarado pela empresa ao IRTT (nota de fonte 1).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 34485,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 26364,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2023-01",
+      "tipo": "outro",
+      "descricao": "Fato relevante de 11/01/2023 informa inconsistências em lançamentos contábeis redutores da conta fornecedores, estimadas em cerca de R$ 20 bilhões na data-base de 30/09/2022, e operações de financiamento de compras da mesma ordem não refletidas adequadamente nas demonstrações.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 11/01/2023: inconsistências em lançamentos contábeis",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1049072&numSequencia=573802&numVersao=1",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "11/01/2023"
+      }
+    },
+    {
+      "data": "2023-01",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Em 19/01/2023 a companhia e três subsidiárias (ST Importações, JSM Global e B2W Digital Lux) pedem recuperação judicial na 4ª Vara Empresarial do Rio de Janeiro; o juízo defere o processamento no mesmo dia e suspende ações, execuções e a exigibilidade dos créditos sujeitos ao processo.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 19/01/2023: Ajuizamento de Recuperação Judicial e deferimento do processamento",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1050720&numSequencia=575450&numVersao=1",
+        "pagina": "p. 1; fato relevante da mesma data, protocolo 1050973, p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "19/01/2023"
+      }
+    },
+    {
+      "data": "2023-06",
+      "tipo": "outro",
+      "descricao": "Fato relevante de 13/06/2023: relatório de assessores jurídicos, baseado em documentos do comitê independente, indica que as demonstrações financeiras vinham sendo fraudadas pela diretoria anterior.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 13/06/2023: relatório sobre fraude nas demonstrações financeiras",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1112823&numSequencia=637552&numVersao=2",
+        "pagina": "p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "13/06/2023"
+      }
+    },
+    {
+      "data": "2023-11",
+      "tipo": "reapresentacao",
+      "descricao": "Com as demonstrações de 2022, entregues em 16/11/2023, a companhia reapresenta 2021: o lucro líquido divulgado de R$ 544 milhões passa a prejuízo de R$ 6.237 milhões, a receita líquida vai de R$ 22.696 milhões para R$ 22.521 milhões e o patrimônio líquido de 31/12/2021 fica negativo em R$ 12,6 bilhões. Os principais ajustes são a reversão de verbas de fornecedores fictícias (R$ 18,2 bilhões no patrimônio), juros de risco sacado, impairment e baixa de tributos diferidos. Atenção: a gold traz para 2021 os valores originalmente divulgados (lucro de R$ 543,8 milhões e patrimônio de R$ 15.911,0 milhões), anteriores à reapresentação.",
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2022 (versão 3)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1171351&numSequencia=696077&numVersao=3",
+        "pagina": "p. 6, 7 e 12",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 reapresentado e 2022"
+      }
+    },
+    {
+      "data": "2023-12",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Em 19/12/2023 a assembleia geral de credores aprova o plano de recuperação judicial; em 26/02/2024 a 4ª Vara Empresarial o homologa e concede a recuperação.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 26/02/2024: Homologação do Plano de Recuperação Judicial",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1199003&numSequencia=723729&numVersao=2",
+        "pagina": "p. 1; fato relevante de 19/12/2023, protocolo 1175633, p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "26/02/2024"
+      }
+    },
+    {
+      "data": "2024-07",
+      "tipo": "mudanca_de_controle",
+      "descricao": "Em 25/07/2024 o conselho homologa aumento de capital de R$ 24.460,7 milhões, a R$ 1,30 por ação: 9.369.000.523 ações subscritas por credores com a capitalização de créditos e 9.446.920.577 por acionistas, quase todas pelas afiliadas dos acionistas de referência. Segundo as demonstrações de 2025, o total se compõe de R$ 1.469 milhões em dinheiro e R$ 10.800 milhões em dívidas com os acionistas de referência e R$ 12.180 milhões em dívidas com credores.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 25/07/2024: Homologação do Aumento de Capital",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1262982&numSequencia=787708&numVersao=1",
+        "pagina": "p. 1; DF 2025, p. 92 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "25/07/2024"
+      }
+    },
+    {
+      "data": "2024-09",
+      "tipo": "outro",
+      "descricao": "No terceiro trimestre de 2024, a execução do plano gera o desconto (haircut) dos credores financeiros na substituição da dívida antiga por novas obrigações (novação): é o que explica o resultado financeiro positivo de R$ 12.319 milhões em 2024. As demonstrações de 2025 detalham R$ 12,3 bilhões de haircut e R$ 2,9 bilhões de reversão de juros e variação monetária lançados sobre a dívida sujeita ao processo desde janeiro de 2023.",
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 2024",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1352242&numSequencia=876968&numVersao=1",
+        "pagina": "p. 5 e 11; DF 2025, p. 20 do PDF",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024"
+      }
+    },
+    {
+      "data": "2025-09",
+      "tipo": "desinvestimento",
+      "descricao": "Em 30/09/2025 a companhia aceita proposta vinculante da Fan Store Entretenimento (BandUP!) pela Uni.Co; após processo competitivo judicial em 25/03/2026 e contrato de 01/04/2026, a venda é fechada em 02/07/2026, com preço base de R$ 152,9 milhões, dos quais R$ 20 milhões à vista. Hortifruti Natural da Terra e Uni.Co passam a operações descontinuadas nas demonstrações de 2025.",
+      "fonte": {
+        "titulo": "Americanas, Fato Relevante de 03/07/2026: Conclusão da Venda da UPI Uni.Co",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1541658&numSequencia=1066364&numVersao=1",
+        "pagina": "p. 1; release 2025, p. 4 e 5",
+        "consultado_em": "2026-11-23",
+        "periodo": "03/07/2026"
+      }
+    },
+    {
+      "data": "2026-08",
+      "tipo": "desinvestimento",
+      "descricao": "Em 13/08/2026 é concluído o primeiro fechamento parcial da venda de lojas do Hortifruti Natural da Terra ao Oba Hortifruti: 3 das 10 lojas previstas, em operação de R$ 69,3 milhões no total.",
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 3T26 e 9M26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588037&numSequencia=1112743&numVersao=1",
+        "pagina": "p. 18",
+        "consultado_em": "2026-11-23",
+        "periodo": "3T26"
+      }
+    },
+    {
+      "data": "2026-10",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Depois do pedido protocolado em 25/03/2026, a 4ª Vara Empresarial do Rio de Janeiro decreta em 19/10/2026 o encerramento da recuperação judicial, reconhecendo o cumprimento das obrigações do plano vencidas até dois anos após a homologação e determinando a retirada de \"em recuperação judicial\" da denominação. A sentença ainda está sujeita a recursos; a denominação na CVM, capturada na gold, ainda trazia a expressão.",
+      "fonte": {
+        "titulo": "Americanas, Release de Resultados 3T26 e 9M26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588037&numSequencia=1112743&numVersao=1",
+        "pagina": "p. 2 e 20; Fato Relevante de 25/03/2026 (protocolo 1495249), p. 1",
+        "consultado_em": "2026-11-23",
+        "periodo": "out/2026"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT classifica a Americanas por R$ 17.013 milhões em 2025 (R$ 18.708 milhões em 2024), dado declarado pela empresa. O número é igual ao GMV total do release de 2025 (p. 5): R$ 15.765 milhões das lojas físicas, R$ 1.001 milhão do digital e R$ 247 milhões de outras subsidiárias, sem Hortifruti Natural da Terra e Uni.Co, tratadas como operações descontinuadas. Como a companhia não separa vendas próprias e de parceiros no GMV digital, não é possível confirmar que o valor exclui o 3P, como prevê a metodologia do ranking (p. 31). A receita líquida da CVM, R$ 12.305 milhões, exclui impostos e devoluções e inclui serviços. A gold de 2024 (R$ 14.349 milhões) vem da demonstração original, com as duas operações depois descontinuadas; na base reapresentada o valor de 2024 é R$ 12.452 milhões.",
+  "analise": {
+    "crescimento": "A receita líquida de 2025 foi de R$ 12.305 milhões. A comparação com os R$ 14.349 milhões de 2024 que constam da demonstração original não vale: Hortifruti Natural da Terra e Uni.Co passaram a operações descontinuadas, e na base reapresentada a queda é de 1,2%. O movimento tem duas partes. Nas lojas, as vendas brutas das mesmas lojas, isto é, das unidades com vendas ininterruptas em 12 meses, cresceram 7,8%, apesar do fechamento de 117 unidades (1.470 no fim do ano); a administração cita melhor execução de eventos como a Páscoa e menos falta de produtos. No digital, o GMV caiu 67,7%, o que a companhia atribui à decisão de redimensionar a operação e reduzir o marketplace. De janeiro a setembro de 2026 a receita líquida foi de R$ 9.356 milhões, contra R$ 8.616 milhões um ano antes, com mesmas lojas em 8,7%.",
+    "rentabilidade_caixa": "Em 2025 a margem bruta foi de 27,01% e a margem operacional, de 2,69%, esta apoiada em R$ 1,2 bilhão de outras receitas operacionais, sobretudo créditos tributários de períodos anteriores. O prejuízo de R$ 271 milhões inclui perda de R$ 369 milhões das operações descontinuadas. O caixa operacional foi de R$ 561 milhões, para investimento de R$ 205 milhões. O lucro de R$ 8.281 milhões de 2024 não veio da operação: o resultado financeiro positivo de R$ 12.319 milhões reflete o desconto obtido dos credores na troca da dívida prevista no plano de recuperação judicial. De janeiro a setembro de 2026 o resultado operacional foi negativo em R$ 442 milhões, o prejuízo chegou a R$ 955 milhões e o caixa operacional consumiu R$ 353 milhões; a administração afirma que 2025 teve ganhos extraordinários que distorcem a comparação.",
+    "acompanhar": {
+      "indicador": "Caixa líquido das atividades operacionais, lido junto com a margem operacional sem créditos tributários extraordinários e com as vendas nas mesmas lojas",
+      "reforca": "Caixa operacional positivo e margem operacional positiva sem receitas extraordinárias, com mesmas lojas acima da inflação: indicaria que a rede menor se sustenta depois do fim da recuperação judicial.",
+      "enfraquece": "Continuidade do consumo de caixa operacional e alta da dívida líquida (R$ 1.874 milhões em set/2026, sem arrendamentos, contra R$ 941 milhões em dez/2025): indicaria dependência de venda de ativos ou de nova captação."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Vendas nas mesmas lojas de 2022: não localizadas no release de 2022.",
+    "Número de lojas de 2021 e de set/2026 (o release do 3T26 diz apenas \"mais de 1.400\").",
+    "GMV de 2026: o release do 3T26 passou a divulgar receita bruta, não GMV.",
+    "Separação entre 1P e 3P no GMV digital e comissão do marketplace.",
+    "Capex de 2021 a 2024 e de 2026 na gold (nulo): as demonstrações não trazem linhas com a descrição usada pela fórmula.",
+    "Participação percentual atual dos acionistas de referência: não consta dos documentos lidos; o formulário de referência não foi consultado.",
+    "Demonstrações de 2024 (DFP) não foram abertas em PDF: a explicação do resultado financeiro de 2024 vem do release de 2024 e do relatório da administração de 2025, ambos entregues à CVM.",
+    "Indicadores de crédito: a companhia não divulga carteira nem inadimplência de crediário ou cartão nos documentos lidos."
+  ],
+  "fontes": [
+    {
+      "titulo": "Americanas, Release de Resultados 2025",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495296&numSequencia=1020002&numVersao=1",
+      "pagina": "p. 3 a 8",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T25 e 2025"
+    },
+    {
+      "titulo": "Americanas, Release de Resultados 3T26 e 9M26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588037&numSequencia=1112743&numVersao=1",
+      "pagina": "p. 2, 4, 5, 9, 10, 13, 14, 18, 20",
+      "consultado_em": "2026-11-23",
+      "periodo": "3T26 e 9M26"
+    },
+    {
+      "titulo": "Americanas, Release de Resultados 2024",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1352242&numSequencia=876968&numVersao=1",
+      "pagina": "p. 2, 4 a 7, 9 a 11",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T24 e 2024"
+    },
+    {
+      "titulo": "Americanas, Release de Resultados 2023 e 6M24 (versão 3)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1274944&numSequencia=799670&numVersao=3",
+      "pagina": "p. 5 a 7",
+      "consultado_em": "2026-11-23",
+      "periodo": "2023 e 6M24"
+    },
+    {
+      "titulo": "Americanas, Release de Resultados 2022 (versão 3)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1171351&numSequencia=696077&numVersao=3",
+      "pagina": "p. 6, 7, 12",
+      "consultado_em": "2026-11-23",
+      "periodo": "2022 e 2021 reapresentado"
+    },
+    {
+      "titulo": "Americanas, Release de Resultados 4T21",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=947351&numSequencia=472085&numVersao=1",
+      "pagina": "p. 4, 14",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T21 e 2021"
+    },
+    {
+      "titulo": "Americanas, Demonstrações Financeiras de 31/12/2025 (relatório da administração e notas explicativas)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1498018&numSequencia=1022724&numVersao=1",
+      "pagina": "p. 18 a 20, 37, 39, 92 do PDF",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 11/01/2023: inconsistências em lançamentos contábeis",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1049072&numSequencia=573802&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "11/01/2023"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 19/01/2023: Ajuizamento de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1050720&numSequencia=575450&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "19/01/2023"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 19/01/2023: Deferimento do pedido de recuperação judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1050973&numSequencia=575703&numVersao=2",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "19/01/2023"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 13/06/2023: relatório sobre fraude nas demonstrações financeiras",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1112823&numSequencia=637552&numVersao=2",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "13/06/2023"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 19/12/2023: Aprovação do Plano de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1175633&numSequencia=700359&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "19/12/2023"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 26/02/2024: Homologação do Plano de Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1199003&numSequencia=723729&numVersao=2",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "26/02/2024"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 25/07/2024: Homologação do Aumento de Capital",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1262982&numSequencia=787708&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "25/07/2024"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 25/03/2026: Protocolo do Pedido de Encerramento da Recuperação Judicial",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495249&numSequencia=1019955&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "25/03/2026"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 25/03/2026: Resultado do processo competitivo para alienação da UPI Uni.Co",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1495250&numSequencia=1019956&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "25/03/2026"
+    },
+    {
+      "titulo": "Americanas, Fato Relevante de 03/07/2026: Conclusão da Venda da UPI Uni.Co",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1541658&numSequencia=1066364&numVersao=1",
+      "pagina": "p. 1",
+      "consultado_em": "2026-11-23",
+      "periodo": "03/07/2026"
+    },
+    {
+      "titulo": "CVM, DFP 2025 da Americanas (base da gold public/varejo/gold/empresas.json)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=155701",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "CVM, DFP 2024 da Americanas (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=145807",
+      "pagina": "DRE consolidada: resultado financeiro de 2024",
+      "consultado_em": "2026-11-23",
+      "periodo": "2024"
+    },
+    {
+      "titulo": "CVM, DFP 2021 da Americanas, versão original de 24/02/2022 (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=112049",
+      "pagina": "DRE e balanço consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "2021"
+    },
+    {
+      "titulo": "CVM, ITR de 30/09/2026 da Americanas (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=162351",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "9M26"
+    },
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 31, 38, 72, 89, 97",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    }
+  ]
+}
