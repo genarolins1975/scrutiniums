@@ -1,0 +1,405 @@
+{
+  "slug": "grupo-pereira",
+  "grupo": "Grupo Pereira",
+  "resumo": "Grupo de origem catarinense, dono dos supermercados Comper e do atacarejo Fort Atacadista, com lojas no Sul, Centro-Oeste e São Paulo.",
+  "controlador": {
+    "nome": null,
+    "nota": "Nome do controlador não verificado em documento. O IRTT registra capital fechado, controle nacional e conselho de administração constituído. O grupo foi fundado em Itajaí (SC) em 1962, segundo comunicado reproduzido no clipping da ABRAS. O IRTT e a ABRAS indicam sede em São Paulo.",
+    "fonte": {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "38",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Fort Atacadista",
+      "formato": "atacarejo",
+      "nota": "66ª loja aberta em fevereiro de 2025, das quais 39 em Santa Catarina."
+    },
+    {
+      "nome": "Comper",
+      "formato": "supermercado",
+      "nota": "Em setembro de 2026 o grupo anunciou a compra de 21 lojas Carrefour Bairro para operar com a bandeira, sujeita ao Cade."
+    },
+    {
+      "nome": "SempreFort",
+      "formato": "farmácia dentro das lojas",
+      "nota": "15 farmácias em abril de 2023. Não consta entre as bandeiras listadas pelo IRTT."
+    },
+    {
+      "nome": "Schmit",
+      "formato": "supermercado",
+      "nota": "Rede de sete lojas e um centro de distribuição em Santa Catarina, comprada em janeiro de 2025. Destino da bandeira não verificado."
+    }
+  ],
+  "formatos": [
+    "atacarejo",
+    "supermercado",
+    "farmácia"
+  ],
+  "regioes": {
+    "texto": "O IRTT lista lojas físicas no Distrito Federal, Mato Grosso, Mato Grosso do Sul, Santa Catarina e São Paulo (5 unidades da federação). Comunicado de fevereiro de 2025 citava também Goiás e Rio Grande do Sul. Santa Catarina responde por mais da metade do faturamento, segundo o diretor comercial em janeiro de 2025.",
+    "estados": [
+      "DF",
+      "MT",
+      "MS",
+      "SC",
+      "SP"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "comércio eletrônico próprio",
+    "marketplaces de terceiros"
+  ],
+  "clientes": "Famílias nos supermercados Comper. No Fort Atacadista, consumidores finais e pequenos comerciantes que compram em quantidade.",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de mercadorias em atacarejo",
+      "descricao": "Lojas Fort Atacadista, com alimentos, bebidas, higiene, limpeza, hortifrúti e bazar, além de padaria e açougue."
+    },
+    {
+      "nome": "Venda de mercadorias em supermercados",
+      "descricao": "Lojas Comper e as lojas adquiridas da rede Schmit."
+    },
+    {
+      "nome": "Farmácias",
+      "descricao": "Unidades SempreFort instaladas em lojas do grupo. Receita não divulgada em separado."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Assaí",
+      "slug": "assai"
+    },
+    {
+      "nome": "Grupo Carrefour Brasil (Atacadão)",
+      "slug": "carrefour-brasil"
+    },
+    {
+      "nome": "Koch Hipermercado (Santa Catarina)",
+      "slug": null
+    },
+    {
+      "nome": "Giassi (Santa Catarina)",
+      "slug": null
+    },
+    {
+      "nome": "Angeloni (Santa Catarina)",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda bruta ao consumidor",
+      "unidade": "R$ milhões",
+      "nota": "Nota de fonte 2 do IRTT: balanço publicado por sociedade anônima de capital fechado. O balanço original não foi localizado nos hosts acessíveis. Venda com impostos. O Ranking ABRAS 2026 registra faturamento de R$ 17.530.890.000 em 2025, mesmo valor.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 15327,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 17531,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Crescimento da venda",
+      "unidade": "%",
+      "nota": "Percentual publicado pelo IRTT. A divisão de 17.531 por 15.327 resulta em 14,4%.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 14,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Fim de período. A variação de 14 lojas inclui as sete lojas da rede Schmit, compradas em janeiro de 2025. O grupo usa também a contagem de unidades de negócio, mais ampla: 140 em fevereiro de 2025.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 96,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 110,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Expansão orgânica de lojas",
+      "unidade": "lojas",
+      "nota": "Campo sem valor no IRTT (traço).",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas Fort Atacadista",
+      "unidade": "lojas",
+      "nota": "Segundo comunicado do grupo reproduzido pela Redação SuperHiper. 39 das 66 em Santa Catarina.",
+      "valores": [
+        {
+          "periodo": "fevereiro de 2025",
+          "valor": 66,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Pereira inaugura 66ª loja do Fort Atacadista no País",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118385/grupo-pereira-inaugura-66-loja-do-fort-atacadista-no-pais",
+        "pagina": "página única",
+        "periodo": "publicado em fevereiro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por loja",
+      "unidade": "R$ milhões por loja",
+      "nota": "2025 publicado pelo IRTT (23ª maior venda por loja do ranking). 2024 calculado por nós: 15.327 dividido por 96 lojas. As duas contas usam lojas de fim de ano.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 159.7,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 159,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 84",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Variação de 7% publicada pelo IRTT.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 18665,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 19967,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 64",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por funcionário",
+      "unidade": "R$ milhões por funcionário",
+      "nota": "Publicado pelo IRTT com uma casa decimal.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 0.9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Faturamento no Ranking ABRAS",
+      "unidade": "R$",
+      "nota": "7ª posição nas edições de 2025 e 2026 do ranking. Sede indicada: São Paulo. A tabela pública traz só posição, sede e faturamento.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 17530890000,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "ABRAS, Ranking ABRAS 2026, tabela das empresas respondentes",
+        "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+        "pagina": "2",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2023-04",
+      "tipo": "outro",
+      "descricao": "Primeira farmácia SempreFort em uma loja Comper, em Campo Grande (MS). Era a 15ª farmácia do grupo: onze em Santa Catarina, duas em Mato Grosso, uma em São Paulo e uma em Mato Grosso do Sul.",
+      "fonte": {
+        "titulo": "ABRAS, clipping, Grupo Pereira inaugura primeira farmácia SempreFort em MS",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/113669/grupo-pereira-inaugura-primeira-farmacia-semprefort-em-ms",
+        "pagina": "página única",
+        "periodo": "publicado em abril de 2023",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-01",
+      "tipo": "aquisicao",
+      "descricao": "Compra da rede de Supermercados Schmit e de seus imóveis: sete lojas (Itajaí, Camboriú, Itapema e Bombinhas) e um centro de distribuição em Santa Catarina. Operação aprovada pelo Cade em 03/01/2025. Valor não informado. O grupo declarou plano de 10 a 14 novas unidades em 2025, além das sete lojas.",
+      "fonte": {
+        "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Pereira compra rede de supermercados Schmit",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118110/grupo-pereira-compra-rede-de-supermercados-schmit",
+        "pagina": "página única",
+        "periodo": "publicado em janeiro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-02",
+      "tipo": "outro",
+      "descricao": "Abertura da 66ª loja Fort Atacadista, em Florianópolis, com investimento superior a R$ 50 milhões, área de vendas de mais de 3,1 mil metros quadrados e 27 check-outs.",
+      "fonte": {
+        "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Pereira inaugura 66ª loja do Fort Atacadista no País",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118385/grupo-pereira-inaugura-66-loja-do-fort-atacadista-no-pais",
+        "pagina": "página única",
+        "periodo": "publicado em fevereiro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "aquisicao",
+      "descricao": "Compra de 21 lojas Carrefour Bairro do Grupo Carrefour Brasil: 15 no estado de São Paulo e seis no Distrito Federal. Valor não divulgado. Estimativas de mercado citadas pela reportagem apontam R$ 360 milhões. Conclusão sujeita à aprovação do Cade. Marca a entrada da bandeira Comper em São Paulo.",
+      "fonte": {
+        "titulo": "CNN Brasil, Grupo Pereira compra 21 lojas do Carrefour e estreia em SP com Comper",
+        "url": "https://www.cnnbrasil.com.br/economia/money/negocios/grupo-pereira-compra-21-lojas-do-carrefour-e-estreia-em-sp-com-comper/",
+        "pagina": "página única",
+        "periodo": "publicado em 25/09/2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do ranking (R$ 17.531 milhões em 2025) é venda bruta ao consumidor, com impostos. O IRTT indica como origem o balanço publicado pela empresa (nota de fonte 2) e atribui toda a venda a lojas físicas. O critério do instituto exclui a parcela de atacado de empresas com vários canais. Não há separação pública entre Fort Atacadista, Comper e farmácias, e a venda do comércio eletrônico não é publicada. As 21 lojas compradas do Carrefour em setembro de 2026 não estão na venda de 2025 e dependem de aprovação do Cade.",
+  "analise": {
+    "crescimento": "A venda bruta foi de R$ 15.327 milhões em 2024 para R$ 17.531 milhões em 2025, alta de 14,4% pelos números do IRTT. O número de lojas subiu de 96 para 110 (14,6%), praticamente a mesma proporção. A venda por loja ficou estável: R$ 159,7 milhões em 2024, pelo nosso cálculo, e R$ 159 milhões em 2025. A leitura é que o crescimento de 2025 veio da adição de lojas, não de mais venda por unidade. Das 14 lojas adicionais, sete vieram da compra da rede Schmit, aprovada pelo Cade em janeiro de 2025, e as demais de aberturas, com destaque para o Fort Atacadista em Santa Catarina. O IRTT não informa a expansão orgânica do grupo. Não há divulgação de vendas nas mesmas lojas, indicador que compara só as unidades abertas há mais de um ano.",
+    "rentabilidade_caixa": "O IRTT indica que a venda vem de balanço publicado, mas o documento não foi localizado nos hosts acessíveis: margem, lucro, dívida e caixa ficam sem avaliação nesta ficha. A evidência operacional disponível é de escala e produtividade. A venda por loja de R$ 159 milhões é a 23ª maior do ranking, abaixo da do Super Muffato (R$ 168 milhões) e acima da do Koch (R$ 140 milhões), concorrente em Santa Catarina. A venda por funcionário foi de R$ 0,9 milhão, com quadro 7% maior. O grupo ocupa a 7ª posição do Ranking ABRAS há duas edições. A compra de lojas do Carrefour, estimada pelo mercado em R$ 360 milhões, mostra acesso a recursos, mas não permite concluir sobre endividamento nem sobre o retorno das aquisições.",
+    "acompanhar": {
+      "indicador": "Venda por loja no IRTT após a integração das lojas Schmit e das lojas compradas do Carrefour",
+      "reforca": "Aprovação do Cade para as 21 lojas e venda por loja mantida perto de R$ 159 milhões com a rede maior.",
+      "enfraquece": "Queda da venda por loja com a entrada de supermercados de bairro, de menor porte que o atacarejo, ou restrições do Cade à operação."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita líquida, margem bruta, EBITDA, lucro líquido, dívida e caixa: o IRTT cita balanço publicado (nota 2), mas o documento não foi localizado nos hosts acessíveis.",
+    "Nome do controlador e composição acionária: não verificados.",
+    "Expansão orgânica de lojas em 2025: sem valor no IRTT.",
+    "Vendas nas mesmas lojas: não divulgadas.",
+    "Número de lojas por bandeira no fim de 2025: não localizado. O último dado verificado é de 66 lojas Fort Atacadista em fevereiro de 2025.",
+    "Área de vendas e check-outs do grupo: a tabela pública do Ranking ABRAS 2026 traz apenas posição, razão social, sede e faturamento.",
+    "Base ativa de clientes: n.d. no IRTT.",
+    "Valor das aquisições da rede Schmit e das lojas do Carrefour: não divulgado. O valor de R$ 360 milhões é estimativa de mercado citada pela imprensa.",
+    "Site do grupo (www.grupopereira.com.br) não acessado: host bloqueado na rede do ambiente."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "38, 63, 64 e 84",
+      "periodo": "2024 e 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, Ranking ABRAS 2026, tabela das empresas respondentes",
+      "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+      "pagina": "2",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Pereira compra rede de supermercados Schmit",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118110/grupo-pereira-compra-rede-de-supermercados-schmit",
+      "pagina": "página única",
+      "periodo": "publicado em janeiro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Pereira inaugura 66ª loja do Fort Atacadista no País",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118385/grupo-pereira-inaugura-66-loja-do-fort-atacadista-no-pais",
+      "pagina": "página única",
+      "periodo": "publicado em fevereiro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping, Grupo Pereira inaugura primeira farmácia SempreFort em MS",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/113669/grupo-pereira-inaugura-primeira-farmacia-semprefort-em-ms",
+      "pagina": "página única",
+      "periodo": "publicado em abril de 2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, Grupo Pereira compra 21 lojas do Carrefour e estreia em SP com Comper",
+      "url": "https://www.cnnbrasil.com.br/economia/money/negocios/grupo-pereira-compra-21-lojas-do-carrefour-e-estreia-em-sp-com-comper/",
+      "pagina": "página única",
+      "periodo": "publicado em 25/09/2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

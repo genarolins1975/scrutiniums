@@ -1,0 +1,1458 @@
+{
+  "nota_geral": {
+    "criterio_tipo_concorrente": "nacional: rede com lojas em mais de 10 estados segundo o IRTT (o mesmo corte que a fonte usa na página 63); regional: 10 estados ou menos; independentes: conjunto de empresas contado pela PAC 2024, sem nome.",
+    "atividades_pmc": "slugs de public/varejo/gold/setor.json (pmc.atividades). classes_pac: códigos da CNAE como aparecem nos nomes de pac.grupos; classes_pac_ids traz as chaves correspondentes em setor.json.",
+    "sustentacao_da_equivalencia": "Quadro 1 (atividades da PMC e códigos da CNAE) e Quadro 2 do relatório metodológico da PMC, 5ª edição, e slides do seminário de reformulação de março de 2023, ambos lidos no servidor de arquivos do IBGE (ftp.ibge.gov.br). A página 'Conceitos e métodos' da PMC em www.ibge.gov.br não abriu neste ambiente (resposta 403). O relatório é de 2020, anterior à inclusão do atacado de alimentos em 2023; as oito classes de atacado incluídas aparecem só como imagem nos slides e não foram transcritas.",
+    "numeros_da_pac": "Número de empresas e taxa de margem de comercialização vêm de setor.json (PAC 2024, SIDRA 10645). A definição da taxa (margem ÷ custo das mercadorias revendidas) foi conferida por conta nossa com os campos margem_comercializacao e receita_liquida_revenda."
+  },
+  "segmentos": [
+    {
+      "slug": "alimentar",
+      "nome": "Alimentar: supermercados, hipermercados, atacarejo e conveniência",
+      "segmento_irtt": "Super, Hiper, Atacarejo e Conveniência",
+      "atividades_pmc": [
+        "alimentar",
+        "hiper-super",
+        "atacado-alimentar"
+      ],
+      "classes_pac": [
+        "4711",
+        "4712",
+        "47.2"
+      ],
+      "classes_pac_ids": [
+        "83339",
+        "83340",
+        "83342"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "Na PMC, 'Hipermercados e supermercados' corresponde à classe 4711 da CNAE; a atividade 'Hipermercados, supermercados, produtos alimentícios, bebidas e fumo' soma a ela minimercados, mercearias e armazéns (4712) e o comércio especializado em alimentos, bebidas e fumo (4721 a 4729), conforme os Quadros 1 e 2 do relatório metodológico do IBGE. Desde janeiro de 2023 o varejo ampliado inclui a atividade 'Atacado especializado em produtos alimentícios, bebidas e fumo', que o IBGE identificou como 'atacarejo' no seminário de reformulação da pesquisa. O atacarejo aparece, portanto, em dois lugares: parte no varejo restrito (empresas registradas como hipermercado ou supermercado) e parte no atacado do varejo ampliado. A empresa entra na pesquisa pela atividade principal registrada na CNAE (classificação oficial de atividades econômicas), e o IBGE não publica em que atividade cada companhia foi classificada. A divisão do atacarejo entre as duas atividades é leitura nossa da classificação. O segmento do IRTT inclui ainda redes de conveniência e exclui a parcela vendida no atacado.",
+      "o_que_se_vende": "Alimentos, bebidas, higiene e limpeza: itens de compra frequente e valor unitário baixo. Supermercado e hipermercado vendem por unidade ao consumidor. O atacarejo vende também em caixas e fardos, com menos variedade e loja mais simples. A conveniência vende poucas categorias para consumo imediato.",
+      "quem_compra": "Famílias, para abastecer a casa, e pequenos negócios, como bares, restaurantes e mercearias, que usam o atacarejo como fornecedor. A presença dos dois públicos na mesma loja é o que distingue o atacarejo do supermercado.",
+      "canais": "A loja física é o canal principal. Entre as 157 empresas do segmento no Top 300 do IRTT, 95 têm e-commerce próprio e 41 vendem em marketplaces de terceiros (p. 64).",
+      "o_que_determina_a_demanda": "Renda das famílias e preço dos alimentos. A compra de comida é pouco adiável, então o volume oscila menos que o de bens duráveis; quando o preço sobe, o consumidor troca de marca e de formato de loja. O IRTT atribui a expansão do segmento ao atacarejo, que atende à busca por preço menor (p. 63).",
+      "onde_se_forma_a_margem": "A margem por produto é baixa e o resultado vem do giro: vender o estoque muitas vezes por ano, pagando o fornecedor depois de receber do cliente. Escala de compra, logística e perdas (produto vencido, quebrado ou furtado) pesam mais que o preço de venda. Na PAC 2024, a taxa de margem de comercialização (margem de comercialização dividida pelo custo das mercadorias revendidas) foi de 26,5% em hipermercados e supermercados, contra 38,6% no comércio varejista como um todo.",
+      "concorrentes": [
+        {
+          "nome": "Grupo Carrefour Brasil (Carrefour, Atacadão, Sam's Club)",
+          "slug": "carrefour-brasil",
+          "tipo": "nacional",
+          "posicao_irtt": 1,
+          "vendas_milhoes": 123594,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Assaí",
+          "slug": "assai",
+          "tipo": "nacional",
+          "posicao_irtt": 2,
+          "vendas_milhoes": 84736,
+          "natureza": "divulgado",
+          "estados_com_loja": 25,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Mateus",
+          "slug": "grupo-mateus",
+          "tipo": "regional",
+          "posicao_irtt": 6,
+          "vendas_milhoes": 35637,
+          "natureza": "divulgado",
+          "estados_com_loja": 3,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Supermercados BH",
+          "slug": "supermercados-bh",
+          "tipo": "regional",
+          "posicao_irtt": 9,
+          "vendas_milhoes": 25724,
+          "natureza": "divulgado",
+          "estados_com_loja": 1,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Pão de Açúcar (GPA)",
+          "slug": "gpa",
+          "tipo": "nacional",
+          "posicao_irtt": 10,
+          "vendas_milhoes": 20631,
+          "natureza": "divulgado",
+          "estados_com_loja": 12,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Super Muffato",
+          "slug": "super-muffato",
+          "tipo": "regional",
+          "posicao_irtt": 11,
+          "vendas_milhoes": 20355,
+          "natureza": "divulgado",
+          "estados_com_loja": 2,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Pereira (Comper, Fort Atacadista)",
+          "slug": "grupo-pereira",
+          "tipo": "regional",
+          "posicao_irtt": 16,
+          "vendas_milhoes": 17531,
+          "natureza": "divulgado",
+          "estados_com_loja": 5,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Koch Hipermercado",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 21,
+          "vendas_milhoes": 12926,
+          "natureza": "divulgado",
+          "estados_com_loja": 1,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Mart Minas",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 22,
+          "vendas_milhoes": 12550,
+          "natureza": "divulgado",
+          "estados_com_loja": 2,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Hipermercados e supermercados: 19.434 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 19434,
+          "classe_pac": "4711",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Minimercados, mercearias e armazéns: 113.355 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 113355,
+          "classe_pac": "4712",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Giro de estoque",
+        "formula": "custo das mercadorias vendidas no ano ÷ estoque no fim do ano; em empresas.json, valor absoluto de custo ÷ estoques",
+        "por_que": "Mostra quantas vezes por ano a empresa vende o estoque que mantém. Em um negócio de margem baixa por produto, girar mais rápido é o que permite gerar caixa com pouco capital parado na prateleira; uma queda do giro indica produto encalhado ou compra acima da venda.",
+        "empresas": [
+          "assai",
+          "grupo-mateus",
+          "gpa",
+          "carrefour-brasil"
+        ],
+        "nota": "Carrefour Brasil tem demonstrações anuais em empresas.json só até 2024. As demonstrações do Assaí estão na base individual.",
+        "complementar": {
+          "nome": "Venda por loja",
+          "formula": "venda de lojas físicas ÷ número de lojas, coluna 'Venda por loja' do IRTT (p. 38), em R$ milhões",
+          "por_que": "Separa formatos: uma loja de atacarejo vende várias vezes o que vende um supermercado de bairro.",
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 63 e 64",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Seminário metodológico sobre a reformulação das pesquisas conjunturais (março de 2023), parte da PMC",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Material_de_apoio/2023_Seminario_sobre_Reformulacao.pdf",
+          "pagina": "páginas 31 a 37 e 44 do PDF",
+          "periodo": "série com base 2022 = 100, a partir de janeiro de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "CVM, demonstrações financeiras das companhias abertas",
+          "url": "public/varejo/gold/empresas.json",
+          "pagina": "campos custo, estoques, lucro_bruto, receita_liquida e resultado_financeiro",
+          "periodo": "2021 a 2025 e acumulado até 09/2026",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "farmacia-beleza",
+      "nome": "Farmácias, perfumaria e beleza",
+      "segmento_irtt": "Drogarias e Perfumarias",
+      "atividades_pmc": [
+        "farmacia"
+      ],
+      "classes_pac": [
+        "47.7"
+      ],
+      "classes_pac_ids": [
+        "83351"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A atividade da PMC 'Artigos farmacêuticos, médicos, ortopédicos, de perfumaria e cosméticos' reúne as classes 4771, 4772 e 4773 da CNAE (Quadro 1 do relatório metodológico). O grupo 47.7 da PAC inclui também os artigos de óptica, que a PMC coloca em 'Outros artigos de uso pessoal e doméstico'. O segmento do IRTT soma às redes de farmácias os grupos de beleza que vendem por franquias e por venda direta, medidos pela venda ao consumidor; se a atividade principal desses grupos na CNAE for industrial, eles ficam fora da PMC e da PAC (leitura nossa da classificação).",
+      "o_que_se_vende": "Medicamentos, higiene pessoal, perfumaria e cosméticos, além de serviços de saúde prestados na loja. Na composição apresentada pela ABRAS para o faturamento das farmácias em 2025 (R$ 271 bilhões), medicamentos respondem por 70%, higiene e beleza por 23%, alimentos por 5% e outros por 2%.",
+      "quem_compra": "Praticamente toda a população, com peso maior de quem usa medicamento de forma contínua. Em beleza, o consumidor final compra em loja, pela internet ou de revendedoras da venda direta.",
+      "canais": "Rede densa de lojas de vizinhança, e-commerce com retirada ou entrega a partir da loja, franquias e venda direta (porta a porta) nas marcas de beleza. No Top 300 do IRTT, as 24 empresas do segmento têm e-commerce e somam 18.662 pontos de venda (p. 68).",
+      "o_que_determina_a_demanda": "A compra de medicamento depende pouco do ciclo econômico. O IRTT aponta o envelhecimento da população, que aumenta o uso de medicamentos, e a atenção maior a saúde, bem-estar e beleza como fatores de longo prazo (p. 68). Perfumaria e cosméticos respondem mais à renda.",
+      "onde_se_forma_a_margem": "A margem bruta depende da combinação de produtos vendidos: medicamentos de marca, genéricos, perfumaria e marcas próprias têm margens diferentes. A densidade de lojas dilui o custo de logística, e uma loja nova leva tempo para atingir a venda das antigas, o que pesa no resultado de quem abre muitas lojas. Na PAC 2024, a taxa de margem de comercialização do grupo foi de 66,2%.",
+      "concorrentes": [
+        {
+          "nome": "RD Saúde (Raia, Drogasil)",
+          "slug": "rd-saude",
+          "tipo": "nacional",
+          "posicao_irtt": 3,
+          "vendas_milhoes": 47610,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Boticário",
+          "slug": "grupo-boticario",
+          "tipo": "nacional",
+          "posicao_irtt": 5,
+          "vendas_milhoes": 38100,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          },
+          "nota": "Venda inclui o sell-out das lojas franqueadas."
+        },
+        {
+          "nome": "Natura&Co (Natura, Avon)",
+          "slug": "natura",
+          "tipo": "nacional",
+          "posicao_irtt": 8,
+          "vendas_milhoes": 28000,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "DPSP (Drogaria São Paulo, Pacheco)",
+          "slug": "dpsp",
+          "tipo": "regional",
+          "posicao_irtt": 15,
+          "vendas_milhoes": 18200,
+          "natureza": "divulgado",
+          "estados_com_loja": 10,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Pague Menos (com Extrafarma)",
+          "slug": "pague-menos",
+          "tipo": "nacional",
+          "posicao_irtt": 18,
+          "vendas_milhoes": 16049,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Farmácia São João",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 31,
+          "vendas_milhoes": 9300,
+          "natureza": "divulgado",
+          "estados_com_loja": 3,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Panvel Farmácias",
+          "slug": "panvel",
+          "tipo": "regional",
+          "posicao_irtt": 48,
+          "vendas_milhoes": 5912,
+          "natureza": "divulgado",
+          "estados_com_loja": 4,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Drogaria Araújo",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 52,
+          "vendas_milhoes": 5176,
+          "natureza": "divulgado",
+          "estados_com_loja": 1,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Comércio de produtos farmacêuticos, perfumaria, cosméticos, artigos médicos e de óptica: 133.786 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 133786,
+          "classe_pac": "47.7",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Venda por loja",
+        "formula": "venda bruta de 2025 ÷ número de lojas em 2025, ambos do IRTT; onde a fonte publica, usar a coluna 'Venda por loja' (venda de lojas físicas ÷ lojas), em R$ milhões",
+        "por_que": "As redes crescem abrindo lojas. A venda por loja mostra se a rede vende mais em cada ponto ou só tem mais pontos, e permite comparar redes de tamanhos diferentes.",
+        "empresas": [
+          "rd-saude",
+          "pague-menos",
+          "panvel"
+        ],
+        "nota": "Calculável pelo IRTT para todas as redes do segmento (p. 38, 40 e 69). A coluna 'Venda por loja' da fonte está preenchida para Pague Menos e DPSP (R$ 8 milhões cada) e vazia para RD Saúde; para esta, a conta usa a venda total. Não se aplica do mesmo modo a Grupo Boticário e Natura, cuja venda inclui franquias e venda direta."
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 40, 68 e 69",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "ABRAS, Ranking ABRAS 2026, Grandes números e destaques",
+          "url": "https://static.abras.com.br/pdf/ranking/grandes-numeros-ranking-smartmarket-abras-2026.pdf",
+          "pagina": "13",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "eletromoveis",
+      "nome": "Eletromóveis: eletrodomésticos, eletrônicos e móveis",
+      "segmento_irtt": "Eletromóveis",
+      "atividades_pmc": [
+        "moveis-eletro",
+        "moveis",
+        "eletrodomesticos",
+        "informatica"
+      ],
+      "classes_pac": [
+        "4753+4756",
+        "4754+4757+4759",
+        "4751+4752"
+      ],
+      "classes_pac_ids": [
+        "83347",
+        "83348",
+        "83346"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A atividade 'Móveis e eletrodomésticos' da PMC reúne as classes 4753, 4754, 4756, 4759 e 4762 da CNAE. As séries separadas de 'Móveis' e de 'Eletrodomésticos' não têm classe própria: o IBGE as calcula pelos percentuais de venda declarados pelas empresas (Quadro 2 do relatório metodológico). Informática e telefonia ficam em outra atividade, 'Equipamentos e materiais para escritório, informática e comunicação' (4751 e 4752). As grandes redes vendem as três coisas; a correspondência com uma única série é aproximada. O IRTT classifica o Magazine Luiza em lojas de departamento, não em eletromóveis.",
+      "o_que_se_vende": "Bens duráveis de valor unitário alto: eletrodomésticos, televisores, celulares, informática e móveis. Junto com o produto, a loja vende crédito (crediário e cartão próprio), garantia estendida, seguros, frete e montagem.",
+      "quem_compra": "Famílias, em compras espaçadas e quase sempre parceladas. A compra pode ser adiada, o que torna o segmento sensível ao orçamento do mês e ao custo da prestação.",
+      "canais": "Lojas físicas, e-commerce próprio e marketplaces. Segundo o IRTT, a maior parte das redes é regional, de capital fechado, e concorre com os grandes marketplaces, para os quais os eletroeletrônicos são parcela importante da receita (p. 73).",
+      "o_que_determina_a_demanda": "Crédito, juros e renda. O IRTT descreve o segmento como um dos mais afetados pelo ciclo de juros altos e por restrições de crédito (p. 72 e 73). Lançamentos de produtos e datas promocionais concentram a venda em poucos períodos do ano.",
+      "onde_se_forma_a_margem": "A margem do produto é disputada produto a produto, porque o preço é fácil de comparar na internet. Parte relevante do resultado vem do que acompanha a venda: juros do crediário, serviços e seguros. Do outro lado, a empresa paga juros para antecipar o dinheiro das vendas parceladas e para financiar o estoque, e por isso o resultado financeiro é uma linha decisiva da demonstração. Na PAC 2024, a taxa de margem de comercialização em eletrodomésticos e áudio e vídeo foi de 51,3%.",
+      "concorrentes": [
+        {
+          "nome": "Grupo Casas Bahia (Casas Bahia, Ponto Frio)",
+          "slug": "casas-bahia",
+          "tipo": "nacional",
+          "posicao_irtt": 7,
+          "vendas_milhoes": 33833,
+          "natureza": "divulgado",
+          "estados_com_loja": 23,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Gazin",
+          "slug": "gazin",
+          "tipo": "regional",
+          "posicao_irtt": 19,
+          "vendas_milhoes": 13753,
+          "natureza": "divulgado",
+          "estados_com_loja": 9,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Lojas Cem",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 36,
+          "vendas_milhoes": 8327,
+          "natureza": "divulgado",
+          "estados_com_loja": 4,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Fast Shop",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 54,
+          "vendas_milhoes": 4800,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 12,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "42",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Bemol",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 58,
+          "vendas_milhoes": 4335,
+          "natureza": "divulgado",
+          "estados_com_loja": 4,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "42",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Magazine Luiza",
+          "slug": "magazine-luiza",
+          "tipo": "nacional",
+          "posicao_irtt": 4,
+          "vendas_milhoes": 47524,
+          "natureza": "divulgado",
+          "estados_com_loja": 20,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          },
+          "nota": "Classificado pelo IRTT em Lojas de Departamento; concorre nas mesmas categorias."
+        },
+        {
+          "nome": "Comércio de eletrodomésticos, áudio e vídeo: 10.728 empresas; móveis, iluminação e artigos de uso doméstico: 72.325 empresas (2024)",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 10728,
+          "classe_pac": "4753+4756",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Resultado financeiro sobre a receita",
+        "formula": "resultado financeiro (receitas financeiras menos despesas financeiras) ÷ receita líquida × 100; em empresas.json, resultado_financeiro ÷ receita_liquida",
+        "por_que": "Mostra quanto de cada R$ 100 vendidos é consumido por juros. Em um negócio que vende a prazo e antecipa recebíveis (recebe do banco, com desconto, o que o cliente ainda vai pagar), esse número acompanha a taxa de juros e o tamanho da dívida, e pode anular o resultado da operação.",
+        "empresas": [
+          "casas-bahia",
+          "magazine-luiza"
+        ],
+        "nota": "A linha da demonstração não separa o custo de antecipação de recebíveis dos juros da dívida; a abertura está em abre_financeiro quando a companhia a apresenta."
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 40, 42, 72 e 73",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "CVM, demonstrações financeiras das companhias abertas",
+          "url": "public/varejo/gold/empresas.json",
+          "pagina": "campos custo, estoques, lucro_bruto, receita_liquida e resultado_financeiro",
+          "periodo": "2021 a 2025 e acumulado até 09/2026",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "departamento",
+      "nome": "Lojas de departamento, artigos do lar e mercadorias em geral",
+      "segmento_irtt": "Lojas de Departamento, Artigos do Lar e Mercadorias em Geral",
+      "atividades_pmc": [
+        "uso-pessoal"
+      ],
+      "classes_pac": [
+        "4713"
+      ],
+      "classes_pac_ids": [
+        "83341"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A PMC não tem atividade própria para lojas de departamento nem para marketplaces. A classe 4713 da CNAE (mercadorias em geral, sem predominância de alimentos) entra em 'Outros artigos de uso pessoal e doméstico', junto com artigos esportivos, óptica, joias e outros produtos (Quadro 1 do relatório metodológico). O mesmo quadro registra que o comércio eletrônico é classificado pelo tipo de mercadoria vendida, e não pelo modo de venda. Na PAC 2024 existe a classe '4713 Comércio em lojas de departamento e não especializado via Internet'. A empresa entra na pesquisa pela atividade principal registrada na CNAE (classificação oficial de atividades econômicas), e o IBGE não publica em que atividade cada companhia foi classificada. A PMC e a PAC medem a revenda de mercadorias da própria empresa; a venda de terceiros em marketplace não é revenda da plataforma (leitura nossa).",
+      "o_que_se_vende": "Sortimento amplo sem predominância de alimentos: utilidades domésticas, cama, mesa e banho, eletroeletrônicos, brinquedos, vestuário e itens de conveniência. O IRTT descreve o segmento como heterogêneo em mix, formato de loja e presença digital (p. 71).",
+      "quem_compra": "Famílias, em compras de reposição da casa, presentes e datas sazonais. O tíquete varia muito conforme a categoria, de itens de baixo valor a eletroeletrônicos parcelados.",
+      "canais": "Lojas físicas de médio e grande porte, e-commerce próprio e marketplace. Das 9 empresas do segmento no Top 300, 8 têm e-commerce e 4 adotam marketplace (p. 72). No Magazine Luiza, as lojas funcionam também como pontos de logística para a venda online (p. 71 e 72).",
+      "o_que_determina_a_demanda": "Renda e crédito, com sazonalidade forte no fim do ano e em datas promocionais. O IRTT relaciona o crescimento de 2,0% do segmento em 2025 aos juros elevados e à dificuldade de obtenção de crédito pela população (p. 72).",
+      "onde_se_forma_a_margem": "No mix entre categorias de margens diferentes: na PAC 2024, a taxa de margem de comercialização foi de 51,3% no comércio de eletrodomésticos e áudio e vídeo e de 68,5% no de móveis e artigos de uso doméstico. Quem opera marketplace soma à margem da venda própria as comissões cobradas dos vendedores e a receita de serviços como logística e publicidade. Na classe 4713, que reúne lojas de departamento e comércio não especializado pela internet, a taxa foi de 50,1%.",
+      "concorrentes": [
+        {
+          "nome": "Magazine Luiza",
+          "slug": "magazine-luiza",
+          "tipo": "nacional",
+          "posicao_irtt": 4,
+          "vendas_milhoes": 47524,
+          "natureza": "divulgado",
+          "estados_com_loja": 20,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Havan",
+          "slug": "havan",
+          "tipo": "nacional",
+          "posicao_irtt": 14,
+          "vendas_milhoes": 18340,
+          "natureza": "divulgado",
+          "estados_com_loja": 24,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Americanas",
+          "slug": "americanas",
+          "tipo": "nacional",
+          "posicao_irtt": 17,
+          "vendas_milhoes": 17013,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Claudino (Armazém Paraíba)",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 64,
+          "vendas_milhoes": 3900,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 7,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "42",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo Herval",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 74,
+          "vendas_milhoes": 3300,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "42",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Lojas de departamento e comércio não especializado pela internet: 12.363 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 12363,
+          "classe_pac": "4713",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Participação das lojas físicas na venda",
+        "formula": "venda de lojas físicas ÷ venda total (1P) × 100, colunas 'Venda lojas físicas 2025' e 'Venda 2025' do IRTT (p. 38)",
+        "por_que": "Mostra quanto da venda própria ainda passa pela loja e quanto já é digital. Ajuda a ler a estrutura de custo: loja tem aluguel e equipe; venda online tem frete e publicidade.",
+        "empresas": [
+          "magazine-luiza",
+          "americanas"
+        ],
+        "nota": "Pelo IRTT, Magazine Luiza: R$ 20.345 milhões em lojas físicas de R$ 47.524 milhões; Americanas: R$ 15.765 milhões de R$ 17.013 milhões. A Havan não informa a venda de lojas físicas (n.d.). A venda de terceiros no marketplace (3P) fica fora das duas colunas."
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 42, 71 e 72",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "moda",
+      "nome": "Moda, calçados e artigos esportivos",
+      "segmento_irtt": "Moda, Calçados e Artigos Esportivos",
+      "atividades_pmc": [
+        "vestuario"
+      ],
+      "classes_pac": [
+        "4781",
+        "4782",
+        "4755"
+      ],
+      "classes_pac_ids": [
+        "83353",
+        "83354",
+        "83349"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A atividade 'Tecidos, vestuário e calçados' da PMC reúne as classes 4755, 4781 e 4782 da CNAE (Quadro 1 do relatório metodológico). Artigos esportivos (classe 4763) ficam em 'Outros artigos de uso pessoal e doméstico', enquanto o IRTT os coloca neste segmento. O IRTT inclui também marcas que vendem por franquias, pelo sell-out das lojas, e operações só digitais.",
+      "o_que_se_vende": "Roupas, calçados, acessórios e artigos esportivos, organizados em coleções que mudam com a estação. O produto perde valor se não for vendido na estação para a qual foi comprado.",
+      "quem_compra": "Famílias de todas as faixas de renda. O IRTT descreve o segmento como reunião de redes voltadas ao público de alto poder aquisitivo e de redes populares (p. 69 e 70).",
+      "canais": "Lojas de rua e de shopping, próprias ou franqueadas, e-commerce e marketplaces. Das 37 empresas do segmento no Top 300, 34 têm e-commerce (p. 70). Algumas redes têm operação própria de cartão e crédito.",
+      "o_que_determina_a_demanda": "Renda disponível, clima (um inverno fraco reduz a venda de peças de maior valor), calendário de datas comemorativas e acerto da coleção. A concorrência de plataformas internacionais de preço baixo afeta as redes populares; o IRTT lista a Shein entre os maiores marketplaces em operação no país (p. 115).",
+      "onde_se_forma_a_margem": "Na diferença entre o preço cheio e o preço efetivamente praticado. A peça é comprada meses antes; o que sobra é remarcado (vendido com desconto), e cada remarcação reduz a margem bruta. Marca própria, giro da coleção e resultado dos serviços financeiros completam a conta. Na PAC 2024, a taxa de margem de comercialização do comércio de vestuário e complementos foi de 86,1%.",
+      "concorrentes": [
+        {
+          "nome": "Lojas Renner",
+          "slug": "lojas-renner",
+          "tipo": "nacional",
+          "posicao_irtt": 12,
+          "vendas_milhoes": 20243,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Riachuelo (Guararapes)",
+          "slug": "guararapes",
+          "tipo": "nacional",
+          "posicao_irtt": 24,
+          "vendas_milhoes": 11111,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "C&A",
+          "slug": "cea",
+          "tipo": "nacional",
+          "posicao_irtt": 27,
+          "vendas_milhoes": 10541,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Grupo SBF (Centauro)",
+          "slug": "grupo-sbf",
+          "tipo": "nacional",
+          "posicao_irtt": 35,
+          "vendas_milhoes": 8754,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Azzas 2154",
+          "slug": "azzas",
+          "tipo": "nacional",
+          "posicao_irtt": 41,
+          "vendas_milhoes": 7607,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Pernambucanas",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 47,
+          "vendas_milhoes": 6077,
+          "natureza": "divulgado",
+          "estados_com_loja": 16,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Comércio de artigos do vestuário e complementos: 123.163 empresas; calçados, artigos de couro e viagem: 27.246 empresas (2024)",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 123163,
+          "classe_pac": "4781",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Margem bruta",
+        "formula": "lucro bruto ÷ receita líquida × 100; em empresas.json, lucro_bruto ÷ receita_liquida (fórmula margem_bruta_pct)",
+        "por_que": "É onde as remarcações aparecem: quando a coleção encalha e a empresa vende com desconto, a receita cai e o custo da peça não, e a margem bruta recua. Comparar o mesmo trimestre de anos diferentes isola o efeito da estação.",
+        "empresas": [
+          "lojas-renner",
+          "cea",
+          "guararapes",
+          "azzas",
+          "grupo-sbf"
+        ],
+        "nota": "Nas companhias com operação financeira (cartão e crédito), a receita líquida consolidada inclui serviços financeiros, o que eleva a margem bruta em relação à do varejo de mercadorias."
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 40, 69, 70 e 115",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "CVM, demonstrações financeiras das companhias abertas",
+          "url": "public/varejo/gold/empresas.json",
+          "pagina": "campos custo, estoques, lucro_bruto, receita_liquida e resultado_financeiro",
+          "periodo": "2021 a 2025 e acumulado até 09/2026",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "foodservice",
+      "nome": "Foodservice: restaurantes, bares e cafeterias",
+      "segmento_irtt": "Foodservice (Restaurantes, bares e cafeterias)",
+      "atividades_pmc": [],
+      "classes_pac": [],
+      "classes_pac_ids": [],
+      "equivalencia": "sem_equivalencia",
+      "nota_equivalencia": "A PMC cobre o comércio varejista (divisão 47 da CNAE) e classes selecionadas das divisões 45 e 46; o Quadro 1 do relatório metodológico não lista nenhuma classe de alimentação fora do lar. A PAC cobre só empresas comerciais. Restaurantes e lanchonetes são serviços de alimentação (divisão 56 da CNAE), fora do âmbito das duas pesquisas; a referência à divisão 56 é leitura nossa da classificação, cuja página no IBGE não foi acessada. O IRTT inclui o segmento por tratar a venda ao consumidor final.",
+      "o_que_se_vende": "Refeições e bebidas preparadas, consumidas no local, retiradas ou entregues. A empresa transforma o insumo antes de vender, o que aproxima o negócio de um serviço.",
+      "quem_compra": "Consumidores em refeições do dia a dia e de lazer. Nas redes de franquias, o franqueado é também cliente da franqueadora: paga taxas sobre a venda e compra insumos.",
+      "canais": "Salão, balcão, drive-thru e entrega por aplicativo. Segundo dados da Associação Nacional de Restaurantes citados pelo IRTT, a entrega responde por 30% a 40% da venda nas grandes redes (p. 75). No Top 300, só 3 das 20 redes do segmento não têm parceria com marketplace (p. 75).",
+      "o_que_determina_a_demanda": "Renda e emprego, hábitos de alimentação fora de casa e fluxo de pessoas em shoppings, ruas e estradas. O IRTT avalia que o segmento é menos afetado pelas condições de crédito que outros (p. 75).",
+      "onde_se_forma_a_margem": "Na relação entre o preço do cardápio e os custos de insumos, mão de obra, aluguel e taxas dos aplicativos de entrega. O IRTT registra que o segmento é fortemente influenciado pelo aumento do custo dos insumos (p. 118). Na franquia, a franqueadora investe menos por loja e recebe taxas sobre a venda do franqueado; o IRTT descreve esse mecanismo ao explicar o peso das franquias no segmento (p. 75).",
+      "concorrentes": [
+        {
+          "nome": "Arcos Dorados (McDonald's)",
+          "slug": "arcos-dorados",
+          "tipo": "nacional",
+          "posicao_irtt": 20,
+          "vendas_milhoes": 13000,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 25,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "38",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Zamp (Burger King, Popeyes, Starbucks, Subway)",
+          "slug": "zamp",
+          "tipo": "nacional",
+          "posicao_irtt": 29,
+          "vendas_milhoes": 9800,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Bold Hospitality Company (Outback)",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 77,
+          "vendas_milhoes": 3200,
+          "natureza": "divulgado",
+          "estados_com_loja": 18,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "42",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Habib's",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 92,
+          "vendas_milhoes": 2650,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 17,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "44",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "International Meal Company (IMC)",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 102,
+          "vendas_milhoes": 2491,
+          "natureza": "divulgado",
+          "estados_com_loja": 27,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "44",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Madero",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 108,
+          "vendas_milhoes": 2303,
+          "natureza": "divulgado",
+          "estados_com_loja": 18,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "46",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Venda por restaurante",
+        "formula": "venda de 2025 ÷ número de lojas em 2025, ambos do IRTT, em R$ milhões por unidade",
+        "por_que": "Mede a produtividade de cada ponto, que é o que sustenta aluguel e equipe. Como a venda do IRTT inclui as lojas franqueadas, o indicador descreve a rede inteira, e não só a parte operada pela companhia.",
+        "empresas": [
+          "zamp"
+        ],
+        "nota": "A Zamp é a única do segmento em empresas.json; a receita líquida das demonstrações cobre só o que a companhia fatura e não é comparável com a venda de rede do IRTT. As bandeiras são as listadas pelo IRTT na página 40. Para Arcos Dorados a venda é estimada pela fonte."
+      },
+      "independentes_nota": "Sem evidência verificada do número de restaurantes independentes: a PAC não cobre serviços de alimentação.",
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "38, 40, 42, 44, 46, 75 e 118",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "construcao",
+      "nome": "Material de construção",
+      "segmento_irtt": "Material de Construção",
+      "atividades_pmc": [
+        "construcao"
+      ],
+      "classes_pac": [
+        "47.4"
+      ],
+      "classes_pac_ids": [
+        "83344"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A atividade 'Material de construção' da PMC faz parte do varejo ampliado e reúne varejo e atacado, sem distinção: classes 4741 a 4744 (varejo) e 4671, 4672, 4673, 4674 e 4679 (atacado), conforme o Quadro 1 do relatório metodológico. O grupo 47.4 da PAC cobre só o varejo. O IRTT lista apenas redes varejistas.",
+      "o_que_se_vende": "Materiais básicos, como cimento, areia, tijolo e aço, e materiais de acabamento, como pisos, tintas, louças, elétrica e hidráulica, além de ferramentas e itens de decoração. Os home centers (lojas de grande superfície) concentram o acabamento; as lojas de bairro, o básico.",
+      "quem_compra": "Famílias que reformam ou constroem a própria casa, profissionais como pedreiros, pintores e eletricistas, e pequenas construtoras. O IRTT cita a Obramax como rede voltada ao público profissional, em um modelo que chama de atacarejo de materiais de construção (p. 76).",
+      "canais": "Lojas de bairro, home centers e e-commerce, este mais usado em acabamento e ferramentas do que em material pesado. Segundo o IRTT, só 3 das 13 empresas do segmento no Top 300 têm mais de 100 lojas e 10 atuam em 5 estados ou menos (p. 76).",
+      "o_que_determina_a_demanda": "Crédito, juros, renda e o ritmo de reformas e de construção de moradias. O IRTT atribui o crescimento de 6,3% das redes comparáveis em 2025 às restrições de crédito, depois de anos de reformas intensas durante e logo após a pandemia (p. 76).",
+      "onde_se_forma_a_margem": "O material básico tem margem baixa e frete caro em relação ao valor; o acabamento tem margem maior e giro mais lento. O resultado depende do mix entre os dois, do custo de manter estoque variado e da logística de entrega. Na PAC 2024, a taxa de margem de comercialização do grupo foi de 54,9%.",
+      "concorrentes": [
+        {
+          "nome": "Leroy Merlin",
+          "slug": null,
+          "tipo": "nacional",
+          "posicao_irtt": 32,
+          "vendas_milhoes": 8968,
+          "natureza": "divulgado",
+          "estados_com_loja": 14,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "40",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Obramax",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 94,
+          "vendas_milhoes": 2600,
+          "natureza": "divulgado",
+          "estados_com_loja": 4,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "44",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Ferreira Costa",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 103,
+          "vendas_milhoes": 2460,
+          "natureza": "estimado_pela_fonte",
+          "estados_com_loja": 5,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "44",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Quero Quero",
+          "slug": null,
+          "tipo": "regional",
+          "posicao_irtt": 114,
+          "vendas_milhoes": 2171,
+          "natureza": "divulgado",
+          "estados_com_loja": 5,
+          "fonte": {
+            "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+            "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+            "pagina": "46",
+            "periodo": "2025",
+            "consultado_em": "2026-11-23"
+          }
+        },
+        {
+          "nome": "Comércio varejista de material de construção: 166.575 empresas no país em 2024. O IRTT descreve o segmento como fragmentado, com forte presença de pequenos varejistas independentes de escala local (p. 76)",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 166575,
+          "classe_pac": "47.4",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "indicador_operacional": {
+        "nome": "Venda por loja",
+        "formula": "venda de 2025 ÷ número de lojas em 2025, ambos do IRTT (p. 76), em R$ milhões por loja",
+        "por_que": "Distingue os modelos do segmento: poucas lojas grandes com venda alta por unidade, caso dos home centers, ou muitas lojas pequenas. A comparação entre redes só faz sentido dentro do mesmo modelo.",
+        "empresas": [],
+        "empresas_irtt": [
+          "Leroy Merlin",
+          "Obramax",
+          "Quero Quero",
+          "Portobello Shop",
+          "Cassol",
+          "Espaço Smart"
+        ],
+        "nota": "Nenhuma empresa do segmento está em empresas.json. O indicador é calculável pelo IRTT; as redes listadas são as que têm dado declarado pela empresa (nota 1)."
+      },
+      "fontes": [
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "40, 44, 46 e 76",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "combustiveis",
+      "nome": "Combustíveis e lubrificantes",
+      "segmento_irtt": null,
+      "atividades_pmc": [
+        "combustiveis"
+      ],
+      "classes_pac": [
+        "47.3"
+      ],
+      "classes_pac_ids": [
+        "83343"
+      ],
+      "equivalencia": "direta",
+      "nota_equivalencia": "A atividade 'Combustíveis e lubrificantes' da PMC reúne as classes 4731 e 4732 da CNAE (Quadro 1 do relatório metodológico), as mesmas do grupo 47.3 da PAC. O gás de cozinha (GLP) fica em outra classe da PAC (4784). O IRTT não cobre o segmento: descreve o próprio escopo como aproximadamente o varejo restrito sem combustíveis e com material de construção (p. 21). As redes de conveniência de postos (AM PM e BR Mania) aparecem no ranking dentro do segmento alimentar, pela venda das lojas, não pela venda de combustível.",
+      "o_que_se_vende": "Gasolina, etanol, diesel, gás natural veicular e lubrificantes, vendidos em postos. A loja de conveniência e os serviços automotivos complementam a receita do posto.",
+      "quem_compra": "Motoristas de veículos leves, transportadores de carga e de passageiros e frotas de empresas. O diesel é insumo do transporte; a gasolina e o etanol são consumo das famílias.",
+      "canais": "Postos revendedores, com bandeira de uma distribuidora ou sem bandeira. A venda é presencial; os aplicativos de pagamento e de fidelidade funcionam como meio de relacionamento, não como canal de entrega.",
+      "o_que_determina_a_demanda": "Tamanho e uso da frota, atividade econômica (no caso do diesel) e renda. O preço relativo entre etanol e gasolina desloca o consumo entre os dois produtos. Explicação de mecanismo nossa, sem documento setorial aberto nesta sessão.",
+      "onde_se_forma_a_margem": "O posto ganha poucos centavos por litro e depende de volume: o preço de compra é formado antes dele, na refinaria, na usina, nos tributos e na distribuidora. É o grupo do varejo com a menor taxa de margem de comercialização na PAC 2024: 15,8%, contra 38,6% do varejo como um todo. A conveniência e os serviços têm margem maior que o combustível.",
+      "concorrentes": [
+        {
+          "nome": "Comércio varejista de combustíveis e lubrificantes: 38.620 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 38620,
+          "classe_pac": "47.3",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "concorrentes_nota": "O IRTT não lista redes de postos. Não foi aberto nesta sessão documento com a participação das distribuidoras ou das bandeiras; nenhum nome é citado sem fonte.",
+      "indicador_operacional": {
+        "nome": "Taxa de margem de comercialização",
+        "formula": "margem de comercialização ÷ custo das mercadorias revendidas × 100, publicada pelo IBGE na PAC (setor.json, pac.grupos, campo taxa_margem)",
+        "por_que": "Mostra quanto o revendedor acrescenta ao preço de compra. Em combustíveis esse acréscimo é pequeno, o que explica por que o volume vendido e o custo fixo do posto decidem o resultado.",
+        "empresas": [],
+        "nota": "Exceção declarada: o indicador vem da PAC, não de empresas.json nem do IRTT, porque nenhuma das duas fontes cobre o segmento. É um dado do conjunto das empresas, anual, sem abertura por companhia."
+      },
+      "fontes": [
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+          "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+          "pagina": "21",
+          "periodo": "2025",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "slug": "veiculos",
+      "nome": "Veículos, motocicletas, partes e peças",
+      "segmento_irtt": null,
+      "atividades_pmc": [
+        "veiculos"
+      ],
+      "classes_pac": [
+        "45"
+      ],
+      "classes_pac_ids": [
+        "83312"
+      ],
+      "equivalencia": "parcial",
+      "nota_equivalencia": "A atividade 'Veículos, motocicletas, partes e peças' da PMC faz parte do varejo ampliado e reúne as classes 4511, 4530 e 4541 da CNAE, em que não se distingue varejo de atacado (Quadro 1 do relatório metodológico). Os representantes comerciais (4512 e 4542) saíram da pesquisa na revisão de 2017. A PAC publica a divisão 45 inteira, que é mais ampla. O IRTT não cobre o segmento.",
+      "o_que_se_vende": "Automóveis, comerciais leves, caminhões e motocicletas, novos e usados, além de peças, acessórios e serviços de oficina. A concessionária vende também financiamento, seguro e consórcio como intermediária.",
+      "quem_compra": "Famílias, empresas com frota, locadoras e motoristas profissionais. A compra é de valor alto, rara e quase sempre financiada.",
+      "canais": "Concessionárias ligadas a uma montadora, revendas independentes de usados, lojas de autopeças e plataformas de anúncio na internet. A montadora também vende direto a frotistas e locadoras, sem passar pela concessionária.",
+      "o_que_determina_a_demanda": "Crédito e juros, renda, confiança do consumidor e preço dos veículos. Como a compra pode ser adiada por anos, o segmento amplia as oscilações do ciclo econômico. Explicação de mecanismo nossa, sem documento setorial aberto nesta sessão.",
+      "onde_se_forma_a_margem": "A margem na venda do veículo novo é estreita e em boa parte definida pela montadora. O resultado da concessionária vem do conjunto: usados, peças, oficina e comissões de financiamento e seguro. Na PAC 2024, a taxa de margem de comercialização da divisão 45 foi de 23,2%, abaixo dos 38,6% do comércio varejista.",
+      "concorrentes": [
+        {
+          "nome": "Comércio de veículos automotores e motocicletas (divisão 45): 161.702 empresas no país em 2024",
+          "slug": null,
+          "tipo": "independentes",
+          "empresas_pac_2024": 161702,
+          "classe_pac": "45",
+          "fonte": {
+            "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+            "url": "https://sidra.ibge.gov.br/tabela/10645",
+            "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+            "periodo": "2024",
+            "consultado_em": "2026-11-23"
+          }
+        }
+      ],
+      "concorrentes_nota": "O IRTT não lista concessionárias nem redes de autopeças. Nenhum nome é citado sem fonte aberta nesta sessão.",
+      "indicador_operacional": {
+        "nome": "Taxa de margem de comercialização",
+        "formula": "margem de comercialização ÷ custo das mercadorias revendidas × 100, publicada pelo IBGE na PAC (setor.json, pac.grupos, campo taxa_margem)",
+        "por_que": "Mostra quanto a revenda acrescenta ao preço de compra do veículo e das peças. Uma taxa baixa indica que o ganho depende de volume e de receitas acessórias.",
+        "empresas": [],
+        "nota": "Exceção declarada: o indicador vem da PAC, não de empresas.json nem do IRTT, porque nenhuma das duas fontes cobre o segmento."
+      },
+      "fontes": [
+        {
+          "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+          "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+          "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+          "periodo": "metodologia vigente até a reformulação de 2023",
+          "consultado_em": "2026-11-23"
+        },
+        {
+          "titulo": "IBGE, Pesquisa Anual de Comércio 2024, empresas comerciais por atividade",
+          "url": "https://sidra.ibge.gov.br/tabela/10645",
+          "pagina": "tabela SIDRA 10645, lida em public/varejo/gold/setor.json (pac.grupos)",
+          "periodo": "2024",
+          "consultado_em": "2026-11-23"
+        }
+      ]
+    }
+  ],
+  "ecommerce": {
+    "texto": "O comércio eletrônico não é um segmento: é um canal usado por todos eles. O IBGE registra que a empresa de comércio eletrônico é classificada pelo tipo de mercadoria que vende, e não pelo modo de venda, de forma que a venda online de uma farmácia conta em farmácia e a de uma rede de moda conta em vestuário. A medida oficial do canal está na Pesquisa Anual de Comércio. Em 2024, as empresas varejistas com 20 ou mais pessoas ocupadas declararam R$ 217,9 bilhões de receita bruta de revenda pela internet, 9,8% do total de R$ 2.227,6 bilhões somado em todas as formas de comercialização. As lojas físicas (lojas, postos de combustíveis, boxes, depósitos e similares) responderam por 87,1%, o televendas por 1,6% e a venda porta a porta por 1,2%. Três ressalvas. O universo é o das empresas varejistas com 20 ou mais pessoas ocupadas (39.354 empresas), que não inclui os pequenos lojistas. A variável é a revenda de mercadorias da própria empresa: a venda de terceiros intermediada por uma plataforma não é revenda dela e não entra como tal (leitura nossa do conceito). E o total inclui o comércio de combustíveis, cuja venda se faz em postos, o que reduz a participação da internet no conjunto. Para as plataformas, o número disponível é de outra natureza: o IRTT publica o GMV digital (valor bruto de tudo o que passa pela plataforma, somando venda própria e de terceiros), estimado em R$ 185 bilhões para o Mercado Livre e em R$ 70 bilhões para a Shopee em 2025 (p. 115). São estimativas da fonte, de ano e conceito diferentes dos da PAC, e não devem ser somadas nem comparadas diretamente com ela.",
+    "dados": {
+      "ano": 2024,
+      "unidade": "mil reais correntes de 2024",
+      "universo": "empresas comerciais varejistas (divisão 47 da CNAE) com 20 ou mais pessoas ocupadas",
+      "empresas_no_universo": 39354,
+      "receita_bruta_revenda_por_forma": {
+        "Lojas, postos de combustíveis, boxes em mercados, depósitos, galpões, armazéns e salas": 1939454872.0,
+        "Quiosques e traillers": 2916924.0,
+        "Correio": 10786.0,
+        "Porta a porta, postos móveis ou por ambulantes": 27084259.0,
+        "Internet": 217913978.0,
+        "Televendas": 34595206.0,
+        "Outros": 5673532.0
+      },
+      "total_das_formas": 2227649557.0,
+      "natureza_total": "calculado",
+      "participacao_pct": {
+        "Lojas, postos de combustíveis, boxes em mercados, depósitos, galpões, armazéns e salas": 87.1,
+        "Quiosques e traillers": 0.1,
+        "Correio": 0.0,
+        "Porta a porta, postos móveis ou por ambulantes": 1.2,
+        "Internet": 9.8,
+        "Televendas": 1.6,
+        "Outros": 0.3
+      },
+      "natureza_participacao": "calculado",
+      "formula": "receita bruta de revenda da forma de comercialização ÷ soma das sete formas publicadas × 100"
+    },
+    "ressalvas": [
+      "Universo restrito às empresas varejistas com 20 ou mais pessoas ocupadas; pequenos lojistas ficam fora.",
+      "Mede a revenda de mercadorias da própria empresa (equivalente à venda 1P); a venda de terceiros em marketplace não entra como revenda da plataforma (leitura nossa).",
+      "O total inclui o comércio de combustíveis e lubrificantes, cuja venda se faz em postos.",
+      "PAC 2024 é a série nova da pesquisa, não comparável diretamente com a série encerrada em 2023 (nota de setor.json).",
+      "Os valores de GMV do IRTT são estimativas da fonte (nota 5), referentes a 2025."
+    ],
+    "fonte": {
+      "titulo": "IBGE, Pesquisa Anual de Comércio 2024, número de empresas e receita bruta de revenda das empresas comerciais varejistas com 20 ou mais pessoas ocupadas, por formas de comercialização (série nova)",
+      "url": "https://sidra.ibge.gov.br/tabela/10656",
+      "pagina": "tabela SIDRA 10656, variável 866, divisão 47; lida em public/varejo/gold/setor.json (pac.formas_comercializacao_20mais)",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    "fontes_complementares": [
+      {
+        "titulo": "IBGE, Pesquisa Mensal de Comércio, Série Relatórios Metodológicos, volume 15, 5ª edição (2020)",
+        "url": "https://ftp.ibge.gov.br/Comercio_e_Servicos/Pesquisa_Mensal_de_Comercio/Metodologia_da_Pesquisa/srmpmc.pdf",
+        "pagina": "páginas 13 a 18 do PDF (âmbito da pesquisa; Quadro 1, atividades da PMC e códigos da CNAE; Quadro 2, atividades derivadas)",
+        "periodo": "metodologia vigente até a reformulação de 2023",
+        "consultado_em": "2026-11-23"
+      },
+      {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "112, 114 e 115",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    ]
+  }
+}
