@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-22T18:57:09+00:00",
+ "gerado_em": "2026-11-23T22:36:04+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1323 processos sancionadores em 1ª instância, com 1430 decisões por apenado: 1359 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 150 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (163 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1323 processos sancionadores em 1ª instância, com 1430 decisões por apenado: 1359 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 62 processos sancionadores em 12 meses (163 acusados); 258 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-19",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11471
   },
   "janela_12m": {
-   "ini": "2025-11-22",
+   "ini": "2025-11-23",
    "decisoes": 1430,
    "processos": 1323,
    "multas_n": 1359,
@@ -44,7 +44,7 @@
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
-   "recursos": 150,
+   "recursos": 151,
    "pj": 398,
    "pf": 1032
   },
@@ -101,13 +101,13 @@
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 117,
-    "share": 8.18
+    "n": 118,
+    "share": 8.25
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 110,
-    "share": 7.69
+    "n": 109,
+    "share": 7.62
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -168,16 +168,16 @@
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 118,
-    "share": 0.86
-   },
-   {
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 110,
-    "share": 0.8
+    "n": 119,
+    "share": 0.87
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
+    "n": 109,
+    "share": 0.79
+   },
+   {
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
     "n": 109,
     "share": 0.79
    },
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3207
+   "n": 3204
   },
   "anual": [
    {
@@ -406,11 +406,11 @@
     "multas_valor": 76154100.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
-    "recursos": 137,
+    "recursos": 138,
     "pf": 950,
     "pj": 364,
     "incompleto": true,
-    "recurso_share": 10.43,
+    "recurso_share": 10.5,
     "sem_penalidade_share": 4.03
    }
   ],
@@ -682,8 +682,8 @@
     "decisao": "2026-11-12",
     "pena": "MULTA",
     "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "recurso": "SIM",
+    "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA"
    },
    {
     "pas": "315991",
@@ -941,7 +941,7 @@
    "finalizados": 331
   },
   "abertos_12m": {
-   "ini": "2025-11-22",
+   "ini": "2025-11-23",
    "processos": 62,
    "acusados": 163
   },

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-22T18:56:22+00:00",
+ "gerado_em": "2026-11-23T22:35:27+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 318,
-  "total_editais": 1197,
+  "total_editais": 1198,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1153,6 +1153,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE BARRACAO",
+    "municipio": "Barracão",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-23",
+    "url": "https://pncp.gov.br/compras/87613618000105/2026/31"
+   },
+   {
     "ente": "MUNICIPIO DE VERTENTE DO LERIO",
     "municipio": "Vertente do Lério",
     "uf": "PE",
@@ -1250,15 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-17",
     "url": "https://pncp.gov.br/compras/17847641000189/2026/214"
-   },
-   {
-    "ente": "MUNICIPIO DE MEDEIROS NETO",
-    "municipio": "Medeiros Neto",
-    "uf": "BA",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-16",
-    "url": "https://pncp.gov.br/compras/13786520000113/2026/35"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
