@@ -265,7 +265,7 @@ export default function ListadasPage() {
     ),
   };
   const notasMovimentos = {
-    oQueMudou: tx(<>Documentos do IPE da CVM capturados diariamente.</>, <>CVM IPE documents captured daily.</>),
+    oQueMudou: tx(<>Documentos do IPE da CVM capturados toda semana.</>, <>CVM IPE documents captured every week.</>),
     comoInterpretar: tx(
       <>O assunto é o título que a própria companhia deu ao documento; o link leva ao arquivo no sistema da CVM.</>,
       <>The subject is the title the company itself gave the document, in Portuguese; the link leads to the file in the CVM system.</>,

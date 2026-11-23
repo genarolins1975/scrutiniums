@@ -13,11 +13,11 @@ name: Atualizar dados da Previdência e INSS
 # Cadência pela fonte: o Ministério da Previdência publica o BEPS do mês cerca de quatro semanas depois (o de agosto de
 # 2026 foi gravado em 29/09/2026); o Tesouro publica o RTN no fim do mês seguinte; o arquivo municipal sai uma vez por
 # ano, no meio do ano; o Anuário, uma vez por ano, em outubro (o coletor procura a edição seguinte e, sem ela, recoleta a
-# publicada, o que não muda nenhum número). Duas execuções por mês, nos dias 2 e 18, cobrem as duas publicações mensais; dado igual não gera
+# publicada, o que não muda nenhum número). Uma execução por semana, às segundas, cobre as duas publicações mensais; dado igual não gera
 # commit (o sinal é o hash_dados da gold).
 on:
   schedule:
-    - cron: "41 12 2,18 * *" # dias 2 e 18, 09:41 em São Paulo
+    - cron: "41 12 * * 1" # segunda, 09:41 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

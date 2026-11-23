@@ -34,21 +34,33 @@ import json
 import re
 import sys
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 
 META_PUBLICADO = ("https://raw.githubusercontent.com/genarolins1975/scrutiniums/"
                   "main/public/obs/data/gold/meta.json")
-# Limiar da cadência diária na fonte única de limiares (a mesma da faixa de
+# Limiar da cadência semanal na fonte única de limiares (a mesma da faixa de
 # frescor das páginas e do selo do Crédito): src/lib/frescor/limiares.json.
-LIMITE_DIAS = json.loads((RAIZ / "src" / "lib" / "frescor" / "limiares.json").read_text(encoding="utf-8"))["cadencias"]["diaria"]["limite"]
+# Desde 01/11/2026 a publicação é semanal e o limiar é de 8 dias: gold com 7 dias não acusa.
+LIMITE_DIAS = json.loads((RAIZ / "src" / "lib" / "frescor" / "limiares.json").read_text(encoding="utf-8"))["cadencias"]["semanal"]["limite"]
 # O que a Vercel serve. Até 13/10/2026 nada conferia que a produção servia o mesmo
 # gold do main (OPERACOES.md, pontos únicos de falha).
 META_PRODUCAO = "https://scrutiniums.com/obs/data/gold/meta.json"
-# folga para o deploy da Vercel depois do push do pipeline
+# Folga para o deploy da Vercel depois da publicação. Desde 01/11/2026 a Vercel ignora os commits do coletor
+# (scripts/vercel-ignorar-build.sh) e só constrói na publicação semanal (publicacao-semanal.yml, segunda 16:07 UTC):
+# a produção atrás do main é o estado normal entre uma publicação e outra. Só acusa quando o gold do main é anterior
+# à última publicação semanal e a produção, mais de DEPLOY_FOLGA_HORAS depois dela, ainda não o serve.
 DEPLOY_FOLGA_HORAS = 3
+PUBLICACAO_SEMANAL = (0, 16, 7)  # segunda (weekday 0), 16:07 UTC
+
+
+def ultima_publicacao_semanal(agora):
+    """Instante agendado da publicação semanal mais recente que não é posterior a `agora` (UTC)."""
+    dia, hora, minuto = PUBLICACAO_SEMANAL
+    base = agora.replace(hour=hora, minute=minuto, second=0, microsecond=0) - timedelta(days=(agora.weekday() - dia) % 7)
+    return base if base <= agora else base - timedelta(days=7)
 ISSUE_RETENCAO = "Testes de conteúdo reprovaram a gold do dia: publicação retida"
 
 PAGINA_SPA = ("https://www.gov.br/fazenda/pt-br/composicao/orgaos/"
@@ -87,10 +99,13 @@ def frescor():
     try:
         prod = json.loads(_baixa(META_PRODUCAO))
         gerado_prod = _instante(prod["gerado_em"])
-        if gerado_prod < gerado and (agora - gerado).total_seconds() > DEPLOY_FOLGA_HORAS * 3600:
+        publicacao = ultima_publicacao_semanal(agora)
+        if (gerado_prod < gerado and gerado <= publicacao
+                and (agora - publicacao).total_seconds() > DEPLOY_FOLGA_HORAS * 3600):
             acusacoes.append(
                 f"A produção ({META_PRODUCAO}) serve o gold de **{prod['gerado_em'][:16]}** UTC, mais antigo que "
-                f"o do main (**{meta['gerado_em'][:16]}** UTC) há mais de {DEPLOY_FOLGA_HORAS} h: conferir o "
+                f"o do main (**{meta['gerado_em'][:16]}** UTC), mais de {DEPLOY_FOLGA_HORAS} h depois da publicação "
+                f"semanal de {publicacao:%d/%m/%Y %H:%M} UTC: conferir a execução de publicacao-semanal.yml e o "
                 "último deploy da Vercel (falha de build ou deploy pausado).")
     except Exception as e:  # produção fora do ar também é achado
         acusacoes.append(f"Não foi possível ler o gold da produção ({META_PRODUCAO}): `{str(e)[:160]}`.")
@@ -113,8 +128,11 @@ PRAZO_VINTAGE_DIAS = {"sgs": 75, "scr": 75, "ifdata": 135, "txjuros": 45, "susep
                       "b3": 15, "trends": 120, "sicor": 75, "cvm_ofertas": 45, "securit": 90, "bndes": 200, "focus": 14, "sfn_cadastro": 7, "bcb_pas": 60, "cvm_pas": 45, "caged": 45, "cda": 60, "consorcios": 135, "cobranca": 150,
                       # seis fontes sem prazo até 06/09/2026 (achado D4): mensal + defasagem + folga
                       "fidc": 75, "pix": 60, "estban": 90, "openfinance": 45, "pgfn": 135, "desenrola": 75}
-# gold mantido no ar pela sentinela (build regredido) por mais que isto acusa
-RESTAURADO_MAX_DIAS = 2
+# gold mantido no ar pela sentinela (build regredido) por mais que isto acusa; 8 dias desde a
+# publicação semanal (01/11/2026): uma semana restaurada não acusa, a segunda acusa
+RESTAURADO_MAX_DIAS = 8
+# a coleta passou a ser semanal (01/11/2026): a data-base pode esperar até 7 dias a mais pela coleta seguinte
+ATRASO_COLETA_SEMANAL_DIAS = 7
 
 
 def _fim_do_mes(vintage):
@@ -148,9 +166,9 @@ def pane():
         if not v or len(str(v)) < 7:
             continue
         idade = (hoje - _fim_do_mes(str(v))).days
-        if idade > prazo:
+        if idade > prazo + ATRASO_COLETA_SEMANAL_DIAS:
             acusacoes.append(f"- vintage `{k}` parado em **{v}** há {idade} dias após o fim da data-base "
-                             f"(prazo da fonte: {prazo}).")
+                             f"(prazo da fonte: {prazo}, mais {ATRASO_COLETA_SEMANAL_DIAS} da coleta semanal).")
     # builder quebrado: stub gravado nesta execução (meta.builders_falhos) ou gold
     # mantido pela sentinela há mais de RESTAURADO_MAX_DIAS (meta.restaurados)
     for f in meta.get("builders_falhos") or []:

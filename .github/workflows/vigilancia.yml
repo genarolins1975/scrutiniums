@@ -1,23 +1,25 @@
 name: Vigília do Observatório
 
-# Dois olhos que o pipeline diário não tem sobre si mesmo:
+# Olhos que o pipeline não tem sobre si mesmo. Desde 01/11/2026 (publicação semanal) todos os cheques rodam
+# juntos uma vez por semana, na segunda às 18:00 UTC, depois da publicação das 16:07; o frescor roda de novo às
+# 23:00 UTC, depois da folga de 3 h do deploy, para acusar produção que não recebeu a publicação; frescor e pane
+# rodam também quando a coleta do Crédito termina (workflow_run), que é semanal.
 #
-# - **frescor** (diário, 15:00 UTC — depois da janela do pipeline das 9:00):
-#   o gold publicado no main envelheceu além de 2 dias? Cobre o caso em que as
+# - **frescor**: o gold publicado no main tem 8 dias ou mais? Cobre o caso em que as
 #   execuções "concluem" sem publicar, que o alerta de falha não enxerga. Também
 #   confere que a produção serve o mesmo gold do main.
-# - **pane** (diário, 15:20 UTC): coletor essencial com zero chaves ok, ou
+# - **pane**: coletor essencial com zero chaves ok, ou
 #   vintage parado além do prazo da fonte, com o gold íntegro e em dia — o
 #   buraco entre as duas outras vigílias (SCR 3/3 e DJEN 8/8 falhando em
 #   setembro de 2026 sem nenhuma issue).
-# - **fontes** (semanal, segunda): saiu documento novo nas fontes manuais
+# - **fontes**: saiu documento novo nas fontes manuais
 #   documentadas (página de apresentações da SPA/MF)? É o gatilho da
 #   atualização manual do painel de bets — o Panorama do 1S2026 é esperado
 #   para o fim de agosto de 2026.
-# - **saneamento** (semanal, segunda): SINISA, SISAGUA e CadÚnico mudaram desde
+# - **saneamento**: SINISA, SISAGUA e CadÚnico mudaram desde
 #   a coleta registrada em public/saneamento/gold/meta.json? O saneamento não tem
-#   coleta diária; sem este cheque, retificação ou edição nova passa em silêncio.
-# - **dominios** (diário, 20:00 UTC): algum observatório passou do limiar de
+#   coleta frequente; sem este cheque, retificação ou edição nova passa em silêncio.
+# - **dominios**: algum observatório passou do limiar de
 #   frescor da sua cadência (src/lib/frescor/limiares.json, o mesmo da faixa
 #   de frescor das entradas)? Uma issue por domínio, "Vigília de frescor: <nome>":
 #   abre, comenta a aberta (nunca duplica) e fecha quando volta a ficar em dia.
@@ -29,15 +31,15 @@ name: Vigília do Observatório
 on:
   # frescor e pane rodam quando o pipeline termina (workflow_run): o cron fixo
   # das 15:00 avaliava o gold do dia anterior quando o pipeline atrasava
-  # (auditoria de 06/09/2026, achado T2). Os crons ficam como reserva.
+  # (auditoria de 06/09/2026, achado T2). O cron semanal roda todos os cheques.
   workflow_run:
     workflows: ["Atualizar dados do Observatório"]
     types: [completed]
   schedule:
-    - cron: "0 20 * * *" # frescor, reserva diária
-    - cron: "30 9 * * 1" # fontes, segunda-feira
-    - cron: "40 9 * * 1" # saneamento, segunda-feira
-    - cron: "20 20 * * *" # pane, reserva diária (fonte parada com o gold íntegro)
+    - cron: "0 18 * * 1" # segunda, todos os cheques, depois da publicação semanal das 16:07
+    # segunda rodada só do frescor, depois da folga de 3 h do deploy (16:07 + 3 h): a das 18:00 não enxerga deploy
+    # que falhou, e na segunda seguinte a coleta nova muda o gold do main e esconde a falha antiga
+    - cron: "0 23 * * 1" # segunda, só frescor (produção contra o main depois da publicação)
   workflow_dispatch:
 
 permissions:
@@ -81,17 +83,14 @@ jobs:
       - name: Selecionar cheques do horário
         id: horario
         run: |
-          # no agendamento, cada cron roda só o seu cheque; no disparo manual, todos;
-          # após o pipeline (workflow_run), frescor e pane — fontes e saneamento são semanais
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            case "${{ github.event.schedule }}" in
-              "0 20 * * *") case "${{ matrix.cheque }}" in frescor|dominios) ;; *) echo "pular=1" >> "$GITHUB_OUTPUT" ;; esac ;;
-              "30 9 * * 1") [ "${{ matrix.cheque }}" = "fontes" ]  || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
-              "40 9 * * 1") [ "${{ matrix.cheque }}" = "saneamento" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
-              "20 20 * * *") [ "${{ matrix.cheque }}" = "pane" ]   || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
-            esac
+          # no agendamento das 18:00 e no disparo manual, todos os cheques; no das 23:00, só o frescor;
+          # após o pipeline (workflow_run), frescor e pane
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 23 * * 1" ]; then
+            [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT"
           elif [ "${{ github.event_name }}" = "workflow_run" ]; then
-            case "${{ matrix.cheque }}" in fontes|saneamento|dominios) echo "pular=1" >> "$GITHUB_OUTPUT" ;; esac
+            # os cheques pulados saem logo: antes de 01/11/2026 os cinco jobs esperavam os 5 min,
+            # cerca de 23 min de Actions por execução (702 min de 02/10 a 01/11/2026)
+            case "${{ matrix.cheque }}" in fontes|saneamento|dominios) echo "pular=1" >> "$GITHUB_OUTPUT"; exit 0 ;; esac
             # o meta.json é lido do raw.githubusercontent do main: dá tempo ao push
             # do pipeline chegar e ao cache do raw virar (até 5 min)
             sleep 300

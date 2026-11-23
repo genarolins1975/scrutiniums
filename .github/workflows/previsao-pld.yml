@@ -1,9 +1,11 @@
-name: Rodada diária da previsão do PLD
+name: Rodada semanal da previsão do PLD
 
-# Compromisso operacional (seção 12.1 da especificação do observatório): corte às 07h00 e
-# publicação até 08h00 de Brasília (America/Sao_Paulo), todos os dias.
+# Cadência (decisão do dono de 01/11/2026, seção 12.1 da especificação do observatório): uma rodada por
+# semana, na segunda de manhã, com corte às 07h00 de Brasília (America/Sao_Paulo). O compromisso diário de
+# publicação até 08h00 deixou de existir; a rodada vai ao ar com a publicação semanal do Observatório
+# (publicacao-semanal.yml, segunda 13h07), porque o commit do coletor não dispara build na Vercel.
 #
-# A pré-carga é a coleta noturna das 20h40 (atualizar-energia.yml). Esta rodada NÃO reusa
+# A pré-carga é a coleta de domingo às 20h40 (atualizar-energia.yml). Esta rodada NÃO reusa
 # aquela execução como se fosse a das 07h: ela restaura o silver com vintages, confere se o
 # que a previsão precisa já foi capturado, tenta coletar o que falta ANTES do corte, espera
 # o corte e emite com o dado como estava às 07h00 (como_estava_em). Coleta feita depois do
@@ -29,11 +31,11 @@ name: Rodada diária da previsão do PLD
 # `rotina`) só a declara comprovada com execuções agendadas reais registradas no arquivo.
 on:
   schedule:
-    - cron: "47 8 * * *"  # 05h47 em Brasília: verificação cedo (espera até o corte)
-    - cron: "17 9 * * *"  # 06h17
-    - cron: "43 9 * * *"  # 06h43
-    - cron: "13 10 * * *" # 07h13: emissão imediata se as anteriores não rodaram
-    - cron: "37 10 * * *" # 07h37: última chance dentro do prazo
+    - cron: "47 8 * * 1"  # 05h47 em Brasília: verificação cedo (espera até o corte)
+    - cron: "17 9 * * 1"  # 06h17
+    - cron: "43 9 * * 1"  # 06h43
+    - cron: "13 10 * * 1" # 07h13: emissão imediata se as anteriores não rodaram
+    - cron: "37 10 * * 1" # 07h37: última chance dentro do prazo
   workflow_dispatch:
     inputs:
       origem:

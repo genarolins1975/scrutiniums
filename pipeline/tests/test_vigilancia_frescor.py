@@ -76,7 +76,9 @@ class Limiares(unittest.TestCase):
                 self.assertGreaterEqual(c["limite"], c["intervalo"])
 
     def test_a_vigilia_do_credito_usa_o_mesmo_limiar(self):
-        self.assertEqual(vigilancia.LIMITE_DIAS, LIMIARES["cadencias"]["diaria"]["limite"])
+        # publicação semanal desde 01/11/2026: cadência semanal, limiar de 8 dias
+        self.assertEqual(vigilancia.LIMITE_DIAS, LIMIARES["cadencias"]["semanal"]["limite"])
+        self.assertEqual(vigilancia.LIMITE_DIAS, 8)
 
     def test_arquivos_publicados_trazem_data_em_todo_dominio(self):
         # um campo renomeado no pipeline viraria "data não informada" na página: aqui reprova antes
@@ -134,7 +136,7 @@ class Vigiar(unittest.TestCase):
         self.assertIn("Vigília de frescor: Crédito", criar)
         self.assertEqual(criar[criar.index("--assignee") + 1], "dono")
         corpo = criar[criar.index("--body") + 1]
-        self.assertIn("Atualização atrasada há 23 dias", corpo)
+        self.assertIn("Atualização atrasada há 17 dias", corpo)
         self.assertIn("24/09/2026", corpo)
         self.assertIn("src/lib/frescor/limiares.json", corpo)
 
@@ -161,7 +163,7 @@ class Vigiar(unittest.TestCase):
         r = v.vigiar(limiares_so("credito"), leitor({META_CREDITO: meta}), AGORA, "dono/repo", "dono", gh)
         self.assertEqual(r, ["credito: retida; issue aberta"])
         corpo = gh.de("create")[0][-3]
-        self.assertIn("Publicação retida em parte há 23 dias", corpo)
+        self.assertIn("Publicação retida em parte há 17 dias", corpo)
         self.assertIn("18/10/2026", corpo)
 
     def test_volta_em_dia_comenta_e_fecha(self):
@@ -179,3 +181,53 @@ class Vigiar(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VigiliaDoCreditoSemanal(unittest.TestCase):
+    """Publicação semanal (01/11/2026): gold com 7 dias não acusa; a produção atrás do main só acusa depois da
+    publicação semanal (segunda, 16:07 UTC) mais a folga do deploy."""
+
+    def _frescor(self, gerado_main, gerado_prod, agora):
+        from unittest import mock
+
+        def baixa(url, timeout=60):
+            g = gerado_prod if url == vigilancia.META_PRODUCAO else gerado_main
+            return json.dumps({"gerado_em": g, "vintages": {}}).encode()
+
+        class Relogio(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return agora
+
+        with mock.patch.object(vigilancia, "_baixa", baixa), mock.patch.object(vigilancia, "datetime", Relogio):
+            return vigilancia.frescor()
+
+    def test_gold_com_sete_dias_nao_acusa_e_com_oito_acusa(self):
+        segunda = datetime(2026, 11, 9, 18, 0, tzinfo=timezone.utc)
+        self.assertEqual(self._frescor("2026-11-02T11:00:00+00:00", "2026-11-02T11:00:00+00:00", segunda), 0)
+        self.assertEqual(self._frescor("2026-11-02T11:00:00+00:00", "2026-11-02T11:00:00+00:00",
+                                       datetime(2026, 11, 10, 11, 0, tzinfo=timezone.utc)), vigilancia.ACUSA)
+
+    def test_producao_atras_do_main_antes_da_publicacao_semanal_nao_acusa(self):
+        # coleta de segunda gravou o main às 11:00; a publicação é às 16:07: às 15:00 a produção atrás é o normal
+        self.assertEqual(self._frescor("2026-11-09T11:00:00+00:00", "2026-11-02T11:00:00+00:00",
+                                       datetime(2026, 11, 9, 15, 0, tzinfo=timezone.utc)), 0)
+        # gold do main gravado numa quarta (disparo manual) fica para a publicação seguinte
+        self.assertEqual(self._frescor("2026-11-11T11:00:00+00:00", "2026-11-09T11:00:00+00:00",
+                                       datetime(2026, 11, 13, 12, 0, tzinfo=timezone.utc)), 0)
+
+    def test_producao_atras_depois_da_publicacao_e_da_folga_acusa(self):
+        self.assertEqual(self._frescor("2026-11-09T11:00:00+00:00", "2026-11-02T11:00:00+00:00",
+                                       datetime(2026, 11, 9, 19, 30, tzinfo=timezone.utc)), vigilancia.ACUSA)
+        self.assertEqual(self._frescor("2026-11-09T11:00:00+00:00", "2026-11-02T11:00:00+00:00",
+                                       datetime(2026, 11, 9, 18, 0, tzinfo=timezone.utc)), 0)
+
+    def test_ultima_publicacao_semanal(self):
+        u = vigilancia.ultima_publicacao_semanal
+        self.assertEqual(u(datetime(2026, 11, 9, 16, 7, tzinfo=timezone.utc)), datetime(2026, 11, 9, 16, 7, tzinfo=timezone.utc))
+        self.assertEqual(u(datetime(2026, 11, 9, 16, 6, tzinfo=timezone.utc)), datetime(2026, 11, 2, 16, 7, tzinfo=timezone.utc))
+        self.assertEqual(u(datetime(2026, 11, 15, 23, 0, tzinfo=timezone.utc)), datetime(2026, 11, 9, 16, 7, tzinfo=timezone.utc))
+
+    def test_restaurado_e_vintage_toleram_a_coleta_semanal(self):
+        self.assertEqual(vigilancia.RESTAURADO_MAX_DIAS, 8)
+        self.assertEqual(vigilancia.ATRASO_COLETA_SEMANAL_DIAS, 7)

@@ -9,7 +9,7 @@ name: Atualizar dados do Agronegócio
 # já integrada não gera commit. Separado dos outros domínios.
 on:
   schedule:
-    - cron: "41 11 9,24 * *" # dias 9 e 24, 08:41 em São Paulo
+    - cron: "41 11 * * 1" # segunda, 08:41 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

@@ -84,7 +84,7 @@ A descrição informa:
 - Rota raiz `/setor-eletrico`.
 - Publicação estática baseada em arquivos `public/energia/gold/*.json`.
 - Pipeline em `pipeline/energia/`.
-- Atualização operacional diária, descrita como 20h40 de Brasília.
+- Atualização operacional diária, descrita como 20h40 de Brasília (até 01/11/2026; desde então, coleta de domingo às 20h40 e publicação semanal na segunda, decisão do dono de 01/11/2026).
 - Navegação em `src/lib/energia/navegacao.ts`.
 - Componentes de evidência e modos Entender, Analisar e Auditar.
 - Sete conjuntos em uso naquele momento: PLD horário, EAR, ENA, carga, balanço energético, intercâmbios e CMO semanal.
@@ -722,8 +722,8 @@ O desenho descrito no diagnóstico possui quatro modelos — B0, C1, C2-P e C2-H
 - Defina semanas com limites inequívocos. Exemplo: sábado 00h até sábado seguinte 00h, excluindo o instante final. Evite “sábado a sábado” sem esclarecer a inclusão dos extremos.
 - Meses civis e tratamento de períodos parcialmente conhecidos precisam estar explícitos.
 - Separe o PLD já publicado para horas futuras do resultado ainda desconhecido que exige previsão.
-- Preserve o compromisso operacional descrito: corte às 07h e publicação até 08h, `America/Sao_Paulo`, todos os dias.
-- Use coleta noturna como pré-carga, com verificação/retentativa antes do corte. Emitir às 20h40 como se fosse uma rodada cortada às 07h altera o conjunto de informação e é incorreto.
+- Rotina semanal (decisão do dono de 01/11/2026, substitui o compromisso diário de corte às 07h e publicação até 08h): uma rodada por semana, na segunda-feira, com corte às 07h e emissão até 08h, `America/Sao_Paulo`; a rodada vai ao ar com a publicação semanal do Observatório, na segunda às 13h07. O compromisso diário de publicação até 08h00 deixou de existir.
+- Use a coleta de domingo à noite como pré-carga, com verificação/retentativa antes do corte. Emitir às 20h40 como se fosse uma rodada cortada às 07h altera o conjunto de informação e é incorreto.
 - Registre horário real da emissão, atraso, falha e versão. Rotina definida no código não é rotina comprovadamente executada.
 
 ### 12.2 Conteúdo público
@@ -1120,7 +1120,7 @@ Os IDs abaixo são estáveis para acompanhar cobertura. As fontes são resolvida
 - **Visualização principal:** Faixas de previsão e tabela 4 × 7.
 - **Implementação exigida:** Concluir as pendências de validação; preservar W1–W4/M1–M3; B0 apenas como referência aprovada e identificada.
 - **Fontes de partida:** D0. Consultar o Anexo B e verificar o recurso específico.
-- **Recorte e frequência:** Rodada diária 07h/08h Brasília.
+- **Recorte e frequência:** Rodada semanal, segunda 07h/08h Brasília (diária até 01/11/2026).
 - **Critério específico de aceite:** Valores reais do modelo, alvo e emissão preservados; bandas só com método documentado.
 
 ### P014 — Previsões e modelos / Registro de modelos

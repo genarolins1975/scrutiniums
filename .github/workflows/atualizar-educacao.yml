@@ -11,11 +11,11 @@ name: Atualizar dados da Educação nos municípios
 #
 # Cadência pela fonte: o Ideb é bienal (o de 2025 saiu em 05/08/2026; o INEP avisou na nota informativa que foi a última
 # divulgação com a fórmula original) e a Sinopse do Censo Escolar é anual (a de 2025 foi gravada em 30/07/2026). Uma
-# execução por mês, no dia 9, alcança as duas publicações em até um mês; dado igual não gera commit (o sinal é o
+# execução por semana, às segundas, alcança as duas publicações em até uma semana; dado igual não gera commit (o sinal é o
 # hash_dados da gold).
 on:
   schedule:
-    - cron: "23 11 9 * *" # dia 9 de cada mês, 08:23 em São Paulo
+    - cron: "23 11 * * 1" # segunda, 08:23 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

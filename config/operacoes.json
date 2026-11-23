@@ -3,7 +3,7 @@
   "repositorio": "genarolins1975/scrutiniums",
   "release": "operacoes-adm",
   "ativo": "estado.json",
-  "validadeHoras": 3,
+  "validadeHoras": 192,
   "dominios": [
     {
       "id": "credito",
@@ -24,7 +24,7 @@
         "atualizar-energia.yml",
         "previsao-pld.yml"
       ],
-      "automatico": "Coleta diária; previsão do PLD em rotina própria. Publicação depende dos contratos de dados.",
+      "automatico": "Coleta semanal (domingo à noite) e publicação na segunda; previsão do PLD em rotina semanal própria. Publicação depende dos contratos de dados.",
       "manual": "Reconferir retratos e mudanças de contrato da ANEEL. A previsão recente não comprova atualização da operação."
     },
     {
@@ -76,7 +76,7 @@
       "workflows": [
         "atualizar-inflacao.yml"
       ],
-      "automatico": "Coleta mensal do SIDRA com validação da composição publicada.",
+      "automatico": "Coleta semanal do SIDRA com validação da composição publicada.",
       "manual": "Rever mudanças de tabela e de classificação do IBGE."
     },
     {
@@ -152,7 +152,7 @@
       "nome": "Atualizar dados do Setor Elétrico"
     },
     "previsao-pld.yml": {
-      "nome": "Rodada diária da previsão do PLD"
+      "nome": "Rodada semanal da previsão do PLD"
     },
     "atualizar-gas.yml": {
       "nome": "Atualizar dados do Gás Natural"

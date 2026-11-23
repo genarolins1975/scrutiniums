@@ -115,11 +115,16 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 
 O pipeline Python vive em `pipeline/` (config em `config/`), com o
 histórico acumulado semeado em `pipeline/seed/silver-seed.db.gz` (25 MB).
-O workflow `.github/workflows/atualizar-dados.yml` roda diariamente às
+O workflow `.github/workflows/atualizar-dados.yml` roda toda segunda às
 06:00 (São Paulo): restaura o estado silver/bronze do cache do Actions
 (ou semeia na primeira execução), coleta as fontes públicas, reconstrói a
-camada gold e, havendo mudança, commita `public/obs/data` — o push
-dispara o deploy da Vercel. Execução manual pela aba Actions
+camada gold e, havendo mudança, commita `public/obs/data` com o autor
+`pipeline@scrutiniums.com`. A Vercel ignora esse commit
+(`scripts/vercel-ignorar-build.sh`, `ignoreCommand` do `vercel.json`) e só
+constrói na publicação semanal (`publicacao-semanal.yml`, segunda às 13:07
+de São Paulo), que leva ao ar de uma vez o que todos os coletores gravaram
+na semana. Commit humano no main continua disparando o deploy; prévias de
+branch estão desligadas desde 01/11/2026. Execução manual pela aba Actions
 (workflow_dispatch), com opção `somente_gold` para reconstruir sem
 coletar. O estado da CI evolui de forma independente do arquivo
 histórico no Mac de origem, que permanece como arquivo-mestre.

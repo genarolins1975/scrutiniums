@@ -1,0 +1,73 @@
+name: Publicação semanal do Observatório
+
+# Único gatilho de build de produção vindo da automação (decisão do dono de 01/11/2026). Os coletores continuam
+# fazendo commit no main com o autor pipeline@scrutiniums.com, mas a Vercel ignora esses commits
+# (scripts/vercel-ignorar-build.sh, "ignoreCommand" do vercel.json). Este workflow grava um commit vazio com
+# outro autor; a Vercel constrói o main inteiro e publica de uma vez tudo o que os coletores gravaram na semana.
+#
+# Segunda às 16:07 UTC (13:07 em Brasília), depois das coletas de segunda (a última agendada começa às 13:47 UTC).
+# Antes do commit, espera até 60 min pelos coletores ainda em execução, para que a publicação não saia sem eles;
+# passado esse prazo, publica assim mesmo e o que chegar depois vai na semana seguinte (ou num disparo manual).
+#
+# Push com GITHUB_TOKEN não dispara outros workflows: o ci.yml roda sobre o main publicado pelo gatilho
+# workflow_run deste workflow.
+on:
+  schedule:
+    - cron: "7 16 * * 1" # segunda, 13:07 em São Paulo
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: publicacao-semanal
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    if: github.repository == 'genarolins1975/scrutiniums'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Esperar os coletores em execução (até 60 min)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          # API REST de execuções (o `gh run list --json` não tem o campo do caminho do workflow). Consulta que falha
+          # não vale como "nenhum coletor": conta como espera e é repetida.
+          COLETORES='/(atualizar-[a-z-]+|previsao-pld|auditoria-notas)[.]yml$'
+          for i in $(seq 1 12); do
+            EM_CURSO=""
+            CONSULTA_OK=1
+            for estado in queued in_progress waiting requested pending; do
+              R=$(gh api "repos/$GH_REPO/actions/runs?branch=main&status=$estado&per_page=100" \
+                --jq "[.workflow_runs[].path | select(test(\"$COLETORES\"))] | join(\" \")") || { CONSULTA_OK=0; break; }
+              EM_CURSO="$EM_CURSO $R"
+            done
+            EM_CURSO=$(echo $EM_CURSO | tr ' ' '\n' | sort -u | tr '\n' ' ' | sed 's/ *$//')
+            if [ "$CONSULTA_OK" = 1 ] && [ -z "$EM_CURSO" ]; then echo "Nenhum coletor em execução."; exit 0; fi
+            if [ "$CONSULTA_OK" = 1 ]; then echo "Coletores em execução: $EM_CURSO (espera $i de 12)"
+            else echo "::warning::consulta às execuções falhou; nova tentativa em 5 min (espera $i de 12)"; fi
+            sleep 300
+          done
+          echo "::warning::coletores em execução, ou consulta sem resposta, depois de 60 min; a publicação segue sem o que eles gravarem"
+
+      - name: Commit vazio e push no main
+        run: |
+          git config user.name "publicacao-semanal[bot]"
+          git config user.email "publicacao@scrutiniums.com"
+          git commit --allow-empty -m "Publicação semanal do Observatório"
+          # o main anda durante a manhã (coletores): rebase e quatro tentativas, como nos outros workflows
+          for tentativa in 1 2 3 4; do
+            if git pull --rebase origin main && git push origin HEAD:main; then exit 0; fi
+            echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível publicar após 4 tentativas"
+          exit 1

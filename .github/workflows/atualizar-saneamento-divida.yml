@@ -9,15 +9,13 @@ name: Atualizar dívida dos prestadores de saneamento
 # anterior continua no ar, a issue é aberta ou comentada e a execução fica vermelha.
 #
 # Cadência pela fonte (trimestral): a DFP vence até 31 de março e o ITR até 45 dias depois do fim do trimestre (15 de
-# maio, 14 de agosto e 14 de novembro); a CVM regrava os ZIPs dos anos recentes quando chegam reapresentações. Uma
-# execução logo depois de cada prazo (7 de abril e dia 22 de maio, agosto e novembro) e uma segunda passada três
-# semanas depois para quem entregou com atraso (28 de abril e dia 12 de junho, setembro e dezembro). Dado igual não
+# maio, 14 de agosto e 14 de novembro); a CVM regrava os ZIPs dos anos recentes quando chegam reapresentações. Desde
+# 01/11/2026 a execução é semanal, toda segunda (decisão do dono pela publicação semanal única): a primeira segunda
+# depois de cada prazo traz a entrega, e as seguintes pegam quem entregou com atraso. Dado igual não
 # gera commit (o sinal é o hash_dados da gold).
 on:
   schedule:
-    - cron: "23 11 7,28 4 *" # 7 e 28 de abril, 08:23 em São Paulo (DFP)
-    - cron: "23 11 22 5,8,11 *" # dia 22 de maio, agosto e novembro (ITR)
-    - cron: "23 11 12 6,9,12 *" # dia 12 de junho, setembro e dezembro (entregas atrasadas)
+    - cron: "23 11 * * 1" # segunda, 08:23 em São Paulo; DFP (abril), ITR (maio, agosto e novembro) e entregas atrasadas entram na semana em que a CVM as publica
   workflow_dispatch:
     inputs:
       sem_coleta:

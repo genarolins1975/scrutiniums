@@ -9,11 +9,11 @@ name: Atualizar dados da Inflação por cidade
 # comentada e a execução fica vermelha.
 #
 # Cadência pela fonte: o IBGE divulga o IPCA do mês anterior entre os dias 8 e 12 (calendário em
-# servicodados.ibge.gov.br/api/v3/calendario/9256; o de outubro de 2026 sai em 12/11/2026). Duas execuções,
-# nos dias 10 e 14, cobrem a divulgação mesmo quando ela atrasa; resposta igual não gera commit.
+# servicodados.ibge.gov.br/api/v3/calendario/9256; o de outubro de 2026 sai em 12/11/2026). A execução
+# semanal, às segundas, alcança a divulgação na semana em que ela sai, mesmo quando atrasa; resposta igual não gera commit.
 on:
   schedule:
-    - cron: "47 13 10,14 * *" # dias 10 e 14, 10:47 em São Paulo (o IBGE divulga às 9h)
+    - cron: "47 13 * * 1" # segunda, 10:47 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

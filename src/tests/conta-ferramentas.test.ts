@@ -269,7 +269,7 @@ describe("alertas de atualização", () => {
     expect(restantes.map((r) => r.userId)).toEqual([b.id]);
   });
 
-  it("a interface só diz que o e-mail sai quando há provedor e o disparo rodou nos últimos três dias", async () => {
+  it("a interface só diz que o e-mail sai quando há provedor e o disparo rodou nos últimos oito dias", async () => {
     vi.stubEnv("RESEND_API_KEY", "");
     expect(await alertas.envioLigado()).toBe(false);
     vi.stubEnv("RESEND_API_KEY", "re_sintetico");
@@ -286,7 +286,9 @@ describe("alertas de atualização", () => {
     correio.falhar = false;
     expect((await enviarApi.POST(new Request("http://localhost/api/alertas/enviar", { method: "POST", headers: { Authorization: `Bearer ${SEGREDO}` } }))).status).toBe(200);
     expect(await alertas.envioLigado()).toBe(true);
-    expect(await alertas.envioLigado(new Date(Date.now() + 4 * 86_400_000))).toBe(false);
+    // disparo semanal desde 01/11/2026: a verificação vale por oito dias
+    expect(await alertas.envioLigado(new Date(Date.now() + 7 * 86_400_000))).toBe(true);
+    expect(await alertas.envioLigado(new Date(Date.now() + 9 * 86_400_000))).toBe(false);
     vi.stubEnv("RESEND_API_KEY", "");
   });
 });

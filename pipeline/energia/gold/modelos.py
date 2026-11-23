@@ -151,9 +151,10 @@ def construir(anterior=None, pasta=arq.PASTA, legado=None, destino_series=None, 
             "Um modelo aprovado nas etapas de validação (revisão independente) e promovido a produção pelo responsável.",
             "Período prospectivo com rodadas registradas antes do realizado; para os candidatos, ele só começa depois da liberação "
             "formal de número em rodada interna.",
-            "Rodadas agendadas reais no prazo (corte às 07h00 e emissão até 08h00 de Brasília) que comprovem a rotina.",
+            "Rodadas agendadas reais no prazo (rodada semanal às segundas, corte às 07h00 e emissão até 08h00 de Brasília) que "
+            "comprovem a rotina.",
         ],
-        "estado_pipeline": ("A rodada diária está implementada (pipeline/energia/previsoes/emissao.py) e agendada no workflow "
+        "estado_pipeline": ("A rodada semanal, às segundas, está implementada (pipeline/energia/previsoes/emissao.py) e agendada no workflow "
                             "previsao-pld.yml; a previsão principal segue sem número porque nenhum modelo está em produção. A "
                             "persistência (B0) aparece à parte como referência experimental identificada."),
     } if not pode else _atual_com_producao(cod, publicacoes, ultima_interna)

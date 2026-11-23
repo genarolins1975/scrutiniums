@@ -1,9 +1,9 @@
 name: Atualizar dados da Eficiência Estatal
 
-# Eficiência Estatal (OBEE), Educação e Saúde nas capitais: recoleta mensal do Siconfi (DCA I-E,
+# Eficiência Estatal (OBEE), Educação e Saúde nas capitais: recoleta semanal do Siconfi (DCA I-E,
 # RREO 02 do 6º bimestre, MSC de dezembro) e do SIOPS para os exercícios integrados (2021 a 2025),
 # e publicação por grupo (scripts/atualizacao_por_grupo.py, config/atualizacao/eficiencia.json).
-# Os entes entregam a DCA até 30 de abril e retificam a qualquer tempo: a recoleta mensal capta a
+# Os entes entregam a DCA até 30 de abril e retificam a qualquer tempo: a recoleta semanal capta a
 # retificação. Mudança só de data de captura não publica nada (o sinal é o hash_dados de cada gold).
 # Consulta que volta com erro no lugar de uma resposta íntegra reprova a coleta do grupo (guarda
 # manifesto_sem_erro_novo): fonte em pane não troca dado publicado por ausência.
@@ -17,7 +17,7 @@ name: Atualizar dados da Eficiência Estatal
 # demais capítulos do OBEE, todos fixados por edição com revisão.
 on:
   schedule:
-    - cron: "53 10 12 * *" # dia 12, 07:53 em São Paulo
+    - cron: "53 10 * * 1" # segunda, 07:53 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

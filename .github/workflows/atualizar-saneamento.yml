@@ -9,7 +9,7 @@ name: Atualizar dados do Saneamento
 # Cadência pela fonte: o SINISA sai uma vez por ano (dezembro) e é retificado sem aviso (a base
 # municipal de água foi retificada em 25/05/2026); o Ministério da Saúde reescreve os arquivos do
 # SISAGUA todo mês; a CVM recebe versões do Formulário de Referência o ano todo; o JMP atualiza uma
-# vez por ano ou a cada dois; a base dos ODS da ONU, por trimestre. Uma execução por mês cobre todas.
+# vez por ano ou a cada dois; a base dos ODS da ONU, por trimestre. Uma execução por semana, às segundas, cobre todas.
 # Resposta idêntica não gera commit; arquivo reescrito com os mesmos números publica só a
 # proveniência nova (assim a vigília semanal de vigilancia.yml não acusa de novo o que já foi visto).
 #
@@ -18,7 +18,7 @@ name: Atualizar dados do Saneamento
 # dos reguladores (curadoria de documentos) e o capítulo de saneamento da Eficiência Estatal.
 on:
   schedule:
-    - cron: "23 11 6 * *" # dia 6, 08:23 em São Paulo
+    - cron: "23 11 * * 1" # segunda, 08:23 em São Paulo
   workflow_dispatch:
     inputs:
       sem_coleta:

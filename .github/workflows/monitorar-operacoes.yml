@@ -2,7 +2,9 @@ name: Atualizar quadro do ADM
 
 on:
   schedule:
-    - cron: '17 * * * *'
+    # Semanal desde 01/11/2026 (era de hora em hora): segunda às 18h00 UTC, depois da publicação semanal das 16h07.
+    # O quadro do ADM tolera consulta de até oito dias (src/lib/operacoes); disparo manual atualiza na hora.
+    - cron: '0 18 * * 1'
   workflow_dispatch:
 
 permissions:
