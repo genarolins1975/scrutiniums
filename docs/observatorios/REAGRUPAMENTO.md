@@ -211,12 +211,14 @@ pessoa física (SGS 29034, 29037, 21084 e 20716; `src/lib/divida/dados.ts`). O a
 Famílias; a página nova leva a ele como "o crédito das empresas e dos bancos". O consignado segue na coleção. A regra 2 das
 regras originais ("endereços não mudam") continua valendo: nenhum endereço foi renomeado.
 
-## Vistas antigas das Famílias: seis redirecionadas, três pendentes (10/11/2026)
+## Vistas antigas das Famílias: as nove redirecionadas (10/11/2026)
 
 Nove painéis das Famílias foram reescritos como páginas Next (`src/lib/observatorios/reescritos.ts`). A auditoria de
 10/11/2026 (`docs/AUDITORIA_QUALIDADE_2026-11-10.md`, achado 4) mostrou que as nove vistas antigas da aplicação do Crédito
 seguiam no ar, rotuladas como Economia. Decisão do dono em 10/11/2026: **redirecionar já, de forma permanente, as seis cujo
-painel novo não tem perda declarada**, e manter as três com perda até os mapas serem migrados.
+painel novo não tem perda declarada**, e manter as três com perda até os mapas serem migrados. No mesmo dia, 10/11/2026, a
+perda declarada das três foi fechada (o que foi feito em cada painel está em `docs/familias/PARIDADE.md`) e as três entraram na
+lista: os nove endereços antigos redirecionam.
 
 | Endereço antigo | Página nova | Estado |
 |---|---|---|
@@ -226,9 +228,9 @@ painel novo não tem perda declarada**, e manter as três com perda até os mapa
 | `/observatorio/lawsuits` | `/divida-das-familias/clientes-contra-bancos` | Redirecionado |
 | `/observatorio/debt-collection-lawsuits` | `/divida-das-familias/bancos-cobrando-na-justica` | Redirecionado |
 | `/observatorio/conduct-enforcement` | `/divida-das-familias/sancoes-e-reclamacoes` | Redirecionado |
-| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Pendente: perda declarada (mapa municipal sem estado na URL, dispersão sem bolha) |
-| `/observatorio/housing-credit` | `/credito-imobiliario` | Pendente: o mapa municipal não foi migrado |
-| `/observatorio/formal-employment` | `/emprego-formal` | Pendente: os pesos do score setorial não foram migrados (`docs/familias/PARIDADE.md`) |
+| `/observatorio/payroll-lending-aging` | `/divida-das-familias/consignado` | Redirecionado em 10/11/2026, depois de fechada a paridade: recorte do mapa no endereço, tamanho do círculo e seletor de estado na dispersão, realce de 60 anos ou mais na pirâmide |
+| `/observatorio/housing-credit` | `/credito-imobiliario` | Redirecionado em 10/11/2026, depois de fechada a paridade: mapa municipal em quatro medidas |
+| `/observatorio/formal-employment` | `/emprego-formal` | Redirecionado em 10/11/2026, depois de fechada a paridade: pesos do Risco setorial lidos da gold setorial |
 
 Esta é a primeira exceção à regra 2 ("endereços não mudam"), e ela continua valendo no sentido que importa: nenhum endereço
 deixa de responder. O antigo responde com redirecionamento permanente, com a consulta preservada, e quem não tem sessão chega
@@ -236,17 +238,26 @@ ao login com o destino novo.
 
 - A lista é uma só, `src/lib/observatorios/paineis-reescritos.json` (campo `redirecionar`), lida por `next.config.mjs`, pelo
   registro e pelo índice que a aplicação do Crédito recebe. Não há lista paralela.
-- `GRUPOS_CREDITO` guarda o endereço novo dos seis. O "Início do painel" continua listando os oito grupos por pergunta; os
-  seis itens são link comum para a página das Famílias, com o título e a pergunta dela. A navegação da coleção do Crédito já
+- `GRUPOS_CREDITO` guarda o endereço novo dos nove. O "Início do painel" continua listando os oito grupos por pergunta; os
+  nove itens são link comum para a página das Famílias, com o título e a pergunta dela. A navegação da coleção do Crédito já
   não os mostrava.
 - Dentro da aplicação, `nav()`, as pontes, os alertas e o histórico saem para a página nova; o boletim por e-mail e o sitemap
   usam `enderecoDaAba` (`src/lib/data/observatorioAbas.ts`).
-- As três vistas pendentes continuam alcançáveis pelo "Início do painel" da aplicação (grupo "Território e pessoas" e passo 4
-  do ciclo) e pelo endereço direto. Na navegação das coleções, na busca e no registro, quem aparece é a página nova.
-- O código de render das seis vistas ficou em `public/obs/app.js`, morto; a remoção é um PR próprio (detalhe e motivo em
-  `docs/familias/PARIDADE.md`).
+- Nenhuma vista antiga das Famílias continua alcançável: o "Início do painel" (grupo "Território e pessoas" e passo 4 do
+  ciclo) liga à página nova, e o endereço direto redireciona. Um recorte salvo ou um link antigo do consignado com `?cgcam=`,
+  `?cgregiao=` ou `?cgconf=` reabre o mesmo recorte na página nova, que lê os mesmos parâmetros.
+- O código de render das nove vistas foi removido de `public/obs/app.js` em 10/11/2026 (versão 0.129.0 da aplicação): funções
+  de render, verbetes do guia e o registro nos mapas. Ficaram as nove chaves de `ROUTES`, porque o endereço antigo é a chave
+  do mapa `substituidas`, e os títulos. O que saiu, o que ficou, o tamanho antes e depois e a decisão em cada teste que lia
+  esse código estão em `docs/familias/PARIDADE.md`, seção "Remoção do código das nove vistas".
+- A vitrine da home passou a contar as páginas do Crédito pela mesma fonte do "Início do painel" (os grupos do Crédito): 32
+  páginas temáticas, no lugar das 43 abas do catálogo, que incluíam as nove reescritas. As nove contam uma vez só, na coleção
+  dona, das Famílias (`src/tests/vitrine-credito-contagem.test.ts`).
 - Testes: `src/tests/redirecionamento-reescritos.test.ts`, `src/tests/mapa-menu.test.ts` e, no navegador,
-  `src/tests/split-bundle-browser.test.ts`.
+  `src/tests/split-bundle-browser.test.ts`, `src/tests/familias-paridade-browser.test.ts` (as três últimas, na página nova) e
+  `src/tests/vistas-reescritas-browser.test.ts` (a aplicação depois da remoção do código das nove vistas).
+  Os testes de navegador que abriam a vista antiga do consignado e a da moradia tiveram essas asserções aposentadas, com o
+  motivo escrito em cada arquivo (lista em `docs/familias/PARIDADE.md`).
 
 ## Fusão das coleções de uma página só (10/11/2026)
 

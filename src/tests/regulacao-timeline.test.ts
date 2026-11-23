@@ -81,12 +81,23 @@ describe("SPA e camada indexável", () => {
   });
 
   it("os marcos viram marcadores verticais em pix, consignado e desenrola", () => {
-    // 1 definição + pelo menos 3 usos nos gráficos
+    // Na aplicação do Crédito ficou o Pix: 1 definição e 1 uso. Até 10/11/2026 eram 3 usos; as vistas do consignado e do
+    // Desenrola saíram de public/obs/app.js nessa data e os marcos delas vivem nas páginas novas, que leem a mesma gold
+    // (regulacao.json) e filtram pelo mesmo campo "paineis" (src/lib/familias/consignado.ts e src/lib/familias/desenrola.ts).
     const usos = appJs.split("marcosRegulatorios(").length - 1;
-    expect(usos).toBeGreaterThanOrEqual(4);
+    expect(usos).toBeGreaterThanOrEqual(2);
     expect(appJs).toMatch(/marcosRegulatorios\("pix"\)/);
-    expect(appJs).toMatch(/marcosRegulatorios\("consignado"\)/);
-    expect(appJs).toMatch(/marcosRegulatorios\("desenrola"\)/);
+    for (const painel of ["consignado", "desenrola"]) {
+      const lib = readFileSync(join(process.cwd(), `src/lib/familias/${painel}.ts`), "utf-8");
+      expect(lib, painel).toContain(`.filter((m) => m.serie_x && (m.paineis ?? []).includes("${painel}"))`);
+      expect(lib, painel).toContain("regulacao.json");
+    }
+    const desenrola = readFileSync(join(process.cwd(), "src/app/divida-das-familias/desenrola/page.tsx"), "utf-8");
+    expect(desenrola).toContain("...marcosRegulacao]");
+    expect(desenrola).toContain("marcos={marcosSerie}");
+    const consignado = readFileSync(join(process.cwd(), "src/app/divida-das-familias/consignado/page.tsx"), "utf-8");
+    expect(consignado).toContain("...marcosRegulacao,");
+    expect(consignado).toContain("marcos={marcos.map(");
   });
 
   it("a aba entra no registro indexável (SEO/sitemap)", () => {

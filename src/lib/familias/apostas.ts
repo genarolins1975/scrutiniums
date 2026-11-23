@@ -16,8 +16,6 @@ export const PERGUNTA_APOSTAS = "As apostas online estão chegando ao crédito d
 export const DESCRICAO_APOSTAS =
   "O tamanho do mercado regulado de apostas, quem aposta e o que os números oficiais permitem afirmar sobre a ligação com dívida e atraso das famílias, com o grau de evidência de cada número.";
 export const SECAO_APOSTAS = "familias:apostas";
-/** Endereço da vista antiga, na aplicação de página única do Crédito. */
-export const ROTA_ANTIGA_APOSTAS = "/observatorio/bets-financial-risk";
 
 /* ------------------------------------------------------------- contrato de evidência (comum a Apostas e a Golpes e fraudes) */
 

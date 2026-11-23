@@ -49,8 +49,10 @@ describe("E1/E15 — número antes do método, ações recolhidas", () => {
     expect(app).toContain("function phActions(itens, controles)");
     expect(app).toMatch(/details class="ph-menu"/);
     expect(css).toContain(".ph-menu .ph-items");
-    // cabeçalhos próprios (Visão geral, Bets, Fraudes, Juros) usam o mesmo helper
-    expect((app.match(/\$\{phActions\(/g) ?? []).length).toBeGreaterThanOrEqual(5);
+    // cabeçalhos próprios usam o mesmo helper. Até 10/11/2026 eram quatro além do pageHead (Visão geral, Bets, Fraudes e
+    // Juros: cinco usos); com a remoção das vistas Bets e Fraudes, que viraram páginas das Famílias, ficam o pageHead, a Visão
+    // geral e os Juros. O que a trava protege não mudou: nenhum cabeçalho próprio monta as ações fora do helper.
+    expect((app.match(/\$\{phActions\(/g) ?? []).length).toBeGreaterThanOrEqual(3);
   });
 
   it("Instituições: método e limitações vêm DEPOIS da tabela, e o disclaimer só no rodapé", () => {
@@ -64,7 +66,16 @@ describe("E1/E15 — número antes do método, ações recolhidas", () => {
   });
 
   it("Desenrola: o aviso de cobertura vem depois dos números oficiais", () => {
-    expect(app).toContain("</div>${avisoDes}");
+    // Até 10/11/2026 a trava lia renderDesenrola em public/obs/app.js ("</div>${avisoDes}"), removido nessa data. O achado
+    // (número antes do método) vale na página nova, /divida-das-familias/desenrola: os números oficiais abrem a página e o aviso
+    // de cobertura vem depois dos números do SCR, antes do gráfico.
+    const pagina = readFileSync(join(raiz, "src/app/divida-das-familias/desenrola/page.tsx"), "utf-8");
+    const aviso = pagina.indexOf('<Nota titulo="Esta base não cobre o programa inteiro.">{t(g.aviso_cobertura)}</Nota>');
+    const oficiais = pagina.indexOf('numeros={[numeroOficial("elegiveis"), numeroOficial("renegociaram"), numeroOficial("regularizado"), numeroOficial("beneficiados")]}');
+    expect(oficiais).toBeGreaterThan(-1);
+    expect(aviso).toBeGreaterThan(oficiais);
+    expect(aviso).toBeGreaterThan(pagina.indexOf('rotulo="Grupos credores"'));
+    expect(pagina).not.toContain("Antes do primeiro número: esta base não cobre");
     expect(app).not.toContain("Antes do primeiro número: esta base não cobre");
   });
 
@@ -106,8 +117,11 @@ describe("E4/E5 — gráficos: piso tipográfico e escala log", () => {
 });
 
 describe("E9/E10 — guia em toda aba, um nome por aba", () => {
-  it("Juros, Bets, Fraudes e as rotas dinâmicas renderizam o guia", () => {
-    for (const v of ["juros", "bets", "fraudes", "inst", "product", "sector"]) {
+  it("Juros e as rotas dinâmicas renderizam o guia", () => {
+    // Aposentadas em 10/11/2026 (2 asserções): guiaPagina("bets") e guiaPagina("fraudes"). As duas vistas saíram de
+    // public/obs/app.js; nas páginas novas a orientação de leitura é o lead, o limite da abertura e a nota da faixa de números,
+    // conferidos pelo molde em src/tests/familias-apostas.test.ts e src/tests/familias-golpes-e-fraudes.test.ts.
+    for (const v of ["juros", "inst", "product", "sector"]) {
       expect(app, v).toContain(`guiaPagina("${v}")`);
     }
   });
@@ -129,9 +143,16 @@ describe("E9/E10 — guia em toda aba, um nome por aba", () => {
     const cabecalhos = new Set<string>();
     for (const m of Array.from(app.matchAll(/pageHead\(\{\s*title: ["`]([^"`]+)["`]/g))) cabecalhos.add(m[1]);
     for (const m of Array.from(app.matchAll(/<h2(?: [^>]*)?>([^<$]+)</g))) cabecalhos.add(m[1].trim());
-    const fora = ["inst", "sector", "product", "presmun", "estado", "bets", "fraudes", "lucro"]; // título vem do dado ou da pergunta central exigida pelo painel
+    const fora = ["inst", "sector", "product", "presmun", "estado", "lucro"]; // título vem do dado ou da pergunta central exigida pelo painel
+    // Aposentadas em 10/11/2026 (7 vistas: judicial, desenrola, moradia, consignado, conduta, emprego e cobranca; bets e
+    // fraudes já ficavam de fora): as nove vistas reescritas não têm mais cabeçalho na aplicação, só o título em VIEW_TITLES,
+    // que é o texto do link quando o índice do servidor falta. O título de cada página nova é o do registro
+    // (src/lib/observatorios/paineis-reescritos.json), conferido por src/tests/redirecionamento-reescritos.test.ts.
+    const render = mapa("RENDER");
+    const semDesenho = Object.keys(titulos).filter((v) => !render[v]);
+    expect(semDesenho.sort()).toEqual(["bets", "cobranca", "conduta", "consignado", "desenrola", "emprego", "fraudes", "judicial", "moradia"]);
     for (const [view, t] of Object.entries(titulos)) {
-      if (fora.includes(view)) continue;
+      if (fora.includes(view) || semDesenho.includes(view)) continue;
       const bate = Array.from(cabecalhos).some((c) => c === t || c.startsWith(t + " ") || c === t.replace("&", "&amp;"));
       expect(bate, `${view}: nenhum cabeçalho começa por "${t}"`).toBe(true);
     }
@@ -249,9 +270,10 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
     // 0.123.0: Iniciativa 2 do parecer de UX (23/10/2026): navegação, rótulo e fim de página da plataforma; sai a barra lateral
     // 0.126.0: homologação UX 24/10: gráficos responsivos, acessibilidade Pix e tabelas; sucede Iniciativa 2, PR 2 (23/10/2026): escala tipográfica, número, selo de natureza e datas da plataforma; sai o tema escuro
     // 0.128.0: seis vistas das Famílias redirecionadas para a página Next (decisão do dono de 10/11/2026): a aplicação sai para a página nova
-    expect(app).toContain('const APP_VERSION = "0.128.0";');
-    expect(html).toContain("app.min.js?v=0.128.0");
-    expect(html).toContain("casca.min.js?v=0.128.0");
+    // 0.129.0: sai da aplicação o código que desenhava as nove vistas das Famílias reescritas (10/11/2026)
+    expect(app).toContain('const APP_VERSION = "0.129.0";');
+    expect(html).toContain("app.min.js?v=0.129.0");
+    expect(html).toContain("casca.min.js?v=0.129.0");
     expect(html).not.toContain("?v=0.106.0");
     expect(html).not.toContain("?v=0.86.0");
   });

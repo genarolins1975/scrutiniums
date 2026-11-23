@@ -48,9 +48,12 @@ describe("fonte canônica: marcadores e despacho", () => {
   });
 
   it("cada rota de chunk tem o renderizador dentro da região do chunk certo", () => {
+    // Aposentadas em 10/11/2026 (5 vistas, 3 asserções cada): desenrola, moradia e consignado no pedaço municipal, bets e
+    // fraudes no emergentes. As cinco viraram páginas próprias das Famílias e o desenho delas saiu de public/obs/app.js; a
+    // garantia que sobra para elas é a contrária, conferida em "as nove vistas reescritas saíram da fonte e dos artefatos".
     const mapa: Record<string, string> = {
-      pgfn: "municipal", desenrola: "municipal", penetracao: "municipal", moradia: "municipal", consignado: "municipal",
-      sobre: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes",
+      pgfn: "municipal", penetracao: "municipal", rural: "municipal",
+      sobre: "emergentes", juros: "emergentes",
     };
     for (const [view, chunk] of Object.entries(mapa)) {
       expect(app).toContain(`${view}: "${chunk}"`); // no CHUNK_OF_VIEW
@@ -62,7 +65,7 @@ describe("fonte canônica: marcadores e despacho", () => {
       });
       expect(dentro, `${fn} fora da região ${chunk}`).toBe(true);
     }
-    // penEscala é compartilhada por três painéis municipais: vive no CORE
+    // penEscala é compartilhada pelos mapas municipais (penetração e crédito rural): vive no CORE
     const kPen = app.indexOf("function penEscala(");
     const emChunk = ["municipal", "emergentes"].some(c => regioes(c).some(([a, b]) => kPen > a && kPen < b));
     expect(emChunk, "penEscala precisa ficar fora dos chunks").toBe(false);
@@ -76,18 +79,18 @@ describe("artefatos do build", () => {
     for (const f of ["public/obs/app-municipal.min.js", "public/obs/app-emergentes.min.js"]) {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
-    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
-      "renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
+    for (const fn of ["renderPgfn", "renderPenetracao", "renderRural",
+      "renderSobre", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
     const eme = read("public/obs/app-emergentes.min.js");
-    for (const fn of ["renderPgfn", "renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
+    for (const fn of ["renderPgfn", "renderPenetracao", "renderRural"]) {
       expect(mun.includes(`function ${fn}(`), fn).toBe(true);
     }
     // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário
     // Instituições (lista e ficha) foi para o chunk emergentes na v0.101.0; histogram e openInstPage ficam no core
-    for (const fn of ["renderSobre", "renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
+    for (const fn of ["renderSobre", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
       expect(eme.includes(`function ${fn}(`), fn).toBe(true);
     }
     for (const fn of ["histogram"]) {
@@ -95,6 +98,32 @@ describe("artefatos do build", () => {
     }
     // e o core mantém o que os chunks usam
     expect(core).toContain("function penEscala(");
+  });
+
+  it("as nove vistas reescritas saíram da fonte e dos artefatos; a aplicação guarda só o endereço antigo", () => {
+    // 10/11/2026: o código que desenhava as nove vistas das Famílias reescritas foi removido de public/obs/app.js. Substitui
+    // as asserções aposentadas neste arquivo (renderDesenrola, renderMoradia e renderConsignado no pedaço municipal;
+    // renderBets e renderFraudes no emergentes). As páginas novas são conferidas por src/tests/familias-*.test.ts; a saída da
+    // aplicação para elas, por src/tests/split-bundle-browser.test.ts e src/tests/familias-paridade-browser.test.ts.
+    const reescritas: { abaAntiga: string }[] = JSON.parse(read("src/lib/observatorios/paineis-reescritos.json"));
+    const par = (nome: string) => Object.fromEntries(Array.from(app.match(new RegExp(`const ${nome} = \\{([\\s\\S]*?)\\};`))![1].matchAll(/(\w+): "([^"]*)"/g)).map((x) => [x[1], x[2]]));
+    const rotas = par("ROUTES"), render = par("RENDER"), pedacos = par("CHUNK_OF_VIEW");
+    // toda chave de ROUTES sem render é uma das nove reescritas, e só elas (é o que vistaReescrita() decide na aplicação)
+    const semRender = Object.keys(rotas).filter((v) => !render[v]);
+    expect(semRender.map((v) => rotas[v]).sort()).toEqual(reescritas.map((r) => r.abaAntiga).sort());
+    expect(semRender.length).toBe(9);
+    expect(app).toContain("function vistaReescrita(v) { return !!ROUTES[v] && !RENDER[v]; }");
+    for (const v of semRender) expect(pedacos[v], v).toBeUndefined();
+    const fontes = { "app.js": app, core, municipal: read("public/obs/app-municipal.min.js"), emergentes: read("public/obs/app-emergentes.min.js") };
+    for (const fn of ["renderDesenrola", "renderBets", "renderFraudes", "renderJudicial", "renderCobranca", "renderConduta", "renderConsignado", "renderMoradia", "renderEmprego"]) {
+      for (const [nome, texto] of Object.entries(fontes)) expect(texto.includes(fn), `${fn} em ${nome}`).toBe(false);
+    }
+    // os contêineres das nove vistas saíram das duas páginas da aplicação
+    for (const arq of ["public/obs/index.html", "public/obs/embed.html"]) {
+      for (const v of semRender) expect(read(arq), `${arq}: view-${v}`).not.toContain(`id="view-${v}"`);
+    }
+    // e toda vista com render tem contêiner no index.html (as dinâmicas e as estáticas)
+    for (const v of Object.keys(render)) expect(read("public/obs/index.html"), v).toContain(`id="view-${v}"`);
   });
 
   it("o core encolheu de verdade (≤ 580 KB desde a v0.101.0; era 744 KB inteiro)", () => {

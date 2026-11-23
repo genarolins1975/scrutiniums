@@ -13,8 +13,9 @@
  *
  * Decisão do dono de 10/11/2026: redirecionar já as seis vistas cujo painel novo não tem perda declarada (Desenrola, Apostas,
  * Golpes e fraudes, Clientes contra bancos, Bancos cobrando na Justiça, Sanções e reclamações) e manter no endereço antigo as
- * três com perda (Consignado, Crédito imobiliário e Emprego formal) até os mapas serem migrados. A tabela de paridade de cada
- * painel está em docs/familias/PARIDADE.md.
+ * três com perda (Consignado, Crédito imobiliário e Emprego formal) até os mapas serem migrados. No mesmo dia a perda das três
+ * foi fechada e as nove passaram a redirecionar. A tabela de paridade de cada painel e o fechamento estão em
+ * docs/familias/PARIDADE.md.
  */
 import type { ObservatorioId } from "./lista";
 import DADOS from "./paineis-reescritos.json";

@@ -3,7 +3,7 @@ import { CAPITULOS_AGRO, PERGUNTAS_AGRO } from '@/lib/agro/modelo';
  * Vitrine da página inicial: o que cada observatório já publica.
  *
  * Nada aqui é escrito à mão quando existe registro no código. Títulos, rotas,
- * perguntas e contagens vêm dos catálogos de cada domínio (abas do Crédito,
+ * perguntas e contagens vêm dos catálogos de cada domínio (abas e grupos do Crédito,
  * navegação do Setor Elétrico, dimensões da Eficiência Estatal, capítulos das
  * Contas Federais, medidas e catálogo das Contas Estaduais, páginas do Gás Natural). Um painel que sai
  * do registro some da home; um título que muda no registro muda aqui.
@@ -19,6 +19,7 @@ import type { DominioId } from "@/lib/dominios";
 import type { Idioma } from "@/lib/idioma";
 import { formatadorNumero } from "@/lib/format";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { paginasTematicasDoCredito } from "@/lib/credito/navegacao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { orgaosDasFontes } from "@/lib/energia/dados";
@@ -70,8 +71,6 @@ function listaPt(itens: string[]): string {
 
 // ---------------------------------------------------------------- Crédito
 
-const ABAS_INSTITUCIONAIS = new Set(["/suggestions", "/about"]);
-
 function aba(caminho: string, descricao: string): PainelVitrine {
   const a = ABAS_OBSERVATORIO.find((x) => x.caminho === caminho);
   if (!a) throw new Error(`aba do Crédito fora do catálogo: ${caminho}`);
@@ -88,8 +87,9 @@ function fontesCredito(): number | null {
 }
 
 function vitrineCredito(fmt: FormatarNumero): Vitrine {
-  const temas = ABAS_OBSERVATORIO.filter((a) => !a.caminho.endsWith("/") && !ABAS_INSTITUCIONAIS.has(a.caminho));
-  const quantidade = temas.length;
+  // a mesma contagem do "Início do painel" da aplicação (os grupos do Crédito, src/lib/credito/navegacao.ts): as nove vistas
+  // reescritas como páginas das Famílias (10/11/2026) saíram dela e são contadas na coleção dona, uma vez só
+  const quantidade = paginasTematicasDoCredito().length;
   const nFontes = fontesCredito();
   return {
     id: "credito",

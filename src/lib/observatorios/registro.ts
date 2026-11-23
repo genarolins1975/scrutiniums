@@ -68,9 +68,9 @@ export const DESTINO_ABAS_CREDITO: Record<string, Destino> = {
 export const ABAS_INSTITUCIONAIS_CREDITO = new Set(["/suggestions", "/about"]);
 /**
  * Abas da aplicação do Crédito substituídas por página Next (reescritos.ts): saem do registro, da navegação e da busca, que
- * passam a apontar para a página nova. Seis endereços antigos redirecionam para a página nova desde a decisão do dono de
- * 10/11/2026 (`redirecionar` em paineis-reescritos.json, lido pelo next.config.mjs); os três com perda declarada (Consignado,
- * Crédito imobiliário e Emprego formal) continuam servindo a vista antiga até os mapas serem migrados.
+ * passam a apontar para a página nova. Os nove endereços antigos redirecionam para a página nova desde 10/11/2026
+ * (`redirecionar` em paineis-reescritos.json, lido pelo next.config.mjs): seis pela decisão do dono dessa data e os três que
+ * tinham perda declarada (Consignado, Crédito imobiliário e Emprego formal) depois de fechada a paridade, no mesmo dia.
  */
 export const ABAS_SUBSTITUIDAS = new Map(PAINEIS_REESCRITOS.map((r) => [r.abaAntiga, r.rota]));
 

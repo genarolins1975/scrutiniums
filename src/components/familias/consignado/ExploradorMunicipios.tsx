@@ -1,8 +1,12 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ExportacaoComConta } from "@/components/acesso/ExportacaoComConta";
 import { Controles, TabelaDados } from "@/components/painel";
+import { useEstadoUrl } from "@/components/painel/useEstadoUrl";
+import { MapaMunicipios } from "@/components/familias/MapaMunicipios";
+import { campo as campoUrl, tiposUrl } from "@/lib/painel/estadoUrl";
+import { NAO_SE_APLICA, type ValorClassificavel } from "@/lib/painel/escalas";
 import {
   CAMADAS,
   COLUNAS_SENSIBILIDADE,
@@ -10,10 +14,8 @@ import {
   RECORTE_PADRAO,
   REGIOES,
   ROTULO_CONFIABILIDADE,
-  corDaEscala,
   faixasDependencia,
   fontesDaCamada,
-  limitesDaEscala,
   linhaSensibilidade,
   linhasDoPerfil,
   maioresDaCamada,
@@ -26,9 +28,18 @@ import {
   type Recorte,
 } from "./camadas";
 
-type Malha = { viewBox: string; transform: string; paths: Record<string, string> };
-type Carga = { municipios: Municipio[]; malha: Malha | null; ufs: Malha | null };
-type Estado = { fase: "parado" | "carregando" | "erro" } | ({ fase: "pronto" } & Carga);
+type Estado = { fase: "parado" | "carregando" | "erro" } | { fase: "pronto"; municipios: Municipio[] };
+
+/**
+ * Recorte no endereço, com os mesmos nomes de parâmetro da vista antiga (?cgcam=, ?cgregiao=, ?cgconf=), para o link antigo, que o
+ * redirecionamento repassa com a consulta, reabrir o mesmo recorte; ?cgmun= guarda os municípios do perfil (até cinco).
+ */
+const ESQUEMA = {
+  cgcam: campoUrl(tiposUrl.opcao(IDS_CAMADAS), "p60"),
+  cgregiao: campoUrl(tiposUrl.opcao(["todas", ...REGIOES]), "todas"),
+  cgconf: campoUrl(tiposUrl.opcao(["exclui_baixa", "todas"]), RECORTE_PADRAO.conf),
+  cgmun: campoUrl(tiposUrl.lista(tiposUrl.texto({ max: 7 }), { max: 5 }), []),
+};
 
 const GOLD = "/obs/data/gold";
 const POR_PAGINA = 50;
@@ -47,54 +58,68 @@ async function json<T>(caminho: string): Promise<T> {
 /**
  * Explorador municipal do painel "Consignado e aposentados": o mapa por camada, os filtros de região e de confiabilidade, a lista dos 25
  * maiores, a tabela paginada com busca e arquivo, a distribuição por faixa de dependência, a sensibilidade na região e o perfil de até
- * cinco municípios lado a lado. A gold municipal (6,8 MB) e a malha (1,4 MB) só são pedidas quando o leitor aciona o botão: nada disso
- * entra no HTML. Antes da carga, o resumo do recorte padrão vem do servidor (a tabela equivalente da figura).
+ * cinco municípios lado a lado. A gold municipal (6,8 MB) e a malha do IBGE (1,3 MB) só são pedidas quando o leitor aciona o botão, ou
+ * quando o endereço já traz um recorte (medida, região, confiabilidade ou município): nada disso entra no HTML. Antes da carga, o
+ * resumo do recorte padrão vem do servidor (a tabela equivalente da figura). Medida, região, confiabilidade e municípios do perfil
+ * ficam no endereço, e o voltar do navegador desfaz cada escolha.
  */
 export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao }: { ano: number; scr: string; total: number; faixasPadrao: { rotulo: string; n: number }[]; basePadrao: number }) {
   const [estado, setEstado] = useState<Estado>({ fase: "parado" });
-  const [cam, setCam] = useState<IdCamada>("p60");
-  const [recorte, setRecorte] = useState<Recorte>(RECORTE_PADRAO);
+  const [url, setUrl] = useEstadoUrl(ESQUEMA);
+  const cam: IdCamada = url.cgcam;
+  const recorte = useMemo<Recorte>(() => ({ regiao: url.cgregiao, conf: url.cgconf }), [url.cgregiao, url.cgconf]);
+  const perfis = url.cgmun;
   const [busca, setBusca] = useState("");
   const [pagina, setPagina] = useState(0);
-  const [perfis, setPerfis] = useState<string[]>([]);
   const refPerfil = useRef<HTMLHeadingElement>(null);
   const refBusca = useRef<HTMLInputElement>(null);
 
   async function carregar() {
     setEstado({ fase: "carregando" });
     try {
-      const [mun, malha, ufs] = await Promise.all([
-        json<{ municipios: Municipio[] }>(`${GOLD}/consignado_mun.json`),
-        json<Malha>(`${GOLD}/penetracao_malha.json`).catch(() => null),
-        json<Malha>("/obs/geo/uf.json").catch(() => null),
-      ]);
-      setEstado({ fase: "pronto", municipios: mun.municipios, malha, ufs });
+      const mun = await json<{ municipios: Municipio[] }>(`${GOLD}/consignado_mun.json`);
+      setEstado({ fase: "pronto", municipios: mun.municipios });
     } catch {
       setEstado({ fase: "erro" });
     }
   }
 
+  // o endereço já pede um recorte ou um município: a carga não espera o botão
+  const pedeCarga = url.cgcam !== "p60" || url.cgregiao !== RECORTE_PADRAO.regiao || url.cgconf !== RECORTE_PADRAO.conf || url.cgmun.length > 0;
+  useEffect(() => {
+    if (pedeCarga && estado.fase === "parado") void carregar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- carrega uma vez, quando o endereço pede
+  }, [pedeCarga, estado.fase]);
+
   const municipios = estado.fase === "pronto" ? estado.municipios : null;
   const base = useMemo(() => (municipios ?? []).filter((m) => noRecorte(m, recorte)), [municipios, recorte]);
-  const porCodigo = useMemo(() => new Map(base.map((m) => [m.c, m])), [base]);
-  const limites = useMemo(() => limitesDaEscala(base, cam), [base, cam]);
+  // o mapa mostra a região inteira: quem sai do recorte só pela confiabilidade baixa fica em cinza liso, sem valor
+  const daRegiao = useMemo(() => (municipios ?? []).filter((m) => recorte.regiao === "todas" || m.reg === recorte.regiao), [municipios, recorte.regiao]);
+  const idsDoMapa = useMemo(() => daRegiao.map((m) => m.c), [daRegiao]);
+  const valoresDoMapa = useMemo(() => {
+    const v: Record<string, ValorClassificavel> = {};
+    for (const m of daRegiao) v[m.c] = noRecorte(m, recorte) ? m[cam] : NAO_SE_APLICA;
+    return v;
+  }, [daRegiao, recorte, cam]);
+  const foraPorConfiabilidade = daRegiao.length - base.length;
   const maiores = useMemo(() => maioresDaCamada(base, cam), [base, cam]);
   const filtrados = useMemo(() => {
     const q = semAcento(busca.trim());
     return q ? base.filter((m) => semAcento(`${m.n} ${m.uf}`).includes(q)) : base;
   }, [base, busca]);
+  const porCodigoDaRegiao = useMemo(() => new Map(daRegiao.map((m) => [m.c, m])), [daRegiao]);
   const C = CAMADAS[cam];
   const fontes = fontesDaCamada(cam, { ano, scr });
 
   function abrirPerfil(codigo: string) {
-    setPerfis((p) => [codigo, ...p.filter((c) => c !== codigo)].slice(0, MAX_PERFIS));
+    setUrl((a) => ({ cgmun: [codigo, ...a.cgmun.filter((c) => c !== codigo)].slice(0, MAX_PERFIS) }));
     // o foco vai ao título do perfil: quem escolheu pelo teclado ou leitor de tela chega ao resultado
     requestAnimationFrame(() => refPerfil.current?.focus());
   }
 
   if (estado.fase !== "pronto") {
     return (
-      <div data-mapa-legado="" data-explorador-municipios={estado.fase} className="border border-linha bg-superficie p-5">
+      <div data-grafico="mapa-municipios" data-explorador-municipios={estado.fase} className="border border-linha bg-superficie p-5">
         <p className="t-corpo max-w-prose2 text-carvao">
           O mapa, a busca por nome e o perfil de cada um dos {n(total)} municípios usam um arquivo de cerca de 8 MB, que só é baixado quando você pede.
         </p>
@@ -119,21 +144,19 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
     );
   }
 
-  const { malha, ufs } = estado;
   const ultima = Math.max(0, Math.ceil(filtrados.length / POR_PAGINA) - 1);
   const pag = Math.min(pagina, ultima);
   const daPagina = filtrados.slice(pag * POR_PAGINA, (pag + 1) * POR_PAGINA);
   const faixas = faixasDependencia(base);
   const selecionados = perfis.map((c) => estado.municipios.find((m) => m.c === c)).filter((m): m is Municipio => Boolean(m));
   const sensiveis = recorte.regiao === "todas" ? [] : maioresSensibilidade(base);
-  const legenda = limites ? [limites.lo, (limites.lo + limites.hi) / 2, limites.hi] : [];
 
   function baixarCsv() {
     const cab = [
       `# ${C.rotulo}`, `# Natureza: ${C.natureza.toLowerCase()}`, `# Fonte e referência: ${fontes}`, `# Unidade: ${C.unidade}`,
       ...(C.ressalva ? [`# Ressalva: ${C.ressalva}`] : []),
       `# Região: ${recorte.regiao}; confiabilidade: ${recorte.conf === "todas" ? "todas" : "sem confiabilidade baixa"}; busca: ${busca}`,
-      "# Valores sem saturação por percentis; célula vazia indica medida indisponível.",
+      "# Valor de cada município, sem agrupar em classes; célula vazia indica medida indisponível.",
       "municipio;uf;valor;unidade;confiabilidade",
     ];
     const esc = (t: string) => (/[;"\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t);
@@ -147,14 +170,14 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
   }
 
   return (
-    <div data-mapa-legado="" data-explorador-municipios="pronto" className="space-y-6">
+    <div data-explorador-municipios="pronto" className="space-y-6">
       <Controles
         rotulo="Recorte do mapa e da tabela de municípios"
         resumo={`${n(base.length)} municípios no recorte`}
       >
         <label className="block min-w-0 text-sm text-carvao">
           Medida
-          <select value={cam} onChange={(e) => { setCam(e.target.value as IdCamada); setPagina(0); }} className={campo}>
+          <select value={cam} onChange={(e) => { setUrl({ cgcam: e.target.value as IdCamada }); setPagina(0); }} className={campo}>
             {IDS_CAMADAS.map((id) => (
               <option key={id} value={id}>{CAMADAS[id].rotulo}</option>
             ))}
@@ -162,7 +185,7 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
         </label>
         <label className="block text-sm text-carvao">
           Região
-          <select value={recorte.regiao} onChange={(e) => { setRecorte({ ...recorte, regiao: e.target.value }); setPagina(0); }} className={campo}>
+          <select value={recorte.regiao} onChange={(e) => { setUrl({ cgregiao: e.target.value as typeof url.cgregiao }); setPagina(0); }} className={campo}>
             <option value="todas">Todas</option>
             {REGIOES.map((r) => (
               <option key={r}>{r}</option>
@@ -171,7 +194,7 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
         </label>
         <label className="block text-sm text-carvao">
           Confiabilidade
-          <select value={recorte.conf} onChange={(e) => { setRecorte({ ...recorte, conf: e.target.value as Recorte["conf"] }); setPagina(0); }} className={campo}>
+          <select value={recorte.conf} onChange={(e) => { setUrl({ cgconf: e.target.value as Recorte["conf"] }); setPagina(0); }} className={campo}>
             <option value="exclui_baixa">Sem confiabilidade baixa</option>
             <option value="todas">Incluir todas</option>
           </select>
@@ -180,40 +203,24 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="min-w-0">
-          {malha ? (
-            <svg viewBox={malha.viewBox} role="group" aria-label={`Mapa municipal: ${C.rotulo}`} className="block h-auto w-full">
-              <g transform={malha.transform}>
-                {Object.entries(malha.paths).map(([cod, d]) => {
-                  const m = porCodigo.get(cod);
-                  if (!m) return <path key={cod} d={d} fill="var(--cor-papel)" />;
-                  const marcado = perfis.includes(cod);
-                  return (
-                    <path key={cod} d={d} fill={corDaEscala(m[cam], limites, C.paleta)} stroke={marcado ? "var(--cor-carvao)" : undefined} strokeWidth={marcado ? 1200 : undefined} className="cursor-pointer" onClick={() => abrirPerfil(cod)}>
-                      <title>{`${m.n} (${m.uf}): ${valorDaCamada(m, cam)}. Confiabilidade ${ROTULO_CONFIABILIDADE[m.sel]}.`}</title>
-                    </path>
-                  );
-                })}
-                {ufs && Object.entries(ufs.paths).map(([uf, d]) => <path key={uf} d={d} fill="none" stroke="var(--cor-carvao)" strokeOpacity={0.45} strokeWidth={500} pointerEvents="none" />)}
-              </g>
-            </svg>
-          ) : (
-            <p className="t-meta text-carvao">A malha municipal não pôde ser carregada. A lista e a tabela abaixo trazem os mesmos municípios e valores.</p>
-          )}
-          <p className="t-meta mt-2 text-carvao-muted">
-            {C.rotulo} · {C.unidade} · {C.natureza.toLowerCase()} · {fontes}. Escala contínua, saturada nos percentis 5 e 95 do recorte.
-          </p>
-          <ul className="t-meta mt-1 flex flex-wrap gap-x-5 gap-y-1 text-carvao" aria-label="Referências numéricas da escala de cor">
-            {legenda.length === 0 && <li>Sem dados no recorte</li>}
-            {legenda.map((v, i) => (
-              <li key={i} className="inline-flex items-center gap-1.5">
-                <span aria-hidden="true" className="inline-block h-3 w-5 border border-linha" style={{ background: corDaEscala(v, limites, C.paleta) }} />
-                {i === 0 ? "Até " : i === 2 ? "A partir de " : ""}
-                {valorDaCamada({ [cam]: v } as Pick<Municipio, IdCamada>, cam)}
-              </li>
-            ))}
-          </ul>
+          <MapaMunicipios
+            chave={recorte.regiao}
+            paisInteiro={recorte.regiao === "todas"}
+            titulo={`${C.rotulo}, por município`}
+            ids={idsDoMapa}
+            valores={valoresDoMapa}
+            unidade={C.unidade}
+            casas={C.casas}
+            periodo={fontes}
+            paleta={C.paleta}
+            selecionado={perfis[0] ?? null}
+            // "Limpar seleção" e o segundo clique no polígono chegam como null: sai do perfil o município que o mapa destacava
+            onSelecionar={(c) => { if (c) abrirPerfil(c); else setUrl((a) => ({ cgmun: a.cgmun.slice(1) })); }}
+            detalheRegiao={(c) => { const m = porCodigoDaRegiao.get(c); return m ? (noRecorte(m, recorte) ? `confiabilidade ${ROTULO_CONFIABILIDADE[m.sel]}` : "fora do recorte: confiabilidade baixa") : null; }}
+            nota={`${C.natureza === "OBSERVADO" ? "Observado" : C.natureza === "CALCULADO" ? "Calculado" : "Estimado"}. ${C.ressalva ? `${C.ressalva} ` : ""}${foraPorConfiabilidade > 0 ? `Em cinza liso, rotulados “não se aplica”: ${n(foraPorConfiabilidade)} municípios fora do recorte por confiabilidade baixa. ` : ""}Hachura: município sem a medida na publicação, nunca zero.`}
+          />
           <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">
-            Azul petróleo para envelhecimento e Previdência, bronze para exposição estimada ao consignado: envelhecer não é risco, e a cor não deve sugerir que seja. Toque ou clique num município para abrir o perfil; pelo teclado, use a lista ao lado ou a tabela.
+            Azul petróleo para envelhecimento e Previdência, bronze para exposição estimada ao consignado: envelhecer não é risco, e a cor não deve sugerir que seja. Toque ou clique num município para abrir o perfil; pelo teclado, use a busca do mapa, a lista ao lado ou a tabela.
           </p>
         </div>
         <div className="min-w-0">
@@ -252,7 +259,7 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
           Dados do mapa: {n(base.length)} municípios no recorte
         </summary>
         <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">
-          {C.ressalva ? `${C.ressalva} ` : ""}Mesma medida e mesmos filtros do mapa. Busque município ou UF e escolha o nome para abrir o perfil. A cor satura nos percentis 5 e 95; os valores da tabela e do arquivo não são limitados.
+          {C.ressalva ? `${C.ressalva} ` : ""}Mesma medida e mesmos filtros do mapa. Busque município ou UF e escolha o nome para abrir o perfil. O mapa agrupa os valores em cinco classes; a tabela e o arquivo trazem o valor de cada município.
         </p>
         <div className="mt-3 flex flex-wrap items-end gap-3">
           <label className="block min-w-[14rem] flex-1 text-sm text-carvao">
@@ -309,13 +316,13 @@ export function ExploradorMunicipios({ ano, scr, total, faixasPadrao, basePadrao
             <ul className="mt-3 flex flex-wrap items-center gap-2">
               {selecionados.map((m) => (
                 <li key={m.c}>
-                  <button type="button" className={botao} onClick={() => setPerfis((p) => p.filter((c) => c !== m.c))} aria-label={`Remover ${m.n} (${m.uf}) da comparação`}>
+                  <button type="button" className={botao} onClick={() => setUrl((a) => ({ cgmun: a.cgmun.filter((c) => c !== m.c) }))} aria-label={`Remover ${m.n} (${m.uf}) da comparação`}>
                     {m.n} <span className="ml-1 text-mineral">{m.uf}</span> <span aria-hidden="true" className="ml-2">×</span>
                   </button>
                 </li>
               ))}
               {selecionados.length > 1 && (
-                <li><button type="button" className={botao} onClick={() => setPerfis([])}>Limpar comparação</button></li>
+                <li><button type="button" className={botao} onClick={() => setUrl({ cgmun: [] })}>Limpar comparação</button></li>
               )}
               <li><button type="button" className={botao} onClick={() => { const d = refBusca.current?.closest("details"); if (d) d.open = true; refBusca.current?.focus(); }}>Voltar à busca de municípios</button></li>
             </ul>
