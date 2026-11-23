@@ -1,0 +1,518 @@
+{
+  "slug": "pague-menos",
+  "grupo": "Pague Menos (Empreendimentos Pague Menos S.A.)",
+  "resumo": "Rede de farmácias com sede no Ceará, dona das bandeiras Pague Menos e Extrafarma, com 1.689 lojas no fim de 2025 e maior presença no Norte e Nordeste.",
+  "controlador": {
+    "nome": "Francisco Deusmar de Queirós",
+    "nota": "Único acionista marcado como controlador no Formulário de Referência de 2026 (versão 11), com 25,7% das ações. Outras seis pessoas físicas, que venderam ações ao lado dele na oferta de março de 2026, têm entre 2,3% e 6,4% cada uma e não aparecem como controladoras. Veículos da gestora General Atlantic somam cerca de 8,9% (soma nossa de onze veículos).",
+    "fonte": {
+      "titulo": "CVM, Formulário de Referência 2026 de Empreendimentos Pague Menos S.A., versão 11, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161270)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "pague-menos",
+  "bandeiras": [
+    {
+      "nome": "Pague Menos",
+      "formato": "farmácia",
+      "nota": "No 4T25, crescimento nas mesmas lojas de 18,0% e venda média mensal das lojas maduras de R$ 910 mil (release 4T25, p. 7 e 8)."
+    },
+    {
+      "nome": "Extrafarma",
+      "formato": "farmácia",
+      "nota": "Comprada da Ultrapar, com fechamento em 01/08/2022. No 4T25, crescimento nas mesmas lojas de 21,4% e venda média mensal das lojas maduras de R$ 753 mil."
+    }
+  ],
+  "formatos": [
+    "farmácia com venda de medicamentos, higiene e beleza",
+    "consultório farmacêutico dentro da loja (Clinic Farma): 1.181 unidades no fim de 2025 e 1.182 no 3T26",
+    "canais digitais: aplicativo, site e superapps de entrega, com retirada na loja ou entrega"
+  ],
+  "regioes": {
+    "texto": "Presente nos 26 estados e no Distrito Federal (IRTT, p. 38) e em 408 municípios no fim de 2025. A companhia informa presença em 85% dos municípios com mais de 50 mil habitantes do Norte e do Nordeste e participação de mercado de 22,2% no Nordeste e 6,9% no país no 4T25, com dados da IQVIA (release 4T25, p. 6 e 9).",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas próprias (não há franquias, segundo o IRTT, p. 38)",
+    "digital: 19,4% da venda em 2025 e 24,6% no 3T26; o aplicativo próprio concentra dois terços da venda do comércio eletrônico no 3T26"
+  ],
+  "clientes": "Consumidor final, com foco declarado no cliente de uso contínuo de medicamentos (a companhia chama de cliente de cuidado contínuo): 5,8 milhões no fim de 2025, de 22,2 milhões de clientes ativos. A companhia descreve seu público como a classe média expandida (fato relevante de 01/08/2022).",
+  "fontes_de_receita": [
+    {
+      "nome": "Medicamentos de marca",
+      "descricao": "Cresceram 25,2% no 4T25, segundo a companhia impulsionados pelos análogos de GLP-1, que foram 9,1% da venda no 4T25 e 8,5% no 3T26."
+    },
+    {
+      "nome": "Genéricos",
+      "descricao": "Cresceram 28,2% no 4T25; a companhia cita o programa Farmácia Popular, que chegou a 4,4% da venda total no trimestre."
+    },
+    {
+      "nome": "Medicamentos isentos de prescrição (OTC)",
+      "descricao": "Categoria de menor crescimento no 3T26, segundo a companhia por temporada mais branda de infecções respiratórias."
+    },
+    {
+      "nome": "Higiene e beleza",
+      "descricao": "Cresceu 15,5% no 4T25. As marcas exclusivas da rede venderam R$ 1 bilhão em 2025 e foram 13,7% do autosserviço no 3T26."
+    },
+    {
+      "nome": "Serviços de saúde",
+      "descricao": "Atendimentos e vacinação nos consultórios farmacêuticos: 5,5 milhões de atendimentos em 2025."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "RD Saúde (Raia e Drogasil)",
+      "slug": "rd-saude"
+    },
+    {
+      "nome": "DPSP (Drogaria São Paulo e Pacheco)",
+      "slug": "dpsp"
+    },
+    {
+      "nome": "Panvel",
+      "slug": "panvel"
+    },
+    {
+      "nome": "Farmácia São João",
+      "slug": null
+    },
+    {
+      "nome": "Mercado Livre (venda de medicamentos em marketplace, tema de entrevista do presidente da companhia citada em comunicado de 05/11/2026)",
+      "slug": "mercado-livre"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Consolidado Pague Menos e Extrafarma. Em 2022 e 2023 os releases divulgam o indicador separado por bandeira e ele não foi registrado. No release do 4T25, a tabela da p. 3 e o gráfico da p. 7 trazem 17,9% no ano e 18,6% no 4T25; a mensagem da administração (p. 4) cita 17,4% e o texto da p. 7 cita 18,3% no 4T25, valores que o gráfico atribui às lojas maduras. Registramos a tabela. Trimestres de 2026: 13,0% (1T), 8,0% (2T) e 5,6% (3T).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 13.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 17.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 5.6,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 3 e 7 (2024 e 2025); release 3T26, p. 3",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas nas lojas maduras",
+      "unidade": "%",
+      "nota": "Lojas com três anos ou mais, conforme o perfil etário do release (p. 6). Reajuste regulado de medicamentos (CMED) informado no gráfico: 4,8% em 2024 e 3,8% em 2025.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 12.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 17.4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 7",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Fim do período. 2021: só a bandeira Pague Menos, antes da compra da Extrafarma. 2022: soma nossa de 1.270 lojas Pague Menos e 376 Extrafarma. O IRTT traz os mesmos números para 2024 e 2025 (p. 38).",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 1165,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 1646,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1632,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1649,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1689,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 1705,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 3 e 6 (2024 e 2025); release 4T22, p. 3 (2021 e 2022); release 4T23, p. 3 e 6 (2023); release 3T26, p. 3 e 4",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas",
+      "unidade": "lojas",
+      "nota": "No ano; no 3T26, aberturas do trimestre (46 em 12 meses). 2021, 2022 e 2024 não lidos.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 20,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 50,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 14,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 6 (2025); release 4T23, p. 6; release 3T26, p. 4",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "No ano; no 3T26, fechamentos do trimestre.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 34,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 10,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 6 (2025); release 4T23, p. 6; release 3T26, p. 4",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação dos canais digitais na receita bruta",
+      "unidade": "%",
+      "nota": "2025: valor do gráfico do release (p. 11), igual ao cálculo com os dados do IRTT (R$ 3.108 milhões de comércio eletrônico em R$ 16.049 milhões). Venda digital de R$ 3,1 bilhões em 2025, alta de 55%.",
+      "valores": [
+        {
+          "periodo": "4T24",
+          "valor": 16.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 19.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 21.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 24.6,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 3 e 11; release 3T26, p. 3; IRTT, p. 113",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda média mensal por loja",
+      "unidade": "R$ mil",
+      "nota": "Receita bruta mensal média por loja no trimestre. O release do 3T26 reapresenta o 4T25 como R$ 856 mil.",
+      "valores": [
+        {
+          "periodo": "4T24",
+          "valor": 727,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 855,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 868,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 3 e 8; release 3T26, p. 3",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda das lojas físicas",
+      "unidade": "R$ milhões",
+      "nota": "Segundo o IRTT; somada ao comércio eletrônico (R$ 3.108 milhões) dá a venda total de R$ 16.049 milhões. Venda por loja de R$ 8 milhões no ano, arredondada pela fonte.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 12941,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "O IRTT traz 28.207 em 2025 e 27.191 em 2024; o release traz 28.207 no 4T25 e 26.057 no 4T24 (27.191 é o número do 3T25). Registramos o release para 2024.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 26057,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 28207,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 28161,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+        "pagina": "p. 3; release 3T26, p. 3; IRTT, p. 38",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2022-08",
+      "tipo": "aquisicao",
+      "descricao": "Fechamento, em 01/08/2022, da compra da Extrafarma (Imifarma Produtos Farmacêuticos e Cosméticos S.A.) da Ultrapar: 99,07% das ações, valor total ajustado de R$ 737,8 milhões, com metade paga no ato e duas parcelas em agosto de 2023 e agosto de 2024.",
+      "fonte": {
+        "titulo": "Pague Menos, Fato Relevante: fechamento da aquisição da Extrafarma (01/08/2022)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1002261&numSequencia=526995&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "agosto de 2022",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "Oferta pública de ações: 35 milhões de ações novas e 35 milhões vendidas pelo controlador e por outros seis acionistas pessoas físicas, a R$ 6,55 por ação, preço aprovado em 10/03/2026. A parte primária levou R$ 229,25 milhões ao capital social. O mesmo documento cita aumento de capital privado aprovado em 16/12/2025 e homologado em 24/02/2026.",
+      "fonte": {
+        "titulo": "Pague Menos, Fato Relevante: aprovação do preço por ação da oferta (10/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1488644&numSequencia=1013350&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "março de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Em resposta a ofício da CVM, a companhia esclareceu entrevista do presidente, Jonas Marques, sobre a regulação da venda de medicamentos com receita em marketplaces e sobre a relação entre juros e abertura de lojas (custo de R$ 1,7 milhão a R$ 2 milhões por loja).",
+      "fonte": {
+        "titulo": "Pague Menos, Comunicado ao Mercado: esclarecimentos sobre notícia veiculada na mídia (05/11/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1585197&numSequencia=1109903&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "periodo": "novembro de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do IRTT (R$ 16.049 milhões em 2025, dado fornecido pela empresa, nota 1) é a receita bruta do release (R$ 16.049,1 milhões), com os tributos sobre a venda. A receita líquida da CVM é de R$ 14.906,4 milhões, R$ 1.143 milhões a menos (a venda do ranking é 7,7% maior). Não há franquias nem venda de terceiros na conta. O release apresenta resultados sem a norma de arrendamentos (IFRS 16) e ajustados por itens não recorrentes, com margens sobre a receita bruta; a gold usa as demonstrações da CVM, com a norma e sobre a receita líquida. Por isso o lucro de 2025 é R$ 286,6 milhões no release (ajustado, sem minoritários) e R$ 260,9 milhões na gold. A dívida líquida do release (R$ 1.827 milhões no fim de 2025) soma recebíveis antecipados; a da gold (R$ 1.547 milhões) não. Em 2021 a gold usa o balanço individual, anterior à Extrafarma.",
+  "analise": {
+    "crescimento": "A receita líquida de 2025 foi de R$ 14,9 bilhões, 17,9% acima de 2024 (CVM); a receita bruta chegou a R$ 16,0 bilhões, alta de 18,3%. O avanço veio quase todo das lojas existentes: a venda nas mesmas lojas, as abertas há mais de um ano, subiu 17,9%, com reajuste regulado de medicamentos de 3,8%, e a rede passou de 1.649 para 1.689 unidades (50 aberturas e 10 fechamentos). A companhia decompõe o crescimento em 7,9% de atendimentos e 9,6% de tíquete médio e o atribui ao foco no cliente de uso contínuo, aos análogos de GLP-1 (remédios contra diabetes e obesidade), às ações promocionais e aos canais digitais. Em 2026 o ritmo caiu: as mesmas lojas cresceram 13,0% no primeiro trimestre, 8,0% no segundo e 5,6% no terceiro. A administração cita base de comparação mais alta, ambiente de mercado mais adverso e contribuição menor do GLP-1.",
+    "rentabilidade_caixa": "A margem bruta ficou em 31,95% da receita líquida em 2025 (31,85% em 2024) e a margem operacional subiu de 4,54% para 5,78%; a companhia atribui o ganho à diluição das despesas de venda pelo crescimento. O resultado financeiro (juros recebidos menos pagos) foi negativo em R$ 686 milhões, ante R$ 572 milhões, o que a administração relaciona à alta dos juros. O lucro líquido passou de R$ 103 milhões para R$ 261 milhões. O caixa das operações caiu de R$ 384,5 milhões para R$ 200 milhões e os investimentos subiram de R$ 102 milhões para R$ 261 milhões. A dívida líquida sem arrendamentos foi de R$ 1,27 bilhão para R$ 1,55 bilhão. Até setembro de 2026 o lucro somou R$ 217 milhões (R$ 131 milhões um ano antes) e a dívida líquida ficou em R$ 1,48 bilhão, após a oferta de ações de março.",
+    "acompanhar": {
+      "indicador": "Vendas nas mesmas lojas em relação ao reajuste regulado de medicamentos e venda média mensal por loja",
+      "reforca": "Mesmas lojas estabilizando acima do reajuste, com venda média por loja ainda em alta (R$ 868 mil no 3T26) e margem operacional mantida, indicaria que o ganho de produtividade das lojas de 2024 e 2025 se sustenta sem o impulso do GLP-1.",
+      "enfraquece": "Mesmas lojas caindo para perto do reajuste, ou ciclo de caixa em alta (72 dias no 3T26, ante 62 no 4T25) consumindo o caixa das operações, indicaria que a melhora dependia da fase de crescimento acelerado."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Vendas nas mesmas lojas consolidadas de 2021 a 2023: os releases de 2022 e 2023 divulgam o indicador por bandeira; 2021 não foi lido.",
+    "Aberturas e fechamentos de 2021, 2022 e 2024: releases desses anos não lidos nesse ponto.",
+    "Participação anual do digital antes de 2025 e mix de vendas por categoria em percentuais: o gráfico do release não pôde ser lido com segurança no texto extraído.",
+    "Distribuição das lojas por região e por estado: gráfico não lido com segurança.",
+    "Fatos relevantes de setembro e outubro de 2025 sobre oferta pública de ações e o de 16/12/2025 sobre aumento de capital privado: constam do índice da CVM, mas não foram abertos nesta sessão."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 38, 68, 69, 85, 112, 113 e 120",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Release de Resultados 4T25 e 2025, versão 2 (03/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484694&numSequencia=1009400&numVersao=2",
+      "pagina": "p. 2 a 17",
+      "periodo": "4T25 e 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Release de Resultados 3T26 (04/11/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1583957&numSequencia=1108663&numVersao=1",
+      "pagina": "p. 2 a 9 e 16 a 18",
+      "periodo": "3T26 e janeiro a setembro de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Release de Resultados 4T23 e 2023 (04/03/2024)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1202660&numSequencia=727386&numVersao=1",
+      "pagina": "p. 3 e 6",
+      "periodo": "4T23 e 2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Release de Resultados 4T22 e 2022 (06/03/2023)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1069300&numSequencia=594030&numVersao=1",
+      "pagina": "p. 3",
+      "periodo": "4T22 e 2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Fato Relevante: fechamento da aquisição da Extrafarma (01/08/2022)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1002261&numSequencia=526995&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "agosto de 2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Fato Relevante: oferta pública de distribuição primária e secundária de ações (02/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484352&numSequencia=1009058&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "março de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Fato Relevante: aprovação do preço por ação da oferta (10/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1488644&numSequencia=1013350&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "março de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Pague Menos, Comunicado ao Mercado: esclarecimentos sobre notícia veiculada na mídia (05/11/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1585197&numSequencia=1109903&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "periodo": "novembro de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, Formulário de Referência 2026 de Empreendimentos Pague Menos S.A., versão 11, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161270)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, DFP 2021 a 2025 e ITR do 3T26, extraídos em public/varejo/gold/empresas.json",
+      "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-dfp",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2021 a 2025 e janeiro a setembro de 2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

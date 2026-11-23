@@ -1,0 +1,366 @@
+{
+  "slug": "grupo-boticario",
+  "grupo": "Grupo Boticário",
+  "resumo": "Fabricante e varejista de cosméticos e perfumaria com sede no Paraná, dono de O Boticário e outras marcas, com 3.898 lojas, a maioria franquias.",
+  "controlador": {
+    "nome": null,
+    "nota": "Capital fechado, controle nacional e conselho consultivo, segundo o IRTT (p. 38). A composição societária não foi verificada em documento aberto nesta sessão.",
+    "fonte": {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 38",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "O Boticário",
+      "formato": "lojas próprias e franqueadas, venda direta por revendedores, comércio eletrônico",
+      "nota": "Principal marca; a divisão de lojas e vendas por marca não é pública."
+    },
+    {
+      "nome": "Eudora",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Quem Disse, Berenice?",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Vult",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "O.U.i",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Dr. Jones",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Truss",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Au.migos Pets",
+      "formato": "",
+      "nota": ""
+    },
+    {
+      "nome": "Beleza na Web",
+      "formato": "comércio eletrônico multimarcas, com lojas físicas desde 2024",
+      "nota": "Em 2024 abriu seis lojas em São Paulo, Minas Gerais, Rio de Janeiro e Paraná (Reuters, 27/03/2025)."
+    }
+  ],
+  "formatos": [
+    "lojas de perfumaria e cosméticos, próprias e franqueadas",
+    "venda direta por revendedores",
+    "comércio eletrônico próprio e marketplace",
+    "distribuição a farmácias, perfumarias, lojas de departamento e redes alimentares (operação que o grupo chama de B2B)"
+  ],
+  "regioes": {
+    "texto": "Presente nos 26 estados e no Distrito Federal, com sede no Paraná (IRTT, p. 38 e 103).",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "franquias: 2.898 das 3.898 lojas no fim de 2025 (IRTT, p. 105)",
+    "lojas próprias: 1.000, pela diferença (cálculo nosso)",
+    "venda direta por revendedores (o IRTT marca 'sim' para venda direta, p. 38)",
+    "digital: comércio eletrônico e marketplace próprio e de terceiros (IRTT, p. 38 e 69)",
+    "distribuição a outros varejistas: 130 mil pontos de venda em 2024 (Reuters)"
+  ],
+  "clientes": "Consumidor final nas lojas, na venda direta e no digital; franqueados e revendedores, que compram do grupo para revender; e outros varejistas na distribuição. O grupo informou 25,7 milhões de clientes ativos e identificados em 2024 (Reuters, 27/03/2025).",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de produtos a franqueados e revendedores",
+      "descricao": "O grupo fabrica e vende às franquias e aos revendedores, que vendem ao consumidor. A receita do grupo nessa etapa não é pública; o ranking registra a venda final ao consumidor."
+    },
+    {
+      "nome": "Venda ao consumidor em lojas próprias e no comércio eletrônico",
+      "descricao": "Sem divisão pública por canal."
+    },
+    {
+      "nome": "Distribuição a outros varejistas (B2B)",
+      "descricao": "Farmácias, perfumarias, lojas de departamento e redes alimentares: 130 mil pontos de venda em 2024."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Natura (Natura e Avon)",
+      "slug": "natura"
+    },
+    {
+      "nome": "Sephora",
+      "slug": null
+    },
+    {
+      "nome": "We Pink",
+      "slug": null
+    },
+    {
+      "nome": "Redes de farmácias na categoria de higiene e beleza (RD Saúde)",
+      "slug": "rd-saude"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda total ao consumidor (sell-out de lojas próprias, franquias e canais digitais)",
+      "unidade": "R$ milhões",
+      "nota": "Dado fornecido pela empresa ao IRTT (nota 1). O valor de 2024 coincide com as 'vendas totais (GMV)' de R$ 35,7 bilhões divulgadas pelo grupo em março de 2025 (Reuters). Crescimento de 6,7% em 2025 (IRTT, p. 24). Reportagem do InfoMoney de 14/12/2024 cita R$ 30,8 bilhões em 2023, o que daria alta de 15,9% em 2024, e não os 19% informados pelo grupo; a diferença não foi esclarecida e 2023 não foi registrado.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 35700,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 38100,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 24, 25 e 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Lojas próprias e franqueadas no fim do ano. Variação de 152 lojas (p. 87); o IRTT conta 113 como expansão orgânica (p. 38 e 85) e não explica a diferença.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 3746,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 3898,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38, 85 e 87",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas franqueadas",
+      "unidade": "lojas",
+      "nota": "74,3% das lojas em 2025 (cálculo nosso). O número de 2024 não consta do ranking.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2898,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 105",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas (expansão orgânica)",
+      "unidade": "lojas",
+      "nota": "Conceito do IRTT. Fechamentos não informados.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 113,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 85",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Quadro do grupo, sem os empregados das franquias (o ranking não detalha). Venda por funcionário de R$ 1,9 milhão em 2025, não comparável à de redes só de lojas próprias porque a venda inclui a das franquias.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 20390,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20007,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Não divulgado.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação do digital na venda",
+      "unidade": "%",
+      "nota": "Não divulgado: o grupo não aparece nas tabelas de comércio eletrônico e de venda digital do IRTT (p. 113 e 115).",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 113 e 115",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2024-12",
+      "tipo": "outro",
+      "descricao": "Reportagem de 14/12/2024 informa projeto de nova fábrica em Pouso Alegre (MG), com capacidade máxima de 1 bilhão de peças por ano, expansão de 50% da capacidade de produção e projeção do grupo de chegar a R$ 50 bilhões de vendas totais ao fim do ciclo, em 2028.",
+      "fonte": {
+        "titulo": "InfoMoney, 'Do faturamento zero na pandemia à projeção de R$ 50 bi: a saga do Grupo Boticário'",
+        "url": "https://www.infomoney.com.br/business/do-faturamento-zero-na-pandemia-a-projecao-de-r-50-bi-a-saga-do-grupo-boticario/",
+        "pagina": "página única",
+        "periodo": "publicado em 14/12/2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-03",
+      "tipo": "outro",
+      "descricao": "Em 27/03/2025 o grupo divulgou vendas totais (GMV) de R$ 35,7 bilhões em 2024, alta de 19%, 25,7 milhões de clientes ativos e 130 mil pontos de venda na distribuição a outros varejistas. O presidente executivo citado é Fernando Modé.",
+      "fonte": {
+        "titulo": "InfoMoney (Reuters), 'Grupo Boticário registra vendas totais de R$ 35,7 bi em 2024, alta anual de 19%'",
+        "url": "https://www.infomoney.com.br/business/grupo-boticario-registra-vendas-totais-de-r-357-bi-em-2024-alta-anual-de-19/",
+        "pagina": "página única",
+        "periodo": "publicado em 27/03/2025; dados de 2024",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do ranking (R$ 38.100 milhões em 2025) não é a receita do grupo. O IRTT classifica as empresas com franquias pela venda total ao consumidor: soma o que o consumidor pagou (sell-out) nas lojas próprias e nas franqueadas e a venda online, com impostos (p. 31 e 32). Como 2.898 das 3.898 lojas são franquias, a maior parte desse valor passa pelo caixa dos franqueados; a receita do grupo com a venda de produtos a eles é menor e não é pública. O dado foi fornecido pela empresa (nota 1), não é estimativa, e não foi conferido com demonstrações, que o grupo não publica de forma completa. O ranking não diz se a venda dos revendedores da venda direta e a distribuição a outros varejistas entram na conta. Vendas de terceiros em marketplace ficam fora (p. 31).",
+  "analise": {
+    "crescimento": "O IRTT registra venda de R$ 38,1 bilhões em 2025, 6,7% acima dos R$ 35,7 bilhões de 2024, com dados fornecidos pela empresa. O número soma o que o consumidor pagou em lojas próprias, franquias e canais digitais. Em 2024 o grupo havia informado alta de 19% no mesmo conceito, segundo a Reuters; o ritmo de 2025 foi cerca de um terço do anterior e ficou abaixo dos 13,0% do conjunto de drogarias e perfumarias do ranking. A rede passou de 3.746 para 3.898 lojas, alta de 4%, com 113 aberturas contadas pelo IRTT como expansão orgânica. O grupo não publica vendas nas mesmas lojas nem a divisão da venda por canal ou marca, de modo que não é possível separar o efeito de lojas novas, preço e volume. Não foi localizado, nas fontes acessíveis, comunicado do grupo com os resultados de 2025 ou de 2026.",
+    "rentabilidade_caixa": "O grupo tem capital fechado e não publica demonstrações completas: margens, lucro, caixa e dívida não estão disponíveis. A evidência é operacional. Com 3.898 lojas, é a segunda maior rede em número de pontos do ranking do IRTT, e 74% delas são franquias, modelo em que o franqueado investe na loja e o grupo vende a ele os produtos que fabrica. O quadro próprio caiu 2%, para 20.007 funcionários, enquanto a venda subiu 6,7%. O grupo informou 25,7 milhões de clientes identificados em 2024 e distribuição a 130 mil pontos de venda de outros varejistas. Reportagem de dezembro de 2024 cita projeção de R$ 50 bilhões de vendas em 2028, com nova fábrica em Minas Gerais; partindo de 2025, isso pede crescimento médio de 9,5% ao ano (cálculo nosso), acima do ritmo de 2025.",
+    "acompanhar": {
+      "indicador": "Crescimento anual da venda total ao consumidor (GMV) divulgada pelo grupo e número de lojas",
+      "reforca": "Volta a um crescimento próximo de 10% ao ano, compatível com a projeção de R$ 50 bilhões em 2028, indicaria que a desaceleração de 2025 foi pontual.",
+      "enfraquece": "Novo ano com crescimento abaixo do segmento (13,0% em 2025 no IRTT) ou redução do número de lojas franqueadas indicaria perda de participação para concorrentes de perfumaria e para as farmácias."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita líquida, margens, lucro, caixa, investimentos e dívida: o grupo tem capital fechado e não publica demonstrações completas.",
+    "Controlador e composição societária: não verificados em documento aberto nesta sessão.",
+    "Vendas nas mesmas lojas, venda por canal (lojas próprias, franquias, venda direta, digital, distribuição) e por marca: não divulgados.",
+    "Venda das lojas físicas e venda por loja: n.d. no IRTT (p. 38).",
+    "Fechamentos de lojas e número de franquias em 2024: não constam do ranking.",
+    "Comunicado do grupo com os resultados de 2025 e dados de 2026: não localizados nos sites acessíveis (InfoMoney, CNN Brasil, Agência Brasil); o site do grupo não está entre os hosts liberados e não foi consultado.",
+    "A coluna da p. 38 do IRTT posterior à de lojas franqueadas traz o número 153 para o grupo; pelo cabeçalho extraído parece tratar de operações fora do Brasil, mas a leitura não foi confirmada e o dado não foi registrado."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 23, 24, 25, 26, 31, 32, 38, 68, 69, 81, 85, 87, 105 e 123",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney (Reuters), 'Grupo Boticário registra vendas totais de R$ 35,7 bi em 2024, alta anual de 19%'",
+      "url": "https://www.infomoney.com.br/business/grupo-boticario-registra-vendas-totais-de-r-357-bi-em-2024-alta-anual-de-19/",
+      "pagina": "página única",
+      "periodo": "publicado em 27/03/2025; dados de 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, 'Do faturamento zero na pandemia à projeção de R$ 50 bi: a saga do Grupo Boticário'",
+      "url": "https://www.infomoney.com.br/business/do-faturamento-zero-na-pandemia-a-projecao-de-r-50-bi-a-saga-do-grupo-boticario/",
+      "pagina": "página única",
+      "periodo": "publicado em 14/12/2024",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

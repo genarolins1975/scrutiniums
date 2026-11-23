@@ -1,0 +1,599 @@
+{
+  "slug": "natura",
+  "grupo": "Natura (Natura Cosméticos S.A.; no ranking, Natura&Co)",
+  "resumo": "Fabricante de cosméticos das marcas Natura e Avon, que vende no Brasil e na América Hispânica sobretudo por consultoras, além de lojas e canais digitais.",
+  "controlador": {
+    "nome": "Fundadores (Antônio Luiz da Cunha Seabra, Guilherme Peirão Leal e Pedro Luiz Barreiros Passos) e demais signatários do acordo de acionistas",
+    "nota": "No Formulário de Referência de 2026 (versão 6), os acionistas marcados como controladores somam cerca de 38,8% das ações (cálculo nosso: 100% menos 28,716% de outros, 0,089% em tesouraria, quatro gestores com mais de 5% e a Advent). Novo acordo de acionistas de dez anos foi assinado em 30/03/2026. A Advent International aparece com 8,0%, como parte de acordo mas não como controladora; em 01/07/2026 informou 6,6% em ações e 1,4% em derivativos.",
+    "fonte": {
+      "titulo": "CVM, Formulário de Referência 2026 de Natura Cosméticos S.A., versão 6, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161546)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "natura",
+  "bandeiras": [
+    {
+      "nome": "Natura",
+      "formato": "venda por consultoras, lojas próprias e franqueadas, comércio eletrônico",
+      "nota": "R$ 11.196 milhões de receita líquida no Brasil em 2025 e R$ 17.311 milhões na América Latina (release 4T25, p. 4)."
+    },
+    {
+      "nome": "Avon",
+      "formato": "venda por consultoras",
+      "nota": "R$ 1.809 milhões de receita líquida no Brasil em 2025. A Natura manteve a marca e as operações da Avon na América Latina; os negócios fora da região foram vendidos em 2025 e 2026."
+    },
+    {
+      "nome": "Emana Pay",
+      "formato": "plataforma financeira para consultoras",
+      "nota": "Crédito e meios de pagamento para as consultoras; 71% do crédito concedido na venda às consultoras no 3T26."
+    }
+  ],
+  "formatos": [
+    "venda direta por consultoras de beleza (a companhia chama de venda por relações)",
+    "lojas próprias e franquias da marca Natura",
+    "comércio eletrônico e venda social (canal que a companhia chama de omni/digital)"
+  ],
+  "regioes": {
+    "texto": "No Brasil, presente nos 26 estados e no Distrito Federal (IRTT, p. 38). A receita consolidada inclui a América Hispânica (México e Argentina são os mercados citados no release): em 2025, R$ 8.795 milhões de R$ 22.218 milhões de receita líquida pro forma vieram de fora do Brasil. A companhia informa participação de mercado maior no Nordeste que no restante do país (release 4T25, p. 5).",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "venda direta por consultoras: R$ 11.284 milhões de receita líquida no Brasil em 2025 (84% do total do país, cálculo nosso)",
+    "omni/digital: R$ 1.211 milhões em 2025",
+    "varejo (lojas próprias e franquias): R$ 928 milhões em 2025, com 174 lojas próprias e 910 franquias no fim do ano"
+  ],
+  "clientes": "A companhia vende principalmente às consultoras, que revendem ao consumidor final: 1,508 milhão de consultoras ativas em média no Brasil em 2025. Informa também 9,4 milhões de clientes identificados no Brasil no fim de 2025.",
+  "fontes_de_receita": [
+    {
+      "nome": "Marca Natura",
+      "descricao": "R$ 17.311 milhões de receita líquida na América Latina em 2025 (78% do total pro forma, cálculo nosso)."
+    },
+    {
+      "nome": "Marca Avon",
+      "descricao": "R$ 3.683 milhões na América Latina em 2025, em queda; a companhia relançou a marca em março de 2026."
+    },
+    {
+      "nome": "Casa & Estilo e outros",
+      "descricao": "Linhas que o release apresenta separadas das marcas Natura e Avon; no 4T25, R$ 237 milhões e R$ 51 milhões na América Latina."
+    },
+    {
+      "nome": "Serviços financeiros às consultoras (Emana Pay)",
+      "descricao": "Crédito próprio e pagamentos; volume de pagamentos de R$ 13,7 bilhões no 3T26. A carteira é financiada em parte por fundo de recebíveis (FIDC) de R$ 1.450 milhões."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Grupo Boticário",
+      "slug": "grupo-boticario"
+    },
+    {
+      "nome": "Sephora",
+      "slug": null
+    },
+    {
+      "nome": "We Pink",
+      "slug": null
+    },
+    {
+      "nome": "Redes de farmácias na categoria de higiene e beleza (RD Saúde)",
+      "slug": "rd-saude"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas (lojas Natura, Brasil)",
+      "unidade": "%",
+      "nota": "Refere-se só ao canal de varejo, que foi 7% da receita do Brasil em 2025; não mede a venda por consultoras. No 4T25 o indicador foi de 1,4%; de janeiro a setembro de 2026, de 2,2% negativos.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 13.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 5.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": -2.0,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas (Brasil)",
+      "unidade": "lojas",
+      "nota": "Lojas próprias mais franquias no fim do período. O IRTT registra 1.080 lojas em 2025 e 1.008 em 2024 (p. 38); o release traz 1.084 em 2025.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 1008,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1084,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 1125,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas próprias (Brasil)",
+      "unidade": "lojas",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 145,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 174,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 203,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Franquias (Brasil)",
+      "unidade": "lojas",
+      "nota": "O formato antigo de franquia ('Aqui tem Natura') migra para um novo modelo de contrato ao longo de 2026, segundo a companhia.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 863,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 910,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 922,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas (Brasil)",
+      "unidade": "lojas",
+      "nota": "2025: aberturas no ano. 3T26: aberturas do trimestre (93 em 12 meses). Fechamentos não são divulgados.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 76,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 27,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (numerada 7); release 3T26, p. 6 do PDF (numerada 7)",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Consultoras ativas no Brasil (média)",
+      "unidade": "mil",
+      "nota": "Média de consultoras de beleza ativas no período.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 1576,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1508,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 1477,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita líquida da venda por consultoras (Brasil, não digital)",
+      "unidade": "R$ milhões",
+      "nota": "3T26: valor do trimestre (R$ 2.776 milhões no 3T25).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 11696,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 11284,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 2506,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação do canal omni/digital na receita líquida do Brasil",
+      "unidade": "%",
+      "nota": "Cálculo nosso: receita omni/digital dividida pela soma dos três canais (2024: 955 em 13.443; 2025: 1.211 em 13.423; 3T26: 184 em 2.920). O IRTT estima o comércio eletrônico próprio em R$ 1.200 milhões em 2025 (p. 113, nota 5).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 7.1,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 9.0,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 6.3,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+        "pagina": "p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil; release 3T26, p. 6 do PDF (página numerada 7), tabela de indicadores operacionais do Brasil",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Não informado no IRTT (n.d., p. 38).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2024-12",
+      "tipo": "outro",
+      "descricao": "Em 04/12/2024 o tribunal do processo de recuperação (Chapter 11) da Avon Products, Inc., subsidiária não operacional nos Estados Unidos, aprovou acordo com os credores e a compra, pela então controladora Natura &Co, das operações da Avon fora dos Estados Unidos por US$ 125 milhões em créditos. A Avon voltou a ser consolidada a partir dessa data. O pedido de Chapter 11, de agosto de 2024, consta do índice da CVM (documento em imagem, não lido).",
+      "fonte": {
+        "titulo": "Natura &Co Holding, Fato Relevante: tribunal aprova acordo global e compra de ativos da Avon no Chapter 11 da Avon Products, Inc. (04/12/2024, versão em inglês)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1311317&numSequencia=836043&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "dezembro de 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-03",
+      "tipo": "outro",
+      "descricao": "Em 20/03/2025 a Natura &Co Holding propôs ser incorporada pela subsidiária integral Natura Cosméticos, que voltaria a ser a holding operacional. Segundo a administração, o objetivo era alinhar a governança ao foco na América Latina e simplificar a estrutura.",
+      "fonte": {
+        "titulo": "Natura &Co Holding e Natura Cosméticos, Fato Relevante: proposta de incorporação da companhia pela Natura Cosméticos (20/03/2025)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1349478&numSequencia=874204&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "março de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-07",
+      "tipo": "outro",
+      "descricao": "Incorporação da Natura &Co Holding pela Natura Cosméticos consumada em 01/07/2025: cada ação NTCO3 foi trocada por uma ação NATU3, negociada no Novo Mercado a partir de 02/07/2025. As demonstrações anteriores da Natura Cosméticos não têm o mesmo perímetro.",
+      "fonte": {
+        "titulo": "Natura &Co Holding e Natura Cosméticos, Fato Relevante: fechamento da incorporação (23/06/2025)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1392505&numSequencia=917217&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "periodo": "junho de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-09",
+      "tipo": "desinvestimento",
+      "descricao": "Acordo de 15/09/2025 para vender ao Grupo PDC os negócios da Avon na Guatemala, Nicarágua, Panamá, Honduras, El Salvador e República Dominicana (Avon CARD), por valor nominal de US$ 1,00 mais o pagamento de um recebível de US$ 22 milhões. Venda concluída em 02/10/2025 (fato relevante dessa data).",
+      "fonte": {
+        "titulo": "Natura Cosméticos, Fato Relevante: acordo vinculante para vender Avon CARD (15/09/2025)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1423373&numSequencia=948085&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "setembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "desinvestimento",
+      "descricao": "Venda da Avon International (negócios da Avon fora da América Latina, exceto Rússia) a veículo ligado à Regent: acordo de 17/09/2025, por £ 1,00 mais pagamentos contingentes limitados a £ 60 milhões, e conclusão em 31/12/2025. A marca Avon na América Latina ficou com a Natura.",
+      "fonte": {
+        "titulo": "Natura Cosméticos, Fato Relevante: conclusão da venda da Avon International (02/01/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1462993&numSequencia=987699&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "dezembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-02",
+      "tipo": "desinvestimento",
+      "descricao": "Venda das operações da Avon na Rússia ao Grupo Arnest por RUB 2.520,4 milhões (cerca de EUR 26,9 milhões), com recursos recebidos em 17/02/2026. Segundo a companhia, a operação conclui a simplificação societária.",
+      "fonte": {
+        "titulo": "Natura Cosméticos, Fato Relevante: Natura vende Avon Rússia (19/02/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1479149&numSequencia=1003855&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "fevereiro de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "Em 30/03/2026: novo acordo de acionistas de dez anos entre os fundadores e demais signatários, anúncio da migração dos fundadores do conselho de administração para um conselho consultivo, sujeita a assembleia, e compromisso vinculante de investimento da Advent International. Em 01/07/2026 um fundo da Advent informou deter 6,6% das ações e exposição a mais 1,4% por derivativos (fato relevante de 02/07/2026).",
+      "fonte": {
+        "titulo": "Natura Cosméticos, Fato Relevante: novo acordo de acionistas, mudanças na governança e compromisso vinculante de investimento da Advent International (30/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1498085&numSequencia=1022791&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "periodo": "março de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-08",
+      "tipo": "outro",
+      "descricao": "Troca de comando aprovada em 28/08/2026: João Paulo Ferreira deixou a presidência executiva após 30/09/2026 e Alessandro Carlucci, que presidia o conselho e foi presidente executivo de 2005 a 2014, assumiu em 01/10/2026. Fábio Barbosa voltou à presidência do conselho.",
+      "fonte": {
+        "titulo": "Natura Cosméticos, Fato Relevante: mudanças no comando da companhia (31/08/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1562875&numSequencia=1087581&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "periodo": "agosto de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do IRTT (R$ 28.000 milhões em 2025) é estimativa do próprio instituto (nota 5, em itálico na fonte), sem valor de 2024 e sem cálculo de crescimento; o IRTT declara que não faz comparação entre anos com dados estimados (p. 31 e 32). O ranking classifica pela venda ao consumidor final, com impostos (p. 32). A Natura não divulga esse número: sua receita é a venda às consultoras, que revendem ao consumidor, mais lojas e comércio eletrônico. Os números divulgados para 2025 são: receita bruta pro forma de R$ 29.494 milhões na América Latina, dos quais R$ 18.430 milhões no Brasil; receita líquida pro forma de R$ 22.218 milhões (release 4T25, p. 2 e 4); e receita líquida de R$ 21.823,5 milhões nas demonstrações da CVM (gold), que só incluem a antiga controladora a partir da incorporação. A estimativa do IRTT fica R$ 6.176,5 milhões acima da receita líquida da CVM. O IRTT não informa o método nem se a estimativa cobre só o Brasil.",
+  "analise": {
+    "crescimento": "A receita líquida consolidada de 2025 foi de R$ 21,8 bilhões, 2,6% acima de 2024 (CVM). Os dois exercícios não têm o mesmo perímetro: em julho de 2025 a Natura Cosméticos incorporou a controladora Natura &Co. No release, em base pro forma, a receita líquida recuou 5,0% em reais e subiu 1,8% em moeda constante, isto é, sem o efeito do câmbio. No Brasil ficou estável, em R$ 13,4 bilhões: a marca Natura cresceu 3,5% e a Avon caiu 13,4%. A venda por consultoras recuou 3,5%, com 4,3% menos consultoras; o canal digital cresceu 26,7% e as lojas, 17,2%, com 76 aberturas. Em 2026 a receita caiu: até setembro, R$ 15,0 bilhões, 4,3% abaixo de 2025 (CVM). No terceiro trimestre o Brasil recuou 9,0%, o que a administração atribui à falta de produtos e à menor atividade de uma base de consultoras em queda.",
+    "rentabilidade_caixa": "A margem bruta foi de 66,6% em 2025 e a margem operacional caiu de 7,5% para 6,5%. O resultado financeiro (juros recebidos menos pagos) ficou negativo em R$ 867 milhões, ante R$ 545,5 milhões em 2024. As operações continuadas deram lucro de R$ 529 milhões. As descontinuadas, que segundo o release reúnem a baixa dos negócios vendidos da Avon e provisão de acordo judicial, somaram perda de R$ 2,31 bilhões, e o exercício fechou com prejuízo de R$ 1,79 bilhão. O caixa das operações foi negativo em R$ 115 milhões; a administração cita maior consumo de capital de giro, com mais estoques. Os investimentos foram de R$ 379,5 milhões. A dívida líquida sem arrendamentos terminou 2025 em R$ 3,50 bilhões e estava no mesmo nível em setembro de 2026. Até setembro de 2026 houve prejuízo de R$ 360 milhões, com margem operacional de 5,0%.",
+    "acompanhar": {
+      "indicador": "Receita líquida do Brasil na venda por consultoras e número médio de consultoras ativas",
+      "reforca": "Estabilização da base de consultoras (1,477 milhão no 3T26) e volta do crescimento da receita do Brasil, com margem operacional em alta, indicaria que a queda de 2026 veio de gargalos de abastecimento que a companhia diz estar corrigindo.",
+      "enfraquece": "Nova queda da base de consultoras e da receita do Brasil, com caixa das operações ainda negativo, indicaria perda de espaço do canal de venda direta, que responde por mais de 80% da receita no país."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Venda ao consumidor final (o conceito do ranking): a companhia não divulga; o valor do IRTT é estimativa (nota 5).",
+    "Venda de 2024 e crescimento no IRTT: n.d. na fonte.",
+    "Funcionários: n.d. no IRTT.",
+    "Séries operacionais de 2021 a 2023: releases da antiga Natura &Co Holding não lidos; os de 2025 e 2026 trazem 2024 em diante.",
+    "Fechamentos de lojas: não divulgados no release.",
+    "Vendas nas mesmas lojas para a venda por consultoras: o conceito não se aplica; a companhia divulga número e produtividade das consultoras.",
+    "Fato relevante de 12/08/2024 sobre o pedido de Chapter 11 da Avon Products: o arquivo da CVM é imagem sem texto e não foi lido; o evento foi registrado pelo fato relevante de 04/12/2024.",
+    "Operações descontinuadas: o release pro forma registra perda de R$ 2.665 milhões em 2025; as demonstrações da CVM (gold), R$ 2.314,2 milhões. O release informa que seus dados de 2025 são pro forma; a diferença não foi reconciliada por nós."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 26, 31, 32, 38, 68, 69, 87, 113 e 115",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Press Release 4T-25 (16/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1490902&numSequencia=1015608&numVersao=1",
+      "pagina": "p. 2 a 7, 14 e seções 07 e 08",
+      "periodo": "4T25 e 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Press Release 3T-26 (12/11/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588737&numSequencia=1113443&numVersao=1",
+      "pagina": "p. 2 a 7",
+      "periodo": "3T26 e janeiro a setembro de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura &Co Holding, Fato Relevante: tribunal aprova acordo global e compra de ativos da Avon no Chapter 11 da Avon Products, Inc. (04/12/2024, versão em inglês)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1311317&numSequencia=836043&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "dezembro de 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura &Co Holding e Natura Cosméticos, Fato Relevante: proposta de incorporação da companhia pela Natura Cosméticos (20/03/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1349478&numSequencia=874204&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "março de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura &Co Holding e Natura Cosméticos, Fato Relevante: fechamento da incorporação (23/06/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1392505&numSequencia=917217&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "periodo": "junho de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: acordo vinculante para vender Avon CARD (15/09/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1423373&numSequencia=948085&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "setembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: conclusão da venda da Avon CARD (02/10/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1429000&numSequencia=953712&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "outubro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: acordo vinculante para a venda da Avon International (18/09/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1424570&numSequencia=949282&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "setembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: conclusão da venda da Avon International (02/01/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1462993&numSequencia=987699&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "dezembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: Natura vende Avon Rússia (19/02/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1479149&numSequencia=1003855&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "fevereiro de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: novo acordo de acionistas, mudanças na governança e compromisso vinculante de investimento da Advent International (30/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1498085&numSequencia=1022791&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "periodo": "março de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: aquisição de participação relevante pela Advent (02/07/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1540900&numSequencia=1065606&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "julho de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Natura Cosméticos, Fato Relevante: mudanças no comando da companhia (31/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1562875&numSequencia=1087581&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "periodo": "agosto de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, Formulário de Referência 2026 de Natura Cosméticos S.A., versão 6, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161546)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, DFP 2021 a 2025 e ITR do 3T26, extraídos em public/varejo/gold/empresas.json",
+      "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-dfp",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2021 a 2025 e janeiro a setembro de 2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}
