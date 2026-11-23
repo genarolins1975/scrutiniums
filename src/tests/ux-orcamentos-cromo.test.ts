@@ -28,6 +28,8 @@ const exigir = process.env.EXIGIR_BUILD_HTML === "1";
  */
 const ENTRADAS: Record<string, string> = {
   conectividade: "/conectividade",
+  // coleção Varejo (Economia), 23/11/2026
+  varejo: "/varejo",
   federais: "/contas-publicas",
   fogo: "/territorio/queimadas",
   desastres: "/territorio/desastres",
@@ -68,9 +70,9 @@ const ENTRADAS: Record<string, string> = {
 /** Entradas dos seis observatórios e as páginas da conta, com a mesma barra comum. */
 const SUPERFICIES = ["/observatorios/familias", "/observatorios/servicos-publicos", "/observatorios/contas-publicas", "/observatorios/energia-e-infraestrutura", "/observatorios/economia", "/app/observatorios", "/app/conta"];
 /** Subpáginas e superfícies da mesma navegação. */
-const OUTRAS = ["/observatorio/credit", "/observatorio/interest-rates", "/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao", "/eficiencia-estatal/seguranca-alimentar", "/eficiencia-estatal/saude-capitais/gastos", "/eficiencia-estatal/educacao-municipal-capitais/gastos", "/eficiencia-estatal/acesso-justica", "/eficiencia-estatal/saneamento", "/eficiencia-estatal/energia-conectividade"];
+const OUTRAS = ["/varejo/brasil", "/varejo/segmentos", "/observatorio/credit", "/observatorio/interest-rates", "/territorio", "/territorio/emissoes", "/contas-publicas/execucao", "/contas-publicas/previdencia", "/gas-natural/importacao", "/gas-natural/metodologia", "/observatorio-do-credito/simulador-da-parcela", "/saneamento/esgoto", "/saneamento/prestadores/divida", "/agronegocio/producao", "/agronegocio/ambiente", "/setor-eletrico/geracao", "/setor-eletrico/pld", "/setor-eletrico/dados", "/en/setor-eletrico", "/en/setor-eletrico/geracao", "/eficiencia-estatal/seguranca-alimentar", "/eficiencia-estatal/saude-capitais/gastos", "/eficiencia-estatal/educacao-municipal-capitais/gastos", "/eficiencia-estatal/acesso-justica", "/eficiencia-estatal/saneamento", "/eficiencia-estatal/energia-conectividade"];
 /** Páginas aperitivo das mesmas coleções, sem sessão. */
-const ABERTAS = ["/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz", "/eficiencia-estatal", "/buscar"];
+const ABERTAS = ["/varejo", "/varejo/metodo", "/conectividade", "/contas-publicas/previdencia", "/contas-publicas/metodologia", "/territorio/metodologia", "/gas-natural/gas-de-cozinha", "/combustiveis/no-meu-estado", "/educacao-municipal", "/saneamento/municipio", "/saneamento/metodologia", "/agronegocio/metodologia", "/setor-eletrico/conta-de-luz", "/setor-eletrico/metodologia", "/setor-eletrico/aprenda", "/en/setor-eletrico/conta-de-luz", "/eficiencia-estatal", "/buscar"];
 
 describe("orçamento de cromo", () => {
   it("o build existe quando o CI exige", () => {

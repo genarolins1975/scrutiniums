@@ -368,6 +368,36 @@
         }
       ],
       "referenciaRotulo": "mês mais recente da Anatel"
+    },
+    "varejo": {
+      "nome": "Varejo",
+      "nomeEn": "Retail",
+      "rotulo": "Fontes: IBGE, BCB e CVM",
+      "cadencia": "mensal",
+      "nota": "O IBGE divulga a Pesquisa Mensal de Comércio cerca de um mês e meio depois do mês de referência; a Pesquisa Anual de Comércio sai uma vez por ano, e as companhias abertas entregam demonstrações à CVM a cada trimestre. A data é a da captura das séries setoriais; a das demonstrações das companhias conta como parte.",
+      "publicacao": [
+        {
+          "arquivo": "public/varejo/gold/setor.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "partes": [
+        {
+          "arquivo": "public/varejo/gold/setor.json",
+          "campo": "capturado_em"
+        },
+        {
+          "arquivo": "public/varejo/gold/empresas.json",
+          "campo": "capturado_em"
+        }
+      ],
+      "referencia": [
+        {
+          "arquivo": "public/varejo/gold/setor.json",
+          "campo": "referencia.pmc"
+        }
+      ],
+      "referenciaRotulo": "pesquisa mensal do IBGE"
     }
   }
 }

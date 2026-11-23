@@ -306,7 +306,8 @@ describe("cabeçalho móvel: a lista de observatórios dá lugar ao seletor", ()
     // fora do registro, vale o domínio declarado: a coleção que o apresenta inteiro
     expect(renderToStaticMarkup(createElement(SwitcherObservatorio, { atual: "eficiencia", caminho: "/fora-do-registro" }))).toContain('aria-label="Coleção atual: Síntese das capitais.');
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(OBSERVATORIOS.flatMap((o) => o.colecoes)).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(OBSERVATORIOS.flatMap((o) => o.colecoes)).toHaveLength(25);
     expect(DOMINIOS).toHaveLength(8);
     for (const d of DOMINIOS) expect(OBSERVATORIOS.some((o) => o.id === OBSERVATORIO_PRINCIPAL[d.id]), d.id).toBe(true);
   });

@@ -16,6 +16,7 @@ export const FRESCOR_DAS_COLECOES = {
   "/agronegocio": ["agro"],
   "/combustiveis": ["gas"],
   "/conectividade": ["conectividade"],
+  "/varejo": ["varejo"],
   "/educacao-municipal": ["educacao"],
   "/custo-de-vida": ["inflacao"],
   "/divida-das-familias": ["credito"],
@@ -30,5 +31,5 @@ export const FRESCOR_DOS_OBSERVATORIOS = {
   "territorio-e-clima": ["territorio", "agro", "saneamento", "eficiencia", "energia"],
   "contas-publicas": ["contas-federais", "previdencia", "contas-estaduais"],
   "energia-e-infraestrutura": ["energia", "gas", "saneamento"],
-  economia: ["credito", "agro"],
+  economia: ["credito", "agro", "varejo"],
 } as const satisfies Record<ObservatorioId, readonly DominioFrescorId[]>;

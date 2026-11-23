@@ -37,6 +37,8 @@ function paginasDoApp(): string[] {
 /** Páginas abertas que não são aperitivo: explicam como a plataforma mede, levam aos temas (as portas e a busca) ou cuidam da conta. */
 const FORA_DO_PRINCIPIO = [
   /^\/$/, /^\/home(\/|$)/, /^\/(termos|privacidade|imprensa|glossario)$/, /^\/sobre(\/|$)/, /^\/(entrar|cadastro)(\/|$)/, /^\/boletim\/sair/,
+  // método da coleção Varejo (23/11/2026): o endereço é /varejo/metodo, como o dono pediu; página de método como as demais
+  /^\/varejo\/metodo$/,
   /\/metodologia(\/|$)/, /\/glossario(\/|$)/, /^\/setor-eletrico\/aprenda(\/|$)/, /^\/eficiencia-estatal\/[a-z0-9-]+\/metodos$/,
   /^\/perguntas(\/|$)/, /nao-encontrado/,
   // a busca da plataforma (Iniciativa 3 do parecer de UX, 21/10/2026): navegação, só títulos, resumos e endereços, nunca dado

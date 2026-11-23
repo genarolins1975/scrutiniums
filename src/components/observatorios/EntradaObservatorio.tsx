@@ -32,8 +32,10 @@ function ListaPaineis({ paineis }: Readonly<{ paineis: ColecaoEntrada["paineis"]
  * ("Para você"), as coleções a um clique, um modelo didático do mecanismo, caminhos por pergunta e método recolhido no fim.
  */
 export function EntradaObservatorio({
-  rota, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null, gravura = null,
+  rota, acento, pergunta, descricao, escala, paraVoce = null, colecoes, artefato, caminhos, metodo, frescor = null, frescorMetodo = null, parceria = null, gravura = null, caminhosAVista,
 }: Readonly<{
+  /** Quantas perguntas ficam à vista; o resto vai para "Mais perguntas", no HTML (orçamento de comprimento). */
+  caminhosAVista?: number;
   /** Endereço da entrada (/observatorios/<id>): o rótulo de contexto lê o observatório por ele. */
   rota: string;
   acento: Dominio["acento"];
@@ -71,6 +73,7 @@ export function EntradaObservatorio({
       destinos={<ColecoesDoObservatorio colecoes={colecoes} />}
       artefato={artefato}
       caminhos={caminhos.map((c) => ({ pergunta: c.pergunta, resumo: c.resumo, href: c.href, rotulo: c.colecao }))}
+      caminhosAVista={caminhosAVista}
       metodo={metodo}
       frescorMetodo={frescorMetodo}
     />

@@ -52,6 +52,7 @@ export const FRESCOR_NO_MAPA: Record<string, readonly DominioFrescorId[]> = {
   pagamentos: ["credito"],
   empresas: ["credito"],
   agro: FRESCOR_DAS_COLECOES["/agronegocio"],
+  varejo: FRESCOR_DAS_COLECOES["/varejo"],
   desmatamento: ["agro"],
   "cidades-clima": [],
   // a referência do domínio Território e Clima é a gold de queimadas (limiares.json: "focos de calor"); a publicação cobre as

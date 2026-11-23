@@ -105,7 +105,8 @@ describe.skipIf(!temBuild)("busca na barra no navegador (build de produção)", 
 
   it("com sessão, o campo está na barra das seis portas, das 24 entradas e do mapa da conta, e na aplicação do Crédito", async () => {
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(ENTRADAS).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(ENTRADAS).toHaveLength(25);
     const ctx = await contexto(1440, true);
     const sem: string[] = [];
     try {

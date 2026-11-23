@@ -106,6 +106,9 @@ export default function EntradaObservatorioPage({ params }: { params: { id: stri
         colecoes={colecoesDe(id)}
         artefato={c.artefato}
         caminhos={porta?.caminhos ?? []}
+        // Famílias: com a coleção Varejo no rodapé (23/11/2026), a entrada passava do orçamento de comprimento a 390 px (11.030 de
+        // 11.000); a sétima pergunta vai para "Mais perguntas", no HTML, como manda a regra (recolher, nunca apagar)
+        caminhosAVista={id === "familias" ? 6 : undefined}
         metodo={c.metodo}
         frescor={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} conteiner="mx-auto max-w-page px-6" />}
         frescorMetodo={<FaixaFrescor dominios={FRESCOR_DOS_OBSERVATORIOS[id]} variante="metodo" />}

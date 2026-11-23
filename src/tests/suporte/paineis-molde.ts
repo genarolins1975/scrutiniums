@@ -15,6 +15,8 @@ export const NO_MOLDE_PAINEL: string[] = [
   "/divida-das-familias/clientes-contra-bancos", "/divida-das-familias/bancos-cobrando-na-justica",
   "/divida-das-familias/sancoes-e-reclamacoes", "/credito-imobiliario", "/emprego-formal",
   "/educacao-municipal/mapa",
+  // coleção Varejo (Economia), 23/11/2026: os dois painéis nascem no molde
+  "/varejo/brasil", "/varejo/segmentos",
   "/setor-eletrico/pld",
   "/setor-eletrico/qualidade",
   "/setor-eletrico/conta-de-luz",
@@ -276,6 +278,8 @@ export const FORA_DO_MOLDE: Record<string, string> = {
   "/agronegocio/metodologia": "página de método",
   "/combustiveis": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/conectividade": "entrada no molde EntradaColecao (entradas-molde.ts)",
+  "/varejo": "entrada no molde EntradaColecao (entradas-molde.ts)",
+  "/varejo/metodo": "página de método",
   "/contas-publicas": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/contas-publicas-estaduais": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/contas-publicas/dados": "página de dados (catálogo, arquivos e reprodução)",

@@ -206,7 +206,8 @@ describe("componente", () => {
     // desde a Iniciativa 4 (22/10/2026), as entradas de Conectividade, Educação nos municípios e Previdência (painéis de uma coleção
     // só, com versão aperitivo no mesmo endereço) também têm o bloco, e seguem a mesma regra
     // e a apresentação do Crédito, aberta, que ganhou o bloco no Grupo C
-    expect(ENTRADAS.filter((e) => ehRotaPublica(e)).sort()).toEqual(["/conectividade", "/contas-publicas/previdencia", "/educacao-municipal", "/eficiencia-estatal", "/observatorio-do-credito"]);
+    // desde 23/11/2026, a entrada da coleção Varejo, também com versão aperitivo no mesmo endereço
+    expect(ENTRADAS.filter((e) => ehRotaPublica(e)).sort()).toEqual(["/conectividade", "/contas-publicas/previdencia", "/educacao-municipal", "/eficiencia-estatal", "/observatorio-do-credito", "/varejo"]);
     caminho.atual = "/eficiencia-estatal";
     expect(html("/eficiencia-estatal" as EntradaParaVoce)).not.toContain("data-selo-conta");
     for (const e of ENTRADAS) {

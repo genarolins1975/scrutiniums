@@ -21,8 +21,13 @@ const indice = () => indiceDeBusca();
 
 const CAMPOS_ENTRADA = new Set(["id", "tipo", "titulo", "resumo", "href", "observatorio", "colecao", "situacao", "aberta", "termos", "lugares"]);
 const CAMPOS_INDICE = new Set(["versao", "observatorios", "colecoes", "exemplos", "lugares", "entradas"]);
-/** Peso alvo do arquivo que o campo baixa ao receber foco (antes da compressão do servidor). */
-const PESO_MAXIMO = 150 * 1024;
+/**
+ * Peso alvo do arquivo que o campo baixa ao receber foco (antes da compressão do servidor). Eram 150 KiB até 23/11/2026: a coleção
+ * Varejo (uma coleção, dois painéis, o método e a consulta aberta, cerca de 1,7 KiB com resumos e termos já enxugados) não cabia no
+ * 1,4 KiB que restava, e o crescimento vem de páginas novas, não de razões sociais (a alavanca de `encurtarRazaoSocial` segue sendo
+ * a primeira para as listas de nomes). O teto novo deixa folga para as páginas de grupos e do comparador da mesma coleção.
+ */
+const PESO_MAXIMO = 154 * 1024;
 
 describe("índice da busca", () => {
   it("cobre os seis observatórios, as 24 coleções, páginas, perguntas, consultas, verbetes e métodos", () => {
@@ -31,8 +36,9 @@ describe("índice da busca", () => {
     for (const t of ["observatorio", "colecao", "pagina", "pergunta", "consulta", "verbete", "metodo"]) expect(tipos, t).toContain(t);
     expect(i.observatorios.map((o) => o.id)).toEqual(OBSERVATORIOS.map((o) => o.id));
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(i.colecoes).toHaveLength(24);
-    expect(i.entradas.filter((e) => e.tipo === "colecao")).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(i.colecoes).toHaveLength(25);
+    expect(i.entradas.filter((e) => e.tipo === "colecao")).toHaveLength(25);
     expect(i.exemplos).toHaveLength(3);
   });
 

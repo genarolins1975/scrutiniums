@@ -1,5 +1,5 @@
 /**
- * Navegação de cada uma das 24 coleções (Iniciativa 2 do parecer de UX de 21/10/2026; eram 28 até a fusão das coleções de uma
+ * Navegação de cada uma das 25 coleções (Iniciativa 2 do parecer de UX de 21/10/2026; eram 28 até a fusão das coleções de uma
  * página só, decidida pelo dono em 10/11/2026): uma só forma para toda coleção,
  * lida dos catálogos que já existem, sem lista paralela escrita à mão. NavegacaoColecao desenha o que esta função devolve.
  *
@@ -30,6 +30,7 @@ import { GRUPOS_GAS, PAGINAS_GAS } from "@/lib/gas/navegacao";
 import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS, ROTA_CONSULTA_TANQUE } from "@/lib/combustiveis/paginas";
 import { ROTA_CONSULTA_CIDADE, ROTA_INFLACAO, paginaInflacao } from "@/lib/inflacao/paginas";
 import { ROTA_CAPITAIS, ROTA_EDUCACAO, TITULO_CAPITAIS } from "@/lib/educacao/paginas";
+import { ROTA_METODO as ROTA_METODO_VAREJO, ROTA_VAREJO, paineisPublicados as paineisVarejo } from "@/lib/varejo/paginas";
 import { CAPITULOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { CADEIAS, CAPITULOS_AGRO, PERGUNTAS_AGRO, ROTA_AGRO } from "@/lib/agro/modelo";
 import { GRUPOS_CREDITO, PAGINAS_CREDITO } from "@/lib/credito/navegacao";
@@ -378,6 +379,14 @@ function conectividade(): Montagem {
   return { ...base, itens: [...base.itens.filter((i) => !temas.includes(i.href)), temaComoGrupo(mobilidade), temaComoGrupo(tema)], levar: levarDe(mobilidade, tema) };
 }
 
+/**
+ * Varejo (23/11/2026): a entrada e os painéis publicados do catálogo da coleção, na ordem da procura (Brasil, Segmentos e
+ * estados; Grupos e Comparador entram sozinhos quando o catálogo os publicar). O método é atalho, à direita.
+ */
+function varejo(): Montagem {
+  return { itens: [pagina("Início", ROTA_VAREJO), ...paineisVarejo().map((p) => pagina(p.rotulo, p.href))], atalhos: { metodo: ROTA_METODO_VAREJO } };
+}
+
 const MONTAGENS: Record<string, () => Montagem> = {
   "setor-eletrico": setorEletrico,
   gas,
@@ -390,6 +399,7 @@ const MONTAGENS: Record<string, () => Montagem> = {
   educacao,
   divida: dividaDasFamilias,
   conectividade,
+  varejo,
 };
 
 /** Navegação de uma coleção do registro (id de lista.ts). */
@@ -424,7 +434,7 @@ export function navegacaoDaConta(admin: boolean): NavegacaoDaColecao {
   };
 }
 
-/** Os ids das 24 coleções, na ordem do registro. */
+/** Os ids das 25 coleções, na ordem do registro. */
 export function idsDasColecoes(): string[] {
   return OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id));
 }

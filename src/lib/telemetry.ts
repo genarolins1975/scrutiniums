@@ -144,6 +144,12 @@ export const VIEW_SECTIONS = [
   // Conectividade (Energia e Infraestrutura; painel com conta e a versão aperitivo no mesmo endereço)
   "infra:conectividade",
   "infra:conectividade-aperitivo",
+  // Varejo (Economia; entrada com conta e a versão aperitivo no mesmo endereço, painéis e método)
+  "economia:varejo",
+  "economia:varejo-aperitivo",
+  "economia:varejo-brasil",
+  "economia:varejo-segmentos",
+  "economia:varejo-metodo",
   // Educação nos municípios (Serviços Públicos: painel com conta e a versão aperitivo no mesmo endereço)
   "servicos:educacao-municipal",
   "servicos:educacao-municipal-aperitivo",
@@ -317,6 +323,11 @@ export const SECTION_LABELS: Record<(typeof VIEW_SECTIONS)[number], string> = {
   "contas:previdencia-aperitivo": "Contas Federais · Previdência e INSS: versão aperitivo (sem conta)",
   "infra:conectividade": "Energia e Infraestrutura · Conectividade",
   "infra:conectividade-aperitivo": "Energia e Infraestrutura · Conectividade: versão aperitivo (sem conta)",
+  "economia:varejo": "Economia · Varejo",
+  "economia:varejo-aperitivo": "Economia · Varejo: versão aperitivo (sem conta)",
+  "economia:varejo-brasil": "Economia · Varejo: Brasil",
+  "economia:varejo-segmentos": "Economia · Varejo: segmentos e estados",
+  "economia:varejo-metodo": "Economia · Varejo: método",
   "servicos:educacao-municipal": "Serviços Públicos · Educação nos municípios",
   "servicos:educacao-municipal-aperitivo": "Serviços Públicos · Educação nos municípios: versão aperitivo (sem conta)",
   "familias:custo-de-vida": "Custo de vida · Inflação por cidade",

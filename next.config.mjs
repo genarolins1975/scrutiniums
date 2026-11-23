@@ -80,6 +80,10 @@ const nextConfig = {
       // (município na URL), leem a cada instância a gold e o arquivo da UF do município pedido
       "/conectividade": ["./public/conectividade/gold/**/*.json"],
       "/aperitivo/conectividade": ["./public/conectividade/gold/**/*.json"],
+      // coleção Varejo: os painéis são dinâmicos (recorte na URL) e leem as golds e a curadoria a cada instância; a entrada,
+      // o aperitivo e o método são estáticos e as leem no build
+      "/varejo/brasil": ["./public/varejo/gold/*.json"],
+      "/varejo/segmentos": ["./public/varejo/gold/*.json"],
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
       // ficha do lugar (/app/minha-cidade, 10/11/2026): dinâmica (município na URL), lê a cada instância os mesmos arquivos
@@ -164,6 +168,7 @@ const nextConfig = {
       {source: "/saneamento/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/previdencia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/conectividade/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
+      {source: "/varejo/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/saneamento/divida/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/educacao/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
       {source: "/gas/:dir(gold|series)/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},

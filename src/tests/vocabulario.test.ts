@@ -88,7 +88,8 @@ describe("1. o nome antigo dos domínios não volta à interface", () => {
 describe("2. o seletor da barra lista as 24 coleções", () => {
   it("nas páginas Next, agrupadas pelos seis observatórios, com a coleção dona do endereço marcada", () => {
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(COLECOES).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(COLECOES).toHaveLength(25);
     for (const c of COLECOES) {
       navegador.caminho = c.href;
       const html = renderToStaticMarkup(createElement(SwitcherObservatorio, { caminho: c.href }));
@@ -188,7 +189,8 @@ describe("4. toda página de coleção traz a trilha \"Você está em\"", () => 
 
   it("o inventário tem as 24 coleções e cada endereço resolve no registro", () => {
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(inventario().flatMap((o) => o.colecoes)).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(inventario().flatMap((o) => o.colecoes)).toHaveLength(25);
     for (const r of rotas) expect(resolverContexto(r, indice), r).not.toBeNull();
   });
 

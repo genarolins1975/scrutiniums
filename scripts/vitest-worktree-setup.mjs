@@ -13,5 +13,7 @@ export default async function setup() {
   await import('./materializar-assistencia.mjs');
   await import('./materializar-seguranca-alimentar.mjs');
   await import('./materializar-trabalho-renda.mjs');
+  // curadoria do Varejo (gitignorada): as páginas da coleção a leem de public/varejo/gold/curadoria.json
+  await import('./materializar-varejo.mjs');
   return () => assertWorktreeUnchanged(root, before);
 }
