@@ -18,6 +18,7 @@ import type { NumeroProps } from "@/lib/painel/tipos";
 import {
   atividadesDaUf,
   curadoria,
+  goldEmpresas,
   DEF_MEDIDA,
   formasDeComercializacao,
   goldSetor,
@@ -45,6 +46,8 @@ import {
 import { bilhoes, direcao, mesCurto, mesExtenso, num, pct, plural, variacao } from "@/lib/varejo/formato";
 import { emUf, hrefDownload, NOME_CURTO_ATIVIDADE, paginaVarejo, ROTA_BRASIL, ROTA_SEGMENTOS, UFS } from "@/lib/varejo/paginas";
 import { provVarejo } from "@/lib/varejo/proveniencia";
+import { hrefComRecorte as hrefCom } from "@/lib/painel/recorte";
+import { hrefFicha, ROTA_COMPARADOR, ROTA_GRUPOS } from "@/lib/varejo/grupos";
 import type { Indicador, Universo } from "@/lib/varejo/tipos";
 
 /**
@@ -129,6 +132,11 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
   const lojas = formas[0] ?? null;
   const totalFormas = formas.reduce((s, f) => s + (f.valor ?? 0), 0);
   const ano = String(g.pac.ano);
+
+  // vínculo setor ↔ empresa: o concorrente com ficha leva à ficha; a companhia aberta sem ficha, ao comparador
+  const empresas = goldEmpresas().empresas;
+  const hrefConcorrente = (slug: string | null | undefined): string | null =>
+    !slug ? null : c.fichas[slug] ? hrefFicha(slug) : empresas[slug] ? hrefCom(ROTA_COMPARADOR, { e: slug }) : null;
 
   const numeroTexto = (rotulo: string, valor: string, unidade: string, periodoN: string, recorteN?: string): NumeroProps => ({
     rotulo, formato: "texto", valorTexto: valor, unidade, periodo: periodoN, recorte: recorteN, fonte: FONTE_PMC, natureza: "CALCULADO", tamanho: "g",
@@ -288,7 +296,7 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                   <>
                     <div className="space-y-8" data-curadoria-segmento="">
                       <h3 className="t-h3 text-carvao">Como funciona este negócio</h3>
-                      {curados.length > 0 ? curados.map((s) => <SegmentoCurado key={s.slug} s={s} />) : <SegmentoEmApuracao atividade={nomeAtividade} />}
+                      {curados.length > 0 ? curados.map((s) => <SegmentoCurado key={s.slug} s={s} hrefDe={hrefConcorrente} />) : <SegmentoEmApuracao atividade={nomeAtividade} />}
                     </div>
                     <p className="t-meta text-carvao-muted">
                       <Link href={`${h({ segmento: null })}#atividades`} prefetch={false} className={LINK}>
@@ -321,7 +329,7 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
 
             {!atividade && sel.segmento && (
               <Recolhido id="segmento" aberto nivelTitulo={2} titulo={sel.segmento.nome} resumo="Segmento empresarial sem atividade equivalente na pesquisa mensal: descrição da curadoria, sem série do IBGE.">
-                <SegmentoCurado s={sel.segmento} />
+                <SegmentoCurado s={sel.segmento} hrefDe={hrefConcorrente} />
                 <p className="t-meta mt-6 text-carvao-muted">
                   <Link href={`${h({ segmento: null })}#atividades`} prefetch={false} className={LINK}>
                     Fechar o segmento e voltar às atividades
@@ -560,6 +568,10 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
               A série do Brasil, a diferença entre receita e volume e o tamanho do mercado estão em{" "}
               <Link href={ROTA_BRASIL} prefetch={false} className={LINK}>
                 O que mudou nas vendas?
+              </Link>{" "}
+              Os maiores grupos de cada segmento, com as marcas e a ficha de cada um, estão em{" "}
+              <Link href={ROTA_GRUPOS} prefetch={false} className={LINK}>
+                {paginaVarejo("grupos").pergunta}
               </Link>
             </>
           ),

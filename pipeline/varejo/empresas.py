@@ -139,7 +139,7 @@ def ler(tipo: str, ano: int, codigos: set[str]):
     processar("ind", codigos - com_consolidado)
     for (cd, dt), d in docs.items():
         if cd in saida and dt in saida[cd]:
-            saida[cd][dt]["doc"] = {"versao": int(d["VERSAO"]), "recebido_em": d["DT_RECEB"], "link": d["LINK_DOC"], "denominacao": d["DENOM_CIA"], "cnpj": d["CNPJ_CIA"]}
+            saida[cd][dt]["doc"] = {"versao": int(d["VERSAO"]), "recebido_em": d["DT_RECEB"], "link": d["LINK_DOC"].replace("http://", "https://", 1), "denominacao": d["DENOM_CIA"], "cnpj": d["CNPJ_CIA"]}
     return saida
 
 

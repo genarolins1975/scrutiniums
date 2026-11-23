@@ -5,8 +5,8 @@ import type { CuradoriaVarejo, GoldEmpresas, GoldSetor } from "./tipos";
 
 /**
  * O que a coleção completa mostra a mais que a versão aberta (decisão do dono de 20/10/2026), na ordem das páginas com
- * conta e dimensionado pelas próprias golds. Só promete o que está no ar: grupos e comparador entram na lista quando as
- * páginas deles forem publicadas (src/lib/varejo/paginas.ts) e a curadoria tiver chegado.
+ * conta e dimensionado pelas próprias golds. Só promete o que está no ar: grupos e comparador entram na lista com as páginas
+ * publicadas (src/lib/varejo/paginas.ts) e, no caso dos grupos, com a curadoria do ranking no lugar.
  */
 export function comConta(g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): string[] {
   const meses = mesesSelecionaveis(g);
@@ -22,8 +22,11 @@ export function comConta(g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): str
     `Como R$ 100 de venda se dividem em custo, despesas, juros, impostos e lucro em companhias abertas (${num(nEmpresas)} na base, pelas demonstrações enviadas à CVM)`,
     "A renda, a inflação de alimentos e os juros do crédito às famílias ao lado das vendas, cada um no seu gráfico",
   ];
-  if (paginaVarejo("grupos").publicada && c.ranking?.grupos?.length) itens.push(`Os ${num(c.ranking.grupos.length)} maiores grupos do varejo, com vendas, lojas e bandeiras, e a ficha de cada um`);
-  if (paginaVarejo("comparador").publicada) itens.push("O comparador de companhias: receita, margens, giro e dívida lado a lado");
+  const nFichas = Object.keys(c.fichas).length;
+  if (paginaVarejo("grupos").publicada && c.ranking?.grupos?.length) {
+    itens.push(`Os ${num(c.ranking.grupos.length)} maiores grupos do varejo, com a busca que diz de quem é cada marca${nFichas ? `, e ${num(nFichas)} fichas com bandeiras, canais, indicadores de loja, eventos e fontes` : ""}`);
+  }
+  if (paginaVarejo("comparador").publicada) itens.push(`O comparador de companhias abertas (${num(nEmpresas)} na base): de R$ 100 de receita ao lucro e para onde foi o caixa, lado a lado`);
   itens.push("Os arquivos para baixar (CSV): a série do Brasil, as atividades e os estados");
   return itens;
 }

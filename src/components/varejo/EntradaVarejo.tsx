@@ -14,7 +14,10 @@ import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { difusao, formasDeComercializacao, leituraBrasil, linhasUf, pacVarejo, perfisDoModelo, serieMacro, ultimoComValor } from "@/lib/varejo/dados";
 import { dataBr, direcao, mesExtenso, milhoesDe, num, pct, pontos, trilhoes, variacao } from "@/lib/varejo/formato";
 import { DOWNLOADS, hrefDownload, PERGUNTA_ENTRADA, ROTA_BRASIL, ROTA_METODO, ROTA_SEGMENTOS, ROTA_VAREJO } from "@/lib/varejo/paginas";
-import type { GoldEmpresas, GoldSetor } from "@/lib/varejo/tipos";
+import { PARES } from "@/lib/varejo/comparador";
+import { amostraDoRanking, exercicioDoRanking, fonteDoRanking, linhasDoRanking, ROTA_COMPARADOR, ROTA_GRUPOS } from "@/lib/varejo/grupos";
+import { reaisDeMilhoes } from "@/lib/varejo/formato";
+import type { CuradoriaVarejo, GoldEmpresas, GoldSetor } from "@/lib/varejo/tipos";
 import { PonteCemReais } from "./PonteCemReais";
 
 const PMC = "IBGE, Pesquisa Mensal de Comércio";
@@ -47,7 +50,7 @@ export function escalaVarejo(g: GoldSetor): NumeroPorta[] {
 }
 
 /** Perguntas para começar: cada uma com o número lido do mesmo seletor que a página de destino usa. */
-function caminhosVarejo(g: GoldSetor): CaminhoEntrada[] {
+function caminhosVarejo(g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): CaminhoEntrada[] {
   const l = leituraBrasil(g, "restrito");
   const mes = mesExtenso(l.mes);
   const dif = l.receita.aa !== null && l.volume.aa !== null ? l.receita.aa - l.volume.aa : null;
@@ -58,7 +61,23 @@ function caminhosVarejo(g: GoldSetor): CaminhoEntrada[] {
   const internet = formasDeComercializacao(g).find((f) => f.forma === "Internet");
   const juros = ultimoComValor(serieMacro(g, g.macro.juros_credito_livre_pf.valores, "24m"));
   const v = pacVarejo(g);
+  const primeiro = linhasDoRanking(c)[0] ?? null;
+  const cvm = "CVM, Demonstrações Financeiras Padronizadas";
+  const ultimoAno = String(e.fontes.dfp.exercicios[e.fontes.dfp.exercicios.length - 1]);
+  const doRanking: CaminhoEntrada[] = primeiro
+    ? [
+        {
+          pergunta: "De quem é a marca em que eu compro?", resumo: "A busca que devolve o grupo dono de cada marca, e a ficha dele com lojas, canais e eventos.", href: `${ROTA_GRUPOS}#ranking`,
+          numero: { rotulo: `Maior grupo em vendas: ${primeiro.grupo}`, valor: ou(reaisDeMilhoes(primeiro.vendas_milhoes), typeof primeiro.vendas_milhoes === "number"), unidade: "venda bruta ao consumidor", periodo: exercicioDoRanking(c), fonte: fonteDoRanking(c), href: `${ROTA_GRUPOS}#ranking` },
+        },
+      ]
+    : [];
   return [
+    ...doRanking,
+    {
+      pergunta: "Por que duas redes do mesmo ramo lucram diferente?", resumo: "De R$ 100 de receita ao lucro e ao caixa, empresa ao lado de empresa, no mesmo ano.", href: ROTA_COMPARADOR,
+      numero: { rotulo: "Companhias abertas que podem ser comparadas", valor: num(Object.keys(e.empresas).length), unidade: "companhias", periodo: `exercícios até ${ultimoAno}`, fonte: cvm, href: ROTA_COMPARADOR },
+    },
     {
       pergunta: "A alta em reais veio com mais mercadoria vendida?", resumo: "A diferença entre a receita nominal e o volume, que aproxima o efeito dos preços.", href: `${ROTA_BRASIL}#diferenca`,
       numero: { rotulo: "Receita menos volume, contra o mesmo mês do ano anterior", valor: ou(pontos(dif), dif !== null), unidade: "", periodo: mes, fonte: PMC, href: `${ROTA_BRASIL}#diferenca` },
@@ -86,7 +105,8 @@ function caminhosVarejo(g: GoldSetor): CaminhoEntrada[] {
   ];
 }
 
-export function EntradaVarejo({ g, e }: Readonly<{ g: GoldSetor; e: GoldEmpresas }>) {
+export function EntradaVarejo({ g, e, c }: Readonly<{ g: GoldSetor; e: GoldEmpresas; c: CuradoriaVarejo }>) {
+  const amostra = amostraDoRanking(c);
   const perfis = perfisDoModelo(e);
   const l = leituraBrasil(g, "restrito");
   const d12 = difusao(g, "ampliado", "m12", "volume");
@@ -96,7 +116,7 @@ export function EntradaVarejo({ g, e }: Readonly<{ g: GoldSetor; e: GoldEmpresas
       rota={ROTA_VAREJO}
       acento="gas"
       titulo={PERGUNTA_ENTRADA}
-      frase="As vendas do comércio mês a mês, em volume e em reais, o tamanho do mercado, as diferenças entre atividades e estados e o caminho de R$ 100 de venda até o lucro nas companhias abertas."
+      frase="As vendas do comércio mês a mês, em volume e em reais, as diferenças entre atividades e estados, os maiores grupos com as marcas de cada um e o caminho de R$ 100 de venda até o lucro nas companhias abertas."
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/varejo"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaVarejo(g)}
       paraVoce={<ParaVoce entrada={ROTA_VAREJO} />}
@@ -104,6 +124,10 @@ export function EntradaVarejo({ g, e }: Readonly<{ g: GoldSetor; e: GoldEmpresas
         numeros: {
           [ROTA_BRASIL]: { rotulo: "Volume de vendas no mês, com ajuste sazonal", valor: ou(variacao(l.volume.mm), l.volume.mm !== null), unidade: "ante o mês anterior", periodo: mesExtenso(l.mes), fonte: PMC, href: ROTA_BRASIL },
           [ROTA_SEGMENTOS]: { rotulo: "Atividades com volume em alta em 12 meses", valor: `${num(d12.alta)} de ${num(d12.total)}`, unidade: "atividades", periodo: `até ${mesExtenso(d12.mes)}`, fonte: PMC, href: ROTA_SEGMENTOS },
+          ...(amostra.n > 0
+            ? { [ROTA_GRUPOS]: { rotulo: `Vendas somadas dos ${num(amostra.n)} maiores grupos`, valor: reaisDeMilhoes(amostra.total_milhoes), unidade: amostra.estimados > 0 ? `venda bruta, com ${num(amostra.estimados)} estimativas da fonte` : "venda bruta ao consumidor", periodo: exercicioDoRanking(c), fonte: fonteDoRanking(c), href: ROTA_GRUPOS } }
+            : {}),
+          [ROTA_COMPARADOR]: { rotulo: "Pares preparados para comparar", valor: num(PARES.length), unidade: `pares, entre ${num(Object.keys(e.empresas).length)} companhias abertas`, periodo: `exercícios de ${e.fontes.dfp.exercicios[0]} a ${e.fontes.dfp.exercicios[e.fontes.dfp.exercicios.length - 1]}`, fonte: "CVM, Demonstrações Financeiras Padronizadas", href: ROTA_COMPARADOR },
         },
       })}
       artefato={
@@ -127,7 +151,7 @@ export function EntradaVarejo({ g, e }: Readonly<{ g: GoldSetor; e: GoldEmpresas
           <PonteCemReais perfis={perfis} />
         </ModeloDidatico>
       }
-      caminhos={caminhosVarejo(g)}
+      caminhos={caminhosVarejo(g, e, c)}
       metodo={<MetodoDaEntrada g={g} e={e} />}
       frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/varejo"]} variante="metodo" />}
     />

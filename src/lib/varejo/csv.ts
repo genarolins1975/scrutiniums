@@ -2,9 +2,10 @@
  * Arquivos CSV da coleção Varejo, servidos por rotas com conta (src/app/varejo/*.csv). Separador ';', ponto decimal, ausência
  * como campo vazio (nunca zero), BOM para o Excel abrir com acentos. Cada linha leva a fonte e a data de captura.
  */
-import { goldSetor } from "./dados";
+import { curadoria, goldSetor } from "./dados";
+import { crescimentoDe, linhasDoRanking, nomeDoSegmento, ROTULO_NATUREZA } from "./grupos";
 import { UFS } from "./paginas";
-import type { BlocoPmc, GoldSetor, Indicador, Universo, VariavelPmc } from "./tipos";
+import type { BlocoPmc, CuradoriaVarejo, GoldSetor, Indicador, Universo, VariavelPmc } from "./tipos";
 
 const celula = (v: unknown): string => {
   if (v === null || v === undefined) return "";
@@ -49,6 +50,32 @@ export function csvUfs(g: GoldSetor = goldSetor()): string {
         linhas.push(linha([mes, uf, UFS[uf]?.nome ?? uf, universo, ...colunas(b[universo], i), ...pac.map((c) => (i === ult && universo === "restrito" ? g.pac.ufs_varejo[uf]?.[c] ?? null : null)), `${f.orgao}, ${f.tabela}${i === ult && universo === "restrito" ? `; ${g.fontes.pac_uf.tabela}` : ""}`, f.capturado_em])),
       );
     }
+  }
+  return arquivo(linhas);
+}
+
+/**
+ * O ranking dos maiores grupos, como publicado pela fonte, uma linha por grupo: posição, bandeiras, segmento, vendas com a
+ * natureza do dado (divulgado ou estimado pela fonte), lojas, funcionários, a participação na amostra (soma dos grupos
+ * listados, não o mercado) e a companhia aberta correspondente na CVM. Cada linha leva a fonte, a página e a data de consulta.
+ */
+export function csvGrupos(c: CuradoriaVarejo = curadoria()): string {
+  const f = c.ranking?.fonte;
+  const ano = f?.exercicio ?? "";
+  const linhas = [
+    linha([
+      "posicao", "posicao_ano_anterior", "slug", "grupo", "bandeiras", "segmento", "segmento_na_fonte", `vendas_${ano}_milhoes_reais`, "natureza_do_dado", "vendas_ano_anterior_milhoes_reais", "crescimento_pct",
+      "lojas", "funcionarios", "capital", "sede_uf", "participacao_na_amostra_pct", "companhia_na_cvm", "definicao_de_venda", "fonte", "pagina", "consultado_em",
+    ]),
+  ];
+  for (const g of linhasDoRanking(c)) {
+    linhas.push(
+      linha([
+        g.posicao, g.posicao_anterior, g.slug, g.grupo, (g.bandeiras ?? []).join(", "), nomeDoSegmento(g.segmento), g.segmento_irtt, g.vendas_milhoes, ROTULO_NATUREZA[g.natureza_dado], g.vendas_ano_anterior_milhoes, crescimentoDe(g),
+        g.lojas, g.funcionarios, g.capital, g.sede_uf, g.participacao_na_amostra === null ? null : Number(g.participacao_na_amostra.toFixed(2)), g.empresa_gold,
+        "venda bruta ao consumidor final, com impostos; sem venda de terceiros em marketplace; franquias pela venda ao consumidor", `${f?.nome ?? "IRTT"}, edição ${f?.edicao ?? ""}`.trim(), g.pagina, f?.consultado_em,
+      ]),
+    );
   }
   return arquivo(linhas);
 }

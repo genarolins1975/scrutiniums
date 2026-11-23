@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { dataBr } from "@/lib/varejo/formato";
 import { NOME_CURTO_ATIVIDADE } from "@/lib/varejo/paginas";
 import type { FonteCuradoria, SegmentoCuradoria } from "@/lib/varejo/tipos";
@@ -36,11 +37,16 @@ function Fonte({ f }: Readonly<{ f: FonteCuradoria }>) {
 
 /**
  * Um segmento empresarial da curadoria (pipeline/varejo/curadoria/segmentos.json): o que se vende, quem compra, por onde se
- * vende, o que move a demanda, onde se forma a margem, quem concorre e o indicador operacional que vale acompanhar, com a
+ * vende, o que move a demanda, onde se forma a margem, quem concorre (com link para a ficha do grupo quando ela existe) e o
+ * indicador operacional que vale acompanhar, com a
  * equivalência entre o segmento e as atividades da pesquisa do IBGE dita antes de tudo. Texto escrito à mão a partir de
  * documentos públicos, com as fontes no fim; campo que a curadoria não preencheu não aparece (nunca vira texto inventado).
  */
-export function SegmentoCurado({ s }: Readonly<{ s: SegmentoCuradoria }>) {
+export function SegmentoCurado({ s, hrefDe }: Readonly<{
+  s: SegmentoCuradoria;
+  /** Endereço da ficha do grupo (ou do comparador, para companhia aberta sem ficha) de um concorrente; null quando não há página. */
+  hrefDe?: (slug: string | null | undefined) => string | null;
+}>) {
   const blocos: [string, string | null][] = [
     ["O que se vende", texto(s.o_que_se_vende)],
     ["Quem compra", texto(s.quem_compra)],
@@ -84,7 +90,13 @@ export function SegmentoCurado({ s }: Readonly<{ s: SegmentoCuradoria }>) {
           <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-carvao">
             {concorrentes.map((c) => (
               <li key={c.nome}>
-                {c.nome}
+                {hrefDe?.(c.slug) ? (
+                  <Link href={hrefDe(c.slug)!} prefetch={false} className={LINK} data-concorrente-com-pagina={c.slug ?? ""}>
+                    {c.nome}
+                  </Link>
+                ) : (
+                  c.nome
+                )}
                 {c.tipo && TIPO[c.tipo] ? <span className="text-carvao-muted"> ({TIPO[c.tipo]})</span> : null}
               </li>
             ))}

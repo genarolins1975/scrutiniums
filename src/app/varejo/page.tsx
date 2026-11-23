@@ -4,7 +4,7 @@ import { NavegacaoColecao } from "@/components/layout/NavegacaoColecao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { EntradaVarejo } from "@/components/varejo/EntradaVarejo";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
-import { goldEmpresas, goldSetor } from "@/lib/varejo/dados";
+import { curadoria, goldEmpresas, goldSetor } from "@/lib/varejo/dados";
 import { mesExtenso } from "@/lib/varejo/formato";
 import { paginaVarejo, PERGUNTA_ENTRADA, ROTA_VAREJO } from "@/lib/varejo/paginas";
 
@@ -31,7 +31,7 @@ export default function Page() {
         <NavegacaoColecao colecao="varejo" />
       </header>
       <MarcaVisita secao={paginaVarejo("inicio").secao} />
-      <EntradaVarejo g={goldSetor()} e={goldEmpresas()} />
+      <EntradaVarejo g={goldSetor()} e={goldEmpresas()} c={curadoria()} />
     </>
   );
 }

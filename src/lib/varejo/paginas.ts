@@ -6,8 +6,8 @@
  * Princípio do aperitivo: o endereço público /varejo serve, sem sessão, a versão aperitivo (src/app/aperitivo/varejo, por
  * rewrite do middleware) e, com sessão, a entrada completa da coleção. APERITIVOS em src/lib/rotasPublicas.ts declara as duas.
  *
- * As páginas `grupos`, `grupo` (a ficha de cada grupo) e `comparador` estão reservadas e ainda não publicadas: com
- * `publicada: false` não entram na navegação, no registro, na busca nem em nenhum link. A etapa que as cria troca o campo.
+ * As páginas `grupos` (ranking e busca por marca), `grupo` (a ficha de cada grupo, endereço dinâmico: fica fora da navegação
+ * e do registro, e chega pelo ranking, pela busca e pelos segmentos) e `comparador` foram publicadas em 23/11/2026.
  *
  * A coleção mantém pipeline e golds próprios (pipeline/varejo, public/varejo/gold) e a fonte de frescor "varejo"
  * (src/lib/frescor/limiares.json).
@@ -34,6 +34,8 @@ export type PaginaVarejo = {
   publicada: boolean;
   /** Página de método: fica nos atalhos da navegação e fora do registro de painéis. */
   metodo?: boolean;
+  /** Ficha de entidade, com endereço dinâmico (`[slug]`): fora da navegação, do registro e da busca, que só levam endereços concretos. */
+  ficha?: boolean;
 };
 
 export const PAGINAS_VAREJO: readonly PaginaVarejo[] = [
@@ -55,24 +57,23 @@ export const PAGINAS_VAREJO: readonly PaginaVarejo[] = [
     resumo: "Onde a média do varejo esconde diferenças? Atividades, estados e internet.",
     termos: ["farmácias", "vestuário", "eletrodomésticos", "e-commerce", "vendas por estado"],
   },
-  // reservadas (outra etapa cria as páginas e troca `publicada`): não entram em navegação, registro, busca nem link
   {
-    id: "grupos", href: `${ROTA_VAREJO}/grupos`, rotulo: "Grupos", secao: "economia:varejo-grupos", publicada: false,
-    pergunta: "Quem são os maiores grupos do varejo?",
-    resumo: "Quem são os maiores grupos do varejo brasileiro? Vendas, lojas, bandeiras e demonstrações das companhias abertas.",
-    termos: ["ranking do varejo", "maiores varejistas", "redes", "bandeiras", "lojas", "CVM", "companhias abertas"],
+    id: "grupos", href: `${ROTA_VAREJO}/grupos`, rotulo: "Grupos", secao: "economia:varejo-grupos", publicada: true,
+    pergunta: "Quem lidera e como ganha dinheiro?",
+    resumo: "Quem lidera o varejo e como ganha dinheiro? Os 20 maiores grupos, as marcas de cada um e a ficha com vendas e demonstrações.",
+    termos: ["ranking do varejo", "maiores varejistas", "bandeiras", "dono da marca", "Atacadão", "Drogasil", "Netshoes", "Ponto Frio", "marketplace", "IRTT"],
   },
   {
-    id: "grupo", href: `${ROTA_VAREJO}/grupos/[slug]`, rotulo: "Ficha do grupo", secao: "economia:varejo-grupo", publicada: false,
+    id: "grupo", href: `${ROTA_VAREJO}/grupos/[slug]`, rotulo: "Ficha do grupo", secao: "economia:varejo-grupo", publicada: true, ficha: true,
     pergunta: "Como este grupo vende e ganha dinheiro?",
     resumo: "Como este grupo do varejo vende e ganha dinheiro? Bandeiras, canais, indicadores operacionais e demonstrações.",
     termos: ["ficha", "bandeiras", "vendas nas mesmas lojas", "margem", "dívida"],
   },
   {
-    id: "comparador", href: `${ROTA_VAREJO}/comparador`, rotulo: "Comparador", secao: "economia:varejo-comparador", publicada: false,
-    pergunta: "Como dois grupos se comparam?",
-    resumo: "Como dois grupos do varejo se comparam? Receita, margens, giro e dívida das companhias abertas, lado a lado.",
-    termos: ["comparar varejistas", "margem bruta", "margem líquida", "giro de estoque", "dívida líquida"],
+    id: "comparador", href: `${ROTA_VAREJO}/comparador`, rotulo: "Comparador", secao: "economia:varejo-comparador", publicada: true,
+    pergunta: "Por que empresas do mesmo ramo têm resultados diferentes?",
+    resumo: "Por que empresas do mesmo ramo têm resultados diferentes? De R$ 100 de receita ao lucro e ao caixa, lado a lado.",
+    termos: ["comparar varejistas", "margem bruta", "lucro", "capital de giro", "risco sacado", "convênio de fornecedores", "dívida líquida", "CVM"],
   },
   {
     id: "metodo", href: `${ROTA_VAREJO}/metodo`, rotulo: "Método", secao: "economia:varejo-metodo", publicada: true, metodo: true,
@@ -91,8 +92,8 @@ export function paginaVarejo(id: IdPaginaVarejo): PaginaVarejo {
 /** Páginas com endereço no ar, na ordem da procura. */
 export const paginasPublicadas = (): PaginaVarejo[] => PAGINAS_VAREJO.filter((p) => p.publicada);
 
-/** Painéis da coleção (sem a entrada e sem o método), para a navegação e os destinos da entrada. */
-export const paineisPublicados = (): PaginaVarejo[] => paginasPublicadas().filter((p) => p.id !== "inicio" && !p.metodo);
+/** Painéis da coleção (sem a entrada, sem o método e sem a ficha de endereço dinâmico), para a navegação e os destinos da entrada. */
+export const paineisPublicados = (): PaginaVarejo[] => paginasPublicadas().filter((p) => p.id !== "inicio" && !p.metodo && !p.ficha);
 
 export const ROTA_BRASIL = paginaVarejo("brasil").href;
 export const ROTA_SEGMENTOS = paginaVarejo("segmentos").href;

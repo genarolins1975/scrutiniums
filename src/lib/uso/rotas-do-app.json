@@ -381,6 +381,9 @@
   "/territorio/queimadas/municipio/[ibge]",
   "/varejo",
   "/varejo/brasil",
+  "/varejo/comparador",
+  "/varejo/grupos",
+  "/varejo/grupos/[slug]",
   "/varejo/metodo",
   "/varejo/segmentos"
 ]

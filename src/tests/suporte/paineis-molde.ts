@@ -15,8 +15,10 @@ export const NO_MOLDE_PAINEL: string[] = [
   "/divida-das-familias/clientes-contra-bancos", "/divida-das-familias/bancos-cobrando-na-justica",
   "/divida-das-familias/sancoes-e-reclamacoes", "/credito-imobiliario", "/emprego-formal",
   "/educacao-municipal/mapa",
-  // coleção Varejo (Economia), 23/11/2026: os dois painéis nascem no molde
-  "/varejo/brasil", "/varejo/segmentos",
+  // coleção Varejo (Economia), 23/11/2026: os painéis nascem no molde; a ficha de grupo, de endereço dinâmico, entra por três
+  // endereços concretos (companhia aberta, grupo fechado e operador digital fora do ranking)
+  "/varejo/brasil", "/varejo/segmentos", "/varejo/grupos", "/varejo/comparador",
+  "/varejo/grupos/assai", "/varejo/grupos/supermercados-bh", "/varejo/grupos/mercado-livre",
   "/setor-eletrico/pld",
   "/setor-eletrico/qualidade",
   "/setor-eletrico/conta-de-luz",
@@ -280,6 +282,7 @@ export const FORA_DO_MOLDE: Record<string, string> = {
   "/conectividade": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/varejo": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/varejo/metodo": "página de método",
+  "/varejo/grupos/[slug]": "padrão dinâmico da ficha de grupo: a ficha segue o molde e é conferida pelos endereços concretos de NO_MOLDE_PAINEL e por varejo-grupos.test.ts",
   "/contas-publicas": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/contas-publicas-estaduais": "entrada no molde EntradaColecao (entradas-molde.ts)",
   "/contas-publicas/dados": "página de dados (catálogo, arquivos e reprodução)",

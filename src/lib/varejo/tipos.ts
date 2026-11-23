@@ -93,9 +93,8 @@ export type Ponte100 = {
   lucro_liquido: number;
 };
 
-export type PeriodoEmpresa = {
-  exercicio: number;
-  data_base: string;
+/** As rubricas de um período (um exercício anual ou um acumulado até o trimestre), como a gold as publica. */
+export type Demonstracao = {
   base?: string;
   receita_liquida: number | null;
   custo: number | null;
@@ -111,7 +110,36 @@ export type PeriodoEmpresa = {
   ponte_100: Ponte100 | null;
   documento?: { versao?: number; recebido_em?: string; link?: string; denominacao?: string; cnpj?: string } | null;
   reapresentado_no_exercicio_seguinte?: { receita_liquida: number | null; lucro_liquido: number | null };
+  caixa_operacional?: number | null;
+  caixa_operacional_apos_convenio?: number | null;
+  convenio_fornecedores_no_financiamento?: number | null;
+  capex?: number | null;
+  var_estoques?: number | null;
+  var_fornecedores?: number | null;
+  var_recebiveis?: number | null;
+  divida_liquida_sem_arrendamento?: number | null;
+  passivo_arrendamento?: number | null;
+  estoques?: number | null;
+  fornecedores?: number | null;
+  operacoes_descontinuadas?: number | null;
+  abre_despesas?: LinhaConta[];
+  abre_financeiro?: LinhaConta[];
+  abre_giro?: LinhaConta[];
+  abre_financiamento?: LinhaConta[];
   [campo: string]: unknown;
+};
+
+export type PeriodoEmpresa = Demonstracao & { exercicio: number; data_base: string };
+
+export type LinhaConta = { conta?: string; descricao?: string; valor?: number | null };
+
+/** O acumulado do ano até o último trimestre entregue, contra o mesmo período do ano anterior. */
+export type UltimoTrimestre = {
+  data_base?: string;
+  periodo?: string;
+  atual?: Demonstracao | null;
+  mesmo_periodo_ano_anterior?: Demonstracao | null;
+  documento?: Demonstracao["documento"];
 };
 
 export type EmpresaGold = {
@@ -120,7 +148,7 @@ export type EmpresaGold = {
   cnpj: string;
   denominacao_cvm: string;
   anuais: PeriodoEmpresa[];
-  ultimo_trimestre?: Record<string, unknown> | null;
+  ultimo_trimestre?: UltimoTrimestre | null;
 };
 
 export type GoldEmpresas = {
@@ -155,12 +183,67 @@ export type GrupoRanking = {
   sede_uf?: string;
   natureza?: string;
   empresa_gold?: string | null;
+  /** Campos que a curadoria acrescentou além do contrato mínimo; todos opcionais. */
+  crescimento_pct_calculado?: number | null;
+  lojas_ano_anterior?: number | null;
+  funcionarios_ano_anterior?: number | null;
+  estados?: string;
+  n_estados?: number | null;
+  /** Posição na hierarquia de fontes do IRTT (1 a 5; 5 é estimativa do instituto). */
+  nota_fonte?: number | null;
+  pagina?: number | string | null;
+  nota?: string;
+};
+
+export type LiderSegmento = {
+  segmento_irtt: string;
+  lider: string;
+  slug?: string | null;
+  posicao_geral?: number | null;
+  vendas_milhoes?: number | null;
+  pagina?: number | string | null;
+  natureza?: string;
+  vendas_segmento_bilhoes?: number | null;
+  empresas_no_segmento?: number | null;
+  participacao_no_top300_pct?: number | null;
+  nota?: string;
+};
+
+export type LinhaMarketplace = {
+  posicao?: number;
+  nome: string;
+  segmento_irtt?: string;
+  gmv_digital_2025_milhoes?: number | null;
+  gmv_digital_2024_milhoes?: number | null;
+  venda_de_sellers_2025_milhoes?: number | null;
+  nota_fonte?: number | null;
+  natureza?: string;
+  pagina?: number | string | null;
+};
+
+export type Marketplaces = { tratamento?: string; pagina?: number | string; base?: string; unidade?: string; observacao_da_fonte?: string; lista?: LinhaMarketplace[]; legenda_marketplace?: string };
+
+export type Conferencia = {
+  fonte: string;
+  edicao?: string;
+  url?: string;
+  pagina?: number | string;
+  consultado_em?: string;
+  conceito_faturamento?: string;
+  o_que_confere?: string;
+  valores_abras_reais?: Record<string, number>;
+  divergencias?: { grupo?: string; valor_irtt?: number | null; valor_outra?: number | null; motivo?: string }[];
+  nao_acessado?: string;
 };
 
 export type RankingCuradoria = {
-  fonte: FonteCuradoria & { exercicio?: number; metodologia?: string; conceito_venda?: string };
+  fonte: FonteCuradoria & { exercicio?: number; metodologia?: string; conceito_venda?: string; paginas?: string; unidade?: string; hierarquia_fontes?: Record<string, string>; nota_crescimento?: string };
   grupos: GrupoRanking[];
   soma_top300_milhoes?: number | null;
+  soma_top300_nota?: { texto?: string; comparacao_ibge_citada_pela_fonte?: string };
+  lideres_por_segmento?: LiderSegmento[];
+  marketplaces?: Marketplaces;
+  conferencias?: Conferencia[];
 };
 
 export type SegmentoCuradoria = {
@@ -182,7 +265,32 @@ export type SegmentoCuradoria = {
 
 export type SegmentosCuradoria = { segmentos: SegmentoCuradoria[]; ecommerce?: { texto?: string; fonte?: FonteCuradoria } };
 
-export type FichaCuradoria = { slug: string; grupo: string; resumo?: string; [campo: string]: unknown };
+export type ValorOperacional = { periodo?: string; valor?: number | null; natureza?: string; nota?: string };
+export type Operacional = { indicador: string; unidade?: string; nota?: string; valores?: ValorOperacional[]; fonte?: FonteCuradoria };
+export type EventoFicha = { data?: string; tipo?: string; descricao?: string; fonte?: FonteCuradoria };
+
+/** Ficha de um grupo (pipeline/varejo/curadoria/fichas/<slug>.json). Só `slug` e `grupo` são garantidos pelo materializador. */
+export type FichaCuradoria = {
+  slug: string;
+  grupo: string;
+  resumo?: string;
+  controlador?: { nome?: string | null; nota?: string; fonte?: FonteCuradoria };
+  capital?: string;
+  empresa_gold?: string | null;
+  bandeiras?: { nome: string; formato?: string; nota?: string }[];
+  formatos?: string[];
+  regioes?: { texto?: string; estados?: string[] };
+  canais?: string[];
+  clientes?: string;
+  fontes_de_receita?: { nome: string; descricao?: string }[];
+  concorrentes?: { nome: string; slug?: string | null }[];
+  operacionais?: Operacional[];
+  eventos?: EventoFicha[];
+  alcance_do_dado?: string;
+  analise?: { crescimento?: string; rentabilidade_caixa?: string; acompanhar?: { indicador?: string; reforca?: string; enfraquece?: string } };
+  campos_sem_divulgacao?: string[];
+  fontes?: FonteCuradoria[];
+};
 
 /** O arquivo único que as páginas leem. Parte ausente na curadoria fica null: a página diz "em apuração". */
 export type CuradoriaVarejo = {

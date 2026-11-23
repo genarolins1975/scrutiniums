@@ -311,11 +311,12 @@ function paineisConectividade(): Painel[] {
 /**
  * Coleção Varejo, mantida pelo próprio Observatório da Economia, com pipeline e golds próprios (pipeline/varejo,
  * public/varejo): a entrada e os painéis publicados do catálogo (src/lib/varejo/paginas.ts). A página de método é aberta e
- * fica no campo `metodo` da coleção (lista.ts); as páginas reservadas (grupos, comparador) entram quando forem publicadas.
+ * fica no campo `metodo` da coleção (lista.ts); a ficha de cada grupo (/varejo/grupos/[slug]) tem endereço dinâmico e fica fora:
+ * a rota dela responde pelo painel Grupos (donoDaRota).
  */
 function paineisVarejo(): Painel[] {
   return paginasVarejo()
-    .filter((p) => !p.metodo)
+    .filter((p) => !p.metodo && !p.ficha)
     .map((p): Painel => ({ rota: p.href, titulo: p.id === "inicio" ? NOME_VAREJO : p.rotulo, observatorio: "economia", colecao: "varejo", origem: null, resumo: p.resumo, termos: p.termos }));
 }
 

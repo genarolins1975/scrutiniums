@@ -81,13 +81,18 @@ describe("registro, navegação e acesso", () => {
     expect(c.href).toBe(ROTA_VAREJO);
     expect(c.metodo).toBe(ROTA_METODO);
     expect(colecoesDe("economia").find((x) => x.id === "varejo")!.href).toBe(ROTA_VAREJO);
-    for (const p of paginasPublicadas().filter((x) => !x.metodo)) {
+    // a ficha de grupo tem endereço dinâmico (/varejo/grupos/[slug]): fica fora do registro e responde pelo painel Grupos
+    for (const p of paginasPublicadas().filter((x) => !x.metodo && !x.ficha)) {
       const painel = paineis().find((x) => x.rota === p.href)!;
       expect(painel, p.href).toBeDefined();
       expect([painel.observatorio, painel.colecao, painel.origem], p.href).toEqual(["economia", "varejo", null]);
       expect(painel.duplicataDe, p.href).toBeUndefined();
     }
     expect(donoDaRota(hrefDownload("ufs.csv"))?.rota).toBe(ROTA_VAREJO);
+    for (const p of paginasPublicadas().filter((x) => x.ficha)) {
+      expect(paineis().some((x) => x.rota === p.href), `${p.href}: padrão dinâmico no registro`).toBe(false);
+      expect(donoDaRota(p.href.replace("[slug]", "assai"))?.rota, p.href).toBe(p.href.replace("/[slug]", ""));
+    }
   });
 
   it("toda página do catálogo tem pergunta, resumo de até 140 caracteres, de 3 a 12 termos e seção de telemetria; a publicada existe no app", () => {
@@ -129,7 +134,7 @@ describe("registro, navegação e acesso", () => {
     expect(desvioDoAperitivo(VERSAO_ABERTA)).toEqual({ tipo: "interno" });
     expect(existsSync(join(raiz, "src/app", VERSAO_ABERTA, "page.tsx"))).toBe(true);
     expect(ehRotaPublica(ROTA_METODO)).toBe(true);
-    const fechadas = [ROTA_BRASIL, ROTA_SEGMENTOS, VERSAO_ABERTA, "/varejo/gold/setor.json", "/varejo/gold/empresas.json", "/varejo/gold/curadoria.json", ...DOWNLOADS.map((d) => hrefDownload(d.arquivo)), ...PAGINAS_VAREJO.filter((p) => !p.publicada).map((p) => p.href.replace("[slug]", "x"))];
+    const fechadas = [ROTA_BRASIL, ROTA_SEGMENTOS, VERSAO_ABERTA, "/varejo/gold/setor.json", "/varejo/gold/empresas.json", "/varejo/gold/curadoria.json", ...DOWNLOADS.map((d) => hrefDownload(d.arquivo)), ...PAGINAS_VAREJO.filter((p) => p.id !== "inicio" && !p.metodo).map((p) => p.href.replace("[slug]", "assai")), "/varejo/grupos.csv"];
     for (const r of fechadas) expect(ehRotaPublica(r), r).toBe(false);
     for (const d of DOWNLOADS) expect(existsSync(join(raiz, "src/app/varejo", d.arquivo, "route.ts")), d.arquivo).toBe(true);
   });
@@ -142,7 +147,8 @@ describe("registro, navegação e acesso", () => {
     expect(sitemap).toContain(`rota("${ROTA_VAREJO}"`);
     expect(sitemap).toContain(`rota("${ROTA_METODO}"`);
     const cfg = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
-    for (const r of [ROTA_BRASIL, ROTA_SEGMENTOS]) expect(cfg, r).toContain(`"${r}": ["./public/varejo/gold/*.json"]`);
+    // toda página dinâmica da coleção leva as golds no pacote da função (as estáticas as leem no build)
+    for (const p of paginasPublicadas().filter((x) => x.id !== "inicio" && !x.metodo)) expect(cfg, p.href).toContain(`"${p.href}": ["./public/varejo/gold/*.json"]`);
     expect(cfg).toContain('source: "/varejo/gold/:path*"');
     const f = extrairFrescor("varejo", (arquivo) => JSON.parse(readFileSync(join(raiz, arquivo), "utf-8")));
     expect(f.publicadoEm).toBe(g.capturado_em);
@@ -286,8 +292,15 @@ describe("números da entrada e do convite", () => {
     expect(itens.join(" ")).toContain(num(Object.keys(g.pmc.ufs).length));
     expect(itens.join(" ")).toContain(String(g.pac.ano));
     const reservadas = PAGINAS_VAREJO.filter((p) => !p.publicada && p.id !== "grupo").length;
-    // sem as páginas de grupos e do comparador no ar, o convite não as cita
+    // sem as páginas de grupos e do comparador no ar, o convite não as cita; com elas no ar, cita as duas, dimensionadas pelo dado
     if (reservadas === 2) expect(itens.join(" ")).not.toMatch(/comparador|maiores grupos/i);
+    if (reservadas === 0) {
+      const c = dados.curadoria();
+      expect(itens.some((i) => /comparador/i.test(i) && i.includes(num(Object.keys(e.empresas).length)))).toBe(true);
+      if (c.ranking?.grupos?.length) expect(itens.some((i) => /grupos/i.test(i) && i.includes(num(c.ranking!.grupos.length)) && i.includes(num(Object.keys(c.fichas).length)))).toBe(true);
+      // sem o ranking da curadoria, o convite não promete os grupos
+      expect(comConta(g, e, { gerado_em: null, ranking: null, segmentos: null, fichas: {}, recusados: [] }).join(" ")).not.toMatch(/maiores grupos/i);
+    }
   });
 });
 

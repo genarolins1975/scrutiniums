@@ -84,6 +84,9 @@ const nextConfig = {
       // o aperitivo e o método são estáticos e as leem no build
       "/varejo/brasil": ["./public/varejo/gold/*.json"],
       "/varejo/segmentos": ["./public/varejo/gold/*.json"],
+      "/varejo/grupos": ["./public/varejo/gold/*.json"],
+      "/varejo/grupos/[slug]": ["./public/varejo/gold/*.json"],
+      "/varejo/comparador": ["./public/varejo/gold/*.json"],
       // painel Educação nos municípios e a sua versão aperitivo (servida em /educacao-municipal a quem não tem sessão):
       // dinâmicos (município na URL), leem a gold e o arquivo da UF do município pedido; os CSV leem todas as UFs no build
       // ficha do lugar (/app/minha-cidade, 10/11/2026): dinâmica (município na URL), lê a cada instância os mesmos arquivos
