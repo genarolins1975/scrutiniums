@@ -1,0 +1,714 @@
+{
+  "slug": "carrefour-brasil",
+  "grupo": "Grupo Carrefour Brasil (Atacadão S.A.)",
+  "resumo": "Maior varejista do país: atacarejo Atacadão, hipermercados Carrefour, clube Sam's Club e banco próprio. Fechou o capital no Brasil em 2025.",
+  "controlador": {
+    "nome": "Carrefour S.A. (França)",
+    "nota": "Desde 30/05/2025 todas as ações do Atacadão S.A. pertencem a uma sociedade brasileira integralmente detida pelo Carrefour S.A.; a proposta oferecia aos acionistas dinheiro, ações da matriz ou recibos de ações (BDR, negociados na B3 com o código CAFR31). A matriz é listada em Paris; a companhia brasileira teve o registro de companhia aberta cancelado em 22/12/2025. Antes da operação, o controle era do Carrefour S.A. e da Carrefour Nederland B.V.",
+    "fonte": {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 30/05/2025 (fechamento da reorganização societária), entregue à CVM em 2025-05-30",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1385327&numSequencia=910039&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto no exterior",
+  "empresa_gold": "carrefour-brasil",
+  "bandeiras": [
+    {
+      "nome": "Atacadão",
+      "formato": "atacarejo e atacado de entrega",
+      "nota": "380 lojas e 34 atacados de entrega em março de 2025; 72% das vendas no 1T25. O IRTT informa que a divisão responde por mais de 70% da venda do grupo em 2025."
+    },
+    {
+      "nome": "Carrefour",
+      "formato": "hipermercado, supermercado, loja de conveniência (Carrefour Express), drogaria e posto de combustível",
+      "nota": "Em março de 2025: 112 hipermercados, 72 supermercados, 143 lojas de conveniência, 98 drogarias e 103 postos. 22% das vendas no 1T25."
+    },
+    {
+      "nome": "Sam's Club",
+      "formato": "clube de compras para sócios",
+      "nota": "58 lojas em março de 2025; 6% das vendas no 1T25. Veio com a compra do Grupo BIG."
+    },
+    {
+      "nome": "Bompreço e Nacional",
+      "formato": "supermercado",
+      "nota": "Herdadas do Grupo BIG. A companhia anunciou a venda ou o fechamento dos 64 supermercados restantes até o fim do primeiro semestre de 2025."
+    },
+    {
+      "nome": "Banco Carrefour",
+      "formato": "cartões de crédito Carrefour, Atacadão e Sam's Club e outros produtos de crédito",
+      "nota": "Faturamento de R$ 68,8 bilhões e carteira de crédito de R$ 28,4 bilhões em 2024."
+    }
+  ],
+  "formatos": [
+    "atacarejo",
+    "atacado de entrega",
+    "hipermercado",
+    "supermercado",
+    "loja de conveniência",
+    "clube de compras",
+    "drogaria",
+    "posto de combustível",
+    "banco (cartões e crédito)"
+  ],
+  "regioes": {
+    "texto": "Presença nos 26 estados e no Distrito Federal, segundo o IRTT (p. 103). Os releases não trazem lojas por estado.",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "comércio eletrônico próprio de alimentos e de não alimentos (1P)",
+    "marketplace com vendedores terceiros (3P)",
+    "canal digital do Atacadão (9,3% das vendas da bandeira no 1T25)"
+  ],
+  "clientes": "Comerciantes e famílias no Atacadão; famílias nos hipermercados, supermercados e lojas de conveniência; sócios no Sam's Club; titulares de cartão no Banco Carrefour.",
+  "fontes_de_receita": [
+    {
+      "nome": "Atacadão (atacarejo)",
+      "descricao": "Venda bruta de R$ 86,0 bilhões em 2024, 71% do grupo, com margem bruta de 15,4%."
+    },
+    {
+      "nome": "Varejo Carrefour",
+      "descricao": "Venda bruta de R$ 27,2 bilhões em 2024 (queda de 9,4% com o fechamento de lojas), incluindo R$ 3,5 bilhões de gasolina; margem bruta de 23,0%."
+    },
+    {
+      "nome": "Sam's Club",
+      "descricao": "Venda bruta de R$ 7,3 bilhões em 2024, alta de 16,8%."
+    },
+    {
+      "nome": "Banco Carrefour",
+      "descricao": "Receitas da intermediação financeira de R$ 5,2 bilhões em 2024, somadas à receita líquida consolidada; resultado antes de juros, impostos e depreciação (Ebitda ajustado) de R$ 890 milhões."
+    },
+    {
+      "nome": "Outras receitas do varejo",
+      "descricao": "R$ 761 milhões no varejo e R$ 252 milhões no Atacadão em 2024, na linha 'outras receitas' dos segmentos; o release consultado não detalha a composição."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Assaí Atacadista",
+      "slug": "assai"
+    },
+    {
+      "nome": "Grupo Mateus",
+      "slug": "grupo-mateus"
+    },
+    {
+      "nome": "GPA (Pão de Açúcar e Extra Mercado)",
+      "slug": "gpa"
+    },
+    {
+      "nome": "Supermercados BH",
+      "slug": "supermercados-bh"
+    },
+    {
+      "nome": "Super Muffato",
+      "slug": "super-muffato"
+    },
+    {
+      "nome": "Grupo Pereira",
+      "slug": "grupo-pereira"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas (consolidado, com gasolina, sem efeito de calendário)",
+      "unidade": "%",
+      "nota": "2025 no ano não foi divulgado: o último release é o do 1T25, com 5,7% (3,2% com efeito de calendário). Em 2024: Atacadão 5,4%, varejo sem gasolina 3,4%, Sam's Club 3,5%. Fontes: release 4T21 p. 5; 4T22 p. 4; 4T24 p. 2 (2023 e 2024); 1T25 p. 2.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 2.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 12.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": -1.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 4.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1T25",
+          "valor": 5.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "sem release depois do 1T25"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 2",
+        "periodo": "2023 e 2024 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no fim do período",
+      "unidade": "lojas",
+      "nota": "Todos os formatos, com drogarias e postos. O salto de 2022 vem da compra do Grupo BIG. 2025 é o número declarado ao IRTT (956, contra 1.007 em 2024), sem abertura por formato. Fontes: release 4T21 p. 17; 4T22 p. 17; 4T23 p. 15; 4T24 p. 11; 1T25 p. 9; IRTT p. 38.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 779,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 1203,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1188,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1007,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1T25",
+          "valor": 1000,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 956,
+          "natureza": "divulgado",
+          "nota": "declarado pela empresa ao IRTT"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 11",
+        "periodo": "dez/2023 e dez/2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas Atacadão no fim do período (sem atacados de entrega)",
+      "unidade": "lojas",
+      "nota": "Mesmas fontes do indicador anterior. 2025 não divulgado.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 250,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 344,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 361,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 379,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1T25",
+          "valor": 380,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 11",
+        "periodo": "dez/2023 e dez/2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas no ano",
+      "unidade": "lojas",
+      "nota": "Não inclui conversões de bandeira (63 em 2022) nem as 332 lojas recebidas do Grupo BIG em 2022. Em 2024: 19 Atacadão, 7 Sam's Club, 2 de conveniência e 5 postos.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 63,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 35,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 44,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 33,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 11",
+        "periodo": "2024 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas no ano",
+      "unidade": "lojas",
+      "nota": "2023 não inclui 10 lojas vendidas por exigência do Cade. Em 2024 a companhia informa 191 lojas de varejo convertidas, vendidas ou fechadas; a tabela registra 214 saídas, das quais 127 supermercados e 31 hipermercados.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 50,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 214,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 11",
+        "periodo": "2024 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Área de vendas no fim do período",
+      "unidade": "m²",
+      "nota": "Fontes: release 4T21 p. 17; 4T22 p. 17; 4T23 p. 15; 4T24 p. 11; 1T25 p. 9. 2025 não divulgado.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 2180514,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 3414702,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 3335965,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 3147355,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "1T25",
+          "valor": 3139918,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 11",
+        "periodo": "dez/2023 e dez/2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda bruta (com gasolina)",
+      "unidade": "R$ milhões",
+      "nota": "2021 a 2024 nos releases; 2025 é a venda declarada ao IRTT (o Ranking ABRAS 2026 traz R$ 123.594,3 milhões). No 1T25: 28.786. Fontes: release 4T21 p. 2; 4T22 p. 2; 4T23 p. 2; 4T24 p. 2; IRTT p. 38.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 81185,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 108052,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 115458,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 120594,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 123594,
+          "natureza": "divulgado",
+          "nota": "declarado pela empresa ao IRTT"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 2",
+        "periodo": "2023 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Faturamento do Banco Carrefour (compras nos cartões e outros produtos)",
+      "unidade": "R$ milhões",
+      "nota": "No 1T25: 17.783, com carteira de crédito de R$ 29,0 bilhões. 2025 não divulgado.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 60158,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 68829,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 6",
+        "periodo": "2023 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado do IRTT, que classifica a fonte do Carrefour como declaração da empresa (nota 1). O IRTT não traz o número de 2024.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 120900,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 64 e 88",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2022-06",
+      "tipo": "aquisicao",
+      "descricao": "Conclusão da compra do Grupo BIG (bandeiras BIG, Maxxi, Bompreço, Nacional e Sam's Club) em 06/06/2022: a companhia comprou 70% das ações e incorporou o restante com a emissão de 116,8 milhões de ações próprias. A rede passou de 779 para 1.203 lojas no ano.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 07/06/2022, entregue à CVM em 2022-06-07",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=988384&numSequencia=513118&numVersao=1",
+        "pagina": "p. 1 (lojas: release do 4T22, p. 17)",
+        "periodo": "2022",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2024-12",
+      "tipo": "desinvestimento",
+      "descricao": "Ajuste da rede de varejo em 2024: 191 lojas convertidas em Atacadão ou Sam's Club, vendidas ou fechadas, e anúncio da venda ou do fechamento dos 64 supermercados Bompreço e Nacional restantes. A companhia registrou R$ 410 milhões de despesas ligadas à venda ou ao fechamento de supermercados.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+        "pagina": "p. 5, 7 e 11",
+        "periodo": "2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-02",
+      "tipo": "fechamento_de_capital",
+      "descricao": "Em 11/02/2025 o controlador propôs transformar a companhia em subsidiária integral e tirá-la do Novo Mercado, com três opções na proposta inicial: R$ 7,70 por ação em dinheiro, ações ou recibos de ações (BDR) da matriz, ou parte em dinheiro e parte em ações. A relação de troca foi alterada em 03/04/2025 e a assembleia aprovou a operação em 25/04/2025.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 11/02/2025, entregue à CVM em 2025-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1333493&numSequencia=858219&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-05",
+      "tipo": "mudanca_de_controle",
+      "descricao": "Fechamento da reorganização em 30/05/2025: as ações da companhia passam a ser todas da sociedade controlada pelo Carrefour S.A. e deixam de ter acionistas minoritários no Brasil.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 30/05/2025, entregue à CVM em 2025-05-30",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1385327&numSequencia=910039&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-07",
+      "tipo": "outro",
+      "descricao": "Assembleia de 14/07/2025 aprova a saída do Novo Mercado, extingue o comitê de auditoria estatutário, desinstala o conselho fiscal e muda a composição do conselho de administração. Em 25/07/2025 o conselho aprova empréstimos da Carrefour Finance de até R$ 9,05 bilhões à companhia e de até R$ 750 milhões a uma controlada, a 15,40% ao ano por 36 meses, e o resgate antecipado de debêntures.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 25/07/2025 (assembleia: comunicado de 18/07/2025), entregue à CVM em 2025-07-25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1404228&numSequencia=928940&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-09",
+      "tipo": "fechamento_de_capital",
+      "descricao": "A CVM converte o registro da categoria A para a categoria B em 02/09/2025. O último release de resultados é o do 1T25; a última informação trimestral entregue cobre até setembro de 2025.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 02/09/2025, entregue à CVM em 2025-09-02",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1419402&numSequencia=944114&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "fechamento_de_capital",
+      "descricao": "A CVM cancela o registro de companhia aberta em 22/12/2025. A companhia passa a ser fechada e os seus valores mobiliários deixam de ser negociados em mercado organizado. Na base da CVM usada pela gold não há demonstração anual de 2025 nem informação trimestral de 2026.",
+      "fonte": {
+        "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 22/12/2025, entregue à CVM em 2025-12-22",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1460440&numSequencia=985146&numVersao=2",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do IRTT é a venda bruta ao consumidor, com impostos e com o que é vendido a comerciantes nas lojas do Atacadão, sem as vendas de terceiros no marketplace: R$ 123.594 milhões em 2025 e R$ 120.600 milhões em 2024, contra R$ 120.594 milhões de venda bruta no release de 2024. A receita líquida da CVM em 2024, de R$ 115.636 milhões, desconta impostos e soma R$ 6.325 milhões de outras receitas, das quais R$ 5.215 milhões do Banco Carrefour; a venda líquida de mercadorias foi de R$ 109.311 milhões. Para 2025 só existe na CVM o acumulado de janeiro a setembro, R$ 88.276 milhões. O faturamento do banco (R$ 68,8 bilhões em 2024) é o valor das compras nos cartões, não é receita e não entra em nenhuma das duas medidas. O IRTT informa ainda volume de vendas pela internet (GMV digital) de R$ 16.726 milhões em 2025, dos quais cerca de R$ 1 bilhão de terceiros (p. 115).",
+  "analise": {
+    "crescimento": "Não há demonstração anual de 2025: a companhia fechou o capital, e a última informação trimestral cobre janeiro a setembro, com receita líquida de R$ 88,3 bilhões, 4,7% acima do mesmo período de 2024. O último release, do primeiro trimestre de 2025, mostra a origem do crescimento: venda bruta de R$ 28,8 bilhões (alta de 3,6%), com 3,2% nas mesmas lojas (5,7% sem o efeito de calendário) e 0,4 ponto de expansão. O atacarejo Atacadão cresceu 7,3%, o varejo caiu 6,3% depois do fechamento de supermercados, e o clube Sam's subiu 1,9%. A administração associou o avanço do Atacadão à inflação de alimentos, que leva comerciantes a estocar. Para o ano inteiro só existe o número declarado ao IRTT: R$ 123,6 bilhões, 2,5% acima de 2024, com 956 lojas contra 1.007. De 2026 não há dado público.",
+    "rentabilidade_caixa": "Em 2024, último exercício com demonstração, a margem bruta foi de 18,31% (18,81% em 2023) e a margem operacional subiu de 2,59% para 3,69%. A receita líquida de R$ 115,6 bilhões inclui R$ 5,2 bilhões do Banco Carrefour. O resultado financeiro foi negativo em R$ 2,8 bilhões e o lucro líquido, de R$ 1,94 bilhão, depois de prejuízo de R$ 0,64 bilhão em 2023. A companhia atribuiu a melhora ao corte de despesas e à maturação das lojas convertidas do Grupo BIG. O caixa operacional foi de R$ 4,7 bilhões e o investimento, de R$ 2,1 bilhões. De janeiro a setembro de 2025 a margem operacional foi de 3,92% e o lucro, de R$ 0,86 bilhão. A dívida líquida sem arrendamento passou de R$ 9,8 bilhões em dezembro de 2024 para R$ 20,1 bilhões em setembro de 2025, e não há release que explique a variação.",
+    "acompanhar": {
+      "indicador": "Venda bruta e número de lojas declarados ao IRTT, únicos dados da operação brasileira que seguem públicos",
+      "reforca": "Venda crescendo com a rede estável depois do fechamento de supermercados (956 lojas em 2025) indicaria que o grupo cresce pelas lojas existentes e pelo Atacadão, como no 1T25.",
+      "enfraquece": "Nova redução de lojas com venda parada, ou a retirada do grupo das tabelas declaratórias do ranking, deixaria a leitura sem base: não há mais margem, caixa nem dívida publicados no Brasil."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Demonstração anual de 2025 e informações trimestrais de 2026: não existem na CVM; o registro foi cancelado em 22/12/2025. Margens, lucro, caixa operacional, investimento e dívida ficam sem dado depois de setembro de 2025.",
+    "Release de resultados depois do 1T25: não foi entregue. Com isso deixaram de ser divulgados as vendas nas mesmas lojas, a venda por segmento (Atacadão, varejo, Sam's Club), o número de lojas e a área de vendas por formato, as aberturas e os fechamentos, o volume de vendas pela internet e os números do Banco Carrefour (faturamento, carteira de crédito e inadimplência).",
+    "Número de lojas por formato e área de vendas em dezembro de 2025: o IRTT só traz o total de 956 lojas.",
+    "Funcionários em 2024: o IRTT 2026 só traz o número de 2025.",
+    "Explicação da alta da dívida líquida entre dezembro de 2024 e setembro de 2025: a informação trimestral traz os saldos, mas não houve release.",
+    "Resultados do Brasil publicados pela matriz Carrefour S.A.: não consultados nesta sessão (documentos fora das fontes liberadas)."
+  ],
+  "fontes": [
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-18",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336268&numSequencia=860994&numVersao=1",
+      "pagina": "p. 1 a 7 e 11",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 1T25, entregue à CVM em 2025-05-07",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1373193&numSequencia=897905&numVersao=2",
+      "pagina": "p. 1 a 3, 5, 9 e 10",
+      "periodo": "1T25",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T23, entregue à CVM em 2024-02-19",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1196354&numSequencia=721080&numVersao=1",
+      "pagina": "p. 2, 3 e 15",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T22, entregue à CVM em 2023-02-13",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1059831&numSequencia=584561&numVersao=1",
+      "pagina": "p. 2, 4 e 17",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), release de resultados do 4T21, entregue à CVM em 2022-02-15",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=944105&numSequencia=468839&numVersao=1",
+      "pagina": "p. 2, 5 e 17",
+      "periodo": "2021",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 07/06/2022 (conclusão da compra do Grupo BIG), entregue à CVM em 2022-06-07",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=988384&numSequencia=513118&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 11/02/2025 (proposta de deslistagem), entregue à CVM em 2025-02-11",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1333493&numSequencia=858219&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 30/05/2025 (fechamento da reorganização), entregue à CVM em 2025-05-30",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1385327&numSequencia=910039&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), comunicado ao mercado de 18/07/2025 (conversão de categoria e nova governança), entregue à CVM em 2025-07-18",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1402236&numSequencia=926948&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 25/07/2025 (refinanciamento de dívidas), entregue à CVM em 2025-07-25",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1404228&numSequencia=928940&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 02/09/2025 (categoria B), entregue à CVM em 2025-09-02",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1419402&numSequencia=944114&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Carrefour Brasil (Atacadão S.A.), fato relevante de 22/12/2025 (cancelamento de registro), entregue à CVM em 2025-12-22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1460440&numSequencia=985146&numVersao=2",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2024 (ATACADÃO S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=144849",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2023 (ATACADÃO S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=134106",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ITR de 2025-09-30 (ATACADÃO S.A.), extraído em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=152538",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "acumulado de janeiro a 09/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 23, 24, 38, 64, 88, 103 e 115",
+      "periodo": "2025 (e 2024 para comparação)",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Ranking ABRAS 2026, tabela das empresas respondentes",
+      "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+      "pagina": "p. 2",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

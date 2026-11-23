@@ -1,0 +1,573 @@
+{
+  "slug": "assai",
+  "grupo": "Assaí Atacadista (Sendas Distribuidora S.A.)",
+  "resumo": "Rede de atacarejo com 313 lojas em 24 estados e no Distrito Federal, que vende a comerciantes e a famílias; segunda maior varejista do país em vendas.",
+  "controlador": {
+    "nome": null,
+    "nota": "A companhia se declara sem controlador único (corporation). O antigo controlador, o grupo francês Casino, vendeu a participação remanescente de 11,67% em 23/06/2023. Em 30/09/2026 a Superintendência-Geral do Cade aprovou sem restrições a compra de 12,0134% das ações por três fundos de investimento e por Everton Muffato; a companhia informa que a aprovação não altera, por si só, o controle nem a administração.",
+    "fonte": {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+      "pagina": "p. 19",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "assai",
+  "bandeiras": [
+    {
+      "nome": "Assaí Atacadista",
+      "formato": "atacarejo",
+      "nota": "312 lojas em dezembro de 2025 e 313 em setembro de 2026; 64 delas são antigos hipermercados Extra convertidos entre 2022 e 2023, e outras 2 foram convertidas em 2024."
+    },
+    {
+      "nome": "Assaí Farma",
+      "formato": "farmácia dentro da loja",
+      "nota": "11 unidades no estado de São Paulo em setembro de 2026; a companhia informa meta de 25 no ano."
+    },
+    {
+      "nome": "Passaí",
+      "formato": "cartão de crédito com a financeira FIC (Itaú)",
+      "nota": "1,4 milhão de cartões ativos em dezembro de 2025; 5,4% das vendas no 4T25."
+    }
+  ],
+  "formatos": [
+    "atacarejo (loja de autosserviço que vende no atacado e no varejo)",
+    "galerias comerciais anexas às lojas convertidas",
+    "farmácia dentro da loja (piloto desde 2026)"
+  ],
+  "regioes": {
+    "texto": "Todas as regiões. Em dezembro de 2025: 170 lojas no Sudeste, 82 no Nordeste, 29 no Centro-Oeste, 21 no Norte e 10 no Sul. O release fala em 24 estados e Distrito Federal sem listá-los; a lista abaixo é a do IRTT (25 unidades da federação, sem Rio Grande do Sul e Santa Catarina).",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MT",
+      "MS",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "entrega por parceiros (iFood e outros aplicativos), mais de 3% da venda das lojas que estão na plataforma",
+    "marketplace do Mercado Livre, com início de vendas previsto para o 2T26",
+    "aplicativo Meu Assaí (16 milhões de cadastros; 52% das vendas do 4T25 identificadas pelo aplicativo)"
+  ],
+  "clientes": "Comerciantes e consumidores finais que compram no atacado ou no varejo. A companhia informa mais de 40 milhões de clientes por mês e aponta as famílias de menor renda como o público mais afetado por juros e endividamento.",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de mercadorias",
+      "descricao": "Receita bruta de R$ 84,7 bilhões em 2025. Açougue e empório de frios somam cerca de 5% da venda total."
+    },
+    {
+      "nome": "Galerias comerciais",
+      "descricao": "Aluguel de lojas nas galerias dos hipermercados convertidos: R$ 125 milhões em 2025 (alta de 13,6%), com 83% da área locável ocupada."
+    },
+    {
+      "nome": "Serviços financeiros (cartão Passaí)",
+      "descricao": "Participação na financeira FIC, do Itaú: resultado de equivalência patrimonial de R$ 60 milhões em 2025 e reembolso de R$ 79 milhões pela vantagem de preço dada a quem paga com o cartão. A participação foi vendida ao Itaú por cerca de R$ 260 milhões, com conclusão dois anos após a primeira etapa."
+    },
+    {
+      "nome": "Novas frentes anunciadas",
+      "descricao": "Farmácias, marca própria (140 itens em setembro de 2026), maquininhas Assaí Pay (piloto em 30 lojas) e 18 postos de combustíveis comprados em 2026, com operação própria a partir de 2027."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Atacadão (Grupo Carrefour Brasil)",
+      "slug": "carrefour-brasil"
+    },
+    {
+      "nome": "Mix Mateus e Novo Atacarejo (Grupo Mateus)",
+      "slug": "grupo-mateus"
+    },
+    {
+      "nome": "Max Atacadista (Super Muffato)",
+      "slug": "super-muffato"
+    },
+    {
+      "nome": "Fort Atacadista (Grupo Pereira)",
+      "slug": "grupo-pereira"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Lojas abertas há mais de 12 meses. 2021 a 2023 como divulgado; 2024 e 2025 e o 3T26 excluem o efeito de calendário (2024 sobre a venda líquida). Para 2022 o release só informa 'acima de 10%' no ano e 10,5% no 4T22, por isso o ano fica nulo. Trimestres de 2026: 1T -0,9, 2T 0,9, 3T 0,1. Fontes por ano: release 4T21 p. 2; 4T23 p. 2; 4T24 p. 2; 4T25 p. 2 e 7; 3T26 p. 3 e 8.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 4.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "release informa apenas 'acima de 10%'"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 3.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 0.1,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 2 e 7",
+        "periodo": "2021 a 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no fim do período",
+      "unidade": "lojas",
+      "nota": "O IRTT traz os mesmos 302 (2024) e 312 (2025), p. 38. O release registra seis fechamentos desde o 3T22, ligados às conversões.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 212,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 263,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 288,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 302,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 312,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 313,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 21 (3T26: release do 3T26, p. 20)",
+        "periodo": "4T21 a 4T25",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas inauguradas no ano (orgânicas e conversões)",
+      "unidade": "lojas",
+      "nota": "2021: 24 orgânicas e 4 conversões. 2022: 13 orgânicas e 47 conversões de hipermercados Extra. 2024: inclui as 2 últimas conversões. 2026: uma loja no 1T26, conta nossa pela variação de 312 para 313 lojas, sem fechamento informado. Fontes: release 4T21 p. 2; 4T22 p. 2; 4T23 p. 2; 4T24 p. 2; 4T25 p. 15; 3T26 p. 20.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 28,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 60,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 27,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 15,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 10,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 1,
+          "natureza": "calculado",
+          "nota": "313 lojas em set/2026 menos 312 em dez/2025"
+        }
+      ],
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 15",
+        "periodo": "2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Área de vendas no fim do período",
+      "unidade": "mil m²",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 964,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 1307,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 1456,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 1529,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1579,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 1584,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 21 (3T26: release do 3T26, p. 20)",
+        "periodo": "4T21 a 4T25",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita bruta de vendas",
+      "unidade": "R$ milhões",
+      "nota": "Venda com impostos, base do ranking IRTT. Fontes: release 4T21 p. 16; 4T23 p. 4 (2022 e 2023); 4T24 p. 4; 4T25 p. 6; 3T26 p. 7 (9M26; no 3T26 isolado, 21.325).",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 45585,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 59684,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 72785,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 80570,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 84736,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 63343,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 6",
+        "periodo": "2024 e 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado do IRTT, que classifica a fonte do Assaí como declaração da empresa (nota 1). O IRTT não traz o número de 2024.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 92878,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 64 e 88",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2023-06",
+      "tipo": "mudanca_de_controle",
+      "descricao": "O Casino vendeu em bolsa a participação remanescente de 11,67%; a companhia passou a não ter controlador.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), fato relevante de 23/06/2023, entregue à CVM em 2023-06-23",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1116241&numSequencia=640970&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2023",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2024-12",
+      "tipo": "outro",
+      "descricao": "Fim do projeto de conversão de hipermercados Extra em lojas Assaí, com as duas últimas aberturas no 4T24. As 64 lojas convertidas em 2022 e 2023 venderam em média R$ 26,7 milhões por mês em 2025, 21% acima das lojas orgânicas abertas até 2022.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+        "pagina": "p. 9",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-09",
+      "tipo": "outro",
+      "descricao": "Medida cautelar contra o Casino e o GPA, em 24/09/2025, para obter garantias contra cobranças de tributos do GPA anteriores à cisão de 31/12/2020; a Receita Federal busca responsabilizar o Assaí de forma solidária, em procedimento de cerca de R$ 36 milhões.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), fato relevante de 24/09/2025, entregue à CVM em 2025-09-24",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1426251&numSequencia=950963&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "desinvestimento",
+      "descricao": "Contrato de 08/12/2025 para vender ao Itaú a participação na financeira FIC por cerca de R$ 260 milhões, em duas etapas; a parceria do cartão Passaí segue por dois anos. A companhia registrou baixa contábil de R$ 521 milhões no 4T25, sem saída de caixa.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), fato relevante de 08/12/2025, entregue à CVM em 2025-12-08",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453753&numSequencia=978465&numVersao=1",
+        "pagina": "p. 1 (baixa contábil: release do 4T25, p. 5)",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-01",
+      "tipo": "outro",
+      "descricao": "Pedido de cancelamento do registro na SEC (Form 15F) em 12/01/2026, depois da saída dos recibos de ações (ADS) da Bolsa de Nova York, efetivada antes do pregão de 10/01/2025; as ações seguem no Novo Mercado da B3.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), fato relevante de 12/01/2026, entregue à CVM em 2026-01-12",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1466457&numSequencia=991163&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "aquisicao",
+      "descricao": "Contrato de 17/09/2026 para comprar as sociedades donas de 18 postos de combustíveis instalados em lojas Assaí em São Paulo, por até R$ 80 milhões; a companhia só assume as operações a partir de 31/07/2027.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), fato relevante de 17/09/2026, entregue à CVM em 2026-09-17",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1569287&numSequencia=1093993&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "outro",
+      "descricao": "A Superintendência-Geral do Cade aprovou sem restrições, em 30/09/2026, a compra de 12,0134% das ações por Snapper Rocks Strategy FIA, WHG Apache FIA, Exitus FIM e Everton Muffato.",
+      "fonte": {
+        "titulo": "Assaí (Sendas Distribuidora), comunicado ao mercado de 30/09/2026, entregue à CVM em 2026-09-30",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1573054&numSequencia=1097760&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT usa a venda bruta ao consumidor, com impostos: R$ 84.736 milhões em 2025, o mesmo número da receita bruta do release. A demonstração entregue à CVM (a gold usa a demonstração individual) registra receita líquida de R$ 77.307 milhões. A diferença de R$ 7.429 milhões (conta nossa) são tributos sobre vendas e devoluções, deduzidos entre a receita bruta e a líquida. A venda inclui o que é vendido a comerciantes nas lojas e não inclui a receita das galerias nem o resultado do cartão Passaí. Os releases apresentam margens e lucro na visão anterior à norma de arrendamentos (IFRS 16); a gold usa a visão contábil, com arrendamentos.",
+  "analise": {
+    "crescimento": "Em 2025 a venda bruta do Assaí somou R$ 84,7 bilhões, alta de 5,2%, e a receita líquida registrada na CVM foi de R$ 77,3 bilhões (4,7%). Segundo a administração, 2,6 pontos vieram das vendas nas mesmas lojas (lojas abertas há mais de um ano, sem efeito de calendário) e 3,1 pontos da expansão: dez inaugurações, que levaram a rede a 312 lojas. A companhia atribui o ritmo baixo à queda de preços de arroz, leite, açúcar e feijão e ao endividamento das famílias de menor renda. De janeiro a setembro de 2026 a venda bruta cresceu 2,3%, para R$ 63,3 bilhões, e a receita líquida ficou em R$ 56,8 bilhões (0,5%). As vendas nas mesmas lojas variaram 0,9% negativo, 0,9% e 0,1% nos três trimestres, com uma loja aberta no ano.",
+    "rentabilidade_caixa": "A margem bruta (lucro bruto dividido pela receita líquida) foi de 16,87% em 2025, contra 16,56% em 2024. A margem operacional caiu de 5,21% para 4,69%, porque o resultado inclui baixa contábil de R$ 521 milhões da participação na financeira FIC, sem saída de caixa. O resultado financeiro piorou de R$ 2,9 bilhões negativos para R$ 3,4 bilhões negativos, o que a companhia atribui à alta do CDI, e o lucro líquido recuou de R$ 0,77 bilhão para R$ 0,50 bilhão. O caixa operacional subiu para R$ 5,6 bilhões, o investimento caiu para R$ 1,1 bilhão e a dívida líquida sem arrendamento ficou em R$ 10,4 bilhões. De janeiro a setembro de 2026 a margem bruta foi a 19,13% e o lucro a R$ 1,19 bilhão, com créditos de PIS e Cofins de períodos anteriores; sem eles, a administração informa margem bruta de 17,0%.",
+    "acompanhar": {
+      "indicador": "Vendas nas mesmas lojas por trimestre",
+      "reforca": "Dois trimestres seguidos acima de zero, na linha dos 3,9% que a companhia informou para outubro de 2026, indicariam que a receita volta a crescer sem depender de lojas novas (a previsão para 2026 é de cinco aberturas).",
+      "enfraquece": "Novo trimestre próximo de zero com despesas crescendo mais que a receita líquida, como no 3T26 (despesas 4,2%, receita líquida 0,2%), reduziria a margem operacional quando os créditos tributários acabarem."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Vendas nas mesmas lojas de 2022 no ano: o release informa apenas 'acima de 10%'.",
+    "Fechamentos de lojas por ano: o release só lista seis fechamentos entre o 3T22 e o 3T23, e a soma de aberturas e fechamentos não fecha com o total de lojas em 2022 e 2024.",
+    "Lista de estados: o release informa 24 estados e Distrito Federal sem nomeá-los; a lista usada é a do IRTT.",
+    "Funcionários em 2024: o IRTT 2026 só traz o número de 2025 para o Assaí.",
+    "Venda dividida entre comerciantes e consumidores finais: não divulgada nos releases consultados."
+  ],
+  "fontes": [
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T25 e 2025, entregue à CVM em 2026-02-11",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1476541&numSequencia=1001247&numVersao=1",
+      "pagina": "p. 2 a 12, 15, 18, 19 e 21",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 3T26, entregue à CVM em 2026-11-05",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1585096&numSequencia=1109802&numVersao=1",
+      "pagina": "p. 3 a 10, 14 e 20",
+      "periodo": "3T26 e acumulado de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T24 e 2024, entregue à CVM em 2025-02-19",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336839&numSequencia=861565&numVersao=1",
+      "pagina": "p. 2, 4 a 6 e 9",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T23 e 2023, entregue à CVM em 2024-02-21",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1197321&numSequencia=722047&numVersao=1",
+      "pagina": "p. 2, 4 e 5",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T22 e 2022, entregue à CVM em 2023-02-15",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1061396&numSequencia=586126&numVersao=1",
+      "pagina": "p. 2, 5 e 6",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), release de resultados do 4T21 e 2021, entregue à CVM em 2022-02-22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=945926&numSequencia=470660&numVersao=1",
+      "pagina": "p. 2, 4, 5 e 16",
+      "periodo": "2021",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), fato relevante de 08/12/2025 (venda da FIC), entregue à CVM em 2025-12-08",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453753&numSequencia=978465&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), fato relevante de 17/09/2026 (postos de combustíveis), entregue à CVM em 2026-09-17",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1569287&numSequencia=1093993&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), comunicado ao mercado de 30/09/2026 (aprovação do Cade), entregue à CVM em 2026-09-30",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1573054&numSequencia=1097760&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), fato relevante de 24/09/2025 (medida cautelar), entregue à CVM em 2025-09-24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1426251&numSequencia=950963&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), fato relevante de 12/01/2026 (Form 15F), entregue à CVM em 2026-01-12",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1466457&numSequencia=991163&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Assaí (Sendas Distribuidora), fato relevante de 23/06/2023 (venda do Casino), entregue à CVM em 2023-06-23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1116241&numSequencia=640970&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2025 (SENDAS DISTRIBUIDORA S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154718",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2024 (SENDAS DISTRIBUIDORA S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=144897",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ITR de 2026-09-30 (SENDAS DISTRIBUIDORA S.A.), extraído em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=162076",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "acumulado de janeiro a 09/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 38, 64, 88 e 104",
+      "periodo": "2025 (e 2024 para comparação)",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}
