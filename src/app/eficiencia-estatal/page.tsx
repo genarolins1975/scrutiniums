@@ -65,6 +65,7 @@ export default function PaginaEntradaEficiencia(){
   notaEscala="Mediana simples das 26 capitais estaduais, sem o Distrito Federal. Precisão municipal não quantificada nas medidas amostrais."
   resposta={<SeletorCapital/>}
   contextoEscala="Referência: a mediana das 26 capitais"
+  contextoAteEscolha
   paraVoce={<ParaVoce entrada="/eficiencia-estatal"/>}
   destinos={<div className="mx-auto max-w-page px-6"><MapaCobertura temas={temas}/></div>}
   secaoPropria={<ReguaCapital/>}

@@ -5,6 +5,7 @@ import { RotuloContexto } from "@/components/layout/RotuloContexto";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { NumeroEscala } from "@/components/observatorios/NumeroEscala";
 import { Recolhido } from "@/components/observatorios/Recolhido";
+import { ContextoAteEscolha } from "@/components/observatorios/ContextoAteEscolha";
 import { SeloProntidao, type Prontidao } from "@/components/observatorios/SeloProntidao";
 import type { Dominio } from "@/lib/dominios";
 import type { Idioma } from "@/lib/idioma";
@@ -84,6 +85,7 @@ export function EntradaColecao({
   paraVoce,
   resposta,
   contextoEscala,
+  contextoAteEscolha = false,
   seuMunicipio,
   destinos,
   secaoPropria,
@@ -131,6 +133,8 @@ export function EntradaColecao({
   resposta?: ReactNode;
   /** Identifica o universo dos números de contexto quando há uma resposta específica acima. */
   contextoEscala?: string;
+  /** Decisão do dono de 24/11/2026: com escolha feita no navegador, o contexto abre à vista e recolhe quando a resposta marca `data-escolha="sim"`. */
+  contextoAteEscolha?: boolean;
   /** Extrato escolhido pelo leitor, antes da escala nacional (Educação, pedido de 25/10/2026). */
   seuMunicipio?: ReactNode;
   destinos?: ReactNode;
@@ -173,7 +177,7 @@ export function EntradaColecao({
           <p className={`${resposta ? "mt-3" : "mt-6"} max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg`}>{frase}</p>
           {resposta && <div data-fatia="resposta" className="mt-4">{resposta}</div>}
           {seuMunicipio && <div data-fatia="seu-municipio">{seuMunicipio}</div>}
-          {escala && escala.length > 0 && (contextoEscala ? <Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8"><Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} /></Recolhido> : <Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} />)}
+          {escala && escala.length > 0 && (contextoEscala ? <><Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8" aberto={contextoAteEscolha}><Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} /></Recolhido>{contextoAteEscolha && <ContextoAteEscolha alvo="contexto-da-entrada" />}</> : <Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} />)}
           {figuraEscala}
         </div>
       </section>

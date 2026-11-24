@@ -92,7 +92,7 @@ export function PrecoNoEstado({ dados, titulo, destacarTanque = false }: { dados
       {!litrosValidos && <p role="status" className="text-sm text-carvao-muted">Informe de 1 a 1.000 litros para calcular o tanque. Os preços por litro continuam disponíveis.</p>}
       {escolha.invalida && <p aria-live="polite" className="text-sm text-carvao-muted">O estado informado no endereço não está na pesquisa. Exibimos a média do Brasil.</p>}
 
-      <div role="status" aria-live="polite" data-resposta-especifica="">
+      <div role="status" aria-live="polite" data-resposta-especifica="" data-escolha={linha ? "sim" : "nao"}>
         <h2 className="ed-h2 max-w-3xl font-serif text-carvao">{titulo ?? `${destacarTanque ? "Custo do tanque" : "Preço médio do litro"}: ${nome}, ${mes}`}</h2>
         <p className="mt-2 text-xs leading-relaxed text-mineral">Fonte: ANP, pesquisa de preços nos postos · {mes}. {destacarTanque ? "Custo calculado pela média observada, não uma cotação de posto." : "Média observada na pesquisa."}</p>
         <ul className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
