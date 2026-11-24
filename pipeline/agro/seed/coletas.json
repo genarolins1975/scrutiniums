@@ -25,10 +25,10 @@
       "limite": "Estimativa mensal da safra do ano, revista a cada mês e depois substituída pela PAM. Anos anteriores usam a estimativa de dezembro. Brasil, sem recorte por UF nesta coleta.",
       "arquivoRepositorio": "pipeline/agro/seed/lspa.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "e21112fd48b8c1507142fa8d2c54dd2d1aa6c324ddf247f7d3eca1efdb4152ee",
-      "sha256Arquivo": "83c777423a1c97f864b8087ff501359e9d99d5c26f2a68a36a7be996d7603c55",
+      "sha256Original": "f6b85fa18a0cd59a200ae00d359a8e6dadb5b483bcd62d7acbc609dfe52db709",
+      "sha256Arquivo": "b8116a90c86f4c3318307036419c6074d5e20d59778a6079f3a078f1a8396c4c",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T18:03:46+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "censoagro",
@@ -53,10 +53,10 @@
       "limite": "Pessoas ocupadas no grupamento agricultura, pecuária, produção florestal, pesca e aquicultura, pelo trabalho principal. Rendimento habitual real do trabalho principal, a preços do último trimestre. Estimativa amostral.",
       "arquivoRepositorio": "pipeline/agro/seed/pnadc.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "002b3142af751ba92856d38bfb1100b4d323208a249286837a1fdf0ff296a607",
-      "sha256Arquivo": "a596c0523c84590724b9d5ed9ff92c099961497d05ab1f5938c212209d2201ca",
+      "sha256Original": "231b0871b2f23cd741662e23c1ac831af21879457fa6fb492b3cd0d51a94888a",
+      "sha256Arquivo": "2d53cff765a2b7853437103984b95f8cc94f369896e559839468e4c3818cd2e3",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:10:33+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "ipca",
@@ -67,10 +67,10 @@
       "limite": "Preços ao consumidor das famílias com renda de 1 a 40 salários mínimos, em 16 áreas urbanas. Mede o que a família paga, não o preço recebido pelo produtor.",
       "arquivoRepositorio": "pipeline/agro/seed/ipca.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "b88ef6bfa6aefdafe286379eda39a524d0e50b352796e3784abda4239e04bef2",
-      "sha256Arquivo": "e97fd306ce4aad7fdcc20a324ea968268d2e56ff8c91f4c98fcbd3f390bba45f",
+      "sha256Original": "de2174f9768efe51000e42f07ccc1c61e989b6a094966306b4ad16b1696ba1f6",
+      "sha256Arquivo": "aaa29632e981c5dc75e3a350267c134c0eac2b8fd69d02ed84287019ee7cc24c",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:10:33+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "sicor",
@@ -81,10 +81,10 @@
       "limite": "Taxa contratada informada pela instituição, em % ao ano, média ponderada pelo valor de cada contrato. Só contratos sem indexador; os indexados (CDI, TLP, IPCA) ficam fora da média. O mês mais recente pode ser completado em revisões.",
       "arquivoRepositorio": "pipeline/agro/seed/sicor.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "30217c50cb3dbdd9a71d0e15d902996c5b374992d079092aac5f4a9fd0d15699",
-      "sha256Arquivo": "8f3fe496f0dd24e49af2eb71571f473d10f63460b6a4bfda1cf1c19cf1d10e69",
+      "sha256Original": "0b32349e3198c79d7ffc3e7b4ce64afc80eb667802b20dd56dedc4896051f191",
+      "sha256Arquivo": "b423010aa896ccb0e007267f175d8b4e05ac9f62f675cc3646fa71c886cb15ca",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:53:19+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "tesouro",
@@ -95,10 +95,10 @@
       "limite": "Pagamentos do ano, em R$ correntes; referem-se a contratos de safras anteriores. Não inclui subvenção ao prêmio do seguro rural (PSR), renúncia tributária nem o custo dos fundos constitucionais.",
       "arquivoRepositorio": "pipeline/agro/seed/tesouro.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "34271657523d552320e0966f805f08fd09713a8ccd1d75d06bd989e10d6e58d9",
-      "sha256Arquivo": "e00f10ec117f711d7f38abac130b38f187aa82ef3eb18ed793870a45e791175e",
+      "sha256Original": "936e209d5acfb03c8b40c977b7a43b687ba76edac570c19e177021126478d0cb",
+      "sha256Arquivo": "fec6ed4bbfefda3abcb1fc380638f25f320d5d7f799f84bff538754beb28c11c",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:21:27+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "prodes",
@@ -123,10 +123,10 @@
       "limite": "Estimativa da sociedade civil, não o inventário oficial do governo. Toneladas de CO2 equivalente, GWP-AR5. Mudança de uso da terra inclui desmatamento por qualquer causa, não só agropecuária.",
       "arquivoRepositorio": "pipeline/agro/seed/seeg.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "669b4d38822d8c390bf036ca9f8cd12bf9f4fc78edf381d380b426ec2f882a09",
-      "sha256Arquivo": "c9dae8a0b572260338481458e5d1091ee5916129bfb2385c7a78d9d64ea58fef",
+      "sha256Original": "91008c742a3b1a86e4d8fa4687d6f6b6f05123cc831e6765316e2cf334e0dfde",
+      "sha256Arquivo": "6706d135d78f5c97576b8fdce3daebfeb80f798d5a607923adca39d5bf82d704",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T19:21:27+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "mapbiomas",
@@ -165,10 +165,10 @@
       "limite": "Valores FOB em US$ correntes e massa líquida em kg, por posição de quatro dígitos do Sistema Harmonizado. Uma posição pode incluir produto de outra origem (álcool etílico de milho, leguminosas que não são feijão, aves que não são frango).",
       "arquivoRepositorio": "pipeline/agro/seed/comexcadeias.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "4ccca9aba63d0865c8177380e227117329424782862bb37182091dc774dae0aa",
-      "sha256Arquivo": "5d97a679b1389fb6552ccf9faf400dc1e42cbaf5dbcaa0451db14135d482e7bd",
+      "sha256Original": "c17610804c75b45ea1ff0190815bd4d7ed3bde9271fe1f7b59df002e386375af",
+      "sha256Arquivo": "3559d46186f5050cee9ddcaf45e025d32c8cd8f39e335afd007ba4c04fd58307",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T21:39:34+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     },
     {
       "id": "comex",
@@ -179,10 +179,10 @@
       "limite": "Valores FOB em US$ correntes e massa líquida em kg. O recorte agro por capítulo SH não é o Agrostat/MAPA. Valor unitário de comércio não é preço pago ou recebido na fazenda.",
       "arquivoRepositorio": "pipeline/agro/seed/comex.json.gz",
       "commitRepositorio": "",
-      "sha256Original": "fac5349e1cbcbd3423685ea41b9f807ad06fee8e6b667f34ffeccd4ed959300c",
-      "sha256Arquivo": "e1b881f647cab2a3fe021012716784a83116ec5fc0f6666d5a56570a6da92804",
+      "sha256Original": "f3005f9dd5f9621cf1cd991a7ca75938a2d1b3bfa309e5fba53d78228e322f71",
+      "sha256Arquivo": "a3abef7673518045e5dd4e5a5d92559706a933734a9fa0210796706a1bdac86d",
       "estadoAcesso": "COLETA_OFICIAL",
-      "capturadoEm": "2026-10-17T18:03:46+00:00"
+      "capturadoEm": "2026-11-24T21:37:15+00:00"
     }
   ]
 }
