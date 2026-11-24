@@ -52,6 +52,36 @@ class LogosVarejo(unittest.TestCase):
         self.assertIsNone(logos.png_embutido(envolve.replace(b"</svg>", b'<image href="data:image/png;base64,' + b64 + b'"/></svg>')))
         self.assertIsNone(logos.png_embutido(b"<svg/>"))
 
+    def test_png_da_pagina_exige_a_marca_do_elemento(self):
+        import base64
+        png = b"\x89PNG\r\n\x1a\n" + b"\x01" * 40
+        b64 = base64.b64encode(png)
+        pagina = b'<html><svg><image id="logo-x" width="1" xlink:href="data:image/png;base64,' + b64 + b'"/></svg></html>'
+        self.assertEqual(logos.png_da_pagina(pagina, b'id="logo-x"'), png)
+        self.assertIsNone(logos.png_da_pagina(pagina, b'id="outro"'))
+        self.assertIsNone(logos.png_da_pagina(pagina + pagina, b'id="logo-x"'))
+
+    def test_derivacao_recorta_e_reduz_sem_mudar_o_formato(self):
+        import io
+
+        from PIL import Image
+        orig = io.BytesIO()
+        Image.new("RGBA", (400, 100), (10, 20, 30, 255)).save(orig, "PNG")
+        saida, desc = logos.derivar(orig.getvalue(), (100, 10, 300, 90), 100)
+        self.assertEqual(logos.formato_de(saida), "png")
+        self.assertEqual(logos.dimensoes(saida, "png"), (100, 40))
+        self.assertEqual(desc["caixa"], [100, 10, 300, 90])
+        self.assertEqual(logos.derivar(orig.getvalue(), (100, 10, 300, 90), 100)[0], saida)
+
+    def test_entradas_derivadas_e_do_dono_ficam_declaradas(self):
+        porslug = {x["slug"]: x for x in self.manifesto()["logos"]}
+        for slug in logos.DERIVADOS:
+            self.assertTrue(porslug[slug]["derivado_de"], slug)
+        for slug in logos.EXTRAIDOS:
+            self.assertTrue(porslug[slug]["extraido_de"], slug)
+        for slug, metodo in logos.METODO.items():
+            self.assertEqual(porslug[slug]["metodo"], metodo, slug)
+
 
 if __name__ == "__main__":
     unittest.main()

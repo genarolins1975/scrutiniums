@@ -18,6 +18,7 @@ export type EntradaLogoVarejo = {
   papel: string;
   cnpj: string | null;
   vinculo: string | null;
+  vinculo_conferido_por: "dono" | null;
   nota: string | null;
   arquivo: string | null;
   formato: "svg" | "png" | "webp" | null;
@@ -29,9 +30,10 @@ export type EntradaLogoVarejo = {
   capturado_em: string | null;
   sha256: string | null;
   bytes: number | null;
-  metodo: "direto" | "extraido" | "navegador" | null;
-  extraido_de: { url: string; sha256: string; bytes: number } | null;
+  metodo: "direto" | "navegador" | "dono" | null;
+  extraido_de: { url: string; sha256?: string; bytes?: number; elemento?: string } | null;
   derivado_de: string | null;
+  derivacao: { caixa: number[] | null; largura_max: number | null; ferramenta: string } | null;
   ausencia: { motivo: string } | null;
 };
 

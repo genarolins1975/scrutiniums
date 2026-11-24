@@ -1,7 +1,7 @@
 {
- "versao": 3,
- "gerado_em": "2026-11-24T10:18:24Z",
- "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'metodo' 'extraido' marca o PNG que a companhia publica embutido num SVG e que foi extraído sem alteração. Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
+ "versao": 4,
+ "gerado_em": "2026-11-24T10:31:24Z",
+ "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'extraido_de' marca o PNG que a companhia publica embutido num SVG ou na página e que foi extraído sem alteração; 'derivado_de' e 'derivacao' marcam o recorte ou a redução de um arquivo oficial; 'metodo' diz como os bytes chegaram (requisição direta, navegador ou arquivo anexado pelo dono da plataforma). Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
  "logos": [
   {
    "slug": "amazon-brasil",
@@ -9,6 +9,7 @@
    "papel": "grupo do ranking, líder de segmento, ficha",
    "cnpj": null,
    "vinculo": "Grupo estrangeiro, sem CNPJ na página. O rodapé da página de origem, o site institucional da Amazon no Brasil, exibe \"© 1996-2023 Amazon.com, Inc. ou suas afiliadas\"; o cabeçalho da mesma página publica o arquivo, servido de assets.aboutamazon.com.",
+   "vinculo_conferido_por": null,
    "nota": "Marca do grupo Amazon; a página não cita a razão social nem o CNPJ da operação brasileira.",
    "arquivo": "/varejo/logos/amazon-brasil.svg",
    "formato": "svg",
@@ -23,6 +24,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -31,6 +33,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "00.776.574/0001-56",
    "vinculo": "CNPJ 00.776.574/0001-56 (Americanas S.A. - Em Recuperação Judicial, gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@americanas.io, do mesmo domínio do site de RI que publica o arquivo (ri.americanas.io), cujo rodapé exibe \"© 2026 — Americanas SA\".",
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": "/varejo/logos/americanas.png",
    "formato": "png",
@@ -45,6 +48,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -53,6 +57,7 @@
    "papel": "grupo do ranking, líder de segmento, ficha",
    "cnpj": null,
    "vinculo": "Grupo estrangeiro, sem CNPJ na página. O site de origem identifica o titular: rodapé \"Copyright © 2025 - Arcos Dorados - All rights reserved\" e, na política de privacidade do mesmo site (www.arcosdorados.com/privacy-policy/, que usa o mesmo arquivo), \"Arcos Dorados S.A. [...] Roque Saenz Peña 432 Olivos (1636) Provincia de Buenos Aires\".",
+   "vinculo_conferido_por": null,
    "nota": "Marca do grupo Arcos Dorados, operador do McDonald's na América Latina; a página não cita a subsidiária brasileira nem o CNPJ dela.",
    "arquivo": "/varejo/logos/arcos-dorados.png",
    "formato": "png",
@@ -67,6 +72,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -75,6 +81,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "06.057.223/0001-71",
    "vinculo": "CNPJ 06.057.223/0001-71 (Sendas Distribuidora S.A., gold de empresas do Varejo). O rodapé da página de origem exibe \"Assaí Atacadista. Todos os direitos reservados Sendas Distribuidora S/A. CNPJ 06.057.223/0001-71\".",
+   "vinculo_conferido_por": null,
    "nota": "Marca da bandeira Assaí Atacadista, pela qual a companhia se apresenta; o nome vem em branco, para fundo escuro.",
    "arquivo": "/varejo/logos/assai.svg",
    "formato": "svg",
@@ -89,6 +96,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -97,6 +105,7 @@
    "papel": "companhia do comparador",
    "cnpj": "16.590.234/0001-76",
    "vinculo": "CNPJ 16.590.234/0001-76 (Azzas 2154 S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@azzas2154.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.azzas2154.com.br, \"Home - Azzas 2154 RI\").",
+   "vinculo_conferido_por": null,
    "nota": "Arquivo publicado só em branco, para fundo escuro.",
    "arquivo": "/varejo/logos/azzas.png",
    "formato": "png",
@@ -111,6 +120,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -118,48 +128,48 @@
    "nome_exibicao": "Grupo Carrefour Brasil",
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "75.315.333/0001-09",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 75.315.333/0001-09 (Atacadão S.A., gold de empresas do Varejo; registro na CVM cancelado depois da incorporação das ações pelo Carrefour S.A.). Fato relevante da companhia arquivado na CVM em 30/05/2025 (IPE, protocolo 024171IPE300520250179350617-50, \"Fechamento da Reorganização Societária\", p. 2): \"A documentação aplicável à Transação está disponível aos acionistas [...] no website da Companhia (ri.grupocarrefourbrasil.com.br)\". O arquivo vem do site institucional do mesmo domínio (grupocarrefourbrasil.com.br).",
+   "vinculo_conferido_por": null,
+   "nota": "Versão em branco, para fundo escuro. A página responde 403 à requisição direta e foi aberta pelo dono da plataforma no navegador dele em 24/11/2026; o arquivo do logo responde à requisição direta.",
+   "arquivo": "/varejo/logos/carrefour-brasil.svg",
+   "formato": "svg",
+   "fundo": "escuro",
+   "largura": 138.0,
+   "altura": 44.0,
+   "url_origem": "https://grupocarrefourbrasil.com.br/images/logo/logo_gcb_branca.svg",
    "pagina_origem": "https://grupocarrefourbrasil.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:30:24Z",
+   "sha256": "321fad6a2502ec9d93440941d4287f83ca427d185b4ce0c6944fbd500d28cb23",
+   "bytes": 8572,
+   "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi obtido."
-   }
+   "derivacao": null,
+   "ausencia": null
   },
   {
    "slug": "casas-bahia",
    "nome_exibicao": "Grupo Casas Bahia",
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "33.041.260/0652-90",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 33.041.260/0652-90 (Grupo Casas Bahia S.A. - Em Recuperação Judicial, gold de empresas do Varejo). Fato relevante da companhia arquivado na CVM em 11/11/2026 (IPE, protocolo 006505IPE111120260156061613-95, \"Divulgação de Informações Financeiras Gerenciais Mensais - Agosto de 2026\", p. 1): \"O RMA está disponível para acesso no site de relações com investidores da Companhia por meio do seguinte link: https://ri.grupocasasbahia.com.br/informacoes-financeiras/recuperacao-judicial/\".",
+   "vinculo_conferido_por": null,
+   "nota": "Marca com fundo próprio (pílula vermelha e branca), muito larga: 1549 x 166 px. A página de RI responde 403 à requisição direta e foi aberta pelo dono da plataforma no navegador dele em 24/11/2026; o arquivo do logo responde à requisição direta.",
+   "arquivo": "/varejo/logos/casas-bahia.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 1549,
+   "altura": 166,
+   "url_origem": "https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_via_redesign2021/img/logoTop.png",
    "pagina_origem": "https://ri.grupocasasbahia.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:30:28Z",
+   "sha256": "beedee573025718b1aa0519ef5989387344815ebeba5f3ebd580123e0e6d570e",
+   "bytes": 29588,
+   "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site de RI (ri.grupocasasbahia.com.br) respondeu 403 na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; a loja (www.casasbahia.com.br) respondeu 403 à requisição direta. Nenhum arquivo oficial foi obtido."
-   }
+   "derivacao": null,
+   "ausencia": null
   },
   {
    "slug": "cea",
@@ -167,6 +177,7 @@
    "papel": "companhia do comparador",
    "cnpj": "45.242.914/0001-05",
    "vinculo": "CNPJ 45.242.914/0001-05 (C&A Modas S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@cea.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.cea.com.br, \"Investidores C&A\").",
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": "/varejo/logos/cea.png",
    "formato": "png",
@@ -181,6 +192,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -189,6 +201,7 @@
    "papel": "grupo do ranking, ficha",
    "cnpj": null,
    "vinculo": null,
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": null,
    "formato": null,
@@ -203,8 +216,9 @@
    "metodo": null,
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": {
-    "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site e a conexão segura não se estabeleceu na coleta de 24/11/2026, nem por requisição direta nem com navegador; nenhum arquivo oficial foi obtido."
+    "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site: a conexão segura não se estabeleceu por requisição direta nem com navegador, e deu erro de privacidade também no Chrome do dono da plataforma (24/11/2026). Nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -213,6 +227,7 @@
    "papel": "grupo do ranking, ficha",
    "cnpj": null,
    "vinculo": null,
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": null,
    "formato": null,
@@ -227,6 +242,7 @@
    "metodo": null,
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": {
     "motivo": "O site www.gazin.com.br responde 403 à requisição direta. Na visita com navegador de 24/11/2026, feita a pedido do dono da plataforma, a página abriu e o rodapé exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\" (um estabelecimento da empresa, não a matriz), mas o logo do cabeçalho não está entre os arquivos de imagem que a visita salvou; recortar a captura de tela não é arquivo oficial. Nenhum logo foi obtido."
    }
@@ -237,6 +253,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "47.508.411/0001-56",
    "vinculo": "CNPJ 47.508.411/0001-56 (Companhia Brasileira de Distribuição, gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI gpa.ri@gpabr.com; o site institucional desse domínio (www.gpabr.com) aponta no menu \"Investidores\" para www.gpari.com.br, o site de RI (\"Home - GPA RI\") que publica o arquivo.",
+   "vinculo_conferido_por": null,
    "nota": "Arquivo publicado só em branco, para fundo escuro.",
    "arquivo": "/varejo/logos/gpa.png",
    "formato": "png",
@@ -251,31 +268,35 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
    "slug": "grupo-boticario",
    "nome_exibicao": "Grupo Boticário",
    "papel": "grupo do ranking, ficha",
-   "cnpj": null,
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "cnpj": "11.137.051/0001-86",
+   "vinculo": "Grupo de capital fechado, sem registro na CVM. A política de privacidade do mesmo site (www.grupoboticario.com.br/privacidade/politica-de-privacidade/, lida por requisição direta em 24/11/2026 e com o mesmo logo no cabeçalho) identifica o titular: \"BOTICARIO PRODUTOS DE BELEZA LTDA., sociedade empresária com sede na Avenida Doutor Dario Lopes Dos Santos, nº 2197, 4º andar, conj. 401, Cidade de Curitiba, Estado do Paraná, inscrita no CNPJ sob o nº 11.137.051/0001-86\".",
+   "vinculo_conferido_por": null,
+   "nota": "O cabeçalho da página traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito dentro do HTML (elemento header-logo-desktop-2025); não há arquivo de logo. O arquivo publicado são os bytes exatos desse PNG, extraídos sem alteração. A página de privacidade foi indicada pelo dono da plataforma.",
+   "arquivo": "/varejo/logos/grupo-boticario.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 803,
+   "altura": 178,
+   "url_origem": "https://www.grupoboticario.com.br/",
    "pagina_origem": "https://www.grupoboticario.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
-   "extraido_de": null,
+   "capturado_em": "2026-11-24T10:30:58Z",
+   "sha256": "cbabcda1e12d12d0542f616c594f97e48f8b2ab4bb77797c70dbff0bdc3cfffd",
+   "bytes": 17559,
+   "metodo": "direto",
+   "extraido_de": {
+    "url": "https://www.grupoboticario.com.br/",
+    "elemento": "id=\"header-logo-desktop-2025\""
+   },
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial (lida também com navegador) nem a de informações administrativas exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de 24/11/2026)."
-   }
+   "derivacao": null,
+   "ausencia": null
   },
   {
    "slug": "grupo-mateus",
@@ -283,6 +304,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "24.990.777/0001-09",
    "vinculo": "CNPJ 24.990.777/0001-09 (Grupo Mateus S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@grupomateus.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.grupomateus.com.br, \"Home - Grupo Mateus\").",
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": "/varejo/logos/grupo-mateus.png",
    "formato": "png",
@@ -297,6 +319,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -305,6 +328,7 @@
    "papel": "grupo do ranking, ficha",
    "cnpj": null,
    "vinculo": null,
+   "vinculo_conferido_por": null,
    "nota": null,
    "arquivo": null,
    "formato": null,
@@ -319,8 +343,9 @@
    "metodo": null,
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": {
-    "motivo": "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; nenhum arquivo oficial foi obtido."
+    "motivo": "O site www.grupopereira.com.br encerrou a conexão por requisição direta e com navegador, e a navegação não concluiu no Chrome do dono da plataforma (24/11/2026). Nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -329,6 +354,7 @@
    "papel": "companhia do comparador",
    "cnpj": "13.217.485/0001-11",
    "vinculo": "CNPJ 13.217.485/0001-11 (Grupo SBF S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@gruposbf.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.gruposbf.com.br, \"Home - Grupo SBF RI\").",
+   "vinculo_conferido_por": null,
    "nota": "Marca do grupo, dono da Centauro; o verde-claro do arquivo foi desenhado para fundo escuro.",
    "arquivo": "/varejo/logos/grupo-sbf.png",
    "formato": "png",
@@ -343,6 +369,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -350,24 +377,33 @@
    "nome_exibicao": "Guararapes (Riachuelo)",
    "papel": "companhia do comparador",
    "cnpj": "08.402.943/0001-52",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 08.402.943/0001-52 (Guararapes Confecções S.A., gold de empresas do Varejo). Press-release de resultados do 3T26 arquivado pela companhia na CVM em 09/11/2026 (IPE, protocolo 004669IPE300920260191722202-56, p. 25): \"Para mais informações, entre em contato com o Time de RI da Riachuelo: ri@riachuelo.com.br https://ri.riachuelo.com.br/\".",
+   "vinculo_conferido_por": null,
+   "nota": "O arquivo oficial do cabeçalho é uma faixa de 8472 x 487 px com cinco marcas (Riachuelo, Guararapes, Midway, Casa Riachuelo e Carter's), ilegível numa placa de logo. O arquivo publicado é o recorte da marca \"guararapes\" dessa faixa (colunas 2105 a 3218, linhas 118 a 420), sem outra alteração; o sha256 da faixa está em derivado_de. A página de RI responde 403 à requisição direta e foi aberta pelo dono da plataforma no navegador dele em 24/11/2026.",
+   "arquivo": "/varejo/logos/guararapes.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 1113,
+   "altura": 302,
+   "url_origem": "https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_Riachuelo_Guararapes/img/logo2026.png",
    "pagina_origem": "https://ri.riachuelo.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:30:32Z",
+   "sha256": "8a584829551be87b1af6d27d104246ecdbf039c14cbf47295668584455344e89",
+   "bytes": 12880,
+   "metodo": "direto",
    "extraido_de": null,
-   "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi obtido."
-   }
+   "derivado_de": "4faaf399f5356b2a2bf6efbad4ace173dd7aaa67e030029095cde3246241b087",
+   "derivacao": {
+    "caixa": [
+     2105,
+     118,
+     3218,
+     420
+    ],
+    "largura_max": null,
+    "ferramenta": "Pillow 12.3.0"
+   },
+   "ausencia": null
   },
   {
    "slug": "havan",
@@ -375,6 +411,7 @@
    "papel": "grupo do ranking, ficha",
    "cnpj": "79.379.491/0008-50",
    "vinculo": "Companhia de capital fechado, sem registro na CVM. O rodapé da página de origem exibe \"Havan Labs © 1986 - 2026 HAVAN S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil\"; o CNPJ registrado aqui é o que a página exibe (um estabelecimento da empresa, não a matriz).",
+   "vinculo_conferido_por": null,
    "nota": "Versão em azul, publicada no menu lateral da loja; o cabeçalho usa a mesma marca em branco.",
    "arquivo": "/varejo/logos/havan.svg",
    "formato": "svg",
@@ -389,6 +426,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -397,7 +435,8 @@
    "papel": "líder de segmento",
    "cnpj": null,
    "vinculo": null,
-   "nota": null,
+   "vinculo_conferido_por": null,
+   "nota": "Para uso futuro, segundo o dono da plataforma, que abriu o site no navegador dele em 24/11/2026: o rodapé cita \"Leroy Merlin Cia Brasileira de Bricolagem\", CNPJ da matriz 01.438.784/0001-05, e o logo do cabeçalho é um SVG escrito dentro da página. Nada disso foi conferido por este script.",
    "arquivo": null,
    "formato": null,
    "fundo": null,
@@ -411,8 +450,9 @@
    "metodo": null,
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": {
-    "motivo": "Líder de segmento citado no ranking, sem ficha nem linha no comparador; o site oficial não foi consultado na coleta de 24/11/2026 e o vínculo não foi provado."
+    "motivo": "Líder de segmento citado no ranking, sem ficha nem linha no comparador. O site oficial não está entre os hosts liberados para a coleta e o arquivo do logo ainda não foi anexado (24/11/2026)."
    }
   },
   {
@@ -421,6 +461,7 @@
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "92.754.738/0001-62",
    "vinculo": "CNPJ 92.754.738/0001-62 (Lojas Renner S.A., gold de empresas do Varejo). O rodapé da página de origem exibe \"Copyright Lojas Renner S.A. © - Av. Joaquim Porto Villanova, 401 - B. Jardim do Salso - Porto Alegre/RS CEP: 91410-400 CNPJ: 92.754.738/0001-62\".",
+   "vinculo_conferido_por": null,
    "nota": "Marca da companhia com as bandeiras (Renner, Camicado, Youcom, Realize, Ashua) na linha de baixo.",
    "arquivo": "/varejo/logos/lojas-renner.svg",
    "formato": "svg",
@@ -435,6 +476,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -443,6 +485,7 @@
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "47.960.950/0001-21",
    "vinculo": "CNPJ 47.960.950/0001-21 (Magazine Luiza S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@magazineluiza.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.magazineluiza.com.br, \"Magazine Luiza | Relações com Investidores\").",
+   "vinculo_conferido_por": null,
    "nota": "Nome \"Magazine Luiza\" em branco, desenhado para o cabeçalho azul do site; aqui vai sobre a placa escura. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
    "arquivo": "/varejo/logos/magazine-luiza.svg",
    "formato": "svg",
@@ -457,6 +500,7 @@
    "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -465,6 +509,7 @@
    "papel": "ficha",
    "cnpj": "03.007.331/0001-41",
    "vinculo": "Sem registro na CVM (a controladora MercadoLibre, Inc. é listada nos Estados Unidos). O rodapé da página de origem exibe \"Copyright © 1999-2026. Mercado Livre Brasil Ltda.\" e \"CNPJ n.º 03.007.331/0001-41 / Av. das Nações Unidas, nº 3.003, Bonfim, Osasco/SP\"; o cabeçalho da mesma página (.nav-logo) usa o arquivo, servido de http2.mlstatic.com.",
+   "vinculo_conferido_por": null,
    "nota": "Marca em português do cabeçalho da loja brasileira; o CNPJ é o da empresa brasileira que a página exibe.",
    "arquivo": "/varejo/logos/mercado-livre.webp",
    "formato": "webp",
@@ -479,6 +524,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -487,6 +533,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "71.673.990/0001-77",
    "vinculo": "CNPJ 71.673.990/0001-77 (Natura Cosméticos S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@natura.net; o site de RI que publica o arquivo exibe o mesmo endereço em ri.natura.com.br/informacoes-aos-investidores/fale-com-ri/ (\"transparência e proximidade no relacionamento com o mercado. ri@natura.net\").",
+   "vinculo_conferido_por": null,
    "nota": "O cabeçalho do site de RI publica o logo como um SVG que apenas envolve um PNG de 4000 x 886 px embutido em base64. O SVG é recusado pela regra; o arquivo publicado aqui são os bytes exatos desse PNG, extraídos sem alteração.",
    "arquivo": "/varejo/logos/natura.png",
    "formato": "png",
@@ -498,13 +545,14 @@
    "capturado_em": "2026-11-24T09:59:39Z",
    "sha256": "b1a7b43a7520bbda9a5e373c54d3a67ef7182e6a142601bfb7d58b1d622bec1c",
    "bytes": 54108,
-   "metodo": "extraido",
+   "metodo": "direto",
    "extraido_de": {
     "url": "https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_natura_2025_ri/public/img/logo-natura.svg",
     "sha256": "d0284b41a783c42de941f3df0157cd5c3313a340685e5f0f10e7b1b9cc04a374",
     "bytes": 72580
    },
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -513,6 +561,7 @@
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "06.626.253/0001-51",
    "vinculo": "CNPJ 06.626.253/0001-51 (Empreendimentos Pague Menos S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@pmenos.com.br; o site de RI que publica o arquivo exibe o mesmo endereço em ri.paguemenos.com.br/servicos-aos-investidores/fale-com-o-ri/ (\"Diretor Financeiro e de RI E-mail: ri@pmenos.com.br\").",
+   "vinculo_conferido_por": null,
    "nota": "Arquivo com o nome em branco, para fundo escuro.",
    "arquivo": "/varejo/logos/pague-menos.png",
    "formato": "png",
@@ -527,6 +576,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -535,6 +585,7 @@
    "papel": "companhia do comparador",
    "cnpj": "92.665.611/0001-77",
    "vinculo": "CNPJ 92.665.611/0001-77 (Dimed S.A. Distribuidora de Medicamentos, gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail relinvest@grupopanvel.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.grupopanvel.com.br, rodapé \"© 2026 Grupo Panvel\").",
+   "vinculo_conferido_por": null,
    "nota": "Arquivo publicado só em branco, para fundo escuro.",
    "arquivo": "/varejo/logos/panvel.png",
    "formato": "png",
@@ -549,6 +600,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -557,6 +609,7 @@
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "61.585.865/0001-51",
    "vinculo": "CNPJ 61.585.865/0001-51 (Raia Drogasil S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@rdsaude.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.rdsaude.com.br, \"RD Saúde - Relações com Investidores\"; o texto alternativo do logo na página é \"RD | RaiaDrogasil S.A. | Gente Saúde e Bem-estar | Investidores\").",
+   "vinculo_conferido_por": null,
    "nota": "Marca do grupo com as bandeiras Drogasil e Raia na linha de baixo. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
    "arquivo": "/varejo/logos/rd-saude.png",
    "formato": "png",
@@ -571,6 +624,7 @@
    "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -579,6 +633,7 @@
    "papel": "grupo do ranking, ficha",
    "cnpj": "76.430.438/0124-20",
    "vinculo": "Grupo de capital fechado, sem registro na CVM. O rodapé da página de origem exibe \"Irmãos Muffato & Cia Ltda - CNPJ: 76.430.438/0124-20 - Avenida Tiradentes, nº2667\"; o CNPJ registrado aqui é o que a página exibe (um estabelecimento da empresa, não a matriz).",
+   "vinculo_conferido_por": null,
    "nota": "Marca do grupo (\"Grupo Muffato\"), não a da bandeira Super Muffato.",
    "arquivo": "/varejo/logos/super-muffato.png",
    "formato": "png",
@@ -593,6 +648,7 @@
    "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   },
   {
@@ -600,48 +656,61 @@
    "nome_exibicao": "Supermercados BH",
    "papel": "grupo do ranking, ficha",
    "cnpj": null,
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "Companhia de capital fechado, sem registro na CVM. A política de privacidade do próprio site (www.supermercadosbh.com.br/politicas/politica-de-privacidade) cita \"Supermercados BH Comércio de Alimentos S/A.\"; trecho transcrito pelo dono da plataforma em 24/11/2026 a partir do navegador dele, porque o site encerra a conexão deste script.",
+   "vinculo_conferido_por": "dono",
+   "nota": "O arquivo oficial do cabeçalho é um SVG de 73 x 39 e 2.263.138 bytes que só envolve um PNG de 1500 x 1500 px em base64; o SVG é recusado pela regra. O arquivo foi baixado pelo dono da plataforma no navegador dele em 24/11/2026 e anexado. O publicado é o PNG extraído, recortado na janela que o próprio SVG mostra e reduzido a 240 px de largura para caber no limite da pasta; o sha256 do PNG extraído está em derivado_de e o do SVG em extraido_de.",
+   "arquivo": "/varejo/logos/supermercados-bh.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 240,
+   "altura": 131,
+   "url_origem": "https://www.supermercadosbh.com.br/logo-supermercadosbh-header.svg",
    "pagina_origem": "https://www.supermercadosbh.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
-   "extraido_de": null,
-   "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; nenhum arquivo oficial foi obtido."
-   }
+   "capturado_em": "2026-11-24T10:30:59Z",
+   "sha256": "8c670ca8e2c8736b85eb4227541787f80b18c21e8dd5d0949272070e2cf4d824",
+   "bytes": 42312,
+   "metodo": "dono",
+   "extraido_de": {
+    "url": "https://www.supermercadosbh.com.br/logo-supermercadosbh-header.svg",
+    "sha256": "b18ca64b728eb802ec7816544fc32d15b6eac0e9b76257479fee85281f4070ba",
+    "bytes": 2263138
+   },
+   "derivado_de": "c3fe6932b97a7a67e729cc4dc7c74f1fff8240f8c6a421c5fa604074d1ba0341",
+   "derivacao": {
+    "caixa": [
+     11,
+     345,
+     1500,
+     1155
+    ],
+    "largura_max": 240,
+    "ferramenta": "Pillow 12.3.0"
+   },
+   "ausencia": null
   },
   {
    "slug": "vivara",
    "nome_exibicao": "Vivara",
    "papel": "líder de segmento, companhia do comparador",
    "cnpj": "33.839.910/0001-11",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 33.839.910/0001-11 (Vivara Participações S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@vivara.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.vivara.com.br).",
+   "vinculo_conferido_por": null,
+   "nota": "Arquivo publicado só em branco, para fundo escuro. A conexão do script com ri.vivara.com.br falha (certificado); a página foi aberta pelo dono da plataforma no navegador dele em 24/11/2026, e o arquivo do logo responde à requisição direta.",
+   "arquivo": "/varejo/logos/vivara.png",
+   "formato": "png",
+   "fundo": "escuro",
+   "largura": 158,
+   "altura": 32,
+   "url_origem": "https://cdn-sites-assets.mziq.com/wp-content/uploads/sites/1102/2023/01/g10.png",
    "pagina_origem": "https://ri.vivara.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:30:32Z",
+   "sha256": "5bd72f4bcd8888eb2e4d706366e19f397e871d98425875ac16fb564670f0f7eb",
+   "bytes": 1767,
+   "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026, nem por requisição direta nem com navegador (certificado inválido); nenhum arquivo oficial foi obtido."
-   }
+   "derivacao": null,
+   "ausencia": null
   },
   {
    "slug": "zamp",
@@ -649,6 +718,7 @@
    "papel": "companhia do comparador",
    "cnpj": "13.574.594/0001-96",
    "vinculo": "CNPJ 13.574.594/0001-96 (Zamp S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@zamp.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.zamp.com.br, \"ZAMP | Relações com Investidores\").",
+   "vinculo_conferido_por": null,
    "nota": "Marca da companhia, operadora do Burger King e do Popeyes no Brasil. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
    "arquivo": "/varejo/logos/zamp.png",
    "formato": "png",
@@ -663,6 +733,7 @@
    "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
+   "derivacao": null,
    "ausencia": null
   }
  ]

@@ -62,7 +62,7 @@ describe("Varejo: manifesto de logos", () => {
       expect(l.nome_exibicao.length, l.slug).toBeGreaterThan(1);
       if (!l.arquivo) {
         expect(l.ausencia?.motivo.length ?? 0, l.slug).toBeGreaterThan(20);
-        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes, l.metodo, l.extraido_de]) expect(c, l.slug).toBeNull();
+        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes, l.metodo, l.extraido_de, l.derivado_de, l.derivacao, l.vinculo_conferido_por]) expect(c, l.slug).toBeNull();
         continue;
       }
       expect(l.ausencia, l.slug).toBeNull();
@@ -71,16 +71,26 @@ describe("Varejo: manifesto de logos", () => {
       expect(bytes.length, l.slug).toBe(l.bytes);
       expect(bytes.length, l.slug).toBeLessThanOrEqual(60_000);
       expect(createHash("sha256").update(bytes).digest("hex"), l.slug).toBe(l.sha256);
-      expect(l.derivado_de, l.slug).toBeNull(); // todo arquivo é o original, sem redução
-      // extração só de PNG, com a origem e o sha256 do SVG que o envolvia; o SVG em si nunca é publicado
-      expect(["direto", "extraido", "navegador"], l.slug).toContain(l.metodo);
-      expect(l.metodo === "extraido", l.slug).toBe(l.extraido_de !== null);
+      // como os bytes chegaram; extração só de PNG, com a origem; recorte ou redução sempre com o sha256 do original e a caixa
+      expect(["direto", "navegador", "dono"], l.slug).toContain(l.metodo);
       if (l.extraido_de) {
         expect(l.formato, l.slug).toBe("png");
         expect(l.extraido_de.url, l.slug).toBe(l.url_origem);
-        expect(l.extraido_de.sha256, l.slug).toMatch(/^[0-9a-f]{64}$/);
+        expect(l.extraido_de.sha256 ?? l.extraido_de.elemento, l.slug).toBeTruthy();
+        if (l.extraido_de.sha256) expect(l.extraido_de.sha256, l.slug).toMatch(/^[0-9a-f]{64}$/);
         expect(l.nota ?? "", l.slug).toMatch(/extra[ií]d/);
       }
+      expect(l.derivado_de === null, l.slug).toBe(l.derivacao === null);
+      if (l.derivado_de) {
+        expect(l.derivado_de, l.slug).toMatch(/^[0-9a-f]{64}$/);
+        expect(l.derivado_de, l.slug).not.toBe(l.sha256);
+        expect(l.formato, l.slug).toBe("png");
+        expect(l.derivacao!.caixa ?? l.derivacao!.largura_max, l.slug).toBeTruthy();
+        expect(l.nota ?? "", l.slug).toMatch(/recort|reduzid/);
+      }
+      // prova que o script não releu: só a transcrita pelo dono, e dita no texto do vínculo
+      expect([null, "dono"], l.slug).toContain(l.vinculo_conferido_por);
+      if (l.vinculo_conferido_por) expect(l.vinculo, l.slug).toMatch(/transcrito pelo dono/);
       expect(l.url_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.pagina_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.capturado_em, l.slug).toMatch(/^\d{4}-\d{2}-\d{2}T/);
