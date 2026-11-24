@@ -181,14 +181,15 @@ function Distribuicao({ faixas, destaque, mediana, descricao, unidade, escalaCom
 }
 
 /** Pequenos múltiplos: a mesma escala em ambas as etapas, sem unir edições ausentes. */
-export function GraficoComponente({ anos, valores, max, unidade, descricao }: { anos: number[]; valores: (number | null)[]; max: number; unidade: string; descricao: string }) {
+export function GraficoComponente({ anos, valores, max, min = 0, unidade, descricao }: { anos: number[]; valores: (number | null)[]; max: number; min?: number; unidade: string; descricao: string }) {
   const L = 380, H = 210, e = 44, d = 22, t = 40, b = 30;
   const fx = (a: number) => e + (a - anos[0]) / Math.max(1, anos[anos.length - 1] - anos[0]) * (L - e - d);
-  const fy = (v: number) => t + (1 - v / max) * (H - t - b);
+  // eixo recortado (min > 0) só quando a legenda da figura diz isso; o padrão começa no zero
+  const fy = (v: number) => t + (1 - (v - min) / (max - min)) * (H - t - b);
   const pontos = anos.map((x, i) => ({ x, y: valores[i] }));
   return <svg viewBox={`0 0 ${L} ${H}`} className="edm-svg" role="img" aria-label={descricao}>
     <title>{descricao}</title>
-    {[0, max / 2, max].map((v) => <g key={v}><line x1={e} x2={L-d} y1={fy(v)} y2={fy(v)} className="edm-grade"/><text x={e-8} y={fy(v)+4} textAnchor="end">{num(v, max === 1 ? 1 : 0)}</text></g>)}
+    {[min, (min + max) / 2, max].map((v) => <g key={v}><line x1={e} x2={L-d} y1={fy(v)} y2={fy(v)} className="edm-grade"/><text x={e-8} y={fy(v)+4} textAnchor="end">{num(v, max === 1 ? 1 : 0)}</text></g>)}
     {anos.includes(2021) && <g><line x1={fx(2021)} x2={fx(2021)} y1={t} y2={H-b} className="edm-nota-linha"/><text x={fx(2021)} y={t-12} textAnchor="middle">2021</text></g>}
     <path d={caminho(pontos, fx, fy)} className="edm-linha"/>
     {pontos.filter(p => p.y !== null).map(p => <circle key={p.x} cx={fx(p.x)} cy={fy(p.y!)} r={2.5} className="edm-linha-ponto"/>)}
