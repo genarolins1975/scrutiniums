@@ -37,7 +37,10 @@ describe("assinatura do resumo: ciclo", () => {
     const agora = new Date("2026-10-13T12:00:00Z");
     const { id, token } = await A.pedirAssinatura("Leitora@Exemplo.com", "diaria", agora);
     expect((await linha("leitora@exemplo.com"))?.status).toBe("PENDENTE");
-    expect(await A.confirmarAssinatura(token.slice(0, -2) + "00", agora)).toBe(false);
+    // a adulteração sempre muda o token: trocar o fim por "00" não muda nada quando o token sorteado já termina em "00"
+    const adulterado = token.slice(0, -2) + (token.endsWith("00") ? "11" : "00");
+    expect(adulterado).not.toBe(token);
+    expect(await A.confirmarAssinatura(adulterado, agora)).toBe(false);
     expect(await A.confirmarAssinatura(token, new Date(agora.getTime() + 8 * 86_400_000))).toBe(false);
     expect(await A.confirmarAssinatura(token, agora)).toBe(true);
     const r = await linha("leitora@exemplo.com");
