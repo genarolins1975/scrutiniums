@@ -55,25 +55,26 @@ export function ultimoIndiceSimFinal(g: GoldSeguranca): number {
   return g.anos.indexOf(g.fontes.sim.final_ate);
 }
 
+// Perguntas reescritas pela vida do leitor, não pela base (diagnóstico de 24/11/2026, item 2.2.4); o conteúdo de cada página é o mesmo.
 export const GRUPOS: Record<Exclude<GrupoId, "qualidade" | "recursos">, { titulo: string; pergunta: string; nota: string }> = {
   letalidade: {
     titulo: "Violência letal",
-    pergunta: "Quantas mortes violentas cada registro conta?",
+    pergunta: "Quantas pessoas morrem de forma violenta, e de que forma?",
     nota: "Categorias apresentadas separadamente. Homicídio doloso, latrocínio, lesão corporal seguida de morte e mortes por intervenção de agentes do Estado são classificações policiais distintas e não formam aqui uma soma. O óbito por agressão vem do registro de saúde, com outra regra de contagem.",
   },
   mulheres: {
     titulo: "Mulheres e violência sexual",
-    pergunta: "O que os registros mostram sobre a violência contra mulheres e a violência sexual?",
+    pergunta: "A violência contra mulheres e a violência sexual estão crescendo?",
     nota: "Feminicídio é uma classificação penal específica e não equivale a todo homicídio de mulher; o registro de saúde conta os óbitos de mulheres por agressão. Estupro e estupro de vulnerável contam vítimas de qualquer sexo. Violência sexual registrada não mede toda a vitimização: acesso à denúncia e classificação influenciam os registros.",
   },
   patrimonio: {
     titulo: "Crimes patrimoniais",
-    pergunta: "Como variaram os crimes patrimoniais registrados?",
+    pergunta: "Roubos e furtos de veículos e de carga ficaram mais raros?",
     nota: "Ocorrências não equivalem a vítimas únicas. A variação dos registros depende também da denúncia e da classificação. O recorte cobre veículos, carga e instituições financeiras; não todo crime patrimonial. A taxa de veículos usa a população como base, não a frota.",
   },
   resposta: {
     titulo: "Busca e atividade policial",
-    pergunta: "Que atividades e registros de busca são contabilizados?",
+    pergunta: "Quantas pessoas desaparecem, e o que a polícia registra de atividade?",
     nota: "Localizações podem se referir a desaparecimentos de outros anos: dividir localizados por desaparecidos não produz taxa de resolução. Apreensões e mandados cumpridos medem atividade registrada, não qualidade nem eficiência, e por isso aparecem sem taxa por habitante.",
   },
 };
@@ -88,7 +89,50 @@ export type LinhaNacional = {
   taxa: number | null;
   variacao: number | null;
   anoAnterior: number | null;
+  /** A série nacional inteira, para a evolução: taxa (ou contagem, sem denominador) por ano, com a marca do ano incompleto. */
+  serie: SerieNacional;
 };
+
+/**
+ * Série nacional de um indicador para desenhar a evolução: o valor de cada ano (taxa quando há denominador, contagem quando não) e
+ * a marca dos anos que não são do Brasil inteiro (soma parcial, com UFs de fora) ou que ainda são preliminares (SIM). Ausência é null.
+ */
+export type SerieNacional = {
+  medida: "taxa" | "n";
+  valor: (number | null)[];
+  /** true quando o ano não cobre as 27 UFs ou é preliminar: desenhado vazado e tracejado, nunca emendado como se fosse completo. */
+  incompleto: boolean[];
+  cobertura: number[];
+  preliminar: boolean[];
+};
+
+export function serieNacional(g: GoldSeguranca, id: string): SerieNacional {
+  const i = indicador(g, id);
+  const br = serieBR(g, id);
+  const preliminar = g.anos.map((a) => i.fonte === "sim" && g.fontes.sim.situacao[String(a)] === "preliminar");
+  const medida = br.taxa ? "taxa" : "n";
+  return {
+    medida,
+    valor: g.anos.map((_, k) => (medida === "taxa" ? br.taxa?.[k] ?? null : br.n[k])),
+    incompleto: g.anos.map((_, k) => br.situacao[k] !== "ok" || preliminar[k]),
+    cobertura: br.cobertura,
+    preliminar,
+  };
+}
+
+/** Variação percentual entre dois valores publicados (b sobre a), para frases factuais; null sem os dois. */
+export function variacaoPct(a: number | null | undefined, b: number | null | undefined): number | null {
+  if (a == null || b == null || a === 0) return null;
+  return (b / a - 1) * 100;
+}
+
+/** Primeiro ano com as 27 UFs na sequência contínua que termina no último ano completo (o começo de uma comparação justa). */
+export function inicioSequenciaCompleta(g: GoldSeguranca, id: string): number {
+  const br = serieBR(g, id);
+  let k = ultimoIndice(g, id);
+  while (k > 0 && br.situacao[k - 1] === "ok") k--;
+  return k;
+}
 
 /** Os indicadores de um grupo no último ano publicado de cada um, com a variação nacional calculada pela gold. */
 export function linhasNacionais(g: GoldSeguranca, grupo: GrupoId): LinhaNacional[] {
@@ -107,6 +151,7 @@ export function linhasNacionais(g: GoldSeguranca, grupo: GrupoId): LinhaNacional
         taxa: br.taxa ? br.taxa[k] : null,
         variacao: br.variacao[k],
         anoAnterior: k > 0 ? g.anos[k - 1] : null,
+        serie: serieNacional(g, i.id),
       };
     });
 }
