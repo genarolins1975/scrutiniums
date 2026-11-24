@@ -33,7 +33,8 @@ export type EntradaLogoVarejo = {
   metodo: "direto" | "navegador" | "dono" | null;
   extraido_de: { url: string; sha256?: string; bytes?: number; elemento?: string } | null;
   derivado_de: string | null;
-  derivacao: { caixa: number[] | null; largura_max: number | null; ferramenta: string } | null;
+  derivacao: { operacao: string; caixa: number[] | null; largura_max: number | null; ferramenta: string } | null;
+  vinculo_reforco: string | null;
   ausencia: { motivo: string } | null;
 };
 

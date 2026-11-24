@@ -26,7 +26,7 @@ do ranking e os líderes de segmento (pipeline/varejo/curadoria/ranking.json), a
 (pipeline/varejo/curadoria/fichas) e as companhias do comparador (public/varejo/gold/empresas.json).
 Formato: {"versao", "gerado_em", "regras", "logos": [{slug, nome_exibicao, papel, cnpj, vinculo,
 nota, arquivo, formato, fundo, largura, altura, url_origem, pagina_origem, capturado_em, sha256,
-bytes, metodo, extraido_de, derivado_de, derivacao, vinculo_conferido_por, ausencia}]}; `ausencia`
+bytes, metodo, extraido_de, derivado_de, derivacao, vinculo_conferido_por, vinculo_reforco, ausencia}]}; `ausencia`
 é null ou {"motivo": texto}; `derivado_de` é null quando o arquivo é o original (sha256 do original de um
 raster reduzido). `metodo` diz como os bytes chegaram: "direto" (requisição deste script à URL
 de origem), "navegador" (o site recusa a requisição direta; bytes originais da resposta salvos numa
@@ -36,7 +36,8 @@ arquivo anterior da mesma origem é mantido. `extraido_de` não nulo: a companhi
 um PNG embutido em base64 (num SVG que só o envolve, ou num elemento da página); o SVG segue
 recusado e os bytes exatos do PNG são publicados. `derivado_de` e `derivacao`: recorte ou redução
 determinística de um arquivo oficial, com o sha256 dos bytes de partida, a caixa e a ferramenta.
-`vinculo_conferido_por`: "dono" quando o trecho da prova foi transcrito por ele do navegador.
+`vinculo_conferido_por`: "dono" quando a prova foi lida ou aceita por ele, e não relida pelo
+script. `vinculo_reforco`: segunda evidência, lida pelo dono, que não troca a prova principal.
 """
 import base64
 import glob
@@ -170,13 +171,20 @@ CURADORIA = [
      "S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil\"; o CNPJ registrado aqui é o que a página exibe (um "
      "estabelecimento da empresa, não a matriz).",
      "Versão em azul, publicada no menu lateral da loja; o cabeçalho usa a mesma marca em branco."),
-    ("dpsp", "DPSP", None, None, "https://www.dpsp.com.br/", None,
-     "O certificado de www.dpsp.com.br não corresponde ao nome do site: a conexão segura não se estabeleceu por requisição "
-     "direta nem com navegador, e deu erro de privacidade também no Chrome do dono da plataforma (24/11/2026). Nenhum "
-     "arquivo oficial foi obtido.", None),
+    ("dpsp", "Grupo DPSP", None, "https://www.grupodpsp.com.br/wp-content/themes/DPSP-novo-painel/assets/img/rnk-logo-dpsp.png",
+     "https://www.grupodpsp.com.br/", "claro",
+     "Vínculo fraco, aceito por decisão do dono da plataforma em 24/11/2026: grupo de capital fechado, sem registro na CVM, "
+     "e o site do grupo não exibe razão social nem CNPJ (rodapé, /privacidade/ e /quem-somos/ vistos pelo dono no navegador "
+     "dele; o rodapé da página inicial, lido também por requisição direta, só tem links). A prova é o domínio oficial do "
+     "grupo, cuja página de origem se apresenta como \"Drogaria São Paulo e Pacheco | Grupo DPSP\" e publica o arquivo com o "
+     "texto alternativo \"Logo DPSP\".",
+     "Marca do grupo (\"Grupo DPSP\"), dono das Drogarias Pacheco e da Drogaria São Paulo. Arquivo de baixa resolução: 80 x 36 "
+     "px, o único publicado no cabeçalho (sem versão maior nem SVG). O endereço www.dpsp.com.br tem certificado que não "
+     "corresponde ao nome do site."),
     ("grupo-pereira", "Grupo Pereira", None, None, "https://www.grupopereira.com.br/", None,
-     "O site www.grupopereira.com.br encerrou a conexão por requisição direta e com navegador, e a navegação não concluiu "
-     "no Chrome do dono da plataforma (24/11/2026). Nenhum arquivo oficial foi obtido.", None),
+     "O site do grupo (www.grupopereira.com.br) encerrou a conexão por requisição direta e com navegador, e não abriu em "
+     "três tentativas no Chrome do dono da plataforma (24/11/2026). O site da marca Comper abriu para o dono, mas logo de "
+     "bandeira não representa o grupo, e o rodapé traz CNPJ sem razão social. Nenhum arquivo oficial foi obtido.", None),
     ("americanas", "Americanas", "00.776.574/0001-56", f"{MZ}/themes/mziq_americanas_ri/public/img/logo.png",
      "https://ri.americanas.io/", "claro",
      f"CNPJ 00.776.574/0001-56 (Americanas S.A. - Em Recuperação Judicial, gold de empresas do Varejo). O {CVM} registra "
@@ -190,10 +198,12 @@ CURADORIA = [
      "ri@pmenos.com.br\").",
      "Arquivo com o nome em branco, para fundo escuro."),
     ("gazin", "Gazin", None, None, "https://www.gazin.com.br/", None,
-     "O site www.gazin.com.br responde 403 à requisição direta. Na visita com navegador de 24/11/2026, feita a pedido do dono "
-     "da plataforma, a página abriu e o rodapé exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: "
-     "77.941.490/0294-80\" (um estabelecimento da empresa, não a matriz), mas o logo do cabeçalho não está entre os "
-     "arquivos de imagem que a visita salvou; recortar a captura de tela não é arquivo oficial. Nenhum logo foi obtido.", None),
+     "Logo localizado no cabeçalho de www.gazin.com.br como SVG escrito dentro da página (o site responde 403 à requisição "
+     "direta; a página abriu com navegador em 24/11/2026); aguardando o arquivo do dono da plataforma.",
+     "Para a entrada futura (--importar gazin <arquivo> --fundo gazin <claro|escuro>): sha256 esperado "
+     "df41eb761108b6d13b9e47b0489fbc90a56895278c7324854e690bf3d1aa85a3, 5.610 bytes, informado pelo dono. Prova de vínculo já "
+     "lida no rodapé da página: \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\" "
+     "(um estabelecimento da empresa, não a matriz)."),
     ("arcos-dorados", "Arcos Dorados", None, "https://www.arcosdorados.com/wp-content/themes/oxpitan/images/logo-mobile.png",
      "https://www.arcosdorados.com/", "claro",
      "Grupo estrangeiro, sem CNPJ na página. O site de origem identifica o titular: rodapé \"Copyright © 2025 - Arcos Dorados "
@@ -249,23 +259,26 @@ CURADORIA = [
      "Investidores\").",
      "Marca da companhia, operadora do Burger King e do Popeyes no Brasil. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta."),
     ("leroy-merlin", "Leroy Merlin", None, None, None, None,
-     "Líder de segmento citado no ranking, sem ficha nem linha no comparador. O site oficial não está entre os hosts "
-     "liberados para a coleta e o arquivo do logo ainda não foi anexado (24/11/2026).",
-     "Para uso futuro, segundo o dono da plataforma, que abriu o site no navegador dele em 24/11/2026: o rodapé cita \"Leroy "
-     "Merlin Cia Brasileira de Bricolagem\", CNPJ da matriz 01.438.784/0001-05, e o logo do cabeçalho é um SVG escrito "
-     "dentro da página. Nada disso foi conferido por este script."),
+     "Líder de segmento citado no ranking, sem ficha nem linha no comparador. Logo localizado pelo dono da plataforma no "
+     "cabeçalho do site como SVG escrito dentro da página (24/11/2026); aguardando o arquivo dele. O site não está entre os "
+     "hosts liberados para a coleta.",
+     "Para a entrada futura (--importar leroy-merlin <arquivo> --fundo leroy-merlin <claro|escuro>): sha256 esperado "
+     "5d3a4c6601841ee9cb5637b580592117dcfdf6ff18b1d7e917a91c86b97cebc2, 1.435 bytes, informado pelo dono; o código vem sem o "
+     "atributo xmlns, que o importador acrescenta. Prova de vínculo transcrita pelo dono, não conferida por este script: "
+     "\"A Leroy Merlin Cia. Brasileira de Bricolagem, inscrita no CNPJ nº 01.438.784/0001-05\"."),
 ]
 
 CAMPOS = ("slug", "nome_exibicao", "papel", "cnpj", "vinculo", "vinculo_conferido_por", "nota", "arquivo", "formato", "fundo",
           "largura", "altura", "url_origem", "pagina_origem", "capturado_em", "sha256", "bytes", "metodo", "extraido_de",
-          "derivado_de", "derivacao", "ausencia")
+          "derivado_de", "derivacao", "vinculo_reforco", "ausencia")
 METODOS = ("direto", "navegador", "dono")
 
 # Como os bytes chegaram, quando não foi pela requisição direta deste script. "navegador": o site recusa a requisição
 # direta (403) e os bytes originais da resposta foram salvos numa visita com navegador. "dono": o dono da plataforma
 # baixou o arquivo no navegador dele e o anexou (o site encerra a conexão do script). Nos dois casos o arquivo entra
 # com --importar e, nas recapturas, a requisição direta falha e o arquivo publicado é mantido.
-METODO = {"rd-saude": "navegador", "magazine-luiza": "navegador", "zamp": "navegador", "supermercados-bh": "dono"}
+METODO = {"rd-saude": "navegador", "magazine-luiza": "navegador", "zamp": "navegador", "supermercados-bh": "dono",
+          "gazin": "dono", "leroy-merlin": "dono"}
 
 # Entidades cujo logo oficial é um PNG embutido em base64: publica-se o PNG extraído, nunca o SVG. None = o arquivo
 # oficial é um SVG que só envolve o PNG; bytes = a origem é a página, e o PNG é o do elemento com essa marca.
@@ -283,7 +296,51 @@ DERIVADOS = {
 }
 
 # Prova de vínculo que o script não pôde reler porque o site não responde a ele: quem a conferiu.
-CONFERIDO_POR = {"supermercados-bh": "dono"}
+CONFERIDO_POR = {"supermercados-bh": "dono", "dpsp": "dono", "leroy-merlin": "dono"}
+
+# Segunda evidência de vínculo, sem trocar a prova principal: trechos lidos pelo dono da plataforma no navegador dele
+# em 24/11/2026 (os sites respondem 403 à requisição direta ou não estão entre os hosts liberados).
+REFORCO = {
+    "carrefour-brasil": ("Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade linkada a partir "
+                         "de grupocarrefourbrasil.com.br (www.carrefour.com.br/institucional/politicas-carrefour/"
+                         "politica-de-privacidade-carrefour) cita \"CARREFOUR COMÉRCIO E INDÚSTRIA LTDA [...] inscrita no CNPJ sob "
+                         "o nº. 45.543.915/0001-81\"."),
+    "casas-bahia": ("Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade da loja "
+                    "(www.casasbahia.com.br/l/politica-privacidade.aspx) cita \"o GRUPO CASAS BAHIA S.A., CNPJ/MF n.º "
+                    "33.041.260/0652-90\"."),
+    "guararapes": ("Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade do grupo "
+                   "(privacidade.grupoguararapes.com.br/politicas-de-privacidade/) cita \"O Grupo Guararapes Confecções S.A, "
+                   "composto pelas empresas Lojas Riachuelo S.A.\"."),
+}
+
+# Logos que são SVG escrito dentro da página (não há URL de arquivo): entram quando o dono anexar o código, com
+# --importar <slug> <arquivo> --fundo <slug> <claro|escuro>. O sha256 esperado é o que ele informou; o tom do fundo só
+# se decide abrindo a imagem, por isso é pedido na importação. Enquanto o arquivo não chega, vale a ausência da CURADORIA.
+XMLNS = b' xmlns="http://www.w3.org/2000/svg"'
+PENDENTES = {
+    "gazin": {
+        "sha256": "df41eb761108b6d13b9e47b0489fbc90a56895278c7324854e690bf3d1aa85a3", "bytes": 5610,
+        "cnpj": "77.941.490/0294-80", "url": "https://www.gazin.com.br/", "pagina": "https://www.gazin.com.br/",
+        "prova": ("Grupo de capital fechado, sem registro na CVM. O rodapé da página de origem, lido na visita com navegador de "
+                  "24/11/2026, exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\"; o "
+                  "CNPJ registrado aqui é o que a página exibe (um estabelecimento da empresa, não a matriz)."),
+        "nota": ("O logo do cabeçalho é um SVG escrito dentro da página, sem URL de arquivo; o código foi copiado pelo dono da "
+                 "plataforma no navegador dele e anexado em 24/11/2026. O site responde 403 à requisição direta. É a versão da "
+                 "loja virtual, com \"gazin.com.br\" e um cursor no desenho, sobre fundo próprio azul arroxeado; o cursor é "
+                 "branco e some no claro, por isso a placa escura, como no cabeçalho do site."),
+    },
+    "leroy-merlin": {
+        "sha256": "5d3a4c6601841ee9cb5637b580592117dcfdf6ff18b1d7e917a91c86b97cebc2", "bytes": 1435,
+        "cnpj": "01.438.784/0001-05", "url": "https://www.leroymerlin.com.br/", "pagina": "https://www.leroymerlin.com.br/",
+        "prova": ("Sem registro na CVM. Trecho transcrito pelo dono da plataforma a partir do navegador dele, porque o site não "
+                  "está entre os hosts liberados para este script: \"A Leroy Merlin Cia. Brasileira de Bricolagem, inscrita no "
+                  "CNPJ nº 01.438.784/0001-05\"."),
+        "nota": ("O logo do cabeçalho é um SVG escrito dentro da página, sem URL de arquivo; o código foi copiado pelo dono da "
+                 "plataforma no navegador dele e anexado. O código original não traz o atributo xmlns, sem o qual o arquivo "
+                 "não abre como imagem; o importador acrescentou só esse atributo, e o sha256 do código original está em "
+                 "derivado_de. As letras são brancas e ficam fora do triângulo verde, por isso a placa escura."),
+    },
+}
 
 
 def derivar(corpo, caixa, largura_max):
@@ -300,7 +357,8 @@ def derivar(corpo, caixa, largura_max):
         im = im.resize((largura_max, round(im.height * largura_max / im.width)), Image.LANCZOS)
     saida = io.BytesIO()
     im.save(saida, "PNG", optimize=True)
-    return saida.getvalue(), {"caixa": list(caixa) if caixa else None, "largura_max": largura_max, "ferramenta": f"Pillow {PIL.__version__}"}
+    return saida.getvalue(), {"operacao": "recorte" + (" e redução" if largura_max else ""), "caixa": list(caixa) if caixa else None,
+                              "largura_max": largura_max, "ferramenta": f"Pillow {PIL.__version__}"}
 
 
 def png_da_pagina(corpo, marca):
@@ -433,7 +491,7 @@ def conferir(manifesto=None):
             if not (x["ausencia"] and len(x["ausencia"].get("motivo", "")) > 20):
                 erros.append(f"{s}: sem arquivo e sem motivo de ausência")
             if any(x[c] is not None for c in ("formato", "fundo", "largura", "altura", "sha256", "bytes", "metodo", "extraido_de",
-                                              "derivado_de", "derivacao", "vinculo_conferido_por")):
+                                              "derivado_de", "derivacao", "vinculo_conferido_por", "vinculo_reforco")):
                 erros.append(f"{s}: ausência com dados de arquivo")
             continue
         if x["ausencia"] is not None:
@@ -473,6 +531,8 @@ def conferir(manifesto=None):
             erros.append(f"{s}: derivação sem o sha256 do original ou sem a descrição do recorte")
         if x["derivado_de"] == x["sha256"]:
             erros.append(f"{s}: derivado igual ao original")
+        if x["derivacao"] and not x["derivacao"].get("operacao"):
+            erros.append(f"{s}: derivação sem dizer a operação")
         if x["vinculo_conferido_por"] not in (None, "dono"):
             erros.append(f"{s}: conferência de vínculo inválida")
         if x["fundo"] not in ("claro", "escuro"):
@@ -489,9 +549,16 @@ def conferir(manifesto=None):
     return erros
 
 
-def main(importados=None):
-    """Recaptura tudo. `importados` = {slug: bytes} de arquivos trazidos por navegador ou pelo dono (--importar)."""
-    importados = importados or {}
+def main(importados=None, fundos=None):
+    """Recaptura tudo. `importados` = {slug: bytes} de arquivos trazidos por navegador ou pelo dono (--importar);
+    `fundos` = {slug: "claro" | "escuro"} para os pendentes, decidido abrindo a imagem (--fundo)."""
+    importados, fundos = importados or {}, fundos or {}
+    for slug, corpo in importados.items():  # arquivo anexado tem de ser o que o dono descreveu
+        esperado = PENDENTES.get(slug)
+        if esperado and (hashlib.sha256(corpo).hexdigest() != esperado["sha256"] or len(corpo) != esperado["bytes"]):
+            raise SystemExit(f"{slug}: o arquivo importado não confere com o sha256 e o tamanho esperados; nada foi alterado")
+        if esperado and fundos.get(slug) not in ("claro", "escuro"):
+            raise SystemExit(f"{slug}: abra a imagem e informe o tom com --fundo {slug} claro|escuro; nada foi alterado")
     os.makedirs(DESTINO, exist_ok=True)
     papeis = slugs_da_colecao()
     anterior = {}
@@ -504,6 +571,12 @@ def main(importados=None):
         item.update({"slug": slug, "nome_exibicao": nome, "papel": ", ".join(papeis.get(slug, ["fora da coleção"])), "cnpj": cnpj,
                      "nota": nota, "pagina_origem": pagina})
         ant = anterior.get(slug) or {}
+        pend = PENDENTES.get(slug)
+        if pend and (slug in importados or ant.get("sha256")):  # o arquivo chegou (agora ou numa rodada anterior)
+            cnpj, url, pagina, prova, nota = pend["cnpj"], pend["url"], pend["pagina"], pend["prova"], pend["nota"]
+            fundo = fundos.get(slug) or ant.get("fundo")
+            item.update({"cnpj": cnpj, "nota": nota, "pagina_origem": pagina})
+        item["vinculo_reforco"] = REFORCO.get(slug)
         tem_anterior = bool(ant.get("sha256")) and ant.get("url_origem") == url
 
         def ausente(motivo):
@@ -524,13 +597,16 @@ def main(importados=None):
             # mantém o arquivo anterior da mesma origem; os campos de curadoria (nome, vínculo, nota, fundo, método) seguem os atuais
             mantido = {c: ant.get(c) for c in CAMPOS}
             mantido.update({c: item[c] for c in ("slug", "nome_exibicao", "papel", "cnpj", "vinculo", "vinculo_conferido_por", "nota",
-                                                 "pagina_origem", "metodo")})
+                                                 "pagina_origem", "metodo", "vinculo_reforco")})
             mantido["fundo"] = fundo
+            if mantido.get("derivacao") and not mantido["derivacao"].get("operacao") and slug in DERIVADOS:
+                mantido["derivacao"] = {"operacao": "recorte" + (" e redução" if DERIVADOS[slug]["largura_max"] else ""), **mantido["derivacao"]}
             logos.append(mantido)
             continue
 
         def recusado(motivo):
-            item.update({"metodo": None, "extraido_de": None, "derivado_de": None, "derivacao": None, "vinculo_conferido_por": None})
+            item.update({"metodo": None, "extraido_de": None, "derivado_de": None, "derivacao": None, "vinculo_conferido_por": None,
+                         "vinculo_reforco": None})
             ausente(motivo)
 
         if corpo is None:
@@ -545,6 +621,13 @@ def main(importados=None):
             item["extraido_de"] = ({"url": url, "elemento": marca.decode()} if marca
                                    else {"url": url, "sha256": hashlib.sha256(corpo).hexdigest(), "bytes": len(corpo)})
             corpo, fmt = png, "png"
+        if fmt == "svg" and pend and b"xmlns=" not in corpo[:corpo.find(b">")]:
+            # SVG copiado de dentro da página: sem xmlns não abre como imagem; só esse atributo é acrescentado
+            item["derivado_de"] = hashlib.sha256(corpo).hexdigest()
+            k = corpo.find(b"<svg") + 4
+            corpo = corpo[:k] + XMLNS + corpo[k:]
+            item["derivacao"] = {"operacao": "atributo xmlns acrescentado à tag svg", "caixa": None, "largura_max": None,
+                                 "ferramenta": "pipeline/varejo/logos.py"}
         if fmt == "svg" and svg_recusado(corpo):
             recusado(f"O SVG oficial ({url}) traz script, evento, conteúdo embutido ou referência externa e não é publicado.")
             continue
@@ -578,7 +661,7 @@ def main(importados=None):
         if nome != "manifesto.json" and nome not in publicados:
             os.remove(os.path.join(DESTINO, nome))
     man = {
-        "versao": 4,
+        "versao": 5,
         "gerado_em": base.agora_utc(),
         "regras": ("Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem "
                    "alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria "
@@ -609,11 +692,15 @@ if __name__ == "__main__":
             print("ERRO", p, file=sys.stderr)
         print("manifesto de logos do Varejo:", "confere" if not problemas else f"{len(problemas)} problema(s)")
         sys.exit(1 if problemas else 0)
-    trazidos = {}
+    trazidos, tons = {}, {}
     args = sys.argv[1:]
+    while "--fundo" in args:  # --fundo <slug> <claro|escuro>: tom decidido abrindo a imagem de um pendente
+        k = args.index("--fundo")
+        tons[args[k + 1]] = args[k + 2]
+        del args[k:k + 3]
     while "--importar" in args:  # --importar <slug> <arquivo>: bytes trazidos por navegador ou pelo dono
         k = args.index("--importar")
         with open(args[k + 2], "rb") as f:
             trazidos[args[k + 1]] = f.read()
         del args[k:k + 3]
-    sys.exit(main(trazidos))
+    sys.exit(main(trazidos, tons))

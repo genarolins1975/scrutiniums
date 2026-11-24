@@ -1,6 +1,6 @@
 {
- "versao": 4,
- "gerado_em": "2026-11-24T10:31:24Z",
+ "versao": 5,
+ "gerado_em": "2026-11-24T10:43:13Z",
  "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'extraido_de' marca o PNG que a companhia publica embutido num SVG ou na página e que foi extraído sem alteração; 'derivado_de' e 'derivacao' marcam o recorte ou a redução de um arquivo oficial; 'metodo' diz como os bytes chegaram (requisição direta, navegador ou arquivo anexado pelo dono da plataforma). Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
  "logos": [
   {
@@ -25,6 +25,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -49,6 +50,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -73,6 +75,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -97,6 +100,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -121,6 +125,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -145,6 +150,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": "Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade linkada a partir de grupocarrefourbrasil.com.br (www.carrefour.com.br/institucional/politicas-carrefour/politica-de-privacidade-carrefour) cita \"CARREFOUR COMÉRCIO E INDÚSTRIA LTDA [...] inscrita no CNPJ sob o nº. 45.543.915/0001-81\".",
    "ausencia": null
   },
   {
@@ -169,6 +175,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": "Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade da loja (www.casasbahia.com.br/l/politica-privacidade.aspx) cita \"o GRUPO CASAS BAHIA S.A., CNPJ/MF n.º 33.041.260/0652-90\".",
    "ausencia": null
   },
   {
@@ -193,59 +200,58 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
    "slug": "dpsp",
-   "nome_exibicao": "DPSP",
+   "nome_exibicao": "Grupo DPSP",
    "papel": "grupo do ranking, ficha",
    "cnpj": null,
-   "vinculo": null,
-   "vinculo_conferido_por": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
-   "pagina_origem": "https://www.dpsp.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "vinculo": "Vínculo fraco, aceito por decisão do dono da plataforma em 24/11/2026: grupo de capital fechado, sem registro na CVM, e o site do grupo não exibe razão social nem CNPJ (rodapé, /privacidade/ e /quem-somos/ vistos pelo dono no navegador dele; o rodapé da página inicial, lido também por requisição direta, só tem links). A prova é o domínio oficial do grupo, cuja página de origem se apresenta como \"Drogaria São Paulo e Pacheco | Grupo DPSP\" e publica o arquivo com o texto alternativo \"Logo DPSP\".",
+   "vinculo_conferido_por": "dono",
+   "nota": "Marca do grupo (\"Grupo DPSP\"), dono das Drogarias Pacheco e da Drogaria São Paulo. Arquivo de baixa resolução: 80 x 36 px, o único publicado no cabeçalho (sem versão maior nem SVG). O endereço www.dpsp.com.br tem certificado que não corresponde ao nome do site.",
+   "arquivo": "/varejo/logos/dpsp.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 80,
+   "altura": 36,
+   "url_origem": "https://www.grupodpsp.com.br/wp-content/themes/DPSP-novo-painel/assets/img/rnk-logo-dpsp.png",
+   "pagina_origem": "https://www.grupodpsp.com.br/",
+   "capturado_em": "2026-11-24T10:40:20Z",
+   "sha256": "0f5cb502a294a8f1bdb075af7e3712d8f6d92a2636b6f64da63cb0ff5b6cf57f",
+   "bytes": 872,
+   "metodo": "direto",
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
-   "ausencia": {
-    "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site: a conexão segura não se estabeleceu por requisição direta nem com navegador, e deu erro de privacidade também no Chrome do dono da plataforma (24/11/2026). Nenhum arquivo oficial foi obtido."
-   }
+   "vinculo_reforco": null,
+   "ausencia": null
   },
   {
    "slug": "gazin",
    "nome_exibicao": "Gazin",
    "papel": "grupo do ranking, ficha",
-   "cnpj": null,
-   "vinculo": null,
+   "cnpj": "77.941.490/0294-80",
+   "vinculo": "Grupo de capital fechado, sem registro na CVM. O rodapé da página de origem, lido na visita com navegador de 24/11/2026, exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\"; o CNPJ registrado aqui é o que a página exibe (um estabelecimento da empresa, não a matriz).",
    "vinculo_conferido_por": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "nota": "O logo do cabeçalho é um SVG escrito dentro da página, sem URL de arquivo; o código foi copiado pelo dono da plataforma no navegador dele e anexado em 24/11/2026. O site responde 403 à requisição direta. É a versão da loja virtual, com \"gazin.com.br\" e um cursor no desenho, sobre fundo próprio azul arroxeado; o cursor é branco e some no claro, por isso a placa escura, como no cabeçalho do site.",
+   "arquivo": "/varejo/logos/gazin.svg",
+   "formato": "svg",
+   "fundo": "escuro",
+   "largura": 724.0,
+   "altura": 255.33,
+   "url_origem": "https://www.gazin.com.br/",
    "pagina_origem": "https://www.gazin.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:41:41Z",
+   "sha256": "df41eb761108b6d13b9e47b0489fbc90a56895278c7324854e690bf3d1aa85a3",
+   "bytes": 5610,
+   "metodo": "dono",
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
-   "ausencia": {
-    "motivo": "O site www.gazin.com.br responde 403 à requisição direta. Na visita com navegador de 24/11/2026, feita a pedido do dono da plataforma, a página abriu e o rodapé exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\" (um estabelecimento da empresa, não a matriz), mas o logo do cabeçalho não está entre os arquivos de imagem que a visita salvou; recortar a captura de tela não é arquivo oficial. Nenhum logo foi obtido."
-   }
+   "vinculo_reforco": null,
+   "ausencia": null
   },
   {
    "slug": "gpa",
@@ -269,6 +275,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -296,6 +303,7 @@
    },
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -320,6 +328,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -344,8 +353,9 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": {
-    "motivo": "O site www.grupopereira.com.br encerrou a conexão por requisição direta e com navegador, e a navegação não concluiu no Chrome do dono da plataforma (24/11/2026). Nenhum arquivo oficial foi obtido."
+    "motivo": "O site do grupo (www.grupopereira.com.br) encerrou a conexão por requisição direta e com navegador, e não abriu em três tentativas no Chrome do dono da plataforma (24/11/2026). O site da marca Comper abriu para o dono, mas logo de bandeira não representa o grupo, e o rodapé traz CNPJ sem razão social. Nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -370,6 +380,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -394,6 +405,7 @@
    "extraido_de": null,
    "derivado_de": "4faaf399f5356b2a2bf6efbad4ace173dd7aaa67e030029095cde3246241b087",
    "derivacao": {
+    "operacao": "recorte",
     "caixa": [
      2105,
      118,
@@ -403,6 +415,7 @@
     "largura_max": null,
     "ferramenta": "Pillow 12.3.0"
    },
+   "vinculo_reforco": "Lido pelo dono da plataforma no navegador dele em 24/11/2026: a política de privacidade do grupo (privacidade.grupoguararapes.com.br/politicas-de-privacidade/) cita \"O Grupo Guararapes Confecções S.A, composto pelas empresas Lojas Riachuelo S.A.\".",
    "ausencia": null
   },
   {
@@ -427,33 +440,38 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
    "slug": "leroy-merlin",
    "nome_exibicao": "Leroy Merlin",
    "papel": "líder de segmento",
-   "cnpj": null,
-   "vinculo": null,
-   "vinculo_conferido_por": null,
-   "nota": "Para uso futuro, segundo o dono da plataforma, que abriu o site no navegador dele em 24/11/2026: o rodapé cita \"Leroy Merlin Cia Brasileira de Bricolagem\", CNPJ da matriz 01.438.784/0001-05, e o logo do cabeçalho é um SVG escrito dentro da página. Nada disso foi conferido por este script.",
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
-   "pagina_origem": null,
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "cnpj": "01.438.784/0001-05",
+   "vinculo": "Sem registro na CVM. Trecho transcrito pelo dono da plataforma a partir do navegador dele, porque o site não está entre os hosts liberados para este script: \"A Leroy Merlin Cia. Brasileira de Bricolagem, inscrita no CNPJ nº 01.438.784/0001-05\".",
+   "vinculo_conferido_por": "dono",
+   "nota": "O logo do cabeçalho é um SVG escrito dentro da página, sem URL de arquivo; o código foi copiado pelo dono da plataforma no navegador dele e anexado. O código original não traz o atributo xmlns, sem o qual o arquivo não abre como imagem; o importador acrescentou só esse atributo, e o sha256 do código original está em derivado_de. As letras são brancas e ficam fora do triângulo verde, por isso a placa escura.",
+   "arquivo": "/varejo/logos/leroy-merlin.svg",
+   "formato": "svg",
+   "fundo": "escuro",
+   "largura": 149.0,
+   "altura": 99.0,
+   "url_origem": "https://www.leroymerlin.com.br/",
+   "pagina_origem": "https://www.leroymerlin.com.br/",
+   "capturado_em": "2026-11-24T10:42:53Z",
+   "sha256": "0dc069ed0b5feabdf65290b5685870fdff232a3c4af6bef817c0332704f2e00e",
+   "bytes": 1470,
+   "metodo": "dono",
    "extraido_de": null,
-   "derivado_de": null,
-   "derivacao": null,
-   "ausencia": {
-    "motivo": "Líder de segmento citado no ranking, sem ficha nem linha no comparador. O site oficial não está entre os hosts liberados para a coleta e o arquivo do logo ainda não foi anexado (24/11/2026)."
-   }
+   "derivado_de": "5d3a4c6601841ee9cb5637b580592117dcfdf6ff18b1d7e917a91c86b97cebc2",
+   "derivacao": {
+    "operacao": "atributo xmlns acrescentado à tag svg",
+    "caixa": null,
+    "largura_max": null,
+    "ferramenta": "pipeline/varejo/logos.py"
+   },
+   "vinculo_reforco": null,
+   "ausencia": null
   },
   {
    "slug": "lojas-renner",
@@ -477,6 +495,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -501,6 +520,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -525,6 +545,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -553,6 +574,7 @@
    },
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -577,6 +599,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -601,6 +624,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -625,6 +649,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -649,6 +674,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -677,6 +703,7 @@
    },
    "derivado_de": "c3fe6932b97a7a67e729cc4dc7c74f1fff8240f8c6a421c5fa604074d1ba0341",
    "derivacao": {
+    "operacao": "recorte e redução",
     "caixa": [
      11,
      345,
@@ -686,6 +713,7 @@
     "largura_max": 240,
     "ferramenta": "Pillow 12.3.0"
    },
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -710,6 +738,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   },
   {
@@ -734,6 +763,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "derivacao": null,
+   "vinculo_reforco": null,
    "ausencia": null
   }
  ]

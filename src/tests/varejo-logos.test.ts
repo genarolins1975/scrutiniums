@@ -62,7 +62,7 @@ describe("Varejo: manifesto de logos", () => {
       expect(l.nome_exibicao.length, l.slug).toBeGreaterThan(1);
       if (!l.arquivo) {
         expect(l.ausencia?.motivo.length ?? 0, l.slug).toBeGreaterThan(20);
-        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes, l.metodo, l.extraido_de, l.derivado_de, l.derivacao, l.vinculo_conferido_por]) expect(c, l.slug).toBeNull();
+        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes, l.metodo, l.extraido_de, l.derivado_de, l.derivacao, l.vinculo_conferido_por, l.vinculo_reforco]) expect(c, l.slug).toBeNull();
         continue;
       }
       expect(l.ausencia, l.slug).toBeNull();
@@ -84,13 +84,15 @@ describe("Varejo: manifesto de logos", () => {
       if (l.derivado_de) {
         expect(l.derivado_de, l.slug).toMatch(/^[0-9a-f]{64}$/);
         expect(l.derivado_de, l.slug).not.toBe(l.sha256);
-        expect(l.formato, l.slug).toBe("png");
-        expect(l.derivacao!.caixa ?? l.derivacao!.largura_max, l.slug).toBeTruthy();
-        expect(l.nota ?? "", l.slug).toMatch(/recort|reduzid/);
+        expect(l.derivacao!.operacao.length, l.slug).toBeGreaterThan(5);
+        if (l.derivacao!.caixa || l.derivacao!.largura_max) expect(l.formato, l.slug).toBe("png");
+        expect(l.nota ?? "", l.slug).toMatch(/recort|reduzid|acrescent/);
       }
       // prova que o script não releu: só a transcrita pelo dono, e dita no texto do vínculo
       expect([null, "dono"], l.slug).toContain(l.vinculo_conferido_por);
-      if (l.vinculo_conferido_por) expect(l.vinculo, l.slug).toMatch(/transcrito pelo dono/);
+      if (l.vinculo_conferido_por) expect(l.vinculo, l.slug).toMatch(/pelo dono/);
+      // segunda evidência nunca substitui a principal: só existe ao lado dela e cita o trecho entre aspas
+      if (l.vinculo_reforco) expect(l.vinculo_reforco, l.slug).toMatch(/"[^"]{10,}"/);
       expect(l.url_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.pagina_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.capturado_em, l.slug).toMatch(/^\d{4}-\d{2}-\d{2}T/);
