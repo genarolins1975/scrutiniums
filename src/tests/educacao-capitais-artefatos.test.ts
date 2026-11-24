@@ -34,7 +34,7 @@ describe("Educação nas capitais: artefatos e consumidores compartilhados",()=>
     const novo=renderToStaticMarkup(createElement(EscoresServicos,{capitulo:"education",preparacao:true}));
     expect(novo).not.toMatch(/<a\s/);
     expect(novo).toContain("Não calculável");
-    expect(renderToStaticMarkup(createElement(EscoresServicos,{capitulo:"health"}))).toContain("/eficiencia-estatal/seguranca-alimentar/metodos");
+    expect(renderToStaticMarkup(createElement(EscoresServicos,{capitulo:"health"}))).toContain("/eficiencia-estatal/saude-capitais/metodos");
   });
   it("o eixo pode conservar os limites naturais sem acrescentar observações",()=>{
     const h=renderToStaticMarkup(createElement(GraficoPontos,{titulo:"Ideb",itens:[{id:"a",rotulo:"Capital A",valor:6,referencia:5}],unidade:"pontos",rotuloValor:"Ideb",rotuloReferencia:"Mediana",limitesEixo:[0,10],zeroNoEixo:true}));

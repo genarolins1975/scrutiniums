@@ -5,7 +5,6 @@ import { dadosAlimentares } from "@/lib/eficiencia/alimentar/dados";
 import { dadosComplementares } from "@/lib/eficiencia/alimentar/complementos";
 import { naturezaDaFicha, numerosComplementares } from "@/components/eficiencia/alimentar/Complementos";
 import { MetodoAlimentar, siglasAlimentar } from "@/components/eficiencia/alimentar/PainelAlimentar";
-import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import { TEMAS_EFICIENCIA } from "@/lib/eficiencia/temas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 
@@ -82,7 +81,6 @@ export default function PanoramaAlimentar() {
         }
         metodo={<MetodoAlimentar c={c} g={g} pnad fichas={["san.cadinsan.risco", "san.pnae.alunos", "san.ipca.alimentacao"]} />}
       />
-      <EscoresServicos capitulo="food" />
     </>
   );
 }
