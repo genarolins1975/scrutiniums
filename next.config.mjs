@@ -161,6 +161,7 @@ const nextConfig = {
       {source: "/energia/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/saneamento/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/conectividade/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
+      {source: "/varejo/logos/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       // marcas de parceiros (pasta aberta): mesma política dos logos
       {source: "/home/parceiros/:path*", headers: [{key: "Content-Security-Policy", value: "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox"}, {key: "X-Content-Type-Options", value: "nosniff"}]},
       {source: "/energia/gold/:path*", headers: [{key: "Cache-Control", value: "private, max-age=3600"}]},
