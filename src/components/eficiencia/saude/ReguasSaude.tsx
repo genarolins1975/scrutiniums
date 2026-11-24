@@ -105,8 +105,13 @@ function ReguaCapitais({ m, c, marcas, selecionada, aoEscolher }: { m: MedidaSau
       })}
       {/* eixo */}
       <span className="absolute inset-x-0 border-t border-linha" style={{ top: 24 + altPontos + 6 }} />
-      {ticks.map((t) => (
-        <span key={t} className="t-meta absolute -translate-x-1/2 whitespace-nowrap tabular-nums text-carvao-muted" style={{ left: x(t), top: 24 + altPontos + 10 }}>
+      {/* o primeiro rótulo alinha pela esquerda e o último pela direita: nenhum sai da largura no celular */}
+      {ticks.map((t, k) => (
+        <span
+          key={t}
+          className={`t-meta absolute whitespace-nowrap tabular-nums text-carvao-muted ${k === 0 ? "" : k === ticks.length - 1 ? "-translate-x-full" : "-translate-x-1/2"}`}
+          style={{ left: k === 0 ? 0 : k === ticks.length - 1 ? w : x(t), top: 24 + altPontos + 10 }}
+        >
           {m.formataEixo(t)}
         </span>
       ))}

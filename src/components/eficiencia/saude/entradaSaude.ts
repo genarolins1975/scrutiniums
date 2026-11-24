@@ -156,8 +156,8 @@ export function perguntasSaude(g: GoldSaude, modelo: DadosModeloSaude): Pergunta
   const p0 = evo.pontos[0];
   const pN = evo.pontos[evo.pontos.length - 1];
 
-  const escopoFonte = c.fonte.ok ? `${c.fonte.escopo}, ${c.fonte.ano}` : null;
-  const escopoDestino = c.destino.ok ? `${c.destino.escopo}, ${c.destino.ano}` : null;
+  const escopoFonte = c.fonte.ok ? `${c.fonte.escopo.toLowerCase()}, ${c.fonte.ano}` : null;
+  const escopoDestino = c.destino.ok ? `${c.destino.escopo.toLowerCase()}, ${c.destino.ano}` : null;
 
   return [
     {

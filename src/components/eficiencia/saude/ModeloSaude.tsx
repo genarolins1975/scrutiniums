@@ -111,7 +111,7 @@ export function ModeloSaude({ modelo, dados: dadosProp }: { modelo: DadosModeloS
         titulo={cap ? `De onde vem e para onde vai o dinheiro em ${cap.nome}` : "De onde vem e para onde vai o dinheiro da saúde"}
         descricao={
           <>
-            Três elos, com os números de {nome}. As fatias de cada barra somam 100% do total daquele elo. O primeiro e o segundo elos vêm de fontes e de estágios
+            Três elos, com os números {cap ? `de ${nome}` : "do conjunto das capitais"}. As fatias de cada barra somam 100% do total daquele elo. O primeiro e o segundo elos vêm de fontes e de estágios
             contábeis diferentes (despesa empenhada no SIOPS, despesa liquidada na DCA): mostram a mesma despesa por dois lados e não se somam.
           </>
         }
