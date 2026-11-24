@@ -319,8 +319,19 @@ describe("Educação PR 1: hierarquia e proteção da ficha", () => {
     expect(html.indexOf('data-fatia="seu-municipio"')).toBeGreaterThan(0);
     expect(html.indexOf('data-fatia="seu-municipio"')).toBeLessThan(html.indexOf('data-fatia="escala"'));
     expect(html).toContain(`href="/educacao-municipal/municipio/${SP}"`);
-    expect((html.match(/class="edm-lab"/g) ?? [])).toHaveLength(1);
-    expect(await painel()).not.toContain('data-fatia="seu-municipio"');
+    // Rodada de 24/11/2026 (direção do coordenador, mock "03 · Educação"): o laboratório N × P desce para a ficha; a entrada
+    // ensina o mecanismo com a divisão da mudança do Ideb (seção própria) e o modelo "Da creche ao 9º ano". Nada se duplica.
+    expect((html.match(/class="edm-lab"/g) ?? [])).toHaveLength(0);
+    expect(html).toContain('data-fatia="secao-propria"');
+    expect(html).toContain("data-motor-ideb");
+    expect(html).toContain("data-quem-cuida");
+    expect(html).toContain('id="contexto-da-entrada"');
+    const semCidade = await painel();
+    expect(semCidade).not.toContain('data-fatia="seu-municipio"');
+    // sem município, os quatro números do país ficam à vista (checklist da entrada, item 1), não recolhidos
+    expect(semCidade).not.toContain('id="contexto-da-entrada"');
+    expect((semCidade.match(/data-numero-escala=""/g) ?? [])).toHaveLength(4);
+    expect(textoDe(semCidade)).not.toMatch(/NaN|undefined/);
     const detalhe = await ficha(SP);
     expect((detalhe.match(/class="edm-lab"/g) ?? [])).toHaveLength(1);
     expect(detalhe).toMatch(/<details[^>]+id="tabelas-componentes"/);

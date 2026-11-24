@@ -50,6 +50,9 @@ export function comConta(g: GoldEducacao, municipio?: { m: MunicipioGold; uf: st
     itens.push(`A comparação de cada município com o estado, com o Brasil e com as cidades do mesmo porte (${g.portes.length} faixas de população do IBGE)`);
     itens.push(`As matrículas e as escolas de cada rede municipal, por etapa, do Censo Escolar ${g.censo.ano}`);
   }
+  // a entrada com conta: a divisão da mudança do Ideb e o modelo de quem cuida de cada etapa (rodada de 24/11/2026)
+  itens.push(`Se o Ideb subiu porque os alunos aprenderam mais ou porque foram mais aprovados, no Brasil e nas ${Object.keys(g.ideb.ufs.ai).length} unidades da federação, desde ${anos[0]}`);
+  itens.push(`Quem cuida de cada etapa, da creche ao 9º ano, e quantas escolas da prefeitura ficam na zona rural, no Censo Escolar ${g.censo.ano}`);
   itens.push(`Mapa de ${num(g.municipios.total)} municípios e séries de ${Object.keys(g.municipios.por_uf).length} UFs, com os motivos de ausência`);
   itens.push("Arquivos CSV: Ideb e componentes desde " + anos[0] + ", matrículas, escolas e resumo por estado");
   const nCapitais = goldCapitais()?.universo.capitais.length;

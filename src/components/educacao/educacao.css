@@ -265,3 +265,106 @@
 
 
 @media (min-width: 1100px) { .edm-placar-cidade { grid-template-columns: repeat(8, minmax(0,1fr)); } }
+
+/* Entrada, rodada de 24/11/2026: "Aprenderam mais ou reprovaram menos?" (seção própria) e "Da creche ao 9º ano" (modelo didático).
+ * Cor só no dado: a parcela da aprendizagem leva o acento, a da aprovação o neutro; ambas têm o valor escrito ao lado. */
+.edm-motor-secao .edm-intro { max-width: 68ch; }
+.edm-motor { margin-top: 24px; }
+.edm-motor-controles { display: flex; flex-wrap: wrap; align-items: end; gap: 16px 32px; }
+.edm-segmento { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--cor-linha); background: var(--cor-superficie); }
+.edm-segmento button { min-height: 44px; padding: 0 16px; font-size: 14px; color: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; transition: background-color 160ms ease, color 160ms ease, transform 140ms var(--edm-saida); }
+.edm-segmento button + button { border-left: 1px solid var(--cor-linha); }
+.edm-segmento button[aria-pressed="true"] { background: var(--cor-carvao); color: var(--cor-papel); }
+.edm-segmento button:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .edm-segmento button[aria-pressed="false"]:hover { color: var(--cor-carvao); background: var(--cor-marfim); } }
+.edm-motor-achado { margin-top: 20px; max-width: 72ch; font-size: 16px; line-height: 1.6; color: var(--cor-carvao); }
+.edm-motor-grade { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--cor-linha); }
+.edm-motor-etapa { padding: 20px 32px 8px 0; min-width: 0; }
+.edm-motor-etapa + .edm-motor-etapa { padding: 20px 0 8px 32px; border-left: 1px solid var(--cor-linha); }
+.edm-motor-etapa h3 { font-size: 21px; }
+.edm-motor-etapa h3 span { font-family: var(--font-sans), system-ui, sans-serif; font-size: 14px; color: var(--cor-carvao-muted); margin-left: 6px; }
+.edm-motor-ideb { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.edm-motor-ideb .numero-m { color: var(--cor-carvao-muted); }
+.edm-motor-ideb .edm-motor-final { color: var(--edm-acento-escuro); }
+.edm-motor-seta { font-size: 22px; color: var(--cor-carvao-muted); }
+.edm-motor-ideb .edm-unidade { flex-basis: 100%; margin-left: 0; }
+.edm-motor-barras { margin-top: 16px; display: grid; gap: 14px; }
+.edm-motor-barras > div { display: grid; gap: 6px; }
+.edm-motor-barras dt { font-size: 14px; font-weight: 500; }
+.edm-motor-barras dt small { display: block; font-weight: 400; font-size: 13px; color: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; }
+.edm-motor-barras dd { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem; align-items: center; gap: 12px; }
+.edm-motor-trilho { position: relative; height: 20px; background: var(--cor-marfim); }
+.edm-motor-trilho > b { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--cor-carvao); }
+.edm-motor-trilho > i { position: absolute; top: 0; bottom: 0; transition: left 220ms var(--edm-saida), width 220ms var(--edm-saida); }
+.edm-motor-n { background: var(--edm-acento); }
+.edm-motor-p { background: var(--edm-neutro); }
+.edm-motor-valor { font-family: var(--font-serif), Georgia, serif; font-size: 22px; font-variant-numeric: tabular-nums lining-nums; text-align: right; white-space: nowrap; }
+.edm-motor-valor small { font-family: var(--font-sans), system-ui, sans-serif; font-size: 13px; color: var(--cor-carvao-muted); }
+.edm-motor-apoio { margin-top: 14px; font-size: 13px; line-height: 1.6; color: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; }
+.edm-ressalvas { margin-top: 24px; max-width: 80ch; font-size: 14px; line-height: 1.6; color: var(--cor-carvao-muted); }
+.edm-ressalvas strong { font-weight: 600; color: var(--cor-carvao); }
+.edm-decomposicao-barras { max-width: 720px; }
+@media (max-width: 760px) {
+  .edm-motor-grade { grid-template-columns: minmax(0, 1fr); }
+  .edm-motor-etapa, .edm-motor-etapa + .edm-motor-etapa { padding: 20px 0 8px; border-left: 0; }
+  .edm-motor-etapa + .edm-motor-etapa { border-top: 1px solid var(--cor-linha); }
+  .edm-motor-barras dd { grid-template-columns: minmax(0, 1fr) 6.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .edm-motor-trilho > i, .edm-segmento button { transition: none; } .edm-segmento button:active { transform: none; } }
+
+.edm-quem-escolha { display: grid; gap: 6px; font-size: 14px; }
+.edm-quem-escolha select { min-height: 44px; min-width: min(100%, 18rem); max-width: 100%; border: 1px solid var(--cor-mineral); background: var(--cor-superficie); padding: 0 12px; color: var(--cor-carvao); font-size: 15px; }
+.edm-quem-linha { margin-top: 24px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--cor-linha); }
+.edm-quem-linha > li { padding: 18px 24px 8px 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.edm-quem-linha > li + li { padding-left: 24px; border-left: 1px solid var(--cor-linha); }
+.edm-quem-linha h3 { font-size: 20px; line-height: 1.25; }
+.edm-quem-linha h3 span { display: block; font-family: var(--font-sans), system-ui, sans-serif; font-size: 13px; color: var(--cor-carvao-muted); margin-top: 2px; }
+.edm-quem-valor { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.edm-quem-valor .numero-m { color: var(--edm-acento-escuro); }
+.edm-quem-valor .edm-unidade { margin-left: 0; }
+.edm-quem-sem { font-size: 15px; color: var(--cor-carvao-muted); }
+.edm-quem-barra { display: block; height: 10px; background: var(--cor-grade); }
+.edm-quem-barra > i { display: block; height: 100%; background: var(--edm-acento); transition: width 220ms var(--edm-saida); }
+.edm-quem-conta { font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); font-variant-numeric: tabular-nums; }
+.edm-quem-medida { margin-top: auto; padding-top: 10px; font-size: 13px; line-height: 1.5; color: var(--cor-carvao-muted); border-top: 1px dashed var(--cor-linha); }
+.edm-quem-medida.edm-quem-mede { color: var(--cor-carvao); border-top: 2px solid var(--edm-acento); }
+@media (max-width: 960px) {
+  .edm-quem-linha { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .edm-quem-linha > li:nth-child(3) { padding-left: 0; border-left: 0; }
+  .edm-quem-linha > li:nth-child(n+3) { border-top: 1px solid var(--cor-linha); }
+}
+@media (max-width: 560px) {
+  /* duas colunas também no celular: a linha da vida escolar continua lida em pares e a página fica no orçamento de comprimento */
+  .edm-quem-linha > li { padding: 14px 12px 8px 0; }
+  .edm-quem-linha > li:nth-child(even) { padding-left: 12px; padding-right: 0; }
+  .edm-quem-linha h3 { font-size: 18px; }
+}
+@media (max-width: 340px) {
+  .edm-quem-linha { grid-template-columns: minmax(0, 1fr); }
+  .edm-quem-linha > li, .edm-quem-linha > li:nth-child(even) { padding: 14px 0 8px; border-left: 0; }
+  .edm-quem-linha > li + li { border-top: 1px solid var(--cor-linha); }
+}
+@media (prefers-reduced-motion: reduce) { .edm-quem-barra > i { transition: none; } }
+
+/* Ficha em quatro capítulos */
+.edm-capitulos { margin-top: 24px; max-width: 1000px; }
+.edm-capitulos ol { display: flex; flex-wrap: wrap; gap: 0 4px; border-block: 1px solid var(--cor-linha); }
+.edm-capitulos a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px 0 0; font-size: 15px; color: var(--edm-acento-escuro); text-decoration: underline; text-decoration-color: var(--cor-linha); text-underline-offset: 4px; }
+.edm-capitulo { margin-top: 72px; scroll-margin-top: 24px; }
+.edm-capitulo > h2 { font-size: clamp(28px, 3.2vw, 36px); line-height: 1.15; padding-bottom: 12px; border-bottom: 1px solid var(--cor-linha); }
+.edm-figura h5 { font-size: 15px; font-weight: 600; }
+@media (max-width: 760px) { .edm-capitulo { margin-top: 56px; } }
+@media (max-width: 560px) {
+  /* celular: o mesmo conteúdo com ritmo mais curto (orçamento de comprimento da entrada a 390 px) */
+  .edm-motor { margin-top: 16px; }
+  .edm-motor-achado { margin-top: 14px; font-size: 15px; }
+  .edm-motor-etapa, .edm-motor-etapa + .edm-motor-etapa { padding: 14px 0 4px; }
+  .edm-motor-ideb { margin-top: 4px; }
+  .edm-motor-barras { margin-top: 10px; gap: 10px; }
+  .edm-motor-apoio { margin-top: 8px; }
+  .edm-ressalvas { margin-top: 16px; font-size: 13px; }
+  .edm-quem-escolha { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
+  .edm-quem-linha { margin-top: 16px; }
+  .edm-quem-linha > li { gap: 6px; }
+  .edm-quem-medida { padding-top: 6px; }
+}
