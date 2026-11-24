@@ -17,7 +17,7 @@ export type SerieDecomposta = { variacoes: VariacaoIdeb[] } & Pick<Serie, "ideb"
  */
 export function DecomposicaoIdeb({ nome, anos, etapas }: { nome: string; anos: number[]; etapas: Record<Etapa, SerieDecomposta | null> }) {
   const [etapa, setEtapa] = useState<Etapa>("ai");
-  return <ModeloDidatico id="variacao-ideb" titulo="Aprendeu mais ou reprovou menos?"
+  return <ModeloDidatico id="variacao-ideb" titulo="Aprendizagem e aprovação entre duas edições"
     descricao={`Divisão matemática da mudança do Ideb da rede municipal de ${nome} entre a aprendizagem (nota do Saeb) e a aprovação. Fonte: INEP, Ideb; cálculo da Scrutiniums com os componentes publicados.`}
     deixaDeFora={["Esta divisão não é causa", "Aprendizagem (N) e fluxo (P) não são independentes", "A mudança de alunos entre edições não é controlada", "O produto N × P difere do Ideb publicado pelo arredondamento do INEP"]}>
     <div className="flex flex-wrap items-center gap-3"><label htmlFor="variacao-etapa">Etapa</label>

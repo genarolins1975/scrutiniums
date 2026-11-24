@@ -180,12 +180,14 @@ describe("resposta específica na entrada, no build", () => {
         const p = await c.newPage();
         await abrir(p, rota);
         const busca = p.locator(CONSULTA).getByRole("combobox");
+        // as sugestões são as da busca: a página pode ter outros <select> (o lugar da divisão do Ideb, a UF do modelo das etapas)
+        const sugestoes = p.locator(CONSULTA).getByRole("option");
         await busca.fill("Recife");
-        await p.getByRole("option").first().waitFor();
+        await sugestoes.first().waitFor();
         await p.keyboard.press("Escape");
-        expect(await p.getByRole("option").count()).toBe(0);
+        expect(await sugestoes.count()).toBe(0);
         await busca.fill("Recif");
-        await p.getByRole("option").first().waitFor();
+        await sugestoes.first().waitFor();
         await p.keyboard.press("ArrowDown");
         await p.keyboard.press("Enter");
         await p.waitForURL(`**${rota}?ibge=2611606`);
