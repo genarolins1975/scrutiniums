@@ -79,6 +79,10 @@ def _z(vals):
 
 
 def _faixa(z):
+    # A faixa sai do z PUBLICADO (duas casas, _r), não do valor interno: z = 0,996 é publicado como 1,00 e,
+    # classificado antes do arredondamento, saía "forte" ao lado de um z que o leitor lê como +1 ("aquecido").
+    # De 06/11 a 23/11/2026 essa divergência reprovou src/tests/emprego-data.test.ts e reteve emprego-setores-ufs.
+    z = _r(z)
     if z is None:
         return None
     return "contração" if z <= -1 else "fraco" if z < -0.5 else "na média" if z <= 0.5 else "forte" if z < 1 else "aquecido"

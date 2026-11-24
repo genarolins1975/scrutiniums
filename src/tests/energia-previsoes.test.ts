@@ -644,7 +644,8 @@ describe("P015: arquivo de emissões, CSV publicado e tabela", () => {
 
   it("resposta do arquivo inteiro com contagens, transcrição e a primeira entrega a terminar", () => {
     const t = respostaP015(linhas, "", linhas.length);
-    expect(t).toContain(`O arquivo tem ${linhas.length} registros de ${G.prospectivo.total_rodadas} rodadas.`);
+    // a página escreve a contagem com separador de milhar (padrão brasileiro) desde que o arquivo passou de 999 registros
+    expect(t).toContain(`O arquivo tem ${linhas.length.toLocaleString("pt-BR")} registros de ${G.prospectivo.total_rodadas.toLocaleString("pt-BR")} rodadas.`);
     const semNumero = G.prospectivo.rodadas.filter((r) => r.com_numero === 0);
     for (const r of semNumero) expect(t).toContain(`A rodada de ${r.origem.split("-").reverse().join("/")}`);
     // a gold publica só as apurações mais recentes (LIMITE_APURACOES) e o total em apuracoes_total: a frase "nenhuma

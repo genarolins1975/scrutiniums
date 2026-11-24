@@ -39,14 +39,20 @@ def _recorde_da_serie(s):
     maiores = [r for r, v in anteriores if v >= v_u]
     menores = [r for r, v in anteriores if v <= v_u]
     out = []
+    # A janela mínima vale também para o recorde histórico: len(s) conta observações, não meses, e uma série
+    # com mais de uma observação por mês (ou histórico curto e denso) passava com janela de 5 meses
+    # (of_sucesso_iniciacao_pagamento, 13 a 23/11/2026: reprovou recordes-data.test.ts e reteve recordes e overview).
+    janela = _meses_entre(anteriores[0][0], ref_u)
     if not maiores:
-        out.append(("maximo_historico", anteriores[0][0], _meses_entre(anteriores[0][0], ref_u)))
+        if janela >= MIN_MESES:
+            out.append(("maximo_historico", anteriores[0][0], janela))
     else:
         gap = _meses_entre(maiores[-1], ref_u)
         if gap >= MIN_MESES:
             out.append(("maior_desde", maiores[-1], gap))
     if not menores:
-        out.append(("minimo_historico", anteriores[0][0], _meses_entre(anteriores[0][0], ref_u)))
+        if janela >= MIN_MESES:
+            out.append(("minimo_historico", anteriores[0][0], janela))
     else:
         gap = _meses_entre(menores[-1], ref_u)
         if gap >= MIN_MESES:
