@@ -31,17 +31,18 @@ const ETAPAS = {
 
 /**
  * Artefato didático "Uma morte, dois registros": os dois caminhos pelos quais a mesma morte violenta vira número, com as
- * contagens reais da UF escolhida (gold). Modelo simplificado do fluxo: as etapas reais têm mais passos e prazos.
+ * contagens reais da UF escolhida (gold). Modelo simplificado do fluxo: as etapas reais têm mais passos e prazos. Vive no envelope
+ * ModeloDidatico da página, que diz o que fica de fora; a UF é a mesma chave `uf` do bloco "Como está o meu estado?".
  */
 export function DoisRegistros({ dados: d }: { dados: DadosDoisRegistros }) {
-  const escolha = useSelecaoGas("uf_registro", ["BR", ...d.ufs.map((u) => u.sigla)], "BR");
+  const escolha = useSelecaoGas("uf", ["BR", ...d.ufs.map((u) => u.sigla)], "BR");
   const id = useId();
   const v = d.valores[escolha.valor];
   const nome = escolha.valor === "BR" ? "Brasil" : d.ufs.find((u) => u.sigla === escolha.valor)?.nome;
   const razao = v.policia !== null && v.saude ? v.policia / v.saude : null;
   return (
     <div className="space-y-6">
-      <p className="text-xs uppercase tracking-label text-obee-dark">Modelo didático · fluxo simplificado, com os números reais de {d.ano}</p>
+      <p className="t-meta text-carvao-muted">Fluxo simplificado; os números são os reais de {d.ano}, do Brasil ou da UF escolhida (a mesma escolha do bloco “Como está o meu estado?”).</p>
       <div className="grid gap-6 md:grid-cols-2">
         {(["policia", "saude"] as const).map((lado) => (
           <ol key={lado} aria-label={lado === "policia" ? "Caminho do registro policial" : "Caminho do registro de saúde"} className="space-y-2">
@@ -57,7 +58,7 @@ export function DoisRegistros({ dados: d }: { dados: DadosDoisRegistros }) {
       </div>
       <div className="border-y border-linha py-5">
         <label htmlFor={id} className="block text-sm">Ver os dois números de</label>
-        <select id={id} value={escolha.valor} onChange={(e) => escolha.selecionar(e.target.value)} className="mt-1 min-h-[44px] max-w-full border border-obee-dark bg-superficie px-3 text-sm">
+        <select id={id} value={escolha.valor} onChange={(e) => escolha.selecionar(e.target.value)} className="mt-1 min-h-[44px] max-w-full border border-mineral bg-superficie px-3 text-base text-carvao">
           <option value="BR">Brasil</option>
           {[...d.ufs].sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")).map((u) => <option key={u.sigla} value={u.sigla}>{u.nome}</option>)}
         </select>

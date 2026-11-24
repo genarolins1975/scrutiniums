@@ -324,3 +324,92 @@ export function denominadoresIcsapIguais(ix: IndiceSaude, ano: number): { iguais
 export function medida(id: MedidaSaudeId): MedidaSaude {
   return MEDIDAS_SAUDE[id];
 }
+
+/* ------------------------------------------------------------------ entrada (Panorama) */
+
+/*
+ * Contas da entrada da Saúde nas capitais: o agrupamento das composições do modelo didático, a despesa somada num conjunto fixo de
+ * capitais e a população do universo. Partem das observações, pelas mesmas regras de elegibilidade das demais visões.
+ */
+
+/** Um elo do modelo didático agrupa categorias da fonte em poucas fatias; a tabela do modelo mostra o que cada fatia reúne. */
+export type GrupoCategorias = { chave: string; rotulo: string; membros: string[] };
+
+export type FatiaElo = { chave: string; rotulo: string; valor: number; participacao: number; membros: string[] };
+
+/** Fontes de recursos do SIOPS em quatro fatias: o que o município arrecada, o SUS da União, o SUS do estado e o restante. */
+export const GRUPOS_FONTE: GrupoCategorias[] = [
+  { chave: "proprios", rotulo: "Impostos e recursos livres do município", membros: ["impostos_saude", "recursos_ordinarios"] },
+  { chave: "sus_uniao", rotulo: "Transferências do SUS da União", membros: ["sus_uniao"] },
+  { chave: "sus_estado", rotulo: "Transferências do SUS do estado", membros: ["sus_estado"] },
+  { chave: "demais", rotulo: "Convênios, royalties, crédito e outras fontes", membros: ["convenios", "operacoes_credito", "lc173_uniao", "royalties", "outros"] },
+];
+
+/** Subfunções da DCA em quatro fatias: atenção básica, hospitalar e ambulatorial, administração e as demais. */
+export const GRUPOS_DESTINO: GrupoCategorias[] = [
+  { chave: "basica", rotulo: "Atenção básica", membros: ["301"] },
+  { chave: "hospitalar", rotulo: "Assistência hospitalar e ambulatorial", membros: ["302"] },
+  { chave: "administracao", rotulo: "Administração geral", membros: ["122"] },
+  { chave: "demais", rotulo: "Vigilância, medicamentos e demais subfunções", membros: ["303", "304", "305", "306", "FU10"] },
+];
+
+/** Agrupa linhas de composição (valores em reais) nas fatias; a participação é sobre a soma das linhas, que reproduz o total. */
+export function agrupar(linhas: LinhaComposicao[], grupos: GrupoCategorias[]): FatiaElo[] {
+  const total = linhas.reduce((s, l) => s + l.valor, 0);
+  if (!total) return [];
+  return grupos
+    .map((g) => {
+      const doGrupo = linhas.filter((l) => g.membros.includes(l.chave));
+      const valor = doGrupo.reduce((s, l) => s + l.valor, 0);
+      return { chave: g.chave, rotulo: g.rotulo, valor, participacao: (100 * valor) / total, membros: doGrupo.map((l) => l.rotulo) };
+    })
+    .filter((f) => f.membros.length > 0);
+}
+
+export type PontoEvolucao = { ano: number; real: number; nominal: number };
+export type EvolucaoGasto = { pontos: PontoEvolucao[]; capitais: CapitalPainel[]; fora: { cap: CapitalPainel; motivo: string }[] };
+
+/**
+ * Despesa liquidada na função Saúde, somada num conjunto fixo de capitais: entram só as que têm valor observado e elegível em todos
+ * os exercícios, para a soma de um ano ser comparável à do outro. Em reais de 2025 (IPCA, média anual, fatores da gold) e em reais
+ * correntes. Quem fica fora é devolvido com o motivo do primeiro exercício que a tira.
+ */
+export function evolucaoDaDespesa(ix: IndiceSaude): EvolucaoGasto {
+  const ind = "sau.despesa.funcao_saude";
+  const anos = ix.anos(ind, "real_2025");
+  const capitais: CapitalPainel[] = [];
+  const fora: { cap: CapitalPainel; motivo: string }[] = [];
+  for (const cap of ix.d.capitais) {
+    const falha = anos
+      .map((a) => ({ a, p: ix.ponto(ind, cap.cod, a, "real_2025") }))
+      .find(({ p }) => p.status !== "OBSERVADO" || p.valor === null || !p.elegivel);
+    if (falha) fora.push({ cap, motivo: `${falha.a}: ${(falha.p.motivo ?? falha.p.nota ?? "sem valor comparável").replace(/\.$/, "")}` });
+    else capitais.push(cap);
+  }
+  const pontos = anos.map((ano) => ({
+    ano,
+    real: capitais.reduce((s, c) => s + (ix.ponto(ind, c.cod, ano, "real_2025").valor ?? 0), 0),
+    nominal: capitais.reduce((s, c) => s + (ix.ponto(ind, c.cod, ano, "nominal").valor ?? 0), 0),
+  }));
+  return { pontos: capitais.length ? pontos : [], capitais, fora };
+}
+
+/** Variação percentual entre o primeiro e o último ponto, ou null sem dois pontos. */
+export function variacaoTotal(pontos: PontoEvolucao[]): number | null {
+  if (pontos.length < 2 || !pontos[0].real) return null;
+  return (pontos[pontos.length - 1].real / pontos[0].real - 1) * 100;
+}
+
+/** População residente somada das capitais com valor observado no ano, com quantas entram: o tamanho do universo, não uma comparação. */
+export function populacaoDoUniverso(ix: IndiceSaude, ano: number): { soma: number; capitais: number; universo: number } {
+  let soma = 0;
+  let capitais = 0;
+  for (const c of ix.d.capitais) {
+    const p = ix.ponto("ctx.populacao.residente", c.cod, ano, null);
+    if (p.status === "OBSERVADO" && p.valor !== null) {
+      soma += p.valor;
+      capitais++;
+    }
+  }
+  return { soma, capitais, universo: ix.d.capitais.length };
+}

@@ -23,7 +23,7 @@ function esquema(ids: string[]) {
 }
 
 /** A capital escolhida, lida da URL (?cap=); as peças do panorama se avisam pela mesma URL (useEstadoUrl). */
-function useCapital(dados: DadosSaude) {
+export function useCapital(dados: DadosSaude) {
   const ids = useMemo(() => dados.capitais.map((c) => c.id), [dados]);
   const esq = useMemo(() => esquema(ids), [ids]);
   const [s, definir] = useEstadoUrl(esq);
@@ -49,34 +49,13 @@ export function SeletorCapitalSaude({ dados: dadosProp }: { dados?: DadosSaude }
   );
 }
 
-/** Os caminhos para as visões do módulo, levando a capital escolhida. */
-export function CaminhosSaude({ dados: dadosProp }: { dados?: DadosSaude }) {
-  const dados = useBaseSaude(dadosProp);
-  const { cap } = useCapital(dados);
-  const p = cap ? { cap: cap.id } : {};
-  const link = "inline-flex min-h-[44px] items-center text-obee-dark underline underline-offset-4";
-  return (
-    <nav aria-labelledby="caminhos" className="mt-8">
-      <h2 id="caminhos" className="rotulo text-mineral">
-        Para ir além
-      </h2>
-      <ul className="mt-2 grid gap-x-8 gap-y-0 text-[0.9375rem] sm:grid-cols-2">
-        <li><Link className={link} href={hrefSaude(CAMINHO_TEMA.gastos, p)}>Quanto se aplica, por habitante e em quais componentes</Link></li>
-        <li><Link className={link} href={hrefSaude(CAMINHO_TEMA.rede, p)}>Que estabelecimentos, equipes e cobertura estão registrados</Link></li>
-        <li><Link className={link} href={hrefSaude(CAMINHO_TEMA.resultados, p)}>Que resultados e que lacunas de atendimento</Link></li>
-        <li><Link className={link} href={hrefSaude("/metodos")}>De onde vem cada medida e como reproduzir o cálculo</Link></li>
-      </ul>
-    </nav>
-  );
-}
-
 /**
  * As medidas do Panorama no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026): uma FiguraAnalitica por medida, na ordem
  * dos três perímetros, com o menor valor, a mediana e o maior valor das capitais (e a capital escolhida, quando há) no gráfico de
  * barras do kit, a tabela equivalente, a ficha de origem e o que o perímetro não permite presumir. Os números e as frases são os do
  * panorama de antes (PanoramaFaixa): extremos nomeados, metade central, capitais fora da comparação e referências externas diretas.
  */
-export function FigurasPanoramaSaude({ dados: dadosProp, contextos }: { dados?: DadosSaude; contextos: Record<string, ContextoFicha> }) {
+export function FigurasPanoramaSaude({ dados: dadosProp, contextos, medidas }: { dados?: DadosSaude; contextos: Record<string, ContextoFicha>; medidas?: readonly string[] }) {
   const dados = useBaseSaude(dadosProp);
   const ix = useMemo(() => new IndiceSaude(dados), [dados]);
   const { cap } = useCapital(dados);
@@ -84,7 +63,7 @@ export function FigurasPanoramaSaude({ dados: dadosProp, contextos }: { dados?: 
   return (
     <>
       {GRUPOS.flatMap((g, k) =>
-        g.medidas.map((id) => {
+        g.medidas.filter((id) => !medidas || medidas.includes(id)).map((id) => {
           const m = MEDIDAS_SAUDE[id];
           const anos = anosDaMedida(ix, m, o);
           const ano = anos[anos.length - 1];

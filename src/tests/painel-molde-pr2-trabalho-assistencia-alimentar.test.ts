@@ -15,6 +15,9 @@ import AcessoAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/acesso
 import QualidadeAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/qualidade/page";
 import RecursosAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/recursos/page";
 import PanoramaTrabalho from "@/app/eficiencia-estatal/trabalho-renda/page";
+import MetodosTrabalho from "@/app/eficiencia-estatal/trabalho-renda/metodos/page";
+import MetodosAssistencia from "@/app/eficiencia-estatal/assistencia-social/metodos/page";
+import MetodosAlimentar from "@/app/eficiencia-estatal/seguranca-alimentar/metodos/page";
 import QualificacaoTrabalho from "@/app/eficiencia-estatal/trabalho-renda/qualificacao/page";
 import RecursosTrabalho from "@/app/eficiencia-estatal/trabalho-renda/recursos/page";
 
@@ -43,11 +46,12 @@ describe("molde de painel: Assistência social", () => {
     expect(h).toContain("consulta por unidade");
   });
 
-  it("panorama: os três tipos de rede, os sete capítulos, a ressalva do recorte e a proposta de escores depois do painel", () => {
+  it("panorama: os três tipos de rede, os sete capítulos, a ressalva do recorte, sem a proposta de escores", () => {
     const h = pagina(PanoramaAssistencia);
     for (const t of ["Apoio e acompanhamento familiar", "Proteção especializada", "Centros-dia e modalidades similares", "36 regionais incluídas", "Da necessidade ao cuidado.", "Ausência de resposta não é ausência de serviço.", "experiência de quem precisa"]) expect(h).toContain(t);
     for (const r of ["necessidades", "acesso", "acompanhamento", "cuidado", "recursos", "dados", "metodos"]) expect(h).toContain(`href="/eficiencia-estatal/assistencia-social/${r}"`);
-    expect(h.indexOf('id="escores-servicos"')).toBeGreaterThan(h.indexOf('data-fatia="fim"'));
+    // a proposta de escore, ainda não calculável, saiu do panorama em 24/11/2026: fica só no método, com o selo de preparação
+    expect(h).not.toContain('id="escores-servicos"');
   });
 
   it("acompanhamento: o volume mensal do RMA com a tabela equivalente, o arquivo e as ressalvas de antes", () => {
@@ -147,10 +151,28 @@ describe("molde de painel: Segurança alimentar", () => {
     for (const t of ['data-figura-analitica="pnae-repasses"', 'id="paa"', 'id="municipio"', 'id="estrutura"', "Gestão e participação", "Explorar registros de equipamentos e gestão", "Por estado, 2025"]) expect(h).toContain(t);
   });
 
-  it("panorama: os quatro números, as seis perguntas e a proposta de escores depois do painel", () => {
+  it("panorama: os quatro números, as seis perguntas, sem a proposta de escores", () => {
     const h = pagina(PanoramaAlimentar);
     expect(h.match(/data-numero-indicador=""/g)).toHaveLength(4);
     for (const r of ["necessidades", "acesso", "qualidade", "recursos", "dados", "metodos"]) expect(h).toContain(`href="/eficiencia-estatal/seguranca-alimentar/${r}"`);
-    expect(h.indexOf('id="escores-servicos"')).toBeGreaterThan(h.indexOf('data-fatia="fim"'));
+    // a proposta de escore, ainda não calculável, saiu do panorama em 24/11/2026: fica só no método, com o selo de preparação
+    expect(h).not.toContain('id="escores-servicos"');
+  });
+});
+
+describe("proposta de escore experimental: só no método, com o selo de preparação", () => {
+  it.each([
+    ["trabalho e renda", MetodosTrabalho],
+    ["assistência social", MetodosAssistencia],
+    ["segurança alimentar", MetodosAlimentar],
+  ] as const)("%s", async (_nome, P) => {
+    // a página de método de Trabalho e renda é assíncrona: resolve primeiro e renderiza o resultado
+    const h = renderToStaticMarkup((await (P as () => unknown)()) as ReactElement);
+    const i = h.indexOf('id="escores-servicos"');
+    expect(i).toBeGreaterThan(-1);
+    const bloco = h.slice(i);
+    expect(bloco).toContain("Não calculável");
+    // em preparação, o bloco não oferece ação nem leva ao método de outro capítulo
+    expect(bloco.slice(0, bloco.indexOf("</section>"))).not.toMatch(/<a\s/);
   });
 });

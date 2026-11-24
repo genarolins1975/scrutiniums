@@ -1,4 +1,4 @@
-import { DecomposicaoIdeb } from "./DecomposicaoIdeb";
+import { DecomposicaoIdeb, type SerieDecomposta } from "./DecomposicaoIdeb";
 import { MetasEducacao, DecadaIdeb, DistribuicoesCidade, QuemAtende } from "./ArtefatosEducacao";
 /**
  * Painel completo "Educação nos municípios" (com conta). Seções por pergunta, na ordem da procura: a escola pública do
@@ -8,7 +8,12 @@ import { MetasEducacao, DecadaIdeb, DistribuicoesCidade, QuemAtende } from "./Ar
  * número escrito à mão.
  */
 import Link from "next/link";
-import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
+import { EntradaColecao, type CaminhoEntrada } from "@/components/observatorios/EntradaColecao";
+import { AbreAncora } from "./AbreAncora";
+import { MotorIdeb } from "./MotorIdeb";
+import { QuemCuida, type Recorte } from "./QuemCuida";
+import { goldEducacao as goldCapitais } from "@/lib/eficiencia/dados";
+import { iniciosDosPeriodos, recortesDecompostos, type RecorteDecomposto } from "@/lib/educacao/decomposicao";
 import { destinosDaColecao } from "@/components/observatorios/DestinosDaColecao";
 import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { Recolhido } from "@/components/observatorios/Recolhido";
@@ -27,16 +32,16 @@ import {
 } from "@/lib/educacao/paginas";
 import { DO_ESTADO } from "@/lib/previdencia/paginas";
 import { prefetchDoLink } from "@/lib/rotasPublicas";
-import { ETAPAS, MOTIVOS, type ArquivoUf, type Etapa, type GoldEducacao, type MunicipioGold, type Rede, type Serie } from "@/lib/educacao/tipos";
+import { ETAPAS, MOTIVOS, type ArquivoUf, type Censo, type Etapa, type GoldEducacao, type MunicipioGold, type Rede, type Serie } from "@/lib/educacao/tipos";
 
 export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: ConsultaMunicipio }) {
   const uf = consulta.estado === "ok" ? consulta.uf : null;
   const m = consulta.estado === "ok" ? consulta.m : null;
   const k = manchete(g);
-  const br = g.ideb.brasil.ai.municipal;
-  const i = g.ideb.anos.length - 1;
-  const semIdeb = k.municipios - k.comIdebAi;
-  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026): as seções de sempre, nas fatias do molde; as longas, recolhidas
+  const recortes = recortesDecompostos(g, nomeUf);
+  const capitais = idebCapitais();
+  // molde único de entrada (Iniciativa 4 do parecer de UX, 22/10/2026). Sem município escolhido, os quatro números do país ficam à
+  // vista (checklist da entrada, item 1); com município, a resposta vem antes e o contexto nacional se recolhe (pedido de 27/10/2026).
   return (
     <EntradaColecao
       tipo="colecao"
@@ -44,62 +49,37 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
       idPrincipal="conteudo-educacao"
       acento="obee"
       titulo={PERGUNTA_PAINEL}
-      frase={`Aprendizagem e aprovação no Índice de Desenvolvimento da Educação Básica (Ideb). Resultados de ${g.ideb.ano} e matrículas do Censo Escolar ${g.censo.ano}.`}
+      frase={`As redes municipais têm ${num(k.matMunicipal / 1e6, 2)} milhões de matrículas. Veja o Ideb da sua cidade desde ${g.ideb.anos[0]}, se o avanço veio da aprendizagem ou da aprovação e quem cuida de cada etapa.`}
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/educacao-municipal"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaEducacao(g)}
+      notaEscala={notaEscala(g)}
       resposta={<SecaoMunicipio g={g} c={consulta} />}
-      contextoEscala="A educação no Brasil"
+      contextoEscala={consulta.estado === "ok" ? "A educação no Brasil" : undefined}
       paraVoce={<ParaVoce entrada={ROTA_EDUCACAO} />}
-      destinos={destinosDaColecao("educacao")}
-      artefato={
-        typeof br.n[i] === "number" && typeof br.p[i] === "number" && typeof br.ideb[i] === "number" ? (
-          <ModeloDidatico
-            id="laboratorio-ideb"
-            titulo="Como a aprendizagem e a aprovação formam o Ideb"
-            descricao={`Mova a nota (N) e o fluxo (P) e veja o índice que resulta, a partir dos números das redes municipais do Brasil nos anos iniciais em ${g.ideb.ano}. A conta é a do INEP: Ideb = N × P.`}
-            deixaDeFora={[
-              "A média harmônica das taxas de aprovação de cada ano escolar, de onde sai o P",
-              "A régua do Saeb, que junta as notas de português e de matemática no N",
-              "O que acontece em cada escola: o índice é o da rede inteira",
-            ]}
-          >
-            <LaboratorioIdeb chaveUrl="ideb_br" n={br.n[i] as number} p={br.p[i] as number} ideb={br.ideb[i] as number} rede="rede municipal do Brasil" ano={g.ideb.ano} />
-          </ModeloDidatico>
-        ) : (
-          <ModeloDidatico id="laboratorio-ideb" titulo="Como a aprendizagem e a aprovação formam o Ideb" deixaDeFora={["A média harmônica das taxas de aprovação de cada ano escolar, de onde sai o P", "A régua do Saeb, que junta as notas de português e de matemática no N"]}>
-            <ComoLer />
-          </ModeloDidatico>
-        )
-      }
-      caminhos={[
-        { pergunta: "Como cada estado se compara?", resumo: "O Ideb das redes municipais e públicas de cada estado, lado a lado com o Brasil.", href: "#estados" },
-        { pergunta: "O tamanho da cidade faz diferença no Ideb?", resumo: "O Ideb pelas faixas de população do IBGE, com a mediana e os quartis.", href: "#porte" },
-        {
-          pergunta: "Onde não há Ideb, e por quê?",
-          resumo: "As redes sem resultado e o motivo de cada uma, como o INEP informa.",
-          href: "#cobertura",
-          numero: { rotulo: "Municípios sem Ideb dos anos iniciais na rede municipal", valor: num(semIdeb), unidade: `de ${num(k.municipios)}`, periodo: String(k.ano), fonte: `INEP, Ideb ${g.fontes.ideb.edicao}`, href: "#cobertura" },
-        },
-        { pergunta: "Como estão as escolas municipais das capitais?", resumo: `Gasto, alunos por turma, Ideb e Saeb das 26 capitais, no painel ${TITULO_CAPITAIS}.`, href: ROTA_CAPITAIS },
-      ]}
+      destinos={destinosDaColecao("educacao", { excluir: [ROTA_MAPA], numeros: capitais ? { [ROTA_CAPITAIS]: capitais } : {}, descricao: <SecaoCapitais /> })}
+      secaoPropria={recortes.length > 0 ? <SecaoMotor g={g} recortes={recortes} uf={uf} /> : undefined}
+      artefato={<ArtefatoQuemCuida g={g} uf={uf} />}
+      caminhos={caminhosEducacao(g, capitais)}
+      // seis à vista e as duas últimas (metas e método) em "Mais perguntas", no HTML: orçamento de comprimento a 390 px
+      caminhosAVista={6}
       recolhidos={
         <>
-          <Recolhido id="recolhido-metas" titulo="As metas projetadas pelo INEP" resumo="Quantas redes alcançaram a meta em cada edição, entre as que tinham meta e Ideb."><MetasEducacao g={g} mostrarTitulo={false} /></Recolhido>
-          <Recolhido id="recolhido-decada" titulo="A década do Ideb" resumo="Séries do Brasil e dos estados, com as duas etapas na mesma escala."><DecadaIdeb g={g} mostrarTitulo={false} /></Recolhido>
-          <Recolhido id="recolhido-retrato" titulo="O retrato do país" resumo="Os números de abertura numa frase, com a distribuição das redes.">
-            <Achado g={g} />
-          </Recolhido>
-          <Recolhido id="recolhido-estados" titulo="Como cada estado se compara?" resumo="A tabela dos estados e do Brasil.">
+          <AbreAncora />
+          <Recolhido id="recolhido-estados" titulo="Como cada estado se compara?" resumo="O Ideb da rede pública e a mediana das redes municipais de cada estado, lado a lado com o Brasil.">
             <SecaoEstados g={g} uf={uf} />
           </Recolhido>
-          <Recolhido id="recolhido-porte" titulo="O tamanho da cidade faz diferença no Ideb?" resumo="O Ideb pelas faixas de população.">
+          <Recolhido id="recolhido-porte" titulo="O tamanho da cidade faz diferença no Ideb?" resumo={`O Ideb pelas ${num(g.portes.length)} faixas de população do IBGE, com a mediana e os quartis.`}>
             <SecaoPorte g={g} m={m} />
           </Recolhido>
-          <Recolhido id="recolhido-cobertura" titulo="Onde não há Ideb, e por quê?" resumo="As redes sem resultado, com o motivo.">
+          <Recolhido id="recolhido-cobertura" titulo="Onde não há Ideb, e por quê?" resumo="As redes sem resultado, com o motivo que o INEP informa. Ausência não é nota zero.">
             <SecaoCobertura g={g} />
           </Recolhido>
-          <Recolhido id="recolhido-capitais" titulo="As capitais em profundidade" resumo={`O painel ${TITULO_CAPITAIS} (origem: Eficiência Estatal).`}>
-            <SecaoCapitais />
+          <Recolhido id="recolhido-rural" titulo="Quantas escolas da prefeitura ficam no campo?" resumo={`Escolas e matrículas municipais na zona rural, por estado, no Censo Escolar ${g.censo.ano}.`}>
+            <SecaoRural g={g} uf={uf} />
+          </Recolhido>
+          <Recolhido id="recolhido-decada" titulo={`O Ideb de ${g.ideb.anos[0]} a ${g.ideb.ano} e as metas do INEP`} resumo={`As séries do Brasil e dos ${num(Object.keys(g.ideb.ufs.ai).length)} estados e quantas redes alcançaram a meta em cada edição do primeiro ciclo.`}>
+            <DecadaIdeb g={g} mostrarTitulo={false} />
+            <MetasEducacao g={g} />
           </Recolhido>
         </>
       }
@@ -109,18 +89,7 @@ export function PainelEducacao({ g, consulta }: { g: GoldEducacao; consulta: Con
   );
 }
 
-/** Os quatro números da abertura, lidos da gold (os mesmos da frase do retrato do país). */
-function escalaEducacao(g: GoldEducacao): NumeroPorta[] {
-  const k = manchete(g);
-  const f = g.fontes;
-  const v = (x: number | null | undefined, t: (n: number) => string) => (typeof x === "number" ? t(x) : null);
-  return [
-    { rotulo: "Ideb dos anos iniciais, redes municipais do Brasil", valor: v(k.ai, ideb), unidade: "de 0 a 10", periodo: `${k.ano}, 1º ao 5º ano`, fonte: `INEP, Ideb ${f.ideb.edicao}`, href: "#municipio" },
-    { rotulo: "Ideb dos anos finais, redes municipais do Brasil", valor: v(k.af, ideb), unidade: "de 0 a 10", periodo: `${k.ano}, 6º ao 9º ano`, fonte: `INEP, Ideb ${f.ideb.edicao}`, href: "#municipio" },
-    { rotulo: "Redes municipais com Ideb dos anos iniciais", valor: num(k.comIdebAi), unidade: `de ${num(k.municipios)} municípios`, periodo: String(k.ano), fonte: `INEP, Ideb ${f.ideb.edicao}`, nota: "As demais, com o motivo, na seção sobre a cobertura.", href: "#cobertura" },
-    { rotulo: "Matrículas nas redes municipais", valor: v(k.matMunicipal, (x) => num(x / 1e6, 2)), unidade: "milhões", periodo: `${k.censoAno}, educação básica`, fonte: "INEP, Censo Escolar", href: "#municipio" },
-  ];
-}
+const ROTA_MAPA = `${ROTA_EDUCACAO}/mapa`;
 
 /** Os anos do Ideb depois do fim do primeiro ciclo de metas ("2023 e 2025"). */
 const semMeta = (anos: number[], anosMeta: number[]) => {
@@ -130,18 +99,237 @@ const semMeta = (anos: number[], anosMeta: number[]) => {
 
 const anoNota = (g: GoldEducacao) => (g.ideb.anos.includes(2021) ? { ano: 2021, texto: "2021, pandemia" } : undefined);
 
-/* --------------------------------------------------------------------------------------------- abertura */
-
-/** A frase do retrato do país (os quatro números estão na escala da entrada). */
-function Achado({ g }: { g: GoldEducacao }) {
+/** Redes municipais com Ideb dos anos iniciais, apontando para onde o número se detalha. */
+function numeroComIdeb(g: GoldEducacao, href: string): NumeroPorta {
   const k = manchete(g);
+  return { rotulo: "Redes municipais com Ideb dos anos iniciais", valor: num(k.comIdebAi), unidade: `de ${num(k.municipios)} municípios`, periodo: String(k.ano), fonte: `INEP, Ideb ${g.fontes.ideb.edicao}`, href };
+}
+
+/** Os quatro números da abertura, lidos da gold; cada um leva à seção da entrada que o detalha. */
+function escalaEducacao(g: GoldEducacao): NumeroPorta[] {
+  const k = manchete(g);
+  const f = g.fontes;
+  const v = (x: number | null | undefined, t: (n: number) => string) => (typeof x === "number" ? t(x) : null);
+  const antes = (e: Etapa) => {
+    const s = g.ideb.brasil[e].municipal.ideb[0];
+    return typeof s === "number" ? `Era ${ideb(s)} em ${g.ideb.anos[0]}.` : undefined;
+  };
+  return [
+    { rotulo: "Ideb dos anos iniciais, redes municipais do Brasil", valor: v(k.ai, ideb), unidade: "de 0 a 10", periodo: `${k.ano}, 1º ao 5º ano`, fonte: `INEP, Ideb ${f.ideb.edicao}`, nota: antes("ai"), href: "#motor-ideb" },
+    { rotulo: "Ideb dos anos finais, redes municipais do Brasil", valor: v(k.af, ideb), unidade: "de 0 a 10", periodo: `${k.ano}, 6º ao 9º ano`, fonte: `INEP, Ideb ${f.ideb.edicao}`, nota: antes("af"), href: "#motor-ideb" },
+    {
+      rotulo: "Matrículas nas redes municipais", valor: v(k.matMunicipal, (x) => num(x / 1e6, 2)), unidade: "milhões", periodo: `${k.censoAno}, educação básica`, fonte: `INEP, Censo Escolar ${k.censoAno}`,
+      nota: `${pct(parte(k.matMunicipal, k.matPublica), 0)} das matrículas da rede pública.`, href: "#quem-cuida",
+    },
+    { ...numeroComIdeb(g, "#cobertura"), nota: "As demais não são nota zero: o motivo de cada uma está em “Onde não há Ideb”." },
+  ];
+}
+
+/** A frase do retrato do país, sob os números: onde ficou a metade das redes, e a ressalva da fórmula. */
+function notaEscala(g: GoldEducacao): string {
   const d = g.distribuicao.ai.brasil;
+  const formula = g.fontes.ideb.ultima_formula_original === g.ideb.ano ? ` O INEP informa que o Ideb ${g.ideb.ano} é a última edição com a fórmula original.` : "";
+  return `Metade das ${num(d.n)} redes municipais com Ideb ${g.ideb.ano} ficou entre ${ideb(d.p25)} e ${ideb(d.p75)} nos anos iniciais.${formula} Os números vêm de fontes diferentes e não se somam.`;
+}
+
+/** Mediana do Ideb dos anos iniciais das capitais, do painel Educação nas capitais (as mesmas planilhas do INEP). */
+function idebCapitais(): NumeroPorta | null {
+  const r = goldCapitais()
+    ?.referencias.filter((x) => x.indicador === "edu.ideb.rede_municipal" && x.componente === "ideb" && x.etapa === "anos_iniciais" && x.grupo === "todas" && x.mediana !== null)
+    .sort((a, b) => b.ano - a.ano)[0];
+  if (!r || r.mediana === null) return null;
+  return {
+    rotulo: `Ideb dos anos iniciais, mediana das ${num(r.n)} capitais`, valor: ideb(r.mediana), unidade: "de 0 a 10", periodo: String(r.ano), fonte: `INEP, Ideb ${r.ano}`,
+    nota: r.minimo !== null && r.maximo !== null ? `De ${ideb(r.minimo)} a ${ideb(r.maximo)} entre as capitais.` : undefined, href: ROTA_CAPITAIS,
+  };
+}
+
+/** As oito portas por pergunta, cada uma com um número lido da gold (nunca escrito à mão). */
+function caminhosEducacao(g: GoldEducacao, capitais: NumeroPorta | null): CaminhoEntrada[] {
+  const k = manchete(g);
+  const f = `INEP, Ideb ${g.fontes.ideb.edicao}`;
+  const i = g.ideb.anos.length - 1;
+  const ufs = Object.entries(g.ideb.ufs.ai)
+    .map(([s, x]) => ({ s, v: x.publica.ideb[i] }))
+    .filter((x): x is { s: string; v: number } => typeof x.v === "number")
+    .sort((a, b) => a.v - b.v);
+  const pMenor = g.portes[0];
+  const pMaior = g.portes[g.portes.length - 1];
+  const dMenor = pMenor ? g.distribuicao.ai.portes[pMenor.id] : null;
+  const dMaior = pMaior ? g.distribuicao.ai.portes[pMaior.id] : null;
+  const c = g.censo.brasil;
+  const meta = g.metas.ai.at(-1);
+  const caminhos: CaminhoEntrada[] = [
+    { pergunta: "Onde estão os resultados no mapa?", resumo: "O Ideb das redes municipais no território, por etapa e estado, com a tabela ao lado.", href: ROTA_MAPA, numero: numeroComIdeb(g, ROTA_MAPA) },
+    { pergunta: "Como estão as escolas municipais das capitais?", resumo: `Gasto, alunos por turma, Ideb e Saeb das capitais, no painel ${TITULO_CAPITAIS}.`, href: ROTA_CAPITAIS, ...(capitais ? { numero: capitais } : {}) },
+  ];
+  if (ufs.length) {
+    const menor = ufs[0];
+    const maior = ufs[ufs.length - 1];
+    caminhos.push({
+      pergunta: "Como cada estado se compara?", resumo: "O Ideb da rede pública e a mediana das redes municipais de cada estado.", href: "#estados",
+      numero: { rotulo: "Ideb dos anos iniciais da rede pública, do menor ao maior estado", valor: `${ideb(menor.v)} a ${ideb(maior.v)}`, unidade: "de 0 a 10", periodo: String(k.ano), fonte: f, nota: `${nomeUf(menor.s)} e ${nomeUf(maior.s)}.`, href: "#estados" },
+    });
+  }
+  if (pMenor && pMaior && dMenor && dMaior) {
+    caminhos.push({
+      pergunta: "Cidades pequenas têm Ideb maior ou menor?", resumo: "O Ideb pelas faixas de população do IBGE, com a mediana e os quartis.", href: "#porte",
+      numero: {
+        rotulo: `Mediana dos anos iniciais, cidades com ${pMenor.rotulo.toLowerCase()}`, valor: ideb(dMenor.mediana), unidade: `de 0 a 10, ${num(dMenor.n)} redes`, periodo: String(k.ano), fonte: f,
+        nota: `${ideb(dMaior.mediana)} nas ${num(dMaior.n)} redes de cidades com ${pMaior.rotulo.toLowerCase()}.`, href: "#porte",
+      },
+    });
+  }
+  caminhos.push({
+    pergunta: "Onde não há Ideb, e por quê?", resumo: "As redes sem resultado e o motivo de cada uma, como o INEP informa.", href: "#cobertura",
+    numero: { rotulo: "Municípios sem Ideb dos anos iniciais na rede municipal", valor: num(k.municipios - k.comIdebAi), unidade: `de ${num(k.municipios)}`, periodo: String(k.ano), fonte: f, href: "#cobertura" },
+  });
+  caminhos.push({
+    pergunta: "Quantas escolas da prefeitura ficam no campo?", resumo: "Escolas e matrículas municipais na zona rural, estado por estado.", href: "#rural",
+    numero: {
+      rotulo: "Escolas municipais na zona rural", valor: num(c.esc_mun_rural), unidade: `de ${num(c.esc_municipal)}`, periodo: String(g.censo.ano), fonte: `INEP, Censo Escolar ${g.censo.ano}`,
+      nota: `${pct(parte(c.esc_mun_rural, c.esc_municipal), 1)} das escolas da prefeitura.`, href: "#rural",
+    },
+  });
+  if (meta) {
+    caminhos.push({
+      pergunta: "As redes cumpriram as metas do INEP?", resumo: "Quantas redes alcançaram a meta em cada edição do primeiro ciclo.", href: "#metas-inep",
+      numero: { rotulo: `Redes que alcançaram a meta dos anos iniciais em ${meta.ano}`, valor: num(meta.alcancou), unidade: `de ${num(meta.alcancou + meta.nao_alcancou)} com meta e Ideb`, periodo: String(meta.ano), fonte: f, href: "#metas-inep" },
+    });
+  }
+  caminhos.push({
+    pergunta: "De onde vêm os números?", resumo: "O que cada número mede, as fontes, as conferências e os arquivos para baixar.", href: "#metodo",
+    numero: { rotulo: "Edições do Ideb na base", valor: num(g.ideb.anos.length), unidade: `de ${g.ideb.anos[0]} a ${g.ideb.ano}`, periodo: `publicação de ${dataBr(g.fontes.ideb.publicado_em)}`, fonte: f, href: "#metodo" },
+  });
+  return caminhos;
+}
+
+/* ------------------------------------------------------------------- aprenderam mais ou reprovaram menos? */
+
+/** Seção própria: a mudança do Ideb dividida entre aprendizagem e aprovação, no Brasil e em cada estado, por etapa e período. */
+function SecaoMotor({ g, recortes, uf }: { g: GoldEducacao; recortes: RecorteDecomposto[]; uf: string | null }) {
+  // abre no par que a ficha também abre por padrão: a edição mais recente e a de seis anos antes, quando existe
+  const inicios = iniciosDosPeriodos(g.ideb.anos, g.ideb.ano);
+  const padrao = inicios.includes(g.ideb.ano - 6) ? g.ideb.ano - 6 : inicios[inicios.length - 1];
+  const formula = g.fontes.ideb.ultima_formula_original === g.ideb.ano;
+  const inicial = uf && recortes.some((r) => r.id === uf) ? uf : recortes[0].id;
   return (
-    <p className="edm-achado">
-        Em {k.ano}, o Ideb dos anos iniciais das redes municipais do Brasil foi <strong>{ideb(k.ai)}</strong>, numa escala de 0 a 10. Entre as {num(d.n)} redes municipais com
-        resultado, metade ficou entre <strong>{ideb(d.p25)}</strong> e <strong>{ideb(d.p75)}</strong>. As prefeituras respondem por {pct(parte(k.matMunicipal, k.matPublica), 0)} das
-        matrículas da educação básica pública, segundo o Censo Escolar {k.censoAno}.
-    </p>
+    <section id="motor-ideb" aria-labelledby="motor-ideb-titulo" className="edm-motor-secao mx-auto max-w-page scroll-mt-24 px-6 py-10 md:py-14">
+      <h2 id="motor-ideb-titulo" className="t-h2 max-w-3xl text-carvao">Aprenderam mais ou reprovaram menos?</h2>
+      <p className="edm-intro text-carvao-muted">
+        O Ideb é a nota do Saeb (aprendizagem) vezes um indicador de aprovação (fluxo). A mudança do índice dividida entre as duas partes: no Brasil, das redes
+        municipais; nos estados, da rede pública, a única que o INEP publica por estado.
+      </p>
+      <MotorIdeb recortes={recortes} inicial={inicial} padrao={padrao} />
+      <p className="edm-ressalvas">
+        <strong>Ressalvas.</strong> É uma divisão matemática do produto N × P (método logarítmico), não uma explicação de causa: aprendizagem e aprovação andam juntas.
+        {g.ideb.anos.includes(2021) && " 2021 foi afetado pela pandemia, quando muitas redes aprovaram todos os alunos."} As redes mudam de tamanho entre edições, sobretudo nos
+        anos finais. As parcelas fecham a mudança do produto N × P, que difere um pouco do Ideb publicado pelo arredondamento do INEP.
+        {formula && ` O INEP informa que o Ideb ${g.ideb.ano} é a última divulgação com a fórmula original: as próximas edições podem não ser comparáveis.`}
+      </p>
+      <p className="edm-fonte">
+        Fonte: INEP, Ideb {g.fontes.ideb.edicao}, planilhas do Brasil e das UFs (N, P, aprovação e notas do Saeb). Divisão calculada pela Scrutiniums com a mesma regra usada na
+        ficha de cada município.
+      </p>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------------------------- quem cuida de cada etapa */
+
+function ArtefatoQuemCuida({ g, uf }: { g: GoldEducacao; uf: string | null }) {
+  const recorte = (id: string, nome: string, c: Censo): Recorte => ({
+    id,
+    nome,
+    etapas: {
+      creche: { mun: c.creche_mun, total: c.creche_total },
+      pre: { mun: c.pre_mun, total: c.pre_total },
+      ai: { mun: c.ai_mun, total: c.ai_total, publica: c.ai_publica },
+      af: { mun: c.af_mun, total: c.af_total, publica: c.af_publica },
+    },
+  });
+  const ufs = Object.keys(g.censo.ufs).sort((a, b) => nomeUf(a).localeCompare(nomeUf(b), "pt-BR"));
+  const recortes = [recorte("BR", "Brasil", g.censo.brasil), ...ufs.map((s) => recorte(s, nomeUf(s), g.censo.ufs[s]))];
+  return (
+    <div id="quem-cuida" className="scroll-mt-24">
+      <ModeloDidatico
+        id="modelo-quem-cuida"
+        titulo="Da creche ao 9º ano: quem cuida de cada etapa?"
+        descricao={
+          <>
+            Pela Constituição (art. 211), o município atua prioritariamente na educação infantil e no fundamental; o estado, no fundamental e no médio. Veja quanto de cada
+            etapa fica com a rede municipal e onde o Ideb mede.
+          </>
+        }
+        deixaDeFora={[
+          "Creches e pré escolas conveniadas com a prefeitura contam como rede privada no Censo Escolar",
+          "Matrícula é vínculo, não criança: um aluno pode ter mais de uma",
+          "Ensino médio, educação de jovens e adultos e educação especial ficam fora da linha",
+          "A parte atendida não mede qualidade nem gasto",
+        ]}
+      >
+        <QuemCuida recortes={recortes} inicial={uf && g.censo.ufs[uf] ? uf : "BR"} ano={g.censo.ano} />
+      </ModeloDidatico>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------------------------- escolas no campo */
+
+function SecaoRural({ g, uf }: { g: GoldEducacao; uf: string | null }) {
+  const siglas = Object.keys(g.censo.ufs).sort((a, b) => nomeUf(a).localeCompare(nomeUf(b), "pt-BR"));
+  const titulo = `Escolas e matrículas das redes municipais na zona rural, por estado, Censo Escolar ${g.censo.ano}`;
+  const linha = (c: Censo) => (
+    <>
+      <td>{num(c.esc_municipal)}</td>
+      <td>{num(c.esc_mun_rural)}</td>
+      <td>{c.esc_municipal ? pct(parte(c.esc_mun_rural, c.esc_municipal), 0) : <span className="edm-vazio">Sem rede municipal</span>}</td>
+      <td>{num(c.mat_municipal)}</td>
+      <td>{num(c.mat_mun_rural)}</td>
+      <td>{c.mat_municipal ? pct(parte(c.mat_mun_rural, c.mat_municipal), 0) : <span className="edm-vazio">Sem rede municipal</span>}</td>
+    </>
+  );
+  return (
+    <section className="edm-secao" id="rural" aria-labelledby="rural-titulo">
+      <h2 id="rural-titulo">Quantas escolas da prefeitura ficam no campo?</h2>
+      <p className="edm-intro">
+        A zona rural é a do cadastro da escola no Censo Escolar. Escola rural costuma ser menor e atender menos alunos, por isso a parte das escolas é maior que a das matrículas.
+        A localização não diz nada sobre a qualidade.
+      </p>
+      <p className="edm-legenda-tabela" aria-hidden="true">{titulo}.</p>
+      <div className="edm-tabela-rolagem" tabIndex={0} role="region" aria-label={`${titulo}; no celular, deslize para o lado`}>
+        <table className="edm-tabela edm-tabela-larga">
+          <caption className="sr-only">{titulo}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Estado</th>
+              <th scope="col">Escolas municipais</th>
+              <th scope="col">Na zona rural</th>
+              <th scope="col">Parte rural das escolas</th>
+              <th scope="col">Matrículas municipais</th>
+              <th scope="col">Na zona rural</th>
+              <th scope="col">Parte rural das matrículas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {siglas.map((s) => (
+              <tr key={s} className={s === uf ? "edm-escolhido" : ""}>
+                <th scope="row">{nomeUf(s)}</th>
+                {linha(g.censo.ufs[s])}
+              </tr>
+            ))}
+            <tr className="edm-forte">
+              <th scope="row">Brasil</th>
+              {linha(g.censo.brasil)}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="edm-fonte">
+        Fonte: {g.fontes.censo.orgao}, {g.fontes.censo.nome} {g.fontes.censo.edicao}, estabelecimentos e matrículas por dependência administrativa e localização. Partes calculadas pela
+        Scrutiniums. O Distrito Federal não tem rede municipal.
+      </p>
+    </section>
   );
 }
 
@@ -186,12 +374,26 @@ function redeDoMunicipio(m: MunicipioGold, etapa: Etapa, anos: number[]): Rede |
 export function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: MunicipioGold; uf: string; arquivo: ArquivoUf }) {
   const anos = arquivo.anos;
   const porte = rotuloPorte(g, m.porte);
+  const formula = g.fontes.ideb.ultima_formula_original === g.ideb.ano;
+  // a decomposição vai ao navegador só com as séries que ela lê, não com a ficha inteira da cidade
+  const decomposicao = Object.fromEntries(
+    ETAPAS.map((e) => {
+      const s = m[e].municipal;
+      return [e, s ? { variacoes: m.analises[e].variacoes, ideb: s.ideb, n: s.n, p: s.p } : null];
+    }),
+  ) as Record<Etapa, SerieDecomposta | null>;
+  const capitulos = [
+    ["capitulo-tempo", "Melhorou ou piorou?"],
+    ["capitulo-porque", "Aprendeu mais ou reprovou menos?"],
+    ["capitulo-comparacao", "Como se compara?"],
+    ["capitulo-atendimento", "Quem atende e quantos alunos?"],
+  ] as const;
   return (
     <>
       <ExtratoMunicipio g={g} m={m} uf={uf} arquivo={arquivo} />
       {m.capital && (
         <p className="edm-capital">
-          <span>{m.nome} é capital: o gasto da prefeitura com educação por matrícula, os alunos por turma e o Ideb lado a lado com as outras 25 capitais estão no painel</span>
+          <span>{m.nome} é capital: o gasto da prefeitura com educação por matrícula, os alunos por turma e o Ideb lado a lado com as outras capitais estão no painel</span>
           <Link href={ROTA_CAPITAIS} prefetch={prefetchDoLink(ROTA_CAPITAIS)} className="edm-toque">
             {TITULO_CAPITAIS}
             <SeloComConta href={ROTA_CAPITAIS} />
@@ -199,27 +401,55 @@ export function Municipio({ g, m, uf, arquivo }: { g: GoldEducacao; m: Municipio
         </p>
       )}
       <ComoLer />
-
-      <div className="edm-sub" id="serie">
-        <h2>O Ideb ao longo do tempo</h2>
-        <p>
-          A rede de {m.nome} ao lado da rede pública {DO_ESTADO[uf]} e das redes municipais do Brasil, a cada dois anos desde {anos[0]}. As marcas mostram as metas do primeiro ciclo
-          do INEP para a rede municipal, que foram de {arquivo.anos_meta[0]} a {arquivo.anos_meta[arquivo.anos_meta.length - 1]}; {semMeta(anos, arquivo.anos_meta)} não têm meta.
-        </p>
-        <div className="edm-series">
-          {ETAPAS.map((e) => (
-            <SerieEtapa key={e} g={g} m={m} uf={uf} etapa={e} anos={anos} anosMeta={arquivo.anos_meta} />
+      <nav className="edm-capitulos" aria-label="Capítulos da ficha">
+        <ol>
+          {capitulos.map(([id, t]) => (
+            <li key={id}>
+              <a href={`#${id}`}>{t}</a>
+            </li>
           ))}
-        </div>
-      </div>
+        </ol>
+      </nav>
 
-      <Componentes g={g} m={m} anos={anos} />
-      <DecomposicaoIdeb anos={anos} m={m} />
-      <MetasEducacao g={g} m={m} />
-      <Comparacao g={g} m={m} uf={uf} arquivo={arquivo} porte={porte} />
-      <DistribuicoesCidade g={g} m={m} uf={uf} />
-      <QuemAtende m={m} ano={g.censo.ano} />
-      <MatriculasEscolas g={g} m={m} uf={uf} />
+      <section className="edm-capitulo" id="capitulo-tempo" aria-labelledby="capitulo-tempo-titulo">
+        <h2 id="capitulo-tempo-titulo">Melhorou ou piorou?</h2>
+        <div className="edm-sub" id="serie">
+          <h3>O Ideb ao longo do tempo</h3>
+          <p>
+            A rede de {m.nome} ao lado da rede pública {DO_ESTADO[uf]} e das redes municipais do Brasil, a cada dois anos desde {anos[0]}. As marcas mostram as metas do primeiro ciclo
+            do INEP para a rede municipal, que foram de {arquivo.anos_meta[0]} a {arquivo.anos_meta[arquivo.anos_meta.length - 1]}; {semMeta(anos, arquivo.anos_meta)} não têm meta.
+            {formula && ` O INEP informa que o Ideb ${g.ideb.ano} é a última edição com a fórmula original: as próximas podem não ser comparáveis.`}
+          </p>
+          <div className="edm-series">
+            {ETAPAS.map((e) => (
+              <SerieEtapa key={e} g={g} m={m} uf={uf} etapa={e} anos={anos} anosMeta={arquivo.anos_meta} />
+            ))}
+          </div>
+        </div>
+        <Recolhido id="metas-cidade" titulo="As metas do INEP, edição por edição" resumo={`Se a rede municipal de ${m.nome} alcançou a meta projetada em cada edição do primeiro ciclo.`} className="mt-10">
+          <MetasEducacao g={g} m={m} mostrarTitulo={false} />
+        </Recolhido>
+      </section>
+
+      <section className="edm-capitulo" id="capitulo-porque" aria-labelledby="capitulo-porque-titulo">
+        <h2 id="capitulo-porque-titulo">Aprendeu mais ou reprovou menos?</h2>
+        <DecomposicaoIdeb nome={m.nome} anos={anos} etapas={decomposicao} />
+        <Componentes g={g} m={m} anos={anos} />
+      </section>
+
+      <section className="edm-capitulo" id="capitulo-comparacao" aria-labelledby="capitulo-comparacao-titulo">
+        <h2 id="capitulo-comparacao-titulo">Como se compara?</h2>
+        <Comparacao g={g} m={m} uf={uf} arquivo={arquivo} porte={porte} />
+        <Recolhido id="distribuicoes-cidade-recolhido" titulo="A cidade na distribuição do Brasil e do estado" resumo="Os histogramas de todas as redes municipais do país e do estado, com a faixa da cidade." className="mt-10">
+          <DistribuicoesCidade g={g} m={m} uf={uf} mostrarTitulo={false} />
+        </Recolhido>
+      </section>
+
+      <section className="edm-capitulo" id="capitulo-atendimento" aria-labelledby="capitulo-atendimento-titulo">
+        <h2 id="capitulo-atendimento-titulo">Quem atende e quantos alunos?</h2>
+        <QuemAtende m={m} ano={g.censo.ano} />
+        <MatriculasEscolas g={g} m={m} uf={uf} />
+      </section>
       <TabelasComponentes g={g} m={m} anos={anos} anosMeta={arquivo.anos_meta} />
     </>
   );
@@ -295,7 +525,7 @@ function SerieEtapa({ g, m, uf, etapa, anos, anosMeta }: { g: GoldEducacao; m: M
     : `${NOME_ETAPA[etapa]}: ${m.nome} não tem Ideb nesta etapa; o gráfico mostra o estado e o Brasil.`;
   return (
     <figure className="edm-figura">
-      <h3>{NOME_ETAPA[etapa]} ({SERIES_ETAPA[etapa]})</h3>
+      <h4>{NOME_ETAPA[etapa]} ({SERIES_ETAPA[etapa]})</h4>
       <GraficoIdeb series={series} anos={anos} metas={metas} anoNota={anoNota(g)} descricao={descricao} />
       <div className="edm-legenda">
         {s && <span><i />{rede === "municipal" ? `Rede municipal de ${m.nome}` : `Rede pública de ${m.nome}`}</span>}
@@ -318,7 +548,7 @@ function Componentes({ g, m, anos }: { g: GoldEducacao; m: MunicipioGold; anos: 
   const escolha = (["municipal", "publica"] as Rede[]).flatMap((r) => ETAPAS.map((e) => ({ e, r, s: m[e][r] }))).find((x) => x.s?.ideb[k] != null && x.s.n[k] != null && x.s.p[k] != null);
   return (
     <div className="edm-sub" id="componentes">
-      <h2>Do que o Ideb é feito: aprendizagem e aprovação</h2>
+      <h3>Do que o Ideb é feito: aprendizagem e aprovação</h3>
       <p>O Ideb multiplica a nota padronizada (N) do Sistema de Avaliação da Educação Básica (Saeb) pelo indicador de rendimento (P), que resume a aprovação.</p>
       {escolha?.s ? (
         <ModeloDidatico id="laboratorio-municipio" titulo="E se a aprendizagem ou a aprovação mudasse?"
@@ -327,26 +557,34 @@ function Componentes({ g, m, anos }: { g: GoldEducacao; m: MunicipioGold; anos: 
           <LaboratorioIdeb chaveUrl="ideb_mun" n={escolha.s.n[k]!} p={escolha.s.p[k]!} ideb={escolha.s.ideb[k]!} rede={`${NOME_REDE[escolha.r].toLowerCase()} de ${m.nome}`} ano={g.ideb.ano} />
         </ModeloDidatico>
       ) : <p className="edm-aviso">{m.nome} não tem componentes completos do Ideb {g.ideb.ano}. As séries preservam as edições anteriores disponíveis.</p>}
+      <Recolhido id="componentes-series" titulo="As quatro partes do Ideb, edição a edição" resumo="Aprendizagem (N), fluxo (P) e as notas de matemática e português do Saeb, por etapa, desde a primeira edição." className="mt-10">
       {ETAPAS.map((e) => {
         const rede = redeDoMunicipio(m, e, anos);
         const s = rede ? m[e][rede] : null;
         if (!s || !rede) return null;
+        // o Saeb divide uma escala recortada entre matemática e português, para a variação aparecer; a legenda diz o recorte
+        const notas = [...s.mat, ...s.port].filter((v): v is number => v !== null);
+        const saeb = notas.length ? [Math.floor((Math.min(...notas) - 5) / 25) * 25, Math.ceil((Math.max(...notas) + 5) / 25) * 25] : [0, 500];
         return <section key={e} className="edm-sub" aria-label={`${NOME_ETAPA[e]}, componentes`}>
-          <h3>{NOME_ETAPA[e]} · {NOME_REDE[rede]} de {m.nome}</h3>
+          <h4>{NOME_ETAPA[e]} · {NOME_REDE[rede]} de {m.nome}</h4>
           <div className="edm-componentes-grade">
             {([
-              ["n", "Aprendizagem (N)", "nota padronizada, de 0 a 10", 10],
-              ["p", "Fluxo (P)", "indicador de rendimento, de 0 a 1", 1],
-              ["mat", "Saeb de matemática", "pontos na escala do Saeb", 500],
-              ["port", "Saeb de português", "pontos na escala do Saeb", 500],
-            ] as const).map(([campo, titulo, unidade, max]) => <figure key={campo} className="edm-figura">
-              <h4>{titulo}</h4>
-              <GraficoComponente anos={anos} valores={s[campo]} max={max} unidade={unidade} descricao={`${titulo}, ${NOME_REDE[rede]} de ${m.nome}, ${NOME_ETAPA[e]}, INEP, ${anos[0]} a ${anos.at(-1)}. Lacunas interrompem a linha.`} />
-              <figcaption>{unidade} · INEP, Ideb {g.ideb.ano}. Lacunas são ausência de dado; 2021 requer a ressalva da pandemia.</figcaption>
+              ["n", "Aprendizagem (N)", "nota padronizada, de 0 a 10", 10, 0],
+              ["p", "Fluxo (P)", "indicador de rendimento, de 0 a 1", 1, 0],
+              ["mat", "Saeb de matemática", "pontos na escala do Saeb", saeb[1], saeb[0]],
+              ["port", "Saeb de português", "pontos na escala do Saeb", saeb[1], saeb[0]],
+            ] as const).map(([campo, titulo, unidade, max, min]) => <figure key={campo} className="edm-figura">
+              <h5 className="edm-h5">{titulo}</h5>
+              <GraficoComponente anos={anos} valores={s[campo]} max={max} min={min} unidade={unidade} descricao={`${titulo}, ${NOME_REDE[rede]} de ${m.nome}, ${NOME_ETAPA[e]}, INEP, ${anos[0]} a ${anos.at(-1)}. Lacunas interrompem a linha.`} />
+              <figcaption>
+                {unidade}{min > 0 ? `; eixo recortado de ${num(min)} a ${num(max)} pontos, o mesmo para matemática e português, para mostrar a variação` : ""} · INEP, Ideb {g.ideb.ano}.
+                Lacunas são ausência de dado; 2021 requer a ressalva da pandemia.
+              </figcaption>
             </figure>)}
           </div>
         </section>;
       })}
+      </Recolhido>
     </div>
   );
 }
@@ -416,7 +654,7 @@ function Comparacao({ g, m, uf, arquivo, porte }: { g: GoldEducacao; m: Municipi
   const k = g.ideb.anos.length - 1;
   return (
     <div className="edm-sub" id="comparacao">
-      <h2>Comparado ao estado, ao Brasil e a cidades do mesmo porte</h2>
+      <h3>Comparado ao estado, ao Brasil e a cidades do mesmo porte</h3>
       <p>
         Onde a rede municipal de {m.nome} fica entre as redes municipais com Ideb {g.ideb.ano}: no estado e entre as cidades do mesmo porte{porte ? ` (${porte.toLowerCase()})` : ""},
         pela população estimada pelo IBGE para {g.fontes.populacao.ano}. A posição não diz por que a rede está ali.
@@ -430,7 +668,7 @@ function Comparacao({ g, m, uf, arquivo, porte }: { g: GoldEducacao; m: Municipi
           const est = g.ideb.ufs[e][uf]?.publica.ideb[k] ?? null;
           return (
             <figure key={e} className="edm-figura">
-              <h3>{NOME_ETAPA[e]} ({SERIES_ETAPA[e]})</h3>
+              <h4>{NOME_ETAPA[e]} ({SERIES_ETAPA[e]})</h4>
               {v === null ? (
                 <p className="edm-aviso">A rede municipal de {m.nome} não tem Ideb {g.ideb.ano} nesta etapa. {m[e].motivo_municipal ? TEXTO_MOTIVO[m[e].motivo_municipal!] : ""}</p>
               ) : (
@@ -477,7 +715,7 @@ function MatriculasEscolas({ g, m, uf }: { g: GoldEducacao; m: MunicipioGold; uf
   const titulo = `${m.nome}: matrículas da rede municipal por etapa, Censo Escolar ${g.censo.ano}, e a parte que ela atende`;
   return (
     <div className="edm-sub" id="matriculas">
-      <h2>Quantos alunos e escolas a rede municipal tem</h2>
+      <h3>Quantos alunos e escolas a rede municipal tem</h3>
       <p>
         {c.mat_municipal > 0
           ? `A rede municipal de ${m.nome} tem ${num(c.mat_municipal)} matrículas e ${num(c.esc_municipal)} escolas, ${num(c.esc_mun_rural)} delas na zona rural, no Censo Escolar ${g.censo.ano}.`
@@ -707,21 +945,13 @@ function SecaoCobertura({ g }: { g: GoldEducacao }) {
 
 /* --------------------------------------------------------------------------------------------- capitais */
 
+/** O mapa sai dos destinos porque é a primeira das perguntas para começar; as capitais ficam, com esta nota. */
 function SecaoCapitais() {
   return (
-    <section className="edm-secao" id="capitais" aria-labelledby="capitais-titulo">
-      <h2 id="capitais-titulo">As capitais em profundidade</h2>
-      <p className="edm-intro">
-        Para as 26 capitais, o painel {TITULO_CAPITAIS} (origem: Eficiência Estatal) junta ao Ideb e ao Saeb o gasto da prefeitura com educação, por habitante e por matrícula, os alunos
-        por turma e a comparação entre as capitais. O Ideb das capitais é o mesmo nos dois painéis: as duas publicações leem as mesmas planilhas do INEP.
-      </p>
-      <p className="edm-capital">
-        <Link href={ROTA_CAPITAIS} prefetch={prefetchDoLink(ROTA_CAPITAIS)} className="edm-toque">
-          Abrir {TITULO_CAPITAIS}
-          <SeloComConta href={ROTA_CAPITAIS} />
-        </Link>
-      </p>
-    </section>
+    <span id="capitais" className="block scroll-mt-24">
+      Para as 26 capitais, o painel {TITULO_CAPITAIS} (origem: Eficiência Estatal) junta ao Ideb e ao Saeb o gasto da prefeitura com educação, por habitante e por matrícula, e os
+      alunos por turma. O Ideb das capitais é o mesmo nos dois painéis: as duas publicações leem as mesmas planilhas do INEP.
+    </span>
   );
 }
 

@@ -1,7 +1,13 @@
-import {describe, it, expect} from 'vitest';
+import {describe, it, expect, vi} from 'vitest';
+// a página importa módulos marcados com server-only; no teste, o marcador não tem efeito
+vi.mock('server-only', () => ({}));
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import PaginaSeguranca from '@/app/eficiencia-estatal/seguranca-publica/[[...painel]]/page';
+import {numerosAbertura, portasPanorama} from '@/components/eficiencia/seguranca/Panorama';
 import {readFileSync, readdirSync, existsSync} from 'node:fs';
 import {join} from 'node:path';
-import {amplitude, goldSeguranca, indicador, linhasNacionais, pacoteEstados, serieBR, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
+import {amplitude, goldSeguranca, indicador, inicioSequenciaCompleta, linhasNacionais, ROTA, serieNacional, pacoteEstados, serieBR, serieUF, ultimoIndice, ultimoIndiceSimFinal} from '@/lib/eficiencia/seguranca/dados';
 import {ehRotaPublica} from '@/lib/rotasPublicas';
 import {paineis} from '@/lib/observatorios/registro';
 import {portas} from '@/lib/perguntas/portas';
@@ -150,5 +156,83 @@ describe('Segurança pública: navegação e acesso', () => {
     const s = g.series.homicidio.SP as SerieUF;
     expect(s.n).toHaveLength(g.anos.length);
     expect(s.posicao).toHaveLength(g.anos.length);
+  });
+});
+
+/**
+ * Panorama organizado pela pergunta do leitor (diagnóstico de 24/11/2026; direção do coordenador sobre o mock "02 · Segurança").
+ * Invariantes, não texto literal: natureza, período e prova de cada número; links válidos; ordem das fatias; nada de undefined, NaN
+ * ou ano diferente lado a lado sem dizer.
+ */
+describe('Segurança pública: panorama por perguntas', () => {
+  const html = renderToStaticMarkup(createElement(PaginaSeguranca, {params: {}}));
+  const texto = html.replace(/<[^>]+>/g, ' ');
+
+  it('H1 único, com até 60 caracteres, e as fatias na ordem do molde das entradas', () => {
+    const h1s = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)].map((m) => m[1].replace(/<[^>]+>/g, '').trim());
+    expect(h1s).toHaveLength(1);
+    expect(h1s[0].length).toBeLessThanOrEqual(60);
+    const ordem = [...html.matchAll(/data-fatia="([a-z-]+)"/g)].map((m) => m[1]).filter((f, i, xs) => xs.indexOf(f) === i);
+    expect(ordem).toEqual(['abertura', 'escala', 'para-voce', 'secao-propria', 'artefato', 'caminhos', 'metodo']);
+    expect(html.match(/data-fatia="metodo"/g)).toHaveLength(1);
+    expect(texto).not.toMatch(/undefined|NaN|null/);
+  });
+
+  it('quatro números com valor, fonte e período; o SIM leva o registro policial do mesmo ano', () => {
+    const ns = numerosAbertura(g, ROTA);
+    expect(ns).toHaveLength(4);
+    for (const n of ns) {
+      expect(n.valor, n.rotulo).toBeTruthy();
+      expect(n.periodo, n.rotulo).toMatch(/\d{4}/);
+      expect(n.fonte, n.rotulo).toBeTruthy();
+      expect(n.href.startsWith(ROTA), n.rotulo).toBe(true);
+    }
+    const anoSim = String(g.anos[ultimoIndiceSimFinal(g)]);
+    expect(ns[1].periodo).toContain(anoSim);
+    // a nota do SIM cita a contagem policial do mesmo ano, lida da gold
+    const kS = ultimoIndiceSimFinal(g);
+    expect(ns[1].nota).toContain((serieBR(g, 'homicidio').n[kS] as number).toLocaleString('pt-BR'));
+    expect(html.match(/data-prova-numero=""/g)?.length ?? 0).toBeGreaterThanOrEqual(4);
+  });
+
+  it('o bloco do estado leva à comparação por UF, e o modelo didático diz o que deixa de fora', () => {
+    expect(html).toContain('data-painel-escuro=""');
+    expect(html).toContain(`href="${ROTA}/estados"`);
+    expect(html).toContain('data-modelo-didatico=""');
+    expect(html).toContain('data-deixa-de-fora=""');
+  });
+
+  it('a evolução começa no primeiro ano com as 27 UFs no Sinesp e marca o SIM preliminar', () => {
+    const k0 = inicioSequenciaCompleta(g, 'homicidio');
+    expect(serieBR(g, 'homicidio').situacao.slice(k0).every((s) => s === 'ok')).toBe(true);
+    expect(texto).toContain(`Brasil, ${g.anos[k0]} a`);
+    const s = serieNacional(g, 'agressoes');
+    g.anos.forEach((a, k) => expect(s.preliminar[k]).toBe(g.fontes.sim.situacao[String(a)] === 'preliminar'));
+  });
+
+  it('oito portas, cada uma com número, período e fonte, e links para páginas do painel ou para o retrato das capitais', () => {
+    const ps = portasPanorama(g, ROTA);
+    expect(ps).toHaveLength(8);
+    const validas = ['', 'estados', 'letalidade', 'mulheres', 'patrimonio', 'resposta', 'recursos'].map((r) => (r ? `${ROTA}/${r}` : ROTA));
+    for (const p of ps) {
+      expect(p.numero.valor, p.pergunta).toBeTruthy();
+      expect(p.numero.periodo, p.pergunta).toMatch(/\d{4}/);
+      const base = p.href.split('?')[0];
+      expect(validas.includes(base) || base === '/eficiencia-estatal', p.href).toBe(true);
+    }
+    // a soma parcial nunca aparece como total do país sem dizer quantas UFs entraram
+    const iv = serieBR(g, 'intervencao'), k = g.anos.length - 1;
+    const porta = ps.find((p) => p.numero.rotulo.startsWith('Mortes por intervenção'))!;
+    if (iv.situacao[k] !== 'ok') expect(porta.numero.periodo).toContain(`${iv.cobertura[k]} UFs`);
+  });
+
+  it('os exploradores levam a série nacional, com os anos incompletos marcados', () => {
+    for (const grupo of ['letalidade', 'mulheres', 'patrimonio', 'resposta'] as const) {
+      for (const l of linhasNacionais(g, grupo)) {
+        expect(l.serie.valor).toHaveLength(g.anos.length);
+        const br = serieBR(g, l.indicador.id);
+        g.anos.forEach((_, k) => { if (br.situacao[k] !== 'ok') expect(l.serie.incompleto[k]).toBe(true); });
+      }
+    }
   });
 });

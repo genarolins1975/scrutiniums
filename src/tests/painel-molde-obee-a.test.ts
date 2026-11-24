@@ -69,9 +69,17 @@ describe("molde de painel, Eficiência Estatal (frente obee-a)", () => {
   it("/eficiencia-estatal/saude-capitais", () => {
     const h = html(PaginaSaude);
     conferirPainel("/eficiencia-estatal/saude-capitais", h);
-    // uma figura por medida do panorama, cada uma com o caminho para a trilha da própria medida em Dados e métodos
-    expect(h.match(/data-figura-analitica="medida-/g)).toHaveLength(7);
+    // redesenho da entrada (direção do coordenador de 24/11/2026): três réguas das capitais, a evolução em reais de 2025 e as outras
+    // quatro medidas recolhidas; as sete medidas seguem no HTML, cada uma com o caminho para a trilha da própria medida em Dados e métodos
+    for (const id of ["despesa_hab", "cobertura_aps", "icsap_taxa"]) expect(h).toContain(`data-figura-analitica="regua-${id}"`);
+    expect(h).toContain('data-figura-analitica="evolucao-despesa"');
+    expect(h.match(/data-figura-analitica="medida-/g)).toHaveLength(4);
     expect(h).toContain('href="/eficiencia-estatal/saude-capitais/metodos#trilha-sau-despesa-por_habitante"');
+    // o modelo didático, com a lista do que deixa de fora, e as perguntas para começar, com a comparação e o método
+    expect(h).toContain("data-modelo-didatico");
+    expect(h).toContain("data-deixa-de-fora");
+    expect(h).toContain('href="/eficiencia-estatal/saude-capitais/comparar"');
+    expect(h).toContain('href="/eficiencia-estatal/saude-capitais/metodos"');
   });
 
   it("/eficiencia-estatal/educacao-municipal-capitais", () => {

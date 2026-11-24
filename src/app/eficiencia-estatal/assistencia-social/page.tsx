@@ -2,7 +2,6 @@ import type {Metadata} from 'next';
 import Link from 'next/link';
 import {PaginaPainel, type NumeroProps} from '@/components/painel';
 import {dadosAssistencia} from '@/lib/eficiencia/assistencia/dados';
-import {EscoresServicos} from '@/components/eficiencia/EscoresServicos';
 import {FONTE_SUAS, FiguraSuasDoPainel, FontesSuas, MetodoSuas} from '@/components/eficiencia/assistencia/PainelSuas';
 import {TEMAS_EFICIENCIA} from '@/lib/eficiencia/temas';
 import {dataBr} from '@/lib/eficiencia/formato';
@@ -49,6 +48,5 @@ export default function Panorama(){
       figuras={<FiguraSuasDoPainel ids={IDS} rota={ROTA}/>}
       metodo={<MetodoSuas ids={IDS}/>}
     />
-    <EscoresServicos capitulo="assistance"/>
   </>;
 }
