@@ -31,8 +31,9 @@ bytes, metodo, extraido_de, derivado_de, ausencia}]}; `ausencia` é null ou {"mo
 raster reduzido). `metodo` diz como o arquivo foi obtido: "direto" (os bytes da URL de origem),
 "extraido" (a companhia publica o logo como um PNG embutido em base64 num SVG que só o envolve; o
 SVG segue recusado e os bytes exatos do PNG são publicados, com a URL e o sha256 do SVG em
-`extraido_de`) ou "navegador" (arquivo que só um navegador obtém; nenhum neste ciclo). Quando a
-requisição falha numa recaptura, o arquivo anterior da mesma origem é mantido.
+`extraido_de`) ou "navegador" (o site recusa a requisição direta; os bytes originais da resposta
+foram salvos numa visita com navegador e postos na pasta; ver NAVEGADOR). Quando a requisição falha
+numa recaptura, o arquivo anterior da mesma origem é mantido.
 """
 import base64
 import glob
@@ -66,32 +67,39 @@ CVM = ("cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.
 # no lugar da prova.
 CURADORIA = [
     ("carrefour-brasil", "Grupo Carrefour Brasil", "75.315.333/0001-09", None, "https://grupocarrefourbrasil.com.br/", None,
-     "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum "
-     "arquivo oficial foi obtido.", None),
+     "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi "
+     "obtido.", None),
     ("assai", "Assaí", "06.057.223/0001-71", "https://www.assai.com.br/sites/all/themes/assai_2024/logo.svg",
      "https://www.assai.com.br/", "escuro",
      "CNPJ 06.057.223/0001-71 (Sendas Distribuidora S.A., gold de empresas do Varejo). O rodapé da página de origem exibe "
      "\"Assaí Atacadista. Todos os direitos reservados Sendas Distribuidora S/A. CNPJ 06.057.223/0001-71\".",
      "Marca da bandeira Assaí Atacadista, pela qual a companhia se apresenta; o nome vem em branco, para fundo escuro."),
-    ("rd-saude", "RD Saúde", "61.585.865/0001-51", None, "https://ri.rdsaude.com.br/", None,
-     "O site de RI (ri.rdsaude.com.br) respondeu 403 (\"Acesso Bloqueado\") e o institucional (www.rdsaude.com.br) não "
-     "aceitou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido.", None),
-    ("magazine-luiza", "Magazine Luiza", "47.960.950/0001-21", None, "https://ri.magazineluiza.com.br/", None,
-     "O site de RI (ri.magazineluiza.com.br) e a loja (www.magazineluiza.com.br) responderam 403 à coleta de 24/11/2026; "
-     "nenhum arquivo oficial foi obtido.", None),
+    ("rd-saude", "RD Saúde", "61.585.865/0001-51", "https://ri.rdsaude.com.br/assets/images/logo.png",
+     "https://ri.rdsaude.com.br/", "claro",
+     f"CNPJ 61.585.865/0001-51 (Raia Drogasil S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail de "
+     "RI ri@rdsaude.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.rdsaude.com.br, \"RD Saúde - Relações "
+     "com Investidores\"; o texto alternativo do logo na página é \"RD | RaiaDrogasil S.A. | Gente Saúde e Bem-estar | "
+     "Investidores\").",
+     "Marca do grupo com as bandeiras Drogasil e Raia na linha de baixo. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta."),
+    ("magazine-luiza", "Magazine Luiza", "47.960.950/0001-21", "https://ri.magazineluiza.com.br/images/magalu-logo.svg",
+     "https://ri.magazineluiza.com.br/", "escuro",
+     f"CNPJ 47.960.950/0001-21 (Magazine Luiza S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail "
+     "de RI ri@magazineluiza.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.magazineluiza.com.br, \"Magazine "
+     "Luiza | Relações com Investidores\").",
+     "Nome \"Magazine Luiza\" em branco, desenhado para o cabeçalho azul do site; aqui vai sobre a placa escura. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta."),
     ("grupo-boticario", "Grupo Boticário", None, None, "https://www.grupoboticario.com.br/", None,
      "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito "
-     "dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial nem a de informações administrativas "
-     "exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de "
-     "24/11/2026).", None),
+     "dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial (lida também com navegador) nem a de "
+     "informações administrativas exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, "
+     "sem logo (coleta de 24/11/2026).", None),
     ("grupo-mateus", "Grupo Mateus", "24.990.777/0001-09", f"{MZ}/themes/mziq_grupo_mateus/img/logo.png",
      "https://ri.grupomateus.com.br/", "claro",
      f"CNPJ 24.990.777/0001-09 (Grupo Mateus S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail "
      "de RI ri@grupomateus.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.grupomateus.com.br, \"Home - "
      "Grupo Mateus\").", None),
     ("casas-bahia", "Grupo Casas Bahia", "33.041.260/0652-90", None, "https://ri.grupocasasbahia.com.br/", None,
-     "O site de RI (ri.grupocasasbahia.com.br) e a loja (www.casasbahia.com.br) responderam 403 à coleta de 24/11/2026; "
-     "nenhum arquivo oficial foi obtido.", None),
+     "O site de RI (ri.grupocasasbahia.com.br) respondeu 403 na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; a loja (www.casasbahia.com.br) respondeu 403 à requisição "
+     "direta. Nenhum arquivo oficial foi obtido.", None),
     ("natura", "Natura", "71.673.990/0001-77", f"{MZ}/themes/mziq_natura_2025_ri/public/img/logo-natura.svg",
      "https://ri.natura.com.br/", "claro",
      f"CNPJ 71.673.990/0001-77 (Natura Cosméticos S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o "
@@ -101,7 +109,8 @@ CURADORIA = [
      "O cabeçalho do site de RI publica o logo como um SVG que apenas envolve um PNG de 4000 x 886 px embutido em base64. O "
      "SVG é recusado pela regra; o arquivo publicado aqui são os bytes exatos desse PNG, extraídos sem alteração."),
     ("supermercados-bh", "Supermercados BH", None, None, "https://www.supermercadosbh.com.br/", None,
-     "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido.", None),
+     "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; "
+     "nenhum arquivo oficial foi obtido.", None),
     ("gpa", "GPA", "47.508.411/0001-56", f"{MZ}/uploads/sites/108/2022/11/gpa-logo.png", "https://www.gpari.com.br/", "escuro",
      f"CNPJ 47.508.411/0001-56 (Companhia Brasileira de Distribuição, gold de empresas do Varejo). O {CVM} registra para "
      "esse CNPJ o e-mail de RI gpa.ri@gpabr.com; o site institucional desse domínio (www.gpabr.com) aponta no menu "
@@ -135,9 +144,10 @@ CURADORIA = [
      "Versão em azul, publicada no menu lateral da loja; o cabeçalho usa a mesma marca em branco."),
     ("dpsp", "DPSP", None, None, "https://www.dpsp.com.br/", None,
      "O certificado de www.dpsp.com.br não corresponde ao nome do site e a conexão segura não se estabeleceu na coleta de "
-     "24/11/2026; nenhum arquivo oficial foi obtido.", None),
+     "24/11/2026, nem por requisição direta nem com navegador; nenhum arquivo oficial foi obtido.", None),
     ("grupo-pereira", "Grupo Pereira", None, None, "https://www.grupopereira.com.br/", None,
-     "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido.", None),
+     "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; "
+     "nenhum arquivo oficial foi obtido.", None),
     ("americanas", "Americanas", "00.776.574/0001-56", f"{MZ}/themes/mziq_americanas_ri/public/img/logo.png",
      "https://ri.americanas.io/", "claro",
      f"CNPJ 00.776.574/0001-56 (Americanas S.A. - Em Recuperação Judicial, gold de empresas do Varejo). O {CVM} registra "
@@ -151,7 +161,10 @@ CURADORIA = [
      "ri@pmenos.com.br\").",
      "Arquivo com o nome em branco, para fundo escuro."),
     ("gazin", "Gazin", None, None, "https://www.gazin.com.br/", None,
-     "O site www.gazin.com.br respondeu 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido.", None),
+     "O site www.gazin.com.br responde 403 à requisição direta. Na visita com navegador de 24/11/2026, feita a pedido do dono "
+     "da plataforma, a página abriu e o rodapé exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: "
+     "77.941.490/0294-80\" (um estabelecimento da empresa, não a matriz), mas o logo do cabeçalho não está entre os "
+     "arquivos de imagem que a visita salvou; recortar a captura de tela não é arquivo oficial. Nenhum logo foi obtido.", None),
     ("arcos-dorados", "Arcos Dorados", None, "https://www.arcosdorados.com/wp-content/themes/oxpitan/images/logo-mobile.png",
      "https://www.arcosdorados.com/", "claro",
      "Grupo estrangeiro, sem CNPJ na página. O site de origem identifica o titular: rodapé \"Copyright © 2025 - Arcos Dorados "
@@ -170,8 +183,7 @@ CURADORIA = [
      f"CNPJ 45.242.914/0001-05 (C&A Modas S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail de RI "
      "ri@cea.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.cea.com.br, \"Investidores C&A\").", None),
     ("guararapes", "Guararapes (Riachuelo)", "08.402.943/0001-52", None, "https://ri.riachuelo.com.br/", None,
-     "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") à coleta de 24/11/2026; nenhum arquivo oficial "
-     "foi obtido.", None),
+     "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi obtido.", None),
     ("azzas", "Azzas 2154", "16.590.234/0001-76", f"{MZ}/uploads/sites/1381/2024/07/Camada_1-3.png",
      "https://ri.azzas2154.com.br/", "escuro",
      f"CNPJ 16.590.234/0001-76 (Azzas 2154 S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail de "
@@ -190,11 +202,13 @@ CURADORIA = [
      "(ri.grupopanvel.com.br, rodapé \"© 2026 Grupo Panvel\").",
      "Arquivo publicado só em branco, para fundo escuro."),
     ("vivara", "Vivara", "33.839.910/0001-11", None, "https://ri.vivara.com.br/", None,
-     "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026 (cadeia de certificado não "
-     "verificável); nenhum arquivo oficial foi obtido.", None),
-    ("zamp", "Zamp (Burger King Brasil)", "13.574.594/0001-96", None, "https://ri.zamp.com.br/", None,
-     "O site de RI (ri.zamp.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum arquivo oficial foi "
-     "obtido.", None),
+     "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026, nem por requisição direta nem com "
+     "navegador (certificado inválido); nenhum arquivo oficial foi obtido.", None),
+    ("zamp", "Zamp", "13.574.594/0001-96", "https://ri.zamp.com.br/img/logo-zamp.png", "https://ri.zamp.com.br/", "claro",
+     f"CNPJ 13.574.594/0001-96 (Zamp S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail de RI "
+     "ri@zamp.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.zamp.com.br, \"ZAMP | Relações com "
+     "Investidores\").",
+     "Marca da companhia, operadora do Burger King e do Popeyes no Brasil. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta."),
     ("leroy-merlin", "Leroy Merlin", None, None, None, None,
      "Líder de segmento citado no ranking, sem ficha nem linha no comparador; o site oficial não foi consultado na coleta "
      "de 24/11/2026 e o vínculo não foi provado.", None),
@@ -207,6 +221,35 @@ METODOS = ("direto", "extraido", "navegador")
 # Entidades cujo arquivo oficial é um SVG que só envolve um PNG em base64: publica-se o PNG, nunca o SVG.
 EXTRAIDOS = {"natura"}
 PNG_EMBUTIDO = re.compile(rb"data:image/png;base64,([A-Za-z0-9+/=\s]+)")
+
+
+# Entidades cujo site recusa a requisição direta (403) e só entrega o arquivo a um navegador. A captura é feita à parte,
+# com navegador, e os bytes originais da resposta vão para a pasta com o nome <slug>.<ext>; este script não abre
+# navegador: tenta a requisição direta e, quando ela falha, mantém o arquivo que já está publicado.
+NAVEGADOR = {"rd-saude", "magazine-luiza", "zamp"}
+
+
+def baixar(url):
+    """(bytes, None) quando a requisição direta devolve uma imagem; (None, motivo) quando falha ou devolve outra coisa."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": AGENTE})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            corpo = r.read()
+    except Exception as e:
+        return None, str(e)
+    if formato_de(corpo) is None:
+        return None, "a resposta não é PNG, WebP nem SVG"
+    return corpo, None
+
+
+def arquivo_local(slug):
+    """Os bytes de <slug>.<ext> já presentes na pasta de logos, ou None."""
+    for ext in ("svg", "png", "webp"):
+        caminho = os.path.join(DESTINO, f"{slug}.{ext}")
+        if os.path.exists(caminho):
+            with open(caminho, "rb") as f:
+                return f.read()
+    return None
 
 
 def png_embutido(corpo):
@@ -388,21 +431,25 @@ def main():
             ausente(prova)
             continue
         item.update({"vinculo": prova, "url_origem": url})
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": AGENTE})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                corpo = r.read()
-        except Exception as e:  # mantém o arquivo anterior da mesma origem, se houver; senão registra a ausência
-            if tem_anterior:
-                logos.append({c: ant.get(c) for c in CAMPOS} | {"papel": item["papel"]})
-            else:
-                ausente(f"Falha ao baixar o arquivo oficial de {url}: {e}"[:300])
+        corpo, falha = baixar(url)
+        if corpo is None and tem_anterior:
+            # mantém o arquivo anterior da mesma origem; os campos de curadoria (nome, vínculo, nota, fundo) seguem os atuais
+            mantido = {c: ant.get(c) for c in CAMPOS}
+            mantido.update({c: item[c] for c in ("slug", "nome_exibicao", "papel", "cnpj", "vinculo", "nota", "pagina_origem")})
+            mantido["fundo"] = fundo
+            logos.append(mantido)
+            continue
+        if corpo is None and slug in NAVEGADOR:
+            # primeira entrada de um arquivo capturado com navegador: os bytes já estão na pasta, postos ali à mão
+            corpo = arquivo_local(slug)
+        if corpo is None:
+            ausente(f"Falha ao baixar o arquivo oficial de {url}: {falha}"[:300])
             continue
         fmt = formato_de(corpo)
         if fmt is None:
             ausente(f"O endereço oficial ({url}) não devolveu PNG, WebP nem SVG.")
             continue
-        item["metodo"] = "direto"
+        item["metodo"] = "navegador" if slug in NAVEGADOR else "direto"
         if slug in EXTRAIDOS:
             png = png_embutido(corpo) if fmt == "svg" else None
             if png is None:

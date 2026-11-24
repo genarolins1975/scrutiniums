@@ -1,6 +1,6 @@
 {
  "versao": 3,
- "gerado_em": "2026-11-24T09:59:42Z",
+ "gerado_em": "2026-11-24T10:18:24Z",
  "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'metodo' 'extraido' marca o PNG que a companhia publica embutido num SVG e que foi extraído sem alteração. Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
  "logos": [
   {
@@ -134,7 +134,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -158,7 +158,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site de RI (ri.grupocasasbahia.com.br) e a loja (www.casasbahia.com.br) responderam 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site de RI (ri.grupocasasbahia.com.br) respondeu 403 na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; a loja (www.casasbahia.com.br) respondeu 403 à requisição direta. Nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -204,7 +204,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site e a conexão segura não se estabeleceu na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site e a conexão segura não se estabeleceu na coleta de 24/11/2026, nem por requisição direta nem com navegador; nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -228,7 +228,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site www.gazin.com.br respondeu 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site www.gazin.com.br responde 403 à requisição direta. Na visita com navegador de 24/11/2026, feita a pedido do dono da plataforma, a página abriu e o rodapé exibe \"Gazin Indústria e Comércio De Móveis e Eletrodomésticos LTDA - CNPJ: 77.941.490/0294-80\" (um estabelecimento da empresa, não a matriz), mas o logo do cabeçalho não está entre os arquivos de imagem que a visita salvou; recortar a captura de tela não é arquivo oficial. Nenhum logo foi obtido."
    }
   },
   {
@@ -274,7 +274,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial nem a de informações administrativas exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de 24/11/2026)."
+    "motivo": "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial (lida também com navegador) nem a de informações administrativas exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de 24/11/2026)."
    }
   },
   {
@@ -320,7 +320,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -366,7 +366,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") na coleta de 24/11/2026, tanto à requisição direta quanto à visita com navegador feita a pedido do dono da plataforma; nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -442,24 +442,22 @@
    "nome_exibicao": "Magazine Luiza",
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "47.960.950/0001-21",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 47.960.950/0001-21 (Magazine Luiza S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@magazineluiza.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.magazineluiza.com.br, \"Magazine Luiza | Relações com Investidores\").",
+   "nota": "Nome \"Magazine Luiza\" em branco, desenhado para o cabeçalho azul do site; aqui vai sobre a placa escura. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
+   "arquivo": "/varejo/logos/magazine-luiza.svg",
+   "formato": "svg",
+   "fundo": "escuro",
+   "largura": 215.0,
+   "altura": 32.0,
+   "url_origem": "https://ri.magazineluiza.com.br/images/magalu-logo.svg",
    "pagina_origem": "https://ri.magazineluiza.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:18:09Z",
+   "sha256": "6443dfb3d7aed6dfaab1265aa38f418218033aa9de481617c8100bced89759d4",
+   "bytes": 8490,
+   "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site de RI (ri.magazineluiza.com.br) e a loja (www.magazineluiza.com.br) responderam 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
-   }
+   "ausencia": null
   },
   {
    "slug": "mercado-livre",
@@ -558,24 +556,22 @@
    "nome_exibicao": "RD Saúde",
    "papel": "grupo do ranking, líder de segmento, ficha, companhia do comparador",
    "cnpj": "61.585.865/0001-51",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 61.585.865/0001-51 (Raia Drogasil S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@rdsaude.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.rdsaude.com.br, \"RD Saúde - Relações com Investidores\"; o texto alternativo do logo na página é \"RD | RaiaDrogasil S.A. | Gente Saúde e Bem-estar | Investidores\").",
+   "nota": "Marca do grupo com as bandeiras Drogasil e Raia na linha de baixo. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
+   "arquivo": "/varejo/logos/rd-saude.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 228,
+   "altura": 54,
+   "url_origem": "https://ri.rdsaude.com.br/assets/images/logo.png",
    "pagina_origem": "https://ri.rdsaude.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:18:08Z",
+   "sha256": "bd37720f2e979952e8d32b1679c4141e7897209ccbb72c504913ab9b67fa86f8",
+   "bytes": 9018,
+   "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site de RI (ri.rdsaude.com.br) respondeu 403 (\"Acesso Bloqueado\") e o institucional (www.rdsaude.com.br) não aceitou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
-   }
+   "ausencia": null
   },
   {
    "slug": "super-muffato",
@@ -620,7 +616,7 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
+    "motivo": "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026, por requisição direta e com navegador; nenhum arquivo oficial foi obtido."
    }
   },
   {
@@ -644,32 +640,30 @@
    "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026 (cadeia de certificado não verificável); nenhum arquivo oficial foi obtido."
+    "motivo": "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026, nem por requisição direta nem com navegador (certificado inválido); nenhum arquivo oficial foi obtido."
    }
   },
   {
    "slug": "zamp",
-   "nome_exibicao": "Zamp (Burger King Brasil)",
+   "nome_exibicao": "Zamp",
    "papel": "companhia do comparador",
    "cnpj": "13.574.594/0001-96",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 13.574.594/0001-96 (Zamp S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@zamp.com.br, do mesmo domínio do site de RI que publica o arquivo (ri.zamp.com.br, \"ZAMP | Relações com Investidores\").",
+   "nota": "Marca da companhia, operadora do Burger King e do Popeyes no Brasil. A requisição direta ao site recebe 403; a captura foi feita com navegador em 24/11/2026, a pedido do dono da plataforma, e o arquivo são os bytes originais da resposta.",
+   "arquivo": "/varejo/logos/zamp.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 170,
+   "altura": 50,
+   "url_origem": "https://ri.zamp.com.br/img/logo-zamp.png",
    "pagina_origem": "https://ri.zamp.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
-   "metodo": null,
+   "capturado_em": "2026-11-24T10:18:16Z",
+   "sha256": "213873c78f700c035d340dbf2f694f9d910bf9cee403964e566bb98c3e9b510c",
+   "bytes": 6383,
+   "metodo": "navegador",
    "extraido_de": null,
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O site de RI (ri.zamp.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
-   }
+   "ausencia": null
   }
  ]
 }
