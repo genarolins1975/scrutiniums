@@ -157,7 +157,10 @@ def derivar(p: dict) -> dict:
     if g("arrendamento_cp") is not None or g("arrendamento_lp") is not None:
         arr = (g("arrendamento_cp") or 0) + (g("arrendamento_lp") or 0)
     # pagamentos a fornecedores via convênio (risco sacado) que a companhia classifica no fluxo de financiamento
-    conv = [x["valor"] for x in p.get("abre_financiamento", []) if re.search(r"fornecedor|conv[eê]nio|risco sacado", x["descricao"], re.I)]
+    # só pagamentos ou variação líquida da conta; captação de financiamento ligada a fornecedores é entrada de
+    # dívida, não pagamento a fornecedor, e fica fora do ajuste (caso da Vivara)
+    conv = [x["valor"] for x in p.get("abre_financiamento", [])
+            if re.search(r"fornecedor|conv[eê]nio|risco sacado", x["descricao"], re.I) and not re.search(r"capta", x["descricao"], re.I)]
     p["convenio_fornecedores_no_financiamento"] = sum(conv) if conv else None
     p["caixa_operacional_apos_convenio"] = (g("caixa_operacional") + sum(conv)) if conv and g("caixa_operacional") is not None else None
     p["divida_liquida_sem_arrendamento"] = divida
@@ -227,7 +230,7 @@ def main():
             "margem_liquida_pct": "lucro ou prejuízo consolidado do período (3.11) ÷ receita líquida × 100",
             "divida_liquida_sem_arrendamento": "empréstimos e financiamentos de curto (2.01.04) e longo prazo (2.02.01) − caixa e equivalentes (1.01.01) − aplicações financeiras (1.01.02); não inclui passivo de arrendamento nem antecipação de recebíveis",
             "ponte_100": "cada rubrica da DRE (3.02, 3.04, 3.06, 3.08) dividida pela receita líquida × 100; 'descontinuadas_e_outros' fecha a diferença até o lucro líquido consolidado (3.11)",
-            "caixa_operacional_apos_convenio": "caixa líquido das atividades operacionais (6.01) + pagamentos a fornecedores por convênio ou risco sacado que a companhia apresenta no fluxo de financiamento (6.03); só existe quando a companhia apresenta essas linhas",
+            "caixa_operacional_apos_convenio": "caixa líquido das atividades operacionais (6.01) + linhas de fornecedores por convênio ou risco sacado que a companhia apresenta no fluxo de financiamento (6.03), sejam pagamentos ou a variação líquida da conta, conforme a companhia divulga; linhas de captação ficam fora; só existe quando a companhia apresenta essas linhas",
             "capex": "soma das linhas do fluxo de investimento (6.02) descritas como aquisição ou adição de imobilizado e intangível",
             "var_estoques, var_fornecedores, var_recebiveis": "linhas do fluxo de caixa operacional (6.01) com essas descrições; sinal negativo consome caixa",
         },

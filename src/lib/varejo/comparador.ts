@@ -265,7 +265,7 @@ export function avisosDaSelecao(empresas: { slug: string; emp: EmpresaGold }[], 
     if (b && b.resultado_financeiro > 0) {
       avisos.push({
         id: `financeiro-${x.slug}`, titulo: `${x.emp.nome}: resultado financeiro positivo em ${ano}`,
-        texto: `O resultado financeiro somou R$ ${b.resultado_financeiro.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} a cada R$ 100 de receita líquida, em vez de tirar. Um ganho desse tamanho não vem da operação das lojas e não se repete: o lucro do exercício não mede o desempenho recorrente.`,
+        texto: `O resultado financeiro somou R$ ${b.resultado_financeiro.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} a cada R$ 100 de receita líquida, em vez de tirar. A base não diz de onde veio o ganho: a composição está na parcela "resultado financeiro" abaixo e os eventos do exercício, quando documentados, estão na ficha do grupo.`,
       });
     }
     if (b && Math.abs(b.descontinuadas_e_outros) >= LIMITE_EXTRAORDINARIO / 2) {
