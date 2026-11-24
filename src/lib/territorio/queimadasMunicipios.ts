@@ -62,6 +62,12 @@ export function municipiosDeFocos(g: GoldQueimadasMunicipios): FocosMunicipio[] 
   });
 }
 
+/**
+ * Classes do mapa de focos por 1.000 km² (painel de queimadas): cortes fixos e redondos, os mesmos para estados e municípios, para
+ * que a mesma cor signifique a mesma faixa nos dois níveis. Cinco classes: menos de 5, 5 a 10, 10 a 20, 20 a 40 e 40 ou mais.
+ */
+export const CORTES_FOCOS_AREA: readonly number[] = [5, 10, 20, 40];
+
 /** Piso de focos para entrar no ranking por área: abaixo dele, poucos focos num município pequeno dominam a lista. */
 export const PISO_FOCOS_DENSIDADE = 100;
 

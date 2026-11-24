@@ -14,7 +14,8 @@ import { municipiosDeFocos, URL_QUEIMADAS_MUNICIPIOS, type FocosMunicipio, type 
 type Carga = { lista: FocosMunicipio[]; posicao: Map<string, number>; comFoco: number; g: GoldQueimadasMunicipios };
 
 let promessa: Promise<Carga> | null = null;
-function carregar(): Promise<Carga> {
+/** Uma só carga da gold municipal por página: a busca e o mapa no nível município (MapaFocosArea) dividem a mesma promessa. */
+export function carregarFocosMunicipios(): Promise<Carga> {
   promessa ??= fetch(URL_QUEIMADAS_MUNICIPIOS)
     .then((r) => {
       if (!r.ok) throw new Error(String(r.status));
@@ -50,7 +51,7 @@ export function FocosNoMunicipio({ ano }: Readonly<{ ano: number }>) {
   const escolher = (it: ItemIndice) => {
     setEscolhido(it);
     setErro(null);
-    carregar().then(setCarga, (e: unknown) => setErro(e instanceof Error ? e.message : String(e)));
+    carregarFocosMunicipios().then(setCarga, (e: unknown) => setErro(e instanceof Error ? e.message : String(e)));
   };
 
   return (

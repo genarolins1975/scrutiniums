@@ -1,11 +1,21 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
-import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte } from "@/lib/territorio/queimadas";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it, vi } from "vitest";
+import { CORTES_FOCOS_AREA, densidadePorUf, lerAreasUf, lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, NOME_UF, recorte } from "@/lib/territorio/queimadas";
 import { portas } from "@/lib/perguntas/portas";
 import { donoDaRota } from "@/lib/observatorios/registro";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
 import { cartoesTerritorio, escalaTerritorio } from "@/lib/observatorios/entradas/territorio";
+
+const caminho = vi.hoisted(() => ({ atual: "/territorio/queimadas" }));
+vi.mock("next/navigation", async () => ({
+  ...(await vi.importActual<typeof import("next/navigation")>("next/navigation")),
+  usePathname: () => caminho.atual,
+  useRouter: () => ({ push: () => undefined, replace: () => undefined, prefetch: () => undefined }),
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 describe("queimadas do Território e Clima", () => {
   const g = lerQueimadas();
@@ -93,4 +103,43 @@ describe("queimadas do Território e Clima", () => {
     expect(municipiosParaMetade([m("a", 4), m("b", 3), m("c", 3)], 10)).toBe(2);
     expect(municipiosParaMetade([], 0)).toBeNull();
   });
+
+  it("mapa por área: a densidade de cada UF é focos ÷ área somada dos municípios do Censo 2022 × 1.000, e as UFs somam o recorte", () => {
+    const ref = JSON.parse(readFileSync(join(process.cwd(), "pipeline", "territorio", "referencia", "municipios_ibge_2022.json"), "utf-8")) as { campos: string[]; linhas: (string | number | null)[][] };
+    const [iUf, iArea] = [ref.campos.indexOf("uf"), ref.campos.indexOf("areaKm2")];
+    const soma: Record<string, number> = {};
+    for (const l of ref.linhas) if (typeof l[iArea] === "number") soma[l[iUf] as string] = (soma[l[iUf] as string] ?? 0) + (l[iArea] as number);
+    const d = densidadePorUf(g, "ultimoAnoCompleto")!;
+    expect(d.itens).toHaveLength(Object.keys(NOME_UF).length);
+    for (const u of d.itens) {
+      expect(u.areaKm2, u.uf).toBeCloseTo(soma[u.uf], 6);
+      expect(u.porMilKm2, u.uf).toBeCloseTo((1000 * u.focos) / soma[u.uf], 9);
+      expect(Number.isFinite(u.porMilKm2), u.uf).toBe(true);
+    }
+    // soma das UFs igual ao total do recorte, salvo os focos sem UF, declarados à parte
+    expect(d.itens.reduce((s, u) => s + u.focos, 0) + d.semUf).toBe(d.recorte.focos);
+    // ordenado da maior densidade para a menor
+    d.itens.forEach((u, i) => i > 0 && expect(u.porMilKm2).toBeLessThanOrEqual(d.itens[i - 1].porMilKm2));
+    // o município sem área na referência é o mesmo que a gold municipal declara sem cobertura (sem dado, nunca zero)
+    expect(lerAreasUf().semArea.map((m) => m.id)).toEqual(lerQueimadasMunicipios()!.semCoberturaNaFonte.ids);
+    expect([...CORTES_FOCOS_AREA]).toEqual([...CORTES_FOCOS_AREA].sort((a, b) => a - b));
+  });
+
+  it("o HTML do painel traz o mapa, a lista única de municípios com as duas tabelas e nenhum NaN, undefined ou data ISO", async () => {
+    const { default: Pagina } = await import("@/app/territorio/queimadas/page");
+    const html = renderToStaticMarkup(createElement(Pagina as never));
+    expect(html).toContain('id="mapa-por-area"');
+    expect(html).toContain('data-grafico="mapa"');
+    // as duas listas viraram uma figura com alternância; as duas tabelas equivalentes seguem no HTML
+    expect(html).not.toContain('id="municipios-area"-titulo');
+    expect((html.match(/data-figura-analitica="municipios"/g) ?? []).length).toBe(1);
+    expect(html).toContain("Os 15 municípios com mais focos de calor em ");
+    expect(html).toContain("Os 15 municípios com mais focos de calor por 1.000 km² em ");
+    expect(html).toContain("data-alternar-vista");
+    // a gold municipal não vai no HTML (o mapa municipal e a busca a baixam só sob pedido)
+    expect(html).not.toMatch(/"focos_ultimoAnoCompleto"/);
+    const texto = html.replace(/<[^>]+>/g, " ");
+    expect(texto).not.toMatch(/\bNaN\b|\bundefined\b/);
+    expect(texto).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/);
+  }, 60_000);
 });
