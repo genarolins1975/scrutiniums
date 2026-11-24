@@ -86,6 +86,7 @@ export function EntradaColecao({
   resposta,
   contextoEscala,
   contextoAteEscolha = false,
+  escalaCompacta = false,
   seuMunicipio,
   destinos,
   secaoPropria,
@@ -135,6 +136,8 @@ export function EntradaColecao({
   contextoEscala?: string;
   /** Decisão do dono de 24/11/2026: com escolha feita no navegador, o contexto abre à vista e recolhe quando a resposta marca `data-escolha="sim"`. */
   contextoAteEscolha?: boolean;
+  /** Escala em duas colunas também no celular (números curtos, como preços). */
+  escalaCompacta?: boolean;
   /** Extrato escolhido pelo leitor, antes da escala nacional (Educação, pedido de 25/10/2026). */
   seuMunicipio?: ReactNode;
   destinos?: ReactNode;
@@ -177,7 +180,7 @@ export function EntradaColecao({
           <p className={`${resposta ? "mt-3" : "mt-6"} max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg`}>{frase}</p>
           {resposta && <div data-fatia="resposta" className="mt-4">{resposta}</div>}
           {seuMunicipio && <div data-fatia="seu-municipio">{seuMunicipio}</div>}
-          {escala && escala.length > 0 && (contextoEscala ? <><Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8" aberto={contextoAteEscolha}><Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} /></Recolhido>{contextoAteEscolha && <ContextoAteEscolha alvo="contexto-da-entrada" />}</> : <Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} />)}
+          {escala && escala.length > 0 && (contextoEscala ? <><Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8" aberto={contextoAteEscolha}><Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} compacta={escalaCompacta} /></Recolhido>{contextoAteEscolha && <ContextoAteEscolha alvo="contexto-da-entrada" />}</> : <Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} compacta={escalaCompacta} />)}
           {figuraEscala}
         </div>
       </section>
@@ -207,16 +210,16 @@ export function EntradaColecao({
 }
 
 /** Fatia 2: de um a quatro números de escala, cada um com a sua prova e o painel de onde vem. */
-export function Escala({ escala, nota, idioma = "pt", microfiguras }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null; idioma?: Idioma; microfiguras?: readonly ReactNode[] }>) {
+export function Escala({ escala, nota, idioma = "pt", microfiguras, compacta = false }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null; idioma?: Idioma; microfiguras?: readonly ReactNode[]; /** Duas colunas já no celular, para números curtos (preços): cabe no orçamento de comprimento com o contexto aberto (24/11/2026). */ compacta?: boolean }>) {
   return (
     <div data-fatia="escala">
       <h2 className="sr-only">{t(idioma, "O tema em números", "The topic in numbers")}</h2>
-      <dl className={`mt-6 grid md:mt-10 gap-px border border-linha bg-linha sm:grid-cols-2 ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
+      <dl className={`mt-6 grid md:mt-10 gap-px border border-linha bg-linha ${compacta ? "grid-cols-2" : "sm:grid-cols-2"} ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
         {escala.map((n, i) => (
           <div key={n.rotulo} className="flex flex-col bg-papel p-4 sm:p-5" data-numero-escala="">
             <dt className="text-sm leading-snug text-carvao-muted">{n.rotulo}</dt>
             <dd className="mt-2">
-              <NumeroEscala n={n} grande idioma={idioma} />
+              <NumeroEscala n={n} grande={!compacta} idioma={idioma} />
             </dd>
             {microfiguras?.[i] && n.valor !== null && (
               <dd className="mt-3" data-microfigura="">
