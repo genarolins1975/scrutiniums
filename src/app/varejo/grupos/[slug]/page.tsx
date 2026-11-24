@@ -6,7 +6,7 @@ import { Recolhido } from "@/components/observatorios/Recolhido";
 import { FiguraAnalitica, LeituraGuiada, PaginaPainel } from "@/components/painel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CabecalhoVarejo, LINK } from "@/components/varejo/comum";
-import { Concorrentes, DocumentosNaCvm, FontesDaFicha, GraficosDaCompanhia, LinhaDoTempo, RankingContraCvm, Reapresentacoes, SerieOperacional, UltimoTrimestre } from "@/components/varejo/FichaGrupo";
+import { Concorrentes, DocumentosNaCvm, FontesDaFicha, GraficosDaCompanhia, LinhaDoTempo, RankingContraCvm, Reapresentacoes, RESUMO_MAIS, SeriesOperacionais, UltimoTrimestre } from "@/components/varejo/FichaGrupo";
 import { Campo, FonteDocumento, NaoDivulgado } from "@/components/varejo/grupos-comum";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
@@ -66,6 +66,10 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
+/** Marcas à vista no capítulo de identidade; as demais ficam recolhidas, no HTML. */
+const MARCAS_A_VISTA = 4;
+const RECEITAS_A_VISTA = 3;
+
 const MOTIVO_SEM_CVM: Record<string, string> = {
   fechado: "Capital fechado: o grupo não entrega demonstrações financeiras à CVM.",
   "aberto no exterior": "Listado no exterior: não entrega demonstrações à CVM. A ficha cita os documentos entregues ao regulador estrangeiro.",
@@ -122,6 +126,21 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
       ? { rotulo: "Lojas", valor: noRanking.lojas, formato: "inteiro", unidade: "lojas no fim do exercício", ...provaRanking, natureza: "OBSERVADO", tamanho: "g", nota: typeof noRanking.lojas_ano_anterior === "number" ? `No ano anterior: ${num(noRanking.lojas_ano_anterior)}.` : undefined }
       : { rotulo: "Lojas", unidade: "lojas no fim do exercício", ...provaRanking, natureza: "OBSERVADO", valor: null, motivoAusencia: "A fonte do ranking não publica o número de lojas deste grupo; os indicadores operacionais abaixo trazem o que a companhia divulga." },
   ];
+
+  const bandeira = (b: { nome: string; formato?: string; nota?: string }) => (
+    <li key={b.nome} className="border-t border-linha py-2.5">
+      <p className="text-base font-medium leading-snug text-carvao">{b.nome}</p>
+      {b.formato && <p className="mt-0.5 text-sm leading-relaxed text-carvao">{textoCurado(b.formato)}</p>}
+      {b.nota && <p className="t-meta mt-0.5 text-carvao-muted">{textoCurado(b.nota)}</p>}
+    </li>
+  );
+
+  const receita = (x: { nome: string; descricao?: string }) => (
+    <div key={x.nome} className="border-t border-linha py-2.5">
+      <dt className="text-sm font-medium text-carvao">{textoCurado(x.nome)}</dt>
+      <dd className="mt-0.5 text-sm leading-relaxed text-carvao-muted">{textoCurado(x.descricao) || <NaoDivulgado>valor não divulgado</NaoDivulgado>}</dd>
+    </div>
+  );
 
   const capitulos = [
     { id: "quem", rotulo: "Quem é" },
@@ -182,22 +201,25 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 <div className="min-w-0">
                   <h3 className="rotulo text-mineral">Marcas e formatos</h3>
                   {f.bandeiras.length > 0 ? (
-                    <ul className="mt-2" data-bandeiras={f.bandeiras.length}>
-                      {f.bandeiras.map((b) => (
-                        <li key={b.nome} className="border-t border-linha py-2.5">
-                          <p className="text-base font-medium leading-snug text-carvao">{b.nome}</p>
-                          {b.formato && <p className="mt-0.5 text-sm leading-relaxed text-carvao">{textoCurado(b.formato)}</p>}
-                          {b.nota && <p className="t-meta mt-0.5 text-carvao-muted">{textoCurado(b.nota)}</p>}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mt-2" data-bandeiras={f.bandeiras.length}>
+                      <ul>{f.bandeiras.slice(0, MARCAS_A_VISTA).map(bandeira)}</ul>
+                      {f.bandeiras.length > MARCAS_A_VISTA && (
+                        <details className="border-t border-linha">
+                          <summary className={RESUMO_MAIS}>
+                            Ver as outras {f.bandeiras.length - MARCAS_A_VISTA} marcas: {f.bandeiras.slice(MARCAS_A_VISTA).map((b) => b.nome).join(", ")}
+                          </summary>
+                          <ul>{f.bandeiras.slice(MARCAS_A_VISTA).map(bandeira)}</ul>
+                        </details>
+                      )}
+                    </div>
                   ) : (
                     <p className="mt-2 text-sm">
                       <NaoDivulgado>a curadoria não registrou as marcas deste grupo</NaoDivulgado>
                     </p>
                   )}
                 </div>
-                <dl className="min-w-0 space-y-6">
+                <div className="min-w-0 space-y-6">
+                  <dl className="space-y-6">
                   <Campo rotulo="Onde atua">
                     {textoCurado(f.regioes?.texto) || <NaoDivulgado />}
                     {estados.length > 0 && (
@@ -206,23 +228,32 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                       </span>
                     )}
                   </Campo>
-                  <Campo rotulo="Formatos de loja">{f.formatos.length > 0 ? f.formatos.map(textoCurado).join("; ") : <NaoDivulgado />}</Campo>
                   <Campo rotulo="Canais de venda">{f.canais.length > 0 ? f.canais.map(textoCurado).join("; ") : <NaoDivulgado />}</Campo>
-                  <Campo rotulo="Quem compra">{textoCurado(f.clientes) || <NaoDivulgado />}</Campo>
-                </dl>
+                  </dl>
+                  <details data-formatos-e-clientes="">
+                    <summary className={RESUMO_MAIS}>Formatos de loja e quem compra</summary>
+                    <dl className="space-y-5 pb-2 pt-1">
+                        <Campo rotulo="Formatos de loja">{f.formatos.length > 0 ? f.formatos.map(textoCurado).join("; ") : <NaoDivulgado />}</Campo>
+                        <Campo rotulo="Quem compra">{textoCurado(f.clientes) || <NaoDivulgado />}</Campo>
+                    </dl>
+                  </details>
+                </div>
               </div>
               <div className="mt-8 grid gap-x-12 gap-y-8 border-t border-linha pt-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
                 <div className="min-w-0">
                   <h3 className="rotulo text-mineral">De onde vem a receita</h3>
                   {f.fontes_de_receita.length > 0 ? (
-                    <dl className="mt-2">
-                      {f.fontes_de_receita.map((x) => (
-                        <div key={x.nome} className="border-t border-linha py-2.5">
-                          <dt className="text-sm font-medium text-carvao">{textoCurado(x.nome)}</dt>
-                          <dd className="mt-0.5 text-sm leading-relaxed text-carvao-muted">{textoCurado(x.descricao) || <NaoDivulgado>valor não divulgado</NaoDivulgado>}</dd>
-                        </div>
-                      ))}
-                    </dl>
+                    <div className="mt-2" data-fontes-de-receita={f.fontes_de_receita.length}>
+                      <dl>{f.fontes_de_receita.slice(0, RECEITAS_A_VISTA).map(receita)}</dl>
+                      {f.fontes_de_receita.length > RECEITAS_A_VISTA && (
+                        <details className="border-t border-linha">
+                          <summary className={RESUMO_MAIS}>
+                            Ver as outras {f.fontes_de_receita.length - RECEITAS_A_VISTA}: {f.fontes_de_receita.slice(RECEITAS_A_VISTA).map((x) => textoCurado(x.nome).toLowerCase()).join("; ")}
+                          </summary>
+                          <dl>{f.fontes_de_receita.slice(RECEITAS_A_VISTA).map(receita)}</dl>
+                        </details>
+                      )}
+                    </div>
                   ) : (
                     <p className="mt-2 text-sm">
                       <NaoDivulgado>composição da receita não divulgada</NaoDivulgado>
@@ -232,10 +263,13 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 <dl className="min-w-0 space-y-6">
                   <Campo rotulo="Controlador">
                     {f.controlador?.nome ? textoCurado(f.controlador.nome) : <NaoDivulgado>não verificado</NaoDivulgado>}
-                    {f.controlador?.nota && <span className="t-meta mt-1.5 block text-carvao-muted">{textoCurado(f.controlador.nota)}</span>}
-                    <span className="t-meta mt-1.5 block text-carvao-muted">
-                      <FonteDocumento f={f.controlador?.fonte} prefixo="Fonte: " />
-                    </span>
+                    <details className="mt-1" data-controle-detalhe="">
+                      <summary className={RESUMO_MAIS}>Como o controle foi verificado, e a fonte</summary>
+                      {f.controlador?.nota && <span className="t-meta block text-carvao-muted">{textoCurado(f.controlador.nota)}</span>}
+                      <span className="t-meta mt-1.5 block pb-2 text-carvao-muted">
+                        <FonteDocumento f={f.controlador?.fonte} prefixo="Fonte: " />
+                      </span>
+                    </details>
                   </Campo>
                   <Campo rotulo="Capital">{CAPITAL[f.capital ?? ""] ?? <NaoDivulgado>não informado</NaoDivulgado>}</Campo>
                   <Campo rotulo="Concorrentes diretos">
@@ -380,11 +414,7 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
               resumo={f.operacionais.length > 0 ? `${num(f.operacionais.length)} ${plural(f.operacionais.length, "série", "séries")} da operação, cada uma com período, natureza do dado e documento de origem com a página.` : "Nenhuma série operacional registrada."}
             >
               {f.operacionais.length > 0 ? (
-                <div className="space-y-6" data-operacionais={f.operacionais.length}>
-                  {f.operacionais.map((o, i) => (
-                    <SerieOperacional key={`${o.indicador}-${i}`} o={o} />
-                  ))}
-                </div>
+                <SeriesOperacionais series={f.operacionais} />
               ) : (
                 <p className="text-sm">
                   <NaoDivulgado>a curadoria não encontrou indicadores operacionais divulgados por este grupo</NaoDivulgado>
@@ -398,7 +428,6 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
 
             <Recolhido
               id="sem-divulgacao"
-              aberto={f.campos_sem_divulgacao.length > 0}
               nivelTitulo={2}
               titulo="O que não foi divulgado"
               resumo={f.campos_sem_divulgacao.length > 0 ? `${num(f.campos_sem_divulgacao.length)} ${plural(f.campos_sem_divulgacao.length, "informação que a ficha procurou e não encontrou", "informações que a ficha procurou e não encontrou")} em documento público. Nenhuma foi estimada.` : "A curadoria não registrou lacunas para este grupo."}

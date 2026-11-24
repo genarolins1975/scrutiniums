@@ -26,7 +26,7 @@ import { FonteDocumento, MarcaNatureza, NaoDivulgado } from "./grupos-comum";
  */
 export function GraficosDaCompanhia({ emp, anos }: Readonly<{ emp: EmpresaGold; anos: readonly number[] }>) {
   return (
-    <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-3" data-graficos-companhia="">
+    <div className="grid gap-x-8 gap-y-8 md:grid-cols-2 md:gap-y-10 xl:grid-cols-3" data-graficos-companhia="">
       {INDICADORES_FICHA.map((ind) => (
         <div key={ind.id} className="min-w-0" data-indicador={ind.id}>
           <GraficoBarras
@@ -40,7 +40,7 @@ export function GraficosDaCompanhia({ emp, anos }: Readonly<{ emp: EmpresaGold; 
             series={[{ id: "valor", rotulo: ind.rotulo, cor: "var(--cor-gas)" }]}
             unidade={ind.unidade}
             casas={ind.casas}
-            altura={210}
+            altura={176}
             rotulosValor
           />
         </div>
@@ -60,7 +60,7 @@ export function GraficosDaCompanhia({ emp, anos }: Readonly<{ emp: EmpresaGold; 
           ]}
           unidade="R$ bilhões"
           casas={1}
-          altura={240}
+          altura={210}
           rotulosValor
         />
       </div>
@@ -79,19 +79,40 @@ export function Reapresentacoes({ emp }: Readonly<{ emp: EmpresaGold }>) {
         A demonstração do exercício seguinte republicou estes valores com outro número, em geral porque a companhia vendeu ou encerrou um negócio e o separou do resultado, ou porque corrigiu o que havia publicado. Os gráficos
         usam o valor publicado no próprio exercício.
       </p>
-      <ul className="mt-4 grid gap-x-10 gap-y-3 md:grid-cols-2">
-        {linhas.map((r) => (
-          <li key={`${r.exercicio}-${r.campo}`} className="border-t border-linha pt-3 text-sm text-carvao" data-reapresentado={r.exercicio}>
-            <span className="rotulo mr-2 inline-flex border border-carvao-muted px-1.5 py-0.5 text-carvao">reapresentado</span>
-            <span className="font-medium">
-              {r.campo} de {r.exercicio}
-            </span>
-            <span className="mt-1 block tabular-nums">
-              Publicado: {reais(r.publicado, 2)}. Reapresentado no exercício seguinte: {reais(r.reapresentado, 2)}.
-            </span>
-          </li>
-        ))}
-      </ul>
+      {linhas.length <= 2 ? (
+        <ul className="mt-4 grid gap-x-10 gap-y-3 md:grid-cols-2">
+          {linhas.map((r) => (
+            <li key={`${r.exercicio}-${r.campo}`} className="border-t border-linha pt-3 text-sm text-carvao" data-reapresentado={r.exercicio}>
+              <span className="rotulo mr-2 inline-flex border border-carvao-muted px-1.5 py-0.5 text-carvao">reapresentado</span>
+              <span className="font-medium">
+                {r.campo} de {r.exercicio}
+              </span>
+              <span className="mt-1 block tabular-nums">
+                Publicado: {reais(r.publicado, 2)}. Reapresentado no exercício seguinte: {reais(r.reapresentado, 2)}.
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <details data-reapresentacoes-recolhidas={linhas.length}>
+          <summary className={RESUMO_MAIS}>
+            Ver os {linhas.length} valores reapresentados, de {linhas[0].exercicio} a {linhas[linhas.length - 1].exercicio}, com o publicado e o reapresentado
+          </summary>
+          <ul className="mt-4 grid gap-x-10 gap-y-3 md:grid-cols-2">
+            {linhas.map((r) => (
+              <li key={`${r.exercicio}-${r.campo}`} className="border-t border-linha pt-3 text-sm text-carvao" data-reapresentado={r.exercicio}>
+                <span className="rotulo mr-2 inline-flex border border-carvao-muted px-1.5 py-0.5 text-carvao">reapresentado</span>
+                <span className="font-medium">
+                  {r.campo} de {r.exercicio}
+                </span>
+                <span className="mt-1 block tabular-nums">
+                  Publicado: {reais(r.publicado, 2)}. Reapresentado no exercício seguinte: {reais(r.reapresentado, 2)}.
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
     </div>
   );
 }
@@ -264,6 +285,37 @@ export function SerieOperacional({ o }: Readonly<{ o: Operacional }>) {
 
 /* ------------------------------------------------------------------ linha do tempo */
 
+/** Quantos eventos e quantas séries operacionais ficam à vista; o resto segue no HTML, recolhido, para a ficha caber no celular. */
+export const EVENTOS_A_VISTA = 5;
+export const SERIES_A_VISTA = 2;
+export const RESUMO_MAIS = "inline-flex min-h-[44px] cursor-pointer items-center text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao";
+
+/** As séries operacionais: as primeiras à vista e as demais recolhidas, todas no HTML. */
+export function SeriesOperacionais({ series }: Readonly<{ series: readonly Operacional[] }>) {
+  const resto = series.slice(SERIES_A_VISTA);
+  return (
+    <div data-operacionais={series.length}>
+      <div className="space-y-6">
+        {series.slice(0, SERIES_A_VISTA).map((o, i) => (
+          <SerieOperacional key={`${o.indicador}-${i}`} o={o} />
+        ))}
+      </div>
+      {resto.length > 0 && (
+        <details className="mt-6 border-t border-linha" data-series-recolhidas={resto.length}>
+          <summary className={RESUMO_MAIS}>
+            Ver as outras {resto.length} séries: {resto.map((o) => textoCurado(o.indicador).toLowerCase()).join("; ")}
+          </summary>
+          <div className="space-y-6 pt-2">
+            {resto.map((o, i) => (
+              <SerieOperacional key={`${o.indicador}-${i}`} o={o} />
+            ))}
+          </div>
+        </details>
+      )}
+    </div>
+  );
+}
+
 export function LinhaDoTempo({ eventos }: Readonly<{ eventos: readonly EventoFicha[] }>) {
   if (eventos.length === 0) {
     return (
@@ -273,23 +325,35 @@ export function LinhaDoTempo({ eventos }: Readonly<{ eventos: readonly EventoFic
       </p>
     );
   }
+  const ordenados = eventosOrdenados([...eventos]);
+  const item = (ev: EventoFicha, i: number) => (
+    <li key={i} className="grid grid-cols-[5.5rem_1fr] gap-x-4 border-t border-linha py-4 sm:grid-cols-[7rem_1fr]" data-evento={ev.tipo ?? "outro"}>
+      <p className="numero-p text-carvao">
+        <time dateTime={/^\d{4}-\d{2}/.test(ev.data ?? "") ? ev.data : undefined}>{ev.data ? mesDaData(ev.data) : "sem data"}</time>
+      </p>
+      <div className="min-w-0">
+        <p className="rotulo text-mineral">{TIPO_EVENTO[ev.tipo ?? "outro"] ?? TIPO_EVENTO.outro}</p>
+        <p className="mt-1 text-sm leading-relaxed text-carvao">{textoCurado(ev.descricao)}</p>
+        <p className="t-meta mt-1.5 text-carvao-muted">
+          <FonteDocumento f={ev.fonte} prefixo="Fonte: " />
+        </p>
+      </div>
+    </li>
+  );
+  const recentes = ordenados.slice(0, EVENTOS_A_VISTA);
+  const anteriores = ordenados.slice(EVENTOS_A_VISTA);
   return (
-    <ol className="max-w-3xl" data-linha-do-tempo={eventos.length}>
-      {eventosOrdenados([...eventos]).map((ev, i) => (
-        <li key={i} className="grid grid-cols-[5.5rem_1fr] gap-x-4 border-t border-linha py-4 sm:grid-cols-[7rem_1fr]" data-evento={ev.tipo ?? "outro"}>
-          <p className="numero-p text-carvao">
-            <time dateTime={/^\d{4}-\d{2}/.test(ev.data ?? "") ? ev.data : undefined}>{ev.data ? mesDaData(ev.data) : "sem data"}</time>
-          </p>
-          <div className="min-w-0">
-            <p className="rotulo text-mineral">{TIPO_EVENTO[ev.tipo ?? "outro"] ?? TIPO_EVENTO.outro}</p>
-            <p className="mt-1 text-sm leading-relaxed text-carvao">{textoCurado(ev.descricao)}</p>
-            <p className="t-meta mt-1.5 text-carvao-muted">
-              <FonteDocumento f={ev.fonte} prefixo="Fonte: " />
-            </p>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <div className="max-w-3xl" data-linha-do-tempo={eventos.length}>
+      <ol>{recentes.map(item)}</ol>
+      {anteriores.length > 0 && (
+        <details className="border-t border-linha" data-eventos-anteriores={anteriores.length}>
+          <summary className={RESUMO_MAIS}>
+            Ver os {anteriores.length} eventos anteriores, até {mesDaData(anteriores[anteriores.length - 1].data)}
+          </summary>
+          <ol>{anteriores.map((ev, i) => item(ev, i + EVENTOS_A_VISTA))}</ol>
+        </details>
+      )}
+    </div>
   );
 }
 

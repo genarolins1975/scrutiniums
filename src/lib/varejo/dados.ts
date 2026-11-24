@@ -182,6 +182,20 @@ export function linhasAtividades(g: GoldSetor, medida: Medida, i: number = ultim
   return principais.flatMap((s) => [s, ...slugs.filter((d) => g.pmc.atividades[d].parte_de === s)]).map((s) => linhaAtividade(g, s, medida, i));
 }
 
+export type ContraBrasil = { universo: Universo; volume: number | null; receita: number | null };
+
+/**
+ * A variação de uma atividade menos a do varejo do Brasil, em pontos percentuais, na mesma medida e no mesmo mês. A referência
+ * é o universo a que a atividade pertence: atividade do varejo restrito (e os detalhes dela) contra o varejo restrito; atividade
+ * que só entra no ampliado contra o varejo ampliado. Ausente quando um dos dois valores falta.
+ */
+export function contraBrasil(g: GoldSetor, l: LinhaAtividade, medida: Medida, i: number = ultimoIndice(g)): ContraBrasil {
+  const dono = l.universo === "detalhe" ? g.pmc.atividades[l.parteDe ?? ""]?.universo : l.universo;
+  const universo: Universo = dono === "ampliado" ? "ampliado" : "restrito";
+  const br = leituraBrasil(g, universo, i);
+  return { universo, volume: diferenca(l.volume, br.volume[medida]), receita: diferenca(l.receita, br.receita[medida]) };
+}
+
 export type Difusao = { mes: string; total: number; alta: number; queda: number; estavel: number; semDado: number; linhas: LinhaAtividade[] };
 
 /**

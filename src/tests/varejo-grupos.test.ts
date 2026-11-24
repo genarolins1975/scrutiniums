@@ -14,7 +14,8 @@ import ComparadorPage from "@/app/varejo/comparador/page";
 import GruposPage from "@/app/varejo/grupos/page";
 import FichaPage from "@/app/varejo/grupos/[slug]/page";
 import SegmentosPage from "@/app/varejo/segmentos/page";
-import { valorNaUnidade } from "@/components/varejo/FichaGrupo";
+import { EVENTOS_A_VISTA, SERIES_A_VISTA, valorNaUnidade } from "@/components/varejo/FichaGrupo";
+import MetodoPage from "@/app/varejo/metodo/page";
 import { navegacaoDaColecao } from "@/lib/observatorios/navegacaoColecao";
 import { paineis } from "@/lib/observatorios/registro";
 import { ehRotaPublica } from "@/lib/rotasPublicas";
@@ -507,6 +508,10 @@ describe("páginas no HTML do servidor", () => {
     expect(blocos(html, "data-campos-sem-divulgacao")).toEqual(f.campos_sem_divulgacao.length ? [String(f.campos_sem_divulgacao.length)] : []);
     expect(blocos(html, "data-fontes-da-ficha")).toEqual([String(f.fontes.length)]);
     for (const fonte of f.fontes) expect(html, fonte.url).toContain(`href="${gr.urlSegura(fonte.url)!.replace(/&/g, "&amp;")}"`);
+    // capítulos secundários recolhidos por padrão, com tudo no HTML: séries além das primeiras e eventos além dos mais recentes
+    expect(blocos(html, "data-series-recolhidas")).toEqual(f.operacionais.length > SERIES_A_VISTA ? [String(f.operacionais.length - SERIES_A_VISTA)] : []);
+    expect(blocos(html, "data-eventos-anteriores")).toEqual(f.eventos.length > EVENTOS_A_VISTA ? [String(f.eventos.length - EVENTOS_A_VISTA)] : []);
+    expect(html).toMatch(/<details id="fontes"(?![^>]*\bopen\b)/);
     // companhia aberta: gráficos, tabela, documento original de cada exercício e as reapresentações; fechada: campos financeiros como não divulgados
     const emp = gr.empresaDaFicha(e, f);
     expect(html.includes('data-figura-analitica="demonstracoes"')).toBe(Boolean(emp));
@@ -542,7 +547,8 @@ describe("páginas no HTML do servidor", () => {
     { e: Object.keys(e.empresas).slice(-4).join(","), ano: String(anos[0]) },
     ...(semUltimoAno ? [{ e: `${semUltimoAno},${cmp.PAR_PADRAO[0]}`, ano: String(anos.at(-1)) }] : []),
     { e: "nao-existe,<b>", ano: "1999" },
-    { e: Object.keys(e.empresas).at(-1)! },
+    // uma empresa só: com e sem companhia do mesmo segmento na base
+    ...Object.keys(e.empresas).filter((s, i, todos) => { const n = cmp.substitutos(cmp.empresasComparaveis(e, c), s).length; return todos.findIndex((t) => (cmp.substitutos(cmp.empresasComparaveis(e, c), t).length > 0) === n > 0) === i; }).map((s) => ({ e: s })),
   ];
 
   it.each(recortesComparador.map((r) => [new URLSearchParams(r).toString() || "(padrão)", r] as const))("/varejo/comparador?%s segue o molde, com a ponte que fecha e a demonstração original de cada empresa", (_n, r) => {
@@ -552,13 +558,26 @@ describe("páginas no HTML do servidor", () => {
     linksValidos(gr.ROTA_COMPARADOR, html);
     const t = texto(html);
     const ano = cmp.anoDaUrl(e, r.ano ?? null);
+    const pedidos = cmp.selecaoDaUrl(e, r.e);
+    // uma empresa só, sem companhia do mesmo segmento na base: a página pede a segunda em vez de completar com outro ramo
+    if (pedidos.length === 1 && cmp.substitutos(cmp.empresasComparaveis(e, c), pedidos[0]).length === 0) {
+      expect(blocos(html, "data-escolha-segunda")).toEqual(pedidos);
+      expect(blocos(html, "data-ponte-empresa")).toEqual([]);
+      expect(blocos(html, "data-segunda").sort()).toEqual(Object.keys(e.empresas).filter((s) => s !== pedidos[0]).sort());
+      expect(html).not.toContain("data-figura-analitica");
+      return;
+    }
+    expect(html).not.toContain("data-escolha-segunda");
     const slugs = blocos(html, "data-ponte-empresa");
     expect(slugs.length).toBeGreaterThanOrEqual(cmp.MIN_EMPRESAS);
     expect(slugs.length).toBeLessThanOrEqual(cmp.MAX_EMPRESAS);
     expect(new Set(slugs).size).toBe(slugs.length);
-    const pedidos = cmp.selecaoDaUrl(e, r.e);
     if (pedidos.length >= 2) expect(slugs).toEqual(pedidos);
-    if (pedidos.length === 1) expect(slugs[0]).toBe(pedidos[0]);
+    if (pedidos.length === 1) {
+      expect(slugs[0]).toBe(pedidos[0]);
+      // a dupla só é completada com companhia do mesmo segmento
+      expect(cmp.substitutos(cmp.empresasComparaveis(e, c), pedidos[0]).map((x) => x.slug)).toContain(slugs[1]);
+    }
     if (pedidos.length === 0) expect(slugs).toEqual([...cmp.PAR_PADRAO]);
     expect(blocos(html, "data-caixa-empresa")).toEqual(slugs);
     for (const id of ["ponte", "caixa"]) expect(html, id).toContain(`data-figura-analitica="${id}"`);
@@ -604,6 +623,60 @@ describe("páginas no HTML do servidor", () => {
     const html = render(SegmentosPage({ searchParams: { segmento: s.slug } }));
     for (const k of (s.concorrentes ?? []).filter((x) => x.slug && c.fichas[x.slug])) expect(html, k.slug!).toContain(`href="${gr.hrefFicha(k.slug!)}"`);
     linksValidos("/varejo/segmentos", html);
+  });
+});
+
+describe("segmentos e método", () => {
+  const g = dados.goldSetor();
+
+  it("diferença contra o Brasil: a atividade menos o varejo a que ela pertence, na mesma medida e no mesmo mês, em pontos percentuais", () => {
+    for (const medida of dados.MEDIDAS) {
+      const linhas = dados.linhasAtividades(g, medida);
+      for (const l of linhas) {
+        const d = dados.contraBrasil(g, l, medida);
+        const dono = l.universo === "detalhe" ? g.pmc.atividades[l.parteDe!].universo : l.universo;
+        expect(d.universo, l.slug).toBe(dono === "ampliado" ? "ampliado" : "restrito");
+        const br = dados.leituraBrasil(g, d.universo);
+        if (l.volume !== null && br.volume[medida] !== null) expect(d.volume, `${l.slug} ${medida}`).toBeCloseTo(l.volume - (br.volume[medida] as number), 1);
+        else expect(d.volume).toBeNull();
+        if (l.receita !== null && br.receita[medida] !== null) expect(d.receita, `${l.slug} ${medida}`).toBeCloseTo(l.receita - (br.receita[medida] as number), 1);
+        else expect(d.receita).toBeNull();
+      }
+      // a página traz a coluna e o universo de comparação de cada linha (o CSV do recorte recebe as mesmas linhas, no navegador)
+      const html = render(SegmentosPage({ searchParams: { medida } }));
+      const tabela = html.slice(html.indexOf('data-figura-analitica="atividades"'));
+      const cabecalho = texto(tabela.slice(tabela.indexOf("<thead"), tabela.indexOf("</thead>")));
+      expect(cabecalho).toMatch(/contra o Brasil, p\.p\./);
+      const corpo = texto(tabela.slice(tabela.indexOf("<tbody"), tabela.indexOf("</tbody>")));
+      for (const u of new Set(linhas.map((l) => dados.contraBrasil(g, l, medida).universo))) expect(corpo).toContain(dados.NOME_UNIVERSO[u].toLowerCase());
+    }
+  });
+
+  it("método: ranking, conferências, base da CVM, todas as fórmulas da gold e as lacunas lidas do dado", () => {
+    const html = render(MetodoPage());
+    semLixo("/varejo/metodo", html);
+    linksValidos("/varejo/metodo", html);
+    const t = texto(html);
+    expect(html).toMatch(/<section id="grupos"/);
+    expect(html).toContain(`href="${c.ranking!.fonte.url}"`);
+    expect(t).toContain(textoCurado(c.ranking!.fonte.conceito_venda).slice(0, 60));
+    for (const v of Object.values(c.ranking!.fonte.hierarquia_fontes ?? {})) expect(t, v).toContain(textoCurado(v));
+    for (const x of c.ranking!.conferencias ?? []) expect(html, x.fonte).toContain(`data-metodo-conferencia="${x.fonte}"`);
+    for (const f of Object.values(e.formulas)) expect(t, f).toContain(f);
+    const linhas = gr.linhasDoRanking(c);
+    const lacuna = (id: string) => { const i = html.indexOf(`data-lacuna="${id}"`); expect(i, id).toBeGreaterThan(0); return texto(html.slice(i, html.indexOf("</li>", i))); };
+    for (const l of linhas.filter((x) => x.natureza_dado === "estimado_pela_fonte")) expect(lacuna("estimados"), l.slug).toContain(l.grupo);
+    for (const l of linhas.filter((x) => x.capital === "fechado" && !x.empresa_gold)) expect(lacuna("fechados"), l.slug).toContain(l.grupo);
+    for (const l of linhas.filter((x) => x.empresa_gold)) expect(lacuna("fechados"), l.slug).not.toContain(`${l.grupo},`);
+    expect(lacuna("digitais").length).toBeGreaterThan(80);
+    expect(lacuna("conceitos-pmc").length).toBeGreaterThan(80);
+    // companhia com ficha sem o último exercício na base, e companhia com o último trimestre atrás das demais
+    const ultimo = anos.at(-1)!;
+    const semAno = Object.values(c.fichas).filter((f) => f.empresa_gold && e.empresas[f.empresa_gold] && !gr.periodoDe(e.empresas[f.empresa_gold], ultimo));
+    expect(blocos(html, "data-lacuna").filter((x) => x === "sem-demonstracao")).toHaveLength(semAno.length);
+    for (const f of semAno) expect(lacuna("sem-demonstracao")).toContain(f.grupo);
+    expect(blocos(html, "data-lacuna").filter((x) => x === "conferencia")).toHaveLength((c.ranking!.conferencias ?? []).filter((x) => x.nao_acessado).length);
+    expect(blocos(html, "data-lacuna")).toContain("trimestre");
   });
 });
 

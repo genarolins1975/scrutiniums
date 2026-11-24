@@ -17,8 +17,10 @@ import { hrefComRecorte, parametro, parametroEntre, type ParametrosPagina } from
 import type { NumeroProps } from "@/lib/painel/tipos";
 import {
   atividadesDaUf,
+  contraBrasil,
   curadoria,
   goldEmpresas,
+  leituraBrasil,
   DEF_MEDIDA,
   formasDeComercializacao,
   goldSetor,
@@ -43,7 +45,7 @@ import {
   type Medida,
   type Periodo,
 } from "@/lib/varejo/dados";
-import { bilhoes, direcao, mesCurto, mesExtenso, num, pct, plural, variacao } from "@/lib/varejo/formato";
+import { bilhoes, direcao, mesCurto, mesExtenso, num, pct, plural, pontos, variacao } from "@/lib/varejo/formato";
 import { emUf, hrefDownload, NOME_CURTO_ATIVIDADE, paginaVarejo, ROTA_BRASIL, ROTA_SEGMENTOS, UFS } from "@/lib/varejo/paginas";
 import { provVarejo } from "@/lib/varejo/proveniencia";
 import { hrefComRecorte as hrefCom } from "@/lib/painel/recorte";
@@ -59,6 +61,7 @@ import type { Indicador, Universo } from "@/lib/varejo/tipos";
 export const dynamic = "force-dynamic";
 
 const pagina = paginaVarejo("segmentos");
+const indicadorVolume = "volume" as const;
 const PADRAO = { medida: "m12", universo: "restrito", indicador: "volume", periodo: "5a" } as const;
 
 type Busca = { searchParams: ParametrosPagina };
@@ -104,6 +107,14 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
   const menor = comVolume[comVolume.length - 1] ?? null;
   const universoDe = (l: (typeof linhas)[number]) =>
     l.universo === "detalhe" ? `parte de ${(NOME_CURTO_ATIVIDADE[l.parteDe ?? ""] ?? l.parteDe ?? "").toLowerCase()}` : l.universo === "restrito" ? "restrito e ampliado" : "só ampliado";
+  // a diferença de cada atividade contra o varejo do Brasil, na mesma medida e no mesmo mês, pelo mesmo seletor da tabela e do CSV
+  const contra = linhas.map((l) => contraBrasil(g, l, medida));
+  const brRestrito = leituraBrasil(g, "restrito")[indicadorVolume][medida];
+  const brAmpliado = leituraBrasil(g, "ampliado")[indicadorVolume][medida];
+  const maisDistante = linhas
+    .map((l, k) => ({ l, d: contra[k] }))
+    .filter((x) => x.l.universo !== "detalhe" && x.d.volume !== null)
+    .sort((a, b) => Math.abs(b.d.volume as number) - Math.abs(a.d.volume as number))[0] ?? null;
   const semEquivalencia = (c.segmentos?.segmentos ?? []).filter((s) => !(s.atividades_pmc ?? []).some((a) => g.pmc.atividades[a]));
 
   // ---------------------------------------------------------------- segmento escolhido
@@ -189,6 +200,12 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                     <>
                       {quando.charAt(0).toUpperCase() + quando.slice(1)}, o volume foi de {variacao(maior.volume)} em {maior.nomeCurto.toLowerCase()} a {variacao(menor.volume)} em {menor.nomeCurto.toLowerCase()}, {def.base}. Das{" "}
                       {num(principais.length)} atividades, {num(emAlta)} {plural(emAlta, "teve", "tiveram")} alta no volume.
+                      {maisDistante && (
+                        <>
+                          {" "}
+                          A que mais se afastou do Brasil foi {maisDistante.l.nomeCurto.toLowerCase()}: {pontos(maisDistante.d.volume)} em relação ao {NOME_UNIVERSO[maisDistante.d.universo].toLowerCase()}.
+                        </>
+                      )}
                     </>
                   ) : (
                     <>O IBGE não publicou as variações por atividade para este mês.</>
@@ -204,28 +221,30 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                     recolhida={false}
                     idioma="pt"
                     titulo={`Atividades do varejo: crescimento real e nominal, variação ${def.curto}, ${quando}`}
-                    colunas={["Atividade", "Crescimento real (volume), %", "Crescimento nominal (receita), %", "Receita menos volume, p.p.", "Volume nos últimos 24 meses", "Universo", "Peso ou contribuição"]}
-                    linhas={linhas.map((l) => [
+                    colunas={["Atividade", "Crescimento real (volume), %", "Volume: diferença contra o Brasil, p.p.", "Comparada com", "Crescimento nominal (receita), %", "Receita menos volume, p.p.", "Volume nos últimos 24 meses", "Universo", "Peso ou contribuição"]}
+                    linhas={linhas.map((l, k) => [
                       l.nomeCurto,
                       l.volume,
+                      contra[k].volume,
+                      NOME_UNIVERSO[contra[k].universo].toLowerCase(),
                       l.receita,
                       l.diferenca,
                       <MiniTrajetoria key={l.slug} nome={l.nomeCurto} pontos={trajetoria(g, g.pmc.atividades[l.slug], "volume")} />,
                       universoDe(l),
                       "não publicado no SIDRA",
                     ])}
-                    casas={[null, 1, 1, 1, null, null, null]}
+                    casas={[null, 1, 1, null, 1, 1, null, null, null]}
                     limite={linhas.length}
                     links={{ Atividade: linhas.map((l) => `${h({ segmento: l.slug })}#segmento`) }}
                     linhasDestacadas={sel.atividade ? [linhas.findIndex((l) => l.slug === sel.atividade)] : []}
                     fixarPrimeiraColuna
                     csv={hrefDownload("atividades.csv")}
-                    nota="Toque no nome de uma atividade para abrir o segmento. A trajetória é o índice de volume com ajuste sazonal, cada linha na própria escala: mostra a forma do movimento, não compara níveis entre atividades."
+                    nota={`Diferença contra o Brasil: variação do volume da atividade menos a do varejo a que ela pertence, na mesma medida e no mesmo mês (varejo restrito: ${variacao(brRestrito)}; varejo ampliado: ${variacao(brAmpliado)}, para as atividades que só entram nele). Toque no nome de uma atividade para abrir o segmento. A trajetória é o índice de volume com ajuste sazonal, cada linha na própria escala: mostra a forma do movimento, não compara níveis entre atividades.`}
                   />
                   <ExportarRecorte
                     nome={`varejo-atividades-${medida}-${mes}`}
-                    colunas={["atividade", "nome", "universo", "volume_pct", "receita_nominal_pct", "receita_menos_volume_pp", "peso_ou_contribuicao"]}
-                    linhas={linhas.map((l) => [l.slug, l.nomeCurto, universoDe(l), l.volume, l.receita, l.diferenca, "não publicado no SIDRA"])}
+                    colunas={["atividade", "nome", "universo", "volume_pct", "receita_nominal_pct", "receita_menos_volume_pp", "comparada_com", "volume_menos_brasil_pp", "receita_menos_brasil_pp", "peso_ou_contribuicao"]}
+                    linhas={linhas.map((l, k) => [l.slug, l.nomeCurto, universoDe(l), l.volume, l.receita, l.diferenca, NOME_UNIVERSO[contra[k].universo].toLowerCase(), contra[k].volume, contra[k].receita, "não publicado no SIDRA"])}
                     recorte={`Brasil, variação ${def.base}, ${quando}`}
                     fonte={`${g.fontes.pmc_atividades.orgao}, ${g.fontes.pmc_atividades.tabela}`}
                   />

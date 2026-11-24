@@ -33,7 +33,7 @@ import {
 } from "@/lib/varejo/comparador";
 import { curadoria, goldEmpresas } from "@/lib/varejo/dados";
 import { dataBr, mesDaData, num, pct, plural, pontos, por100, reais, textoCurado, variacao } from "@/lib/varejo/formato";
-import { dividaLiquida, eventosOrdenados, exerciciosDaGold, fichaDoGrupo, hrefFicha, passivoArrendamento, periodoDe, ROTA_COMPARADOR, ROTA_GRUPOS, TIPO_EVENTO } from "@/lib/varejo/grupos";
+import { dividaLiquida, eventosOrdenados, exerciciosDaGold, fichaDoGrupo, hrefFicha, nomeDoSegmento, passivoArrendamento, periodoDe, ROTA_COMPARADOR, ROTA_GRUPOS, TIPO_EVENTO } from "@/lib/varejo/grupos";
 import { paginaVarejo, ROTA_METODO } from "@/lib/varejo/paginas";
 import { provCvm } from "@/lib/varejo/proveniencia";
 import type { FichaCuradoria } from "@/lib/varejo/tipos";
@@ -91,8 +91,84 @@ export default function PaginaComparador({ searchParams }: Busca) {
   // seleção: sem `e`, o primeiro par preparado; com uma empresa só, ela e a primeira substituta do mesmo segmento
   let slugs = selecaoDaUrl(e, searchParams.e);
   if (slugs.length === 0) slugs = [...PAR_PADRAO];
-  if (slugs.length === 1) slugs = [slugs[0], substitutos(todas, slugs[0])[0]?.slug ?? PAR_PADRAO.find((s) => s !== slugs[0])!];
+  // uma empresa só: a página completa a dupla apenas com companhia do mesmo segmento; sem nenhuma, pede a segunda ao leitor
+  const sozinha = slugs.length === 1 ? slugs[0] : null;
+  const substituta = sozinha ? substitutos(todas, sozinha)[0]?.slug ?? null : null;
+  if (sozinha && substituta) slugs = [sozinha, substituta];
   const h = (s: readonly string[], a: number = ano) => hrefComparador(e, s, a);
+
+  if (sozinha && !substituta) {
+    const emp = e.empresas[sozinha];
+    const p = periodoDe(emp, ano);
+    const outras = todas.filter((x) => x.slug !== sozinha);
+    return (
+      <>
+        <MarcaVisita secao={pagina.secao} />
+        <CabecalhoVarejo rota={ROTA_COMPARADOR} />
+        <PaginaPainel
+          rota={ROTA_COMPARADOR}
+          abertura={{
+            grupo: "Comparador",
+            acento: "gas",
+            titulo: pagina.pergunta,
+            lead: "Duas redes vendem as mesmas coisas e chegam a lucros diferentes. Siga R$ 100 de receita até o lucro e veja para onde foi o caixa, empresa ao lado de empresa, no mesmo exercício.",
+            recorte: { periodo: `exercício de ${ano}`, universo: `1 de ${num(todas.length)} companhias abertas do varejo escolhida`, unidade: "reais correntes e R$ por R$ 100 de receita líquida", fonte: "CVM, Demonstrações Financeiras Padronizadas" },
+            limite: "qual empresa é melhor, nem a causa de cada diferença: as contas mostram onde os números se afastam; perímetro, eventos do ano e critérios contábeis explicam parte da distância.",
+          }}
+          figuras={
+            <>
+              <Controles rotulo="Empresas e exercício da comparação" idioma="pt" resumo={<>Uma empresa escolhida: {emp.nome}. Falta a segunda.</>} limpar={{ href: ROTA_COMPARADOR }}>
+                <SeletorUrl id="sel-ano" rotulo="Exercício (o mesmo para todas)" atual={String(ano)} opcoes={anos.map((a) => ({ valor: String(a), rotulo: String(a), href: h([sozinha], a) }))} />
+              </Controles>
+              <Recolhido id="escolha" aberto nivelTitulo={2} titulo="Escolha a segunda empresa" resumo={`${emp.nome} não tem, na base, outra companhia aberta do mesmo segmento. A página não completa a dupla com uma empresa de outro ramo por conta própria.`}>
+                <div data-escolha-segunda={sozinha}>
+                  <p className="max-w-prose2 text-base leading-relaxed text-carvao">
+                    {p?.ponte_100
+                      ? `Em ${ano}, de cada R$ 100 de receita líquida, ${emp.nome} ${p.ponte_100.lucro_liquido < 0 ? "teve" : "ficou com"} ${por100(Math.abs(p.ponte_100.lucro_liquido))} de ${p.ponte_100.lucro_liquido < 0 ? "prejuízo" : "lucro"}.`
+                      : `${emp.nome} não tem demonstração de ${ano} na base.`}{" "}
+                    Para pôr esse número ao lado de outro, escolha a companhia. Empresas de ramos diferentes têm margens e prazos diferentes por natureza do negócio: a escolha, e a ressalva que vem com ela, é sua.
+                  </p>
+                  <ul className="mt-5 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
+                    {outras.map((x) => (
+                      <li key={x.slug} className="border-t border-linha">
+                        <Link href={h([sozinha, x.slug])} prefetch={false} scroll={false} className="flex min-h-[44px] flex-col justify-center py-2 text-sm text-carvao" data-segunda={x.slug}>
+                          <span className={`font-medium ${LINK}`}>{x.nome}</span>
+                          <span className="t-meta text-carvao-muted">{x.segmentos.length ? x.segmentos.map(nomeDoSegmento).join(" e ") : "sem segmento na curadoria"}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="t-meta mt-5 text-carvao-muted">
+                    Ou comece por um par preparado:{" "}
+                    {PARES.map((par, i) => (
+                      <span key={par.id}>
+                        {i > 0 && ", "}
+                        <Link href={h(par.slugs)} prefetch={false} className={LINK}>
+                          {par.rotulo}
+                        </Link>
+                      </span>
+                    ))}
+                    .
+                  </p>
+                </div>
+              </Recolhido>
+            </>
+          }
+          metodo={
+            <p>
+              {e.fontes.dfp.orgao}, {e.fontes.dfp.nome}. Exercícios de {anos[0]} a {anos[anos.length - 1]}. Consultado em {dataBr(e.fontes.dfp.capturado_em)}.{" "}
+              <Link href={ROTA_METODO} prefetch={false} className={LINK}>
+                Fontes, fórmulas, correspondência com o IBGE e lacunas
+              </Link>
+              .
+            </p>
+          }
+          frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/varejo"]} variante="metodo" />}
+        />
+      </>
+    );
+  }
+
   const hrefAno = (a: number) => `${h(slugs, a)}#ponte`;
   const foraDoPadrao = h(slugs) !== ROTA_COMPARADOR;
 

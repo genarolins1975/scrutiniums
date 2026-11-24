@@ -263,7 +263,7 @@ export type SegmentoCuradoria = {
   fontes?: FonteCuradoria[];
 };
 
-export type SegmentosCuradoria = { segmentos: SegmentoCuradoria[]; ecommerce?: { texto?: string; fonte?: FonteCuradoria } };
+export type SegmentosCuradoria = { segmentos: SegmentoCuradoria[]; nota_geral?: { sustentacao_da_equivalencia?: string }; ecommerce?: { texto?: string; fonte?: FonteCuradoria } };
 
 export type ValorOperacional = { periodo?: string; valor?: number | null; natureza?: string; nota?: string };
 export type Operacional = { indicador: string; unidade?: string; nota?: string; valores?: ValorOperacional[]; fonte?: FonteCuradoria };
