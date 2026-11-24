@@ -442,15 +442,15 @@
   "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Até duas vagas por família na primeira rodada; famílias distintas — a ordem não é gravidade."
  },
  "ibcc_posicao": {
-  "atual": 92.91,
+  "atual": 92.85,
   "ref": "2026-08-01",
   "percentil_historico": 5.0,
   "m1": 93.34,
-  "m3": 92.51,
+  "m3": 92.52,
   "m12": 93.58,
-  "delta_1m": -0.43,
-  "delta_3m": 0.4,
-  "delta_12m": -0.67
+  "delta_1m": -0.49,
+  "delta_3m": 0.33,
+  "delta_12m": -0.73
  },
  "projecoes_resumo": {
   "inad_total": {
