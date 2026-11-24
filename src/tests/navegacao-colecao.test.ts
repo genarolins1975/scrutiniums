@@ -117,9 +117,10 @@ describe("catálogo único das 24 coleções", () => {
     expect(faltam).toEqual([]);
   });
 
-  it("o Território e Clima, que mantém painéis próprios, tem a navegação do observatório: entrada, Queimadas, Desastres, Emissões e Método", () => {
+  it("o Território e Clima, que mantém painéis próprios, tem a navegação do observatório: entrada, a consulta por município em segundo, Queimadas, Desastres, Emissões e Método", () => {
     const nav = navegacaoDoObservatorio("territorio-e-clima");
-    expect(nav.itens.map((i) => i.href)).toEqual(["/territorio", "/territorio/queimadas", "/territorio/desastres", "/territorio/emissoes"]);
+    expect(nav.itens.map((i) => i.href)).toEqual(["/territorio", "/territorio/queimadas/municipio", "/territorio/queimadas", "/territorio/desastres", "/territorio/emissoes"]);
+    expect(nav.itens[1].subpaginas?.map((p) => p.href)).toEqual(["/territorio/queimadas/municipio", "/territorio/desastres/municipio"]);
     expect(nav.atalhos).toEqual({ metodo: "/territorio/metodologia" });
   });
 

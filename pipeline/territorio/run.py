@@ -13,6 +13,7 @@ de gravar. Fontes: queimadas (INPE, Programa Queimadas), desastres (Atlas Digita
 de Desastres no Brasil, Sedec/MIDR) e emissões (inventário oficial do MCTI, SIRENE).
 """
 import argparse
+import collections
 import json
 import os
 import re
@@ -153,11 +154,68 @@ def validar_desastres(dados):
     for chave, o in dados['originais'].items():
         if len(o.get('sha256') or '') != 64 or not o.get('bytes'):
             raise ValueError(f'Original sem sha256 ou bytes: {chave}')
+    mun = dados.get('municipios')
+    if mun:
+        validar_desastres_municipios(dados, mun)
+
+
+def validar_desastres_municipios(dados, mun):
+    """Os municípios reconciliam com a série nacional ano a ano: reconhecidos, sem reconhecimento e danos humanos."""
+    ini, fim = mun['periodo']['inicio'], mun['periodo']['fim']
+    serie = {a['ano']: a for a in dados['serie_anual']}
+    rec = collections.Counter()
+    sem = 0
+    danos = [0, 0, 0, 0]
+    for cod, l in mun['linhas'].items():
+        if len(cod) != 7 or not cod.isdigit():
+            raise ValueError(f'Município com código IBGE inválido: {cod}')
+        if l['r'] != sorted(l['r']):
+            raise ValueError(f'Reconhecimentos fora de ordem em {cod}')
+        for item in l['r']:
+            dia, tipo = item.split(' ')
+            ano = int(dia[:4])
+            if not ini <= ano <= fim or tipo not in mun['tipos'] or mun['grupoDoTipo'][tipo] not in GRUPOS_DESASTRES:
+                raise ValueError(f'Reconhecimento fora do período ou de tipo desconhecido em {cod}: {item}')
+            rec[(ano, mun['grupoDoTipo'][tipo])] += 1
+        sem += l['n']
+        if l['d'] is not None:
+            for i in range(4):
+                danos[i] += l['d'][i]
+            if l['d'][4] > l['d'][3]:
+                raise ValueError(f'Mais registros sem dano que registros em {cod}')
+    for ano in range(ini, fim + 1):
+        a = serie[ano]
+        for g in GRUPOS_DESASTRES:
+            if rec[(ano, g)] != a['por_grupo_reconhecidos'][g]:
+                raise ValueError(f'Municípios não somam os reconhecidos de {g} em {ano}')
+    if sem != sum(serie[a]['registros_municipais'] - serie[a]['registros_reconhecidos'] for a in range(ini, fim + 1)):
+        raise ValueError('Registros sem reconhecimento dos municípios não somam a série')
+    nac = [x for x in dados['danos_humanos']['serie'] if mun['danosDesde'] <= x['ano'] <= fim]
+    if danos != [sum(x['obitos'] for x in nac), sum(x['desabrigados'] for x in nac), sum(x['desalojados'] for x in nac), sum(x['registros'] for x in nac)]:
+        raise ValueError('Danos humanos dos municípios não somam a série nacional')
 
 
 def gold_desastres(seed):
     validar_desastres(seed)
-    return {'dominio': 'territorio', 'gold': 'desastres', 'versaoPipeline': VERSAO, **seed}
+    resto = {k: v for k, v in seed.items() if k != 'municipios'}
+    return {'dominio': 'territorio', 'gold': 'desastres', 'versaoPipeline': VERSAO, **resto}
+
+
+def gold_desastres_municipios(seed):
+    """Registros por município numa gold própria: só a ficha "Meu município" a usa, montada no servidor."""
+    validar_desastres(seed)
+    mun = seed.get('municipios')
+    if not mun:
+        return None
+    return {'dominio': 'territorio', 'gold': 'desastres_municipios', 'versaoPipeline': VERSAO,
+            'capturadoEm': seed['capturadoEm'], 'dataReferencia': seed['dataReferencia'], 'fonte': seed['fonte'],
+            'unidade': seed['unidade'], 'grupos': seed['grupos'], **mun,
+            'ressalvas': [
+                'Município fora da lista não tem registro na base do Atlas no período; isso não prova que não houve desastre: só entra o que o município registrou no sistema da Defesa Civil.',
+                'Reconhecimento federal depende de pedido do município ou do estado e da análise da Defesa Civil nacional; registro sem reconhecimento junta não pedidos, negados e pendentes.',
+                'Uma mesma ocorrência pode gerar mais de um registro no município quando a tipologia ou a data muda; secas renovadas a cada 180 dias foram consolidadas pelo Atlas.',
+                'Danos humanos são os do momento do registro e somam registros reconhecidos ou não; zero na base também pode ser campo não preenchido.',
+            ]}
 
 
 SETORES_EMISSOES = [k for k, _, _ in emissoes.SETORES]
@@ -217,6 +275,7 @@ FONTES = {
     'queimadas': {'gold': gold_queimadas},
     'queimadas_municipios': {'gold': gold_queimadas_municipios, 'seed': 'queimadas'},
     'desastres': {'gold': gold_desastres},
+    'desastres_municipios': {'gold': gold_desastres_municipios, 'seed': 'desastres'},
     'emissoes': {'gold': gold_emissoes},
 }
 

@@ -187,6 +187,61 @@ def normalizar(caminho_csv):
     return linhas, por_ano, por_uf_ano, danos_ano, doc_ano, max_evento, max_registro
 
 
+ANO_INICIO_RECONHECIMENTO = 2003
+ANO_INICIO_DANOS = 2013
+
+
+def por_municipio(linhas, ultimo_completo):
+    """Registros por município, de 2003 ao último ano completo, para a ficha "Meu município".
+
+    Para cada código IBGE com ao menos um registro no período: os registros reconhecidos (data da
+    ocorrência e código COBRADE, em ordem), a contagem dos registros sem reconhecimento (não pedidos,
+    negados ou pendentes) e, de 2013 em diante, óbitos, desabrigados e desalojados somados de todos os
+    registros, com quantos registros não trazem nenhum dano humano informado. Município fora da lista
+    não tem registro na base no período; isso não prova que não houve desastre.
+    """
+    reconhecidos = collections.defaultdict(list)
+    sem_reconhecimento = collections.Counter()
+    danos = collections.defaultdict(lambda: [0, 0, 0, 0, 0])
+    tipos = {}
+    for r in linhas:
+        ev = data(r['Data_Evento'])
+        if not ANO_INICIO_RECONHECIMENTO <= ev.year <= ultimo_completo:
+            continue
+        mun, cobrade = r['Cod_IBGE_Mun'].strip(), r['Cod_Cobrade'].strip()
+        if len(mun) != 7 or not mun.isdigit():
+            raise RuntimeError(f'Código IBGE inválido: {mun!r}')
+        if r['Status'].strip() == 'Reconhecido':
+            reconhecidos[mun].append(f'{ev.isoformat()} {cobrade}')
+            tipos[cobrade] = r['descricao_tipologia'].strip()
+        else:
+            sem_reconhecimento[mun] += 1
+        if ev.year >= ANO_INICIO_DANOS:
+            vals = {k: num(r[DANOS[k]]) for k in DANOS}
+            d = danos[mun]
+            d[0] += int(vals['obitos'] or 0)
+            d[1] += int(vals['desabrigados'] or 0)
+            d[2] += int(vals['desalojados'] or 0)
+            d[3] += 1
+            if all((v or 0) == 0 for v in vals.values()):
+                d[4] += 1
+    linhas_mun = {}
+    for mun in sorted(set(reconhecidos) | set(sem_reconhecimento) | set(danos)):
+        linhas_mun[mun] = {'r': sorted(reconhecidos.get(mun, [])), 'n': sem_reconhecimento.get(mun, 0), 'd': danos.get(mun)}
+    return {
+        'periodo': {'inicio': ANO_INICIO_RECONHECIMENTO, 'fim': ultimo_completo},
+        'danosDesde': ANO_INICIO_DANOS,
+        'campos': {
+            'r': 'Registros com reconhecimento federal: "AAAA-MM-DD COBRADE", data da ocorrência e código da tipologia, em ordem.',
+            'n': 'Registros do período sem reconhecimento federal (não pedidos, negados ou pendentes).',
+            'd': f'De {ANO_INICIO_DANOS} em diante, somados de todos os registros: [óbitos, desabrigados, desalojados, registros, registros sem nenhum dano humano informado]; null sem registro no período.',
+        },
+        'tipos': dict(sorted(tipos.items())),
+        'grupoDoTipo': {c: grupo(c) for c in sorted(tipos)},
+        'linhas': linhas_mun,
+    }
+
+
 def montar(originais, bloqueios, dir_originais, hoje):
     caminho_csv = os.path.join(dir_originais, originais['atlas_csv']['arquivo'])
     linhas, por_ano, por_uf_ano, danos_ano, doc_ano, max_evento, max_registro = normalizar(caminho_csv)
@@ -250,6 +305,7 @@ def montar(originais, bloqueios, dir_originais, hoje):
             'publicar': 'Só óbitos, desabrigados e desalojados, de 2013 em diante (FIDE no S2iD), como soma de registros e com a ressalva de que zero na base também significa campo não informado. Não publicar "afetados".',
             'serie': danos,
         },
+        'municipios': por_municipio(linhas, ultimo_completo),
         'ressalvas': [
             'Ausência vira zero na própria fonte: os campos de danos não têm vazio; antes de 2013 entre 48% e 95% dos registros de cada ano têm todos os danos humanos iguais a zero.',
             'Quebra de série em 2012/2013: o FIDE no S2iD substituiu AVADAN e NOPRED; o total de danos humanos diretos salta de 0,5 milhão (2012) para 5,9 milhões (2013).',

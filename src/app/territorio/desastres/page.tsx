@@ -6,6 +6,10 @@ import { DoDesastreAoReconhecimento } from "@/components/territorio/Desastres";
 import { FiguraAnalitica, GraficoBarras, LeituraGuiada, PaginaPainel, TabelaDados, type NumeroProps } from "@/components/painel";
 import { provenienciaMontada } from "@/lib/painel/proveniencia-montada";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
+import Link from "next/link";
+import { BuscaDesastres } from "@/components/territorio/BuscaDesastres";
+import { ROTA_DESASTRES_MUNICIPIO } from "@/lib/territorio/consultaDesastres";
+import { municipiosIbge } from "@/lib/territorio/focosMunicipio";
 
 export const dynamic = "force-static";
 
@@ -61,6 +65,14 @@ export default function PaginaDesastres() {
   const primeiro = serie[0];
   const anoUf = g.por_uf.ultimo_ano_completo.ano;
   const linhasDanos = g.danos_humanos.serie.filter((d) => d.publicavel);
+  // municípios de cada estado na lista do IBGE: a parcela com reconhecimento compara estados com números de municípios diferentes
+  const municipiosDaUf = new Map<string, number>();
+  for (const m of municipiosIbge().values()) municipiosDaUf.set(m.uf, (municipiosDaUf.get(m.uf) ?? 0) + 1);
+  const parcela = (uf: string, distintos: number) => {
+    const total = municipiosDaUf.get(uf);
+    return total ? (100 * distintos) / total : null;
+  };
+  const parcelaLider = [...ufs].filter(([uf]) => parcela(uf, 0) !== null).sort((a, b) => (parcela(b[0], b[1].municipios_distintos) as number) - (parcela(a[0], a[1].municipios_distintos) as number))[0];
 
   const numeros: NumeroProps[] = [
     {
@@ -190,15 +202,33 @@ export default function PaginaDesastres() {
               leitura={
                 <LeituraGuiada>
                   {NOME_UF[ufLider] ?? ufLider} teve mais registros reconhecidos ({n(dadosUf.registros_reconhecidos)}, em {n(dadosUf.municipios_distintos)} municípios). Estados com
-                  mais municípios tendem a somar mais registros: a contagem não está dividida pelo número de municípios.
+                  mais municípios tendem a somar mais registros; por isso a tabela traz também a parcela dos municípios de cada estado com ao menos um
+                  reconhecimento no ano
+                  {parcelaLider ? <>, maior em {NOME_UF[parcelaLider[0]] ?? parcelaLider[0]} ({n(parcela(parcelaLider[0], parcelaLider[1].municipios_distintos) as number, 0)}%)</> : null}.
                 </LeituraGuiada>
               }
               naoConcluir="que um estado é mais atingido ou mais vulnerável que outro: estados com mais municípios somam mais registros, e só entra quem pediu e obteve o reconhecimento."
+              complemento={
+                <div className="grid gap-6 border-t border-linha pt-6 lg:grid-cols-12" data-consulta-municipio="">
+                  <div className="lg:col-span-5">
+                    <h3 className="font-serif text-xl leading-snug text-carvao">Desastres reconhecidos no seu município</h3>
+                    <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+                      A ficha mostra cada reconhecimento desde {primeiro.ano}, ano a ano e por tipo, a comparação com o estado e as pessoas atingidas desde 2013.
+                    </p>
+                    <p className="mt-1">
+                      <Link href={ROTA_DESASTRES_MUNICIPIO} prefetch={false} className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">
+                        Abrir a consulta por município
+                      </Link>
+                    </p>
+                  </div>
+                  <div className="min-w-0 lg:col-span-7"><BuscaDesastres rotulo="Quais desastres a União reconheceu no meu município?" /></div>
+                </div>
+              }
               tabela={{
                 titulo: `Registros com reconhecimento federal e municípios distintos por estado, ${anoUf}`,
-                colunas: ["Unidade da Federação", "Reconhecidos", "Municípios distintos", ...GRUPOS.map((gr) => ROTULO_CURTO[gr])],
-                linhas: ufs.map(([uf, u]) => [NOME_UF[uf] ?? uf, u.registros_reconhecidos, u.municipios_distintos, ...GRUPOS.map((gr) => u.por_grupo[gr])]),
-                casas: [null, 0, 0, ...GRUPOS.map(() => 0)],
+                colunas: ["Unidade da Federação", "Reconhecidos", "Municípios distintos", "% dos municípios do estado", ...GRUPOS.map((gr) => ROTULO_CURTO[gr])],
+                linhas: ufs.map(([uf, u]) => [NOME_UF[uf] ?? uf, u.registros_reconhecidos, u.municipios_distintos, parcela(uf, u.municipios_distintos), ...GRUPOS.map((gr) => u.por_grupo[gr])]),
+                casas: [null, 0, 0, 0, ...GRUPOS.map(() => 0)],
                 limite: ufs.length,
               }}
             >
@@ -268,6 +298,8 @@ export default function PaginaDesastres() {
             </p>
             <p>
               <a href="/territorio/gold/desastres.json" className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">Baixar os dados deste painel (JSON)</a>
+              {" · "}
+              <a href="/territorio/gold/desastres_municipios.json" className="inline-flex min-h-[44px] items-center text-carvao underline decoration-linha underline-offset-4">Baixar os registros por município (JSON)</a>
             </p>
           </>
         }

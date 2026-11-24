@@ -278,6 +278,11 @@ function territorio(): Montagem {
   return {
     itens: [
       pagina("Início", "/territorio"),
+      // a consulta pessoal em segundo (anexo navegacao.md): as duas consultas por município do observatório
+      grupo("Meu município", [
+        pagina("Fogo perto de mim", "/territorio/queimadas/municipio"),
+        pagina("Desastres no meu município", "/territorio/desastres/municipio"),
+      ]),
       pagina("Queimadas", "/territorio/queimadas"),
       pagina("Desastres", "/territorio/desastres"),
       pagina("Emissões", "/territorio/emissoes"),

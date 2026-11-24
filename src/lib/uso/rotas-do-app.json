@@ -374,6 +374,8 @@
   "/termos",
   "/territorio",
   "/territorio/desastres",
+  "/territorio/desastres/municipio",
+  "/territorio/desastres/municipio/[ibge]",
   "/territorio/emissoes",
   "/territorio/metodologia",
   "/territorio/queimadas",

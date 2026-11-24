@@ -230,7 +230,7 @@ class TestQueimadas(unittest.TestCase):
 
 
 COLS_DANOS = list(desastres.DANOS.values())
-CAB_ATLAS = ['Protocolo_S2iD', 'Data_Evento', 'Data_Registro', 'Sigla_UF', 'Cod_IBGE_Mun', 'Cod_Cobrade', 'Status'] + COLS_DANOS
+CAB_ATLAS = ['Protocolo_S2iD', 'Data_Evento', 'Data_Registro', 'Sigla_UF', 'Cod_IBGE_Mun', 'Cod_Cobrade', 'descricao_tipologia', 'Status'] + COLS_DANOS
 
 
 def _atlas(linhas, pasta):
@@ -238,7 +238,7 @@ def _atlas(linhas, pasta):
     corpo = ';'.join(CAB_ATLAS) + '\n'
     for prot, dia, uf, mun, cob, status, obitos in linhas:
         danos = [str(obitos)] + ['0'] * (len(COLS_DANOS) - 1)
-        corpo += ';'.join([prot, dia, dia, uf, mun, cob, status] + danos) + '\n'
+        corpo += ';'.join([prot, dia, dia, uf, mun, cob, f'Tipo {cob}', status] + danos) + '\n'
     caminho = os.path.join(pasta, 'BD_Atlas_teste.csv')
     Path(caminho).write_bytes(corpo.encode('latin-1'))
     return caminho
@@ -272,11 +272,45 @@ class TestDesastres(unittest.TestCase):
         with self.assertRaises(ValueError):
             run.validar_desastres(d)
         d['serie_anual'] = [x for x in d['serie_anual'] if x['ano'] == 2025]
+        d.pop('municipios')  # a série recortada não cobre 2003 a 2024; os municípios têm teste próprio
         run.validar_desastres(d)
         # a cobertura declarada sai da base coletada, não de texto fixo
         self.assertIn('1991 a 2025', d['fonte']['cadencia'])
         d2027 = self._montar([('PE-F-1', '10/03/2027', 'PE', '2600054', '14110', 'Reconhecido', 0)], hoje=date(2028, 3, 1))
         self.assertIn('1991 a 2027', d2027['fonte']['cadencia'])
+
+    def test_municipios_reconciliam_com_a_serie_e_ausencia_nao_e_zero(self):
+        linhas = [(f'PE-F-{a}', f'10/03/{a}', 'PE', '2600054', '14110', 'Reconhecido', 0) for a in range(2003, 2026)]
+        linhas += [
+            ('PE-F-X', '20/05/2025', 'PE', '2600054', '12100', 'Reconhecido', 2),
+            ('RS-F-Y', '30/12/2014', 'RS', '4300042', '13310', 'Registro', 1),
+            ('BA-F-Z', '05/02/2002', 'BA', '2900108', '14110', 'Registro', 0),
+            ('RS-F-W', '30/12/2025', 'RS', '4300042', '13310', 'Registro', 0),  # fecha 2025 como último ano completo
+        ]
+        d = self._montar(linhas)
+        run.validar_desastres(d)
+        m = d['municipios']
+        self.assertEqual(m['periodo'], {'inicio': 2003, 'fim': 2025})
+        pe = m['linhas']['2600054']
+        self.assertEqual(len(pe['r']), 24)
+        self.assertEqual(pe['r'][-1], '2025-05-20 12100')
+        self.assertEqual(pe['d'][0], 2)  # óbitos desde 2013
+        rs = m['linhas']['4300042']
+        self.assertEqual((rs['r'], rs['n'], rs['d'][:4]), ([], 2, [1, 0, 0, 2]))
+        # registro anterior a 2003 fica fora: o município não aparece, e a ficha diz "nenhum registro", não zero desastres
+        self.assertNotIn('2900108', m['linhas'])
+        self.assertEqual(m['grupoDoTipo']['12100'], 'chuvas_inundacoes_enxurradas_alagamentos')
+        # um reconhecimento a mais num município, sem a série nacional, bloqueia a publicação
+        m['linhas']['2600054']['r'].append('2025-12-01 14110')
+        with self.assertRaises(ValueError):
+            run.validar_desastres(d)
+
+    def test_gold_do_painel_nao_carrega_os_municipios(self):
+        seed = json.loads((run.SEED / 'desastres.json').read_text(encoding='utf-8'))
+        self.assertNotIn('municipios', run.gold_desastres(seed))
+        gm = run.gold_desastres_municipios(seed)
+        self.assertEqual(gm['gold'], 'desastres_municipios')
+        self.assertTrue(all(len(c) == 7 for c in gm['linhas']))
 
     def test_protocolo_repetido_falha(self):
         with self.assertRaises(RuntimeError):

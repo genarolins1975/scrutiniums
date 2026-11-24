@@ -198,6 +198,8 @@ export const A_MIGRAR: Record<string, keyof typeof GRUPOS> = {
   "/saneamento/saude-ambiente": 3,
   // Grupo 4, painéis próprios dos observatórios
   "/custo-de-vida/na-minha-cidade": 4,
+  "/territorio/desastres/municipio": 4,
+  "/territorio/desastres/municipio/[ibge]": 4,
   "/territorio/emissoes": 4,
   "/territorio/queimadas/municipio": 4,
   "/territorio/queimadas/municipio/[ibge]": 4,

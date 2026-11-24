@@ -1,3 +1,4 @@
+import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import type { GoldDesastres, Grupo } from "@/lib/territorio/desastres";
 import { GRUPOS, ROTULO_CURTO, serieReconhecida } from "@/lib/territorio/desastres";
 import { NOME_UF } from "@/lib/territorio/queimadas";
@@ -165,37 +166,42 @@ export function DoDesastreAoReconhecimento() {
     { titulo: "A União reconhece", texto: "A Defesa Civil nacional analisa e publica uma portaria. Uma só portaria pode reconhecer dezenas de municípios." },
   ];
   return (
-    <section aria-labelledby="didatico-desastres" className="border-y border-linha bg-marfim">
-      <div className="mx-auto max-w-page px-6 py-12 md:py-14">
-        <p className="rotulo text-mineral">Modelo didático</p>
-        <h2 id="didatico-desastres" className="mt-3 max-w-3xl font-serif text-[clamp(1.5rem,2.8vw,2rem)] leading-tight text-carvao">Do desastre ao reconhecimento federal</h2>
-        <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-          O painel conta registros municipais que chegaram ao último passo. O caminho explica por que essa contagem não é o número de
-          desastres nem o de portarias.
-        </p>
-        <ol className="mt-8 grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
-          {passos.map((p, i) => (
-            <li key={p.titulo} className="flex flex-col bg-papel p-5">
-              <p className="rotulo flex items-baseline gap-2 text-mineral"><span className="tabular-nums text-carvao">{String(i + 1).padStart(2, "0")}</span>Passo</p>
-              <h3 className="mt-2 font-serif text-lg leading-snug text-carvao">{p.titulo}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.texto}</p>
-            </li>
-          ))}
-        </ol>
-        <dl className="mt-6 grid gap-px border border-linha bg-linha md:grid-cols-3">
-          {[
-            ["Uma chuva em 300 municípios", "300 registros municipais"],
-            ["Uma portaria para 40 municípios", "40 registros reconhecidos"],
-            ["Município que não pediu", "fica fora dos reconhecidos, mesmo com desastre"],
-          ].map(([a, b]) => (
-            <div key={a} className="bg-papel p-4">
-              <dt className="text-sm text-carvao">{a}</dt>
-              <dd className="mt-1 text-sm text-carvao-muted">conta como {b}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-4 text-xs leading-relaxed text-mineral">Exemplos ilustrativos, sem dado real. As regras de reconhecimento mudaram ao longo do tempo (2012, 2016, 2020 e 2022).</p>
-      </div>
-    </section>
+    <ModeloDidatico
+      id="didatico-desastres"
+      titulo="Do desastre ao reconhecimento federal"
+      descricao={
+        <>
+          A contagem é de registros municipais que chegaram ao último passo. O caminho explica por que ela não é o número de desastres nem o
+          de portarias. Exemplos ilustrativos, sem dado real.
+        </>
+      }
+      deixaDeFora={[
+        "O desastre que o município não registrou ou cujo reconhecimento não pediu: fica fora dos reconhecidos.",
+        "Os pedidos negados ou ainda em análise: aparecem na base como registro sem reconhecimento.",
+        "As mudanças de regra de 2012, 2016, 2020 e 2022, que alteram o que é reconhecido ao longo da série.",
+      ]}
+    >
+      <ol className="grid gap-px border border-linha bg-linha sm:grid-cols-2 lg:grid-cols-4">
+        {passos.map((p, i) => (
+          <li key={p.titulo} className="flex flex-col bg-papel p-5">
+            <p className="rotulo flex items-baseline gap-2 text-mineral"><span className="tabular-nums text-carvao">{String(i + 1).padStart(2, "0")}</span>Passo</p>
+            <h3 className="mt-2 font-serif text-lg leading-snug text-carvao">{p.titulo}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.texto}</p>
+          </li>
+        ))}
+      </ol>
+      <dl className="mt-6 grid gap-px border border-linha bg-linha md:grid-cols-3">
+        {[
+          ["Uma chuva em 300 municípios", "300 registros municipais"],
+          ["Uma portaria para 40 municípios", "40 registros reconhecidos"],
+          ["Município que não pediu", "fica fora dos reconhecidos, mesmo com desastre"],
+        ].map(([a, b]) => (
+          <div key={a} className="bg-papel p-4">
+            <dt className="text-sm text-carvao">{a}</dt>
+            <dd className="mt-1 text-sm text-carvao-muted">conta como {b}</dd>
+          </div>
+        ))}
+      </dl>
+    </ModeloDidatico>
   );
 }
