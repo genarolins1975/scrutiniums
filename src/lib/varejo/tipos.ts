@@ -251,6 +251,8 @@ export type SegmentoCuradoria = {
   nome: string;
   atividades_pmc: string[];
   classes_pac?: string[];
+  /** Códigos dos grupos da PAC (chaves de `pac.grupos` na gold setorial) que correspondem ao segmento. */
+  classes_pac_ids?: string[];
   equivalencia: "direta" | "parcial" | "sem_equivalencia";
   nota_equivalencia?: string;
   o_que_se_vende?: string;

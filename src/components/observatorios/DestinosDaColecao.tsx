@@ -20,12 +20,15 @@ export function destinosDaColecao(
   {
     excluir = [],
     numeros = {},
+    miniaturas = {},
     titulo,
     descricao,
     proprio,
   }: {
     excluir?: string[];
     numeros?: Record<string, NumeroPorta>;
+    /** Miniatura da figura principal de cada destino, por endereço (desenhada pela coleção com o dado real). */
+    miniaturas?: Record<string, ReactNode>;
     titulo?: string;
     descricao?: ReactNode;
     /** A página que mostra os destinos, quando não é a entrada da coleção (um painel que é porta de tema dentro da coleção). */
@@ -51,6 +54,7 @@ export function destinosDaColecao(
       href: i.href,
       pergunta: resumo(i.href),
       numero: numeros[i.href],
+      miniatura: miniaturas[i.href],
       prontidao: i.publicado ? undefined : "preparacao",
     }));
   if (itens.length === 0) return null;

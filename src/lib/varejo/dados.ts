@@ -341,11 +341,18 @@ export type PerfilCem = {
   documento: string | null;
 };
 
-/** Companhias que ilustram três tipos de negócio no modelo didático da entrada; a primeira com ponte publicada em cada perfil. */
+/**
+ * Companhias que ilustram seis tipos de negócio no modelo didático da entrada; em cada perfil vale a primeira com ponte publicada.
+ * O tipo de cada uma é o segmento em que o ranking da curadoria a classifica (atacarejo e supermercado são formatos do segmento
+ * alimentar). Não é amostra do segmento: é um caso real de cada tipo.
+ */
 export const PERFIS_DO_MODELO: { perfil: string; slugs: string[] }[] = [
   { perfil: "Atacarejo", slugs: ["assai", "grupo-mateus"] },
+  { perfil: "Supermercado", slugs: ["gpa", "carrefour-brasil"] },
   { perfil: "Farmácia", slugs: ["rd-saude", "pague-menos", "panvel"] },
   { perfil: "Moda", slugs: ["lojas-renner", "cea", "guararapes"] },
+  { perfil: "Eletromóveis", slugs: ["casas-bahia"] },
+  { perfil: "Departamento", slugs: ["magazine-luiza", "americanas"] },
 ];
 
 /** O último exercício anual com a ponte de R$ 100 calculada. */
@@ -403,4 +410,220 @@ export function selecaoDeSegmento(g: GoldSetor, c: CuradoriaVarejo, pedido: stri
 export function fraseDoMes(g: GoldSetor, universo: Universo = "restrito"): string {
   const l = leituraBrasil(g, universo);
   return `volume ${variacao(l.volume.mm)} e receita nominal ${variacao(l.receita.mm)} ante o mês anterior, com ajuste sazonal; em 12 meses, ${variacao(l.volume.m12)} e ${variacao(l.receita.m12)}`;
+}
+
+/* ------------------------------------------------------------------ figuras do redesenho (24/11/2026) */
+
+export type ContaDoCupom = {
+  /** O que entra: os R$ 100 de venda líquida e, quando houver, linhas que devolveram dinheiro no ano (crédito de imposto, resultado financeiro positivo). */
+  entradas: { id: PerfilCem["partes"][number]["id"] | "venda"; rotulo: string; valor: number }[];
+  /** O que sai, na ordem da demonstração: custo, despesas, juros, imposto, outros. Só valores positivos. */
+  saidas: { id: PerfilCem["partes"][number]["id"]; rotulo: string; valor: number }[];
+  /** Lucro (positivo) ou prejuízo (negativo) por R$ 100 de venda. */
+  resultado: number;
+  /** Soma das saídas mais o lucro, quando há: o comprimento da barra de R$ 1 em R$ 1. */
+  total: number;
+};
+
+/**
+ * A conta do cupom de R$ 100: entradas de um lado, saídas do outro e o que sobra. As saídas mais o lucro fecham com as entradas;
+ * com prejuízo, as saídas passam das entradas exatamente no valor dele. Parte menor que meio centavo fica de fora.
+ */
+export function contaDoCupom(p: PerfilCem): ContaDoCupom {
+  const semLucro = p.partes.filter((x) => x.id !== "lucro" && Math.abs(x.valor) >= 0.005);
+  const resultado = p.partes.find((x) => x.id === "lucro")?.valor ?? 0;
+  const saidas = semLucro.filter((x) => x.valor > 0);
+  const devolvidas = semLucro.filter((x) => x.valor < 0).map((x) => ({ id: x.id, rotulo: x.rotulo, valor: -x.valor }));
+  return {
+    entradas: [{ id: "venda", rotulo: "Venda líquida", valor: 100 }, ...devolvidas],
+    saidas,
+    resultado,
+    total: saidas.reduce((s, x) => s + x.valor, 0) + Math.max(0, resultado),
+  };
+}
+
+export type PontoTesoura = { mes: string; volume: number | null; receita: number | null; abertura: number | null };
+
+/**
+ * A "tesoura": volume e receita nominal em índice com ajuste sazonal, os dois levados a 100 no primeiro mês do período, para a
+ * distância entre as linhas mostrar quanto a receita se afastou do volume desde então. É a razão entre o índice de cada mês e o do
+ * mês-base, vezes 100: cálculo sobre os índices publicados, sem suavizar. Lacuna continua lacuna; sem o mês-base, tudo ausente.
+ */
+export function tesoura(g: GoldSetor, bloco: BlocoPmc | undefined, periodo: Periodo): PontoTesoura[] {
+  const de = inicioDoPeriodo(g, periodo);
+  const ate = ultimoIndice(g);
+  const bv = v(bloco?.volume.indice_sa, de);
+  const br = v(bloco?.receita.indice_sa, de);
+  const saida: PontoTesoura[] = [];
+  for (let i = de; i <= ate; i++) {
+    const a = v(bloco?.volume.indice_sa, i);
+    const b = v(bloco?.receita.indice_sa, i);
+    const volume = a === null || !bv ? null : (100 * a) / bv;
+    const receita = b === null || !br ? null : (100 * b) / br;
+    saida.push({ mes: g.pmc.meses[i], volume, receita, abertura: volume === null || receita === null ? null : receita - volume });
+  }
+  return saida;
+}
+
+/** O último ponto da tesoura com os dois valores. */
+export function fimDaTesoura(pontos: PontoTesoura[]): PontoTesoura | null {
+  for (let i = pontos.length - 1; i >= 0; i--) if (pontos[i].volume !== null && pontos[i].receita !== null) return pontos[i];
+  return null;
+}
+
+export type Mosaico = {
+  meses: string[];
+  linhas: { slug: string; nomeCurto: string; universo: AtividadePmc["universo"]; valores: (number | null)[] }[];
+  /** Contagem de altas, quedas, estáveis e sem valor em cada mês (difusão), na mesma ordem de `meses`. */
+  contagem: { alta: number; queda: number; estavel: number; semDado: number }[];
+  /** Limite da escala de cor, em %: o percentil 90 do valor absoluto, arredondado para cima. Acima dele a cor satura e a legenda diz. */
+  limite: number;
+};
+
+/**
+ * Mosaico das atividades: uma linha por atividade do universo, uma coluna por mês desde janeiro de 2019, com a variação na medida e
+ * no indicador escolhidos. A contagem de cada mês é a mesma da difusão (o mesmo seletor). Ausência segue null.
+ */
+export function mosaicoAtividades(g: GoldSetor, universo: Universo, medida: Medida, indicador: Indicador): Mosaico {
+  const de = inicioDoPeriodo(g, "2019");
+  const ate = ultimoIndice(g);
+  const k = DEF_MEDIDA[medida].variavel;
+  const slugs = atividadesDoUniverso(g, universo);
+  const meses = g.pmc.meses.slice(de, ate + 1);
+  const linhas = slugs.map((slug) => {
+    const a = g.pmc.atividades[slug];
+    return { slug, nomeCurto: NOME_CURTO_ATIVIDADE[slug] ?? a.nome, universo: a.universo, valores: meses.map((_, j) => v(a[indicador][k], de + j)) };
+  });
+  const contagem = meses.map((_, j) => {
+    const d = difusao(g, universo, medida, indicador, de + j);
+    return { alta: d.alta, queda: d.queda, estavel: d.estavel, semDado: d.semDado };
+  });
+  const abs = linhas.flatMap((l) => l.valores.filter((x): x is number => x !== null).map(Math.abs)).sort((a, b) => a - b);
+  const p90 = abs.length ? abs[Math.min(abs.length - 1, Math.floor(0.9 * abs.length))] : 1;
+  const degrau = p90 > 20 ? 10 : p90 > 6 ? 3 : 1.5;
+  return { meses, linhas, contagem, limite: Math.max(degrau, Math.ceil(p90 / degrau) * degrau) };
+}
+
+export type ParteNoComercio = { id: "receita" | "empresas" | "pessoal"; rotulo: string; varejo: number | null; total: number | null; parte: number | null };
+
+/** O comércio varejista (divisão 47) dentro do comércio total da PAC (veículos, atacado e varejo): receita, empresas e pessoas. */
+export function varejoNoComercio(g: GoldSetor = goldSetor()): ParteNoComercio[] {
+  const t = g.pac.grupos[CODIGO_PAC_TOTAL] ?? null;
+  const r = pacVarejo(g);
+  const de = (id: ParteNoComercio["id"], rotulo: string, campo: "receita_operacional_liquida" | "empresas" | "pessoal_ocupado"): ParteNoComercio => {
+    const varejo = r?.[campo] ?? null;
+    const total = t?.[campo] ?? null;
+    return { id, rotulo, varejo, total, parte: varejo !== null && total ? (100 * varejo) / total : null };
+  };
+  return [de("receita", "Receita operacional líquida", "receita_operacional_liquida"), de("empresas", "Empresas", "empresas"), de("pessoal", "Pessoas ocupadas", "pessoal_ocupado")];
+}
+
+export type Haltere = LinhaAtividade & {
+  /** Universo de referência da atividade e as variações do varejo desse universo no Brasil. */
+  referencia: Universo;
+  brasilVolume: number | null;
+  brasilReceita: number | null;
+  /** Volume da atividade menos o do Brasil, em pontos percentuais. */
+  contraVolume: number | null;
+};
+
+/** As atividades principais (sem as de detalhe) para os halteres, da maior para a menor variação do volume, com a referência do Brasil. */
+export function halteres(g: GoldSetor, medida: Medida, i: number = ultimoIndice(g)): Haltere[] {
+  const linhas = linhasAtividades(g, medida, i).filter((l) => l.universo !== "detalhe");
+  const ordenadas = ordenarPor(linhas.map((l) => ({ ...l, nome: l.nomeCurto })), (l) => l.volume);
+  return ordenadas.map((l) => {
+    const c = contraBrasil(g, l, medida, i);
+    const br = leituraBrasil(g, c.universo, i);
+    return { ...l, referencia: c.universo, brasilVolume: br.volume[medida], brasilReceita: br.receita[medida], contraVolume: c.volume };
+  });
+}
+
+export type Etiqueta = {
+  slug: string;
+  nome: string;
+  /** A primeira frase de "o que se vende", da curadoria. */
+  vende: string | null;
+  /** A atividade da PMC que dá o número e a trajetória; null quando o segmento não tem equivalente na pesquisa. */
+  atividade: string | null;
+  equivalencia: SegmentoCuradoria["equivalencia"];
+  volume: number | null;
+  receita: number | null;
+  trajetoria: { mes: string; valor: number | null }[];
+};
+
+/** Os segmentos da curadoria como etiquetas de gôndola: nome, o que se vende, o número da primeira atividade equivalente e a trajetória dela. */
+export function etiquetasDeSegmento(g: GoldSetor, c: CuradoriaVarejo, medida: Medida, i: number = ultimoIndice(g)): Etiqueta[] {
+  return (c.segmentos?.segmentos ?? []).map((s) => {
+    // a atividade principal antes da de detalhe: o número da etiqueta é o do agregado que a pesquisa publica com série ajustada
+    const equivalentes = (s.atividades_pmc ?? []).filter((a) => g.pmc.atividades[a]);
+    const atividade = equivalentes.find((a) => g.pmc.atividades[a].universo !== "detalhe") ?? equivalentes[0] ?? null;
+    const l = atividade ? linhaAtividade(g, atividade, medida, i) : null;
+    const frase = typeof s.o_que_se_vende === "string" ? s.o_que_se_vende.trim().split(/(?<=[.:])\s/)[0].replace(/[.:]$/, "") : "";
+    return {
+      slug: s.slug, nome: s.nome, vende: frase || null, atividade, equivalencia: s.equivalencia,
+      volume: l?.volume ?? null, receita: l?.receita ?? null,
+      trajetoria: atividade ? trajetoria(g, g.pmc.atividades[atividade], "volume") : [],
+    };
+  });
+}
+
+/** Tipos de comércio varejista da PAC, do maior para o menor em receita, com a parte de cada um na receita do comércio varejista. */
+export function tiposDeComercio(g: GoldSetor = goldSetor()): { codigo: string; rotulo: string; curto: string; receita: number | null; parte: number | null; empresas: number | null; pessoal: number | null; taxaMargem: number | null }[] {
+  const total = pacVarejo(g)?.receita_operacional_liquida ?? null;
+  return [...gruposDoVarejo(g)]
+    .sort((a, b) => (b.receita_operacional_liquida ?? -1) - (a.receita_operacional_liquida ?? -1))
+    .map((x) => ({ codigo: x.codigo, rotulo: x.rotulo, curto: x.curto, receita: x.receita_operacional_liquida, parte: x.receita_operacional_liquida !== null && total ? (100 * x.receita_operacional_liquida) / total : null, empresas: x.empresas, pessoal: x.pessoal_ocupado, taxaMargem: x.taxa_margem }));
+}
+
+export type LinhaDeIndicador = { id: string; nome: string; valor: number; /** Exercício ou ano do valor. */ periodo: string; estimado?: boolean; referencia?: boolean };
+export type FiguraDeIndicador = { titulo: string; unidade: string; casas: number; fonte: string; linhas: LinhaDeIndicador[] };
+
+/** A taxa de margem de comercialização (PAC) dos grupos da pesquisa anual ligados ao segmento, com o comércio varejista como referência. */
+export function taxaDeMargemDoSegmento(s: SegmentoCuradoria, g: GoldSetor): FiguraDeIndicador | null {
+  const ano = String(g.pac.ano);
+  const linhas: LinhaDeIndicador[] = (s.classes_pac_ids ?? [])
+    .map((id) => ({ id, x: g.pac.grupos[id] }))
+    .filter((r) => r.x && typeof r.x.taxa_margem === "number")
+    .map((r) => ({ id: r.id, nome: r.x.nome.replace(/^[\d.+ ]+/, "").replace(/^Comércio (de |em |varejista )?/, "").replace(/^./, (ch) => ch.toUpperCase()), valor: r.x.taxa_margem as number, periodo: ano }));
+  if (!linhas.length) return null;
+  const varejo = pacVarejo(g);
+  if (typeof varejo?.taxa_margem === "number" && !linhas.some((l) => l.id === CODIGO_PAC_VAREJO)) linhas.push({ id: CODIGO_PAC_VAREJO, nome: "Comércio varejista, total", valor: varejo.taxa_margem, periodo: ano, referencia: true });
+  return { titulo: "Taxa de margem de comercialização", unidade: "% sobre o custo das mercadorias revendidas", casas: 1, fonte: `IBGE, Pesquisa Anual de Comércio ${ano}`, linhas };
+}
+
+/**
+ * O indicador operacional que a curadoria manda acompanhar no segmento, calculado quando a fórmula dela usa só o que as golds e o
+ * ranking trazem: giro de estoque, margem bruta e resultado financeiro sobre a receita (demonstrações da CVM, último exercício de
+ * cada companhia que a curadoria lista), venda por loja (ranking: venda ÷ lojas dos grupos do segmento) e taxa de margem de
+ * comercialização (PAC). Indicador com outra fórmula, ou sem dado para nenhuma empresa, devolve null: a ficha mostra só o texto.
+ */
+export function indicadorDoSegmento(s: SegmentoCuradoria, g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): FiguraDeIndicador | null {
+  const io = s.indicador_operacional;
+  const nome = (io?.nome ?? "").toLowerCase();
+  if (!io || !nome) return null;
+  const cvm = "CVM, Demonstrações Financeiras Padronizadas; cálculo da Scrutiniums";
+  const n = (x: unknown): number | null => (typeof x === "number" && Number.isFinite(x) ? x : null);
+  const dasCompanhias = (calc: (p: PeriodoEmpresa) => number | null): LinhaDeIndicador[] =>
+    (io.empresas ?? []).flatMap((slug) => {
+      const emp = e.empresas[slug];
+      if (!emp) return [];
+      for (let i = emp.anuais.length - 1; i >= 0; i--) {
+        const valor = calc(emp.anuais[i]);
+        if (valor !== null) return [{ id: slug, nome: emp.nome, valor, periodo: String(emp.anuais[i].exercicio) }];
+      }
+      return [];
+    });
+  const fechar = (unidade: string, casas: number, fonte: string, linhas: LinhaDeIndicador[]): FiguraDeIndicador | null => (linhas.length ? { titulo: io.nome, unidade, casas, fonte, linhas: [...linhas].sort((a, b) => b.valor - a.valor) } : null);
+  if (nome.includes("giro de estoque")) return fechar("vezes ao ano", 1, cvm, dasCompanhias((p) => { const custo = n(p.custo); const est = n(p.estoques); return custo !== null && est ? Math.abs(custo) / est : null; }));
+  if (nome.includes("margem bruta")) return fechar("% da receita líquida", 1, cvm, dasCompanhias((p) => n(p.margem_bruta_pct) ?? (n(p.lucro_bruto) !== null && n(p.receita_liquida) ? (100 * (p.lucro_bruto as number)) / (p.receita_liquida as number) : null)));
+  if (nome.includes("resultado financeiro")) return fechar("% da receita líquida", 1, cvm, dasCompanhias((p) => (n(p.resultado_financeiro) !== null && n(p.receita_liquida) ? (100 * (p.resultado_financeiro as number)) / (p.receita_liquida as number) : null)));
+  if (nome.includes("venda por")) {
+    const ano = c.ranking?.fonte?.exercicio ? String(c.ranking.fonte.exercicio) : "exercício não informado";
+    const linhas = (c.ranking?.grupos ?? [])
+      .filter((x) => x.segmento === s.slug && typeof x.vendas_milhoes === "number" && typeof x.lojas === "number" && x.lojas > 0)
+      .map((x) => ({ id: x.slug, nome: x.grupo, valor: (x.vendas_milhoes as number) / (x.lojas as number), periodo: ano, estimado: x.natureza === "estimado_pela_fonte" }));
+    return fechar("R$ milhões por loja", 1, "IRTT, Top 300 do Varejo Brasileiro (venda bruta ÷ lojas); cálculo da Scrutiniums", linhas);
+  }
+  if (nome.includes("taxa de margem")) return taxaDeMargemDoSegmento(s, g);
+  return null;
 }

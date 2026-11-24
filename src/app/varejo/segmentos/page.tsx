@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
-import { Controles, FiguraAnalitica, GraficoBarras, GraficoLinhas, LeituraGuiada, PaginaPainel, TabelaDados } from "@/components/painel";
+import { Controles, FiguraAnalitica, LeituraGuiada, PaginaPainel, TabelaDados } from "@/components/painel";
 import { Recolhido } from "@/components/observatorios/Recolhido";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CabecalhoVarejo, FechoDoMetodo, FONTE_PAC, FONTE_PMC, LINK, LinhaFonte, numeroDeVariacao } from "@/components/varejo/comum";
 import { ExportarRecorte } from "@/components/varejo/ExportarRecorte";
+import { BarrasRotuladas } from "@/components/varejo/figuras/BarrasRotuladas";
+import { COR_RECEITA, COR_VOLUME, corDoPasso, limiteSimetrico, passoDivergente } from "@/components/varejo/figuras/escala";
+import { Halteres } from "@/components/varejo/figuras/Halteres";
+import { MapaBlocos } from "@/components/varejo/figuras/MapaBlocos";
+import { Prateleira } from "@/components/varejo/figuras/Prateleira";
+import { BarraDePartes } from "@/components/varejo/figuras/Proporcoes";
+import { Tesoura } from "@/components/varejo/figuras/Tesoura";
 import { MapaEstados } from "@/components/varejo/MapaEstados";
 import { MiniTrajetoria } from "@/components/varejo/MiniTrajetoria";
 import { SegmentoCurado, SegmentoEmApuracao } from "@/components/varejo/SegmentoCurado";
@@ -22,8 +29,12 @@ import {
   goldEmpresas,
   leituraBrasil,
   DEF_MEDIDA,
+  etiquetasDeSegmento,
+  fimDaTesoura,
   formasDeComercializacao,
   goldSetor,
+  halteres,
+  indicadorDoSegmento,
   INDICADORES,
   inicioDoPeriodo,
   linhasAtividades,
@@ -38,6 +49,8 @@ import {
   selecaoDeSegmento,
   serieBrasil,
   serieDoBloco,
+  taxaDeMargemDoSegmento,
+  tesoura,
   trajetoria,
   ufValida,
   ultimoIndice,
@@ -45,7 +58,7 @@ import {
   type Medida,
   type Periodo,
 } from "@/lib/varejo/dados";
-import { bilhoes, direcao, mesCurto, mesExtenso, num, pct, plural, pontos, variacao } from "@/lib/varejo/formato";
+import { bilhoes, direcao, mesCurto, mesExtenso, num, pct, plural, pontos, reais, variacao } from "@/lib/varejo/formato";
 import { emUf, hrefDownload, NOME_CURTO_ATIVIDADE, paginaVarejo, ROTA_BRASIL, ROTA_SEGMENTOS, UFS } from "@/lib/varejo/paginas";
 import { provVarejo } from "@/lib/varejo/proveniencia";
 import { hrefComRecorte as hrefCom } from "@/lib/painel/recorte";
@@ -53,9 +66,10 @@ import { hrefFicha, ROTA_COMPARADOR, ROTA_GRUPOS } from "@/lib/varejo/grupos";
 import type { Indicador, Universo } from "@/lib/varejo/tipos";
 
 /**
- * "Onde a média esconde diferenças?" (coleção Varejo, com conta): as atividades da Pesquisa Mensal de Comércio lado a lado,
- * a abertura de um segmento com a curadoria (`?segmento=`), os estados no mapa e em lista ordenada, a trajetória de um estado
- * contra a do Brasil (`?uf=`) e o comércio eletrônico como canal. O recorte vive na URL e o servidor desenha a página nele.
+ * "Onde a média esconde diferenças?" (coleção Varejo, com conta): as atividades da Pesquisa Mensal de Comércio em halteres (real
+ * contra nominal, com o Brasil como referência), a prateleira de segmentos da curadoria e a ficha visual do segmento aberto
+ * (`?segmento=`), os estados num mapa de blocos e em lista ordenada, a trajetória de um estado contra a do Brasil com a área de
+ * diferença (`?uf=`) e o comércio eletrônico como parte das formas de venda. Figuras em src/components/varejo/figuras. O recorte vive na URL e o servidor desenha a página nele.
  * A curadoria chega por public/varejo/gold/curadoria.json; enquanto um segmento não chega, a página diz "em apuração".
  */
 export const dynamic = "force-dynamic";
@@ -115,7 +129,6 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
     .map((l, k) => ({ l, d: contra[k] }))
     .filter((x) => x.l.universo !== "detalhe" && x.d.volume !== null)
     .sort((a, b) => Math.abs(b.d.volume as number) - Math.abs(a.d.volume as number))[0] ?? null;
-  const semEquivalencia = (c.segmentos?.segmentos ?? []).filter((s) => !(s.atividades_pmc ?? []).some((a) => g.pmc.atividades[a]));
 
   // ---------------------------------------------------------------- segmento escolhido
   const atividade = sel.atividade ? g.pmc.atividades[sel.atividade] : null;
@@ -135,7 +148,26 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
   const serieUf = uf ? serieDoBloco(g, g.pmc.ufs[uf][universo], medida, periodo) : [];
   const ultUf = serieUf[serieUf.length - 1];
   const pacUf = uf ? g.pac.ufs_varejo[uf] : null;
+  // o total do estado no mês em que a pesquisa traz as atividades por UF, contra o mesmo mês do ano anterior: a referência dos halteres do estado
+  const totalUfAa = uf ? serieDoBloco(g, g.pmc.ufs[uf][universo], "aa", "24m").find((p) => p.mes === g.pmc.ufs_atividades.mes) ?? null : null;
   const fonteU = universo === "restrito" ? "pmc_restrito" : "pmc_ampliado";
+
+  // ---------------------------------------------------------------- figuras do redesenho
+  const hs = halteres(g, medida);
+  const gruposHaltere = (["restrito", "ampliado"] as const)
+    .map((u) => ({ u, linhas: hs.filter((x) => x.referencia === u) }))
+    .filter((x) => x.linhas.length > 0)
+    .map(({ u, linhas: ls }) => ({
+      titulo: u === "restrito" ? "Atividades do varejo restrito" : "Só no varejo ampliado",
+      referencia: { nome: `${NOME_UNIVERSO[u]} no Brasil`, volume: ls[0].brasilVolume },
+      linhas: ls.map((x) => ({ id: x.slug, nome: x.nomeCurto, volume: x.volume, receita: x.receita, contra: x.contraVolume, href: `${h({ segmento: x.slug })}#segmento`, selecionado: sel.atividade === x.slug })),
+    }));
+  const etiquetas = etiquetasDeSegmento(g, c, medida);
+  const limiteUf = limiteSimetrico(ufs.map((l) => l[indicador]));
+  // a tesoura do segmento: em índice quando o IBGE publica a série com ajuste sazonal da atividade; senão, as duas variações
+  const tesouraAtividade = atividade ? tesoura(g, atividade, periodo) : [];
+  const fimTesouraAtividade = fimDaTesoura(tesouraAtividade);
+  const e = goldEmpresas();
 
   // ---------------------------------------------------------------- comércio eletrônico
   const formas = formasDeComercializacao(g);
@@ -145,7 +177,7 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
   const ano = String(g.pac.ano);
 
   // vínculo setor ↔ empresa: o concorrente com ficha leva à ficha; a companhia aberta sem ficha, ao comparador
-  const empresas = goldEmpresas().empresas;
+  const empresas = e.empresas;
   const hrefConcorrente = (slug: string | null | undefined): string | null =>
     !slug ? null : c.fichas[slug] ? hrefFicha(slug) : empresas[slug] ? hrefCom(ROTA_COMPARADOR, { e: slug }) : null;
 
@@ -212,13 +244,12 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                   )}
                 </LeituraGuiada>
               }
-              comoInterpretar="Crescimento real é o do volume, já descontados os preços. Crescimento nominal é o da receita em reais. Quando a barra da receita é bem maior que a do volume, a diferença veio sobretudo de preço."
+              comoInterpretar="Crescimento real é o do volume, já descontados os preços. Crescimento nominal é o da receita em reais. Quando o losango da receita fica longe do círculo do volume, a diferença veio sobretudo de preço. A linha vertical é o varejo do Brasil."
               naoConcluir="quanto cada atividade pesou no resultado do varejo: a pesquisa não publica os pesos no SIDRA, e uma atividade pequena pode variar muito sem mover a média."
-              tabela={{ naFigura: "A tabela das atividades vem logo abaixo do gráfico, com os mesmos valores, a trajetória recente de cada uma e o link que abre o segmento." }}
+              tabela={{ naFigura: "A tabela das atividades vem logo abaixo, recolhida, com os mesmos valores, as subdivisões, a trajetória recente de cada uma e o link que abre o segmento." }}
               complemento={
                 <>
                   <TabelaDados
-                    recolhida={false}
                     idioma="pt"
                     titulo={`Atividades do varejo: crescimento real e nominal, variação ${def.curto}, ${quando}`}
                     colunas={["Atividade", "Crescimento real (volume), %", "Volume: diferença contra o Brasil, p.p.", "Comparada com", "Crescimento nominal (receita), %", "Receita menos volume, p.p.", "Volume nos últimos 24 meses", "Universo", "Peso ou contribuição"]}
@@ -248,47 +279,44 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                     recorte={`Brasil, variação ${def.base}, ${quando}`}
                     fonte={`${g.fontes.pmc_atividades.orgao}, ${g.fontes.pmc_atividades.tabela}`}
                   />
-                  {semEquivalencia.length > 0 && (
-                    <p className="t-meta max-w-prose2 text-carvao-muted" data-sem-equivalencia="">
-                      Segmentos empresariais sem atividade equivalente na pesquisa mensal:{" "}
-                      {semEquivalencia.map((s, i) => (
-                        <span key={s.slug}>
-                          {i > 0 && "; "}
-                          <Link href={`${h({ segmento: s.slug })}#segmento`} prefetch={false} scroll className={LINK}>
-                            {s.nome}
-                          </Link>
-                        </span>
-                      ))}
-                      .
-                    </p>
-                  )}
                 </>
               }
+              depois={
+                etiquetas.length > 0 ? (
+                  <div data-prateleira-de-segmentos="">
+                    <h3 className="t-h3 text-carvao">A prateleira de segmentos</h3>
+                    <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">
+                      Os segmentos como o mercado os agrupa, cada um com a variação do volume da atividade do IBGE mais próxima ({def.curto}, {quando}) e a trajetória dos últimos 24 meses. Toque numa etiqueta para abrir a ficha do segmento.
+                    </p>
+                    <div className="mt-4">
+                      <Prateleira
+                        rotulo="Segmentos do varejo"
+                        etiquetas={etiquetas.map((x) => ({
+                          id: x.slug,
+                          nome: x.nome.split(":")[0],
+                          descricao: x.vende,
+                          valor: x.volume,
+                          medida: `volume, ${def.curto}`,
+                          estado: x.atividade ? "sem valor publicado para o período" : "sem atividade equivalente na pesquisa mensal",
+                          serie: x.trajetoria.map((p) => p.valor),
+                          href: `${h({ segmento: x.slug })}#segmento`,
+                          selecionado: sel.segmento?.slug === x.slug || (!sel.segmento && x.atividade !== null && x.atividade === sel.atividade),
+                        }))}
+                      />
+                    </div>
+                  </div>
+                ) : undefined
+              }
             >
-              <GraficoBarras
-                semTabela
-                titulo={`Volume e receita nominal por atividade, variação ${def.curto}, ${quando}`}
-                dados={ordenadas.map((l) => ({ slug: l.slug, nome: l.nomeCurto, volume: l.volume, receita: l.receita }))}
-                chaveCategoria="slug"
-                chaveRotulo="nome"
-                series={[
-                  { id: "volume", rotulo: "Volume (crescimento real)", cor: "var(--cor-gas)" },
-                  { id: "receita", rotulo: "Receita nominal", cor: "var(--serie-referencia)" },
-                ]}
-                unidade="%"
-                casas={1}
-                orientacao="horizontal"
-                alturaCategoria={48}
-                rotulosValor
-              />
+              <Halteres grupos={gruposHaltere} medida={def.curto} />
             </FiguraAnalitica>
 
             {atividade && (
               <FiguraAnalitica
                 id="segmento"
                 pergunta={`${nomeAtividade}: como evoluíram as vendas?`}
-                subtitulo={`${atividade.nome} · volume e receita nominal · variação em %, ${def.base} · Brasil · ${periodoTexto}`}
-                natureza="OBSERVADO"
+                subtitulo={fimTesouraAtividade ? `${atividade.nome} · receita nominal e volume · índice com ajuste sazonal, ${mesCurto(inicio)} = 100 · Brasil · ${periodoTexto}` : `${atividade.nome} · volume e receita nominal · variação em %, ${def.base} · Brasil · ${periodoTexto}`}
+                natureza={fimTesouraAtividade ? "CALCULADO" : "OBSERVADO"}
                 proveniencia={provVarejo(g, "pmc_atividades", {
                   indicador: `Volume de vendas e receita nominal, ${atividade.nome}`, natureza: "OBSERVADO", unidade: `variação em %, ${def.base}`, frequencia: "mensal", inicio, fim: mes,
                   limitacoes: [g.notas.pmc_pesos], download: hrefDownload("atividades.csv"),
@@ -296,6 +324,12 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                 leitura={
                   ultAtividade ? (
                     <LeituraGuiada>
+                      {fimTesouraAtividade && (
+                        <>
+                          De {mesExtenso(inicio)} a {mesExtenso(fimTesouraAtividade.mes)}, a receita em reais de {nomeAtividade.toLowerCase()} variou {variacao((fimTesouraAtividade.receita as number) - 100)} e o volume vendido,{" "}
+                          {variacao((fimTesouraAtividade.volume as number) - 100)}.{" "}
+                        </>
+                      )}
                       Em {mesExtenso(ultAtividade.mes)}, o volume de {nomeAtividade.toLowerCase()} variou {variacao(ultAtividade.volume)} e a receita nominal, {variacao(ultAtividade.receita)}, {def.base}.
                       {atividade.universo === "ampliado" && " Esta atividade só entra no varejo ampliado."}
                       {atividade.universo === "detalhe" && ` Esta atividade é parte de ${(NOME_CURTO_ATIVIDADE[atividade.parte_de ?? ""] ?? "").toLowerCase()}.`}
@@ -304,10 +338,10 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                 }
                 naoConcluir="que as companhias do segmento tiveram esse desempenho: a pesquisa mede todas as empresas da atividade, grandes e pequenas, e a correspondência entre a atividade do IBGE e o segmento empresarial quase nunca é exata."
                 tabela={{
-                  titulo: `${nomeAtividade}: volume e receita nominal, variação ${def.curto}`,
-                  colunas: ["Mês", "Volume, %", "Receita nominal, %", "Receita menos volume, p.p."],
-                  linhas: serieAtividade.map((p) => [mesCurto(p.mes), p.volume, p.receita, p.diferenca]),
-                  casas: [null, 1, 1, 1],
+                  titulo: `${nomeAtividade}: volume e receita nominal, variação ${def.curto}${fimTesouraAtividade ? ` e índice com ${mesCurto(inicio)} = 100` : ""}`,
+                  colunas: ["Mês", "Volume, %", "Receita nominal, %", "Receita menos volume, p.p.", ...(fimTesouraAtividade ? ["Receita nominal, índice", "Volume, índice"] : [])],
+                  linhas: serieAtividade.map((p, k) => [mesCurto(p.mes), p.volume, p.receita, p.diferenca, ...(fimTesouraAtividade ? [tesouraAtividade[k]?.receita ?? null, tesouraAtividade[k]?.volume ?? null] : [])]),
+                  casas: [null, 1, 1, 1, 1, 1],
                   limite: 24,
                   csv: hrefDownload("atividades.csv"),
                 }}
@@ -315,7 +349,7 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                   <>
                     <div className="space-y-8" data-curadoria-segmento="">
                       <h3 className="t-h3 text-carvao">Como funciona este negócio</h3>
-                      {curados.length > 0 ? curados.map((s) => <SegmentoCurado key={s.slug} s={s} hrefDe={hrefConcorrente} />) : <SegmentoEmApuracao atividade={nomeAtividade} />}
+                      {curados.length > 0 ? curados.map((s) => <SegmentoCurado key={s.slug} s={s} hrefDe={hrefConcorrente} indicador={indicadorDoSegmento(s, g, e, c)} margem={taxaDeMargemDoSegmento(s, g)} />) : <SegmentoEmApuracao atividade={nomeAtividade} />}
                     </div>
                     <p className="t-meta text-carvao-muted">
                       <Link href={`${h({ segmento: null })}#atividades`} prefetch={false} className={LINK}>
@@ -328,27 +362,42 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                 <div className="mb-4">
                   <SeletorUrl id="sel-periodo-seg" rotulo="Período" atual={periodo} opcoes={PERIODOS.map((p) => ({ valor: p, rotulo: NOME_PERIODO[p], href: h({ periodo: p }) }))} />
                 </div>
-                <GraficoLinhas
-                  semTabela
-                  titulo={`${nomeAtividade}: volume de vendas e receita nominal`}
-                  dados={serieAtividade.map((p) => ({ mes: p.mes, volume: p.volume, receita: p.receita }))}
-                  chaveX="mes"
-                  formatoX="mes"
-                  series={[
-                    { id: "volume", rotulo: "Volume de vendas", cor: "var(--cor-gas)", espessura: 2.2 },
-                    { id: "receita", rotulo: "Receita nominal", cor: "var(--serie-referencia)" },
-                  ]}
-                  unidade="%"
-                  casas={1}
-                  zeroNoEixo
-                  altura={320}
-                />
+                {fimTesouraAtividade ? (
+                  <Tesoura
+                    titulo={`${nomeAtividade}: receita nominal e volume de vendas em índice, ${mesCurto(inicio)} = 100`}
+                    meses={tesouraAtividade.map((p) => p.mes)}
+                    a={{ rotulo: "Receita nominal", valores: tesouraAtividade.map((p) => p.receita), cor: COR_RECEITA, espessura: 2 }}
+                    b={{ rotulo: "Volume de vendas", valores: tesouraAtividade.map((p) => p.volume), cor: COR_VOLUME, espessura: 2.5 }}
+                    formato="indice"
+                    base={100}
+                    rotuloBase={`${mesCurto(inicio)} = 100`}
+                    rotuloArea="Diferença: aproxima o efeito dos preços"
+                    rotuloAreaAbaixo="Volume acima da receita"
+                    corArea="var(--escala-varejo-neg-1)"
+                    corAreaAbaixo="var(--escala-varejo-pos-1)"
+                    altura={320}
+                  />
+                ) : (
+                  <Tesoura
+                    titulo={`${nomeAtividade}: volume de vendas e receita nominal, variação ${def.curto}`}
+                    meses={serieAtividade.map((p) => p.mes)}
+                    a={{ rotulo: "Receita nominal", valores: serieAtividade.map((p) => p.receita), cor: COR_RECEITA, espessura: 2 }}
+                    b={{ rotulo: "Volume de vendas", valores: serieAtividade.map((p) => p.volume), cor: COR_VOLUME, espessura: 2.5 }}
+                    formato="variacao"
+                    base={0}
+                    rotuloArea="Receita acima do volume"
+                    rotuloAreaAbaixo="Volume acima da receita"
+                    corArea="var(--escala-varejo-neg-1)"
+                    corAreaAbaixo="var(--escala-varejo-pos-1)"
+                    altura={320}
+                  />
+                )}
               </FiguraAnalitica>
             )}
 
             {!atividade && sel.segmento && (
               <Recolhido id="segmento" aberto nivelTitulo={2} titulo={sel.segmento.nome} resumo="Segmento empresarial sem atividade equivalente na pesquisa mensal: descrição da curadoria, sem série do IBGE.">
-                <SegmentoCurado s={sel.segmento} hrefDe={hrefConcorrente} />
+                <SegmentoCurado s={sel.segmento} hrefDe={hrefConcorrente} indicador={indicadorDoSegmento(sel.segmento, g, e, c)} margem={taxaDeMargemDoSegmento(sel.segmento, g)} />
                 <p className="t-meta mt-6 text-carvao-muted">
                   <Link href={`${h({ segmento: null })}#atividades`} prefetch={false} className={LINK}>
                     Fechar o segmento e voltar às atividades
@@ -396,7 +445,7 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                   )}
                 </LeituraGuiada>
               }
-              comoInterpretar="As cores do mapa dividem os 27 estados em cinco grupos de tamanho parecido, do menor ao maior valor: mostram posição relativa, não um limite entre bom e ruim. A lista ao lado traz os mesmos valores em ordem."
+              comoInterpretar="A cor de cada bloco parte do zero: azul para alta, sépia para queda, mais escura quanto maior a variação. Mostra tamanho e sentido da variação, não um limite entre bom e ruim. A lista ao lado traz os mesmos valores em ordem."
               naoConcluir="que um estado com variação maior vende mais: a variação parte da base de cada estado, e estados com comércio pequeno oscilam mais de um mês para o outro."
               tabela={{
                 titulo: `${nomeU} por estado, variação ${def.curto}, ${quando}`,
@@ -407,36 +456,54 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                 csv: hrefDownload("ufs.csv"),
               }}
             >
-              <div className="grid gap-x-10 gap-y-8 lg:grid-cols-2">
-                <div className="min-w-0" data-mapa-legado="">
+              <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)]">
+                <div className="min-w-0">
+                  <MapaBlocos
+                    titulo={`${nomeInd} do ${nomeU.toLowerCase()} por unidade da federação, variação ${def.curto}, ${quando}`}
+                    blocos={ufs.map((l) => ({ uf: l.uf, nome: l.nome, valor: l[indicador], href: `${h({ uf: l.uf })}#estado` }))}
+                    limite={limiteUf}
+                    selecionado={uf}
+                  />
+                  <p className="t-meta mt-3 max-w-[30rem] text-carvao-muted">Cada bloco é um estado, na posição aproximada dele no país e todos do mesmo tamanho. Toque num bloco para abrir a trajetória do estado contra a do Brasil.</p>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="rotulo text-mineral">Da maior para a menor variação</h3>
+                  <div className="mt-2">
+                    <BarrasRotuladas
+                      titulo={`${nomeInd} do ${nomeU.toLowerCase()} por estado, da maior para a menor variação`}
+                      larguraDoNome="10.5rem"
+                      limiteInicial={14}
+                      rotuloMais={`Ver os ${num(ufs.length)} estados`}
+                      linhas={[
+                        ...ufs.map((l) => {
+                          const passo = passoDivergente(l[indicador], limiteUf);
+                          return { id: l.uf, nome: `${l.nome} (${l.uf})`, valor: l[indicador], texto: variacao(l[indicador]), cor: passo ? corDoPasso(passo === "centro" ? "pos-1" : passo) : undefined, href: `${h({ uf: l.uf })}#estado`, selecionado: uf === l.uf };
+                        }),
+                      ]}
+                    />
+                  </div>
+                  <p className="t-meta mt-2 text-carvao-muted">
+                    Brasil: <span className="tabular-nums text-carvao">{variacao(ultBrasil?.[indicador])}</span>.
+                  </p>
+                </div>
+              </div>
+              <details className="group/malha mt-6 border-t border-linha" data-mapa-legado="">
+                <summary className="flex min-h-[44px] cursor-pointer items-center text-sm text-carvao-muted hover:text-carvao">
+                  <span className="group-open/malha:hidden">Ver no mapa com a malha do IBGE</span>
+                  <span className="hidden group-open/malha:inline">Fechar o mapa com a malha do IBGE</span>
+                </summary>
+                <div className="max-w-2xl pb-4">
                   <MapaEstados
                     titulo={`${nomeInd} do ${nomeU.toLowerCase()} por unidade da federação`}
                     valores={Object.fromEntries(ufs.map((l) => [l.cod, l[indicador]]))}
                     unidade="%"
                     periodo={quando}
-                    nota={`Variação ${def.base}. Toque num estado para abrir a trajetória dele.`}
+                    nota={`Variação ${def.base}. Neste mapa as cores dividem os estados em cinco grupos de tamanho parecido, do menor ao maior valor; no mapa de blocos, a cor parte do zero. Toque num estado para abrir a trajetória dele.`}
                     selecionado={uf ? UFS[uf].cod : null}
                     hrefs={{ "": h({ uf: null }), ...Object.fromEntries(Object.entries(UFS).map(([sg, u]) => [u.cod, h({ uf: sg })])) }}
                   />
                 </div>
-                <div className="min-w-0">
-                  <GraficoBarras
-                    semTabela
-                    titulo={`${nomeInd} do ${nomeU.toLowerCase()} por estado, da maior para a menor variação`}
-                    dados={ufs.map((l) => ({ uf: l.uf, nome: `${l.nome} (${l.uf})`, valor: l[indicador] }))}
-                    chaveCategoria="uf"
-                    chaveRotulo="nome"
-                    series={[{ id: "valor", rotulo: nomeInd, cor: "var(--cor-gas)" }]}
-                    unidade="%"
-                    casas={1}
-                    orientacao="horizontal"
-                    alturaCategoria={32}
-                    limiteInicial={12}
-                    rotulosValor
-                    selecionado={uf}
-                  />
-                </div>
-              </div>
+              </details>
               <div className="mt-4">
                 <ExportarRecorte
                   nome={`varejo-estados-${universo}-${medida}-${mes}`}
@@ -478,20 +545,47 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                   csv: hrefDownload("ufs.csv"),
                 }}
                 complemento={
-                  <TabelaDados
-                    recolhida={false}
-                    idioma="pt"
-                    tituloVisivel={`Atividades em ${UFS[uf].nome}, ${mesExtenso(g.pmc.ufs_atividades.mes)}`}
-                    id="estado-atividades"
-                    lead="Por estado, o IBGE divulga as atividades só com as variações do mês mais recente: não há série para desenhar. Onde a pesquisa não publica a atividade no estado, a célula diz isso."
-                    titulo={`Atividades do varejo em ${UFS[uf].nome}, ${mesExtenso(g.pmc.ufs_atividades.mes)}`}
-                    colunas={["Atividade", "Volume, interanual, %", "Volume, 12 meses, %", "Receita, interanual, %", "Receita, 12 meses, %"]}
-                    linhas={atividadesDaUf(g, uf).map((a) => [a.nomeCurto, a.volumeAa, a.volumeM12, a.receitaAa, a.receitaM12])}
-                    casas={[null, 1, 1, 1, 1]}
-                    limite={20}
-                    ausencia={Object.fromEntries(["Volume, interanual, %", "Volume, 12 meses, %", "Receita, interanual, %", "Receita, 12 meses, %"].map((k) => [k, "não publicado"]))}
-                    fixarPrimeiraColuna
-                  />
+                  <div className="border-t border-linha pt-5" data-atividades-do-estado="">
+                    <h3 className="t-h3 text-carvao">
+                      Atividades em {UFS[uf].nome}, {mesExtenso(g.pmc.ufs_atividades.mes)}
+                    </h3>
+                    <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">
+                      Por estado, o IBGE divulga as atividades só com as variações do mês mais recente: não há série para desenhar. Aqui, a variação contra o mesmo mês do ano anterior; a linha vertical é o {nomeU.toLowerCase()} do estado.
+                    </p>
+                    <div className="mt-4">
+                      <Halteres
+                        medida="contra o mesmo mês do ano anterior"
+                        rotuloReferencia={`Volume do ${nomeU.toLowerCase()} ${emUf(uf)}`}
+                        rotuloContra="Volume contra o estado"
+                        grupos={[
+                          {
+                            titulo: "Atividade",
+                            referencia: { nome: `${nomeU} ${emUf(uf)}`, volume: totalUfAa?.volume ?? null },
+                            linhas: ordenarPor(atividadesDaUf(g, uf).map((a) => ({ ...a, nome: a.nomeCurto })), (a) => a.volumeAa).map((a) => ({
+                              id: `${uf}-${a.slug}`,
+                              nome: a.nomeCurto,
+                              volume: a.volumeAa,
+                              receita: a.receitaAa,
+                              contra: a.volumeAa === null || totalUfAa?.volume == null ? null : Number((a.volumeAa - totalUfAa.volume).toFixed(1)),
+                            })),
+                          },
+                        ]}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TabelaDados
+                        idioma="pt"
+                        id="estado-atividades"
+                        titulo={`Atividades do varejo em ${UFS[uf].nome}, ${mesExtenso(g.pmc.ufs_atividades.mes)}`}
+                        colunas={["Atividade", "Volume, interanual, %", "Volume, 12 meses, %", "Receita, interanual, %", "Receita, 12 meses, %"]}
+                        linhas={atividadesDaUf(g, uf).map((a) => [a.nomeCurto, a.volumeAa, a.volumeM12, a.receitaAa, a.receitaM12])}
+                        casas={[null, 1, 1, 1, 1]}
+                        limite={20}
+                        ausencia={Object.fromEntries(["Volume, interanual, %", "Volume, 12 meses, %", "Receita, interanual, %", "Receita, 12 meses, %"].map((k) => [k, "não publicado"]))}
+                        fixarPrimeiraColuna
+                      />
+                    </div>
+                  </div>
                 }
                 depois={
                   <p className="t-meta text-carvao-muted">
@@ -504,19 +598,15 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
                 <div className="mb-4">
                   <SeletorUrl id="sel-periodo" rotulo="Período" atual={periodo} opcoes={PERIODOS.map((p) => ({ valor: p, rotulo: NOME_PERIODO[p], href: h({ periodo: p }) }))} />
                 </div>
-                <GraficoLinhas
-                  semTabela
-                  titulo={`${nomeInd} do ${nomeU.toLowerCase()}: ${UFS[uf].nome} e Brasil`}
-                  dados={serieUf.map((p, i) => ({ mes: p.mes, uf: p[indicador], brasil: brasil[i]?.[indicador] ?? null }))}
-                  chaveX="mes"
-                  formatoX="mes"
-                  series={[
-                    { id: "uf", rotulo: UFS[uf].nome, cor: "var(--cor-gas)", espessura: 2.2 },
-                    { id: "brasil", rotulo: "Brasil", cor: "var(--serie-referencia)" },
-                  ]}
-                  unidade="%"
-                  casas={1}
-                  zeroNoEixo
+                <Tesoura
+                  titulo={`${nomeInd} do ${nomeU.toLowerCase()}, variação ${def.curto}: ${UFS[uf].nome} e Brasil`}
+                  meses={serieUf.map((p) => p.mes)}
+                  a={{ rotulo: UFS[uf].nome, valores: serieUf.map((p) => p[indicador]), cor: COR_VOLUME, espessura: 2.5 }}
+                  b={{ rotulo: "Brasil", valores: serieUf.map((_, i) => brasil[i]?.[indicador] ?? null), cor: COR_RECEITA, espessura: 2 }}
+                  formato="variacao"
+                  base={0}
+                  rotuloArea={`${UFS[uf].nome} acima do Brasil`}
+                  rotuloAreaAbaixo={`${UFS[uf].nome} abaixo do Brasil`}
                   altura={320}
                 />
               </FiguraAnalitica>
@@ -550,25 +640,18 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
               }}
               depois={
                 c.segmentos?.ecommerce?.texto ? (
-                  <div className="max-w-prose2 border-t border-linha pt-4" data-curadoria-ecommerce="">
-                    <h3 className="rotulo text-mineral">Nota da curadoria sobre o canal</h3>
-                    <p className="t-meta mt-2 text-carvao-muted">{c.segmentos.ecommerce.texto}</p>
-                  </div>
+                  <details className="max-w-prose2 border-t border-linha" data-curadoria-ecommerce="">
+                    <summary className="rotulo flex min-h-[44px] cursor-pointer items-center text-carvao-muted hover:text-carvao">Nota da curadoria sobre o canal</summary>
+                    <p className="t-meta pb-2 text-carvao-muted">{c.segmentos.ecommerce.texto}</p>
+                  </details>
                 ) : undefined
               }
             >
-              <GraficoBarras
-                semTabela
+              <BarraDePartes
                 titulo={`Receita bruta de revenda por forma de comercialização, ${ano}`}
-                dados={formas.map((f) => ({ forma: f.forma, nome: f.curto, valor: f.valor === null ? null : f.valor / 1e6 }))}
-                chaveCategoria="forma"
-                chaveRotulo="nome"
-                series={[{ id: "valor", rotulo: "Receita bruta de revenda", cor: "var(--cor-gas)" }]}
-                unidade="R$ bilhões"
-                casas={1}
-                orientacao="horizontal"
-                alturaCategoria={40}
-                rotulosValor
+                destaque="Internet"
+                casas={2}
+                partes={formas.map((f) => ({ id: f.forma, rotulo: f.curto, parte: f.parte, valor: f.valor === null ? undefined : reais(f.valor * 1e3, 1) }))}
               />
             </FiguraAnalitica>
           </>
@@ -603,8 +686,8 @@ export default function PaginaSegmentos({ searchParams }: Busca) {
             <LinhaFonte f={g.fontes.pac_formas} periodo={ano} />
             <LinhaFonte f={g.fontes.pac_uf} periodo={ano} />
             <p>
-              A descrição de cada segmento empresarial é curadoria da Scrutiniums, escrita a partir de documentos públicos citados em cada texto; as explicações de causa dadas por empresas são atribuídas a elas. A malha do mapa é a
-              oficial do IBGE, já usada na plataforma. Fonte das formas de comercialização: {FONTE_PAC} {ano}.
+              A descrição de cada segmento empresarial é curadoria da Scrutiniums, escrita a partir de documentos públicos citados em cada texto; as explicações de causa dadas por empresas são atribuídas a elas. O mapa de blocos é um esquema, com
+              os estados do mesmo tamanho e em posição aproximada; a malha do mapa alternativo é a oficial do IBGE, já usada na plataforma. Fonte das formas de comercialização: {FONTE_PAC} {ano}.
             </p>
             <FechoDoMetodo g={g} />
           </>

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
-import { Controles, FiguraAnalitica, GraficoBarras, GraficoLinhas, LeituraGuiada, PaginaPainel } from "@/components/painel";
+import { Controles, FiguraAnalitica, LeituraGuiada, PaginaPainel } from "@/components/painel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CabecalhoVarejo, FechoDoMetodo, FONTE_PAC, FONTE_PMC, LINK, LinhaFonte, numeroDeVariacao } from "@/components/varejo/comum";
 import { ExportarRecorte } from "@/components/varejo/ExportarRecorte";
+import { Colunas } from "@/components/varejo/figuras/Colunas";
+import { COR_RECEITA, COR_VOLUME } from "@/components/varejo/figuras/escala";
+import { LinhaContexto } from "@/components/varejo/figuras/LinhaContexto";
+import { MosaicoCalor } from "@/components/varejo/figuras/MosaicoCalor";
+import { BarraDePartes, BarraDeUmaParte, QuadroDeCem } from "@/components/varejo/figuras/Proporcoes";
+import { Tesoura } from "@/components/varejo/figuras/Tesoura";
 import { SelectUrl } from "@/components/varejo/SelectUrl";
 import { SeletorUrl } from "@/components/varejo/SeletorUrl";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
@@ -14,6 +20,7 @@ import {
   atividadesDoUniverso,
   DEF_MEDIDA,
   difusao,
+  fimDaTesoura,
   goldSetor,
   gruposDoVarejo,
   INDICADORES,
@@ -22,6 +29,7 @@ import {
   MEDIDAS,
   mesAnterior,
   mesesSelecionaveis,
+  mosaicoAtividades,
   NOME_INDICADOR,
   NOME_PERIODO,
   NOME_UNIVERSO,
@@ -31,28 +39,35 @@ import {
   porteDoVarejo,
   serieBrasil,
   serieMacro,
+  tesoura,
+  tiposDeComercio,
   tituloDoAchado,
   ultimoComValor,
   UNIVERSOS,
+  varejoNoComercio,
   type Medida,
   type Periodo,
 } from "@/lib/varejo/dados";
-import { direcao, mesCurto, mesExtenso, num, pct, plural, pontos, trilhoes, variacao } from "@/lib/varejo/formato";
+import { direcao, mesCurto, mesExtenso, num, pct, plural, pontos, reais, trilhoes, variacao } from "@/lib/varejo/formato";
 import { hrefDownload, NOME_CURTO_ATIVIDADE, paginaVarejo, ROTA_BRASIL, ROTA_SEGMENTOS } from "@/lib/varejo/paginas";
 import { provVarejo } from "@/lib/varejo/proveniencia";
 import type { Indicador, Universo } from "@/lib/varejo/tipos";
 
 /**
- * "O que mudou nas vendas?" (coleção Varejo, com conta). O título é o achado do último mês publicado, calculado da gold pelo
- * mesmo seletor do gráfico principal (tituloDoAchado). O recorte vive na URL: universo (restrito ou ampliado), medida de
+ * "O que mudou nas vendas?" (coleção Varejo, com conta). O título é o achado do último mês publicado, calculado da gold
+ * (tituloDoAchado). Cada seção é uma pergunta com uma figura dominante (src/components/varejo/figuras): a tesoura receita × volume, as
+ * colunas da diferença, o mosaico das atividades com a difusão, o tamanho do mercado em blocos e o contexto em pequenos múltiplos. O recorte vive na URL: universo (restrito ou ampliado), medida de
  * variação, período, mês da contagem e indicador da contagem; o servidor lê os parâmetros e a página inteira sai no recorte,
  * com os textos acompanhando a seleção. Sem parâmetro vale o padrão; parâmetro inválido também.
  */
 export const dynamic = "force-dynamic";
 
 const pagina = paginaVarejo("brasil");
-// período padrão de cinco anos: desde 2019, o tombo e a volta de 2020 achatam a variação mensal dos demais meses; a série inteira fica a um toque
-const PADRAO = { universo: "restrito", medida: "mm", periodo: "5a", indicador: "volume" } as const;
+// período padrão de cinco anos: desde 2019, o tombo e a volta de 2020 achatam os demais meses; a série inteira fica a um toque.
+// Medida padrão interanual (redesenho de 24/11/2026): a figura principal passou a ser a tesoura em índice, que não depende da medida, e
+// a medida ficou só com a diferença e com o mosaico das atividades, onde a variação mensal é ruído. É também a medida dos números que a
+// entrada da coleção cita ao levar para #diferenca e #difusao.
+const PADRAO = { universo: "restrito", medida: "aa", periodo: "5a", indicador: "volume" } as const;
 
 type Busca = { searchParams: ParametrosPagina };
 
@@ -130,6 +145,14 @@ export default function PaginaBrasil({ searchParams }: Busca) {
   ] as const;
 
   const periodoTexto = `${mesCurto(inicio)} a ${mesCurto(ult.mes)}`;
+
+  // ---------------------------------------------------------------- figuras do redesenho
+  const pontosTesoura = tesoura(g, g.pmc.brasil[universo], periodo);
+  const fimT = fimDaTesoura(pontosTesoura);
+  const mosaico = mosaicoAtividades(g, universo, medida, indicador);
+  const noComercio = varejoNoComercio(g);
+  const tipos = tiposDeComercio(g);
+  const desdeInicio = (x: number | null | undefined) => (x == null ? null : x - 100);
   const resumoRecorte = `${nomeU}, variação ${def.base}, ${NOME_PERIODO[periodo].toLowerCase()} (${periodoTexto}).`;
 
   return (
@@ -166,71 +189,73 @@ export default function PaginaBrasil({ searchParams }: Busca) {
             <Controles
               rotulo="Recorte das vendas"
               idioma="pt"
-              resumo={<>Mostrando: {resumoRecorte} O universo e a medida valem também para a diferença e para a contagem das atividades.</>}
+              resumo={<>Mostrando: {resumoRecorte} O universo vale para a página toda; a variação, para a diferença e para o mosaico das atividades.</>}
               limpar={foraDoPadrao ? { href: ROTA_BRASIL } : undefined}
             >
               <SeletorUrl id="sel-universo" rotulo="Universo" atual={universo} opcoes={UNIVERSOS.map((u) => ({ valor: u, rotulo: NOME_UNIVERSO[u], href: h({ universo: u }) }))} />
-              <SeletorUrl id="sel-medida" rotulo="Variação" atual={medida} opcoes={MEDIDAS.map((m) => ({ valor: m, rotulo: DEF_MEDIDA[m].rotulo, href: h({ medida: m }) }))} />
               <SeletorUrl id="sel-periodo" rotulo="Período" atual={periodo} opcoes={PERIODOS.map((p) => ({ valor: p, rotulo: NOME_PERIODO[p], href: h({ periodo: p }) }))} />
+              <SeletorUrl id="sel-medida" rotulo="Variação" atual={medida} opcoes={MEDIDAS.map((m) => ({ valor: m, rotulo: DEF_MEDIDA[m].rotulo, href: h({ medida: m }) }))} />
             </Controles>
 
             <FiguraAnalitica
               id="vendas"
               pergunta="Vendeu-se mais mercadoria ou só entrou mais dinheiro?"
-              subtitulo={`${nomeU} · volume e receita nominal · variação em %, ${def.base} · Brasil · ${periodoTexto}`}
-              natureza="OBSERVADO"
+              subtitulo={`${nomeU} · receita nominal e volume de vendas · índice com ajuste sazonal, ${mesCurto(inicio)} = 100 · Brasil · ${periodoTexto}`}
+              natureza="CALCULADO"
               proveniencia={provVarejo(g, fonteU, {
-                indicador: `Volume de vendas e receita nominal do ${nomeUmin}`, natureza: "OBSERVADO", unidade: `variação em %, ${def.base}`, frequencia: "mensal", inicio, fim: ult.mes,
-                limitacoes: [g.notas.pmc_base, "Os meses mais recentes podem ser revisados pelo IBGE nas divulgações seguintes."], download: hrefDownload("serie-brasil.csv"),
+                indicador: `Receita nominal e volume de vendas do ${nomeUmin}, em índice`, natureza: "CALCULADO", unidade: `índice com ajuste sazonal, ${mesCurto(inicio)} = 100`, frequencia: "mensal", inicio, fim: ult.mes,
+                formula: "índice com ajuste sazonal do mês ÷ índice com ajuste sazonal do primeiro mês do período × 100",
+                transformacoes: ["Mudança de base dos índices publicados pelo IBGE para o primeiro mês do período escolhido; nenhuma suavização"],
+                limitacoes: [g.notas.pmc_base, "Os meses mais recentes podem ser revisados pelo IBGE nas divulgações seguintes.", "A distância entre as linhas aproxima o efeito dos preços; não é um índice de preços."], download: hrefDownload("serie-brasil.csv"),
               })}
               leitura={
                 <LeituraGuiada>
-                  Em {mesExtenso(ult.mes)}, o volume do {nomeUmin} variou {variacao(ult.volume)} e a receita nominal, {variacao(ult.receita)}, {def.base}.
+                  {fimT ? (
+                    <>
+                      De {mesExtenso(inicio)} a {mesExtenso(fimT.mes)}, a receita em reais do {nomeUmin} variou {variacao(desdeInicio(fimT.receita))} e o volume vendido, {variacao(desdeInicio(fimT.volume))}. As linhas se
+                      afastaram {num(fimT.abertura, 1)} pontos do índice.
+                    </>
+                  ) : (
+                    <>O IBGE não publicou os índices com ajuste sazonal para este recorte.</>
+                  )}
                 </LeituraGuiada>
               }
-              comoInterpretar={
-                <>
-                  Volume é a venda descontada a variação dos preços; receita nominal é a venda em reais correntes. As duas linhas partem dos índices do IBGE com média de 2022 igual a 100.
-                  {medida === "mm" && " A variação no mês usa a série com ajuste sazonal, que desconta efeitos de calendário como o Natal."}
-                </>
-              }
-              naoConcluir="que a receita maior significa mais mercadoria vendida: quando os preços sobem, a receita cresce mesmo com o volume parado. O gráfico também não diz por que as vendas mudaram."
+              comoInterpretar="As duas linhas saem de 100 no primeiro mês do período. Volume é a venda descontada a variação dos preços; receita nominal é a venda em reais correntes. A área entre elas é o quanto a receita se afastou do volume: uma aproximação do efeito dos preços."
+              naoConcluir="que a receita maior significa mais mercadoria vendida: quando os preços sobem, a receita cresce mesmo com o volume parado. O gráfico também não diz por que as vendas mudaram, e a abertura depende do mês em que o período começa."
               complemento={
                 <>
                   <ExportarRecorte
-                    nome={`varejo-brasil-${universo}-${medida}-${periodo}`}
-                    colunas={["mes", "volume_pct", "receita_nominal_pct", "receita_menos_volume_pp"]}
-                    linhas={serie.map((p) => [p.mes, p.volume, p.receita, p.diferenca])}
-                    recorte={resumoRecorte}
+                    nome={`varejo-brasil-${universo}-indice-${periodo}`}
+                    colunas={["mes", "receita_nominal_indice", "volume_indice", "receita_menos_volume_pontos"]}
+                    linhas={pontosTesoura.map((p) => [p.mes, p.receita === null ? null : Number(p.receita.toFixed(2)), p.volume === null ? null : Number(p.volume.toFixed(2)), p.abertura === null ? null : Number(p.abertura.toFixed(2))])}
+                    recorte={`${nomeU}, índice com ajuste sazonal com ${mesCurto(inicio)} = 100, ${NOME_PERIODO[periodo].toLowerCase()} (${periodoTexto}).`}
                     fonte={`${g.fontes[fonteU].orgao}, ${g.fontes[fonteU].tabela}`}
                   />
                   <Composicao universo={universo} g={g} />
                 </>
               }
               tabela={{
-                titulo: `${nomeU}: volume e receita nominal, variação ${def.curto}`,
-                colunas: ["Mês", "Volume, %", "Receita nominal, %", "Receita menos volume, p.p."],
-                linhas: serie.map((p) => [mesCurto(p.mes), p.volume, p.receita, p.diferenca]),
+                titulo: `${nomeU}: receita nominal e volume em índice, ${mesCurto(inicio)} = 100`,
+                colunas: ["Mês", "Receita nominal, índice", "Volume, índice", "Receita menos volume, pontos do índice"],
+                linhas: pontosTesoura.map((p) => [mesCurto(p.mes), p.receita, p.volume, p.abertura]),
                 casas: [null, 1, 1, 1],
                 limite: 24,
                 csv: hrefDownload("serie-brasil.csv"),
               }}
             >
-              <GraficoLinhas
-                semTabela
-                titulo={`${nomeU}: volume de vendas e receita nominal`}
-                dados={serie.map((p) => ({ mes: p.mes, volume: p.volume, receita: p.receita }))}
-                chaveX="mes"
-                formatoX="mes"
-                series={[
-                  { id: "volume", rotulo: "Volume de vendas", cor: "var(--cor-gas)", espessura: 2.2 },
-                  { id: "receita", rotulo: "Receita nominal", cor: "var(--serie-referencia)" },
-                ]}
-                unidade="%"
-                casas={1}
-                zeroNoEixo
-                altura={360}
-                marcos={universo === "ampliado" && inicio <= "2023-01" ? [{ x: "2023-01", rotulo: "Atacado de alimentos entra no ampliado" }] : []}
+              <Tesoura
+                titulo={`${nomeU}: receita nominal e volume de vendas em índice, ${mesCurto(inicio)} = 100`}
+                meses={pontosTesoura.map((p) => p.mes)}
+                a={{ rotulo: "Receita nominal", valores: pontosTesoura.map((p) => p.receita), cor: COR_RECEITA, espessura: 2 }}
+                b={{ rotulo: "Volume de vendas", valores: pontosTesoura.map((p) => p.volume), cor: COR_VOLUME, espessura: 2.5 }}
+                formato="indice"
+                base={100}
+                rotuloBase={`${mesCurto(inicio)} = 100`}
+                rotuloArea="Diferença: aproxima o efeito dos preços"
+                rotuloAreaAbaixo="Volume acima da receita"
+                corArea="var(--escala-varejo-neg-1)"
+                corAreaAbaixo="var(--escala-varejo-pos-1)"
+                marcos={universo === "ampliado" && inicio <= "2023-01" ? [{ mes: "2023-01", rotulo: "jan/2023: atacado de alimentos entra no ampliado" }] : []}
               />
             </FiguraAnalitica>
 
@@ -247,7 +272,7 @@ export default function PaginaBrasil({ searchParams }: Busca) {
               })}
               leitura={
                 <LeituraGuiada>
-                  Em {mesExtenso(ult.mes)}, a receita nominal variou {variacao(ult.receita)} e o volume, {variacao(ult.volume)}, {def.base}: diferença de {pontos(ult.diferenca)}.
+                  Em {mesExtenso(ult.mes)}, a receita nominal variou {variacao(ult.receita)} e o volume, {variacao(ult.volume)}, {def.base}: a diferença é de {pontos(ult.diferenca).replace(/\.$/, "")}.
                   {ult.diferenca !== null && ult.volume !== null && ult.receita !== null && (
                     <> {direcao(ult.volume) === "alta" ? "O volume também cresceu" : direcao(ult.volume) === "queda" ? "O volume caiu" : "O volume ficou parado"}; a diferença aproxima a parte da receita que veio de preços.</>
                   )}
@@ -262,22 +287,27 @@ export default function PaginaBrasil({ searchParams }: Busca) {
                 casas: [null, 1, 1, 1],
                 limite: 24,
               }}
+              complemento={
+                <ExportarRecorte
+                  nome={`varejo-brasil-${universo}-${medida}-${periodo}`}
+                  colunas={["mes", "volume_pct", "receita_nominal_pct", "receita_menos_volume_pp"]}
+                  linhas={serie.map((p) => [p.mes, p.volume, p.receita, p.diferenca])}
+                  recorte={resumoRecorte}
+                  fonte={`${g.fontes[fonteU].orgao}, ${g.fontes[fonteU].tabela}`}
+                />
+              }
             >
-              <GraficoLinhas
-                semTabela
-                titulo={`${nomeU}: receita nominal menos volume`}
-                dados={serie.map((p) => ({ mes: p.mes, diferenca: p.diferenca }))}
-                chaveX="mes"
-                formatoX="mes"
-                series={[{ id: "diferenca", rotulo: "Receita menos volume", cor: "var(--cor-gas)", espessura: 2 }]}
+              <Colunas
+                titulo={`${nomeU}: receita nominal menos volume, variação ${def.curto}, em pontos percentuais`}
+                meses={serie.map((p) => p.mes)}
+                valores={serie.map((p) => p.diferenca)}
                 unidade="p.p."
-                casas={1}
-                zeroNoEixo
-                altura={280}
+                rotuloAcima="Receita cresceu mais que o volume"
+                rotuloAbaixo="Volume cresceu mais que a receita"
               />
             </FiguraAnalitica>
 
-            <Controles rotulo="Mês e indicador da contagem" idioma="pt" resumo={<>Mostrando: {NOME_INDICADOR[indicador].toLowerCase()} em {mesExtenso(d.mes)}, {nomeUmin}, variação {def.curto}.</>}>
+            <Controles rotulo="Mês e indicador das atividades" idioma="pt" resumo={<>Mostrando: {NOME_INDICADOR[indicador].toLowerCase()} em {mesExtenso(d.mes)}, {nomeUmin}, variação {def.curto}.</>}>
               <SelectUrl
                 id="sel-mes"
                 rotulo="Mês"
@@ -293,11 +323,11 @@ export default function PaginaBrasil({ searchParams }: Busca) {
             <FiguraAnalitica
               id="difusao"
               pergunta="A variação foi espalhada ou concentrada?"
-              subtitulo={`${nomeU} · ${num(d.total)} atividades · ${NOME_INDICADOR[indicador].toLowerCase()}, variação em %, ${def.base} · ${mesExtenso(d.mes)}`}
+              subtitulo={`${nomeU} · ${num(d.total)} atividades · ${NOME_INDICADOR[indicador].toLowerCase()}, variação em %, ${def.base} · ${mesCurto(mosaico.meses[0])} a ${mesCurto(ultimoMes)}`}
               natureza="OBSERVADO"
               proveniencia={provVarejo(g, "pmc_atividades", {
-                indicador: `${NOME_INDICADOR[indicador]} por atividade do ${nomeUmin}`, natureza: "OBSERVADO", unidade: `variação em %, ${def.base}`, frequencia: "mensal", inicio: d.mes, fim: d.mes,
-                transformacoes: ["Contagem das atividades com variação positiva, negativa e nula, sobre o valor arredondado a uma casa"],
+                indicador: `${NOME_INDICADOR[indicador]} por atividade do ${nomeUmin}`, natureza: "OBSERVADO", unidade: `variação em %, ${def.base}`, frequencia: "mensal", inicio: mosaico.meses[0], fim: ultimoMes,
+                transformacoes: ["Contagem das atividades com variação positiva, negativa e nula em cada mês, sobre o valor arredondado a uma casa", `Cor em sete passos, com a escala saturando em ${num(mosaico.limite, mosaico.limite % 1 ? 1 : 0)}% para cima e para baixo`],
                 limitacoes: [g.notas.pmc_pesos], download: hrefDownload("atividades.csv"),
               })}
               leitura={
@@ -308,6 +338,7 @@ export default function PaginaBrasil({ searchParams }: Busca) {
                   {d.semDado > 0 && <>; {num(d.semDado)} sem valor publicado</>}, {def.base}.
                 </LeituraGuiada>
               }
+              comoInterpretar="Cada faixa é uma atividade e cada coluna, um mês. Colunas inteiras da mesma cor são meses em que o varejo andou junto; faixas que destoam são atividades em outro ritmo. A faixa de cima conta quantas subiram e quantas caíram."
               ressalva="Esta é uma contagem, não uma contribuição. O IBGE não publica no SIDRA o peso de cada atividade no índice geral, então a página não calcula quanto cada uma puxou o resultado: uma atividade grande em queda pode pesar mais que várias pequenas em alta."
               naoConcluir="quanto cada atividade contribuiu para o resultado do varejo, nem que a maioria em alta garante alta do total: sem os pesos, a contagem só diz se o movimento foi espalhado."
               tabela={{
@@ -335,28 +366,25 @@ export default function PaginaBrasil({ searchParams }: Busca) {
                 </p>
               }
             >
-              <GraficoBarras
-                semTabela
-                titulo={`${NOME_INDICADOR[indicador]} por atividade em ${mesExtenso(d.mes)}, da maior alta à maior queda`}
-                dados={barras.map((x) => ({ slug: x.slug, nome: NOME_CURTO_ATIVIDADE[x.slug] ?? x.nome, valor: x[indicador] }))}
-                chaveCategoria="slug"
-                chaveRotulo="nome"
-                series={[{ id: "valor", rotulo: NOME_INDICADOR[indicador], cor: "var(--cor-gas)" }]}
-                unidade="%"
-                casas={1}
-                orientacao="horizontal"
-                alturaCategoria={40}
-                rotulosValor
+              <MosaicoCalor
+                titulo={`${NOME_INDICADOR[indicador]} das atividades do ${nomeUmin}, variação ${def.curto}, mês a mês`}
+                meses={mosaico.meses}
+                linhas={mosaico.linhas.map((l) => ({ id: l.slug, nome: l.nomeCurto, valores: l.valores, href: `${hrefComRecorte(ROTA_SEGMENTOS, { segmento: l.slug })}#segmento` }))}
+                contagem={mosaico.contagem}
+                limite={mosaico.limite}
+                mesInicial={d.mes}
+                hrefDoMes={`${h({ mes: "__MES__" })}#difusao`}
               />
             </FiguraAnalitica>
 
             <FiguraAnalitica
               id="mercado"
               pergunta={`Qual era o tamanho do mercado em ${ano}?`}
-              subtitulo={`Comércio varejista por tipo de comércio · receita operacional líquida, R$ bilhões correntes de ${ano} · Brasil · ${ano}`}
+              subtitulo={`Comércio varejista dentro do comércio e por tipo de comércio · receita operacional líquida, empresas e pessoas ocupadas · Brasil · ${ano}`}
               natureza="OBSERVADO"
               proveniencia={provVarejo(g, "pac_geral", {
                 indicador: "Receita operacional líquida, empresas e pessoal ocupado do comércio varejista", natureza: "OBSERVADO", unidade: `R$ bilhões correntes de ${ano}`, frequencia: "anual", inicio: ano, fim: ano,
+                transformacoes: ["Parte do varejo no comércio: valor do comércio varejista ÷ total do comércio × 100", "Parte de cada tipo: receita do tipo ÷ receita do comércio varejista × 100"],
                 limitacoes: [g.notas.pac, "Pessoal ocupado em 31 de dezembro do ano de referência."],
               })}
               complementares={[
@@ -370,21 +398,12 @@ export default function PaginaBrasil({ searchParams }: Busca) {
               }
               ressalva={`Os valores são de ${ano}, em reais daquele ano, e não acompanham a conjuntura dos gráficos acima, que vai até ${mesExtenso(ultimoMes)}. A divisão 47 da classificação de atividades não inclui o comércio de veículos nem o atacado.`}
               complemento={
-                <div className="border-t border-linha pt-4" data-porte="">
-                <dl className="grid gap-x-10 gap-y-4 sm:grid-cols-2">
-                  <div>
-                    <dt className="t-meta text-carvao-muted">Empresas com 20 ou mais pessoas ocupadas</dt>
-                    <dd className="mt-1 text-carvao">
-                      <span className="numero-p">{num(porte.empresas20)}</span> <span className="t-meta text-carvao-muted">de {num(porte.empresas)} ({pct(porte.parteEmpresas)})</span>
-                    </dd>
+                <div className="border-t border-linha pt-5" data-porte="">
+                  <h3 className="t-h3 text-carvao">Poucas empresas grandes, quase metade das pessoas</h3>
+                  <div className="mt-4 grid gap-x-12 gap-y-5 md:grid-cols-2">
+                    <BarraDeUmaParte rotulo="Empresas com 20 ou mais pessoas ocupadas" parte={porte.parteEmpresas} valor={porte.empresas20} total={porte.empresas} />
+                    <BarraDeUmaParte rotulo="Pessoas ocupadas nessas empresas" parte={porte.partePessoal} valor={porte.pessoal20} total={porte.pessoal} />
                   </div>
-                  <div>
-                    <dt className="t-meta text-carvao-muted">Pessoas ocupadas nessas empresas</dt>
-                    <dd className="mt-1 text-carvao">
-                      <span className="numero-p">{num(porte.pessoal20)}</span> <span className="t-meta text-carvao-muted">de {num(porte.pessoal)} ({pct(porte.partePessoal)})</span>
-                    </dd>
-                  </div>
-                </dl>
                   <p className="t-meta mt-4 max-w-prose2 text-carvao-muted">
                     É o recorte de porte que a pesquisa divulga para o varejo: 20 ou mais pessoas ocupadas contra o total. Não há abertura por faixas menores nem por faturamento. Fonte: {FONTE_PAC} {ano}; partes em %: cálculo da Scrutiniums.
                   </p>
@@ -397,30 +416,53 @@ export default function PaginaBrasil({ searchParams }: Busca) {
                 linhas: [
                   ...grupos.map((x) => [x.rotulo, x.receita_operacional_liquida === null ? null : x.receita_operacional_liquida / 1e6, x.receita_operacional_liquida !== null && v?.receita_operacional_liquida ? (100 * x.receita_operacional_liquida) / v.receita_operacional_liquida : null, x.empresas, x.pessoal_ocupado, x.taxa_margem]),
                   ["Comércio varejista, total", v?.receita_operacional_liquida == null ? null : v.receita_operacional_liquida / 1e6, v?.receita_operacional_liquida != null ? 100 : null, v?.empresas ?? null, v?.pessoal_ocupado ?? null, v?.taxa_margem ?? null],
+                  ...noComercio.map((x) => [`Comércio total (varejo, atacado e veículos): ${x.rotulo.toLowerCase()}`, x.id === "receita" && x.total !== null ? x.total / 1e6 : null, null, x.id === "empresas" ? x.total : null, x.id === "pessoal" ? x.total : null, null]),
                 ],
                 casas: [null, 1, 1, 0, 0, 1],
-                limite: grupos.length + 1,
+                limite: grupos.length + 1 + noComercio.length,
               }}
             >
-              <GraficoBarras
-                semTabela
-                titulo={`Receita operacional líquida do comércio varejista por tipo de comércio, ${ano}`}
-                dados={grupos.map((x) => ({ codigo: x.codigo, nome: x.curto, receita: x.receita_operacional_liquida === null ? null : x.receita_operacional_liquida / 1e6 }))}
-                chaveCategoria="codigo"
-                chaveRotulo="nome"
-                series={[{ id: "receita", rotulo: "Receita operacional líquida", cor: "var(--cor-gas)" }]}
-                unidade="R$ bilhões"
-                casas={0}
-                orientacao="horizontal"
-                alturaCategoria={40}
-                rotulosValor
-              />
+              <div data-grafico="mercado" className="space-y-10">
+                <div>
+                  <h3 className="t-h3 text-carvao">O varejo dentro de todo o comércio</h3>
+                  <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">
+                    Em {ano}, o comércio varejista reunia {noComercio.filter((x) => x.id !== "receita").map((x) => `${pct(x.parte, 0)} ${x.id === "empresas" ? "das empresas" : "das pessoas ocupadas"}`).join(" e ")} de todo o comércio, e{" "}
+                    {pct(noComercio[0].parte, 0)} da receita. Cada quadro tem cem blocos; os cheios são a parte do varejo no total, que soma o atacado e o comércio de veículos.
+                  </p>
+                  {/* três quadros lado a lado também no celular, com as mesmas linhas de grade: rótulo, número, blocos e valor alinhados */}
+                  <div className="mt-5 grid grid-cols-3 grid-rows-[auto_auto_auto_auto] gap-x-4 sm:gap-x-12">
+                    {noComercio.map((x) => (
+                      <QuadroDeCem
+                        key={x.id}
+                        rotulo={x.rotulo}
+                        parte={x.parte}
+                        valor={x.id === "receita" ? `R$ ${trilhoes(x.varejo)} trilhões` : `${num(x.varejo)} ${x.id === "empresas" ? "empresas" : "pessoas"}`}
+                        total={x.id === "receita" ? `R$ ${trilhoes(x.total)} trilhões` : num(x.total)}
+                        nomeDaParte="o comércio varejista"
+                        nomeDoTodo="todo o comércio"
+                        className="row-span-4 grid-rows-subgrid"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="t-h3 text-carvao">De que tipos de loja vem a receita do varejo</h3>
+                  <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">Receita operacional líquida do comércio varejista em {ano}, R$ {trilhoes(v?.receita_operacional_liquida)} trilhões, repartida pelos oito tipos de comércio da pesquisa.</p>
+                  <div className="mt-4">
+                    <BarraDePartes
+                      titulo={`Receita operacional líquida do comércio varejista por tipo de comércio, ${ano}`}
+                      destaque={tipos[0]?.codigo}
+                      partes={tipos.map((x) => ({ id: x.codigo, rotulo: x.curto, parte: x.parte, valor: x.receita === null ? undefined : reais(x.receita * 1e3, 0) }))}
+                    />
+                  </div>
+                </div>
+              </div>
             </FiguraAnalitica>
 
             <FiguraAnalitica
               id="contexto"
               pergunta="O que acontecia com renda, preços e juros?"
-              subtitulo={`Três variáveis de contexto, cada uma na sua unidade e no seu gráfico · Brasil · ${periodoTexto}`}
+              subtitulo={`Três variáveis de contexto, cada uma na sua unidade e na sua escala · Brasil · ${periodoTexto}`}
               natureza="OBSERVADO"
               proveniencia={provVarejo(g, "pnadc_massa", { indicador: "Massa de rendimento real habitual de todos os trabalhos", natureza: "OBSERVADO", unidade: g.macro.massa_renda_real.unidade, frequencia: "trimestre móvel encerrado em cada mês", inicio, fim: uMassa?.mes ?? ult.mes })}
               complementares={[
@@ -437,29 +479,18 @@ export default function PaginaBrasil({ searchParams }: Busca) {
                 limite: 24,
               }}
             >
-              <div className="grid gap-x-10 gap-y-10 lg:grid-cols-3">
+              {/* pequenos múltiplos: as três colunas dividem as mesmas linhas da grade, para título, unidade, gráfico e texto ficarem alinhados */}
+              <div className="grid gap-x-10 gap-y-10 lg:grid-cols-3 lg:grid-rows-[auto_auto_auto_auto] lg:gap-y-0">
                 {CONTEXTO.map((c) => (
-                  <div key={c.id} className="min-w-0" data-contexto={c.id}>
+                  <div key={c.id} className="grid min-w-0 gap-y-2 lg:row-span-4 lg:grid-rows-subgrid lg:gap-y-3" data-contexto={c.id}>
                     <h3 className="t-h3 text-carvao">{c.titulo}</h3>
-                    <p className="t-meta mt-2 min-h-[4.5rem] text-carvao-muted">{c.mecanismo}</p>
-                    <p className="t-meta mt-2 text-carvao lg:min-h-[4rem]">
-                      <span className="font-medium">Indicador observável:</span> {c.ultimo}.
-                    </p>
-                    <div className="mt-3">
-                      <GraficoLinhas
-                        semTabela
-                        semTitulo
-                        titulo={c.titulo}
-                        dados={c.pontos.map((p) => ({ mes: p.mes, valor: p.valor }))}
-                        chaveX="mes"
-                        formatoX="mes"
-                        series={[{ id: "valor", rotulo: c.titulo, cor: "var(--serie-4)" }]}
-                        unidade={c.unidade}
-                        casas={c.casas}
-                        altura={210}
-                        rotulosDiretos={false}
-                        sincronizarCursor={false}
-                      />
+                    <p className="t-meta text-carvao-muted">{c.unidade}</p>
+                    <LinhaContexto titulo={c.titulo} meses={c.pontos.map((p) => p.mes)} valores={c.pontos.map((p) => p.valor)} unidade={c.unidade} casas={c.casas} />
+                    <div>
+                      <p className="t-meta text-carvao">
+                        <span className="font-medium">Último valor:</span> {c.ultimo}.
+                      </p>
+                      <p className="t-meta mt-2 text-carvao-muted">{c.mecanismo}</p>
                     </div>
                   </div>
                 ))}
@@ -475,7 +506,7 @@ export default function PaginaBrasil({ searchParams }: Busca) {
             { termo: "Varejo restrito", definicao: "O comércio do dia a dia medido pelo IBGE: combustíveis, supermercados, vestuário, móveis e eletrodomésticos, farmácia, livros, informática e outros artigos de uso pessoal." },
             { termo: "Varejo ampliado", definicao: "O restrito mais veículos e peças, material de construção e, desde janeiro de 2023, o atacado de alimentos, bebidas e fumo." },
             { termo: "Ajuste sazonal", definicao: "Correção que desconta o que se repete todo ano, como o Natal e o número de dias úteis, para comparar um mês com o anterior." },
-            { termo: "Ponto percentual (p.p.)", definicao: "A diferença entre duas porcentagens.", exemplo: `Receita de ${variacao(ult.receita)} menos volume de ${variacao(ult.volume)} dá ${pontos(ult.diferenca)}.` },
+            { termo: "Ponto percentual (p.p.)", definicao: "A diferença entre duas porcentagens.", exemplo: `Receita de ${variacao(ult.receita)} menos volume de ${variacao(ult.volume)} dá ${pontos(ult.diferenca).replace(/\.$/, "")}.` },
           ],
         }}
         metodo={
@@ -509,14 +540,15 @@ function Composicao({ universo, g }: Readonly<{ universo: Universo; g: ReturnTyp
       .map(([slug]) => (NOME_CURTO_ATIVIDADE[slug] ?? slug).toLowerCase());
   const lista = (itens: string[]) => (itens.length > 1 ? `${itens.slice(0, -1).join("; ")}; e ${itens[itens.length - 1]}` : itens[0] ?? "");
   return (
-    <div className="max-w-prose2 border-t border-linha pt-4" data-composicao={universo}>
+    <details className="max-w-prose2" data-composicao={universo}>
+      <summary className="inline-flex min-h-[44px] cursor-pointer items-center text-sm text-carvao-muted underline underline-offset-4 hover:text-carvao">O que entra no varejo restrito e no ampliado</summary>
       <p className="t-meta text-carvao">
         <span className="font-medium">O que entra no varejo restrito:</span> {lista(nomes("restrito"))}.
       </p>
-      <p className={`t-meta mt-2 ${universo === "ampliado" ? "text-carvao" : "text-carvao-muted"}`}>
+      <p className={`t-meta mt-2 pb-2 ${universo === "ampliado" ? "text-carvao" : "text-carvao-muted"}`}>
         <span className="font-medium">O que o ampliado acrescenta:</span> {lista(nomes("so-ampliado"))}. O atacado de alimentos, bebidas e fumo faz parte do ampliado desde janeiro de 2023, segundo a nota da pesquisa; antes
         disso o ampliado não o incluía. Todos os índices têm a média de 2022 igual a 100.
       </p>
-    </div>
+    </details>
   );
 }

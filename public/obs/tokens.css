@@ -81,6 +81,13 @@
   --escala-gas-3: #7a93b8;
   --escala-gas-4: #48689a;
   --escala-gas-5: #233f68;
+  --escala-varejo-neg-3: var(--escala-jmp-5);
+  --escala-varejo-neg-2: var(--escala-jmp-4);
+  --escala-varejo-neg-1: var(--escala-jmp-3);
+  --escala-varejo-centro: var(--escala-div-centro);
+  --escala-varejo-pos-1: var(--escala-gas-2);
+  --escala-varejo-pos-2: var(--escala-gas-3);
+  --escala-varejo-pos-3: var(--escala-gas-5);
   --cor-grade: #e5e0d5;
   --cor-previsto: #5b3f8c;
   --serie-hidraulica: #256abf;

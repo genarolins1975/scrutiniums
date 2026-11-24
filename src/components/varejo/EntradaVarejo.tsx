@@ -1,6 +1,7 @@
 /**
  * Entrada da coleção Varejo (com conta), no molde único das entradas (EntradaColecao): a pergunta, os quatro números de escala
- * com a prova, o "Para você", os destinos, o modelo didático "Do preço da prateleira ao lucro", as perguntas para começar e o
+ * com a prova e uma microfigura cada, o "Para você", os destinos com a miniatura da figura de cada página, o modelo didático "O cupom
+ * de R$ 100" (figuras/Cupom.tsx), as perguntas para começar e o
  * método recolhido no fim. Tudo desenhado no servidor a partir das golds; nenhum número escrito à mão.
  */
 import Link from "next/link";
@@ -11,14 +12,17 @@ import { ModeloDidatico } from "@/components/observatorios/ModeloDidatico";
 import { ParaVoce } from "@/components/observatorios/ParaVoce";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
-import { difusao, formasDeComercializacao, leituraBrasil, linhasUf, pacVarejo, perfisDoModelo, serieMacro, ultimoComValor } from "@/lib/varejo/dados";
-import { dataBr, direcao, mesExtenso, milhoesDe, num, pct, pontos, trilhoes, variacao } from "@/lib/varejo/formato";
+import { contaDoCupom, difusao, formasDeComercializacao, leituraBrasil, linhasUf, pacVarejo, perfisDoModelo, serieBrasil, serieMacro, tesoura, ultimoComPonte, ultimoComValor, varejoNoComercio } from "@/lib/varejo/dados";
+import { dataBr, direcao, mesCurto, mesExtenso, milhoesDe, num, pct, pontos, trilhoes, variacao } from "@/lib/varejo/formato";
 import { DOWNLOADS, hrefDownload, PERGUNTA_ENTRADA, ROTA_BRASIL, ROTA_METODO, ROTA_SEGMENTOS, ROTA_VAREJO } from "@/lib/varejo/paginas";
 import { PARES } from "@/lib/varejo/comparador";
 import { amostraDoRanking, exercicioDoRanking, fonteDoRanking, linhasDoRanking, ROTA_COMPARADOR, ROTA_GRUPOS } from "@/lib/varejo/grupos";
 import { reaisDeMilhoes } from "@/lib/varejo/formato";
 import type { CuradoriaVarejo, GoldEmpresas, GoldSetor } from "@/lib/varejo/tipos";
-import { PonteCemReais } from "./PonteCemReais";
+import type { ReactNode } from "react";
+import { Cupom } from "./figuras/Cupom";
+import { COR_DA_PARTE, COR_RECEITA, corDoPasso, limiteSimetrico, passoDivergente } from "./figuras/escala";
+import { MapaBlocosMini, MicroBarra, MicroBarras, MicroCupons, MicroProporcao, MicroSerie, TesouraMini } from "./figuras/Miniaturas";
 
 const PMC = "IBGE, Pesquisa Mensal de Comércio";
 const PAC = "IBGE, Pesquisa Anual de Comércio";
@@ -47,6 +51,83 @@ export function escalaVarejo(g: GoldSetor): NumeroPorta[] {
       periodo: `31 de dezembro de ${ano}`, fonte: PAC, nota: `Em ${num(v?.empresas)} empresas.`, href: `${ROTA_BRASIL}#mercado`,
     },
   ];
+}
+
+const legenda = "mt-1.5 block text-xs leading-snug text-mineral";
+
+/**
+ * A microfigura de cada número de escala, na ordem de `escalaVarejo` e lida dos mesmos seletores: a trajetória de 24 meses da
+ * variação em 12 meses (volume e receita), a parte do varejo na receita de todo o comércio e quantas em cada dez pessoas ocupadas
+ * no comércio estão no varejo. Cada uma traz uma linha dizendo o que mostra.
+ */
+export function microfigurasDaEscala(g: GoldSetor): ReactNode[] {
+  const m12 = serieBrasil(g, "restrito", "m12", "24m");
+  const periodo = `Em 12 meses, ${mesCurto(m12[0].mes)} a ${mesCurto(m12[m12.length - 1].mes)}`;
+  const [receita, , pessoal] = varejoNoComercio(g);
+  const emDez = pessoal.parte === null ? null : Math.round(pessoal.parte / 10);
+  return [
+    <>
+      <MicroSerie valores={m12.map((p) => p.volume)} zero />
+      <span className={legenda}>{periodo}; linha cinza: zero</span>
+    </>,
+    <>
+      <MicroSerie valores={m12.map((p) => p.receita)} cor={COR_RECEITA} zero />
+      <span className={legenda}>{periodo}; linha cinza: zero</span>
+    </>,
+    receita.parte === null ? null : (
+      <>
+        <MicroBarra parte={receita.parte} />
+        <span className={legenda}>{pct(receita.parte, 0)} da receita de todo o comércio, que soma atacado e veículos</span>
+      </>
+    ),
+    emDez === null ? null : (
+      <>
+        <MicroProporcao parte={pessoal.parte} />
+        <span className={legenda}>
+          {num(emDez)} em cada 10 pessoas ocupadas no comércio ({pct(pessoal.parte, 0)})
+        </span>
+      </>
+    ),
+  ];
+}
+
+/** A miniatura da figura principal de cada destino, desenhada com o dado que o destino mostra. Decorativas: o número do cartão diz o valor. */
+function miniaturasDosDestinos(g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): Record<string, ReactNode> {
+  const t = tesoura(g, g.pmc.brasil.restrito, "5a");
+  const ufs = linhasUf(g, "restrito", "m12");
+  const limite = limiteSimetrico(ufs.map((u) => u.volume));
+  const cores = Object.fromEntries(ufs.map((u) => { const p = passoDivergente(u.volume, limite); return [u.uf, p ? corDoPasso(p) : null]; }));
+  const vendas = linhasDoRanking(c).map((x) => x.vendas_milhoes).filter((x): x is number => typeof x === "number").slice(0, 6);
+  const par = PARES[0]?.slugs.map((slug) => ({ slug, b: ultimoComPonte(e.empresas[slug]?.anuais ?? [])?.ponte_100 ?? null })).filter((x) => x.b) ?? [];
+  const altura = "h-16";
+  return {
+    [ROTA_BRASIL]: <TesouraMini volume={t.map((p) => p.volume)} receita={t.map((p) => p.receita)} altura={64} />,
+    [ROTA_SEGMENTOS]: <MapaBlocosMini cores={cores} altura={64} />,
+    ...(vendas.length > 1 ? { [ROTA_GRUPOS]: <MicroBarras valores={vendas} className={altura} /> } : {}),
+    ...(par.length === 2
+      ? {
+          [ROTA_COMPARADOR]: (
+            <MicroCupons
+              className={altura}
+              lojas={par.map((x) => ({
+                id: x.slug,
+                partes: (
+                  [
+                    ["custo", -x.b!.custo],
+                    ["despesas", -x.b!.despesas_operacionais],
+                    ["financeiro", -x.b!.resultado_financeiro],
+                    ["impostos", -x.b!.ir_csll],
+                    ["lucro", x.b!.lucro_liquido],
+                  ] as const
+                )
+                  .filter(([, v]) => v > 0)
+                  .map(([id, valor]) => ({ cor: COR_DA_PARTE[id], valor })),
+              }))}
+            />
+          ),
+        }
+      : {}),
+  };
 }
 
 /** Perguntas para começar: cada uma com o número lido do mesmo seletor que a página de destino usa. */
@@ -107,7 +188,7 @@ function caminhosVarejo(g: GoldSetor, e: GoldEmpresas, c: CuradoriaVarejo): Cami
 
 export function EntradaVarejo({ g, e, c }: Readonly<{ g: GoldSetor; e: GoldEmpresas; c: CuradoriaVarejo }>) {
   const amostra = amostraDoRanking(c);
-  const perfis = perfisDoModelo(e);
+  const perfis = perfisDoModelo(e).map((p) => ({ ...p, conta: contaDoCupom(p) }));
   const l = leituraBrasil(g, "restrito");
   const d12 = difusao(g, "ampliado", "m12", "volume");
   return (
@@ -119,8 +200,10 @@ export function EntradaVarejo({ g, e, c }: Readonly<{ g: GoldSetor; e: GoldEmpre
       frase="As vendas do comércio mês a mês, em volume e em reais, as diferenças entre atividades e estados, os maiores grupos com as marcas de cada um e o caminho de R$ 100 de venda até o lucro nas companhias abertas."
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/varejo"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaVarejo(g)}
+      microfiguras={microfigurasDaEscala(g)}
       paraVoce={<ParaVoce entrada={ROTA_VAREJO} />}
       destinos={destinosDaColecao("varejo", {
+        miniaturas: miniaturasDosDestinos(g, e, c),
         numeros: {
           [ROTA_BRASIL]: { rotulo: "Volume de vendas no mês, com ajuste sazonal", valor: ou(variacao(l.volume.mm), l.volume.mm !== null), unidade: "ante o mês anterior", periodo: mesExtenso(l.mes), fonte: PMC, href: ROTA_BRASIL },
           [ROTA_SEGMENTOS]: { rotulo: "Atividades com volume em alta em 12 meses", valor: `${num(d12.alta)} de ${num(d12.total)}`, unidade: "atividades", periodo: `até ${mesExtenso(d12.mes)}`, fonte: PMC, href: ROTA_SEGMENTOS },
@@ -133,25 +216,26 @@ export function EntradaVarejo({ g, e, c }: Readonly<{ g: GoldSetor; e: GoldEmpre
       artefato={
         <ModeloDidatico
           id="mecanismo"
-          titulo="Do preço da prateleira ao lucro"
+          titulo="O cupom de R$ 100: da prateleira ao lucro"
           descricao={
             <>
-              Como R$ 100 de venda se dividem dentro de uma varejista: a mercadoria, a operação, os juros, o imposto e o que sobra. Três companhias abertas ilustram três tipos de negócio, com os números que
-              elas mesmas entregaram à CVM. Escolha uma para abrir a conta.
+              De cada R$ 100 que entram no caixa de uma varejista, quanto vai para a mercadoria, para manter a loja aberta, para os juros e para o imposto, e quanto sobra. {num(perfis.length)} companhias abertas, uma
+              de cada tipo de negócio, com os números que elas mesmas entregaram à CVM. Troque a loja e o cupom se reimprime.
             </>
           }
           deixaDeFora={[
             "Os impostos sobre a venda (ICMS, PIS e Cofins): a conta começa na receita líquida, depois deles",
-            "O que cada companhia tem de particular: uma empresa não representa o seu segmento, e os anos não são iguais",
+            "O que cada companhia tem de particular: uma empresa não representa o seu tipo de negócio, e os anos não são iguais",
             "A diferença entre lucro e dinheiro em caixa: estoques, prazos de fornecedores e investimentos em lojas não aparecem",
             "Receitas que não são venda de mercadoria (crédito ao consumidor, comissões de vendedores parceiros), somadas à receita",
             "As varejistas de capital fechado, que não publicam demonstrações na CVM",
           ]}
         >
-          <PonteCemReais perfis={perfis} />
+          <Cupom perfis={perfis} />
         </ModeloDidatico>
       }
       caminhos={caminhosVarejo(g, e, c)}
+      caminhosAVista={4}
       metodo={<MetodoDaEntrada g={g} e={e} />}
       frescorMetodo={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/varejo"]} variante="metodo" />}
     />

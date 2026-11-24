@@ -297,8 +297,11 @@ describe("gold setorial: um seletor por número", () => {
 
   it("modelo dos R$ 100: companhias reais, com exercício, e as partes fecham a conta", () => {
     const perfis = dados.perfisDoModelo(e);
-    expect(perfis.length).toBeGreaterThanOrEqual(2);
-    expect(perfis.length).toBeLessThanOrEqual(3);
+    // redesenho de 24/11/2026 ("O cupom de R$ 100"): de quatro a seis tipos de negócio, um caso real de cada (eram dois ou três)
+    expect(perfis.length).toBeGreaterThanOrEqual(4);
+    expect(perfis.length).toBeLessThanOrEqual(6);
+    expect(new Set(perfis.map((p) => p.slug)).size).toBe(perfis.length);
+    expect(new Set(perfis.map((p) => p.perfil)).size).toBe(perfis.length);
     for (const p of perfis) {
       expect(e.empresas[p.slug].nome).toBe(p.empresa);
       expect(e.empresas[p.slug].anuais.some((a) => a.exercicio === p.exercicio && a.ponte_100)).toBe(true);
@@ -306,6 +309,133 @@ describe("gold setorial: um seletor por número", () => {
       const saidas = p.partes.filter((x) => x.id !== "lucro").reduce((s, x) => s + x.valor, 0);
       const lucro = p.partes.find((x) => x.id === "lucro")!.valor;
       expect(saidas + lucro).toBeCloseTo(100, 1);
+      // o cupom: entradas (os R$ 100 e o que voltou) = saídas + resultado; com prejuízo, as saídas passam das entradas no valor dele
+      const c = dados.contaDoCupom(p);
+      const entrou = c.entradas.reduce((s, x) => s + x.valor, 0);
+      const saiu = c.saidas.reduce((s, x) => s + x.valor, 0);
+      expect(c.entradas[0]).toEqual({ id: "venda", rotulo: "Venda líquida", valor: 100 });
+      expect(c.saidas.every((x) => x.valor > 0) && c.entradas.every((x) => x.valor > 0)).toBe(true);
+      expect(entrou - saiu).toBeCloseTo(c.resultado, 1);
+      expect(c.resultado).toBe(lucro);
+      expect(c.total).toBeCloseTo(saiu + Math.max(0, lucro), 6);
+      if (lucro < 0) expect(saiu).toBeGreaterThan(entrou);
+    }
+  });
+});
+
+describe("seletores das figuras (redesenho de 24/11/2026)", () => {
+  it("tesoura: as duas séries saem de 100 no primeiro mês, seguem os índices publicados e a abertura é receita menos volume", () => {
+    for (const u of dados.UNIVERSOS) {
+      for (const per of dados.PERIODOS) {
+        const t = dados.tesoura(g, g.pmc.brasil[u], per);
+        const de = dados.inicioDoPeriodo(g, per);
+        expect(t[0].mes).toBe(g.pmc.meses[de]);
+        expect(t[0].volume).toBeCloseTo(100, 9);
+        expect(t[0].receita).toBeCloseTo(100, 9);
+        const fim = dados.fimDaTesoura(t)!;
+        expect(fim.mes).toBe(g.referencia.pmc);
+        const ult = dados.ultimoIndice(g);
+        expect(fim.volume!).toBeCloseTo((100 * g.pmc.brasil[u].volume.indice_sa[ult]!) / g.pmc.brasil[u].volume.indice_sa[de]!, 9);
+        expect(fim.abertura!).toBeCloseTo(fim.receita! - fim.volume!, 9);
+      }
+    }
+    // série sem ajuste sazonal publicado (atividade de detalhe): tudo ausente, nunca 100 nem zero
+    const semSerie = Object.values(g.pmc.atividades).find((a) => a.volume.indice_sa.every((x) => x === null));
+    if (semSerie) {
+      const t = dados.tesoura(g, semSerie, "24m");
+      expect(t.every((p) => p.volume === null && p.abertura === null)).toBe(true);
+      expect(dados.fimDaTesoura(t)).toBeNull();
+    }
+    // lacuna no mês-base: a série inteira fica ausente
+    const c = structuredClone(g);
+    c.pmc.brasil.restrito.volume.indice_sa[dados.inicioDoPeriodo(c, "24m")] = null;
+    expect(dados.tesoura(c, c.pmc.brasil.restrito, "24m").every((p) => p.volume === null)).toBe(true);
+  });
+
+  it("mosaico: uma linha por atividade do universo, meses desde 2019, contagem igual à difusão e ausência preservada", () => {
+    for (const u of dados.UNIVERSOS) {
+      const m = dados.mosaicoAtividades(g, u, "aa", "volume");
+      expect(m.meses[0]).toBe("2019-01");
+      expect(m.meses.at(-1)).toBe(g.referencia.pmc);
+      expect(m.linhas.map((l) => l.slug)).toEqual(dados.atividadesDoUniverso(g, u));
+      expect(m.contagem).toHaveLength(m.meses.length);
+      for (const l of m.linhas) expect(l.valores).toHaveLength(m.meses.length);
+      const d = dados.difusao(g, u, "aa", "volume");
+      expect(m.contagem.at(-1)).toEqual({ alta: d.alta, queda: d.queda, estavel: d.estavel, semDado: d.semDado });
+      const i = g.pmc.meses.indexOf("2020-04");
+      const j = m.meses.indexOf("2020-04");
+      for (const l of m.linhas) expect(l.valores[j]).toBe(g.pmc.atividades[l.slug].volume.aa[i]);
+      expect(m.limite).toBeGreaterThan(0);
+    }
+    // atividade sem valor num mês continua sem valor (o atacado de alimentos só entra em 2023)
+    const amp = dados.mosaicoAtividades(g, "ampliado", "aa", "volume");
+    const atacado = amp.linhas.find((l) => l.slug === "atacado-alimentar");
+    if (atacado) expect(atacado.valores[0]).toBeNull();
+  });
+
+  it("varejo no comércio, tipos de comércio e halteres leem a gold e fecham as contas", () => {
+    const partes = dados.varejoNoComercio(g);
+    expect(partes.map((p) => p.id)).toEqual(["receita", "empresas", "pessoal"]);
+    for (const p of partes) {
+      expect(p.parte!).toBeGreaterThan(0);
+      expect(p.parte!).toBeLessThan(100);
+      expect(p.parte!).toBeCloseTo((100 * p.varejo!) / p.total!, 9);
+    }
+    expect(partes[0].varejo).toBe(dados.pacVarejo(g)!.receita_operacional_liquida);
+    expect(partes[0].total).toBe(g.pac.grupos[dados.CODIGO_PAC_TOTAL].receita_operacional_liquida);
+    const tipos = dados.tiposDeComercio(g);
+    expect(tipos.reduce((s, x) => s + (x.parte ?? 0), 0)).toBeCloseTo(100, 0);
+    expect(tipos.map((x) => x.receita)).toEqual([...tipos.map((x) => x.receita)].sort((a, b) => (b ?? -1) - (a ?? -1)));
+    for (const m of dados.MEDIDAS) {
+      const hs = dados.halteres(g, m);
+      expect(hs.every((x) => x.universo !== "detalhe")).toBe(true);
+      expect(hs).toHaveLength(dados.atividadesDoUniverso(g, "ampliado").length);
+      for (const x of hs) {
+        expect(x.brasilVolume).toBe(dados.leituraBrasil(g, x.referencia).volume[m]);
+        expect(x.contraVolume).toBe(dados.diferenca(x.volume, x.brasilVolume));
+        expect(x.referencia).toBe(x.universo === "ampliado" ? "ampliado" : "restrito");
+      }
+      const comValor = hs.filter((x) => x.volume !== null).map((x) => x.volume as number);
+      expect(comValor).toEqual([...comValor].sort((a, b) => b - a));
+    }
+  });
+
+  it("etiquetas e indicadores dos segmentos: número da atividade equivalente, ausência dita, e figura só com dado estruturado", () => {
+    const c = dados.curadoria();
+    const etiquetas = dados.etiquetasDeSegmento(g, c, "m12");
+    expect(etiquetas.map((x) => x.slug)).toEqual((c.segmentos?.segmentos ?? []).map((s) => s.slug));
+    for (const x of etiquetas) {
+      if (x.atividade) {
+        expect(g.pmc.atividades[x.atividade]).toBeDefined();
+        expect(x.volume).toBe(g.pmc.atividades[x.atividade].volume.m12[dados.ultimoIndice(g)]);
+      } else {
+        // segmento sem atividade equivalente: sem número e sem trajetória, nunca zero
+        expect([x.volume, x.receita, x.trajetoria.length]).toEqual([null, null, 0]);
+      }
+      expect(String(x.vende)).not.toMatch(/undefined/);
+    }
+    for (const s of c.segmentos?.segmentos ?? []) {
+      for (const f of [dados.indicadorDoSegmento(s, g, e, c), dados.taxaDeMargemDoSegmento(s, g)]) {
+        if (!f) continue;
+        expect(f.linhas.length).toBeGreaterThan(0);
+        expect(f.unidade.trim()).not.toBe("");
+        expect(f.fonte.trim()).not.toBe("");
+        for (const l of f.linhas) {
+          expect(Number.isFinite(l.valor), `${s.slug}: ${l.nome}`).toBe(true);
+          expect(l.periodo).toMatch(/^\d{4}$/);
+        }
+      }
+      // sem grupos da pesquisa anual ligados, não há taxa de margem inventada
+      if (!(s.classes_pac_ids ?? []).length) expect(dados.taxaDeMargemDoSegmento(s, g)).toBeNull();
+    }
+    // margem bruta sai do campo publicado pela gold, no último exercício da companhia
+    const moda = c.segmentos?.segmentos.find((s) => (s.indicador_operacional?.nome ?? "").toLowerCase().includes("margem bruta"));
+    if (moda) {
+      const f = dados.indicadorDoSegmento(moda, g, e, c)!;
+      for (const l of f.linhas) {
+        const ano = e.empresas[l.id].anuais.find((a) => String(a.exercicio) === l.periodo)!;
+        expect(l.valor).toBeCloseTo(ano.margem_bruta_pct ?? (100 * ano.lucro_bruto!) / ano.receita_liquida!, 6);
+      }
     }
   });
 });
@@ -359,8 +489,13 @@ describe("páginas no HTML do servidor", () => {
     expect(provas.length).toBeGreaterThanOrEqual(2);
     for (const p of provas) expect(p.split(" · ").filter((x) => x.trim()).length, p).toBeGreaterThanOrEqual(2);
     expect(texto(html)).toContain(variacao(g.pmc.brasil.restrito.volume.mm[dados.ultimoIndice(g)]));
-    // sem mapa, sem série e sem arquivo: a malha das UFs e os CSV são da área com conta
+    // sem mapa, sem gráfico do kit nem figura interativa (data-grafico) e sem arquivo: a malha das UFs, a leitura mês a mês e os CSV
+    // são da área com conta. Desde o redesenho de 24/11/2026 a página aberta tem uma figura só, a tesoura de 24 meses em miniatura,
+    // com descrição acessível e sem tabela nem valores mês a mês.
     expect(html).not.toMatch(/energia\/geo|data-grafico|\.csv/);
+    expect(html.match(/data-tesoura-mini/g)).toHaveLength(1);
+    expect(html).toMatch(/data-tesoura-mini=""[^>]*role="img"[^>]*aria-label="[^"]{40,}"/);
+    expect(html).not.toMatch(/<table\b|type="range"/);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
     for (const h of linksInternos(html)) expect(existe(h), h).toBe(true);
     for (const p of PAGINAS_VAREJO.filter((x) => !x.publicada)) expect(html, p.href).not.toContain(`href="${p.href.replace("/[slug]", "")}"`);
@@ -397,10 +532,17 @@ describe("páginas no HTML do servidor", () => {
     expect(texto(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)![1]).trim()).toBe(dados.tituloDoAchado(g));
     for (const h of linksInternos(html)) expect(existe(h), h).toBe(true);
     for (const id of ["vendas", "diferenca", "difusao", "mercado", "contexto"]) expect(html, id).toContain(`data-figura-analitica="${id}"`);
+    // cada seção com a sua figura (redesenho de 24/11/2026): tesoura, colunas da diferença, mosaico com a difusão, quadros de cem e três gráficos de contexto
+    for (const fig of ["tesoura", "colunas", "mosaico"]) expect(html, fig).toContain(`data-figura-varejo="${fig}"`);
+    expect(html.match(/data-quadro-de-cem/g)).toHaveLength(3);
+    expect(html.match(/data-figura-varejo="linha-contexto"/g)).toHaveLength(3);
+    expect(html.match(/data-linha-mosaico=/g)).toHaveLength(dados.atividadesDoUniverso(g, r.universo === "ampliado" ? "ampliado" : "restrito").length);
     // o ano da pesquisa anual acompanha o valor do mercado
     expect(texto(html)).toContain(String(g.pac.ano));
     const universo = r.universo === "ampliado" ? "ampliado" : "restrito";
-    const medida = (dados.MEDIDAS as readonly string[]).includes(r.medida) ? (r.medida as dados.Medida) : "mm";
+    // medida padrão interanual desde o redesenho de 24/11/2026: a figura principal é a tesoura em índice, e a medida vale para a
+    // diferença e o mosaico (era a variação no mês)
+    const medida = (dados.MEDIDAS as readonly string[]).includes(r.medida) ? (r.medida as dados.Medida) : "aa";
     const p = dados.serieBrasil(g, universo, medida, "24m").at(-1)!;
     // o texto acompanha a seleção: a leitura traz os valores do recorte pedido
     expect(texto(html)).toContain(variacao(p.volume));
@@ -430,6 +572,13 @@ describe("páginas no HTML do servidor", () => {
     // toda atividade está na tabela, com o estado de ausência do peso dito, e o mapa tem a lista equivalente
     for (const a of Object.keys(g.pmc.atividades)) expect(html, a).toContain(`segmento=${a}`);
     expect(html).toContain("data-mapa-legado");
+    // redesenho de 24/11/2026: halteres com todas as atividades principais, a prateleira com todos os segmentos da curadoria e o mapa de blocos com as 27 UFs
+    // (os halteres das atividades de um estado aberto levam a sigla na frente do identificador e ficam fora desta conta)
+    expect(html.match(/data-haltere="[a-z]/g)).toHaveLength(dados.atividadesDoUniverso(g, "ampliado").length);
+    expect(html.includes("data-atividades-do-estado")).toBe(Boolean(r.uf && UFS[r.uf]));
+    expect(html.match(/data-etiqueta="/g)).toHaveLength(dados.curadoria().segmentos?.segmentos.length ?? 0);
+    expect(html.match(/data-bloco-uf="/g)).toHaveLength(27);
+    expect(html).toContain("data-barra-de-partes");
     // trajetória recente: um minigráfico por atividade com série publicada; sem série, a ausência dita em texto, nunca uma linha inventada
     const comSerie = Object.values(g.pmc.atividades).filter((a) => dados.trajetoria(g, a, "volume").filter((p) => p.valor !== null).length >= 2).length;
     expect((html.match(/<svg[^>]*role="img"[^>]*aria-label="[^"]*índice de/g) ?? []).length).toBe(comSerie);
