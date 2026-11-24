@@ -336,3 +336,267 @@ export function voltaAoRanking(de: string | null): string {
   });
   return `${ROTA_GRUPOS}${q ? `?${q}` : ""}#ranking`;
 }
+
+/* ------------------------------------------------------------------ figuras do redesenho dos grupos (24/11/2026) */
+
+/** Nome curto de uma companhia para a placa tipográfica e os rótulos de figura: sem "Grupo", "Supermercados" e "Brasil" nas pontas. */
+export function nomeCurtoDoGrupo(nome: string): string {
+  const curto = nome.replace(/\s*\(.*\)\s*$/, "").replace(/^(Grupo|Supermercados|Lojas)\s+/i, "").replace(/\s+Brasil$/i, "").trim();
+  return curto || nome;
+}
+
+export type BlocoDeTamanho = { slug: string; grupo: string; posicao: number; vendas_milhoes: number; participacao: number; natureza: NaturezaCurada; tem_ficha: boolean };
+export type SegmentoDeTamanho = { segmento: string; nome: string; vendas_milhoes: number; participacao: number; blocos: BlocoDeTamanho[] };
+
+/**
+ * "O tamanho de cada grupo": os grupos com venda publicada, reunidos por segmento, do maior segmento para o menor e, dentro dele,
+ * do maior grupo para o menor. A participação é sempre sobre a soma dos grupos listados (amostraDoRanking), nunca sobre o mercado;
+ * as dos segmentos somam 100% e a de cada segmento é a soma das dos seus grupos. Grupo sem venda publicada não entra no desenho
+ * (a página o lista à parte).
+ */
+export function tamanhosPorSegmento(c: CuradoriaVarejo): SegmentoDeTamanho[] {
+  const porSegmento = new Map<string, BlocoDeTamanho[]>();
+  for (const l of linhasDoRanking(c)) {
+    if (typeof l.vendas_milhoes !== "number" || l.participacao_na_amostra === null) continue;
+    const s = l.segmento ?? "outros";
+    porSegmento.set(s, [...(porSegmento.get(s) ?? []), { slug: l.slug, grupo: l.grupo, posicao: l.posicao, vendas_milhoes: l.vendas_milhoes, participacao: l.participacao_na_amostra, natureza: l.natureza_dado, tem_ficha: l.tem_ficha }]);
+  }
+  return Array.from(porSegmento, ([segmento, blocos]) => ({
+    segmento,
+    nome: nomeDoSegmento(segmento),
+    vendas_milhoes: blocos.reduce((s, b) => s + b.vendas_milhoes, 0),
+    participacao: blocos.reduce((s, b) => s + b.participacao, 0),
+    blocos: [...blocos].sort((a, b) => b.vendas_milhoes - a.vendas_milhoes || a.posicao - b.posicao),
+  })).sort((a, b) => b.vendas_milhoes - a.vendas_milhoes);
+}
+
+export type Movimento = {
+  slug: string;
+  grupo: string;
+  segmento: string | null;
+  atual: number;
+  /** Posição no ranking do exercício anterior; null quando a fonte não a publica (sem base de comparação). */
+  anterior: number | null;
+  /** Posições ganhas (positivo: subiu) ou perdidas (negativo); null sem a posição anterior. */
+  ganho: number | null;
+  natureza: NaturezaCurada;
+  tem_ficha: boolean;
+};
+
+/** "Quem subiu e quem desceu": a posição publicada no exercício e a do anterior, com as posições ganhas. Ordem da fonte. */
+export function movimentosDoRanking(c: CuradoriaVarejo): Movimento[] {
+  return linhasDoRanking(c).map((l) => {
+    const anterior = typeof l.posicao_anterior === "number" && l.posicao_anterior > 0 ? l.posicao_anterior : null;
+    return { slug: l.slug, grupo: l.grupo, segmento: l.segmento ?? null, atual: l.posicao, anterior, ganho: anterior === null ? null : anterior - l.posicao, natureza: l.natureza_dado, tem_ficha: l.tem_ficha };
+  });
+}
+
+/** O maior deslocamento, em posições, entre os grupos com posição anterior (0 quando ninguém se moveu ou não há base). */
+export const maiorMovimento = (m: readonly Movimento[]): number => Math.max(0, ...m.map((x) => Math.abs(x.ganho ?? 0)));
+
+export type ModeloDeLoja = {
+  slug: string;
+  grupo: string;
+  segmento: string | null;
+  vendas_milhoes: number | null;
+  lojas: number | null;
+  /** Venda do exercício ÷ lojas no fim do exercício, em R$ milhões por loja; null sem um dos dois. */
+  venda_por_loja_milhoes: number | null;
+  natureza: NaturezaCurada;
+  tem_ficha: boolean;
+};
+
+/** Vendas × lojas de cada grupo e a venda por loja (conta desta página sobre dois valores da fonte). Ausência segue ausência. */
+export function modelosDeLoja(c: CuradoriaVarejo): ModeloDeLoja[] {
+  return linhasDoRanking(c).map((l) => {
+    const vendas = typeof l.vendas_milhoes === "number" ? l.vendas_milhoes : null;
+    const lojas = typeof l.lojas === "number" && l.lojas > 0 ? l.lojas : null;
+    return { slug: l.slug, grupo: l.grupo, segmento: l.segmento ?? null, vendas_milhoes: vendas, lojas, venda_por_loja_milhoes: vendas !== null && lojas !== null ? vendas / lojas : null, natureza: l.natureza_dado, tem_ficha: l.tem_ficha };
+  });
+}
+
+export type ParteDoCrescimento = { id: "vendas" | "lojas" | "venda_por_loja"; rotulo: string; atual: number | null; anterior: number | null; variacao_pct: number | null };
+
+const varPct = (atual: number | null, anterior: number | null): number | null => (atual === null || anterior === null || anterior <= 0 ? null : (100 * atual) / anterior - 100);
+
+/**
+ * Decomposição do crescimento de um grupo entre o exercício anterior e o do ranking: vendas, lojas e venda por loja, cada uma com a
+ * variação percentual. As três fecham por multiplicação, (1 + vendas) = (1 + lojas) × (1 + venda por loja), não por soma. Sem um dos
+ * quatro valores da fonte, a parte que depende dele fica ausente.
+ */
+export function decomposicaoDoCrescimento(g: Pick<GrupoRanking, "vendas_milhoes" | "vendas_ano_anterior_milhoes" | "lojas" | "lojas_ano_anterior"> | null): ParteDoCrescimento[] {
+  const num = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) && v > 0 ? v : null);
+  const v1 = num(g?.vendas_milhoes), v0 = num(g?.vendas_ano_anterior_milhoes), l1 = num(g?.lojas), l0 = num(g?.lojas_ano_anterior);
+  const p1 = v1 !== null && l1 !== null ? v1 / l1 : null;
+  const p0 = v0 !== null && l0 !== null ? v0 / l0 : null;
+  return [
+    { id: "vendas", rotulo: "Vendas", atual: v1, anterior: v0, variacao_pct: varPct(v1, v0) },
+    { id: "lojas", rotulo: "Lojas", atual: l1, anterior: l0, variacao_pct: varPct(l1, l0) },
+    { id: "venda_por_loja", rotulo: "Venda por loja", atual: p1, anterior: p0, variacao_pct: varPct(p1, p0) },
+  ];
+}
+
+export type LinhaPlataforma = {
+  nome: string;
+  /** Ficha ou grupo do ranking com o mesmo nome, quando existe. */
+  slug: string | null;
+  gmv_milhoes: number | null;
+  /** Parte vendida por terceiros (3P), quando a fonte publica. */
+  terceiros_milhoes: number | null;
+  /** Valor negociado menos a parte de terceiros: a venda própria (1P), conta desta página; null sem os dois. */
+  propria_milhoes: number | null;
+  natureza: NaturezaCurada;
+  pagina: number | string | null;
+};
+
+/** A régua das plataformas: valor negociado (GMV) de cada uma, com a parte de terceiros quando a fonte a publica. Ordem da fonte. */
+export function reguaDasPlataformas(c: CuradoriaVarejo): LinhaPlataforma[] {
+  const mk = c.ranking?.marketplaces;
+  const nomes = new Map<string, string>();
+  for (const g of c.ranking?.grupos ?? []) nomes.set(g.grupo, g.slug);
+  for (const [slug, f] of Object.entries(c.fichas)) if (!nomes.has(f.grupo)) nomes.set(f.grupo, slug);
+  return (mk?.lista ?? []).map((m) => {
+    const gmv = typeof m.gmv_digital_2025_milhoes === "number" ? m.gmv_digital_2025_milhoes : null;
+    const terceiros = typeof m.venda_de_sellers_2025_milhoes === "number" ? m.venda_de_sellers_2025_milhoes : null;
+    const slug = nomes.get(m.nome) ?? null;
+    return { nome: m.nome, slug: slug && c.fichas[slug] ? slug : null, gmv_milhoes: gmv, terceiros_milhoes: terceiros, propria_milhoes: gmv !== null && terceiros !== null ? gmv - terceiros : null, natureza: naturezaCurada(m.natureza), pagina: m.pagina ?? mk?.pagina ?? null };
+  });
+}
+
+export type ParDeListas = { slug: string; grupo: string; irtt_milhoes: number | null; outra_milhoes: number; diferenca_milhoes: number | null; tem_ficha: boolean };
+
+/** Conferência com a ABRAS: o valor de cada grupo alimentar nas duas listas, em R$ milhões, e a diferença (ABRAS menos IRTT). */
+export function paresDaAbras(c: CuradoriaVarejo): ParDeListas[] {
+  const abras = (c.ranking?.conferencias ?? []).find((x) => x.valores_abras_reais);
+  if (!abras?.valores_abras_reais) return [];
+  return linhasDoRanking(c)
+    .filter((l) => typeof abras.valores_abras_reais![l.slug] === "number")
+    .map((l) => {
+      const outra = abras.valores_abras_reais![l.slug] / 1e6;
+      return { slug: l.slug, grupo: l.grupo, irtt_milhoes: typeof l.vendas_milhoes === "number" ? l.vendas_milhoes : null, outra_milhoes: outra, diferenca_milhoes: typeof l.vendas_milhoes === "number" ? outra - l.vendas_milhoes : null, tem_ficha: l.tem_ficha };
+    });
+}
+
+export type LiderNoSegmento = LiderSegmentoBase & { parte_do_lider_pct: number | null };
+type LiderSegmentoBase = { segmento_irtt: string; lider: string; slug: string | null; tem_ficha: boolean; posicao_geral: number | null; vendas_milhoes: number | null; vendas_segmento_milhoes: number | null; empresas: number | null; parte_nas_300_pct: number | null; natureza: NaturezaCurada };
+
+/** O líder de cada segmento da fonte com o tamanho do segmento e a parte do líder nele (venda do líder ÷ vendas do segmento × 100). */
+export function lideresNosSegmentos(c: CuradoriaVarejo): LiderNoSegmento[] {
+  return (c.ranking?.lideres_por_segmento ?? []).map((l) => {
+    const lider = typeof l.vendas_milhoes === "number" ? l.vendas_milhoes : null;
+    const seg = typeof l.vendas_segmento_bilhoes === "number" ? l.vendas_segmento_bilhoes * 1000 : null;
+    return {
+      segmento_irtt: l.segmento_irtt, lider: l.lider, slug: l.slug ?? null, tem_ficha: Boolean(l.slug && c.fichas[l.slug]), posicao_geral: typeof l.posicao_geral === "number" ? l.posicao_geral : null,
+      vendas_milhoes: lider, vendas_segmento_milhoes: seg, empresas: typeof l.empresas_no_segmento === "number" ? l.empresas_no_segmento : null,
+      parte_nas_300_pct: typeof l.participacao_no_top300_pct === "number" ? l.participacao_no_top300_pct : null, natureza: naturezaCurada(l.natureza),
+      parte_do_lider_pct: lider !== null && seg !== null && seg > 0 ? (100 * lider) / seg : null,
+    };
+  });
+}
+
+/* ------------------------------------------------------------------ figuras da ficha */
+
+export type Presenca = {
+  /** "todos": a fonte diz que o grupo está em todas as unidades da federação; "lista": estados nomeados; "nao_divulgado": nenhum dos dois. */
+  tipo: "todos" | "lista" | "nao_divulgado";
+  ufs: string[];
+  /** De onde veio a lista: a ficha do grupo (documentos da companhia) ou o ranking. */
+  origem: "ficha" | "ranking" | null;
+};
+
+const UFS_VALIDAS = ["AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"];
+
+/**
+ * Onde o grupo atua, por unidade da federação: a lista da ficha quando existe (é a que cita documento), senão a do ranking. "Todos"
+ * e "não divulgado" são estados diferentes: o primeiro pinta as 27; o segundo não pinta nenhuma e diz que a lista não foi publicada.
+ */
+export function presencaPorEstado(c: CuradoriaVarejo, slug: string): Presenca {
+  const limpa = (l: readonly string[]) => Array.from(new Set(l.map((x) => x.trim().toUpperCase()).filter((x) => UFS_VALIDAS.includes(x)))).sort();
+  const daFicha = limpa(c.fichas[slug]?.regioes?.estados ?? []);
+  const fecha = (ufs: string[], origem: "ficha" | "ranking"): Presenca => ({ tipo: ufs.length === UFS_VALIDAS.length ? "todos" : "lista", ufs, origem });
+  if (daFicha.length > 0) return fecha(daFicha, "ficha");
+  const g = (c.ranking?.grupos ?? []).find((x) => x.slug === slug);
+  const texto = (g?.estados ?? "").trim();
+  if (/^todos$/i.test(texto)) return { tipo: "todos", ufs: [...UFS_VALIDAS], origem: "ranking" };
+  const doRanking = limpa(texto.split(/[,;]/));
+  if (doRanking.length > 0) return fecha(doRanking, "ranking");
+  return { tipo: "nao_divulgado", ufs: [], origem: null };
+}
+
+export type PontoDaSerie = { exercicio: number; valor: number | null; /** Valor que a demonstração do exercício seguinte republicou, quando difere do publicado. */ reapresentado: number | null };
+export type SerieDaFicha = { id: string; rotulo: string; unidade: "R$ bilhões" | "%"; casas: number; pontos: PontoDaSerie[]; /** Segunda série na mesma unidade e escala (o passivo de arrendamento ao lado da dívida líquida). */ par?: { rotulo: string; pontos: PontoDaSerie[] } };
+
+/**
+ * As séries dos pequenos múltiplos da ficha: os indicadores de INDICADORES_FICHA e, por último, a dívida líquida com o passivo de
+ * arrendamento como par. Todas nos mesmos exercícios (exerciciosDaGold); exercício sem demonstração é ponto ausente. Receita e lucro
+ * trazem o valor reapresentado no exercício seguinte quando ele difere do publicado.
+ */
+export function seriesDaFicha(emp: EmpresaGold, anos: readonly number[]): SerieDaFicha[] {
+  const reap = (p: PeriodoEmpresa | null, campo: "receita_liquida" | "lucro_liquido"): number | null => {
+    const r = p?.reapresentado_no_exercicio_seguinte;
+    return p && r && r[campo] !== null && r[campo] !== p[campo] ? (r[campo] as number) / 1e9 : null;
+  };
+  const series: SerieDaFicha[] = INDICADORES_FICHA.map((ind) => ({
+    id: ind.id, rotulo: ind.rotulo, unidade: ind.unidade, casas: ind.casas,
+    pontos: anos.map((a) => {
+      const p = periodoDe(emp, a);
+      return { exercicio: a, valor: p ? ind.valor(p) : null, reapresentado: ind.id === "receita" ? reap(p, "receita_liquida") : ind.id === "lucro" ? reap(p, "lucro_liquido") : null };
+    }),
+  }));
+  series.push({
+    id: "divida", rotulo: "Dívida líquida sem arrendamento", unidade: "R$ bilhões", casas: 1,
+    pontos: anos.map((a) => ({ exercicio: a, valor: dividaLiquida(periodoDe(emp, a)), reapresentado: null })),
+    par: { rotulo: "Passivo de arrendamento", pontos: anos.map((a) => ({ exercicio: a, valor: passivoArrendamento(periodoDe(emp, a)), reapresentado: null })) },
+  });
+  return series;
+}
+
+export type PeriodicidadeOperacional = "anual" | "trimestral";
+export type SerieComparavel = { periodicidade: PeriodicidadeOperacional; pontos: { periodo: string; ordem: number; valor: number }[] };
+
+/** Período da curadoria na periodicidade e na ordem do tempo: "2025" e "dez/2025" são o exercício; "4T24" é um trimestre. O resto não se ordena. */
+export function periodoOperacional(periodo: string | undefined): { periodicidade: PeriodicidadeOperacional; ordem: number } | null {
+  const p = (periodo ?? "").trim();
+  const ano = /^(?:dez\/)?(\d{4})$/.exec(p);
+  if (ano) return { periodicidade: "anual", ordem: Number(ano[1]) };
+  const tri = /^([1-4])T(\d{2})$/.exec(p);
+  if (tri) return { periodicidade: "trimestral", ordem: (2000 + Number(tri[2])) * 4 + Number(tri[1]) - 1 };
+  return null;
+}
+
+/**
+ * A parte de uma série operacional que pode virar minigráfico: três ou mais valores da mesma periodicidade (só exercícios, ou só
+ * trimestres), em ordem do tempo. Trimestre e ano nunca dividem o eixo; com as duas periodicidades, vale a que tem mais pontos
+ * (empate: a anual). Menos de três pontos comparáveis: null, e a série segue em pares rótulo e valor.
+ */
+export function serieComparavel(o: Pick<Operacional, "valores">): SerieComparavel | null {
+  const grupos: Record<PeriodicidadeOperacional, SerieComparavel["pontos"]> = { anual: [], trimestral: [] };
+  for (const v of o.valores ?? []) {
+    const p = periodoOperacional(v.periodo);
+    if (!p || typeof v.valor !== "number" || !Number.isFinite(v.valor)) continue;
+    if (grupos[p.periodicidade].some((x) => x.ordem === p.ordem)) continue;
+    grupos[p.periodicidade].push({ periodo: (v.periodo ?? "").trim(), ordem: p.ordem, valor: v.valor });
+  }
+  const periodicidade: PeriodicidadeOperacional = grupos.trimestral.length > grupos.anual.length ? "trimestral" : "anual";
+  const pontos = grupos[periodicidade].sort((a, b) => a.ordem - b.ordem);
+  return pontos.length >= 3 ? { periodicidade, pontos } : null;
+}
+
+/** A venda do ranking e a receita líquida do mesmo exercício na CVM, em R$ milhões, com a parte que a receita representa da venda. */
+export function rankingContraCvm(vendaMilhoes: number | null, emp: EmpresaGold | null, anoRanking: string): { venda_milhoes: number | null; receita_milhoes: number | null; exercicio: number | null; mesmo_ano: boolean; razao_pct: number | null; diferenca_milhoes: number | null; base: string | null } {
+  const doAno = emp ? periodoDe(emp, Number(anoRanking)) : null;
+  const p = doAno ?? ultimoExercicio(emp);
+  const receita = p?.receita_liquida != null ? p.receita_liquida / 1e6 : null;
+  const mesmo = Boolean(doAno);
+  const comparavel = mesmo && vendaMilhoes !== null && vendaMilhoes > 0 && receita !== null;
+  return { venda_milhoes: vendaMilhoes, receita_milhoes: receita, exercicio: p?.exercicio ?? null, mesmo_ano: mesmo, razao_pct: comparavel ? (100 * receita!) / vendaMilhoes! : null, diferenca_milhoes: comparavel ? vendaMilhoes! - receita! : null, base: p?.base ?? null };
+}
+
+/**
+ * A partir de quantas posições um movimento é destacado no gráfico de inclinação: o terceiro maior deslocamento da lista, nunca
+ * menos de duas posições. Com isso a figura destaca poucos grupos (os empates do terceiro entram) e nunca destaca troca de um lugar.
+ */
+export function limiarDeDestaque(m: readonly Movimento[]): number {
+  const ordenados = m.map((x) => Math.abs(x.ganho ?? 0)).sort((a, b) => b - a);
+  return Math.max(2, ordenados[Math.min(2, ordenados.length - 1)] ?? 2);
+}

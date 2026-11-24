@@ -2,30 +2,12 @@
 
 import { useId, useState, type MouseEvent } from "react";
 import type { ContaDoCupom, PerfilCem } from "@/lib/varejo/dados";
+import { EXPLICA, NOME_CURTO } from "./cupom-comum";
 import { COR_DA_PARTE } from "./escala";
 
 export type PerfilDoCupom = PerfilCem & { conta: ContaDoCupom };
 
 const reais = (v: number) => `R$ ${Math.abs(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-/** O que cada parte é, em palavras de quem nunca leu um balanço. */
-const EXPLICA: Record<PerfilCem["partes"][number]["id"], string> = {
-  custo: "O que a loja pagou ao fornecedor pelas mercadorias que vendeu.",
-  despesas: "Salários, aluguel, energia, entrega, propaganda e administração.",
-  financeiro: "Juros da dívida e dos aluguéis de longo prazo, menos o que o caixa rendeu.",
-  impostos: "Imposto de renda e contribuição social sobre o lucro do ano.",
-  outros: "Negócios que a companhia encerrou ou vendeu, e arredondamentos.",
-  lucro: "O que sobra para os donos depois de tudo.",
-};
-
-const NOME_CURTO: Record<PerfilCem["partes"][number]["id"], string> = {
-  custo: "Mercadoria",
-  despesas: "Operação da loja",
-  financeiro: "Juros",
-  impostos: "Imposto sobre o lucro",
-  outros: "Encerradas e outros",
-  lucro: "Lucro",
-};
 
 const DEVOLVEU: Partial<Record<PerfilCem["partes"][number]["id"], string>> = {
   impostos: "Crédito de imposto sobre o lucro",
@@ -46,7 +28,7 @@ const PICOTE = {
  * Todas as lojas usam a mesma escala (`escala`), para as barras se compararem de relance. O que passa dos R$ 100 mais o que voltou
  * (crédito de imposto) é prejuízo e sai hachurado; o lucro é o último trecho, no azul da coleção.
  */
-function Barra({ p, escala, alta = false }: Readonly<{ p: PerfilDoCupom; escala: number; alta?: boolean }>) {
+export function BarraDoCupom({ p, escala, alta = false }: Readonly<{ p: PerfilDoCupom; escala: number; alta?: boolean }>) {
   const c = p.conta;
   const entrou = c.entradas.reduce((s, x) => s + x.valor, 0);
   const partes = [...c.saidas.map((x) => ({ id: x.id, valor: x.valor })), ...(c.resultado > 0 ? [{ id: "lucro" as const, valor: c.resultado }] : [])];
@@ -78,7 +60,12 @@ function Barra({ p, escala, alta = false }: Readonly<{ p: PerfilDoCupom; escala:
  * com prejuízo, as saídas passam das entradas no valor dele, e o cupom diz "faltam" em vez de "sobram". Os valores chegam prontos de
  * `contaDoCupom` (src/lib/varejo/dados.ts); nada é calculado aqui.
  */
-export function Cupom({ perfis }: Readonly<{ perfis: readonly PerfilDoCupom[] }>) {
+export function Cupom({ perfis, titulo, descricao }: Readonly<{
+  perfis: readonly PerfilDoCupom[];
+  /** Título e frase da lista de barras, quando as "lojas" não são os perfis do modelo da entrada (a ficha de um grupo e os pares dele). */
+  titulo?: string;
+  descricao?: string;
+}>) {
   const id = useId();
   const [atual, setAtual] = useState(perfis[0]?.slug ?? "");
   const [imprime, setImprime] = useState(false);
@@ -96,8 +83,8 @@ export function Cupom({ perfis }: Readonly<{ perfis: readonly PerfilDoCupom[] }>
     <div data-ponte-cem="" data-cupom="" className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)]">
       {/* as lojas: no celular vêm antes do cupom, porque é nelas que se escolhe */}
       <div className="lg:order-2">
-        <h3 className="t-h3 text-carvao">{perfis.length} lojas na mesma régua</h3>
-        <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">Cada barra são os R$ 100 de uma loja, riscados de R$ 10 em R$ 10; o traço escuro marca os R$ 100. Escolha uma para imprimir o cupom.</p>
+        <h3 className="t-h3 text-carvao">{titulo ?? `${perfis.length} lojas na mesma régua`}</h3>
+        <p className="t-meta mt-1 max-w-prose2 text-carvao-muted">{descricao ?? "Cada barra são os R$ 100 de uma loja, riscados de R$ 10 em R$ 10; o traço escuro marca os R$ 100. Escolha uma para imprimir o cupom."}</p>
         <ul className="mt-4 border-t border-linha" aria-label="Lojas do modelo">
           {perfis.map((x) => {
             const ativo = x.slug === p.slug;
@@ -118,7 +105,7 @@ export function Cupom({ perfis }: Readonly<{ perfis: readonly PerfilDoCupom[] }>
                     <span className="text-sm tabular-nums text-carvao">{x.conta.resultado >= 0 ? `sobram ${reais(x.conta.resultado)}` : `faltam ${reais(x.conta.resultado)}`}</span>
                   </span>
                   <span className="mt-2 block pr-3">
-                    <Barra p={x} escala={escala} />
+                    <BarraDoCupom p={x} escala={escala} />
                   </span>
                 </button>
               </li>
@@ -192,7 +179,7 @@ export function Cupom({ perfis }: Readonly<{ perfis: readonly PerfilDoCupom[] }>
             </div>
 
             <div className="mt-5">
-              <Barra p={p} escala={Math.max(100, c.total)} alta />
+              <BarraDoCupom p={p} escala={Math.max(100, c.total)} alta />
               <p className="mt-2 text-center text-xs text-mineral">Cada risco, R$ 1. O traço marca os R$ 100.</p>
             </div>
           </div>

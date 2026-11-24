@@ -49,3 +49,17 @@ export const COR_DA_PARTE = {
 /** As duas séries da coleção: volume (crescimento real) no azul, receita nominal no neutro de referência. */
 export const COR_VOLUME = "var(--cor-gas)";
 export const COR_RECEITA = "var(--serie-referencia)";
+
+/** Fundo de cada segmento do ranking nas figuras dos grupos (mapa de blocos, dispersão): tons claros de token, com carvão por cima. */
+const SEGMENTOS_COM_COR = ["alimentar", "farmacia-beleza", "departamento", "eletromoveis", "moda", "digital", "foodservice", "construcao"];
+export const corDoSegmento = (slug: string | null | undefined): string => `var(--segmento-varejo-${slug && SEGMENTOS_COM_COR.includes(slug) ? slug : "outros"})`;
+
+/** Hachura de estimativa da fonte e de prejuízo: a mesma do cupom, em papel sobre a cor da marca. A leitura nunca depende só dela: o texto diz "estimado". */
+export const HACHURA = "repeating-linear-gradient(135deg, var(--cor-papel) 0 2px, transparent 2px 5px)";
+/** Hachura de ausência sobre o fundo da página (estado "não divulgado", "sem dado"). */
+export const HACHURA_AUSENCIA = "repeating-linear-gradient(135deg, var(--cor-mineral-soft) 0 1px, transparent 1px 4px)";
+
+/** Subida e descida de posição ou de valor entre dois períodos: o azul e o sépia da escala divergente; parado, o neutro de referência. */
+export const COR_SUBIU = "var(--cor-gas)";
+export const COR_DESCEU = "var(--escala-varejo-neg-2)";
+export const COR_PARADO = "var(--serie-referencia)";

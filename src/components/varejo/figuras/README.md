@@ -28,6 +28,17 @@ Figuras e artefatos da coleção Varejo, desenhados à mão (SVG e HTML, sem bib
 | `BarrasRotuladas.tsx` | `BarrasRotuladas` | Barras horizontais com nome e valor, a partir do zero (aceita negativos), com links e "ver todas" | servidor |
 | `LinhaContexto.tsx` | `LinhaContexto` | Gráfico pequeno de uma série, para pequenos múltiplos alinhados | servidor |
 | `Miniaturas.tsx` | `MicroSerie`, `MicroProporcao`, `MicroBarra`, `MicroBarras`, `MicroCupons`, `TesouraMini`, `MapaBlocosMini` | Miniaturas para números de escala, cartões de destino, etiquetas e a versão aberta | servidor |
+| `geometria.ts` (2ª metade) | `mosaico`, `logaritmica` | Mosaico de áreas proporcionais (treemap "squarified") e escala logarítmica | módulo puro |
+| `escala.ts` (2ª metade) | `corDoSegmento`, `HACHURA`, `HACHURA_AUSENCIA`, `COR_SUBIU`, `COR_DESCEU`, `COR_PARADO` | Fundo de cada segmento (`--segmento-varejo-*`), as duas hachuras (estimativa ou prejuízo; ausência) e os tons de subida e descida | módulo puro |
+| `BlocosDeTamanho.tsx` | `BlocosDeTamanho` | "O tamanho de cada grupo": mosaico por segmento, bloco com logo, venda e parte na amostra; estimativa com moldura hachurada; lista de barras no celular | servidor |
+| `Inclinacao.tsx` | `Inclinacao`, `textoDoMovimento` | Gráfico de inclinação entre a posição do ano anterior e a do exercício, com logos nas pontas e destaque de quem mais se moveu; lista com barra divergente no celular | servidor |
+| `DispersaoLojas.tsx` | `DispersaoLojas` | Vendas × lojas em escala logarítmica, com diagonais de mesma venda por loja e rótulo direto; lista ordenada no celular; grupo sem lojas listado à parte | servidor |
+| `QuadrosDoRanking.tsx` | `ReguaPlataformas`, `ParesDeListas`, `LideresDeSegmento`, `ConceitoEmEsquema` | Régua 1P/3P das plataformas, o mesmo grupo em duas listas na mesma régua, o líder dentro do segmento e o esquema das quatro medidas que não se somam | servidor |
+| `MapaPresenca.tsx` | `MapaPresenca` | Os 27 blocos de `GRADE_UF` cheios onde o grupo atua; "todos" e "não divulgado" são estados próprios | servidor |
+| `ColunasPequenas.tsx` | `ColunasPequenas`, `LegendaDasColunas` | Colunas pequenas a partir do zero para pequenos múltiplos: lacuna desenhada, abaixo do zero hachurado, ponto vazado (publicado) e cheio (reapresentado), par na mesma escala | servidor |
+| `CuponsLadoALado.tsx` | `CuponsLadoALado`, `LinhaALinha` | Um cupom por companhia com logo e a barra de R$ 100 na mesma régua; cada parcela companhia a companhia, com a distância anotada | servidor |
+| `CascataCaixa.tsx` | `CascataCaixa`, `LegendaDaCascata`, `dominioDasCascatas` | Cascata horizontal do caixa por R$ 100 de receita, com o passo do convênio hachurado e a linha ausente como estado | servidor |
+| `PontosConectados.tsx` | `PontosConectados`, `MarcaDaCompanhia` | Uma linha por medida, marcas de forma diferente por companhia ligadas por um traço, eixo comum por unidade e a persistência em quadrinhos por exercício | servidor |
 
 ## Como usar (exemplos)
 
@@ -54,3 +65,10 @@ const passo = passoDivergente(valor, limite); // null quando não há valor
 - `/varejo` sem sessão (versão aberta): `TesouraMini` de 24 meses, só com os valores do começo e do fim.
 - `/varejo/brasil`: `Tesoura` (índice), `Colunas` (diferença), `MosaicoCalor` (atividades e difusão), `QuadroDeCem`, `BarraDePartes` e `BarraDeUmaParte` (mercado), `LinhaContexto` (renda, preços e juros).
 - `/varejo/segmentos`: `Halteres` (atividades e, com `?uf=`, atividades do estado), `Prateleira`, a ficha do segmento (`../SegmentoCurado.tsx`, com `BarrasRotuladas`), `MapaBlocos` com `BarrasRotuladas`, `Tesoura` (estado × Brasil e o segmento aberto), `BarraDePartes` (formas de venda).
+- `/varejo/grupos`: `BlocosDeTamanho` (figura `ranking`), `Inclinacao` (`movimento`), `DispersaoLojas` (`modelos`), `LideresDeSegmento`, `ReguaPlataformas` com `ConceitoEmEsquema`, `ParesDeListas`; a busca responde com `CadeiaDaMarca` (`../BuscaGrupos.tsx`).
+- `/varejo/grupos/[slug]`: logo no título e selo de posição na abertura; microfiguras nos quatro números (`MicroBarra`, `MicroSerie`); `MapaPresenca`; `RankingContraCvm` em duas barras na mesma régua; `BarrasRotuladas` na decomposição do crescimento; `Cupom` (figura `cupom`, a companhia e os pares do segmento); `ColunasPequenas` nas demonstrações e nas séries operacionais com três ou mais pontos comparáveis; a faixa do tempo e o trilho de `LinhaDoTempo` (`../FichaGrupo.tsx`).
+- `/varejo/comparador`: `CuponsLadoALado` e `LinhaALinha` (figura `ponte`), `CascataCaixa` (figura `caixa`), `PontosConectados`.
+
+## Logos nas figuras
+
+Toda figura que nomeia uma companhia usa `<LogoEmpresa ... decorativo semLogo="placa" />` (`../LogoEmpresa.tsx`): o arquivo oficial do manifesto, ou, sem ele, a placa do mesmo tamanho com o nome curto na serifa da plataforma (`data-logo-ausente`). O nome vem sempre escrito ao lado, em texto; o logo nunca é o único rótulo. Bandeiras e plataformas sem entrada no manifesto ficam com a placa tipográfica ou só com o texto.

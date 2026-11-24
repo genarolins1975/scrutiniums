@@ -2,9 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FaixaFrescor } from "@/components/frescor/FaixaFrescor";
 import { Recolhido } from "@/components/observatorios/Recolhido";
-import { Controles, FiguraAnalitica, GraficoBarras, LeituraGuiada, PaginaPainel, TabelaDados } from "@/components/painel";
+import { Controles, FiguraAnalitica, LeituraGuiada, PaginaPainel, TabelaDados } from "@/components/painel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { ApoioNaCuradoria, CaixasLadoALado, COR_PARTE, PontesLadoALado, SelecaoDeEmpresas, type ApoioDoPar, type Selecionada } from "@/components/varejo/Comparador";
+import { ApoioNaCuradoria, CaixasLadoALado, CorpoDaPonte, SelecaoDeEmpresas, type ApoioDoPar, type Selecionada } from "@/components/varejo/Comparador";
+import { RESUMO_MAIS } from "@/components/varejo/FichaGrupo";
+import { LegendaDaCascata } from "@/components/varejo/figuras/CascataCaixa";
+import { CuponsLadoALado, LinhaALinha } from "@/components/varejo/figuras/CuponsLadoALado";
+import { PontosConectados } from "@/components/varejo/figuras/PontosConectados";
+import { LogoEmpresa } from "@/components/varejo/LogoEmpresa";
 import { CabecalhoVarejo, LINK } from "@/components/varejo/comum";
 import { ExportarRecorte } from "@/components/varejo/ExportarRecorte";
 import { Campo, FonteDocumento, NaoDivulgado } from "@/components/varejo/grupos-comum";
@@ -19,19 +24,23 @@ import {
   caixaDe,
   empresasComparaveis,
   hrefComparador,
+  linhasDosCupons,
   MAX_EMPRESAS,
+  medidasEmPontos,
   MIN_EMPRESAS,
   PAR_PADRAO,
   parDaSelecao,
   PARES,
   PARTES,
+  perfilDoExercicio,
   persistencias,
   reconciliacao,
   selecaoDaUrl,
+  sinaisPorExercicio,
   substitutos,
   variacaoDaReceita,
 } from "@/lib/varejo/comparador";
-import { curadoria, goldEmpresas } from "@/lib/varejo/dados";
+import { contaDoCupom, curadoria, goldEmpresas } from "@/lib/varejo/dados";
 import { dataBr, mesDaData, num, pct, plural, pontos, por100, reais, textoCurado, variacao } from "@/lib/varejo/formato";
 import { dividaLiquida, eventosOrdenados, exerciciosDaGold, fichaDoGrupo, hrefFicha, nomeDoSegmento, passivoArrendamento, periodoDe, ROTA_COMPARADOR, ROTA_GRUPOS, TIPO_EVENTO } from "@/lib/varejo/grupos";
 import { paginaVarejo, ROTA_METODO } from "@/lib/varejo/paginas";
@@ -131,9 +140,12 @@ export default function PaginaComparador({ searchParams }: Busca) {
                   <ul className="mt-5 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
                     {outras.map((x) => (
                       <li key={x.slug} className="border-t border-linha">
-                        <Link href={h([sozinha, x.slug])} prefetch={false} scroll={false} className="flex min-h-[44px] flex-col justify-center py-2 text-sm text-carvao" data-segunda={x.slug}>
-                          <span className={`font-medium ${LINK}`}>{x.nome}</span>
-                          <span className="t-meta text-carvao-muted">{x.segmentos.length ? x.segmentos.map(nomeDoSegmento).join(" e ") : "sem segmento na curadoria"}</span>
+                        <Link href={h([sozinha, x.slug])} prefetch={false} scroll={false} className="flex min-h-[44px] items-center gap-3 py-2 text-sm text-carvao" data-segunda={x.slug}>
+                          <LogoEmpresa slug={x.slug} nome={x.nome} tamanho="p" decorativo semLogo="placa" />
+                          <span className="flex min-w-0 flex-col">
+                            <span className={`font-medium ${LINK}`}>{x.nome}</span>
+                            <span className="t-meta text-carvao-muted">{x.segmentos.length ? x.segmentos.map(nomeDoSegmento).join(" e ") : "sem segmento na curadoria"}</span>
+                          </span>
                         </Link>
                       </li>
                     ))}
@@ -189,6 +201,23 @@ export default function PaginaComparador({ searchParams }: Busca) {
   const comConvenio = selecionadas.filter((x) => caixaDe(x.p).convenio !== null);
   const notasConvenio = selecionadas.map((x, i) => ({ x, o: notaDoConvenio(fichas[i]) })).filter((n) => n.o);
   const apoio: ApoioDoPar[] = par && dois ? (APOIO[par.id] ?? []).map((a) => ({ rotulo: a.rotulo, padroes: [a.padrao[dois[0].slug] ?? /$^/, a.padrao[dois[1].slug] ?? /$^/] as const })) : [];
+  const perfis = selecionadas.map((x) => {
+    const perfil = perfilDoExercicio(x.slug, x.emp, x.p, "Companhia");
+    return perfil ? { ...perfil, conta: contaDoCupom(perfil) } : null;
+  });
+  const linhasCupons = linhasDosCupons(selecionadas.map((x) => x.p?.ponte_100 ?? null));
+  const emPontos = medidasEmPontos(selecionadas.map((x) => x.p));
+  const persistenciaDesenhada = dois
+    ? Object.fromEntries(
+        pers.map((p) => [
+          p.medida.id,
+          {
+            sinais: sinaisPorExercicio(e, dois[0].emp, dois[1].emp, p.medida),
+            texto: p.comparaveis < 2 ? "um só exercício comparável" : p.repete ? `mesmo lado nos ${num(p.comparaveis)} exercícios` : `troca de lado: ${dois[0].emp.nome} acima em ${num(p.aAcima)} de ${num(p.comparaveis)}`,
+          },
+        ]),
+      )
+    : undefined;
   const eventos = selecionadas
     .map((x, i) => ({ x, slugFicha: fichas[i]?.slug ?? null, lista: eventosOrdenados((fichas[i]?.eventos ?? []).filter((ev) => EVENTOS_QUE_MUDAM.includes(ev.tipo ?? "") && (ev.data ?? "") >= `${ano}-01`)).slice(0, 3) }))
     .filter((g) => g.lista.length > 0);
@@ -233,7 +262,7 @@ export default function PaginaComparador({ searchParams }: Busca) {
           acao: (
             <div data-atalhos-pares="">
               <p className="text-sm font-medium text-carvao">Dois pares para começar</p>
-              <ul className="mt-1.5 flex flex-wrap gap-2">
+              <ul className="mt-2 grid max-w-3xl gap-3 sm:grid-cols-2">
                 {PARES.map((p) => {
                   const ativo = par?.id === p.id;
                   return (
@@ -243,11 +272,19 @@ export default function PaginaComparador({ searchParams }: Busca) {
                         prefetch={false}
                         scroll={false}
                         aria-current={ativo ? "true" : undefined}
-                        className={`inline-flex min-h-[44px] items-center border px-4 text-sm transition-[border-color,background-color,transform] duration-150 ease-out motion-safe:active:scale-[0.97] ${
-                          ativo ? "border-carvao bg-carvao font-medium text-papel" : "border-carvao-muted bg-superficie text-carvao [@media(hover:hover)]:hover:border-carvao"
+                        className={`flex h-full min-h-[44px] flex-col gap-2 border bg-superficie px-3 py-3 text-carvao transition-[border-color,transform] duration-150 ease-out motion-safe:active:scale-[0.98] ${
+                          ativo ? "border-carvao shadow-[inset_0_-4px_0_var(--cor-gas)]" : "border-linha [@media(hover:hover)]:hover:border-carvao"
                         }`}
                       >
-                        {p.rotulo}
+                        <span className="flex items-center gap-2">
+                          <LogoEmpresa slug={p.slugs[0]} nome={e.empresas[p.slugs[0]]?.nome ?? p.slugs[0]} tamanho="p" decorativo semLogo="placa" />
+                          <span aria-hidden="true" className="text-sm text-mineral">×</span>
+                          <LogoEmpresa slug={p.slugs[1]} nome={e.empresas[p.slugs[1]]?.nome ?? p.slugs[1]} tamanho="p" decorativo semLogo="placa" />
+                        </span>
+                        <span className="text-sm font-medium leading-snug">{p.rotulo}</span>
+                        <span className="text-xs leading-snug text-carvao-muted">
+                          Por que {p.porque} chegam a resultados diferentes?{ativo ? " É a comparação em vigor." : ""}
+                        </span>
                       </Link>
                     </li>
                   );
@@ -331,7 +368,7 @@ export default function PaginaComparador({ searchParams }: Busca) {
                   )}
                 </LeituraGuiada>
               }
-              comoInterpretar="No gráfico, as faixas à direita do zero mostram para onde foram os R$ 100: custo, despesas, juros, imposto e, no fim, o lucro. O que aparece à esquerda do zero entrou além dos R$ 100 (um crédito de imposto, um resultado financeiro positivo) ou faltou (prejuízo). Somando os dois lados, toda barra dá R$ 100."
+              comoInterpretar="Cada cupom lista o que saiu dos R$ 100 de receita líquida de uma companhia, na ordem da demonstração de resultado, e fecha no lucro. A barra no pé de cada cupom usa a mesma régua em todos: o que passa do traço dos R$ 100 é prejuízo, hachurado. Em “linha a linha”, cada parcela aparece companhia a companhia, com a distância entre elas escrita."
               naoConcluir="que a empresa com mais lucro por R$ 100 é mais eficiente: custo e despesa dependem do que cada uma vende, de quanto é serviço ou crédito na receita, de eventos do ano e de onde a contabilidade classifica cada gasto."
               tabela={{
                 titulo: `Ponte da receita líquida ao lucro, R$ por R$ 100 de receita líquida, ${ano}`,
@@ -346,40 +383,42 @@ export default function PaginaComparador({ searchParams }: Busca) {
               }}
               complemento={
                 <div className="space-y-5">
-                  <PontesLadoALado selecionadas={selecionadas} ano={ano} hrefAno={hrefAno} />
-                  <dl className="grid gap-x-10 gap-y-4 border-t border-linha pt-5 md:grid-cols-2 lg:grid-cols-3" data-o-que-e-cada-parcela="">
+                  <div data-linha-a-linha-bloco="">
+                    <h3 className="t-h3 text-carvao">Linha a linha: de onde vem a diferença</h3>
+                    <div className="mt-3">
+                      <LinhaALinha linhas={linhasCupons} nomes={nomes} slugs={slugs} />
+                    </div>
+                  </div>
+                  <details className="border-t border-linha" data-o-que-e-cada-parcela-recolhido="">
+                  <summary className={RESUMO_MAIS}>O que é cada parcela, em palavras simples</summary>
+                  <dl className="grid gap-x-10 gap-y-4 pb-3 pt-1 md:grid-cols-2 lg:grid-cols-3" data-o-que-e-cada-parcela="">
                     {PARTES.map((p) => (
                       <Campo key={p.id} rotulo={p.rotulo}>
                         {p.explica}
                       </Campo>
                     ))}
                   </dl>
+                  </details>
                 </div>
               }
             >
-              <GraficoBarras
-                semTabela
-                titulo={`De R$ 100 de receita líquida ao lucro, ${ano}`}
-                dados={selecionadas.map((x) => {
-                  const b = x.p?.ponte_100;
-                  return { slug: x.slug, nome: x.emp.nome, custo: b ? -b.custo : null, despesas: b ? -b.despesas_operacionais : null, financeiro: b ? -b.resultado_financeiro : null, impostos: b ? -b.ir_csll : null, outros: b ? -b.descontinuadas_e_outros : null, lucro: b ? b.lucro_liquido : null };
-                })}
-                chaveCategoria="slug"
-                chaveRotulo="nome"
-                series={PARTES.map((p) => ({ id: p.id, rotulo: p.id === "lucro" ? "Lucro líquido (à esquerda do zero, prejuízo)" : p.rotulo, cor: COR_PARTE[p.id] }))}
-                unidade="R$ por R$ 100"
-                casas={2}
-                orientacao="horizontal"
-                empilhado
-                alturaCategoria={56}
-                rotulosSaoNomes
-              />
+              <div data-grafico="cupons-lado-a-lado">
+                <CuponsLadoALado
+                  cupons={selecionadas.map((x, i) => ({
+                    slug: x.slug,
+                    nome: x.emp.nome,
+                    legenda: `Exercício de ${ano}${x.p ? `, demonstração ${x.p.base === "individual" ? "individual" : "consolidada"}` : ""}`,
+                    perfil: perfis[i],
+                    corpo: <CorpoDaPonte x={x} ano={ano} hrefAno={hrefAno} />,
+                  }))}
+                />
+              </div>
             </FiguraAnalitica>
 
             <FiguraAnalitica
               id="caixa"
               pergunta="Para onde foi o caixa?"
-              subtitulo={`Caixa operacional declarado, depois do convênio de fornecedores e investimentos · R$ bilhões correntes · ${lista(nomes)} · exercício de ${ano}`}
+              subtitulo={`Do que a operação gerou ao que sobra depois dos investimentos · R$ por R$ 100 de receita líquida, com o valor em reais · ${lista(nomes)} · exercício de ${ano}`}
               natureza="OBSERVADO"
               proveniencia={provCvm(e, {
                 indicador: "Caixa das atividades operacionais, variações de capital de giro e investimentos", natureza: "OBSERVADO", unidade: "reais correntes", inicio: String(ano), fim: String(ano),
@@ -411,7 +450,7 @@ export default function PaginaComparador({ searchParams }: Busca) {
                   "Nenhuma das empresas escolhidas apresenta pagamentos a fornecedores por convênio no fluxo de financiamento neste exercício; o caixa operacional declarado já traz a compra de mercadorias."
                 )
               }
-              comoInterpretar="Nas variações de estoques, fornecedores e contas a receber, o sinal é o da demonstração: negativo consumiu caixa (comprou mais estoque, pagou fornecedor, vendeu a prazo), positivo liberou. Investimento aparece no gráfico como valor positivo, por ser saída de outra natureza."
+              comoInterpretar="Leia cada cascata de cima para baixo. As barras escuras são patamares do caixa, a partir do zero; entre elas, cada passo parte de onde o anterior parou: para a direita liberou caixa, para a esquerda consumiu. Tudo em R$ por R$ 100 de receita líquida, na mesma escala em todas as companhias; o valor em reais vem embaixo. O primeiro patamar é conta desta página: o caixa operacional declarado menos as três variações de capital de giro."
               naoConcluir="que caixa operacional alto prova saúde financeira: ele sobe quando a empresa alonga o prazo dos fornecedores ou antecipa recebíveis, e o efeito pode se desfazer no exercício seguinte."
               tabela={{
                 titulo: `Caixa operacional, capital de giro e investimentos, R$ bilhões, ${ano}`,
@@ -426,11 +465,10 @@ export default function PaginaComparador({ searchParams }: Busca) {
               }}
               complemento={
                 <div className="space-y-6">
-                  <CaixasLadoALado selecionadas={selecionadas} ano={ano} hrefAno={hrefAno} />
                   {notasConvenio.length > 0 && (
-                    <div className="border-t border-linha pt-5" data-como-descrevem-o-convenio="">
-                      <h3 className="t-h3 text-carvao">Como cada companhia descreve o convênio</h3>
-                      <div className={`mt-4 grid gap-x-10 gap-y-6 ${notasConvenio.length > 1 ? "lg:grid-cols-2" : ""}`}>
+                    <details className="border-t border-linha" data-como-descrevem-o-convenio="">
+                      <summary className={RESUMO_MAIS}>Como cada companhia descreve o convênio nas notas das demonstrações, com a página</summary>
+                      <div className={`grid gap-x-10 gap-y-6 pb-3 pt-1 ${notasConvenio.length > 1 ? "lg:grid-cols-2" : ""}`}>
                         {notasConvenio.map(({ x, o }) => (
                           <div key={x.slug} className="min-w-0">
                             <p className="rotulo text-mineral">{x.emp.nome}</p>
@@ -441,42 +479,36 @@ export default function PaginaComparador({ searchParams }: Busca) {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </details>
                   )}
                 </div>
               }
             >
-              <GraficoBarras
-                semTabela
-                titulo={`Caixa operacional e investimentos, ${ano}`}
-                dados={selecionadas.map((x) => {
-                  const cx = caixaDe(x.p);
-                  return { slug: x.slug, nome: x.emp.nome, operacional: cx.operacional === null ? null : cx.operacional / 1e9, apos: cx.aposConvenio === null ? null : cx.aposConvenio / 1e9, investimentos: cx.investimentos === null ? null : Math.abs(cx.investimentos) / 1e9 };
-                })}
-                chaveCategoria="slug"
-                chaveRotulo="nome"
-                series={[
-                  { id: "operacional", rotulo: "Caixa operacional declarado", cor: "var(--serie-4)" },
-                  { id: "apos", rotulo: "Caixa operacional depois do convênio", cor: "var(--cor-gas)", opcional: true },
-                  { id: "investimentos", rotulo: "Investimentos", cor: "var(--serie-3)" },
-                ]}
-                unidade="R$ bilhões"
-                casas={1}
-                orientacao="horizontal"
-                alturaCategoria={84}
-                rotulosValor
-                rotulosSaoNomes
-              />
+              <div data-grafico="cascata-do-caixa">
+                <LegendaDaCascata comConvenio={comConvenio.length > 0} />
+                <div className="mt-5">
+                  <CaixasLadoALado selecionadas={selecionadas} ano={ano} hrefAno={hrefAno} />
+                </div>
+              </div>
             </FiguraAnalitica>
 
+            <Recolhido
+              id="o-que-sobrevive"
+              aberto
+              nivelTitulo={2}
+              titulo={dois ? "Quais diferenças não dependem do ano?" : "Onde as companhias se afastam, medida a medida"}
+              resumo={
+                dois
+                  ? `${dois[0].emp.nome} e ${dois[1].emp.nome} em ${num(pers.length)} medidas relativas, nos ${num(Math.max(0, ...pers.map((p) => p.comparaveis)))} exercícios em que as duas têm demonstração.`
+                  : `${lista(nomes)} em ${num(emPontos.length)} medidas relativas, no exercício de ${ano}. Com duas companhias, a página mostra também em quantos exercícios a diferença se repete.`
+              }
+            >
+              <PontosConectados medidas={emPontos} nomes={nomes} persistencia={persistenciaDesenhada} />
+              <p className="t-meta mt-3 max-w-prose2 text-carvao-muted">
+                Exercício de {ano}. Medidas relativas (por receita líquida, por custo), calculadas das demonstrações entregues à CVM; as fórmulas estão no método. Cada marca é uma companhia; o traço liga a menor à maior. Estar mais à direita não é estar melhor: despesa maior e margem maior ficam do mesmo lado.
+              </p>
             {dois && (
-              <Recolhido
-                id="o-que-sobrevive"
-                aberto
-                nivelTitulo={2}
-                titulo="Quais diferenças não dependem do ano?"
-                resumo={`${dois[0].emp.nome} e ${dois[1].emp.nome} em ${num(pers.length)} medidas relativas, nos ${num(Math.max(0, ...pers.map((p) => p.comparaveis)))} exercícios em que as duas têm demonstração.`}
-              >
+              <div className="mt-8 border-t border-linha pt-5">
                 <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-leitura-do-par="">
                   {repetem.length > 0 ? (
                     <>
@@ -500,7 +532,8 @@ export default function PaginaComparador({ searchParams }: Busca) {
                   Uma diferença que se repete em todos os anos não é efeito do exercício escolhido. Ela ainda pode vir do perímetro de cada demonstração e do tipo de negócio, que os avisos acima e as fichas descrevem; a repetição não
                   aponta a causa.
                 </p>
-                <div className="mt-6">
+                <details className="mt-3 border-t border-linha" data-tabela-das-medidas="">
+                  <summary className={RESUMO_MAIS}>Ver as medidas em tabela, com a menor e a maior diferença nos exercícios</summary>
                   <TabelaDados
                     recolhida={false}
                     idioma="pt"
@@ -520,7 +553,7 @@ export default function PaginaComparador({ searchParams }: Busca) {
                     fixarPrimeiraColuna
                     nota={`Diferença: ${dois[0].emp.nome} menos ${dois[1].emp.nome}, em pontos percentuais nas medidas em % e em dias nas de estoque e fornecedores. Valores publicados em cada exercício, sem ajuste de perímetro.`}
                   />
-                </div>
+                </details>
                 {par && apoio.length > 0 && (
                   <div className="mt-8 border-t border-linha pt-5" data-par-preparado={par.id}>
                     <h3 className="t-h3 text-carvao">O que os documentos das duas dizem sobre a operação em {ano}</h3>
@@ -531,9 +564,9 @@ export default function PaginaComparador({ searchParams }: Busca) {
                   </div>
                 )}
                 {fichas.some((f) => (f?.fontes_de_receita ?? []).length > 0) && (
-                  <div className="mt-8 border-t border-linha pt-5" data-receitas-do-par="">
-                    <h3 className="t-h3 text-carvao">O que entra na receita de cada uma</h3>
-                    <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">A receita líquida das demonstrações soma tudo o que a companhia fatura. Quando uma tem atacado, marketplace ou crédito em peso diferente, margens e prazos mudam por composição, não por desempenho.</p>
+                  <details className="mt-6 border-t border-linha" data-receitas-do-par="">
+                    <summary className={RESUMO_MAIS}>O que entra na receita de cada uma: mercadoria, serviços, comissões e crédito</summary>
+                    <p className="t-meta max-w-prose2 text-carvao-muted">A receita líquida das demonstrações soma tudo o que a companhia fatura. Quando uma tem atacado, marketplace ou crédito em peso diferente, margens e prazos mudam por composição, não por desempenho.</p>
                     <div className="mt-4 grid gap-x-10 gap-y-6 md:grid-cols-2">
                       {dois.map((x, i) => (
                         <div key={x.slug} className="min-w-0">
@@ -563,12 +596,13 @@ export default function PaginaComparador({ searchParams }: Busca) {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </details>
                 )}
-              </Recolhido>
+              </div>
             )}
+            </Recolhido>
             {eventos.length > 0 && (
-              <Recolhido id="eventos" aberto nivelTitulo={2} titulo={`O que aconteceu com cada grupo de ${ano} em diante`} resumo="Recuperações judiciais, reapresentações, compras, vendas de negócios e mudanças de controle registradas nas fichas, com o documento de origem.">
+              <Recolhido id="eventos" nivelTitulo={2} titulo={`O que aconteceu com cada grupo de ${ano} em diante`} resumo="Recuperações judiciais, reapresentações, compras, vendas de negócios e mudanças de controle registradas nas fichas, com o documento de origem.">
                 <div data-eventos-da-comparacao="">
                   <div className={`grid gap-x-10 gap-y-6 ${eventos.length > 1 ? "md:grid-cols-2" : ""}`}>
                     {eventos.map((g) => (

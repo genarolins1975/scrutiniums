@@ -89,3 +89,54 @@ export function marcasDeTempo(meses: readonly string[], maximo = 9): { i: number
   while (marcas.length > maximo) marcas = marcas.filter((_, k) => k % 2 === 0);
   return marcas;
 }
+
+export type Caixa = { x: number; y: number; w: number; h: number };
+
+/**
+ * Mosaico de áreas proporcionais (treemap "squarified"): divide a caixa em retângulos de área proporcional ao valor de cada item,
+ * mantendo-os o mais perto possível do quadrado, do maior para o menor. Devolve a caixa de cada item, nas unidades da caixa dada;
+ * item com valor zero ou negativo fica de fora. A soma das áreas é a área da caixa.
+ */
+export function mosaico<T extends { valor: number }>(itens: readonly T[], caixa: Caixa): (T & Caixa)[] {
+  const validos = itens.filter((i) => i.valor > 0).sort((a, b) => b.valor - a.valor);
+  const total = validos.reduce((s, i) => s + i.valor, 0);
+  const saida: (T & Caixa)[] = [];
+  if (!(total > 0) || !(caixa.w > 0) || !(caixa.h > 0)) return saida;
+  const escala = (caixa.w * caixa.h) / total;
+  let resto: Caixa = { ...caixa };
+  let fila = validos.map((i) => ({ item: i, area: i.valor * escala }));
+  const pior = (linha: { area: number }[], lado: number) => {
+    const soma = linha.reduce((s, r) => s + r.area, 0);
+    const max = Math.max(...linha.map((r) => r.area));
+    const min = Math.min(...linha.map((r) => r.area));
+    return Math.max((lado * lado * max) / (soma * soma), (soma * soma) / (lado * lado * min));
+  };
+  while (fila.length) {
+    const lado = Math.min(resto.w, resto.h);
+    let n = 1;
+    while (n < fila.length && pior(fila.slice(0, n + 1), lado) <= pior(fila.slice(0, n), lado)) n++;
+    const linha = fila.slice(0, n);
+    fila = fila.slice(n);
+    const soma = linha.reduce((s, r) => s + r.area, 0);
+    if (resto.w >= resto.h) {
+      // coluna à esquerda, itens empilhados de cima para baixo
+      const largura = soma / resto.h;
+      let y = resto.y;
+      for (const r of linha) { const h = r.area / largura; saida.push({ ...r.item, x: resto.x, y, w: largura, h }); y += h; }
+      resto = { x: resto.x + largura, y: resto.y, w: resto.w - largura, h: resto.h };
+    } else {
+      const altura = soma / resto.w;
+      let x = resto.x;
+      for (const r of linha) { const w = r.area / altura; saida.push({ ...r.item, x, y: resto.y, w, h: altura }); x += w; }
+      resto = { x: resto.x, y: resto.y + altura, w: resto.w, h: resto.h - altura };
+    }
+  }
+  return saida;
+}
+
+/** Escala logarítmica (base 10) de um domínio positivo para uma faixa. */
+export function logaritmica(dominio: readonly [number, number], faixa: readonly [number, number]): Escala {
+  const a = Math.log10(dominio[0]);
+  const b = Math.log10(dominio[1]);
+  return (v) => faixa[0] + ((Math.log10(v) - a) * (faixa[1] - faixa[0])) / (b - a);
+}

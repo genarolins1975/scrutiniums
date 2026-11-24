@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { abertura, caixaDe, partesDaPonte, reconciliacao, type EmpresaComparavel, type IdParte } from "@/lib/varejo/comparador";
+import { abertura, cascataDoCaixa, partesDaPonte, reconciliacao, type EmpresaComparavel, type IdParte } from "@/lib/varejo/comparador";
 import { diaBr, num, por100, reais, textoCurado } from "@/lib/varejo/formato";
 import { naturezaCurada, nomeDoSegmento, urlSegura, valorOperacional } from "@/lib/varejo/grupos";
 import type { EmpresaGold, FichaCuradoria, LinhaConta, PeriodoEmpresa } from "@/lib/varejo/tipos";
 import { LINK } from "./comum";
 import { valorNaUnidade } from "./FichaGrupo";
+import { CascataCaixa, dominioDasCascatas } from "./figuras/CascataCaixa";
+import { LogoEmpresa } from "./LogoEmpresa";
 import { FonteDocumento, MarcaNatureza, NaoDivulgado } from "./grupos-comum";
 
 export type Selecionada = { slug: string; emp: EmpresaGold; p: PeriodoEmpresa | null };
@@ -46,12 +48,15 @@ function SemExercicio({ x, ano, hrefAno }: Readonly<{ x: Selecionada; ano: numbe
 
 function Cabeca({ x, ano }: Readonly<{ x: Selecionada; ano: number }>) {
   return (
-    <header>
-      <h3 className="t-h3 text-carvao">{x.emp.nome}</h3>
-      <p className="t-meta mt-0.5 text-carvao-muted">
-        Exercício de {ano}
-        {x.p ? `, demonstração ${x.p.base === "individual" ? "individual" : "consolidada"}` : ""}
-      </p>
+    <header className="flex items-center gap-3">
+      <LogoEmpresa slug={x.slug} nome={x.emp.nome} tamanho="p" decorativo semLogo="placa" />
+      <div className="min-w-0">
+        <h3 className="t-h3 text-carvao">{x.emp.nome}</h3>
+        <p className="t-meta text-carvao-muted">
+          Exercício de {ano}
+          {x.p ? `, demonstração ${x.p.base === "individual" ? "individual" : "consolidada"}` : ""}
+        </p>
+      </div>
     </header>
   );
 }
@@ -92,26 +97,18 @@ function Abertura({ rotulo, linhas, receita }: Readonly<{ rotulo: string; linhas
 }
 
 /**
- * "De cada R$ 100 de receita líquida, quanto chega ao lucro?": a conta de cada empresa, parcela por parcela, com o sinal da
- * demonstração (negativo tira dos R$ 100; positivo soma), a abertura das despesas e do resultado financeiro, a reconciliação
- * com o lucro divulgado e o link do documento original. As empresas ficam lado a lado no computador e em sequência no celular.
+ * O corpo do cupom de uma companhia na comparação: a conta de R$ 100, parcela por parcela, com o sinal da demonstração (negativo
+ * tira dos R$ 100; positivo soma), a abertura das despesas e do resultado financeiro, a reconciliação com o lucro divulgado e o
+ * link do documento original. Sem demonstração do exercício, o estado de ausência com os exercícios que a companhia tem.
  */
-export function PontesLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selecionadas: readonly Selecionada[]; ano: number; hrefAno: (ano: number) => string }>) {
+export function CorpoDaPonte({ x, ano, hrefAno }: Readonly<{ x: Selecionada; ano: number; hrefAno: (ano: number) => string }>) {
+  const b = x.p?.ponte_100 ?? null;
+  const rec = x.p ? reconciliacao(x.p) : null;
+  if (!x.p || !b || !rec) return <SemExercicio x={x} ano={ano} hrefAno={hrefAno} />;
   return (
-    <div className={`grid gap-x-8 gap-y-10 ${colunas(selecionadas.length)}`} data-pontes="">
-      {selecionadas.map((x) => {
-        const b = x.p?.ponte_100 ?? null;
-        const rec = x.p ? reconciliacao(x.p) : null;
-        return (
-          <article key={x.slug} className="min-w-0 border-t border-carvao pt-4" data-ponte-empresa={x.slug}>
-            <Cabeca x={x} ano={ano} />
-            {!x.p || !b || !rec ? (
-              <div className="mt-4">
-                <SemExercicio x={x} ano={ano} hrefAno={hrefAno} />
-              </div>
-            ) : (
+
               <>
-                <ul className="mt-4" aria-label={`Parcelas de R$ 100 de receita líquida de ${x.emp.nome}`}>
+                <ul aria-label={`Parcelas de R$ 100 de receita líquida de ${x.emp.nome}`}>
                   <li className="grid grid-cols-[1fr_auto] gap-x-3 py-2 text-sm text-carvao">
                     <span>
                       Receita líquida
@@ -124,7 +121,7 @@ export function PontesLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selec
                     .map((parte) => {
                       const zero = Math.abs(parte.valor) < 0.005;
                       return (
-                        <li key={parte.id} className="border-t border-linha py-2" data-parcela={parte.id}>
+                        <li key={parte.id} className="py-1.5" data-parcela={parte.id}>
                           <div className="grid grid-cols-[1fr_auto] gap-x-3 text-sm text-carvao">
                             <span className="flex items-baseline gap-2">
                               <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0" style={{ background: COR_PARTE[parte.id] }} />
@@ -140,7 +137,7 @@ export function PontesLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selec
                         </li>
                       );
                     })}
-                  <li className="grid grid-cols-[1fr_auto] gap-x-3 border-t border-carvao py-2.5 text-carvao" data-parcela="lucro">
+                  <li className="grid grid-cols-[1fr_auto] gap-x-3 border-t border-dashed border-mineral-soft py-2.5 text-carvao" data-parcela="lucro">
                     <span className="flex items-baseline gap-2 text-sm font-medium">
                       <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0" style={{ background: COR_PARTE.lucro }} />
                       <span>
@@ -168,40 +165,24 @@ export function PontesLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selec
                 </p>
                 <LinkDaDemonstracao p={x.p} emp={x.emp} />
               </>
-            )}
-          </article>
-        );
-      })}
-    </div>
-  );
-}
-
-const SINAL_GIRO = (v: number | null) => (v === null ? null : v < 0 ? "consumiu caixa" : v > 0 ? "liberou caixa" : "sem efeito");
-
-function LinhaCaixa({ rotulo, valor, detalhe, forte = false }: Readonly<{ rotulo: string; valor: number | null; detalhe?: string | null; forte?: boolean }>) {
-  return (
-    <div className={`grid grid-cols-[1fr_auto] gap-x-3 border-t py-2 text-sm text-carvao ${forte ? "border-carvao" : "border-linha"}`}>
-      <dt className={forte ? "font-medium" : undefined}>
-        {rotulo}
-        {detalhe && <span className="t-meta block font-normal text-carvao-muted">{detalhe}</span>}
-      </dt>
-      <dd className={`text-right tabular-nums ${forte ? "numero-p" : ""}`}>{valor === null ? <NaoDivulgado>sem dado</NaoDivulgado> : reais(valor)}</dd>
-    </div>
   );
 }
 
 /**
- * "Para onde foi o caixa": o caixa operacional declarado, o que estoques, fornecedores e recebíveis fizeram com ele, os
- * investimentos e, quando a companhia apresenta pagamentos a fornecedores por convênio no fluxo de financiamento, o caixa
- * operacional depois de descontá-los. Sinal como na demonstração: negativo consome caixa.
+ * "Para onde foi o caixa": uma cascata por companhia, por R$ 100 de receita líquida e na mesma escala, do que a operação gerou
+ * antes do capital de giro ao que sobra depois dos investimentos, passando pelo caixa operacional declarado e, quando a companhia
+ * apresenta pagamentos a fornecedores por convênio no financiamento, pelo caixa depois deles. Abaixo, todas as variações de ativos
+ * e passivos da demonstração e o link do documento.
  */
 export function CaixasLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selecionadas: readonly Selecionada[]; ano: number; hrefAno: (ano: number) => string }>) {
+  const cascatas = selecionadas.map((x) => cascataDoCaixa(x.p));
+  const dominio = dominioDasCascatas(cascatas);
   return (
-    <div className={`grid gap-x-8 gap-y-10 ${colunas(selecionadas.length)}`} data-caixas="">
-      {selecionadas.map((x) => {
-        const cx = caixaDe(x.p);
+    <div className={`grid gap-x-10 gap-y-10 ${colunas(selecionadas.length)}`} data-caixas="">
+      {selecionadas.map((x, i) => {
+        const passos = cascatas[i];
         return (
-          <article key={x.slug} className="min-w-0 border-t border-carvao pt-4" data-caixa-empresa={x.slug}>
+          <article key={x.slug} className="min-w-0" data-caixa-empresa={x.slug}>
             <Cabeca x={x} ano={ano} />
             {!x.p ? (
               <div className="mt-4">
@@ -209,30 +190,15 @@ export function CaixasLadoALado({ selecionadas, ano, hrefAno }: Readonly<{ selec
               </div>
             ) : (
               <>
-                <dl className="mt-4">
-                  <LinhaCaixa rotulo="Caixa operacional declarado" valor={cx.operacional} detalhe="o que a operação gerou, como a companhia apresenta" forte />
-                  <LinhaCaixa rotulo="dentro dele: estoques" valor={cx.estoques} detalhe={SINAL_GIRO(cx.estoques)} />
-                  <LinhaCaixa rotulo="dentro dele: fornecedores" valor={cx.fornecedores} detalhe={SINAL_GIRO(cx.fornecedores)} />
-                  <LinhaCaixa rotulo="dentro dele: contas a receber" valor={cx.recebiveis} detalhe={SINAL_GIRO(cx.recebiveis)} />
-                  {cx.convenio !== null ? (
-                    <>
-                      <LinhaCaixa rotulo="Pagamentos a fornecedores por convênio" valor={cx.convenio} detalhe="apresentados fora do operacional, no fluxo de financiamento" />
-                      <LinhaCaixa rotulo="Caixa operacional depois do convênio" valor={cx.aposConvenio} detalhe="declarado mais os pagamentos de convênio (negativos)" forte />
-                    </>
-                  ) : (
-                    <div className="border-t border-linha py-2 text-sm text-carvao" data-sem-convenio="">
-                      <dt>Pagamentos a fornecedores por convênio</dt>
-                      <dd className="t-meta mt-0.5 text-carvao-muted">A companhia não apresenta essa linha no fluxo de financiamento deste exercício: não há ajuste a fazer.</dd>
-                    </div>
-                  )}
-                  <LinhaCaixa rotulo="Investimentos" valor={cx.investimentos} detalhe="compra de imobilizado e intangível (saída)" forte />
-                </dl>
+                <div className="mt-3">
+                  {passos ? <CascataCaixa passos={passos} dominio={dominio} titulo={`Cascata do caixa de ${x.emp.nome} em ${ano}, em R$ por R$ 100 de receita líquida`} /> : <p className="text-sm"><NaoDivulgado>a demonstração não traz o caixa das atividades operacionais deste exercício</NaoDivulgado></p>}
+                </div>
                 {(x.p.abre_giro ?? []).length > 0 && (
-                  <details className="mt-1" data-abre-giro="">
+                  <details className="mt-1 border-t border-linha" data-abre-giro="">
                     <summary className="t-meta inline-flex min-h-[44px] cursor-pointer items-center text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao">Abrir todas as variações de ativos e passivos</summary>
                     <ul className="pb-2">
-                      {abertura(x.p.abre_giro, null).map((l, i) => (
-                        <li key={`${l.descricao}-${i}`} className="grid grid-cols-[1fr_auto] gap-x-3 border-t border-linha py-1.5 text-sm text-carvao">
+                      {abertura(x.p.abre_giro, null).map((l, k) => (
+                        <li key={`${l.descricao}-${k}`} className="grid grid-cols-[1fr_auto] gap-x-3 border-t border-linha py-1.5 text-sm text-carvao">
                           <span className="min-w-0">{l.descricao}</span>
                           <span className="text-right tabular-nums">{reais(l.valor)}</span>
                         </li>
@@ -266,7 +232,7 @@ export function SelecaoDeEmpresas({ todas, selecao, href }: Readonly<{ todas: re
   const outras = fora.filter((x) => !doMesmoSegmento.includes(x));
   const cheio = selecao.length >= max;
   const segmentoDe = (x: EmpresaComparavel) => (x.segmentos.length ? x.segmentos.map(nomeDoSegmento).join(" e ") : "Outros");
-  const botao = "inline-flex min-h-[44px] items-center border px-3 text-sm transition-[border-color,background-color,transform] duration-150 ease-out motion-safe:active:scale-[0.97]";
+  const botao = "inline-flex min-h-[44px] items-center gap-2.5 border py-1.5 pl-1.5 pr-3 text-sm transition-[border-color,background-color,transform] duration-150 ease-out motion-safe:active:scale-[0.97]";
   const entrar = (x: EmpresaComparavel) => (
     <li key={x.slug}>
       <Link
@@ -277,6 +243,7 @@ export function SelecaoDeEmpresas({ todas, selecao, href }: Readonly<{ todas: re
         data-entrar={x.slug}
       >
         <span className="sr-only">{cheio ? `Trocar ${escolhidas[escolhidas.length - 1]?.nome ?? "a última"} por ` : "Incluir "}</span>
+        <LogoEmpresa slug={x.slug} nome={x.nome} tamanho="p" decorativo semLogo="placa" />
         {x.nome}
       </Link>
     </li>
@@ -289,7 +256,10 @@ export function SelecaoDeEmpresas({ todas, selecao, href }: Readonly<{ todas: re
       <ul aria-labelledby="sel-empresas" className="mt-1 flex flex-wrap gap-2">
         {escolhidas.map((x) => (
           <li key={x.slug} className="inline-flex items-stretch border border-carvao bg-carvao text-sm text-papel">
-            <span className="inline-flex min-h-[44px] items-center px-3 font-medium">{x.nome}</span>
+            <span className="inline-flex min-h-[44px] items-center gap-2.5 py-1.5 pl-1.5 pr-3 font-medium">
+              <LogoEmpresa slug={x.slug} nome={x.nome} tamanho="p" decorativo semLogo="placa" />
+              {x.nome}
+            </span>
             {selecao.length > min && (
               <Link href={href(selecao.filter((s) => s !== x.slug))} prefetch={false} scroll={false} className="inline-flex min-h-[44px] items-center border-l border-marfim/30 px-3 underline decoration-marfim/40 underline-offset-4 [@media(hover:hover)]:hover:decoration-marfim" data-tirar={x.slug}>
                 tirar<span className="sr-only"> {x.nome} da comparação</span>

@@ -88,6 +88,15 @@
   --escala-varejo-pos-1: var(--escala-gas-2);
   --escala-varejo-pos-2: var(--escala-gas-3);
   --escala-varejo-pos-3: var(--escala-gas-5);
+  --segmento-varejo-alimentar: var(--escala-gas-2);
+  --segmento-varejo-farmacia-beleza: var(--cor-neutro-frio-claro);
+  --segmento-varejo-departamento: var(--serie-5);
+  --segmento-varejo-eletromoveis: var(--escala-jmp-3);
+  --segmento-varejo-moda: var(--cor-linha);
+  --segmento-varejo-digital: var(--escala-gas-1);
+  --segmento-varejo-foodservice: var(--cor-bronze-soft);
+  --segmento-varejo-construcao: var(--escala-div-pos-1);
+  --segmento-varejo-outros: var(--escala-div-centro);
   --cor-grade: #e5e0d5;
   --cor-previsto: #5b3f8c;
   --serie-hidraulica: #256abf;

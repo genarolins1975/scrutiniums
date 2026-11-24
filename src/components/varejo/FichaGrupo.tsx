@@ -1,70 +1,74 @@
 import Link from "next/link";
-import { GraficoBarras, TabelaDados } from "@/components/painel";
+import { TabelaDados } from "@/components/painel";
 import { diaBr, mesDaData, num, pct, reais, reaisDeMilhoes, textoCurado } from "@/lib/varejo/formato";
 import {
-  dividaLiquida,
   eventosOrdenados,
-  INDICADORES_FICHA,
   naturezaCurada,
-  passivoArrendamento,
   periodoDe,
+  rankingContraCvm,
   reapresentacoes,
+  serieComparavel,
+  seriesDaFicha,
   TIPO_EVENTO,
   urlSegura,
   type NaturezaCurada,
 } from "@/lib/varejo/grupos";
 import type { Demonstracao, EmpresaGold, EventoFicha, FonteCuradoria, Operacional } from "@/lib/varejo/tipos";
 import { LINK } from "./comum";
+import { ColunasPequenas, LegendaDasColunas } from "./figuras/ColunasPequenas";
+import { COR_RECEITA, COR_VOLUME, HACHURA, HACHURA_AUSENCIA } from "./figuras/escala";
+import { LogoEmpresa } from "./LogoEmpresa";
 import { FonteDocumento, MarcaNatureza, NaoDivulgado } from "./grupos-comum";
 
 /* ------------------------------------------------------------------ demonstrações */
 
 /**
- * Um gráfico pequeno por indicador, todos com os mesmos exercícios no eixo: barras a partir do zero, sem eixo duplo, e o
- * exercício sem demonstração como lacuna marcada ("sem dado"), nunca como zero. A dívida líquida e o passivo de arrendamento
- * dividem um gráfico porque têm a mesma unidade e se leem juntos.
+ * Pequenos múltiplos das demonstrações: um gráfico por indicador, todos com os mesmos exercícios na horizontal, colunas a partir do
+ * zero, valor escrito em cada coluna, prejuízo e caixa consumido abaixo do zero no tom de aviso com hachura, exercício sem
+ * demonstração como lacuna desenhada e a reapresentação marcada no próprio gráfico (ponto vazado no valor publicado, cheio no
+ * republicado). A dívida líquida e o passivo de arrendamento dividem o último gráfico, porque têm a mesma unidade e se leem juntos.
  */
 export function GraficosDaCompanhia({ emp, anos }: Readonly<{ emp: EmpresaGold; anos: readonly number[] }>) {
+  const series = seriesDaFicha(emp, anos);
+  const todos = series.flatMap((x) => [...x.pontos, ...(x.par?.pontos ?? [])]);
   return (
-    <div className="grid gap-x-8 gap-y-8 md:grid-cols-2 md:gap-y-10 xl:grid-cols-3" data-graficos-companhia="">
-      {INDICADORES_FICHA.map((ind) => (
-        <div key={ind.id} className="min-w-0" data-indicador={ind.id}>
-          <GraficoBarras
-            semTabela
-            titulo={ind.rotulo}
-            dados={anos.map((a) => {
-              const p = periodoDe(emp, a);
-              return { ano: String(a), valor: p ? ind.valor(p) : null };
-            })}
-            chaveCategoria="ano"
-            series={[{ id: "valor", rotulo: ind.rotulo, cor: "var(--cor-gas)" }]}
-            unidade={ind.unidade}
-            casas={ind.casas}
-            altura={176}
-            rotulosValor
-          />
+    <div data-grafico="pequenos-multiplos" data-graficos-companhia="">
+      <LegendaDasColunas reapresentacao={todos.some((p) => p.reapresentado !== null)} negativos={todos.some((p) => (p.valor ?? 0) < 0)} lacunas={series[0].pontos.some((p) => p.valor === null)} />
+      <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-9 lg:grid-cols-4 lg:gap-x-10">
+        {series.map((x) => (
+          <div key={x.id} className={`min-w-0 ${x.par ? "col-span-2" : ""}`} data-indicador={x.id}>
+            <ColunasPequenas
+              titulo={x.rotulo}
+              unidade={x.unidade}
+              casas={x.casas}
+              rotulos={x.par ? "todos" : "pontas"}
+              rotuloPar={x.par?.rotulo}
+              colunas={x.pontos.map((p, i) => ({ rotulo: String(p.exercicio), valor: p.valor, reapresentado: p.reapresentado, ...(x.par ? { par: x.par.pontos[i].valor } : {}) }))}
+            />
+          </div>
+        ))}
+      </div>
+      <p className="t-meta mt-4 text-carvao-muted sm:hidden">No celular, o valor vai escrito no primeiro e no último exercício; os demais estão na tabela logo abaixo.</p>
+    </div>
+  );
+}
+
+/** As mesmas molduras dos pequenos múltiplos, vazias e hachuradas: o grupo não publica demonstração, e a ausência é o estado desenhado. */
+export function DemonstracoesNaoDivulgadas({ rotulos }: Readonly<{ rotulos: readonly string[] }>) {
+  return (
+    <dl className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-4 lg:gap-x-10" data-financeiro-nao-divulgado="">
+      {rotulos.map((rotulo) => (
+        <div key={rotulo} className="min-w-0">
+          <dt className="text-sm font-medium leading-snug text-carvao">{rotulo}</dt>
+          <dd className="mt-2">
+            <span aria-hidden="true" className="block h-16" style={{ backgroundImage: HACHURA_AUSENCIA, boxShadow: "inset 0 0 0 1px var(--cor-linha)" }} />
+            <span className="mt-1.5 block text-sm">
+              <NaoDivulgado />
+            </span>
+          </dd>
         </div>
       ))}
-      <div className="min-w-0 md:col-span-2 xl:col-span-3" data-indicador="divida">
-        <GraficoBarras
-          semTabela
-          titulo="Dívida líquida sem arrendamento e passivo de arrendamento"
-          dados={anos.map((a) => {
-            const p = periodoDe(emp, a);
-            return { ano: String(a), divida: dividaLiquida(p), arrendamento: passivoArrendamento(p) };
-          })}
-          chaveCategoria="ano"
-          series={[
-            { id: "divida", rotulo: "Dívida líquida sem arrendamento", cor: "var(--cor-gas)" },
-            { id: "arrendamento", rotulo: "Passivo de arrendamento (aluguéis de longo prazo)", cor: "var(--serie-referencia)" },
-          ]}
-          unidade="R$ bilhões"
-          casas={1}
-          altura={210}
-          rotulosValor
-        />
-      </div>
-    </div>
+    </dl>
   );
 }
 
@@ -169,7 +173,7 @@ export function UltimoTrimestre({ emp }: Readonly<{ emp: EmpresaGold }>) {
   const t = emp.ultimo_trimestre;
   if (!t?.atual) {
     return (
-      <p className="t-meta border-t border-linha pt-4 text-carvao-muted" data-sem-trimestre="">
+      <p className="t-meta pb-3 text-carvao-muted" data-sem-trimestre="">
         Último trimestre: <NaoDivulgado>sem informações trimestrais desta companhia na base</NaoDivulgado>.
       </p>
     );
@@ -187,7 +191,7 @@ export function UltimoTrimestre({ emp }: Readonly<{ emp: EmpresaGold }>) {
     comSaldos ? biOuNulo(d?.passivo_arrendamento) : null,
   ];
   return (
-    <div className="border-t border-linha pt-5" data-ultimo-trimestre={t.data_base}>
+    <div className="pb-2 pt-1" data-ultimo-trimestre={t.data_base}>
       <TabelaDados
         recolhida={false}
         idioma="pt"
@@ -231,6 +235,12 @@ export function SerieOperacional({ o }: Readonly<{ o: Operacional }>) {
   const unica: NaturezaCurada | null = naturezas.length === 1 ? naturezas[0] : null;
   const notas = valores.filter((v) => typeof v.nota === "string" && v.nota.trim());
   const nota = textoCurado(o.nota);
+  // três ou mais valores da mesma periodicidade viram minigráfico; os demais períodos (um semestre, um "até agosto") seguem em pares
+  const serie = unica ? serieComparavel(o) : null;
+  const noGrafico = new Set(serie?.pontos.map((p) => p.periodo) ?? []);
+  const consecutivos = !serie || serie.pontos.every((p, i) => i === 0 || p.ordem - serie.pontos[i - 1].ordem === 1);
+  const emPares = serie ? valores.filter((v) => !noGrafico.has((v.periodo ?? "").trim())) : valores;
+  const casasDaSerie = serie ? (serie.pontos.every((p) => Number.isInteger(p.valor)) ? 0 : serie.pontos.every((p) => Math.abs(p.valor) < 100) ? 1 : 0) : 0;
   return (
     <article className="border-t border-linha pt-4" data-serie-operacional="">
       <h3 className="text-base font-medium leading-snug text-carvao">
@@ -241,9 +251,15 @@ export function SerieOperacional({ o }: Readonly<{ o: Operacional }>) {
           </span>
         )}
       </h3>
+      {serie && (
+        <div className="mt-3 max-w-md" data-serie-em-grafico={serie.periodicidade}>
+          <ColunasPequenas titulo={serie.periodicidade === "anual" ? (consecutivos ? "Por exercício" : "Por exercício, anos não consecutivos") : consecutivos ? "Por trimestre" : "Trimestres divulgados, não consecutivos"} unidade={textoCurado(o.unidade) || "unidade não informada"} casas={casasDaSerie} altura={84} colunas={serie.pontos.map((p) => ({ rotulo: p.periodo, valor: p.valor }))} descricao={`${textoCurado(o.indicador)}: ${serie.pontos.map((p) => `${p.periodo}, ${valorNaUnidade(p.valor, o.unidade)}`).join("; ")}.`} />
+        </div>
+      )}
+      {serie && emPares.length > 0 && <p className="t-meta mt-3 text-carvao-muted">Outros períodos divulgados, que não entram no mesmo eixo:</p>}
       {valores.length > 0 ? (
-        <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-3">
-          {valores.map((v, i) => (
+        <dl className={`flex flex-wrap gap-x-8 gap-y-3 ${serie ? (emPares.length ? "mt-1" : "hidden") : "mt-3"}`}>
+          {emPares.map((v, i) => (
             <div key={`${v.periodo}-${i}`} className="min-w-[5.5rem]">
               <dt className="t-meta text-carvao-muted">{textoCurado(v.periodo)}</dt>
               <dd className="numero-p mt-0.5 text-carvao">{typeof v.valor === "number" ? valorNaUnidade(v.valor, o.unidade) : <NaoDivulgado />}</dd>
@@ -286,8 +302,8 @@ export function SerieOperacional({ o }: Readonly<{ o: Operacional }>) {
 /* ------------------------------------------------------------------ linha do tempo */
 
 /** Quantos eventos e quantas séries operacionais ficam à vista; o resto segue no HTML, recolhido, para a ficha caber no celular. */
-export const EVENTOS_A_VISTA = 5;
-export const SERIES_A_VISTA = 2;
+export const EVENTOS_A_VISTA = 2;
+export const SERIES_A_VISTA = 1;
 export const RESUMO_MAIS = "inline-flex min-h-[44px] cursor-pointer items-center text-sm text-carvao underline decoration-linha underline-offset-4 hover:decoration-carvao";
 
 /** As séries operacionais: as primeiras à vista e as demais recolhidas, todas no HTML. */
@@ -303,7 +319,8 @@ export function SeriesOperacionais({ series }: Readonly<{ series: readonly Opera
       {resto.length > 0 && (
         <details className="mt-6 border-t border-linha" data-series-recolhidas={resto.length}>
           <summary className={RESUMO_MAIS}>
-            Ver as outras {resto.length} séries: {resto.map((o) => textoCurado(o.indicador).toLowerCase()).join("; ")}
+            Ver as outras {resto.length} séries: {resto.slice(0, 3).map((o) => textoCurado(o.indicador).toLowerCase()).join("; ")}
+            {resto.length > 3 ? ` e mais ${resto.length - 3}` : ""}
           </summary>
           <div className="space-y-6 pt-2">
             {resto.map((o, i) => (
@@ -316,6 +333,35 @@ export function SeriesOperacionais({ series }: Readonly<{ series: readonly Opera
   );
 }
 
+/** Forma de cada tipo de evento, igual na faixa do tempo, na legenda e no trilho da lista: a leitura não depende de cor. */
+function GlifoDoEvento({ tipo, className = "" }: Readonly<{ tipo: string | undefined; className?: string }>) {
+  const t = tipo && TIPO_EVENTO[tipo] ? tipo : "outro";
+  const comum = { stroke: "var(--cor-carvao)", strokeWidth: 1.75 } as const;
+  return (
+    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" className={`shrink-0 ${className}`} focusable="false">
+      {t === "aquisicao" && <circle cx="7" cy="7" r="5" fill="var(--cor-carvao)" {...comum} />}
+      {t === "desinvestimento" && <circle cx="7" cy="7" r="5" fill="var(--cor-papel)" {...comum} />}
+      {t === "reapresentacao" && <path d="M7 1.2 12.8 7 7 12.8 1.2 7Z" fill="var(--cor-papel)" {...comum} />}
+      {t === "recuperacao_judicial" && <rect x="2" y="2" width="10" height="10" fill="var(--cor-carvao)" {...comum} />}
+      {t === "fechamento_de_capital" && <rect x="2" y="2" width="10" height="10" fill="var(--cor-papel)" {...comum} />}
+      {t === "mudanca_de_controle" && <path d="M7 1.5 13 12.5H1Z" fill="var(--cor-carvao)" {...comum} strokeLinejoin="round" />}
+      {t === "outro" && <circle cx="7" cy="7" r="2.75" fill="var(--cor-mineral)" stroke="var(--cor-mineral)" strokeWidth="1" />}
+    </svg>
+  );
+}
+
+/** Posição de uma data "AAAA-MM" (ou "AAAA-MM-DD") em anos decimais; null quando a data não tem ano e mês. */
+const anoDecimal = (data: string | undefined): number | null => {
+  const m = /^(\d{4})-(\d{2})/.exec(data ?? "");
+  return m ? Number(m[1]) + (Number(m[2]) - 1) / 12 : null;
+};
+
+/**
+ * A linha do tempo desenhada: uma faixa com os anos na horizontal e uma marca por evento, na forma do tipo dele (aquisição,
+ * desinvestimento, recuperação judicial, mudança de controle, reapresentação, fechamento de capital e outros), com a legenda das
+ * formas. Eventos do mesmo mês empilham. Abaixo, a lista do mais recente para o mais antigo, com a mesma marca num trilho vertical,
+ * o texto e a fonte de cada evento; os mais antigos ficam recolhidos, no HTML. No celular a faixa some e fica o trilho.
+ */
 export function LinhaDoTempo({ eventos }: Readonly<{ eventos: readonly EventoFicha[] }>) {
   if (eventos.length === 0) {
     return (
@@ -327,11 +373,15 @@ export function LinhaDoTempo({ eventos }: Readonly<{ eventos: readonly EventoFic
   }
   const ordenados = eventosOrdenados([...eventos]);
   const item = (ev: EventoFicha, i: number) => (
-    <li key={i} className="grid grid-cols-[5.5rem_1fr] gap-x-4 border-t border-linha py-4 sm:grid-cols-[7rem_1fr]" data-evento={ev.tipo ?? "outro"}>
-      <p className="numero-p text-carvao">
+    <li key={i} className="relative grid grid-cols-[1.75rem_minmax(0,1fr)] gap-x-2 pb-5 last:pb-1 sm:grid-cols-[1.75rem_6rem_minmax(0,1fr)]" data-evento={ev.tipo ?? "outro"}>
+      <span aria-hidden="true" className="absolute bottom-0 left-[6px] top-0 w-px bg-linha" />
+      <span className="relative mt-1 bg-papel py-0.5">
+        <GlifoDoEvento tipo={ev.tipo} />
+      </span>
+      <p className="numero-p col-start-2 text-carvao">
         <time dateTime={/^\d{4}-\d{2}/.test(ev.data ?? "") ? ev.data : undefined}>{ev.data ? mesDaData(ev.data) : "sem data"}</time>
       </p>
-      <div className="min-w-0">
+      <div className="col-start-2 min-w-0 sm:col-start-3">
         <p className="rotulo text-mineral">{TIPO_EVENTO[ev.tipo ?? "outro"] ?? TIPO_EVENTO.outro}</p>
         <p className="mt-1 text-sm leading-relaxed text-carvao">{textoCurado(ev.descricao)}</p>
         <p className="t-meta mt-1.5 text-carvao-muted">
@@ -342,15 +392,61 @@ export function LinhaDoTempo({ eventos }: Readonly<{ eventos: readonly EventoFic
   );
   const recentes = ordenados.slice(0, EVENTOS_A_VISTA);
   const anteriores = ordenados.slice(EVENTOS_A_VISTA);
+  // a faixa: do janeiro do ano do primeiro evento ao dezembro do ano do último
+  const datados = ordenados.map((ev) => ({ ev, t: anoDecimal(ev.data) })).filter((x): x is { ev: EventoFicha; t: number } => x.t !== null);
+  const ini = datados.length ? Math.floor(Math.min(...datados.map((x) => x.t))) : 0;
+  const fim = datados.length ? Math.floor(Math.max(...datados.map((x) => x.t))) + 1 : 1;
+  const pos = (t: number) => (100 * (t - ini)) / (fim - ini);
+  const pilha = new Map<number, number>();
+  const marcas = [...datados].reverse().map((x) => {
+    const andar = pilha.get(x.t) ?? 0;
+    pilha.set(x.t, andar + 1);
+    return { ...x, andar };
+  });
+  const andares = Math.max(1, ...pilha.values());
+  const tipos = Array.from(new Set(ordenados.map((ev) => (ev.tipo && TIPO_EVENTO[ev.tipo] ? ev.tipo : "outro"))));
+  const anosDaFaixa = Array.from({ length: fim - ini + 1 }, (_, i) => ini + i);
+  const passo = Math.max(1, Math.ceil(anosDaFaixa.length / 12));
   return (
-    <div className="max-w-3xl" data-linha-do-tempo={eventos.length}>
-      <ol>{recentes.map(item)}</ol>
+    <div data-linha-do-tempo={eventos.length}>
+      <ul className="t-meta flex flex-wrap gap-x-5 gap-y-1 text-carvao-muted" aria-label="Tipos de evento">
+        {tipos.map((t) => (
+          <li key={t} className="flex items-center gap-2">
+            <GlifoDoEvento tipo={t} />
+            {TIPO_EVENTO[t]}
+          </li>
+        ))}
+      </ul>
+      {datados.length > 1 && (
+        <div className="mt-5 hidden px-2 md:block" aria-hidden="true" data-faixa-do-tempo={datados.length}>
+          <div className="relative" style={{ height: 18 * andares + 8 }}>
+            {marcas.map((m, i) => (
+              <span key={i} className="absolute -translate-x-1/2" style={{ left: `${pos(m.t + 1 / 24)}%`, bottom: 4 + 18 * m.andar }} title={`${mesDaData(m.ev.data)}: ${TIPO_EVENTO[m.ev.tipo ?? "outro"] ?? TIPO_EVENTO.outro}`}>
+                <GlifoDoEvento tipo={m.ev.tipo} className="block" />
+              </span>
+            ))}
+          </div>
+          <div className="relative h-px bg-carvao">
+            {anosDaFaixa.map((a) => (
+              <span key={a} className="absolute -top-1 h-[9px] w-px bg-carvao" style={{ left: `${pos(a)}%` }} />
+            ))}
+          </div>
+          <div className="relative mt-1.5 h-4">
+            {anosDaFaixa.slice(0, -1).filter((_, i) => i % passo === 0).map((a) => (
+              <span key={a} className="absolute -translate-x-1/2 text-xs tabular-nums text-mineral" style={{ left: `${pos(a + 0.5)}%` }}>
+                {a}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      <ol className="mt-6 max-w-3xl">{recentes.map(item)}</ol>
       {anteriores.length > 0 && (
-        <details className="border-t border-linha" data-eventos-anteriores={anteriores.length}>
+        <details className="max-w-3xl border-t border-linha" data-eventos-anteriores={anteriores.length}>
           <summary className={RESUMO_MAIS}>
             Ver os {anteriores.length} eventos anteriores, até {mesDaData(anteriores[anteriores.length - 1].data)}
           </summary>
-          <ol>{anteriores.map((ev, i) => item(ev, i + EVENTOS_A_VISTA))}</ol>
+          <ol className="pt-2">{anteriores.map((ev, i) => item(ev, i + EVENTOS_A_VISTA))}</ol>
         </details>
       )}
     </div>
@@ -371,46 +467,50 @@ export function RankingContraCvm({ vendaMilhoes, natureza, anoRanking, fonteRank
   emp: EmpresaGold | null;
   motivoSemCvm: string;
 }>) {
-  const doAno = emp ? periodoDe(emp, Number(anoRanking)) : null;
-  const p = doAno ?? (emp?.anuais.length ? emp.anuais[emp.anuais.length - 1] : null);
-  const mesmoAno = Boolean(doAno);
-  const razao = mesmoAno && vendaMilhoes && p?.receita_liquida ? (100 * p.receita_liquida) / (vendaMilhoes * 1e6) : null;
+  const r = rankingContraCvm(vendaMilhoes, emp, anoRanking);
+  const max = Math.max(r.venda_milhoes ?? 0, r.receita_milhoes ?? 0);
+  const largura = (v: number | null) => (v === null || !(max > 0) ? 0 : (100 * v) / max);
+  const estimado = natureza === "estimado_pela_fonte";
+  const linha = (rotulo: string, valor: number | null, cor: string, hachura: boolean, ausencia: string, detalhe: React.ReactNode) => (
+    <div className="grid gap-x-6 gap-y-1 border-t border-linha py-3 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
+      <dt className="text-sm font-medium leading-snug text-carvao">{rotulo}</dt>
+      <dd className="min-w-0">
+        <span className="flex items-center gap-3">
+          {valor === null ? (
+            <span aria-hidden="true" className="block h-6 flex-1" style={{ backgroundImage: HACHURA_AUSENCIA, boxShadow: "inset 0 0 0 1px var(--cor-linha)" }} />
+          ) : (
+            <span aria-hidden="true" className="block h-6 min-w-[2px]" style={{ width: `calc(${largura(valor)}% - ${(largura(valor) / 100) * 9}rem)`, background: cor, ...(hachura ? { backgroundImage: HACHURA } : {}) }} />
+          )}
+          <span className="numero-p shrink-0 whitespace-nowrap text-carvao">{valor === null ? <NaoDivulgado>{ausencia}</NaoDivulgado> : reaisDeMilhoes(valor)}</span>
+        </span>
+        <span className="t-meta mt-1.5 block text-carvao-muted">{detalhe}</span>
+      </dd>
+    </div>
+  );
   return (
-    <div className="border-t border-linha pt-5" data-ranking-contra-cvm="">
-      <h3 className="t-h3 text-carvao">Venda no ranking e receita líquida na CVM</h3>
-      <dl className="mt-4 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Venda no ranking, {anoRanking}</dt>
-          <dd className="numero-m mt-1 text-carvao">{vendaMilhoes === null ? <NaoDivulgado>fora do ranking</NaoDivulgado> : reaisDeMilhoes(vendaMilhoes)}</dd>
-          <dd className="t-meta mt-1 text-carvao-muted">
-            {vendaMilhoes === null ? "O método da fonte não atribui venda a este grupo." : <>Venda bruta ao consumidor, com impostos. <MarcaNatureza natureza={natureza} />. Fonte: {fonteRanking}.</>}
-          </dd>
-        </div>
-        <div className="min-w-0">
-          <dt className="rotulo text-mineral">Receita líquida na CVM{p ? `, ${p.exercicio}` : ""}</dt>
-          <dd className="numero-m mt-1 text-carvao">{p?.receita_liquida != null ? reais(p.receita_liquida) : <NaoDivulgado />}</dd>
-          <dd className="t-meta mt-1 text-carvao-muted">
-            {p ? (
-              <>
-                Depois de impostos sobre a venda, devoluções e descontos; inclui receitas que não são venda de mercadoria. Demonstrações {p.base === "individual" ? "individuais" : "consolidadas"}. Fonte: CVM, Demonstrações
-                Financeiras Padronizadas.
-              </>
-            ) : (
-              motivoSemCvm
-            )}
-          </dd>
-        </div>
+    <div data-ranking-contra-cvm="">
+      <h3 className="t-h3 text-carvao">Venda no ranking e receita líquida na CVM, na mesma régua</h3>
+      <dl className="mt-3 border-b border-linha">
+        {linha(
+          `Venda no ranking, ${anoRanking}`, r.venda_milhoes, COR_VOLUME, estimado, "fora do ranking",
+          r.venda_milhoes === null ? "O método da fonte não atribui venda a este grupo." : <>Venda bruta ao consumidor, com impostos. <MarcaNatureza natureza={natureza} />. Fonte: {fonteRanking}.</>,
+        )}
+        {linha(
+          `Receita líquida na CVM${r.exercicio ? `, ${r.exercicio}` : ""}`, r.receita_milhoes, COR_RECEITA, false, "não divulgado",
+          r.exercicio ? <>Depois de impostos sobre a venda, devoluções e descontos; inclui receitas que não são venda de mercadoria. Demonstrações {r.base === "individual" ? "individuais" : "consolidadas"}. Fonte: CVM, Demonstrações Financeiras Padronizadas.</> : motivoSemCvm,
+        )}
       </dl>
-      {p && vendaMilhoes !== null && (
+      {r.receita_milhoes !== null && r.venda_milhoes !== null && (
         <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao" data-explica-diferenca="">
-          {razao !== null ? (
+          {r.razao_pct !== null && r.diferenca_milhoes !== null ? (
             <>
-              No mesmo exercício, a receita líquida equivale a {pct(razao)} da venda do ranking. Os dois números medem coisas diferentes: o ranking conta o que o consumidor pagou, com impostos, só no varejo e só da venda própria;
-              a demonstração conta o que ficou para a companhia depois dos impostos, em tudo o que ela fatura, inclusive atacado, serviços, comissões e crédito quando existem.
+              No mesmo exercício, a receita líquida equivale a {pct(r.razao_pct)} da venda do ranking: {r.diferenca_milhoes >= 0 ? `${reaisDeMilhoes(r.diferenca_milhoes)} a menos` : `${reaisDeMilhoes(-r.diferenca_milhoes)} a mais`}. Os dois números medem coisas diferentes: o ranking
+              conta o que o consumidor pagou, com impostos, só no varejo e só da venda própria; a demonstração conta o que ficou para a companhia depois dos impostos, em tudo o que ela fatura, inclusive atacado, serviços, comissões e
+              crédito quando existem.
             </>
           ) : (
             <>
-              Os dois números são de exercícios diferentes ({anoRanking} no ranking, {p.exercicio} na última demonstração anual da base) e por isso não são divididos um pelo outro. Além do ano, medem coisas diferentes: o ranking
+              Os dois números são de exercícios diferentes ({anoRanking} no ranking, {r.exercicio} na última demonstração anual da base) e por isso não são divididos um pelo outro. Além do ano, medem coisas diferentes: o ranking
               conta o que o consumidor pagou, com impostos; a demonstração, o que ficou para a companhia depois deles.
             </>
           )}
@@ -438,18 +538,21 @@ export function FontesDaFicha({ fontes }: Readonly<{ fontes: readonly FonteCurad
 export function Concorrentes({ itens, hrefDe }: Readonly<{ itens: readonly { nome: string; slug?: string | null }[]; hrefDe: (slug: string | null | undefined) => string | null }>) {
   if (itens.length === 0) return <NaoDivulgado>a curadoria não listou concorrentes</NaoDivulgado>;
   return (
-    <ul className="flex flex-wrap gap-x-5 gap-y-1">
+    <ul className="space-y-2">
       {itens.map((x) => {
         const href = hrefDe(x.slug);
         return (
-          <li key={x.nome}>
-            {href ? (
-              <Link href={href} prefetch={false} className={LINK}>
-                {x.nome}
-              </Link>
-            ) : (
-              x.nome
-            )}
+          <li key={x.nome} className="flex items-center gap-3">
+            {x.slug && <LogoEmpresa slug={x.slug} nome={x.nome} tamanho="p" decorativo semLogo="placa" />}
+            <span className="min-w-0">
+              {href ? (
+                <Link href={href} prefetch={false} className={LINK}>
+                  {x.nome}
+                </Link>
+              ) : (
+                x.nome
+              )}
+            </span>
           </li>
         );
       })}

@@ -416,7 +416,11 @@ describe("páginas no HTML do servidor", () => {
     const visiveis = gr.linhasDoRanking(c).filter((l) => !segmento || l.segmento === segmento);
     const figura = html.slice(html.indexOf('data-figura-analitica="ranking"'), html.indexOf('id="lideres"'));
     // uma marca de natureza, por extenso, para cada grupo visível, e a página da fonte em cada linha
-    const naturezas = blocos(figura.slice(figura.indexOf("<table")), "data-natureza-dado");
+    // (redesenho de 24/11/2026: a figura do ranking virou o mosaico, com tabela equivalente própria; a lista completa, com as marcas
+    // de natureza, é o bloco `lista`, logo depois das figuras e antes dos líderes)
+    const lista = html.slice(html.indexOf('id="lista"'), html.indexOf('id="lideres"'));
+    expect(html.indexOf('id="lista"')).toBeGreaterThan(html.indexOf('data-figura-analitica="ranking"'));
+    const naturezas = blocos(lista.slice(lista.indexOf("<table")), "data-natureza-dado");
     expect(naturezas).toHaveLength(visiveis.length);
     expect(naturezas.filter((n) => n === "estimado_pela_fonte")).toHaveLength(visiveis.filter((l) => l.natureza_dado === "estimado_pela_fonte").length);
     for (const l of visiveis) {
@@ -696,5 +700,279 @@ describe("CSV do ranking", () => {
     const pos = cab.findIndex((k) => k.startsWith("vendas_") && k.endsWith("_milhoes_reais") && !k.includes("anterior"));
     const linha1 = csvGrupos(semValor).split("\n").slice(1).find((x) => x.startsWith(`${semValor.ranking!.grupos[0].posicao};`))!;
     expect(linha1.split(";")[pos]).toBe("");
+  });
+});
+
+/**
+ * Figuras do redesenho de 24/11/2026 (mosaico de tamanhos, inclinação, dispersão, régua das plataformas, mapa de presença, pequenos
+ * múltiplos, cupons lado a lado, cascata do caixa e pontos conectados). Invariantes dos seletores que as alimentam: cada número de
+ * figura sai de um seletor, fecha com o dado de origem e mantém a ausência como ausência.
+ */
+describe("seletores das figuras dos grupos", () => {
+  const linhas = gr.linhasDoRanking(c);
+
+  it("tamanhos por segmento: todo grupo com venda entra uma vez, as participações fecham em 100% e a do segmento é a soma dos seus grupos", () => {
+    const t = gr.tamanhosPorSegmento(c);
+    const blocosT = t.flatMap((s) => s.blocos);
+    expect(blocosT.map((b) => b.slug).sort()).toEqual(linhas.filter((l) => typeof l.vendas_milhoes === "number").map((l) => l.slug).sort());
+    expect(t.reduce((s, x) => s + x.participacao, 0)).toBeCloseTo(100, 6);
+    for (const s of t) {
+      expect(s.participacao, s.segmento).toBeCloseTo(s.blocos.reduce((a, b) => a + b.participacao, 0), 6);
+      expect(s.vendas_milhoes, s.segmento).toBeCloseTo(s.blocos.reduce((a, b) => a + b.vendas_milhoes, 0), 6);
+      expect(s.blocos.map((b) => b.vendas_milhoes)).toEqual([...s.blocos.map((b) => b.vendas_milhoes)].sort((a, b) => b - a));
+    }
+    expect(t.map((s) => s.vendas_milhoes)).toEqual([...t.map((s) => s.vendas_milhoes)].sort((a, b) => b - a));
+    expect(blocosT.filter((b) => b.natureza === "estimado_pela_fonte")).toHaveLength(gr.amostraDoRanking(c).estimados);
+  });
+
+  it("mosaico: a área de cada bloco é proporcional ao valor, a soma das áreas é a da caixa e nenhum bloco sai dela", async () => {
+    const { mosaico } = await import("@/components/varejo/figuras/geometria");
+    const itens = linhas.filter((l) => typeof l.vendas_milhoes === "number").map((l) => ({ id: l.slug, valor: l.vendas_milhoes as number }));
+    const caixa = { x: 10, y: 20, w: 1000, h: 470 };
+    const m = mosaico(itens, caixa);
+    const total = itens.reduce((s, i) => s + i.valor, 0);
+    expect(m).toHaveLength(itens.length);
+    expect(m.reduce((s, b) => s + b.w * b.h, 0)).toBeCloseTo(caixa.w * caixa.h, 3);
+    for (const b of m) {
+      expect((b.w * b.h) / (caixa.w * caixa.h), b.id).toBeCloseTo(b.valor / total, 6);
+      expect(b.x).toBeGreaterThanOrEqual(caixa.x - 1e-6);
+      expect(b.y).toBeGreaterThanOrEqual(caixa.y - 1e-6);
+      expect(b.x + b.w).toBeLessThanOrEqual(caixa.x + caixa.w + 1e-6);
+      expect(b.y + b.h).toBeLessThanOrEqual(caixa.y + caixa.h + 1e-6);
+    }
+    expect(mosaico([{ valor: 0 }, { valor: -3 }], caixa)).toEqual([]);
+  });
+
+  it("movimentos: posições ganhas são a anterior menos a atual; sem posição anterior não há ganho; o destaque nunca é troca de um lugar", () => {
+    const m = gr.movimentosDoRanking(c);
+    expect(m.map((x) => x.atual)).toEqual(linhas.map((l) => l.posicao));
+    for (const x of m) expect(x.ganho, x.slug).toBe(x.anterior === null ? null : x.anterior - x.atual);
+    expect(gr.limiarDeDestaque(m)).toBeGreaterThanOrEqual(2);
+    expect(gr.movimentosDoRanking({ ...c, ranking: { ...c.ranking!, grupos: [{ ...c.ranking!.grupos[0], posicao_anterior: null }] } })[0]).toMatchObject({ anterior: null, ganho: null });
+  });
+
+  it("vendas e lojas: a venda por loja é a divisão das duas, e grupo sem número de lojas fica sem ela (nunca zero)", () => {
+    for (const x of gr.modelosDeLoja(c)) {
+      const l = linhas.find((y) => y.slug === x.slug)!;
+      if (typeof l.vendas_milhoes === "number" && typeof l.lojas === "number" && l.lojas > 0) expect(x.venda_por_loja_milhoes, x.slug).toBeCloseTo(l.vendas_milhoes / l.lojas, 9);
+      else expect(x.venda_por_loja_milhoes, x.slug).toBeNull();
+    }
+    expect(gr.modelosDeLoja(c).some((x) => x.lojas === null)).toBe(linhas.some((l) => typeof l.lojas !== "number"));
+  });
+
+  it("decomposição do crescimento: (1 + vendas) = (1 + lojas) × (1 + venda por loja), e parte sem os dois anos fica ausente", () => {
+    for (const g of c.ranking!.grupos) {
+      const [v, l, p] = gr.decomposicaoDoCrescimento(g);
+      if (v.variacao_pct !== null && l.variacao_pct !== null && p.variacao_pct !== null) expect((1 + l.variacao_pct / 100) * (1 + p.variacao_pct / 100), g.slug).toBeCloseTo(1 + v.variacao_pct / 100, 9);
+      if (typeof g.vendas_ano_anterior_milhoes !== "number") expect(v.variacao_pct, g.slug).toBeNull();
+      if (typeof g.lojas_ano_anterior !== "number" || typeof g.lojas !== "number") expect(p.variacao_pct, g.slug).toBeNull();
+    }
+    expect(gr.decomposicaoDoCrescimento(null).every((x) => x.variacao_pct === null)).toBe(true);
+  });
+
+  it("plataformas, conferência e líderes: venda própria mais a de terceiros dá o valor negociado; a diferença é ABRAS menos IRTT; a parte do líder é a venda dele sobre a do segmento", () => {
+    const lista = c.ranking!.marketplaces!.lista!;
+    const regua = gr.reguaDasPlataformas(c);
+    expect(regua.map((x) => x.nome)).toEqual(lista.map((m) => m.nome));
+    for (const x of regua) {
+      if (x.propria_milhoes !== null) expect(x.propria_milhoes + x.terceiros_milhoes!, x.nome).toBeCloseTo(x.gmv_milhoes!, 6);
+      else expect(x.gmv_milhoes === null || x.terceiros_milhoes === null, x.nome).toBe(true);
+      if (x.slug) expect(Object.keys(c.fichas), x.nome).toContain(x.slug);
+    }
+    for (const p of gr.paresDaAbras(c)) if (p.irtt_milhoes !== null) expect(p.diferenca_milhoes, p.slug).toBeCloseTo(p.outra_milhoes - p.irtt_milhoes, 6);
+    for (const l of gr.lideresNosSegmentos(c)) if (l.parte_do_lider_pct !== null) expect(l.parte_do_lider_pct, l.lider).toBeCloseTo((100 * l.vendas_milhoes!) / l.vendas_segmento_milhoes!, 9);
+    expect(gr.lideresNosSegmentos(c)).toHaveLength(c.ranking!.lideres_por_segmento!.length);
+  });
+
+  it("presença por estado: 'todos' pinta as 27, a lista traz só siglas válidas e a ausência de lista é estado próprio, sem estado pintado", () => {
+    for (const slug of gr.slugsDasFichas(c)) {
+      const p = gr.presencaPorEstado(c, slug);
+      expect(new Set(p.ufs).size, slug).toBe(p.ufs.length);
+      if (p.tipo === "todos") expect(p.ufs, slug).toHaveLength(27);
+      if (p.tipo === "lista") expect(p.ufs.length, slug).toBeGreaterThan(0);
+      if (p.tipo === "lista") expect(p.ufs.length, slug).toBeLessThan(27);
+      if (p.tipo === "nao_divulgado") expect([p.ufs.length, p.origem], slug).toEqual([0, null]);
+      const daFicha = (c.fichas[slug].regioes?.estados ?? []).length;
+      const doRanking = (c.ranking!.grupos.find((g) => g.slug === slug)?.estados ?? "").trim();
+      expect(p.tipo === "nao_divulgado", slug).toBe(daFicha === 0 && doRanking === "");
+      if (daFicha > 0) expect(p.origem, slug).toBe("ficha");
+    }
+    expect(gr.presencaPorEstado(c, "nao-existe").tipo).toBe("nao_divulgado");
+  });
+
+  it("séries da ficha: os indicadores e a dívida nos mesmos exercícios; a reapresentação só aparece onde o valor republicado difere do publicado", () => {
+    for (const slug of gr.slugsDasFichas(c)) {
+      const emp = gr.empresaDaFicha(e, c.fichas[slug]);
+      if (!emp) continue;
+      const series = gr.seriesDaFicha(emp, anos);
+      expect(series.map((s) => s.id)).toEqual([...gr.INDICADORES_FICHA.map((i) => i.id), "divida"]);
+      for (const s of series) expect(s.pontos.map((p) => p.exercicio), `${slug} ${s.id}`).toEqual(anos);
+      const marcados = series.flatMap((s) => s.pontos.filter((p) => p.reapresentado !== null).map((p) => `${p.exercicio}-${s.id}`)).sort();
+      expect(marcados, slug).toEqual(gr.reapresentacoes(emp).map((r) => `${r.exercicio}-${r.campo === "Receita líquida" ? "receita" : "lucro"}`).sort());
+      for (const a of anos) if (!gr.periodoDe(emp, a)) for (const s of series) expect(s.pontos.find((p) => p.exercicio === a)!.valor, `${slug} ${a}`).toBeNull();
+    }
+  });
+
+  it("série operacional em gráfico: três ou mais valores da mesma periodicidade, em ordem, e trimestre nunca divide o eixo com ano", () => {
+    expect(gr.periodoOperacional("2025")).toEqual({ periodicidade: "anual", ordem: 2025 });
+    expect(gr.periodoOperacional("dez/2025")).toEqual({ periodicidade: "anual", ordem: 2025 });
+    expect(gr.periodoOperacional("4T24")!.periodicidade).toBe("trimestral");
+    for (const p of ["1S26", "9M25", "jun/2026", "até 16/08/2026", "", undefined]) expect(gr.periodoOperacional(p), String(p)).toBeNull();
+    expect(gr.serieComparavel({ valores: [{ periodo: "4T22", valor: 1 }, { periodo: "4T23", valor: 2 }, { periodo: "2025", valor: 3 }, { periodo: "2T26", valor: 4 }] })).toMatchObject({ periodicidade: "trimestral", pontos: [{ periodo: "4T22" }, { periodo: "4T23" }, { periodo: "2T26" }] });
+    expect(gr.serieComparavel({ valores: [{ periodo: "2024", valor: 1 }, { periodo: "2025", valor: 2 }, { periodo: "1S26", valor: 3 }] })).toBeNull();
+    for (const f of Object.values(c.fichas)) {
+      for (const o of f.operacionais ?? []) {
+        const s = gr.serieComparavel(o);
+        if (!s) continue;
+        expect(s.pontos.length, o.indicador).toBeGreaterThanOrEqual(3);
+        expect(s.pontos.map((p) => p.ordem), o.indicador).toEqual([...s.pontos.map((p) => p.ordem)].sort((a, b) => a - b));
+        for (const p of s.pontos) expect(gr.periodoOperacional(p.periodo)!.periodicidade, o.indicador).toBe(s.periodicidade);
+      }
+    }
+  });
+
+  it("venda do ranking contra a receita da CVM: a razão só existe no mesmo exercício e é a receita sobre a venda", () => {
+    for (const g of c.ranking!.grupos) {
+      const emp = g.empresa_gold ? e.empresas[g.empresa_gold] ?? null : null;
+      const r = gr.rankingContraCvm(g.vendas_milhoes, emp, gr.exercicioDoRanking(c));
+      const p = emp ? gr.periodoDe(emp, Number(gr.exercicioDoRanking(c))) : null;
+      expect(r.mesmo_ano, g.slug).toBe(Boolean(p));
+      if (p?.receita_liquida != null && typeof g.vendas_milhoes === "number") {
+        expect(r.razao_pct, g.slug).toBeCloseTo((100 * p.receita_liquida) / (g.vendas_milhoes * 1e6), 6);
+        expect(r.diferenca_milhoes, g.slug).toBeCloseTo(g.vendas_milhoes - p.receita_liquida / 1e6, 4);
+      } else expect(r.razao_pct, g.slug).toBeNull();
+    }
+    expect(gr.rankingContraCvm(null, null, "2025")).toMatchObject({ venda_milhoes: null, receita_milhoes: null, razao_pct: null });
+  });
+});
+
+describe("seletores das figuras do comparador", () => {
+  const todosOsPeriodos = Object.entries(e.empresas).flatMap(([slug, emp]) => emp.anuais.map((p) => ({ slug, emp, p })));
+
+  it("cascata do caixa: cada patamar é o anterior mais os passos entre eles, o declarado é o da demonstração e o convênio ausente não vira zero", () => {
+    expect(cmp.cascataDoCaixa(null)).toBeNull();
+    for (const { slug, p } of todosOsPeriodos) {
+      const passos = cmp.cascataDoCaixa(p);
+      const cx = cmp.caixaDe(p);
+      if (!p.receita_liquida || cx.operacional === null) {
+        expect(passos, `${slug} ${p.exercicio}`).toBeNull();
+        continue;
+      }
+      const de = (id: string) => passos!.find((x) => x.id === id)!;
+      const r = (v: number) => (100 * v) / p.receita_liquida!;
+      const giro = ["estoques", "fornecedores", "recebiveis"].reduce((s, id) => s + (de(id).por100 ?? 0), 0);
+      expect(de("antes-do-giro").por100! + giro, `${slug} ${p.exercicio}: giro`).toBeCloseTo(r(cx.operacional), 6);
+      expect(de("operacional").por100, `${slug} ${p.exercicio}`).toBeCloseTo(r(cx.operacional), 9);
+      expect(de("recebiveis").ate ?? de("fornecedores").ate ?? de("estoques").ate ?? de("antes-do-giro").ate, `${slug} ${p.exercicio}: o último passo do giro chega ao declarado`).toBeCloseTo(r(cx.operacional), 6);
+      expect(de("convenio").por100 === null, `${slug} ${p.exercicio}: convênio`).toBe(cx.convenio === null);
+      expect(de("apos-convenio").por100 === null).toBe(cx.convenio === null);
+      if (cx.convenio !== null) {
+        expect(de("apos-convenio").por100).toBeCloseTo(r(cx.aposConvenio!), 9);
+        expect(de("convenio").ate).toBeCloseTo(r(cx.aposConvenio!), 6);
+      }
+      if (cx.investimentos !== null) expect(de("apos-investimentos").por100).toBeCloseTo(r((cx.aposConvenio ?? cx.operacional) + cx.investimentos), 9);
+      for (const x of passos!) if (x.tipo === "total" && x.por100 !== null) expect([x.de, x.ate]).toEqual([0, x.por100]);
+    }
+  });
+
+  it("cupons linha a linha: as saídas e o lucro de cada companhia fecham em R$ 100, e a distância anotada é a maior menos a menor", () => {
+    const pontes = todosOsPeriodos.filter((x) => x.p.ponte_100).slice(0, 12).map((x) => x.p.ponte_100!);
+    const linhasC = cmp.linhasDosCupons([...pontes, null]);
+    expect(linhasC.map((l) => l.id)).toEqual(cmp.PARTES.map((p) => p.id));
+    pontes.forEach((_b, i) => expect(linhasC.reduce((s, l) => s + (l.valores[i] as number), 0), String(i)).toBeCloseTo(100, 1));
+    for (const l of linhasC) {
+      expect(l.valores.at(-1)).toBeNull();
+      const com = l.valores.filter((v): v is number => v !== null);
+      if (l.maior !== null && l.menor !== null) {
+        expect(l.valores[l.maior]).toBe(Math.max(...com));
+        expect(l.valores[l.menor]).toBe(Math.min(...com));
+        expect(l.amplitude).toBeCloseTo(Math.max(...com) - Math.min(...com), 9);
+      }
+    }
+    expect(cmp.linhasDosCupons([pontes[0], null]).every((l) => l.maior === null && l.amplitude === null)).toBe(true);
+    // o perfil do cupom lê a mesma ponte: a conta do cupom fecha com o lucro por R$ 100
+    const { slug, emp, p } = todosOsPeriodos.find((x) => x.p.ponte_100)!;
+    const perfil = cmp.perfilDoExercicio(slug, emp, p, "Companhia")!;
+    expect(dados.contaDoCupom(perfil).resultado).toBe(p.ponte_100!.lucro_liquido);
+    expect(cmp.perfilDoExercicio(slug, emp, null, "Companhia")).toBeNull();
+  });
+
+  it("pontos conectados e persistência desenhada: um valor por empresa e por medida; os quadrinhos somam o que a persistência conta", () => {
+    const [a, b] = cmp.PARES[1].slugs.map((s) => e.empresas[s]);
+    const ano = anos.at(-1)!;
+    const pontos = cmp.medidasEmPontos([gr.periodoDe(a, ano), gr.periodoDe(b, ano), null]);
+    expect(pontos.map((m) => m.medida.id)).toEqual(cmp.MEDIDAS_COMPARADAS.map((m) => m.id));
+    for (const m of pontos) expect(m.valores).toHaveLength(3);
+    for (const m of pontos) expect(m.valores[2]).toBeNull();
+    for (const p of cmp.persistencias(e, a, b, ano)) {
+      const sinais = cmp.sinaisPorExercicio(e, a, b, p.medida);
+      expect(sinais.map((s) => s.exercicio)).toEqual(anos);
+      expect(sinais.filter((s) => s.sinal !== null), p.medida.id).toHaveLength(p.comparaveis);
+      expect(sinais.filter((s) => s.sinal === 1), p.medida.id).toHaveLength(p.aAcima);
+      expect(p.a, p.medida.id).toBe(pontos.find((m) => m.medida.id === p.medida.id)!.valores[0]);
+    }
+  });
+});
+
+describe("figuras no HTML do servidor", () => {
+  it("/varejo/grupos: mosaico com um bloco por grupo com venda e a estimativa marcada; inclinação com uma linha por grupo com posição anterior; dispersão com um ponto por grupo com lojas", () => {
+    const html = render(GruposPage({ searchParams: {} }));
+    const comVenda = gr.linhasDoRanking(c).filter((l) => typeof l.vendas_milhoes === "number");
+    // o mosaico sai em duas composições (larga e de tablet) e em lista no celular: cada grupo aparece nas duas primeiras
+    const blocosDoMosaico = blocos(html, "data-bloco-grupo");
+    expect(blocosDoMosaico).toHaveLength(2 * comVenda.length);
+    expect(new Set(blocosDoMosaico)).toEqual(new Set(comVenda.map((l) => l.slug)));
+    expect((html.match(/data-bloco-grupo="[^"]*" data-estimado/g) ?? []).length).toBe(2 * comVenda.filter((l) => l.natureza_dado === "estimado_pela_fonte").length);
+    expect(html).toContain("data-denominador");
+    const mov = gr.movimentosDoRanking(c);
+    expect(blocos(html, "data-linha-movimento").sort()).toEqual(mov.filter((m) => m.anterior !== null).map((m) => m.slug).sort());
+    expect(blocos(html, "data-movimento")).toEqual(mov.map((m) => m.slug));
+    const modelos = gr.modelosDeLoja(c);
+    expect(blocos(html, "data-ponto-grupo").sort()).toEqual(modelos.filter((m) => m.venda_por_loja_milhoes !== null).map((m) => m.slug).sort());
+    expect(blocos(html, "data-fora-da-dispersao")).toEqual(modelos.some((m) => m.venda_por_loja_milhoes === null) ? [String(modelos.filter((m) => m.venda_por_loja_milhoes === null).length)] : []);
+    for (const id of ["ranking", "movimento", "modelos"]) expect(html).toContain(`data-figura-analitica="${id}"`);
+    expect(blocos(html, "data-plataforma")).toEqual(c.ranking!.marketplaces!.lista!.map((m) => m.nome));
+    expect(blocos(html, "data-par-de-listas")).toEqual(gr.paresDaAbras(c).map((p) => p.slug));
+    expect(blocos(html, "data-lideres-de-segmento")).toEqual([String(c.ranking!.lideres_por_segmento!.length)]);
+    // identidade: todo grupo do ranking aparece com o logo oficial ou com a placa tipográfica, nunca com imagem de arquivo ausente
+    for (const l of comVenda) expect(html.includes(`data-logo="${l.slug}"`) || html.includes(`data-logo-ausente="${l.slug}"`), l.slug).toBe(true);
+  });
+
+  it.each(gr.slugsDasFichas(c))("ficha /varejo/grupos/%s: identidade com logo ou placa, mapa de presença no estado certo, cupom só com a ponte e linha do tempo desenhada", (slug) => {
+    const f = gr.fichaDoGrupo(c, slug)!;
+    const html = render(FichaPage({ params: { slug }, searchParams: {} }));
+    expect(html).toContain("data-identidade-ficha");
+    expect(html.includes(`data-logo="${slug}"`) || html.includes(`data-logo-ausente="${slug}"`)).toBe(true);
+    const presenca = gr.presencaPorEstado(c, slug);
+    expect(blocos(html, "data-mapa-presenca")).toEqual([presenca.tipo]);
+    expect((html.match(/data-presente=""/g) ?? []).length).toBe(presenca.tipo === "nao_divulgado" ? 0 : presenca.ufs.length);
+    const emp = gr.empresaDaFicha(e, f);
+    const comPonte = emp ? dados.ultimoComPonte(emp.anuais) : null;
+    expect(html.includes('data-figura-analitica="cupom"')).toBe(Boolean(comPonte));
+    if (comPonte) expect(texto(html)).toContain(por100(Math.abs(comPonte.ponte_100!.lucro_liquido)).replace("−", ""));
+    const noRanking = c.ranking!.grupos.find((g) => g.slug === slug) ?? null;
+    expect(html.includes("data-decomposicao-do-crescimento")).toBe(gr.decomposicaoDoCrescimento(noRanking).some((x) => x.variacao_pct !== null));
+    expect(html.includes("data-faixa-do-tempo")).toBe(f.eventos.filter((ev) => /^\d{4}-\d{2}/.test(ev.data ?? "")).length > 1);
+    // minigráfico só para série de uma natureza só, com três ou mais pontos comparáveis
+    const emGrafico = f.operacionais.filter((o) => gr.serieComparavel(o) && new Set((o.valores ?? []).filter((v) => (v.periodo ?? "").trim()).map((v) => gr.naturezaCurada(v.natureza))).size === 1).length;
+    expect((html.match(/data-serie-em-grafico/g) ?? []).length).toBe(emGrafico);
+  });
+
+  it("/varejo/comparador: um cupom, uma cascata e uma marca por companhia, com a diferença de cada linha anotada", () => {
+    for (const r of [{}, { e: cmp.PARES[1].slugs.join(","), ano: String(anos.at(-1)) }, { e: Object.keys(e.empresas).slice(0, 4).join(","), ano: String(anos.at(-2)) }] as Record<string, string>[]) {
+      const html = render(ComparadorPage({ searchParams: r }));
+      const slugs = blocos(html, "data-ponte-empresa");
+      const ano = cmp.anoDaUrl(e, r.ano ?? null);
+      expect(blocos(html, "data-cupons-lado-a-lado")).toEqual([String(slugs.length)]);
+      const comCaixa = slugs.filter((s) => cmp.cascataDoCaixa(gr.periodoDe(e.empresas[s], ano)));
+      expect((html.match(/data-cascata-caixa=""/g) ?? []).length).toBe(comCaixa.length);
+      const linhasC = cmp.linhasDosCupons(slugs.map((s) => gr.periodoDe(e.empresas[s], ano)?.ponte_100 ?? null));
+      expect(blocos(html, "data-linha-do-cupom")).toEqual(linhasC.map((l) => l.id));
+      expect(blocos(html, "data-diferenca-da-linha")).toEqual(linhasC.map((l) => (l.amplitude === null ? "sem-dado" : l.amplitude.toFixed(2))));
+      // as medidas vêm agrupadas pela unidade (as em % num eixo, as em dias noutro): todas presentes, uma vez cada
+      expect(blocos(html, "data-medida-em-pontos").sort()).toEqual(cmp.MEDIDAS_COMPARADAS.map((m) => m.id).sort());
+      expect((html.match(/data-persistencia-desenhada/g) ?? []).length).toBe(slugs.length === 2 ? cmp.MEDIDAS_COMPARADAS.length : 0);
+      for (const s of slugs) expect(html.includes(`data-logo="${s}"`) || html.includes(`data-logo-ausente="${s}"`), s).toBe(true);
+    }
   });
 });
