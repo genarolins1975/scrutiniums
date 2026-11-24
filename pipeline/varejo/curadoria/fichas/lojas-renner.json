@@ -1,0 +1,664 @@
+{
+  "slug": "lojas-renner",
+  "grupo": "Lojas Renner",
+  "resumo": "Varejista de moda com as marcas Renner, Youcom, Ashua e Camicado, lojas no Brasil, Uruguai e Argentina e financeira própria, a Realize.",
+  "controlador": {
+    "nome": "Sem controlador definido",
+    "nota": "A companhia informa ter capital totalmente pulverizado desde 2005, com 100% das ações em circulação, e se descreve como a primeira corporação brasileira.",
+    "fonte": {
+      "titulo": "Lojas Renner, Release de Resultados 4T25",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+      "pagina": "p. 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T25"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "lojas-renner",
+  "bandeiras": [
+    {
+      "nome": "Renner",
+      "formato": "lojas de departamento de vestuário, calçados e moda íntima com marcas próprias",
+      "nota": "443 lojas em dez/2025, incluindo unidades no Uruguai e na Argentina (release 4T25, p. 17 e 26)."
+    },
+    {
+      "nome": "Youcom",
+      "formato": "lojas de moda jovem",
+      "nota": "152 lojas em dez/2025."
+    },
+    {
+      "nome": "Camicado",
+      "formato": "lojas de casa e decoração",
+      "nota": "104 lojas em dez/2025."
+    },
+    {
+      "nome": "Ashua",
+      "formato": "moda feminina plus size",
+      "nota": "18 lojas em dez/2025."
+    },
+    {
+      "nome": "Realize CFI",
+      "formato": "instituição financeira: Cartão Renner (marca própria) e Meu Cartão (bandeirado)",
+      "nota": "Braço financeiro do grupo, consolidado nas demonstrações."
+    },
+    {
+      "nome": "Repassa",
+      "formato": "plataforma online de revenda de roupas, calçados e acessórios",
+      "nota": ""
+    },
+    {
+      "nome": "Uello",
+      "formato": "logística",
+      "nota": "Listada pelo IRTT entre as operações do grupo (p. 38); não descrita no release lido."
+    }
+  ],
+  "formatos": [
+    "loja de departamento de moda em shopping e em rua",
+    "loja especializada (Youcom, Ashua, Camicado)",
+    "e-commerce e aplicativo (1P)",
+    "marketplace (3P)"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em todas as 27 unidades da federação segundo o IRTT; operação também no Uruguai e na Argentina. Sede no Rio Grande do Sul segundo o IRTT.",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "site e aplicativo",
+    "marketplace",
+    "cartões próprios da Realize"
+  ],
+  "clientes": "Consumidores de moda do segmento médio e alto, na descrição da companhia (release 4T25, p. 26). O IRTT registra base ativa de 20.000.000 de clientes em 2025.",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria",
+      "descricao": "Receita líquida de varejo de R$ 13.838,2 milhões em 2025: vestuário, calçados, beleza, casa e decoração, mais a receita de serviços do marketplace (release 4T25, p. 4 e 6; definição no release 3T26, p. 6)."
+    },
+    {
+      "nome": "Comissões de marketplace",
+      "descricao": "Incluídas na receita de varejo; a companhia não as divulga em separado."
+    },
+    {
+      "nome": "Serviços financeiros",
+      "descricao": "Receita da Realize com os cartões próprios. A receita líquida consolidada da CVM (R$ 15.829,5 milhões em 2025) supera a de varejo em R$ 1.991,3 milhões, diferença que corresponde aos serviços financeiros (conta nossa). Em 2025 o resultado de serviços financeiros equivaleu a 12% do EBITDA total, segundo a administração (release 4T25, p. 14)."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "C&A",
+      "slug": "cea"
+    },
+    {
+      "nome": "Guararapes (Riachuelo)",
+      "slug": "guararapes"
+    },
+    {
+      "nome": "Azzas 2154",
+      "slug": "azzas"
+    },
+    {
+      "nome": "Plataformas internacionais de moda, citadas pela companhia sem nomear",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas (varejo)",
+      "unidade": "%",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 3; 4T23 p. 3; 4T24 p. 4; 4T25 p. 4 e 6; 3T26 p. 4 e 6. A url abaixo é a do release 4T25; as demais estão em fontes. O valor de 2021 vem da coluna comparativa do release 4T22.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 40.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 18.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 0.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 7.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 8.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 0.3,
+          "natureza": "divulgado",
+          "nota": "Janeiro a setembro de 2026; no 3T26 isolado, -2,5%."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 4 e 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 9M26"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Para 2021 a 2023 somamos as lojas por marca do release (Renner com Ashua, Camicado e Youcom): 413+119+104; 435+123+114; 442+107+124. Fontes: 4T21 p. 13; 4T22 p. 13; 4T23 p. 12; 4T24 p. 11; 4T25 p. 17; 3T26 p. 20. IRTT 2026 (p. 38): 717 lojas em 2025 e 686 em 2024, iguais aos do release.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 636,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 672,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 673,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 686,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 717,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 725,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 17",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a set/2026"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas",
+      "unidade": "lojas",
+      "nota": "Os releases de 2021 a 2023 trazem inaugurações líquidas por marca, não o total bruto.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 24,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 34,
+          "natureza": "divulgado",
+          "nota": "14 Renner, 17 Youcom e 3 Camicado."
+        },
+        {
+          "periodo": "9M26",
+          "valor": 22,
+          "natureza": "calculado",
+          "nota": "Soma dos três trimestres de 2026 na tabela do release 3T26: 2, 14 e 6."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 17 (4T25); 3T26 p. 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 a 9M26"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 11,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 14,
+          "natureza": "calculado",
+          "nota": "Soma dos três trimestres de 2026: 4, 6 e 4."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 17 (4T25); 3T26 p. 20",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 a 9M26"
+      }
+    },
+    {
+      "indicador": "Receita líquida de varejo",
+      "unidade": "R$ milhões",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 3; 4T23 p. 3; 4T24 p. 4; 4T25 p. 4 e 6; 3T26 p. 4 e 6. A url abaixo é a do release 4T25; as demais estão em fontes. Exclui os serviços financeiros; por isso é menor que a receita líquida consolidada da CVM.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 9555.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 11575.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 11706.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 12672.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13838.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 9594.6,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 9.485,7."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 4 e 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 9M26"
+      }
+    },
+    {
+      "indicador": "GMV digital (1P + 3P)",
+      "unidade": "R$ milhões",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 3; 4T23 p. 3; 4T24 p. 4; 4T25 p. 4 e 6; 3T26 p. 4 e 6. A url abaixo é a do release 4T25; as demais estão em fontes. Cada valor vem do release do próprio ano; os comparativos dos releases seguintes trazem pequenas revisões (por exemplo, 2.527,5 para 2024 no release 4T25). A companhia não separa 1P de 3P.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 1625.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 2046.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 2219.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 2527.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2838.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 2170.0,
+          "natureza": "divulgado",
+          "nota": "Mesmo período de 2025: 2.004,1."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 4 e 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 9M26"
+      }
+    },
+    {
+      "indicador": "Participação do digital nas vendas",
+      "unidade": "%",
+      "nota": "Fontes por período: 4T21 p. 2; 4T22 p. 3; 4T23 p. 3; 4T24 p. 4; 4T25 p. 4 e 6; 3T26 p. 4 e 6. A url abaixo é a do release 4T25; as demais estão em fontes.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 13.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 13.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 14.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 15.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 15.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 17.0,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 4 e 6",
+        "consultado_em": "2026-11-23",
+        "periodo": "2021 a 9M26"
+      }
+    },
+    {
+      "indicador": "Carteira de crédito da Realize",
+      "unidade": "R$ milhões",
+      "nota": "Fontes: 4T22 p. 10; 4T24 p. 9 (2023 e 2024); 4T25 p. 13; 3T26 p. 16. Um gráfico do release 4T24 indica 6.368,5 para dez/2022, diferente do texto do release 4T22; mantivemos o valor do texto.",
+      "valores": [
+        {
+          "periodo": "dez/2022",
+          "valor": 6324.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2023",
+          "valor": 6186.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 6182.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 6881.1,
+          "natureza": "divulgado",
+          "nota": "Sem os efeitos da Resolução 4.966 do Conselho Monetário Nacional, que mudou os prazos de reconhecimento de juros de atraso e de baixa de créditos vencidos, a carteira seria de 6.199,1."
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 6435.0,
+          "natureza": "divulgado",
+          "nota": "Na base ajustada do release: 6.297,5, contra 6.395,7 em set/2025."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 12 e 13",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2022 a set/2026"
+      }
+    },
+    {
+      "indicador": "Inadimplência da Realize: carteira vencida há mais de 90 dias",
+      "unidade": "% da carteira",
+      "nota": "A série tem quebra em 2025 por mudança regulatória; os valores de 2025 e 2026 não são comparáveis aos de 2023 e 2024. Fontes: 4T24 p. 9; 4T25 p. 13; 3T26 p. 16.",
+      "valores": [
+        {
+          "periodo": "dez/2023",
+          "valor": 19.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2024",
+          "valor": 14.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "dez/2025",
+          "valor": 22.3,
+          "natureza": "divulgado",
+          "nota": "Estágio 3 (atraso a partir de 90 dias) já com a Resolução 4.966, que mantém créditos vencidos por mais tempo na carteira; sem esse efeito, 13,8%, contra 13,9% em dez/2024 no mesmo critério."
+        },
+        {
+          "periodo": "set/2026",
+          "valor": 27.7,
+          "natureza": "divulgado",
+          "nota": "Estágio 3 (atraso a partir de 90 dias ou renegociação inadimplente) sobre a carteira divulgada. Na base ajustada do release, que aplica o prazo de até 540 dias para baixa nos dois períodos, 26,1% em set/2026 contra 24,4% em set/2025."
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 13",
+        "consultado_em": "2026-11-23",
+        "periodo": "dez/2023 a set/2026"
+      }
+    },
+    {
+      "indicador": "Perdas em crédito, líquidas das recuperações",
+      "unidade": "R$ milhões",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 957.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 950.5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 14 e 21",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado declarado pela empresa ao IRTT (nota de fonte 1).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 25102,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 26058,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2025-01",
+      "tipo": "outro",
+      "descricao": "A partir do 1T25 a Realize altera os prazos de reconhecimento de juros de atraso e de baixa de ativos vencidos, em linha com a Resolução 4.966: a carteira total cresce 11,3% em 2025 por esse efeito e a parcela vencida passa de 19,1% para 26,9%.",
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 12 e 13",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "outro",
+      "descricao": "A companhia divulga projeções para 2026 a 2030, entre elas crescimento anual da receita de varejo de 9% a 13% e meta de 570 a 600 lojas da marca Renner e 260 a 290 da Youcom até 2030. O cadastro da CVM registra fato relevante de 08/12/2025 com o assunto Divulgação de Projeções.",
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 4T25",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+        "pagina": "p. 3 e 17",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "No release do 3T26 a administração informa ter descontinuado as projeções de crescimento da receita líquida para 2026 e para 2027 a 2030, mantendo as demais; atribui a decisão à incerteza trazida pela conjuntura macroeconômica e competitiva. O cadastro da CVM registra fatos relevantes de 05/11/2026 com o assunto Modificação de Projeções Divulgadas.",
+      "fonte": {
+        "titulo": "Lojas Renner, Release de Resultados 3T26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1584882&numSequencia=1109588&numVersao=1",
+        "pagina": "p. 3",
+        "consultado_em": "2026-11-23",
+        "periodo": "3T26"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT classifica a Lojas Renner por R$ 20.243 milhões em 2025 (R$ 18.401 milhões em 2024), venda ao consumidor com impostos, dado declarado pela empresa (IRTT, p. 32 e 38). A receita líquida consolidada da CVM é de R$ 15.829,5 milhões e soma duas atividades: varejo (R$ 13.838,2 milhões, líquidos de impostos e devoluções, incluindo a receita de serviços do marketplace) e serviços financeiros da Realize (R$ 1.991,3 milhões, por diferença). O release não publica a receita bruta, de modo que a composição exata do número do IRTT não pôde ser reconstituída: não sabemos se inclui a receita da Realize nem as vendas de parceiros no marketplace, que a companhia não separa do GMV digital (R$ 2.838,7 milhões). Na coluna de venda em lojas físicas, o IRTT repete R$ 13.838 milhões, que é a receita líquida de varejo de todos os canais.",
+  "analise": {
+    "crescimento": "A receita líquida consolidada passou de R$ 14.436,4 milhões em 2024 para R$ 15.829,5 milhões em 2025, alta de cerca de 9,6%. No varejo, a receita cresceu 9,2% e as vendas nas mesmas lojas, isto é, nas unidades que já operavam no período comparado, cresceram 8,1%; o restante veio de 34 inaugurações contra 3 fechamentos (717 lojas no fim do ano) e do canal digital, cujo GMV subiu 12,3% e chegou a 15,5% das vendas. A administração atribui o resultado à expansão para novas cidades, à maior penetração digital e a ganhos de produtividade. De janeiro a setembro de 2026 o ritmo caiu: receita líquida de R$ 11.089,2 milhões, 0,9% acima de 2025, mesmas lojas em 0,3% e queda de 2,5% no terceiro trimestre, que a companhia relaciona à pressão sobre a renda disponível e à competição de plataformas internacionais.",
+    "rentabilidade_caixa": "Em 2025 a margem bruta consolidada foi de 61,71%, a margem operacional, de 11,35%, e o lucro líquido, de R$ 1.457,6 milhões (9,21% da receita líquida). O caixa operacional somou R$ 2.802,0 milhões para investimento de R$ 800,0 milhões, e a companhia fechou o ano com caixa e aplicações R$ 1.522,9 milhões acima dos empréstimos, sem contar arrendamentos. As demonstrações não trazem pagamentos a fornecedores por convênio no fluxo de financiamento. Parte do resultado vem do crédito: segundo a administração, os serviços financeiros da Realize equivaleram a 12% do EBITDA total, com perdas em crédito de R$ 950,5 milhões. De janeiro a setembro de 2026 a margem operacional recuou de 10,10% para 9,59% e o lucro ficou em R$ 908,3 milhões, contra R$ 904,9 milhões um ano antes.",
+    "acompanhar": {
+      "indicador": "Vendas nas mesmas lojas do varejo, lidas junto com a margem bruta de varejo e com a parcela da carteira da Realize em atraso acima de 90 dias",
+      "reforca": "Retorno das mesmas lojas a taxas próximas das de 2024 e 2025 (7,5% e 8,1%) com margem bruta preservada e estágio 3 da Realize sem novas altas na base ajustada (26,1% em set/2026): indicaria que a queda do 3T26 foi pontual.",
+      "enfraquece": "Novos trimestres de mesmas lojas negativas, aumento da atividade promocional ou alta do estágio 3 da carteira: indicaria perda de espaço para concorrentes e risco de o resultado do crédito deixar de compensar o varejo."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita bruta e composição dos R$ 20.243 milhões usados pelo IRTT: o release só publica receita líquida.",
+    "Separação entre 1P e 3P no GMV digital e comissão do marketplace.",
+    "Total de aberturas e fechamentos brutos de lojas em 2021, 2022 e 2023: os releases trazem inaugurações líquidas por marca.",
+    "Carteira da Realize em dez/2021: o valor só aparece em gráfico (4.811,7 no release 4T24), sem tabela que o confirme.",
+    "Número de lojas e operação por país (Uruguai e Argentina) em 2025: o release lido não abre.",
+    "Fatos relevantes de projeções (08/12/2025 e 05/11/2026): constam do cadastro da CVM, mas usamos o texto dos releases; os documentos em si não foram abertos."
+  ],
+  "fontes": [
+    {
+      "titulo": "Lojas Renner, Release de Resultados 4T25",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1486239&numSequencia=1010945&numVersao=2",
+      "pagina": "p. 2 a 4, 6, 12 a 14, 17, 21, 26",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T25 e 2025"
+    },
+    {
+      "titulo": "Lojas Renner, Release de Resultados 3T26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1584882&numSequencia=1109588&numVersao=1",
+      "pagina": "p. 3, 4, 6, 16, 20, 24",
+      "consultado_em": "2026-11-23",
+      "periodo": "3T26 e 9M26"
+    },
+    {
+      "titulo": "Lojas Renner, Release de Resultados 4T24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1337521&numSequencia=862247&numVersao=1",
+      "pagina": "p. 4, 5, 9, 11",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T24 e 2024"
+    },
+    {
+      "titulo": "Lojas Renner, Release de Resultados 4T23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1207636&numSequencia=732362&numVersao=1",
+      "pagina": "p. 3, 9, 12",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T23 e 2023"
+    },
+    {
+      "titulo": "Lojas Renner, Release de Resultados 4T22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1061907&numSequencia=586637&numVersao=2",
+      "pagina": "p. 3, 10, 13",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T22 e 2022"
+    },
+    {
+      "titulo": "Lojas Renner, Release de Resultados 4T21",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=955391&numSequencia=480125&numVersao=1",
+      "pagina": "p. 2, 13",
+      "consultado_em": "2026-11-23",
+      "periodo": "4T21 e 2021"
+    },
+    {
+      "titulo": "CVM, DFP 2025 da Lojas Renner, versão 2 (base da gold public/varejo/gold/empresas.json)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=155117",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    },
+    {
+      "titulo": "CVM, ITR de 30/09/2026 da Lojas Renner (base da gold)",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=162059",
+      "pagina": "DRE, balanço e DFC consolidados",
+      "consultado_em": "2026-11-23",
+      "periodo": "9M26"
+    },
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 32, 38, 70, 86, 89, 119",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    }
+  ]
+}

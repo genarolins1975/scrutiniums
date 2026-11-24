@@ -1,0 +1,348 @@
+{
+  "slug": "havan",
+  "grupo": "Havan",
+  "resumo": "Rede catarinense de lojas de departamento de grande porte, de capital fechado, com 184 lojas em 24 unidades da federação em 2025.",
+  "controlador": {
+    "nome": "Luciano Hang (fundador)",
+    "nota": "A imprensa o identifica como fundador e dono da rede; a participação societária não consta de documento aberto nesta sessão. O IRTT registra capital fechado, controle nacional, conselho estatutário e demonstrações auditadas.",
+    "fonte": {
+      "titulo": "InfoMoney, \"Luciano Hang anuncia bônus de R$ 90 milhões a funcionários da Havan\"",
+      "url": "https://www.infomoney.com.br/brasil/luciano-hang-anuncia-bonus-de-r-90-milhoes-a-funcionarios-da-havan/",
+      "pagina": "texto da reportagem",
+      "consultado_em": "2026-11-23",
+      "periodo": "publicada em 14/01/2026"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Havan",
+      "formato": "loja de departamento de grande porte, com eletrônicos, utilidades, cama, mesa e banho e outros itens",
+      "nota": "Descrição do sortimento em reportagem de 2020 da CNN Brasil (mais de 100 mil itens); o IRTT classifica a rede em Lojas de Departamento, Artigos do Lar e Mercadorias em Geral."
+    }
+  ],
+  "formatos": [
+    "loja de departamento de grande porte",
+    "e-commerce"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em 24 unidades da federação segundo o IRTT; sede em Santa Catarina (fundada em Brusque). Reportagem de 2020 da CNN Brasil descreve a estratégia de abrir lojas em cidades do interior e junto a rodovias, para atrair também moradores de municípios vizinhos.",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "BA",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RO",
+      "RS",
+      "RN",
+      "SC",
+      "SP",
+      "SE",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "e-commerce (o IRTT registra que a rede tem e-commerce e não indica operação de marketplace)"
+  ],
+  "clientes": "Consumidores finais de itens para casa, vestuário e eletrônicos, com presença em cidades médias e do interior. O IRTT não traz base ativa de clientes para a Havan (n.d.).",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria",
+      "descricao": "Venda em lojas e no e-commerce: R$ 18.340 milhões em 2025 segundo o IRTT, sem abertura por canal (venda em lojas físicas consta como n.d.)."
+    },
+    {
+      "nome": "Serviços financeiros e crediário",
+      "descricao": "Não verificado: nenhum documento aberto nesta sessão descreve cartão próprio, crediário ou receita financeira da Havan."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Americanas",
+      "slug": "americanas"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas (critério do IRTT)",
+      "unidade": "R$ milhões",
+      "nota": "Venda ao consumidor com impostos. Nota de fonte 3 do IRTT: rankings setoriais e estudos de entidades; não é estimativa do instituto. Crescimento de 16% segundo o ranking.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 15795,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 18340,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38, 72 e 102",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Variação de 4% segundo o ranking.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 177,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 184,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas (expansão orgânica)",
+      "unidade": "lojas",
+      "nota": "O ranking não informa fechamentos; a variação líquida também é de 7 lojas.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 7,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "indicador": "Venda média por loja",
+      "unidade": "R$ milhões",
+      "nota": "Conta nossa: venda do ano dividida pelo número de lojas no fim do ano (15.795 ÷ 177 e 18.340 ÷ 184). Não é o indicador de vendas nas mesmas lojas, que a empresa não divulga.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 89.2,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 99.7,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Valores arredondados na fonte.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 22000,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 23000,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 89",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem EBITDA",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 23.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 21.9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem bruta",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 41.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 39.7,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem líquida",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa. O índice de alavancagem da Havan aparece sem valor na tabela.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 10.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 10.9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "A empresa é de capital fechado e não publica release; o ranking não traz o indicador.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "Não divulgado."
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2026-01",
+      "tipo": "outro",
+      "descricao": "A Havan anuncia pagamento de R$ 4 mil por funcionário em participação nos resultados, para mais de 23 mil pessoas; a reportagem registra mais de 180 lojas e que a empresa ainda não havia divulgado o faturamento de 2025.",
+      "fonte": {
+        "titulo": "InfoMoney, \"Luciano Hang anuncia bônus de R$ 90 milhões a funcionários da Havan\"",
+        "url": "https://www.infomoney.com.br/brasil/luciano-hang-anuncia-bonus-de-r-90-milhoes-a-funcionarios-da-havan/",
+        "pagina": "texto da reportagem",
+        "consultado_em": "2026-11-23",
+        "periodo": "publicada em 14/01/2026"
+      }
+    }
+  ],
+  "alcance_do_dado": "Não há demonstração da Havan na CVM: a empresa é de capital fechado e não tem ficha na gold. O único número de venda é o do IRTT, R$ 18.340 milhões em 2025 (R$ 15.795 milhões em 2024), venda ao consumidor com impostos, obtida de rankings setoriais e estudos de entidades (nota de fonte 3), e não declarada diretamente pela empresa nem estimada pelo instituto (p. 32 e 38). O ranking não abre venda em lojas e no e-commerce nem informa receita líquida, de modo que não há como reconciliar o valor com um balanço. A rede não aparece com marketplace próprio no IRTT, então a distinção entre vendas próprias e de parceiros não se aplica.",
+  "analise": {
+    "crescimento": "Sem demonstrações públicas, a leitura se apoia no IRTT. As vendas passaram de R$ 15.795 milhões em 2024 para R$ 18.340 milhões em 2025, alta de 16%, enquanto o segmento de lojas de departamento cresceu 2,0% entre as empresas que divulgaram os dois anos. A rede abriu 7 lojas e fechou o ano com 184, variação de 4%; a diferença entre o crescimento das vendas e o do número de lojas indica que a maior parte do avanço veio de unidades já existentes. A venda média por loja, conta nossa sobre o número de lojas no fim do ano, subiu de R$ 89,2 milhões para R$ 99,7 milhões. A empresa não divulga vendas nas mesmas lojas, preço médio ou participação do e-commerce, e por isso não é possível separar volume, preço e canal. O quadro de funcionários foi de 22.000 para 23.000.",
+    "rentabilidade_caixa": "O IRTT publica três margens da Havan, extraídas de balanço ou fornecidas pela empresa segundo a metodologia do ranking: margem EBITDA (resultado antes de juros, impostos, depreciação e amortização) de 21,9% em 2025, contra 23,8% em 2024; margem bruta de 39,7%, contra 41,5%; e margem líquida de 10,9%, contra 10,8%. As duas primeiras caíram enquanto as vendas cresciam 16%. Na mesma tabela, o Magazine Luiza aparece com margem EBITDA de 8,3% e margem líquida de 0,5%. O ranking não informa dívida, caixa, estoques nem fluxo de caixa da Havan, e o índice de alavancagem está em branco. Não há, portanto, evidência pública sobre geração de caixa ou financiamento de fornecedores; a posição competitiva só pode ser avaliada pela escala, pelo crescimento por loja e pelas margens declaradas.",
+    "acompanhar": {
+      "indicador": "Venda média por loja e margem bruta na próxima edição do IRTT",
+      "reforca": "Venda por loja em alta com margem bruta estável ou maior: indicaria que o crescimento não depende de preço mais baixo.",
+      "enfraquece": "Nova queda da margem bruta e da margem EBITDA com vendas crescendo: indicaria crescimento comprado com margem."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Demonstrações financeiras: a empresa é de capital fechado e não arquiva na CVM. O IRTT indica que é auditada, mas o balanço não foi localizado em host liberado.",
+    "Vendas nas mesmas lojas, GMV, participação do digital, venda em lojas físicas (n.d. no IRTT) e base de clientes (n.d. no IRTT).",
+    "Fechamentos de lojas e série de lojas antes de 2024.",
+    "Dívida, caixa, alavancagem (em branco no IRTT, p. 119), estoques e fluxo de caixa.",
+    "Indicadores de crédito (cartão próprio, carteira, inadimplência): não verificados em documento aberto.",
+    "Participação societária do controlador.",
+    "Sites da empresa (www.havan.com.br e ri.havan.com.br): hosts não liberados neste ambiente."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 26, 31, 32, 38, 72, 89, 102, 104, 119",
+      "consultado_em": "2026-11-23",
+      "periodo": "2024 e 2025"
+    },
+    {
+      "titulo": "InfoMoney, \"Luciano Hang anuncia bônus de R$ 90 milhões a funcionários da Havan\"",
+      "url": "https://www.infomoney.com.br/brasil/luciano-hang-anuncia-bonus-de-r-90-milhoes-a-funcionarios-da-havan/",
+      "pagina": "texto da reportagem",
+      "consultado_em": "2026-11-23",
+      "periodo": "publicada em 14/01/2026"
+    },
+    {
+      "titulo": "CNN Brasil, \"Luciano Hang, da Havan: ascensão e polêmicas do empresário\"",
+      "url": "https://www.cnnbrasil.com.br/business/luciano-hang-da-havan-ascensao-e-polemicas-do-empresario/",
+      "pagina": "texto da reportagem",
+      "consultado_em": "2026-11-23",
+      "periodo": "publicada em 27/05/2020"
+    }
+  ]
+}

@@ -59,6 +59,12 @@ export const CONSULTAS = {
     resumo: "Quantos acessos de banda larga fixa o seu município tem por 100 habitantes, quantos por fibra, quantas empresas atendem e quem está dentro da cobertura 4G e 5G, pela Anatel.",
     href: "/conectividade",
   },
+  // coleção Varejo (23/11/2026): sem sessão, o endereço mostra só o último resultado da pesquisa mensal e o tamanho do mercado
+  varejo: {
+    pergunta: "Quanto o varejo vendeu no último mês?",
+    resumo: "O último resultado das vendas do comércio, em volume e em receita, e o tamanho do mercado, pelo IBGE.",
+    href: "/varejo",
+  },
   inss: {
     pergunta: "Quanto o INSS paga na minha cidade?",
     resumo: "Quantos benefícios o INSS pagou por agências da sua cidade em dezembro e o valor médio de cada um, pelo Ministério da Previdência Social.",
@@ -581,8 +587,9 @@ function porta_economia(): Porta {
       caminho("credito", "Como se comparam os bancos?", "Capital, inadimplência e rentabilidade dentro de cada segmento.", "/observatorio/institutions"),
       caminho("credito", "Os juros e os atrasos estão subindo?", "Concessões, saldo, taxas e inadimplência por segmento, com a série histórica.", "/observatorio/credit"),
       caminho("credito", "Como o Pix mudou os pagamentos?", "Pix comparado a cartões, TED e boleto, com geografia municipal.", "/observatorio/pix"),
+      caminho("economia", "As vendas do comércio cresceram?", "Volume contra receita nominal mês a mês e o tamanho do mercado.", "/varejo/brasil"),
     ],
-    paraOSeuCaso: [],
+    paraOSeuCaso: [CONSULTAS.varejo],
     lacunas: [
       "Indústria e serviços: produção, emprego e investimento por setor.",
       "Produção agrícola por estado e por cadeia.",

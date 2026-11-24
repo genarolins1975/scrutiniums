@@ -35,7 +35,7 @@ const minuscula = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
  *  1. `abertura`: H1, busca da plataforma e índice dos seis observatórios;
  *  2. `retomar`: só quando há último acesso, recorte salvo ou aviso; nunca estado vazio;
  *  3. `para-voce`: as perguntas do estado e da cidade do leitor, no mesmo componente das entradas;
- *  4. `destinos`: as 24 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
+ *  4. `destinos`: as 25 coleções nos seis observatórios, em grade (nunca `columns`), cada coleção um link direto;
  *  5. `metodo`: um só `<details>`, com o inventário, a legenda dos selos e as fontes de cada coleção.
  *
  * Todo destino é `<a href>`; os cliques do diretório são contados por LinkMedido, sem formulário. O `<main>` é o do layout da

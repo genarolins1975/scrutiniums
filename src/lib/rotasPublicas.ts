@@ -53,6 +53,8 @@ const PREFIXOS = [
   "/agronegocio/metodologia",
   "/agronegocio/glossario",
   "/territorio/metodologia",
+  // método da coleção Varejo (23/11/2026): fontes, fórmulas e lacunas, sem série nem recorte
+  "/varejo/metodo",
   // camada aberta "O Brasil em perguntas" (decisão de 17/10/2026): a resposta curta é pública, os painéis seguem com conta
   "/perguntas",
 ];
@@ -110,6 +112,9 @@ export const APERITIVOS: readonly Aperitivo[] = Object.freeze([
   // painel novo Conectividade (Energia e Infraestrutura, dados abertos da Anatel por município), 20/10/2026: sem sessão,
   // "Como é a internet na minha cidade?" (só o município escolhido); com sessão, o painel completo no mesmo endereço
   { tema: "Conectividade", rota: "/conectividade", versaoAberta: "/aperitivo/conectividade", painelCompleto: "/conectividade" },
+  // coleção nova Varejo (Economia; PMC e PAC do IBGE e companhias abertas da CVM), 23/11/2026: sem sessão, "Quanto o varejo
+  // vendeu no último mês?" (o último resultado e o tamanho do mercado); com sessão, a entrada completa no mesmo endereço
+  { tema: "Varejo", rota: "/varejo", versaoAberta: "/aperitivo/varejo", painelCompleto: "/varejo" },
   // painel novo Educação nos municípios (Serviços Públicos), aprovado pelo dono em 20/10/2026: sem sessão, "Como está a escola
   // pública da minha cidade?" (só o Ideb mais recente da rede municipal do município escolhido); com sessão, o painel completo
   { tema: "Educação nos municípios", rota: "/educacao-municipal", versaoAberta: "/aperitivo/educacao-municipal", painelCompleto: "/educacao-municipal", fichasIbge: "/educacao-municipal/municipio", manterConsultaComSessao: true },

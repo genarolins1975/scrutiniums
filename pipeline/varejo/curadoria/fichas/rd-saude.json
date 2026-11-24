@@ -1,0 +1,606 @@
+{
+  "slug": "rd-saude",
+  "grupo": "RD Saúde (Raia Drogasil S.A.)",
+  "resumo": "Maior rede de farmácias do país em vendas, com as bandeiras Raia e Drogasil e 3.547 lojas em todos os estados no fim de 2025.",
+  "controlador": {
+    "nome": "Grupo de controle formado por famílias fundadoras (Pipponzi, Pires Oliveira Dias, Galvão e Zagottis), com acordo de acionistas",
+    "nota": "No Formulário de Referência de 2026 (versão 5), os acionistas marcados como controladores somam cerca de 24,7% das ações (cálculo nosso: 100% menos 59,456% de outros, 0,218% em tesouraria e três gestores com mais de 5% que não são controladores). As maiores posições do grupo são Wells Holding Limited, de Carlos Pires Oliveira Dias (10,765%), e GL Investimentos e Participações, da família Galvão (5,645%).",
+    "fonte": {
+      "titulo": "CVM, Formulário de Referência 2026 de Raia Drogasil S.A., versão 5, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161704)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "rd-saude",
+  "bandeiras": [
+    {
+      "nome": "Raia",
+      "formato": "farmácia",
+      "nota": "O IRTT lista Raia e Drogasil como as bandeiras do grupo (p. 38); a divisão de lojas por bandeira não foi lida nos documentos abertos."
+    },
+    {
+      "nome": "Drogasil",
+      "formato": "farmácia",
+      "nota": ""
+    }
+  ],
+  "formatos": [
+    "farmácia de rua e de shopping, com venda de medicamentos, perfumaria e serviços de saúde",
+    "canais digitais (aplicativo, site e superapps de entrega), com entrega ou retirada na loja"
+  ],
+  "regioes": {
+    "texto": "Presente nos 26 estados e no Distrito Federal (IRTT, p. 38). A companhia informa participação de mercado nacional de 19,5% no 4T25 e de 34,2% no estado de São Paulo, com base na consultoria IQVIA (apresentação do 4T25, p. 4 e 9).",
+    "estados": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas próprias (não há franquias, segundo o IRTT, p. 38)",
+    "digital: aplicativo, site e aplicativos de entrega de terceiros; 29,3% da receita do varejo no 4T25"
+  ],
+  "clientes": "Consumidor final. A companhia informa 52 milhões de clientes ativos em 12 meses e 440 milhões de atendimentos em 2025 (apresentação do 4T25, p. 4).",
+  "fontes_de_receita": [
+    {
+      "nome": "Medicamentos de marca",
+      "descricao": "Maior categoria da venda do varejo: 45,2% no 4T25 e 45,8% no 3T26 (leitura do gráfico de mix; apresentação do 3T26, p. 4). Inclui os análogos de GLP-1, usados contra diabetes e obesidade."
+    },
+    {
+      "nome": "Perfumaria (higiene e beleza)",
+      "descricao": "24,1% da venda do varejo no 4T25 e 22,9% no 3T26."
+    },
+    {
+      "nome": "Medicamentos isentos de prescrição (OTC)",
+      "descricao": "18,5% no 4T25 e 18,9% no 3T26."
+    },
+    {
+      "nome": "Genéricos",
+      "descricao": "12,0% no 4T25 e 12,2% no 3T26."
+    },
+    {
+      "nome": "Serviços",
+      "descricao": "0,2% da venda do varejo."
+    },
+    {
+      "nome": "4Bio (medicamentos especiais), até maio de 2026",
+      "descricao": "Receita bruta de R$ 3,3 bilhões em 2025, dentro dos R$ 47,6 bilhões consolidados; vendida ao Grupo Profarma, com conclusão em 04/05/2026."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "DPSP (Drogaria São Paulo e Pacheco)",
+      "slug": "dpsp"
+    },
+    {
+      "nome": "Pague Menos e Extrafarma",
+      "slug": "pague-menos"
+    },
+    {
+      "nome": "Panvel",
+      "slug": "panvel"
+    },
+    {
+      "nome": "Farmácia São João",
+      "slug": null
+    },
+    {
+      "nome": "Drogaria Araújo",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Crescimento nominal da venda do varejo em lojas abertas há mais de um ano, na nomenclatura da companhia ('mesmas lojas'); a apresentação não traz a definição. Séries anuais lidas no gráfico da página indicada de cada apresentação anual (4T22: 2021 e 2022; 4T23: 2023; 4T25: 2024 e 2025); 3T26 na apresentação do 3T26, p. 5.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 15.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 15.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 10.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 9.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 9.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 10.1,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 7 (2024 e 2025); 4T22, p. 10; 4T23, p. 10; 3T26, p. 5",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas nas lojas maduras",
+      "unidade": "%",
+      "nota": "Crescimento nominal das lojas que a companhia classifica como maduras. Em 2025, 7,8% com reajuste regulado de medicamentos (CMED) de 3,1% estimado pela companhia; no 3T26, 8,4% com reajuste de 2,8%. Séries anuais lidas no gráfico da página indicada de cada apresentação anual (4T22: 2021 e 2022; 4T23: 2023; 4T25: 2024 e 2025); 3T26 na apresentação do 3T26, p. 5.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 12.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 13.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 8.0,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 6.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 7.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 8.4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 7 (2024 e 2025); 4T22, p. 10; 4T23, p. 10; 3T26, p. 5",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Fim do período. 2021 calculado por nós: 2.697 menos 260 aberturas mais 53 encerramentos de 2022. O IRTT traz os mesmos números para 2024 e 2025 (p. 38).",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 2490,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 2697,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 2953,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 3230,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 3547,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 3770,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 4 (2025); 4T22, p. 3; 4T23, p. 3; 4T24, p. 3; 3T26, p. 3",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas",
+      "unidade": "lojas",
+      "nota": "Aberturas brutas no ano; no 3T26, aberturas do trimestre (333 em 12 meses). Projeção da companhia para 2026: 330 a 350 aberturas.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 260,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 270,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 300,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 330,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 92,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 4 (2025); 4T22, p. 3; 4T23, p. 3; 4T24, p. 3; 3T26, p. 3",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas",
+      "unidade": "lojas",
+      "nota": "No ano; no 3T26, encerramentos do trimestre.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 53,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 14,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 23,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 4 (2025); 4T22, p. 3; 4T23, p. 3; 4T24, p. 3; 3T26, p. 3",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda pelos canais digitais",
+      "unidade": "R$ bilhões",
+      "nota": "Receita bruta dos canais digitais no ano; no 3T26, venda do trimestre. O IRTT registra R$ 11.321 milhões em 2025 e R$ 7.106 milhões em 2024 (p. 113).",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 3.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 5.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 7.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 11.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 3.8,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 4 e 8 (2025); 4T22, p. 3; 4T23, p. 3; 4T24, p. 3; 3T26, p. 3 e 7",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação do digital na receita do varejo",
+      "unidade": "%",
+      "nota": "A companhia divulga a participação do quarto trimestre de cada ano, não a do ano inteiro.",
+      "valores": [
+        {
+          "periodo": "4T22",
+          "valor": 11.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T23",
+          "valor": 16.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T24",
+          "valor": 20.2,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 29.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 29.4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+        "pagina": "p. 4 e 8 (4T25); 4T22, p. 3; 4T23, p. 3; 4T24, p. 3; 3T26, p. 3 e 7",
+        "periodo": "4T25 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda anual por loja",
+      "unidade": "R$ milhões",
+      "nota": "Cálculo nosso: venda de R$ 47.610 milhões (inclui a 4Bio) dividida por 3.547 lojas no fim de 2025. O IRTT não informa a venda das lojas físicas da RD (n.d., p. 38).",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 13.4,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Venda por funcionário de R$ 0,6 milhão em 2025, segundo o IRTT.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 64758,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 73895,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2025-12",
+      "tipo": "outro",
+      "descricao": "Fato relevante de 01/12/2025: projeção de 330 a 350 aberturas brutas de lojas em 2026 e proposta de aumento de capital de R$ 750 milhões por capitalização de reservas, com bonificação de 2% em ações.",
+      "fonte": {
+        "titulo": "RD Saúde, Fato Relevante: aumento de capital com bonificação e projeção de abertura de lojas 2026 (01/12/2025)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1451145&numSequencia=975857&numVersao=1",
+        "pagina": "p. 1 e 2",
+        "periodo": "dezembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "desinvestimento",
+      "descricao": "Em 03/03/2026 a RD contratou a venda de 100% da 4Bio Medicamentos (medicamentos especiais) à Health Ventures, do Grupo Profarma. Valor base de R$ 600 milhões, incluindo R$ 80 milhões de caixa mantido na empresa, em seis parcelas de R$ 100 milhões. Segundo a companhia, a 4Bio deixou de se encaixar na estratégia, voltada ao varejo farmacêutico.",
+      "fonte": {
+        "titulo": "RD Saúde, Fato Relevante: alienação da 4Bio Medicamentos S.A. (03/03/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484397&numSequencia=1009103&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "março de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-05",
+      "tipo": "desinvestimento",
+      "descricao": "Conclusão da venda da 4Bio em 04/05/2026, após aprovação do CADE e dos acionistas do Grupo Profarma; recebida a primeira parcela de R$ 100 milhões. Nas demonstrações de 2026 a 4Bio aparece como operação descontinuada.",
+      "fonte": {
+        "titulo": "RD Saúde, Comunicado ao Mercado: fechamento e conclusão da alienação da 4Bio (04/05/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1515372&numSequencia=1040078&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "maio de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-05",
+      "tipo": "aquisicao",
+      "descricao": "Em 20/05/2026 a RD contratou a compra dos 66,67% da Stix Fidelidade e Inteligência que pertenciam ao GPA, por R$ 23 milhões, e passou a deter 100% do programa de fidelidade. O índice de documentos da CVM registra o fechamento em 02/07/2026 (comunicado não aberto nesta sessão).",
+      "fonte": {
+        "titulo": "RD Saúde, Comunicado ao Mercado: aquisição de participação societária na Stix (20/05/2026)",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1525263&numSequencia=1049969&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "maio de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do IRTT (R$ 47.610 milhões em 2025, dado fornecido pela empresa, nota 1) é a receita bruta consolidada, igual aos R$ 47.609,6 milhões da apresentação do 4T25 (p. 3): inclui os tributos sobre a venda e a 4Bio (R$ 3.323 milhões). A receita líquida da CVM em 2025 é de R$ 44.250,4 milhões, R$ 3.359 milhões a menos (a venda do ranking é 7,6% maior). Não há vendas de terceiros em marketplace nem de franquias na conta. Margens do release são calculadas sobre a receita bruta e com ajustes da companhia; as da gold, sobre a receita líquida da CVM. Por isso a margem bruta aparece como 27,2% no release e 29,3% na gold para o mesmo exercício.",
+  "analise": {
+    "crescimento": "A receita líquida de 2025 foi de R$ 44,3 bilhões, 13,8% acima de 2024 (CVM). A receita bruta, que inclui os tributos sobre a venda, cresceu 13,9%, para R$ 47,6 bilhões. A rede abriu 330 farmácias e fechou 13, chegando a 3.547. Nas mesmas lojas, as abertas há mais de um ano, a venda subiu 9,7%; nas lojas que a companhia chama de maduras, 7,8%, com reajuste regulado dos medicamentos de 3,1%, estimado por ela. A administração atribui a aceleração do quarto trimestre a todas as categorias, com destaque para análogos de GLP-1 e genéricos. A venda digital somou R$ 11,3 bilhões, alta de 59,3%. No terceiro trimestre de 2026 as lojas maduras cresceram 8,4%, com reajuste de 2,8%, e a rede chegou a 3.770 farmácias. De janeiro a setembro, a receita líquida foi de R$ 33,0 bilhões, 10,4% acima de 2025.",
+    "rentabilidade_caixa": "A margem bruta, parcela da receita líquida que sobra depois do custo das mercadorias, foi de 29,3% em 2025, ante 29,7% em 2024. A administração atribui a queda ao peso maior dos análogos de GLP-1 (remédios contra diabetes e obesidade), a perdas e ao reajuste regulado. A margem operacional passou de 6,05% para 6,20%. O resultado financeiro, juros recebidos menos juros pagos, ficou negativo em R$ 1,30 bilhão (R$ 933 milhões em 2024) e o lucro líquido foi de R$ 1,30 bilhão, 2,94% da receita. O caixa das operações somou R$ 2,43 bilhões, ante R$ 2,77 bilhões em 2024, e os investimentos, R$ 1,40 bilhão. A dívida líquida sem arrendamentos subiu de R$ 2,75 bilhões para R$ 3,34 bilhões no fim de 2025 e estava em R$ 2,88 bilhões em setembro de 2026, depois da venda da 4Bio.",
+    "acompanhar": {
+      "indicador": "Crescimento das lojas maduras em relação ao reajuste regulado de medicamentos (pontos percentuais acima do reajuste) e margem bruta",
+      "reforca": "Lojas maduras seguirem crescendo vários pontos acima do reajuste (5,6 pontos no 3T26) com margem bruta estável indicaria que o ganho de venda das lojas existentes não depende de preço regulado nem custa margem.",
+      "enfraquece": "Crescimento das lojas maduras convergindo para o reajuste, ou nova queda da margem bruta com o avanço dos análogos de GLP-1 e do canal digital, indicaria que a venda adicional rende menos."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Divisão de lojas e de vendas entre as bandeiras Raia e Drogasil: não lida nos documentos abertos.",
+    "Venda das lojas físicas e venda por loja segundo o IRTT: n.d. na fonte (p. 38); a venda por loja registrada é cálculo nosso.",
+    "Número de lojas de 2021: não lido em documento da época; valor calculado a partir do movimento de 2022.",
+    "Aberturas e fechamentos de 2021 e participação anual do digital (a companhia divulga a do quarto trimestre).",
+    "Release de resultados em texto: a companhia arquiva no cadastro IPE a apresentação de resultados; as explicações usadas vêm dos títulos e notas das lâminas.",
+    "A receita líquida de janeiro a setembro de 2026 (gold) cresce 10,4%, abaixo do crescimento da receita bruta informado na apresentação (16,0% no 3T26). A apresentação aberta não reconcilia os dois números; a causa não foi apurada."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 24, 38, 68, 69, 85, 113 e 120",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Apresentação de Resultados 4T25 (04/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1485206&numSequencia=1009912&numVersao=1",
+      "pagina": "p. 3, 4, 7, 8, 9, 10 e 14",
+      "periodo": "4T25 e 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Apresentação de Resultados 3T26 (04/11/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1583713&numSequencia=1108419&numVersao=1",
+      "pagina": "p. 3, 4, 5, 7, 8 e 13",
+      "periodo": "3T26",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Apresentação de Resultados 4T24 (26/02/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1339710&numSequencia=864436&numVersao=1",
+      "pagina": "p. 3",
+      "periodo": "4T24 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Apresentação de Resultados 4T23 (06/03/2024)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1203524&numSequencia=728250&numVersao=1",
+      "pagina": "p. 3 e 10",
+      "periodo": "4T23 e 2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Apresentação de Resultados 4T22 (08/03/2023)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1070053&numSequencia=594783&numVersao=1",
+      "pagina": "p. 3 e 10",
+      "periodo": "4T22 e 2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Fato Relevante: alienação da 4Bio Medicamentos S.A. (03/03/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1484397&numSequencia=1009103&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "março de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Comunicado ao Mercado: fechamento e conclusão da alienação da 4Bio (04/05/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1515372&numSequencia=1040078&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "maio de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Comunicado ao Mercado: aquisição de participação societária na Stix (20/05/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1525263&numSequencia=1049969&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "maio de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "RD Saúde, Fato Relevante: aumento de capital com bonificação e projeção de abertura de lojas 2026 (01/12/2025)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1451145&numSequencia=975857&numVersao=1",
+      "pagina": "p. 1 e 2",
+      "periodo": "dezembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, Formulário de Referência 2026 de Raia Drogasil S.A., versão 5, posição acionária (dados abertos, arquivo fre_cia_aberta_posicao_acionaria_2026.csv, documento 161704)",
+      "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/fre_cia_aberta_2026.zip",
+      "pagina": "item 6.1 e 6.2 (posição acionária)",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CVM, DFP 2021 a 2025 e ITR do 3T26, extraídos em public/varejo/gold/empresas.json",
+      "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-dfp",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2021 a 2025 e janeiro a setembro de 2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

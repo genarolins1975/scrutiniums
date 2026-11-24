@@ -77,6 +77,7 @@ const TERMOS: Record<string, string> = {
   "economia/pagamentos": "pix cartão boleto open finance",
   "economia/empresas": "setores falência recuperação judicial risco",
   "economia/agro": "safra exportação soja carne café campo cadeia",
+  "economia/varejo": "comércio lojas vendas consumo atacarejo",
   "territorio-e-clima/desmatamento": "amazônia prodes floresta emissões carbono",
   "territorio-e-clima/cidades-clima": "calor chuva racionamento manancial seca",
   "territorio-e-clima/fogo": "queimada foco incêndio inpe inundação enchente deslizamento área de risco defesa civil",

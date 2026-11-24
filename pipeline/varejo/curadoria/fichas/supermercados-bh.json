@@ -1,0 +1,416 @@
+{
+  "slug": "supermercados-bh",
+  "grupo": "Supermercados BH Comércio de Alimentos S.A.",
+  "resumo": "Rede mineira de supermercados com cerca de 400 lojas em Minas Gerais e no Espírito Santo; capital fechado, sem demonstrações públicas.",
+  "controlador": {
+    "nome": null,
+    "nota": "A composição acionária não consta das fontes abertas. A ABRAS identifica Pedro Lourenço como fundador e presidente da rede, criada há 29 anos (em dezembro de 2025) em Santa Luzia (MG). O Ranking ABRAS registra a razão social como sociedade anônima com sede em Minas Gerais.",
+    "fonte": {
+      "titulo": "ABRAS, clipping 'Supermercados BH fecha 2025 com 403 lojas em MG e ES' (26/12/2025)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120242/supermercados-bh-fecha-2025-com-403-lojas-em-mg-e-es",
+      "pagina": "página única",
+      "periodo": "dezembro de 2025",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Supermercados BH",
+      "formato": "supermercado",
+      "nota": "Única bandeira citada pelo IRTT e pela ABRAS. As lojas Bretas compradas em Minas Gerais em 2025 passaram a ser integradas à bandeira a partir de maio daquele ano."
+    }
+  ],
+  "formatos": [
+    "supermercado (as duas lojas abertas em dezembro de 2025 têm 1.200 e 1.800 m² de área de vendas)",
+    "postos de combustíveis (8 unidades vieram com a compra do Bretas)"
+  ],
+  "regioes": {
+    "texto": "Minas Gerais e Espírito Santo. Em maio de 2025, antes da troca de bandeira das lojas Bretas, a rede estava em 99 cidades mineiras e 11 capixabas. Em 2025 foram 73 lojas novas em Minas Gerais, contadas as do Bretas, e 6 no Espírito Santo. Não há número de lojas por estado nas fontes.",
+    "estados": [
+      "MG",
+      "ES"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "sem comércio eletrônico, segundo a tabela do setor no IRTT (p. 64)"
+  ],
+  "clientes": "Consumidores finais, em lojas de supermercado. As fontes abertas não descrevem perfil de renda nem venda a comerciantes.",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de mercadorias em supermercados",
+      "descricao": "R$ 25,7 bilhões em 2025, toda em lojas físicas segundo o IRTT (coluna de venda em lojas físicas igual à venda total)."
+    },
+    {
+      "nome": "Postos de combustíveis",
+      "descricao": "Oito postos comprados com o Bretas em 2025; sem valor de venda divulgado."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Assaí Atacadista (tem lojas em Minas Gerais e no Espírito Santo)",
+      "slug": "assai"
+    },
+    {
+      "nome": "Grupo Carrefour Brasil (presente em todos os estados)",
+      "slug": "carrefour-brasil"
+    },
+    {
+      "nome": "Mart Minas e Dom Atacadista (sede em MG no Ranking ABRAS)",
+      "slug": null
+    },
+    {
+      "nome": "DMA Distribuidora, dona de EPA e Mineirão (MG), com acordo de integração ao BH pendente no Cade",
+      "slug": null
+    },
+    {
+      "nome": "Rede Smart Supermercados (sede em MG no Ranking ABRAS)",
+      "slug": null
+    },
+    {
+      "nome": "Grupo ABC, Grupo Supernosso, Supermercado Bahamas e Villefort (sede em MG no Ranking ABRAS)",
+      "slug": null
+    },
+    {
+      "nome": "Grupo Coutinho (sede no ES no Ranking ABRAS)",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda bruta ao consumidor",
+      "unidade": "R$ milhões",
+      "nota": "2024 e 2025 no IRTT, que classifica a fonte como balanço publicado (nota 2); o Ranking ABRAS 2026 traz R$ 25.724.242.808 para 2025. 2023 é conta nossa: venda de 2024 menos o aumento de R$ 3.890.548.049 informado pela ABRAS; o clipping da ABRAS de fevereiro de 2025 cita R$ 17,4 bilhões. Sem dado de 2021 e 2022 nas fontes abertas.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 17388,
+          "natureza": "calculado",
+          "nota": "21.279 menos 3.890,5 (ABRAS, Ranking 2025, p. 6)"
+        },
+        {
+          "periodo": "2024",
+          "valor": 21279,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 25724,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 102",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Crescimento da venda no ano",
+      "unidade": "%",
+      "nota": "Textos do IRTT (p. 26 e 27). A tabela da p. 38 arredonda 2025 para 21%.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 22.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20.9,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 24, 26 e 27",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no fim do período",
+      "unidade": "lojas",
+      "nota": "Divergência em 2025: o IRTT registra 420 lojas; a empresa, em texto reproduzido pela ABRAS em 26/12/2025, informa 403 lojas em operação no fim do ano, e a CNN Brasil cita 400 lojas em maio de 2026. A ficha usa o IRTT, para manter a mesma fonte da venda, e registra a diferença. 2023: apresentação do Ranking ABRAS 2025, p. 7.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 307,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 338,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 420,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 87",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas abertas ou integradas no ano",
+      "unidade": "lojas",
+      "nota": "2025: soma de 73 lojas novas em Minas Gerais (inclui as lojas Bretas) e 6 no Espírito Santo, informadas pela empresa. 2024: variação líquida de 307 para 338 lojas (ABRAS). O IRTT não informa expansão orgânica para a rede (p. 38).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 31,
+          "natureza": "calculado",
+          "nota": "338 menos 307"
+        },
+        {
+          "periodo": "2025",
+          "valor": 79,
+          "natureza": "calculado",
+          "nota": "73 mais 6"
+        }
+      ],
+      "fonte": {
+        "titulo": "ABRAS, clipping 'Supermercados BH fecha 2025 com 403 lojas em MG e ES' (26/12/2025)",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120242/supermercados-bh-fecha-2025-com-403-lojas-em-mg-e-es",
+        "pagina": "página única",
+        "periodo": "dezembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "2024 e 2025 no IRTT (p. 91); 2023 na apresentação do Ranking ABRAS 2025 (p. 8), que traz o mesmo número de 2024. A CNN Brasil cita 50 mil em maio de 2026.",
+      "valores": [
+        {
+          "periodo": "2023",
+          "valor": 34794,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 39217,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 49233,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 64, 88 e 91",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por loja",
+      "unidade": "R$ milhões por loja",
+      "nota": "2025 é o número do IRTT (61); a divisão de 25.724 por 420 dá 61,2, e por 403 lojas daria 63,8. 2024 é conta nossa. No mesmo quadro do IRTT: Assaí 272, Grupo Carrefour Brasil 128, Grupo Mateus 118.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 63.0,
+          "natureza": "calculado",
+          "nota": "21.279 dividido por 338"
+        },
+        {
+          "periodo": "2025",
+          "valor": 61,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por funcionário",
+      "unidade": "R$ mil por pessoa",
+      "nota": "Contas nossas com venda e funcionários do IRTT.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 542.6,
+          "natureza": "calculado",
+          "nota": "21.279 dividido por 39.217"
+        },
+        {
+          "periodo": "2025",
+          "valor": 522.5,
+          "natureza": "calculado",
+          "nota": "25.724 dividido por 49.233"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 91",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2025-02",
+      "tipo": "aquisicao",
+      "descricao": "Acordo assinado em 07/02/2025 com a Cencosud para comprar a operação Bretas em Minas Gerais: 54 lojas, 8 postos de combustíveis e 1 centro de distribuição. A Cencosud informou valor de R$ 716 milhões, sujeito a ajustes, e a operação dependia do Cade. A vendedora manteve as 26 lojas Bretas de Goiás.",
+      "fonte": {
+        "titulo": "ABRAS, clipping 'Exclusivo: Cencosud vende operação do Bretas em Minas Gerais' (07/02/2025, atualizado em 10/02/2025)",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118292/exclusivo-cencosud-vende-operacao-do-bretas-em-minas-gerais",
+        "pagina": "página única",
+        "periodo": "fevereiro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-05",
+      "tipo": "outro",
+      "descricao": "Início da troca de bandeira das lojas Bretas: primeira fase com cerca de 31 unidades em 15 municípios mineiros, absorção de cerca de 2 mil funcionários e abertura de cerca de mil vagas. A empresa previa chegar a 389 unidades com a conversão completa.",
+      "fonte": {
+        "titulo": "ABRAS, clipping 'Supermercados BH inicia transição das lojas Bretas' (16/05/2025)",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118899/supermercados-bh-inicia-transicao-das-lojas-bretas",
+        "pagina": "página única",
+        "periodo": "maio de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "outro",
+      "descricao": "Inauguração da loja de número 400, em Belo Horizonte, em 19/12/2025; a empresa informa encerrar o ano com 403 lojas em operação.",
+      "fonte": {
+        "titulo": "ABRAS, clipping 'Supermercados BH fecha 2025 com 403 lojas em MG e ES' (26/12/2025)",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120242/supermercados-bh-fecha-2025-com-403-lojas-em-mg-e-es",
+        "pagina": "página única",
+        "periodo": "dezembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-05",
+      "tipo": "aquisicao",
+      "descricao": "Acordo com a DMA Distribuidora, controladora das redes EPA e Mineirão, para integrar as operações, com centros de distribuição e postos; o grupo passaria a cerca de 600 lojas em Minas Gerais, Espírito Santo, Bahia e Pernambuco. A operação depende do Cade e a conclusão não foi verificada nesta sessão. A DMA aparece no Ranking ABRAS 2026 em 14º lugar, com R$ 8.908 milhões.",
+      "fonte": {
+        "titulo": "CNN Brasil, 'Supermercados BH faz acordo para integrar EPA e Mineirão, somando 600 lojas' (01/05/2026)",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/supermercados-bh-faz-acordo-para-integrar-epa-e-mineirao-somando-600-lojas/",
+        "pagina": "página única",
+        "periodo": "maio de 2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "Só existe a venda bruta ao consumidor: R$ 25.724 milhões em 2025 no IRTT (posição 9, fonte classificada como balanço publicado) e R$ 25.724.242.808 no Ranking ABRAS 2026 (posição 4 entre os supermercadistas). Os dois rankings coincidem. Não há receita líquida na CVM, porque a empresa não tem registro de companhia aberta, e a ficha não tem número financeiro além da venda. As lojas Bretas entraram na rede ao longo de 2025 (a troca de bandeira começou em maio), o que limita a comparação com 2024. O número de lojas difere entre as fontes (420 no IRTT, 403 segundo a empresa), e os indicadores por loja mudam conforme a base usada.",
+  "analise": {
+    "crescimento": "A venda do Supermercados BH passou de R$ 21,3 bilhões em 2024 para R$ 25,7 bilhões em 2025, alta de 20,9%, a maior entre os dez primeiros do IRTT, depois de 22,4% no ano anterior. O crescimento veio de lojas novas: a rede foi de 338 para 420 unidades segundo o IRTT (alta de 24%), ou 403 segundo a própria empresa em dezembro de 2025. A empresa informou 79 lojas novas no ano, 73 em Minas Gerais e 6 no Espírito Santo, contadas aí lojas Bretas compradas da Cencosud (acordo de 54 lojas por R$ 716 milhões). Como as lojas cresceram mais que a venda, a venda por loja caiu de R$ 63,0 milhões para R$ 61,2 milhões (conta nossa). A rede não divulga vendas nas mesmas lojas, e de 2026 só há o acordo para integrar a DMA, dona de EPA e Mineirão.",
+    "rentabilidade_caixa": "Sem demonstrações públicas, não há margem, lucro, caixa nem dívida a citar. A evidência disponível é operacional. A venda por loja, de R$ 61 milhões ao ano no IRTT, é menos de um quarto da do Assaí (R$ 272 milhões) e cerca de metade da do Grupo Mateus (R$ 118 milhões): o formato é de lojas menores, como as duas inauguradas em dezembro de 2025, de 1.200 e 1.800 metros quadrados de área de vendas. O quadro foi de 39.217 para 49.233 funcionários, alta de 26%, acima do crescimento das vendas, o que dá 117 pessoas por loja e R$ 522 mil de venda por funcionário (contas nossas). Toda a rede está em dois estados: eram 99 cidades de Minas Gerais e 11 do Espírito Santo antes da integração do Bretas. Como a expansão foi financiada, com R$ 716 milhões só no Bretas, não é público.",
+    "acompanhar": {
+      "indicador": "Venda por loja (venda do ranking dividida pelo número de lojas)",
+      "reforca": "Venda por loja de volta a subir em 2026, com as lojas Bretas já convertidas, indicaria que a rede transforma lojas compradas em venda no padrão das antigas.",
+      "enfraquece": "Nova queda da venda por loja junto com outra aquisição grande (a DMA levaria a rede a cerca de 600 lojas) indicaria crescimento sustentado por compras, sem ganho nas lojas existentes."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita líquida, lucro bruto, margens, resultado financeiro, lucro líquido, caixa operacional, investimento e dívida: a empresa é de capital fechado e não há demonstração na CVM. O IRTT classifica a fonte da venda como balanço publicado (hierarquia 2), mas o documento não foi localizado nas fontes liberadas nesta sessão.",
+    "Vendas nas mesmas lojas: não divulgadas.",
+    "Área de vendas total e número de lojas por estado: não constam do IRTT nem do Ranking ABRAS 2026 (a tabela da ABRAS traz só posição, razão social, sede e faturamento).",
+    "Separação entre abertura orgânica e lojas compradas em 2025: o IRTT deixa em branco a expansão orgânica; a empresa informa 79 lojas novas, contadas as do Bretas.",
+    "Venda e número de lojas de 2021 e 2022: as edições anteriores do Ranking ABRAS (páginas de 2022 a 2024) não estão mais no ar no endereço da ABRAS.",
+    "Data de aprovação do Cade e de conclusão da compra do Bretas, e desfecho do acordo com a DMA: não verificados (o sistema do Cade está fora das fontes liberadas).",
+    "Composição acionária e controlador: não constam das fontes abertas."
+  ],
+  "fontes": [
+    {
+      "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 24, 26, 27, 32, 38, 63, 64, 82, 87, 88, 91 e 102",
+      "periodo": "2025 (e 2024 para comparação)",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Ranking ABRAS 2026, tabela das empresas respondentes",
+      "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+      "pagina": "p. 2",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, página 'Ranking ABRAS 2026' (dados)",
+      "url": "https://www.abras.com.br/dados-ranking-2026",
+      "pagina": "página única",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, página 'Ranking ABRAS 2025' (dados)",
+      "url": "https://www.abras.com.br/dados-ranking-2025",
+      "pagina": "página única",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, Ranking ABRAS 2025, apresentação 'Grandes números e destaques'",
+      "url": "https://static.abras.com.br/pdf/grandes-numeros-ranking-2025.pdf",
+      "pagina": "p. 6 a 8",
+      "periodo": "2023 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping 'Exclusivo: Cencosud vende operação do Bretas em Minas Gerais' (07/02/2025, atualizado em 10/02/2025)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118292/exclusivo-cencosud-vende-operacao-do-bretas-em-minas-gerais",
+      "pagina": "página única",
+      "periodo": "fevereiro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping 'Supermercados BH inicia transição das lojas Bretas' (16/05/2025)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118899/supermercados-bh-inicia-transicao-das-lojas-bretas",
+      "pagina": "página única",
+      "periodo": "maio de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping 'Supermercados BH fecha 2025 com 403 lojas em MG e ES' (26/12/2025)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120242/supermercados-bh-fecha-2025-com-403-lojas-em-mg-e-es",
+      "pagina": "página única",
+      "periodo": "dezembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, 'Supermercados BH faz acordo para integrar EPA e Mineirão, somando 600 lojas' (01/05/2026)",
+      "url": "https://www.cnnbrasil.com.br/economia/negocios/supermercados-bh-faz-acordo-para-integrar-epa-e-mineirao-somando-600-lojas/",
+      "pagina": "página única",
+      "periodo": "maio de 2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

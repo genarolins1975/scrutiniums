@@ -53,6 +53,9 @@ __pycache__/
 # Saída derivada do payload canônico; materializada no prebuild e no setup Vitest.
 /public/eficiencia/trabalho-renda/snapshot.json
 /public/eficiencia/trabalho-renda/snapshot.json.tmp
+# Curadoria do Varejo reunida de pipeline/varejo/curadoria por scripts/materializar-varejo.mjs (prebuild e pretest)
+/public/varejo/gold/curadoria.json
+/public/varejo/gold/curadoria.json.tmp
 /vitest-resultado.json
 /testes-codigos.txt
 /pipeline-testes.log

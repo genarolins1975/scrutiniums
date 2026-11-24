@@ -24,14 +24,14 @@ const exigir = process.env.EXIGIR_BUILD_HTML === "1";
 const ABERTAS = [
   "/", "/perguntas/familias", "/perguntas/energia-e-infraestrutura", "/setor-eletrico/conta-de-luz", "/saneamento/municipio",
   "/eficiencia-estatal", "/gas-natural/gas-de-cozinha", "/observatorio-do-credito", "/combustiveis/no-meu-estado",
-  "/contas-publicas/previdencia", "/conectividade", "/educacao-municipal", "/entrar", "/glossario", "/sobre", "/cadastro",
+  "/contas-publicas/previdencia", "/conectividade", "/educacao-municipal", "/varejo", "/varejo/metodo", "/entrar", "/glossario", "/sobre", "/cadastro",
 ];
 /** Com conta (seção 5 do parecer), inclusive a aplicação do Crédito. */
 const COM_CONTA = [
   "/app/observatorios", "/observatorios/familias", "/observatorios/economia", "/setor-eletrico", "/setor-eletrico/pld", "/saneamento",
   "/saneamento/acesso", "/gas-natural", "/combustiveis", "/eficiencia-estatal", "/eficiencia-estatal/saude-capitais",
   "/eficiencia-estatal/trabalho-renda", "/contas-publicas", "/contas-publicas-estaduais", "/agronegocio", "/territorio", "/custo-de-vida", "/divida-das-familias",
-  "/conectividade", "/educacao-municipal", "/observatorio/map", "/observatorio/interest-rates", "/app/conta",
+  "/conectividade", "/educacao-municipal", "/varejo", "/varejo/brasil", "/varejo/segmentos", "/observatorio/map", "/observatorio/interest-rates", "/app/conta",
   // páginas no molde de painel (Iniciativa 1 do parecer de UX de 23/10/2026, painel-molde.test.ts): a conta de luz aqui é o painel completo
   "/setor-eletrico/qualidade", "/setor-eletrico/conta-de-luz",
   // PR 1 da Iniciativa 1: as demais páginas do Grupo 1 no molde de painel (as outras já estavam na lista)

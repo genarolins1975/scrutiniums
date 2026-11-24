@@ -114,6 +114,8 @@ export const PARA_VOCE = {
   // bloco; os cartões levam às perguntas vizinhas do mesmo bolso (preço do que se compra, serviço da cidade), nunca à própria página
   "/combustiveis": ["gnv", "botijao", "luz"],
   "/conectividade": ["capital", "luz", "municipio"],
+  // Varejo (23/11/2026): o que o leitor sente no caixa e no crediário, cada pergunta no painel que a responde
+  "/varejo": ["custo-de-vida", "comida", "banco-cobra"],
   "/educacao-municipal": ["educacao-capital", "capital"],
   "/custo-de-vida": ["comida", "botijao", "luz"],
   // Dívida das famílias (10/11/2026): as duas consultas pessoais do Crédito, a taxa do seu banco e a parcela do seu empréstimo

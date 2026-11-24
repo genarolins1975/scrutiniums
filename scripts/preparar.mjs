@@ -12,4 +12,6 @@
 await import("./materializar-assistencia.mjs");
 await import("./materializar-seguranca-alimentar.mjs");
 await import("./materializar-trabalho-renda.mjs");
+// curadoria do Varejo (ranking, segmentos e fichas) num arquivo só; ausência é "em apuração", não erro
+await import("./materializar-varejo.mjs");
 await import("./minify-obs.mjs");

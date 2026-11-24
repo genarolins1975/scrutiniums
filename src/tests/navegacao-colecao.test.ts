@@ -92,7 +92,8 @@ describe("catálogo único das 24 coleções", () => {
 
   it("cobre as 24 coleções do registro, na ordem dos observatórios", () => {
     // eram 28 até a fusão das coleções de uma página só (decisão do dono de 10/11/2026): 24 coleções
-    expect(ids).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(ids).toHaveLength(25);
     expect(ids).toEqual(OBSERVATORIOS.flatMap((o) => o.colecoes.map((c) => c.id)));
   });
 

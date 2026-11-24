@@ -1,0 +1,496 @@
+{
+  "slug": "super-muffato",
+  "grupo": "Super Muffato (Grupo Muffato)",
+  "resumo": "Rede familiar paranaense de supermercados (Super Muffato) e atacarejo (Max Atacadista), com lojas no Paraná e em São Paulo.",
+  "controlador": {
+    "nome": "Família Muffato",
+    "nota": "Ederson, Everton e Rosa Reni Muffato são citados como acionistas do Grupo Muffato na decisão do Cade relatada pela imprensa. A razão social no Ranking ABRAS é Irmãos Muffato S.A. O IRTT registra capital fechado, controle nacional e conselho consultivo. A composição acionária não foi consultada em documento societário.",
+    "fonte": {
+      "titulo": "InfoMoney, Cade aprova aquisição de ações do Assaí por investidores do grupo Muffato",
+      "url": "https://www.infomoney.com.br/mercados/cade-aprova-aquisicao-de-acoes-do-assai-por-investidores-do-grupo-muffato/",
+      "pagina": "página única",
+      "periodo": "publicado em 01/10/2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Super Muffato",
+      "formato": "supermercado",
+      "nota": "Bandeira mais antiga do grupo, segundo a direção."
+    },
+    {
+      "nome": "Max Atacadista",
+      "formato": "atacarejo",
+      "nota": "65ª unidade aberta em setembro de 2025 (Morumbi, São Paulo). Etiqueta com três preços: atacado, varejo e cartão Crediffato."
+    },
+    {
+      "nome": "Super Muffato Gourmet",
+      "formato": "supermercado com foco em gastronomia e conveniência",
+      "nota": "Primeira unidade nos Campos Gerais aberta em Ponta Grossa em dezembro de 2025."
+    },
+    {
+      "nome": "Muffato Go (MGo)",
+      "formato": "loja autônoma, sem atendente de caixa",
+      "nota": "Uma operação em Curitiba, citada em novembro de 2023."
+    }
+  ],
+  "formatos": [
+    "supermercado",
+    "atacarejo",
+    "supermercado gourmet",
+    "loja autônoma"
+  ],
+  "regioes": {
+    "texto": "Paraná e São Paulo, segundo o IRTT (2 estados). Em fevereiro de 2026 o grupo se descrevia presente em 53 cidades dos dois estados. A entrada na capital paulista ocorreu em novembro de 2023, em imóveis comprados do Makro.",
+    "estados": [
+      "PR",
+      "SP"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "comércio eletrônico próprio",
+    "venda por WhatsApp ou comércio conversacional",
+    "marketplaces de terceiros"
+  ],
+  "clientes": "Famílias nas lojas de supermercado. No atacarejo, consumidores finais, comerciantes e transformadores (bares, restaurantes e pequenos negócios que compram para revender ou preparar alimentos). A direção afirma que o foco do Max Atacadista é o consumidor final.",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de mercadorias em supermercados",
+      "descricao": "Alimentos, bebidas, higiene, limpeza e bazar nas lojas Super Muffato e Super Muffato Gourmet."
+    },
+    {
+      "nome": "Venda de mercadorias em atacarejo",
+      "descricao": "Lojas Max Atacadista, com preço de atacado para compras em quantidade."
+    },
+    {
+      "nome": "Outras atividades citadas pela imprensa",
+      "descricao": "Serviços financeiros (cartão Crediffato), distribuição atacadista, postos de combustíveis e galerias comerciais (Muffato Malls). Não há divulgação pública da receita de cada atividade."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Assaí",
+      "slug": "assai"
+    },
+    {
+      "nome": "Grupo Carrefour Brasil (Atacadão)",
+      "slug": "carrefour-brasil"
+    },
+    {
+      "nome": "Redes regionais de supermercados e atacarejo do Paraná e do interior de São Paulo",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda bruta ao consumidor",
+      "unidade": "R$ milhões",
+      "nota": "Nota de fonte 1 do IRTT: dado declarado pela empresa ao instituto. Venda com impostos. O Ranking ABRAS 2026 registra faturamento de R$ 20.355.475.718 em 2025, mesmo valor.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 17433,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20355,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Crescimento da venda",
+      "unidade": "%",
+      "nota": "Percentual publicado pelo IRTT. A divisão de 20.355 por 17.433 resulta em 16,8%.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 17,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 102",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Fim de período. A imprensa registrou 115 unidades em setembro de 2025 e 120 em novembro de 2025 e fevereiro de 2026.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 106,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 121,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Expansão orgânica de lojas",
+      "unidade": "lojas",
+      "nota": "Lojas abertas pela própria empresa no ano, segundo o IRTT. Igual à variação total do número de lojas.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 15,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 86",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Lojas por formato",
+      "unidade": "lojas",
+      "nota": "Informado em reportagem. Documento da empresa não acessado. Total de 120 lojas.",
+      "valores": [
+        {
+          "periodo": "novembro de 2025, atacarejo",
+          "valor": 69,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "novembro de 2025, varejo",
+          "valor": 51,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "InfoMoney, Grupo Muffato: o que é e ele pode mudar a tese para as ações do Assaí (ASAI3)?",
+        "url": "https://www.infomoney.com.br/mercados/grupo-muffato-o-que-e-e-ele-pode-mudar-a-tese-para-as-acoes-do-assai-asai3/",
+        "pagina": "página única",
+        "periodo": "publicado em 30/11/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por loja",
+      "unidade": "R$ milhões por loja",
+      "nota": "2025 publicado pelo IRTT (22ª maior venda por loja do ranking). 2024 calculado por nós: 17.433 dividido por 106 lojas. As duas contas usam lojas de fim de ano, o que reduz a média quando há muitas lojas abertas no período.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 164.5,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 168,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 84",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Variação de 9% publicada pelo IRTT.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 22124,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 24209,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38 e 89",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda por funcionário",
+      "unidade": "R$ milhões por funcionário",
+      "nota": "Publicado pelo IRTT com uma casa decimal.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 0.8,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Faturamento no Ranking ABRAS",
+      "unidade": "R$",
+      "nota": "6ª posição nas edições de 2025 e 2026 do ranking. Razão social: Irmãos Muffato S.A., sede no Paraná. A tabela pública traz só posição, sede e faturamento.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 20355475718,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "ABRAS, Ranking ABRAS 2026, tabela das empresas respondentes",
+        "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+        "pagina": "2",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2023-01",
+      "tipo": "aquisicao",
+      "descricao": "Compra de 16 imóveis e 11 postos de combustíveis do Makro, que deixava o país. Valor não revelado. As lojas foram convertidas para a bandeira Max Atacadista.",
+      "fonte": {
+        "titulo": "InfoMoney, Muffato desembarca em São Paulo e mira expansão no Estado",
+        "url": "https://www.infomoney.com.br/business/muffato-desembarca-em-sao-paulo-e-mira-expansao-no-estado/",
+        "pagina": "página única",
+        "periodo": "publicado em 22/11/2023",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2023-11",
+      "tipo": "outro",
+      "descricao": "Abertura da primeira loja na cidade de São Paulo (Max Atacadista Butantã), quarta conversão de imóvel do Makro, com investimento avaliado em cerca de R$ 60 milhões.",
+      "fonte": {
+        "titulo": "InfoMoney, Muffato desembarca em São Paulo e mira expansão no Estado",
+        "url": "https://www.infomoney.com.br/business/muffato-desembarca-em-sao-paulo-e-mira-expansao-no-estado/",
+        "pagina": "página única",
+        "periodo": "publicado em 22/11/2023",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2023-12",
+      "tipo": "outro",
+      "descricao": "O grupo chega a 100 unidades com a abertura do Max Atacadista Interlagos, em São Paulo, décimo atacarejo convertido após a compra do Makro.",
+      "fonte": {
+        "titulo": "ABRAS, clipping, Grupo Muffato inaugura nova loja e chega a 100 unidades",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/115672/grupo-muffato-inaugura-nova-loja-e-chega-a-100-unidades",
+        "pagina": "página única",
+        "periodo": "publicado em dezembro de 2023",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-09",
+      "tipo": "outro",
+      "descricao": "Três inaugurações em uma semana levam o grupo a 115 unidades. A loja Super Muffato do Jardim das Américas, em Curitiba, faz parte da conversão de lojas adquiridas da Rede Nacional, antes do Grupo Carrefour Brasil. O Max Morumbi é a 33ª loja do grupo em São Paulo.",
+      "fonte": {
+        "titulo": "ABRAS, clipping (Redação SuperHiper), Em expansão, Muffato encerrará o ano com 16 inaugurações",
+        "url": "https://www.abras.com.br/clipping/redes-de-supermercados/119714/em-expansao-muffato-encerrara-o-ano-com-16-inauguracoes",
+        "pagina": "página única",
+        "periodo": "publicado em setembro de 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-11",
+      "tipo": "outro",
+      "descricao": "Fundos Snapper Rocks e WHG Apache, de Ederson e Everton Muffato, comunicam participação relevante no Assaí: 4,910% em ações e 5,348% em derivativos, soma de 10,258% (soma calculada por nós). Os investidores declararam não ter objetivo de alterar o controle ou a administração.",
+      "fonte": {
+        "titulo": "Sendas Distribuidora S.A. (Assaí), Comunicado ao Mercado, aquisição de participação acionária relevante",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1450359&numSequencia=975071&numVersao=1",
+        "pagina": "1 e 6",
+        "periodo": "entregue à CVM em 27/11/2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-08",
+      "tipo": "outro",
+      "descricao": "O Assaí informa à CVM que não há negociação de fusão, incorporação ou transferência de controle com o Grupo Muffato.",
+      "fonte": {
+        "titulo": "InfoMoney, Assaí (ASAI3) nega negociação de fusão com Grupo Muffato",
+        "url": "https://www.infomoney.com.br/mercados/assai-asai3-nega-negociacao-de-fusao-com-grupo-muffato/",
+        "pagina": "página única",
+        "periodo": "publicado em 12/08/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-09",
+      "tipo": "outro",
+      "descricao": "A Superintendência-Geral do Cade aprova sem restrições, em 30/09/2026, a aquisição de ações do Assaí pelos fundos da família Muffato. Segundo a decisão relatada, as duas empresas seguem operando de forma independente.",
+      "fonte": {
+        "titulo": "InfoMoney, Cade aprova aquisição de ações do Assaí por investidores do grupo Muffato",
+        "url": "https://www.infomoney.com.br/mercados/cade-aprova-aquisicao-de-acoes-do-assai-por-investidores-do-grupo-muffato/",
+        "pagina": "página única",
+        "periodo": "publicado em 01/10/2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-10",
+      "tipo": "outro",
+      "descricao": "Os fundos e os irmãos Muffato comunicam ter alcançado 15,02% em ações ordinárias e derivativos do Assaí, sem participação específica visada e sem intenção de alterar o controle.",
+      "fonte": {
+        "titulo": "Sendas Distribuidora S.A. (Assaí), Comunicado ao Mercado, aquisição de participação acionária relevante",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1581457&numSequencia=1106163&numVersao=2",
+        "pagina": "1",
+        "periodo": "29/10/2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do ranking (R$ 20.355 milhões em 2025) é venda bruta ao consumidor, com impostos, declarada pela empresa ao IRTT. O instituto informa que toda a venda vem de lojas físicas (a coluna de venda em lojas físicas repete o total) e que seu critério exclui a parcela de atacado de empresas com vários canais. O IRTT não publica a venda do comércio eletrônico do grupo nem detalha se combustíveis, cartão próprio e aluguel de galerias entram no número. O investimento dos acionistas no Assaí é pessoal, feito por fundos, e não altera a venda do grupo.",
+  "analise": {
+    "crescimento": "A venda bruta passou de R$ 17.433 milhões em 2024 para R$ 20.355 milhões em 2025, alta de 16,8% pelos números do IRTT, declarados pela empresa. O número de lojas subiu de 106 para 121 (14,2%), e o IRTT classifica as 15 lojas adicionais como expansão orgânica. A venda por loja, com lojas de fim de ano, foi de R$ 164,5 milhões para R$ 168 milhões, alta de 2,3% pelo nosso cálculo. A leitura é que quase todo o crescimento de 2025 acompanha a abertura de lojas. As inaugurações noticiadas em 2025 incluem lojas Max Atacadista em São Paulo e no Paraná e a conversão, em Curitiba, de loja adquirida da Rede Nacional. Não há divulgação de vendas nas mesmas lojas, indicador que compara só as unidades abertas há mais de um ano.",
+    "rentabilidade_caixa": "O grupo tem capital fechado e não foi localizada demonstração financeira pública: margem, lucro, dívida e caixa não podem ser avaliados. A evidência disponível é operacional. A venda por loja de R$ 168 milhões é a 22ª maior do ranking do IRTT e fica acima da do Grupo Pereira (R$ 159 milhões), rede de porte próximo. A venda por funcionário foi de R$ 0,8 milhão, com quadro 9% maior em 2025. Os investimentos noticiados por loja ficam entre R$ 50 milhões e R$ 60 milhões. Os acionistas montaram, por fundos, posição de 15,02% no Assaí até outubro de 2026, o que indica capacidade financeira dos controladores, não do grupo. Nada disso permite concluir se a expansão em São Paulo gera retorno acima do custo do capital empregado.",
+    "acompanhar": {
+      "indicador": "Venda por loja no IRTT e número de lojas em São Paulo",
+      "reforca": "Venda por loja estável ou em alta enquanto as lojas paulistas completam o primeiro ano inteiro de operação, com manutenção da 6ª posição no Ranking ABRAS.",
+      "enfraquece": "Queda da venda por loja com aumento do número de lojas, o que indicaria que as unidades novas vendem menos que a média, ou interrupção das inaugurações previstas para 2026."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita líquida, margem bruta, EBITDA, lucro líquido, dívida, caixa e investimento total: sem demonstração financeira pública localizada.",
+    "Vendas nas mesmas lojas: não divulgadas.",
+    "Área de vendas e check-outs: a tabela pública do Ranking ABRAS 2026 traz apenas posição, razão social, sede e faturamento.",
+    "Venda do comércio eletrônico e participação do atacarejo na venda total: não divulgadas no IRTT.",
+    "Base ativa de clientes: n.d. no IRTT.",
+    "Valor pago pelos imóveis do Makro e pelas lojas da Rede Nacional: não revelado.",
+    "Sites do grupo (www.grupomuffato.com.br e www.supermuffato.com.br) não acessados: hosts bloqueados na rede do ambiente."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026 (vendas de 2025)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "38, 64, 84, 86, 89, 102 e 123",
+      "periodo": "2024 e 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, Ranking ABRAS 2026, tabela das empresas respondentes",
+      "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+      "pagina": "2",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Muffato desembarca em São Paulo e mira expansão no Estado",
+      "url": "https://www.infomoney.com.br/business/muffato-desembarca-em-sao-paulo-e-mira-expansao-no-estado/",
+      "pagina": "página única",
+      "periodo": "publicado em 22/11/2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Grupo Muffato: o que é e ele pode mudar a tese para as ações do Assaí (ASAI3)?",
+      "url": "https://www.infomoney.com.br/mercados/grupo-muffato-o-que-e-e-ele-pode-mudar-a-tese-para-as-acoes-do-assai-asai3/",
+      "pagina": "página única",
+      "periodo": "publicado em 30/11/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Cade aprova aquisição de ações do Assaí por investidores do grupo Muffato",
+      "url": "https://www.infomoney.com.br/mercados/cade-aprova-aquisicao-de-acoes-do-assai-por-investidores-do-grupo-muffato/",
+      "pagina": "página única",
+      "periodo": "publicado em 01/10/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, Assaí (ASAI3) nega negociação de fusão com Grupo Muffato",
+      "url": "https://www.infomoney.com.br/mercados/assai-asai3-nega-negociacao-de-fusao-com-grupo-muffato/",
+      "pagina": "página única",
+      "periodo": "publicado em 12/08/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Sendas Distribuidora S.A. (Assaí), Comunicado ao Mercado, aquisição de participação acionária relevante",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1450359&numSequencia=975071&numVersao=1",
+      "pagina": "1 e 6",
+      "periodo": "entregue à CVM em 27/11/2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Sendas Distribuidora S.A. (Assaí), Comunicado ao Mercado, aquisição de participação acionária relevante",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1581457&numSequencia=1106163&numVersao=2",
+      "pagina": "1",
+      "periodo": "29/10/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping, Grupo Muffato inaugura nova loja e chega a 100 unidades",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/115672/grupo-muffato-inaugura-nova-loja-e-chega-a-100-unidades",
+      "pagina": "página única",
+      "periodo": "publicado em dezembro de 2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping (Redação SuperHiper), Em expansão, Muffato encerrará o ano com 16 inaugurações",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/119714/em-expansao-muffato-encerrara-o-ano-com-16-inauguracoes",
+      "pagina": "página única",
+      "periodo": "publicado em setembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping (Redação SuperHiper), Super Muffato inaugura primeira loja gourmet em Ponta Grossa (PR)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120164/super-muffato-inaugura-primeira-loja-gourmet-em-ponta-grossa-pr",
+      "pagina": "página única",
+      "periodo": "publicado em dezembro de 2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping, Grupo Muffato anuncia terceira unidade do Max Atacadista em Sorocaba (SP)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/120445/grupo-muffato-anuncia-terceira-unidade-do-max-atacadista-em-sorocaba-sp",
+      "pagina": "página única",
+      "periodo": "publicado em fevereiro de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ABRAS, clipping (Redação SuperHiper), Grupo Muffato investe R$ 50 mi em nova loja em Castro (PR)",
+      "url": "https://www.abras.com.br/clipping/redes-de-supermercados/118347/grupo-muffato-investe-r-50-mi-em-nova-loja-em-castro-pr",
+      "pagina": "página única",
+      "periodo": "publicado em fevereiro de 2025",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

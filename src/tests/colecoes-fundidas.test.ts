@@ -30,9 +30,10 @@ const FUNDIDAS = Object.entries(COLECOES_FUNDIDAS);
 
 describe("fusão das coleções de uma página só (decisão do dono de 10/11/2026)", () => {
   it("24 coleções, com os quatro nomes decididos e Contas Estaduais sem fusão", () => {
-    expect(COLECOES).toHaveLength(24);
-    expect(idsDasColecoes()).toHaveLength(24);
-    expect(new Set(COLECOES.map((c) => c.id)).size).toBe(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(COLECOES).toHaveLength(25);
+    expect(idsDasColecoes()).toHaveLength(25);
+    expect(new Set(COLECOES.map((c) => c.id)).size).toBe(25);
     const porId = new Map(COLECOES.map((c) => [c.id, c]));
     expect(porId.get("fogo")).toMatchObject({ nome: "Fogo e desastres", href: "/territorio/queimadas", observatorio: "territorio-e-clima" });
     expect(porId.get("gas")).toMatchObject({ nome: "Gás e combustíveis", href: "/gas-natural", observatorio: "energia-e-infraestrutura" });
@@ -208,7 +209,8 @@ describe("fusão das coleções de uma página só (decisão do dono de 10/11/20
     expect(Object.keys(ALCANCE_DA_DATA).sort()).toEqual(["conectividade", "educacao", "fogo"]);
     expect(FRESCOR_NO_MAPA.gas).toEqual(["gas"]);
     const linhas = diretorioDoMapa().secoes.flatMap((o) => o.colecoes);
-    expect(linhas).toHaveLength(24);
+    // 25 desde 23/11/2026: a coleção Varejo entrou no Observatório da Economia (pedido do dono); eram 24 desde a fusão de 10/11/2026
+    expect(linhas).toHaveLength(25);
     for (const l of linhas) {
       expect(l.alcance, l.id).toEqual(ALCANCE_DA_DATA[l.id] ?? null);
       if (l.alcance) {

@@ -211,6 +211,8 @@ describe("entradas com conta: faixa na primeira tela e no método", () => {
     // as coleções de um painel só entraram na lista com o molde único (Iniciativa 4): o painel monta a entrada
     "/combustiveis": "src/app/combustiveis/page.tsx",
     "/conectividade": "src/components/conectividade/PainelConectividade.tsx",
+    // coleção Varejo (23/11/2026): a entrada é montada por EntradaVarejo
+    "/varejo": "src/components/varejo/EntradaVarejo.tsx",
     "/educacao-municipal": "src/components/educacao/PainelEducacao.tsx",
     "/custo-de-vida": "src/app/custo-de-vida/page.tsx",
     "/divida-das-familias": "src/app/divida-das-familias/page.tsx",

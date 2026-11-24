@@ -1,0 +1,379 @@
+{
+  "slug": "dpsp",
+  "grupo": "DPSP (Drogaria São Paulo e Drogarias Pacheco)",
+  "resumo": "Rede de farmácias de capital fechado, formada em 2011 pela união da Drogaria São Paulo e das Drogarias Pacheco, com 1.613 lojas em dez estados.",
+  "controlador": {
+    "nome": "Grupos familiares Carvalho (Drogaria São Paulo) e Barata (Drogarias Pacheco)",
+    "nota": "Na fusão de 2011, os dois grupos passaram a dividir a gestão com poder igual, segundo comunicado citado pelo InfoMoney. Reportagem de 30/01/2023 diz que parte do negócio ainda pertence às famílias dos fundadores. A composição societária atual não foi verificada: a empresa tem capital fechado e não foi localizado documento oficial nem notícia de mudança societária em 2025 ou 2026 nos sites acessíveis.",
+    "fonte": {
+      "titulo": "InfoMoney, 'Drogaria SP e Pacheco anunciam fusão e criam gigante farmacêutica'",
+      "url": "https://www.infomoney.com.br/mercados/drogaria-sp-e-pacheco-anunciam-fusao-e-criam-gigante-farmaceutica/",
+      "pagina": "página única",
+      "periodo": "publicado em 30/08/2011",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Drogaria São Paulo",
+      "formato": "farmácia",
+      "nota": "Fundada em 1943. Em agosto de 2022, cerca de 900 das 1,4 mil lojas do grupo eram dessa bandeira (InfoMoney, 19/08/2022)."
+    },
+    {
+      "nome": "Drogarias Pacheco",
+      "formato": "farmácia",
+      "nota": "Fundada em 1892; líder no Rio de Janeiro na época da fusão (InfoMoney, 30/08/2011)."
+    }
+  ],
+  "formatos": [
+    "farmácia com venda de medicamentos, higiene e beleza",
+    "canais digitais com entrega e retirada na loja; marketplace próprio e de terceiros (IRTT, p. 69)"
+  ],
+  "regioes": {
+    "texto": "Dez unidades da federação, segundo o IRTT (p. 38): Bahia, Distrito Federal, Espírito Santo, Goiás, Mato Grosso, Minas Gerais, Pernambuco, Paraná, Rio de Janeiro e São Paulo. Reportagem da CNN Brasil de 02/10/2026 cita só São Paulo, Rio de Janeiro, Espírito Santo e Minas Gerais.",
+    "estados": [
+      "BA",
+      "DF",
+      "ES",
+      "GO",
+      "MT",
+      "MG",
+      "PE",
+      "PR",
+      "RJ",
+      "SP"
+    ]
+  },
+  "canais": [
+    "lojas próprias (o IRTT não registra franquias, p. 38)",
+    "digital: R$ 4.732 milhões em 2025, 26% da venda (IRTT, p. 115, e cálculo nosso)"
+  ],
+  "clientes": "Consumidor final. Não há número público recente de clientes ativos (n.d. no IRTT).",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda em lojas físicas",
+      "descricao": "R$ 13.468 milhões em 2025 (IRTT, p. 38). A divisão por categoria (medicamentos, higiene e beleza) não é pública."
+    },
+    {
+      "nome": "Venda digital",
+      "descricao": "R$ 4.732 milhões em 2025, ante R$ 2.900 milhões em 2024 (IRTT, p. 115). Em outubro de 2026 a empresa informou que 70% das suas vendas de canetas emagrecedoras são feitas online."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "RD Saúde (Raia e Drogasil)",
+      "slug": "rd-saude"
+    },
+    {
+      "nome": "Pague Menos e Extrafarma",
+      "slug": "pague-menos"
+    },
+    {
+      "nome": "Panvel",
+      "slug": "panvel"
+    },
+    {
+      "nome": "Drogaria Araújo",
+      "slug": null
+    },
+    {
+      "nome": "Drogaria Venâncio",
+      "slug": null
+    },
+    {
+      "nome": "Supermercados, autorizados a vender medicamentos pela Lei nº 15.357/2026 (CNN Brasil, 12/04/2026)",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Venda total",
+      "unidade": "R$ milhões",
+      "nota": "O IRTT atribui os dados da DPSP a reportagens (nota 4 da hierarquia de fontes), não à empresa nem a balanço; os valores redondos indicam aproximação. Crescimento de 10% em 2025. Para 2021, reportagem do InfoMoney de 19/08/2022 cita faturamento de R$ 12 bilhões, em conceito que pode não ser o mesmo.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 16500,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 18200,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 69",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas",
+      "unidade": "lojas",
+      "nota": "Fim do ano, segundo o IRTT. Em agosto de 2022 o grupo tinha cerca de 1,4 mil lojas (InfoMoney); em outubro de 2026 a CNN Brasil cita 'mais de 1.700 estabelecimentos', número não confirmado em outra fonte.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 1600,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 1613,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas (expansão orgânica)",
+      "unidade": "lojas",
+      "nota": "Conceito do IRTT. Fechamentos não informados. Em 2022 a rede inaugurou 70 lojas e planejava 130 para 2023 (InfoMoney, 30/01/2023).",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 70,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 86 (2025); InfoMoney de 30/01/2023 (2022)",
+        "periodo": "2022 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda digital (GMV)",
+      "unidade": "R$ milhões",
+      "nota": "Tabela de venda digital do IRTT, alta de 63% em 2025. Para 2022, o InfoMoney cita R$ 1 bilhão nos canais digitais em 12 meses até dezembro.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 2900,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 4732,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 115",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Participação do digital na venda",
+      "unidade": "%",
+      "nota": "Cálculo nosso com dados do IRTT: venda digital dividida pela venda total (2.900 em 16.500; 4.732 em 18.200). Em janeiro de 2023 a empresa informava cerca de 10% (InfoMoney).",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 17.6,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 26.0,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 115",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Venda das lojas físicas",
+      "unidade": "R$ milhões",
+      "nota": "2025: IRTT (p. 38). 2024: cálculo nosso, venda total menos venda digital, supondo o mesmo critério de 2025, em que as duas parcelas somam o total. Venda por loja física de R$ 8 milhões em 2025, arredondada pela fonte.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 13600,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13468,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 115",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Número redondo e igual nos dois anos, o que indica aproximação da fonte. Venda por funcionário de R$ 0,7 milhão.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 26000,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 26000,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025 e 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Não divulgado.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2011-08",
+      "tipo": "outro",
+      "descricao": "Em 30/08/2011 a Drogaria São Paulo e as Drogarias Pacheco anunciaram a fusão que criou a DPSP, então com 691 lojas em cinco estados e receita bruta de R$ 4,4 bilhões em 12 meses. Os grupos Carvalho e Barata passaram a dividir a gestão.",
+      "fonte": {
+        "titulo": "InfoMoney, 'Drogaria SP e Pacheco anunciam fusão e criam gigante farmacêutica'",
+        "url": "https://www.infomoney.com.br/mercados/drogaria-sp-e-pacheco-anunciam-fusao-e-criam-gigante-farmaceutica/",
+        "pagina": "página única",
+        "periodo": "publicado em 30/08/2011",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2022-08",
+      "tipo": "outro",
+      "descricao": "O então presidente, Jonas Laurindvicius, disse que a empresa seguiria de capital fechado, sem oferta de ações nem investidor estratégico no horizonte, e que o caixa gerado bastava para financiar a expansão (investimento de R$ 450 milhões em 2022).",
+      "fonte": {
+        "titulo": "InfoMoney, 'Drogaria São Paulo acelera investimentos e vai abrir quase 200 lojas em dois anos'",
+        "url": "https://www.infomoney.com.br/negocios/drogaria-sao-paulo-acelera-investimentos-e-vai-abrir-quase-200-lojas-em-dois-anos/",
+        "pagina": "página única",
+        "periodo": "publicado em 19/08/2022",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "outro",
+      "descricao": "A Lei nº 15.357/2026, publicada em março de 2026, autorizou a venda de medicamentos em supermercados, em farmácia própria ou por contrato com rede licenciada. Em entrevista de 12/04/2026, o presidente da DPSP, Marcos Colares, disse que a rede já tem lojas dentro de supermercados e está aberta a parcerias.",
+      "fonte": {
+        "titulo": "CNN Brasil, 'Nova lei autoriza remédios em supermercados; CEO da DPSP analisa impacto'",
+        "url": "https://www.cnnbrasil.com.br/economia/negocios/venda-de-remedios-em-supermercados-farmacias-apostam-em-confianca/",
+        "pagina": "página única",
+        "periodo": "publicado em 12/04/2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do ranking (R$ 18.200 milhões em 2025) segue o critério do IRTT, venda ao consumidor final com impostos (p. 32), e soma lojas físicas (R$ 13.468 milhões) e canal digital (R$ 4.732 milhões). A fonte dos números da DPSP é a de nível 4 na hierarquia do IRTT: reportagens em veículos de imprensa, não dados enviados pela empresa nem balanço publicado. Não há demonstrações na CVM para comparar. Os valores são redondos (venda, lojas de 2024, funcionários), sinal de aproximação. A tabela de venda digital do IRTT registra a DPSP com marketplace próprio e de terceiros, mas não informa a venda de terceiros (n.d., p. 115), que pelo critério do ranking fica fora da venda total.",
+  "analise": {
+    "crescimento": "O IRTT registra venda de R$ 18,2 bilhões em 2025, 10% acima dos R$ 16,5 bilhões de 2024. A fonte desses números são reportagens (nota 4 do ranking), não dados enviados pela empresa nem balanço. A rede terminou o ano com 1.613 lojas, 13 a mais que em 2024, de modo que a abertura de lojas explica pouco do avanço. O que mudou foi o canal: a venda digital passou de R$ 2,9 bilhões para R$ 4,7 bilhões, alta de 63%, e chegou a 26% do total. Pela diferença, a venda nas lojas físicas foi de R$ 13,6 bilhões em 2024 (cálculo nosso) e de R$ 13,5 bilhões em 2025. Em outubro de 2026 a empresa informou à CNN Brasil que 70% das suas vendas de canetas emagrecedoras são feitas online. Não há dado público de vendas nas mesmas lojas nem números de 2026.",
+    "rentabilidade_caixa": "A DPSP tem capital fechado e não foram localizadas demonstrações financeiras públicas: margens, lucro, caixa e dívida não estão disponíveis. A evidência é operacional e vem do IRTT. A venda por loja, somados os canais, foi de R$ 11,3 milhões em 2025 (cálculo nosso), entre os R$ 9,5 milhões da Pague Menos e os R$ 13,4 milhões da RD Saúde, esta com a 4Bio incluída. A venda por funcionário foi de R$ 0,7 milhão, ante R$ 0,6 milhão nas duas concorrentes abertas. A participação do digital (26%) é próxima da informada pela RD (29,3% no quarto trimestre) e maior que a da Pague Menos (19,4%). A rede atua em dez unidades da federação; as duas concorrentes, em 27. Em 2022 o então presidente disse que o caixa gerado bastava para financiar a expansão, sem plano de abertura de capital.",
+    "acompanhar": {
+      "indicador": "Crescimento da venda em relação ao segmento de drogarias e perfumarias do IRTT, número de lojas e participação do digital",
+      "reforca": "Crescer no ritmo do segmento (13,0% em 2025; a DPSP cresceu 10%) com venda das lojas físicas voltando a subir indicaria que o digital soma venda em vez de só deslocar a da loja.",
+      "enfraquece": "Venda das lojas físicas estagnada ou em queda com número de lojas parado, ou crescimento de novo abaixo de RD Saúde (13,9%) e Pague Menos (18,3%), indicaria perda de participação nas praças em que atua."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Receita líquida, margens, lucro, caixa, investimentos e dívida: capital fechado, sem demonstrações públicas localizadas.",
+    "Situação societária recente: não foi localizado, nos sites acessíveis (InfoMoney, CNN Brasil, Agência Brasil), documento ou notícia de mudança de controle, entrada de investidor ou oferta de ações em 2025 ou 2026. O registro mais recente lido sobre os sócios é de janeiro de 2023.",
+    "Vendas nas mesmas lojas, fechamentos de lojas, divisão por bandeira e por categoria: não divulgados.",
+    "Séries de 2021 a 2023 e dados de 2026: só há menções em reportagens (faturamento de R$ 12 bilhões em 2021, cerca de 1,4 mil lojas em agosto de 2022), não registradas como série por falta de conceito uniforme.",
+    "Base de clientes ativos: n.d. no IRTT.",
+    "O IRTT marca a DPSP com a nota 4 na p. 38 e com a nota 5 (estimado) na tabela de número de lojas da p. 82; registramos a nota 4, que é a do ranking geral."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 26, 31, 32, 38, 68, 69, 82, 86 e 115",
+      "periodo": "2025 e 2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, 'Drogaria SP e Pacheco anunciam fusão e criam gigante farmacêutica'",
+      "url": "https://www.infomoney.com.br/mercados/drogaria-sp-e-pacheco-anunciam-fusao-e-criam-gigante-farmaceutica/",
+      "pagina": "página única",
+      "periodo": "publicado em 30/08/2011",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, 'Drogaria São Paulo acelera investimentos e vai abrir quase 200 lojas em dois anos'",
+      "url": "https://www.infomoney.com.br/negocios/drogaria-sao-paulo-acelera-investimentos-e-vai-abrir-quase-200-lojas-em-dois-anos/",
+      "pagina": "página única",
+      "periodo": "publicado em 19/08/2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "InfoMoney, 'Na DPSP, o remédio para crescer digitalmente é abrir novas lojas físicas'",
+      "url": "https://www.infomoney.com.br/negocios/na-dpsp-o-remedio-para-crescer-digitalmente-e-abrir-novas-lojas-fisicas/",
+      "pagina": "página única",
+      "periodo": "publicado em 30/01/2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, 'Nova lei autoriza remédios em supermercados; CEO da DPSP analisa impacto'",
+      "url": "https://www.cnnbrasil.com.br/economia/negocios/venda-de-remedios-em-supermercados-farmacias-apostam-em-confianca/",
+      "pagina": "página única",
+      "periodo": "publicado em 12/04/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "CNN Brasil, 'Venda online de canetas emagrecedoras explode e representa 70% das compras'",
+      "url": "https://www.cnnbrasil.com.br/saude/venda-online-de-canetas-emagrecedoras-chega-a-70-nas-farmacias/",
+      "pagina": "página única",
+      "periodo": "publicado em 02/10/2026",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

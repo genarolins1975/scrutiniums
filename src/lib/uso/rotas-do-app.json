@@ -26,6 +26,7 @@
   "/aperitivo/minha-capital",
   "/aperitivo/previdencia",
   "/aperitivo/saneamento",
+  "/aperitivo/varejo",
   "/app/admin",
   "/app/admin/atualizacoes",
   "/app/conta",
@@ -377,5 +378,12 @@
   "/territorio/metodologia",
   "/territorio/queimadas",
   "/territorio/queimadas/municipio",
-  "/territorio/queimadas/municipio/[ibge]"
+  "/territorio/queimadas/municipio/[ibge]",
+  "/varejo",
+  "/varejo/brasil",
+  "/varejo/comparador",
+  "/varejo/grupos",
+  "/varejo/grupos/[slug]",
+  "/varejo/metodo",
+  "/varejo/segmentos"
 ]

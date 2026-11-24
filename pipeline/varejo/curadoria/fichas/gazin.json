@@ -1,0 +1,408 @@
+{
+  "slug": "gazin",
+  "grupo": "Gazin",
+  "resumo": "Rede paranaense de eletrodomésticos e móveis, de capital fechado, com 378 lojas em nove estados do Sul, Centro-Oeste e Norte em 2025.",
+  "controlador": {
+    "nome": null,
+    "nota": "Não verificado em documento aberto nesta sessão. O IRTT registra capital fechado, controle nacional e conselho de administração estatutário; não indica que a empresa seja listada nem auditada.",
+    "fonte": {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 38 e 99",
+      "consultado_em": "2026-11-23",
+      "periodo": "2025"
+    }
+  },
+  "capital": "fechado",
+  "empresa_gold": null,
+  "bandeiras": [
+    {
+      "nome": "Gazin",
+      "formato": "lojas de eletrodomésticos, eletrônicos e móveis",
+      "nota": "O IRTT registra marcas próprias com 15% de penetração nas vendas (p. 122)."
+    }
+  ],
+  "formatos": [
+    "loja de eletromóveis",
+    "e-commerce de estoque próprio (1P)",
+    "venda em marketplaces de terceiros"
+  ],
+  "regioes": {
+    "texto": "Lojas físicas em nove estados segundo o IRTT, no Paraná, no Centro-Oeste e no Norte; sede no Paraná.",
+    "estados": [
+      "AC",
+      "AM",
+      "GO",
+      "MT",
+      "MS",
+      "PA",
+      "PR",
+      "RO",
+      "TO"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "e-commerce próprio",
+    "marketplaces de terceiros (o IRTT registra atuação como vendedor, sem marketplace próprio)",
+    "vendas por conversa e WhatsApp, segundo o IRTT"
+  ],
+  "clientes": "Consumidores finais de eletrodomésticos, eletrônicos e móveis em cidades do Paraná, do Centro-Oeste e do Norte. O IRTT registra base ativa de 3.784.563 clientes em 2025.",
+  "fontes_de_receita": [
+    {
+      "nome": "Mercadoria própria em lojas",
+      "descricao": "R$ 11.254 milhões de venda em lojas físicas em 2025 segundo o IRTT, cerca de R$ 30 milhões por loja."
+    },
+    {
+      "nome": "E-commerce de estoque próprio",
+      "descricao": "R$ 80 milhões em 2025, contra R$ 165 milhões em 2024, queda de 51,5% (IRTT, p. 114)."
+    },
+    {
+      "nome": "Outras vendas",
+      "descricao": "A venda total do ranking (R$ 13.753 milhões) supera a soma de lojas e e-commerce em R$ 2.419 milhões (conta nossa); o IRTT não detalha a origem dessa parcela."
+    },
+    {
+      "nome": "Serviços financeiros e crediário",
+      "descricao": "Não verificado: nenhum documento aberto nesta sessão descreve crediário, carteira ou receita financeira da Gazin."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Grupo Casas Bahia",
+      "slug": "casas-bahia"
+    },
+    {
+      "nome": "Magazine Luiza",
+      "slug": "magazine-luiza"
+    },
+    {
+      "nome": "Lojas Cem",
+      "slug": null
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas (critério do IRTT)",
+      "unidade": "R$ milhões",
+      "nota": "Venda ao consumidor com impostos, sem vendas de parceiros; dado declarado pela empresa ao IRTT (nota de fonte 1). Crescimento de 14% segundo o ranking.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 12084,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 13753,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 73",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Vendas das lojas físicas",
+      "unidade": "R$ milhões",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 11254,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "indicador": "Vendas do e-commerce de estoque próprio (1P)",
+      "unidade": "R$ milhões",
+      "nota": "Queda de 51,5% segundo o ranking. A ordem das colunas (2025 e depois 2024) foi conferida com a linha do Magazine Luiza, que bate com o release da companhia.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 165,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 80,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 114",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Participação do e-commerce próprio nas vendas",
+      "unidade": "%",
+      "nota": "Conta nossa: 165 ÷ 12.084 e 80 ÷ 13.753.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 1.4,
+          "natureza": "calculado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 0.6,
+          "natureza": "calculado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 114",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Número de lojas (fim do período)",
+      "unidade": "lojas",
+      "nota": "Variação de 6% segundo o ranking.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 358,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 378,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 86",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Aberturas de lojas (expansão orgânica)",
+      "unidade": "lojas",
+      "nota": "O ranking não informa fechamentos; a variação líquida também é de 20 lojas.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 20,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 86",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "indicador": "Venda média por loja física",
+      "unidade": "R$ milhões",
+      "nota": "Valor publicado pelo ranking; 11.254 ÷ 378 dá 29,8.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 30,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 11510,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 12520,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38 e 89",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem EBITDA",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 12.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 14.1,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem bruta",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 33.8,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 34.5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Margem líquida",
+      "unidade": "%",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 6.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 6.3,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Alavancagem (dívida em múltiplos do EBITDA)",
+      "unidade": "vezes",
+      "nota": "O cabeçalho da tabela do IRTT não é legível na extração do PDF; a ordem das colunas (2025 e depois 2024) foi conferida com as linhas do Magazine Luiza e da Lojas Renner, cujos valores batem com os releases das companhias. O ranking não informa a base das margens nem a definição de EBITDA de cada empresa. O ranking não define se a dívida é bruta ou líquida.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 0.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 0.96,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 119",
+        "consultado_em": "2026-11-23",
+        "periodo": "2024 e 2025"
+      }
+    },
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "A empresa é de capital fechado e não publica release; o ranking não traz o indicador.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": null,
+          "natureza": "divulgado",
+          "nota": "Não divulgado."
+        }
+      ],
+      "fonte": {
+        "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 38",
+        "consultado_em": "2026-11-23",
+        "periodo": "2025"
+      }
+    }
+  ],
+  "eventos": [],
+  "alcance_do_dado": "Não há demonstração da Gazin na CVM: a empresa é de capital fechado e não tem ficha na gold. O número disponível é o do IRTT, R$ 13.753 milhões em 2025 (R$ 12.084 milhões em 2024), venda ao consumidor com impostos, declarada pela empresa (nota de fonte 1), que pela metodologia exclui vendas de parceiros em marketplace e vendas no atacado (p. 31, 32 e 38). O ranking informa R$ 11.254 milhões em lojas físicas e R$ 80 milhões no e-commerce de estoque próprio; os R$ 2.419 milhões restantes (conta nossa) não são detalhados. A Gazin vende em marketplaces de terceiros e não opera marketplace próprio, segundo o IRTT. Não há receita líquida pública para comparar.",
+  "analise": {
+    "crescimento": "Sem demonstrações públicas, a leitura se apoia no IRTT. As vendas passaram de R$ 12.084 milhões em 2024 para R$ 13.753 milhões em 2025, alta de 14%, acima dos 8,2% do segmento de eletromóveis entre as empresas que divulgaram os dois anos. A rede abriu 20 lojas e chegou a 378, variação de 6%; como as vendas cresceram mais que o número de lojas, parte do avanço veio de unidades já existentes, sem que seja possível medi-la: a empresa não divulga vendas nas mesmas lojas. O crescimento se deu no canal físico. As lojas venderam R$ 11.254 milhões, cerca de R$ 30 milhões por unidade, e o e-commerce de estoque próprio caiu de R$ 165 milhões para R$ 80 milhões. O quadro de funcionários subiu de 11.510 para 12.520, alta de 9%.",
+    "rentabilidade_caixa": "O IRTT publica margens da Gazin extraídas de balanço ou fornecidas pela empresa, segundo a metodologia do ranking: margem EBITDA (resultado antes de juros, impostos, depreciação e amortização) de 14,1% em 2025, contra 12,6% em 2024; margem bruta de 34,5%, contra 33,8%; e margem líquida de 6,3% nos dois anos. A dívida equivalia a 0,96 vez o EBITDA em 2025, contra 0,70 vez em 2024. Na mesma tabela, o Grupo Casas Bahia, líder do segmento, aparece com margem EBITDA de 8,8%, margem líquida negativa de 5,3% e alavancagem de 0,40 vez. O ranking não traz caixa, estoques, prazo de fornecedores nem carteira de crédito ao consumidor, de modo que não há evidência pública sobre geração de caixa ou sobre o peso do crediário no resultado.",
+    "acompanhar": {
+      "indicador": "Alavancagem (dívida sobre EBITDA) e margem líquida na próxima edição do IRTT, lidas junto com o ritmo de abertura de lojas",
+      "reforca": "Alavancagem abaixo de 1 vez com margem líquida em torno de 6% enquanto a rede segue abrindo lojas: indicaria expansão financiada pelo próprio resultado.",
+      "enfraquece": "Alavancagem em alta pelo segundo ano seguido ou queda da margem líquida: indicaria que a expansão passou a depender de dívida num período de juros altos."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Demonstrações financeiras: a empresa é de capital fechado e não arquiva na CVM; o IRTT não a marca como auditada.",
+    "Controlador e composição societária: não verificados em documento aberto.",
+    "Vendas nas mesmas lojas, GMV em marketplaces de terceiros e série de lojas antes de 2024.",
+    "Venda em lojas físicas de 2024 e fechamentos de lojas.",
+    "Origem dos R$ 2.419 milhões de venda fora de lojas físicas e do e-commerce próprio.",
+    "Indicadores de crédito (crediário, carteira, inadimplência), caixa, estoques e fluxo de caixa.",
+    "Eventos societários: nenhum localizado em fonte acessível; buscas em InfoMoney e CNN Brasil não retornaram reportagens sobre a empresa.",
+    "Sites da empresa (www.gazin.com.br e grupogazin.com.br): hosts não liberados neste ambiente."
+  ],
+  "fontes": [
+    {
+      "titulo": "IRTT, Top 300 do Varejo Brasileiro, edição 2026",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 31, 32, 38, 72, 73, 86, 89, 99, 114, 116, 119, 122",
+      "consultado_em": "2026-11-23",
+      "periodo": "2024 e 2025"
+    }
+  ]
+}

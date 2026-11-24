@@ -1,0 +1,660 @@
+{
+  "slug": "grupo-mateus",
+  "grupo": "Grupo Mateus S.A.",
+  "resumo": "Rede do Maranhão com 315 lojas em nove estados do Norte e do Nordeste: atacarejo, supermercados, lojas de eletro e atacado para comerciantes.",
+  "controlador": {
+    "nome": null,
+    "nota": "Os documentos abertos nesta sessão não trazem o quadro de controle. Comunicado de 05/02/2026 informa que, após doação de ações por Maria Barros Pinheiro aos filhos, Ilson Mateus Rodrigues Junior passou a 17,66% e Denilson Pinheiro Rodrigues a 18,84% do capital, e que a doação não pretende alterar o controle. O fundador Ilson Mateus assinava como presidente no release de 2021. O IRTT classifica o controle como nacional (p. 100).",
+    "fonte": {
+      "titulo": "Grupo Mateus, comunicado ao mercado de 05/02/2026 (participação relevante), entregue à CVM em 2026-02-05",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1474011&numSequencia=998717&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "grupo-mateus",
+  "bandeiras": [
+    {
+      "nome": "Mix Mateus",
+      "formato": "atacarejo",
+      "nota": "101 lojas em dezembro de 2025."
+    },
+    {
+      "nome": "Novo Atacarejo",
+      "formato": "atacarejo",
+      "nota": "Rede de Pernambuco em que o grupo tem 51% desde 01/07/2025. Desde junho de 2026 é a única bandeira de atacarejo do grupo em Pernambuco, Paraíba e Alagoas."
+    },
+    {
+      "nome": "Supermercado Mateus e Hipermercado Mateus",
+      "formato": "supermercado e hipermercado",
+      "nota": ""
+    },
+    {
+      "nome": "Camino Supermercado",
+      "formato": "supermercado de vizinhança",
+      "nota": "O IRTT grafa Camiño."
+    },
+    {
+      "nome": "Spazio",
+      "formato": "supermercado de produtos de maior valor",
+      "nota": "Duas lojas próprias abertas em dezembro de 2025, em São Luís."
+    },
+    {
+      "nome": "Novo Mercatto",
+      "formato": "supermercado",
+      "nota": "Bandeira adotada em junho de 2026 por duas lojas, em João Pessoa e no Recife."
+    },
+    {
+      "nome": "Mateus Food",
+      "formato": "atacarejo para restaurantes, padarias, hotéis e bares",
+      "nota": "Primeira loja em novembro de 2025, em São Luís."
+    },
+    {
+      "nome": "Eletro Mateus",
+      "formato": "loja de eletrodomésticos e móveis",
+      "nota": "78 lojas em setembro de 2026, depois de 28 fechamentos em 2025."
+    },
+    {
+      "nome": "Mix Toureiro Farma",
+      "formato": "farmácia",
+      "nota": "Uma loja, aberta em junho de 2026 em São Luís."
+    },
+    {
+      "nome": "Armazém Mateus",
+      "formato": "atacado de distribuição para comerciantes",
+      "nota": "18 centros de distribuição e 6.673 representantes comerciais em setembro de 2026."
+    }
+  ],
+  "formatos": [
+    "atacarejo",
+    "supermercado e hipermercado",
+    "loja de vizinhança",
+    "loja de eletrodomésticos e móveis",
+    "atacado de distribuição (venda a comerciantes por representantes)",
+    "farmácia (desde 2026)"
+  ],
+  "regioes": {
+    "texto": "Norte e Nordeste. Lojas em setembro de 2026: Maranhão 146, Pará 60, Pernambuco 51, Ceará 15, Piauí 13, Bahia 11, Paraíba 11, Alagoas 5 e Sergipe 3. Em dezembro de 2025 a companhia estava em 127 cidades.",
+    "estados": [
+      "MA",
+      "PA",
+      "PI",
+      "CE",
+      "BA",
+      "SE",
+      "PE",
+      "AL",
+      "PB"
+    ]
+  },
+  "canais": [
+    "lojas físicas",
+    "atacado por representantes comerciais, com entrega a partir de centros de distribuição (mais de 63 mil clientes por mês em setembro de 2026)",
+    "canal Balcão das lojas de atacarejo, cujas vendas a companhia reduziu desde o 1T26"
+  ],
+  "clientes": "Famílias, nas lojas, e comerciantes, no atacado e no atacarejo. O Mateus Food atende negócios de alimentação fora de casa.",
+  "fontes_de_receita": [
+    {
+      "nome": "Atacarejo (Mix Mateus e Novo Atacarejo)",
+      "descricao": "Receita bruta de mercadorias de R$ 25,7 bilhões em 2025, 60,9% do total no 4T25."
+    },
+    {
+      "nome": "Varejo (supermercados, hipermercados e vizinhança)",
+      "descricao": "R$ 8,8 bilhões em 2025."
+    },
+    {
+      "nome": "Atacado para comerciantes (B2B)",
+      "descricao": "R$ 7,9 bilhões em 2025, alta de 26,7%. Esta parcela não entra na venda do ranking IRTT."
+    },
+    {
+      "nome": "Eletro",
+      "descricao": "R$ 1,2 bilhão em 2025, queda de 9,0%."
+    },
+    {
+      "nome": "Outras receitas",
+      "descricao": "Cartão de loja (private label), sublocação de espaços comerciais, venda de recicláveis e, no Novo Atacarejo, parceria com a Credsystem; ficam em outras receitas operacionais (R$ 53,4 milhões de janeiro a setembro de 2026)."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Assaí Atacadista",
+      "slug": "assai"
+    },
+    {
+      "nome": "Atacadão (Grupo Carrefour Brasil)",
+      "slug": "carrefour-brasil"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas",
+      "unidade": "%",
+      "nota": "Lojas e centros de distribuição com mais de 13 meses, sem ajuste de calendário; inclui o atacado. No acumulado de janeiro a setembro de 2026: 6,7% negativos (5,0% negativos na operação original e 11,0% negativos em Pernambuco, Paraíba e Alagoas). Fontes: release 4T22 p. 2 (2021 e 2022); 4T23 p. 2; 4T24 p. 2; 4T25 p. 2; 3T26 p. 2 e 11.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 4.1,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 13.4,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 8.5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 6.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2.9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": -4.7,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 2",
+        "periodo": "2024 e 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no fim do período",
+      "unidade": "lojas",
+      "nota": "Todos os formatos, com as lojas de Eletro; 2025 inclui 37 lojas Novo Atacarejo. O IRTT traz os mesmos 272 (2024) e 302 (2025), p. 38. Fontes: release 4T21 p. 4; 4T22 p. 4; 4T24 p. 3 (2023 e 2024); 4T25 p. 3; 3T26 p. 3.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 202,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 232,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 258,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 272,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 302,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 315,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 3 e 5",
+        "periodo": "2024 e 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Inaugurações de atacarejo",
+      "unidade": "lojas",
+      "nota": "Fontes: release 4T22 p. 3 (2021 e 2022); 4T23 p. 3; 4T24 p. 3; 4T25 p. 5; 3T26 p. 4.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 16,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 22,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 10,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 15,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 7,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 5",
+        "periodo": "2024 e 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Inaugurações de supermercados, hipermercados e lojas de vizinhança",
+      "unidade": "lojas",
+      "nota": "Mesmas fontes do indicador anterior.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 12,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 9,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 5,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 5,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 5",
+        "periodo": "2024 e 2025 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Fechamentos de lojas de Eletro",
+      "unidade": "lojas",
+      "nota": "Em 2025 a companhia também encerrou o departamento de Eletro em 20 lojas alimentares. Em 2024 a tabela não registra fechamentos.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 28,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 2, 4 e 5",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Área de vendas no fim do período",
+      "unidade": "mil m²",
+      "nota": "Total de todos os formatos. Os releases de 2021 e 2022 só trazem a área por formato. Fontes: release 4T24 p. 3 (2023 e 2024); 4T25 p. 5; 3T26 p. 11.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 587,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 633,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 801,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 835,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 5",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita bruta de mercadorias",
+      "unidade": "R$ milhões",
+      "nota": "Não inclui serviços e não desconta devoluções; inclui o atacado. 2024 sem o Novo Atacarejo; 2025 com o Novo Atacarejo a partir de julho. Os releases de 2021 e 2022 só trazem o valor por formato. O texto da p. 6 do release do 4T25 fala em R$ 46,3 bilhões, mas a tabela da p. 5 e o gráfico da p. 6 trazem 43.552; usamos a tabela. Fontes: release 4T24 p. 3 (2023 e 2024); 4T25 p. 5.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": null,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 30246,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 36386,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 43552,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 5",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado do IRTT, que classifica a fonte do Grupo Mateus como balanço publicado (nota 2). O IRTT não traz o número de 2024.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 80458,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 64 e 88",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2024-12",
+      "tipo": "aquisicao",
+      "descricao": "Contrato de associação com o Novo Atacarejo, assinado em 19/12/2024: o grupo aporta as suas lojas e centros de distribuição de Pernambuco, Paraíba e Alagoas e caixa estimado em R$ 378,5 milhões, em três parcelas anuais, e fica com 51% da sociedade resultante.",
+      "fonte": {
+        "titulo": "Grupo Mateus, fato relevante de 20/12/2024, entregue à CVM em 2024-12-20",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1317850&numSequencia=842576&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-07",
+      "tipo": "aquisicao",
+      "descricao": "Fechamento da operação com o Novo Atacarejo em 01/07/2025; os fundadores da rede ficam com 49%. Os resultados passam a ser consolidados no segundo semestre de 2025.",
+      "fonte": {
+        "titulo": "Grupo Mateus, fato relevante de 02/07/2025, entregue à CVM em 2025-07-02",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1396809&numSequencia=921521&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-11",
+      "tipo": "reapresentacao",
+      "descricao": "A companhia revisou a apuração de estoques e do custo das mercadorias vendidas, com novo sistema de custeio, e reapresentou os saldos comparativos de 2024 (norma CPC 23). Na gold, o lucro líquido de 2024 aparece como R$ 1,335 bilhão e, reapresentado na demonstração do exercício seguinte, como R$ 1,273 bilhão; a receita líquida não mudou (R$ 32,085 bilhões). No 3T25 a companhia registrou R$ 62,7 milhões de efeito da revisão sobre o primeiro semestre e R$ 91,3 milhões de perdas de estoque por inventários adicionais.",
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 3T25, entregue à CVM em 2025-11-14",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1445174&numSequencia=969886&numVersao=1",
+        "pagina": "p. 7",
+        "periodo": "3T25 e comparativos de 2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-11",
+      "tipo": "outro",
+      "descricao": "O conselho aprovou, em 14/11/2025, aumento de capital por subscrição privada entre R$ 291,7 milhões e R$ 475,9 milhões, a R$ 6,37 por ação.",
+      "fonte": {
+        "titulo": "Grupo Mateus, fato relevante de 14/11/2025, entregue à CVM em 2025-11-14",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1446026&numSequencia=970738&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "desinvestimento",
+      "descricao": "Fechamento de 28 lojas de Eletro ao longo de 2025, 13 delas no Pará no quarto trimestre, e fim do departamento de Eletro em 20 lojas alimentares.",
+      "fonte": {
+        "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+        "pagina": "p. 2 e 4",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-06",
+      "tipo": "outro",
+      "descricao": "As lojas da bandeira Mateus em Pernambuco, Paraíba e Alagoas passam a operar como Novo Atacarejo, e duas lojas de varejo como Novo Mercatto (comunicado de 19/06/2026).",
+      "fonte": {
+        "titulo": "Grupo Mateus, comunicado ao mercado de 19/06/2026, entregue à CVM em 2026-06-19",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1536358&numSequencia=1061064&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-06",
+      "tipo": "outro",
+      "descricao": "Auto de infração da Receita Federal contra a controlada Armazém Mateus, de R$ 1,28 bilhão (R$ 492,9 milhões de principal), sobre a exclusão de créditos presumidos de ICMS da base do imposto de renda em 2022 e 2023. A companhia classifica a perda como possível.",
+      "fonte": {
+        "titulo": "Grupo Mateus, fato relevante de 29/06/2026, entregue à CVM em 2026-06-29",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1539673&numSequencia=1064379&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "A venda do IRTT (R$ 35.637 milhões em 2025; R$ 30.137 milhões em 2024) é venda bruta ao consumidor e exclui o atacado para comerciantes, como manda o método do ranking. A conta fecha com os releases: receita bruta de mercadorias de R$ 43.552 milhões menos R$ 7.915 milhões do atacado em 2025, e R$ 36.386 milhões menos R$ 6.249 milhões em 2024 (contas nossas). A receita líquida da CVM, de R$ 38.424 milhões em 2025, é maior que a venda do ranking porque inclui o atacado, embora desconte impostos e devoluções. O Ranking ABRAS 2026 lista duas empresas do grupo em separado: Mateus Supermercados S.A., com R$ 31.002 milhões, e Novo Mateus S.A., com R$ 12.550 milhões. Os números de 2025 incluem o Novo Atacarejo só a partir de julho, o que limita a comparação com 2024.",
+  "analise": {
+    "crescimento": "A receita líquida do Grupo Mateus cresceu 19,8% em 2025, para R$ 38,4 bilhões. As vendas nas mesmas lojas (unidades com mais de 13 meses) subiram 2,9% no ano e caíram 1,1% no quarto trimestre. O restante veio de expansão e de aquisição: 22 lojas alimentares abertas e a consolidação, desde julho, do Novo Atacarejo, rede de Pernambuco em que o grupo passou a ter 51%. A venda bruta de mercadorias do atacarejo subiu 26,0% e a do atacado para comerciantes, 26,7%. De janeiro a setembro de 2026 a receita líquida avançou 7,5%, para R$ 30,0 bilhões, com as mesmas lojas em queda de 6,7%. A administração atribui a queda ao endividamento das famílias e à redução das vendas no canal Balcão do atacarejo, decidida para priorizar a rentabilidade.",
+    "rentabilidade_caixa": "A margem bruta foi de 22,40% em 2025 (22,63% em 2024, antes da reapresentação que corrigiu estoques e custo das mercadorias). A margem operacional recuou de 6,52% para 5,88%: as despesas cresceram 23,4%, mais que a receita, o que a administração atribui à consolidação do Novo Atacarejo e às lojas novas. O resultado financeiro foi negativo em R$ 0,9 bilhão. O lucro líquido de R$ 1,86 bilhão contou com imposto de renda positivo de R$ 0,5 bilhão, pela reversão de provisão sobre subvenções; sem efeitos extraordinários, a companhia informa R$ 1,57 bilhão. O caixa operacional foi de R$ 1,96 bilhão, o investimento de R$ 1,1 bilhão e a dívida líquida sem arrendamento de R$ 1,06 bilhão. De janeiro a setembro de 2026 a margem operacional caiu a 4,96% e o lucro a R$ 0,76 bilhão.",
+    "acompanhar": {
+      "indicador": "Vendas nas mesmas lojas, separadas entre a operação original e a de Pernambuco, Paraíba e Alagoas",
+      "reforca": "Mesmas lojas de volta ao campo positivo nas duas operações (em setembro de 2026: 0,5% na original e 5,8% negativos no Novo Mateus) mostraria que a queda de 2026 veio do corte do canal Balcão e do consumo, e não de perda de clientes.",
+      "enfraquece": "Continuação de quedas perto de 10% no Novo Mateus, que teve prejuízo de R$ 5,1 milhões de janeiro a setembro de 2026, indicaria que a aquisição cresce a receita sem trazer resultado."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Quadro de controle acionário: não consta dos documentos abertos nesta sessão (o formulário de referência não foi consultado).",
+    "Área de vendas total e receita bruta de mercadorias consolidada de 2021 e 2022: os releases só trazem os valores por formato.",
+    "Total de inaugurações por ano em critério único: os releases ora incluem, ora excluem as lojas de Eletro (44 em 2021, 31 em 2022, 25 em 2023, 16 em 2024 e 22 alimentares em 2025); por isso a ficha usa as séries por formato.",
+    "Funcionários em 2024: o IRTT 2026 só traz o número de 2025.",
+    "Vendas pela internet: o IRTT marca a companhia como sem comércio eletrônico (p. 64), e o release do 3T25 cita e-commerce entre as modalidades de operação sem dar valores."
+  ],
+  "fontes": [
+    {
+      "titulo": "Grupo Mateus, release de resultados do 4T25, entregue à CVM em 2026-03-18",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1492266&numSequencia=1016972&numVersao=1",
+      "pagina": "p. 2 a 14",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 3T26, entregue à CVM em 2026-11-12",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1588727&numSequencia=1113433&numVersao=1",
+      "pagina": "p. 2 a 11",
+      "periodo": "3T26 e acumulado de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 3T25, entregue à CVM em 2025-11-14",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1445174&numSequencia=969886&numVersao=1",
+      "pagina": "p. 7",
+      "periodo": "3T25",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 4T24, entregue à CVM em 2025-02-24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1338822&numSequencia=863548&numVersao=1",
+      "pagina": "p. 2 a 5",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 4T23, entregue à CVM em 2024-03-06",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1203695&numSequencia=728421&numVersao=1",
+      "pagina": "p. 2 e 3",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 4T22, entregue à CVM em 2023-03-08",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1070361&numSequencia=595091&numVersao=1",
+      "pagina": "p. 2 a 4",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, release de resultados do 4T21, entregue à CVM em 2022-05-09",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=978808&numSequencia=503542&numVersao=2",
+      "pagina": "p. 2, 4 e 5",
+      "periodo": "2021",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, fato relevante de 20/12/2024 (contrato com o Novo Atacarejo), entregue à CVM em 2024-12-20",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1317850&numSequencia=842576&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, fato relevante de 02/07/2025 (fechamento da operação), entregue à CVM em 2025-07-02",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1396809&numSequencia=921521&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, fato relevante de 14/11/2025 (aumento de capital), entregue à CVM em 2025-11-14",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1446026&numSequencia=970738&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, comunicado ao mercado de 05/02/2026 (participação relevante), entregue à CVM em 2026-02-05",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1474011&numSequencia=998717&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, comunicado ao mercado de 19/06/2026 (bandeiras), entregue à CVM em 2026-06-19",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1536358&numSequencia=1061064&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Grupo Mateus, fato relevante de 29/06/2026 (auto de infração), entregue à CVM em 2026-06-29",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1539673&numSequencia=1064379&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2025 (GRUPO MATEUS S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=155479",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2024 (GRUPO MATEUS S.A.), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154447",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ITR de 2026-09-30 (GRUPO MATEUS S.A.), extraído em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=162430",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "acumulado de janeiro a 09/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 25, 26, 38, 63, 64, 88 e 100",
+      "periodo": "2025 (e 2024 para comparação)",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Ranking ABRAS 2026, tabela das empresas respondentes",
+      "url": "https://static.abras.com.br/pdf/ranking/ranking-abras-2026.pdf?v=4",
+      "pagina": "p. 2",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

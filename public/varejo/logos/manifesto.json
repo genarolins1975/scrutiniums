@@ -1,0 +1,203 @@
+{
+ "versao": 1,
+ "registrado_em": "2026-11-24",
+ "regra": "Logo só entra com arquivo oficial, URL de origem, data de captura, sha256 e vínculo por CNPJ ou cadeia de controle provada (skill observatorio-layout, anexo componentes-e-graficos). Enquanto isso não existe, a página mostra o nome em texto.",
+ "logos": [
+  {
+   "slug": "amazon-brasil",
+   "nome": "Amazon",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "americanas",
+   "nome": "Americanas",
+   "cnpj": "00.776.574/0001-56",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "arcos-dorados",
+   "nome": "Arcos Dorados (McDonald's)",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "assai",
+   "nome": "Assaí",
+   "cnpj": "06.057.223/0001-71",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "azzas",
+   "nome": "Azzas 2154",
+   "cnpj": "16.590.234/0001-76",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "carrefour-brasil",
+   "nome": "Grupo Carrefour Brasil",
+   "cnpj": "75.315.333/0001-09",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "casas-bahia",
+   "nome": "Grupo Casas Bahia",
+   "cnpj": "33.041.260/0652-90",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "cea",
+   "nome": "C&A Modas",
+   "cnpj": "45.242.914/0001-05",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "dpsp",
+   "nome": "DPSP",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "gazin",
+   "nome": "Gazin",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "gpa",
+   "nome": "Grupo Pão de Açúcar (GPA)",
+   "cnpj": "47.508.411/0001-56",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "grupo-boticario",
+   "nome": "Grupo Boticário",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "grupo-mateus",
+   "nome": "Grupo Mateus",
+   "cnpj": "24.990.777/0001-09",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "grupo-pereira",
+   "nome": "Grupo Pereira",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "grupo-sbf",
+   "nome": "Grupo SBF (Centauro)",
+   "cnpj": "13.217.485/0001-11",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "guararapes",
+   "nome": "Guararapes (Riachuelo)",
+   "cnpj": "08.402.943/0001-52",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "havan",
+   "nome": "Havan",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "lojas-renner",
+   "nome": "Lojas Renner",
+   "cnpj": "92.754.738/0001-62",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "magazine-luiza",
+   "nome": "Magazine Luiza",
+   "cnpj": "47.960.950/0001-21",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "mercado-livre",
+   "nome": "Mercado Livre",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "natura",
+   "nome": "Natura&Co",
+   "cnpj": "71.673.990/0001-77",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "pague-menos",
+   "nome": "Pague Menos",
+   "cnpj": "06.626.253/0001-51",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "panvel",
+   "nome": "Panvel (Dimed)",
+   "cnpj": "92.665.611/0001-77",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "rd-saude",
+   "nome": "RD Saúde",
+   "cnpj": "61.585.865/0001-51",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "super-muffato",
+   "nome": "Super Muffato",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "supermercados-bh",
+   "nome": "Supermercados BH",
+   "cnpj": null,
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "vivara",
+   "nome": "Vivara",
+   "cnpj": "33.839.910/0001-11",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  },
+  {
+   "slug": "zamp",
+   "nome": "Zamp (Burger King Brasil)",
+   "cnpj": "13.574.594/0001-96",
+   "arquivo": null,
+   "ausencia": "Arquivo oficial não capturado neste ciclo: os sites institucionais e de relações com investidores não estavam acessíveis na coleta de 23/11/2026, e o vínculo por CNPJ ou cadeia de controle ainda não foi provado para logo."
+  }
+ ]
+}

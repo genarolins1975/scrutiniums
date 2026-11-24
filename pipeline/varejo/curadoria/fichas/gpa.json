@@ -1,0 +1,614 @@
+{
+  "slug": "gpa",
+  "grupo": "GPA (Companhia Brasileira de Distribuição)",
+  "resumo": "Dono das redes Pão de Açúcar e Extra Mercado e de lojas de proximidade; 717 lojas em setembro de 2026, em recuperação extrajudicial homologada em outubro.",
+  "controlador": {
+    "nome": null,
+    "nota": "Os documentos abertos não indicam acionista controlador; o IRTT classifica o controle como difuso (p. 100). Participações informadas à companhia: família Coelho Diniz, 25,10% das ações em 26/06/2026; Bonsucex Holding e Silvio Tini de Araújo, cerca de 10,314% em 30/12/2025. O grupo francês Casino, antigo controlador, segue como acionista e parte em arbitragem com a companhia (fatos relevantes de 2025 e 2026 citados no cadastro da CVM, não lidos nesta sessão).",
+    "fonte": {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 26/06/2026 (participação relevante), entregue à CVM em 2026-06-26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1538953&numSequencia=1063659&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    }
+  },
+  "capital": "aberto",
+  "empresa_gold": "gpa",
+  "bandeiras": [
+    {
+      "nome": "Pão de Açúcar",
+      "formato": "supermercado de produtos de maior valor",
+      "nota": "200 lojas e 262 mil m² em setembro de 2026; 53,6% da venda no 3T26."
+    },
+    {
+      "nome": "Extra Mercado",
+      "formato": "supermercado",
+      "nota": "164 lojas e 191 mil m²; 32,8% da venda no 3T26. Em revisão de preços e sortimento desde outubro de 2026, a começar pelo Rio de Janeiro."
+    },
+    {
+      "nome": "Minuto Pão de Açúcar",
+      "formato": "loja de proximidade",
+      "nota": "199 lojas em setembro de 2026."
+    },
+    {
+      "nome": "Mini Extra",
+      "formato": "loja de proximidade",
+      "nota": "154 lojas em setembro de 2026."
+    }
+  ],
+  "formatos": [
+    "supermercado",
+    "loja de proximidade",
+    "comércio eletrônico de alimentos"
+  ],
+  "regioes": {
+    "texto": "Os releases consultados não listam os estados com lojas. Eles citam participação de mercado no estado de São Paulo e na Grande São Paulo e um piloto de gestão regional no Rio de Janeiro; os postos vendidos em 2024 ficavam em São Paulo e em outros oito estados.",
+    "estados": []
+  },
+  "canais": [
+    "lojas físicas",
+    "comércio eletrônico em canais próprios (1P) e em plataformas de terceiros (3P): 11,6% das vendas no 3T26 e R$ 2,5 bilhões em 2025",
+    "programa de fidelidade Pão de Açúcar Mais (3,2 milhões de clientes)"
+  ],
+  "clientes": "Consumidores finais. A companhia informa fluxo superior a 20 milhões de clientes por mês e acompanha em separado os 20% de clientes que mais gastam no Pão de Açúcar.",
+  "fontes_de_receita": [
+    {
+      "nome": "Venda de mercadorias",
+      "descricao": "Receita bruta de R$ 20,6 bilhões em 2025: Pão de Açúcar cerca de metade, Extra Mercado um terço e proximidade 12% (proporções do 4T25). Marcas próprias respondem por 21,4% das vendas."
+    },
+    {
+      "nome": "Aluguel de galerias comerciais",
+      "descricao": "Fica em 'Outros negócios': R$ 45 milhões no 3T26, depois da venda da Stix."
+    },
+    {
+      "nome": "Serviços financeiros",
+      "descricao": "Participação na financeira FIC, do Itaú, com resultado de equivalência patrimonial de R$ 60 milhões em 2025. A participação foi vendida ao Itaú por R$ 260,1 milhões (contrato de 05/12/2025); depois do fechamento a companhia pretende firmar novas parcerias para os balcões das lojas."
+    },
+    {
+      "nome": "Publicidade nas lojas e canais (retail media)",
+      "descricao": "Citada pela administração como fonte de margem; sem valor divulgado nos releases consultados."
+    },
+    {
+      "nome": "Negócios encerrados",
+      "descricao": "Aliados (venda direta a pequenos comércios), descontinuado até o 3T26; programa de pontos Stix, vendido à Raia Drogasil (RD Saúde) em julho de 2026; postos de combustíveis, vendidos em 2024; hipermercados Extra, encerrados a partir de 2021."
+    }
+  ],
+  "concorrentes": [
+    {
+      "nome": "Carrefour (hipermercados, supermercados e conveniência)",
+      "slug": "carrefour-brasil"
+    },
+    {
+      "nome": "Assaí Atacadista",
+      "slug": "assai"
+    }
+  ],
+  "operacionais": [
+    {
+      "indicador": "Vendas nas mesmas lojas no trimestre",
+      "unidade": "%",
+      "nota": "A companhia divulga o indicador por trimestre e não informa o número do ano; a série usa o quarto trimestre de cada ano e o 3T26, sem postos de combustíveis e com ajuste de calendário. Com postos, o 4T22 foi de 3,7% e o 4T23 de 4,3%. Trimestres de 2026 por bandeira no release do 3T26, p. 5. Fontes: release 4T22 p. 7; 4T23 p. 5; 4T24 p. 6; 4T25 p. 5; 3T26 p. 5.",
+      "valores": [
+        {
+          "periodo": "4T22",
+          "valor": 7.3,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T23",
+          "valor": 3.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T24",
+          "valor": 9.6,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "4T25",
+          "valor": 2.7,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": -1.4,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T25, entregue à CVM em 2026-02-24",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481411&numSequencia=1006117&numVersao=1",
+        "pagina": "p. 5",
+        "periodo": "4T25 (trimestres anteriores nos releases listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Número de lojas no fim do período",
+      "unidade": "lojas",
+      "nota": "O perímetro muda: 2021 inclui 72 hipermercados Extra, 74 postos e 68 drogarias; 2022 inclui 74 postos; 2023 inclui 71 postos; de 2024 em diante, só supermercados e proximidade. O IRTT traz os mesmos 726 (2024) e 728 (2025), p. 38. Fontes: release 4T21 p. 20; 4T22 p. 19; 4T23 p. 13; 4T24 p. 16; 4T25 p. 13; 3T26 p. 13.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 809,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 735,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 767,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 726,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 728,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 717,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T25, entregue à CVM em 2026-02-24",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481411&numSequencia=1006117&numVersao=1",
+        "pagina": "p. 13",
+        "periodo": "4T25 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Área de vendas no fim do período",
+      "unidade": "mil m²",
+      "nota": "Mesmo perímetro e mesmas fontes do número de lojas; a queda de 2021 para 2022 reflete a saída dos hipermercados.",
+      "valores": [
+        {
+          "periodo": "2021",
+          "valor": 1005,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2022",
+          "valor": 640,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 645,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 557,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 548,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "3T26",
+          "valor": 540,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T25, entregue à CVM em 2026-02-24",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481411&numSequencia=1006117&numVersao=1",
+        "pagina": "p. 13",
+        "periodo": "4T25 (anos anteriores nos releases anuais listados em fontes)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Receita bruta das operações continuadas",
+      "unidade": "R$ milhões",
+      "nota": "2022 como apresentado no release do 4T23, com postos de combustíveis. 2023 reapresentado sem postos no release do 4T24 (com postos, 20.617). No acumulado de janeiro a setembro de 2026: 14.137, queda de 6,2%. Fontes: release 4T23 p. 2; 4T24 p. 2; 4T25 p. 4; 3T26 p. 4.",
+      "valores": [
+        {
+          "periodo": "2022",
+          "valor": 18531,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2023",
+          "valor": 19159,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2024",
+          "valor": 20048,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 20631,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "9M26",
+          "valor": 14137,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T25, entregue à CVM em 2026-02-24",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481411&numSequencia=1006117&numVersao=1",
+        "pagina": "p. 4",
+        "periodo": "2024 e 2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Vendas pelo comércio eletrônico",
+      "unidade": "R$ milhões",
+      "nota": "2025: release do 4T25, p. 2 (R$ 2,5 bilhões, alta de 12,1%). 2024: tabela de comércio eletrônico do IRTT, p. 113.",
+      "valores": [
+        {
+          "periodo": "2024",
+          "valor": 2230,
+          "natureza": "divulgado"
+        },
+        {
+          "periodo": "2025",
+          "valor": 2500,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 113",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "indicador": "Funcionários",
+      "unidade": "pessoas",
+      "nota": "Dado do IRTT, que classifica a fonte do GPA como declaração da empresa (nota 1); o release do 4T25 fala em mais de 37 mil colaboradores. O IRTT não traz o número de 2024.",
+      "valores": [
+        {
+          "periodo": "2025",
+          "valor": 37053,
+          "natureza": "divulgado"
+        }
+      ],
+      "fonte": {
+        "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+        "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+        "pagina": "p. 64 e 88",
+        "periodo": "2025 (e 2024 para comparação)",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "eventos": [
+    {
+      "data": "2021-12",
+      "tipo": "desinvestimento",
+      "descricao": "Início do fechamento dos hipermercados Extra e das drogarias: 31 hipermercados e 34 drogarias encerrados no 4T21. A operação de hipermercados passou a ser tratada como descontinuada.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T21, entregue à CVM em 2022-02-23",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=946693&numSequencia=471427&numVersao=1",
+        "pagina": "p. 20",
+        "periodo": "2021",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2022-12",
+      "tipo": "reapresentacao",
+      "descricao": "A receita líquida de 2021, de R$ 51,3 bilhões na demonstração original, aparece como R$ 16,3 bilhões na demonstração do exercício seguinte, depois da reclassificação dos hipermercados Extra e do Grupo Éxito como operações descontinuadas (marcação da gold).",
+      "fonte": {
+        "titulo": "DFP 2022 (CIA BRASILEIRA DE DISTRIBUICAO), extraída em public/varejo/gold/empresas.json",
+        "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=123740",
+        "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+        "periodo": "2022",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2024-01",
+      "tipo": "desinvestimento",
+      "descricao": "Venda da participação remanescente de 13,31% no grupo colombiano Éxito por US$ 156,4 milhões (R$ 789 milhões), em 23/01/2024. A companhia informa cerca de R$ 1,5 bilhão recebido em vendas de ativos desde o 2T23.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 23/01/2024, entregue à CVM em 2024-01-23",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1185441&numSequencia=710167&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2024-03",
+      "tipo": "outro",
+      "descricao": "Oferta primária de 220 milhões de ações a R$ 3,20, total de R$ 704 milhões (13/03/2024).",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 13/03/2024, entregue à CVM em 2024-03-13",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1207217&numSequencia=731943&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2024-06",
+      "tipo": "desinvestimento",
+      "descricao": "Contratos para a venda dos 71 postos de combustíveis por cerca de R$ 200 milhões; os 49 do estado de São Paulo foram para o Grupo Ultra. Os postos passaram a operação descontinuada, e a receita líquida de 2023 foi reapresentada de R$ 19,3 bilhões para R$ 17,8 bilhões (marcação da gold).",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 26/06/2024, entregue à CVM em 2024-06-26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1253918&numSequencia=778644&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2024",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2025-12",
+      "tipo": "desinvestimento",
+      "descricao": "Contrato de 05/12/2025 para vender ao Itaú a participação na financeira FIC por R$ 260,1 milhões. A companhia registrou baixa contábil de R$ 527 milhões no 4T25, sem saída de caixa.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 08/12/2025, entregue à CVM em 2025-12-08",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453752&numSequencia=978464&numVersao=1",
+        "pagina": "p. 1 (baixa contábil: release do 4T25, p. 9)",
+        "periodo": "2025",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-03",
+      "tipo": "recuperacao_judicial",
+      "descricao": "Acordo com credores, em 10/03/2026, para apresentar plano de recuperação extrajudicial sobre cerca de R$ 4,5 bilhões de dívidas sem garantia; fornecedores, clientes e obrigações trabalhistas ficaram fora.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 10/03/2026, entregue à CVM em 2026-03-10",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1487777&numSequencia=1012483&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-07",
+      "tipo": "desinvestimento",
+      "descricao": "Venda à Raia Drogasil (RD Saúde) dos 66,7% detidos na Stix, empresa de programa de pontos, por R$ 23 milhões: contrato em 20/05/2026 e conclusão em 02/07/2026.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 02/07/2026 (preço no comunicado de 20/05/2026), entregue à CVM em 2026-07-02",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1541402&numSequencia=1066108&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-06",
+      "tipo": "outro",
+      "descricao": "A família Coelho Diniz informa ter atingido 25,10% das ações (26/06/2026); em setembro de 2025 o grupo havia proposto chapa para o conselho de administração.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 26/06/2026, entregue à CVM em 2026-06-26",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1538953&numSequencia=1063659&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-10",
+      "tipo": "recuperacao_judicial",
+      "descricao": "A Justiça de São Paulo homologou, em 07/10/2026, o plano de recuperação extrajudicial: R$ 4,568 bilhões de créditos, adesão de 57,49% dos credores e captação prevista de R$ 200 milhões em novos recursos. Segundo a administração, o prazo médio da dívida vai de 2,1 para 6,4 anos e os pagamentos previstos até 2028 caem de R$ 5,2 bilhões para cerca de R$ 400 milhões.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 07/10/2026 (efeitos estimados: release do 3T26, p. 3), entregue à CVM em 2026-10-08",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1575329&numSequencia=1100035&numVersao=2",
+        "pagina": "p. 1 e 2",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    },
+    {
+      "data": "2026-11",
+      "tipo": "outro",
+      "descricao": "Acordo de 13/11/2026 com o Grupo Casas Bahia encerra disputas do contrato de associação de 2009: extingue obrigação de reembolso de R$ 424 milhões do GPA (com reversão de R$ 174 milhões de provisões no 4T26) e o direito do GPA a créditos tributários de R$ 708 milhões, já baixados no 3T26.",
+      "fonte": {
+        "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 13/11/2026, entregue à CVM em 2026-11-13",
+        "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1589339&numSequencia=1114045&numVersao=1",
+        "pagina": "p. 1",
+        "periodo": "2026",
+        "consultado_em": "2026-11-23"
+      }
+    }
+  ],
+  "alcance_do_dado": "O IRTT usa a venda bruta ao consumidor, com impostos: R$ 20.631 milhões em 2025, o mesmo número da receita bruta do release, que cobre só as operações continuadas (sem hipermercados Extra e sem postos). A receita líquida da CVM é de R$ 19.113 milhões; a diferença de R$ 1.518 milhões (conta nossa) são tributos sobre vendas e devoluções. A venda inclui o comércio eletrônico próprio e, até 2025, o formato Aliados (venda a pequenos comércios, R$ 96 milhões no 4T25), a Stix e o aluguel de galerias. O lucro da gold é o consolidado, com operações descontinuadas; por isso a margem líquida (4,26% negativos em 2025) não descreve só os supermercados. A receita de 2021 e a de 2023 foram reapresentadas, e a série de cinco anos mistura perímetros.",
+  "analise": {
+    "crescimento": "A venda bruta do GPA foi de R$ 20,6 bilhões em 2025, alta de 2,9%, e a receita líquida das operações continuadas, de R$ 19,1 bilhões (1,7%). O crescimento veio das lojas existentes: as três bandeiras tiveram vendas positivas nas mesmas lojas nos quatro trimestres e, no quarto, o consolidado subiu 2,7%. A rede ficou quase estável, de 726 para 728 lojas, e a companhia suspendeu a expansão. O comércio eletrônico somou R$ 2,5 bilhões (alta de 12,1%). De janeiro a setembro de 2026 a venda bruta caiu 6,2%, para R$ 14,1 bilhões. No terceiro trimestre a queda foi de 6,5%: a administração atribui 4,9 pontos ao fim do formato Aliados, de uma parceria logística e à venda da Stix, e 1,4 ponto às mesmas lojas, afetadas por falta de produtos durante a recuperação extrajudicial.",
+    "rentabilidade_caixa": "A margem bruta ficou em 27,56% em 2025 (27,53% em 2024). O resultado antes dos juros foi negativo em R$ 0,17 bilhão, margem operacional de 0,88% negativos, porque inclui baixa contábil de R$ 527 milhões na venda da participação na financeira FIC. O resultado financeiro, negativo em R$ 1,26 bilhão, e as operações descontinuadas (hipermercados Extra e postos, perda de R$ 0,17 bilhão) levaram a prejuízo de R$ 0,82 bilhão, contra R$ 2,40 bilhões em 2024. O caixa operacional foi de R$ 1,35 bilhão, o investimento de R$ 0,53 bilhão, e a dívida líquida sem arrendamento subiu de R$ 1,40 bilhão para R$ 2,09 bilhões. De janeiro a setembro de 2026 a margem bruta foi a 30,52%, o que a companhia atribui ao fim do Aliados e à nova sistemática de ICMS, mas o prejuízo chegou a R$ 2,42 bilhões e a dívida líquida a R$ 3,75 bilhões.",
+    "acompanhar": {
+      "indicador": "Vendas nas mesmas lojas e saldo de fornecedores depois da homologação do plano",
+      "reforca": "Mesmas lojas de volta ao positivo e saldo de fornecedores em recuperação (R$ 1,87 bilhão em setembro de 2026, contra R$ 2,58 bilhões um ano antes) indicariam que o abastecimento se normalizou e que a queda de 2026 foi passageira.",
+      "enfraquece": "Nova queda nas mesmas lojas no quarto trimestre, período de maior venda, com fornecedores ainda encolhendo, indicaria perda de clientes que a reestruturação da dívida não resolve."
+    }
+  },
+  "campos_sem_divulgacao": [
+    "Concorrentes por praça: sem a lista de estados, a ficha só relaciona grupos de presença nacional documentada (Carrefour e Assaí).",
+    "Vendas nas mesmas lojas no ano: a companhia só divulga por trimestre.",
+    "Estados com lojas: os releases consultados não trazem a lista.",
+    "Aberturas e fechamentos somados por ano: os releases trazem a movimentação do trimestre; a ficha não soma trimestres que não foram todos lidos.",
+    "Receita de publicidade (retail media) e de galerias em base anual: sem valor nos releases consultados.",
+    "Acionista controlador: não identificado nos documentos abertos.",
+    "Funcionários em 2024: o IRTT 2026 só traz o número de 2025."
+  ],
+  "fontes": [
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T25, entregue à CVM em 2026-02-24",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481411&numSequencia=1006117&numVersao=1",
+      "pagina": "p. 2 a 13",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 3T26, entregue à CVM em 2026-11-04",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1584154&numSequencia=1108860&numVersao=1",
+      "pagina": "p. 2 a 6, 10, 12 e 13",
+      "periodo": "3T26 e acumulado de 2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T24, entregue à CVM em 2025-02-18",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1336255&numSequencia=860981&numVersao=1",
+      "pagina": "p. 2, 6 e 16",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T23, entregue à CVM em 2024-02-22",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1197508&numSequencia=722234&numVersao=2",
+      "pagina": "p. 2, 5 e 13",
+      "periodo": "2023",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T22, entregue à CVM em 2023-02-27",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1066063&numSequencia=590793&numVersao=1",
+      "pagina": "p. 2, 7 e 19",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), release de resultados do 4T21, entregue à CVM em 2022-02-23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=946693&numSequencia=471427&numVersao=1",
+      "pagina": "p. 20",
+      "periodo": "2021",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 23/01/2024 (venda do Éxito), entregue à CVM em 2024-01-23",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1185441&numSequencia=710167&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 13/03/2024 (oferta de ações), entregue à CVM em 2024-03-13",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1207217&numSequencia=731943&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 26/06/2024 (venda dos postos), entregue à CVM em 2024-06-26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1253918&numSequencia=778644&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 08/12/2025 (venda da FIC), entregue à CVM em 2025-12-08",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1453752&numSequencia=978464&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 01/09/2025 (chapa da família Coelho Diniz), entregue à CVM em 2025-09-01",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1418933&numSequencia=943645&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 30/12/2025 (Bonsucex e Silvio Tini), entregue à CVM em 2025-12-30",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1462771&numSequencia=987477&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 10/03/2026 (plano de recuperação extrajudicial), entregue à CVM em 2026-03-10",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1487777&numSequencia=1012483&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 20/05/2026 (venda da Stix), entregue à CVM em 2026-05-20",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1525258&numSequencia=1049964&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 02/07/2026 (conclusão da venda da Stix), entregue à CVM em 2026-07-02",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1541402&numSequencia=1066108&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), comunicado ao mercado de 26/06/2026 (família Coelho Diniz), entregue à CVM em 2026-06-26",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1538953&numSequencia=1063659&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 07/10/2026 (homologação do plano), entregue à CVM em 2026-10-08",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1575329&numSequencia=1100035&numVersao=2",
+      "pagina": "p. 1 e 2",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "GPA (Companhia Brasileira de Distribuição), fato relevante de 13/11/2026 (acordo com Casas Bahia), entregue à CVM em 2026-11-13",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1589339&numSequencia=1114045&numVersao=1",
+      "pagina": "p. 1",
+      "periodo": "2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2025 (CIA BRASILEIRA DE DISTRIBUICAO), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=154864",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2025",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2024 (CIA BRASILEIRA DE DISTRIBUICAO), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=144850",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2024",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "DFP 2022 (CIA BRASILEIRA DE DISTRIBUICAO), extraída em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=123740",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "2022",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "ITR de 2026-09-30 (CIA BRASILEIRA DE DISTRIBUICAO), extraído em public/varejo/gold/empresas.json",
+      "url": "http://www.rad.cvm.gov.br/ENETCONSULTA/frmDownloadDocumento.aspx?CodigoInstituicao=1&NumeroSequencialDocumento=161994",
+      "pagina": "contas 3.01 a 3.11, 6.01 a 6.03 e balanço",
+      "periodo": "acumulado de janeiro a 09/2026",
+      "consultado_em": "2026-11-23"
+    },
+    {
+      "titulo": "Top 300 do Varejo Brasileiro, edição 2026 (IRTT)",
+      "url": "https://irtt.com.br/wp-content/uploads/2026/09/RankingIRTT_2026_Digital_3set.pdf",
+      "pagina": "p. 27, 38, 64, 88, 100 e 113",
+      "periodo": "2025 (e 2024 para comparação)",
+      "consultado_em": "2026-11-23"
+    }
+  ]
+}

@@ -27,6 +27,7 @@ import { PAGINAS_COMBUSTIVEIS, ROTA_COMBUSTIVEIS } from "@/lib/combustiveis/pagi
 import { ROTA_INFLACAO, TITULO_PAINEL as TITULO_PAINEL_INFLACAO } from "@/lib/inflacao/paginas";
 import { ROTA_CONECTIVIDADE, TITULO_PAINEL as TITULO_PAINEL_CONECTIVIDADE } from "@/lib/conectividade/paginas";
 import { ROTA_EDUCACAO, TITULO_PAINEL as TITULO_PAINEL_EDUCACAO } from "@/lib/educacao/paginas";
+import { NOME_COLECAO as NOME_VAREJO, paginasPublicadas as paginasVarejo } from "@/lib/varejo/paginas";
 import { CAPITULOS_PUBLICADOS as CAPITULOS_CONTAS, PAINEL_AREAS, PAINEL_PREVIDENCIA } from "@/lib/contas-publicas/catalogo";
 import { DIMENSOES } from "@/lib/eficiencia/dimensoes";
 import { TEMAS_EFICIENCIA, tituloComRecorte, type TemaEficiencia } from "@/lib/eficiencia/temas";
@@ -308,6 +309,18 @@ function paineisConectividade(): Painel[] {
 }
 
 /**
+ * Coleção Varejo, mantida pelo próprio Observatório da Economia, com pipeline e golds próprios (pipeline/varejo,
+ * public/varejo): a entrada e os painéis publicados do catálogo (src/lib/varejo/paginas.ts). A página de método é aberta e
+ * fica no campo `metodo` da coleção (lista.ts); a ficha de cada grupo (/varejo/grupos/[slug]) tem endereço dinâmico e fica fora:
+ * a rota dela responde pelo painel Grupos (donoDaRota).
+ */
+function paineisVarejo(): Painel[] {
+  return paginasVarejo()
+    .filter((p) => !p.metodo && !p.ficha)
+    .map((p): Painel => ({ rota: p.href, titulo: p.id === "inicio" ? NOME_VAREJO : p.rotulo, observatorio: "economia", colecao: "varejo", origem: null, resumo: p.resumo, termos: p.termos }));
+}
+
+/**
  * Painel registrado que é cópia integral de outro (copias.ts) leva `duplicataDe`.
  * Cópia parcial, uma seção da página, não: o resto da página é próprio e continua nas listas.
  */
@@ -316,7 +329,7 @@ const PRINCIPAL_DA_COPIA = new Map(COPIAS.filter((c) => !c.parcial).map((c) => [
 export function paineis(): Painel[] {
   // o painel das Famílias vem primeiro: na coleção Custo de vida, a inflação de todo o orçamento abre a lista, antes da comida
   // o painel dos Serviços Públicos vem antes da Eficiência Estatal: na coleção Educação, os municípios abrem a lista, antes das capitais
-  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisTerritorio()]
+  return [...paineisFamilias(), ...paineisServicos(), ...paineisCredito(), ...paineisEficiencia(), ...paineisAgro(), ...paineisColecoesInteiras(), ...paineisConectividade(), ...paineisVarejo(), ...paineisTerritorio()]
     .map((p) => (PRINCIPAL_DA_COPIA.has(p.rota) ? { ...p, duplicataDe: PRINCIPAL_DA_COPIA.get(p.rota) } : p));
 }
 

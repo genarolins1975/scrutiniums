@@ -140,6 +140,9 @@ export const OBSERVATORIOS: Observatorio[] = [
       { id: "pagamentos", nome: "Pagamentos", href: "/observatorio/pix" },
       { id: "empresas", nome: "Empresas e risco", href: "/observatorio/sectors" },
       { id: "agro", nome: "Agronegócio", href: "/agronegocio", dominio: "agro", metodo: "/agronegocio/metodologia", glossario: "/agronegocio/glossario" },
+      // coleção nova de 23/11/2026, mantida pelo próprio observatório (pipeline/varejo, public/varejo): vendas do comércio pela PMC e
+      // pela PAC do IBGE e demonstrações das companhias abertas (CVM). Nasce com mais de uma página (src/lib/varejo/paginas.ts)
+      { id: "varejo", nome: "Varejo", href: "/varejo", metodo: "/varejo/metodo" },
     ],
   },
   {
