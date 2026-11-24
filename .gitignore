@@ -56,6 +56,9 @@ __pycache__/
 # Curadoria do Varejo reunida de pipeline/varejo/curadoria por scripts/materializar-varejo.mjs (prebuild e pretest)
 /public/varejo/gold/curadoria.json
 /public/varejo/gold/curadoria.json.tmp
+# Gravação atômica das golds do Varejo (pipeline/varejo/setor.py e empresas.py): só existe durante a troca
+/public/varejo/gold/setor.json.tmp
+/public/varejo/gold/empresas.json.tmp
 /vitest-resultado.json
 /testes-codigos.txt
 /pipeline-testes.log

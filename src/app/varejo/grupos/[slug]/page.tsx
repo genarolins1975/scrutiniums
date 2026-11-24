@@ -6,17 +6,25 @@ import { Recolhido } from "@/components/observatorios/Recolhido";
 import { FiguraAnalitica, LeituraGuiada, PaginaPainel } from "@/components/painel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CabecalhoVarejo, LINK } from "@/components/varejo/comum";
-import { Concorrentes, DocumentosNaCvm, FontesDaFicha, GraficosDaCompanhia, LinhaDoTempo, RankingContraCvm, Reapresentacoes, RESUMO_MAIS, SeriesOperacionais, UltimoTrimestre } from "@/components/varejo/FichaGrupo";
+import { Concorrentes, DemonstracoesNaoDivulgadas, DocumentosNaCvm, FontesDaFicha, GraficosDaCompanhia, LinhaDoTempo, RankingContraCvm, Reapresentacoes, RESUMO_MAIS, SeriesOperacionais, UltimoTrimestre } from "@/components/varejo/FichaGrupo";
+import { BarrasRotuladas } from "@/components/varejo/figuras/BarrasRotuladas";
+import { Cupom } from "@/components/varejo/figuras/Cupom";
+import { COR_DESCEU, COR_SUBIU, corDoSegmento } from "@/components/varejo/figuras/escala";
+import { MapaPresenca } from "@/components/varejo/figuras/MapaPresenca";
+import { MicroBarra, MicroSerie } from "@/components/varejo/figuras/Miniaturas";
+import { LogoEmpresa } from "@/components/varejo/LogoEmpresa";
 import { Campo, FonteDocumento, NaoDivulgado } from "@/components/varejo/grupos-comum";
 import { FRESCOR_DAS_COLECOES } from "@/lib/frescor/entradas";
 import { tituloNaColecao } from "@/lib/observatorios/contexto";
 import { hrefComRecorte, parametro, type ParametrosPagina } from "@/lib/painel/recorte";
 import type { NumeroProps } from "@/lib/painel/tipos";
-import { empresasComparaveis, substitutos } from "@/lib/varejo/comparador";
-import { curadoria, goldEmpresas } from "@/lib/varejo/dados";
-import { dataBr, diaBr, num, ordinal, pct, plural, reais, reaisDeMilhoes, textoCurado } from "@/lib/varejo/formato";
+import { empresasComparaveis, perfilDoExercicio, substitutos } from "@/lib/varejo/comparador";
+import { contaDoCupom, curadoria, goldEmpresas, ultimoComPonte } from "@/lib/varejo/dados";
+import { dataBr, diaBr, num, ordinal, pct, plural, por100, reais, reaisDeMilhoes, textoCurado, variacao } from "@/lib/varejo/formato";
 import {
+  amostraDoRanking,
   CAPITAL,
+  decomposicaoDoCrescimento,
   dividaLiquida,
   empresaDaFicha,
   exercicioDoRanking,
@@ -31,6 +39,7 @@ import {
   nomeDoSegmento,
   passivoArrendamento,
   periodoDe,
+  presencaPorEstado,
   reapresentacoes,
   ROTA_COMPARADOR,
   ROTA_GRUPOS,
@@ -67,8 +76,8 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 /** Marcas à vista no capítulo de identidade; as demais ficam recolhidas, no HTML. */
-const MARCAS_A_VISTA = 4;
-const RECEITAS_A_VISTA = 3;
+const MARCAS_A_VISTA = 3;
+const RECEITAS_A_VISTA = 2;
 
 const MOTIVO_SEM_CVM: Record<string, string> = {
   fechado: "Capital fechado: o grupo não entrega demonstrações financeiras à CVM.",
@@ -105,25 +114,72 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
     return null;
   };
   const reap = emp ? reapresentacoes(emp) : [];
-  const estados = (f.regioes?.estados ?? []).filter((uf) => UFS[uf]);
+  const presenca = presencaPorEstado(c, f.slug);
+  const nomesUf = Object.fromEntries(Object.entries(UFS).map(([uf, x]) => [uf, x.nome]));
+  const amostra = amostraDoRanking(c);
+  const parteNaAmostra = noRanking && typeof noRanking.vendas_milhoes === "number" && amostra.total_milhoes > 0 ? (100 * noRanking.vendas_milhoes) / amostra.total_milhoes : null;
+  const crescimento = decomposicaoDoCrescimento(noRanking);
+  const anoAnteriorRanking = String(Number(anoRanking) - 1 || "ano anterior");
+  // o cupom da companhia no último exercício com a ponte, ao lado dos pares do mesmo segmento no mesmo exercício
+  const comPonte = emp ? ultimoComPonte(emp.anuais) : null;
+  const rotuloSegmento = segmento ? nomeDoSegmento(segmento) : "Companhia";
+  const perfilProprio = emp && f.empresa_gold ? perfilDoExercicio(f.empresa_gold, emp, comPonte, rotuloSegmento) : null;
+  const perfisDosPares = perfilProprio && f.empresa_gold
+    ? substitutos(todasComparaveis, f.empresa_gold)
+        .map((x) => perfilDoExercicio(x.slug, e.empresas[x.slug], periodoDe(e.empresas[x.slug], perfilProprio.exercicio), "Par do segmento"))
+        .filter((x): x is NonNullable<typeof x> => x !== null)
+        .slice(0, 3)
+    : [];
+  const cupons = perfilProprio ? [perfilProprio, ...perfisDosPares].map((x) => ({ ...x, conta: contaDoCupom(x) })) : [];
 
   const provaRanking = { fonte: fonteRanking, periodo: anoRanking };
   // grupo fora do ranking: o que a fonte publica dele à parte (valor negociado na plataforma), com a natureza que ela declara
   const negociado = noRanking ? null : (c.ranking?.marketplaces?.lista ?? []).find((m) => m.nome === f.grupo) ?? null;
   const numeros: NumeroProps[] = [
     noRanking
-      ? { rotulo: "Posição no ranking de vendas", formato: "texto", valorTexto: `${ordinal(noRanking.posicao)} de ${num(nGrupos)}`, unidade: "entre os maiores grupos listados", ...provaRanking, natureza: "OBSERVADO", tamanho: "g", nota: typeof noRanking.posicao_anterior === "number" ? `No ano anterior: ${ordinal(noRanking.posicao_anterior)}.` : undefined }
+      ? { rotulo: "Posição no ranking de vendas", formato: "texto", valorTexto: `${ordinal(noRanking.posicao)} de ${num(nGrupos)}`, unidade: "entre os maiores grupos listados", ...provaRanking, natureza: "OBSERVADO", tamanho: "g", nota: typeof noRanking.posicao_anterior === "number" ? (
+          <>
+            <span aria-hidden="true" className="mb-2 flex h-6 items-end gap-[2px]" data-microfigura="posicao">
+              {Array.from({ length: nGrupos }, (_, i) => {
+                const pos = i + 1;
+                const atual = pos === noRanking.posicao;
+                const antes = pos === noRanking.posicao_anterior;
+                return <span key={pos} className="block flex-1" style={{ height: atual ? "100%" : antes ? "62%" : "30%", ...(atual ? { background: "var(--cor-gas)" } : antes ? { boxShadow: "inset 0 0 0 1.5px var(--cor-carvao)" } : { background: "var(--cor-linha)" }) }} />;
+              })}
+            </span>
+            {noRanking.posicao_anterior === noRanking.posicao ? `Mesma posição do ano anterior.` : `No ano anterior: ${ordinal(noRanking.posicao_anterior)} (a marca vazada).`}
+          </>
+        ) : undefined }
       : { rotulo: "Posição no ranking de vendas", unidade: "entre os maiores grupos listados", ...provaRanking, natureza: "OBSERVADO", valor: null, motivoAusencia: "Fora do ranking: o método da fonte só conta a venda própria, e a maior parte do que passa por esta plataforma é venda de terceiros." },
     noRanking && typeof noRanking.vendas_milhoes === "number"
-      ? { rotulo: "Venda no ranking", formato: "texto", valorTexto: reaisDeMilhoes(noRanking.vendas_milhoes), unidade: "venda bruta ao consumidor", ...provaRanking, natureza: naturezaDoKit(natureza), tamanho: "g", nota: `Valor ${ROTULO_NATUREZA[natureza]}.` }
+      ? { rotulo: "Venda no ranking", formato: "texto", valorTexto: reaisDeMilhoes(noRanking.vendas_milhoes), unidade: "venda bruta ao consumidor", ...provaRanking, natureza: naturezaDoKit(natureza), tamanho: "g", nota: (
+          <>
+            <MicroBarra parte={parteNaAmostra} className="mb-2" />
+            Valor {ROTULO_NATUREZA[natureza]}.{parteNaAmostra !== null ? ` ${pct(parteNaAmostra)} da soma dos ${num(nGrupos)} grupos listados.` : ""}
+          </>
+        ) }
       : negociado && typeof negociado.gmv_digital_2025_milhoes === "number"
         ? { rotulo: "Valor negociado na plataforma", formato: "texto", valorTexto: reaisDeMilhoes(negociado.gmv_digital_2025_milhoes), unidade: "venda própria e de terceiros somadas; não é venda da empresa", ...provaRanking, natureza: naturezaDoKit(naturezaCurada(negociado.natureza)), tamanho: "g", nota: `Valor ${ROTULO_NATUREZA[naturezaCurada(negociado.natureza)]}, publicado à parte do ranking (p. ${negociado.pagina ?? "não informada"}).` }
         : { rotulo: "Venda no ranking", unidade: "venda bruta ao consumidor", ...provaRanking, natureza: "OBSERVADO", valor: null, motivoAusencia: "A fonte não atribui venda de varejo a este grupo; o que ela publica à parte está no capítulo sobre o alcance do dado." },
     ult && ult.receita_liquida !== null
-      ? { rotulo: "Receita líquida", formato: "texto", valorTexto: reais(ult.receita_liquida), unidade: ult.base === "individual" ? "demonstração individual" : "demonstração consolidada", periodo: String(ult.exercicio), fonte: "CVM, Demonstrações Financeiras Padronizadas", natureza: "OBSERVADO", tamanho: "g" }
+      ? { rotulo: "Receita líquida", formato: "texto", valorTexto: reais(ult.receita_liquida), unidade: ult.base === "individual" ? "demonstração individual" : "demonstração consolidada", periodo: String(ult.exercicio), fonte: "CVM, Demonstrações Financeiras Padronizadas", natureza: "OBSERVADO", tamanho: "g", nota: emp && emp.anuais.length > 1 ? (
+          <>
+            <MicroSerie valores={anos.map((a) => periodoDe(emp, a)?.receita_liquida ?? null)} className="mb-2" altura={24} />
+            Receita líquida de {emp.anuais[0].exercicio} a {ult.exercicio}, em reais correntes.
+          </>
+        ) : undefined }
       : { rotulo: "Receita líquida", unidade: "demonstração financeira", periodo: anoRanking, fonte: "CVM, Demonstrações Financeiras Padronizadas", natureza: "OBSERVADO", valor: null, motivoAusencia: motivoSemCvm },
     noRanking && typeof noRanking.lojas === "number"
-      ? { rotulo: "Lojas", valor: noRanking.lojas, formato: "inteiro", unidade: "lojas no fim do exercício", ...provaRanking, natureza: "OBSERVADO", tamanho: "g", nota: typeof noRanking.lojas_ano_anterior === "number" ? `No ano anterior: ${num(noRanking.lojas_ano_anterior)}.` : undefined }
+      ? { rotulo: "Lojas", valor: noRanking.lojas, formato: "inteiro", unidade: "lojas no fim do exercício", ...provaRanking, natureza: "OBSERVADO", tamanho: "g", nota: typeof noRanking.lojas_ano_anterior === "number" ? (
+          <>
+            <span aria-hidden="true" className="mb-2 flex h-6 items-end gap-1" data-microfigura="lojas">
+              {[noRanking.lojas_ano_anterior, noRanking.lojas].map((v, i) => (
+                <span key={i} className="block w-5" style={{ height: `${(100 * v) / Math.max(noRanking.lojas as number, noRanking.lojas_ano_anterior as number)}%`, ...(i === 1 ? { background: "var(--cor-gas)" } : { boxShadow: "inset 0 0 0 1.5px var(--cor-carvao)" }) }} />
+              ))}
+            </span>
+            No ano anterior: {num(noRanking.lojas_ano_anterior)} (a coluna vazada).
+          </>
+        ) : undefined }
       : { rotulo: "Lojas", unidade: "lojas no fim do exercício", ...provaRanking, natureza: "OBSERVADO", valor: null, motivoAusencia: "A fonte do ranking não publica o número de lojas deste grupo; os indicadores operacionais abaixo trazem o que a companhia divulga." },
   ];
 
@@ -162,7 +218,14 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
         abertura={{
           grupo: "Grupos · Ficha",
           acento: "gas",
-          titulo: f.grupo,
+          titulo: (
+            <>
+              <span className="mb-4 block" data-identidade-logo="">
+                <LogoEmpresa slug={f.slug} nome={f.grupo} tamanho="g" decorativo semLogo="placa" />
+              </span>
+              {f.grupo}
+            </>
+          ),
           lead: textoCurado(f.resumo) || "Ficha do grupo: marcas, canais, indicadores operacionais, eventos e fontes.",
           recorte: {
             periodo: `ranking de ${anoRanking}${emp ? `; demonstrações de ${emp.anuais[0]?.exercicio ?? anos[0]} a ${ult?.exercicio ?? anos[anos.length - 1]}` : ""}`,
@@ -171,11 +234,41 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
           },
           limite: "se o grupo é bem ou mal gerido, nem o valor de suas ações: a ficha reúne o que os documentos públicos dizem, com a fonte de cada número, e marca o que não foi divulgado.",
           acao: (
-            <p className="text-sm">
-              <Link href={volta} prefetch={false} className={`inline-flex min-h-[44px] items-center text-carvao ${LINK}`} data-volta-ranking="">
-                Voltar ao ranking dos grupos{vindoDeRecorte ? ", com a busca e o filtro de antes" : ""}
-              </Link>
-            </p>
+            <div data-identidade-ficha="">
+              <ul className="flex flex-wrap items-stretch gap-3" aria-label="Identidade do grupo">
+                <li className="flex items-center gap-3 border border-carvao bg-superficie px-3 py-2" data-selo-posicao="">
+                  {noRanking ? (
+                    <>
+                      <span className="numero-g leading-none text-carvao">{ordinal(noRanking.posicao)}</span>
+                      <span className="text-xs leading-tight text-carvao">
+                        em vendas, entre os {num(nGrupos)}
+                        <span className="block text-carvao-muted">maiores grupos, {anoRanking}</span>
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs leading-tight text-carvao">
+                      Fora do ranking de {anoRanking}
+                      <span className="block text-carvao-muted">a fonte só conta a venda própria</span>
+                    </span>
+                  )}
+                </li>
+                {noRanking && (
+                  <li className="flex flex-col justify-center border border-carvao bg-superficie px-3 py-2" style={{ boxShadow: `inset 0 -6px 0 ${corDoSegmento(segmento)}` }} data-etiqueta-segmento="">
+                    <span className="rotulo text-mineral">Segmento</span>
+                    <span className="font-serif text-lg leading-tight text-carvao">{nomeDoSegmento(segmento)}</span>
+                  </li>
+                )}
+                <li className="flex flex-col justify-center border border-linha px-3 py-2">
+                  <span className="rotulo text-mineral">Capital</span>
+                  <span className="text-sm leading-tight text-carvao">{f.capital === "aberto" ? "Aberto, na bolsa brasileira" : f.capital === "fechado" ? "Fechado" : f.capital === "aberto no exterior" ? "Aberto no exterior" : "Não informado"}</span>
+                </li>
+              </ul>
+              <p className="mt-2 text-sm">
+                <Link href={volta} prefetch={false} className={`inline-flex min-h-[44px] items-center text-carvao ${LINK}`} data-volta-ranking="">
+                  Voltar ao ranking dos grupos{vindoDeRecorte ? ", com a busca e o filtro de antes" : ""}
+                </Link>
+              </p>
+            </div>
           ),
         }}
         rotuloNumeros={`${f.grupo} em números`}
@@ -221,12 +314,17 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 <div className="min-w-0 space-y-6">
                   <dl className="space-y-6">
                   <Campo rotulo="Onde atua">
-                    {textoCurado(f.regioes?.texto) || <NaoDivulgado />}
-                    {estados.length > 0 && (
-                      <span className="t-meta mt-1.5 block text-carvao-muted" data-estados={estados.length}>
-                        {num(estados.length)} {plural(estados.length, "unidade da federação", "unidades da federação")}: {estados.join(", ")}.
-                      </span>
-                    )}
+                    <div className="grid gap-x-6 gap-y-3 sm:grid-cols-[minmax(0,15.5rem)_minmax(0,1fr)] lg:grid-cols-1 xl:grid-cols-[minmax(0,15.5rem)_minmax(0,1fr)]">
+                      <MapaPresenca presenca={presenca} nomes={nomesUf} grupo={f.grupo} />
+                      <div className="min-w-0">
+                        {textoCurado(f.regioes?.texto) || <NaoDivulgado />}
+                        <span className="t-meta mt-1.5 block text-carvao-muted">
+                          {presenca.tipo === "nao_divulgado"
+                            ? "Nem a ficha nem o ranking trazem a lista de estados: o mapa fica hachurado, sem pintar nenhum."
+                            : `Estados ${presenca.origem === "ficha" ? "registrados na ficha, a partir dos documentos citados" : `publicados no ranking do IRTT de ${anoRanking}`}. Mapa em blocos: cada estado tem o mesmo tamanho.`}
+                        </span>
+                      </div>
+                    </div>
                   </Campo>
                   <Campo rotulo="Canais de venda">{f.canais.length > 0 ? f.canais.map(textoCurado).join("; ") : <NaoDivulgado />}</Campo>
                   </dl>
@@ -271,7 +369,6 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                       </span>
                     </details>
                   </Campo>
-                  <Campo rotulo="Capital">{CAPITAL[f.capital ?? ""] ?? <NaoDivulgado>não informado</NaoDivulgado>}</Campo>
                   <Campo rotulo="Concorrentes diretos">
                     <Concorrentes itens={f.concorrentes} hrefDe={hrefConcorrente} />
                   </Campo>
@@ -293,9 +390,24 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
 
             <Recolhido id="alcance" aberto nivelTitulo={2} titulo="O que a venda do ranking mede neste grupo" resumo="O que entra e o que fica de fora do número do ranking, e por que ele não é a receita das demonstrações.">
               {textoCurado(f.alcance_do_dado) ? (
-                <p className="max-w-3xl bg-marfim px-5 py-4 text-base leading-relaxed text-carvao" data-alcance-do-dado="">
-                  {textoCurado(f.alcance_do_dado)}
-                </p>
+                (() => {
+                  // a primeira frase fica à vista; o resto da nota, com as contas e as páginas, abre no lugar
+                  const nota = textoCurado(f.alcance_do_dado);
+                  const corte = nota.search(/[.!?]\)?\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕ])/);
+                  const primeira = corte > 60 ? nota.slice(0, corte + 1) : nota;
+                  const resto = corte > 60 ? nota.slice(corte + 1).trim() : "";
+                  return (
+                    <div className="max-w-3xl border-l-[3px] border-carvao bg-marfim px-5 py-4 text-base leading-relaxed text-carvao" data-alcance-do-dado="">
+                      <p>{primeira}</p>
+                      {resto && (
+                        <details>
+                          <summary className={RESUMO_MAIS}>Ler a nota inteira, com as contas e as páginas dos documentos</summary>
+                          <p className="pb-1 text-sm leading-relaxed">{resto}</p>
+                        </details>
+                      )}
+                    </div>
+                  );
+                })()
               ) : (
                 <p className="max-w-prose2 text-sm text-carvao-muted">A curadoria não registrou ressalva de alcance específica para este grupo; vale a definição geral de venda da fonte, descrita no ranking.</p>
               )}
@@ -315,6 +427,23 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                   <p className="mt-3 text-base leading-relaxed text-carvao">{textoCurado(f.analise?.rentabilidade_caixa) || <NaoDivulgado>análise ainda não escrita</NaoDivulgado>}</p>
                 </div>
               </div>
+              {crescimento.some((x) => x.variacao_pct !== null) && (
+                <div className="mt-8 grid gap-x-12 gap-y-4 border-t border-linha pt-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]" data-decomposicao-do-crescimento="">
+                  <div className="min-w-0">
+                    <h3 className="t-h3 text-carvao">
+                      O crescimento em três partes, de {anoAnteriorRanking} para {anoRanking}
+                    </h3>
+                    <p className="t-meta mt-2 max-w-prose2 text-carvao-muted">
+                      A venda do ranking cresce porque há mais lojas, porque cada loja vende mais, ou pelas duas coisas. As partes se multiplicam, não se somam; a venda inclui o comércio eletrônico do grupo, que não depende de loja. Variação em %, sobre valores nominais. Fonte: {fonteRanking}; a venda por loja é conta desta página.
+                    </p>
+                  </div>
+                  <BarrasRotuladas
+                    titulo={`${f.grupo}: variação de vendas, lojas e venda por loja de ${anoAnteriorRanking} para ${anoRanking}`}
+                    larguraDoNome="8.5rem"
+                    linhas={crescimento.map((x) => ({ id: x.id, nome: x.rotulo, valor: x.variacao_pct, texto: x.variacao_pct === null ? undefined : variacao(x.variacao_pct), cor: x.variacao_pct !== null && x.variacao_pct < 0 ? COR_DESCEU : COR_SUBIU, nota: x.id === "venda_por_loja" ? "calculado" : natureza === "estimado_pela_fonte" && x.id === "vendas" ? "estimado" : undefined }))}
+                  />
+                </div>
+              )}
               {f.analise?.acompanhar?.indicador && (
                 <div className="mt-8 border-t border-linha pt-5" data-indicador-a-acompanhar="">
                   <h3 className="t-h3 text-carvao">Indicador a acompanhar: {textoCurado(f.analise.acompanhar.indicador)}</h3>
@@ -328,6 +457,38 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 Texto da curadoria da Scrutiniums sobre os documentos listados nas fontes. Explicações de causa dadas pela empresa estão atribuídas a ela e não foram verificadas de forma independente.
               </p>
             </Recolhido>
+
+            {cupons.length > 0 && perfilProprio && emp && (
+              <FiguraAnalitica
+                id="cupom"
+                pergunta={`${emp.nome}: para onde vai cada R$ 100 de receita?`}
+                subtitulo={`Custo, operação, juros, imposto e o que sobra · R$ por R$ 100 de receita líquida · exercício de ${perfilProprio.exercicio}${perfisDosPares.length ? ` · ao lado de ${num(perfisDosPares.length)} ${plural(perfisDosPares.length, "companhia aberta", "companhias abertas")} do mesmo segmento` : ""}`}
+                natureza="CALCULADO"
+                proveniencia={provCvm(e, { indicador: "Ponte da receita líquida ao lucro líquido, por R$ 100 de receita", natureza: "CALCULADO", unidade: "R$ por R$ 100 de receita líquida", inicio: String(perfilProprio.exercicio), fim: String(perfilProprio.exercicio), formula: e.formulas.ponte_100, limitacoes: ["A conta começa na receita líquida: os impostos sobre a venda já saíram.", "Os pares são as companhias abertas do mesmo segmento na base; não são amostra do segmento."] })}
+                leitura={
+                  <LeituraGuiada>
+                    Em {perfilProprio.exercicio}, de cada R$ 100 de receita líquida de {emp.nome}, {por100(cupons[0].conta.saidas.find((x) => x.id === "custo")?.valor ?? null)} pagaram a mercadoria e {por100(cupons[0].conta.saidas.find((x) => x.id === "despesas")?.valor ?? null)} a operação;{" "}
+                    {cupons[0].conta.resultado >= 0 ? `sobraram ${por100(cupons[0].conta.resultado)} de lucro` : `faltaram ${por100(-cupons[0].conta.resultado)}, o prejuízo do exercício`}.
+                  </LeituraGuiada>
+                }
+                naoConcluir="que a companhia que fica com mais de cada R$ 100 opera melhor: custo e despesa dependem do que cada uma vende, de quanto da receita é serviço ou crédito e de eventos do exercício."
+                tabela={{
+                  titulo: `De R$ 100 de receita líquida ao lucro, exercício de ${perfilProprio.exercicio}`,
+                  colunas: ["Companhia", ...perfilProprio.partes.map((x) => `${x.rotulo}, R$ por 100`)],
+                  linhas: cupons.map((x) => [x.empresa, ...x.partes.map((y) => y.valor)]),
+                  casas: [null, ...perfilProprio.partes.map(() => 2)],
+                  limite: cupons.length,
+                }}
+              >
+                <div data-grafico="cupom-da-companhia">
+                  <Cupom
+                    perfis={cupons}
+                    titulo={cupons.length > 1 ? `${emp.nome} e ${num(cupons.length - 1)} ${plural(cupons.length - 1, "par", "pares")} do segmento, na mesma régua` : `Os R$ 100 de ${emp.nome}, riscados de R$ 10 em R$ 10`}
+                    descricao={cupons.length > 1 ? "Cada barra são os R$ 100 de uma companhia; o traço escuro marca os R$ 100. Escolha uma para imprimir o cupom dela." : "O traço escuro marca os R$ 100. Não há, na base, outra companhia aberta do mesmo segmento com demonstração deste exercício."}
+                  />
+                </div>
+              </FiguraAnalitica>
+            )}
 
             {emp && ult ? (
               <FiguraAnalitica
@@ -357,7 +518,7 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                     A dívida líquida não inclui os aluguéis de longo prazo das lojas, que a norma contábil registra como passivo de arrendamento: os dois aparecem separados, e somá-los ou não muda a leitura do endividamento.
                   </>
                 }
-                comoInterpretar="Cada gráfico tem a própria escala, na unidade do indicador, e todos começam no zero. Margem é a parte da receita líquida que sobra depois do custo da mercadoria (bruta) e depois também das despesas da operação (operacional). Investimentos são a compra de imobilizado e intangível, mostrada como valor positivo."
+                comoInterpretar="Cada gráfico tem a própria escala, na unidade do indicador, e todas as colunas partem do zero; os exercícios são os mesmos em todos. O que desce do zero (prejuízo, caixa consumido) vem no tom de aviso, hachurado. Margem é a parte da receita líquida que sobra depois do custo da mercadoria (bruta) e depois também das despesas da operação (operacional). Investimentos são a compra de imobilizado e intangível, mostrada como valor positivo."
                 naoConcluir="que a trajetória continua, nem que o lucro contábil é o resultado recorrente do negócio: o resultado inclui eventos que não se repetem, os releases das companhias trazem medidas ajustadas que diferem destas, e os valores são nominais."
                 tabela={{
                   titulo: `${emp.nome}: demonstrações anuais`,
@@ -373,7 +534,10 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 complemento={
                   <div className="space-y-8">
                     <Reapresentacoes emp={emp} />
-                    <UltimoTrimestre emp={emp} />
+                    <details className="border-t border-linha" data-depois-do-exercicio="">
+                      <summary className={RESUMO_MAIS}>Depois do último exercício: o acumulado do ano em curso, contra o mesmo período do ano anterior</summary>
+                      <UltimoTrimestre emp={emp} />
+                    </details>
                     <DocumentosNaCvm emp={emp} anos={anos} />
                     {par && f.empresa_gold && (
                       <p className="text-sm">
@@ -389,16 +553,7 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
               </FiguraAnalitica>
             ) : (
               <Recolhido id="demonstracoes" aberto nivelTitulo={2} titulo="Demonstrações financeiras: não divulgadas" resumo={motivoSemCvm}>
-                <dl className="grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-4" data-financeiro-nao-divulgado="">
-                  {[...INDICADORES_FICHA.map((i) => i.rotulo), "Dívida líquida sem arrendamento", "Passivo de arrendamento"].map((rotulo) => (
-                    <div key={rotulo} className="border-t border-linha pt-3">
-                      <dt className="text-sm text-carvao">{rotulo}</dt>
-                      <dd className="mt-1 text-sm">
-                        <NaoDivulgado />
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+                <DemonstracoesNaoDivulgadas rotulos={[...INDICADORES_FICHA.map((i) => i.rotulo), "Dívida líquida sem arrendamento", "Passivo de arrendamento"]} />
                 <p className="mt-5 max-w-prose2 text-sm leading-relaxed text-carvao">
                   Sem demonstração pública, não há como medir margem, caixa ou dívida deste grupo, e a página não os estima. O que permite avaliar a operação está nos indicadores abaixo: vendas, lojas, área, funcionários e o que mais a
                   empresa ou as associações do setor publicam, cada série com a sua fonte.
@@ -436,7 +591,7 @@ export default function FichaDoGrupo({ params, searchParams }: Props) {
                 <ul className="max-w-3xl" data-campos-sem-divulgacao={f.campos_sem_divulgacao.length}>
                   {f.campos_sem_divulgacao.map((x, i) => (
                     <li key={i} className="grid grid-cols-[auto_1fr] gap-x-3 border-t border-linha py-3 text-sm leading-relaxed text-carvao">
-                      <span className="rotulo mt-0.5 whitespace-nowrap border border-carvao-muted px-1.5 py-0.5 text-carvao">não divulgado</span>
+                      <span className="rotulo mt-0.5 whitespace-nowrap px-1.5 py-0.5 text-carvao" style={{ backgroundImage: "repeating-linear-gradient(135deg, var(--cor-linha) 0 1px, transparent 1px 4px)", boxShadow: "inset 0 0 0 1px var(--cor-carvao-muted)" }}>não divulgado</span>
                       <span>{textoCurado(x)}</span>
                     </li>
                   ))}

@@ -37,7 +37,15 @@ export type TipoEntrada = "observatorio" | "colecao" | "aperitivo";
 export type CaminhoEntrada = { pergunta: string; resumo: string; href: string; rotulo?: string; numero?: NumeroPorta };
 
 /** Destino de primeiro nível de uma coleção: a pergunta que ele responde e, quando há, o número lido da mesma base. */
-export type DestinoEntrada = { titulo: string; href: string; pergunta?: string; numero?: NumeroPorta; prontidao?: Prontidao };
+export type DestinoEntrada = {
+  titulo: string;
+  href: string;
+  pergunta?: string;
+  numero?: NumeroPorta;
+  prontidao?: Prontidao;
+  /** Miniatura da figura principal do destino, desenhada com o dado real e decorativa para leitor de tela (o número do cartão diz o valor). */
+  miniatura?: ReactNode;
+};
 
 /** Até oito destinos à vista; o resto em "Mais destinos", no HTML. */
 export const DESTINOS_A_VISTA = 8;
@@ -71,6 +79,7 @@ export function EntradaColecao({
   escala,
   notaEscala = "Os números vêm de fontes e períodos diferentes e não se somam nem se comparam entre si.",
   figuraEscala,
+  microfiguras,
   consulta,
   paraVoce,
   resposta,
@@ -110,6 +119,11 @@ export function EntradaColecao({
   notaEscala?: string | null;
   /** Figura da escala (a gravura de abertura da Energia), depois dos números. */
   figuraEscala?: ReactNode;
+  /**
+   * Uma microfigura por número de escala, na mesma ordem (null onde não há): a série curta ou a proporção que o número resume,
+   * desenhada com o mesmo dado, entre o valor e a nota. É apoio ao número, que continua escrito com fonte e período.
+   */
+  microfiguras?: readonly ReactNode[];
   /** Aperitivo: a consulta do leitor, no lugar da escala. */
   consulta?: ReactNode;
   paraVoce?: ReactNode;
@@ -159,7 +173,7 @@ export function EntradaColecao({
           <p className={`${resposta ? "mt-3" : "mt-6"} max-w-prose2 text-base leading-relaxed text-carvao-muted md:text-lg`}>{frase}</p>
           {resposta && <div data-fatia="resposta" className="mt-4">{resposta}</div>}
           {seuMunicipio && <div data-fatia="seu-municipio">{seuMunicipio}</div>}
-          {escala && escala.length > 0 && (contextoEscala ? <Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8"><Escala escala={escala} nota={notaEscala} idioma={idioma} /></Recolhido> : <Escala escala={escala} nota={notaEscala} idioma={idioma} />)}
+          {escala && escala.length > 0 && (contextoEscala ? <Recolhido id="contexto-da-entrada" titulo={contextoEscala} resumo="Indicadores de contexto, com fonte e período." className="mt-8"><Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} /></Recolhido> : <Escala escala={escala} nota={notaEscala} idioma={idioma} microfiguras={microfiguras} />)}
           {figuraEscala}
         </div>
       </section>
@@ -189,17 +203,22 @@ export function EntradaColecao({
 }
 
 /** Fatia 2: de um a quatro números de escala, cada um com a sua prova e o painel de onde vem. */
-export function Escala({ escala, nota, idioma = "pt" }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null; idioma?: Idioma }>) {
+export function Escala({ escala, nota, idioma = "pt", microfiguras }: Readonly<{ escala: readonly NumeroPorta[]; nota?: string | null; idioma?: Idioma; microfiguras?: readonly ReactNode[] }>) {
   return (
     <div data-fatia="escala">
       <h2 className="sr-only">{t(idioma, "O tema em números", "The topic in numbers")}</h2>
       <dl className={`mt-6 grid md:mt-10 gap-px border border-linha bg-linha sm:grid-cols-2 ${escala.length >= 4 ? "lg:grid-cols-4" : escala.length === 3 ? "lg:grid-cols-3" : ""}`}>
-        {escala.map((n) => (
+        {escala.map((n, i) => (
           <div key={n.rotulo} className="flex flex-col bg-papel p-4 sm:p-5" data-numero-escala="">
             <dt className="text-sm leading-snug text-carvao-muted">{n.rotulo}</dt>
             <dd className="mt-2">
               <NumeroEscala n={n} grande idioma={idioma} />
             </dd>
+            {microfiguras?.[i] && n.valor !== null && (
+              <dd className="mt-3" data-microfigura="">
+                {microfiguras[i]}
+              </dd>
+            )}
             {n.nota && <dd className="mt-3 border-l-2 border-linha pl-3 text-xs leading-relaxed text-carvao-muted">{n.nota}</dd>}
             <dd className="mt-auto pt-1 sm:pt-3">
               <Link href={n.href} prefetch={false} className="inline-flex min-h-[44px] items-center text-sm text-carvao underline decoration-linha underline-offset-4">
@@ -346,6 +365,11 @@ function fechaLinha(n: number): string {
 function CartaoDestino({ d, classe = "", idioma }: Readonly<{ d: DestinoEntrada; classe?: string; idioma: Idioma }>) {
   const corpo = (
     <>
+      {d.miniatura && (
+        <span className="mb-4 block" data-miniatura-destino="">
+          {d.miniatura}
+        </span>
+      )}
       <span className="flex flex-wrap items-baseline gap-x-2 font-serif text-lg leading-snug text-carvao">
         {d.titulo}
         {d.prontidao !== "preparacao" && <SeloComConta href={d.href} idioma={idioma} className="font-sans" />}

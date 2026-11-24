@@ -350,7 +350,7 @@ class Configuracao(unittest.TestCase):
         # ordem pelo nome do domínio: "saneamento-divida.json" viria antes de "saneamento.json" na ordem dos arquivos
         self.assertEqual(
             sorted(p.stem for p in arquivos),
-            ["conectividade", "contas-publicas", "educacao", "eficiencia", "inflacao", "previdencia", "saneamento", "saneamento-contratos", "saneamento-divida", "seguranca"],
+            ["conectividade", "contas-publicas", "educacao", "eficiencia", "inflacao", "previdencia", "saneamento", "saneamento-contratos", "saneamento-divida", "seguranca", "varejo"],
         )
         for p in arquivos:
             cfg = A.carregar_config(p)
@@ -376,6 +376,104 @@ class Configuracao(unittest.TestCase):
                             self.assertTrue(list(raiz.glob(alvo + "*")), alvo)
             # o sinal de mudança precisa ler a publicação atual sem erro
             self.assertTrue(A.sinal(raiz, cfg["sinal_de_mudanca"]))
+
+
+COLETAR_GOLD = textwrap.dedent("""
+    import datetime, hashlib, json, os, sys
+    grupo = sys.argv[1]
+    fonte = open(os.path.join(os.environ["FONTE_DIR"], grupo + ".txt")).read().strip()
+    if fonte == "DEGRADADA":
+        print("validação reprovou a gold nova; arquivo publicado intacto", file=sys.stderr); sys.exit(1)
+    os.makedirs("gold", exist_ok=True)
+    corpo = {"valor": fonte}
+    json.dump({"capturado_em": datetime.datetime.now().isoformat(), **corpo,
+               "hash_dados": hashlib.sha256(json.dumps(corpo, sort_keys=True).encode()).hexdigest()}, open(f"gold/{grupo}.json", "w"))
+""")
+CONFERIR_GOLD = textwrap.dedent("""
+    import glob, json, sys
+    ruins = [p for p in sorted(glob.glob("gold/*.json")) if json.load(open(p))["valor"] == "ruim"]
+    if ruins:
+        print("valor reprovado em", ruins); sys.exit(1)
+""")
+
+
+class GoldComoCaminhoDoGrupo(unittest.TestCase):
+    """Domínio sem seed (o Varejo, config/atualizacao/varejo.json): o coletor grava a própria gold, que é o caminho do
+    grupo; `saidas` e `reconstruir` ficam vazios e o sinal de mudança é o hash_dados de cada gold."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        tmp = Path(self._tmp.name)
+        self.repo, self.fontes, remoto = tmp / "repo", tmp / "fontes", tmp / "remoto.git"
+        self.fontes.mkdir()
+        git(tmp, "init", "-q", "--bare", "-b", "main", str(remoto))
+        git(tmp, "init", "-q", "-b", "main", str(self.repo))
+        for k, v in (("user.name", "teste"), ("user.email", "teste@exemplo"), ("commit.gpgsign", "false")):
+            git(self.repo, "config", k, v)
+        (self.repo / "coletar.py").write_text(COLETAR_GOLD)
+        (self.repo / "conferir.py").write_text(CONFERIR_GOLD)
+        (self.repo / ".gitignore").write_text(".atualizacao/\n")
+        os.environ["FONTE_DIR"] = str(self.fontes)
+        for grupo in ("a", "b"):
+            self.fonte(grupo, "1")
+            subprocess.run([sys.executable, "coletar.py", grupo], cwd=self.repo, check=True)
+        git(self.repo, "add", "-A")
+        git(self.repo, "commit", "-qm", "inicial")
+        git(self.repo, "remote", "add", "origin", str(remoto))
+        git(self.repo, "push", "-q", "origin", "main")
+        self.cfg = {
+            "dominio": "semseed", "titulo": "Domínio sem seed", "codigo": ["coletar.py"], "reconstruir": [], "saidas": [],
+            "sinal_de_mudanca": [{"arquivo": f"gold/{x}.json", "json_chave": "hash_dados"} for x in ("a", "b")],
+            "testes": [{"nome": "conteúdo", "comando": [sys.executable, "conferir.py"]}],
+            "grupos": [{"id": x, "nome": f"Fonte {x.upper()}", "coleta": [[sys.executable, "coletar.py", x]], "caminhos": [f"gold/{x}.json"]}
+                       for x in ("a", "b")],
+        }
+
+    def tearDown(self):
+        os.environ.pop("FONTE_DIR", None)
+        self._tmp.cleanup()
+
+    def fonte(self, grupo, valor):
+        (self.fontes / f"{grupo}.txt").write_text(valor)
+
+    def ciclo(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            codigo = A.ciclo(A.carregar_config_dict(json.loads(json.dumps(self.cfg))), self.repo)
+        r = json.loads((self.repo / ".atualizacao/semseed/resultado.json").read_text())
+        return codigo, {g["id"]: g["situacao"] for g in r["grupos"]}, r
+
+    def valor(self, grupo, ref=None):
+        texto = git(self.repo, "show", f"{ref}:gold/{grupo}.json") if ref else (self.repo / f"gold/{grupo}.json").read_text()
+        return json.loads(texto)["valor"]
+
+    def test_recoleta_com_os_mesmos_numeros_nao_publica_a_data_de_captura(self):
+        codigo, situacoes, r = self.ciclo()
+        self.assertEqual(codigo, 0)
+        self.assertEqual(situacoes, {"a": A.SEM_MUDANCA_DADO, "b": A.SEM_MUDANCA_DADO})
+        self.assertFalse(r["publicavel"])
+        self.assertEqual(git(self.repo, "status", "--porcelain"), "")
+
+    def test_dado_novo_publica_so_a_gold_do_grupo_e_coletor_que_reprova_nao_para_o_outro(self):
+        self.fonte("a", "2")
+        self.fonte("b", "DEGRADADA")
+        codigo, situacoes, r = self.ciclo()
+        self.assertEqual(codigo, 1)
+        self.assertEqual(situacoes, {"a": A.PUBLICADO, "b": A.COLETA_FALHOU})
+        self.assertIn("arquivo publicado intacto", next(g for g in r["grupos"] if g["id"] == "b")["saida"])
+        self.assertTrue(r["publicavel"])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(A.publicar(A.carregar_config_dict(json.loads(json.dumps(self.cfg))), self.repo, "main", espera=0), 0)
+        self.assertEqual(git(self.repo, "diff", "--name-only", "HEAD~1", "HEAD"), "gold/a.json")
+        self.assertEqual((self.valor("a", "origin/main"), self.valor("b", "origin/main")), ("2", "1"))
+
+    def test_gold_nova_reprovada_nos_testes_volta_a_publicada(self):
+        self.fonte("a", "ruim")
+        self.fonte("b", "3")
+        codigo, situacoes, r = self.ciclo()
+        self.assertEqual(codigo, 1)
+        self.assertEqual(situacoes, {"a": A.RETIDO_TESTES, "b": A.PUBLICADO})
+        self.assertEqual((self.valor("a"), self.valor("b")), ("1", "3"))
+        self.assertEqual(git(self.repo, "status", "--porcelain").split(), ["M", "gold/b.json"])
 
 
 class TempoEsgotado(unittest.TestCase):

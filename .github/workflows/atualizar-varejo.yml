@@ -1,0 +1,149 @@
+name: Atualizar dados do Varejo
+
+# Observatório da Economia, coleção Varejo: recoleta das fontes automáticas e publicação pelo motor comum por grupo
+# (scripts/atualizacao_por_grupo.py, config/atualizacao/varejo.json). Dois grupos, cada um com a sua gold:
+#   - séries setoriais (python3 -m pipeline.varejo.setor -> public/varejo/gold/setor.json): PMC, PAC, PNAD Contínua e
+#     IPCA pelo SIDRA do IBGE e juros do crédito livre pelo SGS do Banco Central;
+#   - companhias abertas (python3 -m pipeline.varejo.empresas -> public/varejo/gold/empresas.json): DFP e ITR dos
+#     dados abertos da CVM (uns 130 MB de zips por execução, baixados para o diretório temporário do executor).
+# Os coletores não têm seed intermediário: cada um grava a própria gold, que é o caminho do grupo no motor (não há
+# reconstrução nem execução "sem coleta"). Antes de gravar, cada coletor valida a gold nova contra a publicada (PMC com
+# calendário contíguo, nunca com menos meses nem referência anterior, 27 UFs, 14 atividades; nenhuma companhia some,
+# perde exercício ou recua de trimestre fora das saídas esperadas) e, reprovada, sai com erro sem tocar o arquivo: no
+# motor isso é coleta com falha, a publicação anterior continua no ar, a issue é aberta ou comentada e a execução fica
+# vermelha. A gold nova só é publicada com os testes verdes (pipeline.tests.test_varejo e os contratos vitest).
+#
+# Fora desta rotina, por decisão: a curadoria (pipeline/varejo/curadoria: ranking do IRTT, segmentos e fichas dos
+# grupos) é escrita à mão e entra por PR. Revisão esperada: ranking uma vez por ano, quando o IRTT publica; fichas a
+# cada temporada de resultados.
+#
+# Cadência pela fonte: o IBGE divulga a PMC uma vez por mês, entre os dias 12 e 15 (o mês de referência é o de dois
+# meses antes); as companhias entregam o ITR até 45 dias depois do trimestre (meados de maio, agosto e novembro) e a
+# DFP até o fim de março. Duas execuções por mês: o dia 16 pega a PMC recém-divulgada e os ITR do prazo; o dia 28
+# cobre divulgação adiada, entregas atrasadas e reapresentações. Dado igual não gera commit (o sinal é o hash_dados
+# de cada gold). Minuto 33 das 12h UTC: nenhum outro workflow agendado começa nesse horário.
+on:
+  schedule:
+    - cron: "33 12 16,28 * *" # dias 16 e 28, 09:33 em São Paulo
+  workflow_dispatch:
+    inputs:
+      grupos:
+        description: "Coletar só estes grupos (ids separados por vírgula; vazio = todos)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-varejo
+  cancel-in-progress: false
+
+env:
+  CONFIG: config/atualizacao/varejo.json
+  TITULO_ISSUE: "Atualização agendada do Varejo: publicação retida ou coleta com falha"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    # cerca de 1 min de consultas ao SIDRA e ao SGS e sete zips da CVM (uns 130 MB); cada comando tem teto próprio
+    # na configuração
+    timeout-minutes: 60
+    outputs:
+      relatado: ${{ steps.issue.outcome == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # os dois coletores usam só a biblioteca padrão
+
+      - name: Node para os testes de contrato
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Dependências da interface
+        run: npm ci
+
+      - name: Coletar e decidir a publicação por grupo
+        id: ciclo
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GRUPOS: ${{ inputs.grupos }}
+        run: |
+          ARGS=()
+          if [ -n "$GRUPOS" ]; then ARGS+=(--grupos "$GRUPOS"); fi
+          python3 -u scripts/atualizacao_por_grupo.py ciclo "$CONFIG" "${ARGS[@]}"
+
+      # Só as golds dos grupos aprovados, com rebase sobre o ramo e quatro tentativas. Se alguma gold do varejo mudou no
+      # ramo durante a execução, não publica (a composição foi testada sobre outra base); se o código mudou, testa de
+      # novo com o código novo antes de empurrar.
+      - name: Commit e push dos grupos aprovados
+        id: publicar
+        if: always() && steps.ciclo.outputs.publicavel == '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          python3 -u scripts/atualizacao_por_grupo.py publicar "$CONFIG" --ramo "$GITHUB_REF_NAME"
+
+      - name: Abrir ou comentar a issue de retenção
+        id: issue
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PUBLICACAO: ${{ steps.publicar.outcome }}
+        run: |
+          CORPO=.atualizacao/varejo/relatorio.md
+          mkdir -p .atualizacao/varejo
+          if [ ! -s "$CORPO" ]; then
+            printf 'Execução: %s\n\nO ciclo terminou sem relatório (falha antes de gravar). Ver o log do passo *Coletar e decidir*.\n' "$RUN_URL" > "$CORPO"
+          fi
+          if [ "$PUBLICACAO" = "failure" ]; then
+            printf '\n**A publicação dos grupos aprovados falhou** (passo *Commit e push*): nada foi empurrado.\n' >> "$CORPO"
+          fi
+          scripts/issue_dedup.sh "$TITULO_ISSUE" "$CORPO"
+
+      - name: Guardar resultado, relatório e logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atualizacao-varejo
+          include-hidden-files: true
+          path: .atualizacao/varejo/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # Retenção deixa a execução VERMELHA: de 25/09 a 12/10/2026 o Crédito reteve a gold com o
+      # workflow verde e ninguém viu (OPERACOES.md, terceira memória).
+      - name: Sinalizar publicação retida
+        if: always() && (steps.ciclo.outcome != 'success' || steps.publicar.outcome == 'failure')
+        run: |
+          echo "::error::grupo retido, coleta com falha ou publicação não concluída; ver a issue '$TITULO_ISSUE'"
+          exit 1
+
+  # Tempo esgotado ou cancelamento não chegam ao passo da issue: este job cobre esses casos.
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && needs.pipeline.outputs.relatado != 'true' && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir ou comentar issue de interrupção
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf 'Execução de %s UTC terminou com **%s** antes do relatório (tempo esgotado, cancelamento ou falha de preparo): %s\n\nNada foi publicado.\n' \
+            "$(date -u +%d/%m/%Y\ %H:%M)" "$RESULTADO" "$RUN_URL" > /tmp/corpo.md
+          scripts/issue_dedup.sh "$TITULO_ISSUE" /tmp/corpo.md

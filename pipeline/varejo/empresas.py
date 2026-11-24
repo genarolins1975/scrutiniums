@@ -7,6 +7,11 @@ exercício usa a coluna "ÚLTIMO" do próprio arquivo daquele ano (o número com
 quando o exercício seguinte reapresenta o valor na coluna "PENÚLTIMO" com diferença relevante,
 a gold marca a reapresentação. Dívida líquida, margens e a ponte de R$ 100 são cálculos desta
 gold, com a fórmula declarada em "formulas". Campo não encontrado fica null.
+
+Antes de gravar, a gold nova passa por validar(): nenhuma companhia da gold publicada pode sumir, perder
+exercício anual ou recuar de trimestre, salvo as de SAIDAS_ESPERADAS (deixaram de arquivar, com o motivo
+escrito). Reprovada, o script lista os problemas, sai com código 1 e não toca o arquivo publicado: a
+rotina agendada (.github/workflows/atualizar-varejo.yml) roda sem supervisão.
 """
 from __future__ import annotations
 
@@ -18,6 +23,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 import urllib.request
 import zipfile
 from datetime import datetime, timezone
@@ -53,6 +59,13 @@ EMPRESAS = {
     "zamp": ("024317", "Zamp (Burger King Brasil)"),
 }
 
+# Companhias que deixaram de arquivar na CVM: podem sair da gold (ou parar num trimestre antigo) sem reprovar a
+# validação. Toda outra companhia que estava na gold publicada e some da nova faz o script falhar.
+SAIDAS_ESPERADAS = {
+    "carrefour-brasil": "Atacadão S.A. não arquiva demonstrações na CVM desde 2025 (último ITR: 30/09/2025; sem DFP de 2025)",
+}
+MINIMO_COMPANHIAS = 10  # sem gold publicada para comparar, menos que isso é coleta quebrada
+
 DRE = {"3.01": "receita_liquida", "3.02": "custo", "3.03": "lucro_bruto", "3.04": "despesas_operacionais", "3.05": "ebit",
        "3.06": "resultado_financeiro", "3.07": "lucro_antes_ir", "3.08": "ir_csll", "3.09": "lucro_operacoes_continuadas",
        "3.10": "operacoes_descontinuadas", "3.11": "lucro_liquido"}
@@ -69,8 +82,22 @@ def arquivo(tipo: str, ano: int) -> zipfile.ZipFile:
     destino = CACHE / f"{tipo}_{ano}.zip"
     if not destino.exists():
         url = f"{BASE}/{tipo.upper()}/DADOS/{tipo}_cia_aberta_{ano}.zip"
-        with urllib.request.urlopen(url, timeout=600) as r:
-            destino.write_bytes(r.read())
+        tmp = destino.with_name(destino.name + ".parcial")
+        ultimo = None
+        for i in range(4):
+            try:
+                with urllib.request.urlopen(url, timeout=600) as r:
+                    tmp.write_bytes(r.read())
+                with zipfile.ZipFile(tmp) as z:  # download cortado não vira cache
+                    if z.testzip() is not None:
+                        raise zipfile.BadZipFile("membro corrompido")
+                os.replace(tmp, destino)
+                break
+            except Exception as e:  # noqa: BLE001
+                ultimo = e
+                time.sleep(5 * (i + 1))
+        else:
+            raise RuntimeError(f"falha ao baixar {url}: {ultimo}")
     return zipfile.ZipFile(destino)
 
 
@@ -179,8 +206,74 @@ def derivar(p: dict) -> dict:
     return p
 
 
+def validar(gold: dict, anterior: dict | None = None) -> list[str]:
+    """Problemas que impedem a publicação (lista vazia = pode gravar). `anterior` é a gold publicada, quando existe.
+    Valores não são comparados: as companhias reapresentam demonstrações."""
+    prob: list[str] = []
+    empresas = gold.get("empresas") or {}
+    desconhecidas = sorted(set(empresas) - set(EMPRESAS))
+    if desconhecidas:
+        prob.append(f"companhias fora do cadastro do script: {', '.join(desconhecidas)}")
+    for slug, e in sorted(empresas.items()):
+        if not e.get("anuais") and not e.get("ultimo_trimestre"):
+            prob.append(f"{slug}: sem exercício anual e sem trimestre")
+        if not e.get("cnpj") or not e.get("denominacao_cvm"):
+            prob.append(f"{slug}: sem CNPJ ou denominação do documento da CVM")
+        exercicios = [a.get("exercicio") for a in e.get("anuais") or []]
+        if exercicios != sorted(set(exercicios)):
+            prob.append(f"{slug}: exercícios anuais fora de ordem ou repetidos ({exercicios})")
+        for a in e.get("anuais") or []:
+            if not a.get("receita_liquida"):
+                prob.append(f"{slug}: exercício {a.get('exercicio')} sem receita líquida")
+    if not anterior:
+        if len(empresas) < MINIMO_COMPANHIAS:
+            prob.append(f"{len(empresas)} companhias, menos que o mínimo de {MINIMO_COMPANHIAS}")
+        return prob
+    antes = anterior.get("empresas") or {}
+    for slug, a in sorted(antes.items()):
+        if slug in SAIDAS_ESPERADAS:
+            continue
+        n = empresas.get(slug)
+        if n is None:
+            prob.append(f"{slug}: estava na gold publicada e sumiu da nova (se deixou de arquivar na CVM, registrar em SAIDAS_ESPERADAS com o motivo)")
+            continue
+        perdidos = sorted({x["exercicio"] for x in a.get("anuais") or []} & set(ANOS_DFP) - {x["exercicio"] for x in n.get("anuais") or []})
+        if perdidos:
+            prob.append(f"{slug}: exercício(s) anual(is) {', '.join(map(str, perdidos))} da gold publicada ausente(s) na nova")
+        t_a, t_n = (a.get("ultimo_trimestre") or {}).get("data_base"), (n.get("ultimo_trimestre") or {}).get("data_base")
+        if t_a and (not t_n or t_n < t_a):
+            prob.append(f"{slug}: último trimestre {t_n or 'ausente'}, anterior ao publicado ({t_a})")
+    return prob
+
+
+def ler_publicada(caminho: Path) -> dict | None:
+    """A gold publicada, para a comparação; None quando ainda não existe. Arquivo ilegível é erro, não ausência."""
+    return json.loads(caminho.read_text(encoding="utf-8")) if caminho.exists() else None
+
+
+def gravar(caminho: Path, gold: dict) -> None:
+    """Grava num arquivo ao lado e troca de uma vez: uma interrupção nunca deixa a gold publicada pela metade."""
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    tmp = caminho.with_name(caminho.name + ".tmp")
+    tmp.write_text(json.dumps(gold, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    os.replace(tmp, caminho)
+
+
+def janela_vencida(hoje) -> list[str]:
+    """Os anos lidos são fixos (ANOS_DFP, ANOS_ITR). Avisa quando o calendário já pede o ano seguinte: sem a troca
+    manual, a rotina seguiria verde lendo arquivos que não recebem mais documento novo."""
+    avisos = []
+    if hoje.year > max(ANOS_ITR) and hoje.month >= 5:
+        avisos.append(f"ANOS_ITR termina em {max(ANOS_ITR)}: os ITR do 1º trimestre de {hoje.year} já chegaram à CVM; acrescentar o ano")
+    if (hoje.year, hoje.month) >= (max(ANOS_DFP) + 2, 4):
+        avisos.append(f"ANOS_DFP termina em {max(ANOS_DFP)}: as DFP de {hoje.year - 1} já chegaram à CVM; acrescentar o ano")
+    return avisos
+
+
 def main():
     agora = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for aviso in janela_vencida(datetime.now(timezone.utc)):
+        print(f"::warning::{aviso}")
     codigos = {c for c, _ in EMPRESAS.values()}
     dfp = {ano: ler("dfp", ano, codigos) for ano in ANOS_DFP}
     itr = {ano: ler("itr", ano, codigos) for ano in ANOS_ITR}
@@ -237,7 +330,16 @@ def main():
         **corpo,
         "hash_dados": hashlib.sha256(json.dumps(corpo, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
     }
-    SAIDA.write_text(json.dumps(gold, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    problemas = validar(gold, ler_publicada(SAIDA))
+    if problemas:
+        print(f"empresas.json NÃO gravado: {len(problemas)} problema(s) de validação; a gold publicada segue intacta.", file=sys.stderr)
+        for p in problemas[:40]:
+            print(f"  - {p}", file=sys.stderr)
+        return 1
+    gravar(SAIDA, gold)
+    ausentes = sorted(set(SAIDAS_ESPERADAS) - set(empresas))
+    if ausentes:
+        print("fora da gold por saída esperada: " + "; ".join(f"{s} ({SAIDAS_ESPERADAS[s]})" for s in ausentes))
     print(f"empresas.json: {SAIDA.stat().st_size // 1024} KB, {len(empresas)} companhias")
 
 

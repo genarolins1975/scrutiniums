@@ -8,11 +8,17 @@ Fontes, todas oficiais e com tabela declarada na gold:
   IBGE/SIDRA PNAD Contínua 6392 (massa de rendimento real habitual) e IPCA 7060 (alimentação no domicílio)
   Banco Central SGS 20740 (taxa média de juros do crédito livre a pessoas físicas)
 Ausência de dado fica como null; nenhum valor é estimado aqui.
+
+Antes de gravar, a gold nova passa por validar(): estrutura completa (calendário contíguo, 27 UFs, as 14
+atividades, PAC e contexto) e nenhum recuo em relação à gold publicada (menos meses, mês de referência
+anterior, série de contexto mais curta). Reprovada, o script lista os problemas, sai com código 1 e não
+toca o arquivo publicado: a rotina agendada (.github/workflows/atualizar-varejo.yml) roda sem supervisão.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -156,6 +162,109 @@ def coletar_macro(fim: str):
     }
 
 
+def calendario(inicio: str, n: int) -> list[str]:
+    """n meses seguidos a partir de "AAAAMM", no formato da gold ("AAAA-MM")."""
+    ano, m = int(inicio[:4]), int(inicio[4:])
+    saida = []
+    for _ in range(n):
+        saida.append(f"{ano}-{m:02d}")
+        ano, m = (ano + 1, 1) if m == 12 else (ano, m + 1)
+    return saida
+
+
+def validar(gold: dict, anterior: dict | None = None) -> list[str]:
+    """Problemas que impedem a publicação (lista vazia = pode gravar). `anterior` é a gold publicada, quando existe:
+    a nova nunca pode ter menos meses, referência mais antiga ou série de contexto mais curta. Valores não são
+    comparados: o IBGE revisa os meses recentes a cada divulgação."""
+    prob: list[str] = []
+    pmc, pac, macro = gold.get("pmc") or {}, gold.get("pac") or {}, gold.get("macro") or {}
+    meses = pmc.get("meses") or []
+    n = len(meses)
+    if not meses:
+        return ["PMC sem meses"]
+    if meses != calendario(INICIO, n):
+        prob.append(f"PMC: os meses não formam um calendário contíguo desde {mes(INICIO)} (primeiro {meses[0]}, último {meses[-1]}, {n} meses)")
+    if (gold.get("referencia") or {}).get("pmc") != meses[-1]:
+        prob.append(f"referência da PMC ({(gold.get('referencia') or {}).get('pmc')}) diferente do último mês da série ({meses[-1]})")
+
+    def series(bloco, onde, exigir_indice):
+        for tipo in ("volume", "receita"):
+            for var in VARS_PMC.values():
+                serie = ((bloco or {}).get(tipo) or {}).get(var)
+                if not isinstance(serie, list) or len(serie) != n:
+                    prob.append(f"PMC {onde}, {tipo}/{var}: série com comprimento diferente do calendário ({n} meses)")
+                elif exigir_indice and var == "indice" and any(v is None for v in serie):
+                    prob.append(f"PMC {onde}, {tipo}: índice ausente em {sum(v is None for v in serie)} mês(es)")
+                elif var == "indice" and exigir_indice is None and serie[-1] is None:
+                    prob.append(f"PMC {onde}, {tipo}: índice ausente no último mês ({meses[-1]})")
+
+    for universo in ("restrito", "ampliado"):
+        series((pmc.get("brasil") or {}).get(universo), f"Brasil {universo}", True)
+    ufs = pmc.get("ufs") or {}
+    faltam = sorted(set(UFS.values()) - set(ufs))
+    if faltam or len(ufs) != 27:
+        prob.append(f"PMC por UF: {len(ufs)} de 27 unidades da federação (faltam {', '.join(faltam) or 'nenhuma; há sigla desconhecida'})")
+    for sg in sorted(set(UFS.values()) & set(ufs)):
+        for universo in ("restrito", "ampliado"):
+            series(ufs[sg].get(universo), f"{sg} {universo}", None)
+    atividades = pmc.get("atividades") or {}
+    esperadas = {a[0] for a in ATIVIDADES.values()}
+    if set(atividades) != esperadas:
+        prob.append(f"PMC por atividade: {len(set(atividades) & esperadas)} de {len(esperadas)} atividades (faltam {', '.join(sorted(esperadas - set(atividades))) or 'nenhuma'}; a mais: {', '.join(sorted(set(atividades) - esperadas)) or 'nenhuma'})")
+    for slug in sorted(esperadas & set(atividades)):
+        series(atividades[slug], f"atividade {slug}", None)
+    ua = pmc.get("ufs_atividades") or {}
+    if ua.get("mes") != meses[-1] or set(ua.get("dados") or {}) != set(UFS.values()):
+        prob.append(f"PMC, atividades por UF: mês {ua.get('mes')} (esperado {meses[-1]}) ou UFs incompletas ({len(ua.get('dados') or {})} de 27)")
+    elif not any(ua["dados"].values()):
+        prob.append("PMC, atividades por UF: nenhuma UF com atividade divulgada no último mês")
+
+    if not pac.get("grupos") or not any(v.get("receita_operacional_liquida") is not None for v in pac["grupos"].values()):
+        prob.append("PAC: nenhum grupo de atividade com receita operacional líquida")
+    if set(pac.get("ufs_varejo") or {}) != set(UFS.values()):
+        prob.append(f"PAC por UF: {len(pac.get('ufs_varejo') or {})} de 27 unidades da federação")
+    if any((pac.get("porte_varejo") or {}).get(k) is None for k in ("empresas_20mais", "pessoal_20mais")):
+        prob.append("PAC: porte (empresas e pessoal com 20 ou mais pessoas ocupadas) ausente")
+    if not pac.get("formas_comercializacao_20mais"):
+        prob.append("PAC: formas de comercialização ausentes")
+    SERIES_MACRO = ("massa_renda_real", "ipca_alimentacao_domicilio_12m", "ipca_geral_12m", "juros_credito_livre_pf")
+    for chave in SERIES_MACRO:
+        if not any(v is not None for v in ((macro.get(chave) or {}).get("valores") or {}).values()):
+            prob.append(f"contexto, {chave}: série vazia")
+
+    if anterior:
+        a_pmc, a_pac, a_macro = anterior.get("pmc") or {}, anterior.get("pac") or {}, anterior.get("macro") or {}
+        a_meses = a_pmc.get("meses") or []
+        if n < len(a_meses):
+            prob.append(f"PMC: {n} meses, menos que os {len(a_meses)} da gold publicada")
+        if a_meses and meses[-1] < a_meses[-1]:
+            prob.append(f"PMC: último mês {meses[-1]} anterior ao publicado ({a_meses[-1]})")
+        if int(pac.get("ano") or 0) < int(a_pac.get("ano") or 0):
+            prob.append(f"PAC: ano {pac.get('ano')} anterior ao publicado ({a_pac.get('ano')})")
+        if len(pac.get("grupos") or {}) < len(a_pac.get("grupos") or {}) and pac.get("ano") == a_pac.get("ano"):
+            prob.append(f"PAC: {len(pac.get('grupos') or {})} grupos, menos que os {len(a_pac.get('grupos') or {})} da gold publicada")
+        for chave in SERIES_MACRO:
+            def com_dado(m):
+                return sorted(k for k, v in ((m.get(chave) or {}).get("valores") or {}).items() if v is not None)
+            novo, velho = com_dado(macro), com_dado(a_macro)
+            if velho and (len(novo) < len(velho) or not novo or novo[-1] < velho[-1]):
+                prob.append(f"contexto, {chave}: {len(novo)} meses com dado até {novo[-1] if novo else 'nenhum'}; a gold publicada tem {len(velho)} até {velho[-1]}")
+    return prob
+
+
+def ler_publicada(caminho: Path) -> dict | None:
+    """A gold publicada, para a comparação; None quando ainda não existe. Arquivo ilegível é erro, não ausência."""
+    return json.loads(caminho.read_text(encoding="utf-8")) if caminho.exists() else None
+
+
+def gravar(caminho: Path, gold: dict) -> None:
+    """Grava num arquivo ao lado e troca de uma vez: uma interrupção nunca deixa a gold publicada pela metade."""
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    tmp = caminho.with_name(caminho.name + ".tmp")
+    tmp.write_text(json.dumps(gold, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    os.replace(tmp, caminho)
+
+
 def main():
     agora = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     meta = baixar("https://servicodados.ibge.gov.br/api/v3/agregados/8880/metadados")
@@ -194,8 +303,13 @@ def main():
         **corpo,
         "hash_dados": hashlib.sha256(json.dumps(corpo, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
     }
-    SAIDA.parent.mkdir(parents=True, exist_ok=True)
-    SAIDA.write_text(json.dumps(gold, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    problemas = validar(gold, ler_publicada(SAIDA))
+    if problemas:
+        print(f"setor.json NÃO gravado: {len(problemas)} problema(s) de validação; a gold publicada segue intacta.", file=sys.stderr)
+        for p in problemas[:40]:
+            print(f"  - {p}", file=sys.stderr)
+        return 1
+    gravar(SAIDA, gold)
     print(f"setor.json: {SAIDA.stat().st_size // 1024} KB, PMC até {mes(fim)}, {len(pmc['meses'])} meses")
 
 

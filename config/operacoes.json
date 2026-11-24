@@ -144,9 +144,11 @@
       "id": "varejo",
       "nome": "Varejo",
       "rota": "/varejo",
-      "workflows": [],
-      "automatico": "Ainda sem rotina agendada: a coleção nasceu em 23/11/2026 e a coleta roda sob demanda.",
-      "manual": "Rodar python3 -m pipeline.varejo.setor e python3 -m pipeline.varejo.empresas, conferir o mês de referência da PMC e republicar; a curadoria (pipeline/varejo/curadoria) é escrita à mão."
+      "workflows": [
+        "atualizar-varejo.yml"
+      ],
+      "automatico": "Coleta e publicação por grupo de fontes nos dias 16 e 28: séries setoriais (PMC, PAC, PNAD Contínua e IPCA do IBGE; juros do Banco Central) e demonstrações das companhias abertas (DFP e ITR da CVM); cada coletor valida a gold antes de gravar.",
+      "manual": "A curadoria (pipeline/varejo/curadoria) é escrita à mão e fica fora da rotina: ranking uma vez por ano, quando o IRTT publica; fichas dos grupos a cada temporada de resultados; segmentos se o IBGE mudar as atividades da PMC. Uma vez por ano, acrescentar o ano novo em ANOS_DFP e ANOS_ITR e trocar o ano da PAC; companhia que deixa de arquivar na CVM entra em SAIDAS_ESPERADAS."
     }
   ],
   "workflows": {
@@ -203,6 +205,9 @@
     },
     "atualizar-conectividade.yml": {
       "nome": "Atualizar dados da Conectividade"
+    },
+    "atualizar-varejo.yml": {
+      "nome": "Atualizar dados do Varejo"
     },
     "vigilancia.yml": {
       "nome": "Vigília do Observatório"

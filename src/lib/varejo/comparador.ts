@@ -7,6 +7,7 @@
 import { hrefComRecorte } from "@/lib/painel/recorte";
 import { mesCurto } from "./formato";
 import { exerciciosDaGold, periodoDe, ROTA_COMPARADOR } from "./grupos";
+import type { ContaDoCupom, PerfilCem } from "./dados";
 import type { CuradoriaVarejo, Demonstracao, EmpresaGold, GoldEmpresas, LinhaConta, PeriodoEmpresa, Ponte100 } from "./tipos";
 
 /* ------------------------------------------------------------------ seleção */
@@ -296,4 +297,121 @@ export function variacaoDaReceita(emp: EmpresaGold, ano: number): number | null 
   return atual === null || antes === null || antes === 0 ? null : (100 * atual) / antes - 100;
 }
 
-export type { PeriodoEmpresa };
+/* ------------------------------------------------------------------ figuras do redesenho do comparador (24/11/2026) */
+
+/** O exercício de uma companhia como perfil do cupom de R$ 100 (o mesmo formato de perfisDoModelo, em dados.ts); null sem a ponte. */
+export function perfilDoExercicio(slug: string, emp: EmpresaGold, p: PeriodoEmpresa | null, perfil: string): PerfilCem | null {
+  const b = p?.ponte_100;
+  if (!p || !b) return null;
+  return {
+    slug, perfil, empresa: emp.nome, exercicio: p.exercicio, documento: p.documento?.link ?? null,
+    partes: [
+      { id: "custo", rotulo: "Custo da mercadoria vendida", valor: -b.custo },
+      { id: "despesas", rotulo: "Despesas de operação", valor: -b.despesas_operacionais },
+      { id: "financeiro", rotulo: "Juros e resultado financeiro", valor: -b.resultado_financeiro },
+      { id: "impostos", rotulo: "Imposto sobre o lucro", valor: -b.ir_csll },
+      { id: "outros", rotulo: "Operações descontinuadas e outros", valor: -b.descontinuadas_e_outros },
+      { id: "lucro", rotulo: "Lucro ou prejuízo", valor: b.lucro_liquido },
+    ],
+  };
+}
+
+export type LinhaDoCupom = {
+  id: IdParte;
+  /** Uma célula por empresa, na ordem da seleção: quanto a parcela tirou de cada R$ 100 (positivo tira; negativo devolve); null sem demonstração. */
+  valores: (number | null)[];
+  /** Índices da empresa com o maior e com o menor valor, entre as que têm o dado; null com menos de duas. */
+  maior: number | null;
+  menor: number | null;
+  /** Maior menos menor, em R$ por R$ 100. */
+  amplitude: number | null;
+};
+
+/**
+ * Os cupons linha a linha: para cada parcela da ponte, o valor de cada empresa e a distância entre a que mais e a que menos gasta.
+ * O lucro vem com o sinal dele (prejuízo negativo). Diferença menor que um centavo não aponta maior nem menor.
+ */
+export function linhasDosCupons(pontes: readonly (Ponte100 | null | undefined)[]): LinhaDoCupom[] {
+  return PARTES.map((parte) => {
+    const valores = pontes.map((b) => (b ? (parte.id === "lucro" ? b[parte.campo] : -b[parte.campo]) : null));
+    const com = valores.map((v, i) => ({ v, i })).filter((x): x is { v: number; i: number } => x.v !== null);
+    if (com.length < 2) return { id: parte.id, valores, maior: null, menor: null, amplitude: null };
+    const maior = com.reduce((a, b) => (b.v > a.v ? b : a));
+    const menor = com.reduce((a, b) => (b.v < a.v ? b : a));
+    const amplitude = maior.v - menor.v;
+    return amplitude < 0.005 ? { id: parte.id, valores, maior: null, menor: null, amplitude: 0 } : { id: parte.id, valores, maior: maior.i, menor: menor.i, amplitude };
+  });
+}
+
+export type PassoDaCascata = {
+  id: "antes-do-giro" | "estoques" | "fornecedores" | "recebiveis" | "operacional" | "convenio" | "apos-convenio" | "investimentos" | "apos-investimentos";
+  rotulo: string;
+  /** "total": um patamar do caixa (barra a partir do zero); "passo": o que somou ou tirou entre dois patamares. */
+  tipo: "total" | "passo";
+  /** R$ por R$ 100 de receita líquida; null quando a companhia não apresenta a linha. */
+  por100: number | null;
+  /** O mesmo valor em reais. */
+  reais: number | null;
+  /** Onde o passo começa e termina, em R$ por R$ 100 (patamar: de zero ao valor). */
+  de: number | null;
+  ate: number | null;
+};
+
+/**
+ * A cascata do caixa por R$ 100 de receita líquida: o que a operação gerou antes de estoques, fornecedores e contas a receber (conta
+ * desta página: o caixa operacional declarado menos as três variações), as três variações, o caixa operacional declarado, os
+ * pagamentos de convênio que a companhia apresenta no financiamento, o caixa depois deles e, por fim, os investimentos. Cada patamar
+ * é a soma do anterior com os passos entre eles; sem convênio, o passo e o patamar seguinte ficam ausentes e a cascata segue do
+ * declarado. Sem receita ou sem o caixa operacional, não há cascata (null).
+ */
+export function cascataDoCaixa(p: Demonstracao | null): PassoDaCascata[] | null {
+  const cx = caixaDe(p);
+  const receita = p?.receita_liquida ?? null;
+  if (!p || !receita || cx.operacional === null) return null;
+  const r = (v: number | null) => (v === null ? null : (100 * v) / receita);
+  const giro = [cx.estoques, cx.fornecedores, cx.recebiveis];
+  const antes = cx.operacional - giro.reduce<number>((s, v) => s + (v ?? 0), 0);
+  const passos: PassoDaCascata[] = [];
+  let nivel = 0;
+  const total = (id: PassoDaCascata["id"], rotulo: string, valor: number | null) => {
+    passos.push({ id, rotulo, tipo: "total", por100: r(valor), reais: valor, de: valor === null ? null : 0, ate: r(valor) });
+    if (valor !== null) nivel = (100 * valor) / receita;
+  };
+  const passo = (id: PassoDaCascata["id"], rotulo: string, valor: number | null) => {
+    const d = r(valor);
+    passos.push({ id, rotulo, tipo: "passo", por100: d, reais: valor, de: d === null ? null : nivel, ate: d === null ? null : nivel + d });
+    if (d !== null) nivel += d;
+  };
+  total("antes-do-giro", "Gerado pela operação, antes do capital de giro", antes);
+  passo("estoques", "Estoques", cx.estoques);
+  passo("fornecedores", "Fornecedores", cx.fornecedores);
+  passo("recebiveis", "Contas a receber", cx.recebiveis);
+  total("operacional", "Caixa operacional declarado", cx.operacional);
+  passo("convenio", "Pagamentos de convênio a fornecedores", cx.convenio);
+  total("apos-convenio", "Caixa operacional depois do convênio", cx.convenio === null ? null : cx.aposConvenio);
+  passo("investimentos", "Investimentos", cx.investimentos);
+  total("apos-investimentos", "O que sobra depois dos investimentos", cx.investimentos === null ? null : (cx.aposConvenio ?? cx.operacional) + cx.investimentos);
+  return passos;
+}
+
+export type SinalDoExercicio = { exercicio: number; /** 1: A acima de B; -1: B acima; 0: iguais; null: uma das duas sem o valor. */ sinal: 1 | -1 | 0 | null };
+
+/** Para duas companhias e uma medida: em cada exercício da base, qual das duas ficou acima. É a persistência desenhada ano a ano. */
+export function sinaisPorExercicio(e: GoldEmpresas, a: EmpresaGold, b: EmpresaGold, medida: Medida): SinalDoExercicio[] {
+  return exerciciosDaGold(e).map((exercicio) => {
+    const pa = periodoDe(a, exercicio);
+    const pb = periodoDe(b, exercicio);
+    const va = pa ? medida.valor(pa) : null;
+    const vb = pb ? medida.valor(pb) : null;
+    return { exercicio, sinal: va === null || vb === null ? null : va > vb ? 1 : va < vb ? -1 : 0 };
+  });
+}
+
+export type MedidaEmPontos = { medida: Medida; /** Um valor por empresa, na ordem da seleção; null sem o dado. */ valores: (number | null)[] };
+
+/** As medidas relativas de cada empresa selecionada no exercício, para o gráfico de pontos conectados (de duas a quatro empresas). */
+export function medidasEmPontos(periodos: readonly (PeriodoEmpresa | null)[]): MedidaEmPontos[] {
+  return MEDIDAS_COMPARADAS.map((medida) => ({ medida, valores: periodos.map((p) => (p ? medida.valor(p) : null)) }));
+}
+
+export type { ContaDoCupom, PeriodoEmpresa };
