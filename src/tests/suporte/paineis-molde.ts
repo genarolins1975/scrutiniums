@@ -53,6 +53,7 @@ export const NO_MOLDE_PAINEL: string[] = [
   "/setor-eletrico/inclusao-energetica/tarifa-social",
   "/territorio/desastres",
   "/territorio/queimadas",
+  "/territorio/emissoes",
   // PR 1: capítulos servidos pelo mesmo corpo genérico de uma rota do Grupo 1 (Grupo 2 no plano), migrados junto com ela
   "/eficiencia-estatal/meio-ambiente-clima/prevencao",
   "/eficiencia-estatal/meio-ambiente-clima/residuos",
@@ -200,7 +201,6 @@ export const A_MIGRAR: Record<string, keyof typeof GRUPOS> = {
   "/custo-de-vida/na-minha-cidade": 4,
   "/territorio/desastres/municipio": 4,
   "/territorio/desastres/municipio/[ibge]": 4,
-  "/territorio/emissoes": 4,
   "/territorio/queimadas/municipio": 4,
   "/territorio/queimadas/municipio/[ibge]": 4,
   // Grupo 5, resto do Setor Elétrico

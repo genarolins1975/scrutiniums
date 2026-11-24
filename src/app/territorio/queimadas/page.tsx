@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte, NOME_UF, PISO_FOCOS_DENSIDADE, type FocosMunicipio, type GoldQueimadas } from "@/lib/territorio/queimadas";
+import { densidadePorUf, lerAreasUf, lerQueimadas, lerQueimadasMunicipios, municipiosDeFocos, municipiosParaMetade, recorte, NOME_UF, PISO_FOCOS_DENSIDADE, type FocosMunicipio, type GoldQueimadas } from "@/lib/territorio/queimadas";
+import { codigoUf } from "@/lib/energia/expansao";
+import { AlternarVista } from "@/components/territorio/AlternarVista";
 import { FocosNoMunicipio } from "@/components/territorio/FocosNoMunicipio";
+import { MapaFocosArea } from "@/components/territorio/MapaFocosArea";
 import { DoSateliteAoFoco, dataBr, mesAno, n } from "@/components/territorio/Queimadas";
 import { FiguraAnalitica, GraficoBarras, LeituraGuiada, PaginaPainel, TabelaDados, type NumeroProps } from "@/components/painel";
 import { provenienciaMontada } from "@/lib/painel/proveniencia-montada";
@@ -17,10 +20,10 @@ const FONTE = "INPE, Programa Queimadas, satélite de referência AQUA_M-T";
 const FONTE_CURTA = "INPE, Programa Queimadas";
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
-function origem(g: GoldQueimadas, indicador: string, inicio: string, fim: string, extra: { frequencia?: string; unidade?: string; url?: string; limitacoes?: string[] } = {}) {
+function origem(g: GoldQueimadas, indicador: string, inicio: string, fim: string, extra: { frequencia?: string; unidade?: string; url?: string; limitacoes?: string[]; natureza?: "OBSERVADO" | "CALCULADO" } = {}) {
   return provenienciaMontada({
     indicador,
-    natureza: "OBSERVADO",
+    natureza: extra.natureza ?? "OBSERVADO",
     orgao: "INPE",
     dataset: "Programa Queimadas, focos de calor do satélite de referência",
     url: g.fonte.portal,
@@ -108,6 +111,47 @@ export default function PaginaQueimadas() {
       {semMun > 0 ? `${n(semMun)} focos ficaram sem município identificado e entram só no total do país.` : "Todos os focos do ano foram atribuídos a um município."}
     </>
   );
+  // Mapa: focos do último ano completo por UF sobre a área somada dos municípios no Censo 2022 (calculado no build)
+  const dens = densidadePorUf(g, "ultimoAnoCompleto");
+  const areas = lerAreasUf();
+  const anoDens = dens ? Number(dens.recorte.periodo.inicio.slice(0, 4)) : 0;
+  const densMaior = dens?.itens[0];
+  const densMenor = dens?.itens.at(-1);
+  const ufMaisFocos = dens ? [...dens.itens].sort((a, b) => b.focos - a.focos)[0] : undefined;
+  const provArea = provenienciaMontada({
+    indicador: "Área territorial dos municípios, somada por unidade da federação",
+    natureza: "OBSERVADO",
+    orgao: "IBGE",
+    dataset: "Censo Demográfico 2022, área territorial (SIDRA tabela 4714)",
+    url: areas.url,
+    unidade: "km²",
+    frequencia: "censitária",
+    inicio: "2022",
+    fim: "2022",
+    capturadoEm: areas.capturadoEm,
+    sha256: areas.sha256,
+    limitacoes: [`${areas.semArea.map((m) => `${m.nome} (${m.uf})`).join(", ")}: instalado depois do Censo 2022, sem área nesta referência; seu território está na área dos municípios de origem.`],
+  });
+  const provDensidade = dens
+    ? provenienciaMontada({
+        indicador: `Focos de calor por 1.000 km², por unidade da federação, ${anoDens}`,
+        natureza: "CALCULADO",
+        orgao: "INPE e IBGE",
+        dataset: "Programa Queimadas (satélite de referência) e área territorial do Censo 2022",
+        url: g.fonte.portal,
+        urlPrimaria: g.fonte.url,
+        licenca: g.fonte.licenca,
+        unidade: "focos por 1.000 km²",
+        frequencia: "anual",
+        inicio: dens.recorte.periodo.inicio,
+        fim: dens.recorte.periodo.fim,
+        capturadoEm: g.capturadoEm,
+        formula: "focos da UF no ano ÷ soma das áreas territoriais dos municípios da UF no Censo 2022 × 1.000",
+        transformacoes: ["Soma, por UF, da área territorial de cada município (IBGE, Censo 2022).", "Divisão dos focos do ano na UF por essa área, vezes 1.000."],
+        limitacoes: [...g.ressalvas, "A densidade divide uma contagem de focos pela área: não é área queimada nem número de incêndios."],
+      })
+    : null;
+
   const anosAq = aq && aqFechado ? aq.anual.filter((a) => a.ano >= aqFechado.ano - 2) : [];
 
   const mensalAnos = Object.keys(g.mensal).sort();
@@ -316,7 +360,7 @@ export default function PaginaQueimadas() {
               subtitulo={`Focos de calor · ${rotuloAtual}, contra os mesmos meses do ano anterior · todos os estados na tabela abaixo`}
               natureza="OBSERVADO"
               proveniencia={origem(g, "Focos de calor por estado, ano em curso e mesmo período do ano anterior", c?.periodoAnterior.inicio ?? g.dataReferencia, c?.periodoAtual.fim ?? g.dataReferencia, { frequencia: "mensal" })}
-              leitura={<LeituraGuiada>Estados maiores tendem a ter mais focos: a contagem não está dividida pela área.</LeituraGuiada>}
+              leitura={<LeituraGuiada>Estados maiores tendem a ter mais focos: a contagem não está dividida pela área. O mapa a seguir faz essa divisão.</LeituraGuiada>}
               naoConcluir="que um estado queima mais que outro em proporção ao território: a contagem não está dividida pela área, e estados maiores tendem a somar mais focos."
               tabela={{ titulo: `Os dez estados com mais focos de calor, ${rotuloAtual}`, colunas: colunasUf, linhas: ufs.slice(0, 10).map(linhaUf), casas: [null, 0, 0, null, 0], limite: 10 }}
             >
@@ -337,68 +381,127 @@ export default function PaginaQueimadas() {
               />
             </FiguraAnalitica>
 
-            {gm && anoMun && munis.length > 0 && (
-              <>
-                <FiguraAnalitica
-                  id="municipios"
-                  pergunta={`Município a município: mais focos em ${anoMun}`}
-                  subtitulo={`Os 15 municípios com mais focos de calor no ano · satélite de referência · ${anoMun}`}
-                  natureza="OBSERVADO"
-                  proveniencia={origem(g, "Focos de calor por município, último ano completo", String(anoMun), String(anoMun), { limitacoes: gm.ressalvas })}
-                  leitura={
-                    <LeituraGuiada>
-                      Em {anoMun}, {n(munis.length)} dos {n(gm.municipiosIbge)} municípios do país tiveram ao menos um foco de calor detectado pelo satélite de referência
-                      {metade ? <>, e metade de todos os focos do ano ocorreu em {n(metade)} deles</> : null}. Municípios grandes acumulam mais focos; por isso, a segunda lista
-                      divide a contagem pela área.
-                    </LeituraGuiada>
-                  }
-                  complemento={<FocosNoMunicipio ano={anoMun} />}
-                  ressalva={notaMunicipios}
-                  naoConcluir="que um município queimou mais área ou foi mais negligente: a lista conta focos de calor, e municípios grandes acumulam mais focos pela própria extensão."
-                  tabela={{ titulo: `Os 15 municípios com mais focos de calor em ${anoMun}`, ...tabelaMun(topFocos, anoMun) }}
-                >
-                  <GraficoBarras
-                    semTabela
-                    titulo={`Os 15 municípios com mais focos de calor em ${anoMun}`}
-                    dados={topFocos.map((m) => ({ id: m.id, nome: `${m.nome} (${m.uf})`, focos: m.focos.ultimoAnoCompleto ?? 0 }))}
-                    chaveCategoria="id"
-                    chaveRotulo="nome"
-                    series={[{ id: "focos", rotulo: `Focos em ${anoMun}`, cor: "var(--cor-obee)" }]}
-                    unidade="focos"
-                    casas={0}
-                    orientacao="horizontal"
-                    alturaMaxima={15 * 48 + 48}
-                    rotulosValor
-                    rotulosSaoNomes
+            {dens && provDensidade && densMaior && densMenor && (
+              <FiguraAnalitica
+                id="mapa-por-area"
+                pergunta="Onde há mais focos para o tamanho do território?"
+                subtitulo={`Focos de calor por 1.000 km² · ${dens.itens.length} unidades da federação, ou os ${n(gm?.municipiosIbge ?? 5571)} municípios na opção Municípios · satélite de referência · ${anoDens}`}
+                natureza="CALCULADO"
+                proveniencia={provDensidade}
+                complementares={[
+                  { rotulo: "Sobre os focos", p: origem(g, `Focos de calor por estado, ${anoDens}`, dens.recorte.periodo.inicio, dens.recorte.periodo.fim) },
+                  { rotulo: "Sobre a área", p: provArea },
+                ]}
+                leitura={
+                  <LeituraGuiada>
+                    Em {anoDens}, {densMaior.nome} teve {n(densMaior.porMilKm2, 1)} focos por 1.000 km², a maior densidade entre os estados, e {densMenor.nome}, {n(densMenor.porMilKm2, 1)},
+                    a menor. {ufMaisFocos && ufMaisFocos.uf !== densMaior.uf ? <>Na contagem simples, quem lidera é {ufMaisFocos.nome}, com {n(ufMaisFocos.focos)} focos num território de {n(ufMaisFocos.areaKm2)} km².</> : null}
+                  </LeituraGuiada>
+                }
+                ressalva={
+                  <>
+                    A área de cada estado é a soma das áreas territoriais dos seus municípios no Censo 2022 (IBGE). Município sem foco detectado aparece com zero, mas zero focos
+                    não prova ausência de fogo; {areas.semArea.map((m) => `${m.nome} (${m.uf})`).join(", ")}, instalado depois do Censo, não tem área nesta referência e aparece sem dado.
+                    {dens.semUf > 0 ? ` ${n(dens.semUf)} focos sem estado informado na fonte ficam fora do mapa e entram no total do país.` : ""}
+                  </>
+                }
+                naoConcluir="que o fogo cobriu essa fração do território ou que um lugar foi mais negligente: a densidade divide uma contagem de focos pela área e não mede área queimada nem número de incêndios."
+                tabela={{
+                  titulo: `Focos de calor por 1.000 km² por estado, ${anoDens}`,
+                  colunas: ["Unidade da Federação", `Focos em ${anoDens}`, "Área (km²)", "Focos por 1.000 km²"],
+                  linhas: dens.itens.map((u) => [u.nome, u.focos, u.areaKm2, u.porMilKm2]),
+                  casas: [null, 0, 0, 1],
+                  limite: dens.itens.length,
+                }}
+              >
+                <div data-grafico="mapa">
+                  <MapaFocosArea
+                    ano={anoDens}
+                    ufs={dens.itens.map((u) => ({ codigo: codigoUf(u.uf) as string, sigla: u.uf, nome: u.nome, focos: u.focos, areaKm2: u.areaKm2 }))}
+                    semCobertura={gm?.semCoberturaNaFonte.ids ?? []}
                   />
-                </FiguraAnalitica>
+                </div>
+              </FiguraAnalitica>
+            )}
 
-                <FiguraAnalitica
-                  id="municipios-area"
-                  pergunta={`Mais focos por área em ${anoMun}`}
-                  subtitulo={`Focos por 1.000 km², entre municípios com pelo menos ${PISO_FOCOS_DENSIDADE} focos no ano · área do Censo 2022 · ${anoMun}`}
-                  natureza="CALCULADO"
-                  proveniencia={origem(g, "Focos de calor por 1.000 km² de área municipal, último ano completo", String(anoMun), String(anoMun), { unidade: "focos por 1.000 km²", limitacoes: gm.ressalvas })}
-                  leitura={<LeituraGuiada>O piso de {PISO_FOCOS_DENSIDADE} focos no ano evita que poucos focos num município pequeno dominem a lista.</LeituraGuiada>}
-                  naoConcluir="que o fogo cobriu essa fração do município: a densidade divide a contagem de focos pela área, não mede área queimada."
-                  tabela={{ titulo: `Os 15 municípios com mais focos de calor por 1.000 km² em ${anoMun}`, ...tabelaMun(topArea, anoMun) }}
-                >
-                  <GraficoBarras
-                    semTabela
-                    titulo={`Os 15 municípios com mais focos de calor por 1.000 km² em ${anoMun}`}
-                    dados={topArea.map((m) => ({ id: m.id, nome: `${m.nome} (${m.uf})`, densidade: m.porMilKm2 }))}
-                    chaveCategoria="id"
-                    chaveRotulo="nome"
-                    series={[{ id: "densidade", rotulo: "Focos por 1.000 km²", cor: "var(--cor-obee)" }]}
-                    unidade="focos por 1.000 km²"
-                    casas={1}
-                    orientacao="horizontal"
-                    alturaMaxima={15 * 48 + 48}
-                    rotulosValor
-                    rotulosSaoNomes
-                  />
-                </FiguraAnalitica>
-              </>
+            {gm && anoMun && munis.length > 0 && (
+              <FiguraAnalitica
+                id="municipios"
+                ancoraAntiga="municipios-area"
+                pergunta={`Município a município: onde houve mais focos em ${anoMun}`}
+                subtitulo={`Os 15 municípios com mais focos de calor, em contagem ou por 1.000 km² (entre os que tiveram ao menos ${PISO_FOCOS_DENSIDADE} focos) · satélite de referência · área do Censo 2022 · ${anoMun}`}
+                natureza="OBSERVADO"
+                proveniencia={origem(g, "Focos de calor por município, último ano completo", String(anoMun), String(anoMun), { limitacoes: gm.ressalvas })}
+                complementares={[
+                  {
+                    rotulo: "Sobre a ordem por área",
+                    p: origem(g, "Focos de calor por 1.000 km² de área municipal, último ano completo", String(anoMun), String(anoMun), { unidade: "focos por 1.000 km²", limitacoes: gm.ressalvas, natureza: "CALCULADO" }),
+                  },
+                ]}
+                leitura={
+                  <LeituraGuiada>
+                    Em {anoMun}, {n(munis.length)} dos {n(gm.municipiosIbge)} municípios do país tiveram ao menos um foco de calor detectado pelo satélite de referência
+                    {metade ? <>, e metade de todos os focos do ano ocorreu em {n(metade)} deles</> : null}. Municípios grandes acumulam mais focos; por isso, a ordem por área
+                    divide a contagem pela área, e o piso de {PISO_FOCOS_DENSIDADE} focos evita que poucos focos num município pequeno dominem a lista.
+                  </LeituraGuiada>
+                }
+                complemento={
+                  <>
+                    <div data-tabelas-municipios="">
+                      <TabelaDados titulo={`Os 15 municípios com mais focos de calor em ${anoMun}`} {...tabelaMun(topFocos, anoMun)} />
+                      <TabelaDados titulo={`Os 15 municípios com mais focos de calor por 1.000 km² em ${anoMun}`} {...tabelaMun(topArea, anoMun)} />
+                    </div>
+                    <FocosNoMunicipio ano={anoMun} />
+                  </>
+                }
+                ressalva={notaMunicipios}
+                naoConcluir="que um município queimou mais área ou foi mais negligente: a lista conta focos de calor, a densidade divide essa contagem pela área, e nenhuma das duas mede área queimada."
+                tabela={{ naFigura: "as duas listas, em contagem e por área, estão nas tabelas logo abaixo do gráfico, com o mesmo ano e a mesma área do Censo 2022." }}
+              >
+                <AlternarVista
+                  legenda="Ordenar por"
+                  opcoes={[
+                    { id: "contagem", rotulo: "Contagem" },
+                    { id: "area", rotulo: "Por área" },
+                  ]}
+                  vistas={[
+                    <div key="contagem">
+                      <p className="t-meta mb-3 text-carvao-muted">Mais focos em {anoMun}, em número de focos.</p>
+                      <GraficoBarras
+                        semTabela
+                        titulo={`Os 15 municípios com mais focos de calor em ${anoMun}`}
+                        dados={topFocos.map((m) => ({ id: m.id, nome: `${m.nome} (${m.uf})`, focos: m.focos.ultimoAnoCompleto ?? 0 }))}
+                        chaveCategoria="id"
+                        chaveRotulo="nome"
+                        series={[{ id: "focos", rotulo: `Focos em ${anoMun}`, cor: "var(--cor-obee)" }]}
+                        unidade="focos"
+                        casas={0}
+                        orientacao="horizontal"
+                        alturaMaxima={15 * 48 + 48}
+                        rotulosValor
+                        rotulosSaoNomes
+                      />
+                    </div>,
+                    <div key="area">
+                      <p className="t-meta mb-3 text-carvao-muted">Mais focos por área em {anoMun}, em focos por 1.000 km², entre municípios com pelo menos {PISO_FOCOS_DENSIDADE} focos no ano.</p>
+                      <GraficoBarras
+                        semTabela
+                        titulo={`Os 15 municípios com mais focos de calor por 1.000 km² em ${anoMun}`}
+                        dados={topArea.map((m) => ({ id: m.id, nome: `${m.nome} (${m.uf})`, densidade: m.porMilKm2 }))}
+                        chaveCategoria="id"
+                        chaveRotulo="nome"
+                        series={[{ id: "densidade", rotulo: "Focos por 1.000 km²", cor: "var(--cor-obee)" }]}
+                        unidade="focos por 1.000 km²"
+                        casas={1}
+                        orientacao="horizontal"
+                        alturaMaxima={15 * 48 + 48}
+                        rotulosValor
+                        rotulosSaoNomes
+                      />
+                    </div>,
+                  ]}
+                />
+              </FiguraAnalitica>
             )}
           </>
         }

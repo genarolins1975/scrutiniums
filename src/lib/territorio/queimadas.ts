@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { GoldQueimadasMunicipios } from "./queimadasMunicipios";
 
-export { municipiosDeFocos, municipiosParaMetade, PISO_FOCOS_DENSIDADE, URL_QUEIMADAS_MUNICIPIOS } from "./queimadasMunicipios";
+export { CORTES_FOCOS_AREA, municipiosDeFocos, municipiosParaMetade, PISO_FOCOS_DENSIDADE, URL_QUEIMADAS_MUNICIPIOS } from "./queimadasMunicipios";
 export type { FocosMunicipio, GoldQueimadasMunicipios, PeriodoMunicipal } from "./queimadasMunicipios";
 
 export type Recorte = {
@@ -78,4 +78,68 @@ export function lerQueimadasMunicipios(): GoldQueimadasMunicipios | null {
     cacheMunicipios = existsSync(caminho) ? (JSON.parse(readFileSync(caminho, "utf-8")) as GoldQueimadasMunicipios) : null;
   }
   return cacheMunicipios;
+}
+
+/** Área territorial do Censo 2022 por município (pipeline/territorio/referencia), a mesma que a gold municipal usa. */
+export type ReferenciaAreas = {
+  fonte: string;
+  unidade: string;
+  url: string;
+  sha256: string;
+  capturadoEm: string;
+  /** Soma das áreas dos municípios de cada UF, em km², pela sigla. */
+  porUf: Record<string, number>;
+  /** Municípios da lista atual sem área nesta referência (instalados depois do Censo 2022). */
+  semArea: { id: string; nome: string; uf: string }[];
+};
+
+let cacheAreas: ReferenciaAreas | undefined;
+
+/** Área de cada UF somada das áreas municipais do Censo 2022. Lida no build; o navegador não recebe a lista municipal. */
+export function lerAreasUf(): ReferenciaAreas {
+  if (!cacheAreas) {
+    const r = JSON.parse(readFileSync(join(process.cwd(), "pipeline", "territorio", "referencia", "municipios_ibge_2022.json"), "utf-8")) as {
+      fonte: string; unidade: string; url: string; sha256: string; capturadoEm: string; campos: string[]; linhas: (string | number | null)[][];
+    };
+    const [iId, iNome, iUf, iArea] = ["id", "nome", "uf", "areaKm2"].map((c) => r.campos.indexOf(c));
+    const porUf: Record<string, number> = {};
+    const semArea: ReferenciaAreas["semArea"] = [];
+    for (const l of r.linhas) {
+      const uf = l[iUf] as string;
+      const area = l[iArea];
+      if (typeof area === "number" && area > 0) porUf[uf] = (porUf[uf] ?? 0) + area;
+      else semArea.push({ id: l[iId] as string, nome: l[iNome] as string, uf });
+    }
+    cacheAreas = { fonte: r.fonte, unidade: r.unidade, url: r.url, sha256: r.sha256, capturadoEm: r.capturadoEm, porUf, semArea };
+  }
+  return cacheAreas;
+}
+
+export type DensidadeUf = { uf: string; nome: string; focos: number; areaKm2: number; porMilKm2: number };
+
+/**
+ * Focos por 1.000 km² em cada UF num recorte da gold (padrão: o último ano completo): focos da UF divididos pela área somada dos
+ * seus municípios no Censo 2022, vezes 1.000. Ordenado da maior densidade para a menor. Focos sem UF reconhecida ficam fora da
+ * lista e voltam em `semUf`, para a página dizer quantos são.
+ */
+export function densidadePorUf(g: GoldQueimadas, rotulo: Recorte["rotulo"] = "ultimoAnoCompleto"): { recorte: Recorte; itens: DensidadeUf[]; semUf: number } | null {
+  const r = recorte(g, rotulo);
+  if (!r?.porUF || r.focos === null) return null;
+  const areas = lerAreasUf().porUf;
+  const itens: DensidadeUf[] = [];
+  let semUf = 0;
+  for (const u of r.porUF) {
+    const area = areas[u.id];
+    if (!NOME_UF[u.id] || !(area > 0)) {
+      semUf += u.focos;
+      continue;
+    }
+    itens.push({ uf: u.id, nome: NOME_UF[u.id], focos: u.focos, areaKm2: area, porMilKm2: (1000 * u.focos) / area });
+  }
+  // a gold lista só UFs com foco e reconcilia com o total do recorte: UF ausente teve zero focos detectados (zero é valor)
+  for (const uf of Object.keys(NOME_UF)) {
+    if (!itens.some((x) => x.uf === uf) && areas[uf] > 0) itens.push({ uf, nome: NOME_UF[uf], focos: 0, areaKm2: areas[uf], porMilKm2: 0 });
+  }
+  itens.sort((a, b) => b.porMilKm2 - a.porMilKm2);
+  return { recorte: r, itens, semUf };
 }

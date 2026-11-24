@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { RotuloContexto } from "@/components/layout/RotuloContexto";
 import { AvisoConsultaAberta } from "@/components/acesso/AvisoConsultaAberta";
 import { SeloComConta } from "@/components/acesso/SeloComConta";
 import { BuscaFocos } from "@/components/territorio/BuscaFocos";
@@ -61,7 +62,7 @@ export default function FichaFocosPagina({ params }: { params: { ibge: string } 
       )}
       <section aria-labelledby="ficha-focos-titulo" className="border-b border-linha bg-marfim">
         <div className="mx-auto max-w-page px-6 pb-12 pt-10 md:pb-14 md:pt-14">
-          <p className="rotulo mt-8 flex items-center gap-3 text-mineral"><span aria-hidden="true" className="h-[3px] w-8 bg-obee" />Teve fogo perto de mim?</p>
+          <RotuloContexto rota={rotaFichaFocos(f.id)} pagina="Fogo perto de mim" className="mt-8 flex flex-wrap items-center gap-x-3 text-mineral" marca={<span aria-hidden="true" className="h-[3px] w-8 bg-obee" />} />
           <h1 id="ficha-focos-titulo" className="mt-5 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.1] text-carvao [text-wrap:balance]">
             Focos de calor em {f.nome} ({f.uf})
           </h1>
