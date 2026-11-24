@@ -9,11 +9,15 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import AperitivoPage from "@/app/aperitivo/varejo/page";
-import EntradaPage from "@/app/varejo/page";
-import BrasilPage from "@/app/varejo/brasil/page";
-import SegmentosPage from "@/app/varejo/segmentos/page";
-import MetodoPage from "@/app/varejo/metodo/page";
+import AperitivoPage, { generateMetadata as metaAperitivo } from "@/app/aperitivo/varejo/page";
+import EntradaPage, { generateMetadata as metaEntrada } from "@/app/varejo/page";
+import BrasilPage, { generateMetadata as metaBrasil } from "@/app/varejo/brasil/page";
+import { generateMetadata as metaComparador } from "@/app/varejo/comparador/page";
+import { generateMetadata as metaGrupos } from "@/app/varejo/grupos/page";
+import { generateMetadata as metaFicha } from "@/app/varejo/grupos/[slug]/page";
+import SegmentosPage, { generateMetadata as metaSegmentos } from "@/app/varejo/segmentos/page";
+import MetodoPage, { metadata as metaMetodo } from "@/app/varejo/metodo/page";
+import { metadata as metaLayoutVarejo } from "@/app/varejo/layout";
 import { escalaVarejo } from "@/components/varejo/EntradaVarejo";
 import { comConta } from "@/lib/varejo/convite";
 import { csvAtividades, csvSerieBrasil, csvUfs } from "@/lib/varejo/csv";
@@ -154,6 +158,47 @@ describe("registro, navegação e acesso", () => {
     expect(f.publicadoEm).toBe(g.capturado_em);
     expect(f.referencia).toBe(g.referencia.pmc);
     expect(limiares.dominios.varejo.publicacao[0].arquivo).toBe("public/varejo/gold/setor.json");
+  });
+});
+
+describe("título do documento", () => {
+  /**
+   * O <title> como o Next o monta: título absoluto sai como está; texto simples passa pelo modelo do layout mais próximo
+   * acima do segmento da página (o da coleção para as páginas abaixo de /varejo; o da raiz para a entrada, que mora no
+   * segmento do layout da coleção, e para o aperitivo, cujas cascas não declaram título).
+   */
+  const modeloRaiz = /template:\s*"([^"]*%s[^"]*)"/.exec(readFileSync(join(raiz, "src/app/layout.tsx"), "utf-8"))?.[1];
+  const modeloColecao = (metaLayoutVarejo.title as { template: string }).template;
+  const resolver = (titulo: unknown, modelo: string): string => {
+    if (typeof titulo === "string") return modelo.replace("%s", titulo);
+    const t = titulo as { absolute?: string; default?: string };
+    return t.absolute ?? modelo.replace("%s", String(t.default));
+  };
+  const ficha = Object.keys(dados.curadoria().fichas)[0];
+  const titulos: [string, string][] = [
+    ["/varejo sem sessão (aperitivo)", resolver(metaAperitivo().title, modeloRaiz!)],
+    [ROTA_VAREJO, resolver(metaEntrada().title, modeloRaiz!)],
+    [ROTA_BRASIL, resolver(metaBrasil().title, modeloColecao)],
+    [ROTA_SEGMENTOS, resolver(metaSegmentos().title, modeloColecao)],
+    ["/varejo/comparador", resolver(metaComparador().title, modeloColecao)],
+    ["/varejo/grupos", resolver(metaGrupos().title, modeloColecao)],
+    [`/varejo/grupos/${ficha}`, resolver(metaFicha({ params: { slug: ficha }, searchParams: {} }).title, modeloColecao)],
+    ["/varejo/grupos/(ficha que não existe)", resolver(metaFicha({ params: { slug: "nao-existe" }, searchParams: {} }).title, modeloColecao)],
+    [ROTA_METODO, resolver(metaMetodo.title, modeloColecao)],
+  ];
+
+  it("os dois modelos existem e terminam no nome da plataforma", () => {
+    expect(modeloRaiz).toMatch(/%s.*Scrutiniums$/);
+    expect(modeloColecao).toMatch(/%s.*Scrutiniums$/);
+    expect(ficha).toBeTruthy();
+  });
+
+  // em produção até 24/11/2026 o aperitivo saía "… · Varejo · Scrutiniums · Scrutiniums": título por extenso mais o modelo da raiz
+  it.each(titulos)("%s: o nome da plataforma aparece uma vez só, no fim, e a coleção também uma vez", (_rota, titulo) => {
+    expect(titulo.match(/Scrutiniums/g), titulo).toHaveLength(1);
+    expect(titulo, titulo).toMatch(/ · Scrutiniums$/);
+    expect(titulo.split(" · ").filter((p) => p === "Varejo").length, titulo).toBeLessThanOrEqual(1);
+    expect(titulo, titulo).not.toMatch(/undefined|\[object Object\]/);
   });
 });
 

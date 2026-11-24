@@ -443,6 +443,9 @@ export default function MetodoVarejo() {
             <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
               A série mensal usada nos painéis vai de {mesCurto(meses[0])} a {mesCurto(meses[meses.length - 1])}. Dados setoriais consultados em {dataBr(g.capturado_em)}; demonstrações das companhias, em {dataBr(e.capturado_em)}.
             </p>
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+              A plataforma consulta de novo o IBGE, o Banco Central e a CVM nos dias 16 e 28 de cada mês, depois da divulgação mensal da pesquisa do comércio e do prazo de entrega das demonstrações trimestrais. A nova consulta só substitui a publicada se nenhum mês, estado, atividade ou companhia tiver sumido e se todos os testes passarem; se os números forem os mesmos, nada muda. O ranking, as fichas dos grupos e a correspondência dos segmentos são escritos à mão e revistos fora dessa rotina: o ranking uma vez por ano, as fichas a cada temporada de resultados.
+            </p>
             <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-1 text-sm">
               {paineisPublicados().map((p) => (
                 <li key={p.href}>

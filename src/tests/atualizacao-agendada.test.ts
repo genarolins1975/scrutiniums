@@ -81,6 +81,8 @@ const MOTOR: [string, string][] = [
   // painel Educação nos municípios (Serviços Públicos), 20/10/2026: Ideb, Censo Escolar e população no motor por grupo
   ["atualizar-educacao.yml", "educacao"],
   ["atualizar-conectividade.yml", "conectividade"],
+  // coleção Varejo (Observatório da Economia), 24/11/2026: séries do IBGE e do Banco Central e DFP e ITR da CVM; cada gold é o caminho do seu grupo
+  ["atualizar-varejo.yml", "varejo"],
 ];
 
 describe.each(MOTOR)("%s (motor por grupo)", (arquivo, dominio) => {

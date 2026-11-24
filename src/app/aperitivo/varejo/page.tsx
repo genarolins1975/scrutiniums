@@ -4,6 +4,7 @@ import { EntradaColecao } from "@/components/observatorios/EntradaColecao";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { escalaVarejo, MetodoDaEntrada } from "@/components/varejo/EntradaVarejo";
 import { comConta } from "@/lib/varejo/convite";
+import { tituloNaColecao } from "@/lib/observatorios/contexto";
 import { curadoria, goldEmpresas, goldSetor, leituraBrasil, mesAnterior } from "@/lib/varejo/dados";
 import { mesExtenso, variacao } from "@/lib/varejo/formato";
 import { PERGUNTA_APERITIVO, ROTA_VAREJO, SECAO_APERITIVO } from "@/lib/varejo/paginas";
@@ -22,7 +23,9 @@ export const dynamic = "force-static";
 export function generateMetadata(): Metadata {
   const g = goldSetor();
   return {
-    title: `${PERGUNTA_APERITIVO} · Varejo · Scrutiniums`,
+    // título absoluto, com o nome da coleção lido do registro: escrito por extenso, o modelo do layout raiz ("%s · Scrutiniums")
+    // repetia o nome da plataforma (em produção até 24/11/2026)
+    title: tituloNaColecao(PERGUNTA_APERITIVO, ROTA_VAREJO),
     description: `O resultado das vendas do comércio varejista em ${mesExtenso(g.referencia.pmc)}, em volume e em receita, e o tamanho do mercado em reais na pesquisa anual de ${g.pac.ano}, pelas pesquisas do IBGE.`,
     alternates: { canonical: ROTA_VAREJO },
   };

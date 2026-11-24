@@ -1,0 +1,84 @@
+{
+  "dominio": "varejo",
+  "titulo": "Varejo (Observatório da Economia)",
+  "descricao": "Recoleta das fontes automáticas da coleção Varejo. Grupo 1, séries setoriais (python3 -m pipeline.varejo.setor): Pesquisa Mensal de Comércio (IBGE, SIDRA 8880, 8881 e 8883, mensal), Pesquisa Anual de Comércio (SIDRA 10645, 10653, 10655 e 10656, anual), massa de rendimento da PNAD Contínua (SIDRA 6392), IPCA (SIDRA 7060) e juros do crédito livre a pessoas físicas (Banco Central, SGS 20740). Grupo 2, companhias abertas (python3 -m pipeline.varejo.empresas): DFP (anual) e ITR (trimestral) dos dados abertos da CVM. Os dois coletores não têm seed intermediário: cada um grava a própria gold, que por isso é o caminho do grupo (o motor não aceita o mesmo arquivo como caminho de grupo e como saída, e não há o que reconstruir; 'saidas' e 'reconstruir' ficam vazios). Cada coletor valida a gold nova antes de gravar e, reprovada, sai com código diferente de zero sem tocar o arquivo publicado (coleta com falha: issue e execução vermelha): PMC com calendário contíguo desde janeiro de 2018, nunca com menos meses nem mês de referência anterior ao publicado, 27 UFs, as 14 atividades, PAC e séries de contexto que não recuam; nas companhias, nenhuma da gold publicada some, perde exercício anual ou recua de trimestre, salvo as registradas em SAIDAS_ESPERADAS (Carrefour Brasil, que não arquiva na CVM desde 2025). O sinal de mudança é o hash_dados de cada gold: recoleta com os mesmos números não publica nada, só a data de captura não conta. FORA DA ROTINA, por decisão: a curadoria manual (pipeline/varejo/curadoria: ranking.json, segmentos.json e fichas/*.json, reunidos em public/varejo/gold/curadoria.json por scripts/materializar-varejo.mjs). Ela é escrita à mão e entra por PR, com esta cadência de revisão: ranking uma vez por ano, quando o IRTT publica a edição nova; fichas dos grupos a cada temporada de resultados (depois das DFP, em março e abril, e dos ITR, em maio, agosto e novembro); segmentos quando o IBGE mudar a classificação de atividades da PMC. Também manual, uma vez por ano: acrescentar o ano novo em ANOS_DFP e ANOS_ITR (pipeline/varejo/empresas.py avisa no log quando a janela vence) e trocar o ano da PAC em pipeline/varejo/setor.py quando o IBGE publicar a edição seguinte.",
+  "codigo": [
+    "pipeline/varejo/*.py",
+    "pipeline/tests/test_varejo.py",
+    "src/lib/varejo",
+    "src/tests/varejo.test.ts",
+    "src/tests/varejo-grupos.test.ts"
+  ],
+  "reconstruir": [],
+  "saidas": [],
+  "sinal_de_mudanca": [
+    {
+      "arquivo": "public/varejo/gold/setor.json",
+      "json_chave": "hash_dados"
+    },
+    {
+      "arquivo": "public/varejo/gold/empresas.json",
+      "json_chave": "hash_dados"
+    }
+  ],
+  "testes": [
+    {
+      "nome": "pipeline do Varejo (Python): estrutura das duas golds, hash_dados, ponte de R$ 100 e validações que retêm a gravação",
+      "comando": [
+        "python3",
+        "-m",
+        "unittest",
+        "pipeline.tests.test_varejo"
+      ],
+      "timeout_min": 5
+    },
+    {
+      "nome": "contratos da coleção, das fichas dos grupos, do aperitivo e das entradas (vitest)",
+      "comando": [
+        "npx",
+        "vitest",
+        "run",
+        "--testTimeout=60000",
+        "src/tests/varejo.test.ts",
+        "src/tests/varejo-grupos.test.ts",
+        "src/tests/aperitivo.test.ts",
+        "src/tests/observatorios-entradas.test.ts",
+        "src/tests/perguntas-portas.test.ts",
+        "src/tests/para-voce.test.ts"
+      ],
+      "timeout_min": 15
+    }
+  ],
+  "grupos": [
+    {
+      "id": "ibge-bcb-setor",
+      "nome": "IBGE (PMC mensal, PAC anual, PNAD Contínua e IPCA pelo SIDRA) e Banco Central (SGS 20740): séries setoriais e de contexto",
+      "coleta": [
+        [
+          "python3",
+          "-m",
+          "pipeline.varejo.setor"
+        ]
+      ],
+      "caminhos": [
+        "public/varejo/gold/setor.json"
+      ],
+      "timeout_min": 20
+    },
+    {
+      "id": "cvm-dfp-itr",
+      "nome": "CVM, dados abertos: DFP (anual) e ITR (trimestral) das companhias abertas do varejo",
+      "coleta": [
+        [
+          "python3",
+          "-m",
+          "pipeline.varejo.empresas"
+        ]
+      ],
+      "caminhos": [
+        "public/varejo/gold/empresas.json"
+      ],
+      "timeout_min": 30
+    }
+  ]
+}
