@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { statSync } from "node:fs";
 import { join } from "node:path";
 import { CatalogoIndicadores, ListaValidacoes, MatrizDeFontes } from "@/components/eficiencia/saude/CatalogoSaude";
+import { EscoresServicos } from "@/components/eficiencia/EscoresServicos";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { contextosSaude } from "@/lib/eficiencia/saude/contexto";
 import { ARQUIVO_GOLD_SAUDE, goldSaude } from "@/lib/eficiencia/saude/dados";
@@ -247,6 +248,8 @@ export default function PaginaMetodos() {
             ))}
           </ul>
         </Secao>
+        {/* proposta experimental de escore, em preparação: fica no método, com o selo, e não no fim de cada página do módulo */}
+        <EscoresServicos capitulo="health" preparacao />
       </div>
     </div>
   );
