@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { lerQueimadas, lerQueimadasMunicipios } from "./queimadas";
 import { lerDesastres, serieReconhecida } from "./desastres";
+import { lerDesastresMunicipios } from "./desastresMunicipio";
 import { lerEmissoes } from "./emissoes";
 
 export type ItemReadme = { rotulo: string; texto: string };
@@ -127,7 +128,7 @@ export function fontesTerritorio(): FonteMetodo[] {
       cobertura: `Ocorrências de ${d.fonte.cobertura_eventos.inicio.slice(0, 4)} a ${d.fonte.cobertura_eventos.fim.slice(0, 4)}; reconhecimento federal de ${reconhecida[0].ano} a ${reconhecida.at(-1)!.ano}. ${d.fonte.cadencia}`,
       capturadoEm: d.capturadoEm,
       gold: "/territorio/gold/desastres.json",
-      ressalvas: d.ressalvas,
+      ressalvas: [...d.ressalvas, ...(lerDesastresMunicipios()?.ressalvas.map((r) => `Municípios: ${r}`) ?? [])],
       originais: Object.values(d.originais).map((o) => ({ nome: o.arquivo, url: o.url, sha256: o.sha256, bytes: o.bytes, data: dataIso(o.last_modified), tipoData: "fonte" as const })),
       readme: exigirSecao("/territorio/desastres"),
     },

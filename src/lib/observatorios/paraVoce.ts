@@ -34,7 +34,7 @@ import { lerPublico, mesAno, num, numero } from "@/lib/perguntas/leitura";
 import type { NumeroPorta } from "@/lib/perguntas/tipos";
 import { respostasDosCapitulos } from "@/lib/saneamento/respostas";
 import { periodoConsultaTarifas } from "@/lib/saneamento/tarifas";
-import { desastres, focos } from "@/lib/observatorios/entradas/territorio";
+import { focos } from "@/lib/observatorios/entradas/territorio";
 import { goldJuros, resolverConsulta, rotuloModalidade } from "@/lib/credito/juros";
 import { dadosDoEstado, goldCombustiveis } from "@/lib/combustiveis/dados";
 import { dadosBotijaoNoEstado } from "@/lib/gas/botijaoNoEstado";
@@ -363,8 +363,11 @@ function pergunta(id: IdPergunta, idioma: Idioma): PerguntaParaVoce {
         id,
         pergunta: "O meu município já teve desastre reconhecido?",
         resposta: "Secas, chuvas e deslizamentos com emergência ou calamidade reconhecida pela União desde 2003, por município e por tipo.",
-        href: "/territorio/desastres",
-        numero: daPorta(desastres()),
+        // a ficha do município responde à pergunta; a série do país e os estados ficam no painel
+        href: "/territorio/desastres/municipio",
+        // o número sai do destino; a ficha só o mostra depois de escolher o município
+        numero: null,
+        semNumero: "A ficha mostra os números depois de escolher o município.",
       };
     case "estado-contas":
       return {
@@ -619,7 +622,7 @@ export function paraVoceDoMapa(ufBruta: string | null): { estado: PerguntaParaVo
       semNumero("cidade-escola", CONSULTAS.escola.pergunta, CONSULTAS.escola.resumo, CONSULTAS.escola.href, cidade),
       semNumero("cidade-fogo", "Teve fogo perto de mim?", "Focos de calor por município, o ano em curso contra os mesmos meses do ano anterior.", "/territorio/queimadas", cidade),
       // os desastres reconhecidos também são consulta por município (Território e Clima); com eles, a lista fecha em duas linhas de quatro
-      semNumero("cidade-desastres", "O meu município já teve desastre reconhecido?", "Secas, chuvas e deslizamentos com emergência ou calamidade reconhecida pela União desde 2003.", "/territorio/desastres", cidade),
+      semNumero("cidade-desastres", "O meu município já teve desastre reconhecido?", "Secas, chuvas e deslizamentos com emergência ou calamidade reconhecida pela União desde 2003.", "/territorio/desastres/municipio", cidade),
       semNumero("cidade-custo-de-vida", "Quanto subiu o custo de vida na minha cidade?", "A inflação do IPCA na sua cidade ou região metropolitana, comparada com a do Brasil.", "/custo-de-vida", cidade),
     ],
   };
