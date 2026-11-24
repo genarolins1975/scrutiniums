@@ -1,7 +1,7 @@
 {
- "versao": 2,
- "gerado_em": "2026-11-24T09:56:35Z",
- "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado. Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
+ "versao": 3,
+ "gerado_em": "2026-11-24T09:59:42Z",
+ "regras": "Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'metodo' 'extraido' marca o PNG que a companhia publica embutido num SVG e que foi extraído sem alteração. Ausência registrada com motivo; nesse caso a interface mostra o nome em texto.",
  "logos": [
   {
    "slug": "amazon-brasil",
@@ -20,6 +20,8 @@
    "capturado_em": "2026-11-24T09:56:33Z",
    "sha256": "169ad24c1d0a6cce3c4e52ff2c73c4193b65f37a3b6e9a2fae5dc4c52f9a2be0",
    "bytes": 9749,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -40,6 +42,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "7319d8c528b7080683c2c9af94095d8729a8b45cf23d0350077f2ad5b210bf69",
    "bytes": 1049,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -60,6 +64,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "3ef70895faef3bc2982dd924029e11156d95760161a5046c83d28ab81d4decc6",
    "bytes": 16106,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -80,6 +86,8 @@
    "capturado_em": "2026-11-24T09:08:17Z",
    "sha256": "9c0e5858d98530ef97aca222d793c95f37468d5d2249724b81a4a5544bec3572",
    "bytes": 8849,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -100,6 +108,8 @@
    "capturado_em": "2026-11-24T09:08:21Z",
    "sha256": "349f004d2f625541322ca2bfcdf52195c553c86c9b455b7e1f341670c1285cc9",
    "bytes": 2647,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -120,6 +130,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site institucional (grupocarrefourbrasil.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -142,6 +154,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site de RI (ri.grupocasasbahia.com.br) e a loja (www.casasbahia.com.br) responderam 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -164,6 +178,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "481e0b8c12f4b2450ec2e10a84dba340f0d3d6d19d9d6e5dde3dc40c5578fb95",
    "bytes": 2082,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -184,6 +200,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O certificado de www.dpsp.com.br não corresponde ao nome do site e a conexão segura não se estabeleceu na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -206,6 +224,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site www.gazin.com.br respondeu 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -228,6 +248,8 @@
    "capturado_em": "2026-11-24T09:08:17Z",
    "sha256": "378e48877c4bdb3836a00c7c98650aae5f7bdb910d7acece6da7ca668da024dd",
    "bytes": 3759,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -248,9 +270,11 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
-    "motivo": "O logo do cabeçalho de www.grupoboticario.com.br não é um arquivo: é um SVG escrito dentro da página com uma imagem embutida em base64, forma que a regra recusa; e a página não exibe razão social nem CNPJ no rodapé, de modo que o vínculo também não ficou provado (coleta de 24/11/2026)."
+    "motivo": "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial nem a de informações administrativas exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de 24/11/2026)."
    }
   },
   {
@@ -270,6 +294,8 @@
    "capturado_em": "2026-11-24T09:08:17Z",
    "sha256": "3465b98ffc029f0e6bda8d4d46f41f9cf4d018c7eddf3ac6efc8ef62576c2b84",
    "bytes": 2363,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -290,6 +316,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site www.grupopereira.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -312,6 +340,8 @@
    "capturado_em": "2026-11-24T09:08:21Z",
    "sha256": "50a7c4b3015737c8e32c390f175b74f53f1f39f8c6ea971eb8e7afedbc7c4c12",
    "bytes": 8554,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -332,6 +362,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site de RI (ri.riachuelo.com.br) respondeu 403 (\"Access Denied\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -354,6 +386,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "df3ffbb7dc23a4202e65a5df38c0d47f962e3c518f17fdcbc38ddffc5a815359",
    "bytes": 3487,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -374,6 +408,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "Líder de segmento citado no ranking, sem ficha nem linha no comparador; o site oficial não foi consultado na coleta de 24/11/2026 e o vínculo não foi provado."
@@ -396,6 +432,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "78de3d670adf9eb9f50532e5156588955db2e38d46e6e36b5e3544c4b3483941",
    "bytes": 15526,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -416,6 +454,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site de RI (ri.magazineluiza.com.br) e a loja (www.magazineluiza.com.br) responderam 403 à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -438,6 +478,8 @@
    "capturado_em": "2026-11-24T09:56:34Z",
    "sha256": "297a20a57938d9b7e39116e5183643c8abc7eb7f0d8df23393a67b113def52d4",
    "bytes": 3902,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -446,22 +488,26 @@
    "nome_exibicao": "Natura",
    "papel": "grupo do ranking, ficha, companhia do comparador",
    "cnpj": "71.673.990/0001-77",
-   "vinculo": null,
-   "nota": null,
-   "arquivo": null,
-   "formato": null,
-   "fundo": null,
-   "largura": null,
-   "altura": null,
-   "url_origem": null,
+   "vinculo": "CNPJ 71.673.990/0001-77 (Natura Cosméticos S.A., gold de empresas do Varejo). O cadastro de companhias abertas da CVM (dados.cvm.gov.br, cad_cia_aberta.csv, lido em 24/11/2026) registra para esse CNPJ o e-mail de RI ri@natura.net; o site de RI que publica o arquivo exibe o mesmo endereço em ri.natura.com.br/informacoes-aos-investidores/fale-com-ri/ (\"transparência e proximidade no relacionamento com o mercado. ri@natura.net\").",
+   "nota": "O cabeçalho do site de RI publica o logo como um SVG que apenas envolve um PNG de 4000 x 886 px embutido em base64. O SVG é recusado pela regra; o arquivo publicado aqui são os bytes exatos desse PNG, extraídos sem alteração.",
+   "arquivo": "/varejo/logos/natura.png",
+   "formato": "png",
+   "fundo": "claro",
+   "largura": 4000,
+   "altura": 886,
+   "url_origem": "https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_natura_2025_ri/public/img/logo-natura.svg",
    "pagina_origem": "https://ri.natura.com.br/",
-   "capturado_em": null,
-   "sha256": null,
-   "bytes": null,
+   "capturado_em": "2026-11-24T09:59:39Z",
+   "sha256": "b1a7b43a7520bbda9a5e373c54d3a67ef7182e6a142601bfb7d58b1d622bec1c",
+   "bytes": 54108,
+   "metodo": "extraido",
+   "extraido_de": {
+    "url": "https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_natura_2025_ri/public/img/logo-natura.svg",
+    "sha256": "d0284b41a783c42de941f3df0157cd5c3313a340685e5f0f10e7b1b9cc04a374",
+    "bytes": 72580
+   },
    "derivado_de": null,
-   "ausencia": {
-    "motivo": "O arquivo oficial do cabeçalho do site de RI (logo-natura.svg, 72.580 bytes, e a versão em branco, 105.443 bytes) é um SVG com imagem embutida em data:, conteúdo que a regra recusa em vez de limpar; a loja (www.natura.com.br) respondeu 403 (coleta de 24/11/2026)."
-   }
+   "ausencia": null
   },
   {
    "slug": "pague-menos",
@@ -480,6 +526,8 @@
    "capturado_em": "2026-11-24T09:08:20Z",
    "sha256": "f012a78c4293ded4904e37316670bdb4a0d8aa5985bc503930c23430af2c7249",
    "bytes": 17237,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -500,6 +548,8 @@
    "capturado_em": "2026-11-24T09:08:21Z",
    "sha256": "6ec452f336bf493f660f1427d3ebd1a5ab02ae23187f7c38504835fac1b25a44",
    "bytes": 1180,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -520,6 +570,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site de RI (ri.rdsaude.com.br) respondeu 403 (\"Acesso Bloqueado\") e o institucional (www.rdsaude.com.br) não aceitou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -542,6 +594,8 @@
    "capturado_em": "2026-11-24T09:08:18Z",
    "sha256": "6b31bf469e504890fd14c863233f8b747dbcab3ba287bfe90d90ecbf60b07598",
    "bytes": 5298,
+   "metodo": "direto",
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": null
   },
@@ -562,6 +616,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido."
@@ -584,6 +640,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "A conexão segura com ri.vivara.com.br não se estabeleceu na coleta de 24/11/2026 (cadeia de certificado não verificável); nenhum arquivo oficial foi obtido."
@@ -606,6 +664,8 @@
    "capturado_em": null,
    "sha256": null,
    "bytes": null,
+   "metodo": null,
+   "extraido_de": null,
    "derivado_de": null,
    "ausencia": {
     "motivo": "O site de RI (ri.zamp.com.br) respondeu 403 (\"Acesso Bloqueado\") à coleta de 24/11/2026; nenhum arquivo oficial foi obtido."

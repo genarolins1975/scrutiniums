@@ -26,9 +26,15 @@ do ranking e os líderes de segmento (pipeline/varejo/curadoria/ranking.json), a
 (pipeline/varejo/curadoria/fichas) e as companhias do comparador (public/varejo/gold/empresas.json).
 Formato: {"versao", "gerado_em", "regras", "logos": [{slug, nome_exibicao, papel, cnpj, vinculo,
 nota, arquivo, formato, fundo, largura, altura, url_origem, pagina_origem, capturado_em, sha256,
-bytes, derivado_de, ausencia}]}; `ausencia` é null ou {"motivo": texto}; `derivado_de` é null
-enquanto todo arquivo for o original (reservado ao sha256 do original de um raster reduzido).
+bytes, metodo, extraido_de, derivado_de, ausencia}]}; `ausencia` é null ou {"motivo": texto};
+`derivado_de` é null enquanto todo arquivo for o original (reservado ao sha256 do original de um
+raster reduzido). `metodo` diz como o arquivo foi obtido: "direto" (os bytes da URL de origem),
+"extraido" (a companhia publica o logo como um PNG embutido em base64 num SVG que só o envolve; o
+SVG segue recusado e os bytes exatos do PNG são publicados, com a URL e o sha256 do SVG em
+`extraido_de`) ou "navegador" (arquivo que só um navegador obtém; nenhum neste ciclo). Quando a
+requisição falha numa recaptura, o arquivo anterior da mesma origem é mantido.
 """
+import base64
 import glob
 import hashlib
 import json
@@ -74,9 +80,10 @@ CURADORIA = [
      "O site de RI (ri.magazineluiza.com.br) e a loja (www.magazineluiza.com.br) responderam 403 à coleta de 24/11/2026; "
      "nenhum arquivo oficial foi obtido.", None),
     ("grupo-boticario", "Grupo Boticário", None, None, "https://www.grupoboticario.com.br/", None,
-     "O logo do cabeçalho de www.grupoboticario.com.br não é um arquivo: é um SVG escrito dentro da página com uma imagem "
-     "embutida em base64, forma que a regra recusa; e a página não exibe razão social nem CNPJ no rodapé, de modo que o "
-     "vínculo também não ficou provado (coleta de 24/11/2026).", None),
+     "O cabeçalho de www.grupoboticario.com.br traz o logo como um PNG de 803 x 178 px embutido em base64 num SVG escrito "
+     "dentro da página, e os bytes poderiam ser extraídos; mas nem a página inicial nem a de informações administrativas "
+     "exibem razão social ou CNPJ, e o grupo não tem registro na CVM: sem prova de vínculo, sem logo (coleta de "
+     "24/11/2026).", None),
     ("grupo-mateus", "Grupo Mateus", "24.990.777/0001-09", f"{MZ}/themes/mziq_grupo_mateus/img/logo.png",
      "https://ri.grupomateus.com.br/", "claro",
      f"CNPJ 24.990.777/0001-09 (Grupo Mateus S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o e-mail "
@@ -85,10 +92,14 @@ CURADORIA = [
     ("casas-bahia", "Grupo Casas Bahia", "33.041.260/0652-90", None, "https://ri.grupocasasbahia.com.br/", None,
      "O site de RI (ri.grupocasasbahia.com.br) e a loja (www.casasbahia.com.br) responderam 403 à coleta de 24/11/2026; "
      "nenhum arquivo oficial foi obtido.", None),
-    ("natura", "Natura", "71.673.990/0001-77", None, "https://ri.natura.com.br/", None,
-     "O arquivo oficial do cabeçalho do site de RI (logo-natura.svg, 72.580 bytes, e a versão em branco, 105.443 bytes) é "
-     "um SVG com imagem embutida em data:, conteúdo que a regra recusa em vez de limpar; a loja (www.natura.com.br) "
-     "respondeu 403 (coleta de 24/11/2026).", None),
+    ("natura", "Natura", "71.673.990/0001-77", f"{MZ}/themes/mziq_natura_2025_ri/public/img/logo-natura.svg",
+     "https://ri.natura.com.br/", "claro",
+     f"CNPJ 71.673.990/0001-77 (Natura Cosméticos S.A., gold de empresas do Varejo). O {CVM} registra para esse CNPJ o "
+     "e-mail de RI ri@natura.net; o site de RI que publica o arquivo exibe o mesmo endereço em "
+     "ri.natura.com.br/informacoes-aos-investidores/fale-com-ri/ (\"transparência e proximidade no relacionamento com o "
+     "mercado. ri@natura.net\").",
+     "O cabeçalho do site de RI publica o logo como um SVG que apenas envolve um PNG de 4000 x 886 px embutido em base64. O "
+     "SVG é recusado pela regra; o arquivo publicado aqui são os bytes exatos desse PNG, extraídos sem alteração."),
     ("supermercados-bh", "Supermercados BH", None, None, "https://www.supermercadosbh.com.br/", None,
      "O site www.supermercadosbh.com.br encerrou a conexão na coleta de 24/11/2026; nenhum arquivo oficial foi obtido.", None),
     ("gpa", "GPA", "47.508.411/0001-56", f"{MZ}/uploads/sites/108/2022/11/gpa-logo.png", "https://www.gpari.com.br/", "escuro",
@@ -190,7 +201,24 @@ CURADORIA = [
 ]
 
 CAMPOS = ("slug", "nome_exibicao", "papel", "cnpj", "vinculo", "nota", "arquivo", "formato", "fundo", "largura", "altura",
-          "url_origem", "pagina_origem", "capturado_em", "sha256", "bytes", "derivado_de", "ausencia")
+          "url_origem", "pagina_origem", "capturado_em", "sha256", "bytes", "metodo", "extraido_de", "derivado_de", "ausencia")
+METODOS = ("direto", "extraido", "navegador")
+
+# Entidades cujo arquivo oficial é um SVG que só envolve um PNG em base64: publica-se o PNG, nunca o SVG.
+EXTRAIDOS = {"natura"}
+PNG_EMBUTIDO = re.compile(rb"data:image/png;base64,([A-Za-z0-9+/=\s]+)")
+
+
+def png_embutido(corpo):
+    """Os bytes do único PNG em base64 de um SVG que só o envolve; None quando o SVG tem outra coisa além dele."""
+    achados = PNG_EMBUTIDO.findall(corpo)
+    if len(achados) != 1:
+        return None
+    sem_imagem = PNG_EMBUTIDO.sub(b"", corpo)
+    if svg_com_conteudo_ativo(sem_imagem) or len(sem_imagem) > 2000:
+        return None
+    png = base64.b64decode(achados[0])
+    return png if formato_de(png) == "png" else None
 
 # Conteúdo embutido que a expressão do Setor Elétrico não cobre: imagem raster dentro do SVG e qualquer data:.
 SVG_EMBUTIDO = re.compile(rb"<\s*image\b|data\s*:", re.I)
@@ -287,7 +315,7 @@ def conferir(manifesto=None):
         if not x["arquivo"]:
             if not (x["ausencia"] and len(x["ausencia"].get("motivo", "")) > 20):
                 erros.append(f"{s}: sem arquivo e sem motivo de ausência")
-            if any(x[c] is not None for c in ("formato", "fundo", "largura", "altura", "sha256", "bytes")):
+            if any(x[c] is not None for c in ("formato", "fundo", "largura", "altura", "sha256", "bytes", "metodo", "extraido_de")):
                 erros.append(f"{s}: ausência com dados de arquivo")
             continue
         if x["ausencia"] is not None:
@@ -317,6 +345,12 @@ def conferir(manifesto=None):
         w, h = dimensoes(corpo, fmt)
         if (w, h) != (x["largura"], x["altura"]) or not w or not h:
             erros.append(f"{s}: dimensões não conferem ({w} x {h})")
+        if x["metodo"] not in METODOS:
+            erros.append(f"{s}: método de captura inválido")
+        ext = x["extraido_de"]
+        if (x["metodo"] == "extraido") != bool(ext) or (ext and not (str(ext.get("url", "")).startswith("https://")
+                                                                    and re.fullmatch(r"[0-9a-f]{64}", str(ext.get("sha256", ""))))):
+            erros.append(f"{s}: extração sem a origem e o sha256 do arquivo que envolvia a imagem")
         if x["fundo"] not in ("claro", "escuro"):
             erros.append(f"{s}: fundo inválido")
         if len(x["vinculo"] or "") < 40:
@@ -368,10 +402,21 @@ def main():
         if fmt is None:
             ausente(f"O endereço oficial ({url}) não devolveu PNG, WebP nem SVG.")
             continue
+        item["metodo"] = "direto"
+        if slug in EXTRAIDOS:
+            png = png_embutido(corpo) if fmt == "svg" else None
+            if png is None:
+                item["metodo"] = None
+                ausente(f"O arquivo oficial ({url}) deixou de ser um SVG que só envolve um PNG; a extração não se aplica.")
+                continue
+            item.update({"metodo": "extraido", "extraido_de": {"url": url, "sha256": hashlib.sha256(corpo).hexdigest(), "bytes": len(corpo)}})
+            corpo, fmt = png, "png"
         if fmt == "svg" and svg_recusado(corpo):
+            item.update({"metodo": None, "extraido_de": None})
             ausente(f"O SVG oficial ({url}) traz script, evento, conteúdo embutido ou referência externa e não é publicado.")
             continue
         if len(corpo) > LIMITE_BYTES:
+            item.update({"metodo": None, "extraido_de": None})
             ausente(f"O arquivo oficial ({url}) tem {len(corpo)} bytes, acima do limite de {LIMITE_BYTES} da pasta de logos.")
             continue
         sha = hashlib.sha256(corpo).hexdigest()
@@ -395,13 +440,14 @@ def main():
         if nome != "manifesto.json" and nome not in publicados:
             os.remove(os.path.join(DESTINO, nome))
     man = {
-        "versao": 2,
+        "versao": 3,
         "gerado_em": base.agora_utc(),
         "regras": ("Arquivo oficial publicado pela própria companhia (site de RI ou institucional), baixado e servido localmente, sem "
                    "alteração. 'vinculo' é a prova de que o site de origem é o da entidade: CNPJ ou razão social exibidos na própria "
                    "página, ou o e-mail de RI que o cadastro de companhias abertas da CVM registra para o CNPJ, do mesmo domínio do "
                    "site; nunca semelhança de nome. 'fundo' indica o fundo para o qual o arquivo foi desenhado; a interface usa uma "
-                   "placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado. Ausência "
+                   "placa desse tom. SVG com script, evento, conteúdo embutido, entidade ou referência externa é recusado; 'metodo' "
+                   "'extraido' marca o PNG que a companhia publica embutido num SVG e que foi extraído sem alteração. Ausência "
                    "registrada com motivo; nesse caso a interface mostra o nome em texto."),
         "logos": logos,
     }

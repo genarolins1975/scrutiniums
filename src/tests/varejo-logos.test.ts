@@ -62,7 +62,7 @@ describe("Varejo: manifesto de logos", () => {
       expect(l.nome_exibicao.length, l.slug).toBeGreaterThan(1);
       if (!l.arquivo) {
         expect(l.ausencia?.motivo.length ?? 0, l.slug).toBeGreaterThan(20);
-        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes]) expect(c, l.slug).toBeNull();
+        for (const c of [l.formato, l.fundo, l.largura, l.altura, l.sha256, l.bytes, l.metodo, l.extraido_de]) expect(c, l.slug).toBeNull();
         continue;
       }
       expect(l.ausencia, l.slug).toBeNull();
@@ -72,6 +72,15 @@ describe("Varejo: manifesto de logos", () => {
       expect(bytes.length, l.slug).toBeLessThanOrEqual(60_000);
       expect(createHash("sha256").update(bytes).digest("hex"), l.slug).toBe(l.sha256);
       expect(l.derivado_de, l.slug).toBeNull(); // todo arquivo é o original, sem redução
+      // extração só de PNG, com a origem e o sha256 do SVG que o envolvia; o SVG em si nunca é publicado
+      expect(["direto", "extraido", "navegador"], l.slug).toContain(l.metodo);
+      expect(l.metodo === "extraido", l.slug).toBe(l.extraido_de !== null);
+      if (l.extraido_de) {
+        expect(l.formato, l.slug).toBe("png");
+        expect(l.extraido_de.url, l.slug).toBe(l.url_origem);
+        expect(l.extraido_de.sha256, l.slug).toMatch(/^[0-9a-f]{64}$/);
+        expect(l.nota ?? "", l.slug).toMatch(/extra[ií]d/);
+      }
       expect(l.url_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.pagina_origem, l.slug).toMatch(/^https:\/\//);
       expect(l.capturado_em, l.slug).toMatch(/^\d{4}-\d{2}-\d{2}T/);

@@ -29,6 +29,8 @@ export type EntradaLogoVarejo = {
   capturado_em: string | null;
   sha256: string | null;
   bytes: number | null;
+  metodo: "direto" | "extraido" | "navegador" | null;
+  extraido_de: { url: string; sha256: string; bytes: number } | null;
   derivado_de: string | null;
   ausencia: { motivo: string } | null;
 };

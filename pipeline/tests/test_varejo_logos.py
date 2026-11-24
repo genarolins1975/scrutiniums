@@ -41,6 +41,17 @@ class LogosVarejo(unittest.TestCase):
                      b'<!DOCTYPE svg [<!ENTITY x "y">]><svg/>', b'<svg><style>@import url(https://exemplo.invalid/a.css)</style></svg>'):
             self.assertTrue(logos.svg_recusado(ruim), ruim)
 
+    def test_png_embutido_so_quando_o_svg_apenas_o_envolve(self):
+        import base64
+        png = b"\x89PNG\r\n\x1a\n" + b"\x00" * 32
+        b64 = base64.b64encode(png)
+        envolve = b'<svg xmlns="http://www.w3.org/2000/svg"><image href="data:image/png;base64,' + b64 + b'"/></svg>'
+        self.assertEqual(logos.png_embutido(envolve), png)
+        self.assertTrue(logos.svg_recusado(envolve))  # o SVG em si segue recusado
+        self.assertIsNone(logos.png_embutido(envolve.replace(b"<image", b"<script>x()</script><image")))
+        self.assertIsNone(logos.png_embutido(envolve.replace(b"</svg>", b'<image href="data:image/png;base64,' + b64 + b'"/></svg>')))
+        self.assertIsNone(logos.png_embutido(b"<svg/>"))
+
 
 if __name__ == "__main__":
     unittest.main()
