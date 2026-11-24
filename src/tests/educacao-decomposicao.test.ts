@@ -15,6 +15,10 @@ const uf = (s: string) => JSON.parse(readFileSync(join(raiz, "public/educacao/go
 
 describe("educação: divisão da mudança do Ideb entre aprendizagem e aprovação", () => {
   it("reproduz as variações publicadas pelo pipeline para todos os municípios de três estados", () => {
+    // mesma conferência par a par, com as divergências acumuladas e uma asserção só no fim: dezenas de milhares de expect
+    // individuais estouravam o tempo do teste no CI sob carga (24/11/2026)
+    const perto = (a: number | null, b: number | null) => (a === null || b === null ? a === b : Math.abs(a - b) < 5e-10);
+    const divergencias: string[] = [];
     let conferidos = 0;
     for (const s of ["SE", "SP", "RR"]) {
       const a = uf(s);
@@ -22,20 +26,21 @@ describe("educação: divisão da mudança do Ideb entre aprendizagem e aprovaç
         for (const e of ["ai", "af"] as const) {
           const serie = m[e].municipal;
           for (const v of m.analises[e].variacoes) {
-            const calc = decompor(serie!, v[0], v[1])!;
-            expect(calc, `${m.id} ${e} ${v[0]}-${v[1]}`).not.toBeNull();
-            for (let k = 2; k < 6; k++) expect(calc[k]).toBeCloseTo(v[k] as number, 9);
-            if (v[6] === null) expect(calc[6], `${m.id} ${e}`).toBeNull();
-            else expect(calc[6]).toBeCloseTo(v[6], 9);
-            if (v[7] === null) expect(calc[7]).toBeNull();
-            else expect(calc[7]).toBeCloseTo(v[7], 9);
+            const calc = decompor(serie!, v[0], v[1]);
             conferidos++;
+            if (!calc) { divergencias.push(`${m.id} ${e} ${v[0]}-${v[1]}: nulo`); continue; }
+            for (let k = 2; k < 8; k++) {
+              const esperado = (v[k] ?? null) as number | null;
+              const obtido = (calc[k] ?? null) as number | null;
+              if (!perto(obtido, esperado)) divergencias.push(`${m.id} ${e} ${v[0]}-${v[1]} [${k}]: ${obtido} ≠ ${esperado}`);
+            }
           }
         }
       }
     }
+    expect(divergencias.slice(0, 20)).toEqual([]);
     expect(conferidos).toBeGreaterThan(1000);
-  });
+  }, 30_000);
 
   it("Brasil e estados: parcelas fecham o produto, períodos existem na série e ausência não vira zero", () => {
     const recortes = recortesDecompostos(gold, (s) => s);
