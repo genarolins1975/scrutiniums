@@ -276,8 +276,10 @@
       "arquivos": [
         "ibcc.json"
       ],
-      "depende_de": [],
-      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "depende_de": [
+        "overview"
+      ],
+      "evidencia": "pipeline/gold.py: overview.ibcc_posicao = build_ibcc_position(ibcc); src/tests/resumo-canal.test.ts exige igualdade. Publicação conjunta, ciclo com overview: ibcc não avança sobre overview.json retido (de 16 a 23/11/2026 avançou e os dois arquivos divergiram no ar)",
       "produtores": [
         "pipeline/gold.py"
       ]
@@ -500,8 +502,10 @@
       "arquivos": [
         "prazo.json"
       ],
-      "depende_de": [],
-      "evidencia": "pipeline/gold.py: build_all; saídas do mesmo builder",
+      "depende_de": [
+        "emprego-setores-ufs"
+      ],
+      "evidencia": "pipeline/ufs.py: build copia o bloco de prazo de cada UF para ufs.json; src/tests/prazo-data.test.ts exige igualdade. Publicação conjunta: prazo não avança sobre ufs.json retido (de 11 a 23/11/2026 avançou e os dois arquivos divergiram no ar)",
       "produtores": [
         "pipeline/gold.py"
       ]

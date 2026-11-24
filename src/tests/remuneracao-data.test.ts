@@ -20,7 +20,8 @@ const appJs = readFileSync(join(raiz, "public/obs/app.js"), "utf-8");
 describe("estático: coletor e builder", () => {
   it("roda no pipeline diário e no bloco do operacional", () => {
     expect(runPy).toContain('("remuneracao", remuneracao)');
-    expect(operPy).toMatch(/"remuneracao": _bloco_remuneracao\(con\)/);
+    // o bloco recebe o cadastro de instituições da mesma gold desde 24/11/2026 (remuneração só de companhias do cadastro)
+    expect(operPy).toMatch(/"remuneracao": _bloco_remuneracao\(con[,)]/);
   });
 
   it("nunca coleta sem filtro e vence a maior versão da reapresentação", () => {
