@@ -426,6 +426,24 @@ class ManifestoReal(unittest.TestCase):
         self.assertEqual(donos['emprego.json'], donos['sectors.json'])
         self.assertEqual(donos['emprego.json'], donos['ufs.json'])
 
+    def test_copia_embutida_nao_avanca_sobre_o_arquivo_que_a_embute(self):
+        # ufs.json embute o bloco de prazo e overview.json a posição do IBCC; prazo-data.test.ts e
+        # resumo-canal.test.ts exigem igualdade. De 11 a 23/11/2026 a origem foi publicada com o arquivo
+        # que a embute retido: reprovação de coerência entre edições não retém, e a gold foi ao ar divergente.
+        man = pg.ler_json(pg.MANIFESTO)
+        mapa = {'t-emprego': {'grupos': ['emprego-setores-ufs']}, 't-recordes': {'grupos': ['recordes']}}
+        ok = {t: {'estado': 'passed'} for t in mapa}
+        r = pg.selecionar(man, mapa, {**ok, 't-emprego': {'estado': 'failed'}})
+        self.assertIn('Dependência retida: emprego-setores-ufs', r['retidos'].get('prazo', []))
+        self.assertIn('Dependência retida: overview', r['retidos'].get('ibcc', []))
+        r = pg.selecionar(man, mapa, {**ok, 't-recordes': {'estado': 'failed'}})
+        self.assertIn('Dependência retida: overview', r['retidos'].get('ibcc', []))
+        self.assertIn('prazo', r['publicados'])  # recordes não chega a ufs.json: prazo segue livre
+        self.assertIn('emprego-setores-ufs', r['publicados'])
+        # No sentido inverso a recomposição já cobre: prazo retido é insumo de recompor de ufs.json.
+        self.assertIn('prazo', man['grupos']['emprego-setores-ufs']['recompor']['insumos'])
+        self.assertEqual(pg.selecionar(man, mapa, ok)['retidos'], {})
+
 
 if __name__ == '__main__':
     unittest.main()

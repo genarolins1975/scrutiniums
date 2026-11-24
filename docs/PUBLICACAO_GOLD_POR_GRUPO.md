@@ -23,12 +23,14 @@ a gold gerada em cada execução. Mudanças no inventário exigem revisão do ma
 | `consignado` | `juros` | pipeline/consignado.py: _instituicoes lê juros.json |
 | `consorcios` | `emprego-setores-ufs` | pipeline/consorcios.py: common.populacao_uf; pipeline/common.py: reserva de população lê ufs.json quando geo_uf está incompleta |
 | `desenrola` | `panorama` | pipeline/desenrola.py: build lê panorama.json para a carteira por UF |
+| `ibcc` | `overview` | pipeline/gold.py: overview.ibcc_posicao = build_ibcc_position(ibcc); publicação conjunta (ciclo com `overview`) |
 | `instituicoes` | `openfinance` | pipeline/gold.py: inst_pages.build e inst_pages_all.build recebem inst e of |
 | `method` | `pulse`, `ibcc`, `instituicoes`, `emprego-setores-ufs` | pipeline/gold.py: build_model_cards, dicionario_indicadores, score_cards |
 | `moradia` | `penetracao` | pipeline/gold.py: Moradia roda depois da Penetração para usar a mesma exclusão de data-base ESTBAN subcoletada; src/tests/moradia-data.test.ts lê a malha do grupo penetracao |
 | `openfinance` | `instituicoes` | pipeline/gold.py: build_openfinance_real(con, inst); pipeline/indicators.py: relacao_credito usa carteira_brl de inst_gold |
 | `overview` | `ibcc`, `emprego-setores-ufs`, `pulse`, `rj`, `central-alertas`, `regimes`, `recordes`, `guidance` | pipeline/gold.py: build_diagnosis, ibcc_posicao e projecoes_resumo; pipeline/overview.py: build_novidades |
 | `pgfn` | `panorama` | pipeline/pgfn.py: build lê panorama.json para a carteira por UF |
+| `prazo` | `emprego-setores-ufs` | pipeline/ufs.py: build copia o bloco de prazo de cada UF para ufs.json; publicação conjunta |
 | `report` | `overview`, `pulse`, `emprego-setores-ufs`, `instituicoes`, `rj`, `alerts`, `scenario`, `quality` | pipeline/gold.py: report_mod.build recebe os oito objetos |
 | `rural` | `penetracao` | pipeline/rural.py: build lê penetracao e penetracao_mun |
 | `scenario` | `pulse` | pipeline/gold.py: scenario.base_forecast_inad_total e base_forecasts reutilizam forecasts já publicados em pulse.previsoes |
@@ -57,6 +59,8 @@ retenções; nunca libera um grupo reprovado na candidata. Repete até estabiliz
 (no máximo o número de grupos + 1 rodadas). Tudo verde usa os bytes exatos da
 candidata testada, como a cópia integral anterior. A geração do envelope por grupo
 acontece **antes** dos testes; esse metadado aditivo também integra a candidata.
+
+Cópia embutida também é publicação conjunta (desde 24/11/2026). `ufs.json` carrega o bloco de prazo de cada UF e `overview.json` a posição do IBCC; `prazo-data.test.ts` e `resumo-canal.test.ts` exigem igualdade com `prazo.json` e `ibcc.json`. Uma reprovação de coerência entre edições não retém (ver `classe` em `scripts/publicar_gold.py`), então a origem publicada ao lado do arquivo retido que a embute ia ao ar divergente: de 11 a 23/11/2026 `prazo` e, desde 16/11, `ibcc` avançaram com `emprego-setores-ufs` e `overview` retidos, e o CI do `main` ficou vermelho. Por isso `prazo` depende de `emprego-setores-ufs` e `ibcc` de `overview`: a origem espera o arquivo que a copia. O custo é declarado: enquanto `overview` estiver retido, a página do IBCC fica na edição anterior. No sentido inverso (`prazo` retido, UFs aprovadas) vale a recomposição acima.
 
 Instituições e Open Finance têm dependência recíproca: a relação exploratória OF × crédito incorpora a carteira das instituições, e as fichas institucionais incorporam OF. O fecho de aprovação trata esse ciclo como publicação conjunta; não exige um grafo acíclico.
 

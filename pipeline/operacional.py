@@ -309,7 +309,7 @@ def _bloco_custos_ti():
     }
 
 
-def _bloco_remuneracao(con):
+def _bloco_remuneracao(con, cnpj8_listados=None):
     """Item 8 do FRE (dataset estruturado da CVM) — quanto ganha a administração.
 
     Por companhia: o exercício REALIZADO mais recente e a proposta do ano
@@ -345,6 +345,12 @@ def _bloco_remuneracao(con):
         atual = alvo[chave]
         if atual is None or item["exercicio"] > atual["exercicio"]:
             alvo[chave] = item
+    # Só entram companhias do cadastro de instituições desta mesma gold (o elo por cnpj8 que a página usa).
+    # Companhia com FRE fora do cadastro não some em silêncio: o nome vai em "fora_do_cadastro".
+    fora = []
+    if cnpj8_listados is not None:
+        fora = sorted({d["nome"] for c8, d in por.items() if c8 not in cnpj8_listados})
+        por = {c8: d for c8, d in por.items() if c8 in cnpj8_listados}
     empresas = sorted((d for d in por.values()
                        if (d["orgaos"].get("Diretoria Estatutária") or {}).get("realizado")),
                       key=lambda d: -d["orgaos"]["Diretoria Estatutária"]["realizado"]["total_brl"])
@@ -352,6 +358,7 @@ def _bloco_remuneracao(con):
         return None
     return {
         "empresas": empresas,
+        "fora_do_cadastro": fora,
         "leitura": ("Quanto cada banco listado paga à administração, direto do item 8 do Formulário de "
                     "Referência (dataset estruturado da CVM): total do órgão, nº de membros (média anual "
                     "ponderada — 45,5 é normal), média por membro e, quando divulgada, a maior remuneração "
@@ -506,7 +513,7 @@ def build(con, cfg=None):
                     "o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking.",
         },
         "custos_ti": _bloco_custos_ti(),
-        "remuneracao": _bloco_remuneracao(con),
+        "remuneracao": _bloco_remuneracao(con, {i.get("cnpj8") for i in instituicoes if i.get("cnpj8")}),
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,
