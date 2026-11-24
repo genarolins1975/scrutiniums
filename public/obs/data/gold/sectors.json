@@ -394,7 +394,7 @@
    "codigo": "129325",
    "nome": "3.18 Impressão e reprodução de gravações",
    "pesquisa": "industria",
-   "score": 70.9,
+   "score": 71.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -48.72,
@@ -406,7 +406,7 @@
     "atividade": 18.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -429,9 +429,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -440,414 +440,414 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 102.38398
-    },
-    {
      "ref": "2022-10-01",
-     "v": 100.87145
+     "v": 96.96139
     },
     {
      "ref": "2022-11-01",
-     "v": 104.55057
+     "v": 124.96135
     },
     {
      "ref": "2022-12-01",
-     "v": 119.76442
+     "v": 124.94083
     },
     {
      "ref": "2023-01-01",
-     "v": 94.49013
+     "v": 101.20356
     },
     {
      "ref": "2023-02-01",
-     "v": 92.74439
+     "v": 87.71961
     },
     {
      "ref": "2023-03-01",
-     "v": 104.24687
+     "v": 104.32986
     },
     {
      "ref": "2023-04-01",
-     "v": 100.16611
+     "v": 90.16257
     },
     {
      "ref": "2023-05-01",
-     "v": 102.4298
+     "v": 103.44336
     },
     {
      "ref": "2023-06-01",
-     "v": 104.86484
+     "v": 94.49179
     },
     {
      "ref": "2023-07-01",
-     "v": 103.09705
+     "v": 98.46283
     },
     {
      "ref": "2023-08-01",
-     "v": 110.32728
+     "v": 95.90508
     },
     {
      "ref": "2023-09-01",
-     "v": 108.5403
+     "v": 96.53162
     },
     {
      "ref": "2023-10-01",
-     "v": 110.49596
+     "v": 97.44566
     },
     {
      "ref": "2023-11-01",
-     "v": 115.82265
+     "v": 133.21237
     },
     {
      "ref": "2023-12-01",
-     "v": 123.68034
+     "v": 122.05268
     },
     {
      "ref": "2024-01-01",
-     "v": 105.36678
+     "v": 102.67658
     },
     {
      "ref": "2024-02-01",
-     "v": 101.91647
+     "v": 90.0204
     },
     {
      "ref": "2024-03-01",
-     "v": 111.41084
+     "v": 99.71625
     },
     {
      "ref": "2024-04-01",
-     "v": 110.2757
+     "v": 97.29842
     },
     {
      "ref": "2024-05-01",
-     "v": 108.75253
+     "v": 105.56256
     },
     {
      "ref": "2024-06-01",
-     "v": 112.16127
+     "v": 100.85241
     },
     {
      "ref": "2024-07-01",
-     "v": 112.86597
+     "v": 106.4624
     },
     {
      "ref": "2024-08-01",
-     "v": 112.53843
+     "v": 101.98174
     },
     {
      "ref": "2024-09-01",
-     "v": 115.06368
+     "v": 96.34659
     },
     {
      "ref": "2024-10-01",
-     "v": 119.16637
+     "v": 106.83082
     },
     {
      "ref": "2024-11-01",
-     "v": 118.43047
+     "v": 133.97967
     },
     {
      "ref": "2024-12-01",
-     "v": 127.85116
+     "v": 133.6141
     },
     {
      "ref": "2025-01-01",
-     "v": 106.07515
+     "v": 107.5862
     },
     {
      "ref": "2025-02-01",
-     "v": 106.83241
+     "v": 98.74552
     },
     {
      "ref": "2025-03-01",
-     "v": 113.53317
+     "v": 102.7564
     },
     {
      "ref": "2025-04-01",
-     "v": 112.15986
+     "v": 97.60558
     },
     {
      "ref": "2025-05-01",
-     "v": 113.53947
+     "v": 113.00713
     },
     {
      "ref": "2025-06-01",
-     "v": 115.41783
+     "v": 100.47971
     },
     {
      "ref": "2025-07-01",
-     "v": 116.18682
+     "v": 109.86279
     },
     {
      "ref": "2025-08-01",
-     "v": 116.18443
+     "v": 104.09941
     },
     {
      "ref": "2025-09-01",
-     "v": 118.59996
+     "v": 104.06468
     },
     {
      "ref": "2025-10-01",
-     "v": 119.55556
+     "v": 110.42649
     },
     {
      "ref": "2025-11-01",
-     "v": 122.2945
+     "v": 141.64624
     },
     {
      "ref": "2025-12-01",
-     "v": 133.62454
+     "v": 143.45135
     },
     {
      "ref": "2026-01-01",
-     "v": 109.84797
+     "v": 114.10918
     },
     {
      "ref": "2026-02-01",
-     "v": 108.0822
+     "v": 96.89278
     },
     {
      "ref": "2026-03-01",
-     "v": 115.83651
+     "v": 109.15174
     },
     {
      "ref": "2026-04-01",
-     "v": 114.50147
+     "v": 100.0716
     },
     {
      "ref": "2026-05-01",
-     "v": 116.56426
+     "v": 115.15615
     },
     {
      "ref": "2026-06-01",
-     "v": 118.86217
+     "v": 107.889
     },
     {
      "ref": "2026-07-01",
-     "v": 119.24617
+     "v": 105.75023
     },
     {
      "ref": "2026-08-01",
-     "v": 118.15606
+     "v": 95.45205
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 91.2756
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 7.71
-    },
-    {
      "ref": "2022-10-01",
-     "v": 8.26
+     "v": -0.78
     },
     {
      "ref": "2022-11-01",
-     "v": 7.09
+     "v": 2.64
     },
     {
      "ref": "2022-12-01",
-     "v": 7.45
+     "v": 0.31
     },
     {
      "ref": "2023-01-01",
-     "v": 7.17
+     "v": 4.54
     },
     {
      "ref": "2023-02-01",
-     "v": 2.24
+     "v": 1.42
     },
     {
      "ref": "2023-03-01",
-     "v": 6.37
+     "v": 4.64
     },
     {
      "ref": "2023-04-01",
-     "v": 4.7
+     "v": -2.28
     },
     {
      "ref": "2023-05-01",
-     "v": 4.03
+     "v": 1.32
     },
     {
      "ref": "2023-06-01",
-     "v": 4.06
+     "v": 3.5
     },
     {
      "ref": "2023-07-01",
-     "v": 3.62
+     "v": 4.32
     },
     {
      "ref": "2023-08-01",
-     "v": 9.08
+     "v": -0.3
     },
     {
      "ref": "2023-09-01",
-     "v": 6.01
+     "v": 2.82
     },
     {
      "ref": "2023-10-01",
-     "v": 9.54
+     "v": 0.5
     },
     {
      "ref": "2023-11-01",
-     "v": 10.78
+     "v": 6.6
     },
     {
      "ref": "2023-12-01",
-     "v": 3.27
+     "v": -2.31
     },
     {
      "ref": "2024-01-01",
-     "v": 11.51
+     "v": 1.46
     },
     {
      "ref": "2024-02-01",
-     "v": 9.89
+     "v": 2.62
     },
     {
      "ref": "2024-03-01",
-     "v": 6.87
+     "v": -4.42
     },
     {
      "ref": "2024-04-01",
-     "v": 10.09
+     "v": 7.91
     },
     {
      "ref": "2024-05-01",
-     "v": 6.17
+     "v": 2.05
     },
     {
      "ref": "2024-06-01",
-     "v": 6.96
+     "v": 6.73
     },
     {
      "ref": "2024-07-01",
-     "v": 9.48
+     "v": 8.12
     },
     {
      "ref": "2024-08-01",
-     "v": 2.0
+     "v": 6.34
     },
     {
      "ref": "2024-09-01",
-     "v": 6.01
+     "v": -0.19
     },
     {
      "ref": "2024-10-01",
-     "v": 7.85
+     "v": 9.63
     },
     {
      "ref": "2024-11-01",
-     "v": 2.25
+     "v": 0.58
     },
     {
      "ref": "2024-12-01",
-     "v": 3.37
+     "v": 9.47
     },
     {
      "ref": "2025-01-01",
-     "v": 0.67
+     "v": 4.78
     },
     {
      "ref": "2025-02-01",
-     "v": 4.82
+     "v": 9.69
     },
     {
      "ref": "2025-03-01",
-     "v": 1.9
+     "v": 3.05
     },
     {
      "ref": "2025-04-01",
-     "v": 1.71
+     "v": 0.32
     },
     {
      "ref": "2025-05-01",
-     "v": 4.4
+     "v": 7.05
     },
     {
      "ref": "2025-06-01",
-     "v": 2.9
+     "v": -0.37
     },
     {
      "ref": "2025-07-01",
-     "v": 2.94
+     "v": 3.19
     },
     {
      "ref": "2025-08-01",
-     "v": 3.24
+     "v": 2.08
     },
     {
      "ref": "2025-09-01",
-     "v": 3.07
+     "v": 8.01
     },
     {
      "ref": "2025-10-01",
-     "v": 0.33
+     "v": 3.37
     },
     {
      "ref": "2025-11-01",
-     "v": 3.26
+     "v": 5.72
     },
     {
      "ref": "2025-12-01",
-     "v": 4.52
+     "v": 7.36
     },
     {
      "ref": "2026-01-01",
-     "v": 3.56
+     "v": 6.06
     },
     {
      "ref": "2026-02-01",
-     "v": 1.17
+     "v": -1.88
     },
     {
      "ref": "2026-03-01",
-     "v": 2.03
+     "v": 6.22
     },
     {
      "ref": "2026-04-01",
-     "v": 2.09
+     "v": 2.53
     },
     {
      "ref": "2026-05-01",
-     "v": 2.66
+     "v": 1.9
     },
     {
      "ref": "2026-06-01",
-     "v": 2.98
+     "v": 7.37
     },
     {
      "ref": "2026-07-01",
-     "v": 2.63
+     "v": -3.74
     },
     {
      "ref": "2026-08-01",
-     "v": 1.7
+     "v": -8.31
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -12.29
     }
    ],
-   "codigo": "pms_31399",
-   "nome": "3. Serviços profissionais, administrativos e complementares",
-   "pesquisa": "servicos",
-   "score": 65.8,
+   "codigo": "pmc_2759",
+   "nome": "Móveis e eletrodomésticos",
+   "pesquisa": "comercio",
+   "score": 69.4,
    "faixa": "elevado",
    "tendencia": "piorando",
-   "tendencia_valor_pp": -0.97,
+   "tendencia_valor_pp": -19.66,
    "velocidade": "momento piorando",
-   "velocidade_valor_pp": -2.46,
-   "yoy_producao_pct": 1.7,
-   "ref": "2026-08-01",
+   "velocidade_valor_pp": -20.81,
+   "yoy_producao_pct": -12.29,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 14.3,
+    "atividade": 15.6,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": -0.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": 1.27,
+     "z": 1.39,
      "peso": 0.5625,
-     "fonte": "IBGE PMS (volume de serviços)",
+     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
     },
     "condicoes_credito": {
@@ -864,9 +864,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": -0.14,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção M + N, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -1264,7 +1264,7 @@
    "codigo": "129330",
    "nome": "3.21 Fabricação de produtos farmoquímicos e farmacêuticos",
    "pesquisa": "industria",
-   "score": 65.0,
+   "score": 65.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -19.25,
@@ -1276,7 +1276,7 @@
     "atividade": 12.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -1299,9 +1299,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -1310,414 +1310,414 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 93.88801
-    },
-    {
      "ref": "2022-10-01",
-     "v": 96.96139
+     "v": 104.88599
     },
     {
      "ref": "2022-11-01",
-     "v": 124.96135
+     "v": 107.05066
     },
     {
      "ref": "2022-12-01",
-     "v": 124.94083
+     "v": 112.9963
     },
     {
      "ref": "2023-01-01",
-     "v": 101.20356
+     "v": 97.69725
     },
     {
      "ref": "2023-02-01",
-     "v": 87.71961
+     "v": 96.10333
     },
     {
      "ref": "2023-03-01",
-     "v": 104.32986
+     "v": 103.90822
     },
     {
      "ref": "2023-04-01",
-     "v": 90.16257
+     "v": 98.06485
     },
     {
      "ref": "2023-05-01",
-     "v": 103.44336
+     "v": 102.29018
     },
     {
      "ref": "2023-06-01",
-     "v": 94.49179
+     "v": 104.95537
     },
     {
      "ref": "2023-07-01",
-     "v": 98.46283
+     "v": 102.28916
     },
     {
      "ref": "2023-08-01",
-     "v": 95.90508
+     "v": 103.81393
     },
     {
      "ref": "2023-09-01",
-     "v": 96.53162
+     "v": 103.54853
     },
     {
      "ref": "2023-10-01",
-     "v": 97.44566
+     "v": 104.61451
     },
     {
      "ref": "2023-11-01",
-     "v": 133.21237
+     "v": 109.11827
     },
     {
      "ref": "2023-12-01",
-     "v": 122.05268
+     "v": 116.82134
     },
     {
      "ref": "2024-01-01",
-     "v": 102.67658
+     "v": 103.87416
     },
     {
      "ref": "2024-02-01",
-     "v": 90.0204
+     "v": 100.62583
     },
     {
      "ref": "2024-03-01",
-     "v": 99.71625
+     "v": 108.49282
     },
     {
      "ref": "2024-04-01",
-     "v": 97.29842
+     "v": 105.33583
     },
     {
      "ref": "2024-05-01",
-     "v": 105.56256
+     "v": 106.18621
     },
     {
      "ref": "2024-06-01",
-     "v": 100.85241
+     "v": 109.52518
     },
     {
      "ref": "2024-07-01",
-     "v": 106.4624
+     "v": 111.93313
     },
     {
      "ref": "2024-08-01",
-     "v": 101.98174
+     "v": 111.20024
     },
     {
      "ref": "2024-09-01",
-     "v": 96.34659
+     "v": 113.287
     },
     {
      "ref": "2024-10-01",
-     "v": 106.83082
+     "v": 111.69074
     },
     {
      "ref": "2024-11-01",
-     "v": 133.97967
+     "v": 115.13789
     },
     {
      "ref": "2024-12-01",
-     "v": 133.6141
+     "v": 123.24232
     },
     {
      "ref": "2025-01-01",
-     "v": 107.5862
+     "v": 110.19799
     },
     {
      "ref": "2025-02-01",
-     "v": 98.74552
+     "v": 110.50769
     },
     {
      "ref": "2025-03-01",
-     "v": 102.7564
+     "v": 112.69248
     },
     {
      "ref": "2025-04-01",
-     "v": 97.60558
+     "v": 110.82214
     },
     {
      "ref": "2025-05-01",
-     "v": 113.00713
+     "v": 113.52807
     },
     {
      "ref": "2025-06-01",
-     "v": 100.47971
+     "v": 116.03045
     },
     {
      "ref": "2025-07-01",
-     "v": 109.86279
+     "v": 116.53879
     },
     {
      "ref": "2025-08-01",
-     "v": 104.09941
+     "v": 115.08352
     },
     {
      "ref": "2025-09-01",
-     "v": 104.06468
+     "v": 118.92276
     },
     {
      "ref": "2025-10-01",
-     "v": 110.42649
+     "v": 118.32376
     },
     {
      "ref": "2025-11-01",
-     "v": 141.64624
+     "v": 118.71294
     },
     {
      "ref": "2025-12-01",
-     "v": 143.45135
+     "v": 132.57981
     },
     {
      "ref": "2026-01-01",
-     "v": 114.10918
+     "v": 117.34483
     },
     {
      "ref": "2026-02-01",
-     "v": 96.89278
+     "v": 115.22893
     },
     {
      "ref": "2026-03-01",
-     "v": 109.15174
+     "v": 122.21118
     },
     {
      "ref": "2026-04-01",
-     "v": 100.0716
+     "v": 118.08731
     },
     {
      "ref": "2026-05-01",
-     "v": 115.11064
+     "v": 119.67794
     },
     {
      "ref": "2026-06-01",
-     "v": 107.92447
+     "v": 126.88772
     },
     {
      "ref": "2026-07-01",
-     "v": 105.79728
+     "v": 121.76396
     },
     {
      "ref": "2026-08-01",
-     "v": 95.2607
+     "v": 119.83961
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 121.97002
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": -6.14
-    },
-    {
      "ref": "2022-10-01",
-     "v": -0.78
+     "v": 8.39
     },
     {
      "ref": "2022-11-01",
-     "v": 2.64
+     "v": 3.42
     },
     {
      "ref": "2022-12-01",
-     "v": 0.31
+     "v": -0.05
     },
     {
      "ref": "2023-01-01",
-     "v": 4.54
+     "v": 4.02
     },
     {
      "ref": "2023-02-01",
-     "v": 1.42
+     "v": 6.89
     },
     {
      "ref": "2023-03-01",
-     "v": 4.64
+     "v": 6.62
     },
     {
      "ref": "2023-04-01",
-     "v": -2.28
+     "v": 4.0
     },
     {
      "ref": "2023-05-01",
-     "v": 1.32
+     "v": 5.28
     },
     {
      "ref": "2023-06-01",
-     "v": 3.5
+     "v": 5.84
     },
     {
      "ref": "2023-07-01",
-     "v": 4.32
+     "v": 4.48
     },
     {
      "ref": "2023-08-01",
-     "v": -0.3
+     "v": 2.49
     },
     {
      "ref": "2023-09-01",
-     "v": 2.82
+     "v": -0.4
     },
     {
      "ref": "2023-10-01",
-     "v": 0.5
+     "v": -0.26
     },
     {
      "ref": "2023-11-01",
-     "v": 6.6
+     "v": 1.93
     },
     {
      "ref": "2023-12-01",
-     "v": -2.31
+     "v": 3.39
     },
     {
      "ref": "2024-01-01",
-     "v": 1.46
+     "v": 6.32
     },
     {
      "ref": "2024-02-01",
-     "v": 2.62
+     "v": 4.71
     },
     {
      "ref": "2024-03-01",
-     "v": -4.42
+     "v": 4.41
     },
     {
      "ref": "2024-04-01",
-     "v": 7.91
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 2.05
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 6.73
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 8.12
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 6.34
-    },
-    {
-     "ref": "2024-09-01",
-     "v": -0.19
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 9.63
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 0.58
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 9.47
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 4.78
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 9.69
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 3.05
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 0.32
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 7.05
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -0.37
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 3.19
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 2.08
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 8.01
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 3.37
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 5.72
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 7.36
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 6.06
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -1.88
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 6.22
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 2.53
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 1.86
-    },
-    {
-     "ref": "2026-06-01",
      "v": 7.41
     },
     {
+     "ref": "2024-05-01",
+     "v": 3.81
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 4.35
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 9.43
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 7.11
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 9.4
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 6.76
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 5.52
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 5.5
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 6.09
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 9.82
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 3.87
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 5.21
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 6.91
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 5.94
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 4.11
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 3.49
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 4.97
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 5.94
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 3.11
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 7.58
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 6.49
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 4.27
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 8.45
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 6.56
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 5.42
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 9.36
+    },
+    {
      "ref": "2026-07-01",
-     "v": -3.7
+     "v": 4.48
     },
     {
      "ref": "2026-08-01",
-     "v": -8.49
+     "v": 4.13
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 2.56
     }
    ],
-   "codigo": "pmc_2759",
-   "nome": "Móveis e eletrodomésticos",
-   "pesquisa": "comercio",
-   "score": 64.4,
+   "codigo": "pms_106874",
+   "nome": "2. Serviços de informação e comunicação",
+   "pesquisa": "servicos",
+   "score": 65.3,
    "faixa": "elevado",
    "tendencia": "piorando",
-   "tendencia_valor_pp": -10.35,
+   "tendencia_valor_pp": -6.79,
    "velocidade": "momento piorando",
-   "velocidade_valor_pp": -14.09,
-   "yoy_producao_pct": -8.49,
-   "ref": "2026-08-01",
+   "velocidade_valor_pp": -7.71,
+   "yoy_producao_pct": 2.56,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 10.9,
+    "atividade": 11.2,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 2.1
    },
    "componentes": {
     "atividade": {
-     "z": 0.97,
+     "z": 1.0,
      "peso": 0.5625,
-     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
+     "fonte": "IBGE PMS (volume de serviços)",
      "status": "observado"
     },
     "condicoes_credito": {
@@ -1734,9 +1734,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.56,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção J, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -2134,7 +2134,7 @@
    "codigo": "129316",
    "nome": "3 Indústrias de transformação",
    "pesquisa": "industria",
-   "score": 64.0,
+   "score": 64.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -4.75,
@@ -2146,7 +2146,7 @@
     "atividade": 11.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -2169,9 +2169,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -2569,7 +2569,7 @@
    "codigo": "129317",
    "nome": "3.10 Fabricação de produtos alimentícios",
    "pesquisa": "industria",
-   "score": 64.0,
+   "score": 64.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.52,
@@ -2581,7 +2581,7 @@
     "atividade": 11.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -2604,9 +2604,444 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-10-01",
+     "v": 101.65677
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 102.13944
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 106.26215
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 94.14199
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 92.74428
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 108.88903
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 96.17578
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 106.34228
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 103.67473
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 106.4256
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 107.88431
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 102.97417
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 100.70575
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 98.42162
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 99.86271
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 95.9274
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 91.97639
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 97.70896
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 99.41486
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 101.35223
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 101.04324
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 104.72773
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 105.06893
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 102.20128
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 107.91123
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 100.05743
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 103.01683
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 95.13293
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 94.22885
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 99.0371
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 100.43916
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 104.97953
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 104.35998
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 109.11105
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 108.34202
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 108.36477
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 109.22038
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 102.87837
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 104.02583
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 96.37993
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 91.98904
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 101.36752
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 99.13552
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 100.90199
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 101.78157
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 106.21596
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 105.47245
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 103.90358
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": 12.27
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 10.61
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 10.22
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 4.97
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 4.89
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 8.19
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 1.53
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 7.0
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 4.57
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 2.42
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -0.98
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -2.01
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -0.94
+    },
+    {
+     "ref": "2023-11-01",
+     "v": -3.64
+    },
+    {
+     "ref": "2023-12-01",
+     "v": -6.02
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 1.9
+    },
+    {
+     "ref": "2024-02-01",
+     "v": -0.83
+    },
+    {
+     "ref": "2024-03-01",
+     "v": -10.27
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 3.37
+    },
+    {
+     "ref": "2024-05-01",
+     "v": -4.69
+    },
+    {
+     "ref": "2024-06-01",
+     "v": -2.54
+    },
+    {
+     "ref": "2024-07-01",
+     "v": -1.6
+    },
+    {
+     "ref": "2024-08-01",
+     "v": -2.61
+    },
+    {
+     "ref": "2024-09-01",
+     "v": -0.75
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 7.15
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 1.66
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 3.16
+    },
+    {
+     "ref": "2025-01-01",
+     "v": -0.83
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 2.45
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 1.36
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 1.03
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 3.58
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 3.28
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 4.19
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 3.12
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 6.03
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 1.21
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 2.82
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 0.98
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 1.31
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -2.38
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 2.35
+    },
+    {
+     "ref": "2026-04-01",
+     "v": -1.3
+    },
+    {
+     "ref": "2026-05-01",
+     "v": -3.88
+    },
+    {
+     "ref": "2026-06-01",
+     "v": -2.47
+    },
+    {
+     "ref": "2026-07-01",
+     "v": -2.65
+    },
+    {
+     "ref": "2026-08-01",
+     "v": -2.65
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -4.12
+    }
+   ],
+   "codigo": "pms_106876",
+   "nome": "4. Transportes, serviços auxiliares aos transportes e correio",
+   "pesquisa": "servicos",
+   "score": 63.4,
+   "faixa": "elevado",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -1.65,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 3.18,
+   "yoy_producao_pct": -4.12,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": 13.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": -2.3
+   },
+   "componentes": {
+    "atividade": {
+     "z": 1.22,
+     "peso": 0.5625,
+     "fonte": "IBGE PMS (volume de serviços)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": -0.62,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção H, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -3004,7 +3439,7 @@
    "codigo": "129331",
    "nome": "3.22 Fabricação de produtos de borracha e de material plástico",
    "pesquisa": "industria",
-   "score": 63.0,
+   "score": 63.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.82,
@@ -3016,7 +3451,7 @@
     "atividade": 10.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -3039,9 +3474,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -3439,7 +3874,7 @@
    "codigo": "129326",
    "nome": "3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis",
    "pesquisa": "industria",
-   "score": 62.8,
+   "score": 63.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -4.97,
@@ -3451,7 +3886,7 @@
     "atividade": 10.7,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -3474,9 +3909,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -3874,7 +4309,7 @@
    "codigo": "129314",
    "nome": "1 Indústria geral",
    "pesquisa": "industria",
-   "score": 62.5,
+   "score": 62.8,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -4.28,
@@ -3886,7 +4321,7 @@
     "atividade": 10.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": -0.3
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
@@ -3909,9 +4344,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": -0.07,
+     "z": 0.01,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção B + C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção B + C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -4309,7 +4744,7 @@
    "codigo": "129339",
    "nome": "3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores",
    "pesquisa": "industria",
-   "score": 62.5,
+   "score": 62.8,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.94,
@@ -4321,7 +4756,7 @@
     "atividade": 10.4,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -4344,9 +4779,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -4744,7 +5179,7 @@
    "codigo": "129321",
    "nome": "3.14 Confecção de artigos do vestuário e acessórios",
    "pesquisa": "industria",
-   "score": 61.9,
+   "score": 62.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.38,
@@ -4756,7 +5191,7 @@
     "atividade": 9.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -4779,9 +5214,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -5179,7 +5614,7 @@
    "codigo": "129337",
    "nome": "3.28 Fabricação de máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 61.8,
+   "score": 62.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -6.63,
@@ -5191,7 +5626,7 @@
     "atividade": 9.7,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -5214,9 +5649,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -5225,412 +5660,412 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 105.08134
-    },
-    {
      "ref": "2022-10-01",
-     "v": 101.65677
+     "v": 100.87145
     },
     {
      "ref": "2022-11-01",
-     "v": 102.13944
+     "v": 104.55057
     },
     {
      "ref": "2022-12-01",
-     "v": 106.26215
+     "v": 119.76442
     },
     {
      "ref": "2023-01-01",
-     "v": 94.14199
+     "v": 94.49013
     },
     {
      "ref": "2023-02-01",
-     "v": 92.74428
+     "v": 92.74439
     },
     {
      "ref": "2023-03-01",
-     "v": 108.88903
+     "v": 104.24687
     },
     {
      "ref": "2023-04-01",
-     "v": 96.17578
+     "v": 100.16611
     },
     {
      "ref": "2023-05-01",
-     "v": 106.34228
+     "v": 102.4298
     },
     {
      "ref": "2023-06-01",
-     "v": 103.67473
+     "v": 104.86484
     },
     {
      "ref": "2023-07-01",
-     "v": 106.4256
+     "v": 103.09705
     },
     {
      "ref": "2023-08-01",
-     "v": 107.88431
+     "v": 110.32728
     },
     {
      "ref": "2023-09-01",
-     "v": 102.97417
+     "v": 108.5403
     },
     {
      "ref": "2023-10-01",
-     "v": 100.70575
+     "v": 110.49596
     },
     {
      "ref": "2023-11-01",
-     "v": 98.42162
+     "v": 115.82265
     },
     {
      "ref": "2023-12-01",
-     "v": 99.86271
+     "v": 123.68034
     },
     {
      "ref": "2024-01-01",
-     "v": 95.9274
+     "v": 105.36678
     },
     {
      "ref": "2024-02-01",
-     "v": 91.97639
+     "v": 101.91647
     },
     {
      "ref": "2024-03-01",
-     "v": 97.70896
+     "v": 111.41084
     },
     {
      "ref": "2024-04-01",
-     "v": 99.41486
+     "v": 110.2757
     },
     {
      "ref": "2024-05-01",
-     "v": 101.35223
+     "v": 108.75253
     },
     {
      "ref": "2024-06-01",
-     "v": 101.04324
+     "v": 112.16127
     },
     {
      "ref": "2024-07-01",
-     "v": 104.72773
+     "v": 112.86597
     },
     {
      "ref": "2024-08-01",
-     "v": 105.06893
+     "v": 112.53843
     },
     {
      "ref": "2024-09-01",
-     "v": 102.20128
+     "v": 115.06368
     },
     {
      "ref": "2024-10-01",
-     "v": 107.91123
+     "v": 119.16637
     },
     {
      "ref": "2024-11-01",
-     "v": 100.05743
+     "v": 118.43047
     },
     {
      "ref": "2024-12-01",
-     "v": 103.01683
+     "v": 127.85116
     },
     {
      "ref": "2025-01-01",
-     "v": 95.13293
+     "v": 106.07515
     },
     {
      "ref": "2025-02-01",
-     "v": 94.22885
+     "v": 106.83241
     },
     {
      "ref": "2025-03-01",
-     "v": 99.0371
+     "v": 113.53317
     },
     {
      "ref": "2025-04-01",
-     "v": 100.43916
+     "v": 112.15986
     },
     {
      "ref": "2025-05-01",
-     "v": 104.97953
+     "v": 113.53947
     },
     {
      "ref": "2025-06-01",
-     "v": 104.35998
+     "v": 115.41783
     },
     {
      "ref": "2025-07-01",
-     "v": 109.11105
+     "v": 116.18682
     },
     {
      "ref": "2025-08-01",
-     "v": 108.34202
+     "v": 116.18443
     },
     {
      "ref": "2025-09-01",
-     "v": 108.36477
+     "v": 118.59996
     },
     {
      "ref": "2025-10-01",
-     "v": 109.22038
+     "v": 119.54806
     },
     {
      "ref": "2025-11-01",
-     "v": 102.87765
+     "v": 122.29437
     },
     {
      "ref": "2025-12-01",
-     "v": 104.02553
+     "v": 133.6244
     },
     {
      "ref": "2026-01-01",
-     "v": 96.37811
+     "v": 109.842
     },
     {
      "ref": "2026-02-01",
-     "v": 91.97557
+     "v": 108.13328
     },
     {
      "ref": "2026-03-01",
-     "v": 101.36762
+     "v": 115.84701
     },
     {
      "ref": "2026-04-01",
-     "v": 99.14476
+     "v": 114.49999
     },
     {
      "ref": "2026-05-01",
-     "v": 100.92494
+     "v": 116.37286
     },
     {
      "ref": "2026-06-01",
-     "v": 101.80551
+     "v": 118.67462
     },
     {
      "ref": "2026-07-01",
-     "v": 106.2525
+     "v": 119.21738
     },
     {
      "ref": "2026-08-01",
-     "v": 105.30759
+     "v": 118.77933
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 121.93995
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 15.02
-    },
-    {
      "ref": "2022-10-01",
-     "v": 12.27
+     "v": 8.26
     },
     {
      "ref": "2022-11-01",
-     "v": 10.61
+     "v": 7.09
     },
     {
      "ref": "2022-12-01",
-     "v": 10.22
+     "v": 7.45
     },
     {
      "ref": "2023-01-01",
-     "v": 4.97
+     "v": 7.17
     },
     {
      "ref": "2023-02-01",
-     "v": 4.89
+     "v": 2.24
     },
     {
      "ref": "2023-03-01",
-     "v": 8.19
+     "v": 6.37
     },
     {
      "ref": "2023-04-01",
-     "v": 1.53
+     "v": 4.7
     },
     {
      "ref": "2023-05-01",
-     "v": 7.0
+     "v": 4.03
     },
     {
      "ref": "2023-06-01",
-     "v": 4.57
+     "v": 4.06
     },
     {
      "ref": "2023-07-01",
-     "v": 2.42
+     "v": 3.62
     },
     {
      "ref": "2023-08-01",
-     "v": -0.98
+     "v": 9.08
     },
     {
      "ref": "2023-09-01",
-     "v": -2.01
+     "v": 6.01
     },
     {
      "ref": "2023-10-01",
-     "v": -0.94
+     "v": 9.54
     },
     {
      "ref": "2023-11-01",
-     "v": -3.64
+     "v": 10.78
     },
     {
      "ref": "2023-12-01",
-     "v": -6.02
+     "v": 3.27
     },
     {
      "ref": "2024-01-01",
-     "v": 1.9
+     "v": 11.51
     },
     {
      "ref": "2024-02-01",
-     "v": -0.83
+     "v": 9.89
     },
     {
      "ref": "2024-03-01",
-     "v": -10.27
+     "v": 6.87
     },
     {
      "ref": "2024-04-01",
-     "v": 3.37
+     "v": 10.09
     },
     {
      "ref": "2024-05-01",
-     "v": -4.69
+     "v": 6.17
     },
     {
      "ref": "2024-06-01",
-     "v": -2.54
+     "v": 6.96
     },
     {
      "ref": "2024-07-01",
-     "v": -1.6
+     "v": 9.48
     },
     {
      "ref": "2024-08-01",
-     "v": -2.61
+     "v": 2.0
     },
     {
      "ref": "2024-09-01",
-     "v": -0.75
+     "v": 6.01
     },
     {
      "ref": "2024-10-01",
-     "v": 7.15
+     "v": 7.85
     },
     {
      "ref": "2024-11-01",
-     "v": 1.66
+     "v": 2.25
     },
     {
      "ref": "2024-12-01",
-     "v": 3.16
+     "v": 3.37
     },
     {
      "ref": "2025-01-01",
-     "v": -0.83
+     "v": 0.67
     },
     {
      "ref": "2025-02-01",
-     "v": 2.45
+     "v": 4.82
     },
     {
      "ref": "2025-03-01",
-     "v": 1.36
+     "v": 1.9
     },
     {
      "ref": "2025-04-01",
-     "v": 1.03
+     "v": 1.71
     },
     {
      "ref": "2025-05-01",
-     "v": 3.58
+     "v": 4.4
     },
     {
      "ref": "2025-06-01",
-     "v": 3.28
+     "v": 2.9
     },
     {
      "ref": "2025-07-01",
-     "v": 4.19
+     "v": 2.94
     },
     {
      "ref": "2025-08-01",
-     "v": 3.12
+     "v": 3.24
     },
     {
      "ref": "2025-09-01",
-     "v": 6.03
+     "v": 3.07
     },
     {
      "ref": "2025-10-01",
-     "v": 1.21
+     "v": 0.32
     },
     {
      "ref": "2025-11-01",
-     "v": 2.82
+     "v": 3.26
     },
     {
      "ref": "2025-12-01",
-     "v": 0.98
+     "v": 4.52
     },
     {
      "ref": "2026-01-01",
-     "v": 1.31
+     "v": 3.55
     },
     {
      "ref": "2026-02-01",
-     "v": -2.39
+     "v": 1.22
     },
     {
      "ref": "2026-03-01",
-     "v": 2.35
+     "v": 2.04
     },
     {
      "ref": "2026-04-01",
-     "v": -1.29
+     "v": 2.09
     },
     {
      "ref": "2026-05-01",
-     "v": -3.86
+     "v": 2.5
     },
     {
      "ref": "2026-06-01",
-     "v": -2.45
+     "v": 2.82
     },
     {
      "ref": "2026-07-01",
-     "v": -2.62
+     "v": 2.61
     },
     {
      "ref": "2026-08-01",
-     "v": -2.8
+     "v": 2.23
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 2.82
     }
    ],
-   "codigo": "pms_106876",
-   "nome": "4. Transportes, serviços auxiliares aos transportes e correio",
+   "codigo": "pms_31399",
+   "nome": "3. Serviços profissionais, administrativos e complementares",
    "pesquisa": "servicos",
-   "score": 61.3,
+   "score": 61.7,
    "faixa": "elevado",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 1.06,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 2.53,
-   "yoy_producao_pct": -2.8,
-   "ref": "2026-08-01",
+   "tendencia": "estável",
+   "tendencia_valor_pp": -0.01,
+   "velocidade": "momento piorando",
+   "velocidade_valor_pp": -0.79,
+   "yoy_producao_pct": 2.82,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 11.7,
+    "atividade": 9.9,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": -2.4
+    "capacidade_financeira": -0.2
    },
    "componentes": {
     "atividade": {
-     "z": 1.04,
+     "z": 0.88,
      "peso": 0.5625,
      "fonte": "IBGE PMS (volume de serviços)",
      "status": "observado"
@@ -5649,9 +6084,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": -0.65,
+     "z": -0.05,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção H, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção M + N, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -6049,7 +6484,7 @@
    "codigo": "129324",
    "nome": "3.17 Fabricação de celulose, papel e produtos de papel",
    "pesquisa": "industria",
-   "score": 60.7,
+   "score": 61.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.95,
@@ -6061,7 +6496,7 @@
     "atividade": 8.5,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -6084,9 +6519,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -6484,7 +6919,7 @@
    "codigo": "129341",
    "nome": "3.32 Fabricação de produtos diversos",
    "pesquisa": "industria",
-   "score": 60.7,
+   "score": 61.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -14.37,
@@ -6496,7 +6931,7 @@
     "atividade": 8.5,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -6519,9 +6954,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -6530,412 +6965,412 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 97.78536
-    },
-    {
      "ref": "2022-10-01",
-     "v": 102.51205
+     "v": 100.22382
     },
     {
      "ref": "2022-11-01",
-     "v": 102.04472
+     "v": 100.53712
     },
     {
      "ref": "2022-12-01",
-     "v": 121.66192
+     "v": 106.32348
     },
     {
      "ref": "2023-01-01",
-     "v": 96.3007
+     "v": 95.90558
     },
     {
      "ref": "2023-02-01",
-     "v": 92.73136
+     "v": 88.37502
     },
     {
      "ref": "2023-03-01",
-     "v": 101.62821
+     "v": 114.70705
     },
     {
      "ref": "2023-04-01",
-     "v": 103.19666
+     "v": 93.77355
     },
     {
      "ref": "2023-05-01",
-     "v": 98.68158
+     "v": 105.23375
     },
     {
      "ref": "2023-06-01",
-     "v": 99.56226
+     "v": 115.84354
     },
     {
      "ref": "2023-07-01",
-     "v": 103.17058
+     "v": 110.56617
     },
     {
      "ref": "2023-08-01",
-     "v": 104.48636
+     "v": 119.00057
     },
     {
      "ref": "2023-09-01",
-     "v": 104.74064
+     "v": 115.22874
     },
     {
      "ref": "2023-10-01",
-     "v": 104.46568
+     "v": 110.82738
     },
     {
      "ref": "2023-11-01",
-     "v": 107.12675
+     "v": 117.65005
     },
     {
      "ref": "2023-12-01",
-     "v": 128.2214
+     "v": 114.15298
     },
     {
      "ref": "2024-01-01",
-     "v": 102.1485
+     "v": 107.282
     },
     {
      "ref": "2024-02-01",
-     "v": 101.42708
+     "v": 103.12697
     },
     {
      "ref": "2024-03-01",
-     "v": 110.41701
+     "v": 116.74684
     },
     {
      "ref": "2024-04-01",
-     "v": 101.88901
+     "v": 121.00547
     },
     {
      "ref": "2024-05-01",
-     "v": 108.78253
+     "v": 116.41884
     },
     {
      "ref": "2024-06-01",
-     "v": 103.1549
+     "v": 124.04582
     },
     {
      "ref": "2024-07-01",
-     "v": 106.54876
+     "v": 133.0217
     },
     {
      "ref": "2024-08-01",
-     "v": 111.28112
+     "v": 128.69138
     },
     {
      "ref": "2024-09-01",
-     "v": 105.46537
+     "v": 124.75546
     },
     {
      "ref": "2024-10-01",
-     "v": 110.39785
+     "v": 133.79953
     },
     {
      "ref": "2024-11-01",
-     "v": 112.92735
+     "v": 122.44306
     },
     {
      "ref": "2024-12-01",
-     "v": 127.20855
+     "v": 120.72405
     },
     {
      "ref": "2025-01-01",
-     "v": 104.99217
+     "v": 116.94633
     },
     {
      "ref": "2025-02-01",
-     "v": 101.14034
+     "v": 113.26689
     },
     {
      "ref": "2025-03-01",
-     "v": 108.94951
+     "v": 113.79314
     },
     {
      "ref": "2025-04-01",
-     "v": 109.38155
+     "v": 112.3551
     },
     {
      "ref": "2025-05-01",
-     "v": 109.36831
+     "v": 118.1777
     },
     {
      "ref": "2025-06-01",
-     "v": 102.91958
+     "v": 108.71411
     },
     {
      "ref": "2025-07-01",
-     "v": 107.0789
+     "v": 120.54302
     },
     {
      "ref": "2025-08-01",
-     "v": 110.7247
+     "v": 118.77825
     },
     {
      "ref": "2025-09-01",
-     "v": 104.80687
+     "v": 122.08207
     },
     {
      "ref": "2025-10-01",
-     "v": 110.43216
+     "v": 128.02901
     },
     {
      "ref": "2025-11-01",
-     "v": 112.98795
+     "v": 115.91393
     },
     {
      "ref": "2025-12-01",
-     "v": 128.87705
+     "v": 121.61783
     },
     {
      "ref": "2026-01-01",
-     "v": 107.87377
+     "v": 113.1914
     },
     {
      "ref": "2026-02-01",
-     "v": 102.99785
+     "v": 104.26474
     },
     {
      "ref": "2026-03-01",
-     "v": 109.90862
+     "v": 127.97506
     },
     {
      "ref": "2026-04-01",
-     "v": 110.3757
+     "v": 115.34058
     },
     {
      "ref": "2026-05-01",
-     "v": 108.98143
+     "v": 120.67183
     },
     {
      "ref": "2026-06-01",
-     "v": 105.12378
+     "v": 121.54169
     },
     {
      "ref": "2026-07-01",
-     "v": 110.20307
+     "v": 126.56451
     },
     {
      "ref": "2026-08-01",
-     "v": 111.25216
+     "v": 120.52974
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 120.23768
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 3.76
-    },
-    {
      "ref": "2022-10-01",
-     "v": 2.72
+     "v": -0.81
     },
     {
      "ref": "2022-11-01",
-     "v": 2.77
+     "v": -5.46
     },
     {
      "ref": "2022-12-01",
-     "v": 2.45
+     "v": -1.76
     },
     {
      "ref": "2023-01-01",
-     "v": 2.35
+     "v": 4.53
     },
     {
      "ref": "2023-02-01",
-     "v": 0.93
+     "v": -1.36
     },
     {
      "ref": "2023-03-01",
-     "v": 4.45
+     "v": 10.78
     },
     {
      "ref": "2023-04-01",
-     "v": 3.33
+     "v": -2.0
     },
     {
      "ref": "2023-05-01",
-     "v": 1.33
+     "v": 1.51
     },
     {
      "ref": "2023-06-01",
-     "v": 3.21
+     "v": 17.79
     },
     {
      "ref": "2023-07-01",
-     "v": 2.94
+     "v": 9.84
     },
     {
      "ref": "2023-08-01",
-     "v": 5.77
+     "v": 10.98
     },
     {
      "ref": "2023-09-01",
-     "v": 7.11
+     "v": 12.48
     },
     {
      "ref": "2023-10-01",
-     "v": 1.91
+     "v": 10.58
     },
     {
      "ref": "2023-11-01",
-     "v": 4.98
+     "v": 17.02
     },
     {
      "ref": "2023-12-01",
-     "v": 5.39
+     "v": 7.36
     },
     {
      "ref": "2024-01-01",
-     "v": 6.07
+     "v": 11.86
     },
     {
      "ref": "2024-02-01",
-     "v": 9.38
+     "v": 16.69
     },
     {
      "ref": "2024-03-01",
-     "v": 8.65
+     "v": 1.78
     },
     {
      "ref": "2024-04-01",
-     "v": -1.27
+     "v": 29.04
     },
     {
      "ref": "2024-05-01",
-     "v": 10.24
+     "v": 10.63
     },
     {
      "ref": "2024-06-01",
-     "v": 3.61
+     "v": 7.08
     },
     {
      "ref": "2024-07-01",
-     "v": 3.27
+     "v": 20.31
     },
     {
      "ref": "2024-08-01",
-     "v": 6.5
+     "v": 8.14
     },
     {
      "ref": "2024-09-01",
-     "v": 0.69
+     "v": 8.27
     },
     {
      "ref": "2024-10-01",
-     "v": 5.68
+     "v": 20.73
     },
     {
      "ref": "2024-11-01",
-     "v": 5.41
+     "v": 4.07
     },
     {
      "ref": "2024-12-01",
-     "v": -0.79
+     "v": 5.76
     },
     {
      "ref": "2025-01-01",
-     "v": 2.78
+     "v": 9.01
     },
     {
      "ref": "2025-02-01",
-     "v": -0.28
+     "v": 9.83
     },
     {
      "ref": "2025-03-01",
-     "v": -1.33
+     "v": -2.53
     },
     {
      "ref": "2025-04-01",
-     "v": 7.35
+     "v": -7.15
     },
     {
      "ref": "2025-05-01",
-     "v": 0.54
+     "v": 1.51
     },
     {
      "ref": "2025-06-01",
-     "v": -0.23
+     "v": -12.36
     },
     {
      "ref": "2025-07-01",
-     "v": 0.5
+     "v": -9.38
     },
     {
      "ref": "2025-08-01",
-     "v": -0.5
+     "v": -7.7
     },
     {
      "ref": "2025-09-01",
-     "v": -0.62
+     "v": -2.14
     },
     {
      "ref": "2025-10-01",
-     "v": 0.03
+     "v": -4.31
     },
     {
      "ref": "2025-11-01",
-     "v": 0.05
+     "v": -5.33
     },
     {
      "ref": "2025-12-01",
-     "v": 1.31
+     "v": 0.74
     },
     {
      "ref": "2026-01-01",
-     "v": 2.74
+     "v": -3.21
     },
     {
      "ref": "2026-02-01",
-     "v": 1.84
+     "v": -7.95
     },
     {
      "ref": "2026-03-01",
-     "v": 0.88
+     "v": 12.46
     },
     {
      "ref": "2026-04-01",
-     "v": 0.91
+     "v": 2.66
     },
     {
      "ref": "2026-05-01",
-     "v": -0.35
+     "v": 2.11
     },
     {
      "ref": "2026-06-01",
-     "v": 2.14
+     "v": 11.8
     },
     {
      "ref": "2026-07-01",
-     "v": 2.92
+     "v": 5.0
     },
     {
      "ref": "2026-08-01",
-     "v": 0.48
+     "v": 1.47
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -1.51
     }
    ],
-   "codigo": "pmc_90672",
-   "nome": "Hipermercados, supermercados, produtos alimentícios, bebidas e fumo",
+   "codigo": "pmc_103159",
+   "nome": "Veículos, motocicletas, partes e peças",
    "pesquisa": "comercio",
-   "score": 59.6,
+   "score": 60.6,
    "faixa": "elevado",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 0.83,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 3.02,
-   "yoy_producao_pct": 0.48,
-   "ref": "2026-08-01",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -13.31,
+   "velocidade": "momento piorando",
+   "velocidade_valor_pp": -12.65,
+   "yoy_producao_pct": -1.51,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 6.2,
+    "atividade": 6.9,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": 0.55,
+     "z": 0.61,
      "peso": 0.5625,
      "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
@@ -6954,9 +7389,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -7354,7 +7789,7 @@
    "codigo": "129335",
    "nome": "3.26 Fabricação de equipamentos de informática, produtos eletrônicos e ópticos",
    "pesquisa": "industria",
-   "score": 59.0,
+   "score": 59.3,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 5.09,
@@ -7366,7 +7801,7 @@
     "atividade": 6.9,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -7389,9 +7824,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -7789,7 +8224,7 @@
    "codigo": "129320",
    "nome": "3.13 Fabricação de produtos têxteis",
    "pesquisa": "industria",
-   "score": 58.7,
+   "score": 59.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.03,
@@ -7801,7 +8236,7 @@
     "atividade": 6.5,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -7824,9 +8259,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -8224,7 +8659,7 @@
    "codigo": "129322",
    "nome": "3.15 Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados",
    "pesquisa": "industria",
-   "score": 58.5,
+   "score": 58.8,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -8.61,
@@ -8236,7 +8671,7 @@
     "atividade": 6.3,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -8259,9 +8694,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -8659,7 +9094,7 @@
    "codigo": "129319",
    "nome": "3.12 Fabricação de produtos do fumo",
    "pesquisa": "industria",
-   "score": 58.2,
+   "score": 58.5,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -16.54,
@@ -8671,7 +9106,7 @@
     "atividade": 6.1,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -8694,9 +9129,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -8705,412 +9140,412 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 103.96282
-    },
-    {
      "ref": "2022-10-01",
-     "v": 104.88599
+     "v": 100.88488
     },
     {
      "ref": "2022-11-01",
-     "v": 107.05066
+     "v": 96.648
     },
     {
      "ref": "2022-12-01",
-     "v": 112.9963
+     "v": 123.89708
     },
     {
      "ref": "2023-01-01",
-     "v": 97.69725
+     "v": 96.66992
     },
     {
      "ref": "2023-02-01",
-     "v": 96.10333
+     "v": 91.25935
     },
     {
      "ref": "2023-03-01",
-     "v": 103.90822
+     "v": 100.10772
     },
     {
      "ref": "2023-04-01",
-     "v": 98.06485
+     "v": 91.73446
     },
     {
      "ref": "2023-05-01",
-     "v": 102.29018
+     "v": 99.34349
     },
     {
      "ref": "2023-06-01",
-     "v": 104.95537
+     "v": 99.17082
     },
     {
      "ref": "2023-07-01",
-     "v": 102.28916
+     "v": 98.07521
     },
     {
      "ref": "2023-08-01",
-     "v": 103.81393
+     "v": 100.15935
     },
     {
      "ref": "2023-09-01",
-     "v": 103.54853
+     "v": 95.2067
     },
     {
      "ref": "2023-10-01",
-     "v": 104.61451
+     "v": 96.8532
     },
     {
      "ref": "2023-11-01",
-     "v": 109.11827
+     "v": 99.84956
     },
     {
      "ref": "2023-12-01",
-     "v": 116.82134
+     "v": 110.48882
     },
     {
      "ref": "2024-01-01",
-     "v": 103.87416
+     "v": 98.32672
     },
     {
      "ref": "2024-02-01",
-     "v": 100.62583
+     "v": 94.60072
     },
     {
      "ref": "2024-03-01",
-     "v": 108.49282
+     "v": 97.66941
     },
     {
      "ref": "2024-04-01",
-     "v": 105.33583
+     "v": 98.79292
     },
     {
      "ref": "2024-05-01",
-     "v": 106.18621
+     "v": 99.54926
     },
     {
      "ref": "2024-06-01",
-     "v": 109.52518
+     "v": 98.24846
     },
     {
      "ref": "2024-07-01",
-     "v": 111.93313
+     "v": 99.98346
     },
     {
      "ref": "2024-08-01",
-     "v": 111.20024
+     "v": 101.78443
     },
     {
      "ref": "2024-09-01",
-     "v": 113.287
+     "v": 96.67953
     },
     {
      "ref": "2024-10-01",
-     "v": 111.69074
+     "v": 97.2525
     },
     {
      "ref": "2024-11-01",
-     "v": 115.13789
+     "v": 96.43465
     },
     {
      "ref": "2024-12-01",
-     "v": 123.24232
+     "v": 104.20968
     },
     {
      "ref": "2025-01-01",
-     "v": 110.19799
+     "v": 95.33833
     },
     {
      "ref": "2025-02-01",
-     "v": 110.50769
+     "v": 95.17767
     },
     {
      "ref": "2025-03-01",
-     "v": 112.69248
+     "v": 95.0188
     },
     {
      "ref": "2025-04-01",
-     "v": 110.82214
+     "v": 93.87198
     },
     {
      "ref": "2025-05-01",
-     "v": 113.52807
+     "v": 98.14453
     },
     {
      "ref": "2025-06-01",
-     "v": 116.03045
+     "v": 96.86266
     },
     {
      "ref": "2025-07-01",
-     "v": 116.53879
+     "v": 98.43209
     },
     {
      "ref": "2025-08-01",
-     "v": 115.08352
+     "v": 98.6672
     },
     {
      "ref": "2025-09-01",
-     "v": 118.91935
+     "v": 99.84806
     },
     {
      "ref": "2025-10-01",
-     "v": 118.32165
+     "v": 100.61113
     },
     {
      "ref": "2025-11-01",
-     "v": 118.73766
+     "v": 99.01363
     },
     {
      "ref": "2025-12-01",
-     "v": 132.63242
+     "v": 107.48056
     },
     {
      "ref": "2026-01-01",
-     "v": 117.38631
+     "v": 97.40042
     },
     {
      "ref": "2026-02-01",
-     "v": 115.30184
+     "v": 92.80356
     },
     {
      "ref": "2026-03-01",
-     "v": 122.23295
+     "v": 98.27839
     },
     {
      "ref": "2026-04-01",
-     "v": 118.1246
+     "v": 97.2305
     },
     {
      "ref": "2026-05-01",
-     "v": 119.81173
+     "v": 96.12528
     },
     {
      "ref": "2026-06-01",
-     "v": 126.98274
+     "v": 95.14032
     },
     {
      "ref": "2026-07-01",
-     "v": 121.86232
+     "v": 97.03434
     },
     {
      "ref": "2026-08-01",
-     "v": 120.06923
+     "v": 95.59989
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 96.64252
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 5.96
-    },
-    {
      "ref": "2022-10-01",
-     "v": 8.39
+     "v": 6.42
     },
     {
      "ref": "2022-11-01",
-     "v": 3.42
+     "v": 0.29
     },
     {
      "ref": "2022-12-01",
-     "v": -0.05
+     "v": 10.11
     },
     {
      "ref": "2023-01-01",
-     "v": 4.02
+     "v": 0.53
     },
     {
      "ref": "2023-02-01",
-     "v": 6.89
+     "v": 0.6
     },
     {
      "ref": "2023-03-01",
-     "v": 6.62
+     "v": 0.58
     },
     {
      "ref": "2023-04-01",
-     "v": 4.0
+     "v": -0.63
     },
     {
      "ref": "2023-05-01",
-     "v": 5.28
+     "v": 0.68
     },
     {
      "ref": "2023-06-01",
-     "v": 5.84
+     "v": -1.5
     },
     {
      "ref": "2023-07-01",
-     "v": 4.48
+     "v": 4.24
     },
     {
      "ref": "2023-08-01",
-     "v": 2.49
+     "v": -6.03
     },
     {
      "ref": "2023-09-01",
-     "v": -0.4
+     "v": -4.62
     },
     {
      "ref": "2023-10-01",
-     "v": -0.26
+     "v": -4.0
     },
     {
      "ref": "2023-11-01",
-     "v": 1.93
+     "v": 3.31
     },
     {
      "ref": "2023-12-01",
-     "v": 3.39
+     "v": -10.82
     },
     {
      "ref": "2024-01-01",
-     "v": 6.32
+     "v": 1.71
     },
     {
      "ref": "2024-02-01",
-     "v": 4.71
+     "v": 3.66
     },
     {
      "ref": "2024-03-01",
-     "v": 4.41
+     "v": -2.44
     },
     {
      "ref": "2024-04-01",
-     "v": 7.41
+     "v": 7.69
     },
     {
      "ref": "2024-05-01",
-     "v": 3.81
+     "v": 0.21
     },
     {
      "ref": "2024-06-01",
-     "v": 4.35
+     "v": -0.93
     },
     {
      "ref": "2024-07-01",
-     "v": 9.43
+     "v": 1.95
     },
     {
      "ref": "2024-08-01",
-     "v": 7.11
+     "v": 1.62
     },
     {
      "ref": "2024-09-01",
-     "v": 9.4
+     "v": 1.55
     },
     {
      "ref": "2024-10-01",
-     "v": 6.76
+     "v": 0.41
     },
     {
      "ref": "2024-11-01",
-     "v": 5.52
+     "v": -3.42
     },
     {
      "ref": "2024-12-01",
-     "v": 5.5
+     "v": -5.68
     },
     {
      "ref": "2025-01-01",
-     "v": 6.09
+     "v": -3.04
     },
     {
      "ref": "2025-02-01",
-     "v": 9.82
+     "v": 0.61
     },
     {
      "ref": "2025-03-01",
-     "v": 3.87
+     "v": -2.71
     },
     {
      "ref": "2025-04-01",
-     "v": 5.21
+     "v": -4.98
     },
     {
      "ref": "2025-05-01",
-     "v": 6.91
+     "v": -1.41
     },
     {
      "ref": "2025-06-01",
-     "v": 5.94
+     "v": -1.41
     },
     {
      "ref": "2025-07-01",
-     "v": 4.11
+     "v": -1.55
     },
     {
      "ref": "2025-08-01",
-     "v": 3.49
+     "v": -3.06
     },
     {
      "ref": "2025-09-01",
-     "v": 4.97
+     "v": 3.28
     },
     {
      "ref": "2025-10-01",
-     "v": 5.94
+     "v": 3.45
     },
     {
      "ref": "2025-11-01",
-     "v": 3.13
+     "v": 2.67
     },
     {
      "ref": "2025-12-01",
-     "v": 7.62
+     "v": 3.14
     },
     {
      "ref": "2026-01-01",
-     "v": 6.52
+     "v": 2.16
     },
     {
      "ref": "2026-02-01",
-     "v": 4.34
+     "v": -2.49
     },
     {
      "ref": "2026-03-01",
-     "v": 8.47
+     "v": 3.43
     },
     {
      "ref": "2026-04-01",
-     "v": 6.59
+     "v": 3.58
     },
     {
      "ref": "2026-05-01",
-     "v": 5.53
+     "v": -2.06
     },
     {
      "ref": "2026-06-01",
-     "v": 9.44
+     "v": -1.78
     },
     {
      "ref": "2026-07-01",
-     "v": 4.57
+     "v": -1.42
     },
     {
      "ref": "2026-08-01",
-     "v": 4.33
+     "v": -3.11
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -3.21
     }
    ],
-   "codigo": "pms_106874",
-   "nome": "2. Serviços de informação e comunicação",
+   "codigo": "pms_31426",
+   "nome": "5. Outros serviços",
    "pesquisa": "servicos",
-   "score": 58.1,
+   "score": 58.5,
    "faixa": "elevado",
    "tendencia": "piorando",
-   "tendencia_valor_pp": -1.2,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -2.4,
-   "yoy_producao_pct": 4.33,
-   "ref": "2026-08-01",
+   "tendencia_valor_pp": -1.43,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 3.78,
+   "yoy_producao_pct": -3.21,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 3.9,
+    "atividade": 6.1,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 2.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
-     "z": 0.35,
+     "z": 0.54,
      "peso": 0.5625,
      "fonte": "IBGE PMS (volume de serviços)",
      "status": "observado"
@@ -9129,9 +9564,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.59,
+     "z": 0.11,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção J, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção E + K + L + S, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -9140,412 +9575,412 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 84.64984
-    },
-    {
      "ref": "2022-10-01",
-     "v": 88.54056
+     "v": 96.41905
     },
     {
      "ref": "2022-11-01",
-     "v": 95.66476
+     "v": 101.83584
     },
     {
      "ref": "2022-12-01",
-     "v": 167.22246
+     "v": 93.58578
     },
     {
      "ref": "2023-01-01",
-     "v": 79.49329
+     "v": 97.444
     },
     {
      "ref": "2023-02-01",
-     "v": 71.15346
+     "v": 86.80816
     },
     {
      "ref": "2023-03-01",
-     "v": 81.88834
+     "v": 105.03543
     },
     {
      "ref": "2023-04-01",
-     "v": 86.9174
+     "v": 87.14194
     },
     {
      "ref": "2023-05-01",
-     "v": 99.9304
+     "v": 102.50234
     },
     {
      "ref": "2023-06-01",
-     "v": 101.51648
+     "v": 97.38576
     },
     {
      "ref": "2023-07-01",
-     "v": 95.76869
+     "v": 100.90705
     },
     {
      "ref": "2023-08-01",
-     "v": 90.17559
+     "v": 106.60416
     },
     {
      "ref": "2023-09-01",
-     "v": 82.35032
+     "v": 97.25164
     },
     {
      "ref": "2023-10-01",
-     "v": 85.85185
+     "v": 102.71243
     },
     {
      "ref": "2023-11-01",
-     "v": 101.17497
+     "v": 102.6725
     },
     {
      "ref": "2023-12-01",
-     "v": 168.1736
+     "v": 91.49934
     },
     {
      "ref": "2024-01-01",
-     "v": 79.91317
+     "v": 98.09953
     },
     {
      "ref": "2024-02-01",
-     "v": 70.80555
+     "v": 91.2162
     },
     {
      "ref": "2024-03-01",
-     "v": 81.13085
+     "v": 95.20568
     },
     {
      "ref": "2024-04-01",
-     "v": 83.69689
+     "v": 101.70701
     },
     {
      "ref": "2024-05-01",
-     "v": 101.95159
+     "v": 101.37424
     },
     {
      "ref": "2024-06-01",
-     "v": 101.5333
+     "v": 101.31978
     },
     {
      "ref": "2024-07-01",
-     "v": 101.16036
+     "v": 112.1797
     },
     {
      "ref": "2024-08-01",
-     "v": 95.40884
+     "v": 111.7747
     },
     {
      "ref": "2024-09-01",
-     "v": 85.1987
+     "v": 106.63837
     },
     {
      "ref": "2024-10-01",
-     "v": 92.64887
+     "v": 115.52376
     },
     {
      "ref": "2024-11-01",
-     "v": 109.52358
+     "v": 106.50061
     },
     {
      "ref": "2024-12-01",
-     "v": 174.17234
+     "v": 93.45652
     },
     {
      "ref": "2025-01-01",
-     "v": 81.86114
+     "v": 102.03678
     },
     {
      "ref": "2025-02-01",
-     "v": 76.88611
+     "v": 100.00227
     },
     {
      "ref": "2025-03-01",
-     "v": 81.95411
+     "v": 99.85898
     },
     {
      "ref": "2025-04-01",
-     "v": 90.09018
+     "v": 98.94462
     },
     {
      "ref": "2025-05-01",
-     "v": 108.78863
+     "v": 106.42059
     },
     {
      "ref": "2025-06-01",
-     "v": 107.86616
+     "v": 97.45442
     },
     {
      "ref": "2025-07-01",
-     "v": 99.69134
+     "v": 109.16099
     },
     {
      "ref": "2025-08-01",
-     "v": 95.96111
+     "v": 104.98954
     },
     {
      "ref": "2025-09-01",
-     "v": 83.87567
+     "v": 106.32738
     },
     {
      "ref": "2025-10-01",
-     "v": 90.52707
+     "v": 111.12393
     },
     {
      "ref": "2025-11-01",
-     "v": 105.21655
+     "v": 103.35474
     },
     {
      "ref": "2025-12-01",
-     "v": 169.99525
+     "v": 93.5557
     },
     {
      "ref": "2026-01-01",
-     "v": 83.00501
+     "v": 99.38858
     },
     {
      "ref": "2026-02-01",
-     "v": 72.45361
+     "v": 91.55577
     },
     {
      "ref": "2026-03-01",
-     "v": 84.34995
+     "v": 107.97819
     },
     {
      "ref": "2026-04-01",
-     "v": 87.61089
+     "v": 98.53448
     },
     {
      "ref": "2026-05-01",
-     "v": 112.69701
+     "v": 104.64196
     },
     {
      "ref": "2026-06-01",
-     "v": 106.04172
+     "v": 98.00426
     },
     {
      "ref": "2026-07-01",
-     "v": 94.60312
+     "v": 108.15029
     },
     {
      "ref": "2026-08-01",
-     "v": 92.19491
+     "v": 103.20173
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 101.47034
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": -9.51
-    },
-    {
      "ref": "2022-10-01",
-     "v": -15.02
+     "v": -12.78
     },
     {
      "ref": "2022-11-01",
-     "v": -16.42
+     "v": -11.05
     },
     {
      "ref": "2022-12-01",
-     "v": -11.93
+     "v": -7.13
     },
     {
      "ref": "2023-01-01",
-     "v": 2.4
+     "v": 1.1
     },
     {
      "ref": "2023-02-01",
-     "v": -8.92
+     "v": -5.64
     },
     {
      "ref": "2023-03-01",
-     "v": -7.33
+     "v": -4.95
     },
     {
      "ref": "2023-04-01",
-     "v": -11.22
+     "v": -7.59
     },
     {
      "ref": "2023-05-01",
-     "v": -18.19
+     "v": -1.88
     },
     {
      "ref": "2023-06-01",
-     "v": -6.3
+     "v": -2.27
     },
     {
      "ref": "2023-07-01",
-     "v": 1.34
+     "v": -0.24
     },
     {
      "ref": "2023-08-01",
-     "v": -6.94
+     "v": -0.0
     },
     {
      "ref": "2023-09-01",
-     "v": -2.72
+     "v": -5.66
     },
     {
      "ref": "2023-10-01",
-     "v": -3.04
+     "v": 6.53
     },
     {
      "ref": "2023-11-01",
-     "v": 5.76
+     "v": 0.82
     },
     {
      "ref": "2023-12-01",
-     "v": 0.57
+     "v": -2.23
     },
     {
      "ref": "2024-01-01",
-     "v": 0.53
+     "v": 0.67
     },
     {
      "ref": "2024-02-01",
-     "v": -0.49
+     "v": 5.08
     },
     {
      "ref": "2024-03-01",
-     "v": -0.93
+     "v": -9.36
     },
     {
      "ref": "2024-04-01",
-     "v": -3.71
+     "v": 16.71
     },
     {
      "ref": "2024-05-01",
-     "v": 2.02
+     "v": -1.1
     },
     {
      "ref": "2024-06-01",
-     "v": 0.02
+     "v": 4.04
     },
     {
      "ref": "2024-07-01",
-     "v": 5.63
+     "v": 11.17
     },
     {
      "ref": "2024-08-01",
-     "v": 5.8
+     "v": 4.85
     },
     {
      "ref": "2024-09-01",
-     "v": 3.46
+     "v": 9.65
     },
     {
      "ref": "2024-10-01",
-     "v": 7.92
+     "v": 12.47
     },
     {
      "ref": "2024-11-01",
-     "v": 8.25
+     "v": 3.73
     },
     {
      "ref": "2024-12-01",
-     "v": 3.57
+     "v": 2.14
     },
     {
      "ref": "2025-01-01",
-     "v": 2.44
+     "v": 4.01
     },
     {
      "ref": "2025-02-01",
-     "v": 8.59
+     "v": 9.63
     },
     {
      "ref": "2025-03-01",
-     "v": 1.01
+     "v": 4.89
     },
     {
      "ref": "2025-04-01",
-     "v": 7.64
+     "v": -2.72
     },
     {
      "ref": "2025-05-01",
-     "v": 6.71
+     "v": 4.98
     },
     {
      "ref": "2025-06-01",
-     "v": 6.24
+     "v": -3.82
     },
     {
      "ref": "2025-07-01",
-     "v": -1.45
+     "v": -2.69
     },
     {
      "ref": "2025-08-01",
-     "v": 0.58
+     "v": -6.07
     },
     {
      "ref": "2025-09-01",
-     "v": -1.55
+     "v": -0.29
     },
     {
      "ref": "2025-10-01",
-     "v": -2.29
+     "v": -3.81
     },
     {
      "ref": "2025-11-01",
-     "v": -3.93
+     "v": -2.95
     },
     {
      "ref": "2025-12-01",
-     "v": -2.4
+     "v": 0.11
     },
     {
      "ref": "2026-01-01",
-     "v": 1.4
+     "v": -2.6
     },
     {
      "ref": "2026-02-01",
-     "v": -5.77
+     "v": -8.45
     },
     {
      "ref": "2026-03-01",
-     "v": 2.92
+     "v": 8.13
     },
     {
      "ref": "2026-04-01",
-     "v": -2.75
+     "v": -0.41
     },
     {
      "ref": "2026-05-01",
-     "v": 3.59
+     "v": -1.67
     },
     {
      "ref": "2026-06-01",
-     "v": -1.69
+     "v": 0.56
     },
     {
      "ref": "2026-07-01",
-     "v": -5.1
+     "v": -0.93
     },
     {
      "ref": "2026-08-01",
-     "v": -3.92
+     "v": -1.7
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -4.57
     }
    ],
-   "codigo": "pmc_90673",
-   "nome": "Tecidos, vestuário e calçados",
+   "codigo": "pmc_2762",
+   "nome": "Material de construção",
    "pesquisa": "comercio",
-   "score": 57.4,
+   "score": 58.3,
    "faixa": "elevado",
    "tendencia": "piorando",
-   "tendencia_valor_pp": -7.52,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -16.88,
-   "yoy_producao_pct": -3.92,
-   "ref": "2026-08-01",
+   "tendencia_valor_pp": -5.13,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 2.43,
+   "yoy_producao_pct": -4.57,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": 3.9,
+    "atividade": 4.6,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": 0.35,
+     "z": 0.41,
      "peso": 0.5625,
      "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
@@ -9564,9 +9999,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -9964,7 +10399,7 @@
    "codigo": "129332",
    "nome": "3.23 Fabricação de produtos de minerais não metálicos",
    "pesquisa": "industria",
-   "score": 56.9,
+   "score": 57.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -7.07,
@@ -9976,7 +10411,7 @@
     "atividade": 4.7,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -9999,9 +10434,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -10399,7 +10834,7 @@
    "codigo": "129340",
    "nome": "3.31 Fabricação de móveis",
    "pesquisa": "industria",
-   "score": 56.8,
+   "score": 57.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -9.19,
@@ -10411,7 +10846,7 @@
     "atividade": 4.6,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -10434,9 +10869,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -10445,2148 +10880,408 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 114.5346
-    },
-    {
      "ref": "2022-10-01",
-     "v": 116.84811
+     "v": 102.51205
     },
     {
      "ref": "2022-11-01",
-     "v": 104.80255
+     "v": 102.04472
     },
     {
      "ref": "2022-12-01",
-     "v": 107.02454
+     "v": 121.66192
     },
     {
      "ref": "2023-01-01",
-     "v": 100.17
+     "v": 96.3007
     },
     {
      "ref": "2023-02-01",
-     "v": 94.71437
+     "v": 92.73136
     },
     {
      "ref": "2023-03-01",
-     "v": 106.13475
+     "v": 101.62821
     },
     {
      "ref": "2023-04-01",
-     "v": 98.50652
+     "v": 103.19666
     },
     {
      "ref": "2023-05-01",
-     "v": 105.9037
+     "v": 98.68158
     },
     {
      "ref": "2023-06-01",
-     "v": 103.18909
+     "v": 99.56226
     },
     {
      "ref": "2023-07-01",
-     "v": 107.45487
+     "v": 103.17058
     },
     {
      "ref": "2023-08-01",
-     "v": 110.26917
+     "v": 104.48636
     },
     {
      "ref": "2023-09-01",
-     "v": 104.74415
+     "v": 104.74064
     },
     {
      "ref": "2023-10-01",
-     "v": 105.93988
+     "v": 104.46568
     },
     {
      "ref": "2023-11-01",
-     "v": 102.75459
+     "v": 107.12675
     },
     {
      "ref": "2023-12-01",
-     "v": 107.11684
+     "v": 128.2214
     },
     {
      "ref": "2024-01-01",
-     "v": 100.94327
+     "v": 102.1485
     },
     {
      "ref": "2024-02-01",
-     "v": 94.50472
+     "v": 101.42708
     },
     {
      "ref": "2024-03-01",
-     "v": 100.8827
+     "v": 110.41701
     },
     {
      "ref": "2024-04-01",
-     "v": 100.29897
+     "v": 101.88901
     },
     {
      "ref": "2024-05-01",
-     "v": 101.63816
+     "v": 108.78253
     },
     {
      "ref": "2024-06-01",
-     "v": 99.07632
+     "v": 103.1549
     },
     {
      "ref": "2024-07-01",
-     "v": 102.77278
+     "v": 106.54876
     },
     {
      "ref": "2024-08-01",
-     "v": 105.19853
+     "v": 111.28112
     },
     {
      "ref": "2024-09-01",
-     "v": 103.16893
+     "v": 105.46537
     },
     {
      "ref": "2024-10-01",
-     "v": 108.08749
+     "v": 110.39785
     },
     {
      "ref": "2024-11-01",
-     "v": 105.83613
+     "v": 112.92735
     },
     {
      "ref": "2024-12-01",
-     "v": 105.26323
+     "v": 127.20855
     },
     {
      "ref": "2025-01-01",
-     "v": 102.24746
+     "v": 104.99217
     },
     {
      "ref": "2025-02-01",
-     "v": 96.62506
+     "v": 101.14034
     },
     {
      "ref": "2025-03-01",
-     "v": 101.98941
+     "v": 108.94951
     },
     {
      "ref": "2025-04-01",
-     "v": 98.86624
+     "v": 109.38155
     },
     {
      "ref": "2025-05-01",
-     "v": 101.65756
+     "v": 109.36831
     },
     {
      "ref": "2025-06-01",
-     "v": 98.02933
+     "v": 102.91958
     },
     {
      "ref": "2025-07-01",
-     "v": 106.02579
+     "v": 107.0789
     },
     {
      "ref": "2025-08-01",
-     "v": 105.58237
+     "v": 110.7247
     },
     {
      "ref": "2025-09-01",
-     "v": 102.49972
+     "v": 104.80687
     },
     {
      "ref": "2025-10-01",
-     "v": 108.35201
+     "v": 110.43216
     },
     {
      "ref": "2025-11-01",
-     "v": 104.53082
+     "v": 112.98795
     },
     {
      "ref": "2025-12-01",
-     "v": 108.38214
+     "v": 128.87705
     },
     {
      "ref": "2026-01-01",
-     "v": 102.06202
+     "v": 107.87377
     },
     {
      "ref": "2026-02-01",
-     "v": 96.43287
+     "v": 102.99785
     },
     {
      "ref": "2026-03-01",
-     "v": 109.91654
+     "v": 109.90862
     },
     {
      "ref": "2026-04-01",
-     "v": 100.5914
+     "v": 110.3757
     },
     {
      "ref": "2026-05-01",
-     "v": 103.70374
+     "v": 108.98143
     },
     {
      "ref": "2026-06-01",
-     "v": 99.3221
+     "v": 105.12378
     },
     {
      "ref": "2026-07-01",
-     "v": 105.37612
+     "v": 110.20307
     },
     {
      "ref": "2026-08-01",
-     "v": 106.46115
+     "v": 111.29935
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 106.38868
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 34.71
-    },
-    {
      "ref": "2022-10-01",
-     "v": 34.29
+     "v": 2.72
     },
     {
      "ref": "2022-11-01",
-     "v": 27.04
+     "v": 2.77
     },
     {
      "ref": "2022-12-01",
-     "v": 23.8
+     "v": 2.45
     },
     {
      "ref": "2023-01-01",
-     "v": 26.11
+     "v": 2.35
     },
     {
      "ref": "2023-02-01",
-     "v": 19.48
+     "v": 0.93
     },
     {
      "ref": "2023-03-01",
-     "v": 14.3
+     "v": 4.45
     },
     {
      "ref": "2023-04-01",
-     "v": 8.27
+     "v": 3.33
     },
     {
      "ref": "2023-05-01",
-     "v": 10.8
+     "v": 1.33
     },
     {
      "ref": "2023-06-01",
-     "v": 9.17
-    },
-    {
-     "ref": "2023-07-01",
-     "v": -2.3
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -3.4
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -8.55
-    },
-    {
-     "ref": "2023-10-01",
-     "v": -9.34
-    },
-    {
-     "ref": "2023-11-01",
-     "v": -1.95
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 0.09
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 0.77
-    },
-    {
-     "ref": "2024-02-01",
-     "v": -0.22
-    },
-    {
-     "ref": "2024-03-01",
-     "v": -4.95
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 1.82
-    },
-    {
-     "ref": "2024-05-01",
-     "v": -4.03
-    },
-    {
-     "ref": "2024-06-01",
-     "v": -3.99
-    },
-    {
-     "ref": "2024-07-01",
-     "v": -4.36
-    },
-    {
-     "ref": "2024-08-01",
-     "v": -4.6
-    },
-    {
-     "ref": "2024-09-01",
-     "v": -1.5
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 2.03
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 3.0
-    },
-    {
-     "ref": "2024-12-01",
-     "v": -1.73
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 1.29
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 2.24
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 1.1
-    },
-    {
-     "ref": "2025-04-01",
-     "v": -1.43
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 0.02
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -1.06
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 3.17
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 0.36
-    },
-    {
-     "ref": "2025-09-01",
-     "v": -0.65
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 0.24
-    },
-    {
-     "ref": "2025-11-01",
-     "v": -1.23
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 2.96
-    },
-    {
-     "ref": "2026-01-01",
-     "v": -0.18
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -0.2
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 7.77
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 1.74
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 2.01
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 1.32
-    },
-    {
-     "ref": "2026-07-01",
-     "v": -0.61
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 0.83
-    }
-   ],
-   "codigo": "pmc_90671",
-   "nome": "Combustíveis e lubrificantes",
-   "pesquisa": "comercio",
-   "score": 56.8,
-   "faixa": "elevado",
-   "tendencia": "piorando",
-   "tendencia_valor_pp": -1.18,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -3.39,
-   "yoy_producao_pct": 0.83,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": 3.4,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.3,
-     "peso": 0.5625,
-     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.39,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 103.09044
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 96.41905
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 101.83584
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 93.58578
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 97.444
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 86.80816
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 105.03543
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 87.14194
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 102.50234
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 97.38576
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 100.90705
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 106.60416
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 97.25164
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 102.71243
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 102.6725
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 91.49934
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 98.09953
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 91.2162
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 95.20568
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 101.70701
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 101.37424
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 101.31978
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 112.1797
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 111.7747
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 106.63837
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 115.52376
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 106.50061
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 93.45652
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 102.03678
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 100.00227
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 99.85898
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 98.94462
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 106.42059
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 97.45442
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 109.16099
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 104.98954
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 106.32738
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 111.12393
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 103.35474
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 93.5557
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 99.38858
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 91.55577
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 107.97819
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 98.53448
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 104.64196
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 98.00426
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 107.90559
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 101.00013
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": -8.25
-    },
-    {
-     "ref": "2022-10-01",
-     "v": -12.78
-    },
-    {
-     "ref": "2022-11-01",
-     "v": -11.05
-    },
-    {
-     "ref": "2022-12-01",
-     "v": -7.13
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 1.1
-    },
-    {
-     "ref": "2023-02-01",
-     "v": -5.64
-    },
-    {
-     "ref": "2023-03-01",
-     "v": -4.95
-    },
-    {
-     "ref": "2023-04-01",
-     "v": -7.59
-    },
-    {
-     "ref": "2023-05-01",
-     "v": -1.88
-    },
-    {
-     "ref": "2023-06-01",
-     "v": -2.27
-    },
-    {
-     "ref": "2023-07-01",
-     "v": -0.24
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -0.0
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -5.66
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 6.53
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 0.82
-    },
-    {
-     "ref": "2023-12-01",
-     "v": -2.23
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 0.67
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 5.08
-    },
-    {
-     "ref": "2024-03-01",
-     "v": -9.36
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 16.71
-    },
-    {
-     "ref": "2024-05-01",
-     "v": -1.1
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 4.04
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 11.17
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 4.85
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 9.65
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 12.47
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 3.73
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 2.14
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 4.01
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 9.63
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 4.89
-    },
-    {
-     "ref": "2025-04-01",
-     "v": -2.72
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 4.98
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -3.82
-    },
-    {
-     "ref": "2025-07-01",
-     "v": -2.69
-    },
-    {
-     "ref": "2025-08-01",
-     "v": -6.07
-    },
-    {
-     "ref": "2025-09-01",
-     "v": -0.29
-    },
-    {
-     "ref": "2025-10-01",
-     "v": -3.81
-    },
-    {
-     "ref": "2025-11-01",
-     "v": -2.95
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 0.11
-    },
-    {
-     "ref": "2026-01-01",
-     "v": -2.6
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -8.45
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 8.13
-    },
-    {
-     "ref": "2026-04-01",
-     "v": -0.41
-    },
-    {
-     "ref": "2026-05-01",
-     "v": -1.67
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 0.56
-    },
-    {
-     "ref": "2026-07-01",
-     "v": -1.15
-    },
-    {
-     "ref": "2026-08-01",
-     "v": -3.8
-    }
-   ],
-   "codigo": "pmc_2762",
-   "nome": "Material de construção",
-   "pesquisa": "comercio",
-   "score": 56.7,
-   "faixa": "elevado",
-   "tendencia": "piorando",
-   "tendencia_valor_pp": -2.13,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -8.9,
-   "yoy_producao_pct": -3.8,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": 3.3,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.29,
-     "peso": 0.5625,
-     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.39,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 99.82314
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 100.88488
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 96.648
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 123.89708
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 96.66992
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 91.25935
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 100.10772
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 91.73446
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 99.34349
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 99.17082
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 98.07521
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 100.15935
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 95.2067
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 96.8532
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 99.84956
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 110.48882
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 98.32672
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 94.60072
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 97.66941
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 98.79292
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 99.54926
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 98.24846
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 99.98346
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 101.78443
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 96.67953
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 97.2525
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 96.43465
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 104.20968
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 95.33833
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 95.17767
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 95.0188
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 93.87198
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 98.14453
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 96.86266
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 98.43209
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 98.6672
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 99.85446
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 100.58778
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 98.60827
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 107.071
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 96.98193
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 92.41965
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 97.79688
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 96.94588
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 96.09522
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 95.31359
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 97.11295
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 96.16342
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": -2.19
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 6.42
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 0.29
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 10.11
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 0.53
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 0.6
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 0.58
-    },
-    {
-     "ref": "2023-04-01",
-     "v": -0.63
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 0.68
-    },
-    {
-     "ref": "2023-06-01",
-     "v": -1.5
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 4.24
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -6.03
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -4.62
-    },
-    {
-     "ref": "2023-10-01",
-     "v": -4.0
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 3.31
-    },
-    {
-     "ref": "2023-12-01",
-     "v": -10.82
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 1.71
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 3.66
-    },
-    {
-     "ref": "2024-03-01",
-     "v": -2.44
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 7.69
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 0.21
-    },
-    {
-     "ref": "2024-06-01",
-     "v": -0.93
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 1.95
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 1.62
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 1.55
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 0.41
-    },
-    {
-     "ref": "2024-11-01",
-     "v": -3.42
-    },
-    {
-     "ref": "2024-12-01",
-     "v": -5.68
-    },
-    {
-     "ref": "2025-01-01",
-     "v": -3.04
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 0.61
-    },
-    {
-     "ref": "2025-03-01",
-     "v": -2.71
-    },
-    {
-     "ref": "2025-04-01",
-     "v": -4.98
-    },
-    {
-     "ref": "2025-05-01",
-     "v": -1.41
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -1.41
-    },
-    {
-     "ref": "2025-07-01",
-     "v": -1.55
-    },
-    {
-     "ref": "2025-08-01",
-     "v": -3.06
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 3.28
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 3.43
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 2.25
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 2.75
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 1.72
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -2.9
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 2.92
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 3.27
-    },
-    {
-     "ref": "2026-05-01",
-     "v": -2.09
-    },
-    {
-     "ref": "2026-06-01",
-     "v": -1.6
-    },
-    {
-     "ref": "2026-07-01",
-     "v": -1.34
-    },
-    {
-     "ref": "2026-08-01",
-     "v": -2.54
-    }
-   ],
-   "codigo": "pms_31426",
-   "nome": "5. Outros serviços",
-   "pesquisa": "servicos",
-   "score": 56.5,
-   "faixa": "elevado",
-   "tendencia": "estável",
-   "tendencia_valor_pp": -0.45,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -1.26,
-   "yoy_producao_pct": -2.54,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": 4.3,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.3
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.38,
-     "peso": 0.5625,
-     "fonte": "IBGE PMS (volume de serviços)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.07,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção E + K + L + S, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 102.44143
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 100.22382
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 100.53712
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 106.32348
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 95.90558
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 88.37502
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 114.70705
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 93.77355
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 105.23375
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 115.84354
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 110.56617
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 119.00057
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 115.22874
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 110.82738
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 117.65005
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 114.15298
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 107.282
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 103.12697
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 116.74684
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 121.00547
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 116.41884
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 124.04582
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 133.0217
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 128.69138
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 124.75546
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 133.79953
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 122.44306
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 120.72405
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 116.94633
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 113.26689
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 113.79314
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 112.3551
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 118.1777
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 108.71411
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 120.54302
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 118.77825
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 122.08207
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 128.02901
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 115.91393
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 121.61783
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 113.1914
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 104.26474
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 127.97506
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 115.34058
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 120.67183
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 121.54169
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 126.56451
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 120.52917
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": -1.16
-    },
-    {
-     "ref": "2022-10-01",
-     "v": -0.81
-    },
-    {
-     "ref": "2022-11-01",
-     "v": -5.46
-    },
-    {
-     "ref": "2022-12-01",
-     "v": -1.76
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 4.53
-    },
-    {
-     "ref": "2023-02-01",
-     "v": -1.36
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 10.78
-    },
-    {
-     "ref": "2023-04-01",
-     "v": -2.0
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 1.51
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 17.79
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 9.84
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 10.98
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 12.48
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 10.58
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 17.02
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 7.36
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 11.86
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 16.69
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 1.78
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 29.04
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 10.63
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 7.08
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 20.31
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 8.14
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 8.27
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 20.73
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 4.07
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 5.76
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 9.01
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 9.83
-    },
-    {
-     "ref": "2025-03-01",
-     "v": -2.53
-    },
-    {
-     "ref": "2025-04-01",
-     "v": -7.15
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 1.51
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -12.36
-    },
-    {
-     "ref": "2025-07-01",
-     "v": -9.38
-    },
-    {
-     "ref": "2025-08-01",
-     "v": -7.7
-    },
-    {
-     "ref": "2025-09-01",
-     "v": -2.14
-    },
-    {
-     "ref": "2025-10-01",
-     "v": -4.31
-    },
-    {
-     "ref": "2025-11-01",
-     "v": -5.33
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 0.74
-    },
-    {
-     "ref": "2026-01-01",
-     "v": -3.21
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -7.95
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 12.46
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 2.66
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 2.11
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 11.8
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 5.0
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 1.47
-    }
-   ],
-   "codigo": "pmc_103159",
-   "nome": "Veículos, motocicletas, partes e peças",
-   "pesquisa": "comercio",
-   "score": 56.4,
-   "faixa": "elevado",
-   "tendencia": "piorando",
-   "tendencia_valor_pp": -0.64,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -10.69,
-   "yoy_producao_pct": 1.47,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": 2.9,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.26,
-     "peso": 0.5625,
-     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.39,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 97.02643
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 97.53164
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 103.46687
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 112.10471
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 95.23092
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 90.63142
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 108.51701
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 96.75034
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 109.74968
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 104.45825
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 105.34325
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 106.50735
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 103.5143
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 105.50039
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 111.36205
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 117.52999
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 101.97248
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 100.66582
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 113.03441
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 107.71928
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 116.77494
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 112.68921
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 114.41473
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 115.4157
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 112.68637
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 114.75648
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 117.25395
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 120.48343
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 107.81031
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 104.0658
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 115.57583
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 109.93959
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 123.35614
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 115.21968
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 119.20744
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 118.48789
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 118.48885
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 122.08413
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 126.04442
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 128.80818
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 113.3228
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 106.20783
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 123.93041
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 114.85608
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 126.41351
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 122.29414
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 124.89649
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 124.14482
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": 5.84
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 5.26
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 6.44
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 0.76
-    },
-    {
-     "ref": "2023-01-01",
-     "v": -7.56
-    },
-    {
-     "ref": "2023-02-01",
-     "v": -0.51
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 7.1
-    },
-    {
-     "ref": "2023-04-01",
      "v": 3.21
     },
     {
-     "ref": "2023-05-01",
-     "v": 7.56
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 4.67
-    },
-    {
      "ref": "2023-07-01",
-     "v": 6.55
+     "v": 2.94
     },
     {
      "ref": "2023-08-01",
-     "v": 6.52
+     "v": 5.77
     },
     {
      "ref": "2023-09-01",
-     "v": 6.69
+     "v": 7.11
     },
     {
      "ref": "2023-10-01",
-     "v": 8.17
+     "v": 1.91
     },
     {
      "ref": "2023-11-01",
-     "v": 7.63
+     "v": 4.98
     },
     {
      "ref": "2023-12-01",
-     "v": 4.84
+     "v": 5.39
     },
     {
      "ref": "2024-01-01",
-     "v": 7.08
+     "v": 6.07
     },
     {
      "ref": "2024-02-01",
-     "v": 11.07
+     "v": 9.38
     },
     {
      "ref": "2024-03-01",
-     "v": 4.16
+     "v": 8.65
     },
     {
      "ref": "2024-04-01",
-     "v": 11.34
+     "v": -1.27
     },
     {
      "ref": "2024-05-01",
-     "v": 6.4
+     "v": 10.24
     },
     {
      "ref": "2024-06-01",
-     "v": 7.88
+     "v": 3.61
     },
     {
      "ref": "2024-07-01",
-     "v": 8.61
+     "v": 3.27
     },
     {
      "ref": "2024-08-01",
-     "v": 8.36
+     "v": 6.5
     },
     {
      "ref": "2024-09-01",
-     "v": 8.86
+     "v": 0.69
     },
     {
      "ref": "2024-10-01",
-     "v": 8.77
+     "v": 5.68
     },
     {
      "ref": "2024-11-01",
-     "v": 5.29
+     "v": 5.41
     },
     {
      "ref": "2024-12-01",
-     "v": 2.51
+     "v": -0.79
     },
     {
      "ref": "2025-01-01",
-     "v": 5.72
+     "v": 2.78
     },
     {
      "ref": "2025-02-01",
-     "v": 3.38
+     "v": -0.28
     },
     {
      "ref": "2025-03-01",
-     "v": 2.25
+     "v": -1.33
     },
     {
      "ref": "2025-04-01",
-     "v": 2.06
+     "v": 7.35
     },
     {
      "ref": "2025-05-01",
-     "v": 5.64
+     "v": 0.54
     },
     {
      "ref": "2025-06-01",
-     "v": 2.25
+     "v": -0.23
     },
     {
      "ref": "2025-07-01",
-     "v": 4.19
+     "v": 0.5
     },
     {
      "ref": "2025-08-01",
-     "v": 2.66
+     "v": -0.5
     },
     {
      "ref": "2025-09-01",
-     "v": 5.15
+     "v": -0.62
     },
     {
      "ref": "2025-10-01",
-     "v": 6.39
+     "v": 0.03
     },
     {
      "ref": "2025-11-01",
-     "v": 7.5
+     "v": 0.05
     },
     {
      "ref": "2025-12-01",
-     "v": 6.91
+     "v": 1.31
     },
     {
      "ref": "2026-01-01",
-     "v": 5.11
+     "v": 2.74
     },
     {
      "ref": "2026-02-01",
-     "v": 2.06
+     "v": 1.84
     },
     {
      "ref": "2026-03-01",
-     "v": 7.23
+     "v": 0.88
     },
     {
      "ref": "2026-04-01",
-     "v": 4.47
+     "v": 0.91
     },
     {
      "ref": "2026-05-01",
-     "v": 2.48
+     "v": -0.35
     },
     {
      "ref": "2026-06-01",
-     "v": 6.14
+     "v": 2.14
     },
     {
      "ref": "2026-07-01",
-     "v": 4.77
+     "v": 2.92
     },
     {
      "ref": "2026-08-01",
-     "v": 4.77
+     "v": 0.52
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 1.51
     }
    ],
-   "codigo": "pmc_103155",
-   "nome": "Artigos farmacêuticos, médicos, ortopédicos, de perfumaria e cosméticos",
+   "codigo": "pmc_90672",
+   "nome": "Hipermercados, supermercados, produtos alimentícios, bebidas e fumo",
    "pesquisa": "comercio",
-   "score": 55.8,
+   "score": 56.1,
    "faixa": "elevado",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 2.3,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 1.88,
-   "yoy_producao_pct": 4.77,
-   "ref": "2026-08-01",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -0.63,
+   "velocidade": "momento piorando",
+   "velocidade_valor_pp": -1.89,
+   "yoy_producao_pct": 1.51,
+   "ref": "2026-09-01",
    "contribuicoes": {
     "atividade": 2.4,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
@@ -12609,444 +11304,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 101.40848
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 105.70755
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 103.21071
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 115.93612
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 110.26821
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 93.01301
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 99.995
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 98.83522
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 99.54934
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 99.75631
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 112.80969
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 99.72026
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 104.48883
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 106.45686
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 109.27807
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 125.38222
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 114.346
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 98.41071
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 108.03429
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 100.04956
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 104.52465
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 104.17369
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 115.09074
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 107.00818
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 109.05588
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 111.9258
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 114.92544
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 128.5513
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 115.5502
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 98.40704
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 112.15564
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 105.05936
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 107.73054
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 103.44741
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 113.25538
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 109.08734
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 109.23726
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 113.48408
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 115.31824
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 129.79646
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 118.27582
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 102.38364
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 110.78377
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 107.53338
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 111.2197
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 104.81045
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 116.64465
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 113.67512
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": 18.01
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 11.44
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 7.84
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 9.23
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 11.03
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 10.76
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 3.55
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 3.28
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 2.86
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 5.81
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 5.76
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -0.73
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 3.04
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 0.71
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 5.88
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 8.15
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 3.7
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 5.8
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 8.04
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 1.23
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 5.0
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 4.43
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 2.02
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 7.31
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 4.37
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 5.14
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 5.17
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 2.53
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 1.05
-    },
-    {
-     "ref": "2025-02-01",
-     "v": -0.0
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 3.81
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 5.01
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 3.07
-    },
-    {
-     "ref": "2025-06-01",
-     "v": -0.7
-    },
-    {
-     "ref": "2025-07-01",
-     "v": -1.59
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 1.94
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 0.17
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 1.39
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 0.34
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 0.97
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 2.36
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 4.04
-    },
-    {
-     "ref": "2026-03-01",
-     "v": -1.22
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 2.35
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 3.24
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 1.32
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 2.99
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 4.21
-    }
-   ],
-   "codigo": "pms_106869",
-   "nome": "1. Serviços prestados às famílias",
-   "pesquisa": "servicos",
-   "score": 55.4,
-   "faixa": "elevado",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 0.97,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 1.77,
-   "yoy_producao_pct": 4.21,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": 4.5,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": -1.1
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.4,
-     "peso": 0.5625,
-     "fonte": "IBGE PMS (volume de serviços)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": -0.3,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção I + S, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -13444,8 +11704,8 @@
    "codigo": "56689",
    "nome": "3.20 Fabricação de produtos químicos",
    "pesquisa": "industria",
-   "score": 54.9,
-   "faixa": "atenção",
+   "score": 55.1,
+   "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.88,
    "velocidade": "momento melhorando",
@@ -13456,7 +11716,7 @@
     "atividade": 2.7,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -13479,9 +11739,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -13490,412 +11750,412 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 90.24463
-    },
-    {
      "ref": "2022-10-01",
-     "v": 83.00856
+     "v": 97.53164
     },
     {
      "ref": "2022-11-01",
-     "v": 86.79697
+     "v": 103.46687
     },
     {
      "ref": "2022-12-01",
-     "v": 126.82282
+     "v": 112.10471
     },
     {
      "ref": "2023-01-01",
-     "v": 177.901
+     "v": 95.23092
     },
     {
      "ref": "2023-02-01",
-     "v": 121.54405
+     "v": 90.63142
     },
     {
      "ref": "2023-03-01",
-     "v": 95.7555
+     "v": 108.51701
     },
     {
      "ref": "2023-04-01",
-     "v": 70.56993
+     "v": 96.75034
     },
     {
      "ref": "2023-05-01",
-     "v": 81.92383
+     "v": 109.74968
     },
     {
      "ref": "2023-06-01",
-     "v": 82.55379
+     "v": 104.45825
     },
     {
      "ref": "2023-07-01",
-     "v": 82.77835
+     "v": 105.34325
     },
     {
      "ref": "2023-08-01",
-     "v": 79.97019
+     "v": 106.50735
     },
     {
      "ref": "2023-09-01",
-     "v": 73.71974
+     "v": 103.5143
     },
     {
      "ref": "2023-10-01",
-     "v": 79.10356
+     "v": 105.50039
     },
     {
      "ref": "2023-11-01",
-     "v": 82.70698
+     "v": 111.36205
     },
     {
      "ref": "2023-12-01",
-     "v": 116.58643
+     "v": 117.52999
     },
     {
      "ref": "2024-01-01",
-     "v": 162.18467
+     "v": 101.97248
     },
     {
      "ref": "2024-02-01",
-     "v": 115.67464
+     "v": 100.66582
     },
     {
      "ref": "2024-03-01",
-     "v": 81.75252
+     "v": 113.03441
     },
     {
      "ref": "2024-04-01",
-     "v": 72.23987
+     "v": 107.71928
     },
     {
      "ref": "2024-05-01",
-     "v": 74.55233
+     "v": 116.77494
     },
     {
      "ref": "2024-06-01",
-     "v": 75.89186
+     "v": 112.68921
     },
     {
      "ref": "2024-07-01",
-     "v": 78.64308
+     "v": 114.41473
     },
     {
      "ref": "2024-08-01",
-     "v": 73.07091
+     "v": 115.4157
     },
     {
      "ref": "2024-09-01",
-     "v": 65.99087
+     "v": 112.68637
     },
     {
      "ref": "2024-10-01",
-     "v": 71.77135
+     "v": 114.75648
     },
     {
      "ref": "2024-11-01",
-     "v": 73.52341
+     "v": 117.25395
     },
     {
      "ref": "2024-12-01",
-     "v": 112.08348
+     "v": 120.48343
     },
     {
      "ref": "2025-01-01",
-     "v": 160.23797
+     "v": 107.81031
     },
     {
      "ref": "2025-02-01",
-     "v": 110.03179
+     "v": 104.0658
     },
     {
      "ref": "2025-03-01",
-     "v": 75.27696
+     "v": 115.57583
     },
     {
      "ref": "2025-04-01",
-     "v": 69.47235
+     "v": 109.93959
     },
     {
      "ref": "2025-05-01",
-     "v": 76.94525
+     "v": 123.35614
     },
     {
      "ref": "2025-06-01",
-     "v": 75.08016
+     "v": 115.21968
     },
     {
      "ref": "2025-07-01",
-     "v": 81.62493
+     "v": 119.20744
     },
     {
      "ref": "2025-08-01",
-     "v": 73.67461
+     "v": 118.48789
     },
     {
      "ref": "2025-09-01",
-     "v": 64.72457
+     "v": 118.48885
     },
     {
      "ref": "2025-10-01",
-     "v": 72.50701
+     "v": 122.08413
     },
     {
      "ref": "2025-11-01",
-     "v": 77.90816
+     "v": 126.04442
     },
     {
      "ref": "2025-12-01",
-     "v": 110.26936
+     "v": 128.80818
     },
     {
      "ref": "2026-01-01",
-     "v": 154.83177
+     "v": 113.3228
     },
     {
      "ref": "2026-02-01",
-     "v": 105.48621
+     "v": 106.20783
     },
     {
      "ref": "2026-03-01",
-     "v": 82.22177
+     "v": 123.93041
     },
     {
      "ref": "2026-04-01",
-     "v": 69.45799
+     "v": 114.85608
     },
     {
      "ref": "2026-05-01",
-     "v": 94.31422
+     "v": 126.41351
     },
     {
      "ref": "2026-06-01",
-     "v": 84.56107
+     "v": 122.29414
     },
     {
      "ref": "2026-07-01",
-     "v": 80.30092
+     "v": 124.89649
     },
     {
      "ref": "2026-08-01",
-     "v": 74.50927
+     "v": 124.15164
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 124.52246
     }
    ],
    "serie_yoy": [
     {
-     "ref": "2022-09-01",
-     "v": 31.05
-    },
-    {
      "ref": "2022-10-01",
-     "v": 13.67
+     "v": 5.26
     },
     {
      "ref": "2022-11-01",
-     "v": 0.08
+     "v": 6.44
     },
     {
      "ref": "2022-12-01",
-     "v": 0.34
+     "v": 0.76
     },
     {
      "ref": "2023-01-01",
-     "v": 18.32
+     "v": -7.56
     },
     {
      "ref": "2023-02-01",
-     "v": -6.66
+     "v": -0.51
     },
     {
      "ref": "2023-03-01",
-     "v": -6.1
+     "v": 7.1
     },
     {
      "ref": "2023-04-01",
-     "v": -6.28
-    },
-    {
-     "ref": "2023-05-01",
-     "v": -5.6
-    },
-    {
-     "ref": "2023-06-01",
-     "v": -2.19
-    },
-    {
-     "ref": "2023-07-01",
-     "v": -7.36
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -15.59
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -18.31
-    },
-    {
-     "ref": "2023-10-01",
-     "v": -4.7
-    },
-    {
-     "ref": "2023-11-01",
-     "v": -4.71
-    },
-    {
-     "ref": "2023-12-01",
-     "v": -8.07
-    },
-    {
-     "ref": "2024-01-01",
-     "v": -8.83
-    },
-    {
-     "ref": "2024-02-01",
-     "v": -4.83
-    },
-    {
-     "ref": "2024-03-01",
-     "v": -14.62
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 2.37
-    },
-    {
-     "ref": "2024-05-01",
-     "v": -9.0
-    },
-    {
-     "ref": "2024-06-01",
-     "v": -8.07
-    },
-    {
-     "ref": "2024-07-01",
-     "v": -5.0
-    },
-    {
-     "ref": "2024-08-01",
-     "v": -8.63
-    },
-    {
-     "ref": "2024-09-01",
-     "v": -10.48
-    },
-    {
-     "ref": "2024-10-01",
-     "v": -9.27
-    },
-    {
-     "ref": "2024-11-01",
-     "v": -11.1
-    },
-    {
-     "ref": "2024-12-01",
-     "v": -3.86
-    },
-    {
-     "ref": "2025-01-01",
-     "v": -1.2
-    },
-    {
-     "ref": "2025-02-01",
-     "v": -4.88
-    },
-    {
-     "ref": "2025-03-01",
-     "v": -7.92
-    },
-    {
-     "ref": "2025-04-01",
-     "v": -3.83
-    },
-    {
-     "ref": "2025-05-01",
      "v": 3.21
     },
     {
+     "ref": "2023-05-01",
+     "v": 7.56
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 4.67
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 6.55
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 6.52
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 6.69
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 8.17
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 7.63
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 4.84
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 7.08
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 11.07
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 4.16
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 11.34
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 6.4
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 7.88
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 8.61
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 8.36
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 8.86
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 8.77
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 5.29
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 2.51
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 5.72
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 3.38
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 2.25
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 2.06
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 5.64
+    },
+    {
      "ref": "2025-06-01",
-     "v": -1.07
+     "v": 2.25
     },
     {
      "ref": "2025-07-01",
-     "v": 3.79
+     "v": 4.19
     },
     {
      "ref": "2025-08-01",
-     "v": 0.83
+     "v": 2.66
     },
     {
      "ref": "2025-09-01",
-     "v": -1.92
+     "v": 5.15
     },
     {
      "ref": "2025-10-01",
-     "v": 1.03
+     "v": 6.39
     },
     {
      "ref": "2025-11-01",
-     "v": 5.96
+     "v": 7.5
     },
     {
      "ref": "2025-12-01",
-     "v": -1.62
+     "v": 6.91
     },
     {
      "ref": "2026-01-01",
-     "v": -3.37
+     "v": 5.11
     },
     {
      "ref": "2026-02-01",
-     "v": -4.13
+     "v": 2.06
     },
     {
      "ref": "2026-03-01",
-     "v": 9.23
+     "v": 7.23
     },
     {
      "ref": "2026-04-01",
-     "v": -0.02
+     "v": 4.47
     },
     {
      "ref": "2026-05-01",
-     "v": 22.57
+     "v": 2.48
     },
     {
      "ref": "2026-06-01",
-     "v": 12.63
+     "v": 6.14
     },
     {
      "ref": "2026-07-01",
-     "v": -1.62
+     "v": 4.77
     },
     {
      "ref": "2026-08-01",
-     "v": 1.13
+     "v": 4.78
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 5.09
     }
    ],
-   "codigo": "pmc_103156",
-   "nome": "Livros, jornais, revistas e papelaria",
+   "codigo": "pmc_103155",
+   "nome": "Artigos farmacêuticos, médicos, ortopédicos, de perfumaria e cosméticos",
    "pesquisa": "comercio",
-   "score": 52.8,
-   "faixa": "atenção",
+   "score": 55.1,
+   "faixa": "elevado",
    "tendencia": "piorando",
-   "tendencia_valor_pp": -21.44,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -48.14,
-   "yoy_producao_pct": 1.13,
-   "ref": "2026-08-01",
+   "tendencia_valor_pp": -1.05,
+   "velocidade": "constante",
+   "velocidade_valor_pp": 0.04,
+   "yoy_producao_pct": 5.09,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": -0.7,
+    "atividade": 1.3,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": -0.06,
+     "z": 0.12,
      "peso": 0.5625,
      "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
@@ -13914,9 +12174,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -13925,9 +12185,1310 @@
   {
    "serie_obs": [
     {
-     "ref": "2022-09-01",
-     "v": 92.40992
+     "ref": "2022-10-01",
+     "v": 105.70755
     },
+    {
+     "ref": "2022-11-01",
+     "v": 103.21071
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 115.93612
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 110.26821
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 93.01301
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 99.995
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 98.83522
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 99.54934
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 99.75631
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 112.80969
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 99.72026
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 104.48883
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 106.45686
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 109.27807
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 125.38222
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 114.346
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 98.41071
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 108.03429
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 100.04956
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 104.52465
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 104.17369
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 115.09074
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 107.00818
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 109.05588
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 111.9258
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 114.92544
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 128.5513
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 115.5502
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 98.40704
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 112.15564
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 105.05936
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 107.73054
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 103.44741
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 113.25538
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 109.08734
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 109.23726
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 113.48408
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 115.31824
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 129.79646
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 118.27547
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 102.38283
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 110.60283
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 107.25753
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 111.00599
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 104.65054
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 116.64608
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 113.71541
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 114.38885
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": 11.44
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 7.84
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 9.23
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 11.03
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 10.76
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 3.55
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 3.28
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 2.86
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 5.81
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 5.76
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -0.73
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 3.04
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 0.71
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 5.88
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 8.15
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 3.7
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 5.8
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 8.04
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 1.23
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 5.0
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 4.43
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 2.02
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 7.31
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 4.37
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 5.14
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 5.17
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 2.53
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 1.05
+    },
+    {
+     "ref": "2025-02-01",
+     "v": -0.0
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 3.81
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 5.01
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 3.07
+    },
+    {
+     "ref": "2025-06-01",
+     "v": -0.7
+    },
+    {
+     "ref": "2025-07-01",
+     "v": -1.59
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 1.94
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 0.17
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 1.39
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 0.34
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 0.97
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 2.36
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 4.04
+    },
+    {
+     "ref": "2026-03-01",
+     "v": -1.38
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 2.09
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 3.04
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 1.16
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 2.99
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 4.24
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 4.72
+    }
+   ],
+   "codigo": "pms_106869",
+   "nome": "1. Serviços prestados às famílias",
+   "pesquisa": "servicos",
+   "score": 55.0,
+   "faixa": "elevado",
+   "tendencia": "melhorando",
+   "tendencia_valor_pp": 3.55,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 1.01,
+   "yoy_producao_pct": 4.72,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": 3.9,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": -0.9
+   },
+   "componentes": {
+    "atividade": {
+     "z": 0.35,
+     "peso": 0.5625,
+     "fonte": "IBGE PMS (volume de serviços)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": -0.24,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção I + S, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-10-01",
+     "v": 116.84811
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 104.80255
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 107.02454
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 100.17
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 94.71437
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 106.13475
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 98.50652
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 105.9037
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 103.18909
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 107.45487
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 110.26917
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 104.74415
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 105.93988
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 102.75459
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 107.11684
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 100.94327
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 94.50472
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 100.8827
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 100.29897
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 101.63816
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 99.07632
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 102.77278
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 105.19853
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 103.16893
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 108.08749
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 105.83613
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 105.26323
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 102.24746
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 96.62506
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 101.98941
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 98.86624
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 101.65756
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 98.02933
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 106.02579
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 105.58237
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 102.49972
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 108.35201
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 104.53082
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 108.38214
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 102.06202
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 96.43287
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 109.91654
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 100.5914
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 103.70374
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 99.3221
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 105.37612
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 106.48399
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 107.92313
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": 34.29
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 27.04
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 23.8
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 26.11
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 19.48
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 14.3
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 8.27
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 10.8
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 9.17
+    },
+    {
+     "ref": "2023-07-01",
+     "v": -2.3
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -3.4
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -8.55
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -9.34
+    },
+    {
+     "ref": "2023-11-01",
+     "v": -1.95
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 0.09
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 0.77
+    },
+    {
+     "ref": "2024-02-01",
+     "v": -0.22
+    },
+    {
+     "ref": "2024-03-01",
+     "v": -4.95
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 1.82
+    },
+    {
+     "ref": "2024-05-01",
+     "v": -4.03
+    },
+    {
+     "ref": "2024-06-01",
+     "v": -3.99
+    },
+    {
+     "ref": "2024-07-01",
+     "v": -4.36
+    },
+    {
+     "ref": "2024-08-01",
+     "v": -4.6
+    },
+    {
+     "ref": "2024-09-01",
+     "v": -1.5
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 2.03
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 3.0
+    },
+    {
+     "ref": "2024-12-01",
+     "v": -1.73
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 1.29
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 2.24
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 1.1
+    },
+    {
+     "ref": "2025-04-01",
+     "v": -1.43
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 0.02
+    },
+    {
+     "ref": "2025-06-01",
+     "v": -1.06
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 3.17
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 0.36
+    },
+    {
+     "ref": "2025-09-01",
+     "v": -0.65
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 0.24
+    },
+    {
+     "ref": "2025-11-01",
+     "v": -1.23
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 2.96
+    },
+    {
+     "ref": "2026-01-01",
+     "v": -0.18
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -0.2
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 7.77
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 1.74
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 2.01
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 1.32
+    },
+    {
+     "ref": "2026-07-01",
+     "v": -0.61
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 0.85
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 5.29
+    }
+   ],
+   "codigo": "pmc_90671",
+   "nome": "Combustíveis e lubrificantes",
+   "pesquisa": "comercio",
+   "score": 52.3,
+   "faixa": "atenção",
+   "tendencia": "melhorando",
+   "tendencia_valor_pp": 3.97,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 10.43,
+   "yoy_producao_pct": 5.29,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": -1.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 1.7
+   },
+   "componentes": {
+    "atividade": {
+     "z": -0.13,
+     "peso": 0.5625,
+     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": 0.46,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-10-01",
+     "v": 88.54056
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 95.66476
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 167.22246
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 79.49329
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 71.15346
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 81.88834
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 86.9174
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 99.9304
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 101.51648
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 95.76869
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 90.17559
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 82.35032
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 85.85185
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 101.17497
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 168.1736
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 79.91317
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 70.80555
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 81.13085
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 83.69689
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 101.95159
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 101.5333
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 101.16036
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 95.40884
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 85.1987
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 92.64887
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 109.52358
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 174.17234
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 81.86114
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 76.88611
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 81.95411
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 90.09018
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 108.78863
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 107.86616
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 99.69134
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 95.96111
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 83.87567
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 90.52707
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 105.21655
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 169.99525
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 83.00501
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 72.45361
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 84.34995
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 87.61089
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 112.69701
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 106.04172
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 94.60312
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 92.25633
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 86.26685
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": -15.02
+    },
+    {
+     "ref": "2022-11-01",
+     "v": -16.42
+    },
+    {
+     "ref": "2022-12-01",
+     "v": -11.93
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 2.4
+    },
+    {
+     "ref": "2023-02-01",
+     "v": -8.92
+    },
+    {
+     "ref": "2023-03-01",
+     "v": -7.33
+    },
+    {
+     "ref": "2023-04-01",
+     "v": -11.22
+    },
+    {
+     "ref": "2023-05-01",
+     "v": -18.19
+    },
+    {
+     "ref": "2023-06-01",
+     "v": -6.3
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 1.34
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -6.94
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -2.72
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -3.04
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 5.76
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 0.57
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 0.53
+    },
+    {
+     "ref": "2024-02-01",
+     "v": -0.49
+    },
+    {
+     "ref": "2024-03-01",
+     "v": -0.93
+    },
+    {
+     "ref": "2024-04-01",
+     "v": -3.71
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 2.02
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 0.02
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 5.63
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 5.8
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 3.46
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 7.92
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 8.25
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 3.57
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 2.44
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 8.59
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 1.01
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 7.64
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 6.71
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 6.24
+    },
+    {
+     "ref": "2025-07-01",
+     "v": -1.45
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 0.58
+    },
+    {
+     "ref": "2025-09-01",
+     "v": -1.55
+    },
+    {
+     "ref": "2025-10-01",
+     "v": -2.29
+    },
+    {
+     "ref": "2025-11-01",
+     "v": -3.93
+    },
+    {
+     "ref": "2025-12-01",
+     "v": -2.4
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 1.4
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -5.77
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 2.92
+    },
+    {
+     "ref": "2026-04-01",
+     "v": -2.75
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 3.59
+    },
+    {
+     "ref": "2026-06-01",
+     "v": -1.69
+    },
+    {
+     "ref": "2026-07-01",
+     "v": -5.1
+    },
+    {
+     "ref": "2026-08-01",
+     "v": -3.86
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 2.85
+    }
+   ],
+   "codigo": "pmc_90673",
+   "nome": "Tecidos, vestuário e calçados",
+   "pesquisa": "comercio",
+   "score": 51.9,
+   "faixa": "atenção",
+   "tendencia": "melhorando",
+   "tendencia_valor_pp": 4.54,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 9.16,
+   "yoy_producao_pct": 2.85,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": -1.8,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 1.7
+   },
+   "componentes": {
+    "atividade": {
+     "z": -0.16,
+     "peso": 0.5625,
+     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": 0.46,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
     {
      "ref": "2022-10-01",
      "v": 93.32032
@@ -14114,7 +13675,11 @@
     },
     {
      "ref": "2026-08-01",
-     "v": 88.62711
+     "v": 88.65853
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 94.31397
     }
    ],
    "serie_yoy": [
@@ -14292,29 +13857,33 @@
     },
     {
      "ref": "2026-08-01",
-     "v": -1.36
+     "v": -1.32
+    },
+    {
+     "ref": "2026-09-01",
+     "v": -0.63
     }
    ],
    "codigo": "pmc_56741",
    "nome": "Atacado especializado em produtos alimentícios, bebidas e fumo",
    "pesquisa": "comercio",
-   "score": 52.6,
+   "score": 51.8,
    "faixa": "atenção",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 6.51,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 13.51,
-   "yoy_producao_pct": -1.36,
-   "ref": "2026-08-01",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -8.12,
+   "velocidade": "momento piorando",
+   "velocidade_valor_pp": -6.73,
+   "yoy_producao_pct": -0.63,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": -0.9,
+    "atividade": -1.9,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": -0.08,
+     "z": -0.17,
      "peso": 0.5625,
      "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
@@ -14333,9 +13902,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -14733,7 +14302,7 @@
    "codigo": "129334",
    "nome": "3.25 Fabricação de produtos de metal, exceto máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 51.4,
+   "score": 51.7,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.0,
@@ -14745,7 +14314,7 @@
     "atividade": -0.8,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -14768,9 +14337,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -15168,7 +14737,7 @@
    "codigo": "129333",
    "nome": "3.24 Metalurgia",
    "pesquisa": "industria",
-   "score": 50.8,
+   "score": 51.1,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.92,
@@ -15180,7 +14749,7 @@
     "atividade": -1.3,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -15203,9 +14772,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -15603,7 +15172,7 @@
    "codigo": "129338",
    "nome": "3.29 Fabricação de veículos automotores, reboques e carrocerias",
    "pesquisa": "industria",
-   "score": 49.6,
+   "score": 49.9,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -9.76,
@@ -15615,7 +15184,7 @@
     "atividade": -2.6,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -15638,9 +15207,444 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-10-01",
+     "v": 98.42314
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 121.18827
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 127.7347
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 91.56774
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 74.04923
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 84.66601
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 80.24249
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 84.50122
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 81.03824
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 88.48565
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 87.54736
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 81.47252
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 90.00133
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 114.11697
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 112.42353
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 89.6421
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 81.36033
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 95.78814
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 83.75901
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 96.44186
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 87.30096
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 97.92272
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 88.82519
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 86.15773
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 96.55286
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 118.54671
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 123.4525
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 94.05505
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 83.60815
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 89.82016
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 93.0336
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 96.67278
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 89.03737
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 99.17776
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 90.55199
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 88.84309
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 97.74279
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 123.94339
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 124.13164
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 95.66592
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 78.62431
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 98.62793
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 92.75053
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 97.01372
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 93.48192
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 96.87221
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 92.82542
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 90.51373
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": -8.45
+    },
+    {
+     "ref": "2022-11-01",
+     "v": -10.59
+    },
+    {
+     "ref": "2022-12-01",
+     "v": -8.36
+    },
+    {
+     "ref": "2023-01-01",
+     "v": -6.44
+    },
+    {
+     "ref": "2023-02-01",
+     "v": -12.95
+    },
+    {
+     "ref": "2023-03-01",
+     "v": -12.44
+    },
+    {
+     "ref": "2023-04-01",
+     "v": -17.96
+    },
+    {
+     "ref": "2023-05-01",
+     "v": -17.31
+    },
+    {
+     "ref": "2023-06-01",
+     "v": -14.85
+    },
+    {
+     "ref": "2023-07-01",
+     "v": -4.92
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -7.89
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -9.22
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -8.56
+    },
+    {
+     "ref": "2023-11-01",
+     "v": -5.83
+    },
+    {
+     "ref": "2023-12-01",
+     "v": -11.99
+    },
+    {
+     "ref": "2024-01-01",
+     "v": -2.1
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 9.87
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 13.14
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 4.38
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 14.13
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 7.73
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 10.67
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 1.46
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 5.75
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 7.28
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 3.88
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 9.81
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 4.92
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 2.76
+    },
+    {
+     "ref": "2025-03-01",
+     "v": -6.23
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 11.07
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 0.24
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 1.99
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 1.28
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 1.94
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 3.12
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 1.23
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 4.55
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 0.55
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 1.71
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -5.96
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 9.81
+    },
+    {
+     "ref": "2026-04-01",
+     "v": -0.3
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 0.35
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 4.99
+    },
+    {
+     "ref": "2026-07-01",
+     "v": -2.32
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 2.51
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 1.88
+    }
+   ],
+   "codigo": "pmc_103158",
+   "nome": "Outros artigos de uso pessoal e doméstico",
+   "pesquisa": "comercio",
+   "score": 48.8,
+   "faixa": "atenção",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -3.11,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 1.7,
+   "yoy_producao_pct": 1.88,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": -5.0,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 1.7
+   },
+   "componentes": {
+    "atividade": {
+     "z": -0.44,
+     "peso": 0.5625,
+     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": 0.46,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -16038,7 +16042,7 @@
    "codigo": "129315",
    "nome": "2 Indústrias extrativas",
    "pesquisa": "industria",
-   "score": 48.2,
+   "score": 48.5,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.39,
@@ -16050,7 +16054,7 @@
     "atividade": -3.2,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": -0.6
+    "capacidade_financeira": -0.4
    },
    "componentes": {
     "atividade": {
@@ -16073,9 +16077,444 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": -0.17,
+     "z": -0.1,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção B, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção B, até 2026-09)",
+     "status": "observado",
+     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-10-01",
+     "v": 83.00856
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 86.79697
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 126.82282
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 177.901
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 121.54405
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 95.7555
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 70.56993
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 81.92383
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 82.55379
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 82.77835
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 79.97019
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 73.71974
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 79.10356
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 82.70698
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 116.58643
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 162.18467
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 115.67464
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 81.75252
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 72.23987
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 74.55233
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 75.89186
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 78.64308
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 73.07091
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 65.99087
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 71.77135
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 73.52341
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 112.08348
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 160.23797
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 110.03179
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 75.27696
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 69.47235
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 76.94525
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 75.08016
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 81.62493
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 73.67461
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 64.72457
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 72.50701
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 77.90816
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 110.26936
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 154.83177
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 105.48621
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 82.22177
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 69.45799
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 94.31422
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 84.56107
+    },
+    {
+     "ref": "2026-07-01",
+     "v": 80.30092
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 74.47555
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 68.77368
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-10-01",
+     "v": 13.67
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 0.08
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 0.34
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 18.32
+    },
+    {
+     "ref": "2023-02-01",
+     "v": -6.66
+    },
+    {
+     "ref": "2023-03-01",
+     "v": -6.1
+    },
+    {
+     "ref": "2023-04-01",
+     "v": -6.28
+    },
+    {
+     "ref": "2023-05-01",
+     "v": -5.6
+    },
+    {
+     "ref": "2023-06-01",
+     "v": -2.19
+    },
+    {
+     "ref": "2023-07-01",
+     "v": -7.36
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -15.59
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -18.31
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -4.7
+    },
+    {
+     "ref": "2023-11-01",
+     "v": -4.71
+    },
+    {
+     "ref": "2023-12-01",
+     "v": -8.07
+    },
+    {
+     "ref": "2024-01-01",
+     "v": -8.83
+    },
+    {
+     "ref": "2024-02-01",
+     "v": -4.83
+    },
+    {
+     "ref": "2024-03-01",
+     "v": -14.62
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 2.37
+    },
+    {
+     "ref": "2024-05-01",
+     "v": -9.0
+    },
+    {
+     "ref": "2024-06-01",
+     "v": -8.07
+    },
+    {
+     "ref": "2024-07-01",
+     "v": -5.0
+    },
+    {
+     "ref": "2024-08-01",
+     "v": -8.63
+    },
+    {
+     "ref": "2024-09-01",
+     "v": -10.48
+    },
+    {
+     "ref": "2024-10-01",
+     "v": -9.27
+    },
+    {
+     "ref": "2024-11-01",
+     "v": -11.1
+    },
+    {
+     "ref": "2024-12-01",
+     "v": -3.86
+    },
+    {
+     "ref": "2025-01-01",
+     "v": -1.2
+    },
+    {
+     "ref": "2025-02-01",
+     "v": -4.88
+    },
+    {
+     "ref": "2025-03-01",
+     "v": -7.92
+    },
+    {
+     "ref": "2025-04-01",
+     "v": -3.83
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 3.21
+    },
+    {
+     "ref": "2025-06-01",
+     "v": -1.07
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 3.79
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 0.83
+    },
+    {
+     "ref": "2025-09-01",
+     "v": -1.92
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 1.03
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 5.96
+    },
+    {
+     "ref": "2025-12-01",
+     "v": -1.62
+    },
+    {
+     "ref": "2026-01-01",
+     "v": -3.37
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -4.13
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 9.23
+    },
+    {
+     "ref": "2026-04-01",
+     "v": -0.02
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 22.57
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 12.63
+    },
+    {
+     "ref": "2026-07-01",
+     "v": -1.62
+    },
+    {
+     "ref": "2026-08-01",
+     "v": 1.09
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 6.26
+    }
+   ],
+   "codigo": "pmc_103156",
+   "nome": "Livros, jornais, revistas e papelaria",
+   "pesquisa": "comercio",
+   "score": 48.2,
+   "faixa": "atenção",
+   "tendencia": "piorando",
+   "tendencia_valor_pp": -6.37,
+   "velocidade": "momento piorando",
+   "velocidade_valor_pp": -9.77,
+   "yoy_producao_pct": 6.26,
+   "ref": "2026-09-01",
+   "contribuicoes": {
+    "atividade": -5.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 1.7
+   },
+   "componentes": {
+    "atividade": {
+     "z": -0.49,
+     "peso": 0.5625,
+     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.4,
+     "peso": 0.25,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": 0.46,
+     "peso": 0.1875,
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -16473,7 +16912,7 @@
    "codigo": "129318",
    "nome": "3.11 Fabricação de bebidas",
    "pesquisa": "industria",
-   "score": 47.8,
+   "score": 48.1,
    "faixa": "atenção",
    "tendencia": "estável",
    "tendencia_valor_pp": -0.42,
@@ -16485,7 +16924,7 @@
     "atividade": -4.4,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -16508,444 +16947,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
-     "status": "observado",
-     "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 89.74604
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 98.42314
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 121.18827
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 127.7347
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 91.56774
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 74.04923
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 84.66601
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 80.24249
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 84.50122
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 81.03824
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 88.48565
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 87.54736
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 81.47252
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 90.00133
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 114.11697
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 112.42353
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 89.6421
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 81.36033
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 95.78814
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 83.75901
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 96.44186
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 87.30096
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 97.92272
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 88.82519
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 86.15773
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 96.55286
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 118.54671
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 123.4525
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 94.05505
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 83.60815
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 89.82016
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 93.0336
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 96.67278
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 89.03737
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 99.17776
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 90.55199
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 88.84309
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 97.74279
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 123.94339
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 124.13164
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 95.66592
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 78.62431
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 98.62793
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 92.75053
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 97.01372
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 93.48192
-    },
-    {
-     "ref": "2026-07-01",
-     "v": 96.87221
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 92.79705
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": -10.11
-    },
-    {
-     "ref": "2022-10-01",
-     "v": -8.45
-    },
-    {
-     "ref": "2022-11-01",
-     "v": -10.59
-    },
-    {
-     "ref": "2022-12-01",
-     "v": -8.36
-    },
-    {
-     "ref": "2023-01-01",
-     "v": -6.44
-    },
-    {
-     "ref": "2023-02-01",
-     "v": -12.95
-    },
-    {
-     "ref": "2023-03-01",
-     "v": -12.44
-    },
-    {
-     "ref": "2023-04-01",
-     "v": -17.96
-    },
-    {
-     "ref": "2023-05-01",
-     "v": -17.31
-    },
-    {
-     "ref": "2023-06-01",
-     "v": -14.85
-    },
-    {
-     "ref": "2023-07-01",
-     "v": -4.92
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -7.89
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -9.22
-    },
-    {
-     "ref": "2023-10-01",
-     "v": -8.56
-    },
-    {
-     "ref": "2023-11-01",
-     "v": -5.83
-    },
-    {
-     "ref": "2023-12-01",
-     "v": -11.99
-    },
-    {
-     "ref": "2024-01-01",
-     "v": -2.1
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 9.87
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 13.14
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 4.38
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 14.13
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 7.73
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 10.67
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 1.46
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 5.75
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 7.28
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 3.88
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 9.81
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 4.92
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 2.76
-    },
-    {
-     "ref": "2025-03-01",
-     "v": -6.23
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 11.07
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 0.24
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 1.99
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 1.28
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 1.94
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 3.12
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 1.23
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 4.55
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 0.55
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 1.71
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -5.96
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 9.81
-    },
-    {
-     "ref": "2026-04-01",
-     "v": -0.3
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 0.35
-    },
-    {
-     "ref": "2026-06-01",
-     "v": 4.99
-    },
-    {
-     "ref": "2026-07-01",
-     "v": -2.32
-    },
-    {
-     "ref": "2026-08-01",
-     "v": 2.48
-    }
-   ],
-   "codigo": "pmc_103158",
-   "nome": "Outros artigos de uso pessoal e doméstico",
-   "pesquisa": "comercio",
-   "score": 47.6,
-   "faixa": "atenção",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 2.13,
-   "velocidade": "momento piorando",
-   "velocidade_valor_pp": -4.19,
-   "yoy_producao_pct": 2.48,
-   "ref": "2026-08-01",
-   "contribuicoes": {
-    "atividade": -5.9,
-    "condicoes_credito": 2.0,
-    "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
-   },
-   "componentes": {
-    "atividade": {
-     "z": -0.52,
-     "peso": 0.5625,
-     "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.4,
-     "peso": 0.25,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.0,
-     "fonte": "em construção (RJ) — fora do score",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.39,
-     "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -17343,7 +17347,7 @@
    "codigo": "129323",
    "nome": "3.16 Fabricação de produtos de madeira",
    "pesquisa": "industria",
-   "score": 47.2,
+   "score": 47.5,
    "faixa": "atenção",
    "tendencia": "estável",
    "tendencia_valor_pp": 0.19,
@@ -17355,7 +17359,7 @@
     "atividade": -5.0,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -17378,9 +17382,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -17778,7 +17782,7 @@
    "codigo": "129336",
    "nome": "3.27 Fabricação de máquinas, aparelhos e materiais elétricos",
    "pesquisa": "industria",
-   "score": 46.3,
+   "score": 46.6,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.79,
@@ -17790,7 +17794,7 @@
     "atividade": -5.9,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -17813,9 +17817,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -18213,7 +18217,7 @@
    "codigo": "129342",
    "nome": "3.33 Manutenção, reparação e instalação de máquinas e equipamentos",
    "pesquisa": "industria",
-   "score": 44.0,
+   "score": 44.4,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.0,
@@ -18225,7 +18229,7 @@
     "atividade": -8.1,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 0.2
+    "capacidade_financeira": 0.4
    },
    "componentes": {
     "atividade": {
@@ -18248,9 +18252,9 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.04,
+     "z": 0.12,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção C, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
@@ -18258,10 +18262,6 @@
   },
   {
    "serie_obs": [
-    {
-     "ref": "2022-09-01",
-     "v": 93.67504
-    },
     {
      "ref": "2022-10-01",
      "v": 104.883
@@ -18448,14 +18448,14 @@
     },
     {
      "ref": "2026-08-01",
-     "v": 108.19216
+     "v": 108.17614
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 116.92393
     }
    ],
    "serie_yoy": [
-    {
-     "ref": "2022-09-01",
-     "v": 7.01
-    },
     {
      "ref": "2022-10-01",
      "v": 8.5
@@ -18642,29 +18642,33 @@
     },
     {
      "ref": "2026-08-01",
-     "v": 10.19
+     "v": 10.17
+    },
+    {
+     "ref": "2026-09-01",
+     "v": 19.55
     }
    ],
    "codigo": "pmc_103157",
    "nome": "Equipamentos e materiais para escritório, informática e comunicação",
    "pesquisa": "comercio",
-   "score": 42.3,
-   "faixa": "atenção",
+   "score": 31.1,
+   "faixa": "baixo",
    "tendencia": "melhorando",
-   "tendencia_valor_pp": 14.3,
+   "tendencia_valor_pp": 17.35,
    "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 18.65,
-   "yoy_producao_pct": 10.19,
-   "ref": "2026-08-01",
+   "velocidade_valor_pp": 37.65,
+   "yoy_producao_pct": 19.55,
+   "ref": "2026-09-01",
    "contribuicoes": {
-    "atividade": -11.1,
+    "atividade": -22.6,
     "condicoes_credito": 2.0,
     "estresse_empresarial": 0.0,
-    "capacidade_financeira": 1.5
+    "capacidade_financeira": 1.7
    },
    "componentes": {
     "atividade": {
-     "z": -0.99,
+     "z": -2.01,
      "peso": 0.5625,
      "fonte": "IBGE PMC (volume de vendas, varejo ampliado)",
      "status": "observado"
@@ -18683,16 +18687,16 @@
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
-     "z": 0.39,
+     "z": 0.46,
      "peso": 0.1875,
-     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-08)",
+     "fonte": "MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção G, até 2026-09)",
      "status": "observado",
      "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"
     }
    }
   }
  ],
- "emprego_ref": "2026-08",
+ "emprego_ref": "2026-09",
  "metodo": "Score = 50 + 20×Σ(peso×z), calculado APENAS sobre componentes observados: atividade (queda do volume a/a vs. histórico — PIM para indústria, PMS para serviços, PMC para o varejo ampliado; mesma régua: índice de volume 2022=100 sem ajuste sazonal), condições de crédito (inadimplência e spread PJ vs. histórico, BCB) e capacidade financeira (variação a/a do estoque de vínculos formais da seção CNAE da atividade vs. histórico desde 2013, Novo Caged via BCB/SGS, sinal invertido). Pesos: atividade 0,56, condições de crédito 0,25 e capacidade financeira 0,19 (pesos originais 0,45/0,20/0,15 renormalizados sobre os observados). Estresse empresarial aparece como 'em construção', com peso ZERO: nunca entra no número. Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência. Seleção declarada: totais das pesquisas ficam fora; PMS entra pelos 5 grandes grupos; PMC exclui recortes que duplicam categorias-mãe; divisões CNAE herdam o emprego da seção (o BCB só republica o estoque por seção).",
  "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). Emprego entra por seção CNAE, não por divisão: as 24 divisões da transformação recebem o mesmo z; grupos da PMS que cruzam seções recebem a média das seções listadas. Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da própria história), não nos níveis absolutos entre pesquisas. O componente de RJ está em construção e FORA do score. Normalização por nº de empresas/estoque de crédito setorial entra com o SCR (Fase 4).",
  "aviso_demo": "Estresse empresarial (RJ) é demonstrativo, com peso zero — exibido como 'em construção', nunca somado ao score."

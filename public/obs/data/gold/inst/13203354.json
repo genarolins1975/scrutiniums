@@ -2,8 +2,8 @@
  "cod_inst": "13203354",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Fitbank Instituição De Pagamento S.A.",
-  "razao_social_fonte_bcb": "FITBANK INSTITUIÇÃO DE PAGAMENTO S.A.",
+  "nome_comercial": "Fits Instituição De Pagamento S.A.",
+  "razao_social_fonte_bcb": "FITS INSTITUIÇÃO DE PAGAMENTO S.A.",
   "codigo_bcb": "13203354",
   "tcb": "N4",
   "sede": "São Paulo/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:39+00:00",
+  "atualizado_em": "2026-11-24T21:45:04+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 13.203.354"
  },
@@ -114,7 +114,7 @@
    },
    {
     "cod": "19468242",
-    "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMEN"
+    "nome": "IFOOD PAGO INSTITUIÇÃO DE PAGAMENTO S.A."
    },
    {
     "cod": "24795049",

@@ -2,8 +2,8 @@
  "cod_inst": "35136120",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Nvio Brasil Bitso Instituição De Pagamento Ltda",
-  "razao_social_fonte_bcb": "NVIO BRASIL BITSO INSTITUIÇÃO DE PAGAMENTO LTDA",
+  "nome_comercial": "Nvio Brasil Instituicao De Pagamento Ltda",
+  "razao_social_fonte_bcb": "NVIO BRASIL INSTITUICAO DE PAGAMENTO LTDA",
   "codigo_bcb": "35136120",
   "tcb": "N4",
   "sede": "Osasco/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:40+00:00",
+  "atualizado_em": "2026-11-24T21:45:05+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 35.136.120"
  },
@@ -105,7 +105,7 @@
    },
    {
     "cod": "19468242",
-    "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMEN"
+    "nome": "IFOOD PAGO INSTITUIÇÃO DE PAGAMENTO S.A."
    },
    {
     "cod": "24795049",

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-23T22:35:41+00:00",
+ "gerado_em": "2026-11-24T21:45:06+00:00",
  "paginas": 1457,
  "anomes": "202606",
  "instituicoes": [
@@ -235,8 +235,8 @@
   },
   {
    "cod": "16501555",
-   "nome": "Stone Instituição De Pagamento S.A.",
-   "razao": "STONE INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "nome": "Stone Pagamentos S.A.",
+   "razao": "STONE PAGAMENTOS S.A.",
    "sr": "S3",
    "ativo_brl": 89229885376.52,
    "piloto": false,
@@ -1505,8 +1505,8 @@
   },
   {
    "cod": "38372267",
-   "nome": "Shpp Brasil Instituição De Pagamento E Serviços De Pagamentos Ltda.",
-   "razao": "SHPP BRASIL INSTITUIÇÃO DE PAGAMENTO E SERVIÇOS DE PAGAMENTOS LTDA.",
+   "nome": "Maree Instituição De Pagamento Ltda.",
+   "razao": "MAREE INSTITUIÇÃO DE PAGAMENTO LTDA.",
    "sr": "S4",
    "ativo_brl": 5605238852.38,
    "piloto": false,
@@ -1515,8 +1515,8 @@
   },
   {
    "cod": "19468242",
-   "nome": "Zoop Tecnologia & Instituicao De Pagamento S.A.",
-   "razao": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMENTO S.A.",
+   "nome": "Ifood Pago Instituição De Pagamento S.A.",
+   "razao": "IFOOD PAGO INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": "S5",
    "ativo_brl": 5601766851.63,
    "piloto": false,
@@ -2195,8 +2195,8 @@
   },
   {
    "cod": "04670195",
-   "nome": "Credsystem Instituição De Pagamento Ltda",
-   "razao": "CREDSYSTEM INSTITUIÇÃO DE PAGAMENTO LTDA",
+   "nome": "Cred-System Administradora De Cartões De Crédito Ltda.",
+   "razao": "CRED-SYSTEM ADMINISTRADORA DE CARTÕES DE CRÉDITO LTDA.",
    "sr": "S4",
    "ativo_brl": 3489799862.3,
    "piloto": false,
@@ -5065,8 +5065,8 @@
   },
   {
    "cod": "13203354",
-   "nome": "Fitbank Instituição De Pagamento S.A.",
-   "razao": "FITBANK INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "nome": "Fits Instituição De Pagamento S.A.",
+   "razao": "FITS INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": "S5",
    "ativo_brl": 768268867.62,
    "piloto": false,
@@ -6205,8 +6205,8 @@
   },
   {
    "cod": "28581308",
-   "nome": "Greenpass Tecnologia E Instituicao De Pagamento Hue S.A.",
-   "razao": "GREENPASS TECNOLOGIA E INSTITUICAO DE PAGAMENTO HUE S.A.",
+   "nome": "Greenpass Tecnologia Em Pagamentos S.A.",
+   "razao": "GREENPASS TECNOLOGIA EM PAGAMENTOS S.A.",
    "sr": "S?",
    "ativo_brl": 420288367.38,
    "piloto": false,
@@ -7925,8 +7925,8 @@
   },
   {
    "cod": "12481100",
-   "nome": "Biz Instituição De Pagamento S.A.",
-   "razao": "BIZ INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "nome": "Biz Instituição Pagamento Ltda",
+   "razao": "BIZ INSTITUIÇÃO PAGAMENTO LTDA",
    "sr": "S4",
    "ativo_brl": 164526893.37,
    "piloto": false,
@@ -8305,8 +8305,8 @@
   },
   {
    "cod": "35136120",
-   "nome": "Nvio Brasil Bitso Instituição De Pagamento Ltda",
-   "razao": "NVIO BRASIL BITSO INSTITUIÇÃO DE PAGAMENTO LTDA",
+   "nome": "Nvio Brasil Instituicao De Pagamento Ltda",
+   "razao": "NVIO BRASIL INSTITUICAO DE PAGAMENTO LTDA",
    "sr": "S5",
    "ativo_brl": 131222425.05,
    "piloto": false,

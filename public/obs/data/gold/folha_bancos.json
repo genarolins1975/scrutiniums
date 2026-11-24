@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-23T22:35:27+00:00",
+ "gerado_em": "2026-11-24T21:44:55+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 318,
-  "total_editais": 1198,
+  "total_editais": 1203,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1153,6 +1153,42 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE DIVINO DAS LARANJEIRAS",
+    "municipio": "Divino das Laranjeiras",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-24",
+    "url": "https://pncp.gov.br/compras/18357079000178/2026/38"
+   },
+   {
+    "ente": "MUNICIPIO DE OURO VERDE",
+    "municipio": "Ouro Verde",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-24",
+    "url": "https://pncp.gov.br/compras/44882637000124/2026/81"
+   },
+   {
+    "ente": "MUNICIPIO DE DIVINO DAS LARANJEIRAS",
+    "municipio": "Divino das Laranjeiras",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-24",
+    "url": "https://pncp.gov.br/compras/18357079000178/2026/37"
+   },
+   {
+    "ente": "MUNICIPIO DE CABECEIRAS",
+    "municipio": "Cabeceiras",
+    "uf": "GO",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-23",
+    "url": "https://pncp.gov.br/compras/01740430000102/2026/139"
+   },
+   {
     "ente": "MUNICIPIO DE BARRACAO",
     "municipio": "Barracão",
     "uf": "RS",
@@ -1160,6 +1196,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-23",
     "url": "https://pncp.gov.br/compras/87613618000105/2026/31"
+   },
+   {
+    "ente": "MUNICIPIO DE CANDIDO MOTA",
+    "municipio": "Cândido Mota",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-23",
+    "url": "https://pncp.gov.br/compras/46179958000192/2026/186"
    },
    {
     "ente": "MUNICIPIO DE VERTENTE DO LERIO",
@@ -1205,51 +1250,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-18",
     "url": "https://pncp.gov.br/compras/89971758000180/2026/1467"
-   },
-   {
-    "ente": "MUNICIPIO DE LUISLANDIA",
-    "municipio": "Luislândia",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/01612887000131/2026/14"
-   },
-   {
-    "ente": "MUNICIPIO DE CAPITOLIO",
-    "municipio": "Capitólio",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/16726028000140/2026/104"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTO ANTONIO DA PATRULHA",
-    "municipio": "Santo Antônio da Patrulha",
-    "uf": "RS",
-    "modalidade": "Concorrência - Presencial",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/88814199000132/2026/280"
-   },
-   {
-    "ente": "MUNICIPIO DE BARRA FUNDA",
-    "municipio": "Barra Funda",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/94704004000102/2026/111"
-   },
-   {
-    "ente": "MUNICIPIO DE BARRA FUNDA",
-    "municipio": "Barra Funda",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/94704004000102/2026/109"
    },
    {
     "ente": "MUNICIPIO DE BOTELHOS",

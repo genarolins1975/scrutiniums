@@ -2,8 +2,8 @@
  "cod_inst": "04670195",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Credsystem Instituição De Pagamento Ltda",
-  "razao_social_fonte_bcb": "CREDSYSTEM INSTITUIÇÃO DE PAGAMENTO LTDA",
+  "nome_comercial": "Cred-System Administradora De Cartões De Crédito Ltda.",
+  "razao_social_fonte_bcb": "CRED-SYSTEM ADMINISTRADORA DE CARTÕES DE CRÉDITO LTDA.",
   "codigo_bcb": "04670195",
   "tcb": "N4",
   "sede": "Barueri/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:39+00:00",
+  "atualizado_em": "2026-11-24T21:45:04+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 04.670.195"
  },

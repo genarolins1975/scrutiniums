@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-21T18:31:07+00:00",
+ "gerado_em": "2026-11-24T21:44:55+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -135,6 +135,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 2576,
+      "municipios": 1037
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 2533,
+      "municipios": 1036
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 2518,
+      "municipios": 1036
+     },
      {
       "mes": "2023-02",
       "agencias": 2526,
@@ -339,15 +354,25 @@
       "mes": "2026-06",
       "agencias": 1291,
       "municipios": 747
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 1268,
+      "municipios": 739
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 1239,
+      "municipios": 731
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 1291,
-     "municipios": 747
+     "mes": "2026-08",
+     "agencias": 1239,
+     "municipios": 731
     },
-    "var_12m": -569,
-    "var_12m_pct": -30.6,
+    "var_12m": -457,
+    "var_12m_pct": -26.9,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -445,7 +470,7 @@
       },
       "var_aa_pct": -1.6,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -481,6 +506,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 3982,
+      "municipios": 2301
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 3982,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 3980,
+      "municipios": 2301
+     },
      {
       "mes": "2023-02",
       "agencias": 3979,
@@ -685,15 +725,25 @@
       "mes": "2026-06",
       "agencias": 3932,
       "municipios": 2300
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 3932,
+      "municipios": 2300
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 3930,
+      "municipios": 2300
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 3932,
+     "mes": "2026-08",
+     "agencias": 3930,
      "municipios": 2300
     },
-    "var_12m": -68,
-    "var_12m_pct": -1.7,
+    "var_12m": -57,
+    "var_12m_pct": -1.4,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -844,6 +894,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 2853,
+      "municipios": 1732
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 2864,
+      "municipios": 1732
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 2864,
+      "municipios": 1732
+     },
      {
       "mes": "2023-02",
       "agencias": 2867,
@@ -1048,15 +1113,25 @@
       "mes": "2026-06",
       "agencias": 2001,
       "municipios": 1212
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 1975,
+      "municipios": 1197
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 1953,
+      "municipios": 1185
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 2001,
-     "municipios": 1212
+     "mes": "2026-08",
+     "agencias": 1953,
+     "municipios": 1185
     },
-    "var_12m": -192,
-    "var_12m_pct": -8.8,
+    "var_12m": -164,
+    "var_12m_pct": -7.7,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -1244,6 +1319,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 2571,
+      "municipios": 851
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 2571,
+      "municipios": 851
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 2569,
+      "municipios": 852
+     },
      {
       "mes": "2023-02",
       "agencias": 2568,
@@ -1448,15 +1538,25 @@
       "mes": "2026-06",
       "agencias": 1174,
       "municipios": 571
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 1164,
+      "municipios": 565
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 1161,
+      "municipios": 565
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 1174,
-     "municipios": 571
+     "mes": "2026-08",
+     "agencias": 1161,
+     "municipios": 565
     },
-    "var_12m": -1033,
-    "var_12m_pct": -46.8,
+    "var_12m": -942,
+    "var_12m_pct": -44.8,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -1687,6 +1787,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 19,
+      "municipios": 8
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 19,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 19,
+      "municipios": 8
+     },
+     {
       "mes": "2023-02",
       "agencias": 21,
       "municipios": 10
@@ -1890,15 +2005,25 @@
       "mes": "2026-06",
       "agencias": 28,
       "municipios": 13
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 29,
+      "municipios": 14
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 29,
+      "municipios": 14
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 28,
-     "municipios": 13
+     "mes": "2026-08",
+     "agencias": 29,
+     "municipios": 14
     },
-    "var_12m": 3,
-    "var_12m_pct": 12.0,
+    "var_12m": 4,
+    "var_12m_pct": 16.0,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -1996,7 +2121,7 @@
       },
       "var_aa_pct": -5.7,
       "fre_ano": 2026,
-      "versao": 7
+      "versao": 8
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -2022,6 +2147,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 12,
+      "municipios": 12
+     },
      {
       "mes": "2023-02",
       "agencias": 12,
@@ -2226,10 +2366,20 @@
       "mes": "2026-06",
       "agencias": 13,
       "municipios": 13
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 13,
+      "municipios": 13
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 13,
+      "municipios": 13
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 13,
      "municipios": 13
     },
@@ -2375,7 +2525,7 @@
       },
       "var_aa_pct": -2.5,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -2411,6 +2561,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 498,
+      "municipios": 368
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 498,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 498,
+      "municipios": 368
+     },
      {
       "mes": "2023-02",
       "agencias": 497,
@@ -2615,10 +2780,20 @@
       "mes": "2026-06",
       "agencias": 506,
       "municipios": 362
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 506,
+      "municipios": 362
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 506,
+      "municipios": 362
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 506,
      "municipios": 362
     },
@@ -2721,7 +2896,7 @@
       },
       "var_aa_pct": 4.6,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -2747,6 +2922,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 28,
+      "municipios": 23
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 28,
+      "municipios": 23
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 28,
+      "municipios": 23
+     },
      {
       "mes": "2023-02",
       "agencias": 27,
@@ -2951,10 +3141,20 @@
       "mes": "2026-06",
       "agencias": 27,
       "municipios": 22
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 27,
+      "municipios": 22
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 27,
+      "municipios": 22
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 27,
      "municipios": 22
     },
@@ -3148,6 +3348,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
       "mes": "2023-02",
       "agencias": 2,
       "municipios": 2
@@ -3351,10 +3566,20 @@
       "mes": "2026-06",
       "agencias": 3,
       "municipios": 3
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 3,
+      "municipios": 3
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 3,
+      "municipios": 3
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     },
@@ -3483,6 +3708,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 118,
+      "municipios": 108
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 118,
+      "municipios": 108
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 118,
+      "municipios": 108
+     },
      {
       "mes": "2023-02",
       "agencias": 118,
@@ -3687,10 +3927,20 @@
       "mes": "2026-06",
       "agencias": 115,
       "municipios": 106
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 115,
+      "municipios": 106
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 115,
      "municipios": 106
     },
@@ -3788,7 +4038,7 @@
       },
       "var_aa_pct": -2.6,
       "fre_ano": 2026,
-      "versao": 8
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -3819,6 +4069,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 295,
+      "municipios": 271
+     },
      {
       "mes": "2023-02",
       "agencias": 295,
@@ -4023,10 +4288,20 @@
       "mes": "2026-06",
       "agencias": 301,
       "municipios": 277
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 301,
+      "municipios": 277
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 301,
+      "municipios": 277
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 301,
      "municipios": 277
     },
@@ -4160,6 +4435,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 96,
+      "municipios": 71
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 97,
+      "municipios": 71
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 97,
+      "municipios": 71
+     },
      {
       "mes": "2023-02",
       "agencias": 97,
@@ -4364,10 +4654,20 @@
       "mes": "2026-06",
       "agencias": 86,
       "municipios": 60
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 86,
+      "municipios": 60
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 86,
+      "municipios": 60
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 86,
      "municipios": 60
     },
@@ -4539,6 +4839,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 2,
+      "municipios": 1
+     },
      {
       "mes": "2023-02",
       "agencias": 2,
@@ -4743,10 +5058,20 @@
       "mes": "2026-06",
       "agencias": 3,
       "municipios": 2
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 3,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 3,
+      "municipios": 2
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 2
     },
@@ -4849,7 +5174,7 @@
       },
       "var_aa_pct": 5.2,
       "fre_ano": 2026,
-      "versao": 4
+      "versao": 5
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4885,6 +5210,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 125,
+      "municipios": 34
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 125,
+      "municipios": 34
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 125,
+      "municipios": 34
+     },
      {
       "mes": "2023-02",
       "agencias": 123,
@@ -5089,14 +5429,24 @@
       "mes": "2026-06",
       "agencias": 0,
       "municipios": 0
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 0,
+      "municipios": 0
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 0,
      "municipios": 0
     },
-    "var_12m": -86,
+    "var_12m": -64,
     "var_12m_pct": -100.0,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
@@ -5226,6 +5576,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 64,
+      "municipios": 43
+     },
      {
       "mes": "2023-02",
       "agencias": 64,
@@ -5430,10 +5795,20 @@
       "mes": "2026-06",
       "agencias": 65,
       "municipios": 44
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 65,
+      "municipios": 44
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 65,
+      "municipios": 44
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 65,
      "municipios": 44
     },
@@ -5678,6 +6053,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
       "mes": "2023-02",
       "agencias": 9,
       "municipios": 8
@@ -5881,10 +6271,20 @@
       "mes": "2026-06",
       "agencias": 10,
       "municipios": 8
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 10,
+      "municipios": 8
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 10,
+      "municipios": 8
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 10,
      "municipios": 8
     },
@@ -6131,6 +6531,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 155,
+      "municipios": 136
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 155,
+      "municipios": 136
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 155,
+      "municipios": 136
+     },
+     {
       "mes": "2023-02",
       "agencias": 155,
       "municipios": 136
@@ -6334,10 +6749,20 @@
       "mes": "2026-06",
       "agencias": 165,
       "municipios": 145
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 165,
+      "municipios": 145
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 165,
+      "municipios": 145
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 165,
      "municipios": 145
     },
@@ -6471,6 +6896,21 @@
    },
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 51,
+      "municipios": 47
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 51,
+      "municipios": 47
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 51,
+      "municipios": 47
+     },
      {
       "mes": "2023-02",
       "agencias": 51,
@@ -6675,10 +7115,20 @@
       "mes": "2026-06",
       "agencias": 53,
       "municipios": 48
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 53,
+      "municipios": 48
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 53,
+      "municipios": 48
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 53,
      "municipios": 48
     },
@@ -6818,6 +7268,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
       "mes": "2023-02",
       "agencias": 1,
       "municipios": 1
@@ -7021,10 +7486,20 @@
       "mes": "2026-06",
       "agencias": 2,
       "municipios": 2
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 2,
+      "municipios": 2
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     },
@@ -7380,6 +7855,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
       "mes": "2023-02",
       "agencias": 1,
       "municipios": 1
@@ -7583,10 +8073,20 @@
       "mes": "2026-06",
       "agencias": 2,
       "municipios": 2
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 2,
+      "municipios": 2
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     },
@@ -7711,6 +8211,21 @@
    "rede": {
     "serie": [
      {
+      "mes": "2022-11",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
       "mes": "2023-02",
       "agencias": 18,
       "municipios": 16
@@ -7914,15 +8429,25 @@
       "mes": "2026-06",
       "agencias": 2,
       "municipios": 2
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 2,
+      "municipios": 2
      }
     ],
     "atual": {
-     "mes": "2026-06",
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     },
-    "var_12m": -14,
-    "var_12m_pct": -87.5,
+    "var_12m": 1,
+    "var_12m_pct": 100.0,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -8020,6 +8545,21 @@
    "auditor": null,
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 3372,
+      "municipios": 1633
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 3372,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 3372,
+      "municipios": 1633
+     },
      {
       "mes": "2023-02",
       "agencias": 3371,
@@ -8224,15 +8764,25 @@
       "mes": "2026-06",
       "agencias": 2996,
       "municipios": 1630
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 2985,
+      "municipios": 1630
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 2984,
+      "municipios": 1630
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 2996,
+     "mes": "2026-08",
+     "agencias": 2984,
      "municipios": 1630
     },
-    "var_12m": -253,
-    "var_12m_pct": -7.8,
+    "var_12m": -261,
+    "var_12m_pct": -8.0,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -8331,6 +8881,21 @@
    "auditor": null,
    "rede": {
     "serie": [
+     {
+      "mes": "2022-11",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2022-12",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-01",
+      "agencias": 120,
+      "municipios": 54
+     },
      {
       "mes": "2023-02",
       "agencias": 120,
@@ -8535,11 +9100,21 @@
       "mes": "2026-06",
       "agencias": 128,
       "municipios": 55
+     },
+     {
+      "mes": "2026-07",
+      "agencias": 128,
+      "municipios": 55
+     },
+     {
+      "mes": "2026-08",
+      "agencias": 129,
+      "municipios": 55
      }
     ],
     "atual": {
-     "mes": "2026-06",
-     "agencias": 128,
+     "mes": "2026-08",
+     "agencias": 129,
      "municipios": 55
     },
     "var_12m": 3,
@@ -8623,6 +9198,24 @@
  "sfn": {
   "rede": {
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 17207,
+     "municipios": 3149,
+     "bancos": 117
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 17176,
+     "municipios": 3148,
+     "bancos": 117
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 17154,
+     "municipios": 3148,
+     "bancos": 117
+    },
     {
      "mes": "2023-02",
      "agencias": 17159,
@@ -8868,6 +9461,18 @@
      "agencias": 13200,
      "municipios": 2912,
      "bancos": 108
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 13136,
+     "municipios": 2909,
+     "bancos": 110
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 13077,
+     "municipios": 2907,
+     "bancos": 109
     }
    ],
    "nota": "Soma de agências processadas de todos os bancos no ESTBAN e contagem de municípios com ao menos uma agência (código de município do próprio ESTBAN)."
@@ -8876,12 +9481,27 @@
  "rede_por_cnpj8": {
   "00000000": {
    "nome": "BCO DO BRASIL S.A.",
-   "mes": "2026-06",
-   "agencias": 3932,
+   "mes": "2026-08",
+   "agencias": 3930,
    "municipios": 2300,
-   "var_12m": -68,
-   "var_12m_pct": -1.7,
+   "var_12m": -57,
+   "var_12m_pct": -1.4,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3982,
+     "municipios": 2301
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3982,
+     "municipios": 2301
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3980,
+     "municipios": 2301
+    },
     {
      "mes": "2023-02",
      "agencias": 3979,
@@ -9086,17 +9706,42 @@
      "mes": "2026-06",
      "agencias": 3932,
      "municipios": 2300
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3932,
+     "municipios": 2300
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 3930,
+     "municipios": 2300
     }
    ]
   },
   "00360305": {
    "nome": "CAIXA ECONOMICA FEDERAL",
-   "mes": "2026-06",
-   "agencias": 2996,
+   "mes": "2026-08",
+   "agencias": 2984,
    "municipios": 1630,
-   "var_12m": -253,
-   "var_12m_pct": -7.8,
+   "var_12m": -261,
+   "var_12m_pct": -8.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3372,
+     "municipios": 1633
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3372,
+     "municipios": 1633
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3372,
+     "municipios": 1633
+    },
     {
      "mes": "2023-02",
      "agencias": 3371,
@@ -9301,17 +9946,42 @@
      "mes": "2026-06",
      "agencias": 2996,
      "municipios": 1630
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2985,
+     "municipios": 1630
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2984,
+     "municipios": 1630
     }
    ]
   },
   "00416968": {
    "nome": "BANCO INTER",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
-   "var_12m": -14,
-   "var_12m_pct": -87.5,
+   "var_12m": 1,
+   "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 18,
+     "municipios": 16
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 18,
+     "municipios": 16
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 18,
+     "municipios": 16
+    },
     {
      "mes": "2023-02",
      "agencias": 18,
@@ -9514,6 +10184,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -9521,12 +10201,27 @@
   },
   "00517645": {
    "nome": "BCO RIBEIRAO PRETO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -9729,6 +10424,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -9736,12 +10441,27 @@
   },
   "00556603": {
    "nome": "BANCO BARI S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -9944,6 +10664,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -9951,12 +10681,27 @@
   },
   "00795423": {
    "nome": "BANCO SEMEAR",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -10159,6 +10904,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -10166,12 +10921,27 @@
   },
   "00997185": {
    "nome": "BCO B3 S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -10374,6 +11144,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -10381,12 +11161,27 @@
   },
   "01023570": {
    "nome": "BCO RABOBANK INTL BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 19,
    "municipios": 18,
    "var_12m": 1,
    "var_12m_pct": 5.6,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 18,
+     "municipios": 18
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 18,
+     "municipios": 18
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 18,
+     "municipios": 18
+    },
     {
      "mes": "2023-02",
      "agencias": 18,
@@ -10589,6 +11384,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 19,
+     "municipios": 18
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 19,
+     "municipios": 18
+    },
+    {
+     "mes": "2026-08",
      "agencias": 19,
      "municipios": 18
     }
@@ -10596,12 +11401,27 @@
   },
   "01181521": {
    "nome": "BANCO COOPERATIVO SICREDI",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 6,
    "municipios": 5,
    "var_12m": 1,
    "var_12m_pct": 20.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 5,
+     "municipios": 4
+    },
     {
      "mes": "2023-02",
      "agencias": 5,
@@ -10804,6 +11624,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 6,
+     "municipios": 5
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 6,
+     "municipios": 5
+    },
+    {
+     "mes": "2026-08",
      "agencias": 6,
      "municipios": 5
     }
@@ -10811,12 +11641,27 @@
   },
   "01522368": {
    "nome": "BCO BNP PARIBAS BRASIL S A",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -11019,6 +11864,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -11026,12 +11881,27 @@
   },
   "01852137": {
    "nome": "BCO BRASILEIRO DE CRÉDITO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -11234,6 +12104,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -11241,12 +12121,27 @@
   },
   "01858774": {
    "nome": "BCO BV S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -11449,6 +12344,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 2
     }
@@ -11456,12 +12361,27 @@
   },
   "02038232": {
    "nome": "BANCO SICOOB S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 5,
    "municipios": 4,
    "var_12m": 1,
    "var_12m_pct": 25.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 4,
+     "municipios": 4
+    },
     {
      "mes": "2023-02",
      "agencias": 4,
@@ -11664,6 +12584,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-08",
      "agencias": 5,
      "municipios": 4
     }
@@ -11671,12 +12601,27 @@
   },
   "02318507": {
    "nome": "BCO KEB HANA DO BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -11879,6 +12824,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -11886,12 +12841,27 @@
   },
   "02801938": {
    "nome": "BCO MORGAN STANLEY S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -12094,6 +13064,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -12101,12 +13081,27 @@
   },
   "03017677": {
    "nome": "BCO. J.SAFRA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -12309,6 +13304,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -12316,12 +13321,27 @@
   },
   "03323840": {
    "nome": "BCO ALFA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 10,
    "municipios": 8,
    "var_12m": 1,
    "var_12m_pct": 11.1,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 9,
+     "municipios": 8
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 9,
+     "municipios": 8
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 9,
+     "municipios": 8
+    },
     {
      "mes": "2023-02",
      "agencias": 9,
@@ -12524,6 +13544,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 10,
+     "municipios": 8
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 10,
+     "municipios": 8
+    },
+    {
+     "mes": "2026-08",
      "agencias": 10,
      "municipios": 8
     }
@@ -12531,12 +13561,27 @@
   },
   "03532415": {
    "nome": "BANCO ABN AMRO CLEARING S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -12739,6 +13784,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -12746,12 +13801,27 @@
   },
   "03609817": {
    "nome": "BCO CARGILL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -12954,6 +14024,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -12961,12 +14041,27 @@
   },
   "04184779": {
    "nome": "BANCO BRADESCARD",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -13169,6 +14264,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -13176,12 +14281,27 @@
   },
   "04866275": {
    "nome": "BANCO INBURSA",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -13386,17 +14506,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "04902979": {
    "nome": "BCO DA AMAZONIA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 115,
    "municipios": 106,
    "var_12m": 1,
    "var_12m_pct": 0.9,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 118,
+     "municipios": 108
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 118,
+     "municipios": 108
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 118,
+     "municipios": 108
+    },
     {
      "mes": "2023-02",
      "agencias": 118,
@@ -13601,17 +14746,42 @@
      "mes": "2026-06",
      "agencias": 115,
      "municipios": 106
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 115,
+     "municipios": 106
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 115,
+     "municipios": 106
     }
    ]
   },
   "04913711": {
    "nome": "BCO DO EST. DO PA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 165,
    "municipios": 145,
    "var_12m": 1,
    "var_12m_pct": 0.6,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 155,
+     "municipios": 136
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 155,
+     "municipios": 136
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 155,
+     "municipios": 136
+    },
     {
      "mes": "2023-02",
      "agencias": 155,
@@ -13816,17 +14986,42 @@
      "mes": "2026-06",
      "agencias": 165,
      "municipios": 145
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 165,
+     "municipios": 145
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 165,
+     "municipios": 145
     }
    ]
   },
   "06271464": {
    "nome": "BCO BBI S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 5,
    "municipios": 4,
    "var_12m": 1,
    "var_12m_pct": 25.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 3,
@@ -14029,6 +15224,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-08",
      "agencias": 5,
      "municipios": 4
     }
@@ -14036,12 +15241,27 @@
   },
   "07207996": {
    "nome": "BCO BRADESCO FINANC. S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 0,
    "var_12m_pct": 0.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -14246,17 +15466,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "07237373": {
    "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 301,
    "municipios": 277,
    "var_12m": 1,
    "var_12m_pct": 0.3,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 295,
+     "municipios": 271
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 295,
+     "municipios": 271
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 295,
+     "municipios": 271
+    },
     {
      "mes": "2023-02",
      "agencias": 295,
@@ -14461,17 +15706,42 @@
      "mes": "2026-06",
      "agencias": 301,
      "municipios": 277
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 301,
+     "municipios": 277
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 301,
+     "municipios": 277
     }
    ]
   },
   "07450604": {
    "nome": "BOC BRASIL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 8,
    "municipios": 7,
    "var_12m": 0,
    "var_12m_pct": 0.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 8,
+     "municipios": 8
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 8,
+     "municipios": 8
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 8,
+     "municipios": 8
+    },
     {
      "mes": "2023-02",
      "agencias": 8,
@@ -14674,6 +15944,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 8,
+     "municipios": 7
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 8,
+     "municipios": 7
+    },
+    {
+     "mes": "2026-08",
      "agencias": 8,
      "municipios": 7
     }
@@ -14681,12 +15961,27 @@
   },
   "07656500": {
    "nome": "BCO KDB BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -14889,6 +16184,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -14896,12 +16201,27 @@
   },
   "07679404": {
    "nome": "BANCO TOPÁZIO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -15104,6 +16424,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -15111,12 +16441,27 @@
   },
   "09274232": {
    "nome": "STATE STREET BR S.A. BCO COMERCIAL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -15319,6 +16664,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -15326,12 +16681,27 @@
   },
   "09516419": {
    "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -15534,6 +16904,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -15541,12 +16921,27 @@
   },
   "10264663": {
    "nome": "BANCOSEGURO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -15749,6 +17144,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -15756,7 +17161,7 @@
   },
   "10371492": {
    "nome": "BCO YAMAHA MOTOR S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
@@ -15934,6 +17339,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -15941,12 +17356,27 @@
   },
   "10664513": {
    "nome": "BCO AGIBANK S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -16149,6 +17579,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -16156,12 +17596,27 @@
   },
   "10690848": {
    "nome": "BCO DA CHINA BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -16364,6 +17819,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -16371,12 +17836,27 @@
   },
   "10866788": {
    "nome": "BCO BANDEPE S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -16579,6 +18059,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -16586,7 +18076,7 @@
   },
   "11703662": {
    "nome": "BANCO TRAVELEX S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
@@ -16654,6 +18144,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -16661,12 +18161,27 @@
   },
   "11758741": {
    "nome": "BANCO FINAXIS",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -16869,6 +18384,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -16876,12 +18401,27 @@
   },
   "11970623": {
    "nome": "BCO SENFF S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -17084,6 +18624,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -17091,12 +18641,27 @@
   },
   "13009717": {
    "nome": "BCO DO EST. DE SE S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 65,
    "municipios": 44,
    "var_12m": 1,
    "var_12m_pct": 1.6,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 64,
+     "municipios": 43
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 64,
+     "municipios": 43
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 64,
+     "municipios": 43
+    },
     {
      "mes": "2023-02",
      "agencias": 64,
@@ -17299,6 +18864,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 65,
+     "municipios": 44
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 65,
+     "municipios": 44
+    },
+    {
+     "mes": "2026-08",
      "agencias": 65,
      "municipios": 44
     }
@@ -17306,12 +18881,27 @@
   },
   "13720915": {
    "nome": "BCO WESTERN UNION",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -17514,6 +19104,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -17521,12 +19121,27 @@
   },
   "14388334": {
    "nome": "PARANA BCO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -17729,6 +19344,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -17736,12 +19361,27 @@
   },
   "15114366": {
    "nome": "BCO BOCOM BBM S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 4,
    "municipios": 4,
    "var_12m": 1,
    "var_12m_pct": 33.3,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3,
+     "municipios": 3
+    },
     {
      "mes": "2023-02",
      "agencias": 3,
@@ -17944,6 +19584,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 4,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-08",
      "agencias": 4,
      "municipios": 4
     }
@@ -17951,12 +19601,27 @@
   },
   "15357060": {
    "nome": "BCO WOORI BANK DO BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -18159,6 +19824,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -18166,12 +19841,27 @@
   },
   "17184037": {
    "nome": "BCO MERCANTIL DO BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -18374,6 +20064,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 2
     }
@@ -18381,12 +20081,27 @@
   },
   "17351180": {
    "nome": "BCO TRIANGULO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -18589,6 +20304,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -18596,12 +20321,27 @@
   },
   "17453575": {
    "nome": "ICBC DO BRASIL BM S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -18806,17 +20546,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "28127603": {
    "nome": "BCO BANESTES S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 86,
    "municipios": 60,
    "var_12m": 1,
    "var_12m_pct": 1.2,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 96,
+     "municipios": 71
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 97,
+     "municipios": 71
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 97,
+     "municipios": 71
+    },
     {
      "mes": "2023-02",
      "agencias": 97,
@@ -19021,17 +20786,42 @@
      "mes": "2026-06",
      "agencias": 86,
      "municipios": 60
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 86,
+     "municipios": 60
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 86,
+     "municipios": 60
     }
    ]
   },
   "28195667": {
    "nome": "BCO ABC BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 13,
    "municipios": 13,
    "var_12m": 1,
    "var_12m_pct": 8.3,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 12,
+     "municipios": 12
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 12,
+     "municipios": 12
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 12,
+     "municipios": 12
+    },
     {
      "mes": "2023-02",
      "agencias": 12,
@@ -19236,12 +21026,22 @@
      "mes": "2026-06",
      "agencias": 13,
      "municipios": 13
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 13,
+     "municipios": 13
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 13,
+     "municipios": 13
     }
    ]
   },
   "28811341": {
    "nome": "BCO STONEX S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": null,
@@ -19271,17 +21071,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "29030467": {
    "nome": "SCOTIABANK BRASIL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -19486,17 +21311,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "30306294": {
    "nome": "BANCO BTG PACTUAL S.A.",
-   "mes": "2026-06",
-   "agencias": 28,
-   "municipios": 13,
-   "var_12m": 3,
-   "var_12m_pct": 12.0,
+   "mes": "2026-08",
+   "agencias": 29,
+   "municipios": 14,
+   "var_12m": 4,
+   "var_12m_pct": 16.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 19,
+     "municipios": 8
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 19,
+     "municipios": 8
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 19,
+     "municipios": 8
+    },
     {
      "mes": "2023-02",
      "agencias": 21,
@@ -19701,17 +21551,42 @@
      "mes": "2026-06",
      "agencias": 28,
      "municipios": 13
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 29,
+     "municipios": 14
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 29,
+     "municipios": 14
     }
    ]
   },
   "31597552": {
    "nome": "BCO CLASSICO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -19916,17 +21791,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "31872495": {
    "nome": "BCO C6 S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -20131,17 +22031,282 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
+    }
+   ]
+  },
+  "31880826": {
+   "nome": "BCO GUANABARA S.A.",
+   "mes": "2026-08",
+   "agencias": 3,
+   "municipios": 3,
+   "var_12m": 1,
+   "var_12m_pct": 50.0,
+   "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-02",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-03",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-04",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-05",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-08",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-09",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-10",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-01",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-02",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-03",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-04",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-05",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-08",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-09",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-10",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2024-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-01",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-02",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-03",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-04",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-05",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-08",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-09",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-10",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2025-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-01",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-02",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-03",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-04",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-05",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-06",
+     "agencias": 0,
+     "municipios": 0
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 3,
+     "municipios": 3
     }
    ]
   },
   "31895683": {
    "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 11,
    "municipios": 11,
    "var_12m": 2,
    "var_12m_pct": 22.2,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 10,
+     "municipios": 10
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 10,
+     "municipios": 10
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 10,
+     "municipios": 10
+    },
     {
      "mes": "2023-02",
      "agencias": 10,
@@ -20344,6 +22509,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 11,
+     "municipios": 11
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 11,
+     "municipios": 11
+    },
+    {
+     "mes": "2026-08",
      "agencias": 11,
      "municipios": 11
     }
@@ -20351,12 +22526,27 @@
   },
   "32062580": {
    "nome": "BCO UBS BRASIL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -20559,6 +22749,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -20566,12 +22766,27 @@
   },
   "33042151": {
    "nome": "BCO LA NACION ARGENTINA",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -20774,6 +22989,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -20781,12 +23006,27 @@
   },
   "33042953": {
    "nome": "CITIBANK N.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -20989,6 +23229,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -20996,12 +23246,27 @@
   },
   "33132044": {
    "nome": "BCO CEDULA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -21204,6 +23469,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -21211,12 +23486,27 @@
   },
   "33147315": {
    "nome": "BCO BRADESCO BERJ S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -21419,6 +23709,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -21426,12 +23726,27 @@
   },
   "33172537": {
    "nome": "BCO J.P. MORGAN S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -21634,6 +23949,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -21641,12 +23966,27 @@
   },
   "33264668": {
    "nome": "BCO XP S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -21849,6 +24189,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -21856,12 +24206,27 @@
   },
   "33466988": {
    "nome": "BCO CAIXA GERAL BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -22064,6 +24429,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -22071,12 +24446,27 @@
   },
   "33479023": {
    "nome": "BCO CITIBANK S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 44,
    "municipios": 22,
    "var_12m": -2,
    "var_12m_pct": -4.3,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 50,
+     "municipios": 22
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 50,
+     "municipios": 22
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 50,
+     "municipios": 22
+    },
     {
      "mes": "2023-02",
      "agencias": 50,
@@ -22279,6 +24669,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 44,
+     "municipios": 22
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 44,
+     "municipios": 22
+    },
+    {
+     "mes": "2026-08",
      "agencias": 44,
      "municipios": 22
     }
@@ -22286,12 +24686,27 @@
   },
   "33644196": {
    "nome": "BCO FATOR S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -22494,6 +24909,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -22501,12 +24926,27 @@
   },
   "42272526": {
    "nome": "BNY MELLON BCO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -22709,6 +25149,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -22716,12 +25166,27 @@
   },
   "44189447": {
    "nome": "BCO LA PROVINCIA B AIRES BCE",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -22924,6 +25389,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -22931,12 +25406,27 @@
   },
   "45246410": {
    "nome": "BANCO GENIAL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -23139,6 +25629,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -23146,12 +25646,27 @@
   },
   "46518205": {
    "nome": "JPMORGAN CHASE BANK",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -23354,6 +25869,36 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
+    }
+   ]
+  },
+  "48795256": {
+   "nome": "BCO ANDBANK S.A.",
+   "mes": "2026-08",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": null,
+   "var_12m_pct": null,
+   "serie": [
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -23361,12 +25906,27 @@
   },
   "50585090": {
    "nome": "BANCO BMG CONSIGNADO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -23569,6 +26129,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -23576,12 +26146,27 @@
   },
   "53518684": {
    "nome": "BCO HSBC S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -23784,6 +26369,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -23791,12 +26386,27 @@
   },
   "54403563": {
    "nome": "BCO ARBI S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 5,
    "municipios": 4,
    "var_12m": 1,
    "var_12m_pct": 25.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -23999,6 +26609,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 5,
+     "municipios": 4
+    },
+    {
+     "mes": "2026-08",
      "agencias": 5,
      "municipios": 4
     }
@@ -24006,12 +26626,27 @@
   },
   "55230916": {
    "nome": "INTESA SANPAOLO BRASIL S.A. BM",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -24216,17 +26851,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "58160789": {
    "nome": "BCO SAFRA S.A.",
-   "mes": "2026-06",
-   "agencias": 128,
+   "mes": "2026-08",
+   "agencias": 129,
    "municipios": 55,
    "var_12m": 3,
    "var_12m_pct": 2.4,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 120,
+     "municipios": 54
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 120,
+     "municipios": 54
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 120,
+     "municipios": 54
+    },
     {
      "mes": "2023-02",
      "agencias": 120,
@@ -24431,17 +27091,42 @@
      "mes": "2026-06",
      "agencias": 128,
      "municipios": 55
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 128,
+     "municipios": 55
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 129,
+     "municipios": 55
     }
    ]
   },
   "58616418": {
    "nome": "BCO FIBRA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -24644,6 +27329,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -24651,12 +27346,27 @@
   },
   "59118133": {
    "nome": "BCO LUSO BRASILEIRO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -24859,6 +27569,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -24866,12 +27586,27 @@
   },
   "59285411": {
    "nome": "BANCO PAN",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -25074,6 +27809,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -25081,12 +27826,27 @@
   },
   "59588111": {
    "nome": "BCO VOTORANTIM S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 4,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 33.3,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 3,
@@ -25289,6 +28049,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 4,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 4,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 4,
      "municipios": 2
     }
@@ -25296,12 +28066,27 @@
   },
   "60394079": {
    "nome": "BCO ITAUBANK S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -25504,6 +28289,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -25511,12 +28306,27 @@
   },
   "60498557": {
    "nome": "BCO MUFG BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -25719,6 +28529,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -25726,12 +28546,27 @@
   },
   "60518222": {
    "nome": "BCO SUMITOMO MITSUI BRASIL S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -25936,17 +28771,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "60701190": {
    "nome": "ITAÚ UNIBANCO S.A.",
-   "mes": "2026-06",
-   "agencias": 1291,
-   "municipios": 747,
-   "var_12m": -569,
-   "var_12m_pct": -30.6,
+   "mes": "2026-08",
+   "agencias": 1239,
+   "municipios": 731,
+   "var_12m": -457,
+   "var_12m_pct": -26.9,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2576,
+     "municipios": 1037
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2533,
+     "municipios": 1036
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2518,
+     "municipios": 1036
+    },
     {
      "mes": "2023-02",
      "agencias": 2526,
@@ -26151,17 +29011,42 @@
      "mes": "2026-06",
      "agencias": 1291,
      "municipios": 747
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 1268,
+     "municipios": 739
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 1239,
+     "municipios": 731
     }
    ]
   },
   "60746948": {
    "nome": "BCO BRADESCO S.A.",
-   "mes": "2026-06",
-   "agencias": 2001,
-   "municipios": 1212,
-   "var_12m": -192,
-   "var_12m_pct": -8.8,
+   "mes": "2026-08",
+   "agencias": 1953,
+   "municipios": 1185,
+   "var_12m": -164,
+   "var_12m_pct": -7.7,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2853,
+     "municipios": 1732
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2864,
+     "municipios": 1732
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2864,
+     "municipios": 1732
+    },
     {
      "mes": "2023-02",
      "agencias": 2867,
@@ -26366,17 +29251,42 @@
      "mes": "2026-06",
      "agencias": 2001,
      "municipios": 1212
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 1975,
+     "municipios": 1197
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 1953,
+     "municipios": 1185
     }
    ]
   },
   "60850229": {
    "nome": "OMNI BANCO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -26581,17 +29491,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "60889128": {
    "nome": "BCO SOFISA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 24,
    "municipios": 24,
    "var_12m": 2,
    "var_12m_pct": 9.1,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 19,
+     "municipios": 19
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 19,
+     "municipios": 19
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 19,
+     "municipios": 19
+    },
     {
      "mes": "2023-02",
      "agencias": 19,
@@ -26796,17 +29731,42 @@
      "mes": "2026-06",
      "agencias": 24,
      "municipios": 24
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 24,
+     "municipios": 24
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 24,
+     "municipios": 24
     }
    ]
   },
   "61033106": {
    "nome": "BCO CREFISA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -27009,6 +29969,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -27016,12 +29986,27 @@
   },
   "61088183": {
    "nome": "BCO MIZUHO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -27224,6 +30209,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -27231,12 +30226,27 @@
   },
   "61182408": {
    "nome": "BANCO INVESTCRED UNIBANCO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -27439,6 +30449,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -27446,12 +30466,27 @@
   },
   "61186680": {
    "nome": "BCO BMG S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 27,
    "municipios": 22,
    "var_12m": 1,
    "var_12m_pct": 3.8,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 28,
+     "municipios": 23
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 28,
+     "municipios": 23
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 28,
+     "municipios": 23
+    },
     {
      "mes": "2023-02",
      "agencias": 27,
@@ -27654,6 +30689,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 27,
+     "municipios": 22
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 27,
+     "municipios": 22
+    },
+    {
+     "mes": "2026-08",
      "agencias": 27,
      "municipios": 22
     }
@@ -27661,12 +30706,27 @@
   },
   "61348538": {
    "nome": "BCO C6 CONSIG",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -27869,6 +30929,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -27876,12 +30946,27 @@
   },
   "61533584": {
    "nome": "BCO SOCIETE GENERALE BRASIL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -28084,6 +31169,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -28091,12 +31186,27 @@
   },
   "61820817": {
    "nome": "BCO PAULISTA S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -28299,6 +31409,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -28306,12 +31426,27 @@
   },
   "62073200": {
    "nome": "BOFA MERRILL LYNCH BM S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -28514,6 +31649,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -28521,12 +31666,27 @@
   },
   "62144175": {
    "nome": "BCO PINE S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -28729,6 +31889,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -28736,12 +31906,27 @@
   },
   "62232889": {
    "nome": "BCO DAYCOVAL S.A",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 53,
    "municipios": 48,
    "var_12m": 0,
    "var_12m_pct": 0.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 51,
+     "municipios": 47
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 51,
+     "municipios": 47
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 51,
+     "municipios": 47
+    },
     {
      "mes": "2023-02",
      "agencias": 51,
@@ -28944,6 +32129,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 53,
+     "municipios": 48
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 53,
+     "municipios": 48
+    },
+    {
+     "mes": "2026-08",
      "agencias": 53,
      "municipios": 48
     }
@@ -28951,12 +32146,27 @@
   },
   "62331228": {
    "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -29159,6 +32369,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -29166,12 +32386,27 @@
   },
   "62421979": {
    "nome": "BANCO BMG SOLUÇÕES FINANCEIRAS S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -29374,6 +32609,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -29381,12 +32626,27 @@
   },
   "68900810": {
    "nome": "BCO RENDIMENTO S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 7,
    "municipios": 6,
    "var_12m": 0,
    "var_12m_pct": 0.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 6,
+     "municipios": 6
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 6,
+     "municipios": 6
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 6,
+     "municipios": 6
+    },
     {
      "mes": "2023-02",
      "agencias": 6,
@@ -29589,6 +32849,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 7,
+     "municipios": 6
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 7,
+     "municipios": 6
+    },
+    {
+     "mes": "2026-08",
      "agencias": 7,
      "municipios": 6
     }
@@ -29596,12 +32866,27 @@
   },
   "71027866": {
    "nome": "BCO BS2 S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 3,
    "municipios": 3,
    "var_12m": 1,
    "var_12m_pct": 50.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2,
+     "municipios": 2
+    },
     {
      "mes": "2023-02",
      "agencias": 2,
@@ -29804,6 +33089,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2026-08",
      "agencias": 3,
      "municipios": 3
     }
@@ -29811,12 +33106,27 @@
   },
   "74828799": {
    "nome": "NOVO BCO CONTINENTAL S.A. - BM",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 3,
+     "municipios": 3
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 3,
+     "municipios": 3
+    },
     {
      "mes": "2023-02",
      "agencias": 3,
@@ -30019,6 +33329,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -30026,12 +33346,27 @@
   },
   "75647891": {
    "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -30234,6 +33569,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -30241,12 +33586,27 @@
   },
   "78626983": {
    "nome": "BCO VR S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -30449,6 +33809,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -30456,12 +33826,27 @@
   },
   "78632767": {
    "nome": "OURIBANK S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -30666,17 +34051,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "90400888": {
    "nome": "BCO SANTANDER (BRASIL) S.A.",
-   "mes": "2026-06",
-   "agencias": 1174,
-   "municipios": 571,
-   "var_12m": -1033,
-   "var_12m_pct": -46.8,
+   "mes": "2026-08",
+   "agencias": 1161,
+   "municipios": 565,
+   "var_12m": -942,
+   "var_12m_pct": -44.8,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 2571,
+     "municipios": 851
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 2571,
+     "municipios": 851
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 2569,
+     "municipios": 852
+    },
     {
      "mes": "2023-02",
      "agencias": 2568,
@@ -30881,17 +34291,42 @@
      "mes": "2026-06",
      "agencias": 1174,
      "municipios": 571
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 1164,
+     "municipios": 565
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 1161,
+     "municipios": 565
     }
    ]
   },
   "91884981": {
    "nome": "BANCO JOHN DEERE S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
     {
      "mes": "2023-02",
      "agencias": 1,
@@ -31096,17 +34531,42 @@
      "mes": "2026-06",
      "agencias": 2,
      "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
+     "agencias": 2,
+     "municipios": 2
     }
    ]
   },
   "92702067": {
    "nome": "BCO DO ESTADO DO RS S.A.",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 506,
    "municipios": 362,
    "var_12m": -5,
    "var_12m_pct": -1.0,
    "serie": [
+    {
+     "mes": "2022-11",
+     "agencias": 498,
+     "municipios": 368
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 498,
+     "municipios": 368
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 498,
+     "municipios": 368
+    },
     {
      "mes": "2023-02",
      "agencias": 497,
@@ -31311,233 +34771,43 @@
      "mes": "2026-06",
      "agencias": 506,
      "municipios": 362
-    }
-   ]
-  },
-  "92874270": {
-   "nome": "BCO DIGIMAIS S.A.",
-   "mes": "2026-06",
-   "agencias": 3,
-   "municipios": 2,
-   "var_12m": 1,
-   "var_12m_pct": 50.0,
-   "serie": [
-    {
-     "mes": "2023-02",
-     "agencias": 3,
-     "municipios": 2
     },
     {
-     "mes": "2023-03",
-     "agencias": 3,
-     "municipios": 2
+     "mes": "2026-07",
+     "agencias": 506,
+     "municipios": 362
     },
     {
-     "mes": "2023-04",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-05",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-06",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-07",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-08",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-09",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-10",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-11",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2023-12",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-01",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-02",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-03",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-04",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-05",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-06",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-07",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2024-08",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2024-09",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2024-10",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2024-11",
-     "agencias": 2,
-     "municipios": 2
-    },
-    {
-     "mes": "2024-12",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-01",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-02",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-03",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-04",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-05",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-06",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-07",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-08",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-09",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-10",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-11",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2025-12",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2026-01",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2026-02",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2026-03",
-     "agencias": 2,
-     "municipios": 1
-    },
-    {
-     "mes": "2026-04",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2026-05",
-     "agencias": 3,
-     "municipios": 2
-    },
-    {
-     "mes": "2026-06",
-     "agencias": 3,
-     "municipios": 2
+     "mes": "2026-08",
+     "agencias": 506,
+     "municipios": 362
     }
    ]
   },
   "92894922": {
    "nome": "BANCO ORIGINAL",
-   "mes": "2026-06",
+   "mes": "2026-08",
    "agencias": 2,
    "municipios": 2,
    "var_12m": 1,
    "var_12m_pct": 100.0,
    "serie": [
     {
+     "mes": "2022-11",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2022-12",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
+     "mes": "2023-01",
+     "agencias": 1,
+     "municipios": 1
+    },
+    {
      "mes": "2023-02",
      "agencias": 1,
      "municipios": 1
@@ -31739,6 +35009,16 @@
     },
     {
      "mes": "2026-06",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-07",
+     "agencias": 2,
+     "municipios": 2
+    },
+    {
+     "mes": "2026-08",
      "agencias": 2,
      "municipios": 2
     }
@@ -43538,40 +46818,6 @@
     "nome": "BCO BRASIL S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 247575.24,
-       "membros": 8.0,
-       "media_por_membro_brl": 30947,
-       "composicao": {
-        "salario": 247575.24,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 63034.91,
-       "media_individual": 76177.0
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 1176134.4,
-       "membros": 8.0,
-       "media_por_membro_brl": 147017,
-       "composicao": {
-        "salario": 784089.6,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 392044.8
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -43605,6 +46851,40 @@
         "cessacao_cargo": 15380219.22
        }
       }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 247575.24,
+       "membros": 8.0,
+       "media_por_membro_brl": 30947,
+       "composicao": {
+        "salario": 247575.24,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 63034.91,
+       "media_individual": 76177.0
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1176134.4,
+       "membros": 8.0,
+       "media_por_membro_brl": 147017,
+       "composicao": {
+        "salario": 784089.6,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 392044.8
+       }
+      }
      }
     }
    },
@@ -43613,40 +46893,6 @@
     "nome": "BANCO BMG S/A",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 55997474.75,
-       "membros": 12.67,
-       "media_por_membro_brl": 4419690,
-       "composicao": {
-        "salario": 16965623.63,
-        "beneficios": 6483086.83,
-        "bonus": 0.0,
-        "participacao_resultados": 15838056.84,
-        "baseada_acoes": 14892032.25,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 1818675.2
-       },
-       "maior": 9559490.38,
-       "media_individual": 4419690.19
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 118690842.42,
-       "membros": 12.75,
-       "media_por_membro_brl": 9309086,
-       "composicao": {
-        "salario": 19633698.95,
-        "beneficios": 8682647.56,
-        "bonus": 0.0,
-        "participacao_resultados": 17662178.95,
-        "baseada_acoes": 72260233.63,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -43676,6 +46922,40 @@
         "bonus": 0.0,
         "participacao_resultados": 0.0,
         "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 55997474.75,
+       "membros": 12.67,
+       "media_por_membro_brl": 4419690,
+       "composicao": {
+        "salario": 16965623.63,
+        "beneficios": 6483086.83,
+        "bonus": 0.0,
+        "participacao_resultados": 15838056.84,
+        "baseada_acoes": 14892032.25,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 1818675.2
+       },
+       "maior": 9559490.38,
+       "media_individual": 4419690.19
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 118690842.42,
+       "membros": 12.75,
+       "media_por_membro_brl": 9309086,
+       "composicao": {
+        "salario": 19633698.95,
+        "beneficios": 8682647.56,
+        "bonus": 0.0,
+        "participacao_resultados": 17662178.95,
+        "baseada_acoes": 72260233.63,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
        }
@@ -43838,40 +47118,6 @@
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 1856744.08,
-       "membros": 11.0,
-       "media_por_membro_brl": 168795,
-       "composicao": {
-        "salario": 1856744.08,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 295003.6,
-       "media_individual": 253134.78
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 2270846.81,
-       "membros": 11.0,
-       "media_por_membro_brl": 206441,
-       "composicao": {
-        "salario": 2270846.81,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -43902,6 +47148,40 @@
         "participacao_resultados": 1346567.4,
         "baseada_acoes": 0.0,
         "pos_emprego": 2046448.91,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 1856744.08,
+       "membros": 11.0,
+       "media_por_membro_brl": 168795,
+       "composicao": {
+        "salario": 1856744.08,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 295003.6,
+       "media_individual": 253134.78
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 2270846.81,
+       "membros": 11.0,
+       "media_por_membro_brl": 206441,
+       "composicao": {
+        "salario": 2270846.81,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
        }
       }
@@ -43988,40 +47268,6 @@
     "nome": "BCO NORDESTE DO BRASIL S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 9010557.0,
-       "membros": 7.0,
-       "media_por_membro_brl": 1287222,
-       "composicao": {
-        "salario": 6614054.0,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 1822148.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 345214.0,
-        "cessacao_cargo": 229141.0
-       },
-       "maior": 1342899.0,
-       "media_individual": 1279279.0
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 13688202.0,
-       "membros": 7.0,
-       "media_por_membro_brl": 1955457,
-       "composicao": {
-        "salario": 6141043.0,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 2495460.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 1061912.0,
-        "cessacao_cargo": 3989787.0
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -44053,6 +47299,40 @@
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 9010557.0,
+       "membros": 7.0,
+       "media_por_membro_brl": 1287222,
+       "composicao": {
+        "salario": 6614054.0,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 1822148.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 345214.0,
+        "cessacao_cargo": 229141.0
+       },
+       "maior": 1342899.0,
+       "media_individual": 1279279.0
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 13688202.0,
+       "membros": 7.0,
+       "media_por_membro_brl": 1955457,
+       "composicao": {
+        "salario": 6141043.0,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 2495460.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 1061912.0,
+        "cessacao_cargo": 3989787.0
        }
       }
      }
@@ -44335,40 +47615,6 @@
     "nome": "BRB BANCO DE BRASILIA S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 6151888.34,
-       "membros": 10.0,
-       "media_por_membro_brl": 615189,
-       "composicao": {
-        "salario": 4580861.81,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 1571026.53,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 1076556.66,
-       "media_individual": 745683.44
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 9741357.17,
-       "membros": 10.0,
-       "media_por_membro_brl": 974136,
-       "composicao": {
-        "salario": 6871258.94,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 2870098.23,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -44397,6 +47643,40 @@
         "beneficios": 0.0,
         "bonus": 0.0,
         "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 6151888.34,
+       "membros": 10.0,
+       "media_por_membro_brl": 615189,
+       "composicao": {
+        "salario": 4580861.81,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 1571026.53,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 1076556.66,
+       "media_individual": 745683.44
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 9741357.17,
+       "membros": 10.0,
+       "media_por_membro_brl": 974136,
+       "composicao": {
+        "salario": 6871258.94,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 2870098.23,
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
@@ -44581,6 +47861,9 @@
     }
    }
   ],
+  "fora_do_cadastro": [
+   "BANCO VOTORANTIM S.A."
+  ],
   "leitura": "Quanto cada banco listado paga à administração, direto do item 8 do Formulário de Referência (dataset estruturado da CVM): total do órgão, nº de membros (média anual ponderada — 45,5 é normal), média por membro e, quando divulgada, a maior remuneração individual. O exercício realizado é remuneração reconhecida no resultado; o previsto é a proposta aprovada em assembleia — nunca misturados.",
   "cautelas": [
    "O conceito é padronizado pela CVM (comparável), mas o ESCOPO da diretoria estatutária varia por governança: um banco com 90 estatutários e outro com 10 têm médias incomparáveis sem olhar o nº de membros — que viaja junto, sempre.",
@@ -44599,11 +47882,11 @@
   {
    "id": "agencias_sfn",
    "rotulo": "Agências bancárias em funcionamento no país",
-   "valor": 13200,
-   "exibir": "13.200",
-   "unidade": "agências processadas · 2026-06",
+   "valor": 13077,
+   "exibir": "13.077",
+   "unidade": "agências processadas · 2026-08",
    "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os bancos; não inclui postos de atendimento nem correspondentes",
-   "data_ref": "2026-06",
+   "data_ref": "2026-08",
    "nivel": "A",
    "status": "oficial",
    "fonte": "BCB/ESTBAN",
@@ -44612,11 +47895,11 @@
   {
    "id": "municipios_com_agencia",
    "rotulo": "Municípios com ao menos uma agência bancária",
-   "valor": 2912,
-   "exibir": "2.912 de 5.570",
-   "unidade": "municípios · 2026-06",
+   "valor": 2907,
+   "exibir": "2.907 de 5.570",
+   "unidade": "municípios · 2026-08",
    "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
-   "data_ref": "2026-06",
+   "data_ref": "2026-08",
    "nivel": "A",
    "status": "oficial",
    "fonte": "BCB/ESTBAN",
@@ -44625,11 +47908,11 @@
   {
    "id": "var_agencias_sfn_12m",
    "rotulo": "Variação líquida de agências em 12 meses",
-   "valor": -2128,
-   "exibir": "-2.128",
-   "unidade": "agências · 2025-06 → 2026-06",
+   "valor": -1849,
+   "exibir": "-1.849",
+   "unidade": "agências · 2025-08 → 2026-08",
    "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de bancos individuais é migração societária entre CNPJs do mesmo grupo",
-   "data_ref": "2026-06",
+   "data_ref": "2026-08",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB/ESTBAN (derivação por subtração)",
@@ -44638,11 +47921,11 @@
   {
    "id": "maior_fechamento_12m",
    "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
-   "valor": 1033,
-   "exibir": "1.033 (Banco Santander (Brasil) S.A.)",
-   "unidade": "agências · 12 meses até 2026-06",
+   "valor": 942,
+   "exibir": "942 (Banco Santander (Brasil) S.A.)",
+   "unidade": "agências · 12 meses até 2026-08",
    "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
-   "data_ref": "2026-06",
+   "data_ref": "2026-08",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB/ESTBAN (derivação por subtração)",
@@ -44719,17 +48002,17 @@
    "instituicao": "Itau Unibanco Holding S.A.",
    "indicador": "rede",
    "regra": "queda_12m",
-   "valor": -30.6,
-   "referencia": "2026-06",
-   "detalhe": "queda de 30.6% nas agências em 12 meses (1860 → 1291) — verificar reorganização societária"
+   "valor": -26.9,
+   "referencia": "2026-08",
+   "detalhe": "queda de 26.9% nas agências em 12 meses (1696 → 1239) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Santander (Brasil) S.A.",
    "indicador": "rede",
    "regra": "queda_12m",
-   "valor": -46.8,
-   "referencia": "2026-06",
-   "detalhe": "queda de 46.8% nas agências em 12 meses (2207 → 1174) — verificar reorganização societária"
+   "valor": -44.8,
+   "referencia": "2026-08",
+   "detalhe": "queda de 44.8% nas agências em 12 meses (2103 → 1161) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Btg Pactual S.A.",
@@ -44744,8 +48027,8 @@
    "indicador": "rede",
    "regra": "queda_12m",
    "valor": -100.0,
-   "referencia": "2026-06",
-   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária"
+   "referencia": "2026-08",
+   "detalhe": "queda de 100.0% nas agências em 12 meses (64 → 0) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Estado De Sergipe S.A. - Banese",
@@ -44818,14 +48101,6 @@
    "valor": -100.0,
    "referencia": "2024-12-31",
    "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
-  },
-  {
-   "instituicao": "Inter & Co, Inc. (Banco Inter)",
-   "indicador": "rede",
-   "regra": "queda_12m",
-   "valor": -87.5,
-   "referencia": "2026-06",
-   "detalhe": "queda de 87.5% nas agências em 12 meses (16 → 2) — verificar reorganização societária"
   }
  ],
  "cobertura": {
@@ -44833,7 +48108,7 @@
   "com_empregados": 25,
   "com_auditor": 26,
   "com_rede": 23,
-  "bancos_cvm": 32,
+  "bancos_cvm": 33,
   "bancos_cvm_cobertos": 26,
   "bancos_cvm_fora": [
    {
@@ -44855,6 +48130,11 @@
     "cnpj": "60.770.336/0001-65",
     "nome": "BCO ALFA DE INVESTIMENTO S.A.",
     "ultimo_fca": 2024
+   },
+   {
+    "cnpj": "59.588.111/0001-03",
+    "nome": "Banco Votorantim S.A.",
+    "ultimo_fca": 2026
    },
    {
     "cnpj": "91.669.747/0001-92",

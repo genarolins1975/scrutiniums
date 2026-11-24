@@ -2,8 +2,8 @@
  "cod_inst": "19468242",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Zoop Tecnologia & Instituicao De Pagamento S.A.",
-  "razao_social_fonte_bcb": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMENTO S.A.",
+  "nome_comercial": "Ifood Pago Instituição De Pagamento S.A.",
+  "razao_social_fonte_bcb": "IFOOD PAGO INSTITUIÇÃO DE PAGAMENTO S.A.",
   "codigo_bcb": "19468242",
   "tcb": "N4",
   "sede": "Osasco/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:40+00:00",
+  "atualizado_em": "2026-11-24T21:45:05+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 19.468.242"
  },
@@ -113,7 +113,7 @@
    },
    {
     "cod": "19468242",
-    "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMEN"
+    "nome": "IFOOD PAGO INSTITUIÇÃO DE PAGAMENTO S.A."
    },
    {
     "cod": "24795049",

@@ -2,8 +2,8 @@
  "cod_inst": "12481100",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Biz Instituição De Pagamento S.A.",
-  "razao_social_fonte_bcb": "BIZ INSTITUIÇÃO DE PAGAMENTO S.A.",
+  "nome_comercial": "Biz Instituição Pagamento Ltda",
+  "razao_social_fonte_bcb": "BIZ INSTITUIÇÃO PAGAMENTO LTDA",
   "codigo_bcb": "12481100",
   "tcb": "N4",
   "sede": "São Paulo/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:40+00:00",
+  "atualizado_em": "2026-11-24T21:45:05+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 12.481.100"
  },

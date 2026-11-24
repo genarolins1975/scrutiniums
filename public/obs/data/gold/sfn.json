@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-23T22:36:08+00:00",
+ "gerado_em": "2026-11-24T21:45:26+00:00",
  "fontes": {
   "cadastro": {
    "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
@@ -24,11 +24,11 @@
    "nivel": "A — lista oficial vigente, diária"
   }
  },
- "sintese": "Em 2026-11-23, 1723 sedes estavam autorizadas e em funcionamento: 165 bancos, 735 cooperativas de crédito, 194 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 10 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (39 fora do cadastro do BCB hoje, 8 ainda autorizadas). 27 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
+ "sintese": "Em 2026-11-24, 1722 sedes estavam autorizadas e em funcionamento: 165 bancos, 734 cooperativas de crédito, 194 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (58 instituições novas, 10 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (39 fora do cadastro do BCB hoje, 8 ainda autorizadas). 27 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
  "cadastro": {
   "disponivel": true,
-  "data": "2026-11-23",
-  "total": 1723,
+  "data": "2026-11-24",
+  "total": 1722,
   "grupos": [
    {
     "grupo": "Bancos",
@@ -73,11 +73,11 @@
    {
     "grupo": "Cooperativas de crédito",
     "cor": "#2f7d4f",
-    "n": 735,
+    "n": 734,
     "segmentos": [
      {
       "segmento": "Cooperativa de crédito (singular)",
-      "n": 701
+      "n": 700
      },
      {
       "segmento": "Cooperativa de crédito (central)",
@@ -92,7 +92,7 @@
       "n": 3
      }
     ],
-    "share": 42.66
+    "share": 42.62
    },
    {
     "grupo": "Instituições de pagamento",
@@ -104,7 +104,7 @@
       "n": 194
      }
     ],
-    "share": 11.26
+    "share": 11.27
    },
    {
     "grupo": "Fintechs de crédito",
@@ -148,7 +148,7 @@
       "n": 1
      }
     ],
-    "share": 7.31
+    "share": 7.32
    },
    {
     "grupo": "Mercado de capitais e câmbio",
@@ -297,9 +297,9 @@
    {
     "uf": "MT",
     "regiao": "Centro-Oeste",
-    "n": 20,
+    "n": 19,
     "bancos": 0,
-    "cooperativas": 16,
+    "cooperativas": 15,
     "ips": 0,
     "fintechs": 0
    },
@@ -454,21 +454,21 @@
     "n": 1074,
     "cooperativas": 357,
     "bancos": 138,
-    "share": 62.33
+    "share": 62.37
    },
    {
     "regiao": "Sul",
     "n": 415,
     "cooperativas": 238,
     "bancos": 17,
-    "share": 24.09
+    "share": 24.1
    },
    {
     "regiao": "Centro-Oeste",
-    "n": 101,
-    "cooperativas": 66,
+    "n": 100,
+    "cooperativas": 65,
     "bancos": 4,
-    "share": 5.86
+    "share": 5.81
    },
    {
     "regiao": "Nordeste",
@@ -486,64 +486,64 @@
    }
   ],
   "cooperativas": {
-   "n": 735,
+   "n": 734,
    "por_sistema": [
     {
      "sistema": "Sicoob",
      "n": 309,
-     "share": 42.04
+     "share": 42.1
     },
     {
      "sistema": "Independente ou outra central",
      "n": 205,
-     "share": 27.89
+     "share": 27.93
     },
     {
      "sistema": "Sicredi",
-     "n": 103,
-     "share": 14.01
+     "n": 102,
+     "share": 13.9
     },
     {
      "sistema": "Cresol",
      "n": 56,
-     "share": 7.62
+     "share": 7.63
     },
     {
      "sistema": "Unicred",
      "n": 25,
-     "share": 3.4
+     "share": 3.41
     },
     {
      "sistema": "CrediSIS",
      "n": 14,
-     "share": 1.9
+     "share": 1.91
     },
     {
      "sistema": "Ailos",
      "n": 14,
-     "share": 1.9
+     "share": 1.91
     },
     {
      "sistema": "Uniprime",
      "n": 9,
-     "share": 1.22
+     "share": 1.23
     }
    ],
    "por_associacao": [
     {
      "criterio": "Livre Admissão",
-     "n": 395,
-     "share": 53.74
+     "n": 394,
+     "share": 53.68
     },
     {
      "criterio": "Empregados ou Servidores",
      "n": 221,
-     "share": 30.07
+     "share": 30.11
     },
     {
      "criterio": "Atividade Profissional",
      "n": 37,
-     "share": 5.03
+     "share": 5.04
     },
     {
      "criterio": "não informado",
@@ -563,7 +563,7 @@
     {
      "criterio": "Critérios de Associação Mistos Empresários",
      "n": 9,
-     "share": 1.22
+     "share": 1.23
     },
     {
      "criterio": "Empresários",
@@ -580,17 +580,17 @@
     {
      "categoria": "Clássica",
      "n": 491,
-     "share": 66.8
+     "share": 66.89
     },
     {
      "categoria": "Capital e Empréstimo",
      "n": 142,
-     "share": 19.32
+     "share": 19.35
     },
     {
      "categoria": "Plena",
-     "n": 68,
-     "share": 9.25
+     "n": 67,
+     "share": 9.13
     },
     {
      "categoria": "Não Informada",
@@ -702,6 +702,14 @@
     }
    ],
    "saidas": [
+    {
+     "cnpj8": "33021064",
+     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO ARAGUAIA E XINGU - SICREDI ARAXINGU",
+     "grupo": "Cooperativas de crédito",
+     "segmento": "Cooperativa de crédito (singular)",
+     "uf": "MT",
+     "data": "2026-11-23"
+    },
     {
      "cnpj8": "54898266",
      "nome": "OBSIDIAM SOCIEDADE PRESTADORA DE SERVIÇOS  \nDE ATIVOS VIRTUAIS LTDA.",
@@ -1389,6 +1397,17 @@
      "Fomento e desenvolvimento": 20,
      "Instituições de pagamento": 194,
      "Mercado de capitais e câmbio": 205
+    },
+    {
+     "data": "2026-11-24",
+     "Bancos": 165,
+     "Consórcios": 129,
+     "Cooperativas de crédito": 734,
+     "Financeiras e crédito especializado": 126,
+     "Fintechs de crédito": 149,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 194,
+     "Mercado de capitais e câmbio": 205
     }
    ]
   },
@@ -1410,7 +1429,7 @@
    "sem_resumo": 39,
    "entradas_4t": 75,
    "saidas_4t": 50,
-   "entradas_4t_novas": 59,
+   "entradas_4t_novas": 58,
    "entradas_4t_antigas": 10,
    "entradas_4t_troca": 0,
    "saidas_4t_fora_cadastro": 39,
@@ -1433,12 +1452,12 @@
     "ausencias": null,
     "por_tcb": {
      "B3S": 1091,
-     "N2": 170,
      "N1": 109,
-     "B3C": 37,
      "B1": 105,
+     "N2": 170,
+     "B4": 4,
      "B2": 35,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1453,12 +1472,12 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 1070,
-     "N2": 170,
      "N1": 106,
-     "B3C": 37,
      "B1": 105,
+     "N2": 170,
+     "B4": 4,
      "B2": 35,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1473,12 +1492,12 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 1064,
-     "N2": 160,
      "N1": 106,
-     "B3C": 37,
      "B1": 105,
+     "N2": 160,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1493,12 +1512,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1057,
-     "N2": 159,
      "N1": 106,
-     "B3C": 37,
      "B1": 104,
+     "N2": 159,
+     "B4": 4,
      "B2": 33,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1513,12 +1532,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1050,
-     "N2": 156,
      "N1": 105,
-     "B3C": 37,
      "B1": 104,
+     "N2": 156,
+     "B4": 4,
      "B2": 33,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1533,12 +1552,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1043,
-     "N2": 152,
-     "B3C": 37,
-     "B1": 104,
      "N1": 104,
+     "B1": 104,
+     "N2": 152,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1553,12 +1572,12 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 1034,
-     "N2": 150,
-     "B3C": 37,
-     "B1": 105,
      "N1": 103,
+     "B1": 105,
+     "N2": 150,
+     "B4": 4,
      "B2": 33,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1572,13 +1591,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1014,
-     "N2": 149,
-     "B3C": 37,
-     "B1": 105,
      "N1": 103,
+     "B3S": 1014,
+     "B1": 105,
+     "N2": 149,
+     "B4": 4,
      "B2": 33,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1592,13 +1611,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 1000,
-     "N2": 151,
-     "B3C": 37,
-     "B1": 104,
      "N1": 102,
+     "B3S": 1000,
+     "B1": 104,
+     "N2": 151,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 37
     },
     "provisorio": false
    },
@@ -1612,13 +1631,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 984,
-     "N2": 148,
-     "B3C": 36,
-     "B1": 104,
      "N1": 101,
+     "B3S": 984,
+     "B1": 104,
+     "N2": 148,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 36
     },
     "provisorio": false
    },
@@ -1632,13 +1651,13 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 971,
-     "N2": 144,
-     "B3C": 36,
-     "B1": 104,
      "N1": 102,
+     "B3S": 971,
+     "B1": 104,
+     "N2": 144,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 36
     },
     "provisorio": false
    },
@@ -1652,14 +1671,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 967,
-     "N2": 144,
-     "B3C": 37,
-     "B1": 104,
      "N1": 103,
+     "B3S": 967,
+     "B1": 104,
+     "N2": 144,
+     "B4": 4,
      "B2": 34,
-     "N4": 6,
-     "B4": 4
+     "B3C": 37,
+     "N4": 6
     },
     "provisorio": false
    },
@@ -1673,14 +1692,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 964,
-     "N2": 143,
-     "B3C": 37,
-     "B1": 104,
      "N1": 103,
+     "B3S": 964,
+     "B1": 104,
+     "N2": 143,
+     "B4": 4,
      "B2": 35,
-     "N4": 6,
-     "B4": 4
+     "B3C": 37,
+     "N4": 6
     },
     "provisorio": false
    },
@@ -1694,14 +1713,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 952,
-     "N2": 143,
-     "B3C": 37,
-     "B1": 102,
      "N1": 102,
+     "B3S": 952,
+     "B1": 102,
+     "N2": 143,
+     "B4": 4,
      "B2": 35,
-     "N4": 7,
-     "B4": 4
+     "B3C": 37,
+     "N4": 7
     },
     "provisorio": false
    },
@@ -1715,14 +1734,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 933,
-     "N2": 143,
-     "B3C": 37,
-     "B1": 102,
      "N1": 101,
+     "B3S": 933,
+     "B1": 102,
+     "N2": 143,
+     "B4": 4,
      "B2": 35,
-     "N4": 8,
-     "B4": 4
+     "B3C": 37,
+     "N4": 8
     },
     "provisorio": false
    },
@@ -1736,14 +1755,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "B3S": 921,
-     "N2": 141,
-     "B3C": 37,
-     "B1": 102,
      "N1": 102,
+     "B3S": 921,
+     "B1": 102,
+     "N2": 141,
+     "B4": 4,
      "B2": 35,
-     "N4": 10,
-     "B4": 4
+     "B3C": 37,
+     "N4": 10
     },
     "provisorio": false
    },
@@ -1757,14 +1776,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "B3S": 908,
-     "N2": 137,
-     "B3C": 36,
-     "B1": 104,
      "N1": 104,
+     "B3S": 908,
+     "B1": 104,
+     "N2": 137,
+     "B4": 4,
      "B2": 35,
-     "N4": 11,
-     "B4": 4
+     "B3C": 36,
+     "N4": 11
     },
     "provisorio": false
    },
@@ -1780,12 +1799,12 @@
     "por_tcb": {
      "N1": 106,
      "B3S": 893,
-     "N2": 135,
-     "B3C": 36,
      "B1": 104,
+     "N2": 135,
+     "B4": 4,
      "B2": 36,
-     "N4": 13,
-     "B4": 4
+     "B3C": 36,
+     "N4": 13
     },
     "provisorio": false
    },
@@ -1799,14 +1818,14 @@
     "retornos": 0,
     "ausencias": 3,
     "por_tcb": {
-     "N1": 107,
      "B3S": 883,
-     "N2": 130,
-     "B3C": 36,
      "B1": 104,
-     "B2": 36,
-     "N4": 18,
+     "N2": 130,
+     "N1": 107,
      "B4": 4,
+     "B2": 36,
+     "B3C": 36,
+     "N4": 18,
      "?": 1
     },
     "provisorio": false
@@ -1821,14 +1840,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 108,
      "B3S": 872,
-     "N2": 127,
-     "B3C": 36,
      "B1": 103,
+     "N2": 127,
+     "N1": 108,
      "N4": 18,
-     "B2": 35,
      "B4": 4,
+     "B2": 35,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1843,14 +1862,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 109,
      "B3S": 862,
-     "N2": 128,
-     "B3C": 36,
      "B1": 104,
+     "N2": 128,
+     "N1": 109,
      "N4": 20,
-     "B2": 35,
      "B4": 4,
+     "B2": 35,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1865,14 +1884,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 113,
      "B3S": 857,
-     "N2": 127,
-     "B3C": 36,
      "B1": 104,
+     "N2": 127,
+     "N1": 113,
      "N4": 22,
-     "B2": 35,
      "B4": 4,
+     "B2": 35,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1887,14 +1906,14 @@
     "retornos": 0,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 123,
      "B3S": 851,
-     "N2": 129,
-     "B3C": 36,
      "B1": 102,
+     "N2": 129,
+     "N1": 123,
      "N4": 24,
-     "B2": 36,
      "B4": 4,
+     "B2": 36,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1909,14 +1928,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 131,
      "B3S": 841,
-     "N2": 128,
-     "B3C": 36,
      "B1": 102,
+     "N2": 128,
+     "N1": 131,
      "N4": 26,
-     "B2": 35,
      "B4": 4,
+     "B2": 35,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1931,14 +1950,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 134,
      "B3S": 834,
-     "N2": 126,
-     "B3C": 36,
      "B1": 102,
+     "N2": 126,
+     "N1": 134,
      "N4": 28,
-     "B2": 36,
      "B4": 4,
+     "B2": 36,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1953,14 +1972,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 141,
      "B3S": 828,
-     "N2": 127,
-     "B3C": 36,
      "B1": 100,
+     "N2": 127,
+     "N1": 141,
      "N4": 31,
-     "B2": 36,
      "B4": 4,
+     "B2": 36,
+     "B3C": 36,
      "?": 1
     },
     "provisorio": false
@@ -1975,14 +1994,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 145,
      "B3S": 821,
-     "N2": 126,
-     "B3C": 35,
      "B1": 102,
+     "N2": 126,
+     "N1": 145,
      "N4": 33,
-     "B2": 36,
      "B4": 4,
+     "B2": 36,
+     "B3C": 35,
      "?": 1
     },
     "provisorio": false
@@ -1997,14 +2016,14 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 158,
      "B3S": 817,
-     "N2": 130,
-     "B3C": 35,
      "B1": 101,
      "N4": 37,
+     "N2": 130,
+     "N1": 158,
      "B2": 36,
      "B4": 4,
+     "B3C": 35,
      "?": 1
     },
     "provisorio": false
@@ -2019,14 +2038,14 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 163,
      "B3S": 815,
-     "N2": 128,
-     "B3C": 35,
      "B1": 103,
      "N4": 44,
+     "N2": 128,
+     "N1": 163,
      "B2": 36,
      "B4": 4,
+     "B3C": 35,
      "?": 1
     },
     "provisorio": false
@@ -2041,14 +2060,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 165,
      "B3S": 812,
-     "N2": 127,
-     "B3C": 35,
      "B1": 102,
      "N4": 47,
+     "N2": 127,
+     "N1": 165,
      "B2": 35,
      "B4": 4,
+     "B3C": 35,
      "?": 1
     },
     "provisorio": false
@@ -2063,14 +2082,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 170,
      "B3S": 803,
-     "N2": 128,
-     "B3C": 35,
-     "N4": 55,
      "B1": 101,
-     "B4": 4,
+     "N4": 55,
+     "N2": 128,
+     "N1": 170,
      "B2": 34,
+     "B4": 4,
+     "B3C": 35,
      "?": 1
     },
     "provisorio": false
@@ -2085,14 +2104,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 184,
      "B3S": 796,
-     "N2": 127,
-     "N4": 72,
-     "B3C": 33,
      "B1": 102,
-     "B4": 4,
+     "N4": 72,
+     "N2": 127,
+     "N1": 184,
      "B2": 34,
+     "B4": 4,
+     "B3C": 33,
      "?": 1
     },
     "provisorio": false
@@ -2107,14 +2126,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 190,
      "B3S": 788,
      "N2": 128,
-     "N4": 83,
-     "B3C": 32,
      "B1": 101,
-     "B4": 4,
+     "N4": 83,
+     "N1": 190,
      "B2": 34,
+     "B4": 4,
+     "B3C": 32,
      "?": 1
     },
     "provisorio": false
@@ -2129,14 +2148,14 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 195,
      "B3S": 784,
      "N2": 129,
-     "N4": 87,
-     "B3C": 32,
      "B1": 101,
-     "B4": 4,
+     "N4": 87,
+     "N1": 195,
      "B2": 34,
+     "B4": 4,
+     "B3C": 32,
      "?": 1
     },
     "provisorio": false
@@ -2151,14 +2170,14 @@
     "retornos": 0,
     "ausencias": 3,
     "por_tcb": {
-     "N1": 202,
      "B3S": 777,
      "N2": 133,
-     "N4": 96,
-     "B3C": 32,
      "B1": 100,
-     "B4": 4,
+     "N4": 96,
+     "N1": 202,
      "B2": 34,
+     "B4": 4,
+     "B3C": 32,
      "?": 1
     },
     "provisorio": false
@@ -2173,14 +2192,14 @@
     "retornos": 0,
     "ausencias": 2,
     "por_tcb": {
-     "N1": 212,
      "B3S": 768,
      "N2": 131,
-     "N4": 103,
-     "B3C": 32,
      "B1": 98,
+     "N4": 103,
+     "N1": 212,
      "B4": 4,
      "B2": 33,
+     "B3C": 32,
      "?": 1
     },
     "provisorio": false
@@ -2195,14 +2214,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 214,
      "B3S": 767,
      "N2": 131,
-     "N4": 114,
-     "B3C": 32,
      "B1": 99,
+     "N4": 114,
+     "N1": 214,
      "B4": 4,
      "B2": 33,
+     "B3C": 32,
      "?": 1
     },
     "provisorio": false
@@ -2217,14 +2236,14 @@
     "retornos": 1,
     "ausencias": 2,
     "por_tcb": {
-     "N1": 218,
      "B3S": 760,
      "N2": 128,
-     "N4": 125,
-     "B3C": 31,
      "B1": 96,
+     "N4": 125,
+     "N1": 218,
      "B4": 4,
      "B2": 33,
+     "B3C": 31,
      "?": 1
     },
     "provisorio": false
@@ -2239,14 +2258,14 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 223,
      "B3S": 757,
      "N2": 130,
-     "N4": 139,
-     "B3C": 30,
      "B1": 96,
+     "N4": 139,
+     "N1": 223,
      "B4": 4,
      "B2": 32,
+     "B3C": 30,
      "?": 1
     },
     "provisorio": false
@@ -2261,14 +2280,14 @@
     "retornos": 6,
     "ausencias": 7,
     "por_tcb": {
-     "N1": 224,
      "B3S": 753,
      "N2": 133,
      "N4": 144,
-     "B3C": 27,
      "B1": 97,
+     "N1": 224,
+     "B2": 33,
      "B4": 4,
-     "B2": 33
+     "B3C": 27
     },
     "provisorio": false
    },
@@ -2282,14 +2301,14 @@
     "retornos": 4,
     "ausencias": 3,
     "por_tcb": {
-     "N1": 222,
      "B3S": 752,
      "N2": 128,
      "N4": 152,
-     "B3C": 29,
+     "N1": 222,
      "B1": 96,
+     "B2": 33,
      "B4": 4,
-     "B2": 33
+     "B3C": 29
     },
     "provisorio": false
    },
@@ -2303,14 +2322,14 @@
     "retornos": 1,
     "ausencias": 1,
     "por_tcb": {
-     "N1": 224,
      "B3S": 748,
      "N2": 128,
      "N4": 157,
-     "B3C": 29,
+     "N1": 224,
      "B1": 96,
+     "B2": 32,
      "B4": 4,
-     "B2": 32
+     "B3C": 29
     },
     "provisorio": false
    },
@@ -2324,14 +2343,14 @@
     "retornos": 1,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 227,
      "B3S": 747,
      "N2": 127,
      "N4": 161,
-     "B3C": 29,
+     "N1": 227,
      "B1": 95,
      "B2": 34,
-     "B4": 4
+     "B4": 4,
+     "B3C": 29
     },
     "provisorio": false
    },
@@ -2345,14 +2364,14 @@
     "retornos": 10,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 232,
      "B3S": 734,
-     "N4": 181,
      "N2": 124,
-     "B3C": 29,
+     "N4": 181,
+     "N1": 232,
      "B1": 92,
      "B2": 34,
-     "B4": 4
+     "B4": 4,
+     "B3C": 29
     },
     "provisorio": false
    },
@@ -2366,14 +2385,14 @@
     "retornos": 0,
     "ausencias": 0,
     "por_tcb": {
-     "N1": 236,
      "B3S": 719,
-     "N4": 182,
      "N2": 125,
-     "B3C": 29,
+     "N4": 182,
+     "N1": 236,
      "B1": 93,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 29
     },
     "provisorio": false
    },
@@ -2388,13 +2407,13 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 710,
-     "N1": 233,
      "N2": 120,
      "N4": 183,
-     "B3C": 29,
+     "N1": 233,
      "B1": 93,
+     "B4": 4,
      "B2": 34,
-     "B4": 4
+     "B3C": 29
     },
     "provisorio": true
    }
@@ -2450,14 +2469,14 @@
    }
   ],
   "var_4t_por_tcb": {
-   "N1": 12,
    "B3S": -29,
-   "N4": 25,
    "N2": -3,
-   "B3C": 0,
+   "N4": 25,
+   "N1": 12,
    "B1": -3,
+   "B4": 0,
    "B2": 2,
-   "B4": 0
+   "B3C": 0
   },
   "entradas": [
    {
@@ -3542,11 +3561,11 @@
     "anomes": "202509",
     "ativo": 5695163.67,
     "provisorio": false,
-    "inicio_atividade": "202507",
+    "inicio_atividade": null,
     "cnpj8": "56106523",
     "entregou": true,
-    "classe": "nova",
-    "leitura": "instituição nova: início de atividade em 07/2025"
+    "classe": "sem_data",
+    "leitura": "início de atividade não informado no cadastro"
    },
    {
     "cod": "61637240",
@@ -4118,11 +4137,11 @@
     "anomes": "202412",
     "ativo": 461097465.0,
     "provisorio": false,
-    "inicio_atividade": "202411",
+    "inicio_atividade": null,
     "cnpj8": "08611734",
     "entregou": true,
-    "classe": "nova",
-    "leitura": "instituição nova: início de atividade em 11/2024"
+    "classe": "sem_data",
+    "leitura": "início de atividade não informado no cadastro"
    },
    {
     "cod": "16814330",
@@ -4349,22 +4368,6 @@
     "leitura": "instituição nova: início de atividade em 10/2024"
    },
    {
-    "cod": "04891850",
-    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
-    "tcb": "B3C",
-    "tcb_nome": "Cooperativa central ou confederação",
-    "uf": "DF",
-    "sr": null,
-    "anomes": "202412",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "202410",
-    "cnpj8": "04891850",
-    "entregou": false,
-    "classe": "nova",
-    "leitura": "instituição nova: início de atividade em 10/2024"
-   },
-   {
     "cod": "03795072",
     "nome": "CONFEDERACAO DAS COOPERATIVAS DO SICREDI - CONFEDERACAO SICREDI",
     "tcb": "B3C",
@@ -4376,6 +4379,22 @@
     "provisorio": false,
     "inicio_atividade": "202410",
     "cnpj8": "03795072",
+    "entregou": false,
+    "classe": "nova",
+    "leitura": "instituição nova: início de atividade em 10/2024"
+   },
+   {
+    "cod": "04891850",
+    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
+    "tcb": "B3C",
+    "tcb_nome": "Cooperativa central ou confederação",
+    "uf": "DF",
+    "sr": null,
+    "anomes": "202412",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "202410",
+    "cnpj8": "04891850",
     "entregou": false,
     "classe": "nova",
     "leitura": "instituição nova: início de atividade em 10/2024"
@@ -4894,7 +4913,7 @@
    },
    {
     "cod": "04740876",
-    "nome": "ALELO INSTITUICAO DE PAGAMENTO SA",
+    "nome": "ALELO S.A.",
     "tcb": "N4",
     "tcb_nome": "Instituição de pagamento",
     "uf": "SP",
@@ -4962,7 +4981,7 @@
    },
    {
     "cod": "08718431",
-    "nome": "WIRECARD BRAZIL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "nome": "WIRECARD BRAZIL TECNOLOGIA LTDA",
     "tcb": "N4",
     "tcb_nome": "Instituição de pagamento",
     "uf": "SP",
@@ -6388,17 +6407,6 @@
     "ativo": 3882177.47
    },
    {
-    "cod": "23757411",
-    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "tcb": "N4",
-    "tcb_nome": "Instituição de pagamento",
-    "uf": "MG",
-    "sr": null,
-    "anomes": "202412",
-    "ausente_desde": "202306",
-    "ativo": null
-   },
-   {
     "cod": "46009412",
     "nome": "FOR YOU SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "tcb": "N1",
@@ -6407,6 +6415,17 @@
     "sr": null,
     "anomes": "202412",
     "ausente_desde": "202406",
+    "ativo": null
+   },
+   {
+    "cod": "23757411",
+    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": null,
+    "anomes": "202412",
+    "ausente_desde": "202306",
     "ativo": null
    },
    {
@@ -8419,7 +8438,7 @@
     "uf": "SP"
    }
   ],
-  "gerado_em": "2026-11-23T22:35:27+00:00"
+  "gerado_em": "2026-11-24T21:44:55+00:00"
  },
  "catalogo": [
   {

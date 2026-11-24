@@ -2,8 +2,8 @@
  "cod_inst": "16501555",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Stone Instituição De Pagamento S.A.",
-  "razao_social_fonte_bcb": "STONE INSTITUIÇÃO DE PAGAMENTO S.A.",
+  "nome_comercial": "Stone Pagamentos S.A.",
+  "razao_social_fonte_bcb": "STONE PAGAMENTOS S.A.",
   "codigo_bcb": "16501555",
   "tcb": "N4",
   "sede": "São Paulo/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:38+00:00",
+  "atualizado_em": "2026-11-24T21:45:04+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 16.501.555"
  },
@@ -90,7 +90,7 @@
    },
    {
     "cod": "16501555",
-    "nome": "STONE INSTITUIÇÃO DE PAGAMENTO S.A."
+    "nome": "STONE PAGAMENTOS S.A."
    },
    {
     "cod": "08561701",

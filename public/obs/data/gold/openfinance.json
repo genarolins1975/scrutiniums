@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:02+00:00"
+    "last_collected_at": "2026-11-24T20:12:31+00:00"
    },
    "obs": [
     {
@@ -128,7 +128,7 @@
      "estabilidade": 60.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 2
@@ -146,7 +146,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:02+00:00"
+    "last_collected_at": "2026-11-24T20:12:32+00:00"
    },
    "obs": [
     {
@@ -259,7 +259,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -277,7 +277,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:05+00:00"
+    "last_collected_at": "2026-11-24T20:12:33+00:00"
    },
    "obs": [
     {
@@ -390,7 +390,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -408,7 +408,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:11+00:00"
+    "last_collected_at": "2026-11-24T20:12:40+00:00"
    },
    "obs": [
     {
@@ -541,7 +541,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 3,
+    "dias_sem_atualizar": 4,
     "ultima_ref": "2026-11-20",
     "n_obs": 30,
     "n_revisoes": 0
@@ -559,7 +559,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:14+00:00"
+    "last_collected_at": "2026-11-24T20:12:42+00:00"
    },
    "obs": [
     {
@@ -672,7 +672,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -690,7 +690,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:10+00:00"
+    "last_collected_at": "2026-11-24T20:12:39+00:00"
    },
    "obs": [
     {
@@ -803,7 +803,7 @@
      "estabilidade": 80.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 1
@@ -821,7 +821,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:13+00:00"
+    "last_collected_at": "2026-11-24T20:12:41+00:00"
    },
    "obs": [
     {
@@ -954,7 +954,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 3,
+    "dias_sem_atualizar": 4,
     "ultima_ref": "2026-11-20",
     "n_obs": 30,
     "n_revisoes": 0
@@ -972,7 +972,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-11-23T20:56:15+00:00"
+    "last_collected_at": "2026-11-24T20:12:44+00:00"
    },
    "obs": [
     {
@@ -1085,7 +1085,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 24,
+    "dias_sem_atualizar": 25,
     "ultima_ref": "2026-10-30",
     "n_obs": 25,
     "n_revisoes": 0
@@ -1633,7 +1633,7 @@
    "organisation": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
    "chamadas_semana": 159261.0,
    "share_pct": 0.0,
-   "familias_api": 6,
+   "familias_api": 7,
    "papeis": [
     "DADOS",
     "PAGTO"

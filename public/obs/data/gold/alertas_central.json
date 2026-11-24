@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-11-21T18:31:38+00:00",
+ "gerado_em": "2026-11-24T21:45:26+00:00",
  "familias": [
   {
    "id": "macro",
@@ -72,7 +72,7 @@
    "persistencia": "flags recalculadas a cada execução sobre a série completa",
    "limitacao": "Escopos declarados e distintos: empregados são o declarado no FRE (≠ conglomerado prudencial); a rede é do banco operacional — saltos podem ser reorganização societária, não fechamento real; troca de auditor inclui o rodízio obrigatório.",
    "view": "operacional",
-   "ativos": 9,
+   "ativos": 8,
    "arquivo": "operacional.json",
    "disponivel": true
   }
@@ -83,12 +83,12 @@
    "familia": "macro",
    "nivel": "informativo",
    "titulo": "7 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (204 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (204 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (112 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (207 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (207 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (115 dias). Ausência de dado novo NÃO foi interpretada como zero.",
    "valor": 7,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "25 execuções anteriores",
+   "evidencia_persistencia": "28 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
@@ -106,7 +106,7 @@
    "limiar": 0.3,
    "referencia": "2026-09",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "23 execuções anteriores",
+   "evidencia_persistencia": "26 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -221,7 +221,7 @@
    "limiar": 28.0,
    "referencia": "2026-08",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "75 execuções anteriores",
+   "evidencia_persistencia": "78 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -709,14 +709,14 @@
    "ordem": 1.13
   },
   {
-   "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-06",
+   "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-08",
    "familia": "operacional",
    "nivel": "atencao",
    "titulo": "Brb Banco De Brasilia S.A. — rede",
-   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária",
+   "detalhe": "queda de 100.0% nas agências em 12 meses (64 → 0) — verificar reorganização societária",
    "valor": -100.0,
    "limiar": null,
-   "referencia": "2026-06",
+   "referencia": "2026-08",
    "fonte": "BCB/ESTBAN",
    "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
    "recorrente": null,
@@ -724,23 +724,6 @@
     "view": "operacional"
    },
    "ordem": 100.0
-  },
-  {
-   "id": "operacional:rede:queda_12m:Inter & Co, Inc. (Banco Inter):2026-06",
-   "familia": "operacional",
-   "nivel": "atencao",
-   "titulo": "Inter & Co, Inc. (Banco Inter) — rede",
-   "detalhe": "queda de 87.5% nas agências em 12 meses (16 → 2) — verificar reorganização societária",
-   "valor": -87.5,
-   "limiar": null,
-   "referencia": "2026-06",
-   "fonte": "BCB/ESTBAN",
-   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
-   "recorrente": null,
-   "link": {
-    "view": "operacional"
-   },
-   "ordem": 87.5
   },
   {
    "id": "operacional:empregados:variacao_aa:Banco Btg Pactual S.A.:2026-12-31",
@@ -777,38 +760,38 @@
    "ordem": 49.1
   },
   {
-   "id": "operacional:rede:queda_12m:Banco Santander (Brasil) S.A.:2026-06",
+   "id": "operacional:rede:queda_12m:Banco Santander (Brasil) S.A.:2026-08",
    "familia": "operacional",
    "nivel": "atencao",
    "titulo": "Banco Santander (Brasil) S.A. — rede",
-   "detalhe": "queda de 46.8% nas agências em 12 meses (2207 → 1174) — verificar reorganização societária",
-   "valor": -46.8,
+   "detalhe": "queda de 44.8% nas agências em 12 meses (2103 → 1161) — verificar reorganização societária",
+   "valor": -44.8,
    "limiar": null,
-   "referencia": "2026-06",
+   "referencia": "2026-08",
    "fonte": "BCB/ESTBAN",
    "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
    "recorrente": null,
    "link": {
     "view": "operacional"
    },
-   "ordem": 46.8
+   "ordem": 44.8
   },
   {
-   "id": "operacional:rede:queda_12m:Itau Unibanco Holding S.A.:2026-06",
+   "id": "operacional:rede:queda_12m:Itau Unibanco Holding S.A.:2026-08",
    "familia": "operacional",
    "nivel": "atencao",
    "titulo": "Itau Unibanco Holding S.A. — rede",
-   "detalhe": "queda de 30.6% nas agências em 12 meses (1860 → 1291) — verificar reorganização societária",
-   "valor": -30.6,
+   "detalhe": "queda de 26.9% nas agências em 12 meses (1696 → 1239) — verificar reorganização societária",
+   "valor": -26.9,
    "limiar": null,
-   "referencia": "2026-06",
+   "referencia": "2026-08",
    "fonte": "BCB/ESTBAN",
    "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
    "recorrente": null,
    "link": {
     "view": "operacional"
    },
-   "ordem": 30.6
+   "ordem": 26.9
   },
   {
    "id": "operacional:auditoria:troca_auditor:Brbi Br Partners S.A.:2025-12-31",
@@ -862,7 +845,7 @@
    "ordem": 0.0
   }
  ],
- "total": 34,
+ "total": 33,
  "niveis": [
   "informativo",
   "atencao",

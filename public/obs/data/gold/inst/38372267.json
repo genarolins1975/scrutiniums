@@ -2,8 +2,8 @@
  "cod_inst": "38372267",
  "caso": null,
  "cabecalho": {
-  "nome_comercial": "Shpp Brasil Instituição De Pagamento E Serviços De Pagamentos Ltda.",
-  "razao_social_fonte_bcb": "SHPP BRASIL INSTITUIÇÃO DE PAGAMENTO E SERVIÇOS DE PAGAMENTOS LTDA.",
+  "nome_comercial": "Maree Instituição De Pagamento Ltda.",
+  "razao_social_fonte_bcb": "MAREE INSTITUIÇÃO DE PAGAMENTO LTDA.",
   "codigo_bcb": "38372267",
   "tcb": "N4",
   "sede": "São Paulo/SP",
@@ -17,7 +17,7 @@
   "data_base": "2026-T2",
   "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-11-23T22:35:39+00:00",
+  "atualizado_em": "2026-11-24T21:45:04+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 38.372.267"
  },
