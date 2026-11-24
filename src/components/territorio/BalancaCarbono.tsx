@@ -13,7 +13,7 @@ const ALTURA = 280;
 /**
  * A balança do carbono (modelo didático do painel de emissões, dentro do envelope ModeloDidatico): para o ano escolhido, a soma das
  * categorias do inventário com saldo acima de zero sobe da linha do zero, a soma das categorias com saldo abaixo de zero desce, e o
- * saldo líquido é a diferença, que é o total publicado. A escala é a mesma em todos os anos, para o leitor comparar um ano com outro.
+ * saldo líquido é a soma dos dois lados, cada um com o seu sinal, que é o total publicado. A escala é a mesma em todos os anos, para o leitor comparar um ano com outro.
  * Sem script, o servidor entrega o último ano; o desenho é decorativo (aria-hidden) e os números estão no texto ao lado.
  */
 export function BalancaCarbono({
@@ -150,7 +150,7 @@ export function BalancaCarbono({
                       {i === a.categoriasNegativas.length - 1 && "."}
                     </span>
                   ))}{" "}
-                  O saldo é o que a categoria retirou da atmosfera menos o que emitiu; a remoção bruta não é publicada.
+                  O saldo é o que a categoria emitiu menos o que retirou da atmosfera; ficou abaixo de zero porque retirou mais do que emitiu. A remoção bruta não é publicada.
                 </>
               ) : (
                 <>Nenhuma categoria ficou com saldo negativo neste ano.</>
@@ -163,7 +163,7 @@ export function BalancaCarbono({
               <span className="font-label text-[1.5rem] tabular-nums text-carvao">{mt(a.liquido)}</span> <span className="text-sm text-carvao-muted">Mt CO2e</span>
             </dd>
             <dd className="mt-1 text-sm leading-relaxed text-carvao-muted">
-              O lado positivo menos o lado negativo.
+              A soma dos dois lados com o sinal de cada um: o positivo menos o tamanho do negativo.
               {a.semValor > 0 && ` ${a.semValor} categorias sem valor publicado neste ano ficam fora dos dois lados.`}
             </dd>
           </div>

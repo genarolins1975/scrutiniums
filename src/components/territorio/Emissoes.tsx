@@ -76,7 +76,7 @@ export function ModeloBalanca({ g }: Readonly<{ g: GoldEmissoes }>) {
       descricao={
         <>
           O total do país é um saldo. Em cada categoria do inventário, o que se emitiu e o que se retirou da atmosfera já vêm somados: a maior
-          parte fica acima de zero, e algumas, como as florestas, ficam abaixo. Escolha um ano e veja os dois lados e a diferença, que é o total
+          parte fica acima de zero, e algumas, como as florestas, ficam abaixo. Escolha um ano e veja os dois lados e o saldo entre eles, que é o total
           publicado. Números do inventário oficial, na mesma escala em todos os anos.
         </>
       }
