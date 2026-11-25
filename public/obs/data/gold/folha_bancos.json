@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-24T21:44:55+00:00",
+ "gerado_em": "2026-11-25T20:22:22+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 318,
-  "total_editais": 1203,
+  "total_contratos_if": 319,
+  "total_editais": 1207,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 109,
+    "contratos": 110,
     "ufs": 20,
     "como_receita": 12
    },
@@ -609,6 +609,21 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/08358053000190/2026/116"
+   },
+   {
+    "controle": "83026781000110-2-000553/2026",
+    "ente": "MUNICIPIO DE SAO JOSE DO CEDRO",
+    "esfera": "Municipal",
+    "municipio": "São José do Cedro",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-11-05",
+    "vig_fim": "2031-11-18",
+    "valor": 800000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83026781000110/2026/553"
    },
    {
     "controle": "01613076000155-2-000030/2026",
@@ -1134,24 +1149,36 @@
     "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
     "cnpj8": "07512780",
     "url": "https://pncp.gov.br/contratos/83102350000196/2026/1199"
-   },
-   {
-    "controle": "18392522000141-2-000085/2026",
-    "ente": "MUNICIPIO DE LAJINHA",
-    "esfera": "Municipal",
-    "municipio": "Lajinha",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-09-09",
-    "vig_fim": "2036-09-09",
-    "valor": 1500200.0,
-    "receita": true,
-    "banco": "COOPERATIVA DE CRÃ‰DITO CREDICAF LTDA - SICOOB CRED",
-    "cnpj8": "25395435",
-    "url": "https://pncp.gov.br/contratos/18392522000141/2026/85"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE PASSO DE CAMARAGIBE",
+    "municipio": "Passo de Camaragibe",
+    "uf": "AL",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-25",
+    "url": "https://pncp.gov.br/compras/12342655000127/2026/11"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO MARTINHO",
+    "municipio": "São Martinho",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-25",
+    "url": "https://pncp.gov.br/compras/87613097000196/2026/134"
+   },
+   {
+    "ente": "MUNICIPIO DE FONTOURA XAVIER",
+    "municipio": "Fontoura Xavier",
+    "uf": "RS",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-25",
+    "url": "https://pncp.gov.br/compras/87612768000102/2026/87"
+   },
    {
     "ente": "MUNICIPIO DE DIVINO DAS LARANJEIRAS",
     "municipio": "Divino das Laranjeiras",
@@ -1180,6 +1207,15 @@
     "url": "https://pncp.gov.br/compras/18357079000178/2026/37"
    },
    {
+    "ente": "MUNICIPIO DE GAMELEIRA",
+    "municipio": "Gameleira",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-24",
+    "url": "https://pncp.gov.br/compras/11343902000147/2026/39"
+   },
+   {
     "ente": "MUNICIPIO DE CABECEIRAS",
     "municipio": "Cabeceiras",
     "uf": "GO",
@@ -1189,15 +1225,6 @@
     "url": "https://pncp.gov.br/compras/01740430000102/2026/139"
    },
    {
-    "ente": "MUNICIPIO DE BARRACAO",
-    "municipio": "Barracão",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-23",
-    "url": "https://pncp.gov.br/compras/87613618000105/2026/31"
-   },
-   {
     "ente": "MUNICIPIO DE CANDIDO MOTA",
     "municipio": "Cândido Mota",
     "uf": "SP",
@@ -1205,6 +1232,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-23",
     "url": "https://pncp.gov.br/compras/46179958000192/2026/186"
+   },
+   {
+    "ente": "MUNICIPIO DE BARRACAO",
+    "municipio": "Barracão",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-23",
+    "url": "https://pncp.gov.br/compras/87613618000105/2026/31"
    },
    {
     "ente": "MUNICIPIO DE VERTENTE DO LERIO",
@@ -1223,42 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-19",
     "url": "https://pncp.gov.br/compras/01612319000130/2026/26"
-   },
-   {
-    "ente": "MUNICIPIO DE ITAIPE",
-    "municipio": "Itaipé",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-18",
-    "url": "https://pncp.gov.br/compras/18404756000161/2026/23"
-   },
-   {
-    "ente": "MUNICIPIO DE GRANITO",
-    "municipio": "Granito",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-18",
-    "url": "https://pncp.gov.br/compras/11040888000102/2026/79"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO MIGUEL DAS MISSOES",
-    "municipio": "São Miguel das Missões",
-    "uf": "RS",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-18",
-    "url": "https://pncp.gov.br/compras/89971758000180/2026/1467"
-   },
-   {
-    "ente": "MUNICIPIO DE BOTELHOS",
-    "municipio": "Botelhos",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-17",
-    "url": "https://pncp.gov.br/compras/17847641000189/2026/214"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

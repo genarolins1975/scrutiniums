@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-24T21:45:23+00:00",
+ "gerado_em": "2026-11-25T20:22:49+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1323 processos sancionadores em 1ª instância, com 1430 decisões por apenado: 1359 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (169 acusados); 260 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1322 processos sancionadores em 1ª instância, com 1429 decisões por apenado: 1358 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (180 acusados); 262 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-11-19",
@@ -35,36 +35,36 @@
    "apenados_distintos": 11471
   },
   "janela_12m": {
-   "ini": "2025-11-24",
-   "decisoes": 1430,
-   "processos": 1323,
-   "multas_n": 1359,
-   "multas_valor": 78629100.0,
+   "ini": "2025-11-25",
+   "decisoes": 1429,
+   "processos": 1322,
+   "multas_n": 1358,
+   "multas_valor": 78616600.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 151,
    "pj": 398,
-   "pf": 1032
+   "pf": 1031
   },
   "janela_12m_anterior": {
-   "decisoes": 833,
-   "processos": 661,
-   "multas_n": 698,
-   "multas_valor": 25350383.9,
+   "decisoes": 834,
+   "processos": 662,
+   "multas_n": 699,
+   "multas_valor": 25362883.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
    "recursos": 132,
    "pj": 264,
-   "pf": 569
+   "pf": 570
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1359,
+    "n": 1358,
     "share": 95.03
    },
    {
@@ -91,28 +91,28 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 869,
-    "share": 60.77
+    "n": 872,
+    "share": 61.02
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 135,
-    "share": 9.44
+    "share": 9.45
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 118,
-    "share": 8.25
+    "share": 8.26
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 109,
-    "share": 7.62
+    "n": 105,
+    "share": 7.35
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 102,
-    "share": 7.13
+    "share": 7.14
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
@@ -153,8 +153,8 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11996,
-    "share": 87.47
+    "n": 12000,
+    "share": 87.5
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
@@ -178,8 +178,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 109,
-    "share": 0.79
+    "n": 105,
+    "share": 0.77
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -573,7 +573,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "315986",
@@ -933,100 +933,100 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-11-03",
-  "ultima_movimentacao": "2026-11-23",
+  "ultima_movimentacao": "2026-11-24",
   "acervo": {
-   "processos": 591,
-   "acusados": 2104,
-   "em_curso": 260,
-   "finalizados": 331
+   "processos": 594,
+   "acusados": 2115,
+   "em_curso": 262,
+   "finalizados": 332
   },
   "abertos_12m": {
-   "ini": "2025-11-24",
-   "processos": 64,
-   "acusados": 169
+   "ini": "2025-11-25",
+   "processos": 67,
+   "acusados": 180
   },
   "fases": [
    {
     "fase": "Finalizado",
-    "n": 331,
-    "share": 56.01
+    "n": 332,
+    "share": 55.89
    },
    {
     "fase": "Julgamento",
     "n": 102,
-    "share": 17.26
+    "share": 17.17
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 97,
-    "share": 16.41
+    "n": 100,
+    "share": 16.84
    },
    {
     "fase": "Recurso CRSFN",
     "n": 40,
-    "share": 6.77
+    "share": 6.73
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 21,
-    "share": 3.55
+    "n": 20,
+    "share": 3.37
    }
   ],
   "areas": [
    {
     "area": "GEA-3",
     "n": 92,
-    "share": 15.57
+    "share": 15.49
    },
    {
     "area": "GEA-4",
-    "n": 91,
-    "share": 15.4
+    "n": 92,
+    "share": 15.49
    },
    {
     "area": "GNA",
-    "n": 80,
-    "share": 13.54
+    "n": 81,
+    "share": 13.64
    },
    {
     "area": "GMA",
-    "n": 57,
-    "share": 9.64
+    "n": 58,
+    "share": 9.76
    },
    {
     "area": "GER-3",
     "n": 51,
-    "share": 8.63
+    "share": 8.59
    },
    {
     "area": "GSUI-2",
     "n": 36,
-    "share": 6.09
+    "share": 6.06
    },
    {
     "area": "GSAF",
     "n": 33,
-    "share": 5.58
+    "share": 5.56
    },
    {
     "area": "GPS-2",
     "n": 27,
-    "share": 4.57
+    "share": 4.55
    },
    {
     "area": "GAIN",
     "n": 26,
-    "share": 4.4
+    "share": 4.38
    },
    {
     "area": "GPS-3",
     "n": 26,
-    "share": 4.4
+    "share": 4.38
    },
    {
     "area": "GPS-1",
     "n": 15,
-    "share": 2.54
+    "share": 2.53
    },
    {
     "area": "GSEC-2",
@@ -1056,17 +1056,17 @@
    {
     "area": "GSUI-1",
     "n": 6,
-    "share": 1.02
+    "share": 1.01
    },
    {
     "area": "GSR-2",
     "n": 4,
-    "share": 0.68
+    "share": 0.67
    },
    {
     "area": "GRID",
     "n": 4,
-    "share": 0.68
+    "share": 0.67
    },
    {
     "area": "GSEC-1",
@@ -1095,14 +1095,14 @@
    }
   ],
   "duracao_finalizados_meses": {
-   "mediana": 31.1,
+   "mediana": 31.3,
    "p90": 65.9,
-   "n": 331
+   "n": 332
   },
   "idade_em_curso_meses": {
    "mediana": 21.0,
-   "acima_36": 90,
-   "n": 260
+   "acima_36": 89,
+   "n": 262
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1181,10 +1181,10 @@
    {
     "ano": "2023",
     "processos": 77,
-    "finalizados": 57,
+    "finalizados": 58,
     "acusados": 202,
     "incompleto": false,
-    "finalizados_share": 74.03
+    "finalizados_share": 75.32
    },
    {
     "ano": "2024",
@@ -1204,9 +1204,9 @@
    },
    {
     "ano": "2026",
-    "processos": 58,
+    "processos": 61,
     "finalizados": 0,
-    "acusados": 149,
+    "acusados": 160,
     "incompleto": true,
     "finalizados_share": 0.0
    }
@@ -1218,9 +1218,19 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-11-23",
+    "ultima_mov": "2026-11-24",
     "acusados": 1,
     "objeto": "O presente Termo de Acusação originou-se do Processo CVM n.º 19957.002755/2026-15 (anexado ao PAS), instaurado pela SEP - Superintendência de Relações com Empresas com o objetivo de analisar a conformidade de divulgação "
+   },
+   {
+    "nup": "19957016536202613",
+    "abertura": "2026-10-14",
+    "area": "GEA-4",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-11-24",
+    "acusados": 7,
+    "objeto": "Trata-se de processo instaurado para apuração de irregularidades relacionadas à elaboração e à prestação de informações periódicas pela Ambipar, notadamente o Formulário de Informações Trimestrais referente ao terceiro t"
    },
    {
     "nup": "19957014906202688",
@@ -1261,6 +1271,16 @@
     "ultima_mov": "2026-11-23",
     "acusados": 2,
     "objeto": "Termo de Acusação em face de ERIC ROGÉRIO PRADO e REMORA GESTÃO DE NEGÓCIOS LTDA., sobre atuação sem que detivessem o devido registro junto à CVM para prestar este serviço, em infração ao disposto no art. 23 da Lei nº 6."
+   },
+   {
+    "nup": "19957015690202678",
+    "abertura": "2026-09-22",
+    "area": "GMA",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-11-23",
+    "acusados": 2,
+    "objeto": "Apurar responsabilidades por infração ao art. 3°, da Resolução CVM n° 62/22, em decorrência da criação de condições artificiais de demanda, oferta ou preço de valores mobiliários, nos termos descritos no inciso I, art. 2"
    },
    {
     "nup": "19957015320202631",
@@ -1383,6 +1403,16 @@
     "objeto": "O presente termo de acusação originou-se do Processo CVM nº 19957.004044/2025-02, instaurado com o fim de analisar reclamação em face da Inepar S.A. Indústria e Construções - Em recuperação judicial, sobre eventos relaci"
    },
    {
+    "nup": "19957013542202619",
+    "abertura": "2026-08-05",
+    "area": "GNA",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-11-24",
+    "acusados": 2,
+    "objeto": "Termo de acusação em face da KPMG."
+   },
+   {
     "nup": "19957012377202688",
     "abertura": "2026-07-10",
     "area": "GEA-5",
@@ -1481,36 +1511,6 @@
     "ultima_mov": "2026-11-23",
     "acusados": 2,
     "objeto": "Termo de Acusação em face dos Srs. Marco Geovanne Tobias da Silva e Tarciana Paula Gomes Medeiros, na qualidade de diretores do Banco do Brasil S.A., por infração ao art. 15 da Resolução CVM nº 80/2022, ao dar declaração"
-   },
-   {
-    "nup": "19957011288202614",
-    "abertura": "2026-06-18",
-    "area": "GEA-4",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-27",
-    "acusados": 1,
-    "objeto": "O presente Termo de Acusação originou-se do Processo CVM n.º 19957.002685/2025-14 (anexado ao PAS), instaurado pela SEP - Superintendência de Relações com Empresas, que teve como objetivo analisar a conduta dos administr"
-   },
-   {
-    "nup": "19957011221202680",
-    "abertura": "2026-06-17",
-    "area": "GEA-4",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-29",
-    "acusados": 2,
-    "objeto": "O presente Termo de Acusação originou-se do Processo Administrativo CVM no 19957.016625/2025-89, instaurado pela Superintendência de Normas Contábeis - SNC após o recebimento de comunicação enviada por Deloitte Touche To"
-   },
-   {
-    "nup": "19957010789202683",
-    "abertura": "2026-06-08",
-    "area": "GEA-3",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-08-21",
-    "acusados": 3,
-    "objeto": "Trata-se de reclamação apresentada em face da OSX Brasil S.A. - Em Recuperação Judicial, questionando a regularidade da divulgação de informações sobre o litígio existente entre o Reclamante e a Companhia, no escopo da r"
    }
   ],
   "nota": "Processo a processo, com a fase atual e os acusados. A base não traz o resultado (absolvição, multa, termo de compromisso): 'finalizado' é o fim do rito. Objeto reproduzido como publicado pela CVM, truncado. Sem ranking por nome."

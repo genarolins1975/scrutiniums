@@ -1,11 +1,11 @@
 {
- "gerado_em": "2026-11-24T21:44:56+00:00",
+ "gerado_em": "2026-11-25T20:22:22+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 92,8, percentil histórico 5), em fase de recuperação, com sinais mistos entre os indicadores monitorados.",
   "ref": "2026-08-01",
-  "confianca": "moderada",
+  "confianca": "baixa",
   "confianca_motivo": "qualidade média dos dados 65/100; score setorial com 1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
