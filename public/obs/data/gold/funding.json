@@ -4117,7 +4117,7 @@
   ],
   "sigilo": {
    "mes": "2026-10",
-   "valor": 527191841630.0,
+   "valor": 527399099668.0,
    "liberacao_ate": "2027-04-29"
   },
   "cobertura": {
@@ -5210,7 +5210,7 @@
     "ligado_share": 22.62,
     "n_classes": 1455,
     "parcial": true,
-    "sob_sigilo": 527191841630.0,
+    "sob_sigilo": 527399099668.0,
     "sigilo_ate": "2027-04-29"
    }
   ],

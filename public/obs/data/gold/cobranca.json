@@ -62,7 +62,7 @@
   "var_12m_todos_pct": 9.36,
   "bancario_share": 46.12,
   "por_mil_hab": 3.85,
-  "por_bi_carteira": 105.9
+  "por_bi_carteira": 105.8
  },
  "grupos": [
   {
@@ -3401,7 +3401,7 @@
    "por_mil_hab": 4.04,
    "por_bi_carteira": 80.1,
    "inad_scr": 3.99,
-   "carteira_scr": 2325802038262,
+   "carteira_scr": 2325888648906,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 43850,
@@ -3428,7 +3428,7 @@
    "por_mil_hab": 9.91,
    "por_bi_carteira": 191.1,
    "inad_scr": 3.88,
-   "carteira_scr": 424546574208,
+   "carteira_scr": 424589769844,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 27921,
@@ -3455,7 +3455,7 @@
    "por_mil_hab": 6.71,
    "por_bi_carteira": 138.4,
    "inad_scr": 4.67,
-   "carteira_scr": 576555317986,
+   "carteira_scr": 576671234618,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 23336,
@@ -3482,7 +3482,7 @@
    "por_mil_hab": 6.2,
    "por_bi_carteira": 128.5,
    "inad_scr": 5.12,
-   "carteira_scr": 542107809622,
+   "carteira_scr": 542053507397,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 25056,
@@ -3509,7 +3509,7 @@
    "por_mil_hab": 2.96,
    "por_bi_carteira": 92.6,
    "inad_scr": 4.93,
-   "carteira_scr": 683344613593,
+   "carteira_scr": 683286991193,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 23643,
@@ -3534,9 +3534,9 @@
    "casos_12m_todos": 71133,
    "bancario_share": 56.16,
    "por_mil_hab": 2.69,
-   "por_bi_carteira": 131.4,
-   "inad_scr": 6.14,
-   "carteira_scr": 304104819981,
+   "por_bi_carteira": 131.3,
+   "inad_scr": 6.13,
+   "carteira_scr": 304163073546,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 8469,
@@ -3563,7 +3563,7 @@
    "por_mil_hab": 5.09,
    "por_bi_carteira": 108.1,
    "inad_scr": 7.29,
-   "carteira_scr": 349891360810,
+   "carteira_scr": 349851865867,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 10334,
@@ -3588,9 +3588,9 @@
    "casos_12m_todos": 67461,
    "bancario_share": 43.81,
    "por_mil_hab": 1.72,
-   "por_bi_carteira": 50.9,
+   "por_bi_carteira": 50.8,
    "inad_scr": 4.58,
-   "carteira_scr": 581000094853,
+   "carteira_scr": 581441023434,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 6393,
@@ -3617,7 +3617,7 @@
    "por_mil_hab": 7.45,
    "por_bi_carteira": 109.0,
    "inad_scr": 6.23,
-   "carteira_scr": 266085993068,
+   "carteira_scr": 266046870582,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 10817,
@@ -3644,7 +3644,7 @@
    "por_mil_hab": 2.41,
    "por_bi_carteira": 124.2,
    "inad_scr": 5.35,
-   "carteira_scr": 180056160912,
+   "carteira_scr": 180064523705,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 3742,
@@ -3671,7 +3671,7 @@
    "por_mil_hab": 2.22,
    "por_bi_carteira": 119.0,
    "inad_scr": 5.68,
-   "carteira_scr": 177984144185,
+   "carteira_scr": 178008725359,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 3153,
@@ -3698,7 +3698,7 @@
    "por_mil_hab": 2.31,
    "por_bi_carteira": 118.0,
    "inad_scr": 6.74,
-   "carteira_scr": 170322941744,
+   "carteira_scr": 170287658558,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 4921,
@@ -3725,7 +3725,7 @@
    "por_mil_hab": 5.46,
    "por_bi_carteira": 111.1,
    "inad_scr": 7.53,
-   "carteira_scr": 143771047384,
+   "carteira_scr": 143754098933,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 5210,
@@ -3752,7 +3752,7 @@
    "por_mil_hab": 3.7,
    "por_bi_carteira": 113.1,
    "inad_scr": 4.27,
-   "carteira_scr": 134827521181,
+   "carteira_scr": 134834452621,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 5097,
@@ -3778,8 +3778,8 @@
    "bancario_share": 47.77,
    "por_mil_hab": 2.08,
    "por_bi_carteira": 125.5,
-   "inad_scr": 9.06,
-   "carteira_scr": 116066028485,
+   "inad_scr": 9.05,
+   "carteira_scr": 116102897503,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 4828,
@@ -3806,7 +3806,7 @@
    "por_mil_hab": 4.72,
    "por_bi_carteira": 77.7,
    "inad_scr": 3.54,
-   "carteira_scr": 182000811602,
+   "carteira_scr": 182050050524,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 3524,
@@ -3833,7 +3833,7 @@
    "por_mil_hab": 7.32,
    "por_bi_carteira": 196.8,
    "inad_scr": 6.94,
-   "carteira_scr": 65205434277,
+   "carteira_scr": 65197963582,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 7021,
@@ -3858,9 +3858,9 @@
    "casos_12m_todos": 24399,
    "bancario_share": 52.29,
    "por_mil_hab": 2.95,
-   "por_bi_carteira": 155.4,
-   "inad_scr": 6.02,
-   "carteira_scr": 82088589050,
+   "por_bi_carteira": 155.1,
+   "inad_scr": 6.01,
+   "carteira_scr": 82237469132,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 1805,
@@ -3887,7 +3887,7 @@
    "por_mil_hab": 3.49,
    "por_bi_carteira": 182.7,
    "inad_scr": 6.22,
-   "carteira_scr": 61445011654,
+   "carteira_scr": 61441546550,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 1109,
@@ -3914,7 +3914,7 @@
    "por_mil_hab": 2.79,
    "por_bi_carteira": 137.7,
    "inad_scr": 5.38,
-   "carteira_scr": 68520770507,
+   "carteira_scr": 68522250671,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 2058,
@@ -3941,7 +3941,7 @@
    "por_mil_hab": 2.7,
    "por_bi_carteira": 126.6,
    "inad_scr": 5.67,
-   "carteira_scr": 73802789374,
+   "carteira_scr": 73799608347,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 1831,
@@ -3968,7 +3968,7 @@
    "por_mil_hab": 1.65,
    "por_bi_carteira": 86.3,
    "inad_scr": 5.84,
-   "carteira_scr": 79812858224,
+   "carteira_scr": 79818122295,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 1697,
@@ -3995,7 +3995,7 @@
    "por_mil_hab": 4.2,
    "por_bi_carteira": 110.4,
    "inad_scr": 9.01,
-   "carteira_scr": 60347666629,
+   "carteira_scr": 60313232873,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 2625,
@@ -4022,7 +4022,7 @@
    "por_mil_hab": 2.37,
    "por_bi_carteira": 112.7,
    "inad_scr": 5.86,
-   "carteira_scr": 48399618456,
+   "carteira_scr": 48399610765,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 1871,
@@ -4047,9 +4047,9 @@
    "casos_12m_todos": 4636,
    "bancario_share": 49.5,
    "por_mil_hab": 2.6,
-   "por_bi_carteira": 114.2,
+   "por_bi_carteira": 114.1,
    "inad_scr": 6.85,
-   "carteira_scr": 20105103306,
+   "carteira_scr": 20106547553,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 902,
@@ -4075,8 +4075,8 @@
    "bancario_share": 56.29,
    "por_mil_hab": 3.1,
    "por_bi_carteira": 133.8,
-   "inad_scr": 6.73,
-   "carteira_scr": 17120526836,
+   "inad_scr": 6.72,
+   "carteira_scr": 17120992545,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 423,
@@ -4103,7 +4103,7 @@
    "por_mil_hab": 2.19,
    "por_bi_carteira": 88.0,
    "inad_scr": 6.4,
-   "carteira_scr": 20024022704,
+   "carteira_scr": 20026987951,
    "data_scr": "2026-09",
    "grupos": {
     "execucao": 337,

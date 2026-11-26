@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-25T20:22:22+00:00",
+ "gerado_em": "2026-11-26T20:21:54+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 319,
-  "total_editais": 1207,
+  "total_editais": 1208,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1153,6 +1153,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE EMBU-GUACU",
+    "municipio": "Embu-Guaçu",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-26",
+    "url": "https://pncp.gov.br/compras/46523148000101/2026/80"
+   },
+   {
     "ente": "MUNICIPIO DE PASSO DE CAMARAGIBE",
     "municipio": "Passo de Camaragibe",
     "uf": "AL",
@@ -1250,15 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-19",
     "url": "https://pncp.gov.br/compras/40893646000160/2026/54"
-   },
-   {
-    "ente": "MUNICIPIO DE MILAGRES DO MARANHAO",
-    "municipio": "Milagres do Maranhão",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-19",
-    "url": "https://pncp.gov.br/compras/01612319000130/2026/26"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

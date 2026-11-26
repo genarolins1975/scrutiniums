@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-25T20:22:49+00:00",
+ "gerado_em": "2026-11-26T20:22:21+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,53 +24,53 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1322 processos sancionadores em 1ª instância, com 1429 decisões por apenado: 1358 multas somando R$ 78.6 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 373 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (180 acusados); 262 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1330 processos sancionadores em 1ª instância, com 1437 decisões por apenado: 1366 multas somando R$ 78.8 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 372 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (180 acusados); 262 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-19",
+  "ultima_decisao": "2026-11-25",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17097,
-   "processos": 13148,
-   "apenados_distintos": 11471
+   "decisoes": 17108,
+   "processos": 13159,
+   "apenados_distintos": 11479
   },
   "janela_12m": {
-   "ini": "2025-11-25",
-   "decisoes": 1429,
-   "processos": 1322,
-   "multas_n": 1358,
-   "multas_valor": 78616600.0,
+   "ini": "2025-11-26",
+   "decisoes": 1437,
+   "processos": 1330,
+   "multas_n": 1366,
+   "multas_valor": 78829100.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
    "recursos": 151,
-   "pj": 398,
-   "pf": 1031
+   "pj": 399,
+   "pf": 1038
   },
   "janela_12m_anterior": {
-   "decisoes": 834,
-   "processos": 662,
-   "multas_n": 699,
-   "multas_valor": 25362883.9,
+   "decisoes": 833,
+   "processos": 661,
+   "multas_n": 698,
+   "multas_valor": 25337883.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
    "sem_penalidade": 100,
    "recursos": 132,
-   "pj": 264,
-   "pf": 570
+   "pj": 265,
+   "pf": 568
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1358,
-    "share": 95.03
+    "n": 1366,
+    "share": 95.06
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.13
+    "share": 4.11
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,38 +91,38 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 872,
-    "share": 61.02
+    "n": 871,
+    "share": 60.61
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 135,
-    "share": 9.45
+    "n": 150,
+    "share": 10.44
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 118,
-    "share": 8.26
+    "share": 8.21
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 105,
-    "share": 7.35
+    "n": 113,
+    "share": 7.86
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 102,
-    "share": 7.14
+    "n": 88,
+    "share": 6.12
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.78
+    "share": 3.76
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 24,
-    "share": 1.68
+    "share": 1.67
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
@@ -153,13 +153,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 12000,
-    "share": 87.5
+    "n": 12003,
+    "share": 87.45
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 883,
-    "share": 6.44
+    "n": 897,
+    "share": 6.54
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -172,14 +172,14 @@
     "share": 0.87
    },
    {
-    "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 109,
-    "share": 0.79
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
+    "n": 113,
+    "share": 0.82
    },
    {
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 105,
-    "share": 0.77
+    "situacao": "MULTA VENCIDA E NÃO PAGA",
+    "n": 95,
+    "share": 0.69
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -200,7 +200,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3198
+   "n": 3209
   },
   "anual": [
    {
@@ -400,21 +400,131 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1314,
-    "processos": 1211,
-    "multas_n": 1249,
-    "multas_valor": 76154100.0,
+    "decisoes": 1325,
+    "processos": 1222,
+    "multas_n": 1260,
+    "multas_valor": 76416600.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
     "recursos": 138,
-    "pf": 950,
-    "pj": 364,
+    "pf": 959,
+    "pj": 366,
     "incompleto": true,
-    "recurso_share": 10.5,
-    "sem_penalidade_share": 4.03
+    "recurso_share": 10.42,
+    "sem_penalidade_share": 4.0
    }
   ],
   "recentes": [
+   {
+    "pas": "316078",
+    "nome": "BOREO INDUSTRIA DE COMPONENTES LTDA",
+    "pessoa": "PJ",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "315971",
+    "nome": "FABRICIO LAGES ECHEVERRIA",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316142",
+    "nome": "FLORESVALDO LESKO",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316204",
+    "nome": "LAURA CASTRO ALVES NEVES DE ALMEIDA",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316148",
+    "nome": "MARCELO TIGLIA GASTALDI",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316030",
+    "nome": "NAVARRO ALBERTO MENON CATTALINI",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316022",
+    "nome": "PEDRO HENRIQUE PARREIRAS DE OLIVEIRA E SILVA",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316194",
+    "nome": "SABRINA SAYURI COVRE",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316225",
+    "nome": "SANTINA MACAE COVRE GOMES DA ROCHA",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316105",
+    "nome": "THALES DIS BRASIL CARTOES E SOLUCOES DE TECNOLOGIA LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316202",
+    "nome": "VANESSA GUIMARAES HENRIQUES",
+    "pessoa": "PF",
+    "decisao": "2026-11-25",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "316165",
     "nome": "ANNA HERRON MORE",
@@ -543,7 +653,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "316149",
@@ -704,120 +814,10 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316192",
-    "nome": "IDA MARIA VIEIRA TOLEDO",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316122",
-    "nome": "LUIZ ALEXANDRE TOLEDO",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315965",
-    "nome": "MANOEL ANTONIO ALMEIDA NETO",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316207",
-    "nome": "MARCOS ANTONIO BRAGAGNOLO",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316121",
-    "nome": "SIBELE ARREGUI BINZ",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312939",
-    "nome": "YABORA INDUSTRIA AERONAUTICA S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "312214",
-    "nome": "ANA CRISTINA RODRIGUES MARQUES",
-    "pessoa": "PF",
-    "decisao": "2026-11-11",
-    "pena": "NÃO HOUVE PENALIDADE",
-    "multa": null,
-    "recurso": "NÃO",
-    "situacao": "NÃO HOUVE PENALIDADE"
-   },
-   {
-    "pas": "316061",
-    "nome": "AVELINO BRAGAGNOLO S A INDUSTRIA E COMERCIO",
-    "pessoa": "PJ",
-    "decisao": "2026-11-11",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316098",
-    "nome": "NORSKAN OFFSHORE LTDA",
-    "pessoa": "PJ",
-    "decisao": "2026-11-10",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "313071",
-    "nome": "BANCO INTER S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315176",
-    "nome": "BANCO INTER S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-11-09",
-    "pena": "MULTA",
-    "multa": 175000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
-   "vigentes": 373,
+   "vigentes": 372,
    "por_prazo": [
     {
      "prazo_anos": 2.0,
@@ -846,8 +846,8 @@
     },
     {
      "prazo_anos": 6.0,
-     "n": 12,
-     "encerram_12m": 1
+     "n": 11,
+     "encerram_12m": 0
     },
     {
      "prazo_anos": 7.0,
@@ -925,7 +925,7 @@
      "encerram_12m": 0
     }
    ],
-   "encerram_12m": 2
+   "encerram_12m": 1
   },
   "proibidos_vigentes": 2,
   "nota": "Uma linha por apenado e decisão. A penalidade que vale é a de 2ª instância quando existe; multa aplicada não é multa paga (a situação da cobrança está à parte). Pessoa física é o CPF mascarado; pessoa jurídica é o CNPJ. Sem ranking por nome: a lista é cronológica."
@@ -941,7 +941,7 @@
    "finalizados": 332
   },
   "abertos_12m": {
-   "ini": "2025-11-25",
+   "ini": "2025-11-26",
    "processos": 67,
    "acusados": 180
   },
@@ -953,13 +953,13 @@
    },
    {
     "fase": "Julgamento",
-    "n": 102,
-    "share": 17.17
+    "n": 103,
+    "share": 17.34
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 100,
-    "share": 16.84
+    "n": 99,
+    "share": 16.67
    },
    {
     "fase": "Recurso CRSFN",
