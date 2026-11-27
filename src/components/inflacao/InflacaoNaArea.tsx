@@ -81,7 +81,7 @@ export function InflacaoNaArea({ dados, comLinkComida = true, recolherGrupos = f
       {escolha.invalida && <p aria-live="polite" className="text-sm text-carvao-muted">A área informada no endereço não está no IPCA. Exibimos o Brasil.</p>}
 
       <div className="space-y-6">
-        <div role="status" aria-live="polite" data-resposta-especifica="">
+        <div role="status" aria-live="polite" data-resposta-especifica="" data-escolha={ehBrasil ? "nao" : "sim"}>
           <h2 className="ed-h2 max-w-3xl font-serif text-carvao">Inflação em 12 meses</h2>
           <div className="mt-5 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:max-w-4xl">
             <div className="min-w-0 border-t-2 border-bronze pt-3" data-medida="area">

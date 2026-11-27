@@ -35,7 +35,7 @@ function selectionFromUrl(ids: string[]): Selection {
  * escolha (título, seletores, régua, perguntas, educação e o modelo do escore) leem este contexto. A entrada mostra só as posições;
  * a nota experimental fica no painel do índice (decisão do dono de 19/10/2026).
  */
-type Escolha = {retrato: RetratoDados; selection: Selection; select: (next: Selection) => void; a: RetratoDados['capitais'][number]; b: RetratoDados['capitais'][number]};
+type Escolha = {retrato: RetratoDados; selection: Selection; escolhida: boolean; select: (next: Selection) => void; a: RetratoDados['capitais'][number]; b: RetratoDados['capitais'][number]};
 const Contexto = createContext<Escolha | null>(null);
 function useEscolha(): Escolha {
   const c = useContext(Contexto);
@@ -46,14 +46,16 @@ function useEscolha(): Escolha {
 export function ProvedorCapital({retrato, children}: {retrato: RetratoDados; children: ReactNode}) {
   const ids = retrato.capitais.map(c => c.id);
   const [selection, setSelection] = useState<Selection>(DEFAULT);
+  // o leitor escolheu quando a capital está no endereço (a padrão só ilustra): decide se o contexto da entrada recolhe (24/11/2026)
+  const [escolhida, setEscolhida] = useState(false);
   useEffect(() => {
-    const sync = () => setSelection(selectionFromUrl(retrato.capitais.map(c => c.id)));
+    const sync = () => { setSelection(selectionFromUrl(retrato.capitais.map(c => c.id))); setEscolhida(new URLSearchParams(window.location.search).has('territorio')); };
     sync(); window.addEventListener('popstate', sync);
     return () => window.removeEventListener('popstate', sync);
   }, [retrato]);
   function select(next: Selection) {
     if (next.place === next.reference) next = {...next, reference: ids.find(id => id !== next.place)!};
-    setSelection(next);
+    setSelection(next); setEscolhida(true);
     const url = new URL(window.location.href);
     url.searchParams.set('territorio', next.place); url.searchParams.set('comparador', next.reference);
     url.searchParams.set('indicador', next.metric); url.searchParams.set('idade', next.age);
@@ -61,7 +63,7 @@ export function ProvedorCapital({retrato, children}: {retrato: RetratoDados; chi
   }
   const a = retrato.capitais.find(c => c.id === selection.place) ?? retrato.capitais[0];
   const b = retrato.capitais.find(c => c.id === selection.reference) ?? retrato.capitais[1];
-  return <Contexto.Provider value={{retrato, selection, select, a, b}}>{children}</Contexto.Provider>;
+  return <Contexto.Provider value={{retrato, selection, escolhida, select, a, b}}>{children}</Contexto.Provider>;
 }
 
 /** O título da entrada, com a capital escolhida: "Como se vive em Recife?". */
@@ -72,10 +74,10 @@ export function TituloCapital() {
 
 /** Pedido do dono, 27/10/2026: a escolha entrega os resultados da capital antes das medianas e dos caminhos. */
 export function SeletorCapital() {
-  const {retrato, selection, select, a, b} = useEscolha();
+  const {retrato, selection, escolhida, select, a, b} = useEscolha();
   return <SeletoresRetrato a={a} b={b} capitais={retrato.capitais}
     onSelect={(campo, id) => select(campo === 'territorio' ? {...selection, place: id} : {...selection, reference: id})}
-    resposta={<section className="mt-6" aria-labelledby="resposta-capital-titulo" data-resposta-especifica="">
+    resposta={<section className="mt-6" aria-labelledby="resposta-capital-titulo" data-resposta-especifica="" data-escolha={escolhida ? "sim" : "nao"}>
       <h2 id="resposta-capital-titulo" className="font-serif text-2xl text-carvao">Sete resultados de {a.nome}</h2>
       <p className="mt-2 text-sm text-carvao-muted" role="status">Comparação com {b.nome}. São 26 capitais estaduais, sem o DF; os resultados não atribuem efeito à gestão.</p>
       <dl className="mt-4 grid gap-x-8 md:grid-cols-2">

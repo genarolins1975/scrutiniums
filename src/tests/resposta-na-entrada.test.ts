@@ -173,6 +173,28 @@ describe("resposta específica na entrada, no build", () => {
     } finally { await c.close(); }
   }, 90_000);
 
+  // Decisão do dono de 24/11/2026: os números de contexto ficam à vista sem escolha e se recolhem quando o leitor escolhe um recorte.
+  for (const [rota, escolher] of [
+    ["/combustiveis", async (p: Page) => { await p.locator(CONSULTA).locator("select").first().selectOption("PE"); }],
+    ["/custo-de-vida", async (p: Page) => { const s = p.locator(CONSULTA).locator("select").first(); const v = await s.locator("option").nth(1).getAttribute("value"); await s.selectOption(v!); }],
+    ["/eficiencia-estatal", async (p: Page) => { const s = p.locator(CONSULTA).locator("select").first(); const v = await s.locator("option").nth(1).getAttribute("value"); await s.selectOption(v!); }],
+  ] as const) {
+    it(`${rota}: o contexto fica aberto sem escolha e recolhe depois da escolha`, async () => {
+      const c = await contexto();
+      try {
+        const p = await c.newPage();
+        await abrir(p, rota);
+        const ctx = p.locator("#contexto-da-entrada");
+        expect(await ctx.evaluate(d => (d as HTMLDetailsElement).open)).toBe(true);
+        await escolher(p);
+        await expect.poll(() => ctx.evaluate(d => (d as HTMLDetailsElement).open)).toBe(false);
+        // o leitor ainda pode abrir: a ilha só reage quando a escolha muda
+        await ctx.locator("summary").click();
+        await expect.poll(() => ctx.evaluate(d => (d as HTMLDetailsElement).open)).toBe(true);
+      } finally { await c.close(); }
+    }, 90_000);
+  }
+
   for (const rota of ["/conectividade", "/educacao-municipal"]) {
     it(`${rota}: busca por teclado entrega o município antes do país e mantém o recorte ao atualizar`, async () => {
       const c = await contexto();

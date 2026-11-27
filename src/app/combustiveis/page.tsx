@@ -79,6 +79,8 @@ export default function CombustiveisPage() {
           </section>
         }
         contextoEscala="Preços médios no Brasil"
+        contextoAteEscolha
+        escalaCompacta
         paraVoce={<ParaVoce entrada="/combustiveis" />}
         // coleção Gás e combustíveis desde a fusão de 10/11/2026: a consulta por estado, do mesmo grupo, e depois o resto da coleção
         destinos={destinosDaColecao("gas", { proprio: pagina.href })}

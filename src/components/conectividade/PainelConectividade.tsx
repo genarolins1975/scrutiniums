@@ -41,7 +41,7 @@ export function PainelConectividade({ g, consulta }: { g: GoldConectividade; con
       frescor={<FaixaFrescor dominios={FRESCOR_DAS_COLECOES["/conectividade"]} conteiner="mx-auto max-w-page px-6" />}
       escala={escalaConectividade(g)}
       resposta={<ConsultaInicial g={g} c={consulta} />}
-      contextoEscala="A conectividade no Brasil"
+      contextoEscala={consulta.estado === "ok" ? "A conectividade no Brasil" : undefined}
       paraVoce={<ParaVoce entrada={ROTA_CONECTIVIDADE} />}
       destinos={destinosDaColecao("conectividade")}
       artefato={

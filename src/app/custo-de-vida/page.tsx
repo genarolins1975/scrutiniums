@@ -74,6 +74,7 @@ export default function InflacaoPage() {
         ]}
         resposta={<section aria-label="Inflação na sua cidade"><InflacaoNaArea dados={tela} recolherGrupos /></section>}
         contextoEscala="O Brasil e as áreas pesquisadas"
+        contextoAteEscolha
         notaEscala="Compare a variação em 12 meses entre áreas no mesmo período. A variação do mês tem outra janela; não deve ser somada à de 12 meses."
         paraVoce={<ParaVoce entrada="/custo-de-vida" />}
         destinos={destinosDaColecao("custo-de-vida")}
