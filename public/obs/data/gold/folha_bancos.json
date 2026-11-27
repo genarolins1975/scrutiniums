@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-26T20:21:54+00:00",
+ "gerado_em": "2026-11-27T20:19:24+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 319,
-  "total_editais": 1208,
+  "total_contratos_if": 320,
+  "total_editais": 1213,
   "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 110,
+    "contratos": 111,
     "ufs": 20,
     "como_receita": 12
    },
@@ -641,6 +641,21 @@
     "url": "https://pncp.gov.br/contratos/01613076000155/2026/30"
    },
    {
+    "controle": "24772253000141-2-000043/2026",
+    "ente": "MUNICIPIO DE TAPURAH",
+    "esfera": "Municipal",
+    "municipio": "Tapurah",
+    "uf": "MT",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-11-04",
+    "vig_fim": "2031-11-04",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/24772253000141/2026/43"
+   },
+   {
     "controle": "75658377000131-2-000132/2026",
     "ente": "MUNICIPIO DE ARAPOTI",
     "esfera": "Municipal",
@@ -1134,24 +1149,54 @@
     "banco": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA.-SICOOB CREDISUDESTE",
     "cnpj8": "22656789",
     "url": "https://pncp.gov.br/contratos/01616271000139/2026/52"
-   },
-   {
-    "controle": "83102350000196-2-001199/2026",
-    "ente": "MUNICIPIO DE BOTUVERA",
-    "esfera": "Municipal",
-    "municipio": "Botuverá",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-09-10",
-    "vig_fim": "2027-09-09",
-    "valor": 0.01,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
-    "cnpj8": "07512780",
-    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1199"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE ARARUNA",
+    "municipio": "Araruna",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-27",
+    "url": "https://pncp.gov.br/compras/75359760000199/2026/136"
+   },
+   {
+    "ente": "MUNICIPIO DE DIVISOPOLIS",
+    "municipio": "Divisópolis",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-26",
+    "url": "https://pncp.gov.br/compras/66234311000123/2026/23"
+   },
+   {
+    "ente": "MUNICIPIO DE NIOAQUE",
+    "municipio": "Nioaque",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-26",
+    "url": "https://pncp.gov.br/compras/03073699000108/2026/51"
+   },
+   {
+    "ente": "SETE LAGOAS CAMARA MUNICIPAL",
+    "municipio": "Sete Lagoas",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-26",
+    "url": "https://pncp.gov.br/compras/19781236000130/2026/169"
+   },
+   {
+    "ente": "MUNICIPIO DE ANCHIETA",
+    "municipio": "Anchieta",
+    "uf": "ES",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-11-26",
+    "url": "https://pncp.gov.br/compras/27142694000158/2026/287"
+   },
    {
     "ente": "MUNICIPIO DE EMBU-GUACU",
     "municipio": "Embu-Guaçu",
@@ -1214,51 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-11-24",
     "url": "https://pncp.gov.br/compras/18357079000178/2026/37"
-   },
-   {
-    "ente": "MUNICIPIO DE GAMELEIRA",
-    "municipio": "Gameleira",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-24",
-    "url": "https://pncp.gov.br/compras/11343902000147/2026/39"
-   },
-   {
-    "ente": "MUNICIPIO DE CABECEIRAS",
-    "municipio": "Cabeceiras",
-    "uf": "GO",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-23",
-    "url": "https://pncp.gov.br/compras/01740430000102/2026/139"
-   },
-   {
-    "ente": "MUNICIPIO DE CANDIDO MOTA",
-    "municipio": "Cândido Mota",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-23",
-    "url": "https://pncp.gov.br/compras/46179958000192/2026/186"
-   },
-   {
-    "ente": "MUNICIPIO DE BARRACAO",
-    "municipio": "Barracão",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-23",
-    "url": "https://pncp.gov.br/compras/87613618000105/2026/31"
-   },
-   {
-    "ente": "MUNICIPIO DE VERTENTE DO LERIO",
-    "municipio": "Vertente do Lério",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-11-19",
-    "url": "https://pncp.gov.br/compras/40893646000160/2026/54"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

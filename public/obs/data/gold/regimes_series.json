@@ -5,23 +5,23 @@
    "label": "Inadimplência total (Δ mensal)",
    "transformacao": "diff",
    "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.013,
+   "drift_6m_vs_12m_previos": -0.004,
    "cusum": {
     "ultimo_disparo": {
      "data": "2026-02-01",
      "direcao": "alta",
-     "estatistica": 5.81
+     "estatistica": 5.76
     },
-    "cusum_atual": 1.73,
+    "cusum_atual": 2.32,
     "limiar": 5.0
    },
    "quebra_estrutural": {
     "data_quebra": "2021-04-01",
-    "supF": 12.0,
+    "supF": 12.6,
     "critico_5pct_aprox": 8.85,
     "significativa": true,
     "media_antes": -0.013,
-    "media_depois": 0.042,
+    "media_depois": 0.044,
     "direcao": "deterioração"
    },
    "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
@@ -31,23 +31,23 @@
    "label": "Inadimplência PF (Δ mensal)",
    "transformacao": "diff",
    "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.013,
+   "drift_6m_vs_12m_previos": -0.002,
    "cusum": {
     "ultimo_disparo": {
      "data": "2025-08-01",
      "direcao": "alta",
-     "estatistica": 5.97
+     "estatistica": 5.92
     },
-    "cusum_atual": 2.82,
+    "cusum_atual": 3.59,
     "limiar": 5.0
    },
    "quebra_estrutural": {
-    "data_quebra": "2021-07-01",
-    "supF": 17.2,
+    "data_quebra": "2024-07-01",
+    "supF": 19.3,
     "critico_5pct_aprox": 8.85,
     "significativa": true,
-    "media_antes": -0.022,
-    "media_depois": 0.049,
+    "media_antes": -0.011,
+    "media_depois": 0.086,
     "direcao": "deterioração"
    },
    "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
@@ -57,19 +57,19 @@
    "label": "Inadimplência PJ (Δ mensal)",
    "transformacao": "diff",
    "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.011,
+   "drift_6m_vs_12m_previos": -0.007,
    "cusum": {
     "ultimo_disparo": {
      "data": "2020-11-01",
      "direcao": "baixa",
-     "estatistica": -5.44
+     "estatistica": -5.48
     },
-    "cusum_atual": 0.21,
+    "cusum_atual": 0.0,
     "limiar": 5.0
    },
    "quebra_estrutural": {
     "data_quebra": "2021-04-01",
-    "supF": 4.4,
+    "supF": 4.5,
     "critico_5pct_aprox": 8.85,
     "significativa": false,
     "media_antes": -0.009,
@@ -83,23 +83,23 @@
    "label": "Concessões (var. interanual)",
    "transformacao": "yoy",
    "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": 1.794,
+   "drift_6m_vs_12m_previos": 1.048,
    "cusum": {
     "ultimo_disparo": {
      "data": "2022-01-01",
      "direcao": "alta",
-     "estatistica": 6.31
+     "estatistica": 6.36
     },
-    "cusum_atual": 0.26,
+    "cusum_atual": 0.52,
     "limiar": 5.0
    },
    "quebra_estrutural": {
     "data_quebra": "2017-10-01",
-    "supF": 58.4,
+    "supF": 57.3,
     "critico_5pct_aprox": 8.85,
     "significativa": true,
     "media_antes": 0.951,
-    "media_depois": 12.587,
+    "media_depois": 12.472,
     "direcao": "deterioração"
    },
    "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
@@ -109,23 +109,23 @@
    "label": "Saldo de crédito (var. interanual)",
    "transformacao": "yoy",
    "estado_hipotese": "aceleração",
-   "drift_6m_vs_12m_previos": -1.253,
+   "drift_6m_vs_12m_previos": -1.365,
    "cusum": {
     "ultimo_disparo": {
-     "data": "2023-10-01",
-     "direcao": "baixa",
-     "estatistica": -5.1
+     "data": "2020-11-01",
+     "direcao": "alta",
+     "estatistica": 5.59
     },
-    "cusum_atual": 0.71,
+    "cusum_atual": 1.44,
     "limiar": 5.0
    },
    "quebra_estrutural": {
-    "data_quebra": "2020-06-01",
-    "supF": 59.0,
+    "data_quebra": "2020-03-01",
+    "supF": 58.3,
     "critico_5pct_aprox": 8.85,
     "significativa": true,
-    "media_antes": 6.517,
-    "media_depois": 12.476,
+    "media_antes": 6.415,
+    "media_depois": 12.303,
     "direcao": "deterioração"
    },
    "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
@@ -135,19 +135,19 @@
    "label": "Spread médio (Δ mensal)",
    "transformacao": "diff",
    "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.154,
+   "drift_6m_vs_12m_previos": -0.143,
    "cusum": {
     "ultimo_disparo": null,
-    "cusum_atual": 0.31,
+    "cusum_atual": 0.63,
     "limiar": 5.0
    },
    "quebra_estrutural": {
     "data_quebra": "2021-10-01",
-    "supF": 3.1,
+    "supF": 3.4,
     "critico_5pct_aprox": 8.85,
     "significativa": false,
     "media_antes": -0.034,
-    "media_depois": 0.122,
+    "media_depois": 0.129,
     "direcao": "deterioração"
    },
    "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."

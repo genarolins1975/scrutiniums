@@ -25,124 +25,111 @@
   }
  },
  "sistema": {
-  "mes": "2026-09",
+  "mes": "2026-10",
   "componentes": [
    {
     "id": "vista",
     "nome": "Depósitos à vista",
     "cor": "#1d4e89",
-    "valor": 319017595000.0,
-    "share_m4": 1.99,
-    "var_12m_pct": -1.79,
-    "var_mes_pct": 0.17
+    "valor": 316565399000.0,
+    "share_m4": 1.96,
+    "var_12m_pct": 4.72,
+    "var_mes_pct": 0.1
    },
    {
     "id": "poupanca",
     "nome": "Poupança",
     "cor": "#0e7c7b",
-    "valor": 1019549557000.0,
-    "share_m4": 6.35,
-    "var_12m_pct": 0.46,
-    "var_mes_pct": -0.39
+    "valor": 1019723036000.0,
+    "share_m4": 6.3,
+    "var_12m_pct": 0.79,
+    "var_mes_pct": -0.23
    },
    {
     "id": "prazo",
     "nome": "Depósitos a prazo (CDB/RDB)",
     "cor": "#2f7d4f",
-    "valor": 4078140352000.0,
-    "share_m4": 25.41,
-    "var_12m_pct": 14.92,
-    "var_mes_pct": 1.17
+    "valor": 4121378630000.0,
+    "share_m4": 25.48,
+    "var_12m_pct": 14.82,
+    "var_mes_pct": 0.88
    },
    {
     "id": "lf",
     "nome": "Letras financeiras",
     "cor": "#6b46a3",
-    "valor": 758581905000.0,
-    "share_m4": 4.73,
-    "var_12m_pct": 14.2,
-    "var_mes_pct": 1.61
+    "valor": 761524272000.0,
+    "share_m4": 4.71,
+    "var_12m_pct": 13.06,
+    "var_mes_pct": 0.26
    },
    {
     "id": "letras_credito",
     "nome": "Letras de crédito (LCI e LCA)",
     "cor": "#b45309",
-    "valor": 1156566860000.0,
-    "share_m4": 7.21,
-    "var_12m_pct": 5.12,
-    "var_mes_pct": 0.69
+    "valor": 1153470472000.0,
+    "share_m4": 7.13,
+    "var_12m_pct": 4.04,
+    "var_mes_pct": -0.1
    },
    {
     "id": "outros_titulos",
     "nome": "Outros títulos privados",
     "cor": "#8d5a2b",
-    "valor": 203334215000.0,
-    "share_m4": 1.27,
-    "var_12m_pct": 2.31,
-    "var_mes_pct": 0.46
+    "valor": 204164743000.0,
+    "share_m4": 1.26,
+    "var_12m_pct": 2.8,
+    "var_mes_pct": 0.41
    },
    {
     "id": "compromissadas",
     "nome": "Compromissadas com títulos privados",
     "cor": "#9aa3ad",
-    "valor": 161721685000.0,
-    "share_m4": 1.01,
-    "var_12m_pct": 21.45,
-    "var_mes_pct": 18.24
+    "valor": 139718719000.0,
+    "share_m4": 0.86,
+    "var_12m_pct": 6.15,
+    "var_mes_pct": -13.61
    },
    {
     "id": "fundos_monetarios",
     "nome": "Quotas de fundos monetários",
     "cor": "#c0392b",
-    "valor": 6053758651000.0,
-    "share_m4": 37.72,
-    "var_12m_pct": 8.59,
-    "var_mes_pct": -0.72
+    "valor": 6054210968000.0,
+    "share_m4": 37.43,
+    "var_12m_pct": 6.67,
+    "var_mes_pct": 0.02
    },
    {
     "id": "titulos_federais",
     "nome": "Títulos federais (Selic)",
     "cor": "#555",
-    "valor": 1801937990000.0,
-    "share_m4": 11.23,
-    "var_12m_pct": 22.57,
-    "var_mes_pct": 0.57
+    "valor": 1907781389000.0,
+    "share_m4": 11.8,
+    "var_12m_pct": 29.16,
+    "var_mes_pct": 5.53
    }
   ],
   "agregados": [
    {
     "id": "m2",
     "nome": "M2",
-    "valor": 7870395191000.0,
-    "var_12m_pct": 9.91
+    "valor": 7910949081000.0,
+    "var_12m_pct": 9.97
    },
    {
     "id": "m3",
     "nome": "M3",
-    "valor": 14246711983000.0,
-    "var_12m_pct": 9.68
+    "valor": 14266116876000.0,
+    "var_12m_pct": 8.69
    },
    {
     "id": "m4",
     "nome": "M4",
-    "valor": 16048649973000.0,
-    "var_12m_pct": 10.99
+    "valor": 16173898265000.0,
+    "var_12m_pct": 10.76
    }
   ],
   "serie": [
-   {
-    "ref": "2016-10",
-    "m4": 5681511504000.0,
-    "vista": 154121852000.0,
-    "poupanca": 646800713000.0,
-    "prazo": 671922483000.0,
-    "lf": 298876200000.0,
-    "letras_credito": 399447865000.0,
-    "outros_titulos": 16446177000.0,
-    "compromissadas": 333085113000.0,
-    "fundos_monetarios": 2330726607000.0,
-    "titulos_federais": 453025549000.0
-   },
    {
     "ref": "2016-11",
     "m4": 5743868110000.0,
@@ -1640,8 +1627,8 @@
    },
    {
     "ref": "2026-06",
-    "m4": 15766529261000.0,
-    "vista": 327337646000.0,
+    "m4": 15767101008000.0,
+    "vista": 327712817000.0,
     "poupanca": 1028425117000.0,
     "prazo": 3964201852000.0,
     "lf": 721710513000.0,
@@ -1653,42 +1640,55 @@
    },
    {
     "ref": "2026-07",
-    "m4": 15821173410000.0,
-    "vista": 307880889000.0,
+    "m4": 15821174202000.0,
+    "vista": 307882309000.0,
     "poupanca": 1027876247000.0,
-    "prazo": 3986941307000.0,
+    "prazo": 3986941098000.0,
     "lf": 733306116000.0,
     "letras_credito": 1136807285000.0,
     "outros_titulos": 208594373000.0,
     "compromissadas": 137881745000.0,
-    "fundos_monetarios": 6048593919000.0,
+    "fundos_monetarios": 6048594245000.0,
     "titulos_federais": 1760458192000.0
    },
    {
     "ref": "2026-08",
-    "m4": 15981442540000.0,
-    "vista": 318464201000.0,
+    "m4": 15981462135000.0,
+    "vista": 318480020000.0,
     "poupanca": 1023494219000.0,
-    "prazo": 4030891295000.0,
-    "lf": 746542305000.0,
+    "prazo": 4030840891000.0,
+    "lf": 746542451000.0,
     "letras_credito": 1148640239000.0,
     "outros_titulos": 202404126000.0,
     "compromissadas": 136774336000.0,
-    "fundos_monetarios": 6097608900000.0,
-    "titulos_federais": 1791753520000.0
+    "fundos_monetarios": 6097612926000.0,
+    "titulos_federais": 1791803892000.0
    },
    {
     "ref": "2026-09",
-    "m4": 16048649973000.0,
-    "vista": 319017595000.0,
-    "poupanca": 1019549557000.0,
-    "prazo": 4078140352000.0,
-    "lf": 758581905000.0,
-    "letras_credito": 1156566860000.0,
-    "outros_titulos": 203334215000.0,
+    "m4": 16060175013000.0,
+    "vista": 316258160000.0,
+    "poupanca": 1022112010000.0,
+    "prazo": 4085337501000.0,
+    "lf": 759546859000.0,
+    "letras_credito": 1154651940000.0,
+    "outros_titulos": 203324908000.0,
     "compromissadas": 161721685000.0,
-    "fundos_monetarios": 6053758651000.0,
-    "titulos_federais": 1801937990000.0
+    "fundos_monetarios": 6053248752000.0,
+    "titulos_federais": 1807780482000.0
+   },
+   {
+    "ref": "2026-10",
+    "m4": 16173898265000.0,
+    "vista": 316565399000.0,
+    "poupanca": 1019723036000.0,
+    "prazo": 4121378630000.0,
+    "lf": 761524272000.0,
+    "letras_credito": 1153470472000.0,
+    "outros_titulos": 204164743000.0,
+    "compromissadas": 139718719000.0,
+    "fundos_monetarios": 6054210968000.0,
+    "titulos_federais": 1907781389000.0
    }
   ],
   "poupanca_sbpe": {
@@ -5216,7 +5216,7 @@
   ],
   "nota": "Posições diretas das classes de fundos (a classe que compra a cota de outra classe aparece como cota, não como papel, então não há dupla contagem do título). 'Ligado' é a marcação da própria classe de que o emissor é ligado ao gestor. A razão CDA ÷ LF do IF.data cruza um mês com um trimestre e é indicativa."
  },
- "sintese": "O público tinha R$ 16,05 tri aplicados no sistema financeiro em 2026-09 (M4, +11,0% em 12 meses); o instrumento que mais cresceu foi títulos federais (selic) (+22,6%) e o que menos, depósitos à vista (-1,8%). Nos balanços de 2026-06, as 1.044 instituições do corte captavam R$ 14,27 tri: 54% em depósitos e letras de varejo, 34% em mercado e 13% em repasses; as cinco maiores respondem por 63% das captações. Os fundos carregavam R$ 924,1 bi em papéis bancários em 2026-07 (6,6% do PL das classes), 81% em letras financeiras; o maior emissor é BRADESCO (R$ 159,9 bi, 17% do total).",
+ "sintese": "O público tinha R$ 16,17 tri aplicados no sistema financeiro em 2026-10 (M4, +10,8% em 12 meses); o instrumento que mais cresceu foi títulos federais (selic) (+29,2%) e o que menos, poupança (+0,8%). Nos balanços de 2026-06, as 1.044 instituições do corte captavam R$ 14,27 tri: 54% em depósitos e letras de varejo, 34% em mercado e 13% em repasses; as cinco maiores respondem por 63% das captações. Os fundos carregavam R$ 924,1 bi em papéis bancários em 2026-07 (6,6% do PL das classes), 81% em letras financeiras; o maior emissor é BRADESCO (R$ 159,9 bi, 17% do total).",
  "metodo": "Sistema: saldos de fim de mês dos componentes de M4 (SGS), convertidos de R$ mil para R$; shares sobre M4; variações a/a. Bancos: relatório Passivo do IF.data por instituição; captações = depósitos + compromissadas + títulos emitidos + empréstimos e repasses; grupos varejo, mercado e repasses somam as captações; LTD = carteira de crédito ÷ depósitos; HHI sobre as captações das instituições do corte. Fundos: bloco 5 do CDA agregado por emissor (CNPJ raiz) e tipo de papel; nome pelo cadastro do IF.data; conglomerado prudencial quando o CNPJ pertence a um; mês com menos de 90% das classes com papel bancário do máximo dos três meses anteriores é parcial e fica fora (efeito do sigilo de até 90 dias que o gestor pode pedir para uma posição: nesse período a CVM publica o valor sem o emissor); vencimento em 12 meses a partir da data de competência.",
  "limitacoes": "As três fontes não fecham entre si por construção: o SGS mede o que está com o público, o IF.data o que está no balanço (inclui o que outras instituições financeiras carregam) e o CDA só o que está em fundos. O IF.data é trimestral com defasagem de um trimestre; o CDA é mensal com defasagem de um mês, e os dois ou três meses mais recentes carregam posições sob sigilo (valor publicado sem emissor), por isso o mês de referência é o último com cobertura plena. Não há custo de captação por instrumento nas fontes abertas por instituição.",
  "cautelas": [

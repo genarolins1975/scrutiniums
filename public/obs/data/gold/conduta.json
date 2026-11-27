@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-26T20:22:21+00:00",
+ "gerado_em": "2026-11-27T20:20:01+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,58 +24,58 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1330 processos sancionadores em 1ª instância, com 1437 decisões por apenado: 1366 multas somando R$ 78.8 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 151 apenados recorreram. 372 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (180 acusados); 262 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1350 processos sancionadores em 1ª instância, com 1457 decisões por apenado: 1386 multas somando R$ 79.2 milhões (mediana R$ 25 mil), 8 inabilitações e 59 decisões sem penalidade; 149 apenados recorreram. 372 pessoas seguem inabilitadas. A CVM abriu 66 processos sancionadores em 12 meses (178 acusados); 261 seguem em curso, com idade mediana de 21 meses, e os finalizados levaram 32 meses em mediana. Índice mediano de reclamações no ranking do BCB: 70.03 em 2026-3.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-11-25",
+  "ultima_decisao": "2026-11-27",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 17108,
-   "processos": 13159,
-   "apenados_distintos": 11479
+   "decisoes": 17130,
+   "processos": 13181,
+   "apenados_distintos": 11492
   },
   "janela_12m": {
-   "ini": "2025-11-26",
-   "decisoes": 1437,
-   "processos": 1330,
-   "multas_n": 1366,
-   "multas_valor": 78829100.0,
+   "ini": "2025-11-27",
+   "decisoes": 1457,
+   "processos": 1350,
+   "multas_n": 1386,
+   "multas_valor": 79216600.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 8,
    "sem_penalidade": 59,
-   "recursos": 151,
-   "pj": 399,
-   "pf": 1038
+   "recursos": 149,
+   "pj": 403,
+   "pf": 1054
   },
   "janela_12m_anterior": {
    "decisoes": 833,
    "processos": 661,
-   "multas_n": 698,
-   "multas_valor": 25337883.9,
+   "multas_n": 699,
+   "multas_valor": 25350383.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 34,
-   "sem_penalidade": 100,
-   "recursos": 132,
-   "pj": 265,
-   "pf": 568
+   "sem_penalidade": 99,
+   "recursos": 134,
+   "pj": 264,
+   "pf": 569
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1366,
-    "share": 95.06
+    "n": 1386,
+    "share": 95.13
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 59,
-    "share": 4.11
+    "share": 4.05
    },
    {
     "pena": "INABILITAÇÃO",
     "n": 8,
-    "share": 0.56
+    "share": 0.55
    },
    {
     "pena": "DEVOLVER SUBVENÇÃO",
@@ -92,47 +92,52 @@
    {
     "situacao": "MULTA PAGA",
     "n": 871,
-    "share": 60.61
+    "share": 59.78
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 150,
-    "share": 10.44
+    "share": 10.3
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 118,
-    "share": 8.21
+    "share": 8.1
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 113,
-    "share": 7.86
+    "n": 114,
+    "share": 7.82
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 88,
-    "share": 6.12
+    "share": 6.04
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 54,
-    "share": 3.76
+    "share": 3.71
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 24,
-    "share": 1.67
+    "share": 1.65
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 19,
+    "share": 1.3
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
     "n": 8,
-    "share": 0.56
+    "share": 0.55
    },
    {
     "situacao": "PENALIDADE EXTINTA",
     "n": 7,
-    "share": 0.49
+    "share": 0.48
    },
    {
     "situacao": "PENALIDADE ENCAMINHADA PARA A STN",
@@ -153,18 +158,18 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 12003,
-    "share": 87.45
+    "n": 12005,
+    "share": 87.33
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 897,
-    "share": 6.54
+    "n": 896,
+    "share": 6.52
    },
    {
     "situacao": "PENALIDADE EXTINTA",
     "n": 315,
-    "share": 2.3
+    "share": 2.29
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -173,8 +178,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 113,
-    "share": 0.82
+    "n": 114,
+    "share": 0.83
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -188,19 +193,24 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 71,
+    "n": 72,
     "share": 0.52
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 23,
     "share": 0.17
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 19,
+    "share": 0.14
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.8,
    "p90": 29.2,
-   "n": 3209
+   "n": 3231
   },
   "anual": [
    {
@@ -400,21 +410,241 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1325,
-    "processos": 1222,
-    "multas_n": 1260,
-    "multas_valor": 76416600.0,
+    "decisoes": 1347,
+    "processos": 1244,
+    "multas_n": 1282,
+    "multas_valor": 76841600.0,
     "inabilitacoes": 8,
     "sem_penalidade": 53,
     "recursos": 138,
-    "pf": 959,
-    "pj": 366,
+    "pf": 977,
+    "pj": 370,
     "incompleto": true,
-    "recurso_share": 10.42,
-    "sem_penalidade_share": 4.0
+    "recurso_share": 10.24,
+    "sem_penalidade_share": 3.93
    }
   ],
   "recentes": [
+   {
+    "pas": "316027",
+    "nome": "ALEXANDER TAVARES PICOLI",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316172",
+    "nome": "ALEXANDRE AROEIRA SALLES",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316045",
+    "nome": "ALVARO FERNANDES DIAS FILHO",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316176",
+    "nome": "ANA RITA ERNESTO DO REGO LEAL",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "312872",
+    "nome": "BRASIL TERMINAL PORTUARIO S.A.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316138",
+    "nome": "CALIPSON TADEU NOGUEIRA DA GAMA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "315954",
+    "nome": "CAROLINA DE ALMEIDA FERNANDES DIAS MAIA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316101",
+    "nome": "CROPCHEM LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316012",
+    "nome": "DALVA NUNES DA SILVA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316203",
+    "nome": "FERNANDO WEIGERT",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316219",
+    "nome": "HELIO ALMEIDA GOMES",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316007",
+    "nome": "HELOISA MARIA PENTAGNA GUIMARAES HENRIQUES",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316535",
+    "nome": "HOWDEN SOUTH AMERICA VENTILADORES E COMPRESSORES INDUSTRIA E COMERCIO LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316216",
+    "nome": "IVAN LIMA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316002",
+    "nome": "JOSE EUGENIO BARRETO DA SILVA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316183",
+    "nome": "LUIZ FERNANDO CAMARGO VIEIRA ROMANO",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316223",
+    "nome": "LUIZA AMORIM GUTJAHR WILLMS",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316136",
+    "nome": "MAURO LUIZ IECKER VIEIRA",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316036",
+    "nome": "MURILO PARENTE LIMA DOS SANTOS",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "316066",
+    "nome": "POSITIVO TECNOLOGIA S.A.",
+    "pessoa": "PJ",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "316137",
+    "nome": "ROBERTO DE LEPELEIRE",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "315885",
+    "nome": "ROSANE PRATES DE AMORIM GUTJAHR",
+    "pessoa": "PF",
+    "decisao": "2026-11-27",
+    "pena": "MULTA",
+    "multa": 12500.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "316078",
     "nome": "BOREO INDUSTRIA DE COMPONENTES LTDA",
@@ -594,226 +824,6 @@
     "multa": 25000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315919",
-    "nome": "GIONATA GIOVANNI CEOLA",
-    "pessoa": "PF",
-    "decisao": "2026-11-19",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315930",
-    "nome": "IVO DE OLIVEIRA CALADO",
-    "pessoa": "PF",
-    "decisao": "2026-11-19",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316111",
-    "nome": "LIEGE RODRIGUES SARAIVA DE MACEDO",
-    "pessoa": "PF",
-    "decisao": "2026-11-19",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316166",
-    "nome": "LUIS FILIPE CAVALCANTI LIMA",
-    "pessoa": "PF",
-    "decisao": "2026-11-19",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316146",
-    "nome": "PAULO RICARDO TONET CAMARGO",
-    "pessoa": "PF",
-    "decisao": "2026-11-19",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316167",
-    "nome": "RODRIGO DE MEDEIROS ROSAS",
-    "pessoa": "PF",
-    "decisao": "2026-11-18",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "316149",
-    "nome": "VALDEMAR VALENTIN CENCI",
-    "pessoa": "PF",
-    "decisao": "2026-11-18",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "289760",
-    "nome": "AGI FINANCIAL HOLDING S/A",
-    "pessoa": "PJ",
-    "decisao": "2026-11-17",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316067",
-    "nome": "IRMAOS PASSAURA S.A",
-    "pessoa": "PJ",
-    "decisao": "2026-11-17",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "MULTA PAGA"
-   },
-   {
-    "pas": "315986",
-    "nome": "MARIA CECILIA DIAS DE MELLO FLORES",
-    "pessoa": "PF",
-    "decisao": "2026-11-17",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316155",
-    "nome": "RUDIMAR DALL ONDER",
-    "pessoa": "PF",
-    "decisao": "2026-11-17",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "300800",
-    "nome": "SANDRA MARIA LORUSSO VILAR",
-    "pessoa": "PF",
-    "decisao": "2026-11-17",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316211",
-    "nome": "CORNELIUS LITTMANN",
-    "pessoa": "PF",
-    "decisao": "2026-11-16",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315968",
-    "nome": "IZAIR JOSE GAMBATTO",
-    "pessoa": "PF",
-    "decisao": "2026-11-16",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316042",
-    "nome": "MARLI MARIA DE JESUS DENSER",
-    "pessoa": "PF",
-    "decisao": "2026-11-16",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "299083",
-    "nome": "AMAGGI LOUIS DREYFUS ZEN-NOH GRAOS S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-11-13",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "315977",
-    "nome": "DANIELA LEAO SALVINI MORGEN",
-    "pessoa": "PF",
-    "decisao": "2026-11-13",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316346",
-    "nome": "EVANDRO DE AVILA GIMENES",
-    "pessoa": "PF",
-    "decisao": "2026-11-13",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316215",
-    "nome": "GEORGE RANDOLPH",
-    "pessoa": "PF",
-    "decisao": "2026-11-13",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316026",
-    "nome": "ALINE ROCHA MENDES",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 12500.0,
-    "recurso": "SIM",
-    "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA"
-   },
-   {
-    "pas": "315991",
-    "nome": "DORIS MARIA HEXSEL",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "316029",
-    "nome": "FABIANE MENON CATTALINI",
-    "pessoa": "PF",
-    "decisao": "2026-11-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -933,23 +943,23 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-11-03",
-  "ultima_movimentacao": "2026-11-24",
+  "ultima_movimentacao": "2026-11-26",
   "acervo": {
    "processos": 594,
    "acusados": 2115,
-   "em_curso": 262,
-   "finalizados": 332
+   "em_curso": 261,
+   "finalizados": 333
   },
   "abertos_12m": {
-   "ini": "2025-11-26",
-   "processos": 67,
-   "acusados": 180
+   "ini": "2025-11-27",
+   "processos": 66,
+   "acusados": 178
   },
   "fases": [
    {
     "fase": "Finalizado",
-    "n": 332,
-    "share": 55.89
+    "n": 333,
+    "share": 56.06
    },
    {
     "fase": "Julgamento",
@@ -958,18 +968,18 @@
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 99,
-    "share": 16.67
+    "n": 98,
+    "share": 16.5
    },
    {
     "fase": "Recurso CRSFN",
-    "n": 40,
-    "share": 6.73
+    "n": 41,
+    "share": 6.9
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 20,
-    "share": 3.37
+    "n": 19,
+    "share": 3.2
    }
   ],
   "areas": [
@@ -1095,14 +1105,14 @@
    }
   ],
   "duracao_finalizados_meses": {
-   "mediana": 31.3,
+   "mediana": 31.6,
    "p90": 65.9,
-   "n": 332
+   "n": 333
   },
   "idade_em_curso_meses": {
-   "mediana": 21.0,
-   "acima_36": 89,
-   "n": 262
+   "mediana": 21,
+   "acima_36": 88,
+   "n": 261
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1181,10 +1191,10 @@
    {
     "ano": "2023",
     "processos": 77,
-    "finalizados": 58,
+    "finalizados": 59,
     "acusados": 202,
     "incompleto": false,
-    "finalizados_share": 75.32
+    "finalizados_share": 76.62
    },
    {
     "ano": "2024",
@@ -1468,7 +1478,7 @@
     "area": "GEA-3",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-08",
+    "ultima_mov": "2026-11-26",
     "acusados": 5,
     "objeto": "O presente termo de acusação se originou do Processo nº 19957.011579/2024-41, instaurado em 19/8/2024, para analisar reclamação apresentada em face da Construtora Adolpho Lindenberg S.A. (\"CAL\" ou \"Companhia\"), questiona"
    },
@@ -1498,7 +1508,7 @@
     "area": "GEA-5",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-10-02",
+    "ultima_mov": "2026-11-26",
     "acusados": 4,
     "objeto": "Termo de Acusação CVM nº 19957.011534/2026-38, instaurado em 24.06.2026, por meio do qual são acusados, com base no que dispõe o art. 6º da Resolução CVM nº 45/2021, os senhores ANDRÉ PINHEIRO VELOSO, FERNANDO LUIZ ALTER"
    },

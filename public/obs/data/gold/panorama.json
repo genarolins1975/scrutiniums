@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-26T20:22:13+00:00",
+ "gerado_em": "2026-11-27T20:19:51+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-09",
  "data_base_anterior": "2026-08",
@@ -339,12 +339,12 @@
   },
   {
    "p": "2026-05",
-   "saldo": 7594447397196,
+   "saldo": 7594406001101,
    "inad": 4.84,
    "atraso15_90": 1.04,
    "ap": 8.33,
-   "pf": 4693091455873,
-   "pj": 2901355941323
+   "pf": 4693093232028,
+   "pj": 2901312769074
   },
   {
    "p": "2026-06",
