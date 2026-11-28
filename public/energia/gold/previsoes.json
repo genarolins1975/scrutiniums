@@ -1,20 +1,20 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-11-27T18:32:34Z",
+ "gerado_em": "2026-11-28T17:15:20Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "19de393f6b25",
+ "versao_codigo": "936ea9c4e281",
  "disponivel": true,
  "atual": {
   "disponivel": false,
   "motivo_codigo": "NENHUM_MODELO_EM_PRODUCAO",
   "motivo": "Nenhum modelo de previsão do PLD está em produção: todos estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
   "ultima_execucao": {
-   "run_id": "prosp_2026-11-27_20261127T183234Z",
+   "run_id": "prosp_2026-11-28_20261128T171520Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
-   "origem": "2026-11-27",
-   "cutoff": "2026-11-27T10:00:00Z",
-   "emitido_em": "2026-11-27T18:32:34Z",
+   "origem": "2026-11-28",
+   "cutoff": "2026-11-28T10:00:00Z",
+   "emitido_em": "2026-11-28T17:15:20Z",
    "modelo": "B0",
    "versao_modelo": "B0-v1",
    "estado_modelo": "PESQUISA",
@@ -37,11 +37,11 @@
  "referencia_experimental": {
   "modelo": "B0",
   "ultima_rodada": {
-   "run_id": "prosp_2026-11-27_20261127T183234Z",
+   "run_id": "prosp_2026-11-28_20261128T171520Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
-   "origem": "2026-11-27",
-   "cutoff": "2026-11-27T10:00:00Z",
-   "emitido_em": "2026-11-27T18:32:34Z",
+   "origem": "2026-11-28",
+   "cutoff": "2026-11-28T10:00:00Z",
+   "emitido_em": "2026-11-28T17:15:20Z",
    "modelo": "B0",
    "versao_modelo": "B0-v1",
    "estado_modelo": "PESQUISA",
@@ -59,6 +59,24 @@
  },
  "publicacoes": 0,
  "rodadas": [
+  {
+   "run_id": "prosp_2026-11-28_20261128T171520Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-11-28",
+   "cutoff": "2026-11-28T10:00:00Z",
+   "emitido_em": "2026-11-28T17:15:20Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 28,
+   "motivos": [],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "LIMITE_PROVISORIO"
+   ],
+   "modo": "agendada"
+  },
   {
    "run_id": "prosp_2026-11-27_20261127T183234Z",
    "tipo": "REFERENCIA_EXPERIMENTAL",
@@ -828,7 +846,7 @@
    "modo": "manual"
   }
  ],
- "rodadas_total": 42,
+ "rodadas_total": 43,
  "arquivo": [
   {
    "alertas": [
@@ -2068,19 +2086,19 @@
    {
     "mes": "2026-11",
     "url": "/energia/series/previsoes_emissoes_2026-11.json",
-    "registros": 756,
+    "registros": 784,
     "registros_com_campos_omitidos": 0,
     "primeiro": "prosp_2026-11-01_20261101T153107Z:W1:SE:B0",
-    "ultimo_sha256": "f851c3b384ecd7f040f195d7ac276e8faae7f34058d81964e1330a136caf5b6d",
-    "sha256_particao": "5e68dd9dc93fce1ce34e7f2845c3aa7b9e820d6138b202234b0ae17b1573ade2",
+    "ultimo_sha256": "148e09dab87996bced98e857d7493f5e031e907ffa215a9961763c14a039d163",
+    "sha256_particao": "1766a25aa2c5a4eee9e04a446ab3dafe78466f8a695ef79c6eaaf1b4152e9940",
     "por_tipo": {
      "PUBLICACAO": 0,
      "RODADA_INTERNA": 0,
-     "REFERENCIA_EXPERIMENTAL": 756
+     "REFERENCIA_EXPERIMENTAL": 784
     }
    }
   ],
-  "registros": 1148,
+  "registros": 1176,
   "cadeia": "íntegra",
   "nota": "Registros a partir do particionamento: um arquivo por mês de inclusão, carregado sob demanda. `arquivo` guarda só os registros anteriores ao particionamento."
  },
