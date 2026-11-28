@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-11-27T20:19:57+00:00",
+ "gerado_em": "2026-11-28T19:53:58+00:00",
  "ano": 2025,
  "fator_ipca": 1.2019,
  "populacao_fonte": "IBGE Censo 2022 (pirâmide etária por município; a página trabalha por faixa etária, que só o Censo traz)",
@@ -5818,9 +5818,9 @@
    },
    {
     "d": "2026-07",
-    "saldo": 807.8,
+    "saldo": 807.78,
     "op": 89.28,
-    "inad": 3.74
+    "inad": 3.73
    },
    {
     "d": "2026-08",
@@ -6018,14 +6018,14 @@
    },
    {
     "d": "2026-07",
-    "saldo": 159.9,
-    "op": 13.02,
-    "inad": 2.27
+    "saldo": 159.99,
+    "op": 13.03,
+    "inad": 2.26
    },
    {
     "d": "2026-08",
-    "saldo": 159.54,
-    "op": 12.97,
+    "saldo": 159.65,
+    "op": 12.98,
     "inad": 2.24
    },
    {
@@ -8702,169 +8702,169 @@
   "geografia": "nacional",
   "modalidade": "Crédito pessoal consignado INSS - Prefixado",
   "janela": {
-   "inicio": "2026-11-05",
-   "fim": "2026-11-11"
+   "inicio": "2026-11-06",
+   "fim": "2026-11-12"
   },
   "stats": {
    "n": 37,
-   "min": 19.72,
-   "p25": 21.86,
-   "mediana": 23.94,
-   "p75": 24.74,
-   "max": 28.18
+   "min": 19.89,
+   "p25": 21.93,
+   "mediana": 23.96,
+   "p75": 24.73,
+   "max": 28.5
   },
-  "spread_selic": 10.19,
-  "delta_3m": 0.24,
+  "spread_selic": 10.21,
+  "delta_3m": 0.26,
   "ranking": [
    {
     "cnpj8": "61820817",
     "nome": "BCO PAULISTA S.A.",
-    "taxa_am": 1.51,
-    "taxa_aa": 19.72,
+    "taxa_am": 1.52,
+    "taxa_aa": 19.89,
     "posicao": 1,
-    "vs_mediana": -4.22
+    "vs_mediana": -4.07
    },
    {
     "cnpj8": "10264663",
     "nome": "BANCOSEGURO S.A.",
-    "taxa_am": 1.52,
-    "taxa_aa": 19.85,
+    "taxa_am": 1.53,
+    "taxa_aa": 19.97,
     "posicao": 2,
-    "vs_mediana": -4.09
+    "vs_mediana": -3.99
    },
    {
     "cnpj8": "30680829",
     "nome": "NU FINANCEIRA S.A. CFI",
-    "taxa_am": 1.54,
-    "taxa_aa": 20.11,
+    "taxa_am": 1.55,
+    "taxa_aa": 20.21,
     "posicao": 3,
-    "vs_mediana": -3.83
+    "vs_mediana": -3.75
    },
    {
     "cnpj8": "62144175",
     "nome": "BCO PINE S.A.",
     "taxa_am": 1.56,
-    "taxa_aa": 20.39,
+    "taxa_aa": 20.47,
     "posicao": 4,
-    "vs_mediana": -3.55
+    "vs_mediana": -3.49
    },
    {
     "cnpj8": "04866275",
     "nome": "BANCO INBURSA",
-    "taxa_am": 1.59,
-    "taxa_aa": 20.85,
+    "taxa_am": 1.6,
+    "taxa_aa": 20.94,
     "posicao": 5,
-    "vs_mediana": -3.09
+    "vs_mediana": -3.02
    },
    {
     "cnpj8": "58160789",
     "nome": "BCO SAFRA S.A.",
-    "taxa_am": 1.64,
-    "taxa_aa": 21.48,
+    "taxa_am": 1.65,
+    "taxa_aa": 21.66,
     "posicao": 6,
-    "vs_mediana": -2.46
-   },
-   {
-    "cnpj8": "03311443",
-    "nome": "MEUTUDO SCFI",
-    "taxa_am": 1.64,
-    "taxa_aa": 21.58,
-    "posicao": 7,
-    "vs_mediana": -2.36
+    "vs_mediana": -2.3
    },
    {
     "cnpj8": "10664513",
     "nome": "BCO AGIBANK S.A.",
     "taxa_am": 1.65,
-    "taxa_aa": 21.65,
-    "posicao": 8,
+    "taxa_aa": 21.67,
+    "posicao": 7,
     "vs_mediana": -2.29
    },
    {
-    "cnpj8": "09516419",
-    "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-    "taxa_am": 1.66,
-    "taxa_aa": 21.83,
-    "posicao": 9,
-    "vs_mediana": -2.11
+    "cnpj8": "03311443",
+    "nome": "MEUTUDO SCFI",
+    "taxa_am": 1.65,
+    "taxa_aa": 21.7,
+    "posicao": 8,
+    "vs_mediana": -2.26
    },
    {
     "cnpj8": "92702067",
     "nome": "BCO DO ESTADO DO RS S.A.",
     "taxa_am": 1.66,
-    "taxa_aa": 21.86,
+    "taxa_aa": 21.79,
+    "posicao": 9,
+    "vs_mediana": -2.17
+   },
+   {
+    "cnpj8": "09516419",
+    "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
+    "taxa_am": 1.67,
+    "taxa_aa": 21.93,
     "posicao": 10,
-    "vs_mediana": -2.08
+    "vs_mediana": -2.03
    },
    {
     "cnpj8": "00416968",
     "nome": "BANCO INTER",
     "taxa_am": 1.72,
-    "taxa_aa": 22.66,
+    "taxa_aa": 22.75,
     "posicao": 11,
-    "vs_mediana": -1.28
-   },
-   {
-    "cnpj8": "01181521",
-    "nome": "BANCO COOPERATIVO SICREDI",
-    "taxa_am": 1.73,
-    "taxa_aa": 22.78,
-    "posicao": 12,
-    "vs_mediana": -1.16
+    "vs_mediana": -1.21
    },
    {
     "cnpj8": "00556603",
     "nome": "BANCO BARI S.A.",
     "taxa_am": 1.73,
-    "taxa_aa": 22.84,
+    "taxa_aa": 22.89,
+    "posicao": 12,
+    "vs_mediana": -1.07
+   },
+   {
+    "cnpj8": "01181521",
+    "nome": "BANCO COOPERATIVO SICREDI",
+    "taxa_am": 1.74,
+    "taxa_aa": 23.02,
     "posicao": 13,
-    "vs_mediana": -1.1
+    "vs_mediana": -0.94
    },
    {
     "cnpj8": "02038232",
     "nome": "BANCO SICOOB S.A.",
     "taxa_am": 1.76,
-    "taxa_aa": 23.25,
+    "taxa_aa": 23.28,
     "posicao": 14,
-    "vs_mediana": -0.69
+    "vs_mediana": -0.68
    },
    {
     "cnpj8": "13009717",
     "nome": "BCO DO EST. DE SE S.A.",
     "taxa_am": 1.78,
-    "taxa_aa": 23.5,
+    "taxa_aa": 23.52,
     "posicao": 15,
     "vs_mediana": -0.44
-   },
-   {
-    "cnpj8": "28127603",
-    "nome": "BCO BANESTES S.A.",
-    "taxa_am": 1.78,
-    "taxa_aa": 23.63,
-    "posicao": 16,
-    "vs_mediana": -0.31
    },
    {
     "cnpj8": "60701190",
     "nome": "ITAÚ UNIBANCO S.A.",
     "taxa_am": 1.79,
-    "taxa_aa": 23.68,
+    "taxa_aa": 23.73,
+    "posicao": 16,
+    "vs_mediana": -0.23
+   },
+   {
+    "cnpj8": "28127603",
+    "nome": "BCO BANESTES S.A.",
+    "taxa_am": 1.79,
+    "taxa_aa": 23.75,
     "posicao": 17,
-    "vs_mediana": -0.26
+    "vs_mediana": -0.21
    },
    {
     "cnpj8": "59285411",
     "nome": "BANCO PAN",
     "taxa_am": 1.79,
-    "taxa_aa": 23.73,
+    "taxa_aa": 23.77,
     "posicao": 18,
-    "vs_mediana": -0.21
+    "vs_mediana": -0.19
    },
    {
     "cnpj8": "00000000",
     "nome": "BCO DO BRASIL S.A.",
     "taxa_am": 1.81,
-    "taxa_aa": 23.94,
+    "taxa_aa": 23.96,
     "posicao": 19,
     "vs_mediana": 0.0
    },
@@ -8874,103 +8874,103 @@
     "taxa_am": 1.82,
     "taxa_aa": 24.15,
     "posicao": 20,
-    "vs_mediana": 0.21
+    "vs_mediana": 0.19
    },
    {
     "cnpj8": "61186680",
     "nome": "BCO BMG S.A.",
     "taxa_am": 1.82,
-    "taxa_aa": 24.15,
+    "taxa_aa": 24.16,
     "posicao": 21,
-    "vs_mediana": 0.21
+    "vs_mediana": 0.2
    },
    {
     "cnpj8": "09464032",
     "nome": "MIDWAY S.A. - SCFI",
     "taxa_am": 1.83,
-    "taxa_aa": 24.29,
-    "posicao": 22,
-    "vs_mediana": 0.35
-   },
-   {
-    "cnpj8": "62232889",
-    "nome": "BCO DAYCOVAL S.A",
-    "taxa_am": 1.83,
     "taxa_aa": 24.3,
-    "posicao": 23,
-    "vs_mediana": 0.36
+    "posicao": 22,
+    "vs_mediana": 0.34
    },
    {
     "cnpj8": "00360305",
     "nome": "CAIXA ECONOMICA FEDERAL",
     "taxa_am": 1.83,
-    "taxa_aa": 24.33,
-    "posicao": 24,
+    "taxa_aa": 24.35,
+    "posicao": 23,
     "vs_mediana": 0.39
    },
    {
-    "cnpj8": "20443996",
-    "nome": "BECKER FINANCEIRA SA - CFI",
+    "cnpj8": "62232889",
+    "nome": "BCO DAYCOVAL S.A",
     "taxa_am": 1.84,
     "taxa_aa": 24.5,
-    "posicao": 25,
-    "vs_mediana": 0.56
+    "posicao": 24,
+    "vs_mediana": 0.54
    },
    {
     "cnpj8": "60746948",
     "nome": "BCO BRADESCO S.A.",
     "taxa_am": 1.84,
-    "taxa_aa": 24.52,
-    "posicao": 26,
-    "vs_mediana": 0.58
+    "taxa_aa": 24.51,
+    "posicao": 25,
+    "vs_mediana": 0.55
    },
    {
     "cnpj8": "17184037",
     "nome": "BCO MERCANTIL DO BRASIL S.A.",
     "taxa_am": 1.85,
-    "taxa_aa": 24.55,
+    "taxa_aa": 24.59,
+    "posicao": 26,
+    "vs_mediana": 0.63
+   },
+   {
+    "cnpj8": "20443996",
+    "nome": "BECKER FINANCEIRA SA - CFI",
+    "taxa_am": 1.86,
+    "taxa_aa": 24.71,
     "posicao": 27,
-    "vs_mediana": 0.61
+    "vs_mediana": 0.75
    },
    {
     "cnpj8": "90400888",
     "nome": "BCO SANTANDER (BRASIL) S.A.",
     "taxa_am": 1.86,
-    "taxa_aa": 24.74,
+    "taxa_aa": 24.73,
     "posicao": 28,
-    "vs_mediana": 0.8
+    "vs_mediana": 0.77
    },
    {
     "cnpj8": "08357240",
     "nome": "BCO CSF S.A.",
     "taxa_am": 1.87,
-    "taxa_aa": 24.85,
+    "taxa_aa": 24.83,
     "posicao": 29,
-    "vs_mediana": 0.91
-   },
-   {
-    "cnpj8": "61348538",
-    "nome": "BCO C6 CONSIG",
-    "taxa_am": 1.87,
-    "taxa_aa": 24.87,
-    "posicao": 30,
-    "vs_mediana": 0.93
-   },
-   {
-    "cnpj8": "27098060",
-    "nome": "BANCO DIGIO",
-    "taxa_am": 1.87,
-    "taxa_aa": 24.89,
-    "posicao": 31,
-    "vs_mediana": 0.95
+    "vs_mediana": 0.87
    },
    {
     "cnpj8": "74828799",
     "nome": "NOVO BCO CONTINENTAL S.A. - BM",
     "taxa_am": 1.87,
-    "taxa_aa": 24.89,
-    "posicao": 32,
+    "taxa_aa": 24.9,
+    "posicao": 30,
+    "vs_mediana": 0.94
+   },
+   {
+    "cnpj8": "61348538",
+    "nome": "BCO C6 CONSIG",
+    "taxa_am": 1.87,
+    "taxa_aa": 24.91,
+    "posicao": 31,
     "vs_mediana": 0.95
+   },
+   {
+    "cnpj8": "27098060",
+    "nome": "BANCO DIGIO",
+    "taxa_am": 1.87,
+    "taxa_aa": 24.95,
+    "posicao": 32,
+    "vs_mediana": 0.99
    },
    {
     "cnpj8": "33136888",
@@ -8978,7 +8978,7 @@
     "taxa_am": 1.88,
     "taxa_aa": 25.02,
     "posicao": 33,
-    "vs_mediana": 1.08
+    "vs_mediana": 1.06
    },
    {
     "cnpj8": "00795423",
@@ -8986,31 +8986,31 @@
     "taxa_am": 1.88,
     "taxa_aa": 25.03,
     "posicao": 34,
-    "vs_mediana": 1.09
+    "vs_mediana": 1.07
    },
    {
     "cnpj8": "11760553",
     "nome": "GAZINCRED S.A. SCFI",
     "taxa_am": 1.88,
-    "taxa_aa": 25.08,
+    "taxa_aa": 25.09,
     "posicao": 35,
-    "vs_mediana": 1.14
+    "vs_mediana": 1.13
    },
    {
     "cnpj8": "14388334",
     "nome": "PARANA BCO S.A.",
     "taxa_am": 1.9,
-    "taxa_aa": 25.31,
+    "taxa_aa": 25.37,
     "posicao": 36,
-    "vs_mediana": 1.37
+    "vs_mediana": 1.41
    },
    {
     "cnpj8": "04862600",
     "nome": "PORTOSEG S.A. CFI",
-    "taxa_am": 2.09,
-    "taxa_aa": 28.18,
+    "taxa_am": 2.11,
+    "taxa_aa": 28.5,
     "posicao": 37,
-    "vs_mediana": 4.24
+    "vs_mediana": 4.54
    }
   ],
   "serie_mensal": [
@@ -9256,10 +9256,10 @@
    },
    {
     "ref": "2026-11-01",
-    "mediana": 23.94,
-    "p25": 21.86,
-    "p75": 24.74,
-    "min": 19.72,
+    "mediana": 23.96,
+    "p25": 21.93,
+    "p75": 24.73,
+    "min": 19.89,
     "n": 37
    }
   ],

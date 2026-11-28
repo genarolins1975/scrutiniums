@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-27T20:19:56+00:00",
+ "gerado_em": "2026-11-28T19:53:57+00:00",
  "data_base_credito": "2026-08",
  "datas_credito": [
   "2026-08",
@@ -4880,168 +4880,168 @@
    {
     "uf": "DF",
     "estban": 6839663343640.0,
-    "scr": 181018388314.99,
-    "razao": 37.784
+    "scr": 181082213394.4,
+    "razao": 37.771
    },
    {
     "uf": "SP",
     "estban": 3425372372252.0,
-    "scr": 2306213006792.59,
+    "scr": 2306240466237.55,
     "razao": 1.485
    },
    {
     "uf": "RJ",
     "estban": 389698006112.0,
-    "scr": 578726863255.37,
+    "scr": 578726945292.83,
     "razao": 0.673
    },
    {
     "uf": "RS",
     "estban": 341631717427.0,
-    "scr": 540743874406.0,
+    "scr": 540664918309.64,
     "razao": 0.632
    },
    {
     "uf": "RR",
     "estban": 10454939446.0,
-    "scr": 17029498796.31,
+    "scr": 17028686520.89,
     "razao": 0.614
    },
    {
     "uf": "TO",
     "estban": 35784637031.0,
-    "scr": 60408649911.22,
-    "razao": 0.592
+    "scr": 60372438220.89,
+    "razao": 0.593
    },
    {
     "uf": "SE",
     "estban": 27508627453.0,
-    "scr": 49461482086.31,
+    "scr": 49457097481.16,
     "razao": 0.556
    },
    {
     "uf": "MG",
     "estban": 377771627663.0,
-    "scr": 680211914013.36,
+    "scr": 680166046720.88,
     "razao": 0.555
    },
    {
     "uf": "RN",
     "estban": 37016983519.0,
-    "scr": 73543087488.61,
+    "scr": 73541315949.07,
     "razao": 0.503
    },
    {
     "uf": "PI",
     "estban": 34489782171.0,
-    "scr": 68711722884.35,
+    "scr": 68710139655.13,
     "razao": 0.502
    },
    {
     "uf": "RO",
     "estban": 31859039067.0,
-    "scr": 64944310024.78,
+    "scr": 64941737279.31,
     "razao": 0.491
    },
    {
     "uf": "GO",
     "estban": 170830708769.0,
-    "scr": 350050000173.47,
+    "scr": 349985071183.95,
     "razao": 0.488
    },
    {
     "uf": "AP",
     "estban": 9537165678.0,
-    "scr": 19934394201.47,
+    "scr": 19936902277.64,
     "razao": 0.478
    },
    {
     "uf": "AC",
     "estban": 9570807323.0,
-    "scr": 20151086419.17,
+    "scr": 20149363880.64,
     "razao": 0.475
    },
    {
     "uf": "PA",
     "estban": 78369240739.0,
-    "scr": 170434017796.06,
+    "scr": 170389766451.85,
     "razao": 0.46
    },
    {
     "uf": "PB",
     "estban": 36005567525.0,
-    "scr": 79423902365.51,
+    "scr": 79428594501.24,
     "razao": 0.453
    },
    {
     "uf": "CE",
     "estban": 79427556380.0,
-    "scr": 178826945943.74,
+    "scr": 178833443066.05,
     "razao": 0.444
    },
    {
     "uf": "MS",
     "estban": 63570950142.0,
-    "scr": 144231524153.55,
+    "scr": 144256576004.94,
     "razao": 0.441
    },
    {
     "uf": "PE",
     "estban": 77702544032.0,
-    "scr": 176599484494.57,
+    "scr": 176608502491.27,
     "razao": 0.44
    },
    {
     "uf": "MA",
     "estban": 50585317845.0,
-    "scr": 115643914260.38,
+    "scr": 115679856261.32,
     "razao": 0.437
    },
    {
     "uf": "AL",
     "estban": 26475497395.0,
-    "scr": 61283504382.32,
+    "scr": 61279776617.32,
     "razao": 0.432
    },
    {
     "uf": "PR",
     "estban": 243587348150.0,
-    "scr": 574451496980.37,
+    "scr": 574552109822.43,
     "razao": 0.424
    },
    {
     "uf": "MT",
     "estban": 109748281675.0,
-    "scr": 266906763067.67,
+    "scr": 266902434778.37,
     "razao": 0.411
    },
    {
     "uf": "AM",
     "estban": 33118826014.0,
-    "scr": 81337185573.94,
+    "scr": 81326556638.22,
     "razao": 0.407
    },
    {
     "uf": "BA",
     "estban": 118460758942.0,
-    "scr": 303539833838.65,
+    "scr": 303529303705.3,
     "razao": 0.39
    },
    {
     "uf": "ES",
     "estban": 47153546768.0,
-    "scr": 134123949941.53,
+    "scr": 134100490821.73,
     "razao": 0.352
    },
    {
     "uf": "SC",
     "estban": 129056158749.0,
-    "scr": 420971718016.5,
+    "scr": 421031049625.3,
     "razao": 0.307
    }
   ],
   "total_estban": 12834451351907.0,
-  "total_scr": 7718922519582.79,
+  "total_scr": 7718921803189.32,
   "razao_br": 1.663,
   "nota": "Razão entre o saldo contabilizado no ESTBAN e a exposição de crédito do SCR na mesma UF. Não é erro de medição nem controle de qualidade: são conceitos diferentes. O ESTBAN registra onde o saldo foi contabilizado; o SCR, a exposição dos clientes daquela UF. Razão muito acima de 1 indica UF que contabiliza operações de tomadores de outros estados — é o mesmo fenômeno que, no nível municipal, gera o selo de confiabilidade.",
   "aviso_data": null

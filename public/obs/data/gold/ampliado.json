@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-11-26T20:22:21+00:00",
+ "gerado_em": "2026-11-28T19:54:01+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -24,178 +24,178 @@
    "nivel": "A — informe regulatório por certificado, mensal"
   }
  },
- "sintese": "Em 2026-09, empresas e famílias deviam R$ 12.4 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 33% e os títulos privados por 21%. O mercado de capitais registrou R$ 925 bi em ofertas encerradas entre 2025-11 e 2026-10 (-4% sobre os 12 meses anteriores), dos quais R$ 379 bi em debêntures e notas comerciais. Securitização — CRI: R$ 263 bi de créditos vinculados em 2026-09, 1.3% vencidos; CRA: R$ 188 bi de créditos vinculados em 2026-09, 1.6% vencidos.",
+ "sintese": "Em 2026-10, empresas e famílias deviam R$ 12.4 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 32% e os títulos privados por 21%. O mercado de capitais registrou R$ 926 bi em ofertas encerradas entre 2025-11 e 2026-10 (-4% sobre os 12 meses anteriores), dos quais R$ 379 bi em debêntures e notas comerciais. Securitização — CRI: R$ 263 bi de créditos vinculados em 2026-09, 1.3% vencidos; CRA: R$ 188 bi de créditos vinculados em 2026-09, 1.6% vencidos.",
  "saldo": {
   "disponivel": true,
-  "mes": "2026-09",
+  "mes": "2026-10",
   "unidade": "R$ milhões (saldo de fim de mês, nominal)",
-  "total_setor_nao_financeiro": 22110001.0,
-  "governo_geral": 9743420.0,
-  "total_pib_pct": 165.02,
+  "total_setor_nao_financeiro": 22300471.0,
+  "governo_geral": 9868276.0,
+  "total_pib_pct": 165.65,
   "kpis": {
    "ef": {
-    "saldo": 12366581.0,
-    "pib_pct": 92.3,
-    "var_12m_pct": 9.0,
-    "sfn_share": 57.13,
-    "mercado_share": 21.9,
-    "externo_share": 17.06,
+    "saldo": 12432195.0,
+    "pib_pct": 92.35,
+    "var_12m_pct": 8.1,
+    "sfn_share": 56.99,
+    "mercado_share": 21.89,
+    "externo_share": 17.34,
     "componentes": [
      {
       "id": "sfn",
       "nome": "Empréstimos do SFN",
       "cor": "#1d4e89",
-      "valor": 7064897.0,
-      "share": 57.13,
-      "var_12m_pct": 8.5
+      "valor": 7084622.0,
+      "share": 56.99,
+      "var_12m_pct": 7.6
      },
      {
       "id": "osf",
       "nome": "Outras sociedades financeiras",
       "cor": "#0e7c7b",
-      "valor": 246711.0,
-      "share": 1.99,
-      "var_12m_pct": 13.8
+      "valor": 231797.0,
+      "share": 1.86,
+      "var_12m_pct": 6.9
      },
      {
       "id": "fg",
       "nome": "Fundos governamentais",
       "cor": "#6b46a3",
-      "valor": 237784.0,
-      "share": 1.92,
-      "var_12m_pct": 5.6
+      "valor": 239446.0,
+      "share": 1.93,
+      "var_12m_pct": 5.4
      },
      {
       "id": "tit",
       "nome": "Títulos de dívida privados",
       "cor": "#b45309",
-      "valor": 1514865.0,
-      "share": 12.25,
-      "var_12m_pct": 14.2
+      "valor": 1510430.0,
+      "share": 12.15,
+      "var_12m_pct": 11.4
      },
      {
       "id": "sec",
       "nome": "Instrumentos de securitização",
       "cor": "#2f7d4f",
-      "valor": 1193201.0,
-      "share": 9.65,
-      "var_12m_pct": 15.4
+      "valor": 1210475.0,
+      "share": 9.74,
+      "var_12m_pct": 12.4
      },
      {
       "id": "ext",
       "nome": "Dívida externa",
       "cor": "#8d5a2b",
-      "valor": 2109123.0,
-      "share": 17.06,
-      "var_12m_pct": 3.7
+      "valor": 2155425.0,
+      "share": 17.34,
+      "var_12m_pct": 5.5
      }
     ]
    },
    "pj": {
-    "saldo": 7289223.0,
-    "pib_pct": 54.4,
-    "var_12m_pct": 8.0,
-    "sfn_share": 32.65,
-    "mercado_share": 35.51,
-    "externo_share": 28.51,
+    "saldo": 7328814.0,
+    "pib_pct": 54.44,
+    "var_12m_pct": 7.1,
+    "sfn_share": 32.28,
+    "mercado_share": 35.44,
+    "externo_share": 28.98,
     "componentes": [
      {
       "id": "sfn",
       "nome": "Empréstimos do SFN",
       "cor": "#1d4e89",
-      "valor": 2380131.0,
-      "share": 32.65,
-      "var_12m_pct": 5.9
+      "valor": 2365849.0,
+      "share": 32.28,
+      "var_12m_pct": 4.8
      },
      {
       "id": "osf",
       "nome": "Outras sociedades financeiras",
       "cor": "#0e7c7b",
-      "valor": 101416.0,
-      "share": 1.39,
-      "var_12m_pct": 10.3
+      "valor": 99920.0,
+      "share": 1.36,
+      "var_12m_pct": 8.9
      },
      {
       "id": "fg",
       "nome": "Fundos governamentais",
       "cor": "#6b46a3",
-      "valor": 140809.0,
-      "share": 1.93,
-      "var_12m_pct": 6.9
+      "valor": 142175.0,
+      "share": 1.94,
+      "var_12m_pct": 7.1
      },
      {
       "id": "tit",
       "nome": "Títulos de dívida privados",
       "cor": "#b45309",
-      "valor": 1514865.0,
-      "share": 20.78,
-      "var_12m_pct": 14.2
+      "valor": 1510430.0,
+      "share": 20.61,
+      "var_12m_pct": 11.4
      },
      {
       "id": "sec",
       "nome": "Instrumentos de securitização",
       "cor": "#2f7d4f",
-      "valor": 1073606.0,
-      "share": 14.73,
-      "var_12m_pct": 13.2
+      "valor": 1086713.0,
+      "share": 14.83,
+      "var_12m_pct": 9.7
      },
      {
       "id": "ext",
       "nome": "Dívida externa",
       "cor": "#8d5a2b",
-      "valor": 2078396.0,
-      "share": 28.51,
-      "var_12m_pct": 3.8
+      "valor": 2123727.0,
+      "share": 28.98,
+      "var_12m_pct": 5.6
      }
     ]
    },
    "pf": {
-    "saldo": 5077358.0,
-    "pib_pct": 37.9,
-    "var_12m_pct": 10.4,
-    "sfn_share": 92.27,
-    "mercado_share": 2.36,
-    "externo_share": 0.61,
+    "saldo": 5103381.0,
+    "pib_pct": 37.91,
+    "var_12m_pct": 9.4,
+    "sfn_share": 92.46,
+    "mercado_share": 2.43,
+    "externo_share": 0.62,
     "componentes": [
      {
       "id": "sfn",
       "nome": "Empréstimos do SFN",
       "cor": "#1d4e89",
-      "valor": 4684766.0,
-      "share": 92.27,
-      "var_12m_pct": 9.9
+      "valor": 4718773.0,
+      "share": 92.46,
+      "var_12m_pct": 9.1
      },
      {
       "id": "osf",
       "nome": "Outras sociedades financeiras",
       "cor": "#0e7c7b",
-      "valor": 145295.0,
-      "share": 2.86,
-      "var_12m_pct": 16.4
+      "valor": 131877.0,
+      "share": 2.58,
+      "var_12m_pct": 5.4
      },
      {
       "id": "fg",
       "nome": "Fundos governamentais",
       "cor": "#6b46a3",
-      "valor": 96975.0,
+      "valor": 97271.0,
       "share": 1.91,
-      "var_12m_pct": 3.7
+      "var_12m_pct": 3.0
      },
      {
       "id": "sec",
       "nome": "Instrumentos de securitização",
       "cor": "#2f7d4f",
-      "valor": 119595.0,
-      "share": 2.36,
-      "var_12m_pct": 41.0
+      "valor": 123762.0,
+      "share": 2.43,
+      "var_12m_pct": 44.3
      },
      {
       "id": "ext",
       "nome": "Dívida externa",
       "cor": "#8d5a2b",
-      "valor": 30727.0,
-      "share": 0.61,
-      "var_12m_pct": -2.2
+      "valor": 31698.0,
+      "share": 0.62,
+      "var_12m_pct": 0.6
      }
     ]
    }
@@ -2148,38 +2148,50 @@
     },
     {
      "mes": "2026-07",
-     "total": 12215277.0,
-     "pib_pct": 92.11,
-     "sfn": 6983746.0,
-     "osf": 238989.0,
+     "total": 12210650.0,
+     "pib_pct": 92.08,
+     "sfn": 6983734.0,
+     "osf": 234423.0,
      "fg": 235183.0,
      "tit": 1512458.0,
-     "sec": 1200513.0,
+     "sec": 1200464.0,
      "ext": 2044388.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-08",
-     "total": 12309070.0,
-     "pib_pct": 92.34,
-     "sfn": 7036082.0,
-     "osf": 243172.0,
+     "total": 12299415.0,
+     "pib_pct": 92.27,
+     "sfn": 7036083.0,
+     "osf": 233619.0,
      "fg": 237076.0,
      "tit": 1510403.0,
-     "sec": 1190134.0,
+     "sec": 1190031.0,
      "ext": 2092203.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-09",
-     "total": 12366581.0,
-     "pib_pct": 92.3,
-     "sfn": 7064897.0,
-     "osf": 246711.0,
+     "total": 12350277.0,
+     "pib_pct": 92.18,
+     "sfn": 7058840.0,
+     "osf": 233302.0,
      "fg": 237784.0,
      "tit": 1514865.0,
-     "sec": 1193201.0,
-     "ext": 2109123.0,
+     "sec": 1196390.0,
+     "ext": 2109096.0,
+     "fecha_pct": 100.0
+    },
+    {
+     "mes": "2026-10",
+     "total": 12432195.0,
+     "pib_pct": 92.35,
+     "sfn": 7084622.0,
+     "osf": 231797.0,
+     "fg": 239446.0,
+     "tit": 1510430.0,
+     "sec": 1210475.0,
+     "ext": 2155425.0,
      "fecha_pct": 100.0
     }
    ],
@@ -4130,38 +4142,50 @@
     },
     {
      "mes": "2026-07",
-     "total": 7202113.0,
-     "pib_pct": 54.31,
-     "sfn": 2350555.0,
-     "osf": 98065.0,
+     "total": 7200742.0,
+     "pib_pct": 54.3,
+     "sfn": 2350543.0,
+     "osf": 97486.0,
      "fg": 139119.0,
      "tit": 1512458.0,
-     "sec": 1088933.0,
+     "sec": 1088153.0,
      "ext": 2012983.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-08",
-     "total": 7239145.0,
-     "pib_pct": 54.31,
-     "sfn": 2355604.0,
-     "osf": 99980.0,
+     "total": 7237779.0,
+     "pib_pct": 54.3,
+     "sfn": 2355605.0,
+     "osf": 98695.0,
      "fg": 140247.0,
      "tit": 1510403.0,
-     "sec": 1071731.0,
+     "sec": 1071649.0,
      "ext": 2061180.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-09",
-     "total": 7289223.0,
-     "pib_pct": 54.4,
-     "sfn": 2380131.0,
-     "osf": 101416.0,
+     "total": 7280996.0,
+     "pib_pct": 54.34,
+     "sfn": 2370991.0,
+     "osf": 99408.0,
      "fg": 140809.0,
      "tit": 1514865.0,
-     "sec": 1073606.0,
-     "ext": 2078396.0,
+     "sec": 1076554.0,
+     "ext": 2078369.0,
+     "fecha_pct": 100.0
+    },
+    {
+     "mes": "2026-10",
+     "total": 7328814.0,
+     "pib_pct": 54.44,
+     "sfn": 2365849.0,
+     "osf": 99920.0,
+     "fg": 142175.0,
+     "tit": 1510430.0,
+     "sec": 1086713.0,
+     "ext": 2123727.0,
      "fecha_pct": 100.0
     }
    ],
@@ -6112,38 +6136,50 @@
     },
     {
      "mes": "2026-07",
-     "total": 5013164.0,
-     "pib_pct": 37.8,
+     "total": 5009908.0,
+     "pib_pct": 37.78,
      "sfn": 4633191.0,
-     "osf": 140924.0,
+     "osf": 136937.0,
      "fg": 96064.0,
      "tit": null,
-     "sec": 111580.0,
+     "sec": 112311.0,
      "ext": 31405.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-08",
-     "total": 5069925.0,
-     "pib_pct": 38.03,
+     "total": 5061636.0,
+     "pib_pct": 37.97,
      "sfn": 4680478.0,
-     "osf": 143192.0,
+     "osf": 134924.0,
      "fg": 96829.0,
      "tit": null,
-     "sec": 118403.0,
+     "sec": 118382.0,
      "ext": 31023.0,
      "fecha_pct": 100.0
     },
     {
      "mes": "2026-09",
-     "total": 5077358.0,
-     "pib_pct": 37.9,
-     "sfn": 4684766.0,
-     "osf": 145295.0,
+     "total": 5069281.0,
+     "pib_pct": 37.83,
+     "sfn": 4687849.0,
+     "osf": 133894.0,
      "fg": 96975.0,
      "tit": null,
-     "sec": 119595.0,
+     "sec": 119836.0,
      "ext": 30727.0,
+     "fecha_pct": 100.0
+    },
+    {
+     "mes": "2026-10",
+     "total": 5103381.0,
+     "pib_pct": 37.91,
+     "sfn": 4718773.0,
+     "osf": 131877.0,
+     "fg": 97271.0,
+     "tit": null,
+     "sec": 123762.0,
+     "ext": 31698.0,
      "fecha_pct": 100.0
     }
    ]
@@ -6254,11 +6290,11 @@
     "parcial": false
    },
    {
-    "mes": "2026-09",
-    "sfn_share": 32.65,
-    "titulos_share": 20.78,
-    "sec_share": 14.73,
-    "externo_share": 28.51,
+    "mes": "2026-10",
+    "sfn_share": 32.28,
+    "titulos_share": 20.61,
+    "sec_share": 14.83,
+    "externo_share": 28.98,
     "parcial": true
    }
   ],
@@ -6310,17 +6346,17 @@
   "ultimo_mes_com_oferta": "2026-10",
   "unidade": "R$ (valor total da oferta no regime anterior; valor registrado da oferta encerrada na Res. 160)",
   "kpis": {
-   "valor_12m": 925391214566.29,
-   "n_12m": 3432,
-   "var_12m_pct": -3.8,
-   "divida_corporativa_12m": 379264430403.41,
-   "securitizacao_12m": 267282353573.84,
+   "valor_12m": 926264007777.29,
+   "n_12m": 3440,
+   "var_12m_pct": -3.7,
+   "divida_corporativa_12m": 379281708614.41,
+   "securitizacao_12m": 267536353573.84,
    "divida_corporativa_var_12m_pct": -25.5,
-   "profissional_share": 81.03,
+   "profissional_share": 80.99,
    "incentivadas_share_debentures": 24.95,
    "hhi_lideres": 1639,
    "top5_lideres_share": 77.11,
-   "emissores_distintos_divida": 628
+   "emissores_distintos_divida": 629
   },
   "familias": [
    "Ações",
@@ -6339,30 +6375,30 @@
   "por_familia": [
    {
     "familia": "Debêntures",
-    "valor": 325399405885.41,
-    "n": 494,
-    "share": 35.16,
+    "valor": 325416684096.41,
+    "n": 495,
+    "share": 35.13,
     "var_12m_pct": -29.3
    },
    {
     "familia": "Cotas de FII e FIAGRO",
-    "valor": 164033258944.72,
-    "n": 498,
-    "share": 17.73,
-    "var_12m_pct": 71.9
+    "valor": 164634773944.72,
+    "n": 501,
+    "share": 17.77,
+    "var_12m_pct": 72.6
    },
    {
     "familia": "Cotas de FIDC",
-    "valor": 123878970130.95999,
-    "n": 1101,
-    "share": 13.39,
-    "var_12m_pct": -4.4
+    "valor": 124128970130.95999,
+    "n": 1104,
+    "share": 13.4,
+    "var_12m_pct": -4.2
    },
    {
     "familia": "Outros títulos de securitização",
     "valor": 74423145668.99,
     "n": 123,
-    "share": 8.04,
+    "share": 8.03,
     "var_12m_pct": 96.0
    },
    {
@@ -6376,21 +6412,21 @@
     "familia": "Ações",
     "valor": 48837609626.03,
     "n": 16,
-    "share": 5.28,
+    "share": 5.27,
     "var_12m_pct": 994.9
    },
    {
     "familia": "CRI",
-    "valor": 44679239773.89,
-    "n": 438,
-    "share": 4.83,
+    "valor": 44683239773.89,
+    "n": 439,
+    "share": 4.82,
     "var_12m_pct": -3.4
    },
    {
     "familia": "Cotas de FIP",
     "valor": 33112012803.260002,
     "n": 188,
-    "share": 3.58,
+    "share": 3.57,
     "var_12m_pct": 4.0
    },
    {
@@ -6404,7 +6440,7 @@
     "familia": "CRA",
     "valor": 24300998000.0,
     "n": 105,
-    "share": 2.63,
+    "share": 2.62,
     "var_12m_pct": -43.5
    },
    {
@@ -9750,22 +9786,22 @@
    },
    {
     "mes": "2026-06",
-    "total": 81796849444.96,
-    "n": 216,
+    "total": 82318127655.96,
+    "n": 219,
     "Outros": 35830947.24,
     "CRA": 1237995000.0,
-    "Debêntures": 22153775230.0,
-    "CRI": 3329401000.0,
+    "Debêntures": 22171053441.0,
+    "CRI": 3333401000.0,
     "Ações": 8428184894.530001,
     "Notas comerciais e promissórias": 10373499460.0,
     "Cotas de FIDC": 9006984906.32,
     "Outros títulos de securitização": 10915626111.6,
-    "Cotas de FII e FIAGRO": 12128610436.51,
+    "Cotas de FII e FIAGRO": 12628610436.51,
     "Cotas de outros fundos": 1885960000.0,
     "Cotas de FIP": 2300981458.76,
     "Letras financeiras": 0.0,
-    "divida_corporativa": 32527274690.0,
-    "securitizacao": 24490007017.92
+    "divida_corporativa": 32544552901.0,
+    "securitizacao": 24494007017.92
    },
    {
     "mes": "2026-07",
@@ -9788,14 +9824,14 @@
    },
    {
     "mes": "2026-08",
-    "total": 54046986557.33,
-    "n": 143,
+    "total": 54184486557.33,
+    "n": 145,
     "Outros títulos de securitização": 3743557000.0,
     "CRI": 2506208350.0,
     "Notas comerciais e promissórias": 1312625000.0,
-    "Cotas de FIDC": 6964823997.02,
+    "Cotas de FIDC": 7064823997.02,
     "Debêntures": 13256764511.48,
-    "Cotas de FII e FIAGRO": 24259444068.35,
+    "Cotas de FII e FIAGRO": 24296944068.35,
     "CRA": 1170000000.0,
     "Cotas de outros fundos": 483563629.48,
     "Cotas de FIP": 350000001.0,
@@ -9803,16 +9839,16 @@
     "Letras financeiras": 0.0,
     "Outros": 0.0,
     "divida_corporativa": 14569389511.48,
-    "securitizacao": 14384589347.02
+    "securitizacao": 14484589347.02
    },
    {
     "mes": "2026-09",
-    "total": 88288881693.33,
-    "n": 222,
+    "total": 88438881693.33,
+    "n": 224,
     "Notas comerciais e promissórias": 6227720300.0,
     "CRI": 3293576638.22,
     "Debêntures": 40524109808.88,
-    "Cotas de FIDC": 18940321557.14,
+    "Cotas de FIDC": 19090321557.14,
     "Cotas de FII e FIAGRO": 15373310963.36,
     "CRA": 853000000.0,
     "Cotas de FIP": 525459425.73,
@@ -9822,16 +9858,16 @@
     "Letras financeiras": 0.0,
     "Outros": 0.0,
     "divida_corporativa": 46751830108.88,
-    "securitizacao": 25017561195.36
+    "securitizacao": 25167561195.36
    },
    {
     "mes": "2026-10",
-    "total": 32286315143.219997,
-    "n": 113,
+    "total": 32350330143.219997,
+    "n": 114,
     "CRI": 3186330000.0,
     "Cotas de FIDC": 3390298000.03,
     "Debêntures": 10236306500.0,
-    "Cotas de FII e FIAGRO": 4958063021.8,
+    "Cotas de FII e FIAGRO": 5022078021.8,
     "Outros títulos de securitização": 4941388671.389999,
     "Notas comerciais e promissórias": 4565211000.0,
     "CRA": 450000000.0,
@@ -10183,19 +10219,19 @@
    },
    {
     "ano": "2026",
-    "total": 678422517234.3999,
-    "n": 2425,
-    "divida_corporativa": 271894376954.36002,
-    "securitizacao": 193214339787.09,
+    "total": 679295310445.3999,
+    "n": 2433,
+    "divida_corporativa": 271911655165.36002,
+    "securitizacao": 193468339787.09,
     "meses": 10,
     "Ações": 37763485663.03,
     "CRA": 10736504000.0,
-    "CRI": 29605976537.800003,
-    "Cotas de FIDC": 96611146709.3,
-    "Cotas de FII e FIAGRO": 128516822336.19,
+    "CRI": 29609976537.800003,
+    "Cotas de FIDC": 96861146709.3,
+    "Cotas de FII e FIAGRO": 129118337336.19,
     "Cotas de FIP": 25486699959.399998,
     "Cotas de outros fundos": 21391867098.81,
-    "Debêntures": 230058559794.36002,
+    "Debêntures": 230075838005.36002,
     "Letras financeiras": 0.0,
     "Notas comerciais e promissórias": 41835817160.0,
     "Outros": 154925435.52,
@@ -10208,46 +10244,46 @@
     "ini": "2025-11",
     "fim": "2026-10"
    },
-   "valor": 925139073134.27,
-   "n": 3426,
+   "valor": 926011866345.27,
+   "n": 3434,
    "publico_alvo": [
     {
      "publico": "Profissional",
-     "n": 3029,
-     "valor": 749604674373.63,
-     "share": 81.03
+     "n": 3036,
+     "valor": 749977467584.63,
+     "share": 80.99
     },
     {
      "publico": "Qualificado",
      "n": 306,
      "valor": 105751798353.52,
-     "share": 11.43
+     "share": 11.42
     },
     {
      "publico": "Público Geral",
-     "n": 91,
-     "valor": 69782600407.12,
-     "share": 7.54
+     "n": 92,
+     "valor": 70282600407.12,
+     "share": 7.59
     }
    ],
    "regime_distribuicao": [
     {
      "regime": "Melhores Esforços",
-     "n": 2478,
-     "valor": 448964915687.76,
-     "share": 48.53
+     "n": 2486,
+     "valor": 449837708898.76,
+     "share": 48.58
     },
     {
      "regime": "Garantia Firme de Colocação",
      "n": 800,
      "valor": 365460052226.63,
-     "share": 39.5
+     "share": 39.47
     },
     {
      "regime": "Misto",
      "n": 130,
      "valor": 61222421662.6,
-     "share": 6.62
+     "share": 6.61
     },
     {
      "regime": "Garantia Firme de Liquidação",
@@ -10263,16 +10299,16 @@
     }
    ],
    "debentures": {
-    "valor": 325399405885.41,
-    "n": 494,
+    "valor": 325416684096.41,
+    "n": 495,
     "incentivadas_share": 24.95,
     "incentivadas_n": 91,
     "sustentaveis_share": 7.57,
     "sustentaveis_n": 25
    },
    "em_andamento": {
-    "n": 1502,
-    "valor_registrado": 178306831075.71
+    "n": 1508,
+    "valor_registrado": 179065400958.71
    }
   },
   "divida_corporativa": {
@@ -10280,9 +10316,9 @@
     "ini": "2025-11",
     "fim": "2026-10"
    },
-   "valor": 379264430403.41,
-   "n": 783,
-   "emissores_distintos": 628,
+   "valor": 379281708614.41,
+   "n": 784,
+   "emissores_distintos": 629,
    "top_emissores": [
     {
      "nome": "CIA SANEAMENTO BÁSICO ESTADO SÃO PAULO",
@@ -10366,7 +10402,7 @@
      "cnpj": "21.314.559/0001-66",
      "n": 5,
      "valor": 5063391700.0,
-     "share": 1.34
+     "share": 1.33
     },
     {
      "nome": "ENEVA S.A.",
@@ -10396,7 +10432,7 @@
      "cnpj": "04.845.753/0001-59",
      "n": 227,
      "valor": 102421619537.0,
-     "share": 27.01
+     "share": 27.0
     },
     {
      "nome": "BANCO BRADESCO BBI S.A.",
@@ -10481,9 +10517,9 @@
    "n_lideres": 35
   },
   "coleta": {
-   "em": "2026-11-26T19:14:02+00:00",
+   "em": "2026-11-28T18:43:53+00:00",
    "ofertas_regime_anterior": 45702,
-   "ofertas_res160": 15301
+   "ofertas_res160": 15319
   },
   "nota": "Fluxo pela data do registro (ou do início, nas dispensadas do regime anterior). Regime anterior: valor total da oferta. Res. 160 (rito automático): valor registrado das ofertas encerradas; as em andamento aparecem à parte e não entram nos totais. Fundos abertos com registro automático (ICVM 555) ficam fora: o valor lá é teto cadastral."
  },
